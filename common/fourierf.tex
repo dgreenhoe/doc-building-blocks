@@ -1,0 +1,404 @@
+%============================================================================
+% NCTU - Hsinchu, Taiwan
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Fourier Analysis}
+\index{harmonic analysis}
+\index{fourier analysis}
+\label{app:fourier}
+%======================================
+%======================================
+\section{Operations}
+%======================================
+Harmonic analysis provides four operations depending on 
+whether the time/frequency is {\em continuous} or {\em discrete}
+(see Figure~\ref{fig:fourier}).
+
+\begin{figure}[h]
+\begin{center}
+   \begin{tabular}{|c||c|c|}
+      \hline
+      $[\opFT x(t)](f)$     &  continuous $t$      & discrete $t$   \\
+      \hline
+      \hline
+         continuous $f$ & Fourier Transform (FT) & Discrete-Time Fourier Transform (DTFT) \\
+                        & $\opFT:\spLL\to\spLL$    &  $\opDTFT:\spII\to\spLL$ \\
+      \hline
+         discrete   $f$ & Fourier Series (FS)  & Discrete Fourier Transform (DFT) \\
+                        & $\opFS:\spLL\to\spII$  & $\opDFT:\spII\to\spII$ \\
+      \hline
+   \end{tabular}
+\caption{
+   harmonic analysis operations
+   \label{fig:fourier}
+   }
+\end{center}
+\end{figure}
+
+%--------------------------------------
+\begin{definition}
+\label{def:ha_ops}
+\label{def:fs}
+\index{Fourier Transform}               \index{Fourier Series} 
+\index{Discrete Time Fourier Transform} \index{Discrete Fourier Transform}
+\index{FT} \index{FS} \index{DTFT} \index{DFT}
+%--------------------------------------
+Let $x,\ft{x}:\R\to\C$ and $y,\Fx:\Z\to\C$. Then 
+$\opFT  :\spLL\to\spLL$
+$\opFS  :\spLL\to\spII$, 
+$\opDTFT:\spLL\to\spLL$, and 
+$\opDFT :\spII\to\spII$
+are linear operators such that
+
+\begin{align*}
+   \ft{x}(f) &\eqd& \opFT   x &\eqd& \ds \int_t   x(t) e^{-i2\pi ft         } \dt & \mbox{(Fourier Transform---FT)                } \\
+   \Fx(k) &\eqd& \opFS   x &\eqd& \ds \int_0^T x(t) e^{-i\frac{2\pi}{T}kt} \dt & \mbox{(Fourier Series---FS)                   } \\
+             &    & \opDTFT y &\eqd& \ds \sum_n   y(n) e^{-i2\pi fnT        }     & \mbox{(Discrete Time Fourier Transform---DTFT)} \\
+             &    & \opDFT  y &\eqd& \ds \sum_n   y(n) e^{-i2\pi kn         }     & \mbox{(Discrete Fourier Transform---DFT)      } 
+\end{align*}
+\end{definition}
+
+Under Definition~\ref{def:ha_ops}, Harmonic Analysis operations 
+can be expressed in either of two powerful forms:
+
+\begin{tabular}{cll}
+   $\imark$ & linear operators & (Proposition~\ref{prop:ha_linops})\\
+   $\imark$ & innerproducts \footnotemark
+             & (Proposition~\ref{prop:ha_inprod})
+\end{tabular}
+\footnotetext{{\em Innerproducts}: Appendix~\ref{app:inprod} page~\pageref{app:inprod}}
+
+Linear operator expressions allow for the immediate application 
+of powerful tools from linear operator theory such as 
+eigenvalues/eigenvector pairs and spectral analysis
+involving self adjoint operators.
+
+Innerproduct expressions allow for the immediate application 
+of powerful tools from innerproduct space such as 
+frames, Riesz basis, and projections.
+
+%--------------------------------------
+\begin{proposition}[Harmonic operators as linear operators]
+\label{prop:ha_linops}
+\index{linear operator}
+%--------------------------------------
+Let
+\begin{liste}
+   \item $x:\R\to\C$ and $y:\Z\to\C$
+   \item $\kernel$ be a {\bf kernel}.
+\end{liste}
+
+Then
+\formbox{
+\begin{array}{rcllrcl}
+   \left[\opFT    x\right](f) &=& \ds \int_t   \kernelb{f,t} x(t)  \dt & \mbox{ where } & \kernelb{f,t} &\eqd& e^{-i2\pi ft         } \\
+   \left[ \opFS   x\right](k) &=& \ds \int_0^T \kernelb{k,t} x(t)  \dt & \mbox{ where } & \kernelb{k,t} &\eqd& e^{-i\frac{2\pi}{T}kt} \\
+   \left[ \opDTFT y\right](f) &=& \ds \sum_n   \kernelb{f,n} y(n)      & \mbox{ where } & \kernelb{f,n} &\eqd& e^{-i2\pi fnT        } \\
+   \left[ \opDFT  y\right](k) &=& \ds \sum_n   \kernelb{k,n} y(n)      & \mbox{ where } & \kernelb{k,n} &\eqd& e^{-i2\pi kn         } 
+\end{array}
+}
+\end{proposition}
+
+%--------------------------------------
+\begin{proposition}[Harmonic operators as innerproducts]
+\label{prop:ha_inprod}
+\index{innerproduct}
+%--------------------------------------
+Let
+\begin{liste}
+   \item $x,y:\R\to\C$ 
+   \item $a,b:\Z\to\C$.
+\end{liste}
+
+Then
+\formbox{
+\begin{array}{rcllrcl}
+   \opFT   x &=& \ds \inprod{x(t)}{e^{i2\pi ft} }  &\mbox{ where } & \ds \inprod{x}{y} &\eqd& \ds \int_t x(t)y^\ast(t) \dt \\ 
+   \opFS   x &=& \ds \inprod{x(t)}{e^{i\frac{2\pi}{T}k t} }  &\mbox{ where } & \ds \inprod{x}{y} &\eqd& \ds \int_0^T x(t)y^\ast(t) \dt \\
+   \opDTFT a &=& \ds \inprod{a(n)}{e^{i2\pi fnT} } &\mbox{ where } & \ds \inprod{x}{y} &\eqd& \ds \sum_n a(n) b^\ast(n) \\
+   \opDFT  a &=& \ds \inprod{a(n)}{e^{i2\pi kn} }  &\mbox{ where } & \ds \inprod{x}{y} &\eqd& \ds \sum_n a(n) b^\ast(n) \\
+\end{array}
+}
+\end{proposition}
+
+
+%======================================
+\section{Spectral representation}
+\index{spectral decomposition}
+%======================================
+The operations of Definition~\ref{def:ha_ops} can be used to 
+give a spectral representation of a function $\fx(t)$.
+\begin{liste}
+   \item If $\fx(t)$ is periodic, then the Fourier Series operator
+         $\opFS$ provides a spectral representation of $\fx(t)$
+         (Theorem~\ref{thm:ha_sr_fs}).
+   \item If $\fx(t)$ is in the space $\spLL$, then the Fourier Transform operator
+         $\opFT$ provides a spectral representation of $\fx(t)$
+         (Theorem~\ref{thm:ha_sr_ft}).
+\end{liste}
+%--------------------------------------
+\begin{theorem}
+\label{thm:ha_sr_fs}
+%--------------------------------------
+If a funtion $\fx:\R\to\C$ is periodic with period $T$, then
+\formbox{
+   \fx(t) = \sum_k \Fx(k) e^{i\frac{2\pi}{T}kt}.
+   }
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+     \ds \sum_k \Fx(k) e^{i\frac{2\pi}{T}kt}
+       &\eqd& \ds \sum_k \inprod{\fx}{ e^{i\frac{2\pi}{T}kt} } e^{i\frac{2\pi}{T}kt}  
+     \\&\eqd& \ds \frac{1}{T} \sum_k  e^{i\frac{2\pi}{T}kt} \int_0^T \fx(u) e^{-i\frac{2\pi}{T}ku} \du 
+     \\&=&    \ds \int_0^T \fx(u) \frac{1}{T} \sum_k e^{i\frac{2\pi}{T}k(t-u)}  \du 
+     \\&=&    \ds \int_0^T \fx(u) \sum_k \delta(t-u-kT)  \du 
+     \\&=&    \ds \sum_k \int_0^T \fx(u) \delta(t-u-kT)  \du 
+     \\&=&    \ds \sum_k \int_{kT}^{(k+1)T} \fx(u-kT) \delta(t-u)  \du 
+     \\&=&    \ds \sum_k \int_{kT}^{(k+1)T} \fx(u) \delta(t-u)  \du 
+     \\&=&    \ds \int_{-\infty}^{+\infty} \fx(u) \delta(t-u)  \du 
+     \\&=&    \ds \fx(t) 
+\end{eqnarray*}
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:ha_sr_ft}
+%--------------------------------------
+If $(\fx:\R\to\C)\in\spLL$, then
+\formbox{
+   \fx(t) = \int_f \Fx(f) e^{i2\pi ft} \df.
+   }
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+   \int_f \Fx(f) e^{i2\pi ft} \df
+     &=&    \int_f \int_u \fx(u) e^{-i2\pi fu}\du e^{i2\pi ft} \df
+   \\&=&    \int_u \fx(u) \int_f e^{i2\pi f(t-u)} \df\du 
+   \\&\eqq& \int_u \fx(u) \delta(t-u) \du 
+   \\&=&    \fx(t)
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+%======================================
+\section{Poisson Summation Formulas}
+\label{sec:psf}
+\index{Poisson Summation Formula}
+\index{Sampling Theorem                                         }
+\index{Dirichlet Kernel                                         }
+\index{Harmonic shifted orthonormality requirement              }
+\index{Zero-ISI necessary and sufficient criterion              }
+\index{Duobinary ISI necessary and sufficient criterion         }
+\index{Modified duobinary ISI necessary and sufficient criterion}
+%======================================
+The {\em Poisson Summation Formula} (PSF) and 
+{\em Inverse Poisson Summation Forumla} (IPSF)
+are fundamental and extremely powerful theorems in Harmonic analysis.
+Using PSF and IPSF, several other critical results easily follow.
+Examples include\\
+\begin{tabular}{llll}
+   $\imark$ & Sampling Theorem 
+             & Theorem~\ref{thm:f_sampling} 
+             & page~\pageref{thm:f_sampling}
+\\
+   $\imark$ & Dirichlet Kernel 
+             & Theorem~\ref{thm:comb}
+             & page~\pageref{thm:comb}
+\\
+   $\imark$ & Harmonic shifted orthonormality requirement
+             & Theorem~\ref{thm:ortho_tf}
+             & page~\pageref{thm:ortho_tf}
+\\
+   $\imark$ & Zero-ISI necessary and sufficient criterion
+%             & Theorem~\ref{thm:unity}
+%             & page~\pageref{thm:unity}
+\\
+   $\imark$ & Duobinary ISI necessary and sufficient criterion
+%             & Theorem~\ref{thm:db_zeroISI}
+%             & page~\pageref{thm:db_zeroISI}
+\\
+   $\imark$ & Modified duobinary ISI necessary and sufficient criterion
+%             & Theorem~\ref{thm:mdb_zeroISI}
+%             & page~\pageref{thm:mdb_zeroISI}
+\end{tabular}
+%
+
+
+
+%======================================
+\section{Parseval Relations}
+\label{sec:parseval}
+\index{Parseval relations}
+%======================================
+%--------------------------------------
+\begin{theorem}[Parseval's equation]
+\citep{mallat}{26}
+\citep{goswami}{40}
+\label{thm:GPT}
+\index{Parseval's equation}
+\index{theorems!Parseval's equation}
+%--------------------------------------
+Let $\ds \inprod{\fg(t)}{\fh(t)} \eqd \int_t \fg(t) \fh^\ast(t) \dt.$
+Then 
+\footnote{
+  {\em Generalization of Parseval's formula}: 
+  Theorem~\ref{thm:inprod_parseval} page~\pageref{thm:inprod_parseval}.
+  }
+\formbox{
+  \inprod{\fg(t)}{\fh(t)} = \inprod{\Fg(f)}{\Fh(f)}.
+  }
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+   \inprod{\fg(t)}{\fh(t)}
+     &=&    \inprod{\inprod{\Fg(f)}{e^{-i2\pi ft}}}{\fh(t)}
+   \\&=&    \inprod{\int_f\Fg(f)e^{-i2\pi ft}\df}{\fh(t)}
+   \\&=&    \int_f\Fg(f) \inprod{e^{-i2\pi ft}}{\fh(t)} \df
+   \\&=&    \int_f\Fg(f) \inprod{\fh(t)}{e^{-i2\pi ft}}^\ast \df
+   \\&=&    \int_f\Fg(f) \Fh^\ast(f) \df
+   \\&=&    \inprod{\Fg(f)}{\Fh(f)}
+\end{eqnarray*}
+\end{proof}
+
+The energy in the time domain representation of a signal 
+is equal to the energy in 
+the frequency representation as shown in the next corollary.
+%--------------------------------------
+\begin{corollary}[Plancherel's formula]
+\footnote{
+  \citerp{mallat}{26},
+  \citerp{goswami}{40}
+  }
+\label{cor:plancheral}\\
+\index{Plancheral's formula}
+%--------------------------------------
+Let
+\begin{eqnarray*}
+   \inprod{\fg(t)}{\fh(t)} &\eqd& \int_t \fg(t) \fh^\ast(t) \; \dt \\
+   \norm{\fg(t)}^2 &\eqd& \inprod{\fg(t)}{\fg(t)}.
+\end{eqnarray*}
+
+Then
+\footnote{
+  {\em Generalization of Plancheral's formula}: 
+  Corollary~\ref{thm:inprod_plancheral} page~\pageref{thm:inprod_plancheral}.
+  }
+\corbox{
+   \norm{ \fg(t)}^2 = \norm{ \Fg(f)}^2.
+   }
+\end{corollary}
+
+\begin{proof}
+\begin{align*}
+   \norm{ \fg(t)}^2
+     &=& \ds \inprod{\fg(t)}{\fg(t)}
+   \\&=& \ds \inprod{\Fg(f)}{\Fg(f)}  & \mbox{by Theorem \ref{thm:GPT}}
+   \\&=& \ds \norm{\Fg(f)}^2
+\end{align*}
+\end{proof}
+
+
+
+
+
+
+
+
+
+%======================================
+\section{Shifted orthonormality}
+%======================================
+%--------------------------------------
+\begin{theorem}[Harmonic shifted orthonormality requirement]
+\label{thm:ortho_tf}
+\index{Harmonic shifted orthonormality requirement}
+%--------------------------------------
+Let $n\in\Z$ and $\Fphi(f) \eqd [\opFT \phi](f)$. Then \\
+\framebox{
+\begin{tabular}{p{5cm}cp{5cm}}
+  \mc{1}{c}{$\ds \int_t \phi(t) \phi^\ast(t-n) \dt =\kdelta_n $}
+  &$\implies$&
+  \mc{1}{c}{$\ds \sum_n | \Fphi(f-n)|^2 = 1$}
+\\
+  \cline{1-1}\cline{3-3}
+  orthonormality requirement in time domain
+  &&
+  orthonormality requirement in frequency domain
+\end{tabular}
+}
+\end{theorem}
+\begin{proof}
+First note that 
+\[ [\opFT\phi^\ast(-t)](f) 
+   \eqd \int_t \phi^\ast(-t) e^{-i2\pi ft}\dt
+   =    \int_u \phi^\ast(u) e^{i2\pi fu}\du 
+   =    \left[ \int_u \phi(u) e^{-i2\pi fu}\du \right]^\ast
+   \eqd \Fphi^\ast(f).
+\]
+
+{\bf ``only if"} case: 
+$\left[\int_t \phi(t) \phi^\ast(t-n) \dt =\kdelta_n\right] \implies
+  \left[\sum_n | \Fphi(f-n)|^2 = 1 \right]$
+\begin{eqnarray*}
+  1 &=& \sum_n \kdelta_n e^{-i2\pi fn}
+  \\&=& \sum_n \int_t \phi(t)\phi^\ast(t-n) \dt \;e^{-i2\pi fn}
+        \hspace{1cm}\mbox{by left hypothesis}
+  \\&=& \sum_n \left[ \int_t \phi(t)\phi^\ast(-(u-t))\dt \right]_{u=n} e^{-i2\pi fn}
+  \\&=& \sum_n \left[ \phi(u) \conv \phi^\ast(-u)\right](n) e^{-i2\pi fn}
+        \hspace{1cm}\mbox{by convolution definition (Definition~\ref{def:conv})}
+  \\&=& \sum_n \left[\opFT \phi(u) \conv \phi^\ast(-u)\right](f+n) 
+        \hspace{1cm}\mbox{by IPSF (Theorem~\ref{thm:ipsf})}
+  \\&=& \sum_n \Fphi(f+n) \Fphi^\ast(f+n)
+        \hspace{1cm}\mbox{by Convolution Theorem (Theorem~\ref{thm:conv})}
+  \\&=& \sum_n |\Fphi(f+n)|^2
+\end{eqnarray*}
+
+{\bf ``if"} case: 
+$\left[\int_t \phi(t) \phi^\ast(t-n) \dt =\kdelta_n\right] \Longleftarrow
+  \left[\sum_n | \Fphi(f-n)|^2 = 1 \right]$
+
+Mallat\citep{mallat}{225} claims that the ``if" case ($\Longleftarrow$)
+is also true.\attention
+However, I have not been able to prove it. 
+Below is two attempts to prove it.
+However, {\bf this portion of the proof is incomplete} (not a real proof):
+\begin{eqnarray*}
+  \int_t \fphi(t)\fphi^\ast(t-n) \dt
+    &=& \left[ \int_t \fphi(t)\fphi^\ast(-(u-t)) \dt \right]_{u=n}
+  \\&=& \left[ \fphi(u) \conv \fphi^\ast(-u) \right](n)
+  \\&=& \left[ \opFTi \Fphi(f) \Fphi^\ast(f) \right](n)
+  \\&=& \int_f \Fphi(f) \Fphi^\ast(f) e^{i2\pi fn} \df
+  \\&=& \int_f | \Fphi(f) |^2 \df
+\\
+\\
+\\
+  \sum_n \kdelta_n
+    &=& 1
+  \\&=& \sum_n |\Fphi(n)|^2
+        \hspace{1cm}\mbox{by right hypothesis}
+  \\&=& \sum_n \Fphi(n) \Fphi^\ast(n)
+  \\&=& \sum_n \left[ \opFT \fphi(u) \conv \fphi^\ast(-u) \right](n)
+  \\&=& \sum_n \left[ \fphi(u) \conv \fphi^\ast(-u) \right](n)
+        \hspace{1cm}\mbox{by IPSF (Theorem~\ref{thm:ipsf} page~\pageref{thm:ipsf})}
+  \\&=& \sum_n \left[ \int_t \fphi(t)\fphi^\ast(-(u-t)) \dt \right]_{u=n}
+  \\&=& \sum_n \int_t \fphi(t) \fphi^\ast(t-n) \dt 
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+
+
+
+

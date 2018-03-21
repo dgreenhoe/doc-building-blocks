@@ -1,0 +1,969 @@
+﻿%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Measures on Sets}
+\label{chp:measure}
+%======================================
+
+%======================================
+\section{Measurable sets}
+%======================================
+%---------------------------------------
+\begin{definition}
+\label{def:sigalg}
+\citetbl{
+  \citerppg{ab}{95}{97}{0120502577} \\
+  \citerpg{ab}{151}{0120502577}
+  }
+\label{def:(X,S)}
+\label{def:msxs}
+\label{def:mss}
+\label{def:ms}
+\index{space!measurable}
+\index{sets!measurable}
+%---------------------------------------
+Let $\setX$ be a set and $\mss$ a set of subsets of $\setX$ such that 
+$\mss\subseteq\pset{\setX}$.
+\defbox{\begin{array}{M}
+  The set $\hxs{\mss}$ is a \hid{\txsigma-algebra} on $\setX$ if
+  \\\indentx$\begin{array}{Flc >{\ds}ll @{\qquad}DD}
+    1.& \setE\in \mss
+      & \implies 
+      & \cmpA & \in  \mss
+      & (closed under complement operation)
+      & and
+      \\
+    2.& \setE,\setF\in \mss
+      & \implies
+      & \setE\seti\setF & \in  \mss
+      & (closed under intersection operation)
+      & and
+      \\
+    3.& \setxZ{\setE_n}\subseteq\mss
+      & \implies
+      & \setopu_{n\in\Z}\setE_n & \in  \mss
+      & (closed under countable union operations).
+      & 
+  \end{array}$
+  \\
+  A \hid{measurable space} is the pair $\hxs{\msxs}$.
+  A \hid{measurable set}   is any member of $\hxs{\mss}$.
+\end{array}}
+\end{definition}
+
+Every \structe{measurable space} is a \structe{topological space} (next proposition).
+For example, on the set $\setn{x,y,z}$, there are 29 topologies and 5 of these are measurable sets \xref{ex:set_lat_top_xyz}.
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\propbox{
+  \text{$\msxs$ is a \structe{measurable space}}
+  \implies
+  \text{$\msxs$ is a \structe{topological space}}
+  }
+\end{proposition}
+\begin{proof}
+  This follows directly from \prefp{def:topology} and \prefp{def:ms}.
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+%\citetbl{
+%  \citerpgc{bartle1966}{7}{0471054577}{2.2 Examples (e)}
+%  }
+%---------------------------------------
+\propbox{
+  \brb{\begin{array}{M}
+    $\setxN{\opair{\msx}{\mss_n}}$ are\\ 
+    \structe{measurable space}s
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FlMD}
+    1. & \opair{\msx}{\setopi_{n=1}^\xN\mss_n} & is a \structe{measurable space} & and\\
+    2. & \opair{\msx}{\setopu_{n=1}^\xN\mss_n} & is a \structe{measurable space} & 
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+Let $\logopa$ be the \fncte{logical and operator} and $\logopo$ the \fncte{logical or operator}.
+\begin{enumerate}
+  \item Proof that $\opair{\msx}{\setopi \mss_n}$ is a \structe{measurable space}:
+    \begin{align*}
+      \setE\in\setopi_{n=1}^\xN\mss_n
+        &\iff \logopa_{n=1}^\xN\brp{\setE\in\mss_n}                         && \text{by definition of $\setopi$}
+      \\&\iff \logopa_{n=1}^\xN\brp{\cmpE\in\mss_n}                         && \text{by \prefp{def:msxs}}
+      \\&\iff \cmpE\in\setopi_{n=1}^\xN\mss_n                               && \text{by definition of $\setopi$}
+      \\
+      \setE,\setF\in\setopi_{n=1}^\xN\mss_n
+        &\iff \logopa_{n=1}^\xN\brp{\setE,\setF\in\mss_n}                   && \text{by definition of $\setopi$}
+      \\&\implies \logopa_{n=1}^\xN\brs{\brp{\setE\seti\setF}\in\mss_n}         && \text{by \prefp{def:msxs}}
+      \\&\iff \brp{\setE\seti\setF}\in\setopi_{n=1}^\xN\mss_n               && \text{by definition of $\setopi$}
+      \\
+      \set{\setE_m}{m\in\Z}\subseteq\setopi_{n=1}^\xN\mss_n
+        &\iff \logopa_{n=1}^\xN\brp{\set{\setE_m}{m\in\Z}\subseteq\mss_n}                       && \text{by definition of $\setopi$}
+      \\&\iff \logopa_{n=1}^\xN\brs{\brp{\setopu_{m\in\Z}\setE_m}\in\mss_n} && \text{by \prefp{def:msxs}}
+      \\&\iff \brp{\setopu_{m\in\Z}\setE_m}\in\setopi_{n=1}^\xN\mss_n       && \text{by definition of $\setopi$}
+    \end{align*}
+
+  \item Proof that $\opair{\msx}{\setopu_n \mss_n}$ is a \structe{measurable space}: 
+        by (1.) and \thme{principle of duality}\ifdochas{lattice}{ \xref{thm:lat_duality}}.
+  %  \begin{align*}
+  %    \setE\in\setopu_{n=1}^\xN\mss_n
+  %      &\implies \logopo_{n=1}^\xN\brp{\setE\in\mss_n}                         && \text{by definition of $\setopu$}
+  %    \\&\implies \logopo_{n=1}^\xN\brp{\cmpE\in\mss_n}                         && \text{by \prefp{def:msxs}}
+  %    \\&\implies \cmpE\in\setopu_{n=1}^\xN\mss_n                               && \text{by definition of $\setopu$}
+  %    \\
+  %    \setE,\setF\in\setopu_{n=1}^\xN\mss_n
+  %      &\implies \logopo_{n=1}^\xN\brp{\setE,\setF\in\mss_n}                   && \text{by definition of $\setopu$}
+  %    \\&\implies \logopo_{n=1}^\xN\brs{\brp{\setE\seti\setF}\in\mss_n}         && \text{by \prefp{def:msxs}}
+  %    \\&\implies \brp{\setE\seti\setF}\in\setopu_{n=1}^\xN\mss_n               && \text{by definition of $\setopu$}
+  %    \\
+  %    \setE_m\in\setopu_{n=1}^\xN\mss_n
+  %      &\implies \logopo_{n=1}^\xN\brp{\setE_m\in\mss_n}                       && \text{by definition of $\setopu$}
+  %    \\&\implies \logopo_{n=1}^\xN\brs{\brp{\setopu_{m=1}^\xN\setE_m}\in\mss_n} && \text{by \prefp{def:msxs}}
+  %    \\&\implies \brp{\setopu_{m=1}^\xN\setE_m}\in\setopu_{n=1}^\xN\mss_n       && \text{by definition of $\setopu$}
+  %  \end{align*}
+\end{enumerate}
+\end{proof}
+
+%%---------------------------------------
+%\begin{proposition}
+%\citetbl{
+%  \citerpgc{bartle1966}{7}{0471054577}{2.2 Examples (e)}
+%  }
+%%---------------------------------------
+%\propbox{
+%  \brb{\begin{array}{lMD}
+%    \opair{\msx}{\mss_1} & is a \structe{measurable space} & and\\
+%    \opair{\msx}{\mss_2} & is a \structe{measurable space} & 
+%  \end{array}}
+%  \implies
+%  \brb{\opair{\msx}{\mss_1\seti\mss_2}\quad\text{is a \structe{measurable space}}}
+%  }
+%\end{proposition}
+
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerpgc{bartle1966}{7}{0471054577}{2.2 Examples (f)}
+  }
+\label{def:ms_generated}
+%---------------------------------------
+Let $\msxs$ be a \structe{measurable space}.
+Let $\setY$ be a subset of $\setX$.
+\defbox{\begin{array}{M}
+  The \hid{\txsigma-algebra generated by Y} is the intersection of all the \txsigma-algebras containing $\setY$.\\
+  In this text, this is denoted by $\msA\setY$.
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citerpgc{srivastava1998}{82}{0387984127}{Example 3.1.1}\\
+  \citerpgc{bartle1966}{7}{0471054577}{2.2 Examples (a)}
+  }
+%---------------------------------------
+Let $\setX$ be a set.
+Let $\psetx$ be the \structe{power set} of $\setX$ \xref{def:pset}.
+%Let $\seto{\setE}$ be the \structe{order} \xref{def:seto} of a set $\setE\in\psetx$.
+\exbox{\begin{array}{M}
+  The set $\psetx$ is the \hid{discrete \txsigma-algebra} on $\setX$ and
+  $\opair{\setX}{\psetx}$ is a \structe{measurable space}.
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citerpgc{srivastava1998}{82}{0387984127}{Example 3.1.1}
+  %\citerpgc{bartle1966}{7}{0471054577}{2.2 Examples (b)}
+  }
+%---------------------------------------
+Let $\setX$ be a set.
+\exbox{\begin{array}{M}
+  The set $\setn{\emptyset,\,\setX}$ is the \hid{indiscrete \txsigma-algebra} on $\setX$ and
+  $\opair{\setX}{\setn{\emptyset,\setX}}$ is a \structe{measurable space}.
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citerpgc{givant2009}{270}{0387402934}{Chapter 29. Boolean \txsigma-algebras}\\
+  \citerpgc{tao2010}{4}{0821852787}{Example 1.1.5}\\
+  \citerpgc{yeh2006}{10}{9812566538}{Definition 1.16}
+  }
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+Let $\msA\setY$ be the \structe{\txsigma-algebra generated by \setY} \xref{def:ms_generated}.
+\exbox{\begin{array}{M}
+  The \hid{Borel \txsigma-algebra} of $\topspaceX$, $\borel(\setX)$, is defined as $\borel(\setX)\eqd\msA(\topT)$.\\
+  The pair $\opair{\setX}{\borel(\setX)}$ is a \structe{measurable space}.
+  An element of $\borel(\setX)$ is called a \hid{Borel set}.
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citerpgc{bartle1966}{7}{0471054577}{2.2 Examples (g)}\\
+  \citerpgc{ambrosio2011}{3}{8876423850}{Example 1.4}
+  }
+%---------------------------------------
+Let $\R$ be the set of \structe{real numbers}.
+Let $\intoo{a}{b}$ be an \structe{open interval} \xref{def:intervals} on $\R$.
+Let $\msA\setY$ be the \structe{\txsigma-algebra generated by \setY} \xref{def:ms_generated}.
+\exbox{\begin{array}{M}
+  The \hid{Borel \txsigma-algebra} of $\R$, $\borel(\R)$, is defined as
+  \\\indentx$\borel(\R)\eqd\msA\set{\intoo{a}{b}}{a<b,\,a,b\in\R}$ 
+  \\is a \structe{\txsigma-algebra} on $\R$ and
+  $\opair{\R}{\borel(\R)}$ is a \structe{measurable space}.
+  %An element of $\borel(\setX)$ is called a \hid{Borel set}.
+\end{array}}
+\end{example}
+
+
+
+
+
+
+
+
+%======================================
+\section{Measures on measurable sets}
+%======================================
+%%---------------------------------------
+%\begin{definition}
+%\citetbl{
+%  \citerpgc{pap1995}{8}{0792336585}{Definition 2.3}
+%  }
+%\label{def:setf}
+%%---------------------------------------
+%Let $\sssQx$ be a paving on a set $\setX$.
+%Let $\setY$ be a set containing the element $0$.
+%\defbox{
+%  \text{A function $\fm\in\clF{\sssQx}{\setY}$ is a \hid{set function} if $\fm(\emptyset)=0$.}
+%  }
+%\end{definition}
+%
+\prefp{def:(X,S)} calls the pair
+$\opair{\msx}{\mss}$ a \hie{measurable space}. 
+The fact that the space is ``measurable" implies that there is a \hie{measure}
+by which we can measure elements in $\mss$.
+\pref{def:measure} (next) defines a measure on a measurable space.
+%---------------------------------------
+\begin{definition}
+\label{def:measure}
+\label{def:msm}
+\label{def:mspace}
+\citetbl{
+  \citerpgc{bartle1966}{19}{0471054577}{3.1 Definition}\\
+  %\citerpg{ab}{98}{0120502577}
+  \citerpgc{givant2009}{288}{0387402934}{Chapter 31 Measure Algebras}\\
+  \citerpgc{jech2003}{585}{586}{3540440852}{Definition 30.2}
+  }
+\index{space!measure}
+%---------------------------------------
+Let $\opair{\msx}{\mss}$ be a \structe{measurable space} \xref{def:msxs}.
+\defbox{\begin{array}{M}
+  A \fncte{set function} $\msm$ \xref{def:setf} is a \hid{measure} on $\mss$ if
+  \\\indentx$\begin{array}{Flc>{\ds}lD}
+    1. & 
+       &
+       & \msm(\emptyset)=0
+       & and
+       \\
+    2. & \setE\in\mss
+       & \implies
+       & \msm(\setE) \in \intcc{0}{\infty}
+       & and
+       \\
+    3. & \brb{\begin{array}{lC}
+           \setxZ{\setE_n} \subseteq \mss & \mathand \\
+           \setE_n\seti\setE_m=\emptyset  & \mathfor m\neq n
+         \end{array}}
+       & \implies
+       & \msm\brp{\setopu_{n\in\Z} \setE_n} = \sum_{n\in\Z} \msm(\setE_n)
+       %& \forall \set{\setE_n\in \mss}{\setopi_n \setE_n=\emptyset} 
+       & (\prope{\txsigma-additive})
+  \end{array}$
+  \\
+  A \hid{measure space} is the triple $\ms$.
+  %A measure $\msm$ is \prope{strictly positive} if $\msm(\setE)>0$ for all $\setE\in\mss$.
+  %A measure $\msm$ is \prope{probabilistic} if 
+\end{array}}
+\end{definition}
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpgc{kubrusly2007}{21}{0123708990}{Proposition 2.2}\\
+  \citerpgc{ab}{99}{0120502577}{Theorem 13.2}\\
+  \citerpg{haaser1991}{145}{0486665097}
+  }
+\index{isotone}
+\label{thm:measure}
+%---------------------------------------
+Let $\ms$ be a measure space.
+\thmbox{\begin{array}{FlcrclCD}
+  1. & \setE\subseteq \setF                                 &\implies & \msm(\setE)           &\le& \msm(\setF)               & \forall \setE,\setF\in\mss & (\prope{isotone})\\
+  2. & \setE\subseteq \setF \mathand \msm(\setE)<\infty     &\implies & \msm(\setF\setd\setE) &=&   \msm(\setF)-\msm(\setE)   & \forall \setE,\setF\in\mss & \\
+  3. &                                                      &         & \msm(\setE\setu\setF) &\le& \msm(\setE) + \msm(\setF) & \forall \setE,\setF\in\mss & 
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\setE\subseteq \setF \qquad\implies\qquad \msm(\setE) \le \msm(\setF)$: \label{item:measure1}
+    \begin{align*}
+      \msm(\setF)
+        &= \msm\left( A \setu \left[\setF\setd \setE\right] \right)
+      \\&= \msm(\setE) + \msm(\setF\setd \setE)
+        && \text{by \prefp{def:measure} (\txsigma-additive property)}
+      \\&\ge \msm(\setE) 
+        && \text{by \prefp{def:measure} ($\msm:\mss\to\intco{0}{\infty}$)}
+    \end{align*}
+
+  \item Proof that $\setE\subseteq \setF \text{ and } \msm(\setE)<\infty \implies \msm(\setE\setd\setF) =   \msm(\setF)-\msm(\setE)$:
+    \begin{align*}
+      \msm(\setF) - \msm(\setE)
+        &= \msm\brp{\setE\setu\brs{\setF\setd\setE}} -\msm\brp{\setE}
+        && \text{by $\setE\subseteq\setF$ hypothesis}
+      \\&= \msm\brp{\setE} + \msm\brp{\setF\setd\setE} -\msm\brp{\setE}
+        && \text{because $\setE$ and $\setF\setd\setE$ are \prope{disjoint} and by \prefp{def:measure}}
+      \\&= \msm\brp{\setF\setd\setE}
+        && \text{by $\msm(\setE)<\infty$ hypothesis}
+    \end{align*}
+
+  \item Proof that $\msm(\setE\setu\setF) \le \msm(\setE) + \msm(\setF)$:
+    \begin{align*}
+      \msm(\setE\setu\setF) 
+        &=   \msm\brp{\setE\setu\brs{\setF\setd\setE}}
+      \\&=   \msm\brp{\setE} + \msm\brp{\setF\setd\setE}
+      \\&\le \msm(\setE) + \msm(\setF)
+        &&   \text{because $\setF\setd\setE\subseteq\setF$ and by \pref{item:measure1}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%======================================
+%\section{Examples}
+%======================================
+%======================================
+%\subsection{Examples on abstract sets}
+%======================================
+%---------------------------------------
+\begin{example}
+\label{ex:msr_dirac}
+\citetbl{
+  \citerpgc{hewitt1965}{120}{0387901388}{(9.19) Definition}\\
+  \citerpgc{swartz1994}{23}{9810216106}{Example 7}\\
+  \citerpg{ab}{99}{0120502577}
+  }
+%---------------------------------------
+Let $\msxs$ be a \structe{measurable space} \xref{def:msxs}, 
+ and $x$ some fixed value in $\msx$.
+Let $\setind_{\setE}(x)$ be the \fncte{set indicator function} \xref{def:setind} of the set $\setE$ at the point $x$.
+\exbox{\begin{array}{M}
+  The set function $\msm(\setE)\eqd \setind_{\setE}(x)$ is the \hid{Dirac measure concentrated at $x$} or\\ 
+  the \hid{unit point mass concentrated on $x$} on $\msxs$, $\setE\in\mss$.\\
+  The triple $\ms$ is a \hid{Dirac measure space}.
+\end{array}}
+\end{example}
+
+
+
+
+%\prefp{ex:msr_counting} (next) is useful for converting an integral into a summation.
+%---------------------------------------
+\begin{example}
+\label{ex:msr_counting}
+\index{counting measure}
+\citetbl{
+  \citerpgc{tao2010}{7}{0821852787}{Example 1.1.14}\\
+  \citerpg{ab}{99}{0120502577}
+  }
+%---------------------------------------
+Let $\msxs$ be a \structe{measurable space} \xref{def:msxs}.
+Let $\seto{\setE}$ be the \structe{cardinality} \xref{def:seto} of a set $\setE\in\mss$.
+\exbox{\begin{array}{M}
+  The set function $\msm(\setE)\eqd \seto{\setE}$ is the \hid{counting measure} on $\msxs$.\\
+  The triple $\ms$ is a \hid{counting measure space}.
+\end{array}}
+\end{example}
+
+%Suppose a statement involving $\int_\msx \ff() d\msm$ is true for any measure space
+%$\ms$. 
+%If we want the equivalent statement for summation, then we can use the 
+%counting measure such that
+%\begin{align*}
+%  \int_{\Z} \ff()d\msm
+%    &= \sum_{n\in\Z} a_n \msm(\setE_n)
+%  \\&= \sum_{n\in\Z} a_n \left|\set{n\in\Z}{\ff(n)=a_n}\right|
+%  \\&= \sum_{n\in\Z} \ff(n)
+%\end{align*}
+
+
+%======================================
+%\subsection{Examples on probability spaces}
+%======================================
+Important measure spaces include \structe{probability spaces}.
+The next few examples illustrated measure spaces using 
+coins and dice.
+%---------------------------------------
+\begin{example}[Coin flips]
+\label{ex:msr_coin_flips}
+%---------------------------------------
+Let \coinhead be the ``head" and \cointail be the ``tails" of a ``fair" coin.
+We can construct the following \structe{measure space} (\structe{probability space}) $\ps$:
+\exbox{\begin{array}{ll}
+  \pso &= \left\{ \coinhead, \cointail \right\}
+  \\
+  \pse &= \left\{ \mcom{\left\{\hspace{1ex} \right\}}{$\emptyset$}, 
+                  \mcom{\left\{\text{\coinhead}\right\}}{heads}, 
+                  \mcom{\left\{\text{\cointail}\right\}}{tails}, 
+                  \mcom{\left\{ \text{\coinhead,\cointail} \right\}}{$\pso$}
+          \right\}
+  \\ 
+  \psp(e) &= 
+    \left\{\begin{array}{l@{\qquad} >{\text{for }e=}l @{\qquad}D}
+      0           & \{\hspace{1ex}\}  
+                  & ($\emptyset$)
+                  \\
+      1           & \left\{ \text{\coinhead,\cointail}\right\}
+                  & ($\pso$)
+                  \\
+      \frac{1}{2} & \left\{\text{\coinhead}\right\}
+                  & (heads)
+                  \\
+      \frac{1}{2} & \left\{\text{\cointail}\right\}
+                  & (tails)
+    \end{array}\right.
+\end{array}}
+\end{example}
+
+
+%---------------------------------------
+\begin{example}[Even/odd dice measure space]
+\label{ex:msr_even_odd_dice}
+%---------------------------------------
+Suppose we have an ``unfair" dice and we want to know whether
+the result of rolling the dice one time will be ``even" or ``odd".
+We can construct the following \structe{measure space} (\structe{probability space}) $\ps$:
+
+\exbox{\begin{array}{ll}
+  \pso &= \left\{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}
+  \\
+  \pse &= \left\{ \mcom{\left\{\hspace{1ex} \right\}}{$\emptyset$}, 
+                  \mcom{\left\{\text{\diceA,\diceC,\diceE}\right\}}{odd}, 
+                  \mcom{\left\{\text{\diceB,\diceD,\diceF}\right\}}{even}, 
+                  \mcom{\left\{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}}{$\pso$}
+          \right\}
+  \\ 
+  \psp(e) &= 
+    \left\{\begin{array}{l@{\qquad} >{\text{for }e=}l @{\qquad}D}
+      0           & \{\hspace{1ex}\}  
+                  & ($\emptyset$)
+                  \\
+      1           & \left\{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}
+                  & ($\pso$)
+                  \\
+      \frac{1}{3} & \left\{\text{\diceA,\diceC,\diceE}\right\}
+                  & (odd)
+                  \\
+      \frac{2}{3} & \left\{\text{\diceB,\diceD,\diceF}\right\}
+                  & (even)
+    \end{array}\right.
+\end{array}}
+\end{example}
+
+The previous example illustrates a 
+measure space in which the events (ignorning $\emptyset$ and $\pso$)
+are \prope{mutually exclusive}. 
+The next example illustrates a measure space where events are {\em not} mutually exclusive.
+
+%---------------------------------------
+\begin{example}
+\label{ex:msr_dice}
+%---------------------------------------
+Suppose we have a ``fair" dice and we are primarily interested in the
+events of the first four 
+$\left(\setn{\text{\diceA,\diceB,\diceC,\diceD}}\right)$
+(that is, whether one roll of the dice will produce 
+a value in the set $\{1,2,3,4\}$)
+and the last three
+$\left(\setn{\text{\diceD,\diceE,\diceF}}\right)$
+However, these events do not by themselves form a \txsigma-algebra.
+Rather under the $\seti$ and $\setu$ operations, these two events generate
+a total of eight possible events that together form a \txsigma-algebra.
+The resulting measure space $\ps$ is
+\exbox{\begin{array}{ll}
+  \pso &= \left\{ \text{\scs\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}
+  \\
+  \pse &= \left\{ \mcom{\setn{\quad}}{$\emptyset$},\;
+                  \mcom{\setn{\text{\scs\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}}{$\pso$},\;
+                  \mcom{\setn{\text{\scs\diceA,\diceB,\diceC,\diceD}}}{first four},\;
+                  \mcom{\setn{\text{\scs\diceD,\diceE,\diceF}}}{last three},\; 
+                  \right.
+                  \\&\qquad
+                  \left.
+                  \mcom{\setn{\text{\scs\diceD}}}{$\setn{1234}\seti\setn{456}$},\; 
+                  \mcom{\setn{\text{\scs\diceA,\diceB,\diceC,\diceE,\diceF}}}{$\cmp{\setn{4}}$},\;
+                  \mcom{\setn{\text{\scs\diceE,\diceF}}}{$\cmp{\setn{4}}\seti\setn{456}$},\; 
+                  \mcom{\setn{\text{\scs\diceA,\diceB,\diceC}}}{$\setn{1234}\seti\cmp{\setn{4}}$},\;
+          \right\}
+  \\ 
+  \psp(e) &= 
+    \left\{\begin{array}{l@{\qquad} >{\text{for }e=}l @{\qquad}D}
+      0           & \setn{\quad}
+                  & ($\emptyset$)\\
+      1           & \setn{\text{\scs\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}
+                  & ($\pso$)\\
+      \frac{2}{3} & \setn{\text{\scs\diceA,\diceB,\diceC,\diceD}}
+                  & (first four)\\
+      \frac{1}{2} & \setn{\text{\scs\diceD,\diceE,\diceF}}
+                  & (last three)\\
+      \frac{1}{6} & \setn{\text{\scs\diceD}}
+                  & ($\setn{1234}\seti\setn{456}$) \\
+      \frac{5}{6} & \setn{\text{\scs\diceA,\diceB,\diceC,\diceE,\diceF}}
+                  & ($\cmp{\setn{4}}$) \\
+      \frac{1}{3} & \setn{\text{\scs\diceE,\diceF}}
+                  & ($\cmp{\setn{4}}\seti\setn{456}$) \\ 
+      \frac{1}{2} & \setn{\text{\scs\diceA,\diceB,\diceC}}
+                  & ($\setn{1234}\seti\cmp{\setn{4}}$)
+    \end{array}\right.
+\end{array}}
+\end{example}
+
+%Why go through all the trouble of requiring a \txsigma-algebra?
+%Having a \txsigma-algebra in place ensures that anything we might possibly 
+%want to measure {\em can} be measured.
+%It makes sure all possible combinations are taken into account.
+%And why go through the additional trouble of requiring a measure space?
+%With a measure space available, expressing the measure over a complex
+%set is often greatly simplified because the measure space provides nice 
+%algebraic properties (namely the \txsigma-additive property.
+%\prefp{ex:msr_123456} (next) illustrates how a rather complex 
+%\txsigma-algebra (64 elements) can be compactly represented in a measure space.
+%---------------------------------------
+\begin{example}
+\label{ex:msr_123456}
+%---------------------------------------
+Suppose we have a ``fair" dice and we are interested in measuring over the 
+power set of events (largest possible algebra---$2^6=64$ events).
+This leads to the measure space $\ps$ where
+\exbox{\begin{array}{ll@{\qquad}D}
+  \pso    &= \left\{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}
+          \\
+  \pse    &= \mathcal{P}(\pso) & (the power-set of $\pso$)
+          \\ 
+  \psp(e) &= \frac{1}{6} |e|
+          & ($\frac{1}{6}$ times the number of possible outcomes in event $e$)
+\end{array}}
+\end{example}
+
+Examples~\ref{ex:msr_even_odd_dice}, \ref{ex:msr_dice}, \ref{ex:msr_123456}
+all involve probability. 
+However, measure spaces are useful not just for probability,
+but for anything that needs to be {\em measured}.
+%and many many things need to be measured in mathematics.
+%Examples~\ref{ex:msr_LR},\ref{ex:msr_LRn} (next) illustrate measure spaces useful
+%in Lebesgue integration.
+
+%---------------------------------------
+\begin{example}
+\label{ex:msr_jordan}
+\index{measure!Jordan}
+\citep{rao2004}{31}
+%---------------------------------------
+The \hid{Jordan measure space} is $\ms$ where
+\exbox{\begin{array}{ll>{\ds}l}
+  \msx           &=& \R                      \\
+  \mss           &=& \set{(a,b]}{a,b\in\R}   \\
+  \msm((a,b])  &=& \inf\set{\sum_{n=1}^\xN (b_n-a_n)}
+                          {\mcom{\left[\setE\subseteq\setopu_{n=1}^\xN (\setE_n,b_n]\right]}{covers $\setE$}
+                           \;\text{and}\; 
+                           \mcom{\left[\setopi_{n=1}^\xN (\setE_n,b_n]=\emptyset\right]}{disjoint}  
+                          } 
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{example}
+\label{ex:msr_LR}
+\index{measure!Lebesgue}
+%---------------------------------------
+The \hid{Lebesgue measure space over $\R$} is $\ms$ where
+\exbox{\begin{array}{lll}
+  \msx           &=& \R                      \\
+  \mss           &=& \set{\intco{a}{b}}{a,b\in\R}   \\
+  \msm([a,b))  &=& \abs{b-a}
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citerpg{ab}{133}{0120502577}
+  }
+\label{ex:msr_LRn}
+%---------------------------------------
+The \hid{Lebesgue measure space over $\R^\xN$} is $\ms$ where
+\exbox{\begin{array}{ll>{\ds}l}
+  \msx           &=& \R^\xN                    \\
+  \mss           &=& \set{\prod_{n=1}^\xN \intco{a_n}{b_n}}{a_n,b_n\in\R}   \\
+  \msm\brp{\prod_{n=1}^\xN\intco{a_n}{b_n}}  &=& \sqrt{\sum_{n=1}^\xN(b_n-a_n)^2}
+\end{array}}
+\end{example}
+
+
+\ifexclude{wsd}{
+%======================================
+\section{Outer measures on measurable sets}
+%======================================
+Often in analysis, one can prove a statement 
+by finding its upper and lower 
+bounds and then showing that those bounds are equal to each other.
+%We have already seen that all measures are \txsigma-additive (by \prefp{def:measure}).
+\pref{def:mso} (next) introduces an {\em outer} measure which is 
+\txsigma-{\bf sub}additive.
+The outer measure acts as a kind of upper bound while the measure acts as a 
+lower bound.
+%And under certain conditions the measure and outer measure are equal,
+%giving an extremely powerful technique for proving a large range of statements.
+An \structe{outer measure} is \emph{not} in general a \structe{measure} \xref{def:msm};
+but \emph{every} measure \emph{is} an outer measure \xref{prop:mom}.
+%---------------------------------------
+\begin{definition}
+\label{def:mso}
+\citetbl{
+  \citerpgc{hewitt1965}{126}{0387901388}{(10.2) Definition}\\
+  \citerpgc{ab}{103}{0120502577}{Definition 14.1}
+  }
+\index{measure!outer}
+\index{sigma-subadditive}
+%---------------------------------------
+Let $\psetX$ be the \structe{power set} of a set $\setX$ \xref{def:pset}.
+\defbox{\begin{array}{M}
+  A function $\mso$ is an \hid{outer measure} on $\psetx$ if
+  \\$\begin{array}{Flc>{\ds}rc>{\ds}lD}
+    1. & 
+       &
+       & \mso(\emptyset)&=&0
+       %& 
+       & and
+       \\
+    2. & \setE\in\psetx
+       & \implies
+       & \mso(\setE) &\in& \intcc{0}{\infty}
+       %& 
+       & and
+       \\
+    3. & \brb{\begin{array}{rclC}
+           \setxZ{\setE_n} &\subseteq& \mss & \mathand \\
+           \setE_n\seti\setE_m&=&\emptyset  & \mathfor m\neq n
+         \end{array}}
+       & \implies
+       & \mso\brp{\setopu_{n\in\Z} \setE_n} &\le& \sum_{n\in\Z} \mso(\setE_n)
+       %& \forall \set{\setE_n\in \mss}{\setopi_n \setE_n=\emptyset} 
+       %& (\prope{\txsigma-subadditive})
+       & and
+       \\
+    4. & \brb{\begin{array}{rclC}
+           \setE       &\subseteq&\setF & \mathand \\
+           \setE,\setF &\in&      \psetX
+         \end{array}}
+       & \implies
+       & \mso(\setE) &\le& \mso(\setF)
+       %& (\prope{monotonic})  
+       &
+  \end{array}$
+\end{array}}
+%\end{definition}
+\end{definition}
+
+
+To measure the ``size" of a set $\setE$, we could use another set $\setM$ to ``split" $\setE$ into 
+two parts---the part of $\setE$ inside $\setM$ and the part outside $\setM$.
+If the sum of the outer measures of the two parts separately equals the outer measure of $\setE$
+as a whole, we could say that $\setM$ ``splits" $\setE$.
+In this case, we say that the outer measure satisifies the \hie{splitting condition},
+and that $\setM$ is \prope{measurable} (next definition).
+%---------------------------------------
+\begin{definition}
+\label{def:mso_m}
+\index{measurable!$\mso$}
+\index{$\mso$-measurable}
+\index{null set}
+\citetbl{
+  \citerpgc{halmos1950}{44}{0387900888}{\textsection 11}
+  }
+%---------------------------------------
+Let $\mso$ be an \structe{outer measure} in the \structe{measurable space} $\msxp$.
+\defbox{\begin{array}{ll @{\qquad}C @{\qquad}D}
+  \mc{3}{l}{\text{
+    A set $\setM$ is \hid{$\mso$-measurable} if
+    }}
+    \\&
+     \mso(\setE) = \mso(\setE\seti\setM) + \mso(\setE\seti\cmpM)
+     & \forall\setE\in\psetX
+     & (\prope{splitting condition})
+\end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:null_set}
+\index{null set}
+\index{set!null}
+%---------------------------------------
+Let $\mso$ be an \structe{outer measure} in the \structe{measurable space} $\msxp$.
+%Let $\msx$ be a set and $\mso\in\clF{\pset{\msx}}{\intco{0}{\infty}}$ an outer measure on $\msx$.
+\defbox{\begin{array}{M}
+  A set $\setN$ in $\psetx$ is a \hid{null set} if
+  \\\indentx$\mso(\setN) = 0$
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpg{ab}{104}{0120502577}
+  }
+%---------------------------------------
+Let $\mso$ be an \structe{outer measure} in the \structe{measurable space} $\msxp$.
+%Let $\mso$ be an outer measure on a set $\msx$.
+\thmbox{
+  \mcom{\mso(\setN)=0}{$\setN$ is a null set}
+  \qquad\implies\qquad
+  \mcom{\mso(\setE)=\mso(\setE\seti\setN) + \mso(\setE\seti\cmpN) \qquad \forall\setE\in\psetx}
+       {$\setN$ is $\mso$-measurable}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. lemma: Proof that $\mso(\setE\seti\setN)=0$ $\forall \setE\in\psetx$:}
+  0
+    &\le \mso(\setE\seti\setN)
+    &&   \text{by \prefp{def:mso}}
+  \\&\le \mso(\setN)
+    &&   \text{because $\setE\seti\setN\subseteq\setN$ and by \prefp{def:mso} (monoticity)}
+  \\&=   0
+    &&   \text{by left hypothesis}
+  %
+  \intertext{2. Proof that $\setN$ is $\mso$-measurable:}
+  \mso(\setE)
+    &=   \mso\left( [\setE\seti\setN]\setu[\setE\seti\cmpN]\right)
+    &&   \text{because $\setE=[\setE\seti\setN]\setu[\setE\seti\cmpN]$}
+  \\&\le \mso(\setE\seti\setN) + \mso(\setE\seti\cmpN)
+  %\\
+  %  &\mso(\setE\seti\setN) + \mso(\setE\seti\cmpN)
+    %&&   \text{by \prefp{def:mso} (\txsigma-subadditivity)}
+  \\&= 0 + \mso(\setE\seti\cmpN)
+    &&   \text{by 1.}
+  \\&\le \mso(\setE)
+    &&   \text{because $\setE\seti\cmpN\subseteq\setE$ and by \prefp{def:mso} (\prope{monoticity})}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpg{ab}{104}{0120502577}
+  }
+%---------------------------------------
+Let $\mso$ be an \structe{outer measure} in the \structe{measurable space} $\msxp$.
+\thmbox{
+  \left.\begin{array}{ll}
+    1. & \mso(\setE)=\mso(\setE\seti\setM_n)+\mso(\setE\seti\setM_n^\setopc)  \\
+       & \mcom{\scriptstyle\forall\setE\subseteq\msx,\; n=1,2,\ldots,\xN\qquad\qquad\qquad\qquad}
+              {$\setM_1,\setM_2,\ldots,\setM_\xN$ are $\mso$-measurable} 
+       \\
+       & \text{and}
+       \\
+    2. & \mcoml{\setopi_{n=1}^\xN M_n = \emptyset}
+              {$\setM_1,M_2,\ldots,M_n$ are disjoint}
+  \end{array}\right\}
+  \implies
+  \mcom{\mso\left(\setopu_{n=1}^\xN[\setE\seti\setM_n]\right) = \sum_{n=1}^\xN \mso(\setE\seti\setM_n)}
+       {\prope{\txsigma-additive}}
+  }
+\end{theorem}
+\begin{proof}
+Proof is by induction.
+\begin{align*}
+  \intertext{1. Proof for the $\xN=1$ case:}
+    \mso\left(\setopu_{n=1}^{\xN=1}[\setE\seti\setM_n]\right) 
+      &= \mso(\setE\seti\setM_1) 
+    \\&= \sum_{n=1}^{n=1} \mso(\setE\seti\setM_n)
+  \\
+  \intertext{2. Proof that the $\xN$ case $\implies$ $\xN+1$ case:}
+    \mso\left(\setopu_{n=1}^{\xN+1}[\setE\seti\setM_n]\right) 
+      &= \mso\left(\Bigg[\setopu_{n=1}^{\xN+1}A\seti\setM_n\Bigg] \seti\setM_{n+1}  \right) 
+       + \mso\left(\Bigg[\setopu_{n=1}^{\xN+1}A\seti\setM_n\Bigg] \seti\setM_{n+1}^\setopc\right) 
+      && \text{by measurable hypothesis}
+    \\&= \mso\left(\setopu_{n=1}^{\xN+1}[\mcom{\setE\seti\setM_n\seti\setM_{n+1}  }{$\emptyset$ for $n\ne \xN+1$}] \right) 
+       + \mso\left(\setopu_{n=1}^{\xN+1}[\mcom{\setE\seti\setM_n\seti\cmpM_{n+1}}{$\emptyset$ for $n=\xN+1$}    ] \right) 
+      && \text{by \prefp{thm:set_distProp}} 
+    \\&= \mso\left(\setE\seti\setM_{n+1}\right) 
+       + \mso\left(\setopu_{n=1}^{\xN}[\setE\seti\setM_n] \right) 
+      && \text{by disjoint hypothesis}
+    \\&= \mso(\setE\seti\setM_{n+1}) + \sum_{n=1}^{\xN}\mso(\setE\seti\setM_n)
+      && \text{by $n$ case hypothesis} 
+    \\&= \sum_{n=1}^{\xN+1}\mso(\setE\seti\setM_n)
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerppg{ab}{105}{106}{0120502577}
+  }
+%---------------------------------------
+Let $\mso$ be an \structe{outer measure} in the \structe{measurable space} $\msxp$.
+Let $\Lambda$ be the set of all measurable sets in $\msx$ such that
+  \\\indentx$\ds
+  \Lambda\eqd
+  \set{\setM\in\psetx}{\mcom{\mso(\setE)=\mso(\setE\seti\setM)+\mso(\setE\seti\cmpM)}{$\setM$ is $\mso$-measurable}}.
+  $\\
+\thmbox{\begin{array}{lll}
+     1. & \Lambda \text{ is a \txsigma-algebra on $\msx$.}
+  \\ 2. & \mso:\Lambda\to\intco{0}{\infty} \text{ ($\mso$ restricted to $\Lambda$) is a measure.}
+  \\ 3. & (\msx,\Lambda,\mso) \text{ is a measure space.}
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\setM\in\Lambda\implies\cmpM\in\Lambda$:
+    \begin{align*}
+      \mso(\setE)
+        &= \mso(\setE\seti\setM) + \mso(\setE\seti\cmpM)
+        && \text{by left hypothesis}
+      \\&= \mso(\setE\seti\cmpM) + \mso(\setE\seti\setM)
+      \\&\implies\cmpM\in\Lambda
+    \end{align*}
+    
+  \item Proof that $\setM,N\in\Lambda\implies (M\seti\setN)\in\Lambda$:
+    \begin{align*}
+      \mso(\setE)
+        &= \mso(\setE\seti\setM) + \mso(\setE\seti\cmpM)
+        && \text{by left hypothesis}
+      \\&= \mcom{\mso(\setE\seti\setM\seti\setN) + \mso(\setE\seti\setM \seti\cmpN)}
+                {$\mso(\setE\seti\setM)$} 
+         + \mso(\setE\seti\cmpM)
+        && \text{by left hypothesis}
+      \\&= \mso(\setE\seti\setM\seti\setN)  
+         + \Big[\mso(\setE\seti\setM \seti\cmpN) + \mso(\setE\seti\cmpM)\Big]
+        && \text{by associative property of $+$}
+      \\&\ge \mso(\setE\seti\setM\seti\setN)  
+         + \mso\left([\setE\seti\setM \seti\cmpN] \setu [\setE\seti\cmpM]\right)
+        && \text{by \prefp{def:mso} (\txsigma-subadditivity)} 
+      \\&= \mso(\setE\seti [M\seti\setN]) + \mso\left(\setE\seti \cmps{\setM\seti\setN}\right)
+        && \text{by \prefp{thm:set_ops} \prefpo{thm:set_ops}}
+      \\&\ge \mso\left([\setE\seti\setM\seti\setN]\setu[\setE\seti \cmpp{\setM\seti\setN}]\right)
+        && \text{by \prefp{def:mso} (\txsigma-subadditivity)} 
+      \\&= \mso(\setE)
+    \end{align*}
+    
+  \item Proof that $\seq{\setM_n}{n\in\Z}\subseteq\Lambda\implies \setopu_{n\in\Z}\setM_n\in\Lambda$:\\
+    No proof at this time. \problem
+    
+\end{enumerate}
+\end{proof}
+
+
+\prefp{thm:f->mso} (next) shows that 
+every set function $\ff\in\clF{\psetX}{\intco{0}{\infty}}$
+generates an outer measure and that this outer measure provides
+a bound that is at least as tight as (and possibly tighter than)
+the orignal set function $\ff$.
+%---------------------------------------
+\begin{theorem}[\thm{Carath{/'e}odory extension}]
+\label{thm:f->mso}
+\citetbl{
+  \citerppg{ab}{107}{108}{0120502577}
+  }
+%---------------------------------------
+Let $\ff:\psetX\to\intco{0}{\infty}$ be a set function and
+\[
+  \mu_\ff(\setE) \eqd
+  \left\{\begin{array}{>{\ds}ll}
+    0
+    & \text{for } \setE=\emptyset
+    \\ 
+    \inf_{\seqn{\setC_n}}
+    \set{\sum_{n\in\Z} \ff(\setC_n)}{\mcom{\setE\subseteq \setopu_{n\in\Z}\setC_n}{$\seqn{\setC_n}$ covers $\setE$},\quad\setC_n\in\psetX}
+    & \text{otherwise.}
+  \end{array}\right.
+\]
+\thmbox{\begin{array}{ll}
+  1. \text{$\mu_\ff$ is an outer measure (generated by $\ff$).} \\
+  2. \mu_\ff(\setE) \le \ff(\setE) \qquad \scriptstyle \forall\setE\in\psetX
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\mu_\ff$ is an outer measure:
+  \begin{enumerate}
+    \item $\mu_\ff(\emptyset)=0$ by definition of $\mu_\ff$.
+    
+    \item sub-additivity:
+      \begin{align*}
+        \mu_\ff\left(\setopu_{n\in\Z}\setE_n\right)
+          &=   \inf_{\seqn{\setC_n}}\set{\sum_{n\in\Z} \ff(\setC_n)}{\setopu_{n\in\Z}\setE_n\subseteq \setopu_{n\in\Z}\setC_n,\quad\setC_n\in\psetX}
+        \\&\le \inf_{\seqn{\setC_n}}\set{\sum_{n\in\Z} \ff(\setC_n)}{\setopu_{n\in\Z}\setE_n\subseteq \setopu_{n\in\Z}\setC_n,\quad\setC_n\in\psetX,\quad \setopi_n\setE_n=\emptyset}
+        \\&=   \sum_{n\in\Z}\inf_{\seqn{\setC_n}}\set{\sum_{n\in\Z} \ff(\setC_n)}{\setE_n\subseteq \setopu_{n\in\Z}\setC_n,\quad\setC_n\in\psetX}
+        \\&=   \sum_{n\in\Z} \mu_\ff(\setE_n)
+      \end{align*}
+    
+    \item monoticity:
+      \begin{align*}
+        \mu_\ff(\setE)
+          &= \inf_{\seqn{\setC_n}}\set{\sum_{n\in\Z} \ff(\setC_n)}{\setE\subseteq \setopu_{n\in\Z}\setC_n,\quad\setC_n\in\psetX}
+        \\&\le \inf_{\seqn{\setC_n}}\set{\sum_{n\in\Z} \ff(\setC_n)}{\setF\subseteq \setopu_{n\in\Z}\setC_n,\quad\setC_n\in\psetX}
+          &&   \text{by $\setE\subseteq\setF$ hypothesis}
+        \\&=   \mu_\ff(\setF)
+      \end{align*}
+
+  \end{enumerate}
+  
+  \item Proof that 
+        $\mu^{(\ff)}(\setE) \le \ff(\setE) \qquad \scriptstyle \forall\setE\in\psetX$:
+      \begin{align*}
+        \mu_\ff(\setE)
+          &= \inf_{\seqn{\setC_n}}\set{\sum_{n\in\Z} \ff(\setC_n)}{\setE\subseteq \setopu_{n\in\Z}\setC_n,\quad\setC_n\in\psetX}
+        \\&\le? \ff(\setE)
+      \end{align*}
+\problem
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:mom}
+%---------------------------------------
+Let $\msx$ be a \structe{set}.
+%Let $\msxp$ be a \structe{measurable space} \xref{def:msxs}.
+\propbox{
+  \text{$\msm$ is a \structe{measure} on $\msxp$}
+  \qquad\implies\qquad
+  \text{$\msm$ is an \structe{outer measure} on $\msxp$}
+  }
+\end{proposition}
+
+
+
+
+} % if wsd exclude
+
+
+

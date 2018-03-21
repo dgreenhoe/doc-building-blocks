@@ -1,0 +1,772 @@
+﻿%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+%============================================================================
+
+
+
+
+%=======================================
+\chapter{Interpolation}
+%=======================================
+%=======================================
+\section{Polynomial interpolation}
+%=======================================
+%--------------------------------------
+\begin{definition}
+\label{def:Ln(x)}
+\citetbl{
+  \citerp{matthews}{206}
+  }
+\index{polynomial!Lagrange}
+%--------------------------------------
+The \hid{Lagrange polynomial} $L_{P,n}(x)$ with respect to the $n+1$ points \\
+$P=\set{(x_k,y_k)}{k=0,1,2,\ldots,n}$ is defined as
+\defbox{
+  L_{P,n}(x) \eqd \sum_{k=0}^n y_k \prod_{m\ne n} \frac{x-x_m}{x_k-x_m}
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{proposition}
+%--------------------------------------
+Let $L_{P,n}(x)$ be the Lagrange polynomial with respect to the points\\
+$P=\set{(x_k,y_k)}{k=0,1,2,\ldots,n}$.
+\propbox{\begin{tabular}{ll}
+  1.& $L_{P,n}(x)$ is an $n$th order polynomial. \\
+  2.& $L_{P,n}(x)$ intersects all $n+1$ points in $P$.
+\end{tabular}}
+\end{proposition}
+
+%--------------------------------------
+\begin{example}[Lagrange interpolation]
+%--------------------------------------
+The {Lagrange polynomial} $L_{P,3}(x)$ with respect to the $4$ points\\
+$P=\{(-2,1),\; (-1,3),\; (3,2),\; (5,4)\}$ is
+\exbox{
+  L_{P,3}(x) = \frac{   79}{840} x^3 
+             + \frac{- 378}{840} x^2
+             + \frac{-   7}{840} x
+             + \frac{ 2970}{840}
+  }
+\end{example}
+\begin{proof}
+\begin{align*}
+  L_{P,3}(x)
+    &= \sum_{k=0}^n y_k \prod_{m\ne n} \frac{x-x_m}{x_k-x_m}
+    \qquad\text{by Definition~\ref{def:Ln(x)}}
+  \\&=  y_0\frac{(x+1)(x-3)(x-5)}{(x_0-x_1)(x_0-x_2)(x_0-x_3)} +
+        y_1\frac{(x+2)(x-3)(x-5)}{(x_1-x_0)(x_1-x_2)(x_1-x_3)} 
+  \\&\quad+
+        y_2\frac{(x+2)(x+1)(x-5)}{(x_2-x_0)(x_2-x_1)(x_2-x_3)} +
+        y_3\frac{(x+2)(x+1)(x-3)}{(x_3-x_0)(x_3-x_1)(x_3-x_2)}
+%
+  \\&=  1\frac{(x+1)(x-3)(x-5)}{(-2+1)(-2-3)(-2-5)} +
+        3\frac{(x+2)(x-3)(x-5)}{(-1+2)(-1-3)(-1-5)} 
+  \\&\quad+
+        2\frac{(x+2)(x+1)(x-5)}{(3+2)(3+1)(3-5)}    +
+        4\frac{(x+2)(x+1)(x-3)}{(5+2)(5+1)(5-3)}
+  \\&=  1\mcom{\frac{x^3-7x^2+7x+15}{-35} }{roots=$-1,3,5$}   +
+        3\mcom{\frac{x^3-6x^2-x+30}{24}  }{roots=$-2,3,5$}   +
+        2\mcom{\frac{x^3-2x^2-13x-10}{-40}}{roots=$-2,-1,5$}  +
+        4\mcom{\frac{x^3-7x-6}{84}        }{roots=$-2,-1,3$}
+  \\&= -  \frac{x^3-7x^2+7x+15}{35}  
+       +  \frac{x^3-6x^2-x+30}{8}   
+       -  \frac{x^3-2x^2-13x-10}{20}  
+       +  \frac{x^3-7x-6}{21}       
+  \\&=   x^3 \left(
+         \frac{-8\cdot20\cdot21 +35\cdot20\cdot21 - 35\cdot8\cdot21 + 35\cdot8\cdot20}
+              {35 \cdot 8 \cdot 20 \cdot 21}
+             \right)
+  \\&\quad
+         +x^2 \left(
+         \frac{7\cdot8\cdot20\cdot21 -6\cdot35\cdot20\cdot21+ 2\cdot35\cdot8\cdot21+0\cdot35\cdot8\cdot20}
+              {35 \cdot 8 \cdot 20 \cdot 21}
+             \right)
+  \\&\quad
+         +x \left(
+         \frac{-7\cdot8\cdot20\cdot21 -35\cdot20\cdot21+13\cdot35\cdot8\cdot21-7\cdot35\cdot8\cdot20}
+              {35 \cdot 8 \cdot 20 \cdot 21}
+             \right)
+  \\&\quad
+         + \left(
+         \frac{-15\cdot8\cdot20\cdot21 +30\cdot35\cdot20\cdot21+10\cdot35\cdot8\cdot21-6\cdot35\cdot8\cdot20}
+              {35 \cdot 8 \cdot 20 \cdot 21}
+             \right)
+  \\&=   \frac{ 11060}{117600} x^3
+       + \frac{-52920}{117600} x^2
+       + \frac{-  980}{117600} x
+       + \frac{415800}{117600}
+  \\&=   \frac{   79}{840} x^3
+       + \frac{- 378}{840} x^2
+       + \frac{-   7}{840} x
+       + \frac{ 2970}{840}
+\end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{definition}
+\label{def:Nn(x)}
+\citetbl{
+  \citerp{matthews}{220}
+  }
+\index{polynomial!Newton}
+%--------------------------------------
+The \hid{Newton polynomial} $N_{P,n}(x)$ with respect to the $n+1$ points
+$P=\set{(x_k,y_k)}{k=0,1,2,\ldots,n}$ is defined as
+\defbox{
+  N_{P,n}(x) \eqd \sum_{k=0}^n \alpha_k \prod_{m=0}^k (x-x_m)
+  }
+\end{definition}
+
+
+%--------------------------------------
+\begin{proposition}
+%--------------------------------------
+Let $N_{P,n}(x)$ be the Newton polynomial with respect to the points\\
+$P=\set{(x_k,y_k)}{k=0,1,2,\ldots,n}$.
+\propbox{\begin{tabular}{ll}
+  1.& $N_{P,n}(x)$ is an $n$th order polynomial. \\
+  2.& $N_{P,n}(x)$ intersects all $n+1$ points in $P$.
+\end{tabular}}
+\end{proposition}
+
+%--------------------------------------
+\begin{example}[Newton polynomial interpolation]
+\index{polynomial!Newton}
+%--------------------------------------
+The {Newton polynomial} $N_{P,3}(x)$ with respect to the $4$ points\\
+$P=\{(-2,1),\; (-1,3),\; (3,2),\; (5,4)\}$ is
+\exbox{
+  N_{P,3}(x) = \frac{   79}{840} x^3
+             + \frac{- 378}{840} x^2
+             + \frac{-   7}{840} x
+             + \frac{ 2970}{840}
+  }
+\end{example}
+\begin{proof}
+\begin{align*}
+  N_{P,3}(x)
+    &= \sum_{k=0}^n \alpha_k \prod_{m=1}^k (x-x_m)
+  \\&= \alpha_0 + \alpha_1(x-x_0) + \alpha_2(x-x_0)(x-x_1) + \alpha_3(x-x_0)(x-x_1)(x-x_2) 
+  \\&= \alpha_0 + \alpha_1(x+2) + \alpha_2(x+2)(x+1) + \alpha_3(x+2)(x+1)(x-3) 
+  \\&= \alpha_0 + \alpha_1(x+2) + \alpha_2(x^2+3x+2) + \alpha_3(x^3-7x-6)
+  \\&= x^3(\alpha_3) + x^2(\alpha_2) + x(-7\alpha_3+3\alpha_2+\alpha_1)
+      +(-6\alpha_3 + 2\alpha_2 + 2\alpha_1 + \alpha_0)
+  \\&= \Big[ \alpha_0 \; \alpha_1 \; \alpha_2 \; \alpha_3 \Big] 
+       \left[\begin{array}{rrrr}
+          1  &   0  & 0  & 0  \\
+          2  &   1  & 0  & 0  \\
+          2  &   3  & 1  & 0  \\
+         -6  &  -7  & 0  & 1
+       \end{array}\right]
+       \left[\begin{array}{l}
+         1   \\
+         x   \\
+         x^2 \\
+         x^3
+       \end{array}\right]
+  \\
+  \\
+  \left[\begin{array}{l}
+     1  \\
+     3  \\
+     2  \\
+     4  
+  \end{array}\right]
+    &= \left[\begin{array}{l}
+         y_0 \\
+         y_1 \\
+         y_2 \\
+         y_3 
+       \end{array}\right]
+  \\&= \left[\begin{array}{llll}
+         1 & 0         & 0                  & 0                           \\
+         1 & (x_1-x_0) & 0                  & 0                           \\
+         1 & (x_2-x_0) & (x_2-x_0)(x_2-x_1) & 0                           \\
+         1 & (x_3-x_0) & (x_3-x_0)(x_3-x_1) & (x_3-x_0)(x_3-x_1)(x_3-x_2) 
+       \end{array}\right]
+       \left[\begin{array}{l}
+         \alpha_0 \\
+         \alpha_1 \\
+         \alpha_2 \\
+         \alpha_3 
+       \end{array}\right]
+  \\&= \left[\begin{array}{llll}
+         1 & 0     & 0          & 0                           \\
+         1 & (-1+2)& 0          & 0                           \\
+         1 & (3+2) & (3+2)(3+1) & 0                           \\
+         1 & (5+2) & (5+2)(5+1) & (5+2)(5+1)(5-3) 
+       \end{array}\right]
+       \left[\begin{array}{l}
+         \alpha_0 \\
+         \alpha_1 \\
+         \alpha_2 \\
+         \alpha_3 
+       \end{array}\right]
+  \\&= \left[\begin{array}{llll}
+         1 & 0     & 0          & 0                           \\
+         1 & 1     & 0          & 0                           \\
+         1 & 5     & 20         & 0                           \\
+         1 & 7     & 42         & 84                
+       \end{array}\right]
+       \left[\begin{array}{l}
+         \alpha_0 \\
+         \alpha_1 \\
+         \alpha_2 \\
+         \alpha_3 
+       \end{array}\right]
+  \end{align*}
+
+  \begin{align*}
+  \left[\begin{array}{*{8}{r}}
+    1 & 0 & 0  & 0  & 1 & 0 & 0 & 0 \\
+    1 & 1 & 0  & 0  & 0 & 1 & 0 & 0 \\
+    1 & 5 & 20 & 0  & 0 & 0 & 1 & 0 \\
+    1 & 7 & 42 & 84 & 0 & 0 & 0 & 1
+  \end{array}\right]
+    &= \left[\begin{array}{*{8}{r}}
+         1 & 0 & 0  & 0  & 1 & 0 & 0 & 0 \\
+         0 & 1 & 0  & 0  &-1 & 1 & 0 & 0 \\
+         0 & 5 & 20 & 0  &-1 & 0 & 1 & 0 \\
+         0 & 7 & 42 & 84 &-1 & 0 & 0 & 1
+       \end{array}\right]
+  \\&= \left[\begin{array}{*{8}{r}}
+         1 & 0 & 0  & 0  & 1 & 0 & 0 & 0 \\
+         0 & 1 & 0  & 0  &-1 & 1 & 0 & 0 \\
+         0 & 0 & 20 & 0  & 4 &-5 & 1 & 0 \\
+         0 & 0 & 42 & 84 & 6 &-7 & 0 & 1
+       \end{array}\right]
+  \\&= \left[\begin{array}{*{8}{r}}
+         1 & 0 & 0  & 0  & 1 & 0 & 0 & 0 \\
+         0 & 1 & 0  & 0  &-1 & 1 & 0 & 0 \\
+         0 & 0 & 1  & 0  &\frac{1}{5} &-\frac{1}{4} & \frac{1}{20} & 0 \\
+         0 & 0 & 42 & 84 & 6 &-7 & 0 & 1
+       \end{array}\right]
+  \\&= \left[\begin{array}{*{8}{r}}
+         1 & 0 & 0  & 0  & 1 & 0 & 0 & 0 \\
+         0 & 1 & 0  & 0  &-1 & 1 & 0 & 0 \\
+         0 & 0 & 1  & 0  &\frac{1}{5} &-\frac{1}{4} & \frac{1}{20} & 0 \\
+         0 & 0 & 0  & 84 & 6-\frac{42}{5} &-7+\frac{42}{4} & -\frac{42}{20} & 1
+       \end{array}\right]
+  \\&= \left[\begin{array}{*{8}{r}}
+         1 & 0 & 0  & 0  & 1 & 0 & 0 & 0 \\
+         0 & 1 & 0  & 0  &-1 & 1 & 0 & 0 \\
+         0 & 0 & 1  & 0  &\frac{1}{5} &-\frac{1}{4} & \frac{1}{20} & 0 \\
+         0 & 0 & 0  & 84 & -\frac{12}{5} &\frac{14}{4} & -\frac{42}{20} & 1
+       \end{array}\right]
+  \\&= \left[\begin{array}{*{8}{r}}
+         1 & 0 & 0  & 0  & 1 & 0 & 0 & 0 \\
+         0 & 1 & 0  & 0  &-1 & 1 & 0 & 0 \\
+         0 & 0 & 1  & 0  &\frac{4}{20} &-\frac{5}{20} & \frac{1}{20} & 0 \\
+         0 & 0 & 0  & 84 & -\frac{24}{10} &\frac{35}{10} & -\frac{21}{10} & \frac{10}{10}
+       \end{array}\right]
+  \\&= \left[\begin{array}{*{8}{r}}
+         1 & 0 & 0  & 0  & 1 & 0 & 0 & 0 \\
+         0 & 1 & 0  & 0  &-1 & 1 & 0 & 0 \\
+         0 & 0 & 1  & 0  &\frac{4}{20} &-\frac{5}{20} & \frac{1}{20} & 0 \\
+         0 & 0 & 0  & 1  & -\frac{24}{840} &\frac{35}{840} & -\frac{21}{840} & \frac{10}{840}
+       \end{array}\right]
+  \end{align*}
+
+  \begin{align*}
+  \left[\begin{array}{l}
+    \alpha_0 \\
+    \alpha_1 \\
+    \alpha_2 \\
+    \alpha_3 
+  \end{array}\right]
+    &= \left[\begin{array}{*{4}{r}}
+          1 & 0 & 0 & 0 \\
+         -1 & 1 & 0 & 0 \\
+         \frac{4}{20} &-\frac{5}{20} & \frac{1}{20} & 0 \\
+          -\frac{24}{840} &\frac{35}{840} & -\frac{21}{840} & \frac{10}{840}
+       \end{array}\right]
+       \left[\begin{array}{l}
+         1 \\
+         3 \\
+         2 \\
+         4 
+       \end{array}\right]
+  \\&= \left[\begin{array}{l}
+         1 \\
+         2 \\
+         -\frac{9}{20} \\
+         \frac{79}{840} 
+       \end{array}\right]
+  \\
+  \\
+  \\
+  N_{P,3}(x)
+    &= \Big[ \alpha_0 \; \alpha_1 \; \alpha_2 \; \alpha_3 \Big] 
+       \left[\begin{array}{rrrr}
+          1  &   0  & 0  & 0  \\
+          2  &   1  & 0  & 0  \\
+          2  &   3  & 1  & 0  \\
+         -6  &  -7  & 0  & 1
+       \end{array}\right]
+       \left[\begin{array}{l}
+         1   \\
+         x   \\
+         x^2 \\
+         x^3
+       \end{array}\right]
+  \\&= \left[\begin{array}{c|c|c|c} 
+         1 & 2 & -\frac{9}{20} & \frac{79}{840} 
+       \end{array}\right]
+       \left[\begin{array}{rrrr}
+          1  &   0  & 0  & 0  \\
+          2  &   1  & 0  & 0  \\
+          2  &   3  & 1  & 0  \\
+         -6  &  -7  & 0  & 1
+       \end{array}\right]
+       \left[\begin{array}{l}
+         1   \\
+         x   \\
+         x^2 \\
+         x^3
+       \end{array}\right]
+  \\&= \left[\begin{array}{c|c|c|c}
+          1 + 4 - \frac{9}{10} - \frac{79}{140}  &
+          2 - \frac{27}{20} -\frac{79}{120}      &
+          -\frac{9}{20}                          &
+          \frac{79}{840}
+       \end{array}\right]
+       \left[\begin{array}{l}
+         1   \\
+         x   \\
+         x^2 \\
+         x^3
+       \end{array}\right]
+  \\&= \frac{79}{840}x^3 - \frac{378}{840}x^2 - \frac{7}{840}x + \frac{2970}{840}
+\end{align*}
+\end{proof}
+
+
+
+
+%---------------------------------------
+\begin{example}[\exmd{Least squares polynomial interpolation}]
+\index{polynomial!least squares}
+\index{least squares}
+\label{ex:ls}
+%---------------------------------------
+The best 3rd order polynomial in the \hib{least squares} $S_{P,3}(x)$ sense
+with respect to the $4$ points\\
+$P=\{(-2,1),\; (-1,3),\; (3,2),\; (5,4)\}$ is
+\exbox{
+  S_{P,3}(x) = \frac{   79}{840} x^3
+             + \frac{- 378}{840} x^2
+             + \frac{-   7}{840} x
+             + \frac{ 2970}{840}
+  }
+\end{example}
+\begin{proof}
+%The {\em least squares} technique is presented in 
+%Section~\ref{sec:ls} (page~\pageref{sec:ls}).
+\[
+  \vx
+    =
+    \left[\begin{array}{l}
+       x_0  \\
+       x_1  \\
+       x_2  \\
+       x_3  
+    \end{array}\right] 
+    =
+    \left[\begin{array}{r}
+       -2   \\
+       -1   \\
+        3   \\
+        5   
+    \end{array}\right] 
+   \qquad\qquad
+   \vy 
+     =
+     \left[\begin{array}{r}
+         1   \\
+         3   \\
+         2   \\
+         4   \\
+     \end{array}\right] 
+     =
+     \left[\begin{array}{l}
+         1   \\
+         3   \\
+         2   \\
+         4   \\
+     \end{array}\right] 
+\]
+
+We want to find a third order polynomial 
+  \[ d x^3 + c x^2 + bx + a \]
+that best approximates
+the 4 points in the least squares sense.
+We define the matrix $U$ (known) and vector $\estn$ (to be computed)
+as follows:
+\[
+   U^H \eqd 
+   \left[\begin{array}{llll}
+      1  & x_0 & x_0^2 & x_0^3  \\
+      1  & x_1 & x_1^2 & x_1^3  \\
+      1  & x_2 & x_2^2 & x_2^3  \\
+      1  & x_3 & x_3^2 & x_3^3  
+   \end{array}\right]
+   \qquad\qquad
+   \estn \eqd 
+   \left[\begin{array}{l}
+      a  \\
+      b  \\
+      c  \\
+      d
+   \end{array}\right] 
+\]
+Then, using \thme{Least squares}\ifsxref{estimate}{thm:ls}, the best coefficients for the polynomial are
+\begin{align*}
+  \estn
+    &= \left[\begin{array}{l}
+          a  \\
+          b  \\
+          c  \\
+          d
+       \end{array}\right] 
+  \\&= R^{-1}W
+  \\&= (UU^H)^{-1}\; (U\vy)
+  \\&= \left(
+   \left[\begin{array}{llll}
+      1  & x_0 & x_0^2 & x_0^3  \\
+      1  & x_1 & x_1^2 & x_1^3  \\
+      1  & x_2 & x_2^2 & x_2^3  \\
+      1  & x_3 & x_3^2 & x_3^3  
+   \end{array}\right]^H
+   \left[\begin{array}{llll}
+      1  & x_0 & x_0^2 & x_0^3  \\
+      1  & x_1 & x_1^2 & x_1^3  \\
+      1  & x_2 & x_2^2 & x_2^3  \\
+      1  & x_3 & x_3^2 & x_3^3  
+   \end{array}\right]
+       \right)^{-1}
+       \left(
+   \left[\begin{array}{llll}
+      1  & x_0 & x_0^2 & x_0^3  \\
+      1  & x_1 & x_1^2 & x_1^3  \\
+      1  & x_2 & x_2^2 & x_2^3  \\
+      1  & x_3 & x_3^2 & x_3^3  
+   \end{array}\right]^H
+       \left[\begin{array}{l}
+          y_0  \\
+          y_1  \\
+          y_2  \\
+          y_3  
+       \end{array}\right] 
+       \right)
+  \\&= \left(
+   \left[\begin{array}{rrrr}
+      1  & (-2) & (-2)^2 & (-2)^3  \\
+      1  & (-1) & (-1)^2 & (-1)^3  \\
+      1  & (3) & (3)^2 & (3)^3  \\
+      1  & (5) & (5)^2 & (5)^3  
+   \end{array}\right]^H
+   \left[\begin{array}{rrrr}
+      1  & (-2) & (-2)^2 & (-2)^3  \\
+      1  & (-1) & (-1)^2 & (-1)^3  \\
+      1  & (3) & (3)^2 & (3)^3  \\
+      1  & (5) & (5)^2 & (5)^3  
+   \end{array}\right]
+       \right)^{-1}
+       \left(
+   \left[\begin{array}{rrrr}
+      1  & (-2) & (-2)^2 & (-2)^3  \\
+      1  & (-1) & (-1)^2 & (-1)^3  \\
+      1  & (3) & (3)^2 & (3)^3  \\
+      1  & (5) & (5)^2 & (5)^3  
+   \end{array}\right]^H
+       \left[\begin{array}{l}
+          1  \\
+          3  \\
+          2  \\
+          4  
+       \end{array}\right] 
+       \right)
+  \\&= \left(
+   \left[\begin{array}{rrrr}
+      1  & -2 &  4 &  -8  \\
+      1  & -1 &  1 &  -1  \\
+      1  &  3 &  9 &  27  \\
+      1  &  5 & 25 & 125  
+   \end{array}\right]^H
+   \left[\begin{array}{rrrr}
+      1  & -2 &  4 &  -8  \\
+      1  & -1 &  1 &  -1  \\
+      1  &  3 &  9 &  27  \\
+      1  &  5 & 25 & 125  
+   \end{array}\right]
+       \right)^{-1}
+       \left(
+   \left[\begin{array}{rrrr}
+      1  & -2 &  4 &  -8  \\
+      1  & -1 &  1 &  -1  \\
+      1  &  3 &  9 &  27  \\
+      1  &  5 & 25 & 125  
+   \end{array}\right]^H
+       \left[\begin{array}{l}
+          1  \\
+          3  \\
+          2  \\
+          4  
+       \end{array}\right] 
+       \right)
+\\&= \left[\begin{array}{r}
+       2970   \\
+         -7   \\
+       -378   \\
+         79
+     \end{array}\right]
+\end{align*}
+\end{proof}
+
+
+
+
+
+
+
+%=======================================
+\section{Hermite interpolation}
+\label{sec:interpo_hermite}
+%=======================================
+
+\begin{table}
+\footnotesize
+\exbox{
+  \renewcommand{\arraystretch}{1}
+  \renewcommand{\arraycolsep}{0.4ex}
+  \begin{array}{r|@{\qquad}*{13}{r}}
+     p & \mc{13}{l}{\ds(1-y)^p\fP_m(y)= (1-y)^p \sum_{k=0}^{p-1} {p-1+k\choose k} y^k}
+  %    p & \mc{20}{l}{(1-y)^p\fP_m(y)}
+  \\ \hline
+     1 & 1 &-&   y
+  \\ 2 & 1 &-&  3y^2 &+&  2y^3
+  \\ 3 & 1 &-& 10y^3 &+&  15y^4 &-&   6y^5
+  \\ 4 & 1 &-&  35y^4 &+&  84y^5 &-&   70y^6  &+&    20y^7
+  \\ 5 & 1 &-& 126y^5 &+&  420y^6 &-&  540y^7 &+&   315y^8 &-&    70y^9
+  \\ 6 & 1 &-& 462y^6 &+& 1980y^7 &-& 3465y^8 &+&  3080y^9 &-&  1386y^{10} &+& 252y^{11}
+  \end{array}}
+\caption{
+  Low-pass term $(1-y)^p\fP_m(y)$
+  \label{tbl:P_lp}
+  }
+\end{table}
+
+
+
+
+\begin{figure}[h]
+\begin{scriptsize}
+\begin{center}
+\color[rgb]{0.2,0.2,0.2}
+\begin{fsL}
+\setlength{\unitlength}{0.3mm}
+\begin{picture}(335,150)(-10,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thicklines
+  \put(   0,   0 ){\line(1,0){240} }
+  \put(   0,   0 ){\line(0,1){120} }
+
+  \qbezier[10](100,50)(100, 25)( 100,0)
+  \qbezier[40](0,100)(100,100)( 200,100)
+
+  {\color{blue}
+    \qbezier(   0, 100)(  60, 100)( 100,  50)
+    \qbezier( 100,  50)( 140,   0)( 200,   0)
+    \put( 130,  25 ){\makebox(0,0)[l]{$\leftarrow (1-y)^p \fP(y)$} }
+    \put(   5, 105 ){\makebox(0,0)[lb]{$\downarrow$ first $p-1$ derivatives are zero at $y=0$} }
+    \put( 200,   5 ){\makebox(0,0)[lb]{$\downarrow$ first $p-1$ derivatives are zero at $y=1$} }
+    }
+
+  {\color{red}
+    \qbezier(   0,   0)(  60,   0)( 100,  50)
+    \qbezier( 100,  50)( 140, 100)( 200, 100)
+    \put( 130,  75 ){\makebox(0,0)[l]{$\leftarrow y^p \fP(1-y)$} }
+    \put(   5,  -3 ){\makebox(0,0)[lt]{$\uparrow$ first $p-1$ derivatives are zero at $y=0$} }
+    \put( 200,  95 ){\makebox(0,0)[lt]{$\uparrow$ first $p-1$ derivatives are zero at $y=1$} }
+    }
+
+  \put( 100,   3 ){\makebox(0,0)[b]{$\frac{\pi}{2}$} }
+  \put( 260,   0 ){\makebox(0,0)[l]{$\omega$} }
+  \put( -10, 100 ){\makebox(0,0)[r]{$1$} }
+\end{picture}
+\end{fsL}
+\end{center}
+\end{scriptsize}
+\caption{
+  Polynomial quadrature condition low-pass and high-pass terms
+  \label{fig:lphp}
+  }
+\end{figure}
+\prefpp{lem:quadcon_y} expresses the quadrature condition
+as a polynomial in $y=\sin^2\frac{\omega}{2}$.
+The first term in this polynomial quadrature condition is a
+low-pass response and the second term is a high pass;
+and they meet in the middle at $\omega=\frac{\pi}{2}$.
+    \[
+      \mcom{(1-y)^p \fP(y)}{low-pass} + \mcom{y^p \fP(1-y)}{high-pass} = 1
+    \]
+The low-pass and high-pass terms are especially smooth at
+$\omega=0$ ($y=0$) and $\omega=\pi$ ($y=1$)
+in that the first $p-1$ derivatives at both points are zero
+for both terms.
+This is illustrated in \prefpp{fig:lphp}.
+%--------------------------------------
+\begin{theorem}[\thme{Hermite Interpolation}]
+\label{thm:interpo_hermite}
+%--------------------------------------
+\thmbox{\begin{array}{*{3}{>{\ds}l}D}
+  \left.\deriv{^n}{y^n} \left[
+        (1-y)^p \sum_{k=0}^{p-1}{p+k-1\choose k} y^k
+        \right]\right|_{y=0}
+    &=& \kdelta_n
+    &   for $n=0,1,2,\ldots,p-1$
+  \\
+  \left.\deriv{^n}{y^n} \left[
+        (1-y)^p \sum_{k=0}^{p-1} {p+k-1\choose k} y^k
+        \right]\right|_{y=1}
+    &=& 0
+    &   for $n=0,1,2,\ldots,p-1$
+  \\
+  \left.\deriv{^n}{y^n} \left[
+        y^p \sum_{k=0}^{p-1}{p+k-1\choose k} (1-y)^k
+        \right]\right|_{y=0}
+    &=& 0
+    &   for $n=0,1,2,\ldots,p-1$
+  \\
+  \left.\deriv{^n}{y^n} \left[
+        y^p \sum_{k=0}^{p-1} {p+k-1\choose k} (1-y)^k
+        \right]\right|_{y=1}
+    &=& \kdelta_n
+    &   for $n=0,1,2,\ldots,p-1$
+  \end{array}}
+\end{theorem}
+\begin{proof}
+Let
+\begin{align*}
+  \ff(y) &\eqd (1-y)^p \sum_{n=0}^{p-1} {p-1+n \choose n} y^n      \\
+  \fg(y) &\eqd y^p     \sum_{n=0}^{p-1} {p-1+n \choose n} (1-y)^n  \\
+  q      &\eqd p-1
+\end{align*}
+%\begin{enumerate}
+%  \item Proofs for $\ff^{(n)}(0)$:
+  \begin{enumerate}
+  \item Proof that $\ff(0)=1$:
+  \begin{align*}
+  \ff(0)
+    &= \left.(1-y)^p \sum_{m=0}^{p-1} {p-1+m\choose m} y^m \right|_{y=0}
+  \\&= \left.(1-y)^p \left[{p-1 \choose 0} + \sum_{m=1}^{p-1} {p-1+m\choose m} y^m\right]\right|_{y=0}
+  \\&= 1
+  \end{align*}
+
+  \item Proof that
+      $\ds\ff(y)=
+       p \sum_{n=0}^{2p-1}
+       \left[\sum_{k=\max(0,n-q)}^{\min(n,p)} (-1)^k \frac{(p+n-k-1)!}{(p-k)!(n-k)!\,k!}\right]
+       y^n$:
+  \begin{align*}
+  (1-y)^p \fP_m(y)
+    &= \sum_{n=0}^p     {p\choose n} (-1)^n y^n
+       \sum_{m=0}^{p-1} {p-1+m\choose m} y^m
+  \\&= \sum_{n=0}^{2p-1} \sum_{k=\max(0,n-q)}^{\min(n,p)}
+       {p\choose k} (-1)^k {p-1+n-k\choose n-k} y^n
+    && \text{by \pref{thm:polymult} \prefpo{thm:polymult}}
+  \\&= \sum_{n=0}^{2p-1} \sum_{k=\max(0,n-q)}^{\min(n,p)}
+       (-1)^k \frac{p!}{(p-k)!k!} \frac{(p-1+n-k)!}{(p-1)!(n-k)!} y^n
+  \\&= p \sum_{n=0}^{2p-1}
+       \left[\sum_{k=\max(0,n-q)}^{\min(n,p)} (-1)^k \frac{(p+n-k-1)!}{(p-k)!(n-k)!\,k!}\right]
+       y^n
+  \end{align*}
+
+  \item Proof that $\ff^{(n)}(0)=\kdelta_n$ for $n=0,1,2,\ldots,p-1$:
+  \begin{align*}
+  \left.\deriv{^n}{y^n}\left[ (1-y)^p \fP_m(y) \right]\right|_{y=0}
+    &= \left.
+       \deriv{^n}{y^n}\left[
+         p \sum_{m=0}^{2p-1}
+         \left[\sum_{k=\max(0,m-q)}^{\min(m,p)} (-1)^k \frac{(p+m-k-1)!}{(p-k)!(m-k)!\,k!}\right]
+         y^m
+       \right]
+       \right|_{y=0}
+    && \text{by 1.}
+  \\&= \left. p
+       \sum_{m=n}^{2p-1} \sum_{k=\max(0,m-q)}^{\min(m,p)}
+       (-1)^k \frac{(p-1+m-k)!}{(p-k)!(m-k)!k!} \frac{m!}{(m-n)!}y^{m-n}
+       \right|_{y=0}
+  \\&= p \sum_{k=\max(0,n-q)}^{\min(n,p)}
+       (-1)^k \frac{(p-1+n-k)!}{(p-k)!} \frac{n!}{(n-k)!k!}
+  \\&= p \sum_{k=0}^n
+       (-1)^k {n\choose k} \frac{(p+n-k-1)!}{(p-k)!}
+  \\&\eqq \kdelta_n \qquad\text{for } n=0,1,2,\ldots,p-1
+  \end{align*}
+
+  \item Proof that $\ff^{(n)}(0)=\kdelta_n$ for $n=0,1,2,\ldots,p-1$:
+  \begin{align*}
+  &\left.\deriv{^n}{y^n}\left[ (1-y)^p \fP_m(y) \right]\right|_{y=0}
+  \\&= \left.
+       \sum_{k=0}^n {n\choose k}
+       \left[\deriv{^{n-k}}{y^{n-k}} (1-y)^p \right]
+       \left[\deriv{^k}{y^k}\fP_m(y) \right]
+       \right|_{y=0}
+    \qquad\text{by \pref{lem:LGPR} (Leibnitz rule)}
+  \\&= \left.
+       \sum_{k=0}^n {n\choose k}
+       \left[\deriv{^{n-k}}{y^{n-k}} (1-y)^p \right]
+       \left[\deriv{^k}{y^k} \sum_{m=0}^{p-1}{p-1+m \choose m} y^m \right]
+       \right|_{y=0}
+    \quad\text{by definition of $\fP_m(y)$}
+  \\&= \left.
+       \sum_{k=0}^n {n\choose k}
+       \left[(-1)^{n-k}\frac{p!}{(p-n+k)!} (1-y)^{(p-n+k)} \right]
+       \left[\sum_{m=k}^{p-1}{p-1+m \choose m} \frac{m!}{(m-k)!}y^{m-k} \right]
+       \right|_{y=0}
+  \\&= \sum_{k=0}^n {n\choose k}
+       \left[(-1)^{n-k}\frac{p!}{(p-n+k)!}\right]
+       \left[{p-1+k \choose k} k! \right]
+  \\&= \sum_{k=0}^n {n\choose k}
+       \left[(-1)^{n-k}\frac{p!}{(p-n+k)!}\right]
+       \left[\frac{(p-1+k)!}{(p-1)!k!}\; k! \right]
+  \\&= (-1)^n p
+       \sum_{k=0}^n {n\choose k}
+       (-1)^k\frac{(p+k-1)!}{(p+k-n)!}
+  \\&\eqq \kdelta_n \qquad \text{for } k=0,1,2,\ldots,p-1
+  \end{align*}
+
+  \item Proof that $\ff^{(n)}(1)=0$ for $n=0,1,2,\ldots,p-1$:
+  \begin{align*}
+  \left.\deriv{^n}{y^n}\left[ (1-y)^p \fP_m(y) \right]\right|_{y=1}
+    &= \left.
+       \sum_{k=0}^n {n\choose k}
+       \left[\deriv{^k}{y^k} (1-y)^p \right]
+       \fP_m^{(n-k)}(y)
+       \right|_{y=1}
+    && \text{by \pref{lem:LGPR} (Leibnitz rule)}
+  \\&= \left.
+       \sum_{k=0}^n {n\choose k}
+       \left[(-1)^k\frac{p!}{(p-k)!} (1-y)^{p-k} \right]
+       \fP_m^{(n-k)}(y)
+       \right|_{y=1}
+  \\&= \left.
+       \sum_{k=0}^n {n\choose k} \; 0\cdot
+       \fP_m^{(n-k)}(y)
+       \right|_{y=1}
+    && \text{by \pref{lem:LGPR}}
+  \\&= 0 \qquad \text{for } k=0,1,2,\ldots,p-1
+  \end{align*}
+\end{enumerate}
+%\end{enumerate}
+\end{proof}
+
+
+\input{../common/pwspace.tex}
+
+
+
+

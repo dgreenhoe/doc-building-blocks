@@ -1,0 +1,33 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% Marr's wavelet / Mexican Hat wavelet
+%============================================================================
+\begin{pspicture}(-4.5,-1.5)(4.5,1.5)%
+  \psset{%
+    linecolor=blue,%
+    dotsize=5pt,%
+    }%
+  \psset{linecolor=blue,linewidth=1pt}%
+  \psaxes[linecolor=axis]{<->}(0,0)(-4.5,-1.5)(4.5,1.5)%
+  %-------------------------------------
+  % envelope factor: e^{-x^2/2}
+  %-------------------------------------
+  \psplot[plotpoints=100,linecolor=red,linestyle=dotted]{-4.25}{4.25}{2.71828 x x mul neg 2 div exp}% e^{-x^2/2}: exponential envelope
+  %-------------------------------------
+  % Morlet real valued wavelet: cos(5x) e^{-x^2/2}
+  %-------------------------------------
+ %\psplot[plotpoints=512]{-4.25}{4.25}{1 x 2 exp sub 2.71828 x x mul neg 2 div exp mul 0.398942 mul}% 
+  \psplot[plotpoints=512]{-4.25}{4.25}{1 x 2 exp sub 2.71828 x x mul neg 2 div exp mul}% 
+  %                                    |-----------| |---------------------------|                        
+  %                                      (1 - x^2)            e^{-x^2/2}                   
+  %                                    |---------------------------------------------|
+  %                                       (1 - x^2) e^{-x^2/2}                   
+  %-------------------------------------
+  % labeling
+  %-------------------------------------
+  \pnode(0.75,0.7548){Penv}% single point on envelope (for labeling)
+  \pnode(2,1.2){Lenv}% label for envelope
+  \psline[linecolor=red,linewidth=0.75pt]{->}(Lenv)(Penv)%
+  \uput{1pt}[30]{0}(Lenv){$\ds e^{-\sfrac{{x^2}}{2}}$}% exponential envelope
+\end{pspicture}%

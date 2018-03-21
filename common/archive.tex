@@ -1,0 +1,2894 @@
+%============================================================================
+% NCTU - Hsinchu, Taiwan
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Archive -- land of information with no home}
+\label{chp:archive}
+%======================================
+\includegraphics*[height=5cm, width=4cm, keepaspectratio=true, clip=true]{../common/people/poincare.jpg}
+\footnote{\begin{tabular}[t]{ll}
+  quote: & \url{http://en.wikiquote.org/wiki/Henri_Poincare} \\
+  image: & \url{http://en.wikipedia.org/wiki/Image:Poincare_jh.jpg}
+\end{tabular}}
+\parbox[b][5cm][c]{12cm}{
+  \begin{quote}
+  \ding{125}It is not nature which imposes [time and space] upon us, 
+  it is we who impose them upon nature because 
+  we find them convenient.\ding{126} 
+
+  Jules Henri Poincar\'e, 1854-1912
+  \end{quote}
+}
+
+%======================================
+\section{Generl vector spaces}
+%======================================
+
+
+
+
+
+
+
+
+
+
+\parbox[c][][c]{\textwidth/3}{
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}cccc}
+  \includegraphics*[height=4cm, width=4cm, keepaspectratio=true, clip=true]{../common/klein_8i.eps}  &
+  %\includegraphics*[height=5cm, width=3cm, keepaspectratio=true, clip=true]{../common/torus.eps}   &
+  %\includegraphics*[height=5cm, width=3cm, keepaspectratio=true, clip=true]{../common/mandel.eps}  &
+  %\includegraphics*[height=5cm, width=3cm, keepaspectratio=true, clip=true]{../common/whale.eps}   
+  \\
+     \prop{klein bottle -- 8i} \footnotemark 
+   & %\prop{torus}        \footnotemark 
+   & %\prop{Mandelbrot}   \footnotemark 
+   & %\prop{whale}        \footnotemark
+\end{tabular*}
+%\addtocounter{footnote}{-3}
+\footnotetext{
+  A \hie{figure-8 immersion Klein bottle} can be \hie{immersed} in $\R^3$ and generated using the \hie{parametric equation} 
+  $\ff:\R^2\to\R^3$
+  \[
+  \left.\begin{array}{rcl}
+    x &=& 
+              \left[
+               a+\cos\left(\frac{\theta}{2}\right)\sin\phi
+                -\sin\left(\frac{\theta}{2}\right)\sin2\phi
+              \right]\;\cos\theta  
+  \\y &=& 
+              \left[
+               a+\cos\left(\frac{\theta}{2}\right)\sin\phi
+                -\sin\left(\frac{\theta}{2}\right)\sin2\phi
+              \right]\;\sin\theta  
+  \\z &=& 
+                 \sin\left(\frac{\theta}{2}\right)\sin\phi
+                +\cos\left(\frac{\theta}{2}\right)\sin2\phi
+  \end{array}\right\}
+  \qquad
+  \forall \theta\in\left[0,2\pi\right],\quad \theta\in[0,2\pi]
+  \]
+  Reference: \citei[page 327]{gray}
+}
+}
+\parbox[c][][c]{2\textwidth/3}{
+%---------------------------------------
+\begin{example}[Klein bottle]
+%---------------------------------------
+Concave or convex in $\R^3$? $\R^4$?
+\end{example}
+}
+
+
+ %--------------------------------------
+ \begin{theorem}[Riesz representation theorem]
+ \label{thm:rrt}
+ \index{Riesz representation theorem}
+ \index{theorems!Riesz representation theorem}
+ \citepx{michel1993}{393}
+ %--------------------------------------
+ Let $\spH=(\spX,\inprod{\cdot}{\cdot})$ be a Hilbert space,
+ $\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$,
+ and $\ff:\spX\to\spX$ a functional on $\spX$.
+ Then
+ \formbox{
+   \ff \mbox{ is linear}
+   \hs{4ex}\iff\hs{4ex}
+   \left\{\begin{array}{ll}
+     1. & \exists\fy\in\spX \mbox{ such that } \ff(x)=\inprod{x}{y}
+         \mbox{ for all } x\in\spX
+     \\
+     2. & \norm{\ff} = \norm{y}
+   \end{array}\right.
+   }
+ \end{theorem}
+ \begin{proof}
+ No proof at this time. \noproof
+ \end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\citepx{pedersen2000}{35}
+%---------------------------------------
+Let $(\spV,\inprod{\cdot}{\cdot})$ be an inner product space
+with induced norm $\norm{\vx}^2\eqd\inprod{\vx}{\vx}$.
+\formbox{
+  \norm{\vx_n-\vx}\to0 \mbox{ and } \norm{\vy_n-\vy} \to0 \implies
+  \inprod{\vx_n}{\vy_n} \to \inprod{\vx}{\vy}.
+  \qquad\scriptsize
+  \forall \vx,\vy,\seq{\vx_n}{n\in\Z},\seq{\vy_n}{n\in\Z}\in\spV
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \abs{ \inprod{\vx_n}{\vy_n} - \inprod{\vx}{\vy} }
+    &=   \abs{ \inprod{\vx_n}{\vy_n} + \left[- \inprod{\vx}{\vy_n} + \inprod{\vx}{\vy_n}\right] - \inprod{\vx}{\vy} }
+    &&    \text{by addition of $0$}
+  \\&=   \abs{ \inprod{\vx_n-\vx}{\vy_n} + \inprod{\vx}{\vy_n-\vy} }
+    &&    \text{by \pref{def:inprod} (property of $\inprod{\cdot}{\cdot}$)}
+  \\&\le \abs{\inprod{\vx_n-\vx}{\vy_n}} + \abs{\inprod{\vx}{\vy_n-\vy}}
+    &&    \text{by absolute value triangle inequality}
+  \\&\le \norm{\vx_n-\vx}\norm{\vy_n} + \norm{\vx}\norm{\vy_n-\vy}
+    &&    \text{by Cauchy-Schwarz Inequality---\pref{thm:cs}}
+  \\&\to 0\cdot\norm{\vy_n} + \norm{\vx}\cdot0
+    &&    \text{by left hypothesis}
+  \\&=   0
+\end{align*}
+\end{proof}
+
+
+
+%======================================
+\section{Spaces}
+\index{space}
+%======================================
+%---------------------------------------
+\begin{definition}
+%\label{def:vspace}
+\index{space!vector|textbf}
+\citepx{wicker}{29}
+%---------------------------------------
+Let $F$ be a field and $\spV=(F^n,+,\cdot)$ such that
+\[\begin{array}{clcl@{\extracolsep{1cm}}p{40ex}}
+   + & :\spV\times\spV &\to& \spV & (vector-vector addition operator       ) \\
+   \cdot & :F\times\spV    &\to& \spV & (scalar-vector multiplication operator ).
+\end{array}\]
+Then $\spV=(F^n,+,*)$ is an $n$-dimensional \hid{vector space} 
+if for all $\vx,\vy\in \spV$ and $\alpha,\beta\in F$ 
+\defbox{\begin{array}{l rcl @{\qquad}C @{\qquad}D}
+   1. & \vx+\vy           &=  & \vy+\vx                    
+      & \forall \vx,\vy\in\spV 
+      & (commutative)
+ \\2. & (\alpha \vx)      &\in& \spV                       
+      & \forall \vx\in\spV,\; \alpha\in F 
+      & (closure under scalar multiplication)
+ \\3. & \alpha(\vx+\vy)   &=  & (\alpha \vx)+(\alpha \vy)  
+      & \forall \vx,\vy\in\spV,\;\alpha\in F 
+      & (scalar distributive)
+ \\4. & (\alpha+\beta)\vx &=  & (\alpha \vx)+(\beta \vx)   
+      & \forall \vx\in\spV,\;\alpha,\beta\in F 
+      & (vector distributive)
+ \\5. & (\alpha\beta)\vx  &=  & \alpha(\beta \vx)          
+      & \forall \vx\in\spV,\; \alpha,\beta\in F 
+      & (associative)
+\end{array}}
+\end{definition}
+
+
+
+
+
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\setlength{\unitlength}{0.8cm}
+\begin{picture}(16,12)
+\begin{footnotesize}
+\thicklines
+
+\put(9,11){\makebox ( 7,1)[l]{vector-vector multiplication} }
+\put(1,11){\framebox( 7,1){algebra} }
+
+\put( 4.5, 10){\line(0,1){1} }
+\put(9,9){\makebox ( 7,1)[l]{vector addition, scalar-vector multiplication} }
+\put(1,9){\framebox( 7,1){vector space} }
+
+\put( 4.5, 8){\line(0,1){1} }
+\put(9,7){\makebox ( 8,1)[l]{\parbox[c][][c]{8cm}
+         {each non-zero element has multiplicative inverse\\ 
+         (supports division)}} }
+\put(1,7){\framebox( 7,1){field} }
+
+\put( 4.5, 6){\line(0,1){1} }
+\put(9,5){\makebox ( 7,1)[l]{scalar addition, subtraction, multiplication} }
+\put(1, 5){\framebox( 7,1){ring} }
+
+\put( 6.5, 4){\line(0,1){1} }
+\put( 2.5, 4){\line(0,1){1} }
+\put( 5  , 3){\framebox( 3,1){group under $+$} }
+\put( 1  , 3){\framebox( 3,1){group under $\times$}  }
+
+\put( 6.5, 2){\line(0,1){1} }
+\put( 2.5, 2){\line(0,1){1} }
+\put( 1  , 1){\framebox(7,1){set} }
+\end{footnotesize}
+\end{picture}
+\end{center}
+\caption{
+   Vector algebra
+   \label{fig:vect_alg}
+   }
+\end{figure}
+
+
+
+
+\begin{center}
+\color{figcolor}
+\setlength{\unitlength}{0.8cm}
+\begin{picture}(8,12)
+\begin{footnotesize}
+\thicklines
+
+%\put(9,11){\makebox ( 7,1)[l]{vector-vector multiplication} }
+\put(1,11){\framebox( 7,1){algebra} }
+
+\put( 4.5, 10){\line(0,1){1} }
+%\put(9,9){\makebox ( 7,1)[l]{vector addition, scalar-vector multiplication} }
+\put(1,9){\framebox( 7,1){vector space} }
+
+\put( 4.5, 8){\line(0,1){1} }
+%\put(9,7){\makebox ( 8,1)[l]{\parbox[c][][c]{8cm}
+%         {each non-zero element has multiplicative inverse\\ 
+%         (supports division)}} }
+\put(1,7){\framebox( 7,1){field} }
+
+\put( 4.5, 6){\line(0,1){1} }
+%\put(9,5){\makebox ( 7,1)[l]{scalar addition, subtraction, multiplication} }
+\put(1, 5){\framebox( 7,1){ring} }
+
+\put( 6.5, 4){\line(0,1){1} }
+\put( 2.5, 4){\line(0,1){1} }
+\put( 5  , 3){\framebox( 3,1){group under $+$} }
+\put( 1  , 3){\framebox( 3,1){group under $\times$}  }
+
+\put( 6.5, 2){\line(0,1){1} }
+\put( 2.5, 2){\line(0,1){1} }
+\put( 1  , 1){\framebox(7,1){set} }
+\end{footnotesize}
+\end{picture}
+\end{center}
+
+
+
+
+
+
+
+\index{space}
+\index{space!vector space}         \index{vector space}        
+\index{space!normed space}         \index{normed space}        
+\index{space!Banach space}         \index{Banach space}        
+\index{space!inner product space}  \index{inner product space}  
+\index{space!Hilbert space}        \index{Hilbert space}       
+\index{space!$\spLL$}              \index{$\spLL$}              
+\index{space!$\spII$}              \index{$\spII$}              
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}
+\begin{picture}(600,310)(-300,-70)
+  %\graphpaper[10](-200,-200)(600,500)                  
+  \thinlines
+  \put( -30 ,   0 ){\oval(50,30){}}
+  \put( -30 ,   0 ){\makebox(0,0)[c]{$\spLL$}}
+  \put(  30 ,   0 ){\oval(50,30){}}
+  \put(  30 ,   0 ){\makebox(0,0)[c]{$\spII$}}
+  \put(   0 ,  15 ){\oval(140,70){}}
+  \put(   0 ,  40 ){\makebox(0,0)[t]{Hilbert space}}
+  \put(   0 ,  25 ){\oval(200,110){}}
+  \put(   0 ,  70 ){\makebox(0,0)[t]{inner product space}}
+  \put(   0 ,  35 ){\oval(160,150){}}
+  \put(   0 , 100 ){\makebox(0,0)[t]{Banach space}}
+  \put(   0 ,  45 ){\oval(300,190){}}
+  \put(   0 , 130 ){\makebox(0,0)[t]{normed space}}
+  \put(   0 ,  55 ){\oval(400,230){}}
+  \put(   0 , 160 ){\makebox(0,0)[t]{vector space}}
+  \put(   0 ,  65 ){\oval(500,270){}}
+  \put(   0 , 190 ){\makebox(0,0)[t]{metric space}}
+  \put(   0 ,  75 ){\oval(600,310){}}
+  \put(   0 , 220 ){\makebox(0,0)[t]{topological space}}
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Spaces
+   \label{fig:spaces}
+   }
+\end{figure}
+
+\begin{align*}
+  \intertext{$\quad\imark$ Proof that $\norm{\vx+\vy}\le\norm{\vx}+\norm{\vy}$:}
+    \norm{\vx+\vy}^2
+      &=   \sum_{i=1}^n \abs{x_i+y_i}^2
+      &&   \text{by definition of $\norm{\cdot}$}
+    \\&=   \sum_{i=1}^n (x_i+y_i)(x_i+y_i)^\ast
+      &&   \text{by \prefp{thm:C_abs}}
+    \\&=   \sum_{i=1}^n \Big(x_ix_i^\ast + y_iy_i^\ast + x_iy_i^\ast + x_i^\ast y_i\Big)
+    \\&=   \sum_{i=1}^n \Big(\abs{x_i}^2 + \abs{y_i}^2 + 2\Re(x_iy_i)\Big)
+    \\&\le \sum_{i=1}^n \Big(\abs{x_i}^2 + \abs{y_i}^2 + 2\abs{\Re(x_iy_i)}\Big)
+      && \text{by \prefp{def:C_abs}}
+    \\&\le \sum_{i=1}^n \Big(\abs{x_i}^2 + \abs{y_i}^2 + 2\abs{x_iy_i}\Big)
+      && \text{by \prefp{thm:C_abs}}
+    \\&=   \sum_{i=1}^n \Big(\abs{x_i}^2 + \abs{y_i}^2 + 2\abs{x_i}\abs{y_i}\Big)
+      && \text{by \prefp{def:abs}}
+    \\&=   \sum_{i=1}^n \abs{x_i}^2 + \sum_{i=1}^n \abs{y_i}^2 
+       +  2\sum_{i=1}^n \abs{x_i}\abs{y_i}
+    \\&=   \sum_{i=1}^n \abs{x_i}^2 + \sum_{i=1}^n \abs{y_i}^2 
+       +  2\sum_{i=1}^n \sum_{j=1}^n \abs{x_i}\abs{y_j}
+    \\&=   \sum_{i=1}^n \abs{x_i}^2 + \sum_{i=1}^n \abs{y_i}^2 
+       +  2\left(\sum_{i=1}^n \abs{x_i} \right) 
+           \left(\sum_{j=1}^n \abs{y_j} \right)
+    \\&\le \sum_{i=1}^n \abs{x_i}^2 + \sum_{i=1}^n \abs{y_i}^2 
+       +  2\left(\sum_{i=1}^n \abs{x_i}^2 \right)^\frac{1}{2}
+           \left(\sum_{j=1}^n \abs{y_j}^2 \right)^\frac{1}{2}
+      && \text{by \prefp{thm:???}}
+    \\&=  \left(\sqrt{\sum_{i=1}^n \abs{x_i}^2} + \sqrt{\sum_{i=1}^n \abs{y_i}^2} \right)^2
+      &&  \text{because $(A+B)^2=A^2 + B^2 + 2AB$}
+    \\&=  \left(\norm{\vx} + \norm{\vy}\right)^2
+      && \text{by definition of $\norm{\cdot}_2$}
+\end{align*}
+
+
+
+\parbox[c][][c]{\textwidth/3-2ex}{
+  %(see Figure~\ref{fig:parallelogram})
+  %\begin{figure}[ht]
+  \color{figcolor}
+  \begin{center}
+  \begin{fsL}
+  \setlength{\unitlength}{0.15mm}
+  \begin{picture}(300,150)(0,-30)%
+    %\graphpaper[10](0,0)(300,120)%
+    \thinlines%
+    {\color{uvect}%
+      \put(   0,   0){\vector( 1, 1){100} }%
+      \put(   0,   0){\vector( 1, 0){200} }%
+      \put( 100, 100){\vector( 1,-1){100} }%
+      \put(  40,  50 ){\makebox(0,0)[br]{$\vy$}}%
+      \put( 100, -10 ){\makebox(0,0)[t ]{$\vx$}}%
+      \put( 120,  80 ){\makebox(0,0)[bl]{$\vx-\vy$}}%
+      }%
+    {\color{vector}%
+      \put(   0,   0){\vector( 3, 1){150} }%
+      \put( 105,  35 ){\makebox(0,0)[tl]{$\frac{1}{2}(\vx+\vy)$}}%
+      }%
+    {\color{axis}%
+      \qbezier[20](200,0)(250,50)(300,100)%
+      \qbezier[30](100,100)(200,100)(300,100)%
+      \qbezier[20](150,50)(225,75)(300,100)%
+      }%
+  \end{picture}%
+  \end{fsL}
+  \end{center}
+  %\caption{
+  %   Parallelogram Law in $\R^2$
+  %   \label{fig:parallelogram}
+  %   }
+  %\end{figure}
+}
+\parbox[c][][c]{2\textwidth/3-2ex}{
+  In the Euclidean plane $\R^2$, the \hie{Apollonius identity}
+  expresses the length of the median of a triangle in terms of the lengths of its sides.
+  Apollonius' identity is equivalent to the \prop{parallelogram law}.
+  Apollonius' identity is presented in the next theorem and illustrated in the figure
+  to the left.\footnotemark
+  }\footnotetext{\citei[XII.1]{almagest}}
+
+%--------------------------------------
+\begin{theorem}[Apollonius identity]
+\label{thm:apollonius_id}
+\index{theorems!Apollonius identity}
+\index{inner product!Apollonius identity}
+\index{norm!Apollonius identity}
+\footnote{\begin{tabular}[t]{l}
+  \cite[page 46]{giles2000} \\
+  \cite[page 8]{amir} \\
+\end{tabular}}
+%--------------------------------------
+\formbox{
+  \left.
+  \parbox[c]{\textwidth/8}{\raggedright
+    $(\spV,\inprod{\cdot}{\cdot})$
+    is an inner product space
+    }
+  \right\}
+  \iff
+  \mcom{\norm{\vz - \frac{1}{2}(\vx+\vy)}
+    = \frac{1}{2} \left( \norm{\vz-\vx}^2 + \norm{\vz-\vy}^2 - 2 \norm{\vx-\vy}^2 \right)}
+    {Apollonius identity}
+  \quad\scriptstyle
+  \forall \vx,\vy,\vz \in \spV
+  }
+\end{theorem}
+\begin{proof}
+This theorem is equivalent to the parallelogram law (page~\pageref{thm:parallelogram}).
+\begin{align*}
+  \intertext{1. Proof that [parallelogram law] $\implies$ [Apollonius identity]:}
+    \text{let } \vx' &\eqd \frac{1}{2}(\vz - \vx)  \\
+    \text{let } \vy' &\eqd \frac{1}{2}(\vz - \vy)  \\
+    \\
+    \norm{\vz - \frac{1}{2}(\vx+\vy)}^2
+      &= \norm{\frac{1}{2}(\vz - \vx) + \frac{1}{2}(\vz - \vy)}^2
+    \\&= \norm{\vx' + \vy'}^2
+      && \text{by defintions of $\vx'$ and $\vy'$}
+    \\&= 2\norm{\vx'}^2 + 2\norm{\vy'}^2 - \norm{\vx'-\vy'}^2
+      && \text{by parallelogram law}
+    \\&= 2\norm{\frac{1}{2}(\vz - \vx)}^2 + 2\norm{\frac{1}{2}(\vz - \vy)}^2 - \norm{\frac{1}{2}(\vz - \vx)-\frac{1}{2}(\vz - \vy)}^2
+      && \text{by defintions of $\vx'$ and $\vy'$}
+    \\&= \frac{2}{4}\norm{\vz - \vx}^2 + \frac{2}{4}\norm{\vz - \vy}^2 - \frac{1}{4}\norm{(\vz - \vx)-(\vz - \vy)}^2
+      && \text{by \prefp{def:norm}}
+    \\&= \frac{1}{2} \left( \norm{\vz-\vx}^2 + \norm{\vz-\vy}^2 - 2 \norm{\vx-\vy}^2 \right)
+    \\
+  \intertext{2. Proof that [parallelogram law] $\impliedby$ [Apollonius identity]:}
+    \norm{\vx+\vy}^2
+      &= \norm{-\frac{2}{2}(\vx+\vy)}^2
+      && \text{by \prefp{def:norm}}
+    \\&= \left. |2|^2\norm{\vz-\frac{1}{2}(\vx+\vy)}^2 \right|_{\vz=\vzero}
+    \\&= \left. \left( 2\norm{\vz-\vx}^2 + 2\norm{\vz-\vy}^2 - \norm{\vx-\vy}^2 \right)\right|_{\vz=\vzero}
+      && \text{by Apollonius identity}
+    \\&= 2\norm{\vx}^2 + 2\norm{\vy}^2 - \norm{\vx-\vy}^2
+\end{align*}
+
+    %    See \prefp{thm:apollonius_id}
+    % 
+    % \begin{align*}
+    %   \norm{\vz - \frac{1}{2}(\vx+\vy)}^2
+    %     &= \norm{\vz - \frac{1}{2}(\vx+\vy)}^2
+    %   \\&= \norm{\vz}^2 + \norm{- \frac{1}{2}(\vx+\vy)}^2 + 2\Re\inprod{\vz}{- \frac{1}{2}(\vx+\vy)}
+    %     && \text{by \prefp{lem:||x+y||}}
+    %   \\&= \norm{\vz}^2 + \abs{- \frac{1}{2}}^2\norm{(\vx+\vy)}^2
+    %      + 2\left(- \frac{1}{2}\right)\Re\inprod{\vz}{(\vx+\vy)}
+    %     && \text{by \prefp{def:norm} and \prefp{def:inprod}}
+    %   \\&= \norm{\vz}^2 + \frac{1}{4}\left( \norm{\vx}^2 + \norm{\vy}^2 +2\Re\inprod{\vx}{\vy}  \right)
+    %      - \left(\Re\inprod{\vz}{\vx} + \Re\inprod{\vz}{\vy}\right)
+    %     && \text{by \prefp{def:norm} and \prefp{def:inprod}}
+    %   \\&= \left( \frac{1}{2}\norm{\vz}^2 + \frac{1}{2}\norm{\vz}^2 \right)
+    %      + \left( \frac{1}{2}\norm{\vx}^2 - \frac{1}{4}\norm{\vx}^2 \right)
+    %     \\&\qquad + \left( \frac{1}{2}\norm{\vy}^2 - \frac{1}{4}\norm{\vy}^2 \right)
+    %      + \frac{1}{2}\Re\inprod{\vx}{\vy}
+    %      - \Re\inprod{\vz}{\vx}
+    %      - \Re\inprod{\vz}{\vy}
+    %   \\&= \left( \frac{1}{2}\norm{\vz}^2 + \frac{1}{2}\norm{\vx}^2 - \Re\inprod{\vz}{\vx} \right)
+    %      + \left( \frac{1}{2}\norm{\vz}^2 + \frac{1}{2}\norm{\vy}^2 - \Re\inprod{\vz}{\vy} \right)
+    %     \\&\qquad  + \left(-\frac{1}{4}\norm{\vx}^2 - \frac{1}{4}\norm{\vy}^2 + \frac{1}{2}\Re\inprod{\vx}{\vy} \right)
+    %   \\&= \frac{1}{2}\left( \norm{\vz}^2 + \norm{\vx}^2 + 2\Re\inprod{\vz}{-\vx} \right)
+    %      + \frac{1}{2}\left( \norm{\vz}^2 + \norm{\vy}^2 + 2\Re\inprod{\vz}{-\vy} \right)
+    %     \\&\qquad  - \frac{1}{4}\left( \norm{\vx}^2 - \norm{\vy}^2 + 2\Re\inprod{\vx}{-\vy} \right)
+    %   \\&= \frac{1}{2}\norm{\vz-\vz}^2 + \frac{1}{2}\norm{\vz-\vy}^2 -\frac{1}{4}\norm{\vx-\vy}^2
+    %     && \text{by \prefp{lem:||x+y||}}
+    % \end{align*}
+
+\end{proof}
+
+
+The concept of a mathematical ``space" is traditionally a somewhat vague and non-rigorous notion;
+and the definition of ``space" that follows does not fail to disappoint us in
+living up to this traditional level of rigor.
+%---------------------------------------
+\begin{definition}
+\label{def:space}
+\citep{blumenthal1970}{5}
+%---------------------------------------
+Let $X$ be a set.
+A \hid{space} is the pair $(X,\vtheta)$ where $X$ is a set and
+$\vtheta$ is a structure on $X$ (a ``\hib{topology} on $X$")
+that provides sufficient support for the
+concepts of ``\hib{proximity}" and ``\hib{continuity}"
+on $X$.
+\end{definition}
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}
+\begin{picture}(600,310)(-300,-70)
+  %\graphpaper[10](-200,-200)(600,500)
+  \thinlines
+  \put(   0 ,  35 ){\oval(160,150){}}
+  \put(   0 , 100 ){\makebox(0,0)[t]{orthonormal bases}}
+  \put(   0 ,  45 ){\oval(300,190){}}
+  \put(   0 , 130 ){\makebox(0,0)[t]{tight frames}}
+  \put(   0 ,  55 ){\oval(400,230){}}
+  \put(   0 , 160 ){\makebox(0,0)[t]{frames}}
+  \put(   0 ,  65 ){\oval(500,270){}}
+  \put(   0 , 190 ){\makebox(0,0)[t]{Riesz bases}}
+  \put(   0 ,  75 ){\oval(600,310){}}
+  \put(   0 , 220 ){\makebox(0,0)[t]{Hamel bases}}
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Bases for vector spaces
+   \label{fig:basis}
+   }
+\end{figure}
+
+
+
+If an orthormal basis is available for an inner product space,
+then the coefficients alone in an orthonormal representation can be used to compute
+\begin{liste}
+   \item inner product of two vectors
+   \item distance between two vectors
+   \item norm of a vector.
+\end{liste}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:ortho_dist}
+\index{orthonormal basis!distance}
+\index{distance}
+%--------------------------------------
+Let $(\spV,\inprod{\cdot}{\cdot})$ be an inner product space
+with $\setPsi\eqd\{\vpsi_1,\vpsi_2,\ldots,\vpsi_n\in\spV\}$.\\
+If $\setPsi$ is an orthonormal basis for $\spV$, then
+\[
+   \vx \eqd \sum_{i=1}^n a_i \vpsi_i
+   \mbox{ \hspace{3em} and \hspace{3em} }
+   \vy \eqd \sum_{i=1}^n b_i \vpsi_i.
+\]
+
+Then
+\formbox{
+  \dist{\vx}{\vy} = \sqrt{\sum_{i=1}^n  |a_i - b_i|^2}.
+  }
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+   \left[ \dist{\vx}{\vy} \right]^2
+     &=& \norm{\vx-\vy}^2
+   \\&=& \norm{\vx} + \norm{\vy} -2\Re\inprod{\vx}{\vy}
+   \\&=& \norm{\vx} + \norm{\vy} -2\left( \frac{1}{2}\inprod{\vx}{\vy} + \frac{1}{2}\inprod{\vx}{\vy}^\ast \right)
+   \\&=& \norm{\vx} + \norm{\vy} -\inprod{\vx}{\vy} - \inprod{\vx}{\vy}^\ast
+   \\&=& \sum_{i=1}^n |a_i|^2 + \sum_{i=1}^n |b_i|^2 -\sum_{i=1}^n a_i b_i^\ast -\left(\sum_{i=1}^n a_i b_i^\ast \right)^\ast
+   \\&=& \sum_{i=1}^n \left( a_i a_i^\ast + b_i b_i^\ast - a_i b_i^\ast - a_i^\ast b_i \right)
+   \\&=& \sum_{i=1}^n (a_i - b_i)(a_i - b_i)^\ast
+   \\&=& \sum_{i=1}^n | a_i - b_i |^2
+\end{eqnarray*}
+\end{proof}
+
+
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}
+\begin{picture}(500,600)(-400,-600)
+  %\graphpaper[10](0,0)(600,200)
+  \thinlines
+  \put(   0,   0){\line(-1,-1){100} }  \put(   0,   0){\line( 1,-1){100} }
+  \put(-100,-100){\line(-1,-1){100} }  \put(-100,-100){\line( 1,-1){100} }
+  \put(-200,-200){\line(-1,-1){100} }  \put(-200,-200){\line( 1,-1){100} }
+  \put(-400,-400){\line(-1,-1){100} }  \put(-400,-400){\line( 1,-1){100} }
+
+  \put( 100,-100){\line(-1,-5){100} }
+  \put(   0,-200){\line( 0,-1){400} }
+  \put(-100,-300){\line( 1,-3){100} }
+  \put(-200,-400){\line( 1,-1){200} }
+  \put(-300,-500){\line( 3,-1){300} }
+  \put(-500,-500){\line( 5,-1){500} }
+
+  \put(   0,   0){\circle*{15}}
+  \put(-100,-100){\circle*{15}}  \put( 100,-100){\circle*{15}}
+  \put(-200,-200){\circle*{15}}  \put(   0,-200){\circle*{15}}
+  \put(-300,-300){\circle*{15}}  \put(-100,-300){\circle*{15}}
+  \put(-400,-400){\circle*{15}}  \put(-200,-400){\circle*{15}}
+  \put(-500,-500){\circle*{15}}  \put(-300,-500){\circle*{15}}
+  \put(   0,-600){\circle*{15}}
+
+  \put(   0,  10){\makebox(0,0)[b] { $\opV_n$}}
+  \put(-110,-100){\makebox(0,0)[r] { $\opV_{n-1}$}}
+  \put( 110,-100){\makebox(0,0)[l] { $\opW_{n-1}$}}
+  \put(-210,-200){\makebox(0,0)[r] { $\opV_{n-2}$}}
+  \put(  10,-200){\makebox(0,0)[l] { $\opW_{n-2}$}}
+  \put(-310,-300){\makebox(0,0)[r] { $\opV_{n-3}$}}
+  \put( -90,-300){\makebox(0,0)[l] { $\opW_{n-3}$}}
+  \put(-410,-400){\makebox(0,0)[r] { $\opV_{2}$}}
+  \put(-190,-400){\makebox(0,0)[l] { $\opW_{2}$}}
+  \put(-510,-500){\makebox(0,0)[r] { $\opV_{1}$}}
+  \put(-290,-500){\makebox(0,0)[l] { $\opW_{1}$}}
+  \put(   0,-610){\makebox(0,0)[t] { $\setn{0}$}}
+  \put(-350,-350){\makebox(0,0)[c] { $\vdots$}}
+  \put(-250,-350){\makebox(0,0)[c] { $\vdots$}}
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Hasse diagram for lattice of MRA projection operators
+   \label{fig:mra_op_lattice}
+   }
+\end{figure}
+
+
+
+\paragraph{Fourier kernel.}
+One of the most useful operators for revealing the structure of
+functions in the space $\spLL$ (space of absolute square integrable functions)
+is the {\em Fourier Transform operator} $\opF$.\footnotemark[\value{footnote}]
+This operator is an integral operator with kernel
+$\kernel(t,\omega)=e^{-i\omega t}$ such that
+  \[ [\opF\ff](\omega) = \int_t \kernel(t,\omega)\ff(t)\dt = \int_t e^{-i\omega t}\ff(t)\dt. \]
+Amazing properties of this kernel include
+\begin{enume}
+  \item $\kernel(t,\omega)$ is {\em harmonic}
+        as demonstrated by {\em Euler's Identity}
+        $e^{-i\omega t}=\cos\omega t -i\sin\omega t$ \footnotemark[\value{footnote}]
+  \item $\kernel(t,\omega)$ is an eigenvector of the differential operator
+        $\opD_t$ such that \citep{strang89}{614}
+        \[\opD_t e^{-i\omega t} = \frac{i}{\omega} e^{-i\omega t}.\]
+\end{enume}
+
+\paragraph{Inverse operators.}
+It is easy to construct an operator.
+It is more difficult to construct an operator that provides useful
+insight into the structure of functions.
+Of course we want this insight ability, but we
+also would like the operator to have an {\em inverse}.
+The inverse can ``undo" whatever the operator has done.
+An operator will carry a function in a space to some new location
+in that same space or into a new space.
+But if the operator has an inverse,
+then that function or any other function can be carried back home to
+its original location.
+If such an inverse exists, then we can not only analyze the structure of
+functions, but we can have alternative yet {\em completely equivalent}
+representations of functions.
+The Fourier operator $\opF$ has such an inverse $\opFi$.
+
+\paragraph{Difficulties with the Fourier Transform.}
+The Fourier transform is very powerful and very useful.
+However, it does have some difficulties that we would like to
+improve if we could. These include
+\begin{enume}
+  \item There is only one set of basis functions (provided by the kernel)
+        rather than
+        many sets to select from to better suit the analysis at hand.
+  \item The one set of basis functions
+        are infinite in length (do have have {\em compact support}).
+        This make it difficult to represent functions that are limited in time
+        such as a ``tent function".
+  \item Localized time information about a function is hidden when
+        transformed by $\opF$. Only average information over the entire
+        span of the function is presented.
+\end{enume}
+
+\paragraph{Wavelets.}
+Rather than throw out the powerful capabilities of the Fourier transform,
+we use it and other techniques to build a new class of operators called
+{\em wavelet} operators.
+Wavelets overcome difficulties found in the Fourier transform
+and offer some of the same nice features of the Fourier transform as well:
+\begin{enume}
+  \item A {\em Fast Wavelet Transform} (FWT) is available similar in speed
+        and utility to the {\em Fast Fourier Transform} (FFT).
+  \item Provides ``rate of change" information (frequency-like analysis).
+\end{enume}
+
+
+\begin{minipage}[c]{4\tw/16}
+  \begin{center}%
+  \begin{fsL}%
+  \setlength{\unitlength}{\tw/(400)}%
+  \begin{picture}(300,300)(-150,-50)%
+   %{\color{graphpaper}\graphpaper[50](-150,-50)(300,300)}%
+    \thicklines%
+    {\color{latdot}%
+      \put(   0, 200){\circle*{20}}%
+      \put( 100, 100){\circle*{20}}%
+      \put(   0, 100){\circle*{20}}%
+      \put(-100, 100){\circle*{20}}%
+      \put(   0,   0){\circle*{20}}%
+      }%
+    {\color{latdot}%
+      \put(   0, 220){\makebox(0,0)[b] {$\setn{x,y,z}$}}%
+      \put( 120, 100){\makebox(0,0)[cl]{$\setn{z}$}}%
+      \put(  10, 100){\makebox(0,0)[tl]{$\setn{y}$}}%
+      \put(-120, 100){\makebox(0,0)[cr]{$\setn{x}$}}%
+      \put(   0, -20){\makebox(0,0)[t] {$\emptyset$}}%
+      }%
+    {\color{latline}%
+      \put(   0, 200){\line(-1,-1){100}}%
+      \put(   0, 200){\line( 0,-1){100}}%
+      \put(   0, 200){\line( 1,-1){100}}%
+      \put(   0,   0){\line(-1, 1){100}}%
+      \put(   0,   0){\line( 0, 1){100}}%
+      \put(   0,   0){\line( 1, 1){100}}%
+      }%
+  \end{picture}%
+  \end{fsL}%
+  \end{center}%
+\end{minipage}
+\hfill
+\begin{minipage}[c]{2\textwidth/3}
+  %---------------------------------------
+  \begin{example}
+  \label{ex:ts_primitive_xyz}
+  %---------------------------------------
+  Let $\setX\eqd\setn{x,y,z}$ be a set.
+  The family of sets
+  \[ \tau \eqd \setn{\emptyset,\, \setX,\, \setn{x},\, \setn{y},\, \setn{z}} \]
+  is a topology on $\setX$ and $(\setX,\, \tau)$ is a topological space over $\setX$.
+  The lattice $(\setX,\, \tau,\, \subseteq,\, \setu,\, \seti)$
+  generated by $(\setX,\, \tau)$ is illustrated by the figure to the left.
+  \end{example}
+\end{minipage}
+
+
+\begin{minipage}[c]{\tw/3}
+  \color{figcolor}
+  \begin{center}
+  \begin{fsL}
+  \setlength{\unitlength}{\tw/700}
+  \begin{picture}(700,400)(-300,-150)
+    %{\color{graphpaper}\graphpaper[100](-350,-150)(700,400)}
+    \thicklines
+    \color{latline}%
+      \put(   0, 200){\line(-2,-1){200} }%
+      \put(   0, 200){\line( 2,-1){200} }%
+      \put(-200, 100){\line( 1,-1){100} }%
+      \put(-200, 100){\line(-1,-1){100} }%
+      \put( 200, 100){\line( 1,-1){100} }%
+      \put( 200, 100){\line(-1,-1){100} }%
+      \put(   0,-100){\line(-3, 1){300} }%
+      \put(   0,-100){\line(-1, 1){100} }%
+      \put(   0,-100){\line( 3, 1){300} }%
+      \put(   0,-100){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 200){\circle*{30}}% maximum element
+      \put( 200, 100){\circle*{30}}% 
+      \put(-200, 100){\circle*{30}}% 
+      \put(-300,   0){\circle*{30}}% 
+      \put(-100,   0){\circle*{30}}% 
+      \put( 100,   0){\circle*{30}}% 
+      \put( 300,   0){\circle*{30}}% 
+      \put(   0,-100){\circle*{30}}% minimum element
+      %
+      \put(   0, 220){\makebox(0,0)[b] {$\setn{w,x,y,z}$}}%
+      \put(-200, 120){\makebox(0,0)[br]{$\setn{w,x}$}}%
+      \put( 200, 120){\makebox(0,0)[bl]{$\setn{y,z}$}}%
+      \put(-300, -20){\makebox(0,0)[t] {$\setn{w}$}}%
+      \put(-100,  20){\makebox(0,0)[bl]{$\setn{x}$}}%
+      \put( 100,  20){\makebox(0,0)[br]{$\setn{y}$}}%
+      \put( 300, -20){\makebox(0,0)[t] {$\setn{z}$}}%
+      \put(   0,-120){\makebox(0,0)[t] {$\emptyset$}}%
+  \end{picture}
+  \end{fsL}
+  \end{center}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{2\textwidth/3}
+  %---------------------------------------
+  \begin{example}
+  \label{ex:ts_dyadic_xyz}
+  %---------------------------------------
+  The lattice to the left illustrates a topology on the 
+  set $\setX\eqd\setn{w,x,y,z}$.
+  \end{example}
+\end{minipage}
+
+
+\begin{center}
+\color{figcolor}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}
+\begin{picture}(600,350)(-300,-100)
+  {\color{graphpaper}%
+    %\graphpaper[10](-300,-100)(600,350)%
+  }%
+  \thicklines%
+  \put( -30 ,   0 ){\oval(50,30){}}%
+  \put( -30 ,   0 ){\makebox(0,0)[c]{$\spLL$}}%
+  \put(  30 ,   0 ){\oval(50,30){}}%
+  \put(  30 ,   0 ){\makebox(0,0)[c]{$\spII$}}%
+  \put(   0 ,  15 ){\oval(140,70){}}%
+  \put(   0 ,  40 ){\makebox(0,0)[t]{Hilbert space}}%
+  \put(   0 ,  25 ){\oval(200,110){}}%
+  \put(   0 ,  70 ){\makebox(0,0)[t]{inner product space}}%
+  \put(   0 ,  35 ){\oval(160,150){}}%
+  \put(   0 , 100 ){\makebox(0,0)[t]{Banach space}}%
+  \put(   0 ,  45 ){\oval(300,190){}}%
+  \put(   0 , 130 ){\makebox(0,0)[t]{normed space}}%
+  {\color{red}%
+    \put(   0 ,  55 ){\oval(600,230){}}%
+    \put(   0 , 160 ){\makebox(0,0)[t]{vector space}}%
+  }%
+  \put(   0 ,  65 ){\oval(400,270){}}%
+  \put(   0 , 190 ){\makebox(0,0)[t]{metric space}}%
+  \put(   0 ,  75 ){\oval(500,350){}}%
+  \put(   0 , 220 ){\makebox(0,0)[t]{topological space}}%
+\end{picture}%
+\end{fsL}
+\end{center}
+
+\begin{figure}[th]
+\begin{center}
+\footnotesize
+\setlength{\unitlength}{\tw/900}%
+\begin{picture}(700,620)(-350,-50)%
+  \thicklines
+  %{\color{graphpaper}\graphpaper[50](-350,-50)(700,600)}%
+  \color{black}%
+    \put( 0,450){\line(-6,-1){300}}%
+    \put( 0,450){\line(-4,-1){200}}%
+    \put( 0,450){\line(-2,-1){100}}%
+  \color{red}%
+    \put( 0,450){\line( 2,-1){100}}%
+    \put( 0,450){\line( 4,-1){200}}%
+    \put( 0,450){\line( 6,-1){300}}%
+  \color{black}%
+    \put( 0, 50){\line(-6,1){300}}%
+    \put( 0, 50){\line(-4,1){200}}%
+    \put( 0, 50){\line(-2,1){100}}%
+    \put( 0, 50){\line( 0,1){50}}%
+  \color{black}%
+    \put( 0, 50){\line( 2,1){100}}%
+    \put( 0, 50){\line( 4,1){200}}%
+    \put( 0, 50){\line( 6,1){300}}%
+  \color{red}%
+    \put( 0,200){\line( 1,1){100}}%
+    \put( 0,200){\line( 2,1){200}}%
+    \put( 0,200){\line( 3,1){300}}%
+  \color{black}%
+    \put(-300,200){\line( 4,1){400}}%
+    \put(-300,200){\line( 1,1){100}}%
+    \put(-300,200){\line( 0,1){100}}%
+    \put(-200,200){\line( 4,1){400}}%
+    \put(-200,200){\line( 1,1){100}}%
+    \put(-200,200){\line(-1,1){100}}%
+    \put(-100,200){\line( 4,1){400}}%
+    \put(-100,200){\line( 0,1){100}}%
+    \put(-100,200){\line(-1,1){100}}%
+    \put( 100,200){\line( 2,1){100}}%
+    \put( 100,200){\line(-4,1){400}}%
+    \put( 200,200){\line( 0,1){100}}%
+    \put( 200,200){\line(-4,1){400}}%
+    \put( 300,200){\line(-2,1){100}}%
+    \put( 300,200){\line(-4,1){400}}%
+  \color{red}%
+    \qbezier[10](-50,80)(0,80)(50,80)%
+    \qbezier[16](50,80)(50,140)(50,200)%
+    \qbezier[40](50,200)(200,250)(350,300)%
+    \qbezier[15](350,300)(350,400)(350,450)%
+    \qbezier[40](350,450)(200,510)(50,570)%
+    \qbezier[10](50,570)(0,570)(-50,570)%
+    \qbezier[46](-50,570)(-50,325)(-50,80)%
+    \put(150,570){\makebox(0,0)[lt]{algebra of sets}}
+    \put(250,550){\vector(0,-1){60}}
+%
+  \put(0,500){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 300){\circle*{40}}%
+      \put( 100, 200){\circle*{40}}%
+      \put(   0, 200){\circle*{40}}%
+      \put(-100, 200){\circle*{40}}%
+      \put( 100, 100){\circle*{40}}%
+      \put(   0, 100){\circle*{40}}%
+      \put(-100, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(-300,350){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(-100, 200){\circle*{40}}%
+      \put(   0, 100){\circle*{40}}%
+      \put(-100, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(-200,350){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 200){\circle*{40}}%
+      \put( 100, 100){\circle*{40}}%
+      \put(-100, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(-100,350){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put( 100, 200){\circle*{40}}%
+      \put( 100, 100){\circle*{40}}%
+      \put(   0, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(100,350){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 300){\circle*{40}}%
+      \put( 100, 200){\circle*{40}}%
+      \put(-100, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(200,350){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 300){\circle*{40}}%
+      \put(   0, 200){\circle*{40}}%
+      \put(   0, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(300,350){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 300){\circle*{40}}%
+      \put(-100, 200){\circle*{40}}%
+      \put( 100, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(-300,150){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(-100, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(-200,150){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(-100,150){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put( 100, 100){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(0,150){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 300){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(100,150){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(-100, 200){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(200,150){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 200){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(300,150){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put( 100, 200){\circle*{40}}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+  \put(0,0){%
+    \setlength{\unitlength}{1\tw/(3*1000)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0,   0){\circle*{40}}%
+    \end{picture}%
+  }
+\end{picture}
+\end{center}
+\caption{
+  Lattice of rings of sets of $\setX\eqd\setn{x,y,z}$ (see \prefp{ex:set_lat_ring_xyz})
+  \label{fig:set_lat_ring_xyz}
+  }
+\end{figure}
+
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}
+\begin{tabular}{c@{\hspace{4cm}}c}
+\begin{picture}(240,340)(-100,0)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put( 100, 200){\line(-1, 1){100} }
+  \put(   0, 200){\line( 0, 1){100} }
+  \put(-100, 200){\line( 1, 1){100} }
+  \put( 100, 100){\line( 0, 1){100} }
+  \put( 100, 100){\line(-1, 1){100} }
+  \put(   0, 100){\line(-1, 1){100} }
+  \put(   0, 100){\line( 1, 1){100} }
+  \put(-100, 100){\line( 0, 1){100} }
+  \put(-100, 100){\line( 1, 1){100} }
+  \put(   0,   0){\line(-1, 1){100} }
+  \put(   0,   0){\line( 0, 1){100} }
+  \put(   0,   0){\line( 1, 1){100} }
+
+  \put(   0, 300){\circle*{15}}
+  \put( 100, 200){\circle*{15}}
+  \put(   0, 200){\circle*{15}}
+  \put(-100, 200){\circle*{15}}
+  \put( 100, 100){\circle*{15}}
+  \put(   0, 100){\circle*{15}}
+  \put(-100, 100){\circle*{15}}
+  \put(   0,   0){\circle*{15}}
+
+  \put(   0, 310){\makebox(0,0)[b] { $\setn{a,b,c}$ }}
+  \put( 100, 200){\makebox(0,0)[bl]{ $\setn{  b,c}$ }}
+  \put(   0, 200){\makebox(0,0)[bl]{ $\setn{a,  c}$ }}
+  \put(-100, 200){\makebox(0,0)[br]{ $\setn{a,b  }$ }}
+  \put( 100, 100){\makebox(0,0)[tl]{ $\setn{c    }$ }}
+  \put(   0, 100){\makebox(0,0)[tl]{ $\setn{  b  }$ }}
+  \put(-100, 100){\makebox(0,0)[tr]{ $\setn{    a}$ }}
+  \put(   0, -10){\makebox(0,0)[t] { $\emptyset   $ }}
+\end{picture}
+&
+\begin{picture}(240,340)(-100,0)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put( 100, 200){\line(-1, 1){100} }
+  \put(   0, 200){\line( 0, 1){100} }
+  \put(-100, 200){\line( 1, 1){100} }
+  \put( 100, 100){\line( 0, 1){100} }
+  \put( 100, 100){\line(-1, 1){100} }
+  \put(   0, 100){\line(-1, 1){100} }
+  \put(   0, 100){\line( 1, 1){100} }
+  \put(-100, 100){\line( 0, 1){100} }
+  \put(-100, 100){\line( 1, 1){100} }
+  \put(   0,   0){\line(-1, 1){100} }
+  \put(   0,   0){\line( 0, 1){100} }
+  \put(   0,   0){\line( 1, 1){100} }
+
+  \put(   0, 300){\circle*{15}}
+  \put( 100, 200){\circle*{15}}
+  \put(   0, 200){\circle*{15}}
+  \put(-100, 200){\circle*{15}}
+  \put( 100, 100){\circle*{15}}
+  \put(   0, 100){\circle*{15}}
+  \put(-100, 100){\circle*{15}}
+  \put(   0,   0){\circle*{15}}
+
+  \put(   0, 300){\makebox(0,0)[b] { $30=5^1\cdot3^1\cdot2^1$ }}
+  \put( 100, 200){\makebox(0,0)[bl]{ $15=5^1\cdot3^1\cdot2^0$ }}
+  \put(   0, 200){\makebox(0,0)[b]{ $10=5^1\cdot3^0\cdot2^1$ }}
+  \put(-100, 200){\makebox(0,0)[br]{ $ 6=5^0\cdot3^1\cdot2^1$ }}
+  \put( 100, 100){\makebox(0,0)[tl]{ $ 5=5^1\cdot3^0\cdot2^0$ }}
+  \put(   0, 100){\makebox(0,0)[t]{ $ 3=5^0\cdot3^1\cdot2^0$ }}
+  \put(-100, 100){\makebox(0,0)[tr]{ $ 2=5^0\cdot3^0\cdot2^1$ }}
+  \put(   0,  -5){\makebox(0,0)[t] { $ 1=5^0\cdot3^0\cdot2^0$ }}
+\end{picture}
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+   Isomorphic lattices
+   \label{fig:lat_iso}
+   }
+\end{figure}
+
+
+%---------------------------------------
+\begin{definition}
+\cite[page 128]{durbin}
+\index{ring!characteristic|textbf}
+%---------------------------------------
+\defbox{\begin{array}{l}
+  \text{The \hid{characteristic} $\Rchar{R}$ of a ring $R=(\setX,+,*)$ is defined as}
+  \\
+  \Rchar{R}=
+    \left\{\begin{array}{ll}
+      \min\set{n\in\Zp}{\forall a\in A, \; na=0}
+       & \mbox{ for } \set{n\in\Zp}{\forall a\in A, \; na=0}\ne  \emptyset
+       \\
+       0
+       & \mbox{ for } \set{n\in\Zp}{\forall a\in A, \; na=0} = \emptyset
+    \end{array}\right.
+  \end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\citep{durbin}{120}
+\index{integral domain}
+%---------------------------------------
+Let $0$ be the identity element with respect to operator $+$
+and $1$ be the identity element with respect to operator $*$. \\
+An \hid{integral domain} is any triple $(\setX,+,*)$ that satisfies
+\defbox{\begin{array}{ll @{\qquad}C @{\qquad}D}
+   1. & (\setX,+,*) \text{is a \hib{ring}}
+      &
+      & (\prop{ring})
+      \\
+   2. & 1\in \setX
+      &
+      & (\prop{multiplicative identity element})
+      \\
+   3. & xy=yx
+      & \forall x,y\in\setX
+      & (\prop{commutative} with respect to $*$)
+      \\
+   4. & xy\ne 0 \qquad \forall x,y\in \setX\setd\setn{0}
+      & \forall x,y\in\setX
+      & (no \prop{zero divisors}).
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\citep{durbin}{120}
+\index{cancellation!left|textbf}
+\index{cancellation!right|textbf}
+%---------------------------------------
+Let $(\setX,+,*)$ be an integral domain.
+\formbox{\begin{array}{rcl c rcl @{\qquad}C @{\qquad}D}
+   xy &=& xz &\implies& y &=& z & \forall x,y,z\in\setX & (\prop{left cancellation})\\
+   xy &=& zy &\implies& x &=& z & \forall x,y,z\in\setX & (\prop{right cancellation})
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{marray}
+            & xy    &=& xz                                      \\
+   \implies & xy-xz &=& 0       & \mbox{ by ring property}      \\
+   \implies & x(y-z)&=& 0       & \mbox{ by ring property}      \\
+   \implies & (y-z) &=& 0       & \mbox{ because integral domain} \\
+   \implies & y     &=& z       & \mbox{ }
+\end{marray}
+
+\begin{marray}
+            & xy    &=& zy                                      \\
+   \implies & xy-zy &=& 0       & \mbox{ by ring property}      \\
+   \implies & (x-z)y&=& 0       & \mbox{ by ring property}      \\
+   \implies & (x-z) &=& 0       & \mbox{ because integral domain} \\
+   \implies & x &=& z           & \mbox{ }
+\end{marray}
+\end{proof}
+
+
+\begin{figure}[th]
+\begin{center}
+\footnotesize
+\setlength{\unitlength}{\textheight/2400}%
+\begin{picture}(1700,2200)(-650,-110)%
+  \thicklines
+  %{\color[gray]{0.5}\graphpaper[100](-800,-100)(1600,2200)}%
+  %{\color{graphpaper}\graphpaper[100](-700,-100)(1700,2200)}%
+  \put(0,1900){%
+    \setlength{\unitlength}{1\tw/(7*600)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 300){\circle*{60}}%
+      \put( 100, 200){\circle*{60}}%
+      \put(   0, 200){\circle*{60}}%
+      \put(-100, 200){\circle*{60}}%
+      \put( 100, 100){\circle*{60}}%
+      \put(   0, 100){\circle*{60}}%
+      \put(-100, 100){\circle*{60}}%
+      \put(   0,   0){\circle*{60}}%
+    \end{picture}%
+  }
+%
+%
+%
+%
+%
+%
+%
+%
+  \put(0,1800){%
+    \begin{picture}(0,0)(0,0)%
+      %{\color[gray]{0.5}\graphpaper[10](-200,-100)(400,300)}%
+      \color{latgrid}%
+        \multiput(0,0)(-100, -50){7}{\line( 1, 0){1000}}%
+        \multiput(0,0)( 200,   0){6}{\line(-2,-1){600}}%
+      \put(0,-100){%  {X, xz, xy, z, 0}%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(-200,-200){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+%
+      \put(400,-100){%  {X, xz, xy, z, 0}%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(0,-300){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+%
+      \put(600,-200){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(400,-300){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+    \end{picture}%
+  }%
+%
+%
+%
+%
+%
+  \put(0,1300){%
+    \begin{picture}(0,0)(0,0)%
+      %{\color[gray]{0.5}\graphpaper[10](-200,-100)(400,300)}%
+      \color{latgrid}%
+        \multiput(0,0)(-100, -50){7}{\line( 1, 0){1000}}%
+        \multiput(0,0)( 200,   0){6}{\line(-2,-1){600}}%
+      \put(-200,-100){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(-400,-200){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(-600,-300){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(200,0){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(600,0){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(1000,0){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(100, 200){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+    \end{picture}%
+  }%
+%
+%
+%
+%
+%
+  \put(0,900){%
+    \begin{picture}(0,0)(0,0)%
+      %{\color[gray]{0.5}\graphpaper[10](-200,-100)(400,300)}%
+      \color{latgrid}%
+        \multiput(0,0)(-100, -50){7}{\line( 1, 0){1000}}%
+        \multiput(0,0)( 200,   0){6}{\line(-2,-1){600}}%
+      \put(0,-100){%  {X, xz, xy, z, 0}%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(-200,-200){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(-400,-300){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{red}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+%
+      \put(400,-100){%  {X, xz, xy, z, 0}%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(200,-200){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{red}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(0,-300){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+%
+      \put(800,-100){%  {X, xz, xy, z, 0}%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{red}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(600,-200){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(400,-300){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 200){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+    \end{picture}%
+  }%
+%
+%
+%
+  \put(0,400){%
+    \begin{picture}(0,0)(0,0)%
+      %{\color[gray]{0.5}\graphpaper[10](-200,-100)(400,300)}%
+      \color{latgrid}%
+        \multiput(0,0)(-100, -50){7}{\line( 1, 0){1000}}%
+        \multiput(0,0)( 200,   0){6}{\line(-2,-1){600}}%
+      \put(-200,-100){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(-100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(-400,-200){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(-600,-300){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put( 100, 100){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(200,0){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(-100, 200){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(600,0){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(   0, 200){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+      \put(1000,0){%
+        \setlength{\unitlength}{1\tw/(7*600)}%
+        \begin{picture}(0,0)(0,150)%
+        %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+        \thicklines%
+        \color{latline}%
+          \put(   0, 300){\line(-1,-1){100} }%
+          \put(   0, 300){\line( 0,-1){100} }%
+          \put(   0, 300){\line( 1,-1){100} }%
+          \put( 100, 100){\line( 0, 1){100} }%
+          \put( 100, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line(-1, 1){100} }%
+          \put(   0, 100){\line( 1, 1){100} }%
+          \put(-100, 100){\line( 0, 1){100} }%
+          \put(-100, 100){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1, 1){100} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          \put(   0,   0){\line( 1, 1){100} }%
+        \color{latdot}%
+          \put(   0, 300){\circle*{60}}%
+          \put(100, 200){\circle*{60}}%
+          \put(   0,   0){\circle*{60}}%
+        \end{picture}%
+      }
+    \end{picture}%
+  }%
+%
+%
+%
+%
+  \put(0,-100){%
+    \setlength{\unitlength}{1\tw/(7*600)}%
+    \begin{picture}(0,0)(0,150)%
+    %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+    \thicklines%
+    \color{latline}%
+      \put(   0, 300){\line(-1,-1){100} }%
+      \put(   0, 300){\line( 0,-1){100} }%
+      \put(   0, 300){\line( 1,-1){100} }%
+      \put( 100, 100){\line( 0, 1){100} }%
+      \put( 100, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line(-1, 1){100} }%
+      \put(   0, 100){\line( 1, 1){100} }%
+      \put(-100, 100){\line( 0, 1){100} }%
+      \put(-100, 100){\line( 1, 1){100} }%
+      \put(   0,   0){\line(-1, 1){100} }%
+      \put(   0,   0){\line( 0, 1){100} }%
+      \put(   0,   0){\line( 1, 1){100} }%
+    \color{latdot}%
+      \put(   0, 300){\circle*{60}}%
+      \put(   0,   0){\circle*{60}}%
+    \end{picture}%
+  }%
+\end{picture}
+\end{center}
+\caption{
+  Lattice of topologies of $\setX\eqd\setn{x,y,z}$ (see \prefp{ex:set_lat_top_xyz})
+  \label{fig:set_lat_top_xyz}
+  }
+\end{figure}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:set_struct}
+%---------------------------------------
+Let $\setX$ be a set.
+\formbox{\begin{tabular}{lll}
+  1. & $(\powerset(X),\subseteq,\setu,\seti)$
+     & is a {\em bounded distributive lattice}.
+     \\
+  2. & $(\powerset(X),\sets)$
+     & is a {\em commutative group}.
+     \\
+  3. & $(\powerset(X),\sets,\seti)$
+     & is a {\em commutative ring}.
+  \end{tabular}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $(\powerset(X),\setu,\seti)$ is the bounded distributive lattice $(\powerset(X),\subseteq,\setu,\seti)$:
+    \\\begin{tabular}{>{$\imark\qquad$}l}
+      $(\powerset(X),\subseteq)$ is a partially ordered set
+      \\ Under the ordering relation $\subseteq$, $\setu$ is the upper bound operator
+         for any two elements in $\powerset(X)$.
+      \\ Under the ordering relation $\subseteq$, $\seti$ is the lower bound operator
+         for any two elements in $\powerset(X)$.
+    \end{tabular}
+
+  \item Proof that $(\powerset(X),\sets)$ is a commutative group:
+    \\$\begin{array}{>{\imark\qquad}lcl@{\qquad}C@{\qquad}D}
+      (A\sets B)\sets C &=& A\sets(B\sets C)
+        & \forall A,B,C\in\powerset(X)
+        & (associative)
+        \\
+      A \sets \emptyset &=& \emptyset \sets A = A
+        & \forall A\in\powerset(X)
+        & (identity)
+        \\
+      A \sets A &=& \emptyset
+        & \forall A\in\powerset(X)
+        & (inverse)
+        \\
+      A \sets B &=& B \sets A
+        & \forall A,B\in\powerset(X)
+        & (commutative)
+    \end{array}$
+
+  \item Proof that $(\powerset(X),\sets,\seti)$ is a commutative ring:
+    \\$\begin{array}{>{\imark\qquad}lcl@{\qquad}C@{\qquad}D}
+      \mc{4}{l}{\imark\qquad\text{$(\powerset(X),\sets)$ is a group}}
+        & (group with respect to $\sets$)
+        \\
+      (A\seti B)\seti C &=& A\seti(B\seti C)
+        & \forall A,B,C\in\powerset(X)
+        & (associative wrt $\seti$)
+        \\
+      A \seti(B\sets C) &=& (A\seti B)\sets(A\seti C)
+        & \forall A,B,C\in\powerset(X)
+        & ($\seti$ is left distributive over $\sets$)
+        \\
+      (A \sets B)\seti C &=& (A\seti C)\sets(B\seti C)
+        & \forall A,B,C\in\powerset(X)
+        & ($\seti$ is right distributive over $\sets$)
+        \\
+      A \seti B &=& B\seti A
+        & \forall A,B\in\powerset(X)
+        & (commutative with respect to $\seti$)
+    \end{array}$
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+\section{quotes}
+%=======================================
+ Bourbaki
+Structures are the weapons of the mathematician. 
+http://math.furman.edu/~mwoodard/ascquotb.html
+
+Aubrey, John (1626-1697)
+[About Thomas Hobbes:]
+He was 40 years old before he looked on geometry; which happened accidentally. Being in a gentleman's library, Euclid's Elements lay open, and "twas the 47 El. libri I" [Pythagoras' Theorem]. He read the proposition . "By God", sayd he, "this is impossible:" So he reads the demonstration of it, which referred him back to such a proposition; which proposition he read. That referred him back to another, which he also read. Et sic deinceps, that at last he was demonstratively convinced of that trueth. This made him in love with geometry.
+In O. L. Dick (ed.) Brief Lives, Oxford: Oxford University Press, 1960, p. 604.
+http://math.furman.edu/~mwoodard/ascquota.html
+
+
+%\epsfig{file=../common/people/aristot.jpg, height=5cm, clip=true }
+\footnote{\begin{tabular}[t]{ll}
+  quote: & \url{http://en.wikiquote.org/wiki/Aristotle} \\
+  image: & \url{http://en.wikipedia.org/wiki/Aristotle}
+\end{tabular}}
+\parbox[b][5cm][c]{12cm}{
+  \begin{quote}
+  \quoteo Those who assert that the mathematical sciences 
+  say nothing of the beautiful or the good are in error. 
+  For these sciences say and prove a great deal about them; 
+  if they do not expressly mention them, but prove attributes 
+  which are their results or definitions, it is not true that they tell 
+  us nothing about them. 
+  The chief forms of beauty are order and symmetry and definiteness, 
+  which the mathematical sciences demonstrate in a special degree.\quotec
+
+  Aristotle (384 BC -- 322 BC)
+  \end{quote}
+}
+
+\begin{center}\begin{footnotesize}
+  \shadowbox{\parbox[b]{15\textwidth/16}{
+    \parbox[c]{6\textwidth/16-2ex}{
+      \quoteo Man muss immer generalisieren.\quotec
+    }
+    \parbox[c]{2\textwidth/16}{
+      \includegraphics*[width=2\textwidth/16-2ex, keepaspectratio=true, clip=true]
+                       {../common/people/jacobi.jpg}
+    }
+    \parbox[c]{6\textwidth/16-2ex}{
+      \quoteo One should always generalize.\quotec
+    }
+    \\[1ex]
+    \parbox{15\textwidth/16}{\center attributed to Karl Gustav Jakob Jacobi (1804--1851), mathematician} \index{Jacobi, Karl Gustav Jakob}
+  }}
+  \end{footnotesize}
+    \footnote{\begin{tabular}[t]{ll}
+     %quote: & \url{http://en.wikiquote.org/wiki/Gustav_Jacobi} \\
+      quote: & \citei[page 134]{davis1999} \\
+      image: & \url{http://en.wikipedia.org/wiki/Carl_Gustav_Jacobi}
+    \end{tabular}}
+\end{center}
+  
+See quotes from E.T. Bell for more abstraction/generalization quotes:
+
+\url{http://www-groups.dcs.st-and.ac.uk/~history/Quotations/Bell.html}
+
+\includegraphics*[height=5cm, width=4cm, keepaspectratio=true, clip=true]{dyson.jpg}
+\footnote{\begin{tabular}[t]{ll}
+  quote: & \url{http://en.wikiquote.org/wiki/Freeman_Dyson} \\
+  image: & \url{http://en.wikipedia.org/wiki/Freeman_Dyson}
+\end{tabular}}
+%\hspace{4ex}
+\parbox[b][5cm][c]{12cm}{
+\begin{quote}
+\quoteo The bottom line for mathematicians is that the architecture has to be right.
+In all the mathematics that I did, the essential point was to find
+the right architecture.
+It's like building a bridge.
+Once the main lines of the structure are right,
+then the details miraculously fit.
+The problem is the overall design.\quotec
+
+--Freeman Dyson (January 1994)
+\end{quote}
+}
+
+
+\epsfig{file=../common/people/leibnitz.jpg, width=3cm, clip=}
+\footnote{\begin{tabular}[t]{ll}
+  quote: & \url{http://en.wikiquote.org/} \\
+  image: & \url{http://en.wikipedia.org/wiki/Gottfried\_Leibniz}
+\end{tabular}}
+\parbox[b][][t]{12cm}{
+  \begin{quote}
+  ``There are two kinds of truths: 
+  those of reasoning and those of fact. 
+  The truths of reasoning are necessary and their opposite is impossible; 
+  the truths of fact are contingent and their opposites are possible." \\
+  Gottfried Leibniz
+  \end{quote}
+}
+
+
+
+     `` "the proof is left as an exercise" occurred in  `De Triangulis Omnimodis' by Regiomontanus, written 1464 and published 1533. He is quoted as saying "This is seen to be the converse of the preceding. Moreover, it has a straightforward proof, as did the preceding. Whereupon I leave it to you for homework." '' 
+(Quoted in Science, 1994) 
+\url{http://users.cs.dal.ca/~jborwein/quotations.html}
+
+
+     ``Keynes distrusted intellectual rigour of the Ricardian type as likely to get in the way of original thinking and saw that it was not uncommon to hit on a valid conclusion before finding a logical path to it.
+    `I don't really start', he said, `until I get my proofs back from the printer. Then I can begin serious writing.' ''
+    two excerpts from Keynes the man written on the 50th Anniverary of Keynes' death.
+(Sir Alec Cairncross, in the Economist, April 20, 1996) 
+\url{http://users.cs.dal.ca/~jborwein/quotations.html}
+
+     ``Writers often thank their colleagues for their help. Mine have given none. .. Writers often thank their typists. I thank mine. Mrs George Cook is not a particularly good typist, but her spelling and grammar are good. The responsibility for any mistakes is mine, but the fault is hers. Finally, writers too often thank their wives. I have no wife.'' 
+Acknowledgement by Edward Ingram in The Beginning of the Great Game in Asia, 1828-1834.
+(From p. 83 in the Economist, September 7th 1996) 
+\url{http://users.cs.dal.ca/~jborwein/quotations.html}
+
+
+     ``I see some parallels between the shifts of fashion in mathematics and in music. In music, the popular new styles of jazz and rock became fashionable a little earlier than the new mathematical styles of chaos and complexity theory. Jazz and rock were long despised by classical musicians, but have emerged as art-forms more accessible than classical music to a wide section of the public. Jazz and rock are no longer to be despised as passing fads. Neither are chaos and complexity theory. But still, classical music and classical mathematics are not dead. Mozart lives, and so does Euler. When the wheel of fashion turns once more, quantum mechanics and hard analysis will once again be in style.'' 
+Freeman Dyson's review of Nature's Numbers by Ian Stewart (Basic Books, 1995).
+(From p. 612 in the American Mathematical Monthly, August-September 1996) 
+\url{http://users.cs.dal.ca/~jborwein/quotations.html}
+
+    Besides it is an error to believe that rigor in the proof is the enemy of simplicity."
+(David Hilbert)
+In his `23' Mathematische Probleme lecture to the Paris International Congress, 1900 (see Yandell's, fine account in The Honors Class, A.K. Peters, 2002). 
+\url{http://users.cs.dal.ca/~jborwein/quotations.html}
+
+     "Despite the narrative force that the concept of entropy appears to evoke in everyday writing, in scientific writing entropy remains a thermodynamic quantity and a mathematical formula that numerically quantifies disorder. When the American scientist Claude Shannon found that the mathematical formula of Boltzmann defined a useful quantity in information theory, he hesitated to name this newly discovered quantity entropy because of its philosophical baggage. The mathematician John Von Neumann encouraged Shannon to go ahead with the name entropy, however, since "no one knows what entropy is, so in a debate you will always have the advantage." 
+From The American Heritage Book of English Usage, p. 158. 
+\url{http://users.cs.dal.ca/~jborwein/quotations.html}
+
+    "Je n'ai fait celle-ci plus longue que parceque je n'ai pas eu le loisir de la faire plus courte.(I have only made this letter rather long because I have not had time to make it shorter.)" 
+(Blaise Pascal)
+From Pascal's Lettres provinciales, 16, Dec 14, 1656. [Cassell's Book of Quotations, London,1912. P.718.] Similar quotes are due to Goethe and perhaps to Augustine and Cicero.
+\url{http://users.cs.dal.ca/~jborwein/quotations.html}
+
+
+
+Harmonic analysis is a collection of techniques for
+representing functions in terms of a linear combination
+of sinusoids (``harmonics").
+Identifying the sequence of coefficients in such a representation is called
+{\em anaylsis} and reconstructing the function from the coefficients
+is called {\em synthesis}.
+
+In harmonic analysis, there are four common analysis operators.
+These operators are distinct from each other depending on
+their domains and ranges.
+Often the domain of an analysis operator is associated with ``time"
+and the range is associated with ``frequency".
+The choice of analysis operator depends on
+whether the time/frequency is {\em continuous} or {\em discrete}
+(see \prefpp{fig:fourier}).
+
+\begin{figure}[h]
+\begin{center}
+   \begin{tabular}{|c||c|c|}
+      \hline
+      $[\opFT x(t)](\omega)$     &  continuous $t$      & discrete $t$   \\
+      \hline
+      \hline
+         continuous $f$ & Fourier Transform (FT) & Discrete-Time Fourier Transform (DTFT) \\
+                        & $\opFT:\spLL\to\spLL$    &  $\opDTFT:\spII\to\spLL$ \\
+      \hline
+         discrete   $f$ & Fourier Series (FS)  & Discrete Fourier Transform (DFT) \\
+                        & $\opFS:\spLL\to\spII$  & $\opDFT:\spII\to\spII$ \\
+      \hline
+   \end{tabular}
+\caption{
+   harmonic analysis operations
+   \label{fig:fourier}
+   }
+\end{center}
+\end{figure}
+
+%--------------------------------------
+\begin{definition}
+\label{def:ha_ops}
+\label{def:fs}
+\index{Fourier Transform}               \index{Fourier Series}
+\index{Discrete Time Fourier Transform} \index{Discrete Fourier Transform}
+\index{FT} \index{FS} \index{DTFT} \index{DFT}
+%--------------------------------------
+Let $x,\ft{x}:\R\to\C$ and $y,\Fx:\Z\to\C$. Then
+$\opFT  :\spLL\to\spLL$
+$\opFS  :\spLL\to\spII$,
+$\opDTFT:\spLL\to\spLL$, and
+$\opDFT :\spII\to\spII$
+are defined as
+\defbox{\begin{array}{rcll}
+   \left[\opFT   x(t)\right](\omega) &\eqd& \ds \int_t   x(t) e^{-i\omega t         } \dt & \mbox{(Fourier Transform---FT)                } \\
+   \left[\opFS   x(t)\right](k     ) &\eqd& \ds \frac{1}{T}\int_0^T x(t) e^{-i\frac{2\pi}{T}kt} \dt & \mbox{(Fourier Series---FS)                   } \\
+   \left[\opDTFT y(n)\right](\omega) &\eqd& \ds \sum_n   y(n) e^{-i\omega nT        }     & \mbox{(Discrete Time Fourier Transform---DTFT)} \\
+   \left[\opDFT  y(n)\right](k     ) &\eqd& \ds \sum_n   y(n) e^{-i2\pi kn         }     & \mbox{(Discrete Fourier Transform---DFT)      }
+\end{array}}
+\end{definition}
+
+The remainder of this chapter deals only with the
+{\bf Fourier Transform} operator $\opFT$.
+
+
+%--------------------------------------
+\begin{theorem}[Parseval's equation]
+\citep{mallat}{26}
+\citep{goswami}{40}
+\label{thm:GPT}
+\index{Parseval's equation}
+\index{theorems!Parseval's equation}
+%--------------------------------------
+Let $\ff,\fg\in\spLL$. Then
+\footnote{
+  {\em Generalization of Parseval's formula}:
+  \prefpp{thm:inprod_parseval} page~\pageref{thm:inprod_parseval}.
+  }
+\formbox{
+  \inprod{\fg(t)}{\fh(t)} = \fscalei \inprod{\Fg(\omega)}{\Fh(\omega)}.
+  }
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+   \inprod{\fg(t)}{\fh(t)}
+     &=&    \inprod{\inprod{\Fg(\omega)}{e^{-i\omega t}}}{\fh(t)}
+   \\&=&    \inprod{\fscalei \int_\omega\Fg(\omega)\fkerne{t}{\omega}\dw}{\fh(t)}
+   \\&=&    \fscalei \int_\omega\Fg(\omega) \inprod{\fkerne{t}{\omega}}{\fh(t)} \dw
+   \\&=&    \fscalei \int_\omega\Fg(\omega) \inprod{\fh(t)}{\fkerne{t}{\omega}}^\ast \dw
+   \\&=&    \fscalei \int_\omega\Fg(\omega) \Fh^\ast(\omega) \dw
+   \\&=&    \fscalei \inprod{\Fg(\omega)}{\Fh(\omega)}
+\end{eqnarray*}
+\end{proof}
+
+The energy in the time domain representation of a signal
+is equal to the energy in
+the frequency representation as shown in the next corollary.
+%--------------------------------------
+\begin{corollary}[\prop{Plancherel's formula}]
+\citep{mallat}{26}
+\citep{goswami}{40}
+\label{cor:plancheral}
+%--------------------------------------
+Let $\fg\in\spLL$. Then \footnote{
+  {\em Generalization of Plancheral's formula}:
+  Corollary~\ref{thm:inprod_plancheral} page~\pageref{thm:inprod_plancheral}.
+  }
+\formbox{
+   \norm{ \fg(t)}^2 = \fscalei  \norm{ \Fg(\omega)}^2.
+   }
+\end{corollary}
+
+\begin{proof}
+\begin{align*}
+   \norm{ \fg(t)}^2
+     &= \inprod{\fg(t)}{\fg(t)}
+   \\&= \fscalei \inprod{\Fg(\omega)}{\Fg(\omega)}  & \mbox{by Theorem \ref{thm:GPT}}
+   \\&= \fscalei \norm{\Fg(\omega)}^2
+\end{align*}
+\end{proof}
+
+
+The analysts try in vain to conceal the fact that they do not deduce: they combine, they compose ... when they do arrive at the truth they stumble over it after groping their way along.---Evariste Galois
+http://lagrange.math.trinity.edu/aholder/misc/quotes.shtml
+"Remarkable Mathematicians" by Ioan James page 75
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+The following are examples of \hib{convex} sets in the Euclidean space $\R^3$:
+\footnote{These plots were all generated using \hie{gnuplot}.
+  Gnuplot is freely available:
+  \url{http://www.gnuplot.info/}
+  }
+
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}ccc}
+  \includegraphics*[height=3cm, width=3cm, keepaspectratio=true, clip=true]{../common/cylinder.eps} &
+  \includegraphics*[height=3cm, width=3cm, keepaspectratio=true, clip=true]{../common/cone.eps}     &
+  \includegraphics*[height=3cm, width=3cm, keepaspectratio=true, clip=true]{../common/pyr_tri.eps}
+  \\
+     \prop{cylinder}    \footnotemark
+   & \prop{double cone} \footnotemark
+   & \prop{pyramid}
+\end{tabular*}
+\addtocounter{footnote}{-2}
+\stepcounter{footnote}
+\footnotetext{
+  A \hie{cylinder} can be generated using the \hie{parametric equation}
+  $\ff:\R^2\to\R^3$
+  \[
+    (x,y,z)
+       = \ff(h,\theta)
+       = \left(
+         {\cos\theta},\;
+         {\sin\theta},\;
+         {h}
+         \right)
+      \qquad \forall h\in[0,1],\quad \theta\in[0,2\pi]
+  \]
+}
+\stepcounter{footnote}
+\footnotetext{
+  A \hie{cone} can be generated using the \hie{parametric equation}
+  $\ff:\R^2\to\R^3$
+  \[
+    (x,y,z)
+       = \ff(r,\theta)
+       = \left(
+         (1-r)\cos\theta,\;
+         (1-r)\sin\theta,\;
+         r
+         \right)
+      \qquad \forall h\in[0,1],\quad \theta\in[0,2\pi]
+  \]
+}
+\end{example}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+The following are examples of \hib{concave} sets in the Euclidean space $\R^3$:
+\footnote{These plots were all generated using \hie{gnuplot}.
+%  Gnuplot is freely available:
+%  \url{http://www.gnuplot.info/}
+  }
+
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}cccc}
+  \includegraphics*[height=5cm, width=3cm, keepaspectratio=true, clip=true]{../common/sph_k3.eps}  &
+  \includegraphics*[height=5cm, width=3cm, keepaspectratio=true, clip=true]{../common/torus.eps}   &
+  \includegraphics*[height=5cm, width=3cm, keepaspectratio=true, clip=true]{../common/mandel.eps}  &
+  \includegraphics*[height=5cm, width=3cm, keepaspectratio=true, clip=true]{../common/whale.eps}
+  \\
+     \prop{cubic sphere} \footnotemark
+   & \prop{torus}        \footnotemark
+   & \prop{Mandelbrot}   \footnotemark
+   & \prop{whale}        \footnotemark
+\end{tabular*}
+\addtocounter{footnote}{-3}
+\footnotetext{
+  This object is the modified \hie{sphere} and can be generated using the \hie{parametric equation}
+  $\ff:\R^2\to\R^3$
+  \[
+    (x,y,z)
+       = \ff(\theta,\phi)
+       = \left(
+         \mcom{\cos^3\theta\cos^3\phi}{$x$ component},\;
+         \mcom{\cos^3\theta\sin^3\phi}{$y$ component},\;
+         \mcom{\sin^3\theta}{$z$ component}
+         \right)
+      \qquad \forall \theta\in\left[-\frac{\pi}{2},+\frac{\pi}{2}\right],\quad \theta\in[0,2\pi]
+  \]
+}
+\stepcounter{footnote}
+\footnotetext{
+  The \hie{torus} with inner radius $r$ and outer radius $R$ can be generated using the \hie{parametric equation}
+  $\ff:\R^2\to\R^3$
+  \[
+    (x,y,z)
+       = \ff(\theta,\phi)
+       = \left(
+         (R+r\cos\phi)\cos\theta,\;
+         (R+r\cos\phi)\sin\theta,\;
+         r\sin\phi
+         \right)
+      \qquad \forall \theta\in[0,2\pi],\quad \phi\in[0,2\pi]
+  \]
+}
+\stepcounter{footnote}
+\footnotetext{
+Key gnuplot coding for the Mandelbrot plot is due to
+Tanaka Masaki, Tokyo Institute of technology, masaki@isea.is.titech.ac.jp
+and is included in the demo directory of gnuplot.
+  }
+\stepcounter{footnote}
+\footnotetext{Data for the whale plot is part of a gnuplot demo package.}
+\end{example}
+
+
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.10mm}
+\begin{tabular}{c@{\hs{1cm}}c@{\hs{1cm}}c}
+\begin{picture}(300,300)(-130,-130)
+  \thinlines
+  \put(-130,   0){\line(1,0){260} }
+  \put(   0,-130){\line(0,1){260} }
+  \put( 140,   0){\makebox(0,0)[l]{$y_1$}}
+  \put(   0, 140){\makebox(0,0)[b]{$y_2$}}
+  {\color{red}
+    \put(-100,   0){\line( 1, 1){100} }
+    \put(-100,   0){\line( 1,-1){100} }
+    \put( 100,   0){\line(-1, 1){100} }
+    \put( 100,   0){\line(-1,-1){100} }
+  }
+  \put(-100, -10){\line(0,1){20} }
+  \put( 100, -10){\line(0,1){20} }
+  \put( -10,-100){\line(1,0){20} }
+  \put( -10, 100){\line(1,0){20} }
+
+  \put(  10, 110){\makebox(0,0)[bl]{$1$} }
+  \put(  10,-110){\makebox(0,0)[tl]{$1$} }
+  \put(-110,  10){\makebox(0,0)[br]{$1$} }
+  \put( 110,  10){\makebox(0,0)[bl]{$1$} }
+
+  \put(-70,-70){\makebox(0,0)[tr]{$\vx$}}
+  \put(-70,-70){\vector(1, 1){70}}
+\end{picture}
+&
+\begin{picture}(300,300)(-130,-130)
+  \thinlines
+  {\color{red}\input{circle.inp}}
+  \put(-130,   0){\line(1,0){260} }
+  \put(   0,-130){\line(0,1){260} }
+  \put( 140,   0){\makebox(0,0)[l]{$y_1$}}
+  \put(   0, 140){\makebox(0,0)[b]{$y_2$}}
+
+  \put(-100, -10){\line(0,1){20} }
+  \put( 100, -10){\line(0,1){20} }
+  \put( -10,-100){\line(1,0){20} }
+  \put( -10, 100){\line(1,0){20} }
+
+  \put(  10, 110){\makebox(0,0)[bl]{$1$} }
+  \put(  10,-110){\makebox(0,0)[tl]{$1$} }
+  \put(-110,  10){\makebox(0,0)[br]{$1$} }
+  \put( 110,  10){\makebox(0,0)[bl]{$1$} }
+
+  \put(-40,-40){\makebox(0,0)[tr]{$\vx$}}
+  \put(-40,-40){\vector(1, 1){38}}
+\end{picture}
+&
+\begin{picture}(300,300)(-130,-130)
+  \thinlines
+  \put(-130,   0){\line(1,0){260} }
+  \put(   0,-130){\line(0,1){260} }
+  \put( 140,   0){\makebox(0,0)[l]{$y_1$}}
+  \put(   0, 140){\makebox(0,0)[b]{$y_2$}}
+  {\color{red}
+    \put(-100,-100){\line( 1, 0){200} }
+    \put(-100,-100){\line( 0, 1){200} }
+    \put( 100, 100){\line(-1, 0){200} }
+    \put( 100, 100){\line( 0,-1){200} }
+  }
+  \put(-100, -10){\line(0,1){20} }
+  \put( 100, -10){\line(0,1){20} }
+  \put( -10,-100){\line(1,0){20} }
+  \put( -10, 100){\line(1,0){20} }
+
+  \put(  10, 110){\makebox(0,0)[bl]{$1$} }
+  \put(  10,-110){\makebox(0,0)[tl]{$1$} }
+  \put(-110,  10){\makebox(0,0)[br]{$1$} }
+  \put( 110,  10){\makebox(0,0)[bl]{$1$} }
+
+  \put(-40,-40){\makebox(0,0)[tr]{$\vx$}}
+  \put(-40,-40){\vector(1, 1){38}}
+\end{picture}
+\\
+$B(\vx,1)$ in $(\R^2,\fd_1)$ &
+$B(\vx,1)$ in $(\R^2,\fd_2)$ &
+$B(\vx,1)$ in $(\R^2,\fd_\infty)$
+\\
+(Ball using $l_1$ metric) &
+(Ball using $l_2$ metric) &
+(Ball using $l_\infty$ metric)
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+   Balls on the set $\R^2$ using different metrics
+   \label{fig:d_balls}
+   }
+\end{figure}
+
+
+
+
+\footnotetext{
+  A \hie{sphere} can be generated using the \hie{parametric equation}
+  $\ff:\R^2\to\R^3$
+  \[
+    (x,y,z)
+       = \ff(\theta,\phi)
+       = \left(
+         \mcom{\cos\theta\cos\phi}{$x$ component},\;
+         \mcom{\cos\theta\sin\phi}{$y$ component},\;
+         \mcom{\sin\theta}{$z$ component}
+         \right)
+      \qquad \forall \theta\in[-\frac{\pi}{2},+\frac{\pi}{2}],\quad \theta\in[0,2\pi]
+  \]
+}
+%---------------------------------------
+\begin{example}
+\label{ex:d_balls}
+\index{metric!$l_1$}
+\index{metric!$l_2$}
+\index{metric!$l_\infty$}
+\index{metric!taxi cab}
+\index{metric!Euclidean}
+\index{metric!sup}
+%---------------------------------------
+Let $\R^n$ be the $n$-dimensional Euclidean vector space,
+$\vp$ be a vector in $\R^n$ with components $\vp\eqd(x_1,x_2,\ldots,x_n)$,
+$\fd(\vp,\vy)$ be a metric in $\R^n$,
+$\left(\R^n,\fd(\vp,\vy)\right)$ be a \prop{metric space},
+and $B(\vp,r)\eqd\set{\vy\in\R^n}{\fd(\vp,\vy)<r}$ be the open ball with respect to
+distance function $\fd$ centered at $\vp$
+and with radius $r$.
+\footnote{\begin{tabular}[t]{>{\em}lll}
+  metric space:      & \pref{def:metric} & page~\pageref{def:metric} \\
+  open ball:         & \pref{def:ball}   & page~\pageref{def:ball} \\
+  open ball example: & \pref{ex:d_balls} & page~\pageref{ex:d_balls}
+\end{tabular}}
+\exbox{\begin{array}
+  {>{\ds B(\vp,r)\quad\text{\scriptsize in the metric space}\quad\Big( \R^n,\;}l
+   >{\text{is convex.}}l
+  }
+     \mcom{\fd(\vx,\vy) = \sum_{i=1}^n |x_i-y_i|             \Big) }{\prop{$l_1$-metric} or \prop{taxi cab metric} } &
+  \\ \mcom{\fd(\vx,\vy) = \sqrt{\sum_{i=1}^n |x_i-y_i|^2}    \Big) }{\prop{$l_2$-metric} or \prop{Euclidean metric}} &
+\end{array}}
+The above defined balls are illustrated in \prefpp{fig:balls_R2_R3}.
+\end{example}
+\begin{proof}
+We must prove that for any pair of points $\vx$ and $\vy$ in the open ball $B(\vp,r)$,
+any point $\lambda\vx + (1-\lambda)\vy$ is also in the open ball.
+That is, the distance from any point $\lambda\vx + (1-\lambda)\vy$ to 
+the ball's center $\vp$ must be less than $r$.
+  \begin{align*}
+    \intertext{1. Proof that the ball generated by the taxi-cab metric is convex:}
+    \fd(\vp, \lambda\vx + (1-\lambda)\vy)
+      &=   \sum_{i=1}^n \abs{x_i - \lambda u_i - (1-\lambda) v_i }
+      &&   \text{by definition of $\fd(\cdot,\cdot)$}
+    \\&=   \sum_{i=1}^n \abs{\lambda x_i + (1-\lambda)x_i - \lambda u_i - (1-\lambda) v_i }
+    \\&\le \sum_{i=1}^n \Big(\abs{\lambda x_i - \lambda u_i } + \abs{(1-\lambda)x_i - (1-\lambda)v_i }\Big)
+      &&   \text{by \prefp{def:abs}}
+    \\&=   \sum_{i=1}^n \abs{\lambda x_i - \lambda u_i }
+       +   \sum_{i=1}^n \abs{(1-\lambda)x_i - (1-\lambda)v_i }
+    \\&=   \lambda    \mcom{\sum_{i=1}^n \abs{x_i - u_i }}{$\fd(\vp,\vx)$}
+       +   (1-\lambda)\mcom{\sum_{i=1}^n \abs{x_i - v_i }}{$\fd(\vp,\vy)$}
+      &&   \text{by \prefp{def:abs}}
+    \\&\le \lambda r + (1-\lambda)r
+      &&   \text{because $\fd(\vp,\vx)<r$ and $\fd(\vp,\vy)<r$}
+    \\&=   r
+    \\
+    \intertext{2. Proof that the ball generated by the Euclidean metric is convex:}
+    \fd(\vp, \lambda\vx + (1-\lambda)\vy)
+      &=   \sum_{i=1}^n \abs{x_i - \lambda u_i - (1-\lambda) v_i }^2
+      &&   \text{by definition of $\fd(\cdot,\cdot)$}
+    \\&=   \sum_{i=1}^n \abs{\lambda x_i + (1-\lambda)x_i - \lambda u_i - (1-\lambda) v_i }^2
+    \\&\le \sum_{i=1}^n \Big(\abs{\lambda x_i - \lambda u_i } + \abs{(1-\lambda)x_i - (1-\lambda)v_i }\Big)^2
+      &&   \text{by \prefp{def:abs}}
+    \\&\le \sum_{i=1}^n \Big(\abs{\lambda x_i - \lambda u_i }^2 + \abs{(1-\lambda)x_i - (1-\lambda)v_i }^2\Big)
+      &&   \text{by \prefp{def:abs}}
+    \\&=   \sum_{i=1}^n \abs{\lambda x_i - \lambda u_i }^2
+       +   \sum_{i=1}^n \abs{(1-\lambda)x_i - (1-\lambda)v_i }^2
+    \\&=   \lambda^2    \mcom{\sum_{i=1}^n \abs{x_i - u_i }^2}{$\fd(\vp,\vx)$}
+       +   (1-\lambda)^2\mcom{\sum_{i=1}^n \abs{x_i - v_i }^2}{$\fd(\vp,\vy)$}
+      &&   \text{by \prefp{def:abs}}
+    \\&\le \lambda^2 r + (1-\lambda)^2r
+      &&   \text{because $\fd(\vp,\vx)<r$ and $\fd(\vp,\vy)<r$}
+    \\&\le \lambda r + (1-\lambda)r
+      &&   \text{because $\lambda\in[0,1]$}
+    \\&=   r
+    \\
+    \intertext{3. Proof that the ball generated by the lim-sup metric is convex:}
+  \end{align*}
+
+{\bf Alternate proof} using norms: See \prefpp{ex:d_balls_norm}.
+
+\end{proof}
+
+
+%---------------------------------------
+\begin{example}[$l_n$ metrics]
+\label{ex:d_l}
+\citepp{davis2005}{16}{18}
+\index{$l_1$ metric}       \index{taxi cab metric}
+\index{$l_2$ metric}       \index{Euclidean metric}
+\index{$l_\infty$ metric}  \index{sup metric}
+\index{metric!$l_1$}
+\index{metric!$l_2$}
+\index{metric!$l_\infty$}
+\index{metric!taxi cab}
+\index{metric!Euclidean}
+\index{metric!sup}
+%---------------------------------------
+Let $R$ be a commutative ring and $|\cdot|:R\to R$ be the absolute value on $R$.
+The following are all examples of metrics and \prop{metric space}\index{space!metric}s:
+\exbox{\begin{array}{@{\Big(}llc>{\ds}l@{\Big)} @{\qquad}D}
+  R^n, & \fd_1(\vx,\vy)      &=& \sum_{i=1}^n |x_i-y_i|                 &(the $l_1$-metric or taxi cab metric) \\
+  R^n, & \fd_2(\vx,\vy)      &=& \sqrt{\sum_{i=1}^n |x_i-y_i|^2}        &(the $l_2$-metric or Euclidean metric) \\
+  R^n, & \fd_\infty(\vx,\vy) &=& \max\set{|x_i-y_i|}{i=1,2,\ldots n}    &(the $l_\infty$-metric or sup metric) \\
+\end{array}}
+\prefpp{fig:d_balls}
+\end{example}
+\begin{proof}
+\end{proof}
+
+

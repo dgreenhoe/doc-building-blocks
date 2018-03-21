@@ -1,0 +1,57 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% spinner 6 mapping to linearly ordered L6
+%============================================================================
+{\psset{yunit=1.25\psunit}%
+\begin{pspicture}(-6.5,-0.5)(6.5,3.5)%
+  %---------------------------------
+  % options
+  %---------------------------------
+  \psset{%
+    linecolor=blue,%
+    cornersize=relative,
+    framearc=0.25,
+    subgriddiv=1,
+    gridlabels=4pt,
+    gridwidth=0.2pt,
+    }%
+  %---------------------------------
+  % states
+  %---------------------------------
+     \begin{tabstr}{0.75}
+     \rput( 5,1.5){\rnode{Sdeposit} {\psframebox{\begin{tabular}{c}deposit coins\\in vault\end{tabular}}}}%
+     \rput(-5,1.5){\rnode{Sreturn}  {\psframebox{\begin{tabular}{c}return coins          \end{tabular}}}}%
+     \rput( 0,3)  {\rnode{Seject}   {\psframebox{\begin{tabular}{c}deliver product       \end{tabular}}}}%
+     \rput( 0,2)  {\rnode{Scheck}   {\psframebox{\begin{tabular}{c}check availability    \end{tabular}}}}%
+     \rput( 0,1)  {\rnode{Swait}    {\psframebox{\begin{tabular}{c}wait for selection    \end{tabular}}}}%
+     \rput( 0,0)  {\rnode{Sidle}    {\psframebox{\begin{tabular}{c}idle                  \end{tabular}}}}%
+     \end{tabstr}
+  %\Cnode(3,1.5) {Sdeposit}%
+  %\Cnode(-3,1.5){Sreturn}%
+  %\Cnode(0,3)   {Seject}%
+  %\Cnode(0,2)   {Scheck}%
+  %\Cnode(0,1)   {Swait}%
+  %\Cnode(0,0)   {Sidle}%
+  %
+  %\uput[  90](Seject)  {deliver product}%
+  %\uput[   0](Sdeposit){deposit coins in vault}%
+  %\uput[ -90](Sreturn) {return coins}%
+  %\uput[ 180](Scheck)  {check availability}%
+  %\uput[ 180](Swait)   {wait for selection}%
+  %\uput[ -90](Sidle)   {idle}%
+  %---------------------------------
+  % edges
+  %---------------------------------
+  {\psset{labelsep=1pt}%
+  \ncline{->}{Sreturn}{Sidle}\nbput[nrot=:U]{coins returned}%
+  \ncline{<-}{Sreturn}{Seject}\naput[nrot=:U]{jammed}%
+  \ncline{->}{Seject}{Sdeposit}\naput[nrot=:U]{delivery successful}%
+  \ncline{<-}{Sidle}{Sdeposit}\nbput[nrot=:U]{deposit successful}%
+  \ncline{<-}{Sreturn}{Scheck}\nbput[nrot=:U]{not available}%
+  \ncline{->}{Scheck}{Seject}\ncput{available}%
+  \ncline{->}{Swait}{Scheck}\ncput{selection made}%
+  \ncline{->}{Sidle}{Swait}\ncput{coins inserted}%
+  }%
+\end{pspicture}
+}%

@@ -1,0 +1,853 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%======================================
+\chapter{Probability Space}
+\label{chp:prbspace}
+%======================================
+\qboxnps
+  {
+    Blaise Pascal (1623--1662), mathematician
+    \index{Pascal, Blaise}
+    \index{quotes!Pascal, Blaise}
+    \footnotemark
+  }
+  {../common/people/pascal.jpg}
+  {It is not certain that everything is certain.}
+  \footnotetext{\begin{tabular}[t]{ll}
+    quote: & \url{http://en.wikiquote.org/wiki/Blaise_Pascal} \\
+    image: & \url{http://en.wikipedia.org/wiki/Image:Blaise_pascal.jpg}
+  \end{tabular}}
+
+%=======================================
+%\section{A generalized probability function}
+%=======================================
+The traditional probability function $\psp$ is defined on a \structe{Boolean lattice}\ifsxref{boolean}{def:boolean}.
+This text introduces a new definition of $\psp$ which can be defined not only on 
+\structe{Boolean lattice}s, but on some \prope{non-Boolean} lattices as well.
+%This new freedom is exploited in \prefpp{sec:apps_prob}.
+
+%=======================================
+\section{Definitions}
+%=======================================
+%---------------------------------------
+\begin{definition}
+%\footnote{
+%  \citerppgc{pap1995}{8}{9}{0792336585}{Definition 2.3(13)}
+%  }
+\label{def:prob}
+\label{def:ps}
+\label{def:psp}
+%---------------------------------------
+%Let $\intcc{0}{1}$ be a \structe{real interval}.
+%Let $\psL\eqd\logicX$ be a \structe{logic} \xref{def:logic}.
+Let $\psL\eqd\latocX$ be a \structe{orthocomplemented lattice}\ifsxref{latoc}{def:latoc}.
+Let $\distrib$ be the \rele{distributivity relation}\ifsxref{latd}{def:Drel}.
+Let $\oset{\R}{\orela}$ be the \structe{ordered set} \xref{def:oset} of \structe{real numbers}.
+\defboxt{
+  A function $\psp$ in $\clFxr$ is a \fnctd{probability} function on $\psL$ if
+  \\$\begin{array}{>{\qquad}Flc lcl CDD}
+    1. &                   &        & \psp(\lzero)   &=&      0               &                     & (\prope{nondegenerate}) & and \\
+    2. &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})    & and \\
+    3. & x\orel y          &\implies& \psp(x)        &\orela& \psp(y)         & \forall x,y\in\setX & (\prope{monotone})      & and \\
+   %3. & x\meet y = \lzero &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive})      & .      
+    4. & \brb{\begin{array}{lD}
+           x\meet y = \lzero            & and\\
+           \otriple{z}{x}{y}\in\distrib & $\forall z\in\setX$
+         \end{array}} 
+       &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive}).   &       
+  \end{array}$
+  \\
+  If $\psp$ is a \fncte{probability} on an \structe{orthocomplemented lattice} $\psL$, 
+  then $\opair{\psL}{\psp}$ is a \structd{probability space},\\
+  and any element $x$ in $\setX$ is an \structd{event} in $\ps$.
+  % over $\pso$,
+  %$\pso$ is the \structd{outcome space}, and $\pse$ is the \structd{event space}.
+  }
+\end{definition}
+
+%---------------------------------------
+\hrule
+\begin{remark}
+\label{rem:prob}
+%---------------------------------------
+\pref{def:prob} (previous) is not any standard definition of the \fncte{probability function}.
+On a \structe{Boolean lattice}, the \fnctd{measure-theoretic probability} function, due to A. N. Kolmogorov, is defined as%
+  \footnote{
+    \citerppgc{billingsley1995}{22}{23}{0471007102}{Probability Measures},
+    \citer{kolmogorov1933},
+    \citerpc{kolmogorov1933e2}{16}{\structe{field of probability}},
+    \citerppgc{pap1995}{8}{9}{0792336585}{Definition 2.3(13)}, %{,\prope{\txsigma-additive}},
+    \citerpg{kalmbach1986}{27}{9971500094}%{\prope{\txsigma-additive},\prope{\txsigma-complete}}
+    }
+  \\\indentx$\begin{array}{Flc lcl CDD}
+    (1). &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})     & and \\
+    (2). &                   &        & \psp(x)        &\oreld& 0               & \forall x\in\setX   & (\prope{nonnegative})& and \\
+    (3). & \ds\meetop_{n=1}^\infty x_n=\lzero &\implies& \ds\psp\brp{\joinop_{n=1}^\infty x_n} &=&  \ds\sum_{n=1}^\infty\psp(x_n) & \forall x_n\in\setX & (\prope{\txsigma-additive})   & .      
+  \end{array}$\\
+The advantage of this definition is that $\psp$ is a \fncte{measure}, and hence all the power of measure theory 
+is subsequently at one's disposal in using $\psp$.
+However, it has often been argued that the requirement of \prope{\txsigma-additivity} is unnecessary for a probability function.
+Even as early as 1930, de Finetti argued against it, in what became a kind of polite running debate with Fr/'echet.\footnote{
+  \citeP{definetti1930a},
+  \citeP{frechet1930a},
+  \citeP{definetti1930b},
+  \citeP{frechet1930b},
+  \citeP{definetti1930c},
+  \citePpp{cifarelli1996}{258}{260}
+  }
+In fact, Kolmogorov himself provided some argument against \prope{\txsigma-additivity} when referring to the closely related 
+\hie{Axiom of Continuity} saying,
+``Since the new axiom is essential for infinite fields of probability only,
+it is almost impossible to elucidate its empirical meaning\ldots
+For, in describing any observable random process we can obtain only finite fields of probability.\ldots"
+But in its support he added, ``This limitation has been found expedient in researches of the most diverse sort."\footnote{
+  \citerp{kolmogorov1933e2}{15}
+  }
+
+There are several other definitions of probability that only require \prope{additivity} rather than \prope{\txsigma-additivity}.
+On a \structe{Boolean lattice}, the \fnctd{traditional probability} function is defined as%
+  \footnote{
+    \citerppg{papoulis}{21}{22}{0070484775},
+    \citerpc{kolmogorov1933e2}{2}{\textsection 1. Axioms I--V}
+    }
+  \\\indentx$\begin{array}{Flc lcl CDD}
+    (1). &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})     & and \\
+    (2). &                   &        & \psp(x)        &\oreld& 0               & \forall x\in\setX   & (\prope{nonnegative})& and \\
+    (3). & x\meet y = \lzero &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive})   & .      
+  \end{array}$\\
+This definition implies (on a \structe{Boolean lattice}) that 
+  \\\indentx$\begin{array}{FrclCDD}
+      (a). & \psp(\lzero)  &=&     0                              &                     & (\prope{nondegenerate})      & and
+    \\(b). & \psp(x)       &\orel& 1                              & \forall x\in\setX   & (\prope{upper bounded})      & and 
+    \\(c). & \psp(x)       &=&     1-\psp({x^\orthog})              & \forall x\in\setX   &                              & and 
+    \\(d). & \psp(x\join y)&\orel& \psp(x)+\psp(y)                & \forall x,y\in\setX & (\prope{subadditive})        & and 
+    \\(e). & \psp(x\join y)&=&     \psp(x)+\psp(y)-\psp(x\meet y) & \forall x,y\in\setX &                              & and
+    \\(f). & x\orel y \implies \psp(x)&\orel&\psp(y)              & \forall x,y\in\setX & (\prope{monotone})           & . 
+  \end{array}$
+  \\
+On a \structe{distributive pseudocomplemented lattice}, the \fnctd{generalized probability} function has been defined as%
+  \footnote{
+    \citePp{narens2014}{118},
+    \citerg{narens2007}{9812708014}
+    }
+  \\$\begin{array}{>{\qquad}Frcl CDD}
+    (1). &  \psp(\lzero)    &=&      0                                              & (\prope{nondegenerate}) & and \\
+    (2). &  \psp(\lid)      &=&      1                                              & (\prope{normalized}) & and \\
+    (3). &  0\orel\psp(\lid)&\orel&  1                                              &                & and \\
+    (4). &  \psp(x\join y)  &=&\psp(x)+\psp(y)-\psp(x\meet y) & \forall x,y\in\setX &                &  .      
+  \end{array}$
+  \\
+On an \structe{orthomodular lattice}, or a \structe{finite modular lattice}, 
+the \fnctd{quantum probability} function is defined as%
+  \footnote{
+    \citePpc{greechie1971}{126}{{\scshape Definitions}},
+    \citePp{narens2014}{118}
+    }
+  \\$\begin{array}{>{\qquad}Flc lcl CDD}
+    (1). &                   &        & \psp(\lzero)   &=&      0               &                     & (\prope{nondegenerate})& and \\
+    (2). &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})  & and \\
+    (3). & x\ocop y          &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive})& .      
+  \end{array}$
+  \\
+However, for lattices that are not \prope{distributive}, \prope{modular}, or \prope{orthomodular}, 
+none of these definitions work out so well.
+Take for example the \structe{O$_6$ lattice} with the ``very reasonable" probability function given in \prefpp{ex:ps_o6}.
+This probability space $\opair{\text{O$_6$}}{\psp}$ fails to be any of the 4 probability functions defined in this Remark.
+It fails to be a \fncte{measure-theoretic} or \fncte{traditional probability} function because 
+\\\indentx$a\meet b=0$\qquad{but}\qquad$\psp(a\join b)=\psp(\lid)=1\neq\frac{1}{3}+\frac{1}{2}=\psp(a)+\psp(b)$ .\\
+It fails to be a \fncte{generalized probability} function because 
+\\\indentx$\psp(a\join b)=\psp(\lid)=1\neq\frac{1}{3}+\frac{1}{2}-0=\psp(a)+\psp(b)-\psp(0)=\psp(a)+\psp(b)-\psp(a\meet b)$ .\\
+It fails to be an \fncte{quantum probability} function because 
+\\\indentx$a\ocop b=0$\qquad{but}\qquad$\psp(a\join b)=\psp(\lid)=1\neq\frac{1}{3}+\frac{1}{2}=\psp(a)+\psp(b)$ .\\
+In each of these cases, the function $\psp$ fails to be \prope{additive}.
+The solution of \prefpp{def:prob} is simply to ``switch off" \prope{additivity} when the lattice is not \prope{distributive}.
+This method is a little ``crude", but at least it allows us to define probability on a very wide class of lattices,
+while retaining compatibility with the \prope{Boolean} case. % \xxxref{prop:ps_01}{prop:ps_ortho_xy}{prop:ps_boa_xy}.
+\end{remark}
+(end \pref{rem:prob})
+\hrule
+
+%---------------------------------------
+\begin{definition}
+\label{def:independence}
+\label{def:indepen}
+\label{def:independent}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space} \xref{def:ps}.
+\defboxt{
+  Two \structe{event}s $x$ and $y$ in $\psL$ are \propd{independent} if
+  \\\indentx$\psp(x\meet y) = \psp(x)\psp(y)$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:conprob}
+\label{def:conditional}
+\label{def:conP}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space} \xref{def:ps}.
+Let $x$ and $y$ be \structe{event}s in $\psL$.
+\defboxt{
+  The \structd{conditional probability of $x$ given $y$} is defined as
+  \\\indentx$\ds\psp(x|y) \eqd \frac{\psp(x\meet y)}{\psp(y)}$
+  }
+\end{definition}
+
+
+
+%=======================================
+\section{Properties}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  property (1): \citerpgc{papoulis}{21}{0070484775}{(2-11)}
+  }
+\label{thm:ps}
+%\label{prop:ps_01}
+%\label{prop:ps_ortho_xy}
+%\label{thm:ps}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space} \xref{def:ps}.
+\thmbox{
+  \begin{array}{FrclCDD}
+   %  &     & \psp(\lzero) &=& 0     &                   & \\
+    (1). & 0        &\orel   & \psp(x)      \orel 1                  & \forall x\in\setX   & (\prope{bounded})            & and\\
+    (2). & \psp(x)  &=       & 1 - \psp({x^\orthog})                 & \forall x\in\setX   & (\prope{partition of unity}) & and\\
+    (3). & x\orel y &\implies& \psp(y^\orthog) \orel \psp(x^\orthog) & \forall x,y\in\setX & (\prope{antitone})           &
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+  \begin{enumerate}
+        % \psp(\lzero)
+        %   &= \brlr{\psp(x)}_{x=\lzero}
+        % \\&= \brlr{\psp(x\join y)-\psp(y)}_{x=\lzero}
+        %   && \text{because $x\meet\lzero=\lzero$ and by \prope{additive} property of $\psp$ \xref{def:ps}}
+        % \\&= \psp(\lzero\join y)-\psp(y)
+        % \\&= \psp(y)-\psp(y)
+        %   && \text{by definition of $\lzero$}
+        % \\&= 0
+        % \\
+    \item Proof for $0\orel\psp(x)\orel 1$:
+      \begin{align*}
+        \boxed{0}
+          &= \psp(\lzero)
+          && \text{by by \prope{nondegenerate} property of $\psp$ \xref{def:ps}}
+        \\&\orel \boxed{\psp(x)}
+          && \text{because $\lzero\orel x$ \xref{def:latb} and \prope{monotone} property of $\psp$}
+        \\&\orel \psp(\lid)
+          && \text{because $x\orel\lid$ \xref{def:latb} and \prope{monotone} property of $\psp$}
+        \\&= \boxed{\lid}
+          && \text{by \prope{normalized} property of $\psp$}
+      \end{align*}
+    \item Proof for $\psp(x)=1-\psp({x^\orthog})$:
+      \begin{enumerate}
+        \item Proof that $\psp$ is \prope{additive} \xref{def:ps} over $\setn{0,x,x^\orthog}\subseteq\setX$: \label{item:ps_additive}
+          \begin{enumerate}
+            \item $\setn{0,x,x^\orthog}$ is \prope{distributive} by \prefpp{lem:latoc_distrib}.
+            \item $x\meet x^\orthog=0$ for all $x\in\setX$ by the \prope{non-contradiction} property of 
+                  \structe{orthocomplemented lattice}s \xref{def:latoc}.
+            \item Therefore, by \pref{def:ps}, $\psp$ is \prope{additive} over $\setn{0,x,x^\orthog}$.
+          \end{enumerate}
+      
+        \item Then \ldots
+          \begin{align*}
+            1-\psp({x^\orthog})
+              &= \psp(\lid)-\psp({x^\orthog})
+              && \text{by \prope{normalized} property of $\psp$}
+              && \text{\xref{def:ps}}
+            \\&= \psp(x\join{x^\orthog})-\psp({x^\orthog})
+              && \text{by \prope{excluded middle} property of ortho. lat.}
+              && \text{\xref{thm:latoc_prop}}
+            \\&= \psp(x)+\psp({x^\orthog})-\psp({x^\orthog})
+              && \text{by \prope{additive} property of $\ps$}
+              && \text{\xref{item:ps_additive}}
+            \\&= \psp(x)
+              && \text{by field property of $\fieldR$}
+          \end{align*}
+        \end{enumerate}
+          
+    \item Proof for $x\orel y\implies\psp(y^\orthog) \orel \psp(x^\orthog)$:
+      \begin{align*}
+        x\orel y 
+          &\implies y^\orthog \orel x^\orthog
+          && \text{by \prope{antitone} property of \structe{orthocomplemented lattice}s}
+          && \text{\xref{def:latoc}}
+        \\&\implies \psp(y^\orthog) \orel \psp(x^\orthog)
+          && \text{by \prope{monotone} property of $\psp$}
+          && \text{\xref{def:ps}}
+      \end{align*}
+  \end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{papoulis}{21}{0070484775}{(2-13)},
+  \citerppgc{feller1970}{22}{23}{0471257087}{(7.4),(7.6)}
+  }
+\label{thm:ps_boa_xy}
+\label{thm:ps_add}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space} \xref{def:ps}.
+\thmbox{
+   \brbr{\begin{array}{M}
+     $\psL$ is \prope{Boolean}\\
+     \xref{def:boolean}
+   \end{array}}
+   \implies
+   \brbl{\begin{array}{FrclCD}
+     1. & \psp(x\join y) &=&     \psp(x) + \psp(y) - \psp(x\meet y) & \forall x,y\in\setX & and\\
+     2. & \psp(x\join y) &\orel& \psp(x) + \psp(y)                  & \forall x,y\in\setX & (\prope{Boole's inequality})
+   \end{array}}
+   }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: Proof that $\psp((\negat x)\meet y)=\psp(y)-\psp(x\meet y)$: \label{item:ps_boa_xy}
+    \begin{align*}
+      \psp(y)-\psp(xy)
+        &= \psp(\lid\meet{y})-\psp(xy)
+        && \text{by definition of $\lid$ and $\meet$ \xref{def:meet}}
+      \\&= \psp\brs{(x\join{x^\orthog})y}-\psp(xy)
+        && \text{by \prope{excluded middle} property of \structe{Boolean lattice}s}
+      \\&= \psp(xy\join{x^\orthog}y)-\psp(xy)
+        && \text{by \prope{distributive} property of \structe{Boolean lattice}s}
+      \\&= \psp(xy)+\psp({x^\orthog}y)-\psp(xy)
+        %&& \text{because $(xy)({x^\orthog}y)=\lzero$ and by \prope{additive} prop. \xref{def:ps}}
+        && \text{because $(xy)({x^\orthog}y)=\lzero$ and by \prope{additive} property}
+      \\&= \psp({x^\orthog}y)
+    \end{align*}
+
+  \item Proof that $\psp(x\join y) = \psp(x) + \psp(y) - \psp(x\meet y)$:
+    \begin{align*}
+      \psp(x\join y) 
+        &= \psp(x\join {x^\orthog}y)
+        && \text{by property of \prope{Boolean lattice}s} 
+      \\&= \psp(x) + \psp({x^\orthog}y)
+        %&& \text{because $(x)({x^\orthog}y)=\lzero$ and by \prope{additive} property \xref{def:ps}}
+        && \text{because $(x)({x^\orthog}y)=\lzero$ and by \prope{additive} property}
+      \\&= \psp(x) + \psp(y) - \psp(x\meet y)
+        && \text{by \prefpp{item:ps_boa_xy}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}[\thmd{sum of products}]
+\label{thm:psp_sop}
+%\label{thm:psp_soc}
+%---------------------------------------
+Let $\latbX$ be a \structe{bounded lattice} \xref{def:latb},
+    $\ps$ a \structe{probability space} \xref{def:ps},
+and $\setn{y,x_1,x_2,x_3,\ldots}$ a subset of $\setX$.
+\thmbox{
+  \brb{\begin{array}{FMD}
+    1. & $\latL$ is \prope{distributive}                           & and\\ %\xref{def:distributive} & and\\
+    2. & $\setn{x_1,x_2,\ldots}$ is a \structe{partition} of $y$   & %\xref{def:partition}    &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{Frc>{\ds}lD}
+    1. & \psp(y)        &=& \sum_n \psp(x_n) & and \\%= \sum_n \psp(y|x_n)\psp(x_n)
+    2. & \psp(y)        &=& \sum_n \psp(y\meet x_n) & and \\
+    3. & \psp(z\meet y) &=& \sum_n \psp(z\meet x_n) &
+  \end{array}} 
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\psp$ is \prope{additive} \xref{def:ps} on $\ps$: \label{item:sop_additive}
+    \begin{enumerate}
+      \item Proof that $(yx_n) \meet (yx_m) = 0$ for $n\neq m$:
+        \begin{align*}
+          (yx_n) \meet (yx_m)
+            &= y(x_n x_m)
+            && \text{by definition of $\meet$}
+            && \text{\xref{def:meet}}
+          \\&= y\meet0
+            && \text{by \prope{mutually exclusive} property of \structe{partition}s}
+            && \text{\xref{def:partition}}
+          \\&= 0
+            && \text{by \prope{lower bounded} property of \structe{bounded lattice}s}
+            && \text{\xref{prop:latb_prop}}
+        \end{align*}
+      \item Proof that $\latL$ is \prope{distributive} \xref{def:distributive}: by \prope{distributive} hypothesis
+    \end{enumerate}
+
+  \item Proof that $\psp(y) = \sum_n \psp(x_n)$ \label{item:psp_sop}
+    \begin{align*}
+      \psp(y)
+        &= \psp\brp{yx_1 \join yx_2 \join \cdots \join yx_n}
+        && \text{by \prefpp{prop:latb_partition}}
+      \\&= \sum_n\psp\brp{yx_n}
+        && \text{by \pref{item:sop_additive} and \prope{additive} property}
+        && \text{\xref{def:ps}}
+      \\&= \sum_n\psp\brp{y|x_n}\psp(x_n)
+        && \text{by \structe{conditional probability}}
+        && \text{\xref{def:conditional}}
+    \end{align*}
+
+  %\item Proof that $\psp(y) = \sum_n \psp(y|x_n)\psp(x_n)$: This follows from \pref{item:psp_sop} and the 
+  %      definition of \fncte{conditional probability} \xref{def:conditional}.
+
+\end{enumerate}
+\end{proof}
+%=======================================
+\section{Examples}
+%=======================================
+%---------------------------------------
+\exboxt{
+  \begin{tabular}{m{\tw-52.5mm}}
+%\begin{example}[\exmd{/-Lukasiewicz 3-valued probability space}/\exm{Kleene 3-valued probability space}/\exm{RM$_3$ probability space}]
+\begin{example}[\exmd{Kleene 3-valued probability space}]
+\label{ex:prob_L3_kl}
+%---------------------------------------
+    The function $\negat$ on the lattice $\psL$
+    as illustrated to the right is a \fncte{Kleene negation}\ifsxref{negation}{def:negkl}. %{ex:negat_L3_kl}. %{def:negkl}.
+    Together with the probability function $\psp$, also illustrated to the right, the structure $\ps$
+    is a \structe{probability space} \xref{def:ps}.
+\end{example}
+  \end{tabular}%
+  \tbox{\includegraphics{graphics/lat3_L3_1x0_-0-x-1_prob.pdf}}
+}
+
+%---------------------------------------
+\exboxt{
+  \begin{tabular}{m{\tw-73.5mm}}
+\begin{example}
+\label{ex:limpx_m2}
+%---------------------------------------
+    The \structe{orthocomplemented lattice} $\psL$ \xref{def:latn} illustrated to the right is 
+    \prope{Boolean} (and thus also \prope{distributive}---\xrefnp{thm:boolean}).
+    The structure $\ps$ is a \structe{probability space} \xref{def:ps}.
+\end{example}
+  \end{tabular}%
+  \tbox{\includegraphics{graphics/lat4_m2_boa_prob.pdf}}
+  }
+
+%---------------------------------------
+\exboxt{
+  \begin{tabular}{m{\tw-82.343mm}}
+\begin{example}
+\label{ex:ps_o6}
+%---------------------------------------
+    The \structe{orthocomplemented lattice} $\psL$ illustrated to the right is an
+    \structe{orthocomplemented O$_6$ lattice} \xref{def:o6}.
+    %Together with the probability function $\psp$, also illustrated to the right, 
+    The structure $\ps$ is a \structe{probability space} \xref{def:ps}.
+\end{example}
+  \end{tabular}%
+  \tbox{\includegraphics{graphics/lat6_o6_prob_10adbc.pdf}}
+  }
+
+%---------------------------------------
+\exboxt{
+  \begin{tabular}{m{\tw-83.1mm}}
+\begin{example}[Single coin toss]
+\label{ex:ps_coin}
+%---------------------------------------
+    Let $\coinhead$ represent ``heads" and $\cointail$ represent ``tails"
+    in a coin toss.
+    Let $0<p<1$ be the probability of a head.
+    A \structe{probability space} $\ps$ for this single coin toss is as illustrated to the right.
+\end{example}
+  \end{tabular}%
+  \tbox{\includegraphics{graphics/lat4_m2_psE_coin.pdf}}
+  }
+
+
+%%---------------------------------------
+%\begin{example}[Single coin flip]
+%%---------------------------------------
+%\exbox{\begin{array}{rcl@{\qquad}D}
+%  \pso &=&   \setn{\coinhead,\, \cointail}
+%       &     (set of outcomes)
+%    \\
+%  \pse &=&   \setn{\mcom{\emptyset}{neither},\,
+%                   \mcom{\setn{\coinhead}}{heads},\,
+%                   \mcom{\setn{\cointail}}{tails},\,
+%                   \mcom{\setn{\coinhead,\,\cointail}}{heads or tails}
+%                  }
+%       &     (sigma-algebra on $\pso$)
+%    \\
+%  \psp x &=& \left\{\begin{array}{l>{\text{for }}l@{\qquad}D}
+%      0           & x=\emptyset                  & (neither heads nor tails) \\
+%      \frac{1}{2} & x=\setn{\coinhead}           & (heads)                   \\
+%      \frac{1}{2} & x=\setn{\text{\cointail}}    & (tails)                   \\
+%      1           & x=\setn{\coinhead,\cointail} & (either heads or tails)
+%    \end{array}\right.
+%       &      (probability measure on $\pse$)
+%\end{array}}
+%\end{example}
+
+%%---------------------------------------
+%\begin{example}[Two coin flips]
+%%---------------------------------------
+%Let $\seto{\setA}$ be the number of elements in a set $\setA$.
+%Let $\coinhead$ represent ``heads" and $\cointail$ represent ``tails"
+%in a coin toss.
+%Suppose we flip a coin two consecutive time and want to
+%know how many ``heads" we will have.
+%The following is a valid probability space $\ps$:
+%\exbox{\begin{array}{rcl}
+%  \pso &=& \setn{ (\cointail\cointail),\, (\cointail\coinhead),\, (\coinhead\cointail),\, (\coinhead\coinhead) }  \\
+%  \pse &=& \setn{\begin{array}{l}
+%    \mcom{\emptyset}{nothing},\,
+%    \mcom{\setn{(\cointail\cointail)}}{0 heads},\,
+%    \mcom{\setn{(\cointail\coinhead),\,(\coinhead\cointail)}}{1 heads},\,
+%    \mcom{\setn{(\coinhead\coinhead)}}{2 heads},\,
+%    \mcom{\setn{(\cointail\cointail),\,(\cointail\coinhead),\,(\coinhead\cointail)}}{0 heads or 1 heads},\, \\
+%    \mcom{\setn{(\cointail\cointail),\,(\coinhead\coinhead)}}{0 heads or 2 heads},\,
+%    \mcom{\setn{(\cointail\coinhead),\,(\coinhead\cointail),\,(\coinhead\coinhead)}}{1 heads or 2 heads},\,
+%    \pso
+%    %\mcom{\setn{(\cointail\cointail),\, (\cointail\coinhead),\, (\coinhead\cointail),\, (\coinhead\coinhead)} }{0 or 1 or 2 heads ($\pso$)}
+%    \end{array}}
+%  \\
+%  \psp x &=& \frac{1}{4} \seto{x}
+%%  \psp x &=& \left\{\begin{array}{*{2}{l>{\text{for }}l@{\qquad\qquad}}}
+%%    0           & x=\emptyset         & \frac{3}{4} & x=\text{ 0 heads or 1 heads}            \\
+%%    \frac{1}{4} & x=\text{ 0 heads}   & \frac{1}{2} & x=\text{ 0 heads or 2 heads}            \\
+%%    \frac{1}{2} & x=\text{ 1 heads}   & \frac{3}{4} & x=\text{ 1 heads or 2 heads}            \\
+%%    \frac{1}{4} & x=\text{ 2 heads}   & 1           & x=\text{ 0 or 1 or 2 heads}
+%%    \end{array}\right.
+%\end{array}
+%}
+%
+%Note however that
+%\[   \pse = \left\{ \emptyset, \mbox{0 heads}, \mbox{1 head}, \mbox{2 heads}, \pso \right\} \]
+%is {\bf not} a valid event set because it is {\bf not} a sigma-algebra.
+%For example, $\mbox{1 head}\cup\mbox{2 heads}$ is not in $\pse$.
+%\end{example}
+
+%---------------------------------------
+\begin{figure}% Double coin toss
+%---------------------------------------
+  \centering
+  \exbox{
+    \tbox{\includegraphics{graphics/lat8_l2e3_prob_coin.pdf}}
+    \begin{array}{rclrclrcl}
+      \psp(\emptyset) &=&0        & \psp(\setO)          &=& 1               \\
+      \psp(\setA)     &=&(1-p)^2  & \psp(\setA\setu\setB)&=&(1-p)^2+2p(1-p)  \\
+      \psp(\setB)     &=&2p(1-p)  & \psp(\setA\setu\setC)&=& 2p^2-2p+1       \\
+      \psp(\setC)     &=&p^2      & \psp(\setB\setu\setC)&=&-p^2+2p 
+    \end{array}
+    }
+  \caption{\structe{Double coin toss} \xref{ex:ps_doublecoin} \label{fig:ps_doublecoin}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{Double coin toss}]
+\label{ex:ps_doublecoin}
+%---------------------------------------
+    Let $\coinhead$ represent ``heads" and $\cointail$ represent ``tails"
+    in a double coin toss in which each toss is \prope{independent} \xref{def:indepen} of the other.
+    Let $0<p<1$ be the probability of a head.
+    The \structe{probability space} $\ps$ is illustrated in \prefpp{fig:ps_doublecoin}.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \psp(\setO)
+    &= 1
+    && \text{by \prope{normalized} property of $\psp$ \xref{def:psp}}
+  \\
+  \psp(\setC)
+    &= \psp\setn{\coinhead\coinhead}
+    && \text{by definition of $\setC$}
+  \\&= \psp(\coinhead)\psp(\coinhead)
+    && \text{by definition of \prope{independence} \xref{def:indepen}}
+  \\&= p^2
+    && \text{by definition of $p$}
+  \\
+  \psp(\setA)
+    &= \psp\setn{\cointail\cointail}
+    && \text{by definition of $\setA$}
+  \\&= \psp(\cointail)\psp(\cointail)
+    && \text{by definition of \prope{independence} \xref{def:indepen}}
+  \\&= \brb{1-\psp(\coinhead)}\brb{1-\psp(\coinhead)}
+    && \text{by \prope{antitone} property of $\psp$ \xref{thm:ps}}
+  \\&= (1-p)^2
+    && \text{by definition of $p$}
+  \\
+  \psp(\setB)
+    &= \psp\setn{(\cointail\coinhead),(\coinhead\cointail)}
+    && \text{by definition of $\setB$}
+  \\&= \psp\setn{\cointail\coinhead} + \psp\setn{\coinhead\cointail}
+    && \text{by \prope{additive} property of $\psp$ \xref{def:psp}}
+  \\&= \psp\setn{\cointail}\psp\setn{\coinhead} + \psp\setn{\coinhead}\psp\setn{\cointail}
+    && \text{by definition of \prope{independence} \xref{def:indepen}}
+  \\&= (1-p)p + p(1-p)
+    && \text{by \prope{antitone} property of $\psp$ \xref{thm:ps} and definition of $p$}
+  \\&= -2p^2 + p + 1
+  \\
+  \psp(\setA\setu\setB)
+    &= \psp(\setA) + \psp(\setB) -\psp(\setA\seti\setB)
+    && \text{by \pref{thm:ps_add}}
+  \\&= \psp(\setA) + \psp(\setB) -\psp(\emptyset)
+  \\&= (1-p)^2 + (-2p^2 + p + 1) + 0
+    && \text{by previous results}
+  \\&= -p^2-p+1
+  \\
+  \psp(\emptyset)
+    &= 0
+    && \text{by \prope{nondegenerate} property of $\psp$ \xref{def:psp}}
+\end{align*}
+\end{proof}
+
+%%---------------------------------------
+%\begin{example}[Even/odd dice measure space]
+%\label{ex:prob_even_odd_dice}
+%%---------------------------------------
+%Suppose we have an ``unfair" dice and we want to know whether
+%the result of rolling the dice one time will be ``even" or ``odd".
+%We can construct the following measure space (probability space) $\ps$:
+%
+%\exbox{\begin{array}{ll}
+%  \pso &= \left\{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}
+%  \\
+%  \pse &= \left\{ \mcom{\left\{\hspace{1ex} \right\}}{$\emptyset$},
+%                  \mcom{\left\{\text{\diceA,\diceC,\diceE}\right\}}{odd},
+%                  \mcom{\left\{\text{\diceB,\diceD,\diceF}\right\}}{even},
+%                  \mcom{\left\{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}}{$\pso$}
+%          \right\}
+%  \\
+%  \psp(e) &=
+%    \left\{\begin{array}{l@{\qquad} >{\text{for }e=}l @{\qquad}D}
+%      0           & \{\hspace{1ex}\}
+%                  & ($\emptyset$)
+%                  \\
+%      1           & \left\{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}
+%                  & ($\pso$)
+%                  \\
+%      \frac{1}{3} & \left\{\text{\diceA,\diceC,\diceE}\right\}
+%                  & (odd)
+%                  \\
+%      \frac{2}{3} & \left\{\text{\diceB,\diceD,\diceF}\right\}
+%                  & (even)
+%    \end{array}\right.
+%\end{array}}
+%\end{example}
+%
+%Example~\ref{ex:prob_even_odd_dice} (previous) illustrated a
+%measure space in which the events (ignorning $\emptyset$ and $\pso$)
+%are {\em mutually exclusive}.
+%Example~\ref{ex:prob_dice} (next) illustrates a measure space
+%where events are {\em not} mutually exclusive.
+
+%---------------------------------------
+\exboxt{
+\parbox{\tw-72.7mm}{
+\begin{example}[even/odd die]
+\label{ex:prob_dice}
+%---------------------------------------
+Let $0<p<1$ be the probability of a die toss being odd.
+Then 
+\\\indentx$\psp(\emptyset)\!=\!0$, $\psp(\setA)\!=\!p$, $\psp(\setB)\!=\!1-p$, and $\psp(\setO)\!=\!1$ .\\
+The order structure of this \structe{probability space} is illustrated to the right.
+\end{example}
+}%
+\tbox{\includegraphics{graphics/lat4_m2_prob_die.pdf}}
+}
+\\
+\begin{proof}
+\begin{align*}
+  \psp(\setO)
+    &= 1
+    && \text{by \prope{normalized} property of $\psp$ \xref{def:psp}}
+  \\
+  \psp(\setC)
+    &= \psp\setn{\coinhead\coinhead}
+    && \text{by definition of $\setC$}
+  \\&= \psp(\coinhead)\psp(\coinhead)
+    && \text{by definition of \prope{independence} \xref{def:indepen}}
+  \\&= p^2
+    && \text{by definition of $p$}
+  \\
+  \psp(\setA)
+    &= \psp\setn{\dieA,\dieC,\dieE}
+    && \text{by definition of $\setA$}
+  \\&= p
+    && \text{by definition of $p$}
+  \\
+  \psp(\setB)
+    &= \psp\setn{\dieB,\dieD,\dieF}
+    && \text{by definition of $\setB$}
+  \\&= \psp\setn{\dieA,\dieC,\dieE}^\setopc
+    && \text{by definition of set complement $\setopc$}
+  \\&= \psp\setA^\setopc
+    && \text{by definition of $\setA$}
+  \\&= \psp(\negat\setA)
+    && \text{by definition of $\negat$}
+  \\&= 1-\psp(\setA)
+    && \text{by \prefp{thm:ps}}
+  \\&= 1-p
+    && \text{by definition of $p$}
+  \\
+  \psp(\emptyset)
+    &= 0
+    && \text{by \prope{nondegenerate} property of $\psp$ \xref{def:psp}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{figure}% Single die
+%---------------------------------------
+  \centering
+  \exbox{
+    \tbox{\includegraphics{graphics/lat8_l2e3_prob_die.pdf}}
+    \begin{array}{rclrclrcl}
+      \psp(\emptyset) &=&0        & \psp(\setO)          &=& 1               \\
+      \psp(\setA)     &=&(1-p)^2  & \psp(\setA\setu\setB)&=&(1-p)^2+2p(1-p)  \\
+      \psp(\setB)     &=&2p(1-p)  & \psp(\setA\setu\setC)&=& 2p^2-2p+1       \\
+      \psp(\setC)     &=&p^2      & \psp(\setB\setu\setC)&=&-p^2+2p 
+    \end{array}
+    }
+  \caption{\structe{Die toss} \xref{ex:prob_dice} \label{fig:prob_dice}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\label{ex:prob_dice}
+%---------------------------------------
+Let $p\eqd\frac{1}{6}$ be the probability of any face of a fair die.
+The \structe{probability space} $\ps$ is illustrated in \prefpp{fig:prob_dice}.
+\end{example}
+\begin{proof}
+The proof is in essence the same as for \prefpp{ex:ps_doublecoin}.
+\end{proof}
+
+%%---------------------------------------
+%\begin{example}
+%\label{ex:prob_dice}
+%%---------------------------------------
+%Suppose we have a ``fair" dice and we are primarily interested in the
+%events of the first four
+%$\left(\setn{\text{\diceA,\diceB,\diceC,\diceD}}\right)$
+%(that is, whether one roll of the dice will produce
+%a value in the set $\{1,2,3,4\}$)
+%and the last three
+%$\left(\setn{\text{\diceD,\diceE,\diceF}}\right)$
+%However, these events do not by themselves form a $\sigma$-algebra.
+%Rather under the $\cap$ and $\cup$ operations, these two events generate
+%a total of eight possible events that together form a $\sigma$-algebra.
+%The resulting measure space $\ps$ is
+%\exbox{\begin{array}{ll}
+%  \pso &= \left\{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} \right\}
+%  \\
+%  \pse &= \left\{ \mcom{\setn{\quad}}{$\emptyset$},\;
+%                  \mcom{\setn{\text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}}{$\pso$},\;
+%                  \mcom{\setn{\text{\diceA,\diceB,\diceC,\diceD}}}{first four},\;
+%                  \mcom{\setn{\text{\diceD,\diceE,\diceF}}}{last three},\;
+%                  \right.
+%                  \\&\qquad
+%                  \left.
+%                  \mcom{\setn{\text{\diceD}}}{$\setn{1234}\cap\setn{456}$},\;
+%                  \mcom{\setn{\text{\diceA,\diceB,\diceC,\diceE,\diceF}}}{$\setn{4}^c$},\;
+%                  \mcom{\setn{\text{\diceE,\diceF}}}{$\setn{4}^c\cap\setn{456}$},\;
+%                  \mcom{\setn{\text{\diceA,\diceB,\diceC}}}{$\setn{1234}\cap\setn{4}^c$},\;
+%          \right\}
+%  \\
+%  \psp(e) &=
+%    \left\{\begin{array}{l@{\qquad} >{\text{for }e=}l @{\qquad}D}
+%      0           & \setn{\quad}
+%                  & ($\emptyset$)\\
+%      1           & \setn{\text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}
+%                  & ($\pso$)\\
+%      \frac{2}{3} & \setn{\text{\diceA,\diceB,\diceC,\diceD}}
+%                  & (first four)\\
+%      \frac{1}{2} & \setn{\text{\diceD,\diceE,\diceF}}
+%                  & (last three)\\
+%      \frac{1}{6} & \setn{\text{\diceD}}
+%                  & ($\setn{1234}\cap\setn{456}$) \\
+%      \frac{5}{6} & \setn{\text{\diceA,\diceB,\diceC,\diceE,\diceF}}
+%                  & ($\setn{4}^c$) \\
+%      \frac{1}{3} & \setn{\text{\diceE,\diceF}}
+%                  & ($\setn{4}^c\cap\setn{456}$) \\
+%      \frac{1}{2} & \setn{\text{\diceA,\diceB,\diceC}}
+%                  & ($\setn{1234}\cap\setn{4}^c$)
+%    \end{array}\right.
+%\end{array}
+%\tbox{\includegraphics{graphics/lat8_l2e3_prob_die.pdf}}}
+%\end{example}
+
+%Why go through all the trouble of requiring a $\sigma$-algebra?
+%Having a $\sigma$-algebra in place ensures that anything we might possibly
+%want to measure {\em can} be measured.
+%It makes sure all possible combinations are taken into account.
+%And why go through the additional trouble of requiring a measure space?
+%With a measure space available, expressing the measure over a complex
+%set is often greatly simplified because the measure space provides nice
+%algebraic properties (namely the $\sigma$-additive property.
+%\pref{ex:prob_123456} (next) illustrates how a rather complex
+%$\sigma$-algebra (64 elements) can be compactly represented in a measure space.
+%%---------------------------------------
+%\begin{example}
+%\label{ex:prob_123456}
+%%---------------------------------------
+%Suppose we have a ``fair" dice and we are interested in measuring over the
+%power set of events (largest possible algebra---$2^6=64$ events).
+%This leads to the measure space $\ps$ where
+%\exbox{\begin{array}{ll@{\qquad}D}
+%  \pso    &= \setn{ \text{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} }
+%          \\
+%  \pse    &= \mathcal{P}(\pso) & (the power-set of $\pso$)
+%          \\
+%  \psp(e) &= \frac{1}{6} |e|
+%          & ($\frac{1}{6}$ times the number of possible outcomes in event $e$)
+%\end{array}}
+%\end{example}
+
+%---------------------------------------
+\begin{example}[Gaussian distribution on $\R$]
+%---------------------------------------
+Let $\ssB$ be the \structe{Borel algebra on $\R$}.
+Let $\psL\eqd\opair{\ssB}{\subseteq}$ be the lattice formed by the elements of $\ssB$---this
+lattice is a \structe{Boolean algebra}.
+Let 
+\\\indentx$\ds\psp(\setA)\eqd\frac{1}{\sqrt{2\pi\sigma^2}}\int_\setA e^{\frac{x^2}{2\sigma^2}}\dx$ for $\setA\subseteq\ssB$\\
+and where $\int$ is the \ope{Lebesgue integral} \xref{def:intL}.
+Then $\opair{\psL}{\psp}$ is a \structd{probability space}. 
+\end{example}
+
+%%---------------------------------------
+%\begin{example}[Gaussian noise]
+%%---------------------------------------
+%Let $X\sim\pN{0}{\sigma^2}$ be a random variable with Gaussian distribution.
+%We can construct the following probability space $\ps$:
+%
+%\exbox{\begin{array}{rcl}
+%  \pso &=& \R \\
+%  \pse &=& \setn{ \emptyset, \pso } \setu \set{(a,b)}{a,b\in\R,a<b} \\
+%  \psp x &=& \left\{\begin{array}{ll}
+%    0      & \mbox{ for } x=\emptyset \\
+%    1      & \mbox{ for } x=\pso      \\
+%    \frac{1}{\sqrt{2\pi\sigma^2}}\int_a^b e^{\frac{x^2}{2\sigma^2}}\dx & \mbox{ otherwise}
+%    \end{array}\right.
+%\end{array}}
+%\end{example}
+
+%%---------------------------------------
+%\begin{example}
+%\label{ex:prob_1011}
+%%---------------------------------------
+%The set of outcomes $\pso$ can also be a set of waveforms:
+%\exbox{\begin{array}{ll}
+%  \pso    &= \setn{\begin{tabular}{llll}
+%               \textifsym{|H|LL|HHH|L} &
+%               \textifsym{L|H|LL|HHH}  &
+%               \textifsym{H|L|H|LL|HH} &
+%               \textifsym{HH|L|H|LL|H} \\
+%               \textifsym{HHH|L|H|LL}  &
+%               \textifsym{L|HHH|L|H|L} &
+%               \textifsym{LL|HHH|L|H}  &
+%             \end{tabular}}
+%          \\
+%  \pse    &= \mathcal{P}(\pso)
+%          \\
+%  \psp(e) &= \frac{1}{7} |e|
+%\end{array}}
+%\end{example}
+
+
+

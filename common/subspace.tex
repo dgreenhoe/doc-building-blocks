@@ -1,0 +1,3276 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+
+
+%=======================================
+\chapter{Linear Subspaces}
+%=======================================
+
+%======================================
+\section{Subspaces of a linear space}
+%======================================
+\structe{Linear space}s \xref{def:vspace} can be decomposed into a collection of \structe{linear subspace}s \xref{def:subspace}.
+%One of the most useful ways to analyze a linear space, is to decompose it into 
+%a collection of linear subspaces \xrefP{def:subspace}.
+Often such a collection along with an \structe{order relation}\ifsxref{order}{def:orel} forms a 
+\structe{lattice}\ifsxref{lattice}{def:lattice}.
+%\xrefP{thm:sub_lat}.
+
+\begin{figure}[th]
+  \centering%
+  \includegraphics{graphics/latr3subspaces.pdf}%
+  \caption{lattice of subspaces of $\R^3$ \xref{ex:r3subspaces}\label{fig:latr3subspaces}}%
+\end{figure}
+%--------------------------------------
+%--------------------------------------
+\exbox{\begin{tabular}{m{\tw-60mm}}
+  \begin{example}\label{ex:r3subspaces}
+    The 3-dimensional Euclidean space $\R^3$ contains 
+    the 2-dimensional $xy$-plane and $xz$-plane subspaces,
+    which in turn both contain the 1-dimensional $x$-axis subspace.
+    These subspaces are illustrated in the figure to the right and in \prefpp{fig:latr3subspaces}.
+  \end{example}\end{tabular}
+  \tbox{\includegraphics{graphics/r3subspaces_xy.pdf}}%
+  }
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{michel1993}{81}{048667598X}{Definition 3.2.1},
+  \citerpgc{berberian1961}{13}{0821819127}{Definition~I.5.1},
+  \citerp{halmos1958}{16}
+  }
+\label{def:subspace}
+\index{space!linear subspace}
+%--------------------------------------
+Let $\spO\eqd\linearspaceX$ be a \structe{linear space} \xref{def:vspace}.
+\defboxt{%
+  A tupple $\linearspaceY$ is a \structd{linear subspace} of $\spO$ if
+  \\\indentx$\begin{array}{F>{\ds}lclDD}
+      1. & \setY \ne  \emptyset                      &        &                       & ($\setY$ must contain at least one element)  & and
+    \\2. & \setY \subseteq \setX                     &        &                       & ($\setY$ is a subset of $\setX$)             & and
+    \\3. & \vx,\vy\in\setY                           &\implies& \vx \addv \vy\in\setY & (closed under vector addition)               & and
+    \\4. & \vx\in\setY\text{ {\scs and} }\alpha\in\F &\implies& \alpha\vx \in\setY    & (closed under scalar-vector multiplication). & 
+  \end{array}$%
+  \\
+  A linear subspace is also called a \hid{linear manifold}.%
+  }
+\end{definition}
+
+
+
+Every \structe{linear space} \xref{def:vspace} $\spX$ has at least two 
+\structe{linear subspace}s---itself and $\spZero$ \xref{prop:subspace_0X},
+called the \structe{trivial linear space}.
+The \structe{linear span} \xref{def:linspan} of every subset of a linear linear space is a subspace \xref{prop:subspace_span}.
+Every \structe{linear subspace} contains the ``zero" vector $\vzero$, 
+and is \prope{convex}\ifsxxref{convex}{def:convex_set}{prop:subspace_prop}.
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:subspace_0X}
+\footnote{
+  \citerppg{michel1993}{81}{83}{048667598X},
+  \citerpg{haaser1991}{43}{0486665097}
+  }
+%--------------------------------------
+Let $\spX\eqd\linearspaceX$ and $\spZero\eqd\linearspaceXYZ{\setn{\vzero}}$.
+\propbox{
+  \brb{\begin{array}{M}
+    $\spX$ is a \structe{linear space}\\
+    \xref{def:vspace}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{FcMD}
+    1. & \spZero & is a \structe{linear subspace} of $\spX$ & and\\
+    2. & \spX    & is a \structe{linear subspace} of $\spX$ & 
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+For a structure to be a linear subspace of $\spX$, it must satisfy the
+requirements of \prefpp{def:subspace}.
+\begin{enumerate}
+  \item Proof that $\{\vzero\}$ is a linear subspace:
+    \begin{align*}
+      \intertext{(a) Note that $\setn{\vzero}\ne \emptyset$.}
+      %
+      \intertext{(b) Proof that $\vx,\vy\in\setn{\vzero} \implies \vx+\vy\in\setn{\vzero}$:}
+        \vx+\vy
+          &=   \vzero + \vzero
+          &&   \text{by $\vx,\vy\in\setn{\vzero}$ hypothesis}
+        \\&=   \vzero
+        \\&\in \setn{\vzero}
+      %
+      \intertext{(c) Proof that $\vx\in\setn{\vzero},\alpha\in \F \quad\implies\quad \alpha\vx\in\setn{\vzero}$:}
+        \alpha\vx
+          &=   \alpha\vzero
+          &&   \text{by $\vx\in\setn{\vzero}$ hypothesis}
+        \\&=   \vzero
+          &&   \text{by definition of $\vzero$}
+        \\&\in \setn{\vzero}
+    \end{align*}
+
+  \item Proof that $\spO$ is a linear subspace of itself:
+    \begin{align*}
+      \intertext{(a) Proof that $\setX\ne \emptyset$:}
+        \setX &\ne  \emptyset
+      %
+      \intertext{(b) Proof that $\vx,\vy\in\setX \implies \vx+\vy\in\setX$:}
+        \vx+\vy
+          &\in \setn{\vzero}
+          &&   \text{because $+:\setX\times\setX\to\setX$ ($\setX$ is closed under vector addition)}
+      %
+      \intertext{(c) Proof that $\vx\in\setX,\alpha\in \F \quad\implies\quad \alpha\vx\in\setX$:}
+        \alpha\vx
+          &\in \setX
+          &&   \text{because $\cdot:\F\times\setX\to\setX$ ($\setX$ is closed under scalar-vector multiplication)}
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+\ifdochasnot{frames}{
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{michel1993}{86}{048667598X}{3.3.7 Definition},
+  \citerpg{kurdila2005}{44}{3764321989},
+  \citerpgc{searcoid2002}{71}{185233424X}{Definition 3.2.5---more general definition}
+  %\citerppgc{heil2011}{20}{21}{0817646868}{Definition 1.25}
+  }
+\label{def:span}
+\label{def:linspan}
+%--------------------------------------
+Let $\linearspaceX$ be a linear space and $\setY$ be a subset of $\setX$.
+\defbox{\begin{array}{Ml} 
+  The \opd{linear span} of $\setY$ is defined as
+  & \ds
+  \hxs{\linspan}\setY
+  \eqd 
+  \setbigleft{\sum_{\gamma\in\Gamma} \alpha_\gamma \vy_\gamma}{\alpha_\gamma\in\F,\,\vy_\gamma\in\setY} .
+  \\
+  The set $\setY$ \hid{spans} a set $\setA$ if & \setA\subseteq\linspan\setY.
+  %\\
+  %{The \hid{closed span} $\hxs{\linspanc}\seqxZp{\vx_n}$ of $\seqxZp{\vx_n}$ in $\spO$ is the \hie{closure} of $\linspan\seqxZp{\vx_n}$ in $\spO$.}
+  %\\
+  %{The sequence $\seqxZp{\vx_n}$ is \hid{complete} in $\spO$ if $\linspanc\seqxZp{\vx_n}$ spans $\setX$.}
+\end{array}}
+\end{definition}
+}
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citorpg{michel1993}{86}{048667598X}
+  }
+\label{prop:subspace_span}
+%--------------------------------------
+Let $\spX\eqd\linearspaceX$ be a \structe{linear space} \xref{def:vspace}.
+Let $\linspan$ be the \structe{linear span} of a set $\setY$ in $\spX$.
+\propbox{
+    \brb{\begin{array}{M}
+      $\setY$ is a \structe{subset} of the set $\setX$\\
+      ($\setY\subseteq\setX$)
+      %\xref{def:subspace} of $\spX$
+    \end{array}}
+    \implies
+    \brb{\begin{array}{cM}
+      \linspan\setY & is a \structe{linear subspace} of $\spX$.
+    \end{array}}
+  %The linear subspace $\spV(\setY)$ is called the \hid{linear subspace generated} by the set $\setY$.
+  }
+\end{proposition}
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpg{michel1993}{81}{048667598X}
+  }
+\label{prop:subspace_prop}
+%--------------------------------------
+Let $\spX\eqd\linearspaceX$ be a \structe{linear space} % \xref{def:vspace}.
+and $\vzero$ the zero vector of $\spX$.
+\propbox{
+    \brb{\begin{array}{M}
+      $\spY$ is a \structe{linear subspace} of $\spX$
+      %\xref{def:subspace} of $\spX$
+    \end{array}}
+    \implies
+    \brb{\begin{array}{FMD}
+      1. & $\vzero\in\spY$ & and\\
+      2. & $\spY$ is \prope{convex} in $\spX$ & 
+    \end{array}}
+  }
+\end{proposition}
+\begin{proofns}
+    \begin{align*}
+      \text{$\spY$ is a \structe{subspace}}
+        &\implies \exists (\alpha\vy)\in\spY\quad\forall\alpha\in\F
+        && \text{by \prefp{def:subspace}}
+      \\&\implies \exists \vzero\in\spY
+        && \text{because $\alpha=0\in\F$}
+      \\
+      \\
+          \text{$\spY$ is a linear subspace}
+        &\implies \vx+\vy\in\setY \,\forall\vx,\vy\in\setY
+      \\&\implies \lambda\vx+(1-\lambda)\vy\in\setY \,\forall\vx,\vy\in\setY
+      \\&\implies \text{$\spY$ is \prope{convex}}
+    \end{align*}
+\end{proofns}
+
+%======================================
+%\section{Operations on subspaces}
+%======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citorp{wedderburn1907}{79}
+  %\citerp{rudinf}{6}
+  }
+\label{def:sub_add}
+\index{space!Minkowski addition}
+%---------------------------------------
+Let $\spX\eqd\linearspaceX$ and $\spY\eqd\linearspaceY$ be \structe{linear subspace}s \xref{def:subspace} 
+of a \structe{linear space} \xref{def:vspace} $\spO\eqd\linearspaceO$.
+\defbox{\begin{array}{rcl@{\qquad}D}
+  \spX \adds \spY &\eqd& \linearspace{\set{\vx+\vy}{\vx\in\setX\,\text{and}\,\vy\in\setY}}{+}{\cdot}{\F}{\addf}{\dottimes} & (\hib{Minkowski addition}\ifsxref{morph}{def:minkowski_add})\\
+  \spX \spu  \spY &\eqd& \linearspace{\setX\setu\setY}{+}{\cdot}{\F}{\addf}{\dottimes} &(\hid{subspace union}) \\
+  \spX \spi  \spY &\eqd& \linearspace{\setX\seti\setY}{+}{\cdot}{\F}{\addf}{\dottimes} & (\hid{subspace intersection})
+  %\spX \sqsubseteq \spY &\implies& \setX\subseteq\setY
+\end{array}}
+\end{definition}
+
+
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Some examples of operations on subspaces in $\R^3$ are illustrated next:
+\\\input{../common/math/graphics/minkowskiadd.tex}
+\end{example}
+
+
+
+
+%---------------------------------------
+\begin{remark}\hspace{1pt}\\
+%---------------------------------------
+\begin{minipage}{\tw/2-1mm}
+  Notice the similarities between the properties of linear subspaces
+  in a linear space \xrefP{prop:lsub_add}
+  and the properties of closed sets in a topological space\ifdochas{setstrct}{ \xrefP{thm:ts_closed}}:
+\end{minipage}
+\hfill
+\begin{minipage}{\tw/2-1mm}
+  \[\begin{array}{>{\ds}l | >{\ds}l}
+       $\hie{linear subspaces}$         & $\hie{closed sets}$
+    \\ \hline
+       \vzero                     & \emptyset
+    \\ \spO                       & \spO
+    \\ \spX \adds \spY            & \setX \setu \setY
+    \\ \setopi_{n=1}^\xN \spX_n   & \setopi_{\gamma\in\Gamma} \setX_\gamma
+  \end{array}\]
+\end{minipage}
+
+
+\begin{minipage}{2\tw/3-5mm}%
+  One key difference is that the union of two linear subspaces is not in general a
+  linear subspace. For example, if $\vx$ is the vector $[1\,0]$ in
+  the $x$ direction linear subspace of $\R^2$ and $\vy$ is the vector $[0\,1]$ in the
+  $y$ direction linear subspace,
+  then $\vx+\vy$ is not in the union of the two linear subspaces
+  (it is not on the $x$ axis or $y$ axis but rather at $\opair{1}{1}$).\footnotemark
+\end{minipage}%
+\hfill
+\begin{minipage}{\tw/3-5mm}%
+  \color{figcolor}
+  \begin{center}
+  \begin{fsL}
+  \setlength{\unitlength}{\tw/300}%
+  \begin{picture}(270,270)(-130,-130)%
+    %\graphpaper[10](0,0)(600,200)%
+    {\color{axis}%
+      \thicklines%
+      \put(-120,   0){\line( 1, 0){240} }%
+      \put(   0,-120){\line( 0, 1){240} }%
+      \put( 130,   0){\makebox(0,0)[l]{$\spX$}}%
+      \put(   0, 130){\makebox(0,0)[b]{$\spY$}}%
+      \qbezier[20](100,0)(100,50)(100,100)%
+      \qbezier[20](0,100)(50,100)(100,100)%
+      }%
+    {\color{uvect}%
+      \thicklines%
+      \put(   0,   0){\vector( 1, 0){100} }%
+      \put(   0,   0){\vector( 0, 1){100} }%
+      \put( 100, -10){\makebox(0,0)[t]{$\vx$}}%
+      \put( -10, 100){\makebox(0,0)[r]{$\vy$}}%
+      }%
+    {\color{vector}%
+      \thicklines%
+      \put(   0,   0){\vector( 1, 1){100} }%
+      \put( 10, 110){\makebox(0,0)[bl]{$\vx+\vy\notin\spX\spu \spY$}}%
+      }%
+  \end{picture}%
+  \end{fsL}
+  \end{center}
+\end{minipage}%
+\citetblt{\citerpg{michel1993}{82}{048667598X}}
+\end{remark}
+
+
+
+\begin{minipage}{3\tw/4}%
+  In general, the set of all linear subspaces of a linear space $\spO$ is \emph{not} 
+  closed under the subspace union ($\spu $) operation; that is, the union of 
+  of two linear subspaces is \emph{not} necessarily a linear subspace.
+  However the set \emph{is} closed under Minkowski sum ($\adds$) and subspace intersection ($\spi $).
+  \pref{prop:lsub_add} (next) shows four useful objects are always subspaces.
+  Some of these in Euclidean space $\R^3$ are illustrated to the right.
+\end{minipage}%
+\begin{minipage}{\tw/4}
+  \color{figcolor}
+  \begin{center}
+  \begin{fsL}
+  \setlength{\unitlength}{\tw/300}%
+  \begin{picture}(250,250)(-100,-100)%
+    %\graphpaper[10](-100,-100)(200,200)%
+    {\color{axis}%
+      \thicklines%
+      \put(-100,   0){\line( 1, 0){200} }%
+      \put(   0,-100){\line( 0, 1){200} }%
+      \put(   0, 100){\line( 1, 1){ 50} }%
+      \put(-100,   0){\line( 1, 1){ 50} }%
+      \put( 100,   0){\line( 1, 1){ 50} }%
+      \put(   0, 100){\line( 1, 1){ 50} }%
+      \put(   0,-100){\line( 1, 1){ 50} }%
+      \put(  50,  50){\line( 0, 1){100} }%
+      \put(  50,  50){\line( 1, 0){100} }%
+      \put( -50,  50){\line( 1, 0){ 50} }%
+      \put(  50, -50){\line( 0, 1){ 50} }%
+      \put( 130,   0){\makebox(0,0)[l]{$\spX$}}%
+      \put(   0, 130){\makebox(0,0)[b]{$\spY$}}%
+      }%
+    {\color{vector}%
+      \thicklines%
+      \put(   0,   0){\line( 1, 1){ 50} }%
+      \put( 100, -50){\vector( -1, 1){70} }%
+      \put(  80, -60){\makebox(0,0)[tl]{$\spX\spi \spY$}}%
+      }%
+    {\color{figcolor}%
+      \thicklines%
+      \put(   0,   0){\line( 1, 1){ 50} }%
+      \put( -50, -50){\vector( 1, 1){50} }%
+      \put( -50, -60){\makebox(0,0)[tr]{$\vzero$}}%
+      }%
+  \end{picture}%
+  \end{fsL}
+  \end{center}
+\end{minipage}%
+
+
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:lsub_add}
+\footnote{
+  \citerppg{michel1993}{81}{83}{048667598X}
+  }
+%--------------------------------------
+Let $\spX$ be a \structe{linear space} \xref{def:vspace}.
+\propbox{
+  \brbr{\begin{array}{M}
+    $\setxn{\spX_n}$ are\\
+    \structe{linear subspace}s of $\spX$
+  \end{array}}
+  \implies
+  \brbl{\begin{array}{FlM}
+    1. & \spX_1\adds\spX_2\adds\cdots\adds\spX_\xN & is a \structe{linear subspace} of $\spX$ \\
+       & \text{\scs and} \\
+    2. & \spX_1\spi\spX_2\spi\cdots\spi\spX_\xN   & is a \structe{linear subspace} of $\spX$
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+For a structure to be a linear subspace of $\spX$, it must satisfy the
+requirements of \prefpp{def:subspace}.
+\begin{enumerate}
+  \item Proof that $\spX_1\adds\spX_2\adds\cdots\adds\spX_\xN$ is a \structe{linear subspace} (proof by induction):
+    \begin{enumerate}
+      \item proof for $\xN=1$ case: by left hypothesis.
+      \item proof for $\xN=2$ case: \label{item:lsub_adds_n2}
+        \begin{enumerate}
+          \item proof that $\spX_1\adds\spX_2 \ne  \emptyset$:
+            \begin{align*}
+                \spX_1\adds\spX_2
+                  &= \set{\vv+\vw}{\vv\in\spX_1 \text{ and } \vw\in\setY}
+                  && \text{by \prefp{def:sub_add}}
+                \\&\supseteq \set{\vv+\vw}{\vv\in\setn{\vzero}\subseteq\spX_1 \text{ and } \vw\in\setn{\vzero}\subseteq\spX_2}
+                \\&= \setn{\vzero+\vzero}
+                \\&= \setn{\vzero}
+                \\&\ne  \emptyset
+            \end{align*}
+          %
+          \item proof that $\vx,\vy\in\spX_1\adds\spX_2 \quad\implies\quad \vx+\vy\in\spX_1\adds\spX_2$:
+            \begin{align*}
+              \vx + \vy
+                &= (\vv_1 + \vw_1) + (\vv_2 + \vw_2)
+                && \text{by $\vx,\vy\in\spX_1\adds\spX_2$ hypothesis}
+              \\&= \mcom{(\vv_1 + \vv_2)}{in $\spX_1$} +
+                   \mcoml{(\vw_1 + \vw_2)}{in $\spX_2$ because $\spX_2$ is a linear subspace}
+                && \ifdochas{vector}{\ifdochas{vector}{\text{by \prefp{def:vspace}}}}
+              \\&\in \set{\vv+\vw}{\vv\in\spX_1 \text{ and } \vw\in\setY}
+              \\&= \spX_1\adds\spX_2
+                && \text{by \prefp{def:sub_add}}
+            \end{align*}
+
+          \item proof that $\vv\in\spX_1\adds\spX_2,\alpha\in F \quad\implies\quad \alpha\vv\in\spX_1\adds\spX_2$:
+            \begin{align*}
+              \alpha\vx
+                &= \alpha(\vv_1 + \vw_1)
+                && \text{by $\vx\in\spX_1\adds\spX_2$ hypothesis}
+              \\&= \mcomr{\alpha\vv_1}{in $\spX_1$} +
+                   \mcoml{\alpha\vw_1}{in $\spX_2$ because $\spX_2$ is a linear subspace}
+                && \ifdochas{vector}{\text{by \prefp{def:vspace}}}
+              \\&\in \set{\vv+\vw}{\vv\in\spX_1 \text{ and } \vw\in\setY}
+              \\&= \spX_1\adds\spX_2
+                && \text{by \prefp{def:sub_add}}
+            \end{align*}
+        \end{enumerate}
+
+      \item Proof that [$\xN$ case] $\implies$ [$\xN+1$ case]:
+        \begin{align*}
+          \spX_1\adds\spX_2\adds\cdots\adds\spX_{\xN+1}
+            &= \mcomr{\brp{\spX_1\adds\spX_2\adds\cdots\adds\spX_{\xN}}}{linear subspace by $\xN$ case hypothsis}\adds\spX_{\xN+1}
+            && %\text{by \prefp{thm:set_ops}}
+          \\&\implies \text{linear subspace by $\xN=2$ case \xref{item:lsub_adds_n2}}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof that $\spX_1\spi\spX_2\spi\cdots\spi\spX_\xN$ is a \structe{linear subspace} (proof by induction):
+    \begin{enumerate}
+      \item proof for $\xN=1$ case: $\spX_1$ is a linear subspace by left hypothesis.
+
+      \item Proof for $\xN=2$ case: \label{item:lsub_spi_n2}
+        \begin{enumerate}
+          \item proof that $\spX\spi \spY \ne  \emptyset$:
+            \begin{align*}
+                \spX\spi \spY
+                  &= \set{\vx\in\setX}{\vx\in\setX \text{ and } \vw\in\setY}
+                  && %\text{by \prefp{def:space_op}}
+                \\&\supseteq \set{\vx\in\setX}{\vx\in\setn{\vzero}\subseteq\spX \text{ and } \vx\in\setn{\vzero}\subseteq\spY}
+                \\&= \setn{\vzero+\vzero}
+                \\&= \setn{\vzero}
+                \\&\ne  \emptyset
+            \end{align*}
+
+          \item proof that $\vx,\vy\in\setX\spi \spY \quad\implies\quad \vx+\vy\in\setX\spi \spY$:
+            \begin{align*}
+              \vx,\vy\in \spX\spi \spY
+                &\implies \vx,\vy\in \spX \text{ and } \vx,\vy\in\setY
+                &&        \ifdochas{setstrct}{\text{by \prefp{def:ss_setops}}}
+              \\&\implies \vx+\vy\in \spX \text{ and } \vx+\vy\in\setY
+                &&        \text{because $\spX$ and $\spY$ are linear subspaces}
+              \\&\implies \vx+\vy\in \spX\spi \spY
+                &&        \ifdochas{setstrct}{\text{by \prefp{def:ss_setops}}}
+            \end{align*}
+
+          \item proof that $\vv\in\setX\spi \spY,\alpha\in F \quad\implies\quad \alpha\vv\in\setX\spi \spY$:
+            \begin{align*}
+              \vx\in \spX\spi \spY
+                &\implies \vx\in \spX \text{ and } \vx\in\setY
+                &&        \ifdochas{setstrct}{\text{by \prefp{def:ss_setops}}}
+              \\&\implies \alpha\vx\in \spX \text{ and } \alpha\vx\in\setY
+                &&        \text{because $\spX$ and $\spY$ are linear subspaces}
+              \\&\implies \alpha\vx\in \spX\spi \spY
+                &&        \ifdochas{setstrct}{\text{by \prefp{def:ss_setops}}}
+            \end{align*}
+        \end{enumerate}
+
+      \item Proof that [$\xN$ case] $\implies$ [$\xN+1$ case]:
+        \begin{align*}
+          \spX_1\spi\spX_2\spi\cdots\spi\spX_{\xN+1}
+            &= \mcomr{\brp{\spX_1\spi\spX_2\spi\cdots\spi\spX_{\xN}}}{linear subspace by $\xN$ case hypothsis}\spi\spX_{\xN+1}
+          \\&\implies \text{linear subspace by $\xN=2$ case \xref{item:lsub_spi_n2}}
+        \end{align*}
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+Every linear subspace contains the zero vector $\vzero$ \xref{prop:subspace_prop}.
+But if a pair of linear subspaces of a linear space $\spX$ \emph{only} have $\vzero$ in commmon, then 
+any vector in $\spX$ can be \emph{uniquely} represented by a single vector from each of the two subspaces (next).
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{michel1993}{83}{048667598X}{Theorem 3.2.12},
+  \citerpgc{kubrusly2001}{67}{0817641742}{Theorem 2.14}
+  }
+\label{thm:XY0_unique}
+%---------------------------------------
+Let $\spX\eqd\linearspaceX$ and $\spY\eqd\linearspaceY$ be \structe{linear subspace}s \xref{def:subspace} 
+of a \structe{linear space} \xref{def:vspace} $\spO\eqd\linearspaceO$.
+\thmbox{
+  \setX \seti \setY=\setn{\vzero} 
+  \quad\iff\quad
+  \brb{\begin{array}{>{\qquad}FMD}
+    \mc{3}{M}{for every $\vu\in\spX\adds\spY$ there exist $\vx\in\setX$ and $\vy\in\setY$ such that}\\
+      1. & $\vu=\vx+\vy$ & and \\
+      2. & $\vx$ and $\vy$ are \prope{unique}.
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\setX\seti\setY=\setn{\vzero}$ $\implies$ \prope{unique} $\vx,\vy$:\\
+    Suppose that $\vx$ and $\vy$ are not unique, but rather $\vu=\vx_1+\vy_1=\vx_2+\vy_2$ where
+    $\vx_1,\vx_2\in\setX$ and $\vy_1,\vy_2\in\setY$.
+    \begin{align*}
+      \vu = \vx_1+\vy_1 = \vx_2+\vy_2
+        &\implies \mcom{\vx_1-\vx_2}{$\in\setX$} = \mcom{\vy_2-\vy_1}{$\in\setY$}
+        %&& \text{(suppose $\vx$ and $\vy$ are \prope{not unique})}
+      \\&\implies {\vx_1-\vx_2},\,{\vy_2-\vy_1}\,\in\setX\seti \setY
+      \\&\implies {\vx_1-\vx_2}={\vy_2-\vy_1}=\vzero
+        && \text{by left hypothesis}
+      \\&\implies {\vx_1=\vx_2} \quad\text{and}\quad {\vy_2=\vy_1}
+      \\&\implies \text{$\vx$ and $\vy$ are \prope{unique}}
+    \end{align*}
+
+  \item Proof that $\setX\seti\setY=\setn{\vzero}$ $\impliedby$ \prope{unique} $\vx,\vy$:
+    \begin{align*}
+      \vu &= \vx + \vy
+        \\&= \vx + \vy + \vy - \vy
+          && \text{for some vector $\vy\in\setX\seti\setY$}
+        \\&= \mcom{\brp{\vx + \vy}}{$\in\setX$} + \mcom{\brp{\vy - \vy}}{$\in\setY$}
+          && \text{because $\vx\in\setX$ and $\vy\in\setX\seti\setY$ \ldots}
+        \\&\implies \text{$\vx$ and $\vy$ are \prope{not unique} if $\vy\neq\vzero$}
+        \\&\implies \vy=\vzero
+          && \text{by right hypothesis}
+        \\&\implies \setX\seti\setY=\setn{\vzero}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:sub_lat_prop}
+\footnote{%
+  \citerppg{iturrioz1985}{56}{57}{0821850768}
+  }%
+%---------------------------------------
+Let $\spO$ be a linear subspace and $\psetO$ the set of closed linear subspaces of $\spO$.
+\thmboxt{
+  $\latb{\psetO}{\subseteq}{\adds}{\spi }{\spZero}{\spO}$
+  is a \structe{lattice}\ifsxref{lattice}{def:lattice}.
+  In particular
+  \\\indentx$\begin{array}{rcl @{\quad} rcl @{\quad}C}
+      \spX \adds \spX &=& \spX
+    & \spX \spi  \spX &=& \spX
+    & \forall \spX\in\psetO
+    %& (\prop{idempotent})
+    \\
+      \spX \adds \spY &=& \spY \adds \spX
+    & \spX \spi  \spY &=& \spY \spi  \spX
+    & \forall \spX,\spY\in\psetO
+    %& (\prop{commutative})
+    \\
+      (\spX \adds \spY) \adds \spZ &=& \spX \adds (\spY \adds \spZ)
+    & (\spX \spi  \spY) \spi  \spZ &=& \spX \spi  (\spY \spi  \spZ)
+    & \forall \spX,\spY,\spZ\in\psetO
+    %& (\prop{associative})
+    \\
+      \spX \adds (\spX \spi  \spY) &=& \spX
+    & \spX \spi  (\spX \adds \spY) &=& \spX
+    & \forall \spX,\spY\in\psetO
+    %& (\prop{absorptive}/\prop{contractive})
+\end{array}$}
+\end{theorem}
+\begin{proof}
+These results follow directly from 
+the properties of lattices\ifsxref{lattice}{thm:lattice}.
+\end{proof}
+
+
+
+%======================================
+\section{Subspaces of an inner product space}
+%======================================
+%---------------------------------------
+\begin{definition}
+\label{def:sub_ocomp}
+\label{def:set_orthog}
+\footnote{
+  \citerpgc{berberian1961}{59}{0821819127}{Definition~III.2.1},
+  \citerpg{michel1993}{382}{048667598X},
+  \citerpg{kubrusly2001}{328}{0817641742}
+  %\citerpgc{heil2011}{30}{0817646868}{Definition 1.41}
+  }
+\index{space!orthogonal}
+%---------------------------------------
+Let $\spO\eqd\inprodspaceX$ be an \structe{inner product space} \xref{def:inprod}.
+\defbox{\begin{array}{M}
+  The \hid{orthogonal complement} $\setAo$ in $\spO$ of a set $\setA\subseteq\setX$ is
+  \\\qquad
+  $\ds\setAo \eqd \set{\vx\in\setX}{\inprod{\vx}{\vy}=0 \quad \forall \vy\in\setA}$.
+  \\
+  The expression $\setAoo$ is defined as $\brp{\setAo}^\orthog$.
+    %$\setAooo$ as $\brp{\setAoo}^\orthog$, etcetera.
+  \end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  %\citerpg{michel1993}{383}{048667598X}\\
+  \citerpgc{berberian1961}{60}{0821819127}{Theorem~III.2.2},
+  \citerpg{kubrusly2011}{326}{0817649972}
+  }
+\label{prop:inprod_orthog_AB}
+\label{prop:ABBoAo}
+%---------------------------------------
+Let $\inprodspaceX$ be an \structe{inner product space} \xref{def:inprod}.
+%Let $\psetx$ be the power set of $\setA$.
+\propbox{\begin{array}{rclCD}
+      \setA \subseteq \setB &\implies& \setBo\subseteq\setAo &\forall\setA,\setB\in\psetX  & (\prope{antitone})
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \setBo
+    &\eqd \set{\vx\in\setX}{\inprod{\vx}{\vy}=0 \quad\forall \vy\in\setB}
+    && \text{by definition of $\setBo$ \xrefP{def:sub_ocomp}}
+  \\&\subseteq \set{\vx\in\setX}{\inprod{\vx}{\vy}=0 \quad\forall \vy\in\setA}
+    && \text{by $\setA\subseteq\setB$ hypothesis}
+  \\&= \setAo
+    && \text{by definition of $\setAo$ \xref{def:sub_ocomp}}
+\end{align*}
+\end{proof}
+
+Every \structe{linear space} $\spX$ 
+contains $\spZero$ and $\spX$ as \structe{linear subspace}s \xref{prop:subspace_0X}.
+If $\spX$ is also an \structe{inner product space}, then $\spZero$ and $\spX$ are \structe{orthogonal complement}s
+of each other (next proposition).
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpg{kubrusly2011}{326}{0817649972},
+  \citerpg{michel1993}{383}{048667598X}
+  }
+\label{prop:inprod_orthog}
+%---------------------------------------
+Let $\spO\eqd\inprodspaceX$ be an \structe{inner product space} \xref{def:inprod}
+and $\vzero$ the \structe{vector additive identity element} \xref{def:vspace} in $\spO$.
+\propbox{
+  %\brb{\begin{array}{M}
+  %  $\spO$ is an \structe{inner product space}\\
+  %  \xref{def:vspace}
+  %\end{array}}
+  %\qquad\implies\qquad
+  {\begin{array}{Frcl}
+    1. & \setn{\vzero}^\orthog &=& \setX                 \\
+    2. & \setXo                &=& \setn{\vzero}   
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+    \begin{align*}
+      \setn{\vzero}^\orthog 
+        &= \set{\vx\in\setX}{\inprod{\vx}{\vy}=0 \quad \forall \vy\in\setn{\vzero}}
+        && \text{by definition of $\orthog$ \xrefP{def:sub_ocomp}}
+      \\&= \set{\vx\in\setX}{\inprod{\vx}{\vzero}=0 }
+      \\&= \setX
+      \\
+      \setXo
+        &= \set{\vx\in\setX}{\inprod{\vx}{\vy}=0 \quad \forall \vy\in\setX}
+        && \text{by definition of $\orthog$ \prefp{def:sub_ocomp}}
+      \\&= \set{\vx\in\setX}{\inprod{\vx}{\vx}=0}
+      \\&= \setn{\vzero}
+    \end{align*}
+\end{proof}
+
+
+For any set $\setA$ contained in a linear space $\spX$, 
+$\setAoo$ is a \structe{linear subspace}, and it 
+is the smallest linear subspace containing the set $\setA$ ($\setAoo=\linspan\setA$, next theorem).
+In the case that $\setA$ is a \structe{linear subspace} rather than just a subset,
+results simplify significantly (next corollary).
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{michel1993}{383}{048667598X},
+  %\citerppg{kubrusly2001}{328}{329}{0817649972}
+  \citerpg{kubrusly2011}{326}{0817649980}
+  }
+\label{thm:inprod_orthog}
+%---------------------------------------
+Let  $\spO\eqd\inprodspaceX$ be an \structe{inner product space} \xref{def:inprod}.
+%Let $\spY\eqd\inprodspaceY$ be a subspace of an \structe{inner product space} $\spO\eqd\inprodspaceX$.
+Let $\linspan\setA$ be the span of a set $\setA$ \xref{def:span}.
+\thmbox{
+    \brb{\begin{array}{M}
+      $\setA$ is a \structb{subset} of $\setX$\\
+      ($\setA\subseteq\setX$)
+    \end{array}}
+    \quad\implies\quad
+    \brb{\begin{array}{FrclD}
+      1. & \setA\seti \setAo      &=& 
+           \brbl{\begin{array}{lMl}
+             \setn{\vzero}  & if & \vzero\in\setA\\
+             \emptyset      & if & \vzero\notin\setA
+           \end{array}}
+         & and
+         \\
+      2. & \setA &\subseteq& \setAoo = \linspan\setA    & and \\ %($\setAoo$ is the smallest linear subspace containing $\setA$)\\
+      3. & \setAo &=& \setAooo = \clsAo = \oclsA = \brp{\linspan\setA}^\orthog    & and \\
+      4. & \mc{3}{M}{$\setAo$ is a \structb{subspace} of $\spO$}
+    \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\setA\seti \setAo = \cdots$:
+    \begin{align*}
+      \setA\seti\setAo      
+        &= \set{\vx\in\setX}{\vx\in\setA} \spi  \set{\vx\in\setX}{\inprod{\vx}{\vy} \quad \forall \vy\in\setA}
+        && \text{by definition of $\setAo$}
+      \\&= \set{\vx\in\setX}{\vx\in\setA\quad\text{and}\quad \inprod{\vx}{\vy} \quad \forall \vy\in\setA}
+      \\&= \brbl{\begin{array}{lMl}
+             \setn{\vzero} & if & \vzero\in\setA\\
+             \emptyset     & if & \vzero\notin\setA
+           \end{array}}
+    \end{align*}
+
+  \item Proof that $\setA \subseteq \setAoo=\linspan\setA$: \label{item:inprod_orthog_oo}
+    \begin{align*}
+      \vx\in\setA 
+        &\implies \setn{\vx}^{\orthog\orthog} \subseteq \setAoo
+      \\&\implies \vx\in\setn{\vx}^{\orthog\orthog} \subseteq \setAoo
+      \\&\implies \vx\in \setAoo
+     \end{align*}
+     but
+     \begin{align*}
+      \vx\in\setAoo
+        &\notimplies \vx\in\setA
+    \end{align*}
+    Here is an example for the $\notimplies$ part using the linear space $\R^3$:
+    \begin{enumerate}
+      \item Let $\setA\eqd\setn{i}$, where $i$ is the unit vector on the x-axis.\\
+      \item Then $\setAo = \set{\vx\in\setX}{\text{$\vx\in$ yz plane}}$.
+      \item Then $\setAoo = \set{\vx\in\setX}{\text{$\vx\in$ x axis}}$.
+      \item Therefore, $\setA\subsetneq\setAoo$
+    \end{enumerate}
+
+  \item Proof for $\setAo$ equivalent expressions:
+    \begin{enumerate}
+      \item Proof that $\setAo = \setAooo$:
+        \begin{align*}
+          \setAo &\subseteq \brp{\setAo}^{\orthog\orthog}
+                 && \text{by \pref{item:inprod_orthog_oo}}
+               \\&= \brp{\setAoo}^\orthog
+               \\&= \setAooo
+                 && \text{by \prefp{def:sub_ocomp}}
+          \\
+          \setAooo
+            &= \brp{\setAoo}^\orthog
+            && \text{by \prefp{def:sub_ocomp}}
+          \\&\subseteq \setAo
+            && \text{by \pref{item:inprod_orthog_oo} and \prefpp{prop:inprod_orthog_AB}}
+        \end{align*}
+
+      \item Proof that $\setAooo=\brp{\linspan\setA}^\orthog$: follows directly from \pref{item:inprod_orthog_oo} ($\setAoo=\linspan\setA$).
+
+      \item Proof that $\setAo=\clsAo$: 
+        \begin{enumerate}
+          \item Let $\seqn{\vx_n}$ be an $\setAo$-valued sequence that converges to the limit $\vx$ in $\setX$.
+          \item The limit point $\vx$ must be in $\setAo$ because for all $\vy\in\setA$
+            \begin{align*}
+              \inprod{\vx}{\vy} 
+                &= \inprod{\lim\vx_n}{\vy}
+                && \text{by definition of the sequence $\seqn{\vx_n}$}
+              \\&= \lim\inprod{\vx_n}{\vy}
+              \\&= 0
+                && \text{because $\seqn{\vx_n}$ is $\setAo$-valued}
+            \end{align*}
+          \item Because $\inprod{\vx}{\vy}=0\quad\forall\vy\in\setA$, $\vx$ is in $\setAo$.
+          \item Because $\setAo$ contains all its limit points, and by the \thme{Closed Set Theorem} \xref{thm:cst},
+                it must be \prope{closed} ($\setAo=\clsAo$)
+        \end{enumerate}
+
+      \item Proof that $\setAo=\oclsA$: 
+        \begin{enumerate}
+          \item Let  $x\in\setAo$ and $y\in\clsA$.
+          \item Let $\seqn{\vy_n}$ be an $\setAo$-valued sequence that converges in $\setX$ to $y$.
+          \item Thus $\setAo\orthog\clsA$ because
+            \begin{align*}
+              \inprod{\vy}{\vx}
+                &= \inprod{\lim\vy_n}{\vx}
+                && \text{by definition of $\seqn{\vy_n}$}
+              \\&= \lim\inprod{\vy_n}{\vx}
+              \\&= 0
+                && \text{because $\seqn{\vy_n}$ is $\setAo$-valued}
+            \end{align*}
+          \item Because $\setAo\orthog\clsA$, so $\setAo\subseteq\clsAo$.
+          \item But $\clsAo\subseteq\setAo$ because
+            \begin{align*}
+              \setA
+                &\subseteq \clsA \implies \clsAo \subseteq \setAo
+                && \text{by \prope{antitone} property \xref{prop:ABBoAo}}
+            \end{align*}
+          \item And so $\setAo=\clsAo$.
+        \end{enumerate}
+    \end{enumerate}
+
+  %\item Proof that $\setAoo =         \linspan\setA$:
+  \item Proof that $\setAo$ is a \structb{subspace} of $\spO$ (must satisfy the conditions of \prefp{def:subspace}):
+    \begin{enumerate}
+      \item Proof that $\setAo\ne\emptyset$: $\setAo$ has at least one element, the element $\vzero$\ldots
+        \begin{align*}
+          \inprod{\vzero}{\vy} 
+            &=0 \quad \forall \vy\in\setA       && \text{by definition of $\vzero$}
+          \\&\implies \vzero\in\setAo           && \text{by definition of $\setAo$ \xref{def:set_orthog}}
+        \end{align*}
+
+      \item Proof that $\setAo\subseteq\setX$: 
+        \begin{align*}
+          \vu\in\setAo
+            &\implies \vu\in\set{\vx\in\setX}{\inprod{\vx}{\vy}=0 \quad \forall \vy\in\setA}
+            &&\text{by definition of $\setAo$ \xref{def:set_orthog}}
+          \\&\implies \vu\in\setX
+            &&\text{by definition of sets}
+        \end{align*}
+
+      \item Proof that $\vu,\vv\in\setAo\implies(\vu+\vv)\in\setAo$:
+        \begin{align*}
+          \vu,\vv\in\setAo
+            &\implies \inprod{\vu}{\vy}=\inprod{\vv}{\vy}=0 && \forall \vy\in\setA  && \text{by definition of $\setAo$ \xref{def:set_orthog}}
+          \\&\implies \inprod{\vu}{\vy}+\inprod{\vv}{\vy}=0 && \forall \vy\in\setA 
+          \\&\implies \inprod{\vu+\vv}{\vy}=0               && \forall \vy\in\setA  && \text{by \prope{additive} property of $\inprodn$ \xref{def:inprod}}
+          \\&\implies \vu+\vv\in\setAo                      &&                      && \text{by definition of $\setAo$ \xref{def:set_orthog}}
+        \end{align*}
+
+      \item Proof that $\vv\in\setO\implies\alpha\vv\in\setAo$:
+        \begin{align*}
+          \vv\in\setAo
+            &\implies \inprod{\vv}{\vy}=0                  && \forall \vy\in\setA  && \text{by definition of $\setAo$ \xref{def:set_orthog}}
+          \\&\implies \alpha\inprod{\vv}{\vy}=\alpha\cdot0 && \forall \vy\in\setA
+          \\&\implies \inprod{\alpha\vv}{\vy}=0            && \forall \vy\in\setA  && \text{by \prope{homogeneous} property of $\inprodn$ \xref{def:inprod}}
+          \\&\implies \alpha\vv\in\setAo                   &&                      && \text{by definition of $\setAo$ \xref{def:set_orthog}}
+        \end{align*}
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+%\footnote{
+%  \citerpg{michel1993}{383}{048667598X}\\
+%  %\citerppg{kubrusly2001}{328}{329}{0817649972}
+%  \citerpg{kubrusly2011}{326}{0817649972}
+%  }
+\label{cor:inprod_orthog}
+%---------------------------------------
+Let  $\spX\eqd\inprodspaceX$ and $\spY\eqd\inprodspaceY$ be \structe{inner product space}s.
+%Let $\spY\eqd\inprodspaceY$ be a subspace of an \structe{inner product space} $\spO\eqd\inprodspaceX$.
+Let $\linspan\setY$ be the span of the set $\setY$ \xref{def:span}.
+\corbox{
+    \brb{\begin{array}{M}
+      $\spY$ is a \structb{linear subspace} of $\spX$
+    \end{array}}
+    \qquad\implies\qquad
+    \brb{\begin{array}{FrclD}
+      1. & \setY\seti \setYo      &=& \setn{\vzero}              & and \\
+      2. & \setY                  &=& \setYoo = \linspan\setY    & and \\ 
+      3. & \setYo                 &=& \setYooo                   & and \\
+      4. & \mc{3}{M}{$\setYo$ is a \structb{subspace} of $\spX$} & 
+    \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\spY\seti \setYo      = \setn{\vzero}               $: This follows from \prefpp{thm:inprod_orthog} and the fact that all subspaces contain the zero vector $\vzero$ \xref{prop:subspace_prop}.
+  \item Proof that $\spY                  = \spY^{\orthog\orthog} = \linspan\spY$: This follows directly from \prefpp{thm:inprod_orthog}.
+  \item Proof that $\spYo                 = \spY^{\orthog\orthog\orthog}$: This follows directly from \prefpp{thm:inprod_orthog}.
+  \item Proof that $\setYo$ is a \structb{subspace} of $\spX$: This follows directly from \prefpp{thm:inprod_orthog}.
+\end{enumerate}
+\end{proof}
+
+
+
+
+%\pref{def:space_relation} (next) defines relations between linear spaces.
+%Note, however, that these relations are not operations on spaces
+%(as in \pref{def:sub_add}),
+%but are rather statements about the relationship between spaces.
+%%---------------------------------------
+%\begin{definition}
+%\citep{pedersen2000}{50}
+%\label{def:space_relation}
+%\label{def:direct_sum}
+%\label{def:ortho_spaces}
+%\index{space!complement}
+%\index{space!direct sum}
+%\index{space!orthogonal}
+%%---------------------------------------
+%Let $\spX$ be a linear space, $\spV,\spW\subseteq\spX$,
+%and $\vzero$ be the additive identity element in $\spX$.
+%\begin{enumerate}
+%\item ``$\spV$ is \hid{orthogonal} to $\spW$ in $\spX$"
+%is denoted by $\spV\perp\spW$ and is defined as
+%\defbox{
+%  \mcom{\spV \perp \spW}{$\spV$ is \hid{orthogonal} to $\spW$ in $\spX$}
+%  \quad \implies \quad
+%  \inprod{\vx}{\vy}=0
+%  \quad
+%  \forall \vx\in\setV,\; \vy\in\setW
+%  }
+%
+%\item ``$\spW$ is the \hid{complement} of $\spV$ in $\spX$"
+%is denoted by $\spX=\spV\adds\spW$ and has the meaning
+%\defbox{
+%  \mcom{\spX=\spV\adds\spW}{$\spW$ is the \hid{complement} of $\spV$ in $\spX$}
+%  \implies
+%  \left\{\begin{array}{ll}
+%    1. & \spX = \spV + \spW \\
+%    2. & \spV \spi  \spW = \setn{\vzero}
+%  \end{array}\right.
+%  }
+%
+%\item Equivalent ways of expressing $\spX=\spV\adds\spW$ include
+%\begin{enumerate}
+%  \item $\spX$ is the \hid{direct sum} of $\spV$ and $\spW$.
+%  \item $\spX = \spV \adds \spW$ (and ``$\adds$" is the \hid{direct sum operator})
+%  \item $\spW$ is the \hid{complement} of $\spV$ in $\spX$.
+%  \item $\spW$ \hid{complements} $\spV$ in $\spX$.
+%\end{enumerate}
+%\end{enumerate}
+%\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{kubrusly2001}{324}{0817649972}
+  }
+\label{thm:YoZ==>YZ0}
+%---------------------------------------
+Let $\spY\eqd\inprodspaceY$ and $\spZ\eqd\inprodspaceZ$ be \structe{linear subspace}s 
+of an \structe{inner product space} $\spO\eqd\inprodspaceX$.
+\thmbox{
+  \spY \orthog \spZ 
+  \qquad\implies\qquad
+  \setY\seti\setZ=\setn{\vzero}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \vx\in\spY\seti\spZ
+    & \implies \vx\in\spY \text{ and } \vx\in\spZ
+    && \text{by definition of $\seti$}
+  \\& \implies \inprod{\vx}{\vx}=0
+    && \text{by hypothesis $\spY\orthog\spZ$}
+  \\& \implies \vx=\vzero
+    && \text{by \prope{non-isotropic}property of $\inprodn$ \xrefP{def:inprod}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{berberian1961}{61}{0821819127}{Theorem~III.2.3} 
+  }
+%---------------------------------------
+Let $\spY\eqd\inprodspaceY$ and $\spZ\eqd\inprodspaceZ$ be linear subspaces 
+of an \structe{inner product space} $\spO\eqd\inprodspaceX$.
+\thmbox{
+  \brb{\begin{array}{>{\scy}rlD}
+    1. & \spY \orthog \spZ \text{ \scs and}\\
+    2. & \vx \in \spY \adds \spZ
+  \end{array}}
+  \implies
+  \brb{\begin{array}{>{\scy}rM}
+    1. & There exists $\vy\in\spY$ and $\vz\in\spZ$ such that $\vx=\vy+\vz$ \scs and\\
+    2. & $\vy$ and $\vz$ are \prope{unique}.
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\vy$ and $\vz$ exist: by definition of Minkowski addition operator $\adds$ \xrefP{def:sub_add}.
+  \item Proof that $\vy$ and $\vz$ are \prope{unique}:
+    \begin{enumerate}
+      \item Suppose $\vx=\vy_1+\vz_1=\vy_1+ \vz_2$ for $\vy_1,\vy_2\in\spY$ and $\vz_1,\vz_2\in\spZ$.
+      \item This implies
+        \begin{align*}
+          \vzero
+            &= \vx-\vx
+          \\&= \brp{\vy_1+\vz_1} - \brp{\vy_1+ \vz_2}
+          \\&= \mcom{\brp{\vy_1-\vy_2}}{in $\spY$} + \mcom{\brp{\vz_1- \vz_2}}{in $\spZ$}
+        \end{align*}
+      \item Because $\vy_1-\vy_2\in\spY$, $\vz_1-\vz_2\in\spZ$, 
+                    $(\vy_1-\vy_2)+(\vz_1+\vz_2)=\vzero$, and 
+                    $\inprod{\vy_1-\vy_2}{\vz_1-\vz_2}=0$,
+            then by \prefpp{thm:vsinprod_zero}, $\vy_1-\vy_2=\vzero$ and $\vz_1-\vz_2=\vzero$.
+      \item This implies $\vy_1=\vy_2$ and $\vz_1=\vz_2$.
+      \item This implies $\vy$ and $\vz$ are \prope{unique}.
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+
+%=======================================
+\section{Subspaces of a Hilbert Space}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{kubrusly2001}{330}{0817649972}{Theorem 5.13},
+  \citerpgc{ab}{290}{0120502577}{Theorem 33.6},
+  \citerpgc{berberian1961}{68}{0821819127}{Theorem~III.5.1}
+  }
+\label{thm:sub_convex_min}
+%---------------------------------------
+Let $\spH\eqd\HspaceX$ be a \structe{Hilbert space} \xref{def:hspace}.\\
+Let $\setY$ be a \structe{subset} of $\setX$,
+and let $\ds\metric{\vx}{\setY}\eqd\inf_{\vy\in\setY}\norm{\vx-\vy}$.
+\thmbox{
+  \brb{\begin{array}{FMDD}
+      1. & $\setY\neq\emptyset$      &                                 & and
+    \\2. & $\setY$ is \prope{closed} & \ifxref{topology}{def:clsA}     & and 
+    \\3. & $\setY$ is \prope{convex} & \ifxref{convex}{def:convex_set} & 
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{>{\qquad}FMD}
+    \mc{3}{M}{There exists $\vp\in\setY$ such that} \\
+        1. & $\metric{\vx}{\setY} = \norm{\vx-\vp}$ & and
+      \\2. & $\vp$ is \prope{unique}.
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Let $\delta\eqd\inf\set{\vx-\vy}{\vy\in\setY}$.\label{item:sub_convex_min_delta}
+  \item Let $\seqxZ{\vy_n}$ be a sequence such that $\norm{\vx-\vy_n}\rightarrow\delta$.
+  \item Proof that $\seqn{\vy_n}$ is \prope{Cauchy}: \label{item:sub_convex_min_cauchy}
+    \begin{align*}
+      &\lim_{m,n\rightarrow\infty}\norm{\vy_n-\vy_m}^2
+      \\&= \lim_{m,n\rightarrow\infty}\norm{(\vy_n-x)+(x-\vy_m)}^2
+      \\&= \lim_{m,n\rightarrow\infty}\brb{-\norm{(\vy_n-x)-(x-\vy_m)}^2 + 2\norm{\vy_n-x}^2 + 2\norm{x-\vy_m}^2}
+        && \text{by \thme{parallelogram law} (\prefpo{thm:parallelogram})}
+      \\&= \lim_{m,n\rightarrow\infty}\brb{-4\norm{\mcom{\brp{\frac{1}{2}\vy_n+\frac{1}{2}\vy_m}}{in $\spY$ by \prope{convexity}}-x}^2 + 2\norm{\vy_n-x}^2 + 2\norm{x-\vy_m}^2}
+      \\&\le \lim_{m,n\rightarrow\infty}\brb{-4\delta^2 + 2\norm{\vy_n-x}^2 + 2\norm{x-\vy_m}^2}
+        && \text{by definition of $\delta$ (\pref{item:sub_convex_min_delta})}
+      \\&= -4\delta^2 + \lim_{m,n\rightarrow\infty}\brb{2\norm{\vy_n-x}^2} + \lim_{m,n\rightarrow\infty}\brb{2\norm{x-\vy_m}^2}
+      \\&= -4\delta^2 + 2\delta^2 + 2\delta^2
+        && \text{by definition of $\delta$ (\pref{item:sub_convex_min_delta})}
+      \\&= 0
+    \end{align*}
+
+  \item Proof that $\metric{\vx}{\setY} = \norm{\vx-\vy}$: 
+        because $\seqn{\vy_n}$ is \prope{Cauchy} (\pref{item:sub_convex_min_delta}) and by the \prope{closed} hypothesis.
+
+  \item Proof that $\vy$ is \prope{unique}: 
+        Because in a metric space, the limit of a convergent sequence is \prope{unique}\ifdochas{metric}{ by \prefp{thm:xn_to_xy}}.
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{kubrusly2001}{330}{0817649972}{Theorem 5.13}
+  %\citerpgc{ab}{290}{0120502577}{Theorem 33.6}
+  }
+%\label{thm:inprod_orthog}
+%---------------------------------------
+Let $\spH\eqd\HspaceX$ be a \structe{Hilbert space} \xref{def:hspace}.
+Let $\ds\metric{\vx}{\setY}\eqd\inf_{\vy\in\setY}\norm{\vx-\vy}$.
+Let $\spY\eqd\HspaceY$  % be a subspace of $\spH$
+and $\setYo$ the \structe{orthogonal complement} of $\setY$.
+\thmbox{
+  \brb{\begin{array}{M}
+    $\spY$ is a \structe{subspace} of $\spH$
+  \end{array}}
+  \qquad\implies\qquad
+  \brb{\begin{array}{>{\qquad}FMD}
+    \mc{3}{M}{There exists $\vp\in\setY$ such that} \\
+        1. & $\metric{\vx}{\setY} = \norm{\vx-\vp}$ & and
+      \\2. & $\vp$ is \prope{unique}                & and
+      \\3. & $\vx-\vp\in\setYo$.
+  \end{array}}
+  }
+\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%
+%\end{enumerate}
+%\end{proof}
+
+%---------------------------------------
+\begin{theorem}[\thmd{Projection Theorem}]
+\footnote{
+  \citerpgc{bachman1966}{172}{0486402517}{Theorem 10.8},
+  \citerpgc{kubrusly2001}{339}{0817649972}{Theorem 5.20}
+  }
+\label{thm:projection}
+%---------------------------------------
+Let $\spH\eqd\HspaceX$ be a Hilbert space.
+\thmbox{
+  \brb{\begin{array}{M}
+    $\spY$ is a \structe{subspace} of $\spH$
+  \end{array}}
+  \qquad\implies\qquad
+  \brb{\begin{array}{l}
+  \spY \adds \spYo = \spH
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \spY \adds \spYo
+    &= \brs{\spY \adds \spYo}^{\orthog\orthog}
+    && \text{by \prefp{cor:inprod_orthog}}
+  \\&= \brs{\spYo \spi \spYoo}^{\orthog}
+    && \text{by \prefpp{prop:ABBoAo} \ifdochas{ortholat}{and \prefpp{lem:latoc_demorgan}}}
+  \\&= {\setn{\vzero}}^{\orthog}
+    && \text{by \prefp{cor:inprod_orthog}}
+  \\&= \spH
+    && \text{by \prefp{prop:inprod_orthog}}
+\end{align*}
+\end{proof}
+
+%=======================================
+%\section{Subspace order structure}
+%=======================================
+%======================================
+%\subsection{Ordered sets of subspaces}
+%======================================
+The inclusion relation $\subseteq$ is an order relation on the set of subspaces of 
+a linear space $\spO$.
+
+%--------------------------------------
+\begin{proposition}
+%--------------------------------------
+Let $\ssetS$ be the set of subspaces of a linear space $\spO$.
+Let $\subseteq$ be the inclusion relation.
+\propboxt{$\opair{\ssetS}{\subseteq}$ is an \structb{ordered set}}
+\end{proposition}
+\begin{proof}
+$\opair{\ssetS}{\subseteq}$ is an \structe{ordered set}\ifsxref{order}{def:order_rel} and because
+  \\$\begin{array}{@{\qquad}ll@{\qquad}C@{\qquad}DD@{}r@{}D}
+    \cline{6-6}
+    1. & \spX \subseteq \spX
+       & \forall \spX\in\ssetS
+       & (\prop{reflexive})
+       & and \hspace{2ex}
+       & \text{ }\vline
+       & \text{\hspace{2ex}preorder}
+       \\
+    2. & \spX \subseteq \spY \text{ and } \spY \subseteq \spZ \implies \spX \subseteq \spZ
+       & \forall \spX,\spY,\spZ\in\ssetS
+       & (\prop{transitive})
+       & and
+       & \vline
+    \\\cline{6-6}
+    3. & \spX \subseteq \spY \text{ and } \spY \subseteq \spX \implies \spX=\spY
+       & \forall \spX,\spY\in\ssetS
+       & (\prop{anti-symmetric})
+       & 
+       & 
+  \end{array}$
+\end{proof}
+
+%======================================
+%\subsection{Lattices of subspaces}
+%======================================
+
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:sub_lat}
+%%---------------------------------------
+%Let $\spO$ be a linear space and $\ssetS$ a set of linear subspaces of $\spO$.\footnote{
+%  \begin{tabular}{lcl}
+%    \structe{subspace addition operator}     & $\adds$ & \prefp{def:sub_add}\\
+%    \structe{subspace intersection operator} & $\spi$  & \prefp{def:sub_add}
+%  \end{tabular}}
+%\thmbox{
+%    \brb{\begin{array}{>{\scriptstyle}rllCD}
+%    1. & \spZero       &\in \ssetS &                           & and \\ 
+%    2. & \spO          &\in \ssetS &                           & and \\
+%    3. & \spX\adds\spY &\in \ssetS & \forall\spX,\spY\in\ssetS & and \\
+%    4. & \spX\spi \spY &\in \ssetS & \forall\spX,\spY\in\ssetS 
+%    \end{array}}
+%  \qquad\implies\qquad
+%  \brb{\text{$\lattice{\ssetS}{\subseteq}{\adds}{\spi }$ is a \hib{lattice}.}}
+%  }
+%\end{theorem}
+%
+%In this document, we call the lattice described in \pref{thm:sub_lat} (previous theorem) a \hid{subspace lattice}.
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:sub_latoc}
+\footnote{%
+  \citerppg{iturrioz1985}{56}{57}{0821850768}
+  }%
+%---------------------------------------
+Let $\spH$ be a Hilbert space and $\pset{\spH}$ the set of closed linear subspaces of $\spH$.
+\thmboxt{
+  $\latoc{\psetH}{\subseteq}{\adds}{\spi }{\orthog}{\spZero}{\spH}$
+  is an \structe{orthomodular lattice}\ifsxref{ortholat}{def:latoc_omod}.
+  In particular
+  \\\indentx$\begin{array}{Frcl@{\quad}C @{\qquad}D}
+  %    \cnto & \spX \adds \spX &=& \spX
+  %  & \cntx & \spX \spi  \spX &=& \spX
+  %  & \forall \spX\in\ssetS
+  %  %& (\prop{idempotent})
+  %  \\
+  %    \cntx & \spX \adds \spY &=& \spY \adds \spX
+  %  & \cntx & \spX \spi  \spY &=& \spY \spi  \spX
+  %  & \forall \spX,\spY\in\ssetS
+  %  %& (\prop{commutative})
+  %  \\
+  %    \cntx & (\spX \adds \spY) \adds \spZ &=& \spX \adds (\spY \adds \spZ)
+  %  & \cntx & (\spX \spi  \spY) \spi  \spZ &=& \spX \spi  (\spY \spi  \spZ)
+  %  & \forall \spX,\spY,\spZ\in\ssetS
+  %  %& (\prop{associative})
+  %  \\
+  %    \cntx & \spX \adds (\spX \spi  \spY) &=& \spX
+  %  & \cntx & \spX \spi  (\spX \adds \spY) &=& \spX
+  %  & \forall \spX,\spY\in\ssetS
+  %  %& (\prop{absorptive}/\prop{contractive})
+  %  \\
+      1. & \spX \adds \spXo     &=& \spH                & \forall\spX\in\spH & (\prope{complemented})
+    \\2. & \spX \spi \spXo      &=& \spZero             & \forall\spX\in\spH & (\prope{complemented})
+    \\3. & \brp{\spXo}^\orthog  &=& \spX                & \forall\spX\in\spH & (\prope{involutory})
+    \\4. & \spX\orel \spY &\implies& \spYo\orel \spXo   & \forall\spX,\spY\in\spH & (\prope{antitone})
+    \\5. & \spX\orel \spY &\implies& \spX \adds \brp{\spXo \spi \spY} = \spY &\forall \spX,\spY\in\setX & (\prope{orthomodular identity})
+\end{array}$}
+\end{theorem}
+\begin{proofns}
+\begin{enume}
+  \item Proof for \prope{complemented} (1) property: by \thme{Projection Theorem} \xref{thm:projection}.
+  \item Proof for \prope{complemented} (2) property: by \prefpp{cor:inprod_orthog}.
+  \item Proof for \prope{involutory}       property: by \prefpp{cor:inprod_orthog}.
+  \item Proof for \prope{antitone}   property: by \prefpp{prop:ABBoAo}.
+  \item Proof for \prope{orthomodular identity} property: 
+  \item Proof that lattice is \prope{orthomodular}: by 5 properties and definition of \structe{orthomodular lattice}\ifsxref{ortholat}{def:latom}.
+\end{enume}
+\end{proofns}
+
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:sub_latc}
+%%---------------------------------------
+%Let $\spO$ be a \structe{linear space} \xref{def:vspace}.
+%Let $\ssetS$ be a set of linear subspaces of $\spO$.
+%\thmbox{
+%  \brb{\begin{array}{FllCD}
+%    \cnto & \spZero       &\in \ssetS &                           & and
+%    \cntn & \spO          &\in \ssetS &                           & and
+%    \cntn & \spX\adds\spY &\in \ssetS & \forall\spX,\spY\in\ssetS & and
+%    \cntn & \spX\spi \spY &\in \ssetS & \forall\spX,\spY\in\ssetS & and
+%    \cntn & \spXo         &\in \ssetS & \forall\spX     \in\ssetS 
+%  \end{array}}
+%  \quad\implies\quad
+%  \brb{\begin{array}{M}
+%    $\latc{\ssetS}{\subseteq}{\adds}{\spi }{\orthog}{\spZero}{\spO}$\\
+%    is a \hib{complemented lattice}.
+%  \end{array}}
+%  }
+%\end{theorem}
+%
+%In this document, the lattice described in \pref{thm:sub_latc} (previous theorem) will be called a \hid{complemented subspace lattice}.
+
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:sub_latc_prop}
+%%---------------------------------------
+%Let $\latc{\ssetS}{\subseteq}{\adds}{\spi }{\orthog}{\spZero}{\spO}$ 
+%be a \hib{complemented subspace lattice}.
+%\thmbox{
+%%\renewcommand{\arraystretch}{1.25}
+%\begin{array}{rcl @{\qquad} rcl @{\qquad}C @{\qquad}D}
+%    %  \spX \adds \spX &=& \spX
+%    %& \spX \spi  \spX &=& \spX
+%    %& \forall \spX\in\ssetS
+%    %& (\prop{idempotent})
+%    %\\
+%    %  \spX \adds \spY &=& \spY \adds \spX
+%    %& \spX \spi  \spY &=& \spY \spi  \spX
+%    %& \forall \spX,\spY\in\ssetS
+%    %& (\prop{commutative})
+%    %\\
+%    %  (\spX \adds \spY) \adds \spZ &=& \spX \adds (\spY \adds \spZ)
+%    %& (\spX \spi  \spY) \spi  \spZ &=& \spX \spi  (\spY \spi  \spZ)
+%    %& \forall \spX,\spY,\spZ\in\ssetS
+%    %& (\prop{associative})
+%    %\\
+%    %  \spX \adds (\spX \spi  \spY) &=& \spX
+%    %& \spX \spi  (\spX \adds \spY) &=& \spX
+%    %& \forall \spX,\spY\in\ssetS
+%    %& (\prop{absorptive}/\prop{contractive})
+%    %\\
+%      \spX \adds \spXo &=& \spO   
+%    & \spX \spi  \spXo &=& \spZero   
+%    & \forall \spX,\spY\in\ssetS
+%    & (\prop{complemented})
+%\end{array}}
+%\end{theorem}
+%\begin{proof}
+%These results follow directly from the definition 
+%of complemented lattices (\ifdochasni{latvar}{\prefp{def:latc}}).
+%\end{proof}
+
+
+%======================================
+%\subsubsection{Subspaces of Hilbert spaces}
+%======================================
+\begin{minipage}{11\tw/16}%
+%---------------------------------------
+%\begin{theorem}
+%\footnotemark
+%---------------------------------------
+%Let $\spH$ be a Hilbert space and $\pset{\spH}$ the set of closed linear subspaces of $\spH$.
+%\thmboxt{
+%  $\latoc{\psetH}{\subseteq}{\adds}{\spi }{\orthog}{\spZero}{\spH}$\\
+%  is an \structe{orthomodular lattice} \xref{def:latoc_omod}.
+%  }
+%\\
+This concept is illustrated to the right where $\spX,\spY\in\pset{\spH}$ 
+are linear subspaces of the linear space $\spH$ and
+\\\indentx$ \spX \subseteq \spY \quad\implies\quad \spY=\spX \adds \brp{\spX^\ocop \spi  \setY}$.
+%\end{theorem}%
+\end{minipage}%
+%\citetblt{%
+%  \citerppg{iturrioz1985}{56}{57}{0821850768}
+%  }%
+\begin{minipage}{5\tw/16}%
+  \begin{center}
+  \footnotesize
+  \setlength{\unitlength}{\tw/250}%
+  \begin{picture}(250,250)(-100,-100)%
+    \thicklines%
+    %{\color{graphpaper}\graphpaper[10](-100,-100)(250,250)}%
+    \color{blue}%
+      \put(  25,  25){\vector(1, 0){75}}%
+      \put( 105,  25){\makebox(0,0)[l]{$\spX$}}%
+    \color{green}%
+      \put(   0,-100){\line( 0, 1){200} }%
+      \put(   0, 100){\line( 1, 1){ 50} }%
+      \put(   0,-100){\line( 1, 1){ 50} }%
+      \put(  50,  50){\line( 0, 1){100} }%
+      \put(  50, -50){\line( 0, 1){ 50} }%
+      \put(  70,  90){\makebox(0,0)[l]{$\spX^\ocop$}}%
+      \put(  60,  90){\vector(-1,0){35}}%
+    \color{red}%
+      \put(-100,   0){\line( 1, 0){200} }%
+      \put(-100,   0){\line( 1, 1){ 50} }%
+      \put( 100,   0){\line( 1, 1){ 50} }%
+      \put( -50,  50){\line( 1, 0){ 50} }%
+      \put(  50,  50){\line( 1, 0){100} }%
+      \put( -50, 110){\makebox(0,0)[bl]{$\spY=\spX \adds \brp{\spX^\ocop \spi  \setY}$}}%
+      \put( -30, 100){\vector(0,-1){75}}%
+    \color{black}%
+      \put(   0,   0){\line( 1, 1){ 50} }%
+      \put(  70, -30){\makebox(0,0)[tl]{$\spX^\ocop\spi \spY$}}%
+      \put(  65, -35){\vector(-1,1){50}}%
+  \end{picture}%
+  \end{center}
+\end{minipage}%
+
+%---------------------------------------
+\begin{corollary}
+%---------------------------------------
+Let $\spH$ be a Hilbert space with orthogonality operation $\orthog$.
+Let $\latoc{\psetH}{\subseteq}{\adds}{\spi }{\orthog}{\spZero}{\spH}$ be the lattice of subspaces of $\spH$.
+\corbox{
+  \begin{array}{rclCDD}
+    (\spX\adds \spY)^\orthog &=& \spX^\orthog \spi  \spY^\orthog & \forall \spX,\spY\in\psetH & (\prope{de Morgan}) & and \\
+    (\spX\spi  \spY)^\orthog &=& \spX^\orthog \adds \spY^\orthog & \forall \spX,\spY\in\psetH & (\prope{de Morgan}) & 
+  \end{array}
+  }
+\end{corollary}
+\begin{proof}
+By properties of \structe{orthocomplemented lattice}s \ifsxref{ortholat}{thm:latoc_prop}.
+\end{proof}
+
+
+
+
+\if 0
+
+%======================================
+\subsection{Subspace lattice isomorphisms}
+%======================================
+There are three equivalent ways of representing a subspace lattice:
+\\\begin{tabular}{>{\qquad}llll}
+ %1. & subspace lattice             & \pref{def:subspace_lattice} & \prefpo{def:subspace_lattice} \\
+  1. & subspace lattice             & \pref{thm:sub_lat}          & \prefpo{thm:sub_lat} \\
+  2. & projection operator lattice  & \pref{thm:operator_lattice} & \prefpo{thm:operator_lattice} \\
+  3. & bases lattice                & \pref{thm:basis_lattice}    & \prefpo{thm:basis_lattice}
+\end{tabular}\\
+And these three methods provide representations that are isomorphic to each other;
+this is proven in \prefpp{thm:VPb_nsomorphic} and 
+illustrated in \prefpp{fig:VPb_nsomorphic}.
+Because they are isomorphic, they are essentially equivalent and
+can be used interchangeably.
+
+
+%%---------------------------------------
+%% Progressive {x,y,z} lattice
+%%---------------------------------------
+%\begin{minipage}[c]{4\tw/16}
+%  \begin{center}%
+%  \begin{fsL}%
+%  \setlength{\unitlength}{\tw/(400)}%
+%  \begin{picture}(300,400)(-150,-50)%
+%  %{\color{graphpaper}\graphpaper[10](-150,-50)(300,400)}%
+%    \thicklines%
+%    {\color{black}%
+%      \put( 100, 100){\line(-1, 2){100}}%
+%      \put(   0, 100){\line(-1, 2){ 50}}%
+%      \put(-100, 100){\line( 1, 2){100}}%
+%      \put(   0,   0){\line(-1, 1){100}}%
+%      \put(   0,   0){\line( 0, 1){100}}%
+%      \put(   0,   0){\line( 1, 1){100}}%
+%      }%
+%    {\color{blue}%
+%      \put(   0, 300){\circle*{15}}%
+%      \put(- 50, 200){\circle*{15}}%
+%      \put( 100, 100){\circle*{15}}%
+%      \put(   0, 100){\circle*{15}}%
+%      \put(-100, 100){\circle*{15}}%
+%      \put(   0,   0){\circle*{15}}%
+%      }%
+%    {\color{blue}%
+%      \put(   0, 310){\makebox(0,0)[b] {$\spV_5$}}%
+%      \put(- 60, 200){\makebox(0,0)[cr]{$\spV_4$}}%
+%      \put( 110, 100){\makebox(0,0)[cl]{$\spV_3$}}%
+%      \put(  10, 100){\makebox(0,0)[tl]{$\spV_2$}}%
+%      \put(-110, 100){\makebox(0,0)[cr]{$\spV_1$}}%
+%      \put(   0, -10){\makebox(0,0)[t] {$\spZero$}}%
+%      }%
+%  \end{picture}%
+%  \end{fsL}%
+%  \end{center}%
+%\end{minipage}
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:subspace_lattice}
+%%---------------------------------------
+%\defbox{\begin{array}{l@{\qquad}lll}
+%  \mc{4}{l}{\text{A \hid{subspace lattice} is any 4-tupple
+%  $(\seq{\spX_n}{n\in\Z},\, \subseteq,\, +,\, \spi )$ where \footnotemark
+%  }}
+%  \\ &1.& (\seq{\spX_n}{n\in\Z},\, \subseteq,\, +,\, \spi ) & \text{is a lattice}
+%  \\ &2.& \seq{\spX_n}{n\in\Z} & \text{is a sequence of subspaces}
+%  \\ &3.& \subseteq    & \text{is the set inclusion relation}
+%  \\ &4.& \adds        & \text{is subspace addition}
+%  \\ &5.& \mpys        & \text{is the set intersection operator.}
+%\end{array}}
+%\footnotetext{\begin{tabular}[t]{lll}
+%  \hie{subspace}:          & \pref{def:subspace} & \prefpo{def:subspace}  \\
+%  \hie{subspace addition}: & \pref{def:sub_add} & \prefpo{def:sub_add}  \\
+%  \ifdochas{found}{\hie{set intersection}:  & \pref{def:ss_setops}  & \prefpo{def:ss_setops}}
+%\end{tabular}}
+%\end{definition}
+
+
+
+%We can define a projection operator $\opP_n$ for every subspace $\spX_n\subseteq\spO$ 
+%in a \prop{subspace lattice} such that 
+%\[ \spX_n = \opP_n\spO \qquad \forall n\in\Z \]
+%\xrefP{def:operator_lattice}.
+%Each projection operator $\opP_n$ in the lattice ``projects" the range space $\spO$
+%onto a subspace $\spX_n$.
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:operator_lattice}
+%---------------------------------------
+Let $\lattice{\ssetS}{\subseteq}{\adds}{\spi }$ be a \hib{subspace lattice}
+on a linear space $\spO$.
+Let $\ssetP$ be a set of projection operators in $\clF{\spO}{\spO}$,
+$\addo$ operator addition, and $\mpyo$ operator multiplication\ifsxref{relation}{def:op+x}.
+\thmbox{\begin{array}{>{\qquad\scriptstyle}rl@{\qquad}D}
+  \mc{3}{M}{The tuple $\lattice{\ssetP}{\orelP}{\addo}{\mpyo}$ is a 
+            \hib{lattice} and \hib{isomorphic} to $\lattice{\ssetS}{\subseteq}{\adds}{\mpys}$ if}
+  \\ 1.& \forall \spX\in\ssetS \quad\exists\quad \opP\in\ssetP \st \opP\spO = \spX             & and 
+  \\ 2.& \forall \opP\in\ssetP \quad\exists\quad \spX\in\ssetS \st \opP\spO = \spX             & and 
+  \\ 3.& \opP_m\orelP\opP_n \quad\text{if}\quad \opP_m\opP_n=\opP_n\opP_m   =\opP_m            &
+\end{array}}
+\end{theorem}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:basis_lattice}
+%---------------------------------------
+Let $\lattice{\ssetS}{\subseteq}{\adds}{\spi }$ be a \hib{subspace lattice}
+on a linear space $\spO$.
+Let $\ssetB$ be a set of bases on $\clF{\spO}{\spO}$.
+\thmbox{\begin{array}{>{\qquad\scriptstyle}rl@{\qquad}D}
+  \mc{3}{M}{The tuple $\lattice{\ssetB}{\orelB}{\addb}{\mpyb}$ is a 
+            \hib{lattice} and \hib{isomorphic} to $\lattice{\ssetS}{\subseteq}{\adds}{\mpys}$ if}
+  \\1.& \forall \spX\in\ssetS \quad\exists\quad \setA\in\ssetB \st \linspan\setA = \spX             & and 
+  \\2.& \forall \setA\in\ssetB \quad\exists\quad \spX\in\ssetS \st \linspan\setA = \spX             & and 
+  \\3.& \setA_1\orelB\setA_2 \implies \linspan\setA_1 \subseteq \linspan\setA_2
+\end{array}}
+\end{theorem}
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:operator_lattice}
+%%---------------------------------------
+%Let $\spO$ be a linear space with \prop{subspace lattice}
+%$(\seq{\spX_n}{n\in\Z},\, \subseteq,\, \adds,\, \spi )$.
+%\defbox{\begin{array}{l@{\qquad}lll}
+%  \mc{4}{l}{\text{A \hid{projection operator lattice} is any 4-tupple
+%  $(\seq{\opP_n}{n\in\Z},\, \subseteq,\, \boxplus,\, \boxtimes)$ where
+%  }}
+%  \\ &1.& (\seq{\opP_n}{n\in\Z},\, \subseteq,\, \boxplus,\, \boxtimes) & \text{is a lattice}
+%  \\ &2.& \seq{\opP_n}{n\in\Z} & \text{is a sequence of projection operators where } \opP_n\spX \eqd \spX_n \forall n\in\Z
+%  \\ &3.& \orelP               & \text{where } \opP_m\orelP\opP_n \quad\text{if}\quad \opP_m\opP_n=\opP_n\opP_m=\opP_m
+%  \\ &4.& \addo                & \text{is operator addition}
+%  \\ &5.& \mpyo                & \text{is operator multiplication}
+%\end{array}}
+%\end{definition}
+%
+%
+We can define a \hie{basis} $\seq{\psi_{nm}}{m\in\Z}$
+for every subspace $\spX_n\subseteq\spO$ 
+in a \prop{subspace lattice} such that 
+$\spX_n = \linspan\seq{\psi_{nm}}{m\in\Z}$.
+\xrefP{def:basis_lattice}.
+Each basis sequence $\seqn{\psi_{nm}}$ \hie{spans} or \hie{generates} a subspace $\spX_n$.
+%A basis lattice is illustrated in the figure to the left.
+%Bases are available in various levels of sophistication---
+%more sophistication meaning easier to  use but less general and less sophistication
+%meaning more challenging to use but more general.
+
+%\begin{minipage}{12\tw/16}%
+%Examples of basis lattices are given by \\
+%  \begin{tabular}{llll}
+%    $\imark$ & \pref{ex:arch_d1}  & \prefpo{ex:arch_d1}  &---Haar basis / Daubechies-$p1$ basis  \\
+%    $\imark$ & \pref{ex:arch_d2}  & \prefpo{ex:arch_d2}  &---Daubechechies-$p2$ basis \\
+%    $\imark$ & \pref{ex:arch_cos4} & \prefpo{ex:arch_cos4} &---cosine basis
+%  \end{tabular}
+%\end{minipage}
+
+%---------------------------------------
+\begin{definition}
+\label{def:basis_lattice}
+%---------------------------------------
+Let $\spO$ be a linear space with \prop{subspace lattice}
+$(\seq{\spX_n}{n\in\Z},\, \subseteq,\, \adds,\, \spi )$.
+\defboxt{
+  A \hid{basis lattice} is any 4-tupple 
+  $(\seq{\seq{\psi_{n,m}}{m\in\Z}}{n\in\Z},\, \lessdot,\, \spu ,\, \odot)$ where 
+  \\\indentx$\begin{array}{FMD}
+      1.& $(\seq{\seq{\psi_{n,m}}{m\in\Z}}{n\in\Z},\, \lessdot,\, \spu ,\, \odot)$ is a lattice & and
+    \\2.& $\seq{\seq{\psi_{n,m}}{m\in\Z}}{n\in\Z}$ is a sequence of sequence of basis vectors   & and
+    \\3.& $\linspan\seq{\psi_{n,m}}{m\in\Z}=\opV_n\quad \forall n\in\Z$                            & and
+    %\\4.& \subseteq  & \text{where } 
+    \\4.& $\left(\seq{\psi_{i,m}}{m\in\Z}\right)\lessdot\left(\seq{\psi_{j,m}}{m\in\Z}\right) \implies \spV_n\subseteq\spV_j$ & and
+    \\5.& $\spu$ is set union & and 
+    \\6.& $\odot$ is defined such that
+    \\  & $\linspan(\seq{\psi_{i,m}}{m\in\Z}\odot\seq{\psi_{j,m}}{m\in\Z}) = (\linspan\seq{\psi_{i,m}}{m\in\Z})\,\odot\,(\linspan\seq{\psi_{j,m}}{m\in\Z})$.
+  \end{array}$}
+\end{definition}
+
+%---------------------------------------
+% isomorphic lattices
+%---------------------------------------
+
+
+\begin{figure}[th]
+  \begin{center}%
+  \begin{fsL}%
+  \begin{minipage}[c]{12\tw/16}
+  \begin{minipage}[c]{4\tw/16}%
+  \center
+  \latmatlw{4}{0.5}
+    {
+           &       & \null                 \\  
+           & \null                         \\  
+     \null &       & \null &       & \null \\  
+           &       & \null                   
+    }
+    {\ncline{1,3}{2,2}\ncline{2,2}{3,1}
+     \ncline{1,3}{3,5}
+     \ncline{2,2}{3,3}
+     \ncline{4,3}{3,1}\ncline{4,3}{3,3}\ncline{4,3}{3,5}
+    }
+    {\nput{ 90}{1,3}{$\spX_5$}
+     \nput{135}{2,2}{$\spX_4$}
+     \nput{180}{3,1}{$\spX_1$}
+     \nput{ 67}{3,3}{$\spX_2$}
+     \nput{  0}{3,5}{$\spX_3$}
+     \nput{-90}{4,3}{$\spZero$}
+    }
+  \end{minipage}
+  \hfill{\Huge$\thapprox$}\hfill
+  \begin{minipage}[c]{4\tw/16}%
+  \center
+  \latmatlw{4}{0.5}
+    {
+           &       & \null                 \\  
+           & \null                         \\  
+     \null &       & \null &       & \null \\  
+           &       & \null                   
+    }
+    {\ncline{1,3}{2,2}\ncline{2,2}{3,1}
+     \ncline{1,3}{3,5}
+     \ncline{2,2}{3,3}
+     \ncline{4,3}{3,1}\ncline{4,3}{3,3}\ncline{4,3}{3,5}
+    }
+    {\nput{ 90}{1,3}{$\opP_5$}
+     \nput{135}{2,2}{$\opP_4$}
+     \nput{180}{3,1}{$\opP_1$}
+     \nput{ 67}{3,3}{$\opP_2$}
+     \nput{  0}{3,5}{$\opP_3$}
+     \nput{-90}{4,3}{$\opZero$}
+    }
+  \end{minipage}
+  \hfill{\Huge$\thapprox$}\hfill
+  \begin{minipage}[c]{4\tw/16}%
+  \center
+  \latmatlw{4}{0.5}
+    {
+           &       & \null                 \\  
+           & \null                         \\  
+     \null &       & \null &       & \null \\  
+           &       & \null                   
+    }
+    {\ncline{1,3}{2,2}\ncline{2,2}{3,1}
+     \ncline{1,3}{3,5}
+     \ncline{2,2}{3,3}
+     \ncline{4,3}{3,1}\ncline{4,3}{3,3}\ncline{4,3}{3,5}
+    }
+    {\nput{ 90}{1,3}{$\seqn{\psi_{5,m}}$}
+     \nput{135}{2,2}{$\seqn{\psi_{4,m}}$}
+     \nput{180}{3,1}{$\seqn{\psi_{1,m}}$}
+     \nput{ 67}{3,3}{$\seqn{\psi_{2,m}}$}
+     \nput{  0}{3,5}{$\seqn{\psi_{3,m}}$}
+     \nput{-90}{4,3}{$\opZero$}
+    }
+  \end{minipage}
+\end{minipage}
+\end{fsL}
+\end{center}
+\caption{
+  Subspace, projection, basis lattice isomorphism
+  \label{fig:VPb_nsomorphic}
+  }
+\end{figure}
+
+
+
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:VPb_nsomorphic}
+%--------------------------------------
+Let $\spX$ be a \structe{linear space} \xref{def:vspace}.
+\thmbox{\begin{array}{>{\qquad\scriptstyle}r >{\ds}l @{\qquad}D}
+  \mc{3}{M}{The following lattices are isomorphic to each other:}
+  \\1.& (\seq{\spX_n}{n\in\Z},\,\subseteq,\,\adds,\,\spi )                    &     (\prop{subspace lattice})
+  \\2.& (\seq{\opP_n}{n\in\Z},\,\sqsubseteq,\,\boxplus,\,\boxtimes)            &     (\prop{operator lattice})
+  \\3.& (\seq{\seq{\psi_{n,m}}{m\in\Z}}{n\in\Z},\, \lessdot,\, \spu ,\, \odot) &     (\prop{basis lattice})
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Proof that (1) and (2) are isomorphic:
+\begin{enumerate}
+  \item Define a function
+      $\ff:(\seq{\spX_n}{n\in\Z},\,\subseteq,\,\adds,\,\spi )
+       \to (\seq{\opP_n}{n\in\Z},\,\sqsubseteq,\,\boxplus,\,\boxtimes)$:
+      \[ \ff(\spX_n) = \opP_n  \]
+      \label{item:wav_nso_lat}
+
+  \item The function $\ff$ is an \hie{isomorphism} from the wavelet subspace lattice to the
+        wavelet operator lattice. Proof:
+    \begin{align*}
+      \ff(\spX_n \adds \spV_m)
+        &= \ff(\opP_n\spX \adds \opP_m\spX)
+        && \text{by \prefp{thm:operator_lattice}}
+      \\&= \ff([\opP_n \boxplus \opP_m]\spX )
+        && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+      \\&= \opP_n \boxplus \opP_m
+        && \text{by \prefp{item:wav_nso_lat}}
+      \\&= \ff(\spX_n) \boxplus \ff(\spV_m)
+        && \text{by \prefp{item:wav_nso_lat}}
+      \\
+      \\
+      \ff(\spX_n \spi  \spV_m)
+        &= \ff(\opP_n\spX \spi  \opP_m\spX)
+        && \text{by \prefp{thm:operator_lattice}}
+      \\&= \ff(\opP_n[ \opP_m\spX] )
+        &&
+      \\&= \ff([\opP_n \boxtimes \opP_m]\spX )
+        && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+      \\&= \opP_n \boxtimes \opP_m
+        && \text{by \prefp{item:wav_nso_lat}}
+      \\&= \ff(\spX_n) \boxtimes \ff(\spV_m)
+        && \text{by \prefp{item:wav_nso_lat}}
+    \end{align*}
+  \end{enumerate}
+
+\item Proof that (2) and (3) are isomorphic:
+\begin{enumerate}
+  \item Define a function
+      $\ff:(\seq{\spX_n}{n\in\Z},\,\subseteq,\,\adds,\,\spi )
+       \to (\seq{\seq{\psi_{n,m}}{m\in\Z}}{n\in\Z},\, \lessdot,\, \spu ,\, \odot)$:
+      \[ \ff(\spX_n) = \seq{\psi_{n,m}}{m\in\Z} \quad \forall n\in\Z \]
+      \label{item:wav_nso_basis}
+
+  \item The function $\ff$ is an \hie{isomorphism} from the wavelet subspace lattice to the
+        wavelet basis lattice. Proof:
+    \begin{align*}
+      \ff(\spX_n + \spV_m)
+        &= \ff(\linspan\seqn{\psi_n} \spu  \linspan\seq{\psi_m})
+        && \text{by \prefp{def:basis_lattice}}
+      \\&= \ff(\linspan[\seqn{\psi_n} \spu  \seq{\psi_m}])
+      \\&= \seqn{\psi_n} \spu  \seq{\psi_m}]
+        && \text{by \prefp{item:wav_nso_basis}}
+      \\&= \ff(\spX_n) \spu  \ff(\spV_m)
+        && \text{by \prefp{item:wav_nso_basis}}
+      \\
+      \\
+      \ff(\spX_n \spi  \spV_m)
+        &= \ff(\linspan\seqn{\psi_n} \spi  \linspan\seq{\psi_m})
+        && \text{by \prefp{def:basis_lattice}}
+      \\&= \ff(\linspan[\seqn{\psi_n} \odot \seq{\psi_m}])
+        && \text{by definition of $\odot$ \prefpo{def:basis_lattice}}
+      \\&= \seqn{\psi_n} \odot \linspan\seq{\psi_m}]
+        && \text{by \prefp{item:wav_nso_basis}}
+      \\&= \ff(\spX_n) \odot \ff(\spV_m)
+        && \text{by \prefp{item:wav_nso_basis}}
+    \end{align*}
+  \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%%======================================
+%\subsubsection{Subspace architectures}
+%%======================================
+%A subspace lattice architecture is simply the general structure of the lattice.
+%That is, two lattices have the same architecture if they are \hie{isomorphic} to each other.
+%Examples of subspace architectures on the 3-dimensional Euclidean space are illustrated by 
+%\\\begin{tabular}{>{\qquad}lllll}
+%  $\imark$ & \pref{ex:lat_E3d_power}       & \prefpo{ex:lat_E3d_power}       &---power architecture \\
+%  $\imark$ & \pref{ex:lat_E3d_progressive} & \prefpo{ex:lat_E3d_progressive} &---progressive architecture \\
+%  $\imark$ & \pref{ex:lat_E3d_primitive}   & \prefpo{ex:lat_E3d_primitive}   &---primitive architecture \\
+%  $\imark$ & \pref{ex:lat_E3d_linear}      & \prefpo{ex:lat_E3d_linear}      &---linear architecture
+%\end{tabular}
+
+%=======================================
+\subsection{Analyses}
+%=======================================
+An \hid{analysis} of a space $\spX$ is any lattice of subspaces of $\spX$.
+%A sequence $\seq{\spV_j}{j\in\Z}$ of linear subspaces of a linear space $\spX$ is an \hib{analysis} of $\spX$.
+        %if  $\seq{\spV_j}{j\in\Z}$ is a partition of $\spX$.
+        The partial or complete reconstruction of $\spX$ from this set is a \hid{synthesis}.%
+\footnote{%
+  The word \hie{analysis} comes from the Greek word
+  {\fntagreek{>av'alusis}},
+  meaning ``dissolution" (\citerpc{perschbacher1990}{23}{entry 359}),
+  which in turn means
+  ``the resolution or separation into component parts"
+  (\citer{collins2009}, \scs\url{http://dictionary.reference.com/browse/dissolution})
+  }
+
+\begin{figure}[th]
+  \begin{tabular}{*{3}{>{\scs}c}}
+     \input{../common/math/graphics/latr3linear.tex}%
+    &\input{../common/math/graphics/latr3m3.tex}%
+    &\input{../common/math/graphics/latr3mra.tex}%
+    \\linearly ordered analysis of $\R^3$
+    &M-3 analysis of $\R^3$
+    &wavelet-like analysis of $\R^3$
+  \end{tabular}
+  \caption{some anayses of $\R^3$ \xref{ex:r3analyses} \label{fig:r3analyses}}
+\end{figure}%
+%---------------------------------------
+\begin{example}
+\label{ex:r3analyses}
+%---------------------------------------
+  The lattices of subspaces illustrated in \prefpp{fig:r3analyses} are all \structe{analyses} of 
+  $\R^3$.
+\end{example}
+
+
+
+%=======================================
+\subsection{Transform}
+%=======================================
+%---------------------------------------
+\begin{definition}
+%---------------------------------------
+A \hid{transform} on a space $\spX$ is a sequence of projection operators that induces 
+an \structe{analysis} on $\spX$.
+\end{definition}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+A \structe{Fourier analysis} is a sequence of subspaces with sinusoidal bases.
+  Examples of subspaces in a Fourier analysis include $\spV_1=\linspan\setn{e^{ix}}$, 
+  $\spV_{2.3}=\linspan\setn{e^{i2.3x}}$, $\spV_{\sqrt{2}}=\linspan\setn{e^{i\sqrt{2}x}}$, etc.
+  A \hib{transform} is a set of \structe{projection operators} that maps a family of functions (e.g. $\spLLR$)
+  into an analysis.
+  The \ope{Fourier transform}" for Fourier Analysis is \ifxref{harFour}{def:opFT}
+  \\\indentx$\ds\brs{\opFT\ff}(\omega) \eqd \frac{1}{\sqrt{2\pi}} \int_\R \ff(x) e^{-i\omega x} \dx$
+\end{example}
+
+%  \item A sequence $\opT$ in $\clFxy$ is a \hib{transform} \label{item:wavstrct_T}
+%        if each element in the sequence is a projection operator in $\clFxy$.
+%        An example of a transform is the \hib{cosine transform} $\opT$ in $\clFrr$ such that
+%        \begin{align*}
+%          \opT\fx(t) &\eqd \seq{\opP_j}{j\in\Z}
+%             \\&\eqd \seq{\int_{t\in\R} \fx(t)\,\mcom{\cos(nt)}{kernel} \dt}{n\in\Z}
+%             \\&\eqd \seqn{\cdots,\,
+%                           %\int_{t\in\R} \cos\brs{(-2)t}\,\fx(t) \dt,\,
+%                           \int_{t\in\R} \fx(t)\,\cos\brs{(-1)t} \dt,\,
+%                           \int_{t\in\R} \fx(t)\,                \dt,\,
+%                           \int_{t\in\R} \fx(t)\,\cos\brs{( 1)t} \dt,\,
+%                           %\int_{t\in\R} \cos\brs{(-2)t}\,\fx(t) \dt,\,
+%                           \cdots
+%                          }
+%        \end{align*}
+%        Further examples of transforms include the \hie{Fourier Transform} and various \hie{Wavelet Transforms}.
+% it is a \hib{sequence} of projection operators on $\A function $\opT$ in $\clFxy$ is a \hib{transform} if with domain $\clFxy$ and range $\clF{\setA}{\setB}$ if
+
+
+%---------------------------------------
+\subsection{Properties of subspace order structures}
+%---------------------------------------
+The ordered set of all linear subspaces of a \structe{Hilbert space} is an \structe{orthomodular lattice}.
+Orthomodular lattices (and hence Hilbert subspaces) have some special properties \xref{thm:latoc_char3}.
+One is that they satisfy \prope{de Morgan's law}.
+
+\begin{figure}
+{\begin{center}%
+  \begin{fsL}%
+\psset{unit=8mm}%
+\begin{tabular}{|c|c|}%
+\hline%
+\mc{1}{B}{Cosine analysis  (even Fourier series)} & \mc{1}{B}{Cosine polynomial analysis}%
+\\%
+  \input{../common/math/graphics/baslat_cosh.tex}%
+&%
+  \input{../common/math/graphics/baslat_cose.tex}%
+\\\hline%
+\mc{1}{|B|}{Chebyshev polynomial analysis\cittrpg{rivlin1974}{4}{047172470X}}&\mc{1}{|B|}{Hadamard-3 analysis}%
+\\%
+  \input{../common/math/graphics/baslat_cheby.tex}%
+&%
+  \input{../common/math/graphics/baslat_h3.tex}%
+\\\hline%
+\mc{1}{|B|}{Haar/Daubechies-$p1$ wavelet analysis} & \mc{1}{B|}{Daubechies-$p2$ wavelet analysis}%
+\\%
+  \input{../common/math/graphics/baslat_d1.tex}%
+&%
+  \input{../common/math/graphics/baslat_d2.tex}%
+\\\hline%
+\end{tabular}%
+  \end{fsL}%
+\end{center}}%
+\caption{some common transforms\label{fig:commontrans}}
+\end{figure}
+
+\mbox{}\\
+\begin{minipage}{\tw-65mm}%
+  %An analysis can also be partially characterized by its order structure with respect
+  %to an order relation such as the set inclusion relation $\subseteq$.
+  Most transforms have a very simple M-$n$ order structure,
+  as illustrated to the right and in \prefp{fig:commontrans}.
+  The M-$n$ lattices for $n\ge3$ are \prope{modular} but not \prope{distributive}.
+  Analyses typically have one subspace that is a \hie{scaling} subspace;
+  and this subspace is often simply a family of constants
+  (as is the case with \structe{Fourier Analysis}).
+  There is one noteable exception to this---MRA induced \structe{wavelet analysis}\ifsxref{wavstrct}{def:wavelet}.
+\end{minipage}%
+\hfill%
+{\begin{minipage}{60mm}%
+  \begin{center}
+%  \mbox{}\\% force (just above?) top of graphic to be the top of the minipage
+  \input{../common/wavelets/graphics/latmn.tex}%
+  \end{center}
+\end{minipage}}
+
+
+
+
+%%---------------------------------------
+%% Euclidean 3-space partitioned by power lattice
+%%---------------------------------------
+%\begin{minipage}{10\tw/16}
+%%---------------------------------------
+%\begin{example}
+%\label{ex:lat_E3d_power}
+%%---------------------------------------
+%The figure to the right illustrates the subspace lattice
+%\[ \lattice{\pset{(\text{$x$-axis, $y$-axis, $z$-axis})}}{\subseteq}{+}{\spi }. \]
+%The least upper bound of the lattice is the 3-dimensional Euclidean space.
+%This lattice is isomorphic to the power set $\pset{\setn{x,y,z}}$.
+%\end{example}
+%\end{minipage}%
+%\begin{minipage}{6\tw/16}%
+%\begin{center}
+%\footnotesize
+%\setlength{\unitlength}{\tw/500}%
+%\begin{picture}(440,520)(-220,0)%
+%  \thicklines
+%  %{\color{graphpaper}\graphpaper[10](-200,0)(400,520)}%
+%  {\color{picbox}%
+%    %\put( -50,400){\framebox(100,100){}}%
+%    \put( 100,250){\framebox(100,100){}}%
+%    \put( -50,250){\framebox(100,100){}}%
+%    \put(-200,250){\framebox(100,100){}}%
+%    \put( 100,100){\framebox(100,100){}}%
+%    \put( -50,100){\framebox(100,100){}}%
+%    \put(-200,100){\framebox(100,100){}}%
+%    \put( -25,  0){\framebox( 50, 50){}}%
+%    }%
+%  {\color{black}%
+%    \put(   0,400){\line( 0,-1){ 50}}%
+%    \put(   0,400){\line(-3,-1){150}}%
+%    \put(   0,400){\line( 3,-1){150}}%
+%    \put(   0,200){\line(-3, 1){150}}%
+%    \put( 150,200){\line(-3, 1){150}}%
+%    \put(-150,200){\line( 3, 1){150}}%
+%    \put( 150,200){\line( 0, 1){ 50}}%
+%    \put(-150,200){\line( 0, 1){ 50}}%
+%    \put(   0,200){\line( 3, 1){150}}%
+%    \put(   0, 50){\line(-3, 1){150}}%
+%    \put(   0, 50){\line( 0, 1){ 50}}%
+%    \put(   0, 50){\line( 3, 1){150}}%
+%    }%
+%  \put(0,450){%
+%    \setlength{\unitlength}{2\tw/(450*3)}%
+%    \thicklines
+%    \color{red}%
+%      \put(  50,  50){\line( 1, 1){50} }%
+%      \put(  50,-100){\line( 1, 1){50} }%
+%      \put(-100,  50){\line( 1, 1){50} }%
+%    \color{green}%
+%      \put(- 50, 100){\line( 1, 0){150} }%
+%      \put(-100,  50){\line( 1, 0){150} }%
+%      \put(-100,-100){\line( 1, 0){150} }%
+%    \color{blue}%
+%      \put( 100,- 50){\line( 0, 1){150} }%
+%      \put(  50,-100){\line( 0, 1){150} }%
+%      \put(-100,-100){\line( 0, 1){150} }%
+%    }
+%  \put(-150,300){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{xaxis}%
+%        \put(-150, -50){\line( 1, 1){100} }%
+%        \put(  50, -50){\line( 1, 1){100} }%
+%        }%
+%      {\color{yaxis}%
+%        \put(-150, -50){\line( 1, 0){200} }%
+%        \put( 150,  50){\line(-1, 0){200} }%
+%        }%
+%    \end{picture}%
+%  }
+%  \put(0,300){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{xaxis}%
+%        \put( -50,  50){\line( 1, 1){100} }%
+%        \put(  50, -50){\line(-1,-1){100} }%
+%        }%
+%      {\color{zaxis}%
+%        \put( -50,-150){\line( 0, 1){200} }%
+%        \put(  50, 150){\line( 0,-1){200} }%
+%        }%
+%    \end{picture}%
+%  }
+%  \put(150,300){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{yaxis}%
+%        \put(-100, 100){\line( 1, 0){200} }%
+%        \put(-100,-100){\line( 1, 0){200} }%
+%        }%
+%      {\color{zaxis}%
+%        \put(-100,-100){\line( 0, 1){200} }%
+%        \put( 100,-100){\line( 0, 1){200} }%
+%        }%
+%    \end{picture}%
+%  }
+%  \put(-150,150){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{xaxis}%
+%        \put(0,0){\vector( 1, 1){100} }%
+%        \put(0,0){\vector(-1,-1){100} }%
+%        }%
+%    \end{picture}%
+%  }
+%  \put(0,150){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{yaxis}%
+%        \put(0,0){\vector( 1, 0){100} }%
+%        \put(0,0){\vector(-1, 0){100} }%
+%        }%
+%    \end{picture}%
+%  }
+%  \put(150,150){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{zaxis}%
+%        \put(0,0){\vector( 0, 1){100} }%
+%        \put(0,0){\vector( 0,-1){100} }%
+%        }%
+%    \end{picture}%
+%  }
+%  \put(0,25){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{origin}%
+%        \put(0,0){\circle*{15}}%
+%        }%
+%    \end{picture}%
+%  }
+%\end{picture}
+%\end{center}
+%%\caption{
+%%  Euclidean 3-dimensional space partitioned as a power lattice
+%%  \label{fig:lat_E3d_power}
+%%  }
+%%\end{figure}
+%\end{minipage}%
+%
+%\if 0
+%%---------------------------------------
+%% P({x,y,z}) lattice
+%%---------------------------------------
+%\begin{minipage}[c]{6\tw/16}
+%  \begin{center}%
+%  \begin{fsL}%
+%  \setlength{\unitlength}{3\tw/1600}%
+%  \begin{picture}(300,400)(-150,-50)%
+%  %{\color{graphpaper}\graphpaper[10](-150,-50)(300,400)}%
+%    \thicklines%
+%    {\color{axis}%
+%      \put( 100, 200){\line(-1, 1){100}}%
+%      \put(   0, 200){\line( 0, 1){100}}%
+%      \put(-100, 200){\line( 1, 1){100}}%
+%      \put( 100, 100){\line( 0, 1){100}}%
+%      \put( 100, 100){\line(-1, 1){100}}%
+%      \put(   0, 100){\line(-1, 1){100}}%
+%      \put(   0, 100){\line( 1, 1){100}}%
+%      \put(-100, 100){\line( 0, 1){100}}%
+%      \put(-100, 100){\line( 1, 1){100}}%
+%      \put(   0,   0){\line(-1, 1){100}}%
+%      \put(   0,   0){\line( 0, 1){100}}%
+%      \put(   0,   0){\line( 1, 1){100}}%
+%      }%
+%    {\color{zaxis}%
+%      \put(   0, 300){\circle*{15}}%
+%      \put( 100, 200){\circle*{15}}%
+%      \put(   0, 200){\circle*{15}}%
+%      \put(-100, 200){\circle*{15}}%
+%      \put( 100, 100){\circle*{15}}%
+%      \put(   0, 100){\circle*{15}}%
+%      \put(-100, 100){\circle*{15}}%
+%      \put(   0,   0){\circle*{15}}%
+%      }%
+%    {\color{zaxis}%
+%      \put(   0, 310){\makebox(0,0)[b] {$\spV_{xyz}$}}%
+%      \put( 110, 200){\makebox(0,0)[cl]{$\spV_{yz}$}}%
+%      \put(  10, 200){\makebox(0,0)[bl]{$\spV_{xz}$}}%
+%      \put(-110, 200){\makebox(0,0)[cr]{$\spV_{xy}$}}%
+%      \put( 110, 100){\makebox(0,0)[cl]{$\spV_z$}}%
+%      \put(  10, 100){\makebox(0,0)[tl]{$\spV_y$}}%
+%      \put(-110, 100){\makebox(0,0)[cr]{$\spV_x$}}%
+%      \put(   0, -10){\makebox(0,0)[t] {$\spZero$}}%
+%      }%
+%  \end{picture}%
+%  \end{fsL}%
+%  \end{center}%
+%\end{minipage}
+%\fi
+%
+%
+%%---------------------------------------
+%% Euclidean 3-d subspace lattice with progressive architecture
+%%---------------------------------------
+%\begin{minipage}{10\tw/16}
+%%---------------------------------------
+%\begin{example}
+%\label{ex:lat_E3d_progressive}
+%%---------------------------------------
+%The figure to the right illustrates the subspace lattice
+%\[ (\setn{\text{0, $x$-axis, $y$-axis, $z$-axis, $xy$-plane, $xyz$-space}},\, \subseteq,\, +,\, \spi ). \]
+%The least upper bound of the lattice is the 3-dimensional Euclidean space.
+%The architecture of this subspace lattice is called the \hie{progressive architecture}.
+%%\xrefP{def:arch_progressive}. 
+%A progressive architecture is so named because it {\em progressively} adds 
+%one dimension for each step up the linearly ordered portion
+%(left hand side) of the lattice.
+%\end{example}
+%\end{minipage}%
+%\begin{minipage}[c]{6\tw/16}
+%  %\begin{figure}[th]
+%  \begin{center}
+%  \footnotesize
+%  \setlength{\unitlength}{\tw/500}%
+%  \begin{picture}(400,520)(-200,0)%
+%    \thicklines
+%    %{\color{graphpaper}\graphpaper[50](-200,0)(400,520)}%
+%    {\color{picbox}%
+%      %\put( -50,400){\framebox(100,100){}}%
+%      \put(-125,250){\framebox(100,100){}}%
+%      \put( 100,100){\framebox(100,100){}}%
+%      \put( -50,100){\framebox(100,100){}}%
+%      \put(-200,100){\framebox(100,100){}}%
+%      \put( -25,  0){\framebox(50,50){}}%
+%      }%
+%    {\color{black}%
+%      \put(   0,400){\line( 3,-4){150}}%
+%      \put(   0,400){\line(-3,-2){ 75}}%
+%      \put( -75,250){\line( 3,-2){ 75}}%
+%      \put( -75,250){\line(-3,-2){ 75}}%
+%      \put(   0, 50){\line(-3, 1){150}}%
+%      \put(   0, 50){\line( 0, 1){ 50}}%
+%      \put(   0, 50){\line( 3, 1){150}}%
+%      }%
+%  \put(0,450){%
+%    \setlength{\unitlength}{2\tw/(450*3)}%
+%    \thicklines
+%    \color{red}%
+%      \put(  50,  50){\line( 1, 1){50} }%
+%      \put(  50,-100){\line( 1, 1){50} }%
+%      \put(-100,  50){\line( 1, 1){50} }%
+%    \color{green}%
+%      \put(- 50, 100){\line( 1, 0){150} }%
+%      \put(-100,  50){\line( 1, 0){150} }%
+%      \put(-100,-100){\line( 1, 0){150} }%
+%    \color{blue}%
+%      \put( 100,- 50){\line( 0, 1){150} }%
+%      \put(  50,-100){\line( 0, 1){150} }%
+%      \put(-100,-100){\line( 0, 1){150} }%
+%    }
+%    \put(-75,300){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{xaxis}%
+%          \put(-150, -50){\line( 1, 1){100} }%
+%          \put(  50, -50){\line( 1, 1){100} }%
+%          }%
+%        {\color{yaxis}%
+%          \put(-150, -50){\line( 1, 0){200} }%
+%          \put( 150,  50){\line(-1, 0){200} }%
+%          }%
+%      \end{picture}%
+%    }
+%    \put(-150,150){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{xaxis}%
+%          \put(0,0){\vector( 1, 1){100} }%
+%          \put(0,0){\vector(-1,-1){100} }%
+%          }%
+%      \end{picture}%
+%    }
+%    \put(0,150){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{yaxis}%
+%          \put(0,0){\vector( 1, 0){100} }%
+%          \put(0,0){\vector(-1, 0){100} }%
+%          }%
+%      \end{picture}%
+%    }
+%    \put(150,150){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{zaxis}%
+%          \put(0,0){\vector( 0, 1){100} }%
+%          \put(0,0){\vector( 0,-1){100} }%
+%          }%
+%      \end{picture}%
+%    }
+%    \put(0,25){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{origin}%
+%          \put(0,0){\circle*{15}}%
+%          }%
+%      \end{picture}%
+%    }
+%  \end{picture}
+%  \end{center}
+%  %\caption{
+%  %  Euclidean 3-dimensional space partitioned as a progressive lattice
+%  %  \label{fig:lat_E3d_power_progressive}
+%  %  }
+%  %\end{figure}
+%\end{minipage}%
+%
+%
+%
+%\begin{minipage}{10\tw/16}
+%%---------------------------------------
+%\begin{example}
+%\label{ex:lat_E3d_primitive}
+%%---------------------------------------
+%The figure to the left illustrates the subspace lattice
+%\[ (\oquad{\text{0, $x$-axis, $y$-axis, $z$-axis, $xyz$-space}}{\subseteq}{+}{\spi }. \]
+%The least upper bound of the lattice is the 3-dimensional Euclidean space.
+%The architecture of this subspace lattice is called the 
+%\hie{primitive architecture}.% \xrefP{def:arch_primitive}. 
+%\end{example}
+%\end{minipage}%
+%\begin{minipage}{6\tw/16}
+%  %\begin{figure}[th]
+%  \begin{center}
+%  \footnotesize
+%  \setlength{\unitlength}{\tw/500}%
+%  \begin{picture}(400,370)(-200,0)%
+%    \thicklines
+%    %{\color{graphpaper}\graphpaper[50](-200,0)(400,370)}%
+%    {\color{picbox}%
+%      %\put( -50,400){\framebox(100,100){}}%
+%      %\put(-125,250){\framebox(100,100){}}%
+%      \put( 100,100){\framebox(100,100){}}%
+%      \put( -50,100){\framebox(100,100){}}%
+%      \put(-200,100){\framebox(100,100){}}%
+%      \put( -25,  0){\framebox(50,50){}}%
+%      }%
+%    {\color{black}%
+%      \put(   0,250){\line(-3,-1){150}}%
+%      \put(   0,250){\line( 0,-1){ 50}}%
+%      \put(   0,250){\line( 3,-1){150}}%
+%      \put(   0, 50){\line(-3, 1){150}}%
+%      \put(   0, 50){\line( 0, 1){ 50}}%
+%      \put(   0, 50){\line( 3, 1){150}}%
+%      }%
+%  \put(0,300){%
+%    \setlength{\unitlength}{2\tw/(450*3)}%
+%    \thicklines
+%    \color{red}%
+%      \put(  50,  50){\line( 1, 1){50} }%
+%      \put(  50,-100){\line( 1, 1){50} }%
+%      \put(-100,  50){\line( 1, 1){50} }%
+%    \color{green}%
+%      \put(- 50, 100){\line( 1, 0){150} }%
+%      \put(-100,  50){\line( 1, 0){150} }%
+%      \put(-100,-100){\line( 1, 0){150} }%
+%    \color{blue}%
+%      \put( 100,- 50){\line( 0, 1){150} }%
+%      \put(  50,-100){\line( 0, 1){150} }%
+%      \put(-100,-100){\line( 0, 1){150} }%
+%    }
+%    \put(-150,150){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{xaxis}%
+%          \put(0,0){\vector( 1, 1){100} }%
+%          \put(0,0){\vector(-1,-1){100} }%
+%          }%
+%      \end{picture}%
+%    }
+%    \put(0,150){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{yaxis}%
+%          \put(0,0){\vector( 1, 0){100} }%
+%          \put(0,0){\vector(-1, 0){100} }%
+%          }%
+%      \end{picture}%
+%    }
+%    \put(150,150){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{zaxis}%
+%          \put(0,0){\vector( 0, 1){100} }%
+%          \put(0,0){\vector( 0,-1){100} }%
+%          }%
+%      \end{picture}%
+%    }
+%    \put(0,25){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{origin}%
+%          \put(0,0){\circle*{15}}%
+%          }%
+%      \end{picture}%
+%    }
+%  \end{picture}
+%  \end{center}
+%  %\caption{
+%  %  Euclidean 3-dimensional space partitioned as a progressive lattice
+%  %  \label{fig:lat_E3d_power_progressive}
+%  %  }
+%  %\end{figure}
+%\end{minipage}%
+%
+%
+%%---------------------------------------
+%% Euclidean 3-space partitioned by power lattice
+%%---------------------------------------
+%\begin{minipage}[c]{\tw/2}
+%%---------------------------------------
+%\begin{example}
+%\label{ex:lat_E3d_linear}
+%%---------------------------------------
+%The figure to the left illustrates the subspace lattice
+%\[ \oquad{\setn{\text{$0$, $x$-axis, $xy$-plane, $xyz$-space}}}{\subseteq}{\spu }{\spi }. \]
+%The least upper bound of the lattice is the 3-dimensional Euclidean space.
+%%The architecture of this subspace lattice is called the \hie{linear architecture} \xref{def:arch_linear}.
+%\end{example}
+%\end{minipage}%
+%\begin{minipage}[c]{7\tw/16}%
+%%\begin{figure}[th]
+%\begin{center}
+%\footnotesize
+%\setlength{\unitlength}{\tw/440}%
+%\begin{picture}(100,520)(-50,0)%
+%  \thicklines
+%  %{\color[gray]{0.4}\graphpaper[50](-50,0)(100,520)}%
+%  {\color{picbox}%
+%    %\put( -50,400){\framebox(100,100){}}%
+%    \put( -50,250){\framebox(100,100){}}%
+%    \put( -50,100){\framebox(100,100){}}%
+%    \put( -25,  0){\framebox( 50, 50){}}%
+%    }%
+%  {\color{black}%
+%    \put(   0,400){\line( 0,-1){ 50}}%
+%    \put(   0,200){\line( 0, 1){ 50}}%
+%    \put(   0, 50){\line( 0, 1){ 50}}%
+%    }%
+%  \put(0,450){%
+%    \setlength{\unitlength}{2\tw/(450*3)}%
+%    \thicklines
+%    \color{red}%
+%      \put(  50,  50){\line( 1, 1){50} }%
+%      \put(  50,-100){\line( 1, 1){50} }%
+%      \put(-100,  50){\line( 1, 1){50} }%
+%    \color{green}%
+%      \put(- 50, 100){\line( 1, 0){150} }%
+%      \put(-100,  50){\line( 1, 0){150} }%
+%      \put(-100,-100){\line( 1, 0){150} }%
+%    \color{blue}%
+%      \put( 100,- 50){\line( 0, 1){150} }%
+%      \put(  50,-100){\line( 0, 1){150} }%
+%      \put(-100,-100){\line( 0, 1){150} }%
+%    }
+%    \put(0,300){%
+%      \setlength{\unitlength}{1\tw/(400*3)}%
+%      \begin{picture}(0,0)(0,0)%
+%        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%        {\color{xaxis}%
+%          \put(-150, -50){\line( 1, 1){100} }%
+%          \put(  50, -50){\line( 1, 1){100} }%
+%          }%
+%        {\color{yaxis}%
+%          \put(-150, -50){\line( 1, 0){200} }%
+%          \put( 150,  50){\line(-1, 0){200} }%
+%          }%
+%      \end{picture}%
+%    }
+%  \put(0,150){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{xaxis}%
+%        \put(0,0){\vector( 1, 1){100} }%
+%        \put(0,0){\vector(-1,-1){100} }%
+%        }%
+%    \end{picture}%
+%  }
+%  \put(0,25){%
+%    \setlength{\unitlength}{1\tw/(400*3)}%
+%    \begin{picture}(0,0)(0,0)%
+%      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%      {\color{origin}%
+%        \put(0,0){\circle*{15}}%
+%        }%
+%    \end{picture}%
+%  }
+%\end{picture}
+%\end{center}
+%%\caption{
+%%  Euclidean 3-dimensional space partitioned as a power lattice
+%%  \label{fig:lat_E3d_power}
+%%  }
+%%\end{figure}
+%\end{minipage}%
+%
+%
+%
+%
+%Subspace lattice architectures can also be illustrated using basis lattices.
+%Such examples include the following:\\
+%  \begin{tabular}{llll}
+%    $\imark$ & \pref{ex:arch_d1}  & \prefpo{ex:arch_d1}  &---Haar basis / Daubechies-$p1$ basis  \\
+%    $\imark$ & \pref{ex:arch_d2}  & \prefpo{ex:arch_d2}  &---Daubechechies-$p2$ basis \\
+%    $\imark$ & \pref{ex:arch_cos4} & \prefpo{ex:arch_cos4} &---cosine harmonic basis \\
+%    $\imark$ & \pref{ex:arch_cos^0-cos^3} & \prefpo{ex:arch_cos^0-cos^3} &---cosine exponential basis \\
+%    $\imark$ & \pref{ex:arch_cheby4} & \prefpo{ex:arch_cheby4} &---Chebyshev basis
+%  \end{tabular}
+%
+%%---------------------------------------
+%% Euclidean 3-space partitioned by progressive lattice
+%%---------------------------------------
+%\begin{minipage}[c]{7\tw/16}
+%%\begin{figure}[th]
+%\begin{center}
+%\footnotesize
+%\setlength{\unitlength}{\tw/(550)}%
+%\input{../common/math/graphics/baslat_d1.tex}
+%\end{center}
+%\end{minipage}%
+%\hfill
+%\begin{minipage}[c]{\tw/2}
+%  %---------------------------------------
+%  \begin{example}
+%  \label{ex:arch_d1}
+%  %---------------------------------------
+%  The figure to the left illustrates a subspace lattice 
+%  %with \hie{progressive} architecture and 
+%  with a \hie{Haar} basis (\hie{Daubechies-$p1$} basis).
+%\end{example}
+%\end{minipage}
+%
+%
+%
+%\begin{minipage}[c]{7\tw/16}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{\tw/550}%
+%  \input{../common/math/graphics/baslat_d2.tex}%
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}%
+%\hfill
+%\begin{minipage}[c]{\tw/2}
+%%---------------------------------------
+%\begin{example}
+%\label{ex:arch_d2}
+%%---------------------------------------
+%The figure to the left illustrates a subspace lattice 
+%%with \hie{progressive} architecture and 
+%with a \hie{Daubechies-$p2$} basis.
+%\end{example}
+%\end{minipage}
+%
+%
+%\begin{minipage}[c]{9\tw/16}
+%  \begin{center}%
+%  \begin{fsL}%
+%  \setlength{\unitlength}{\tw/550}%
+%  \input{../common/math/graphics/baslat_cosh.tex}%
+%  \end{fsL}%
+%  \end{center}%
+%\end{minipage}%
+%\hfill%
+%\begin{minipage}[c]{6\tw/16}%
+%%---------------------------------------
+%\begin{example}
+%\label{ex:arch_cos4}
+%%---------------------------------------
+%The figure to the left illustrates a subspace lattice 
+%%with \hie{primitive} architecture and 
+%with a \hie{cosine harmonic basis}.
+%\end{example}
+%\end{minipage}%
+%
+%\begin{minipage}[c]{9\tw/16}
+%  \begin{center}%
+%  \begin{fsL}%
+%  \setlength{\unitlength}{\tw/550}%
+%  \input{../common/math/graphics/baslat_cose.tex}%
+%  \end{fsL}%
+%  \end{center}%
+%\end{minipage}%
+%\hfill%
+%\begin{minipage}[c]{6\tw/16}
+%%---------------------------------------
+%\begin{example}
+%\label{ex:arch_cos^0-cos^3}
+%%---------------------------------------
+%The figure to the left illustrates a subspace lattice 
+%%with \hie{primitive} architecture and 
+%with a \hie{cosine exponential basis}.
+%\end{example}
+%\end{minipage}
+%
+%
+%\begin{minipage}[c]{10\tw/16}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{3\tw/(4*550)}
+%  \input{../common/math/graphics/baslat_cheby.tex}%
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}%
+%\hfill%
+%\begin{minipage}[c]{6\tw/16}
+%%---------------------------------------
+%\begin{example}
+%\label{ex:arch_cheby4}
+%%---------------------------------------
+%The figure to the left illustrates a subspace lattice 
+%%with \hie{primitive} architecture and 
+%with a \hie{Chebyshev polynomial basis}.
+%\end{example}
+%\end{minipage}
+
+
+%\paragraph{Residual subspaces.}
+%Let $\spO$ be a linear space with subspaces $\spV_{n},\spX_{n+1}\subseteq\spX$.
+%If $\spX_n\subseteq\spX_{n+1}$, then we could view $\spX_{n+1}$ as
+%a ``larger" subspace with more information or more ``detail" than the
+%``smaller" subspace $\spX_n$.
+%In this case, we could also say that $\spX_{n+1}$ is $\spX_n$ plus some
+%\hie{residual} (or \hie{complementary}) subspace $\spW_n$ containing the missing information or detail.
+%We can express this mathematically as
+%\[ \spX_{n+1} = \spX_n + \spW_n \]
+%We say that $\spW_n$ complements $\spX_n$ in $\spX_{n+1}$.
+%For example, wavelet systems use a sequence of \hie{scaling subspaces} $\seq{\spX_n}{n\in\Z}$
+%and complementary \hie{wavelet subspace} $\seq{\spW_n}{n\in\Z}$.
+%
+%\paragraph{Orthogonal subspaces.}
+%If $\spX_{n+1} = \spX_n + \spW_n$ and $\spX_n \orthog \spW_n$
+%($\spX_n$ is orthogonal to $\spW_n$), then this is denoted by
+%  \[ \spX_{n+1} = \spX_n \adds \spW_n \]
+%Many transforms make use of orthogonal subspaces, including the Fourier series transform
+%and the wavelet transform.
+%
+%
+%%=======================================
+%\subsubsection{Subspace Partitioning}
+%\label{sec:tran_sub_part}
+%%=======================================
+%We have already seen that a single space may be analyzed using several 
+%different {\em subspace architectures} as illustrated by \\
+%\begin{tabular}{lllll}
+%  $\imark$ & \pref{ex:lat_E3d_power}       & \prefpo{ex:lat_E3d_power}       &---power architecture \\
+%  $\imark$ & \pref{ex:lat_E3d_progressive} & \prefpo{ex:lat_E3d_progressive} &---progressive architecture \\
+%  $\imark$ & \pref{ex:lat_E3d_primitive}   & \prefpo{ex:lat_E3d_primitive}   &---primitive architecture
+%\end{tabular}
+%
+%\hie{Subspace partitioning} refers to the way in which elements of a mathematical space
+%are distributed across a subspace architecture.
+%A mathematical space may have the {\em same} subspace architecture but 
+%yet have {\em different} subspace partitioning.
+%This concept is illustrated by \\
+%\begin{tabular}{lllll}
+%  $\imark$ & \pref{ex:arch_cos4} & \prefpo{ex:arch_cos4} &---\prop{cosine harmonic basis} \\
+%  $\imark$ & \pref{ex:arch_cos^0-cos^3} & \prefpo{ex:arch_cos^0-cos^3} &---\prop{cosine exponential basis}
+%\end{tabular}\\
+%In these two examples, the spaces (the least upper bounds) are the same,
+%the subspace architectures are the same,
+%but yet the subspace partitionings (the elements contained in the corresponding subspaces)
+%are different. 
+%The fact that the spaces are the same is because there is a one to one mapping between
+%harmonic cosines of order $n$ and exponential cosines of order 
+%$n$.%
+%\ifdochas{harTrig}{\footnote{\begin{tabular}[t]{llll}
+%  $\imark$ & harmonic to polynomial conversion: & \prefp{thm:cosnx}  & \prefpo{thm:cosnx} \\
+%  $\imark$ & polynomial to harmonic conversion: & \prefp{thm:cos^\xNx} & \prefpo{thm:cos^\xNx} 
+%\end{tabular}}}
+%
+%It is also worth noting the following two examples:\\
+%\begin{tabular}{lllll}
+%  $\imark$ & \pref{ex:arch_d1} & \prefpo{ex:arch_d1} &---progressive architecture partitioned by Daubechies-$p1$ basis \\
+%  $\imark$ & \pref{ex:arch_d2} & \prefpo{ex:arch_d2} &---progressive architecture partitioned by Daubechies-$p2$ basis
+%\end{tabular}\\
+%In these two examples, the subspace architectures are the {\em same},
+%and the subspace partitionings are {\em different}
+%(as in the previous pair of examples), 
+%but unlike the previous pair of examples, the spaces (the least upper bounds)
+%are {\em different}
+%(and therefore the previous pair of examples would seem a little more significant
+%when discussing the significance of subspace partitioning).
+%
+%
+%\paragraph{Partitioning methods.}
+%There are several ways to partition a space.
+%
+%  \begin{tabular}{>{$\imark$}lll}
+%     & frequency        & Fourier transform
+%  \\ & scaling          & wavelet transform
+%  \\ & randomness       & pn-sequences, KL expansion
+%  \\ & order            & Chebyshev polynomials
+%  \\ & Hamming weight   & Walsh functions
+%  \end{tabular}
+%
+%
+%
+%
+%
+%
+%
+%
+%%=======================================
+%\subsection {Classifications of subspace architectures}
+%%=======================================
+%The subspaces of a space $\spX$ form the lattice $(\spX, \subseteq, +, \spi )$.
+%Next we look at several subspace architectures in terms of lattices of subspaces.
+%Names are assigned to these architectures.
+%But note that these namings are not necessarily used generally in the literature
+%and may be somewhat unique to this document.
+%
+%\begin{minipage}[t]{5\tw/16}
+%  \color{figcolor}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{\textwidth/500}
+%  \begin{picture}(400,800)(-50,-350)
+%    %{\color{graphpaper}\graphpaper[50](-50,-350)(400,800)}
+%    \thicklines
+%    \put(0,-150){\line( 0, 1){360} }
+%    \put(0, 350){\line( 0, 1){ 50} }
+%    \put(0,-300){\line( 0, 1){ 50} }
+%
+%    \put(0, 400){\circle*{15}}
+%    \put(0, 200){\circle*{15}}
+%    \put(0, 100){\circle*{15}}
+%    \put(0,   0){\circle*{15}}
+%    \put(0,-100){\circle*{15}}
+%    \put(0,-300){\circle*{15}}
+%
+%
+%
+%    \put(10, 400){\makebox(0,0)[l] {$\spX$}}
+%    \put( 0, 310){\makebox(0,0)[c] {$\vdots$}}
+%    \put(10, 200){\makebox(0,0)[l] {$\spV_2$}}
+%    \put(10, 100){\makebox(0,0)[l] {$\spV_1$}}
+%    \put(10,   0){\makebox(0,0)[l] {$\spV_0$}}
+%    \put(10,-100){\makebox(0,0)[l] {$\spV_{-1}$}}
+%    \put( 0,-200){\makebox(0,0)[c] {$\vdots$}}
+%    \put(10,-300){\makebox(0,0)[l] {$\spZero$}}
+%
+%
+%    {\color{red}
+%      \put( 110, 400){\makebox(0,0)[l] {\parbox{8\tw/16}{\raggedright entire linear space (least upper bound)}}}
+%      \put( 100, 400){\vector(-1,0){60}}
+%      \put( 110,-300){\makebox(0,0)[l] {\parbox{8\tw/16}{\raggedright greatest lower bound}}}
+%      \put( 100,-300){\vector(-1,0){60}}
+%      \put( 150, 150){\vector(0,1){50}}
+%      \put( 110,  50){\makebox(0,0)[bl] {\parbox{6\tw/16}{\raggedright larger subspaces}}}
+%      \put( 110,   0){\makebox(0,0)[tl] {\parbox{6\tw/16}{\raggedright smaller subspaces}}}
+%      \put( 150,-100){\vector(0,-1){50}}
+%      %\put(- 50,-275){\dashbox{10}(100,650){}}
+%      %\put( 110,  50){\makebox(0,0)[bl] {scaling}}
+%      %\put( 110,  45){\makebox(0,0)[tl] {subspaces}}
+%      %\put( 100,  50){\vector(-1,0){50}}
+%    }
+%  \end{picture}
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}
+%\begin{minipage}[t]{11\tw/16}
+%\paragraph{Linear architecture.}
+%The \hie{linear architecture} is illustrated by the figure to the left and 
+%defined in \prefpp{def:arch_linear}.
+%The scaling subspace sequence together with the set inclusion relation $\subseteq$
+%form the \hie{linearly ordered set} $(\seqn{\spX_n}, \subseteq)$, illustrated
+%to the left by its Hasse diagram.
+%Subspaces $\spX_n$ increase in ``size" with increasing $n$.
+%That is, they contain more and more functions for larger and larger $n$---
+%with $\spX$ (largest $n$) containing all the vectors in the space
+%and $\spZero$ (smallest $n$) containing only the $\vzero$ vector.
+%Many lattices contain the linear architecture as one or more sublattices.
+%\end{minipage}
+%
+%%--------------------------------------
+%\begin{definition}
+%\label{def:arch_linear}
+%%--------------------------------------
+%\defbox{\begin{array}{l@{\qquad}l>{\ds}l>{(}D<{)}}
+%  \mc{4}{l}{\parbox{14\tw/16}{
+%    A lattice subspace $(\seq{\spX_n}{n\in\Z},\, \subseteq,\, +,\, seti)$ 
+%    has \hid{linear architecture} if it satisfies the following conditions:
+%    }}
+%  \\
+%  & 1. & \spX_n          \subsetneq \spX_{n+1}
+%       & linearly ordered wrt $\subseteq$  \\
+%  & 2. & \sum_{n\in\Z} \spX_n = \spV_\infty
+%       & least upper bound is $\spV_\infty$ \\
+%  & 3. & \sum_{n\in\Z} \spX_n = \setn{\vzero}
+%       & greatest lower bound is $\vzero$ \\
+%\end{array}}
+%\end{definition}
+%
+%An example of a subspace lattice with the linear architecture is
+%\prefpp{ex:lat_E3d_linear}.
+%%\begin{tabular}[t]{llll}
+%%  $\imark$ & \pref{ex:lat_E3d_linear}  & \prefpo{ex:lat_E3d_linear}
+%%            &---Euclidean 3-d space \\
+%%  $\imark$ & \pref{ax:mra}  & \prefpo{ax:mra} &---Multiresolution Analysis 
+%%\end{tabular}
+%
+%
+%\begin{minipage}[c]{8\tw/16}
+%  \color{figcolor}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{\textwidth/800}
+%  \begin{picture}(600,500)(-300,-250)
+%    %{\color{graphpaper}\graphpaper[100](-300,-250)(600,500)}
+%    \thicklines
+%    \put(-200,   0){\line( 1, 1){200} }
+%    \put(-100,   0){\line( 1, 2){100} }
+%    \put(   0,   0){\line( 0, 1){200} }
+%    \put( 200,   0){\line(-1, 1){200} }
+%
+%    \put(-200,   0){\line( 1,-1){200} }
+%    \put(-100,   0){\line( 1,-2){100} }
+%    \put(   0,   0){\line( 0,-1){200} }
+%    \put( 200,   0){\line(-1,-1){200} }
+%
+%    \put(   0, 200){\circle*{15}}
+%    \put(-200,   0){\circle*{15}}
+%    \put(-100,   0){\circle*{15}}
+%    \put(   0,   0){\circle*{15}}
+%    \put( 100,   0){$\cdots$}
+%    \put( 200,   0){\circle*{15}}
+%    \put(   0,-200){\circle*{15}}
+%
+%    \put(  0, 210){\makebox(0,0)[b] {$\spO=\spX_0+\spX_1+\cdots+\spX_{n-1}$}}
+%    \put(-210,   0){\makebox(0,0)[r] {$\spX_0$}}
+%    \put(-110,   0){\makebox(0,0)[r] {$\spX_1$}}
+%    \put(  10,   0){\makebox(0,0)[l] {$\spX_2$}}
+%    \put( 210,   0){\makebox(0,0)[l] {$\spX_{n-1}$}}
+%    \put( -10,-210){\makebox(0,0)[tl] {$\spZero=\spX_1 \cap \spX_2 \cap \cdots \cap \spX_{n-1}$}}
+%    %\put( -10,-210){\makebox(0,0)[tl] {$\ds\spZero=\setopi_{n=1}^\xN \spW_n$}}
+%    {\color{red}
+%      \put(-300, -50){\dashbox{10}(600,100){}}
+%      \put( 300, 110){\makebox(0,0)[br] {basis subspaces}}
+%      \put( 200, 100){\vector(0,-100){50}}
+%    }
+%  \end{picture}
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}
+%\begin{minipage}[c]{8\tw/16}
+%  The \hie{primitive architecture} is illustrated by the Hasse diagram to the left.
+%  %and defined in \prefpp{def:arch_primitive}.
+%  Many transforms that use only orthogonal subspaces have the primitive architecture.
+%\end{minipage}
+%
+% Examples of subspace lattices with the primitive architecture include
+%\\\indentx\begin{tabular}[t]{llll}
+%  $\imark$ & \pref{ex:lat_E3d_primitive}  & \prefpo{ex:lat_E3d_primitive} 
+%            &---Euclidean 3-d space \\
+%  $\imark$ & \pref{ex:arch_cos4} & \prefpo{ex:arch_cos4} &---cosine harmonic basis \\
+%  $\imark$ & \pref{ex:arch_cos^0-cos^3} & \prefpo{ex:arch_cos^0-cos^3} &---cosine exponential basis \\
+%  $\imark$ & \pref{ex:arch_cheby4} & \prefpo{ex:arch_cheby4} &---Chebyshev basis
+%\end{tabular}
+%
+%%%---------------------------------------
+%%\begin{definition}
+%%\label{def:arch_primitive}
+%%%---------------------------------------
+%%\defbox{\begin{array}{l@{\qquad}l>{\ds}l>{(}D<{)}}
+%%  \mc{4}{l}{\parbox{14\tw/16}{
+%%    A lattice subspace $(\seq{\spX_n}{n\in\Z},\, \subseteq,\, +,\, seti)$ 
+%%    has \hid{primitve architecture} if it satisfies the following conditions:
+%%    }}
+%%  \\
+%%  & 1. & 
+%%       & \\
+%%  & 2. & 
+%%       & 
+%%\end{array}}
+%%\problem
+%%\end{definition}
+%
+%
+%
+%
+%
+%
+%\begin{minipage}[c]{9\tw/16}
+%  \color{figcolor}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{\textwidth/700}
+%  \begin{picture}(600,500)(-300,-200)
+%    %{\color{graphpaper}\graphpaper[100](-300,-200)(600,500)}
+%    \thicklines
+%    \put(-200,   0){\line( 1, 1){120} }
+%    \put(   0, 200){\line(-1,-1){ 40} }
+%    \put(-100,   0){\line(-1, 1){ 50} }
+%    \put(   0,   0){\line(-1, 1){100} }
+%    \put( 200,   0){\line(-1, 1){200} }
+%
+%    \put(-200,   0){\line( 1,-1){200} }
+%    \put(-100,   0){\line( 1,-2){100} }
+%    \put(   0,   0){\line( 0,-1){200} }
+%    \put( 200,   0){\line(-1,-1){200} }
+%
+%    \put(   0, 200){\circle*{15}}  %maximum element
+%    \put(   0,-200){\circle*{15}}  %minimum element
+%
+%    \put(-150,  50){\circle*{15}}
+%    \put(-100, 100){\circle*{15}}
+%
+%    \put(-200, 0){\circle*{15}}
+%    \put(-100, 0){\circle*{15}}
+%    \put(   0, 0){\circle*{15}}
+%    \put( 100, 0){$\cdots$}
+%    \put( 200, 0){\circle*{15}}
+%
+%    \put(   0, 210){\makebox(0,0)[b] {$\spX_n$}}
+%    \put(-110, 100){\makebox(0,0)[r] {$\spX_3$}}
+%    \put(-160,  50){\makebox(0,0)[r] {$\spX_2$}}
+%    \put(-210,   0){\makebox(0,0)[r] {$\spX_1$}}
+%    \put(-110,   0){\makebox(0,0)[r] {$\spY_1$}}
+%    \put(  10,   0){\makebox(0,0)[l] {$\spY_2$}}
+%    \put( 210,   0){\makebox(0,0)[l] {$\spY_{n-1}$}}
+%    \put(  . ,-210){\makebox(0,0)[t] {$\spZero$}}
+%
+%    \put( -50, 15){\makebox(0,0)[c] {$\ddots$}}
+%    {\color{red}
+%      \put(-300,- 50){\dashbox{10}(600,80){}}
+%      \put(-300, 260){\makebox(0,0)[bl] {linearly ordered subspaces}}
+%      \put( 300, 110){\makebox(0,0)[br] {basis subspaces}}
+%      \put( 200, 100){\vector(0,-1){70}}
+%      \put(-250, 250){\vector(1,-1){70}}
+%      \thicklines
+%      \qbezier[30](-300,  50)(-175, 175)( -50, 300)
+%      \qbezier[30](-200, -50)( -75,  75)(  50, 200)
+%      \qbezier[15](-200,-50)(-250,0)(-300,50)
+%      \qbezier[15](  50,200)(0,250)(-50,300)
+%    }
+%  \end{picture}
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}
+%\begin{minipage}[c]{7\tw/16}
+%  The \hie{progressive architecture} is illustrated by the Hasse diagram to the left.
+%  %and defined in \prefpp{def:arch_progressive}.
+%  Note that the left hand portion of the lattice contains a sublattice with 
+%  \hie{linear architecture}.\footnotemark
+%\end{minipage}
+%\footnotetext{
+%  The progressive architecture was essentially proposed by Burt and Adelson in 1983.
+%  In their paper, the sequence $\seqn{\spX_n}$ is called a \hie{Gaussian pyramid}
+%  and the sequence $\seqn{\spW_n}$ is called a 
+%  \hie{Laplacian pyramid}. Reference:\cite{burt1983}.
+%  }
+%
+% Examples of subspace lattices with the progressive architecture include
+%\\\indentx\begin{tabular}[t]{llll}
+%  $\imark$ & \pref{ex:lat_E3d_progressive}  & \prefpo{ex:lat_E3d_progressive} 
+%            &---Euclidean 3-d space \\
+%  $\imark$ & \pref{ex:arch_d1} & \prefpo{ex:arch_d1} &---Haar basis lattice \\
+%  $\imark$ & \pref{ex:arch_d2} & \prefpo{ex:arch_d2} &---Daubechies-$p2$ basis lattice 
+%\end{tabular}
+%
+%%%---------------------------------------
+%%\begin{definition}
+%%\label{def:arch_progressive}
+%%%---------------------------------------
+%%\defbox{\begin{array}{l@{\qquad}l>{\ds}l>{(}D<{)}}
+%%  \mc{4}{l}{\parbox{14\tw/16}{
+%%    A lattice subspace $(\seq{\spX_n}{n\in\Z},\, \subseteq,\, +,\, seti)$ 
+%%    has \hid{progressive architecture} if it satisfies the following conditions:
+%%    }}
+%%  \\
+%%  & 1. & 
+%%       & \\
+%%  & 2. & 
+%%       & 
+%%\end{array}}
+%%\problem
+%%\end{definition}
+%
+%
+%
+%
+%\begin{minipage}{8\tw/16}
+%  \color{figcolor}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{\textwidth/6}
+%  \begin{picture}(2,3)(-1,0)
+%    %{\color{graphpaper}\graphpaper[1](-1,0)(2,3)}
+%    \thicklines
+%    \put( 1, 2){\line(-1, 1){1} }
+%    \put( 0, 2){\line( 0, 1){1} }
+%    \put(-1, 2){\line( 1, 1){1} }
+%    \put( 1, 1){\line( 0, 1){1} }
+%    \put( 1, 1){\line(-1, 1){1} }
+%    \put( 0, 1){\line(-1, 1){1} }
+%    \put( 0, 1){\line( 1, 1){1} }
+%    \put(-1, 1){\line( 0, 1){1} }
+%    \put(-1, 1){\line( 1, 1){1} }
+%    \put( 0, 0){\line(-1, 1){1} }
+%    \put( 0, 0){\line( 0, 1){1} }
+%    \put( 0, 0){\line( 1, 1){1} }
+%
+%    \put( 0, 3){\circle*{0.15}}
+%    \put( 1, 2){\circle*{0.15}}
+%    \put( 0, 2){\circle*{0.15}}
+%    \put(-1, 2){\circle*{0.15}}
+%    \put( 1, 1){\circle*{0.15}}
+%    \put( 0, 1){\circle*{0.15}}
+%    \put(-1, 1){\circle*{0.15}}
+%    \put( 0, 0){\circle*{0.15}}
+%
+%    {\color{red}
+%      \put(-1.5, 0.75){\dashbox{0.10}(3,0.5){}}
+%      \put( 1.5, 1.6){\makebox(0,0)[br] {basis subspaces}}
+%      \put( 1.25, 1.55){\vector(0,-1){0.3}}
+%    }
+%
+%    %\put(   0, 310){\makebox(0,0)[b] { $\setn{a,b,c}$ }}
+%    %\put( 1, 2){\makebox(0,0)[bl]{ $\setn{  b,c}$ }}
+%    %\put(   0, 2){\makebox(0,0)[bl]{ $\setn{a,  c}$ }}
+%    %\put(-1, 2){\makebox(0,0)[br]{ $\setn{a,b  }$ }}
+%    %\put( 1, 1){\makebox(0,0)[tl]{ $\setn{c    }$ }}
+%    %\put(   0, 1){\makebox(0,0)[tl]{ $\setn{  b  }$ }}
+%    %\put(-1, 1){\makebox(0,0)[tr]{ $\setn{    a}$ }}
+%    %\put(   0, -10){\makebox(0,0)[t] { $\emptyset   $ }}
+%  \end{picture}
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}
+%\begin{minipage}{8\tw/16}
+%  %---------------------------------------
+%  %\begin{definition}
+%  %---------------------------------------
+%  The \hid{power architecture} is illustrated by the Hasse diagram to the left.
+%  %\end{definition}
+%  The power architecture is noteable because it is also the lattice formed by
+%  the power set $\psetx$ of a set $\setX$.
+%  Therefore it represents all the possible combinations of subspaces.
+%\end{minipage}
+%
+%
+%
+%\begin{minipage}{8\tw/16}
+%  \color{figcolor}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{\textwidth/18}
+%  \begin{picture}(16,9)(-8,-2)
+%    %{\color{graphpaper}\graphpaper[1](-8,-2)(16,9)}
+%    \thicklines
+%    \put( 2, 1){\line( 1, 1){2} }
+%    \put(-2, 1){\line(-1, 1){2} }
+%
+%    \put( 3,   0){\line(-1, 1){1} }
+%    \put( 1,   0){\line( 1, 1){1} }
+%    \put(-1,   0){\line(-1, 1){1} }
+%    \put(-3,   0){\line( 1, 1){1} }
+%
+%    \put( 7,   0){\line(-1, 1){7} }
+%    \put( 5,   0){\line( 1, 1){1} }
+%    \put( 3,   0){\line(-1, 1){1} }
+%    \put( 1,   0){\line( 1, 1){1} }
+%    \put(-1,   0){\line(-1, 1){1} }
+%    \put(-3,   0){\line( 1, 1){1} }
+%    \put(-5,   0){\line(-1, 1){1} }
+%    \put(-7,   0){\line( 1, 1){7} }
+%
+%    \qbezier(-7,0)(-3.5,-1)(0,-2)
+%    \qbezier( 7,0)( 3.5,-1)(0,-2)
+%
+%    \put(-5,   0){\line( 5,-2){5} }
+%    \put(-3,   0){\line( 3,-2){3} }
+%    \put(-1,   0){\line( 1,-2){1} }
+%    \put( 1,   0){\line(-1,-2){1} }
+%    \put( 3,   0){\line(-3,-2){3} }
+%    \put( 5,   0){\line(-5,-2){5} }
+%
+%    \put(   0, 7){\circle*{0.30}}  %maximum element
+%
+%    \put( 4, 3){\circle*{0.30}}
+%    \put(-4, 3){\circle*{0.30}}
+%    \put( 6, 1){\circle*{0.30}}
+%    \put( 2, 1){\circle*{0.30}}
+%    \put(-2, 1){\circle*{0.30}}
+%    \put(-6, 1){\circle*{0.30}}
+%
+%    \put(-7,   0){\circle*{0.30}}
+%    \put(-5,   0){\circle*{0.30}}
+%    \put(-3,   0){\circle*{0.30}}
+%    \put(-1,   0){\circle*{0.30}}
+%    \put( 1,   0){\circle*{0.30}}
+%    \put( 3,   0){\circle*{0.30}}
+%    \put( 5,   0){\circle*{0.30}}
+%    \put( 7,   0){\circle*{0.30}}
+%
+%    \put(   0,-2){\circle*{0.30}}  %minimum element
+%
+%  %  \put(   0, 210){\makebox(0,0)[b] {$\spLL$}}
+%  %  \put(-210,   0){\makebox(0,0)[r] {$\spW_0$}}
+%  %  \put(-110,   0){\makebox(0,0)[r] {$\spW_1$}}
+%  %  \put(  10,   0){\makebox(0,0)[l] {$\spW_2$}}
+%  %  \put( 210,   0){\makebox(0,0)[l] {$\spW_3$}}
+%  %  \put(   0,-210){\makebox(0,0)[t] {$0$}}
+%    {\color{red}
+%      \put(-8, -0.5){\dashbox{0.2}(16,1){}}
+%      \put( 0, 2.1){\makebox(0,0)[b] {bases subspaces}}
+%      \put( 0, 2){\vector(0,-1){1.5}}
+%    }
+%  \end{picture}
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}
+%\begin{minipage}{8\tw/16}
+%  %---------------------------------------
+%  %\begin{definition}
+%  %---------------------------------------
+%  The \hid{dyadic architecture} is illustrated by the Hasse diagram to the left.
+%  %\end{definition}
+%  In the dyadic architecture,
+%  every subspace higher than the basis subspaces are the sum of two other subspaces
+%  below it.
+%  That is, these subspaces repeatedly split into two smaller subspaces.
+%\end{minipage}
+%
+%
+%\begin{minipage}{8\tw/16}
+%  \color{figcolor}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{\textwidth/18}
+%  \begin{picture}(16,9)(-8,-2)
+%    %{\color{graphpaper}\graphpaper[1](-8,-2)(16,9)}
+%    \thicklines
+%    \put( 7,   0){\line(-1, 1){7} }
+%    \put( 5,   0){\line( 1, 1){1} }
+%    \put( 3,   0){\line( 1, 3){1} }
+%    \put( 1,   0){\line( 1, 5){1} }
+%    \put(-1,   0){\line(-1, 5){1} }
+%    \put(-3,   0){\line(-1, 3){1} }
+%    \put(-5,   0){\line(-1, 1){1} }
+%    \put(-7,   0){\line( 1, 1){7} }
+%
+%    \qbezier(-7,0)(-3.5,-1)(0,-2)
+%    \qbezier( 7,0)( 3.5,-1)(0,-2)
+%    \put(-5,   0){\line( 5,-2){5} }
+%    \put(-3,   0){\line( 3,-2){3} }
+%    \put(-1,   0){\line( 1,-2){1} }
+%    \put( 1,   0){\line(-1,-2){1} }
+%    \put( 3,   0){\line(-3,-2){3} }
+%    \put( 5,   0){\line(-5,-2){5} }
+%
+%    \put(   0, 7){\circle*{0.30}}  %maximum element
+%
+%    \put( 6, 1){\circle*{0.30}}
+%    \put( 4, 3){\circle*{0.30}}
+%    \put( 2, 5){\circle*{0.30}}
+%    \put(-2, 5){\circle*{0.30}}
+%    \put(-4, 3){\circle*{0.30}}
+%    \put(-6, 1){\circle*{0.30}}
+%
+%    \put(-7,   0){\circle*{0.30}}
+%    \put(-5,   0){\circle*{0.30}}
+%    \put(-3,   0){\circle*{0.30}}
+%    \put(-1,   0){\circle*{0.30}}
+%    \put( 1,   0){\circle*{0.30}}
+%    \put( 3,   0){\circle*{0.30}}
+%    \put( 5,   0){\circle*{0.30}}
+%    \put( 7,   0){\circle*{0.30}}
+%
+%    \put(   0,-2){\circle*{0.30}}  %minimum element
+%
+%    {\color{red}
+%      \put(-8, -0.5){\dashbox{0.2}(16,1){}}
+%      \put( 0, 2.1){\makebox(0,0)[b] {bases subspaces}}
+%      \put( 0, 2){\vector(0,-1){1.5}}
+%    }
+%  \end{picture}
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}
+%\begin{minipage}{8\tw/16}
+%  %---------------------------------------
+%  %\begin{definition}
+%  %---------------------------------------
+%  The \hid{symmetric progressive architecture} is illustrated by the Hasse diagram to the left.
+%  %\end{definition}
+%  In the symmetric progressive architecture is similar to the progressive architecture
+%  except that it is symmetric and complemented.
+%\end{minipage}
+%
+%
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:mra_lattice}
+%%---------------------------------------
+%\formbox{\begin{tabular}{p{\tw/8}|| *{6}{c|}}
+%  architecture            & modular  & distributive & complemented & topology & ring         & algebra         \\
+%                          &          &              &              &          & of sets      & of sets         \\
+%  \hline
+%  primitive               & $\checkmark$ &         & $\checkmark$  & $\checkmark$  &          &            \\
+%  progressive             &         &         &          &          &          &            \\
+%  power                   & $\checkmark$ & $\checkmark$ & $\checkmark$  & $\checkmark$  & $\checkmark$  & $\checkmark$    \\
+%  dyadic                  & $\checkmark$ & $\checkmark$ & $\checkmark$  &          &          &            \\
+%  symmetric progressive   & $\checkmark$ & $\checkmark$ & $\checkmark$  &          &          &            \\
+%\end{tabular}}
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%\item The wavelet operator lattice contains the N5 sublattice.
+%  \ifdochaselse{latvar}{By \prefpp{thm:latd_char_n5m3}}{Therefore}, 
+%  the wavelet operator is non-modular and non-distributive.
+%
+%\item For the lattice to be complemented,
+%  there must exist $\spW_{n-2}^c$ such that
+%  $\spW_{n-2} \adds \spW_{n-2}^c = \spX_n$.
+%  However, this subspace does not exist in the MRA.
+%\end{enumerate}
+%\end{proof}
+%
+%
+%
+%
+%
+%
+%%======================================
+%%\subsection{linear spaces of subspaces}
+%%======================================
+%
+%
+
+\fi
+
+%=======================================
+\section{Subspace Metrics}
+%=======================================
+%---------------------------------------
+\begin{definition}[Hilbert space gap metric]
+\footnote{
+  \citerp{deza2006}{235},
+  \citerp{akhiezer1e}{69},
+  \citerp{berkson1963}{8},
+  \citor{krein1947}
+  %\citer{sznagy1946}
+  }
+\index{gap metric}
+\index{metrics!gap}
+\index{opening}
+\index{aperature}
+%---------------------------------------
+Let $\spX$ be a {\bf Hilbert space} and $\ssetS$ the set of subspaces of $\spX$.
+Then we define the following metric between subspaces of $\spX$.
+\defbox{\begin{array}{rc>{\ds}lCD}
+  \metric{\spV}{\spW} &\eqd& \norm{\opP - \opQ} 
+    & \forall \spV,\spW\in\ssetS 
+    & \parbox[t]{8\tw/16}{(the distance between subspaces $\spV$ and $\spW$ is the size of the difference of their projection operators)}
+    \\
+  \text{where }  \spV &\eqd& \opP\spX 
+    & 
+    & ($\opP$ is the projection operator that generates the subspace $\spV$) 
+    \\
+  \text{and }    \spW &\eqd& \opQ\spX 
+    & 
+    & ($\opQ$ is the projection operator that generates the subspace $\spW$).
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}[Banach space gap metric]
+\footnote{
+  \citerp{akhiezer1e}{70},
+  \citerp{berkson1963}{8},
+  \citor{krein1948}
+  %\citer{sznagy1946}
+  }
+\index{gap metric}
+\index{metrics!gap}
+\index{aperature}
+\index{opening}
+%---------------------------------------
+Let $\spX$ be a {\bf Banach space} and $\ssetS$ the set of subspaces of $\spX$.
+%Let $\metrican$ be a metric from a point to a set of points.
+Then we define the following metric between subspaces of $\spX$.
+\defbox{\begin{array}{rc>{\ds}lC}
+  \metric{\spV}{\spW} &\eqd& \max\setn{\sup_{\vv\in\setV,\norm{\vv}=1}\metrica{\vv}{\spW},\;\sup_{\vw\in\setW,\norm{\vw}=1}\metrica{\vw}{\spV}}
+    & \forall \spV,\spW\in\ssetS 
+    \\
+  \text{where }  \metrica{\vv}{\spW} &\eqd& \inf_{\vw\in\setW} \norm{\vv-\vw}
+      \qquad\text{\scriptsize(metric from the point $\vv$ to the subspace $\spW$)}
+\end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{definition}[Sch{/:a}ffer's metric]
+\footnote{
+  \citerpp{massera1958}{562}{563},
+  \citerpp{berkson1963}{7}{8}
+  }
+\label{def:sub_schaffer}
+\index{Sch{/:a}ffer's metric}
+\index{metrics!Sch{/:a}ffer}
+%---------------------------------------
+\defbox{\begin{array}{rcl}
+  \metric{\spV}{\spW} &=& \log\brp{1 + \max\setn{\fr(\spV,\spW),\,\fr(\spW,\spV)}} \qquad\text{ where}\\
+  \fr(\spV,\spW)      &\eqd& 
+    \brbl{\begin{array}{ll}
+      \inf\set{\norm{\opA-\opI}}{\opA\opV = \opW}             & \text{if $\opA$ and $\opAi$ both exist}  \\
+      1                                                       & \text{otherwise}
+    \end{array}}
+  \end{array}}
+\end{definition}
+
+%=======================================
+\section{Literature}
+%=======================================
+\begin{survey}
+\begin{enumerate}
+  \item Lattice of subspaces
+    \\\citer{birkhoffjvn1936}
+    \\\citer{husimi1937}
+    \\\citer{sasaki1954}
+    \\\citer{loomis1955}
+    \\\citer{vonNeumann1960}
+    \\\citer{holland1970}
+    \\\citer{halmos1998}
+    \\\citer{amemiya1966}
+    \\\citer{gudder1979}
+    \\\citer{gudder2005}
+
+  \item Characterizations of lattice of Hilbert subspaces (cf \citerpg{iturrioz1985}{60}{0821850768}):
+    \\\citerc{kakutani1946}{using Banach spaces}
+    \\\citerc{piron1964}{using pre-Hilbert spaces}
+    \\\indentdr\citerc{piron1964e}{using pre-Hilbert spaces}
+    \\\citerc{amemiya1966}{using pre-Hilbert spaces}
+    \\\citerc{wilbur1975}{using locally convex spaces}
+
+  %\item Orthoarguesian law:
+    %\\\citer{day197x}
+
+  \item Metrics on subspaces:\\
+    \citer{burago}
+    
+\end{enumerate}
+\end{survey}
+
+

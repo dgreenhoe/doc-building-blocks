@@ -1,0 +1,438 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX File
+%============================================================================
+
+%=======================================
+\chapter{Pseudo Random generators}
+%=======================================
+
+
+
+
+\index{m-sequence} \index{Gold sequence}
+The most basic binary pn-sequence is the {\em m-sequence}
+(maximal length sequence).
+From this basic sequence, other sequences can be constructed
+such as {\em Gold} sequences.
+
+%=======================================
+\section{Generating m-sequences mathematically}
+\label{sec:math}
+%=======================================
+%=======================================
+\subsection{Definitions}
+\label{sec:def}
+%=======================================
+An m-sequence can be represented as the coefficients of a \hie{polynomial}
+over a \hie{finite field}.
+Any \hie{field} is defined by the triplet $(S,+,\cdot)$,
+where
+
+\begin{tabular}{clrlll}
+   $S$:     & a set \\
+   $+$:     & addition   operation in the form       &$+:$     &$S\times S\to S$ \\
+   $\cdot$: & multiplication   operation in the form &$\cdot:$ &$S\times S\to S $
+\end{tabular}
+
+
+%--------------------------------------
+\begin{definition} {\bf Galois Field 2, GF(2)} \\
+\label{def:gf2}
+\index{Galois field}
+\index{GF(2)}
+%--------------------------------------
+GF(2) is the field $(S,+,\cdot)$ with members of the triplet defined as
+
+\begin{tabular}{ccccc}
+\begin{math}
+\begin{array}{ccl}
+   S     &=& \{0,1\}                        \\
+   +     &:& \{0,1\}\times\{0,1\}\to\{0,1\} \\
+   \cdot &:& \{0,1\}\times\{0,1\}\to\{0,1\}
+\end{array}
+\end{math}
+&
+ such that
+&
+\begin{math}
+\begin{array}{cc|c}
+   a & b & a+b \\
+   \hline
+   0 & 0 & 0 \\
+   0 & 1 & 1 \\
+   1 & 0 & 1 \\
+   1 & 1 & 0 \\
+\end{array}
+\end{math}
+&and&
+\begin{math}
+\begin{array}{cc|c}
+   a & b & a\cdot b \\
+   \hline
+   0 & 0 & 0 \\
+   0 & 1 & 0 \\
+   1 & 0 & 0 \\
+   1 & 1 & 1 \\
+\end{array}
+\end{math}
+\end{tabular}
+
+\end{definition}
+
+\index{GF(2)!polynomials over}
+M-sequences can be generated and represented as
+{\em polynomials over GF(2)}.
+A polynomial over GF(2) is a polynomial with coefficients selected from GF(2).
+An example of a polynomial over GF(2) is
+   \[ 1 + x^2 + x^5 + x^6 + x^7 + x^9. \]
+
+The generation of an m-sequence is equivalent to polynomial division,
+which is very similar to integer division.
+
+%--------------------------------------
+\begin{definition} {\bf Polynomial division} \\
+%--------------------------------------
+The quantities of polynomial division are identified as follows:
+
+\begin{center}
+\begin{tabular}{ccc}
+$\ds \frac{d(x)}{p(x)} = q(x) + \frac{r(x)}{p(x)}$
+&where&
+\begin{tabular}{llll}
+   d(x) & is the dividend \\
+   p(x) & is the divisor  \\
+   q(x) & is the quotient \\
+   r(x) & is the remainder.
+\end{tabular}
+\end{tabular}
+\end{center}
+\end{definition}
+
+The ring of integers $\Z$ contains some special elements called {\em primes}
+which can only be divided\footnote{
+   The expression ``$a$ divides $b$" means that $b/a$ has remainder 0.
+}
+ by themselves or 1.
+Rings of polynomials have a similar elements called {\em primitive polynomials}.
+
+%--------------------------------------
+\begin{definition}[\hid{Primitive polynomial}]
+\label{def:pn_primitive}
+%--------------------------------------
+A primitive polynomial $p(x)$ of order $n$ has the properties
+\begin{enumerate}
+\setlength{\itemsep}{0ex}
+   \item $p(x)$ cannot be factored
+   \item the smallest order polynomial that $p(x)$ can divide is $x^{2^n-1}+1=0$.
+\end{enumerate}
+\end{definition}
+
+%--------------------------------------
+\begin{example}
+\label{ex:pn_primitive}
+%--------------------------------------
+Some examples\citepp{wicker}{465}{475} of primitive polynomials over $GF(2)$ are
+primitive polynomials: \url{http://www.ece.cmu.edu/~koopman/lfsr/index.html}
+
+\[\begin{array}{l|l}
+   \text{primitive polynomial} & \text{recipricol}
+   \\\hline
+   \\\hline
+   x + 1                        &
+                                \\
+   \hline
+   x^2 + x   + 1                &
+                                \\
+   \hline
+   x^3 + x   + 1                &
+   x^3 + x^2 + 1                \\
+   \hline
+   x^4 + x   + 1                &
+   x^4 + x^3 + 1                \\
+   \hline
+   x^5+x^4+x^2+x+1              &
+   x^5+x^4+x^3+x+1              \\
+   x^5+x^3+x^2+x+1              &
+   x^5+x^4+x^3+x^2+1            \\
+   x^5+x^2+1                    &
+   x^5+x^3+1                    \\
+   \hline
+   x^6 + x + 1                  &
+   x^6 + x^5 + 1                \\
+   x^6 + x^4 + x^3 + x + 1      &
+   x^6 + x^5 + x^3 + x^2 + 1    \\
+   x^6 + x^5 + x^2 + x + 1      &
+   x^6 + x^5 + x^4 + x + 1      \\\hline
+\end{array}\]
+
+
+\footnote{\begin{tabular}[t]{>{$}l<{$}l}
+  \frac{1}{x^3+x+1}:           & \url{http://www.research.att.com/~njas/sequences/A011657} \\
+  \frac{1}{x^3+x^2+1}:         & \url{http://www.research.att.com/~njas/sequences/A011656} \\
+  \frac{1}{x^4+x+1}:           & \url{http://www.research.att.com/~njas/sequences/A011659} \\
+  \frac{1}{x^5+x^4+x^2+x+1}    & \url{http://www.research.att.com/~njas/sequences/A011660} \\
+  \frac{1}{x^5+x^3+x^2+x+1}    & \url{http://www.research.att.com/~njas/sequences/A011661} \\
+  \frac{1}{x^5+x^2+1}          & \url{http://www.research.att.com/~njas/sequences/A011662} \\
+  \frac{1}{x^5+x^4+x^3+x+1}    & \url{http://www.research.att.com/~njas/sequences/A011663} \\
+  \frac{1}{x^5+x^3+1}          & \url{http://www.research.att.com/~njas/sequences/A011664} \\
+  \frac{1}{x^5+x^4+x^3+x^2+1}  & \url{http://www.research.att.com/~njas/sequences/A011665} \\
+  \frac{1}{x^6+x^5+x^4+x+1}    & \url{http://www.research.att.com/~njas/sequences/A011666} \\
+  \frac{1}{x^16+x^5+x^3+x^2+1} & \url{http://www.research.att.com/~njas/sequences/A011729} \\
+  \frac{1}{x^31+x^3+1}         & \url{http://www.research.att.com/~njas/sequences/A011744} \\
+\end{tabular}}
+
+Number of primitive polynomials:
+\url{http://www.research.att.com/~njas/sequences/A011260}
+\end{example}
+
+An m-sequence is the remainder when dividing any non-zero polynomial by a primitive
+polynomial.
+We can define an
+\hie{equivalence relation}\footnote{\hie{equivalence relation}: \prefp{def:eq_rel}}
+on polynomials which defines two polynomials as
+{\em equivalent with respect to $p(x)$}
+when their remainders are equal.
+
+%--------------------------------------
+\begin{definition}[\hid{Equivalence relation}]
+\label{def:equiv}
+%--------------------------------------
+\defbox{\begin{array}{lll}
+  \mc{3}{l}{\text{$a_1(x)$ and $a_2(x)$ are equivalent with respect to $p(x)$ if}}
+  \\& 1. & a_1(x) = q_1(x) p(x) + r(x)
+  \\&    & \text{and}
+  \\& 2. & a_2(x) = q_2(x) p(x) + r(x)
+\end{array}}
+In symbols, this is expressed as $a_1(x)\equiv a_2(x)$.
+\end{definition}
+
+Using the equivalence relation of \pref{def:equiv},
+we can develop two very useful equivalent representations of
+polynomials over GF(2).
+We will call these two representations the {\em exponential} representation
+and the {\em polynomial} representation.
+
+%--------------------------------------
+\begin{example}
+\label{ex:representations}
+%--------------------------------------
+By \prefpp{def:equiv}, and
+under $p(x)=x^3+x+1$, we have the following equivalent representations:
+\exbox{\begin{array}{cccc}
+   \text{exponential} & \text{polynomial} & \text{vector} & \text{decimal} \\
+   x^0 & 1       &[001] & 1  \\
+   x^1 & x       &[010] & 2  \\
+   x^2 & x^2     &[100] & 4  \\
+   x^3 & x+1     &[011] & 3  \\
+   x^4 & x^2+x   &[110] & 6  \\
+   x^5 & x^2+x+1 &[111] & 7  \\
+   x^6 & x^2+1   &[101] & 5
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+   \frac{x^0}{x^3+x+1} &=& 0     &+& \frac{1  }{x^3+x+1}     &\implies& x^0 &\equiv& 1   \\
+   \frac{x^1}{x^3+x+1} &=& 0     &+& \frac{x  }{x^3+x+1}     &\implies& x^1 &\equiv& x   \\
+   \frac{x^2}{x^3+x+1} &=& 0     &+& \frac{x^2}{x^3+x+1}     &\implies& x^2 &\equiv& x^2 \\
+   \frac{x^3}{x^3+x+1} &=& 1     &+& \frac{x+1}{x^3+x+1}     &\implies& x^3 &\equiv& x+1 \\
+   \frac{x^4}{x^3+x+1} &=& x     &+& \frac{x^2+x}{x^3+x+1}   &\implies& x^4 &\equiv& x^2+x \\
+   \frac{x^5}{x^3+x+1} &=& x^2+1 &+& \frac{x^2+x+1}{x^3+x+1} &\implies& x^5 &\equiv& x^2+x+1 \\
+   \frac{x^6}{x^3+x+1} &=& x^3+x+1 &+& \frac{x^2+1}{x^3+x+1} &\implies& x^6 &\equiv& x^2+1 \\
+   \frac{x^7}{x^3+x+1} &=& x^4+x^2+x+1 &+& \frac{1}{x^3+x+1} &\implies& x^7 &\equiv& 1
+\end{align*}
+
+Notice that $x^7\equiv x^0$, and so a cycle is formed with
+$2^3-1=7$ elements in the cycle.
+The monomials to the left of the $\equiv$ are the {\em exponential}
+representation and the polynomials to the right are the {\em polynomial}
+representation.
+Additionally, the polynomial representation may be put in a vector form giving a
+{\em vector} representation.
+The vectors may be interpreted as a binary number and represented as a decimal numeral.
+
+\[\begin{array}{cccc}
+   \text{exponential} & \text{polynomial} & \text{vector} & \text{decimal} \\
+   x^0 & 1       &[001] & 1  \\
+   x^1 & x       &[010] & 2  \\
+   x^2 & x^2     &[100] & 4  \\
+   x^3 & x+1     &[011] & 3  \\
+   x^4 & x^2+x   &[110] & 6  \\
+   x^5 & x^2+x+1 &[111] & 7  \\
+   x^6 & x^2+1   &[101] & 5
+\end{array}\]
+\end{proof}
+
+
+%=======================================
+\subsection{Generating m-sequences using polynomial division}
+%=======================================
+An m-sequence is generated by dividing any non-zero polynomial of order less than $m$
+by a primitive polynomial of order $m$.
+The m-sequence is the coefficients of the resulting polynomial.
+M-sequences will repeat every $2^m-1$ values.
+This is the maximum sequence length possible when the
+sequence is generated by division in polynomials over GF(2).
+
+%--------------------------------------
+\begin{example}
+\label{ex:1/p(x)}
+%--------------------------------------
+We can generate an m-sequence of length
+$2^3-1=7$ by dividing 1 by the primitive polynomial $x^3+x+1$.
+
+\begin{fsL}
+\[
+\begin{array}{rrll}
+           &   & x^{-3} + x^{-5} + x^{-6} +& x^{-7} + x^{-10} + x^{-12} + x^{-13} + x^{-14} + x^{-17} + \cdots \\
+   \cline{3-4}
+   x^3+x+1 & \vline & 1 \\
+           &        & 1 + x^{-2} + x^{-3} \\
+   \cline{3-3}
+           &        & x^{-2} + x^{-3} \\
+           &        & x^{-2} + x^{-4} + x^{-5} \\
+   \cline{3-3}
+           &        & x^{-3} + x^{-4} + x^{-5} \\
+           &        & x^{-3} + x^{-5} + x^{-6} \\
+   \cline{3-3}
+           &        & x^{-4} + x^{-6}          \\
+           &        & x^{-4} + x^{-6} + x^{-7} \\
+   \cline{3-3}
+           &        & x^{-7}                   \\
+           &        & x^{-7} + x^{-9} + x^{-10} \\
+   \cline{3-3}
+           &        & x^{-9} + x^{-10}         \\
+           &        & x^{-9} + x^{-11} + x^{-12} \\
+   \cline{3-3}
+           &        & x^{-10} + x^{-11} + x^{-12} \\
+           &        & x^{-10} + x^{-12} + x^{-13} \\
+   \cline{3-3}
+           &        & x^{-11} + x^{-13}          \\
+           &        & x^{-11} + x^{-13} + x^{-14} \\
+   \cline{3-3}
+           &        & x^{-14}           \\
+           &        & \vdots
+\end{array}
+\]
+\end{fsL}
+The coefficients, starting with the $x^{-1}$ term,
+of the resulting polynomial form the m-sequence
+\[ 0010111 \; 0010111 \; \cdots \]
+which repeats every $2^3-1=7$ elements.
+\end{example}
+
+
+Note that the division operation in Example \ref{ex:1/p(x)}
+can be performed using vector notation rather than polynomial notation.
+
+%--------------------------------------
+\begin{example}
+%--------------------------------------
+Generate an m-sequence of length $2^3-1=7$ by dividing 1 by the primitive polynomial
+$x^3+x+1$ using vector notation.
+
+\begin{fsL}
+\[
+\begin{array}{rrllllllllllllllllllllllllllllllllllll}
+           &   &   &.&0&0&1&0&1&1&1 &0&0&1&0&1&1&1 &0&\cdots \\
+   \cline{3-20}
+   1011    &\vline   & 1 &.&0&0&0&0&0&0&0 &0&0&0&0&0&0&0 &0 \\
+           &   & 1 & &0&1&1 \\
+   \cline{3-7}
+           &   & 0 & &0&1&1&0 \\
+           &   &   & &0&0&0&0 \\
+   \cline{5-8}
+           &   &   & &0&1&1&0&0 \\
+           &   &   & & &1&0&1&1 \\
+   \cline{6-9}
+           &   &   & & &0&1&1&1&0 \\
+           &   &   & & & &1&0&1&1 \\
+   \cline{7-10}
+           &   &   & & & &0&1&0&1&0 \\
+           &   &   & & & & &1&0&1&1 \\
+   \cline{8-11}
+           &   &   & & & & &0&0&0&1&0 \\
+           &   &   & & & & & &0&0&0&0 \\
+   \cline{9-12}
+           &   &   & & & & & &0&0&1&0&0 \\
+           &   &   & & & & & & &0&0&0&0 \\
+   \cline{10-13}
+           &   &   & & & & & & &0&1&0&0&0 \\
+           &   &   & & & & & & & &1&0&1&1 \\
+   \cline{11-14}
+           &   &   & & & & & & & &0&0&1&1&0 \\
+           &   &   & & & & & & & & &0&0&0&0 \\
+   \cline{12-15}
+           &   &   & & & & & & & & &0&1&1&0&0 \\
+           &   &   & & & & & & & & & &1&0&1&1 \\
+   \cline{13-16}
+           &   &   & & & & & & & & & &0&1&1&1&0 \\
+           &   &   & & & & & & & & & & &0&0&0&0 \\
+           &   &   & & & & & & & & & & & &\vdots& &  \\
+\end{array}
+\]
+\end{fsL}
+
+The coefficients, starting to the right of the binary point,
+is again the sequence
+\[ 0010111 \; 0010111 \; \cdots. \]
+\end{example}
+
+
+%=======================================
+\subsection{Multiplication modulo a primitive polynomial}
+\label{sec:math-xmod}
+%=======================================
+If $p(x)$ is a primitive polynomial,
+by Definition \ref{def:equiv}
+the product of two polynomials is equivalent (with respect to $p(x)$)
+of the product {\em modulo} $p(x)$.
+The ability to multiplying two polynomials modulo a primitive polynomial
+is very useful for manipulating m-sequences.
+
+In general, the product of two polynomials can be evaluated as follows.
+Let
+\begin{eqnarray*}
+   a(x) &\eqd& a_mx^m + a_{m-1}x^{m-1} + \cdots + a_2x^2 + a_1x + a_0 \\
+   b(x) &\eqd& b_mx^m + b_{m-1}x^{m-1} + \cdots + b_2x^2 + b_1x + b_0
+\end{eqnarray*}
+
+Then
+\begin{scriptsize}
+\begin{eqnarray*}
+   a(x)b(x)
+        &=& \left( a_mx^m + a_{m-1}x^{m-1} + \cdots + a_2x^2 + a_1x + a_0 \right)
+            \left( b_mx^m + b_{m-1}x^{m-1} + \cdots + b_2x^2 + b_1x + b_0 \right)\\
+        &=& a_0b_0 + (a_0b_1+a_1b_0)x + (a_0b_2+a_1b_1+a_2b_0)x^2 + \cdots + a_mb_mx^{2m}\\
+        &=& \left( \sum\limits_{i=0}^{m-1}x^i \sum\limits_{j=0}^i a_jb_{i-j} \right) +
+            \left( \sum\limits_{i=m}^{2m}x^i \sum\limits_{j=0}^{2m-i} a_{i-m+j}b_{m-j} \right)
+\end{eqnarray*}
+\end{scriptsize}
+
+The product modulo $p(x)$ is obtained when the terms involving
+$x^m$, $x^{m+1}$, \ldots, $x^{2m}$ are replaced by their
+equivalent polynomial representations
+(see Section \ref{sec:def}).
+
+%--------------------------------------
+\begin{example}
+\label{ex:math-xmod}
+%--------------------------------------
+Suppose we want to find $(a_2x^2 + a_1x + a_0)(b_2x^2+b_1x+b_0)$ modulo $x^3+x+1$.
+\begin{scriptsize}
+\begin{eqnarray*}
+   a(x)b(x) &=& (a_2x^2+a_1x+a_0)(b_2x^2+b_1x+b_0)
+      \\&=& a_0b_0 + (a_0b_1 + a_1b_0)x + (a_0b_2 + a_1b_1 + a_2b_0)x^2 +
+            (a_1b_2 + a_2b_1)x^3 + a_2b_2x^4
+      \\&=& a_0b_0 + (a_0b_1 + a_1b_0)x + (a_0b_2 + a_1b_1 + a_2b_0)x^2 +
+            (a_1b_2 + a_2b_1)(x+1) + a_2b_2(x^2+x)
+      \\&=& (a_0b_0 + a_1b_2 + a_2b_1) +
+            (a_0b_1 + a_1b_0 + a_1b_2 + a_2b_1 + a_2b_2)x +
+            (a_0b_2 + a_1b_1 + a_2b_0 + a_2b_2)x^2
+\end{eqnarray*}
+\end{scriptsize}
+Notice that if the $a_i$ and $b_i$ coefficients are known,
+the resulting product has only three terms.
+\end{example}
+
+

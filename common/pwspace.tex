@@ -1,0 +1,399 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX/XeLaTeX file
+%============================================================================
+%=======================================
+%\chapter{Cardinal Sequence and Series}
+%=======================================
+
+%=======================================
+\section{Cardinal Series and Sampling}
+%=======================================
+%======================================
+\subsection{Cardinal series basis}
+\label{sec:cardinal}
+%======================================
+The \prope{Paley-Wiener} class of functions (next definition) are those with a bandlimited Fourier transform.
+The cardinal series forms an orthogonal basis for such a space \xrefP{thm:cardinalSeries}.
+In a \structe{frame} $\seqnZ{\vx_n}$ with \ope{frame operator} $\opS$ on a \structe{Hilbert Space} $\spH$
+with \fncte{inner product} $\inprodn$, 
+a function $\ff(x)$ in the space spanned by the frame can be represented by
+\\\indentx$\ds\ff(x) = \sum_{n\in\Z} \mcom{\inprod{\ff}{\opSi\vx_n}}{``\fncte{Fourier coefficient}"}\vx_n$.\\
+If the frame is \prope{orthonormal} (giving an \structe{orthonormal basis}), then $\opS=\opSi=\opI$ and 
+\\\indentx$\ds\ff(x) = \sum_{n\in\Z} \inprod{\ff}{\vx_n}\vx_n$.\\
+In the case of the cardinal series, 
+the \fncte{Fourier coefficients}\ifsxref{frames}{def:fcoef} are particularly 
+simple---these coefficients are samples of $\ff$ taken at regular intervals \xrefP{thm:t_sampling}.
+In fact, one could represent the coefficients using inner product notation with the 
+\structe{Dirac delta distribution} $\delta$ \ifxref{relation}{def:dirac} as
+follows:
+\\\indentx$\ds\inprod{\ff(x)}{\delta(x-n\tau)} \eqd \int_{\R} \ff(x)\delta(x-n\tau) \dt \eqd \ff(n\tau)$
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  %\citerp{higgins1985}{56}\\
+  \citerpgc{higgins1996}{52}{0198596995}{Definition 6.15}
+  %\citerp{hardy1941}{332}
+  }
+\label{def:PW}
+%--------------------------------------
+\defbox{\begin{array}{M}
+  A function $\ff\in\clFcc$ is in the \hid{Paley-Wiener} class of functions $\ds\spPW^p_\sigma$ if\\
+  there exists $\fF\in\spL^p\intoo{-\sigma}{\sigma}$ such that 
+  \\\qquad$\ds\ff(x) = \int_{-\sigma}^{\sigma} \fF(\omega)e^{ix\omega}\dw$
+  \qquad({\scs $\ff$ has a \prope{bandlimited} Fourier transform $\fF$  with bandwidth $\sigma$})
+  \\for $p\in\intco{1}{\infty}$ and $\sigma\in\intoo{0}{\infty}$.
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}[\thmd{Paley-Wiener Theorem for Functions}]
+\footnote{
+  \citerpgc{boas1954}{103}{0123745829}{6.8.1 Theorem of Paley and Wiener},
+  \citerpgc{katznelson2004}{212}{0521543592}{7.4 Theorem},
+  \citerppgc{zygmund1968v2}{272}{273}{0521890535}{(7$\cdot$2) \scshape Theorem of Paley-Wiener},
+  %\citerpg{yosida1971}{161}{3540055061},
+  \citerpg{yosida1980}{161}{3540586547},
+  \citerpgc{rudinr}{375}{0070542341}{19.3 Theorem},
+  \citerpgc{young2001}{85}{0127729550}{Theorem 18}
+  }
+%--------------------------------------
+Let $\ff$ be an \structe{entire function} (the domain of $\ff$ is the entire complex plane $\C$).
+Let $\sigma\in\Rp$.
+\thmbox{
+  \brb{\ff\in\spPW^2_\sigma}
+  \iff
+  \brb{\begin{array}{F>{\ds}lDD}
+    1. & \exists C\in\Rp\st\abs{\ff(z)} \le Ce^{\sigma\abs{z}} & (\prope{exponential type}) & and\\
+    2. & \ff\in\spLLR
+    %2. & \int_{\R} \abs{\ff(x)}^2 \ds < \infty 
+  \end{array}}
+  }
+\end{theorem}
+
+\includegraphics{graphics/sinc.pdf}\\
+%--------------------------------------
+\begin{theorem}[\thmd{Cardinal sequence}]
+%\begin{theorem}
+\footnote{
+  \citerpgc{higgins1996}{52}{0198596995}{Definition 6.15},
+  \citerc{hardy1941}{\prope{orthonormality}},
+  \citerpc{higgins1985}{56}{H1.; historical notes}
+  %
+  %\citerp{higgins1985}{47}\\
+  }
+%\footnotetext{
+%  The {\em sampling theorem} was ``discovered" and published by multiple people: 
+%  Nyquist in 1928 (DSP?), 
+%  Whittaker in 1935 (interpolation theory),
+%  and Shannon in 1949 (communication theory). \\
+%  references: \citerp{mallat}{43} \\
+%  \citerp{os}{143}.
+%  }
+\label{thm:cardinalSeries}
+%--------------------------------------
+%Let $\ff\in\spLLR$ and $\Ff(\omega)$ have bandwidth $W$ such that
+%$\Ff(\omega)=0$ for $\abs{\frac{\omega}{2\pi}}>W$. \\
+%If the sample rate $$ then
+\thmbox{
+  %\mcom{\frac{1}{\tau}\ge 2\sigma}{sample rate $\frac{1}{\tau}$ $\ge$ $2\times$ bandwidth $\sigma$}
+  \brb{\frac{1}{\tau}\ge 2\sigma}
+  \implies
+  \text{The sequence}\quad
+  %\setbigleft{\frac{\sin\left[\frac{\pi}{\tau}(x-n\tau)\right]}{\frac{\pi}{\tau}(x-n\tau)}}{n\in\Z}
+  \seqnZ{\frac{\sin\left[\frac{\pi}{\tau}(x-n\tau)\right]}{\frac{\pi}{\tau}(x-n\tau)}}
+  \text{is an \prope{orthonormal} \structe{basis} for $\spPW_\sigma^2$.}
+  }
+\end{theorem}
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{Sampling Theorem}]
+%\begin{theorem}
+\footnote{
+  %\citerpc{higgins1985}{56}{H1.; historical notes}\\
+  %\citerp{higgins1985}{47}\\
+  \citor{etwhittaker1915},
+  \citor{kotelnikov1933e},
+  \citor{jmwhittaker1935},
+  \citePc{shannon1948}{Theorem 13},
+  \citePp{shannon1949}{11}
+  \citerpg{marks1991}{1}{0387973915},
+  \citer{nashed1991},
+  \citerpg{higgins1996}{5}{0198596995},
+  \citerppgc{young2001}{90}{91}{0127729550}{\scshape The Paley-Wiener Space}
+  }
+\label{thm:t_sampling}
+%\footnotetext{
+%  The {\em sampling theorem} was ``discovered" and published by multiple people: 
+%  Nyquist in 1928 (DSP?), 
+%  Whittaker in 1935 (interpolation theory),
+%  and Shannon in 1949 (communication theory). \\
+%  references: \citerp{mallat}{43} \\
+%  \citerp{os}{143}.
+%  }
+%--------------------------------------
+%Let $\ff\in\spLLR$ and $\Ff(\omega)$ have bandwidth $W$ such that
+%$\Ff(\omega)=0$ for $\abs{\frac{\omega}{2\pi}}>W$. \\
+%If the sample rate  then
+\thmbox{
+  \brb{\begin{array}{F>{\ds}lD}
+    1. & \ff\in\spPW_\sigma^2 & and\\
+    2. & \frac{1}{\tau}\ge 2\sigma
+  \end{array}}
+  \qquad\implies\qquad
+  \ff(x) = \mcom{\ds\sum_{n=1}^\infty \ff(n\tau) \frac{\sin\brs{\frac{\pi}{\tau}(x-n\tau)}}{\frac{\pi}{\tau}(x-n\tau)}}
+                {\hie{Cardinal series}}.
+  }
+\end{theorem}
+\begin{proof}
+\[ \mbox{Let }\hspace{3ex}
+   \fs(x) \eqd \frac{\sin\left[\frac{\pi}{\tau}x\right]}{\frac{\pi}{\tau}x}
+   \iff
+   \Fs(\omega) = \left\{\begin{array}{ll}
+      \tau & : |f|\le \frac{1}{2\tau} \\
+      0 & : \mbox{otherwise}
+      \end{array}\right.
+\]
+
+\begin{enumerate}
+  \item Proof that the set is \prope{orthonormal}: see \citer{hardy1941}
+
+  \item Proof that the set is a \prope{basis}:
+    \begin{align*}
+      \ff(x)
+        &= \int_\omega \Ff(\omega) e^{i\omega t} \dw
+        && \text{by \thme{inverse Fourier transform} \xref{thm:opFTi}}
+      \\&= \int_\omega T \Ffd(\omega)\Fs(\omega) e^{i\omega t} \dw
+        && \text{if $W\le\frac{1}{2T}$}
+      \\&= T \ffd(x) \conv \fs(x) 
+        && \text{by \thme{Convolution theorem} \xref{thm:conv}}
+      \\&= T \int_u [\ffd(u)] \fs(x-u) \du
+        && \text{by \ope{convolution} definition \xref{def:conv}} 
+      \\&= T \int_u \left[ \sum_n\ff(u)\delta(u-n\tau) \right] \fs(x-u) \du
+        && \text{by \ope{sampling} definition \xref{thm:f_sampling}}
+      \\&= T \sum_{n\in\Z} \int_u \ff(u)\fs(x-u)\delta(u-n\tau) \du
+      \\&= T \sum_{n\in\Z} \ff(n\tau)\fs(x-n\tau)
+        && \text{by property of \fncte{Dirac delta} distribution}
+      \\&= T \sum_{n\in\Z} \ff(n\tau) 
+             \frac{\sin\left[\frac{\pi}{\tau}(x-n\tau)\right]}
+                  {\frac{\pi}{\tau}(x-n\tau)       }
+        && \text{by definition of $\fs(x)$}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%======================================
+\subsection{Sampling}
+\label{sec:sampling}
+\index{sampling}
+%======================================
+If $\ffd(x)$ is the function $\ff(x)$ sampled at rate $1/T$, 
+then $\Ffd(\omega)$ is simply $\Ff(\omega)$
+{\em replicated} every $1/T$ Hertz and {\em scaled} by $1/T$.
+This is proven in Theorem~\ref{thm:f_sampling} (next) and 
+illustrated in \prefpp{fig:f_sampling}.
+
+
+\begin{figure}[ht]
+\index{nyquist sampling rate}
+\setlength{\unitlength}{0.1mm}
+\begin{center}
+\begin{fsL}
+\begin{tabular}{c}
+%
+\begin{picture}(1550,200)(-750,-50)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(  40,  70){\makebox(0,0)[lb]{$\Ff(\omega)$} }
+  \put(-750,   0){\line( 1,0){1500} }
+  \put(   0, -50){\line( 0,1){ 200} }
+  \put(-100,   0){\line( 1,1){ 100} }
+  \put( 100,   0){\line(-1,1){ 100} }
+  \put(- 10, 100){\line( 1,0){  20} }
+  \put(- 20, 100){\makebox(0,0)[r]{$A$} }
+  \put(-100, -10){\line( 0,1){  20} }
+  \put( 100, -10){\line( 0,1){  20} }
+  \put(-100, -20){\makebox(0,0)[t]{$-W$} }
+  \put( 100, -20){\makebox(0,0)[t]{$+W$} }
+  \put( 770,   0){\makebox(0,0)[l]{$f$} }
+\end{picture}
+\\
+\begin{picture}(1550,200)(-750,-50)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(  20, 140){\makebox(0,0)[lt]{$\Ffd(\omega)$ at sample rate $\frac{1}{\tau}=3W$ (``oversampling")} }
+  \multiput(-600,0)(+300,0){5}{
+     \put(-100,   0){\line( 1,1){ 100} }
+     \put( 100,   0){\line(-1,1){ 100} }
+     }
+  \put(-750,   0){\line( 1,0){1500} }
+  \put(   0, -50){\line( 0,1){ 200} }
+  \put(- 10, 100){\line( 1,0){  20} }
+  \put(- 20, 100){\makebox(0,0)[r]{$\frac{A}{\tau}$} }
+  \put(-100, -10){\line( 0,1){  20} }
+  \put( 100, -10){\line( 0,1){  20} }
+  \put(-100, -20){\makebox(0,0)[t]{$-W$} }
+  \put( 100, -20){\makebox(0,0)[t]{$+W$} }
+  \put( 770,   0){\makebox(0,0)[l]{$f$} }
+
+  \put(-600, -10){\line( 0,1){  20} }
+  \put(-600, -20){\makebox(0,0)[t]{$\frac{-2}{\tau}$} }
+  \put(-300, -10){\line( 0,1){  20} }
+  \put(-300, -20){\makebox(0,0)[t]{$\frac{-1}{\tau}$} }
+  \put( 300, -10){\line( 0,1){  20} }
+  \put( 290, -20){\makebox(0,0)[lt]{$\frac{1}{\tau}=3W$} }
+  \put( 600, -10){\line( 0,1){  20} }
+  \put( 600, -20){\makebox(0,0)[t]{$\frac{2}{\tau}$} }
+\end{picture}
+\\
+\begin{picture}(1550,200)(-750,-50)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(  20, 80){\makebox(0,0)[lb]{$\Ffd(\omega)$ at sample rate $\frac{1}{\tau}=2W$ (at Nyquist rate)} }
+  \multiput(-600,0)(+200,0){7}{
+     \put(-100,   0){\line( 3,2){ 100} }
+     \put( 100,   0){\line(-3,2){ 100} }
+     }
+  \put(-750,   0){\line( 1,0){1500} }
+  \put(   0, -50){\line( 0,1){ 200} }
+  \put(- 10,  67){\line( 1,0){  20} }
+  \put(- 20,  67){\makebox(0,0)[r]{$\frac{A}{\tau}$} }
+  \put(-100, -10){\line( 0,1){  20} }
+  \put( 100, -10){\line( 0,1){  20} }
+  \put(-100, -20){\makebox(0,0)[t]{$-W$} }
+  \put( 100, -20){\makebox(0,0)[t]{$+W$} }
+  \put( 770,   0){\makebox(0,0)[l]{$f$} }
+
+  \put(-600, -10){\line( 0,1){  20} }
+  \put(-600, -20){\makebox(0,0)[t]{$\frac{-3}{\tau}$} }
+  \put(-400, -10){\line( 0,1){  20} }
+  \put(-400, -20){\makebox(0,0)[t]{$\frac{-2}{\tau}$} }
+  \put(-200, -10){\line( 0,1){  20} }
+  \put(-200, -20){\makebox(0,0)[t]{$\frac{-1}{\tau}$} }
+  \put( 200, -10){\line( 0,1){  20} }
+  \put( 190, -20){\makebox(0,0)[lt]{$\frac{1}{\tau}=2W$} }
+  \put( 400, -10){\line( 0,1){  20} }
+  \put( 400, -20){\makebox(0,0)[t]{$\frac{2}{\tau}$} }
+  \put( 600, -10){\line( 0,1){  20} }
+  \put( 600, -20){\makebox(0,0)[t]{$\frac{3}{\tau}$} }
+\end{picture}
+\\
+\begin{picture}(1550,200)(-750,-50)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(  20, 43){\makebox(0,0)[lb]{$\Ffd(\omega)$ at sample rate $\frac{1}{\tau}=W$ (``undersampling")} }
+  \multiput(-600,0)(+100,0){13}{
+     \put(-100,   0){\line( 3,1){ 100} }
+     \put( 100,   0){\line(-3,1){ 100} }
+     }
+  \put(-750,   0){\line( 1,0){1500} }
+  \put(   0, -50){\line( 0,1){ 200} }
+  \put(- 10,  33){\line( 1,0){  20} }
+  \put(- 20,  33){\makebox(0,0)[r]{$\frac{A}{\tau}$} }
+  \put(-100, -10){\line( 0,1){  20} }
+  \put( 100, -10){\line( 0,1){  20} }
+  %\put(-100, -20){\makebox(0,0)[t]{$-W$} }
+  %\put( 100, -20){\makebox(0,0)[t]{$+W$} }
+  \put( 770,   0){\makebox(0,0)[l]{$f$} }
+
+  \put(-600, -10){\line( 0,1){  20} }
+  \put(-600, -20){\makebox(0,0)[t]{$\frac{-6}{\tau}$} }
+  \put(-500, -10){\line( 0,1){  20} }
+  \put(-500, -20){\makebox(0,0)[t]{$\frac{-5}{\tau}$} }
+  \put(-400, -10){\line( 0,1){  20} }
+  \put(-400, -20){\makebox(0,0)[t]{$\frac{-4}{\tau}$} }
+  \put(-300, -10){\line( 0,1){  20} }
+  \put(-300, -20){\makebox(0,0)[t]{$\frac{-3}{\tau}$} }
+  \put(-200, -10){\line( 0,1){  20} }
+  \put(-200, -20){\makebox(0,0)[t]{$\frac{-2}{\tau}$} }
+  \put(-100, -10){\line( 0,1){  20} }
+  \put(-100, -20){\makebox(0,0)[t]{$\frac{-1}{\tau}$} }
+  \put( 100, -10){\line( 0,1){  20} }
+  \put( 100, -20){\makebox(0,0)[ct]{$\frac{1}{\tau}=W$} }
+  \put( 200, -10){\line( 0,1){  20} }
+  \put( 200, -20){\makebox(0,0)[t]{$\frac{2}{\tau}$} }
+  \put( 300, -10){\line( 0,1){  20} }
+  \put( 300, -20){\makebox(0,0)[t]{$\frac{3}{\tau}$} }
+  \put( 400, -10){\line( 0,1){  20} }
+  \put( 400, -20){\makebox(0,0)[t]{$\frac{4}{\tau}$} }
+  \put( 500, -10){\line( 0,1){  20} }
+  \put( 500, -20){\makebox(0,0)[t]{$\frac{5}{\tau}$} }
+  \put( 600, -10){\line( 0,1){  20} }
+  \put( 600, -20){\makebox(0,0)[t]{$\frac{6}{\tau}$} }
+\end{picture}
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+   Sampling in frequency domain
+   \label{fig:f_sampling}
+   }
+\end{figure}
+
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:f_sampling}
+%--------------------------------------
+Let $\ff,\ffd\in\spLLR$ and $\Ff,\Ffd\in\spLLR$ 
+be their respective fourier transforms.
+Let $\ffd(x)$ be the {\bf sampled} $\ff(x)$ such that
+  \[ \ffd(x) \eqd \sum_{n\in\Z} \ff(x) \delta(x-n\tau). \]
+Then
+\thmbox{
+   \Ffd(\omega) = \frac{2\pi}{\tau}\sum_{n\in\Z} \Ff\left(\omega -\frac{2\pi}{\tau}n \right).
+   }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \Ffd(\omega) 
+     &\eqd \int_t \ffd(x) e^{-i\omega t} \dt
+   \\&=    \int_t \left[\sum_{n\in\Z} \ff(x) \delta(x-n\tau)\right] e^{-i\omega t} \dt
+   \\&=    \sum_{n\in\Z} \int_t \ff(x) \delta(x-n\tau) e^{-i\omega t} \dt
+   \\&=    \sum_{n\in\Z} \ff(n\tau) e^{-i\omega n\tau}
+     &&    \text{by definition of $\delta$ \ifxref{relation}{def:dirac}}
+   \\&=    \frac{2\pi}{\tau} \sum_{n\in\Z} \Ff\left(\omega + \frac{2\pi}{\tau}n \right)
+     &&    \text{by \thme{IPSF} \xref{thm:ipsf}}
+   \\&=    \frac{2\pi}{\tau} \sum_{n\in\Z} \Ff\left(\omega-\frac{2\pi}{\tau}n\right)
+\end{align*}
+\end{proof}
+
+Suppose a waveform $\ff(x)$ is sampled at every time $T$
+generating a sequence of sampled values $\ff(n\tau)$.
+Then in general, we can {\em approximate} $\ff(x)$ by 
+using interpolation between the points $\ff(n\tau)$.
+Interpolation can be performed using several interpolation techniques. %:\\
+%\begin{tabular}{lll}
+%  $\imark$ & 0th order interpolation: & convolution with rectangular functions \\
+%  $\imark$ & 1st order interpolation: & convolution with triangular functions  \\
+%  $\imark$ & 3rd order interpolation: & cubic splines \footnotemark            \\
+%  $\imark$ & lowpass smoothing        & convolution with the ``sinc" function 
+%\end{tabular}
+%\footnotetext{
+%  A {\em cubic spline} is a third order polynomial $ax^3+bx^2+cx+d$.
+%  Such a polynomial has 4 {\em degrees of freedom}. 
+%  Two of these degrees of freedom are used to make the polymomial match
+%  at the interpolation interval endpoints.
+%  The other two degrees of freedom are used to make the slopes of the 
+%  polynomial match at the interval endpoints.
+%  }
+
+In general all techniques lead only to an approximation of $\ff(x)$.
+However, if $\ff(x)$ is \prope{bandlimited} with bandwidth 
+$W\le\frac{1}{2T}$,
+then $\ff(x)$ is {\em perfectly reconstructed} (not just approximated)
+from the sampled values $\ff(n\tau)$ \xref{thm:t_sampling}.
+ %using ``\hie{lowpass smoothing}" (the last technique in the list).
+%This perfect reconstruction is demonstrated in \prefp{thm:t_sampling}.
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1361 @@
+﻿%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX File
+%============================================================================
+
+%======================================
+\chapter{Vanishing Moments Constraint}
+\label{chp:vanish}
+%======================================
+%Besides the \prope{orthonormality} constraint \xref{def:ows} and 
+%the resulting \prope{partition of unity} constraint \xref{def:pun},
+One of the most common wavelet design constraints is 
+the number of \prope{vanishing moments} $p$ on the wavelet function such that
+  \\\indentx$\ds\inprod{\fpsi(x)}{x^n}=0 \qquad\text{for}\quad n=0,1,2,\ldots,p-1.$\\
+This chapter investigates wavelet design under the vanishing moment constraint.
+
+%=======================================
+\section{Moments}
+\label{sec:vanish}
+%=======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpp{jawerth}{16}{17},
+  \citerp{sweldens93}{2},
+  \citerp{vidakovic}{83}  
+  %\citerp{goswami}{102}    \\
+  %\citerpp{mallat}{241}{243}
+  }
+\label{def:Mn}
+%--------------------------------------
+\defboxt{
+  The quantity $M_n$ is the \hid{$n$th moment} of a function $\ff(x)\in\spLLR$ if
+  \\\indentx$\ds M_n \eqd \int_{\R} x^n \ff(x) \dx \qquad \text{for }n\in\Znn$.
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerp{mallat}{241}
+  }
+\label{def:vanish}
+%--------------------------------------
+Let $M_n$ be the \fncte{$n$th moment} \xref{def:Mn} of a function $\ff(x)\in\spLLR$ \xref{def:spLLR}.
+\defboxt{
+  The function $\ff(x)$ has an \propd{$n$th vanishing moment} if $M_n=0$.\\
+  The function $\ff(x)$ has \propd{$p$ vanishing moments} if $M_0=M_1=\cdots=M_{p-1}=0$ and $M_p\neq0$.
+  }
+\end{definition}
+
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $\opP$ be the \fncte{projection operator} that generates the subspace $\spV_0$ 
+and $\opQ$ the \fncte{projection operator} that generates the subspace $\spW_0$.
+The number of {\em vanishing moments} of a wavelet is important
+when using wavelets for the analysis and synthesis of a function $\ff(x)$ as in
+\[ \ff(x) =
+   \mcom{
+     \sum_{n\in\Z} \mcom{\inprod{\ff(x)}{\opTrn^n\fphi(x)}}{Fourier coefficient} \opTrn^n\fphi(x) 
+     }{\structe{Fourier expansion} \xref{def:fex} of $\opP\ff(x)$}
+   +
+   \mcom{
+     \sum_{k=0}^\infty \sum_{n\in\Z}\mcom{\inprod{\ff(x)}{\opDil^k\opTrn^n\fpsi(x)}}{Fourier coefficient} \opDil^k\opTrn^n\fpsi(x)
+     }{\structe{Fourier expansion} \xref{def:fex} of $\opQ\ff(x)$}
+\]
+All differentiable functions have a \fncte{Taylor polynomial expansion}\ifsxref{polynom}{thm:taylor}.
+The \fncte{ Fourier coefficients} \xref{def:fcoef} of this polynomial decrease as the order of each term increases.
+The inner-product of the function and a wavelet with many vanishing moments
+results in a smaller value, giving a better approximation for a fixed
+number of Fourier coefficients.
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:vanish_poly}
+%--------------------------------------
+\thmbox{
+  \brbr{\begin{array}{FMD}
+    1. & a function $\ff(x)$ has $p$ vanishing moments   & and \\
+    2. & a polynomial $\fq(x)$ is of order $p-1$ or less
+  \end{array}}
+  \qquad\implies\qquad
+  \mcoml{\inprod{\ff}{\fq}=0}
+       {$\ff$ is \prope{orthogonal} to $\fq$}
+  }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \inprodr{\ff(x)}{\sum_{n=0}^{p-1}a_n x^n}
+    &=& \sum_{n=0}^{p-1}a_n^\ast \inprod{\ff(x)}{x^n}
+     =  \sum_{n=0}^{p-1}a_n^\ast \cdot 0
+     =  0
+\end{eqnarray*}
+\end{proof}
+
+
+
+The number of vanishing moments a wavelet has is closely related
+to how the derivatives of the Fourier transforms of the wavelet
+and wavelet coefficients behave (next theorem).
+
+%--------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpp{goswami}{38}{39}
+  }
+\label{lem:har_moment}
+%--------------------------------------
+Let $M_n$ be the \fncte{$n$th moment} \xref{def:Mn} and 
+$\Ff(\omega)\eqd\brs{\opFT\ff}(\omega)$ the \fncte{Fourier transform} \xref{def:opFT} of a function $\ff(x)$ in $\spLLR$ \xref{def:spLLR}.
+\lembox{\begin{array}{>{\ds}rc>{\ds}l@{\qquad}C}
+  M_n  &=&  \brs{\sqrt{2\pi}(i)^{n}\opddwn  \Ff(\omega)}_{\omega=0} & \forall n\in\Znn,\,\ff\in\spLLR\\
+  \brs{\opddwn  \Ff(\omega)}_{\omega=0}  &=& \cft(-i)^n M_n         & \forall n\in\Znn,\,\ff\in\spLLR
+\end{array}}
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    \sqrt{2\pi}(i)^n\brs{\opddwn \Ff(\omega)}_{\omega=0} 
+      &= \sqrt{2\pi}(i)^n\brs{\opddwn  \fscale\int_\R \ff(x) \fkernea{x}{\omega}\dx}_{\omega=0} 
+      && \text{by definition of $\opFT$ \xref{def:opFT}}
+    \\&= \left.(i)^n\int_\R \ff(x) \brs{\opddwn    \fkernea{x}{\omega}}\dx\right|_{\omega=0} 
+    \\&= \left.(i)^n\int_\R \ff(x) \brs{(-i)^n x^n \fkernea{x}{\omega}}\dx\right|_{\omega=0} 
+    \\&= (-i^2)^n \int_\R \ff(x) x^n \dx
+    \\&= \int_\R \ff(x) x^n \dx
+    \\&\eqd M_n
+      && \text{by definition of $M_n$ \xref{def:Mn}}
+  \end{align*}
+\end{proof}
+
+
+
+
+%--------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpp{vidakovic}{82}{83},
+  \citerpp{mallat}{241}{242}
+  }
+\label{lem:vanish_deriv}
+\index{vanishing moments}
+%--------------------------------------
+Let $M_n$ be the \fncte{$n$th moment} \xref{def:Mn} and 
+$\Ff(\omega)\eqd\brs{\opFT\ff}(\omega)$ the \fncte{Fourier transform} \xref{def:opFT} of a function $\ff(x)$ in $\spLLR$ \xref{def:spLLR}.
+\lembox{
+  %\mcom{\inprod{\ff(x)}{x^n}=0}{$\ff(x)$ has a vanishing $n$th moment} 
+  M_n=0
+  \qquad\iff\qquad
+  \left.\opddwn \Ff(\omega)\right|_{\omega=0} =0
+  \qquad\scy\forall n\in\Znn
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for $(\implies)$ case: 
+    \begin{align*}
+      0 &= \inprod{\ff(x)}{x^n}
+        && \text{by left hypothesis}
+      \\&= \left.\sqrt{2\pi}(-i)^{-n}\opddwn  \Ff(\omega)\right|_{\omega=0}
+        && \text{by \prefp{lem:har_moment}}
+      \\&\implies \left.\opddwn \Ff(\omega)\right|_{\omega=0} =0
+    \end{align*}
+
+  \item Proof for $(\impliedby)$ case:
+    \begin{align*}
+      0
+        &= \left. \opddwn  \Ff(\omega)\right|_{\omega=0}
+        && \text{by right hypothesis}
+      \\&= \left.\opddwn  \fscale\int_\R \ff(x) \fkernea{x}{\omega}\dx \right|_{\omega=0}
+        && \text{by definition of $\Ff(\omega)$}
+      \\&= \left.\fscale\int_\R \ff(x) \opddwn  \fkernea{x}{\omega}\dx \right|_{\omega=0}
+      \\&= \left.\fscale\int_\R \ff(x) \left[(-i)^n x^n \fkernea{x}{\omega}\right]\dx \right|_{\omega=0}
+      \\&= (-i)^n \fscale\int_\R \ff(x) x^n \dx
+      \\&= (-i)^n \fscale\inprod{\ff(x)}{x^n}
+        && \text{by definition of $\inprod{\cdot}{\cdot}$ in $\spLLR$ \xref{def:spLLR}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%--------------------------------------
+\begin{lemma}[\lemd{Strang-Fix condition}]
+\label{lem:sfixceq}
+\footnote{
+  \citerpp{jawerth}{16}{17},
+  \citerp{sweldens93}{2},
+  \citerp{vidakovic}{83},
+  %\citerp{goswami}{102},
+  \citerpp{mallat}{241}{243},
+  \citor{fix1969}
+  }
+%--------------------------------------
+Let $\ff(x)$ be a function in $\spLLR$ and $M_n$ the \hie{$n$th moment} \xref{def:Mn} of $\ff(x)$.
+Let $\opTrn$ be the \fncte{translation operator} \xref{def:opT}.
+\lembox{
+  \mcom{{\sum_{k\in\Z} \opTrn^k x^n \ff(x) = M_n}}{\prope{Strang-Fix condition} in ``time"}
+  %\mcom{{\sum_{k\in\Z} (x-k)^n \ff(x-k) = M_n}}{\prope{Strang-Fix condition} in ``time"}
+  \qquad\iff\qquad
+  \mcom{{\left.\opddwn  \Ff(\omega) \right|_{\omega=2\pi k} = \cft (-i)^n \kdelta_k M_n}}{\prope{Strang-Fix condition} in ``frequency"}
+  %\qquad\scy\text{for $n=1,2,\ldots,p-1$}
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for ($\implies$) case:
+    \begin{align*}
+      \brs{\opddwn  \Ff(\omega)}_{\omega=2\pi k}
+        &= \sum_{k\in\Z} \brs{\opddwn  \Ff(\omega)}_{\omega=2\pi k}  e^{i2\pi kx} \kdelta_k
+      \\&= \cft \sum_{k\in\Z} \brs{\opddwn \int_\R  \ff(x) e^{-i\omega x} \dx}_{\omega=2\pi k} e^{i2\pi kx}  \kdelta_k
+        && \text{by \prefp{def:opFT}}
+       %&& \text{by definition of $\Ff(\omega)$ \xref{def:opFT}}
+      \\&= \cft \sum_{k\in\Z} \brs{\int_\R  \ff(x)(-ix)^n e^{-i\omega x} \dx}_{\omega=2\pi k} e^{i2\pi kx}  \kdelta_k
+      \\&= (-i)^n \cft \sum_{k\in\Z} \brs{\int_\R  x^n \ff(x)  e^{-i\omega x} \dx}_{\omega=2\pi k} e^{i2\pi kx}  \kdelta_k
+      \\&= (-i)^n \cft \sum_{k\in\Z} (x-k)^n \ff(x-k)  \kdelta_k
+        && \text{by \thme{PSF} \xref{thm:psf}}
+      \\&= \cft (-i)^n \kdelta_k M_n
+        && \text{by left hypothesis}
+    \end{align*}
+
+  %The quantity $(-i)^n M_n$ is not a function of $x$ which implies
+  %that 
+  %$\sum_{k\in\Z} \left.\opddwn  \Ff(\omega)\right|_{\omega=2\pi k}=0$
+  %for $k\ne 0$.
+  %This implies
+  %\[ \left.\opddwn  \Ff(\omega)\right|_{\omega=2\pi k}
+  %   = (-i)^n \kdelta_k M_n.
+  %\]
+ 
+  \item Proof for ($\impliedby$) case:
+    \begin{align*}
+      \cft (-i)^n M_n
+        &= \cft \sum_{k\in\Z} \left[(-i)^n \kdelta_k M_n \right] e^{-i2\pi kx}
+        && \text{by definition of $\kdelta$}
+        && \text{\xref{def:kdelta}}
+      \\&= \sum_{k\in\Z} \left. 
+           \left[\opddwn  \Ff(\omega)\right]\right|_{\omega=2\pi k} 
+           e^{-i2\pi kx}
+        && \text{by right hypothesis}
+      \\&= \sum_{k\in\Z} \left. 
+           \left[
+           \opddwn 
+           \int_\R  \ff(x) e^{-i\omega x} \dx
+           \right]
+           \right|_{\omega=2\pi k} e^{-i2\pi kx}
+      \\&= \sum_{k\in\Z} \left. 
+           \left[
+           \int_\R  \ff(x)(-ix)^n e^{-i\omega x} \dx
+           \right]
+           \right|_{\omega=2\pi k} e^{-i2\pi kx}
+      \\&= (-i)^n \sum_{k\in\Z} \left.
+           \left[
+           \int_\R  x^n \ff(x)  e^{-i\omega x} \dx
+           \right]
+           \right|_{\omega=2\pi k} e^{-i2\pi kx}
+      \\&= (-i)^n \sum_{k\in\Z} (x-k)^n \ff(x-k) 
+        && \text{by \thme{PSF}}
+        && \text{\xref{thm:psf}}
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+
+
+
+%=======================================
+\section {Vanishing moments and the wavelet function}
+%=======================================
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpp{vidakovic}{82}{83},
+  \citerpp{mallat}{241}{242}
+  }
+\label{thm:vanish}
+\index{vanishing moments}
+%--------------------------------------
+Let $\wavsys$ be a \hi{wavelet system}.
+Let $\Fpsi(\omega)$ be the \fncte{Fourier transform} \xref{def:opFT} of $\fpsi(x)$.
+Let $\Dh(\omega)$ and $\Dg(\omega)$ be the \fncte{DTFT}s \xref{def:dtft} of $\seqn{h_n}$ and $\seqn{g_n}$, respectively.
+\thmbox{
+  \brb{\begin{array}{F@{\qquad}>{\ds}r c >{\ds}rcl@{\qquad}F}
+    (A) & \mcom{\inprod{\fpsi(x)}{x^n}=0}{$\fpsi(x)$ has a vanishing $n$th moment}
+      &\iff&
+    \left.\opddwn  \Fpsi(\omega)\right|_{\omega=0} &=& 0         &(B)
+      \\&&\iff&                                                              
+    \left.\opddwn  \Dg(\omega)\right|_{\omega=0}   &=& 0         & (C)
+      \\&&\iff&
+    \sum_{k\in\Z} k^n  g_n &=& 0 & (D)
+  \end{array}}
+  \qquad\scy\forall n\in\Znn
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $(A)\iff(B)$: by \prefp{lem:vanish_deriv}
+
+  \item Proof that $(B)\implies(C)$:
+    \begin{align*}
+      0
+        &= \left.\opddwn  \Fpsi(2\omega)\right|_{\omega=0}
+        && \text{by left hypothesis}
+      \\&= \left.\opddwn  \Dg(\omega)\Fphi(\omega)\right|_{\omega=0}
+        && \text{by \prefp{prop:vsmra_real_Fpsi}}
+      \\&= \left.\sum_{k=0}^n {n \choose k} \Dg^{(k)}(\omega)\Fphi^{(n-k)}(\omega)\right|_{\omega=0}
+        && \text{by \thme{Leibnitz GPR}}
+        && \text{\xref{lem:LGPR}}
+      \\&= \left[
+           \Dg^{(n)}(\omega)\Fphi(\omega)
+           +\sum_{k=0}^{n-1} {n \choose k} \Dg^{(k)}(\omega)\Fphi^{(n-k)}(\omega)
+           \right]_{\omega=0}
+      \\&= \Dg^{(n)}(0) \Fphi(0)
+           +\sum_{k=0}^{n-1} {n \choose k} \Dg^{(k)}(0)\Fphi^{(n-k)}(0)
+    \end{align*}
+
+
+  \[\begin{array}{rrcll}
+    \implies&  \Dg^{(0)}(0) &=& 0   \\
+    \implies&  \Dg^{(1)}(0) &=& 0   \\
+    \implies&  \Dg^{(2)}(0) &=& 0   \\
+    \implies&  \Dg^{(3)}(0) &=& 0   \\
+    \implies&  \Dg^{(4)}(0) &=& 0   \\
+    \vdots  &  \mc{1}{c}{\vdots}    \\
+    \implies&  \Dg^{(n)}(0) &=& 0   \\
+    \implies&  \Dg^{(n)}(0) &=& 0  & \text{for $n=0,1,2,\ldots$}
+  \end{array}\]
+
+  \item Proof that $(B)\impliedby(C)$: 
+    \begin{align*}
+      \left.\opddwn  \Fpsi(2\omega)\right|_{\omega=0}
+        &= \left.\opddwn  \Dg(\omega)\Fphi(\omega)\right|_{\omega=0}
+        && \text{by \prefp{prop:vsmra_real_Fpsi}}
+      \\&= \left.\sum_{k=0}^n {n \choose k} \Dg^{(k)}(\omega)\Fphi^{(n-k)}(\omega)\right|_{\omega=0}
+        && \text{by \thme{Leibnitz GPR}}
+        && \text{\xref{lem:LGPR}}
+      \\&= \left.\sum_{k=0}^n {n \choose k} \;0\; \Fphi^{(n-k)}(\omega)\right|_{\omega=0}
+        && \text{by right hypothesis}
+      \\&= 0
+    \end{align*}
+
+  \item Proof that $(C)\iff(D)$: by \prefp{thm:dtft_ddw}
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+\section {Vanishing moments and the scaling function}
+%=======================================
+%=======================================
+\subsection{Results}
+%=======================================
+%--------------------------------------
+\begin{lemma} %[\thmd{Strang-Fix condition}]
+\label{lem:vanish_hphi}
+%\footnote{
+%  \citerpp{jawerth}{16}{17}    \\
+%  \citerp{sweldens93}{2} \\
+%  \citerp{vidakovic}{83}  \\
+%  \citerp{goswami}{102}    \\
+%  \citerpp{mallat}{241}{243}
+%  }
+%--------------------------------------
+Let $\wavsys$ be a wavelet system and $M_n$ the \hie{$n$th moment} \xref{def:Mn} of $\fphi(x)$.
+\lembox{
+  \left.\opddwn  \Dh(\omega)\right|_{\omega=\pi}=0
+  \qquad\implies\qquad 
+  \left.\opddwn  \Fphi(\omega)\right|_{\omega=2\pi k}= \cft(-i)M_n\delta_k
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item By \prefp{lem:har_moment}, $\left. \opddwn  \Fphi(\omega)\right|_{\omega=0}= \cft (-i)^n M_n$.
+
+  \item Then,
+    \begin{align*}
+        \left. \opddwn  \Fphi(\omega)                           \right|_{\omega=2\pi k}
+          &= \left. \opddwn  
+                   \Dh\left(\frac{\omega}{2}\right) 
+                   \Fphi\left(\frac{\omega}{2}\right) 
+             \right|_{\omega=2\pi k}
+          && \text{by \prefp{prop:vsmra_real_Fpsi}}
+        \\&= \left. \sum_{m=0}^n {n\choose m} 
+                    \Dh  ^{(m  )}\left(\frac{\omega}{2}\right)
+                    \Fphi^{(n-m)}\left(\frac{\omega}{2}\right) 
+             \right|_{\omega=2\pi k}
+        && \text{by \thme{Leibnitz GPR}}
+        && \text{\xref{lem:LGPR}}
+        \\&= \sum_{m=0}^n {n\choose m} \mcom{\Dh^{(m)}(\pi k)}{0 for $k$ odd} \Fphi^{(n-m)}(\pi k)
+        \\&= \brbl{\begin{array}{>{\ds}lM}
+               \sum_{m=0}^n {n\choose m} \Dh^{(m)}(\pi k) \Fphi^{(n-m)}(\pi k)   & for $k$ even \\
+               0                                                                 & for $k$ odd
+             \end{array}}
+          && \text{by left hypothesis}
+    \end{align*}
+
+  \item And so
+    \begin{align*}
+        \Fphi^{(n)}(2\pi0) &= (-i)^n M_n
+        \\
+        \Fphi^{(n)}(2\pi1) &= 0
+        \\
+        \Fphi^{(n)}(2\pi2) 
+          &= \ds \sum_{m=0}^n {n\choose m} \Dh^{(m)}(2\pi1) \mcom{\Fphi^{(n-m)}(2\pi1)}{$0$}
+           = 0
+        \\
+        \Fphi^{(n)}(2\pi3) &= 0
+        \\
+        \Fphi^{(n)}(2\pi4) 
+          &= \ds \sum_{m=0}^n {n\choose m} \Dh^{(m)}(2\pi2) \mcom{\Fphi^{(n-m)}(2\pi2)}{$0$}
+           = 0
+        \\
+        \Fphi^{(n)}(2\pi5) &= 0
+        \\
+        \Fphi^{(n)}(2\pi6) 
+          &= \ds \sum_{m=0}^n {n\choose m} \Dh^{(m)}(2\pi3) \mcom{\Fphi^{(n-m)}(2\pi3)}{$0$}
+           = 0
+        \\
+        \vdots & \vdots
+        \\
+        \Fphi^{(n)}(2\pi k) &= \kdelta_k(-i)^n M_n
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+
+
+
+%\prefpp{thm:vanish} gives alternative forms for expressing 
+%the property of vanishing moments of a wavelet.
+%The \structe{CQF} \xref{def:cqf} constraint on the \structe{wavelet coefficients} \xref{def:gn}
+%establishes a relationship between wavelets and their associated scaling functions. % ($\spV_0\perp\spW_0$).
+%%The definition of a \structe{wavelet system} \xref{def:wavsys} establishes a relationship between wavelets and their associated scaling functions ($\spV_0\perp\spW_0$).
+%With this relationship, the vanishing moments of a wavelet are also related
+%to forms of expression of the scaling function:
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpp{vidakovic}{82}{83},
+  \citerpp{mallat}{241}{242}
+  }
+\index{vanishing moments}
+\label{thm:gh_cqf}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+%Let $\Fpsi(\omega)$ be the \fncte{Fourier transform} \xref{def:opFT} of $\fpsi(x)$.
+Let $\Dh(\omega)$ and $\Dg(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of $\seqn{h_n}$ and $\seqn{g_n}$, respectively.
+\thmboxt{
+  Let $g_n = \pm(-1)^n h^\ast_{N-n}$ (\prope{CQF condition}, {\scs\prefp{def:cqf}}). Then\\
+  %\brb{\begin{array}{FMD}
+  %  A. & $\setn{\opTrn^n\fphi(x)}$ is \prope{orthonormal} & and \\
+  %  B. & $\spV_0\orthog\spW_0$                            & and \\
+  %  C. & $g_n = (-1)^n h^\ast_{N-n}$                      &
+  %\end{array}}
+  %\implies
+  $\brb{\begin{array}{>{\ds}rc >{\ds}rcl@{\qquad}D}
+       \mcom{\inprod{\fpsi(x)}{x^n}=0}{(1) \prope{$n$th vanishing moment}}
+         &\iff&         \left.\opddwn  \Dg(\omega)\right|_{\omega=0}     &=& 0 & (2)
+       \\&\iff&         \left.\opddwn  \Dh(\omega)\right|_{\omega=\pi}   &=& 0 & (3)
+       \\&\iff&         \sum_{k\in\Z} (-1)^k k^n  h_k                    &=& 0 & (4)
+       \\&\iff&         \sum_{k\in\Z} k^n  g_k                           &=& 0 & (5)
+  \end{array}}
+  \qquad\scy\forall n\in\Znn$
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $(1)\iff (2)$: by \prefpp{thm:vanish}
+
+
+  \item Proof that $(2) \iff (3)$: by \prefp{thm:cqf_ddw}
+
+  %\item Proof that $(2) \implies (3)$: 
+  %\item lemma: Proof that $\Dg(\pi)=\sqrt{2}$: \label{item:gh_cqf_Fgpi} % proof moved to wavstruct
+  %\item Proof that $(2) \implies (3)$: % note: this requires orthogonality
+  %  \begin{align*}
+  %      0
+  %        &= \left. \opddwn  \; 0 \right|_{\omega=\pi}
+  %      \\&= \left. \opddwn  \; 2\Shs(\omega) \right|_{\omega=\pi}
+  %        && \text{by (B) and \prefp{lem:Swfgo}} 
+  %      \\&= \left. \opddwn  \left[
+  %           \Dh(\omega)\Dg^\ast(\omega)\Sphi(\omega)+\Dh(\omega+\pi)\Dg^\ast(\omega+\pi)\Sphi(\omega)
+  %           \right]\right|_{\omega=\pi}
+  %        && \text{by \prefp{thm:gen_quadcon}} 
+  %      \\&= \left. \opddwn  \left[
+  %           \Dh(\omega)\Dg^\ast(\omega)+\Dh(\omega+\pi)\Dg^\ast(\omega+\pi)
+  %           \right]\right|_{\omega=\pi}
+  %        && \text{by (A) and \prefp{lem:Swfgo}} 
+  %      \\&= \left.\left[
+  %           \sum_{k=0}^n {n\choose k} \Dh^{(k)}(\omega)\Dg^{(n-k)\ast}(\omega)
+  %          +\sum_{k=0}^n {n\choose k} \Dh^{(k)}(\omega+\pi)\Dg^{(n-k)\ast}(\omega+\pi)
+  %           \right]\right|_{\omega=\pi}
+  %        && \text{by Leibnitz GPR \prefpo{lem:LGPR}}
+  %      \\&= \sum_{k=0}^n {n\choose k} \Dh^{(k)}(\pi)\Dg^{(n-k)\ast}(\pi)
+  %          +\sum_{k=0}^n {n\choose k} \Dh^{(k)}(0)\Dg^{(n-k)\ast}(0)
+  %        && \text{by \prefp{prop:dtft_2pi}}
+  %      \\&= \sum_{k=0}^n {n\choose k} \Dh^{(k)}(\pi)\Dg^{(n-k)\ast}(\pi)
+  %          +\sum_{k=0}^n {n\choose k} \Dh^{(k)}(0)\; \cancelto{0}{\Dg^{(n-k)\ast}(0)}
+  %        && \text{by (2)}
+  %      %\\&= \sum_{k=0}^n {n\choose k} \Dh^{(k)}(\pi)\Dg^{(n-k)\ast}(\pi)
+  %      \\&= \Dh^{(n)}(\pi)\Dg^{\ast}(\pi)
+  %          +\sum_{k=0}^{n-1} {n\choose k} \Dh^{(k)}(\pi)\Dg^{(n-k)\ast}(\pi)
+  %      \\&= \sqrt{2}\;\Dh^{(n)}(\pi)
+  %          +\sum_{k=0}^{n-1} {n\choose k} \Dh^{(k)}(\pi)\Dg^{(n-k)\ast}(\pi)
+  %        && \text{by \prefp{item:gh_cqf_Fgpi}}
+  %  \end{align*}
+  %
+  %\[\begin{array}{r rcl l}
+  %  \implies & \Dh^{(0)}(\pi) &=& 0 \\
+  %  \implies & \Dh^{(1)}(\pi) &=& 0 \\
+  %  \implies & \Dh^{(2)}(\pi) &=& 0 \\
+  %  \implies & \Dh^{(3)}(\pi) &=& 0 \\
+  %  \implies & \Dh^{(4)}(\pi) &=& 0 \\
+  %  \vdots   & \mc{1}{c}{\vdots}    \\
+  %  \implies & \Dh^{(n)}(\pi) &=& 0 \\
+  %  \implies & \Dh^{(n)}(\pi) &=& 0 & \text{for $n=0,1,2,\ldots$}
+  %\end{array}\]
+
+
+  %\item Proof that (2)$\impliedby$(3):
+  %      \begin{align*}
+  %          0
+  %            &= \brlr{\opddwn  \; 0}_{\omega=0}
+  %          \\&= \brlr{\opddwn  \; 2\Shs(\omega)}_{\omega=0}
+  %            && \text{by (B) and \prefp{lem:Swfgo}}
+  %          \\&= \brlr{\opddwn  \brs{
+  %                 \Dh(\omega)\Dg^\ast(\omega)\Sphi(\omega)+\Dh(\omega+\pi)\Dg^\ast(\omega+\pi)\Sphi(\omega)
+  %                 }}_{\omega=0}
+  %            && \text{by \prefp{thm:gen_quadcon}}
+  %          \\&= \brlr{\opddwn  \brs{
+  %                 \Dh(\omega)\Dg^\ast(\omega)+\Dh(\omega+\pi)\Dg^\ast(\omega+\pi)
+  %                 }}_{\omega=0}
+  %            && \text{by (A) and \prefp{lem:Swfgo}} %{; see also \prefp{thm:quadcon}}
+  %          \\&= \left.\left[
+  %               \sum_{k=0}^n {n\choose k} \Dh^{(k)}(\omega)\Dg^{(n-k)\ast}(\omega)
+  %              +\sum_{k=0}^n {n\choose k} \Dh^{(k)}(\omega+\pi)\Dg^{(n-k)\ast}(\omega+\pi)
+  %               \right]\right|_{\omega=0}
+  %            && \text{by Leibnitz GPR \prefpo{lem:LGPR}}
+  %          \\&= \left.\left[
+  %               \sum_{k=0}^n {n\choose k} \Dh^{(k)}(\omega)\Dg^{(n-k)\ast}(\omega)
+  %              +\sum_{k=0}^n {n\choose k} \;0\;\Dg^{(n-k)\ast}(\omega+\pi)
+  %               \right]\right|_{\omega=0}
+  %            && \text{by (3)}
+  %          \\&= \left.
+  %               \sum_{k=0}^n {n\choose k} \Dh^{(k)}(\omega)\Dg^{(n-k)\ast}(\omega)
+  %               \right|_{\omega=0}
+  %          \\&= \Dh^{(0)}(0)\Dg^{(n)\ast}(0)
+  %              +\sum_{k=1}^n {n\choose k} \Dh^{(k)}(0)\Dg^{(n-k)\ast}(0)
+  %          \\&= \sqrt{2}\;\Dg^{(n)\ast}(0)
+  %              +\sum_{k=1}^n {n\choose k} \Dh^{(k)}(0)\Dg^{(n-k)\ast}(0)
+  %            && \text{by \prefp{thm:admiss}}
+  %            %&& \text{by admissibility condition (\pref{thm:admiss})}
+  %      \end{align*}
+  %
+  %    \[\begin{array}{r rcl l}
+  %      \implies & \Dg^{(0)}(0) &=& 0   \\
+  %      \implies & \Dg^{(1)}(0) &=& 0   \\
+  %      \implies & \Dg^{(2)}(0) &=& 0   \\
+  %      \implies & \Dg^{(3)}(0) &=& 0   \\
+  %      \implies & \Dg^{(4)}(0) &=& 0   \\
+  %      \vdots   & \mc{1}{c}{\vdots}    \\
+  %      \implies & \Dg^{(n)}(0) &=& 0  
+  %    \end{array}\]
+
+
+\item Proof that (3)$\iff$(4): by \prefp{thm:dtft_ddw}
+\item Proof that (2)$\iff$(5): by \prefp{thm:dtft_ddw}; see also \prefp{thm:vanish}.
+\item Proof that CQF$\notimpliedby$(1): by \prefp{thm:dtft_ddw}; see also \prefp{thm:vanish}.
+
+\end{enumerate}
+\end{proof}
+
+\begin{figure}
+  \centering%
+  \begin{tabular*}{\textwidth-40mm}{@{\extracolsep{\fill}}cc}%
+    \includegraphics{graphics/bspline_pz.pdf}&\includegraphics{graphics/Dp_pz.pdf}\\%
+    order $p$ Cardinal B-spline&Daubechies-p%
+  \end{tabular*}%
+  \caption{
+     Zero locations for B-cardinal spline $N_p(x)$ and Daubechies-p scaling coefficients
+     \label{fig:vanish_spline_zero}
+     }
+\end{figure}
+These relationships imply that a compactly supported scaling function
+with $p$ vanishing moments has $p$ zeros at $z=-1$
+(due to the spline component) as illustrated in \pref{fig:vanish_spline_zero}.
+
+%=======================================
+\subsection{Scaling function and polynomials}
+%=======================================
+Linear combinations of $\setxZ{\opTrn^n\fphi(x)}$ of a wavelet system with $p$ vanishing moments
+can perfectly represent any polynomial of order $p-1$ or less \xref{thm:sfix_poly}.
+%The key to proving this is the \prope{Strang-Fix condition} \xref{lem:sfixceq}. 
+\prefp{ex:sfixc5} illustrates this using the Strang-Fix condition \xref{lem:sfixc}  
+to represent any polynomial of dgree $4$ or less.
+%--------------------------------------
+\begin{lemma} %[\thmd{Strang-Fix condition}]
+\label{lem:sfixc}
+\footnote{
+  \citerpp{jawerth}{16}{17},
+  \citerp{sweldens93}{2},
+  \citerp{vidakovic}{83},
+  \citerp{goswami}{102},
+  \citerpp{mallat}{241}{243}
+  }
+%--------------------------------------
+Let $\wavsys$ be a wavelet system and $M_n$ the \hie{$n$th moment} \xref{def:Mn} of $\fphi(x)$.
+\lembox{
+  \brb{\begin{array}{M}
+    $\fpsi$ has $p$\\
+    vanishing\\
+    moments
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FlclD}
+    1. & \ds \sum_{k\in\Z} (x-k)^n \fphi(x-k) &=& M_n & and
+    \\
+    2. & \ds \left.\opddwn  \Fphi(\omega) \right|_{\omega=2\pi k}&=& \cft (-i)^n \kdelta_k M_n
+  \end{array}}
+  \quad\scy\text{for $n=1,2,\ldots,p-1$}
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1)$\iff$(2): by \prefp{lem:sfixceq}
+
+
+  \item Proof for ($\implies$) assertion:
+    \begin{align*}
+      \inprod{\fpsi(x)}{x^n} =0
+        &\iff     \left.\opddwn  \Dh(\omega)\right|_{\omega=\pi}=0
+        &&        \text{by \prefp{thm:gh_cqf}}
+      \\&\implies \left.\opddwn  \Fphi(\omega)\right|_{\omega=2\pi k}= \cft(-i)M_n\delta_k
+        &&        \text{by \prefp{lem:vanish_hphi}}
+      \\&\iff     \sum_{k\in\Z} (x-k)^n \fphi(x-k)= M_n
+        &&        \text{by \prope{Strang-Fix condition}}
+        &&        \text{\xref{lem:sfixceq}}
+    \end{align*}
+
+  %\item Proof that 
+  %  $\left.\opddwn  \Dh(\omega)\right|_{\omega=\pi}=0
+  %   \implies 
+  %   \left.\opddwn  \Fphi(\omega)\right|_{\omega=2\pi k}=0
+  %  $:
+  %  \begin{align*}
+  %      \left. \opddwn  \Fphi(\omega)                           \right|_{\omega=0}
+  %        &= \left. \opddwn  \cft \int_\R \fphi(x)e^{-i\omega x} \dx \right|_{\omega=0}
+  %        && \text{by definition of $\Fphi$ \xref{def:opFT}}
+  %      \\&= \left. \cft \int_\R \fphi(x)\opddwn  e^{-i\omega x} \dx \right|_{\omega=0}
+  %      \\&= \left. \cft \int_\R \fphi(x) (-it)^n e^{-i\omega x} \dx             \right|_{\omega=0}
+  %      \\&= \left. \cft (-i)^n \int_\R x^n \fphi(x) e^{-i\omega x} \dx          \right|_{\omega=0}
+  %      \\&= \cft (-i)^n \int_\R x^n \fphi(x) \dx  
+  %      \\&= \cft (-i)^n M_n
+  %        && \text{by definition of $M_n$}  
+  %      \\
+  %      \\
+  %      \left. \opddwn  \Fphi(\omega)                           \right|_{\omega=2\pi k}
+  %        &= \left. \opddwn  
+  %                 \Dh\left(\frac{\omega}{2}\right) 
+  %                 \Fphi\left(\frac{\omega}{2}\right) 
+  %           \right|_{\omega=2\pi k}
+  %        && \text{by \prefp{prop:vsmra_real_Fpsi}}
+  %      \\&= \left. \sum_{m=0}^n {n\choose m} 
+  %                  \Dh  ^{(m  )}\left(\frac{\omega}{2}\right)
+  %                  \Fphi^{(n-m)}\left(\frac{\omega}{2}\right) 
+  %           \right|_{\omega=2\pi k}
+  %        && \text{by Leibnitz GPR \prefpo{lem:LGPR}}
+  %      \\&= \sum_{m=0}^n {n\choose m} \mcom{\Dh^{(m)}(\pi k)}{0 for $k$ odd} \Fphi^{(n-m)}(\pi k)
+  %      \\&= \left\{\begin{array}{ll}
+  %             \sum_{m=0}^n {n\choose m} \Dh^{(m)}(\pi k) \Fphi^{(n-m)}(\pi k)
+  %                & \text{for $k$ even} \\
+  %             0  & \text{for $k$ odd}
+  %           \end{array}\right.
+  %        && \text{by left hypothesis}
+  %  \\
+  %  \\
+  %      \Fphi^{(n)}(2\pi0) &= (-i)^n M_n
+  %      \\
+  %      \Fphi^{(n)}(2\pi1) &= 0
+  %      \\
+  %      \Fphi^{(n)}(2\pi2) 
+  %        &= \ds \sum_{m=0}^n {n\choose m} \Dh^{(m)}(2\pi1) \mcom{\Fphi^{(n-m)}(2\pi1)}{$0$}
+  %         = 0
+  %      \\
+  %      \Fphi^{(n)}(2\pi3) &= 0
+  %      \\
+  %      \Fphi^{(n)}(2\pi4) 
+  %        &= \ds \sum_{m=0}^n {n\choose m} \Dh^{(m)}(2\pi2) \mcom{\Fphi^{(n-m)}(2\pi2)}{$0$}
+  %         = 0
+  %      \\
+  %      \Fphi^{(n)}(2\pi5) &= 0
+  %      \\
+  %      \Fphi^{(n)}(2\pi6) 
+  %        &= \ds \sum_{m=0}^n {n\choose m} \Dh^{(m)}(2\pi3) \mcom{\Fphi^{(n-m)}(2\pi3)}{$0$}
+  %         = 0
+  %      \\
+  %      \vdots & \vdots
+  %      \\
+  %      \Fphi^{(n)}(2\pi k) &= \kdelta_k(-i)^n M_n
+  %  \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:sfix_poly}
+\index{Strang-Fix condition}
+%---------------------------------------
+Let $\wavsys$ be a wavelet system with $p$ vanishing moments.
+Let $\fq(x)$ be a \fncte{polynomial}.
+Let 
+  \\\indentx$\setQ_p\eqd\set{\fq(x)}{\text{$\fq(x)$ is a \fncte{polynomial} of order $p-1$ or less}}$.\\
+\thmbox{
+  \brb{\begin{array}{FMD}
+    1. & $\fpsi$ has $p$ vanishing\\ 
+       & moments                     & and \\
+    2. & $\fq(x)$ is of order $p-1$
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{FMD}
+    1. & There exists $\tuple{b_n}{0}{p-1}$ such that \\
+       & $\ds\fq(x) = \sum_{n=0}^{p-1} b_n \sum_{k\in\Z} k^n\fphi(x-k)$ & and\\
+    2. & $\setxZ{\opTrn^n\fphi(x)}$ is a \structe{basis} for $\setQ_p$.
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+This follows from \prefp{lem:sfixc}
+(Strang-Fix condition).
+See \prefp{ex:sfixc5}.
+\end{proof}
+
+%---------------------------------------
+\begin{example} 
+\label{ex:sfixc5}
+%---------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys} in which
+$\fpsi(x)$ has $5$ vanishing moments.
+\begin{footnotesize}
+\exbox{\begin{array}{lclclclclclclclcl}
+  \ds \sum_{k\in\Z}     \fphi(x-k) &=& M_0
+  \\
+  \ds \sum_{k\in\Z} k   \fphi(x-k) &=& M_0x   &-&  M_1
+  \\
+  \ds \sum_{k\in\Z} k^2 \fphi(x-k) &=& M_0x^2 &-& 2M_1x   &+& M_2
+  \\
+  \ds \sum_{k\in\Z} k^3 \fphi(x-k) &=& M_0x^3 &-& 3M_1x^2 &+& 3M_2x   &-&  M_3
+  \\
+  \ds \sum_{k\in\Z} k^4 \fphi(x-k) &=& M_0x^4 &-& 4M_1x^3 &+& 6M_2x^2 &-& 4M_3x &+& M_4
+  \\
+  \ds \sum_{k\in\Z} k^5 \fphi(x-k) &=& M_0x^5 &-& 5M_1x^4 &+& 10M_2x^3 &-& 10M_3x^2 &+& 5M_4x &-& M_5
+\end{array}}
+
+These equations can be represented in matrix algebra form as
+\exbox{
+  \left[\begin{array}{l}
+    \sum_{k\in\Z} k^4 \fphi(x-k) \\
+    \sum_{k\in\Z} k^3 \fphi(x-k) \\
+    \sum_{k\in\Z} k^2 \fphi(x-k) \\
+    \sum_{k\in\Z} k   \fphi(x-k) \\
+    \sum_{k\in\Z}     \fphi(x-k)
+  \end{array}\right]
+  =
+  \left[\begin{array}{rrrrr}
+    M_0 & -4M_1 &  6M_2 & -4M_3 &  M_4 \\
+      0 &   M_0 & -3M_1 &  3M_2 & -M_3 \\
+      0 &     0 &   M_0 & -2M_1 &  M_2 \\ 
+      0 &     0 &     0 &   M_0 & -M_1 \\
+      0 &     0 &     0 &     0 &  M_0  
+  \end{array}\right]
+  \left[\begin{array}{l}
+    x^4 \\
+    x^3 \\
+    x^2 \\
+    x   \\
+    1   
+  \end{array}\right]
+  }
+
+The operator matrix is triagular and therefore it's inverse 
+always exists.
+The monomials $1, x, x^2, x^3$ and $x^4$ can be computed by 
+computing the inverse of the operator matrix.
+\exbox{\begin{array}{lclclclclclcl}
+  1   &=& \frac{1}{M_0} \sum_{k\in\Z} \fphi(x-k)                     
+  \\
+  x   &=& \frac{1}{M_0}\sum_{k\in\Z} k \fphi(x-k) 
+      &+& \frac{M_1}{M_0}  
+  \\
+  x^2 &=& \frac{1}{M_0}\sum_{k\in\Z} k^2 \fphi(x-k) 
+      &+& \frac{2M_1}{M_0^2}\sum_{k\in\Z} k \fphi(x-k) 
+      &+& \frac{2M_1^2-M_2M_0}{M_0^2}
+  \\
+  x^3 &=& \frac{1}{M_0}\sum_{k\in\Z} k^3 \fphi(x-k) 
+      &+& \frac{3M_1 }{M_0^2}\sum_{k\in\Z} k^2 \fphi(x-k) 
+      &+& \frac{6M_1^2-3M_2M_0}{M_0^3}\sum_{k\in\Z} k \fphi(x-k) 
+      \\&&\qquad&+& \frac{6M_1^3-6M_2M_1M_0+M_3M_0^2}{M_0^3}
+\end{array}}
+\\
+Note that each monomial $x^n$ is simply a linear combination 
+of $\seq{\fphi(x-k)}{k\in\Z}$.
+
+\end{footnotesize}
+\end{example}
+\begin{proof}
+\begin{align*}
+  M_0
+    &= \sum_{k\in\Z} (x-k)^0 \fphi(x-k)
+  \\&= \sum_{k\in\Z} \fphi(x-k)
+  \\
+  \\
+  M_1
+    &= \sum_{k\in\Z} (x-k)^1 \fphi(x-k)
+  \\&= t \sum_{k\in\Z} \fphi(x-k) - \sum_{k\in\Z} k \fphi(x-k)
+  \\&= M_0t  - \sum_{k\in\Z} k \fphi(x-k)
+  \\
+  \\
+  M_2
+    &= \sum_{k\in\Z} (x-k)^2 \fphi(x-k)
+  \\&= x^2 \sum_{k\in\Z}\fphi(x-k) - 2t \sum_{k\in\Z} k\fphi(x-k) + \sum_{k\in\Z} k^2 \fphi(x-k)
+  \\&= x^2 M_0 - 2t(M_0t - M_1) + \sum_{k\in\Z} k^2 \fphi(x-k)
+  \\&= -M_0x^2 + 2M_1x + \sum_{k\in\Z} k^2 \fphi(x-k)
+  \\
+  \\
+  M_3
+    &= \sum_{k\in\Z} (x-k)^3 \fphi(x-k)
+  \\&=  x^3 \sum_{k\in\Z}     \fphi(x-k) 
+      - 3x^2 \sum_{k\in\Z} k   \fphi(x-k) 
+      + 3x   \sum_{k\in\Z} k^2 \fphi(x-k) 
+      -      \sum_{k\in\Z} k^3 \fphi(x-k) 
+  \\&=  x^3 M_0
+      - 3x^2 \left[ M_0t - M_1 \right]
+      + 3x   \left[ M_0x^2 - 2M_1x + M_2 \right]
+      -      \sum_{k\in\Z} k^3 \fphi(x-k) 
+  \\&= (M_0-3M_0+3M_0)x^3 + (3M_1-6M_1)x^2 + 3M_2 x -\sum_{k\in\Z} k^3 \fphi(x-k) 
+  \\&= M_0x^3 -3M_1 x^2 + 3M_2t - \sum_{k\in\Z} k^3 \fphi(x-k) 
+  \\
+  \\
+  M_4
+    &= \sum_{k\in\Z} (x-k)^4  \fphi(x-k)
+  \\&=  x^4 \sum_{k\in\Z}     \fphi(x-k)
+      - 4x^3 \sum_{k\in\Z} k   \fphi(x-k)
+      + 6x^2 \sum_{k\in\Z} k^2 \fphi(x-k)
+      - 4x   \sum_{k\in\Z} k^3 \fphi(x-k)
+      +      \sum_{k\in\Z} k^4 \fphi(x-k)
+  \\&=  x^4 M_0
+      - 4x^3 \left[ M_0t   -  M_1  \right]
+      + 6x^2 \left[ M_0x^2 - 2M_1x   + M_2  \right]
+      - 4x   \left[ M_0x^3 - 3M_1x^2 + 3M_2t - M_3  \right]
+      \\&\qquad+      \sum_{k\in\Z} k^4 \fphi(x-k)
+  \\&=  x^4 M_0
+      + \left[ - 4M_0x^4   + 4M_1x^3  \right]
+      + \left[ 6M_0x^4 - 12M_1x^3  + 6M_2x^2  \right]
+      \\&\qquad+ \left[ - 4M_0x^4 + 12M_1x^3 - 12M_2x^2 + 4M_3x  \right]
+      +  \sum_{k\in\Z} k^4 \fphi(x-k)
+  \\&= (M_0- 4M_0+6M_0- 4M_0)x^4 
+      + (4M_1- 12M_1+ 12M_1)x^3
+      + (6M_2-12M_2)x^2
+      + 4M_3x
+      \\&\qquad+ \sum_{k\in\Z} k^4 \fphi(x-k)
+  \\&= -M_0x^4 
+      + 4M_1x^3
+      - 6M_2x^2
+      + 4M_3x
+      + \sum_{k\in\Z} k^4 \fphi(x-k)
+  \\
+  \\
+  M_5
+    &= \sum_{k\in\Z} (x-k)^5  \fphi(x-k)
+  \\&=  x^5 \sum_{k\in\Z}     \fphi(x-k)
+      - 5x^4 \sum_{k\in\Z} k   \fphi(x-k)
+      +10x^3 \sum_{k\in\Z} k^2 \fphi(x-k)
+      -10x^2 \sum_{k\in\Z} k^3 \fphi(x-k)
+      \\&\qquad+ 5t   \sum_{k\in\Z} k^4 \fphi(x-k)
+      -      \sum_{k\in\Z} k^5 \fphi(x-k)
+  \\&=  x^5 M_0
+      - 5x^4 \left[ M_0x-M_1                 \right]
+      +10x^3 \left[ M_0x^2-2M_1x+M_2         \right]
+      -10x^2 \left[ M_0x^3-3M_1x^2+3M_2x-M_3 \right]
+      \\&\qquad+ 5t   \left[ M_0x^4-4M_1x^3+6M_2x^2-4M_3x+M_4 \right]
+      -      \sum_{k\in\Z} k^5 \fphi(x-k)
+  \\&=  x^5 M_0
+      \left[ -5M_0x^5+5M_1x^4                 \right]
+      + \left[ 10M_0x^5 -20M_1x^4 + 10M_2x^3  \right]
+      \\&\qquad+ \left[ -10M_0x^5 +30M_1x^4 -30M_2x^3 +10M_3x^2 \right]
+      \\&\qquad+ \left[ 5M_0x^5 - 20M_1x^4 +30M_2x^3 - 20M_3x^2 +5M_4x \right]
+      - \sum_{k\in\Z} k^5 \fphi(x-k)
+  \\&= (M_0-5M_0+10M_0+5M_0-10M_0)x^5
+       +(5M_1-20M_1+30M_1-20M_1)x^4
+       \\&\qquad+(10M_2-30M_2+30M_2)x^3
+       +(10M_3-20M_3)x^2
+       + 5M_4x
+      - \sum_{k\in\Z} k^5 \fphi(x-k)
+  \\&= M_0x^5 - 5M_1x^4 + 10M_2x^3 - 10M_3x^2 + 5M_4x 
+      - \sum_{k\in\Z} k^5 \fphi(x-k)
+\end{align*}
+
+\begin{math}
+%  \begin{array}{rr|rrrr@{\hspace{8ex}}rrrr|c}
+  \begin{array}{rr|rrrr@{\hspace{3ex}\hspace{3ex}}rrrr|c}
+    && M_0 & -3M_1 &  3M_2 & -M_3  & 1 & 0 & 0 & 0 &             \\
+    &&   0 &   M_0 & -2M_1 &  M_2  & 0 & 1 & 0 & 0 & \rightarrow \\ 
+    &&   0 &     0 &   M_0 & -M_1  & 0 & 0 & 1 & 0 &             \\
+    &&   0 &     0 &     0 &  M_0  & 0 & 0 & 0 & 1 & 
+    \\ \\
+    && M_0 & -3M_1 &  3M_2 &    0  & 1 & 0 & 0 &  \frac{M_3}{M_0} &             \\
+    &&   0 &   M_0 & -2M_1 &    0  & 0 & 1 & 0 & -\frac{M_2}{M_0} & \rightarrow \\
+    &&   0 &     0 &   M_0 &    0  & 0 & 0 & 1 &  \frac{M_1}{M_0} &             \\
+    &&   0 &     0 &     0 &  M_0  & 0 & 0 & 0 &  1               &               
+    \\ \\
+    && M_0 & -3M_1 &     0 &    0  & 1 & 0 & -\frac{3M_2}{M_0} & -\frac{3M_2M_1}{M_0^2}+\frac{M_3}{M_0} &             \\
+    &&   0 &   M_0 &     0 &    0  & 0 & 1 &  \frac{2M_1}{M_0} & \frac{2M_1^2}{M_0^2}-\frac{M_2}{M_0}   & \rightarrow \\
+    &&   0 &     0 &   M_0 &    0  & 0 & 0 &  1                &  \frac{M_1}{M_0}                       &             \\
+    &&   0 &     0 &     0 &  M_0  & 0 & 0 &  0                &  1                                     &               
+    \\ \\
+    && M_0 &     0 &     0 &    0  & 1 & \frac{3M_1}{M_0} & \frac{6M_1^2}{M_0^2}-\frac{3M_2}{M_0} & \frac{6M_1^3}{M_0^3}-\frac{3M_1M_2}{M_0^2} - \frac{3M_2M_1}{M_0^2}+\frac{M_3}{M_0} &             \\
+    &&   0 &   M_0 &     0 &    0  & 0 & 1                &  \frac{2M_1}{M_0}                     & \frac{2M_1^2}{M_0^2}-\frac{M_2}{M_0}                                               & \rightarrow \\
+    &&   0 &     0 &   M_0 &    0  & 0 & 0                &  1                                    & \frac{M_1}{M_0}                                                                    &             \\
+    &&   0 &     0 &     0 &  M_0  & 0 & 0                &  0                                    & 1                                                                                  &               
+    \\ \\
+    &&   1 &     0 &     0 &    0  & \frac{1}{M_0} & \frac{3M_1}{M_0^2} & \frac{6M_1^2}{M_0^3}-\frac{3M_2}{M_0^2} & \frac{6M_1^3}{M_0^4}-\frac{3M_1M_2}{M_0^3} - \frac{3M_2M_1}{M_0^3}+\frac{M_3}{M_0^2} &             \\
+    &&   0 &     1 &     0 &    0  & 0 & \frac{1}{M_0}    &  \frac{2M_1}{M_0^2}                     & \frac{2M_1^2}{M_0^3}-\frac{M_2}{M_0^2}                                                             & \rightarrow \\
+    &&   0 &     0 &     1 &    0  & 0 & 0                &  \frac{1}{M_0}                          & \frac{M_1}{M_0^2}                                                                                  &             \\
+    &&   0 &     0 &     0 &    1  & 0 & 0                &  0                                    & \frac{1}{M_0}                                                                                        &               
+    \\ \\
+    &&   1 &     0 &     0 &    0  & \frac{1}{M_0} & \frac{3M_1}{M_0^2} & \frac{6M_1^2-3M_2M_0}{M_0^3} & \frac{6M_1^3-6M_2M_1M_0+M_3M_0^2}{M_0^4}  &             \\
+    &&   0 &     1 &     0 &    0  & 0 & \frac{1}{M_0}    &  \frac{2M_1}{M_0^2}                     & \frac{2M_1^2-M_2M_0}{M_0^3}                  & \rightarrow \\
+    &&   0 &     0 &     1 &    0  & 0 & 0                &  \frac{1}{M_0}                          & \frac{M_1}{M_0^2}                            &             \\
+    &&   0 &     0 &     0 &    1  & 0 & 0                &  0                                    & \frac{1}{M_0}                                  &             
+  \end{array}
+\end{math}
+
+\begin{eqnarray*}
+  \left[\begin{array}{l}
+    x^3  \\
+    x^2  \\
+    x    \\
+    1   
+  \end{array}\right]
+  &=& 
+  \left[\begin{array}{llll}
+    \frac{1}{M_0} & \frac{3M_1}{M_0^2} & \frac{6M_1^2-3M_2M_0}{M_0^3} & \frac{6M_1^3-6M_2M_1M_0+M_3M_0^2}{M_0^4}  \\
+    0 & \frac{1}{M_0}    &  \frac{2M_1}{M_0^2}                     & \frac{2M_1^2-M_2M_0}{M_0^3}                  \\
+    0 & 0                &  \frac{1}{M_0}                          & \frac{M_1}{M_0^2}                            \\
+    0 & 0                &  0                                    & \frac{1}{M_0}                                  
+  \end{array}\right]
+  \left[\begin{array}{l}
+    \sum_{k\in\Z} k^3 \fphi(x-k)  \\
+    \sum_{k\in\Z} k^2 \fphi(x-k)  \\
+    \sum_{k\in\Z} k   \fphi(x-k)  \\
+    \sum_{k\in\Z}     \fphi(x-k)  \\
+  \end{array}\right]
+\end{eqnarray*}
+
+
+\begin{align*}
+  x^3 &=  \frac{1}{M_0}                            \sum_{k\in\Z} k^3 \fphi(x-k)
+       +  \frac{3M_1}{M_0^2}                       \sum_{k\in\Z} k^2 \fphi(x-k)
+       +  \frac{6M_1^2-3M_2M_0}{M_0^3}             \sum_{k\in\Z} k   \fphi(x-k)
+    \\& + \frac{6M_1^3-6M_2M_1M_0+M_3M_0^2}{M_0^4} 
+          \mcom{\sum_{k\in\Z} \fphi(x-k)}{$M_0$}
+    \\&=  \frac{1}{M_0}                            \sum_{k\in\Z} k^3 \fphi(x-k)
+       +  \frac{3M_1}{M_0^2}                       \sum_{k\in\Z} k^2 \fphi(x-k)
+       +  \frac{6M_1^2-3M_2M_0}{M_0^3}             \sum_{k\in\Z} k   \fphi(x-k)
+    \\&\qquad+ \frac{6M_1^3-6M_2M_1M_0+M_3M_0^2}{M_0^3} 
+\\
+  x^2 &= 
+      \frac{1}{M_0}                \sum_{k\in\Z} k^2 \fphi(x-k) 
+     +\frac{2M_1}{M_0^2}           \sum_{k\in\Z}     \fphi(x-k) 
+     +\frac{2M_1^2-M_2M_0}{M_0^2} 
+\\
+  x &=  \frac{1}{M_0}\sum_{k\in\Z} k \fphi(x-k) + \frac{M_1}{M_0}
+\end{align*}
+
+\end{proof}
+
+
+%---------------------------------------
+\begin{conjecture}
+\footnote{
+  %\citeoeis{A110555}
+  \citeOc{oeisA110555}{A110555}{$T(n,k) \eqd \sum_{k=0,1,\ldots,n}{n\choose k}(-1)^k$}
+  } 
+\label{cnj:sfixc}
+%---------------------------------------
+Let $\wavsys$ be a wavelet system with $p$ vanishing moments
+and let $M_n$ be the \hi{$n$th moment} \xref{def:Mn} of $\fphi(x)$.
+\cnjbox{
+  \sum_{k\in\Z} k^n \fphi(x-k) 
+      = \sum_{m=0}^n {n\choose m}(-1)^m M_m x^{n-m}
+  }
+\end{conjecture}
+\begin{proof}
+This conjecture is supported by the results of \prefpp{ex:sfixc5}.
+However, I have no proof at this time. 
+\begin{align*}
+  (-1)^n M_n
+    &= (-1)^n \sum_{k\in\Z} (x-k)^n  \fphi(x-k)
+  \\&= (-1)^n \sum_{k\in\Z} \sum_{m=0}^n {n\choose m}x^{n-m} (-k)^m \fphi(x-k)
+  \\&= (-1)^n \sum_{m=0}^n {n\choose m}(-1)^m x^{n-m} \sum_{k\in\Z} k^m \fphi(x-k)
+  \\&= \left[(-1)^{2n} \sum_{k\in\Z} k^n \fphi(x-k)\right]
+      \;+\; (-1)^n \sum_{m=0}^{n-1} {n\choose m}(-1)^m x^{n-m} \sum_{k\in\Z} k^m \fphi(x-k)
+  \\&= \left[\sum_{k\in\Z} k^n \fphi(x-k)\right]
+      \;+\; (-1)^n \sum_{m=0}^{n-1} {n\choose m}(-1)^m x^{n-m} \sum_{k\in\Z} k^m \fphi(x-k)
+  \\
+  \\
+  \sum_{k\in\Z} k^n \fphi(x-k)
+    &= -(-1)^n \sum_{m=0}^{n-1} {n\choose m}(-1)^m x^{n-m} \sum_{k\in\Z} k^m \fphi(x-k)
+        + (-1)^n M_n
+  \\&=  \sum_{m=0}^{n-1} {n\choose m}(-1)^m 
+         \mcom{\left[(-1)^{n-1}\sum_{k\in\Z} k^m \fphi(x-k)\right]}{$M_m?$}
+         x^{n-m} 
+        + (-1)^n M_n
+\\
+\\
+  M_m &\eqq (-1)^{n-1}\sum_{k\in\Z}  k^m \fphi(x-k)
+\\
+  M_m
+    &= \sum_{k\in\Z} (x-k)^m \fphi(x-k)
+  \\&= \sum_{k\in\Z} \sum_{p=0}^m {m\choose p}x^{m-p}(-k)^p \fphi(x-k)
+  \\&= (-1)^m \sum_{k\in\Z} k^m \fphi(x-k)
+      + \mcom{\sum_{k\in\Z} \sum_{p=0}^{m-1}{m\choose p}x^{m-p}(-k)^p \fphi(x-k)}{$0?$}
+  \\
+  \\
+  \sum_{k\in\Z} k^n \fphi(x-k)
+    &= -(-1)^n \sum_{m=0}^{n-1} {n\choose m}(-1)^m x^{n-m} \sum_{k\in\Z} k^m \fphi(x-k)
+        + (-1)^n M_n
+  \\&=  \sum_{m=0}^{n-1} {n\choose m}(-1)^m 
+         (-1)^{n-1}\left[\sum_{k\in\Z} k^m \fphi(x-k)\right]
+         x^{n-m} 
+        + (-1)^n M_n
+  \\&=  \sum_{m=0}^{n-1} {n\choose m}(-1)^m 
+         (-1)^{n-1}
+         \left[
+           \sum_{p=0}^{m-1} {m\choose p}(-1)^p 
+           (-1)^{m-1}\left[\sum_{k\in\Z} k^p \fphi(x-k)\right]
+           x^{m-p} 
+           + (-1)^m M_m
+         \right]
+         x^{n-m} 
+        \\&\qquad+ (-1)^n M_n
+\end{align*}
+\end{proof}
+
+%=======================================
+\subsection{Scaling function and continuity}
+%=======================================
+%--------------------------------------
+\begin{theorem}
+\label{thm:vanish_continuous}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $\Fphi(\omega)$ be the \fncte{Fourier transform} \xref{def:opFT} of $\fphi(x)$.
+\thmbox{
+  \brb{\begin{array}{FM}
+    (1). & $\fpsi$ has $p\ge2$ \prope{vanishing moments}\qquad\scs and\\
+    (2). & $g_n = (-1)^n h^\ast_{N-n}$\qquad\scs[\prope{CQF condition} \xref{def:cqf}]
+  \end{array}}
+  \implies
+  \brb{\begin{array}{M}
+    $\Fphi(\omega)$ is \prope{continuous}\\
+    at $\omega=0$
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    \text{(1) and (2)}
+      &\implies \brlr{\opddwn  \Fphi(\omega)}_{\omega=2\pi k}=\cft (-i)^n \kdelta_k M_n
+      && \text{by \prefp{lem:sfixc}}
+    \\&\implies \brlr{\opddw \Fphi(\omega)}_{\omega=0} = \cft (-i)^1 M_1 
+    \\&\implies \brlr{\opddw \Fphi(\omega)}_{\omega=0} = 0
+      && \text{by (1) and def. of \prope{vanishing moments} \xref{def:vanish}}
+    \\&\implies \brlr{\opddw \Fphi(\omega)}_{\omega=0} < \infty
+    \\&\implies \text{$\Fphi(\omega)$ is \prope{continuous} at $\omega=0$}
+  \end{align*}
+\end{proof}
+
+%=======================================
+\section{Sufficient conditions}
+%=======================================
+How can we design a \structe{wavelet system} \xref{def:wavsys} to have \prope{$p$ vanishing moments}?
+One way is to design the \structe{scaling coefficient sequence} \xref{def:hn} $\seqn{h_n}$ in the \ope{z-domain} \xref{def:opZ}
+such that $\Zh(z)$ includes the factor $\brp{\frac{1+z^{-1}}{2}}^p$ (next theorem).
+This factor is included in the $\Zh(z)$ of the \structe{Daubechies-p wavelet system}\ifsxref{compactp}{def:Dp}.
+A similar factor \xref{lem:FTNn} also appears in the \ope{Fourier transform} \xref{def:opFT} 
+of \structe{B-spline}s \xref{def:Bspline}.
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:van_factor}
+\footnote{
+  \citerp{dau}{155},
+  \citerpp{vidakovic}{80}{82}
+  }
+%---------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $\seqnZ{q_n}$ be a sequence with \ope{z-transform} \xref{def:opZ} $\Zq(z)$.
+%Let the \prope{CQF condition} be defined as in \prefp{def:cqf}.
+\lembox{
+  \brb{\begin{array}{Frc>{\ds}l}
+    (1). & \Zh(z) &=& \brp{\frac{1+z^{-1}}{2}}^p\,\Zq(z) \qquad\text{\scs and} \\
+    (2). & g_n    &=& (-1)^n h^\ast_{N-n}                \quad\text{\scs[\prope{CQF condition} \xref{def:cqf}]}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{M}
+    $\fpsi$ has $p$\\
+    vanishing moments
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+            && \Zh(z)      
+                   &= \brp{\frac{1+z^{-1}}{2}}^p\,\Zq(z)
+                  &&  \text{by (1)}
+  \\\implies&& \Dh(\omega) 
+                   &= \brp{\frac{1+e^{i\omega}}{2}}^p\,\Fq(\omega)
+                   && \text{by \prefp{def:dtft}}
+                   %\text{\scs by \prefp{def:opZ} and \prefp{def:dtft}}
+  \\\implies&& \brlr{\opddwn\Dh(\omega)}_{\omega=\pi} 
+                   &= \brlr{\opddwn\brp{\frac{1+e^{i\omega}}{2}}^p\,\Fq(\omega)}_{\omega=\pi}
+               \\&&&= \brlr{\sum_{k=0}^n\bcoef{n}{k} \brs{\opddwn[k]\brp{\frac{1+e^{i\omega}}{2}}^p} \, \brs{\opddwn[n-k]\Fq(\omega)}}_{\omega=\pi}
+                 %&& \text{by \thme{Leibnitz GPR} \xref{lem:LGPR}}
+                  && \text{by \prefp{lem:LGPR}}
+               \\&&&=\brlr{\sum_{k=0}^n\bcoef{n}{k} \brs{\frac{p!}{2^p(p-k)!}\prod_{k=1}^p\brs{ie^{i\omega}\brp{1+e^{i\omega}}^k}} \, \brs{\opddw^{n-k}\Fq(\omega)}}_{\omega=\pi}
+               \\&&&= 0
+  \\\iff         &&& \text{$\fpsi$ has $p$ vanishing moments}
+                  && \text{by \prefp{thm:gh_cqf}}
+\end{align*}
+\end{proof}
+
+
+
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:compact_form}
+%\footnote{
+%  \citerp{dau}{155},
+%  \citerpp{vidakovic}{80}{82}
+%  }
+%%---------------------------------------
+%Let $\wavsys$ be an \hib{orthonormal} wavelet system.
+%\thmboxt{
+%  $\ds\left.\begin{array}{FlD}
+%    1. & |\fpsi(x)| \le \frac{C_1}{(1+|x|)^\alpha}, \; \alpha>p 
+%       & \text{and} \\
+%    2. & \text{$\fpsi(\omega)$ is $N$ times differentiable}
+%       & \text{and} \\
+%    3. & |\fphi(x)| \le \frac{C_2}{(1+|x|)^\alpha}, \; \alpha>p
+%  \end{array}\right\}
+%  \implies
+%  \left\{\begin{array}{FlD}
+%    1. & \ds \text{$\fpsi$ has $p$ vanishing moments.} & and\\
+%    2. & \ds \Dh(\omega) = \left(\frac{1+e^{-i\omega}}{2}\right)^p \fQ(\omega)
+%  \end{array}\right.$
+%  \\
+%  where $\fQ(\omega)$ is $2\pi$ periodic and 
+%  $\fQ(\omega)$ is $p-1$ times differentiable.
+%  }
+%\end{theorem}
+%%\begin{proof}
+%%No proof at this time.
+%%\end{proof}
+
+
+
+
+%%=======================================
+%\section{Examples}
+%%=======================================
+%Examples of wavelets with $p$ vanishing moments include the B-spline wavelets and the Daubechies-$p$ wavelets.
+%
+%\begin{tabular}{|>{\scs}rlcll|}
+%  \hline
+%     &  name & $p$ & & 
+%  \\\hline
+%  %1. &  Haar                            & 1 & \pref{ex:pun_n=2}       & \prefpo{ex:pun_n=2}\\
+%  %2. &  order 1 B-spline wavelet system & 2 & \pref{ex:sw_gh_tent}    & \prefpo{ex:sw_gh_tent}\\
+%  %3. &  order 3 B-spline wavelet system & 4 & \pref{ex:sw_gh_bspline} & \prefpo{ex:sw_gh_bspline}\\
+%  1. &  order 0 B-spline & 1 & \pref{ex:N0_hg}                           & \prefpo{ex:N0_hg} \\
+%  2. &  order 1 B-spline & 2 & \pref{ex:N1_hg}                           & \prefpo{ex:N1_hg} \\
+%  3. &  order 2 B-spline & 3 & \pref{ex:N2_hg}                           & \prefpo{ex:N2_hg} \\
+%  4. &  Daubechies-p2    & 2 & \ifdochas{compactp}{\pref{ex:dau-p2}}     & \ifdochas{compactp}{\prefpo{ex:dau-p2}}\\
+%  5. &  Daubechies-p3    & 3 & \ifdochas{compactp}{\pref{ex:dau-p3}}     & \ifdochas{compactp}{\prefpo{ex:dau-p3}} \\   
+%  6. &  Symlet-p4        & 4 & \ifdochas{compactp}{\pref{ex:symlet_p4}}  & \ifdochas{compactp}{\prefpo{ex:symlet_p4}}\\
+%  \hline
+%\end{tabular}
+%
+
+%\[\begin{array}{llcllll}
+%  1. & \ds\sum_{n\in\Z}  h_n   &=& \sqrt{2} 
+%     & \text{(admissiblility condition)}
+%     & \text{\pref{thm:admiss}}
+%     & \text{page~\pageref{thm:admiss}}
+%\\
+%\\
+%  2. & \ds\sum_{m\in\Z} h_m \fh^\ast_{m-2n} &=& \kdelta_n
+%     & \text{(quadrature condition)}
+%     & \text{\pref{thm:quadcon}}
+%     & \text{page~\pageref{thm:quadcon}}
+%\\
+%\\
+%  3. & \ds\sum_{m\in\Z} (-1)^m m^p  h_m   &=& 0
+%     & \text{(vanishing $p$th moment)}
+%     & \text{\pref{thm:vanish}} 
+%     & \text{page~\pageref{thm:vanish}}
+%\end{array}\]
+%
+%Note that the ``zero at $z=-1$" constraint 
+%(\pref{thm:zero_unity_evenodd} page~\pageref{thm:zero_unity_evenodd})
+%is just the vanishing 0th moment (and hence included in 3. for $p=0$).
+%Also, the ``partition of unity" and ``even-odd" constraints 
+%are, by the same theorem, equivalent  to the 
+%``zero at $z=-1$" constraint.
+
+
+
+
+
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:vsmra_real}
+%%---------------------------------------
+%Let $\spLLR$ be the set of real Lebesgue measurable functions.
+%\thmbox{
+%  \mcom{\left.\begin{array}{llclC}
+%    1. & \opT  \fx(x) &\eqd&         \fx(x-1) & \forall \fx\in\spLLR \\
+%    2. & \opD  \fx(x) &\eqd& \sqrt{2}\fx(2t)  & \forall \fx\in\spLLR
+%  \end{array}\right\}}{definition of $\opT$ and $\opD$ (\prefp{def:vsmra_real_T})}
+%  \quad\implies\quad
+%  \text{$\vsmrasysLL$ is a \vsmratext}.
+%}
+%\end{theorem}
+%\begin{proof}
+%  \begin{enumerate}
+%    \item Proof that $\opT^n\opD = \opD\opT^{2n}$:  By \prefpp{prop:vsmra_real_commute}
+%    \item Proof that $\brp{\sum_{n\in\Z} \opT^n}$ is normal:
+%      \begin{enumerate}
+%        \item By \prefpp{prop:vsmra_real_sa}, $\brp{\sum_{n\in\Z} \opT^n}$ is self-adjoint.
+%        \item Because self-adjoint $\implies$ normal, 
+%              $\brp{\sum_{n\in\Z} \opT^n}$ is also normal.
+%      \end{enumerate}
+%    \item Proof that $\normop{\opT}=\normop{\opD}=1$: 
+%      \begin{enumerate}
+%        \item By \prefpp{prop:vsmra_real_Ta} and \prefpp{prop:vsmra_real_Ti},
+%          $\opTi=\opTa$ and $\opDi=\opDa$.
+%        \item Therefore, $\opT$ and $\opD$ are both unitary operators because
+%          $\opTa\opT=\opT\opTa=\opI$ and $\opDa\opD=\opD\opDa=\opI$.
+%        \item Because $\opT$ and $\opD$ are unitary operators, 
+%          by \prefpp{thm:unitary_prop}
+%          $\normop{\opT}=\normop{\opD}=1$.
+%    \end{enumerate}
+%  \end{enumerate}
+%\end{proof}
+%
+
+%%--------------------------------------
+%\begin{theorem}
+%\label{thm:Phi=HPhi}
+%\index{dilation equation}
+%\index{refinement equation}
+%\index{two-scale difference equation}
+%\raggedright
+%%--------------------------------------
+%Let $\spX$ be a vector space with unit vector $\vunit$,
+%wavelet basis lattice $\wavlatbasis$,
+%and ``\hie{Fourier transforms}"
+%\[ \begin{array}{rcl cl}
+%     \Fphi(\omega) &\eqd& \inprod{\fphi(x)}{\fkern{x}{\omega}}
+%                   &\eqd& \inprodint{\fphi(x)}{\fkernea{x}{\omega}}
+%     \\
+%     \Fpsi(\omega) &\eqd& \inprod{\fpsi(x)}{\fkern{x}{\omega}}
+%                   &\eqd& \inprodint{\fpsi(x)}{ \fkernea{x}{\omega}}
+%\end{array} \]
+%and ``\hie{discrete Fourier transforms}"
+%\[ \begin{array}{rcl cl @{\qquad}l}
+%     \Dh(\omega) &\eqd& \inproda{\fphi(x)}{\fkern{n}{\omega}}
+%                 &\eqd& \sum_{n\in\Z} h_n \fkernea{n}{\omega}
+%                 &      n \in\Z
+%     \\
+%     \Dg(\omega) &\eqd& \inproda{\fpsi(x)}{\fkern{n}{\omega}}
+%                 &\eqd& \sum_{n\in\Z} g_n \fkernea{n}{\omega} 
+%                 &      n \in\Z
+%\end{array} \]
+%\thmbox{
+%\renewcommand{\arraystretch}{1}
+%\begin{array}{rc>{\ds}l c>{\ds}l}
+%   \Fphi(\omega) &=& \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2}\right)\Fphi\left(\frac{\omega}{2}\right)
+%                 &=& \mcomr{\inprod{\vphi}{\vunit}}{(normally set to $1$)} \;
+%                     \prod_{n=1}^\infty \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2^n}\right)
+%   \\
+%   \Fpsi(\omega) &=& \frac{1}{\sqrt{2}} \Dg\left(\frac{\omega}{2}\right)\Fphi\left(\frac{\omega}{2}\right)
+%   \\
+%\end{array}
+%}
+%\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%   \intertext{\ding{"C0} Proof that
+%     $\Fphi(\omega)=\cwt  \Dh\left(\frac{\omega}{2}\right)\Fphi\left(\frac{\omega}{2}\right)$:}
+%   \opF\vphi
+%     &= \inprod{\vphi}{\fkern{x}{\omega}}
+%   \\&= \inprod{\sum_{n\in\Z}  h_n  \opT^n\opD\vphi}{\fkern{x}{\omega}}
+%     && \text{by dilation equation \prefpo{thm:dilation_eq}}
+%   \\&= \sum_{n\in\Z}  h_n \inprod{\opT^n\opD\vphi}{\fkern{x}{\omega}}
+%     && \text{by definition of $\inprod{\cdot}{\cdot}$ \prefpo{def:inprod}}
+%   \\&= \sum_{n\in\Z}  h_n \inprod{\vphi}{\left(\opT^n\opD\right)^\ast \fkern{x}{\omega}}
+%     && \text{by definition of operator adjoint \prefpo{def:op_adj}}
+%   \\&= \sum_{n\in\Z}  h_n \inprod{\vphi}{\cwt \fkern{n}{\frac{1}{2}\omega}\fkern{x}{\frac{1}{2}\omega}}
+%     && \text{by \prefp{lem:TDk}}
+%   \\&= \sum_{n\in\Z}  h_n  \;
+%        \cwt  \; 
+%        \fkernea{n}{\frac{1}{2}\omega} \;
+%        \inprod{\vphi}{\fkern{x}{\frac{1}{2}\omega}}
+%     && \text{by property of inner-products \prefpo{def:inprod}}
+%   \\&= \cwt  \;
+%        \inprod{h_n}{\fkern{n}{\frac{1}{2}\omega}} \;
+%        \inprod{\vphi}{\fkern{x}{\frac{1}{2}\omega}}
+%     && \text{by assumption}
+%  \\&= \cwt \, \Dh\left(\frac{\omega}{2}\right)\; \Fphi\left(\frac{\omega}{2}\right)
+%    && \text{by definitions of $\Dg$ and $\Fphi$}
+%\\
+%   \intertext{\ding{"C1} Proof that
+%     $\Fpsi(\omega)=\cwt  \Dg\left(\frac{\omega}{2}\right)\Fphi\left(\frac{\omega}{2}\right)$:
+%     essentially same as above but substitute $g_n$ for $h_n$.
+%     }
+%\\
+%   \intertext{\ding{"C2} Proof that
+%     $\Fphi(\omega)=\int_\R \fphi(x) \dx\: \prod_{n=1}^\infty \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2^n}\right)$:
+%     }
+%   \Fphi(\omega)
+%     &= \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2}\right)\Fphi\left(\frac{\omega}{2}\right)
+%     && \text{by part \ding{"C0}}
+%   \\&= \left[
+%          \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2}\right)
+%          \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{4}\right)
+%        \right]\; \Fphi\left(\frac{\omega}{4}\right)
+%   \\&= \left[
+%          \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2}\right)
+%          \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{4}\right)
+%          \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{8}\right)
+%        \right]\; \Fphi\left(\frac{\omega}{8}\right)
+%   \\&\vdots
+%   \\&= \left[\prod_{n=1}^\infty \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2^n}\right)\right]
+%        \left[ \lim_{n\to\infty} \Fphi\left(\frac{\omega}{n}\right) \right]
+%   \\&= \Fphi\left(0\right) \;
+%        \left[\prod_{n=1}^\infty \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2^n}\right)\right]
+%   \\&= \left. \inprod{\vphi}{\fkern{x}{\omega}} \right|_{\omega=0} \;
+%        \left[ \prod_{n=1}^\infty \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2^n}\right) \right]
+%     && \text{by definition of $\Dh(\omega)$}
+%   \\&= \inprod{\vphi}{\vunit} \;
+%        \prod_{n=1}^\infty \frac{1}{\sqrt{2}} \Dh\left(\frac{\omega}{2^n}\right)
+%\end{align*}
+%\end{proof}
+
+
+
+

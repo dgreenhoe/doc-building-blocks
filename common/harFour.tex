@@ -1,0 +1,956 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Fourier Transform}
+\index{harmonic analysis}
+\index{fourier analysis}
+\label{app:fourier}
+%======================================
+\qboxnpq{
+  Joseph Fourier (1768--1830)
+  \index{Fourier, Joseph}
+  \index{quotes!Fourier, Joseph}
+  \footnotemark
+  }
+  {../common/people/fourier_bunzil_wkp_pdomain_gray.jpg}
+  %{Mathematics compares the most diverse phenomena and discovers the secret analogies that unite them.}
+  {%
+  The analytical equations
+  \ldots
+  %, unknown to the ancient geometers, which Descartes was the first to introduce into the study of curves and surfaces, 
+  %are not restricted to the properties of figures, and to 
+  %those properties which are the object of rational mechanics ; they 
+  extend to all general phenomena. 
+  There cannot be a language more universal and more simple, 
+  more free from errors and from obscurities, 
+  \ldots
+  %that is to say more worthy to express the invariable relations of natural things. 
+  %Considered from this point of view, 
+  mathematical analysis is as extensive as nature itself; 
+  \ldots
+  %it defines all perceptible relations, measures times, spaces, forces, temperatures ; 
+  %this difficult science is formed slowly, but 
+  it preserves every principle which it has once acquired; 
+  it grows and strengthens itself incessantly in the midst of the many variations and errors of the human mind. 
+  Its chief attribute is clearness; it has no marks to express confused notions. 
+  It brings together phenomena the most diverse, and discovers the hidden analogies which unite them.
+  }
+  \footnotetext{\begin{tabular}[t]{ll}
+    quote: & \citerppc{fourier1822e}{7}{8}{Preliminary Discourse}\\
+    image: & \scs\url{http://en.wikipedia.org/wiki/File:Fourier2.jpg}, public domain
+  \end{tabular}}
+
+%======================================
+\section{Definitions}
+%======================================
+%%======================================
+%\section{Domain}
+%%======================================
+This chapter deals with the \structe{Fourier Transform} in the space of 
+\structe{Lebesgue square-integrable functions} $\spLLRBu$,
+where $\R$ is the set of real numbers, $\borel$ is the set of \structe{Borel sets} on $\R$, 
+$\msm$ is the standard \fncte{Borel measure} on $\B$, and 
+\\\indentx$\ds\spLLRBu\eqd\set{\ff\in\clFrr}{\int_\R \abs{\ff}^2 \dmu < \infty}$.\\
+Furthermore, $\inprodn$ is the \fncte{inner product} induced by the operator $\int_\R\dmu$ such that 
+\\\indentx$\ds\inprod{\ff}{\fg} \eqd \int_{\R}\ff(x)\fg^\ast(x)\dx$,\\
+and $\opair{\spLLRBu}{\inprodn}$ is a \structe{Hilbert space}.
+
+%--------------------------------------
+\begin{definition}
+\label{def:fkern}
+%--------------------------------------
+Let $\fkernn$ be a \structe{function} in $\clF{\R^2}{\C}$.
+  \defboxt{
+    The function $\fkernn$ is the \fnctd{Fourier kernel} if
+    \qquad$\ds\fkernn(x,\omega) \eqd \fkerne{x}{\omega}$
+    \qquad$\scy \forall x,\omega\in\R$
+    }
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\label{def:ft}
+\label{def:opFT}
+\footnote{
+  \citerpg{bachman2000}{363}{0387988998},
+  \citerpg{chorin2009}{13}{9781441910011},
+  \citerp{loomis1965}{144},
+  \citerppg{knappb2005}{374}{375}{0817632506},
+  %\citerp{mathews}{102},
+  %\citerp{hassani}{219},
+  \citor{fourier1822},
+  \citorp{fourier1822e}{336?}
+  %\citorp{carothers}{2}
+  }
+%--------------------------------------
+%Let $\fkern{x}{\omega}$ be the \hie{kernel} $\fkern{x}{\omega}\eqd\fkerne{x}{\omega}$.
+Let $\spLLRBu$ be the space of all 
+\structe{Lebesgue square-integrable functions}.\\
+\defboxt{
+  The \opd{Fourier Transform} operator $\opFT$ is defined as
+  \\\indentx$\ds
+    \brs{\hxs{\opFT} \ff}(\omega)
+    %\eqd \fscale \inprod   {\ff(x)}{\fkern  {x}{\omega}}
+    \eqd \fscale \inprodinx{\ff(x)}{\fkernea{x}{\omega}}
+    \qquad\scy\forall \ff\in\spLLRBu
+  $
+  \\This definition of the Fourier Transform is also called the \opd{unitary Fourier Transform}.
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{remark}[\hib{Fourier transform scaling factor}]
+\footnote{
+  \citerpg{chorin2009}{13}{9781441910011},
+  \citerppg{jeffrey2008}{xxxi}{xxxii}{0080556841},
+  \citerppg{knappb2005}{374}{375}{0817632506}
+  }
+%--------------------------------------
+  If the Fourier transform operator $\opFT$ and inverse Fourier transform operator $\opFTi$ are defined as 
+    \\\indentx
+      $\ds\opFT \ff(x)\eqd\fF(\omega)\eqd A \int_\R \ff(x)      e^{-i\omega x} \dx$ 
+      \qquad{and}\qquad
+      $\ds\opFTi\Ff(\omega) \eqd B \int_\R \fF(\omega) e^{ i\omega x} \dw$
+    \\
+  then $A$ and $B$ can be any constants as long as $AB=\frac{1}{2\pi}$.
+  The Fourier transform is often defined with the scaling factor $A$ set equal to 1
+  such that $\left[\opFT \ff(x)\right](\omega) \eqd \inprodinx{\ff(x)}{\fkernea{x}{\omega}}$.
+  In this case, the inverse Fourier transform operator $\opFTi$ is either defined as
+  \\\indentx\begin{tabular}{cMl}
+    \imark &\left[\opFTi \ff(x)\right](f) \eqd \inprodinx{\ff(x)}{\fkerne{x}{2\pi f}}
+           &(using oscillatory frequency free variable $f$) or
+    \\\imark & \left[\opFTi \ff(x)\right](\omega) \eqd \frac{1}{2\pi}\inprodinx{\ff(x)}{\fkerne{x}{\omega}}
+             &(using angular frequency free variable $\omega$).
+  \end{tabular}\\
+  In short, the $2\pi$ has to show up somewhere, either in the argument of the exponential
+  ($e^{-i2\pi f t}$) or in front of the integral ($\frac{1}{2\pi}\int\cdots$).
+  One could argue that it is unnecessary to burden the exponential
+  argument with the $2\pi$ factor ($e^{-i2\pi f t}$),
+  and thus could further argue in favor of using the angular frequency variable $\omega$
+  thus giving the inverse operator definition
+  $\left[\opFTi \ff(x)\right](\omega) \eqd \frac{1}{2\pi}\inprodinx{\ff(x)}{\fkernea{x}{\omega}}$.
+  But this causes a new problem. In this case, the Fourier operator $\opFT$ is not
+  \hie{unitary} (see \prefp{thm:ft_unitary})---in particular,
+  $\opFT\opFTa\ne \opI$, where $\opFTa$ is the \hie{adjoint} of $\opFT$;
+  but rather,
+  $\opFT\left(\frac{1}{2\pi}\opFTa\right) = \left(\frac{1}{2\pi}\opFTa\right)\opFT = \opI$.
+  But if we define the operators $\opFT$ and $\opFTi$ to both have the scaling factor
+  $\fscale$, then $\opFT$ and $\opFTi$ are inverses {\em and}
+  $\opFT$ is \hie{unitary}---that is,
+  $\opFT\opFTa = \opFTa\opFT = \opI$.
+\end{remark}  
+
+
+%======================================
+\section{Operator properties}
+%======================================
+%---------------------------------------
+\begin{theorem}[\thmd{Inverse Fourier transform}]
+\label{thm:opFTi}
+\footnote{
+  \citerpg{chorin2009}{13}{9781441910011}
+  %\citerp{mathews}{102}
+  }
+\index{Inverse Fourier transform|textbf}
+\index{Fourier transform!inverse|textbf}
+\index{transform!inverse Fourier|textbf}
+%---------------------------------------
+Let $\opFT$ be the Fourier Transform operator \xref{def:opFT}.
+%let $\fkern{x}{\omega}$ be the \hie{kernel} $\fkern{x}{\omega}\eqd\fkerne{x}{\omega}$.
+The inverse $\opFTi$ of $\opFT$ is
+\thmbox{
+  \brs{\opFTi \Ff}(x)
+    %\quad\eqd\quad \fscalei \inprod           {\Ff(\omega)}{\fkerna{x}{\omega}}
+    = \fscalei \int_\R \Ff(\omega) \fkerne{x}{\omega} \dw
+    \qquad\scy\forall \Ff\in\spLLRBu
+  }
+\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%  \opFTi\opF \ff
+%    &= \fscalei
+%       \inprod{\opF\ff}
+%              {\fkernea{x}{\omega}}
+%  \\&= \fscalei
+%       \inprod{ \fscale \inprod{\ff}{\fkerne{x}{\omega}}}
+%              {\fkernea{x}{\omega}}
+%  \\&= \fscalei \fscale
+%       \inprodinx[\omega]{\inprodinx{\ff(x)}{\fkernea{x}{\omega}}}
+%              {\fkerne{x}{\omega}}
+%  \\&= \frac{1}{2\pi}
+%       \inprodinx[\omega]{\inprodinx{\ff(x)}{\fkernea{x}{\omega}}}
+%              {\fkerne{x}{\omega}}
+%  \\&= \frac{1}{2\pi} \int_\omega \int_{u\in\R} \ff(u) \fkernea{u}{\omega} \fkerne{x}{\omega} \du \dw
+%  \\&= \frac{1}{2\pi} \int_{u\in\R} \int_\omega \ff(u) \fkernea{u}{\omega} \fkerne{x}{\omega} \du \dw
+%  \\&= \frac{1}{2\pi} \int_{u\in\R} \ff(u) \int_\omega \fkerne{(x-u)}{\omega} \du \dw
+%  \\&\eqq \frac{1}{2\pi} \int_{u\in\R} \ff(u) 2\pi \delta(x-u) \dw
+%  \\&= \ff(x)
+%  \\&= \opI \ff
+%  \\
+%  \\
+%  \opF\opFTi \ff
+%    &= \fscale \inprod{\opFTi\ff}{\fkerne{x}{\omega}}
+%  \\&= \fscale \inprod{\fscalei  \inprod{\ff}{\fkernea{x}{\omega}}}
+%              {\fkerne{x}{\omega}}
+%  \\&= \fscale \fscalei
+%       \inprodinx{\inprodinx[\omega]{\ff(\omega)}{\fkerne{x}{\omega}}}
+%              {\fkernea{x}{\omega}}
+%  \\&= \frac{1}{2\pi}
+%       \inprodinx{\inprodinx[\omega]{\ff(\omega)}{\fkerne{x}{\omega}}}
+%              {\fkernea{x}{\omega}}
+%  \\&= \frac{1}{2\pi} \int_\R \int_{u\in\R} \ff(u) \fkerne{x}{u} \fkernea{x}{\omega} \du \dw
+%  \\&= \frac{1}{2\pi} \int_{u\in\R} \int_\R \ff(u) \fkerne{x}{(u-\omega)} \fkerne{x}{\omega} \du \dw
+%  \\&= \frac{1}{2\pi} \int_{u\in\R} \ff(u) \int_\R \fkerne{x}{(u-\omega)} \du \dw
+%  \\&\eqq \frac{1}{2\pi} \int_{u\in\R} \ff(u) 2\pi \delta(u-\omega) \dw
+%  \\&= \ff(\omega)
+%  \\&= \opI \ff
+%\end{align*}
+%\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:opFTa}
+\label{thm:ft_unitary}
+\index{Fourier Transform!adjoint|textbf}
+%---------------------------------------
+Let $\opFT$ be the Fourier Transform operator with
+inverse $\opFTi$ and adjoint $\opFTa$.
+\thmbox{
+  \opFTa = \opFTi
+ }
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    \inprod{\opFT \ff}{\fg}
+      &= \inprod{ \fscale \inprodinx{\ff(x)}{ \fkernea{x}{\omega} } }{\fg(\omega)}
+      && \text{by definition of $\opFT$ \prefpo{def:ft}}
+    \\&= \fscale \inprodinx{\ff(x)}{ \inprod{\fkernea{x}{\omega}}{\fg(\omega)}  }
+      && \text{by \hie{additive property} of $\inprodn$ \ifdochas{vsinprod}{\prefpo{def:inprod}}}
+    \\&= \inprodinx{\ff(x)}{\fscale  \inprod{\fg(\omega)}{\fkernea{x}{\omega}}^\ast  }
+      && \text{by \hie{conjugate symmetric property} of $\inprodn$ \ifdochas{vsinprod}{\prefpo{def:inprod}}}
+    \\&= \inprod{\ff(x)}{ \fscale \inprod{\fg(\omega)}{\fkernea{x}{\omega}}  }
+      && \text{by definition of $\inprodn$}
+    \\&= \inprod{\ff}{\mcom{\opFTi}{$\opFTa$} \fg}
+      && \text{by \prefp{thm:opFTi}}
+  \end{align*}
+\end{proof}
+
+
+The Fourier Transform operator has several nice properties:
+\begin{liste}
+  \item $\opFT$ is \hie{unitary} 
+    \ifdochas{operator}{\footnote{{\em \prop{unitary} operators}: \prefp{def:op_unitary} }}
+    (\pref{cor:ft_unitary}---next corollary).
+  \item Because $\opFT$ is unitary, it automatically has several other nice
+        properties %such as being \hie{isometric}, and satisfying   \hie{Parseval's equation}, satisfying \hie{Plancheral's formula}, and more
+        \xref{thm:ft_prop}.
+\end{liste}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:ft_unitary}
+\index{operator!unitary}  
+%---------------------------------------
+Let $\opI$ be the identity operator
+and let $\opFT$ be the Fourier Transform operator with
+adjoint $\opFTa$ and inverse $\opFTi$.
+\corbox{
+ \mcom{\opFT\opFTa = \opFTa\opFT = \opI}{$\opFTa=\opFTi$}
+ \qquad \text{($\opFT$ is unitary)}
+ }
+\end{corollary}
+\begin{proof}
+  This follows directly from the fact that $\opFTa=\opFTi$ (\prefp{thm:opFTa}).
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:ft_prop}
+%---------------------------------------
+Let $\opFT$ be the Fourier transform operator with adjoint $\opFTa$ and inverse $\opFT$.
+Let $\normopn$ be the operator norm with respect to the vector norm $\normn$ with respect to the 
+Hilbert space $\opair{\clFrc}{\inprodn}$.
+Let $\oppR(\opA)$ be the range of an operator $\opA$.
+\thmbox{\begin{array}{rcl cl D}
+  \oppR(\opF\tau)               &=& \oppR(\opFTi)                   &=& \spLLR            & \\
+ %\oppN(\opF\tau)               &=& \oppN(\opFTi)                   &\eqq& \setn{0}       & \\
+  \normop{\opFT   }             &=& \normop{\opFTi}                 &=& 1                 & (\prope{unitary})              \\
+  \inprod{\opFT \ff}{\opFT \fg} &=& \inprod{\opFTi \ff}{\opFTi \fg} &=& \inprod{\ff}{\fg} & (\structe{Parseval's equation})  \\
+  \norm{\opFT  \ff}             &=& \norm{\opFTi \ff}               &=& \norm{\ff}        & (\structe{Plancherel's formula}) \\
+  \norm{\opFT \ff-\opFT \fg}    &=& \norm{\opFTi \ff-\opFTi \fg}    &=& \norm{\ff-\fg}    & (\prope{isometric})
+\end{array}}
+\end{theorem}
+\begin{proof}
+These results follow directly from the fact that $\opFT$
+is \prop{unitary} (\prefp{cor:ft_unitary}) and from
+the properties of \prop{unitary} operators\ifdochas{operator}{ (\prefp{thm:unitary_prop})}.
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{theorem}[Shift relations]
+\label{thm:ft_shift}
+%--------------------------------------
+Let $\opFT$ be the Fourier transform operator.
+\renewcommand{\arraystretch}{1.25}
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l}
+  \opFT \brs{\ff(x-u)}(\omega)                  &=& \fkernea{u}{\omega} \;\brs{\opFT \ff(x)}(\omega) \\
+  \brs{\opFT\brp{\fkerne{x}{v} \fg(x)}}(\omega) &=& \brs{\opFT\fg(x)}(\omega-v)
+\end{array}}
+\renewcommand{\arraystretch}{1}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opFT \brs{\ff(x-u)}(\omega)
+    &= \fscale \int_\R \ff(x-u) \fkernea{x}{\omega} \dx
+    && \text{by definition of $\opFT$}
+    && \text{\xref{def:opFT})}
+  \\&= \fscale \int_{v\in\R} \ff(v) \fkernea{(u+v)}{\omega} \dv
+    && \text{where $v\eqd x-u$ $\implies$ $t=u+v$}
+  \\&= \fkernea{u}{\omega} \;\fscale \int_{v\in\R} \ff(v)  \fkernea{v}{\omega} \dv
+  \\&= \fkernea{u}{\omega} \;\fscale \int_\R \ff(x)  \fkernea{x}{\omega} \dx
+    && \text{by change of variable $t=v$}
+  \\&= \fkernea{u}{\omega} \;\brs{\opFT \ff(x)}(\omega)
+    && \text{by definition of $\opFT$}
+    && \text{\xref{def:opFT})}
+  \\
+  \brs{\opFT\brp{\fkerne{x}{v} \fg(x)}}(\omega)
+    &= \fscale \int_\R \fkerne{x}{v} \fg(x) \fkernea{x}{\omega} \dx
+    && \text{by definition of $\opFT$}
+    && \text{\xref{def:opFT})}
+  \\&= \fscale \int_\R \fg(x) \fkernea{x}{(\omega-v)} \dx
+  \\&= \brs{\opFT\fg(x)}(\omega-v)
+    && \text{by definition of $\opFT$}
+    && \text{\xref{def:opFT})}
+\end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}[Complex conjugate]
+\label{thm:ft_conj}
+\label{thm:ft_neg}
+%--------------------------------------
+Let $\opFT$ be the Fourier Transform operator and $\ast$ represent the complex conjugate operation on the set of 
+complex numbers.
+\thmbox{\begin{array}{rclCD}
+  \opFT\ff^\ast(-x)                        &=& -\brs{\opFT\ff(x)}^\ast  & \forall\ff\in\spLLRBu\\
+  \text{$\ff$ is real}\implies\Ff(-\omega) &=& \brs{\Ff(\omega)}^\ast  & \forall \omega\in\R   & \prope{reality condition}
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \brs{\opFT\ff^\ast(-x)}(\omega)
+     &\eqd \frac{1}{\sqrt{2\pi}}\:\int \ff^\ast(-x) \fkernea{x}{\omega}\dx
+     &&    \text{by definition of $\opFT$}
+     &&    \text{\xref{def:opFT}}
+   \\&=    \frac{1}{\sqrt{2\pi}}\:\int \ff^\ast(u) e^{i\omega u}(-1)\du
+     &&    \text{where $u\eqd-x\implies\dx=-\du$}
+   \\&=    -\brs{\frac{1}{\sqrt{2\pi}}\:\int \ff(u) e^{-i\omega u}\du}^\ast
+   \\&\eqd -\brs{\opFT\ff(x)}^\ast
+     &&    \text{by definition of $\opFT$}
+     &&    \text{\xref{def:opFT}}
+   \\
+   \Ff(-\omega)
+     &\eqd \frac{1}{\sqrt{2\pi}}\:\int \ff(x) \fkernea{x}{(-\omega)}\dx
+     &&    \text{by definition of $\opFT$}
+     &&    \text{\xref{def:opFT}}
+   \\&=    \brs{\frac{1}{\sqrt{2\pi}}\:\int \ff^\ast(x) \fkernea{x}{\omega}\dx}^\ast
+   \\&=    \brs{\frac{1}{\sqrt{2\pi}}\:\int \ff     (x) \fkernea{x}{\omega}\dx}^\ast
+     &&    \text{by $\ff$ is real hypothesis}
+   \\&\eqd \Ff^\ast(\omega)
+     &&    \text{by definition of $\opFT$}
+     &&    \text{\xref{def:opFT}}
+\end{align*}
+\end{proof}
+
+%======================================
+%\subsection{Relationships between time and frequency}
+%======================================
+
+
+%======================================
+\section{Convolution}
+\label{sec:conv}
+\index{convolution}
+%======================================
+%--------------------------------------
+\begin{definition}
+\label{def:conv}
+\footnote{
+  \citerp{bachman1964}{6}
+  }
+%--------------------------------------
+%Let $\ff$ and $\fg$ be functions in the set of functions $\clFrc$.
+%$\conv:\{\R\to\C\}^2\to\{\R\to\C\}$
+\defbox{\indxs{\conv}\begin{array}{M}
+  The \hid{convolution operation} is defined as % $\conv\in\clF{\R^2}{\R}$ is defined as
+  \\\indentx$\ds
+    \brs{\ff\conv\fg}(x) 
+    \eqd \ff(x)\conv \fg(x)
+    \eqd \int_{u\in\R} \ff(u)\fg(x-u) \du
+    \qquad\scy\forall\ff,\fg\in\spLLRBu
+  $
+\end{array}}
+\end{definition}
+
+%Convolution is performed naturally by \hie{Linear Time Invariant} (\hi{LTI}) filter operations.
+\pref{thm:conv} (next) demonstrates that multiplication in the ``time domain"
+is equivalent to convolution in the ``frequency domain" and
+vice-versa.
+%--------------------------------------
+\begin{theorem}[\thmd{convolution theorem}]
+\label{thm:conv}
+%--------------------------------------
+Let $\opFT$ be the Fourier Transform operator
+and $\conv$ the convolution operator.
+\thmbox{
+\begin{array}{rcl@{\qquad}C}
+  \mcom{\opFT\brs{\ff(x)\conv\fg(x)}(\omega)}{convolution    in ``time domain"} &=& \mcom{\sqrt{2\pi}\brs{\opFT\ff}(\omega)\, \brs{\opFT\fg}(\omega)}    {multiplication in ``frequency domain"} & \forall\ff,\fg\in\spLLRBu\\
+  \mcom{\opFT\brs{\ff(x) \fg(x)}(\omega)}    {multiplication in ``time domain"} &=& \mcom{\frac{1}{\sqrt{2\pi}}\brs{\opFT\ff}(\omega) \conv \brs{\opFT\fg}(\omega)}{convolution    in ``frequency domain"} & \forall\ff,\fg\in\spLLRBu.
+\end{array}
+}
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \opFT \brs{\ff(x)\conv\fg(x)}(\omega)
+     &= \opFT \brs{ \int_{u\in\R} \ff(u)\fg(x-u) \du }(\omega)
+     && \text{by definition of $\conv$ (\prefp{def:conv})}
+   \\&=  \int_{u\in\R} \ff(u)\brs{\opFT \fg(x-u)}(\omega) \du 
+   \\&=  \int_{u\in\R} \ff(u) \fkernea{u}{\omega} \; \brs{\opFT\fg(x)}(\omega) \du 
+     && \text{by \prefp{thm:ft_shift}}
+   \\&= \sqrt{2\pi}\mcom{\brp{\frac{1}{\sqrt{2\pi}}\int_{u\in\R} \ff(u) \fkernea{u}{\omega} \du}}
+             {$\brs{\opFT\ff}(\omega)$} \; 
+        \brs{\opFT\fg}(\omega)
+   \\&= \sqrt{2\pi}\brs{\opFT\ff}(\omega)\;  \brs{\opFT\fg}(\omega)
+     && \text{by definition of $\opFT$ (\prefp{def:opFT})}
+   \\
+   \opFT[\ff(x)\fg(x)](\omega)
+     &= \opFT\brs{\brp{\opFTi\opFT\ff(x)}\;\fg(x)}(\omega)
+     && \text{by definition of operator inverse \ifdochas{operator}{(\prefpo{def:op_inv})}}
+   \\&= \opFT\brs{\brp{ \fscalei \int_{v\in\R} \brs{\opFT\ff(x)}(v) \fkerne{x}{v} \dv }\;\fg(x)}(\omega)
+     && \text{by \prefp{thm:opFTi}}
+   \\&= \fscalei \int_{v\in\R} \brs{\opFT\ff(x)}(v) \brs{\opFT\brp{\fkerne{x}{v} \;\fg(x)}}(\omega,v) \dv 
+   \\&= \fscalei \int_{v\in\R} \brs{\opFT\ff(x)}(v) \brs{\opFT\fg(x)}(\omega-v) \dv 
+     && \text{by \prefp{thm:ft_shift}}
+   \\&= \fscalei\brs{\opFT\ff}(\omega)\conv \brs{\opFT\fg}(\omega)
+     && \text{by definition of $\conv$ (\prefp{def:conv})}
+\end{align*}
+\end{proof}
+
+
+
+
+
+\ifexclude{wsd}{
+%======================================
+\section{Real valued functions}
+%======================================
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.08mm}
+\begin{tabular}{c@{\hspace{1cm}}c@{\hspace{1cm}}c@{\hspace{1cm}}c}
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \put(-100,   0){\line( 1,1){100} }
+  \put( 100,   0){\line(-1,1){100} }
+  \put(  60,  60 ){\makebox(0,0)[bl]{$\Reb{\Fx(\omega)}$}}
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \qbezier(0,0)( 20, 80)( 100, 100)
+  \qbezier(0,0)(-20,-80)(-100,-100)
+  \put( 100,   0){\line(0, 1){100} }
+  \put(-100,   0){\line(0,-1){100} }
+  \put(- 10,  60 ){\makebox(0,0)[br]{$\Imb{\Fx(\omega)}$}}
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \qbezier(0,100)( 20,20)( 100, 0)
+  \qbezier(0,100)(-20,20)(-100, 0)
+  \put( 60,  60 ){\makebox(0,0)[bl]{$|\Fx(\omega)|$}}
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \put( 100,   0){\line(0, 1){100} }
+  \put(-100,   0){\line(0,-1){100} }
+  \put(-100,-100){\line(1, 1){200} }
+  \put(- 10,  60 ){\makebox(0,0)[br]{$\angle\Fx(\omega)$}}
+\end{picture}
+\\
+(symmetric) & (anti-symmetric) & (symmetric) & (anti-symmetric)
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+   Fourier transform components of real-valued signal
+   \label{fig:FTreal}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:FTreal}
+%---------------------------------------
+Let $\ff(x)$ be a function in $\spLLR$ and $\Ff(\omega)$ 
+the \ope{Fourier Transform} of $\ff(x)$.
+%real-valued such that $\ff\in\clFrr$. Then
+\thmbox{
+  \brb{\begin{array}{M}
+    $\ff(x)$ is \prope{real-valued}\\
+    ($\ff\in\clFrr$)
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{rclM}
+    \Ff(\omega)       &=& \Ff^\ast(-\omega)    & (\prope{Hermitian symmetric}) \\
+    \Reb{\Ff(\omega)} &=& \Reb{\Ff(-\omega)}   & (\prope{symmetric}) \\
+    \Imb{\Ff(\omega)} &=& -\Imb{\Ff(-\omega)}  & (\prope{anti-symmetric}) \\
+    |\Ff(\omega)|     &=& |\Ff(-\omega)|       & (\prope{symmetric}) \\
+    \angle\Ff(\omega) &=& \angle\Ff(-\omega)   & (\prope{anti-symmetric}).
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\[\begin{array}{*{10}{l}}
+   \Ff(\omega)
+     &\eqd& [\opFT{\ff(x)}](\omega)
+     &\eqd& \inprod{\ff(x)}{\fkerne{x}{\omega}}
+     &=&     \inprod{\ff(x)}{e^{i(-\omega)x}}^\ast
+     &\eqd& \Ff^\ast(-\omega)
+\\
+   \Reb{\Ff(\omega)}
+     &=& \Reb{\Ff^\ast(-\omega)}
+     &=& \Reb{\Ff(-\omega)}
+\\
+   \Imb{\Ff(\omega)}
+     &=& \Imb{\Ff^\ast(-\omega)}
+     &=& -\Imb{\Ff(-\omega)}
+\\
+   |\Ff(\omega)|
+     &=& |\Ff^\ast(-\omega)|
+     &=& |\Ff(-\omega)|
+\\
+   \angle\Ff(\omega)
+     &=& \angle\Ff^\ast(-\omega)
+     &=& -\angle\Ff(-\omega)
+\end{array}\]
+\end{proof}
+
+} % end exclude
+
+
+
+%======================================
+\section{Examples}
+%======================================
+%\begin{figure}[ht]
+%\color{figcolor}
+%\index{Nyquist sampling rate}
+%\setlength{\unitlength}{0.1mm}
+%\begin{center}
+%\begin{fsL}
+%\begin{tabular}{ccc}
+%\begin{picture}(350,300)(-150,-150)
+%  %\graphpaper[10](0,0)(300,300)
+%  \thicklines
+%  \put        (-150,   0){\line( 1, 0){ 300}}
+%  \put        (   0, -50){\line( 0, 1){ 180}}
+%  {\color{red}
+%    \put        (-100,   0){\line( 1, 1){ 100}}
+%    \put        ( 100,   0){\line(-1, 1){ 100}}
+%  }
+%  \put        ( -20, 100 ){\makebox (  0, 0)[r]{$a$}     }
+%  \put        (-100, -10 ){\makebox (0, 0)[t]{$-b$}     }
+%  \put        ( 100, -10 ){\makebox (0, 0)[t]{$-b$}     }
+%  \put        ( 160,  0 ){\makebox (  0, 0)[l]{$\tau$}     }
+%\end{picture}
+%&
+%$\iff$
+%&
+%\begin{picture}(750,300)(-350,-150)
+%  %\graphpaper[10](0,0)(300,300)
+%  \thicklines
+%  \put        (-350,   0){\line( 1, 0){ 700}}
+%  \put        (   0, -50){\line( 0, 1){ 180}}
+%  {\color{red}
+%    \qbezier    (-100,   0)(   0, 200)( 100,   0)
+%    \qbezier    ( 100,   0)( 150,-100)( 200,   0)
+%    \qbezier    ( 200,   0)( 250,  70)( 300,   0)
+%    \qbezier    (-100,   0)(-150,-100)(-200,   0)
+%    \qbezier    (-200,   0)(-250,  70)(-300,   0)
+%    }
+%  \put        ( -20, 100 ){\makebox (  0, 0)[r]{$ab$}     }
+%  \multiput(-300,0)(100,  0){7}{\qbezier[20](  0,-50)(  0,-25)(  0, 0)}
+%  \put        (-300, -60 ){\makebox (0, 0)[t]{$-\frac{3}{b}$}     }
+%  \put        (-200, -60 ){\makebox (0, 0)[t]{$-\frac{2}{b}$}     }
+%  \put        (-100, -60 ){\makebox (0, 0)[t]{$-\frac{1}{b}$}     }
+%  \put        (   0, -60 ){\makebox (0, 0)[t]{$0$}     }
+%  \put        ( 100, -60 ){\makebox (0, 0)[t]{$ \frac{1}{b}$}     }
+%  \put        ( 200, -60 ){\makebox (0, 0)[t]{$ \frac{2}{b}$}     }
+%  \put        ( 300, -60 ){\makebox (0, 0)[t]{$ \frac{3}{b}$}     }
+%  \put        ( 360,  0 ){\makebox (  0, 0)[l]{$f$}     }
+%\end{picture}
+%\\
+%\begin{picture}(350,300)(-150,-150)
+%  %\graphpaper[10](0,0)(300,300)
+%  \thicklines
+%  \put        (-150,   0){\line( 1, 0){ 300}}
+%  \put        (   0, -50){\line( 0, 1){ 180}}
+%  {\color{red}
+%    \put        (-100,   0){\line( 0, 1){ 100}}
+%    \put        (-100, 100){\line( 1, 0){ 200}}
+%    \put        ( 100,   0){\line( 0, 1){ 100}}
+%    }
+%  \put        ( -20, 110 ){\makebox (  0, 0)[br]{$a$}     }
+%  \put        (-100, -10 ){\makebox (0, 0)[t]{$-b$}     }
+%  \put        ( 100, -10 ){\makebox (0, 0)[t]{$-b$}     }
+%  \put        ( 160,  0 ){\makebox (  0, 0)[l]{$\tau$}     }
+%\end{picture}
+%&
+%%$\iff$
+%&
+%\begin{picture}(750,300)(-350,-150)
+%  %\graphpaper[10](0,0)(300,300)
+%  \thicklines
+%  \put        (-350,   0){\line( 1, 0){ 700}}
+%  \put        (   0, -50){\line( 0, 1){ 180}}
+%  {\color{red}
+%    \qbezier    (-100,   0)(   0, 200)( 100,   0)
+%    \qbezier    ( 100,   0)( 150,-100)( 200,   0)
+%    \qbezier    ( 200,   0)( 250,  70)( 300,   0)
+%    \qbezier    (-100,   0)(-150,-100)(-200,   0)
+%    \qbezier    (-200,   0)(-250,  70)(-300,   0)
+%    }
+%  \put        ( -20, 100 ){\makebox (  0, 0)[r]{$2ab$}     }
+%  \multiput(-300,0)(100,  0){7}{\qbezier[20](  0,-50)(  0,-25)(  0, 0)}
+%  \put        (-300, -60 ){\makebox (0, 0)[t]{$-\frac{3}{2b}$}     }
+%  \put        (-200, -60 ){\makebox (0, 0)[t]{$-\frac{2}{2b}$}     }
+%  \put        (-100, -60 ){\makebox (0, 0)[t]{$-\frac{1}{2b}$}     }
+%  \put        (   0, -60 ){\makebox (0, 0)[t]{$0$}     }
+%  \put        ( 100, -60 ){\makebox (0, 0)[t]{$ \frac{1}{2b}$}     }
+%  \put        ( 200, -60 ){\makebox (0, 0)[t]{$ \frac{2}{2b}$}     }
+%  \put        ( 300, -60 ){\makebox (0, 0)[t]{$ \frac{3}{2b}$}     }
+%  \put        ( 360,  0 ){\makebox (  0, 0)[l]{$f$}     }
+%\end{picture}
+%\end{tabular}
+%\end{fsL}
+%\caption{
+%  Fourier transform pairs
+%  \label{fig:ft_pairs}
+%  }
+%\end{center}
+%\end{figure}
+
+
+   % \begin{figure}[ht]
+   % \begin{center}
+   % \input{"sinc_ab.lpl"}
+   % \end{center}
+   % \caption{
+   %   Fourier transform of rectangular function:
+   %   $2ab \frac{\sin(\omega b)}{\omega b}$
+   %   \label{fig:sinc_ab}
+   % }
+   % \end{figure}
+   %
+   % \begin{figure}[ht]
+   % \begin{center}
+   % \input{"sinc_sq.lpl"}
+   % \end{center}
+   % \caption{
+   %   Fourier transform of triangular function:
+   %   $ab \frac{\sin(\pi fb)}{\pi fb}$
+   %   \label{fig:sinc_sq}
+   % }
+   % \end{figure}
+
+%\ifdochasnot{relation}{
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerp{feller1971}{104}, %{1. Baire Functions}\\
+%  \citerp{ab}{126},
+%  %\citerp{halmos1950}{15},
+%  \citerp{hausdorff1937e}{22},
+%  \citorp{poussin1915}{440}
+%  }
+%\label{def:setind}
+%\index{function!characteristic}
+%\index{function!indicator}
+%%---------------------------------------
+%Let $\setX$ be a set.
+%\defbox{\begin{array}{M}\indxs{\setind}
+%  The \hid{indicator function} $\setind\in\clF{\psetx}{\setn{0,1}}$ is defined as
+%  \\\indentx$\ds
+%  \setind_{\setA}(x) =
+%    \brbl{\begin{array}{ll @{\qquad}C}
+%      1  & $ for $ x\in \setA       & \forall x\in\setX,\; \setA\in\psetx \\
+%      0  & $ for $ x\notin \setA   & \forall x\in\setX,\; \setA\in\psetx
+%    \end{array}}
+%    $
+%  \\
+%  The indicator function $\setind$ is also called the \hid{characteristic function}.
+%\end{array}}
+%\end{definition}
+%}
+
+
+%---------------------------------------
+\begin{example}[\exmd{rectangular pulse}]
+\label{ex:ft_pulse}
+\index{sinc}
+%---------------------------------------
+Let $\Ff(\omega)$ be the \fncte{Fourier transform} of a function $\ff(x)\in\spLLR$.
+\exbox{\begin{array}{*{2}{>{\ds}c}}
+  \ff(x)  =  \brbl{\begin{array}{lM} 
+                     c & for $x\in\intco{a}{b}$ \\
+                     0 & otherwise
+                   \end{array}}
+  &
+  \Ff(\omega) 
+      = \frac{c(b-a)}{\sqrt{2\pi}}
+        e^{-i\brp{\frac{a+b}{2}\omega}}
+        \brs{\frac{\sin\brp{\frac{b-a}{2}\omega}}{\brp{\frac{b-a}{2}\omega}}}
+  \\
+  \includegraphics{graphics/pulseabc.pdf} 
+  & 
+  \includegraphics{graphics/pulseabcft.pdf}
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+   \Ff(\omega)
+     &= \opFT\brs{\ff(x)}(\omega)
+     && \text{by definition of $\Ff(\omega)$}
+   \\&= e^{-i\brp{\frac{a+b}{2}}\omega}\opFT\brs{\ff\brp{x-\frac{a+b}{2}}}(\omega)
+     && \text{by \thme{shift relation} \xref{thm:ft_shift}}
+   \\&= e^{-i\brp{\frac{a+b}{2}}\omega}\opFT\brs{c\setind_\intco{a}{b}\brp{x-\frac{a+b}{2}}}(\omega)
+     && \text{by definition of $\ff(x)$}
+   \\&= e^{-i\brp{\frac{a+b}{2}}\omega}\opFT\brs{c\setind_\intco{-\frac{b-a}{2}}{\frac{b-a}{2}}(x)}(\omega)
+     && \text{by definition of $\setind$ \xref{def:setind}}
+    %&& \text{by definition of $\intcon$ \xref{def:intervals}}
+   \\&= \cft e^{-i\brp{\frac{a+b}{2}}\omega}\int_\R c \setind_\intco{-\frac{b-a}{2}}{\frac{b-a}{2}}(x) e^{-i\omega x}\dx
+     && \text{by definition of $\opFT$ \xref{def:opFT}}
+   \\&= \cft e^{-i\brp{\frac{a+b}{2}}\omega}\int_{-\frac{b-a}{2}}^{\frac{b-a}{2}}c e^{-i\omega x}\dx
+     && \text{by definition of $\setind$ \xref{def:setind}}
+   \\&= \left.\frac{c}{\sqrt{2\pi}}  e^{-i\brp{\frac{a+b}{2}}\omega}\frac{1}{-i\omega } e^{-i\omega x}  \right|_{-\frac{b-a}{2}}^\frac{b-a}{2}
+   \\&= \frac{2c}{\sqrt{2\pi}\omega}
+        e^{-i\brp{\frac{a+b}{2}}\omega}
+        \brs{\frac{\ds e^{i\brp{\frac{b-a}{2}\omega}} - e^{-i\brp{\frac{b-a}{2}\omega}}}{2i}}
+   \\&= \frac{c(b-a)}{\sqrt{2\pi}}
+        e^{-i\brp{\frac{a+b}{2}\omega}}
+        \brs{\frac{\sin\brp{\frac{b-a}{2}\omega}}{\brp{\frac{b-a}{2}\omega}}}
+     && \text{by \prefp{cor:trig_ceesee}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}[\exmd{triangle}]
+\label{ex:ft_triangle}
+\index{sinc}
+%---------------------------------------
+Let $\Ff(\omega)$ be the \fncte{Fourier transform} of a function $\ff(x)\in\spLLR$.
+\exbox{\begin{array}{*{2}{>{\ds}c}}
+  \ff(x) = \brb{\begin{array}{lM} c\brs{1-\frac{\abs{2x-b-a}}{b-a}} & for $x\in\intco{a}{b}$ \\
+                                  0 & otherwise
+                  \end{array}}
+  &
+  \Ff(\omega) 
+      = \frac{c(b-a)^2}{4\sqrt{2\pi}}
+        e^{-i\brp{\frac{a+b}{2}\omega}}
+        \brs{\frac{\sin\brp{\frac{b-a}{4}\omega}}{\brp{\frac{b-a}{4}\omega}}}^2
+  \\
+  \mc{2}{c}{
+    \includegraphics{graphics/triangleabc.pdf} \hspace{10mm} 
+    \includegraphics{graphics/triangleabcft.pdf}
+    }
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+   \Ff(\omega)
+     &= \opFT\brs{\ff(x)}(\omega)
+     && \text{by definition of $\Ff(\omega)$}
+   \\&= e^{-i\brp{\frac{a+b}{2}}\omega}\opFT\brs{\ff\brp{x-\frac{a+b}{2}}}(\omega)
+     && \text{by \thme{shift relation} \xref{thm:ft_shift}}
+   \\&= \opFT\brs{c\brp{1-\frac{\abs{2x-b-a}}{b-a}}\setind_\intco{a}{b}(x)}(\omega)
+     && \text{by definition of $\ff(x)$}
+   \\&= c\opFT\brs{\setind_\intco{\frac{a}{2}}{\frac{b}{2}}(x)\conv\setind_\intco{\frac{a}{2}}{\frac{b}{2}}(x)}(\omega)
+   \\&= c\sqrt{2\pi}\opFT\brs{\setind_\intco{\frac{a}{2}}{\frac{b}{2}}}\,\opFT\brs{\setind_\intco{\frac{a}{2}}{\frac{b}{2}}}
+     && \text{by \thme{convolution theorem} \xref{thm:conv}}
+   \\&= c\sqrt{2\pi}\brp{\opFT\brs{\setind_\intco{\frac{a}{2}}{\frac{b}{2}}}}^2
+   \\&= c\sqrt{2\pi}\brp{
+        \frac{\brp{\frac{b}{2}-\frac{a}{2}}}{\sqrt{2\pi}}
+        e^{-i\brp{\frac{a+b}{4}\omega}}
+        \brs{\frac{\sin\brp{\frac{b-a}{4}\omega}}{\brp{\frac{b-a}{4}\omega}}}
+        }^2
+     && \text{by \prefp{ex:ft_pulse}}
+   \\&= \frac{c(b-a)^2}{4\sqrt{2\pi}}
+        e^{-i\brp{\frac{a+b}{2}\omega}}
+        \brs{\frac{\sin\brp{\frac{b-a}{4}\omega}}{\brp{\frac{b-a}{4}\omega}}}^2
+\end{align*}
+\end{proof}
+
+%Fourier transforms of the sine and cosine functions result in a delta function.
+%Delta functions use the extended real number system and therefore extreme caution should be used
+%when using them in further calculations.
+%However, delta functions are \structe{distributions}, and therefore  it is fairly ``safe" to use
+%the Fourier transforms of sine and cosine within an integral.
+%%---------------------------------------
+%\begin{example}[Cosine]
+%\label{prop:ft_cos}
+%\index{cosine}
+%%---------------------------------------
+%Let $\ff\in\spLLR$ with Fourier Transform $\Fx\in\spLLR$.
+%Then
+%\exbox{
+%  \ff(x) = \cos(\omega_cx)
+%  \qquad\iff\qquad
+%  \Fx(\omega) = \frac{1}{2} \delta( f+f_c ) + \frac{1}{2} \delta( f-f_c ).
+%  }
+%\end{example}
+%\begin{proof}
+%\begin{align*}
+%   \Ff(\omega)
+%      &= \cft\int_\R \ff(x)e^{-i\omega x} \dx
+%      && \text{by definition of \fncte{Fourier transform} \xref{def:opFT}}
+%    \\&= \cft\int_\R \cos\brp{\omega_cx}e^{-i\omega x} \dx
+%      && \text{by definition of $\ff(x)$}
+%    \\&= \cft\int_\R \brp{\frac{e^{i\omega_cx}+e^{-i\omega_cx}}{2}}e^{-i\omega x} \dx
+%      && \text{by \prefp{cor:trig_ceesee}}
+%    \\&= \frac{1}{2\sqrt{2\pi}}\int_\R e^{-i(\omega-\omega_c)x}+e^{-i(\omega+\omega_c)x} \dx
+%    \\
+%    \\&= \inprod{\frac{1}{2}e^{i\omega _ct} + \frac{1}{2}e^{-i\omega _ct}}{\fkerne{x}{\omega}}
+%    \\&= \frac{1}{2}\inprod{e^{ i\omega _ct}}{\fkerne{x}{\omega}}+
+%         \frac{1}{2}\inprod{e^{-i\omega _ct}}{\fkerne{x}{\omega}}
+%    \\&= \frac{1}{2}\int_\R e^{ i\omega _ct} e^{-i\omega x} dt +
+%         \frac{1}{2}\int_\R e^{-i\omega _ct} e^{-i\omega x} dt
+%    \\&= \frac{1}{2}\int_\R e^{-i2\pi (f-f_c)t} dt +
+%         \frac{1}{2}\int_\R e^{-i2\pi (f+f_c)t} dt
+%    \\&= \frac{1}{2}\lim_{h\to0}\sum_{n\in\Z} e^{-i2\pi (f-f_c)nh} h +
+%         \frac{1}{2}\lim_{h\to0}\sum_{n\in\Z} e^{-i2\pi (f+f_c)nh} h
+%    \\&= \frac{1}{2}\lim_{h\to0}h \sum_{n\in\Z} e^{i2\pi (f-f_c)nh}  +
+%         \frac{1}{2}\lim_{h\to0}h \sum_{n\in\Z} e^{i2\pi (f+f_c)nh}
+%    \\&= \frac{1}{2}\lim_{h\to0} \sum_{n\in\Z} \delta\left( \frac{2\pi (f-f_c)}{2\pi} - n\frac{1}{h}\right)  +
+%         \frac{1}{2}\lim_{h\to0} \sum_{n\in\Z} \delta\left( \frac{2\pi (f+f_c)}{2\pi} - n\frac{1}{h}\right)
+%    \\&= \frac{1}{2} \delta( f-f_c )  +  \frac{1}{2} \delta( f+f_c )
+%\end{align*}
+%\end{proof}
+%
+%
+%%---------------------------------------
+%\begin{proposition}[Sine]
+%\label{prop:ft_sin}
+%\index{sine}
+%%---------------------------------------
+%Let $\ff\in\clFrr$ with Fourier Transform $\Fx\in\spLLR$.
+%Then
+%\propbox{
+%  \ff(x) = \sin(\omega _ct)
+%  \qquad\iff\qquad
+%  \Fx(\omega) = \frac{i}{2} \delta( f+f_c )   -\frac{i}{2} \delta( f-f_c ).
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{eqnarray*}
+%   \Fx(\omega)
+%      &=& \inprod{\sin(\omega _ct)}{\fkerne{x}{\omega}}
+%    \\&=& \inprod{\frac{1}{2i}e^{i\omega _ct} i \frac{1}{2i}e^{-i\omega _ct}}{\fkerne{x}{\omega}}
+%    \\&=& \frac{1}{2i}\inprod{e^{ i\omega _ct}}{\fkerne{x}{\omega}}-
+%          \frac{1}{2i}\inprod{e^{-i\omega _ct}}{\fkerne{x}{\omega}}
+%    \\&=& \frac{1}{2i}\int_\R e^{ i\omega _ct} e^{-i\omega x} dt -
+%          \frac{1}{2i}\int_\R e^{-i\omega _ct} e^{-i\omega x} dt
+%    \\&=& \frac{1}{2i}\int_\R e^{-i2\pi (f-f_c)t} dt -
+%          \frac{1}{2i}\int_\R e^{-i2\pi (f+f_c)t} dt
+%    \\&=& \frac{1}{2i}\lim_{h\to0}\sum_{n\in\Z} e^{-i2\pi (f-f_c)nh} h -
+%          \frac{1}{2i}\lim_{h\to0}\sum_{n\in\Z} e^{-i2\pi (f+f_c)nh} h
+%    \\&=& \frac{1}{2i}\lim_{h\to0}h \sum_{n\in\Z} e^{i2\pi (f-f_c)nh}  -
+%          \frac{1}{2i}\lim_{h\to0}h \sum_{n\in\Z} e^{i2\pi (f+f_c)nh}
+%    \\&=& \frac{1}{2i}\lim_{h\to0} \sum_{n\in\Z} \delta\left( \frac{2\pi (f-f_c)}{2\pi} - n\frac{1}{h}\right)  -
+%          \frac{1}{2i}\lim_{h\to0} \sum_{n\in\Z} \delta\left( \frac{2\pi (f+f_c)}{2\pi} - n\frac{1}{h}\right)
+%    \\&=& \frac{1}{2i} \delta( f-f_c )  -  \frac{1}{2i} \delta( f+f_c )
+%    \\&=& \frac{i}{2} \delta( f+f_c )   -\frac{i}{2} \delta( f-f_c )
+%\end{eqnarray*}
+%\end{proof}
+
+%-------------------------------------
+\begin{example}
+\label{ex:ft_cos2}
+%-------------------------------------
+Let a function $\ff$ be defined in terms of the cosine function \xref{def:cos} as follows:
+
+%\exbox{\begin{array}{m{58mm}m{\tw-76mm}}
+\exbox{\begin{array}{*{2}{>{\ds}c}}
+  \ff(x) \eqd \brbl{%
+  \begin{array}{>{\ds}lM}
+     \cos^2\brp{\frac{\pi}{2}x}  & for $\abs{x}\le 1$  \\
+     0    & otherwise
+  \end{array}}
+  &
+  \Ff(\omega) = \frac{1}{2\sqrt{2\pi}}\Big[{\mcom{\frac{2\sin\omega}{\omega}}{$2\sinc(\omega)$}+\mcom{\frac{\sin(\omega+\pi)}{(\omega+\pi)}}{$\sinc(\omega+\pi)$} + \mcom{\frac{\sin(\omega-\pi)}{(\omega-\pi)}}{$\sinc(\omega-\pi)$}}\Big]
+  \\
+  \includegraphics{graphics/coscos11.pdf}&\includegraphics{graphics/coscos11ft.pdf}
+\end{array}}
+\end{example}
+\begin{proof}
+Let $\setind_\setA(x)$ be the \fncte{set indicator function} \xref{def:setind} on a set $\setA$.
+\begin{align*}
+  \Ff(\omega)
+    &\eqd \cft\int_\R \ff(x) e^{-i\omega x} \dx
+    && \text{by definition of $\Ff(\omega)$ \xrefn{def:opFT}}
+  \\&= \cft\int_\R \cos^2\brp{\frac{\pi}{2}x}\setind_\intcc{-1}{1}(x) e^{-i\omega x} \dx
+    && \text{by definition of $\ff(x)$}
+  \\&= \cft\int_{-1}^{1} \cos^2\brp{\frac{\pi}{2}x} e^{-i\omega x} \dx
+    && \text{by definition of $\setind$ \xrefn{def:setind}}
+  \\&= \cft\int_{-1}^{1} \brs{\frac{e^{i{\frac{\pi}{2}x}} + e^{-i{\frac{\pi}{2}x}}}{2}}^2 e^{-i\omega x} \dx
+    && \text{by \prefp{cor:trig_ceesee}}
+  \\&= \frac{1}{4\sqrt{2\pi}} \int_{-1}^{1} \brs{2 + e^{i\pi x} + e^{-i\pi x}} e^{-i\omega x} \dx
+  \\&= \frac{1}{4\sqrt{2\pi}} \int_{-1}^{1} 2e^{-i\omega x} + e^{-i(\omega+\pi)x} + e^{-i(\omega-\pi)x}  \dx
+  \\&= \frac{1}{4\sqrt{2\pi}}\brs{
+           2\frac{e^{-i\omega x}}{-i\omega} 
+         +  \frac{e^{-i(\omega+\pi)x}}{-i(\omega+\pi)} 
+         +  \frac{e^{-i(\omega-\pi)x}}{-i(\omega-\pi)}  
+       }_{-1}^{1}
+  \\&= \frac{1}{2\sqrt{2\pi}}\brs{  
+           2\frac{e^{-i\omega}-e^{+i\omega}}{-2i\omega} 
+         +  \frac{e^{-i(\omega+\pi)}-e^{+i(\omega+\pi)}}{-2i(\omega+\pi)} 
+         +  \frac{e^{-i(\omega-\pi)}-e^{+i(\omega-\pi)}}{-2i(\omega-\pi)}  
+       }_{-1}^{1}
+  \\&= \frac{1}{2\sqrt{2\pi}}\Big[{
+            \mcom{\frac{2\sin\omega}{\omega}}{$2\sinc(\omega)$}
+         +  \mcom{\frac{\sin(\omega+\pi)}{(\omega+\pi)}}{$\sinc(\omega+\pi)$} 
+         +  \mcom{\frac{\sin(\omega-\pi)}{(\omega-\pi)}}{$\sinc(\omega-\pi)$}
+       }\Big]
+\end{align*}
+
+\end{proof}
+
+
+

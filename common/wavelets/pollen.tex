@@ -1,0 +1,352 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+
+%=======================================
+\chapter {Pollen Parameterized Wavelets}
+%=======================================
+David Pollen showed that there are an uncountably infinite number of 
+compactly supported scaling functions (and wavelets) available for 
+coefficient length 4 and greater.
+This is stated in \pref{thm:pollen},
+demonstrated in \prefpp{ex:pollen4} and illustrated in \prefpp{fig:pollen4}.
+%---------------------------------------
+\begin{theorem}[Pollen parameterization theorem]
+\label{thm:pollen}
+\footnote{
+  \citerp{ak}{3}
+  }
+\index{Pollen parameterization theorem}
+\index{theorems!Pollen parameterization theorem}
+%---------------------------------------
+\thmbox{
+\begin{aligned}
+  \Zh(z) 
+    &= \cwt 
+       \left[-1 \quad 1 \right]
+       E(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\[1ex]
+    & \text{where}
+  \\[2ex]
+  E(z)
+    &= \begin{cases}
+         U_1 U_2 \dotsm U_{2k}    & \text{for $ h_n $ of length $4k+2$, $k\in\Znn$} \\
+         U_1 U_2 \dotsm U_{2k+1}  & \text{for $ h_n $ of length $4k+4$, $k\in\Znn$}
+       \end{cases}
+  \\
+  U(z)
+    &= \left[\begin{array}{rr}
+         \fu(z)      & \fv(z) \\
+        -\fv(z^{-1}) & \fu(z^{-1})
+       \end{array}\right]
+  \\
+  \fu(z) &= \frac{1}{2}\left[(1-\cos\theta)z + (1+\cos\theta) \right]
+  \\
+  \fv(z) &= \frac{1}{2}\left[(-\sin\theta) + (\sin\theta)z^{-1} \right]
+\end{aligned}
+}
+\end{theorem}
+%\begin{proof}
+%No proof at this time.
+%\end{proof}
+
+%---------------------------------------
+\begin{example}[Pollen length-4 scaling coefficients]
+\label{ex:pollen4}
+\footnote{
+  \citerp{ak}{3},
+  \citerp{burrus}{66}
+  }
+%---------------------------------------
+\exbox{\begin{array}{r|l}
+  n  &  h_n  \\
+  \hline
+  0  & \ds \frac{\sqrt{2}}{4}(1-\cos\theta+\sin\theta)  \\
+  1  & \ds \frac{\sqrt{2}}{4}(1+\cos\theta+\sin\theta)  \\ 
+  2  & \ds \frac{\sqrt{2}}{4}(1+\cos\theta-\sin\theta)  \\ 
+  3  & \ds \frac{\sqrt{2}}{4}(1-\cos\theta-\sin\theta)
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \Zh(z) 
+    &= \cwt 
+       \left[-1 \quad 1 \right]
+       E(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       U(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       \left[\begin{array}{rr}
+         \fu(z^2)      & \fv(z^2) \\
+        -\fv(z^{-2})   & \fu(z^{-2})
+       \end{array}\right]
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       \left[\begin{array}{cc}
+           \frac{1}{2}\left[(1-\cos\theta)z^2 + (1+\cos\theta) \right]
+       &   \frac{1}{2}\left[(-\sin\theta) + (\sin\theta)z^{-2} \right]
+       \\ -\frac{1}{2}\left[(-\sin\theta) + (\sin\theta)z^{2} \right]
+       &   \frac{1}{2}\left[(1-\cos\theta)z^{-2} + (1+\cos\theta) \right]
+       \end{array}\right]
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \frac{\sqrt{2}}{4}
+       \left[\begin{array}{ll}
+          -\left[(1-\cos\theta)z^2 + (1+\cos\theta) \right]
+          +\left[(-\sin\theta) + (\sin\theta)z^{2} \right]
+       \\ -\left[(-\sin\theta) + (\sin\theta)z^{-2} \right]
+          +\left[(1-\cos\theta)z^{-2} + (1+\cos\theta) \right]
+       \end{array}\right]^T
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \frac{\sqrt{2}}{4}
+       \Bigg[
+          (1-\cos\theta)z +(1+\cos\theta)z^{-1}
+          -(\sin\theta)z^{-1} +(\sin\theta)z
+  \\&\qquad
+          + \sin\theta -(\sin\theta)z^{-2}
+          +(1-\cos\theta)z^{-2} + (1+\cos\theta)
+       \Bigg]
+  \\&= \frac{\sqrt{2}}{4}
+       \Bigg[
+           (1-\cos\theta+\sin\theta)z
+          +(1+\cos\theta+\sin\theta)
+  \\&\qquad          
+          +(1+\cos\theta-\sin\theta)z^{-1}
+          +(1-\cos\theta-\sin\theta)z^{-2}
+       \Bigg]
+\end{align*}
+\end{proof}
+
+%\psset{unit=1mm}
+%\begin{pspicture}(0,0)(100,100)
+%  \psset{%
+%    fillstyle=solid,
+%    linecolor=black,
+%    fillcolor=tan,
+%    gridcolor=graph,
+%    gridwidth=0.8pt,
+%    gridlabels=14pt,
+%    subgriddiv=5,
+%    %linearc=0.5,
+%    %framearc=1,
+%    }%
+%  %\rput[bl](0,10){\ingr{100\psunit}{100\psunit}{../common/wavelets/p4phi_djg.eps}}%
+%  \psline(1,16)(78,4)
+%  \rput[t](1,15){$0$}%
+%  \rput[t](24,11){$1$}%
+%  \rput[t](48,8){$2$}%
+%  \rput[t](70,4){$3$}%
+%  \psgrid[unit=10\psunit](0,0)(10,10)%
+%\end{pspicture}
+
+
+
+%\begin{figure}[ht]
+%\begin{center}
+%\psset{unit=1mm}
+%\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cc}
+%   %\epsfig{file=../common/wavelets/pollen4h.eps, height=7cm, width=7cm}  &
+%   %\epsfig{file=../common/wavelets/pollen4g.eps, height=7cm, width=7cm}
+%   %\\
+%   %$h_n(\theta)$ & $g_n(\theta)$
+%   %\\
+%   \ingr{\tw/2-5mm}{\tw/2-5mm}{../common/wavelets/graphics/p4phib_djg.eps}  &
+%   \ingr{\tw/2-5mm}{\tw/2-5mm}{../common/wavelets/graphics/p4psib_djg.eps}
+%   %\ingr{\tw/2-5mm}{\tw/2-5mm}{../common/wavelets/graphics/p4phib_bw_djg.jpg}  &
+%   %\ingr{\tw/2-5mm}{\tw/2-5mm}{../common/wavelets/graphics/p4psib_bw_djg.jpg}
+%   \\
+%   $\fphi(t)$ & $\fpsi(t)$
+%\end{tabular*}
+%\caption{Pollen scaling and wavelet functions with varying parameter $\theta$
+%  \label{fig:pollen4}
+%  }
+%\end{center}
+%\end{figure}
+
+\begin{figure}[ht]
+\begin{center}
+\psset{unit=1mm}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cc}
+   %\epsfig{file=../common/wavelets/pollen4h.eps, height=7cm, width=7cm}  &
+   %\epsfig{file=../common/wavelets/pollen4g.eps, height=7cm, width=7cm}
+   %\\
+   %$h_n(\theta)$ & $g_n(\theta)$
+   %\\
+   %\ingr{\tw/2-5mm}{\tw/2-5mm}{../common/wavelets/graphics/p4phib_djg.eps}  &
+   %\ingr{\tw/2-5mm}{\tw/2-5mm}{../common/wavelets/graphics/p4psib_djg.eps}
+   %\ingr{\tw/2-5mm}{\tw/2-5mm}{../common/wavelets/graphics/p4phib_bw_djg.jpg}  &
+   %\ingr{\tw/2-5mm}{\tw/2-5mm}{../common/wavelets/graphics/p4psib_bw_djg.jpg}
+   \pgfplotsset{colormap={grayscale}{gray=(0); gray=(0.5)}}%
+   \begin{tikzpicture}
+     \begin{axis}[
+       width=160\psunit,
+       height=80\psunit,
+       z post scale=2.5,
+       xmode=normal,
+       ymode=normal,
+       zmode=normal,
+       xlabel=$\theta$,
+       ylabel=$t$,
+       zlabel=$\fpsi(t;\theta)$,
+       %title="",
+       %axis lines=none,
+       line width=1pt,
+       %colormap/bluered,
+       %view={109}{45},
+       view={109}{45},
+       ]
+       %\addplot3[colormap={bw}{gray=(0); gray=(0)},mesh] table[header=false]{plt/p4psi42.dat};
+       \addplot3[mesh] table[header=false]{plt/p4psi42.dat};
+     \end{axis}
+   \end{tikzpicture}
+   %&
+   %\begin{tikzpicture}
+   %  \begin{axis}[
+   %    width=160\psunit,
+   %    height=80\psunit,
+   %    z post scale=2.5,
+   %    xmode=normal,
+   %    ymode=normal,
+   %    zmode=normal,
+   %    axis lines=none,
+   %    line width=1.5pt,
+   %    %colormap/bluered,
+   %    view={109}{45},
+   %    ]
+   %    \addplot3[black,mesh] table[header=false]{plt/p4psi42.dat};
+   %  \end{axis}
+   %\end{tikzpicture}
+   \\
+  % $\fphi(t)$ & $\fpsi(t)$
+   $\fpsi(t)$
+\end{tabular*}
+\caption{Pollen length-4 wavelet function with varying parameter $\theta$
+  \label{fig:pollen4}
+  }
+\end{center}
+\end{figure}
+
+
+%\clearpage
+%---------------------------------------
+\begin{example}[\exmd{Pollen length-6 scaling coefficients}]
+\label{ex:pollen6}
+\footnote{
+  \citerp{burrus}{66},
+  \citerp{vidakovic}{95}
+  }
+%---------------------------------------
+Length-6 scaling coefficients have two parameters, 
+here designated $\alpha$ and $\beta$.
+The scaling coefficients are as follows.
+\exbox{
+ \begin{array}{c|l}
+   n & h_n
+   \\ \hline
+      0 & \frac{1}{4\sqrt{2}} [(1+\cos(\alpha)+\sin(\alpha))(1-\cos(\beta)-\sin(\beta)) + 2\sin(\beta)\cos(\alpha)] 
+   \\ 1 & \frac{1}{4\sqrt{2}}[(1-\cos(\alpha)+\sin(\alpha))(1+\cos(\beta)-\sin(\beta)) - 2\sin(\beta)\cos(\alpha)] 
+   \\ 2 & \frac{1}{2\sqrt{2}}[(1+\cos(\alpha-\beta)+\sin(\alpha-\beta)] 
+   \\ 3 & \frac{1}{2\sqrt{2}}[(1+\cos(\alpha-\beta)-\sin(\alpha-\beta)] 
+   \\ 4 & \frac{1}{ \sqrt{2}} - h(0) - h(2) 
+   \\ 5 & \frac{1}{ \sqrt{2}} - h(1) - h(3) 
+  \end{array}
+}
+\end{example}
+\if 0
+\begin{proof}
+\begin{align*}
+  \Zh(z) 
+    &= \cwt 
+       \left[-1 \quad 1 \right]
+       E(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       U_\alpha(z^2)
+       U_\beta(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       \left[\begin{array}{rr}
+         \fu_\alpha(z^2)      & \fv_\alpha(z^2) \\
+        -\fv_\alpha(z^{-2})   & \fu_\alpha(z^{-2})
+       \end{array}\right]
+       \left[\begin{array}{rr}
+         \fu_\beta(z^2)      & \fv_\beta(z^2) \\
+        -\fv_\beta(z^{-2})   & \fu_\beta(z^{-2})
+       \end{array}\right]
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[\begin{array}{c@{\qquad}c}
+         -\fu_\alpha(z^2)-\fv_\alpha(z^{-2}) &
+         -\fv_\alpha(z^2)+\fu_\alpha(z^{-2})
+       \end{array}\right]
+       \left[\begin{array}{r}
+         -z^{-1}\fu_\beta(z^2)+ \fv_\beta(z^2) \\
+        z^{-1}\fv_\beta(z^{-2}) +\fu_\beta(z^{-2})
+       \end{array}\right]
+  \\&= \cwt 
+       \left[
+         \left(-\fu_\alpha(z^2)        - \fv_\alpha(z^{-2}) \right)
+         \left(-z^{-1}\fu_\beta(z^2)   + \fv_\beta(z^2)     \right)+
+         \left(-\fv_\alpha(z^2)        + \fu_\alpha(z^{-2}) \right)
+         \left(z^{-1}\fv_\beta(z^{-2}) + \fu_\beta(z^{-2})  \right)
+       \right]
+  \\&= \cwt 
+       \Bigg[
+         \left(
+            z^{-1}\fu_\alpha(z^2)   \fu_\beta(z^2) 
+           -      \fu_\alpha(z^2)   \fv_\beta(z^2)
+           +z^{-1}\fv_\alpha(z^{-2})\fu_\beta(z^2)
+           -      \fv_\alpha(z^{-2})\fv_\beta(z^2)
+         \right)
+       \\&\qquad+
+         \left(
+           -z^{-1}\fv_\alpha(z^2)   \fv_\beta(z^{-2})
+           -      \fv_\alpha(z^2)   \fu_\beta(z^{-2})
+           +z^{-1}\fu_\alpha(z^{-2})\fv_\beta(z^{-2})
+           +      \fu_\alpha(z^{-2})\fu_\beta(z^{-2})
+         \right)
+       \Bigg]
+  \\&= \cwt  \frac{1}{4}
+       \Bigg[
+            z^{-1}\left[(1-\cos\alpha)z^2       + (1+\cos\alpha)     \right]   
+                  \left[(1-\cos\beta)z^2        + (1+\cos\beta)      \right] 
+       \\&\qquad\qquad
+           -      \left[(1-\cos\alpha)z^2       + (1+\cos\alpha)     \right]
+                  \left[(-\sin\beta)            + (\sin\beta)z^{-2}  \right]
+       \\&\qquad\qquad
+           +z^{-1}\left[(-\sin\alpha)           + (\sin\alpha)z^{2}  \right]
+                  \left[(1-\cos\beta)z^2        + (1+\cos\beta)      \right]
+       \\&\qquad\qquad
+           -      \left[(-\sin\alpha)           + (\sin\alpha)z^{2}  \right]
+                  \left[(-\sin\beta)            + (\sin\beta)z^{-2}  \right]
+       \\&\qquad\qquad
+           -z^{-1}\left[(-\sin\alpha)           + (\sin\alpha)z^{-2} \right]
+                  \left[(-\sin\beta)            + (\sin\beta)z^{2}   \right]
+       \\&\qquad\qquad
+           -      \left[(-\sin\alpha)           + (\sin\alpha)z^{-2} \right] 
+                  \left[(1-\cos\beta)z^{-2}     + (1+\cos\beta)      \right]
+       \\&\qquad\qquad
+           +z^{-1}\left[(1-\cos\alpha)z^{-2}    + (1+\cos\alpha)     \right]
+                  \frac{1}{2}\left[(-\sin\beta) + (\sin\beta)z^{2}   \right]
+       \\&\qquad\qquad
+           +      \left[(1-\cos\alpha)z^{-2}    + (1+\cos\alpha)     \right]
+                  \left[(1-\cos\beta)z^{-2}     + (1+\cos\beta)      \right]
+       \Bigg]
+  \\ \vdots
+\end{align*}
+Proof not yet complete. Current result taken from  \problem \\
+\cite[page 66]{burrus}
+\end{proof}
+
+\fi
+
+

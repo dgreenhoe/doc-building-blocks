@@ -1,0 +1,456 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+% Orthologics
+%============================================================================
+
+
+%=======================================
+\chapter{Probability}
+%=======================================
+
+
+%%---------------------------------------
+%\begin{definition}
+%\citetbl{
+%  \citerpg{narici1971}{2}{0824714849},
+%  \citerpg{endler1972}{5}{0387060707}
+%  }
+%%---------------------------------------
+%Let $\intcc{0}{1}$ be a \structe{real interval}.
+%Let $\latL\eqd\logicX$ be a \structe{logic} \xref{def:logic}.
+%\defboxt{
+%  A function $\fv$ in $\clF{\setX}{\intcc{0}{1}}$ is a \fnctd{valuation} on $\setX$ if
+%  \\\indentx$\begin{array}{FrclCD}
+%    1. & \fv(x)        &\oreld& 0                    & \forall x\in\setX   & and \\
+%    2. & \fv(x)        &=&      0 \quad\iff\quad x=0 & \forall x\in\setX   & and \\
+%    3. & \fv(x\meet y) &=&      \fv(x)\fv(y)         & \forall x,y\in\setX & and \\
+%    4. & \fv(x\join y) &\orel&  \fv(x) + \fv(y)      & \forall x,y\in\setX &     \\
+%  \end{array}$
+%  \\
+%  A \fncte{valuation} is \prope{nonarchimedean} if 
+%  $\quad\begin{array}{rclC}
+%    \fv(x\join y) &\orel&  \max\brs{\fv(x) + \fv(y)}  & \forall x,y\in\setX; 
+%  \end{array}$
+%  \\otherwise, it is \prope{archimedean}.
+%  }
+%\end{definition}
+
+%%---------------------------------------
+%\begin{definition}
+%\citetbl{
+%  \citePpc{greechie1971}{126}{{\scshape Definitions}},
+%  \citePp{narens2014}{118}
+%  }
+%\label{def:prob}
+%\label{def:ps}
+%%---------------------------------------
+%Let $\intcc{0}{1}$ be a \structe{real interval}.
+%Let $\pse\eqd\logicX$ be a \structe{logic} \xref{def:logic}.
+%%Let $\pso$ be any lattice containing $\pse$.
+%\defboxt{%
+%  A function $\psp\in\clF{\pse}{\intcc{0}{1}}$ is a \fnctd{probability} function on $\pse$ if
+%  \\\indentx$\begin{array}{FrclCD}
+%    2. & \psp(\lzero)   &=& 0                 &             & and\\
+%    3. & \psp(\lid)     &=& 1                 &             & and\\ 
+%    4. & x\ocop y \implies \psp(x\join y) &=& \psp(x) + \psp(y) & x,y\in\setX
+%  \end{array}$
+%  \\
+%  The triple $\ps$ is a \structd{probability space} over $\pso$,\\
+%  $\pso$ is the \structd{outcome space}, and $\pse$ is the \structd{event space}.
+%  }
+%\end{definition}
+
+%%---------------------------------------
+%\begin{definition}
+%\citetbl{
+%  \citerppgc{pap1995}{8}{9}{0792336585}{Definition 2.3(13)}
+%  }
+%\label{def:prob}
+%\label{def:ps}
+%%---------------------------------------
+%Let $\intcc{0}{1}$ be a \structe{real interval}.
+%Let $\latL\eqd\logicX$ be a \structe{logic} \xref{def:logic}.
+%\defboxt{
+%  A function $\fm$ in $\clF{\setX}{\intcc{0}{1}}$ is a \fnctd{measure} on $\latL$ if
+%  \\$\begin{array}{>{\qquad}F>{\ds}rc>{\ds}lCDD}
+%    1. & \fm(\lzero)   &=&      0                                          &                     &                               & and \\
+%    2. & \fm(x)        &\oreld& 0                                          & \forall x\in\setX   & (\prope{nonnegative})         & and \\
+%    3. & \mc{3}{l}{\ds x_n\meet x_m=\lzero,\,n\neq m\quad\implies\quad\fm\brp{\joinop_{n=1}^\infty x_n} =  \sum_{n=1}^\infty\fm(x_n)}  & \forall x_n\in\setX & (\prope{\txsigma-additive})   & . \\
+%    %\mc{7}{M}{A \fncte{measure} is a \fnctd{probability} on $\latL$ if}\\
+%    %4. & \fm(\lid) &=&  1  
+%  \end{array}$
+%  \\
+%  A \fncte{measure} is a \fnctd{probability} on $\latL$ if
+%  \quad$\begin{array}{Frcl}
+%    4. & \fm(\lid) &=&  1  
+%  \end{array}$\quad
+%  \\
+%  If $\psp$ is a \fncte{probability} on a logic $\latL$, then $\opair{\latL}{\psp}$ is a \structd{probability space}. % over $\pso$,
+%  %$\pso$ is the \structd{outcome space}, and $\pse$ is the \structd{event space}.
+%  }
+%\end{definition}
+
+%---------------------------------------
+\begin{definition}
+%\citetbl{
+%  \citerppgc{pap1995}{8}{9}{0792336585}{Definition 2.3(13)}
+%  }
+\label{def:prob}
+\label{def:ps}
+%---------------------------------------
+%Let $\intcc{0}{1}$ be a \structe{real interval}.
+%Let $\latL\eqd\logicX$ be a \structe{logic} \xref{def:logic}.
+Let $\latL\eqd\latnX$ be a \structe{lattice with negation} \xref{def:latn}.
+Let $\distrib$ be the \rele{distributivity} relation \xref{def:Drel}.
+\defboxt{
+  A function $\psp$ in $\clFxr$ is a \fnctd{probability} on $\latL$ if
+  \\$\begin{array}{>{\qquad}Flc lcl CD}
+    1. &                   &        & \psp(\lzero)   &=&      0               & \mc{2}{D}{(\prope{nondegenerate}) and} \\
+    2. &                   &        & \psp(\lid)     &=&      1               & \mc{2}{D}{(\prope{normalized}) and} \\
+    3. & x\orel y          &\implies& \psp(x)        &\orel&  \psp(y)         & \forall x,y\in\setX & (\prope{monotone}) and \\
+   %3. & x\meet y = \lzero &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive})      & .      
+    4. & \brb{\begin{array}{lD}
+           x\meet y = \lzero            & and\\
+           \otriple{z}{x}{y}\in\distrib & $\forall z\in\setX$
+         \end{array}} 
+       &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive}).      
+  \end{array}$
+  \\
+  If $\psp$ is a \fncte{probability} on a \structe{lattice with negation} $\latL$, 
+  then $\opair{\latL}{\psp}$ is a \structd{probability space}. % over $\pso$,
+  %$\pso$ is the \structd{outcome space}, and $\pse$ is the \structd{event space}.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+\prefp{def:prob} (previous) is not any standard definition of the \fncte{probability function}.
+On a \structe{Boolean lattice}, the \fnctd{measure-theoretic probability} function, due to A. N. Kolmogorov, is defined as%
+  \citetbl{
+    \citerppgc{billingsley1995}{22}{23}{0471007102}{Probability Measures}\\
+    \citer{kolmogorov1933}\\
+    \citerpc{kolmogorov1933e2}{16}{\structe{field of probability}}\\
+    \citerppgc{pap1995}{8}{9}{0792336585}{Definition 2.3(13)}\\ %{,\prope{\txsigma-additive}},
+    \citerpg{kalmbach1986}{27}{9971500094}%{\prope{\txsigma-additive},\prope{\txsigma-complete}}
+    }
+  \\\indentx$\begin{array}{Flc lcl CDD}
+    (1). &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})     & and \\
+    (2). &                   &        & \psp(x)        &\oreld& 0               & \forall x\in\setX   & (\prope{nonnegative})& and \\
+    (3). & \ds\meetop_{n=1}^\infty x_n=\lzero &\implies& \ds\psp\brp{\joinop_{n=1}^\infty x_n} &=&  \ds\sum_{n=1}^\infty\psp(x_n) & \forall x_n\in\setX & (\prope{\txsigma-additive})   & .      
+  \end{array}$\\
+The advantage of this definition is that $\psp$ is a \fncte{measure}, and hence all the power of measure theory 
+is subsequently at one's disposal in using $\psp$.
+However, it has often been argued that the requirement of \prope{\txsigma-additivity} is unnecessary for a probability function.
+Even as early as 1930, de Finetti argued against it, in what became a kind of polite running debate with Fr/'echet.\citetbl{
+  \citeP{definetti1930a}\\
+  \citeP{frechet1930a}\\
+  \citeP{definetti1930b}\\
+  \citeP{frechet1930b}\\
+  \citeP{definetti1930c}\\
+  \citePpp{cifarelli1996}{258}{260}
+  }
+In fact, Kolmogorov himself provided some argument against \prope{\txsigma-additivity} when referring to the closely related 
+\hie{Axiom of Continuity} saying,
+``Since the new axiom is essential for infinite fields of probability only,
+it is almost impossible to elucidate its empirical meaning\ldots
+For, in describing any observable random process we can obtain only finite fields of probability.\ldots"
+But in its support he added, ``This limitation has been found expedient in researches of the most diverse sort."\citetbl{
+  \citerp{kolmogorov1933e2}{15}
+  }
+
+There are several other definitions of probability that only require \prope{additivity} rather than \prope{\txsigma-additivity}.
+On a \structe{Boolean lattice}, the \fnctd{traditional probability} function is defined as%
+  \citetbl{
+    \citerppg{papoulis}{21}{22}{0070484775}\\
+    \citerpc{kolmogorov1933e2}{2}{\textsection 1. Axioms I--V}
+    }
+  \\\indentx$\begin{array}{Flc lcl CDD}
+    (1). &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})     & and \\
+    (2). &                   &        & \psp(x)        &\oreld& 0               & \forall x\in\setX   & (\prope{nonnegative})& and \\
+    (3). & x\meet y = \lzero &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive})   & .      
+  \end{array}$\\
+This definition implies (on a \structe{Boolean lattice}) that 
+  \\\indentx$\begin{array}{FrclCDD}
+      (a). & \psp(\lzero)  &=&     0                              &                     & (\prope{nondegenerate})      & and
+    \\(b). & \psp(x)       &\orel& 1                              & \forall x\in\setX   & (\prope{upper bounded})      & and 
+    \\(c). & \psp(x)       &=&     1-\psp(\negat{x})              & \forall x\in\setX   &                              & and 
+    \\(d). & \psp(x\join y)&\orel& \psp(x)+\psp(y)                & \forall x,y\in\setX & (\prope{subadditive})        & and 
+    \\(e). & \psp(x\join y)&=&     \psp(x)+\psp(y)-\psp(x\meet y) & \forall x,y\in\setX &                              & and
+    \\(f). & x\orel y \implies \psp(x)&\orel&\psp(y)              & \forall x,y\in\setX & (\prope{monotone})           & . 
+  \end{array}$
+  \\
+On a \structe{distributive pseudocomplemented lattice}, the \fnctd{generalized probability} function has been defined as%
+  \citetbl{
+    \citePp{narens2014}{118}\\
+    \citerg{narens2007}{9812708014}
+    }
+  \\$\begin{array}{>{\qquad}Frcl CDD}
+    (1). &  \psp(\lzero)    &=&      0                                              & (\prope{nondegenerate}) & and \\
+    (2). &  \psp(\lid)      &=&      1                                              & (\prope{normalized}) & and \\
+    (3). &  0\orel\psp(\lid)&\orel&  1                                              &                & and \\
+    (4). &  \psp(x\join y)  &=&\psp(x)+\psp(y)-\psp(x\meet y) & \forall x,y\in\setX &                &  .      
+  \end{array}$
+  \\
+On an \structe{orthomodular lattice}, or a \structe{finite modular lattice}, 
+the \fnctd{quantum probability} function is defined as%
+  \citetbl{
+    \citePpc{greechie1971}{126}{{\scshape Definitions}}\\
+    \citePp{narens2014}{118}
+    }
+  \\$\begin{array}{>{\qquad}Flc lcl CDD}
+    (1). &                   &        & \psp(\lzero)   &=&      0               &                     & (\prope{nondegenerate})& and \\
+    (2). &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})  & and \\
+    (3). & x\ocop y          &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive})& .      
+  \end{array}$
+  \\
+However, for lattices that are not \prope{distributive}, \prope{modular}, or \prope{orthomodular}, 
+none of these definitions work out so well.
+Take for example the \structe{O$_6$ lattice} with the ``very reasonable" probability function given in \prefpp{ex:ps_o6}.
+This probability space $\opair{\text{O$_6$}}{\psp}$ fails to be any of the 4 probability functions defined in this Remark.
+It fails to be a \fncte{measure-theoretic} or \fncte{traditional probability} function because 
+\\\indentx$a\meet b=0$\qquad{but}\qquad$\psp(a\join b)=\psp(\lid)=1\neq\frac{1}{3}+\frac{1}{2}=\psp(a)+\psp(b)$ .\\
+It fails to be a \fncte{generalized probability} function because 
+\\\indentx$\psp(a\join b)=\psp(\lid)=1\neq\frac{1}{3}+\frac{1}{2}-0=\psp(a)+\psp(b)-\psp(0)=\psp(a)+\psp(b)-\psp(a\meet b)$ .\\
+It fails to be an \fncte{quantum probability} function because 
+\\\indentx$a\ocop b=0$\qquad{but}\qquad$\psp(a\join b)=\psp(\lid)=1\neq\frac{1}{3}+\frac{1}{2}=\psp(a)+\psp(b)$ .\\
+In each of these cases, the function $\psp$ fails to be \prope{additive}.
+The solution of \prefpp{def:prob} is simply to ``switch off" \prope{additivity} when the lattice is not \prope{distributive}.
+This method is a little ``crude", but at least it allows us to define probability on a very wide class of lattices,
+while retaining compatibility with the \prope{Boolean} case \xxxref{prop:ps_01}{prop:ps_ortho_xy}{prop:ps_boa_xy}.
+\end{remark}
+
+%---------------------------------------
+\begin{proposition}
+\citetbl{
+  \citerpgc{papoulis}{21}{0070484775}{(2-11)}
+  }
+\label{prop:ps_01}
+%---------------------------------------
+Let $\opair{\latL}{\psp}$ be a \structe{probability space} \xref{def:ps}.
+\propbox{
+  \begin{array}{rc rclCDD}
+   %  &     & \psp(\lzero) &=& 0     &                   & \\
+    0 &\orel& \psp(x)      &\orel& 1 & \forall x\in\setX & 
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+   % \psp(\lzero)
+   %   &= \brlr{\psp(x)}_{x=\lzero}
+   % \\&= \brlr{\psp(x\join y)-\psp(y)}_{x=\lzero}
+   %   && \text{because $x\meet\lzero=\lzero$ and by \prope{additive} property of $\psp$ \xref{def:ps}}
+   % \\&= \psp(\lzero\join y)-\psp(y)
+   % \\&= \psp(y)-\psp(y)
+   %   && \text{by definition of $\lzero$}
+   % \\&= 0
+   % \\
+    0
+      &= \psp(\lzero)
+      && \text{by previous result}
+    \\&\orel \psp(x)
+      && \text{because $\lzero\orel x$ and \prope{monotone} property \xref{def:ps}}
+    \\
+    \psp(x)
+      &\orel \psp(\lid)
+      && \text{because $x\orel\lid$ and \prope{monotone} property \xref{def:ps}}
+    \\&= \lid
+      && \text{by property of $\psp$ \xref{def:ps}}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\citetbl{
+  \citerpgc{papoulis}{21}{0070484775}{(2-12)}
+  }
+\label{prop:ps_ortho_xy}
+%---------------------------------------
+Let $\opair{\latL}{\psp}$ be a \structe{probability space} \xref{def:ps}.
+\propbox{
+   \brb{\begin{array}{M}
+     $\latL$ is\\
+     \prope{orthocomplemented}
+   \end{array}}
+   \qquad\implies\qquad
+   \brb{\begin{array}{rclC}
+     \psp(x) &=& 1 - \psp(\negat{x}) & \forall x\in\setX
+   \end{array}}
+   }
+\end{proposition}
+\begin{proof}
+    \begin{align*}
+      1-\psp(\negat{x})
+        &= \psp(\lid)-\psp(\negat{x})
+        && \text{by \prefp{def:ps}}
+      \\&= \psp(x\join\negat{x})-\psp(\negat{x})
+        && \text{by \prope{excluded middle} property of \fncte{ortho negation} \xref{def:negor}}
+      \\&= \psp(x)+\psp(\negat{x})-\psp(\negat{x})
+        && \text{because $(x)(\negat{x})=\lzero$ and \prope{additive} property \xref{def:ps}}
+      \\&= \psp(x)
+    \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\citetbl{
+  \citerpgc{papoulis}{21}{0070484775}{(2-13)}\\
+  \citerppgc{feller1970}{22}{23}{0471257087}{(7.4),(7.6)}
+  }
+\label{prop:ps_boa_xy}
+%---------------------------------------
+Let $\opair{\latL}{\psp}$ be a \structe{probability space} \xref{def:ps}.
+\propbox{
+   \brb{\begin{array}{M}
+     $\latL$ is \\
+     \prope{Boolean}
+   \end{array}}
+   \implies
+   \brbl{\begin{array}{FrclCD}
+     1. & \psp(x\join y) &=&     \psp(x) + \psp(y) - \psp(x\meet y) & \forall x,y\in\setX & and\\
+     2. & \psp(x\join y) &\orel& \psp(x) + \psp(y)                  & \forall x,y\in\setX & (\prope{Boole's inequality})
+   \end{array}}
+   }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: Proof that $\psp((\negat x)\meet y)=\psp(y)-\psp(x\meet y)$: \label{item:ps_boa_xy}
+    \begin{align*}
+      \psp(y)-\psp(xy)
+        &= \psp(\lid\meet{y})-\psp(xy)
+        && \text{by definition of $\lid$ and $\meet$ \xref{def:meet}}
+      \\&= \psp\brs{(x\join\negat{x})y}-\psp(xy)
+        && \text{by \prope{excluded middle} property of \structe{Boolean lattice}s}
+      \\&= \psp(xy\join\negat{x}y)-\psp(xy)
+        && \text{by \prope{distributive} property of \structe{Boolean lattice}s}
+      \\&= \psp(xy)+\psp(\negat{x}y)-\psp(xy)
+        && \text{because $(xy)(\negat{x}y)=\lzero$ and by \prope{additive} property \xref{def:ps}}
+      \\&= \psp(\negat{x}y)
+    \end{align*}
+
+  \item Proof that $\psp(x\join y) = \psp(x) + \psp(y) - \psp(x\meet y)$:
+    \begin{align*}
+      \psp(x\join y) 
+        &= \psp(x\join \negat{x}y)
+        && \text{by property of \prope{Boolean lattice}s} 
+      \\&= \psp(x) + \psp(\negat{x}y)
+        && \text{because $(x)(\negat{x}y)=\lzero$ and by \prope{additive} property \xref{def:ps}}
+      \\&= \psp(x) + \psp(y) - \psp(x\meet y)
+        && \text{by \prefpp{item:ps_boa_xy}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:probtypes}
+%%---------------------------------------
+%Let $\ps$ be a \structe{probability space} \xref{def:ps}.
+%\defbox{\begin{array}{MM}%
+%  $\ps$ is a  \structd{minimal probability space}         &if $\pse$ is a     \fncte{minimal logic}.         \\% &\xref{def:latn}.\\
+%  $\ps$ is a  \structd{fuzzy probability space}           &if $\pse$ is a     \fncte{fuzzy logic}.           \\% &\xref{def:latn}.\\
+%  $\ps$ is an \structd{intuitionalistic probability space}&if $\pse$ is an    \fncte{intuitionalistic logic}.\\% &\xref{def:latn}.\\
+%  $\ps$ is a  \structd{De Morgan probability space}       &if $\pse$ is a     \fncte{De Morgan logic}.       \\% &\xref{def:latn}.\\
+%  $\ps$ is an \structd{ortho probability space}           &if $\pse$ is an    \fncte{ortho logic}.           \\% &\xref{def:latn}.\\
+%  $\ps$ is a  \structd{probability space}                 &if $\pse$ is a     \fncte{classic logic}.           % &\xref{def:latn}.\\
+%\end{array}}
+%\end{definition}
+
+%%---------------------------------------
+%\begin{definition}
+%\citetbl{
+%  %\citePppc{randall1970}
+%  \citePppc{jeffcott1972}{641}{642}{\textsection2. Definitions},
+%  \citerppg{chiara2004}{155}{156}{1402019785}
+%  }
+%%---------------------------------------
+%Let $\latL\eqd\latocd$ be an \structe{algebraic structure}.
+%\defboxt{
+%  $\latL$ is a \structd{orthologic} if
+%  \\\indentx$\begin{array}{FMD}
+%    1. & $\latticeX$ is a \structe{lattice} with \structe{least upper bound} $\bid$ and \structe{greatest lower bound} $\bzero$ & and \\
+%    2. & 
+%  \end{array}$
+%  }
+%\end{definition}
+
+%---------------------------------------
+\exboxt{
+  \begin{tabular}{m{\tw-48mm}}
+\begin{example}%[\exm{/-Lukasiewicz 3-valued logic}/\exm{Kleene 3-valued logic}/\exm{RM$_3$ logic}]
+\label{ex:prob_L3_kl}
+%---------------------------------------
+    As stated in \prefpp{ex:negat_L3_kl}, the function $\negat$ on the lattice $\latL$
+    as illustrated to the right is a \fncte{Kleene negation} \xref{def:negkl}.
+    Together with the probability function $\psp$, also illustrated to the right, the pair $\opair{\latL}{\psp}$
+    is a \structe{probability space}.
+\end{example}
+  \end{tabular}%
+  \hfill%
+  \begin{tabular}{M}
+  \psset{unit=5mm}%
+  \gsize\input{../common/math/graphics/prob/lat3_L3_1x0_-0-x-1_prob.tex}
+  \end{tabular}
+  }
+
+%---------------------------------------
+\exboxt{
+  \begin{tabular}{m{\tw-82mm}}
+\begin{example}
+\label{ex:limpx_m2}
+%---------------------------------------
+    The \structe{lattice with negation} $\latL$ \xref{def:latn} illustrated to the right is a
+    \structe{Boolean lattice}.
+    Together with the probability function $\psp$, also illustrated to the right, the pair $\opair{\latL}{\psp}$
+    is a \structe{probability space}.
+\end{example}
+  \end{tabular}%
+  \hfill%
+  \begin{tabular}{M}
+   \psset{unit=5mm}
+   \gsize\input{../common/math/graphics/prob/lat4_m2_boa_prob.tex}
+  \end{tabular}
+  }
+
+%---------------------------------------
+\exboxt{
+  \begin{tabular}{m{\tw-83mm}}
+\begin{example}
+\label{ex:ps_o6}
+%---------------------------------------
+    The \structe{lattice with negation} $\latL$ \xref{def:latn} illustrated to the right is an
+    \structe{orthocomplemented O$_6$ lattice} \xref{def:o6}.
+    Together with the probability function $\psp$, also illustrated to the right, the pair $\opair{\latL}{\psp}$
+    is a \structe{probability space}.
+\end{example}
+  \end{tabular}%
+  \hfill%
+  \begin{tabular}{M}
+   \psset{unit=5mm}
+   %\gsize\input{../common/math/graphics/prob/lat6_o6_1=-0_a=-d_b=-c_c=-b_d=-a_0=-1_prob.tex}
+   \gsize\input{../common/math/graphics/prob/lat6_o6_1-0_a-d_b-c_c-b_d-a_0-1_prob.tex}
+  \end{tabular}
+  }
+
+
+%%---------------------------------------
+%\begin{example}
+%\citetbl{
+%  \citeP{rawling2000}
+%  }
+%%---------------------------------------
+%quantum computing
+%\end{example}
+%
+%
+%\begin{survey}
+%%\begin{enumerate}
+%  \citeP{birkhoffjvn1936}
+%  \citeP{goldblatt1974}
+%  \citeP{bell1983}
+%  \citeP{bell1986qlogic}
+%  \citer{chiara2004}
+%%\end{enumerate}
+%\end{survey}

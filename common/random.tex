@@ -1,0 +1,1547 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Random Processes}
+\label{app:random_processes}
+%======================================
+\qboxnps
+  {Aristotle (384 BC -- 322 BC)
+    \index{Aristotle}
+    \index{quotes!Aristotle}
+    \footnotemark
+  }
+  {../common/people/aristot.jpg}
+  {A likely impossibility is always preferable to an
+  unconvincing possibility.}
+  \footnotetext{\begin{tabular}[t]{ll}
+    quote: & \url{http://en.wikiquote.org/wiki/Aristotle} \\
+    image: & \url{http://en.wikipedia.org/wiki/Aristotle}
+  \end{tabular}}
+
+
+
+%=======================================
+\section{Continuous-time random processes}
+%=======================================
+%=======================================
+\subsection{Definitions}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\index{random variable}
+\index{random process}
+\citetbl{
+  \citerp{papoulis}{63},
+  \citerp{papoulis}{285}
+  }
+%---------------------------------------
+Let $\ps$ be a \structe{probability space}.%
+  %\footnote{\hie{probabililty space}: \prefp{def:prob_space}}
+\defboxp{
+\begin{liste}
+   \item the function $\rvx:\pso\to\R$ is a \hid{random variable}
+         %\citep{papoulis}{63}
+   \item the function $\rvy:\R\times\pso\to\R$ is a \hid{random process}.
+         %\citep{papoulis}{285}
+\end{liste}
+}
+\end{definition}
+
+
+The random process $\rvx(t,\omega)$, where $t$ commonly represents time
+and $\omega\in\pso$ is an outcome of an experiment,
+can take on more specialized forms depending on whether
+$t$ and $\omega$ are fixed or allowed to vary.
+These forms are illustrated in \prefp{fig:X(t,w)}\footnote{\citerpp{papoulis}{285}{286}}
+and \prefp{fig:X(t,w)graph}.
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+   \begin{tabular}{|c||c|c|}
+      \hline
+         $\rvx(t,\omega)$ &  fixed $t$      & variable $t$   \\
+      \hline
+      \hline
+         fixed    $\omega$ & number          & time function  \\
+      \hline
+         variable $\omega$ & random variable & random process \\
+      \hline
+   \end{tabular}
+\caption{
+   Specialized forms of a random process $\rvx(t,\omega)$
+   \label{fig:X(t,w)}
+   }
+\end{center}
+\end{figure}
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\includegraphics[height=8cm,width=12cm]{../common/x_tw.eps}
+\end{center}
+\caption{
+  Example of a random process $\rvx(t,\omega)$
+  \label{fig:X(t,w)graph}
+}
+\end{figure}
+
+
+%---------------------------------------
+\begin{definition}
+%\label{def:Mx}
+\index{mean}
+\label{def:Rxx}
+\label{def:opR}
+\index{auto-correlation }
+\index{correlation!auto-correlation }
+\label{def:Rxy}
+\index{cross-correlation }
+\index{correlation!cross-correlation }
+\index{Fredholm integral equation of the first kind}
+%---------------------------------------
+Let $x(t)$ and $y(t)$ be random processes.
+Then
+
+\begin{tabular}{cll}
+   $\imark$ & $\Mx(t):X\to\R$       & is the \textbf{mean} of $x(t)$                          \\
+   $\imark$ & $\Rxy:X\times X\to\R$ & is the \textbf{crosscorrelation} of $x(t)$ and $y(t)$   \\
+   $\imark$ & $\Rxx:X\to\R$         & is the \textbf{autocorrelation function} of $x(t)$      \\
+   $\imark$ & $\opR:\vCc\to\vCc$    & is the \textbf{autocorrelation operator}
+\end{tabular}
+
+such that
+\footnote{
+   The equation $\int_u \Rxx(t,u) f(u) \du$ is a
+   \textbf{Fredholm integral equation of the first kind} and
+   $\Rxx(t,u)$ is the \textbf{kernel} of the equation.
+   References: 
+     \citer{fredholm1900},
+     \citerp{fredholm1903}{page 365},
+     \citerp{michel1993}{page 97},
+     \citerp{keener}{page 101}
+   }
+\defbox{\begin{array}{rc>{\ds}ll}
+   \Mx(t)    &\eqd& \pEb{\rvx(t)}             & \text{(mean functional)} \\
+   \Rxy(t,u) &\eqd& \pEb{\rvx(t)\rvy^\ast(u)} & \text{(cross-correlation bilinear functional)} \\
+   \Rxx(t,u) &\eqd& \pEb{\rvx(t)\rvx^\ast(u)} & \text{(auto-correlation bilinear functional)} \\
+   \opR f    &\eqd& \int_u \Rxx(t,u) f(u) \du & \text{(auto-correlation operator)}
+\end{array}}
+\end{definition}
+
+
+
+%---------------------------------------
+\subsection{Properties}
+%---------------------------------------
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:Rxx_prop}
+\index{cross-correlation}
+\index{symmetric!conjugate}
+\index{conjuage symmetric}
+%---------------------------------------
+Let $\fx(t)$ and $\fy(t)$ be random processes with
+cross-correlation $\Rxy(t,u)$ and
+let $\Rxx(t,u)$ be the auto-correlation of $\fx(t)$.
+\thmbox{
+\begin{array}{rcll}
+   \Rxx(t,u) &=& \Rxx^\ast(u,t) & \text{(conjugate symmetric)}\\
+   \Rxy(t,u) &=& \Ryx^\ast(u,t) & \text{(conjugate symmetric)}.
+\end{array}
+}
+\end{theorem}
+
+\begin{proof}
+\[\begin{array}{*{12}{l}}
+   \Rxx(t,u)
+      &\eqd& \E[\rvx(t) \rvx^\ast(u)]
+      &=&      \E[\rvx^\ast(u) \rvx(t) ]
+      &=&      \left( \E[\rvx(u) \rvx^\ast(t) ] \right)^\ast
+      &\eqd& \Rxx^\ast(u,t)
+\\
+   \Rxy(t,u)
+      &\eqd& \E[\rvx(t) \rvy^\ast(u)]
+      &=&      \E[\rvy^\ast(u) \rvx(t) ]
+      &=&      \left( \E[\rvy(u) \rvx^\ast(t) ] \right)^\ast
+      &\eqd& \Ryx^\ast(u,t)
+\end{array}\]
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\index{non-negative}
+\index{positive definite}
+%---------------------------------------
+Let $\opR:\spX\to\spX$ be an auto-correlation operator.
+\thmbox{\begin{array}{ll@{\qquad}l}
+  \inprod{\opR \fx}{\fx} \ge 0
+    & \forall \fx\in\spX
+    & \text{(non-negative)}  \\
+  \inprod{\opR \fx}{\fy} = \inprod{\fx}{\opR \fy}
+    & \forall \fx,\fy\in\spX
+    & \text{(self-adjoint)}
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+\intertext{1. Proof that $\opR$ is non-negative:}
+   \inprod{\opR \fy}{\fy}
+     &= \inprod{\int_u \Rxx(t,u) \fy(u) \du}{\fy(t)}
+     && \text{by definition of $\opR$ (\prefp{def:opR})}
+   \\&= \inprod{\int_u \Eb{\fx(t)\fx^\ast(u)} \fy(u) \du}{\fy(t)}
+     && \text{by definition of $\Rxx$ (\prefp{def:Rxx})}
+   \\&= \pEb{\inprod{\int_u \fx(t)\fx^\ast(u) \fy(u) \du}{\fy(t)}}
+     && \text{by linearity of funtional $\inprodn$ and operator $\int$}
+   \\&= \pEb{\int_u \fx^\ast(u) \fy(u) \du \inprod{\fx(t)}{\fy(t)}}
+     && \text{by \prope{additivity} property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
+   \\&= \pEb{\inprod{\fy(u)}{\fx(u)} \inprod{\fx(t) }{\fy(t)}}
+     && \text{by local definition of $\inprodn$}
+   \\&= \pEb{\inprod{\fx(u)}{\fy(u)}^\ast \inprod{\fx(t) }{\fy(t)}}
+     && \text{by \prope{conjugate symmetry} property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
+   \\&= \pE{\left| \inprod{\fx(t) }{\fy(t)} \right|^2}
+     && \text{by definition of $\absn$} %(\prefp{def:abs})
+   \\&\ge 0
+\intertext{2. Proof that $\opR$ is self-adjoint:}
+   \inprod{\brs{\opR \fx}(t)}{\fy}
+     &= \inprod{\int_u \Rxx(t,u) \fx(u) \du}{\fy(t)}
+     && \text{by definition of $\opR$ (\prefp{def:opR})}
+   \\&= \int_u \fx(u) \inprod{\Rxx(t,u)  }{\fy(t)} \du
+     && \text{by \prope{additivity} property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
+   \\&= \int_u \fx(u) \inprod{\fy(t)}{\Rxx(t,u)}^\ast \du
+     && \text{by \prope{conjugate symmetry} property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
+   \\&= \inprod{ \fx(u) }{\inprod{\fy(t)}{\Rxx(t,u)} }
+     && \text{by local definition of $\inprodn$}
+   \\&= \inprod{ \fx(u) }{\int_t \fy(t) \Rxx^\ast(t,u)\dt }
+     && \text{by local definition of $\inprodn$}
+   \\&= \inprod{ \fx(u) }{\int_t \fy(t) \Rxx(u,t)\dt }
+     && \text{by \prefp{thm:Rxx_prop}}
+   \\&= \inprod{ \fx(u) }{\mcom{\opR}{$\opRa$} \fy }
+     && \text{by definition of $\opR$ (\prefp{def:opR})}
+   \\\implies&\qquad \opR=\opRa \qquad\implies \text{$\opR$ is self adjoint}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\index{autocorrelation}
+\index{symmetric!conjugate}
+\index{conjugate symmetric}
+\index{non-negative definite}
+\index{positive definite}
+\index{self-adjoint}
+\index{kernel}
+\index{orthogonal}
+%---------------------------------------
+Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues and
+    $\seq{\fpsi_n}{n\in\Z}$ be the eigenfunctions of
+    operator $\opR$ such that
+    $\opR \psi_n = \lambda_n \psi_n$.
+\thmbox{\begin{array}{rlp{7cm}}
+  1. & \lambda_n \in \R
+     & (eigenvalues of $\opR$ are real)
+     \\
+  2. & \lambda_n\ne \lambda_m \implies \inprod{\psi_n}{\psi_m}=0
+     & (eigenfunctions associated with distinct eigenvalues are orthogonal)
+     \\
+  3. & \norm{\psi_n(t)}^2>0 \implies \lambda_n\ge0
+     & (eigenvalues are non-negative)
+     \\
+  4. & \norm{\psi_n(t)}^2>0, \inprod{\opR f}{f} > 0 \implies \lambda_n>0
+     & (if $\opR$ is positive definite, then eigenvalues are positive)
+     \\
+  5. & \E{\left| x(t)-\sum_n \inprod{x(t)}{\psi_n(t)} \psi_n(t) \right|^2} = 0
+     & ($\{\psi_n(t)\}$ is a basis for $x(t)$)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Eigenvalues are real:
+Because $\opR$ is self-adjoint, its eigenvalues are real\ifsxref{operator}{thm:self_adjoint}.
+
+\item eigenfunctions associated with distinct eigenvalues are orthogonal:
+Because $\opR$ is self-adjoint, this property follows\ifsxref{operator}{thm:self_adjoint}.
+
+\item Eigenvalues are non-negative:
+\begin{align*}
+   0 &\ge \inprod{\opR \psi_n}{\psi_n}
+     &&   \text{by definition of non-negative definite}
+   \\&=   \inprod{\lambda_n \psi_n}{\psi_n}
+     &&   \text{by hypothesis}
+   \\&=   \lambda_n \inprod{\psi_n}{\psi_n}
+     &&   \text{by definition of inner-products}
+   \\&=   \lambda_n \norm{\psi_n}^2
+     &&   \text{by definition of norm induced by inner-product}
+\end{align*}
+
+\item Eigenvalues are positive if $\opR$ is positive definite:
+\begin{align*}
+   0 &> \inprod{\opR \psi_n}{\psi_n}
+     && \text{by definition of positive definite}
+   \\&= \inprod{\lambda_n \psi_n}{\psi_n}
+     && \text{by hypothesis}
+   \\&= \lambda_n \inprod{\psi_n}{\psi_n}
+     && \text{by definition of inner-products}
+   \\&= \lambda_n \norm{\psi_n}^2
+     && \text{by definition of norm induced by inner-product}
+\end{align*}
+
+\item $\{\psi_n(t)\}$ is a basis for $x(t)$
+      \[ \E{\left| x(t)-\sum_n \dot{x}_n \psi_n(t) \right|^2} = 0
+         \hspace{1cm}\mbox{where } \dot{x}_n\eqd \inprod{x(t)}{\psi_n(t)}
+      \]
+
+\begin{eqnarray*}
+   \Eb{x(t) \left(\sum_n \dot{x}_n \psi_n(t)\right)^\ast}
+     &=& \Eb{x(t) \left(\sum_n \int_u x(u)\psi_n^\ast(u)\du \psi_n(t)\right)^\ast}
+   \\&=&  \sum_n \left(\int_u \Eb{x(t)x^\ast(u)}\psi_n(u)\du\right) \psi_n^\ast(t)
+   \\&=&  \sum_n \left(\int_u \Rxx(t,u)\psi_n(u)\du\right) \psi_n^\ast(t)
+   \\&=&  \sum_n \lambda_n\psi_n(t) \psi_n^\ast(t)
+   \\&=&  \sum_n \lambda_n \left|\psi_n(t) \right|^2
+\\ \\
+   \Eb{\sum_n \dot{x}_n \psi_n(t)\left(\sum_m \dot{x}_m \psi_m(t)\right)^\ast}
+     &=& \Eb{\sum_n \int_u x(u)\psi_n^\ast(u)\du   \psi_n(t)\left(\sum_m \int_v x(v)\psi_m^\ast(v)\dv \psi_m(t)\right)^\ast}
+   \\&=& \sum_n\sum_m \int_u\left(\int_v \Eb{x(u)x^\ast(v)}\psi_m(v)\dv\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n\sum_m \int_u\left(\int_v \Rxx(u,v)\psi_m(v)\dv\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n\sum_m \int_u\left(\lambda_m\psi_m(u)\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n\sum_m \lambda_m \left(\int_u \psi_m(u) \psi_n^\ast(u)\du \right)   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n\sum_m \lambda_m \kdelta_{mn}   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n \lambda_n   \psi_n(t)   \psi_n^\ast(t)
+   \\&=& \sum_n \lambda_n  \left| \psi_n(t) \right|^2
+\end{eqnarray*}
+
+
+Using these two results, we can prove the following:
+
+\begin{eqnarray*}
+  &&\E{\left| x(t)-\sum_n \dot{x}_n \psi_n(t) \right|^2}
+  \\&=& \Eb{\left[ x(t)-\sum_n \dot{x}_n \psi_n(t) \right]\left[ x(t)-\sum_m \dot{x}_m \psi_m(t) \right]^\ast}
+  \\&=& \Eb{x(t)x^\ast(t) -x(t)\left(\sum_n \dot{x}_n \psi_n(t)\right)^\ast -x^\ast(t)\sum_n \dot{x}_n \psi_n(t) + \sum_n \dot{x}_n \psi_n(t) \left(\sum_m \dot{x}_m \psi_m(t) \right)^\ast }
+  \\&=& \Eb{x(t)x^\ast(t)} -\Eb{x(t)\left(\sum_n \dot{x}_n \psi_n(t)\right)^\ast} -\Eb{x^\ast(t)\sum_n \dot{x}_n \psi_n(t)} + \Eb{\sum_n \dot{x}_n \psi_n(t) \left(\sum_m \dot{x}_m \psi_m(t) \right)^\ast }
+  \\&&  \text{by \prop{Mercer's Theorem}\ifsxref{integrat}{thm:mercer}}
+  \\&=& \sum_n \lambda_n |\psi_n(t)|^2 -\sum_n \lambda_n \left|\psi_n(t) \right|^2  -\left(\sum_n \lambda_n \left|\psi_n(t) \right|^2\right)^\ast + \sum_n \lambda_n \left|\psi_n(t) \right|^2
+  \\&=& \sum_n \lambda_n |\psi_n(t)|^2 -\sum_n \lambda_n \left|\psi_n(t) \right|^2  -\sum_n \lambda_n \left|\psi_n(t) \right|^2 + \sum_n \lambda_n \left|\psi_n(t) \right|^2
+  \\&=& 0
+\end{eqnarray*}
+\end{enumerate}
+Reference: \citerpp{keener}{114}{119}
+\end{proof}
+
+%=======================================
+\subsection{Karhunen-Lo\`{e}ve Expansion}
+\label{sec:KL}
+\index{Karhunen-Lo\`{e}ve Expansion}
+\index{eigenfunctions}
+\index{eigenvalues}
+%=======================================
+If a random process $x(t)$ is white
+\footnote{{\em white noise process}: random process $x(t)$ with autocorrelation $\Rxx(\tau)=\delta(\tau)$}
+and $\Psi=\{\psi_1(t),\psi_2(t),\ldots,\psi_N(t)\}$ is \textbf{any} set of orthonormal basis functions,
+then the innerproducts
+$\inprod{n(t)}{\psi_n(t)}$ and $\inprod{n(t)}{\psi_m(t)}$ are uncorrelated
+for $m\ne  n$.
+However, if $x(t)$ is colored (not white), then the innerproducts are not
+in general uncorrelated.
+But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opR$ such
+that
+\[ \opR \psi_n = \lambda_n \psi_n,\]
+then by \prefp{thm:Rxx_prop}, $\{\psi_n(t)\}$ are orthogonal and
+the innerproducts \textbf{are} uncorrelated eventhough $x(t)$ is
+not white.
+This criterion is called the  Karhunen-Lo\`{e}ve criterion for $x(t)$.
+
+
+
+
+%=======================================
+\subsection{LTI Operations on non-stationary random processes}
+\index{LTI!operations on non-stationary random processes}
+%=======================================
+\begin{figure}[ht]\color{figcolor}
+\begin{fsK}
+\begin{center}
+  \setlength{\unitlength}{0.2mm}
+  \begin{picture}(300,130)(-100,-80)
+  \thinlines
+  %\graphpaper[10](0,0)(160,80)
+  \put(-100,  10 ){\makebox (100, 40)[b]{$\rvx(t)$}  }
+  \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(t,u)$}  }
+  \put(-100,   0 ){\vector  (  1,  0){100}             }
+  \put(   0, -50 ){\framebox(100,100){$\conv \fh(t)$}  }
+  \put( 100,   0 ){\vector  (  1,  0){100}             }
+  \put( 110,  10 ){\makebox (100, 40)[lb]{$\ds\rvy(t)=\rvx(t)\conv\fh(t)=\int_u\fh(u)\rvx(t-u)\du$}  }
+  \put( 100, -50 ){\makebox (100, 40)[t]{$\Ryy(t,u)$}  }
+  \put(  50, -60 ){\makebox (  0,  0)[t]{$\Rxy(t,u)$}  }
+  \end{picture}
+\caption{
+   Linear system with random process input and output
+   \label{fig:linear-sys}
+   }
+\end{center}
+\end{fsK}
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+\index{linear time invariant}
+\footnote{\citerp{papoulis}{312}}
+%---------------------------------------
+Let $h:\R\to\C$ be the impulse response of a linear time-invariant system and
+Let $\rvy(t)=h(t)\conv \rvx(t) \eqd \int_u h(u)\rvx(t-u) \du$ as
+illustrated in \prefp{fig:linear-sys}.
+Then
+\thmbox{\begin{array}{rclcl}
+\mc{5}{l}{\mbox{\bf Correlation functions}} \\
+   \Rxy(t,u)
+     &=&    \Rxx(t,u) \conv h^\ast(u)
+     &\eqd& \int_v \fh^\ast(v)  \Rxx(t,u-v)  \dv
+\\
+   \Ryy(t,u)
+     &=&    \Rxy(t,u) \conv \fh(t)
+     &\eqd& \int_v \fh(v) \Rxy(t-v,u) \dv
+\\
+   \Ryy(t,u)
+     &=&    \Rxx(t,u) \conv \fh(t) \conv \fh^\ast(u)
+     &\eqd& \int_w \fh^\ast(w) \int_v \fh(v) \Rxx(t-v,u-w) \dv\dw
+\\ \\
+\mc{5}{l}{\mbox{\bf Laplace power spectral density functions}} \\
+   \LSxy(s,r) &=& \LSxx(s,r) \Lh^\ast(r^\ast)         \\
+   \LSyy(s,r) &=& \LSxy(s,r) \Lh(s)              \\
+   \LSyy(s,r) &=& \LSxx(s,r) \Lh(s) \Lh^\ast(r^\ast)  \\
+\\
+\mc{5}{l}{\mbox{\bf Power spectral density functions}} \\
+   \Sxy(f,g)  &=& \Sxx(f,g) \Fh^\ast(-g)          \\
+   \Syy(f,g)  &=& \Sxy(f,g) \Fh(f)               \\
+   \Syy(f,g)  &=& \Sxx(f,g) \Fh(f) \Fh^\ast(-g)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \Rxy(t,u)
+     &\eqd& \E\left[\rvx(t) \rvy^\ast(u) \right]
+   \\&=&    \E\left[\rvx(t) \left( \int_v \fh(v) \rvx(u-v)  \dv \right)^\ast \right]
+   \\&=&    \E\left[\rvx(t) \int_v \fh^\ast(v) \rvx^\ast(u-v)  \dv \right]
+   \\&=&    \int_v \fh^\ast(v)  \E\brs{\rvx(t)\rvx^\ast(u-v)} \dv
+   \\&=&    \int_v \fh^\ast(v)  \Rxx(t,u-v)  \dv
+   \\&\eqd& \Rxx(t,u) \conv h^\ast(u)
+\\ \\
+   \Ryy(t,u)
+     &\eqd& \E\left[\rvy(t) \rvy^\ast(u) \right]
+   \\&=&    \E\left[\brp{\int_v \fh(v) \fx(t-v)\dv}  \rvy^\ast(u) \right]
+   \\&=&    \int_v \fh(v) \E\brs{\fx(t-v)\rvy^\ast(u)} \dv
+   \\&=&    \int_v \fh(v) \Rxy(t-v,u) \dv
+   \\&\eqd& \Rxy(t,u) \conv \fh(t)
+\\ \\
+   \Ryy(t,u)
+     &\eqd& \E\left[\rvy(t) \rvy^\ast(u) \right]
+   \\&=&    \E\left[\brp{\int_v \fh(v) \fx(t-v)\dv}
+                    \brp{\int_w \fh(w) \fx(u-w)\dw}^\ast
+              \right]
+   \\&=&    \int_w \fh^\ast(w) \int_v \fh(v)
+                   \E\brs{\fx(t-v)\fx^\ast(u-w)} \dv\dw
+   \\&=&    \int_w \fh^\ast(w) \int_v \fh(v)
+                   \Rxx(t-v,u-w) \dv\dw
+   \\&=&    \int_w \fh^\ast(w) \brs{\Rxx(t,u-w)\conv\fh(t)}\dw
+   \\&\eqd& \Rxx(t,u) \conv \fh(t) \conv \fh^\ast(u)
+\\ \\
+   \LSxy(s,r)
+     &\eqd& \opL\Rxy(t,u)
+   \\&=&    \opL[\Rxx(t,u) \conv \fh^\ast(u)]
+   \\&=&    \opL[\Rxx(t,u)]\opL[\fh^\ast(u)]
+   \\&=&    \LSxx(s,r)  \int_u \fh^\ast(u) e^{-ru}\du
+   \\&=&    \LSxx(s,r)  \left[\int_u \fh(u) e^{-r^\ast u}\du \right]^\ast
+   \\&=&    \LSxx(s,r) \Lh^\ast(r^\ast)
+\\ \\
+   \LSyy(s,r)
+     &\eqd& \opL\Ryy(t,u)
+   \\&=&    \opL[\Rxy(t,u) \conv \fh(t)]
+   \\&=&    \opL[\Rxy(t,u)]\opL[\fh(t)]
+   \\&=&    \LSxy(s,r) \Lh(s)
+\\
+   \\&=&    \LSxy(s,r) \Lh(s)
+   \\&=&    \LSxx(s,r) \Lh^\ast(r^\ast)\Lh(s)
+   \\&=&    \LSxx(s,r) \Lh(s) \Lh^\ast(r^\ast)
+\\ \\
+   \Sxy(f,g)
+     &\eqd& \opFT\Rxy(t,u)
+   \\&=&    \opFT[\Rxx(t,u) \conv \fh^\ast(u)]
+   \\&=&    \opFT[\Rxx(t,u)]\opFT[\fh^\ast(u)]
+   \\&=&    \Sxx(f,g) \int_u \fh^\ast(u) e^{-i2\pi g u} \du
+   \\&=&    \Sxx(f,g) \left[\int_u \fh(u) e^{i2\pi g u} \du \right]^\ast
+   \\&=&    \Sxx(f,g) \left[\int_u \fh(u) e^{-i2\pi(-g)u} \du \right]^\ast
+   \\&=&    \Sxx(f,g) \Fh^\ast(-g)
+\\ \\
+   \Syy(f,g)
+     &\eqd& \opFT\Ryy(t,u)
+   \\&=&    \opFT[\Rxy(t,u) \conv \fh(t)]
+   \\&=&    \opFT[\Rxy(t,u)]\opFT[\fh(t)]
+   \\&=&    \Sxy(f,g) \Fh(f)
+\\
+   \\&=&    \Sxy(f,g) \Fh(f)
+   \\&=&    \Sxx(f,g) \Fh^\ast(-g) \Fh(f)
+\end{eqnarray*}
+\end{proof}
+
+
+%=======================================
+\subsection{LTI Operations on WSS random processes}
+\index{LTI!operations on WSS random processes}
+\index{WSS}
+\index{wide sense stationary}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:WSS}
+%---------------------------------------
+A random process $\rvx(t)$ is \textbf{wide sense stationary} (WSS) if
+
+\begin{tabular}{llll}
+   1. & $\Mx(t)$         & is constant with respect to $t$ & (stationary in the mean) \\
+   2. & $\Rxx(t+\tau,t)$ & is constant with respect to $t$ & (stationary in correlation)
+\end{tabular}
+\end{definition}
+
+If a process is WSS, mean and correlation are often written
+$\Mx$ and $\Rxx(\tau)$, respectively.
+If a pair of processes $\rvx$ and $\rvy$ are WSS,
+then their cross-correlation is often written $\Rxy(\tau)$.
+
+%---------------------------------------
+\begin{definition}
+\label{def:psd}
+\index{power spectral density}
+\index{PSD}
+%---------------------------------------
+Let $\rvx(t)$ and $\rvy(t)$ be WSS random processes.
+Then the \textbf{power spectral density} of $\rvx(t)$ and $\rvy(t)$ are defined as
+\defbox{\begin{array}{rclcl}
+   \LSxx(s) &\eqd& \opL{\Rxx(\tau)} &\eqd& \ds \int_\tau \Rxx(\tau) e^{-s\tau} \; d\tau   \\
+   \LSyy(s) &\eqd& \opL{\Ryy(\tau)} &\eqd& \ds \int_\tau \Ryy(\tau) e^{-s\tau} \; d\tau   \\
+   \LSxy(s) &\eqd& \opL{\Rxy(\tau)} &\eqd& \ds \int_\tau \Rxy(\tau) e^{-s\tau} \; d\tau   \\
+   \LSyx(s) &\eqd& \opL{\Ryx(\tau)} &\eqd& \ds \int_\tau \Ryx(\tau) e^{-s\tau} \; d\tau   \\
+\\
+   \Sxx(f) &\eqd& [\opFT{\Rxx(\tau)}](f) &\eqd& \ds \int_\tau \Rxx(\tau) e^{-i2\pi f\tau} \; d\tau   \\
+   \Syy(f) &\eqd& [\opFT{\Ryy(\tau)}](f) &\eqd& \ds \int_\tau \Ryy(\tau) e^{-i2\pi f\tau} \; d\tau   \\
+   \Sxy(f) &\eqd& [\opFT{\Rxy(\tau)}](f) &\eqd& \ds \int_\tau \Rxy(\tau) e^{-i2\pi f\tau} \; d\tau   \\
+   \Syx(f) &\eqd& [\opFT{\Ryx(\tau)}](f) &\eqd& \ds \int_\tau \Ryx(\tau) e^{-i2\pi f\tau} \; d\tau
+\end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{definition}
+\index{ergodic}
+%---------------------------------------
+Let $\rvx(t)$ be a random variable that is stationary in the mean such that
+\[ \Eb{\rvx(t)} = \mbox{ constant with respect to } t.\]
+
+Then $\rvx(t)$ is \textbf{ergodic in the mean} if
+\[ \Eb{\rvx(t)} = \lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{+T}\rvx(t)\dt.\]
+\end{definition}
+
+Why does $\Sxx(f)$ deserve the name {\em power spectral density function}?
+This is answered by the next theorem.
+
+%---------------------------------------
+\begin{theorem}
+\index{power spectral density}
+\index{PSD}
+%---------------------------------------
+Let $\rvx(t)$ be a wide sense stationary, ergodic in the mean, random process.
+Then spectral power of $\rvx(t)$ in the frequency interval $[a,b]$
+is equivalent to
+\thmbox{ \mbox{power of $\rvx(t)$ in $[a,b]$} = \int_a^b \Sxx(f)\df. }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \Sxx(f)
+     &\eqd& \int_\tau \Rxx(\tau) e^{-i2\pi f\tau} \dtau
+   \\&=&    \int_\tau \Eb{\rvx(t+\tau)\rvx^\ast(t)} e^{-i2\pi f\tau} \dtau
+   \\&=&    \Eb{\rvx^\ast(t) \int_\tau \rvx(t+\tau) e^{-i2\pi f\tau} \dtau }
+   \\&=&    \Eb{\rvx^\ast(t) \int_u \rvx(u) e^{-i2\pi f(u-t)} \du }
+   \\&=&    \Eb{\rvx^\ast(t)e^{i2\pi ft} \int_u \rvx(u) e^{-i2\pi fu} \du }
+   \\&=&    \Eb{\rvx^\ast(t)e^{i2\pi ft} \ft{x}(f) }
+   \\&=&    \Eb{\rvx^\ast(t)e^{i2\pi ft}} \ft{x}(f)
+   \\&=&    \lim_{T\to\infty}\frac{1}{2T}\int_{-T}{+T} \rvx^\ast(t)e^{i2\pi ft} \dt \ft{x}(f)
+   \\&=&    \lim_{T\to\infty}\frac{1}{2T}\left[\int_t \rvx(t)e^{-i2\pi ft} \dt\right]^\ast \ft{x}(f)
+   \\&=&    \lim_{T\to\infty}\frac{1}{2T} \ft{x}^\ast(f) \ft{x}(f)
+   \\&=&    \lim_{T\to\infty}\frac{1}{2T} \left|\ft{x}(f)\right|^2
+\end{eqnarray*}
+
+Thus, $\Sxx(f)$ is the power density of $\rvx(t)$ in the frequency domain.
+\end{proof}
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{fsK}
+\begin{center}
+  \setlength{\unitlength}{0.2mm}
+  \begin{picture}(300,130)(-100,-80)
+  \thinlines
+  %\graphpaper[10](0,0)(160,80)
+  \put(-100,  10 ){\makebox (100, 40)[b]{$\rvx(t)$}  }
+  \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(\tau)$}  }
+  \put(-100, -50 ){\makebox (100, 40)[b]{$\Sxx(s)$}  }
+  \put(-100,   0 ){\vector  (  1,  0){100}             }
+  \put(   0, -50 ){\framebox(100,100){$\conv h(t)$}  }
+  \put( 100,   0 ){\vector  (  1,  0){100}             }
+  \put( 100,  10 ){\makebox (100, 40)[b]{$\rvy(t)$}  }
+  \put( 100, -50 ){\makebox (100, 40)[t]{$\Ryy(\tau)$}  }
+  \put( 100, -50 ){\makebox (100, 40)[b]{$\Syy(s)$}  }
+  \put(  50, -60 ){\makebox (  0,  0)[t]{$\Sxy(s)$}  }
+  \end{picture}
+\caption{
+   Linear system with WSS random process input and output
+   \label{fig:linear-sys-WSS}
+   }
+\end{center}
+\end{fsK}
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+\index{convolution}
+\index{linear time invariant systems}
+\index{LTI}
+\footnote{\citerpp{papoulis}{323}{324}}
+%---------------------------------------
+Let $h:\R\to\C$ be the impulse response of a linear time-invariant system and
+let $\rvy(t)=h(t)\conv \rvx(t) \eqd \int_u h(u)\rvx(t-u) \du$ as
+illustrated in \prefp{fig:linear-sys}.
+Then
+\thmbox{\begin{array}{rclcl}
+   \Rxy(\tau) &=&    \Rxx(\tau)\conv h^\ast(-\tau)
+              &\eqd& \int_u h^\ast(-u) \Rxx(\tau-u)\du \\
+   \Ryy(\tau) &=&    \Rxy(\tau)\conv h(\tau)
+              &\eqd& \int_u h(u) \Rxy(\tau-u)\du \\
+   \Ryy(\tau) &=&    \Rxx(\tau)\conv h(\tau)\conv h^\ast(-\tau)
+              &\eqd& \int_v \int_u h(u-v)h^\ast(-v) \Rxx(\tau-u-v)\du\dv  \\
+\\
+   \Sxy(s)    &=&    \Sxx(s) \hat{h}^\ast(-s^\ast)             \\
+   \Syy(s)    &=&    \Sxy(s) \hat{h}(s)                        \\
+   \Syy(s)    &=&    \Sxx(s) \hat{h}(s) \hat{h}^\ast(-s^\ast)  \\
+\\
+   \Sxy(f)    &=&    \Sxx(f) \Fh^\ast(f)  \\
+   \Syy(f)    &=&    \Sxy(f) \Fh(f)       \\
+   \Syy(f)    &=&    \Sxx(f) |\Fh(f)|^2   \\
+\end{array}}
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+   \Rxx(\tau) \conv h^\ast(-\tau)
+     &\eqd& \int_u h^\ast(-u) \Rxx(\tau-u)\du
+   \\&=&    \int_u h^\ast(-u) \E\left[\rvx(t) \rvx^\ast(t-\tau+u) \right] \du
+   \\&=&    \E\left[\rvx(t) \int_u h^\ast(-u)  \rvx^\ast(t-\tau+u) \du   \right]
+   \\&=&    \E\left[\rvx(t) \int_u h^\ast(u^\prime)  \rvx^\ast(t-\tau-u^\prime) \du^\prime   \right]
+   \\&=&    \E\left[\rvx(t) \rvy^\ast(t-\tau)  \right]
+   \\&\eqd& \Rxy(\tau)
+\\
+\\
+   \Rxy(\tau) \conv h(\tau)
+     &\eqd& \int_u h(u) \Rxy(\tau-u)\du
+   \\&=&    \int_u h(u) \E\left[\rvx(t+\tau-u) \rvy^\ast(t) \right] \du
+   \\&=&    \E\left[\rvy^\ast(t) \int_u h(u) \rvx(t+\tau-u)  \du \right]
+   \\&=&    \E\left[\rvy^\ast(t) \rvy(t+\tau) \right]
+   \\&=&    \E\left[ \rvy(t+\tau) \rvy^\ast(t)\right]
+   \\&\eqd& \Ryy(\tau)
+\\
+\\
+   \Ryy(\tau)
+     &=& \Rxy(\tau) \conv h(\tau)
+   \\&=& \Rxx(\tau) \conv h^\ast(-\tau) \conv h(\tau)
+   \\&=& \Rxx(\tau) \conv h(\tau)  \conv h^\ast(-\tau)
+\\
+\\
+   Sxy(s)
+     &\eqd& \opL \Rxy(\tau)
+   \\&\eqd& \int_\tau \Rxy(\tau) e^{-s\tau} \; d\tau
+   \\&=&    \int_\tau \left[ \Rxx(\tau) \conv h^\ast(-\tau) \right] e^{-s\tau} \; d\tau
+   \\&=&    \int_\tau \left[ \int_u h^\ast(-u) \Rxx(\tau-u)\du \right] e^{-s\tau} \; d\tau
+   \\&=&    \int_u h^\ast(-u) \int_\tau \Rxx(\tau-u)e^{-s\tau} \; d\tau\du
+   \\&=&    \int_u h^\ast(-u) \int_v \Rxx(v)e^{-s(v+u)} \dv \du
+            \hspace{3em}\mbox{ where $v=\tau-u\iff \tau=v+u$}
+   \\&=&    \int_u h^\ast(-u) e^{-su} \du \int_v \Rxx(v)e^{-sv} \dv
+   \\&=&    \int_u h^\ast(u) e^{-s(-u)} \du \int_v \Rxx(v)e^{-sv} \dv
+   \\&=&    \left(\int_u h(u) e^{-(-s^\ast)u} \du \right)^\ast
+            \int_v \Rxx(v)e^{-sv} \dv
+   \\&\eqd& \hat{h}^\ast(-s^\ast) \Sxx(s)
+\\
+\\
+   \Syy(s)
+     &\eqd& \opL \Ryy(\tau)
+   \\&\eqd& \int_\tau \Ryy(\tau) e^{-s\tau} \; d\tau
+   \\&=&    \int_\tau \left[ \Rxy(\tau) \conv h(\tau) \right] e^{-s\tau} \; d\tau
+   \\&=&    \int_\tau \left[ \int_u h(u) \Rxy(\tau-u)\du \right] e^{-s\tau} \; d\tau
+   \\&=&    \int_u h(u) \int_\tau \Rxy(\tau-u) e^{-s\tau} \; d\tau\du
+   \\&=&    \int_u h(u) \int_\tau \Rxy(v) e^{-s(v+u)} \; d\tau\du
+            \hspace{3em}\mbox{ where $v=\tau-u\iff \tau=v+u$}
+   \\&=&    \int_u h(u)e^{-su} \;du \int_\tau \Rxy(v) e^{-sv} \; d\tau
+   \\&\eqd& \hat{h}(s) \Sxy(s)
+\\
+\\
+   \Syy(s)
+     &=& \hat{h}(s) \Sxy(s)
+   \\&=& \hat{h}(s) \hat{h}^\ast(-s^\ast) \Sxx(s)
+\\
+\\
+   Sxy(f)
+     &=&    \left. Sxy(s)\right|_{s=j2\pi f}
+   \\&=&    \left. \hat{h}^\ast(-s^\ast) \Sxx(s)\right|_{s=j2\pi f}
+   \\&=&    \left.
+            \left(\int_u h(u) e^{-(-s^\ast)u} \du \right)^\ast
+            \int_v \Rxx(v)e^{-sv} \dv
+            \right|_{s=j2\pi f}
+   \\&=&    \left(\int_u h(u) e^{-(-j2\pi f)^\ast u} \du \right)^\ast
+            \int_v \Rxx(v)e^{-j2\pi fv} \dv
+   \\&=&    \left(\int_u h(u) e^{-j2\pi f u} \du \right)^\ast
+            \int_v \Rxx(v)e^{-j2\pi fv} \dv
+   \\&\eqd& \Fh^\ast(f) \Sxx(f)
+\\
+\\
+   Syy(f)
+     &=&    \left. Syy(s)\right|_{s=j2\pi f}
+   \\&=&    \left. \hat{h}(s) \Sxy(s) \right|_{s=j2\pi f}
+   \\&=&    \left. \int_u h(u)e^{-su} \;du \int_\tau \Rxy(v) e^{-sv} \; d\tau\right|_{s=j2\pi f}
+   \\&=&    \int_u h(u)e^{-j2\pi fu} \;du \int_\tau \Rxy(v) e^{-j2\pi fv} \; d\tau
+   \\&=&    \Fh(f) Sxy(f)
+\\
+\\
+   Syy(f)
+     &=&    \Fh(f) Sxy(f)
+   \\&=&    \Fh(f) \Fh^\ast(f) \Sxx(f)
+   \\&=&    |\Fh(f)|^2 \Sxx(f)
+\end{eqnarray*}
+
+
+\end{proof}
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.08mm}
+\begin{tabular}{c@{\hspace{1cm}}c@{\hspace{1cm}}c@{\hspace{1cm}}c}
+$\Reb{\Rxx(\tau)}$ & $\Imb{\Rxx(\tau)}$ &
+$|\Rxx(\tau)|$     & $\angle\Rxx(\tau)$
+\\
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thinlines
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \put(-100,   0){\line( 1,1){100} }
+  \put( 100,   0){\line(-1,1){100} }
+  %\put(  60,  60 ){\makebox(0,0)[bl]{$\Reb{\Rxx(\tau)}$}}
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thinlines
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \qbezier(0,0)( 20, 80)( 100, 100)
+  \qbezier(0,0)(-20,-80)(-100,-100)
+  \put( 100,   0){\line(0, 1){100} }
+  \put(-100,   0){\line(0,-1){100} }
+  %\put(- 10,  60 ){\makebox(0,0)[br]{$\Imb{\Rxx(\tau)}$}}
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thinlines
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \qbezier(0,100)( 20,20)( 100, 0)
+  \qbezier(0,100)(-20,20)(-100, 0)
+  %\put( 60,  60 ){\makebox(0,0)[bl]{$|\Rxx(\tau)|$}}
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thinlines
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \put( 100,   0){\line(0, 1){100} }
+  \put(-100,   0){\line(0,-1){100} }
+  \put(-100,-100){\line(1, 1){200} }
+  %\put(- 10,  60 ){\makebox(0,0)[br]{$\angle\Rxx(\tau)$}}
+\end{picture}
+\\
+(symmetric) & (anti-symmetric) & (symmetric) & (anti-symmetric)
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+   Autocorrelation $\Rxx(\tau)$
+   \label{fig:Rxx}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+\index{conjugate symmetric}
+%---------------------------------------
+Let $\rvx:\R\to\C$ be a WSS random process with
+auto-correlation $\Rxx(\tau)$.
+Then $\Rxx(\tau)$ is \textbf{conjugate symmetric} such that
+(see \prefp{fig:Rxx})
+\thmbox{\begin{array}{rclD}
+  \Rxx(\tau)       &=& \Rxx^\ast(-\tau)    & (\prope{conjugate symmetric}) \\
+  \Reb{\Rxx(\tau)} &=& \Reb{\Rxx(-\tau)}   & (\prope{symmetric          }) \\
+  \Imb{\Rxx(\tau)} &=& -\Imb{\Rxx(-\tau)}  & (\prope{anti-symmetric     }) \\
+  |\Rxx(\tau)|     &=& |\Rxx(-\tau)|       & (\prope{symmetric          }) \\
+  \angle\Rxx(\tau) &=& \angle\Rxx(-\tau)   & (\prope{anti-symmetric     }).
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \Rxx^\ast(\tau)
+     &\eqd& \left( \Eb{\rvx(t-\tau)\rvx^\ast(t)}\right)^\ast
+   \\&=&           \Eb{\rvx^\ast(t-\tau)\rvx(t)}
+   \\&=&           \Eb{\rvx(t)\rvx^\ast(t-\tau)}
+   \\&=&           \Eb{\rvx(u+\tau)\rvx^\ast(u)}
+       \hspace{4ex}u=t-\tau \iff t=u+\tau
+   \\&\eqd&        \Rxx(\tau)
+\end{eqnarray*}
+
+\[\begin{array}{*{10}{l}}
+   \Reb{\Rxx(\tau)}
+     &=& \Reb{\Rxx^\ast(-\tau)}
+     &=& \Reb{\Rxx(-\tau)}
+\\
+   \Imb{\Rxx(\tau)}
+     &=& \Imb{\Rxx^\ast(-\tau)}
+     &=& -\Imb{\Rxx(-\tau)}
+\\
+   |\Rxx(\tau)|
+     &=& |\Rxx^\ast(-\tau)|
+     &=& |\Rxx(-\tau)|
+\\
+   \angle\Rxx(\tau)
+     &=& \angle\Rxx^\ast(-\tau)
+     &=& -\angle\Rxx(-\tau)
+\end{array}\]
+
+\end{proof}
+
+
+%---------------------------------------
+\subsection{Whitening}
+\index{whitening filter}
+\label{sec:whiten}
+%---------------------------------------
+Simple algebraic operations on white noise processes
+(processes with autocorrelation $\Rxx(\tau)=\delta(\tau)$)
+often produce {\em colored} noise
+(processes with autocorrelation $\Rxx(\tau)\ne\delta(\tau)$).
+Sometimes we would like to process a colored noise process
+to produce a white noise process.
+This operation is known as {\em whitening}.
+Reasons for why we may want to whiten a noise process include
+\begin{enume}
+   \item Samples from a white noise process are uncorrelated.
+         If the noise process is Gaussian, then these samples
+         are also independent which often greatly simplifies analysis.
+   \item Any orthonormal basis can be used to decompose a white noise process.
+         This is not true of a colored noise process.
+         Karhunen--Lo\`eve expansion can be used to decompose colored noise.
+         \footnote{{\em Karhunen--Lo\`eve expansion}: \prefp{sec:KL}}
+\end{enume}
+
+%---------------------------------------
+\begin{definition}
+\index{rational expression}
+\index{poles}
+\index{zeros}
+%---------------------------------------
+A \textbf{rational expression} $\fp(s)$ is a polynomial divided by a polynomial
+such that
+\defbox{
+   \fp(s) = \frac{\ds\sum_{n=0}^N b_n s^n}{\ds\sum_{n=0}^M a_n s^n}.
+}
+The \textbf{zeros} of a rational expression are the roots of its numerator polynomial.
+The \textbf{poles} of a rational expression are the roots of its denominator polynomial.
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\index{minimum phase}
+\index{rational expression}
+%---------------------------------------
+Let $\Lh(s)$ be the Laplace transform of the impulse response of a filter.
+If $\Lh(s)$ can be expressed as a rational expression with poles and zeros at
+$a_n + ib_n$,
+then the filter is \textbf{minimum phase} if each $a_n<0$
+(all roots lie in the left hand side of the complex $s$-plane).
+\end{definition}
+
+Note that if $L(s)$ has a root at $s=-a+ib$, then
+$L^\ast(-s^\ast)$ has a root at
+  \[  -s^\ast = -(-a+ib)^\ast = -(-a-ib) = a+ib.   \]
+That is, if $L(s)$ has a root in the left hand plane,
+then $L^\ast(-s^\ast)$ has a root directly opposite across the imaginary
+axis in the right hand plane (see \prefp{fig:s-roots}).
+A causal stable filter $\hat{h}(s)$ must have all of its poles in the
+left hand plane.
+A minimum phase filter is a filter with both its poles and zeros in the
+left hand plane.
+One advantage of a minimum phase filter is that its recipricol
+(zeros become poles and poles become zeros)
+is also causal and stable.
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(200,230)(-100,-100)
+  %\graphpaper[10](0,0)(200,200)
+  \thicklines
+  \put(-100 ,   0 ){\line(1,0){200} }
+  \put(   0 ,-100 ){\line(0,1){200} }
+  \thinlines
+  \qbezier[20](-70, 40)(  0, 40)( 70, 40)
+  \qbezier[ 8]( 70,  0)( 70, 20)( 70, 40)
+  \qbezier[ 8](-70,  0)(-70, 20)(-70, 40)
+
+  \qbezier[ 8](-30,-60)(  0,-60)( 30,-60)
+  \qbezier[10]( 30,  0)( 30,-30)( 30,-60)
+  \qbezier[10](-30,  0)(-30,-30)(-30,-60)
+
+  \put(  70,  -10 ){\makebox(  0,0)[t]{$+a_z$} }
+  \put( -70,  -10 ){\makebox(  0,0)[t]{$-a_z$} }
+  \put(  30,   10 ){\makebox(  0,0)[b]{$+a_p$} }
+  \put( -30,   10 ){\makebox(  0,0)[b]{$-a_p$} }
+  \put( 105 ,   0 ){\makebox(  0,0)[l]{$\Re$}  }
+  \put(   0 , 105 ){\makebox(  0,0)[b]{$\Im$}  }
+
+  \put(  70 ,  40 ){\circle{10}}
+  \put( -70 ,  40 ){\circle{10}}
+  \put( -30 , -60 ){\makebox(0,0){$\times$}}
+  \put(  30 , -60 ){\makebox(0,0){$\times$}}
+
+  \put(  80 ,  40 ){\makebox(0,0)[l]{zero of $L^\ast(-s^\ast)$}}
+  \put( -80 ,  40 ){\makebox(0,0)[r]{zero of $L(s)$}}
+  \put(  40 , -60 ){\makebox(0,0)[l]{pole of $L^\ast(-s^\ast)$}}
+  \put( -40 , -60 ){\makebox(0,0)[r]{pole of $L(s)$}}
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Mirrored roots in complex-s plane
+   \label{fig:s-roots}
+   }
+\end{figure}
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{fsK}
+\begin{center}
+  \setlength{\unitlength}{0.2mm}
+  \begin{picture}(700,100)(-100,-50)
+  \thinlines
+  %\graphpaper[10](0,0)(160,80)
+  \put(-100,  10 ){\makebox (100, 40)[b]{$\rvx(t)$}                  }
+  \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(\tau)$}               }
+  \put(-100, -50 ){\makebox (100, 40)[b]{$\Sxx(s)$}                  }
+  \put(-100,   0 ){\vector  (  1,  0){100}                           }
+
+  \put(   0, -50 ){\framebox(100,100)   {$\conv\gamma(t)$}           }
+  \put(   0, -40 ){\makebox (100, 80)[t]{whitening}                  }
+  \put(   0, -40 ){\makebox (100, 80)[b]{$\Gamma(s)$}                }
+  \put( 100,   0 ){\vector  (  1,  0)   {200}                        }
+  \put( 100,  10 ){\makebox (200, 40)[t]{white noise process}        }
+  \put( 100,  10 ){\makebox (200, 40)[b]{$\vw(t)$}                 }
+  \put( 100, -50 ){\makebox (200, 40)[t]{$\Rww(\tau)=\delta(\tau)$}  }
+  \put( 100, -50 ){\makebox (200, 40)[b]{$\Sww(s)=1$}                }
+
+  \put( 300, -50 ){\framebox(100,100)   {$\conv l(t)$}               }
+  \put( 300, -40 ){\makebox (100, 80)[t]{innovations}                }
+  \put( 300, -40 ){\makebox (100, 80)[b]{$L(s)$}                     }
+  \put( 400,   0 ){\vector  (  1,  0)   {100}                        }
+  \put( 400,  10 ){\makebox (100, 40)[b]{$\rvx(t)$}                  }
+  \put( 400, -50 ){\makebox (200, 40)[t]{$\Rxx(\tau)=l(\tau)\conv l^\ast(-\tau)$}  }
+  \put( 400, -50 ){\makebox (200, 40)[b]{$\Sxx(s)=L(s)L^\ast(-s^\ast)$}  }
+  \end{picture}
+\end{center}
+\end{fsK}
+\caption{
+   Innovations and whitening filters
+   \label{fig:innovations}
+   }
+\end{figure}
+
+The next theorem demonstrates a method for ``whitening"
+a random process $\fx(t)$ with a filter constructed from a decomposition
+of $\Rxx(\tau)$.
+The technique is stated precisely in \prefp{thm:innovations}
+and illustrated in \prefp{fig:innovations}.
+Both imply two filters with impulse responses $l(t)$ and $\gamma(t)$.
+Filter $l(t)$ is referred to as the \textbf{innovations filter}
+(because it generates or ``innovates" $\fx(t)$ from a white noise
+process $\fw(t)$)
+and $\gamma(t)$ is referred to as the \textbf{whitening filter}
+because it produces a white noise sequence when the input sequence
+is $\fx(t)$.
+\footnote{\citerpp{papoulis}{401}{402}}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:innovations}
+%---------------------------------------
+Let $\fx(t)$ be a WSS random process with autocorrelation $\Rxx(\tau)$
+and spectral density $\Sxx(s)$.
+\textbf{If} $\Sxx(s)$ has a \textbf{rational expression},
+then the following are true:
+\begin{enume}
+   \item There exists a rational expression $L(s)$ with minimum phase
+         such that
+         \[ \Sxx(s) = L(s)L^\ast(-s^\ast). \]
+   \item An LTI filter for which the Laplace transform of
+         the impulse response $\gamma(t)$ is
+         \[ \Gamma(s) = \frac{1}{L(s)} \]
+         is both causal and stable.
+   \item If $\fx(t)$ is the input to the filter $\gamma(t)$,
+         the output $\fy(t)$ is a \textbf{white noise sequence} such that
+         \[ \Syy(s)=1 \hspace{2cm} \Ryy(\tau)=\delta(\tau).\]
+\end{enume}
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+   \Sww(s)
+     &=& \Gamma(s)\Gamma^\ast(-s^\ast) \Sxx(s)
+   \\&=& \frac{1}{L(s)} \frac{1}{L^\ast(-s^\ast)} \Sxx(s)
+   \\&=& \frac{1}{L(s)} \frac{1}{L^\ast(-s^\ast)} L(s) L^\ast(-s^\ast)
+   \\&=& 1
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+%=======================================
+\section{Discrete-time random processes}
+%=======================================
+%---------------------------------------
+\subsection{Properties}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+\thmbox{\begin{array}{rcl}
+   \Rxx(n,m) &=& \Rxx^\ast(m,n)  \\
+   \Rxy(n,m) &=& \Ryx^\ast(m,n)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \Rxx(n,m)
+      &\eqd& \E[\rvx(n) \rvx^\ast(m)]
+    \\&=&      \E[\rvx^\ast(m) \rvx(n) ]
+    \\&=&      \left( \E[\rvx(m) \rvx^\ast(n) ] \right)^\ast
+    \\&\eqd& \Rxx^\ast(m,n)
+\\
+\\
+   \Rxy(n,m)
+      &\eqd& \E[\rvx(n) \rvy^\ast(m)]
+    \\&=&      \E[\rvy^\ast(m) \rvx(n) ]
+    \\&=&      \left( \E[\rvy(m) \rvx^\ast(n) ] \right)^\ast
+    \\&\eqd& \Ryx^\ast(m,n)
+\end{eqnarray*}
+\end{proof}
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{fsK}
+\begin{center}
+  \setlength{\unitlength}{0.2mm}
+  \begin{picture}(300,130)(-100,-80)
+  \thinlines
+  %\graphpaper[10](0,0)(160,80)
+  \put(-100,  10 ){\makebox (100, 40)[b]{$\rvx(n)$}  }
+  \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(n,m)$}  }
+  \put(-100,   0 ){\vector  (  1,  0){100}             }
+  \put(   0, -50 ){\framebox(100,100){$\conv h(n)$}  }
+  \put( 100,   0 ){\vector  (  1,  0){100}             }
+  \put( 110,   0 ){\makebox (100, 40)[lb]{$\ds\rvy(n)=\fh(n)\conv\rvx(n)=\sum_k\fh(k)\rvx(n-k)$}  }
+  \put( 100, -50 ){\makebox (100, 40)[t]{$\Ryy(n,m)$}  }
+  \put(  50, -60 ){\makebox (  0,  0)[t]{$\Rxy(n,m)$}  }
+  \end{picture}
+\caption{
+   Linear system with random process input and output
+   \label{fig:d-linear-sys}
+   }
+\end{center}
+\end{fsK}
+\end{figure}
+
+The next theorem describes the statistical properties of an LTI system
+with impulse response $\fh(t)$
+(see \prefp{fig:d-linear-sys}).\footnote{\citerp{papoulis}{310}}
+
+%---------------------------------------
+\begin{theorem}
+\index{linear time invariant}
+%---------------------------------------
+Let
+\begin{liste}
+   \item $h:\R\to\C$ be the impulse response of a linear time-invariant system
+   \item $\rvy(n)=h(n)\conv \rvx(n) \eqd \sum_m h(m)\rvx(n-m)$.
+\end{liste}
+
+Then
+
+\begin{fsM}
+\thmbox{\begin{array}{rclcl}
+   \Rxy(n,m) &=& \Rxx(n,m)\conv h^\ast(m) &\eqd& \ds \sum_k h^\ast(k) \Rxx(n,m-k)  \\
+   \Ryy(n,m) &=& \Rxy(n,m)\conv h(n)      &\eqd& \ds \sum_k h(k) \Rxy(n-k,m)  \\
+   \Ryy(n,m) &=& \Rxx(n,m)\conv h(n)\conv h^\ast(m)
+                 &\eqd& \ds \sum_p \sum_k h(k)h^\ast(p) \Rxx(n-k,m-p)
+\end{array}}
+\end{fsM}
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+   \Rxy(n,m)
+     &\eqd& \E\left[\rvx(n) \rvy^\ast(m) \right]
+   \\&=&    \E\left[\rvx(n) \left( \sum_k h(k) \rvx(m-k)    \right)^\ast \right]
+   \\&=&    \E\left[\rvx(n) \sum_k h^\ast(k) \rvx^\ast(m-k)     \right]
+   \\&=&    \sum_k h^\ast(k) \E\left[\rvx(n) \rvx^\ast(m-k) \right]
+   \\&=&    \sum_k h^\ast(k) \Rxx(n,m-k)
+   \\&\eqd& \Rxx(n,m) \conv h^\ast(m)
+\\
+\\
+   \Ryy(n,m)
+     &\eqd& \E\left[\rvy(n) \rvy^\ast(m)  \right]
+   \\&=&    \E\left[\left(\sum_k \fh(k) \rvx(n-k)\right) \rvy^\ast(m)  \right]
+   \\&=&    \sum_k \fh(k) \E\left[\rvx(n-k)\rvy^\ast(m)\right]
+   \\&=&    \sum_k \fh(k) \Rxy(n-k,m)
+   \\&\eqd&  \Rxy(n,m)\conv \fh(n)
+\\
+\\
+   \Ryy(n,m)
+     &\eqd& \E\left[\rvy(n) \rvy^\ast(m)  \right]
+   \\&=&    \E\left[\left(\sum_k \fh(k) \rvx(n-k)\right)
+                    \left(\sum_p \fh(p) \rvx(m-p)\right)^\ast
+              \right]
+   \\&=&    \E\left[\sum_k\sum_p \fh(k)\fh^\ast(p) \rvx(n-k)\rvx^\ast(m-p)
+              \right]
+   \\&=&    \sum_p\sum_k \fh(k)\fh^\ast(p)
+            \E\left[\rvx(n-k)\rvx^\ast(m-p)\right]
+   \\&=&    \sum_p\fh^\ast(p) \sum_k \fh(k) \Rxx(n-k,m-p)
+   \\&=&    \sum_p\fh^\ast(p) \left[\Rxx(n,m-p)\conv\fh(n)\right]
+   \\&\eqd& \Rxx(n,m)\conv\fh(n) \conv \fh^\ast(m)
+\end{eqnarray*}
+\end{proof}
+
+
+%---------------------------------------
+\subsection{Wide Sense Stationary processes}
+\index{wide sense stationary}
+\index{WSS}
+%---------------------------------------
+%---------------------------------------
+\begin{definition}
+%---------------------------------------
+Let
+   $\rvx(n)$ be a random process,
+   $\Mx(n)$ its mean, and
+   $\Rxx(n+m,n)$ its autocorrelation.
+
+Then $\rvx(n)$ is \textbf{wide sense stationary} (WSS) if
+
+\begin{tabular}{llll}
+   1. & $\Mx(n)$         & is constant with respect to $n$ & (stationary in the mean) \\
+   2. & $\Rxx(n+m,n)$ & is constant with respect to $n$ & (stationary in correlation)
+\end{tabular}
+\end{definition}
+
+If a process is WSS, mean and correlation are often written
+$\Mx$ and $\Rxx(m)$, respectively.
+If a pair of processes $\rvx$ and $\rvy$ are WSS,
+then their cross-correlation is often written $\Rxy(m)$.
+
+%---------------------------------------
+\begin{definition}
+\label{def:d-psd}
+\index{power spectral density}
+\index{PSD}
+%---------------------------------------
+Let $\rvx(n)$ and $\rvy(n)$ be WSS random processes
+with auto-correlation and cross-correlation
+$\Rxx(m), \Ryy(m), \Rxy(m),$ and $\Ryx(m)$.\\
+Then the \textbf{power spectral density} of $\rvx(n)$ and $\rvy(n)$ are defined as
+\defbox{\begin{array}{rclcl}
+   \Sxx(z) &\eqd& \opZ{\Rxx(m)} &\eqd& \ds \sum_m \Rxx(m) z^{-m}     \\
+   \Syy(z) &\eqd& \opZ{\Ryy(m)} &\eqd& \ds \sum_m \Ryy(m) z^{-m}     \\
+   \Sxy(z) &\eqd& \opZ{\Rxy(m)} &\eqd& \ds \sum_m \Rxy(m) z^{-m}     \\
+   \Syx(z) &\eqd& \opZ{\Ryx(m)} &\eqd& \ds \sum_m \Ryx(m) z^{-m}
+\end{array}}
+\end{definition}
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{fsK}
+\begin{center}
+  \setlength{\unitlength}{0.2mm}
+  \begin{picture}(300,100)(-100,-60)
+  \thinlines
+  %\graphpaper[10](0,0)(160,80)
+  \put(-100,  10 ){\makebox (100, 40)[b]{$\rvx(n)$}  }
+  \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(m)$}  }
+  \put(-100, -50 ){\makebox (100, 40)[b]{$\Sxx(z)$}  }
+  \put(-100,   0 ){\vector  (  1,  0){100}             }
+  \put(   0, -50 ){\framebox(100,100){$\conv h(n)$}  }
+  \put( 100,   0 ){\vector  (  1,  0){100}             }
+  \put( 100,  10 ){\makebox (100, 40)[b]{$\rvy(n)$}  }
+  \put( 100, -50 ){\makebox (100, 40)[t]{$\Ryy(m)$}  }
+  \put( 100, -50 ){\makebox (100, 40)[b]{$\Syy(z)$}  }
+  \put(  50, -60 ){\makebox (  0,  0)[t]{$\Rxy(m)$}  }
+  \end{picture}
+\caption{
+   Linear system with WSS random process input and output
+   \label{fig:d-linear-sys-WSS}
+   }
+\end{center}
+\end{fsK}
+\end{figure}
+
+The next theorem describes the statistical properties of an LTI system
+with impulse response $\fh(t)$ and with an input which is a
+WSS random process
+(see \prefp{fig:d-linear-sys-WSS}).\footnote{\citerp{papoulis}{323}}
+%---------------------------------------
+\begin{theorem}
+\index{convolution}
+\index{linear time invariant systems}
+\index{LTI}
+%---------------------------------------
+Let
+\begin{liste}
+   \item $\ds \fh:\R\to\C$ be the impulse response of a linear time-invariant system
+   \item $\ds\rvy(n)=h(n) \conv \rvx(n) \eqd \sum_k h(k)\rvx(n-k)$.
+\end{liste}
+Then
+\thmbox{\begin{array}{rclcl}
+   \Rxy(m) &=& \ds \Rxx(m)\conv \fh^\ast(-m)           &\eqd& \ds \sum_k h^\ast(-k) \Rxx(m-k)  \\
+   \Ryy(m) &=& \ds \Rxy(m)\conv \fh(m)                 &\eqd& \ds \sum_k h(k) \Rxy(m-k)  \\
+   \Ryy(m) &=& \ds \Rxx(m)\conv \fh(m)\conv h^\ast(-m) &\eqd& \ds \sum_j \sum_k h^\ast(-j) h(k-j) \Rxx(m-k-j)   \\
+\\
+   \Sxy(z) &=& \ds \Sxx(z) \Zh^\ast\left(\frac{1}{z^\ast}\right) \\
+   \Syy(z) &=& \ds \Sxy(z) \Zh(z)            \\
+   \Syy(z) &=& \ds \Sxx(z) \Zh(z) \Zh^\ast\left(\frac{1}{z^\ast}\right)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \Rxx(m) \conv h^\ast(-m)
+     &\eqd& \sum_k \fh^\ast(-k) \Rxx(m-k)
+   \\&=&    \sum_k \fh^\ast(-k) \E\left[\rvx(n) \rvx^\ast(n-m+k) \right]
+   \\&=&    \E\left[\rvx(n) \sum_k \fh^\ast(-k)  \rvx^\ast(n-m+k)     \right]
+   \\&=&    \E\left[\rvx(n) \sum_{k^\prime} \fh^\ast(k^\prime)  \rvx^\ast(n-m-k^\prime)  ^\prime   \right]
+   \\&=&    \E\left[\rvx(n) \rvy^\ast(n-m)  \right]
+   \\&\eqd& \Rxy(m)
+\\
+\\
+   \Rxy(m) \conv h(m)
+     &\eqd& \sum_k \fh(k) \Rxy(m-k)
+   \\&=&    \sum_k \fh(k) \E\left[\rvx(n+m-k) \rvy^\ast(n) \right]
+   \\&=&    \E\left[\rvy^\ast(n) \sum_k \fh(k) \rvx(n+m-k)    \right]
+   \\&=&    \E\left[\rvy^\ast(n) \rvy(n+m) \right]
+   \\&=&    \E\left[ \rvy(n+m) \rvy^\ast(n)\right]
+   \\&\eqd& \Ryy(m)
+\\
+\\
+   \Ryy(m)
+     &=& \Rxy(m) \conv h(m)
+   \\&=& \Rxx(m) \conv h^\ast(-m) \conv h(m)
+   \\&=& \Rxx(m) \conv h(m)  \conv h^\ast(-m)
+\\
+\\
+   Sxy(z)
+     &\eqd& \opZ \Rxy(m)
+   \\&\eqd& \sum_m \Rxy(m) z^{-m}
+   \\&=&    \sum_m \left[ \Rxx(m) \conv h^\ast(-m) \right] z^{-m}
+   \\&=&    \sum_m \left[ \sum_k h^\ast(-k) \Rxx(m-k)  \right] z^{-m}
+   \\&=&    \sum_k h^\ast(-k) \sum_m \Rxx(m-k)z^{-m}
+   \\&=&    \sum_k h^\ast(-k) \sum_j \Rxx(j)z^{-(j+k)}
+            \hspace{3em}\mbox{ where $j=m-k\iff m=j+k$}
+   \\&=&    \sum_k h^\ast(-k) z^{-k}   \sum_j \Rxx(j)z^{-j}
+   \\&=&    \sum_k h^\ast(k) z^{-(-k)}   \sum_j \Rxx(j)z^{-j}
+   \\&=&    \left[\sum_k h(k) \left(\frac{1}{z^\ast}\right)^{-k} \right]^\ast  \sum_j \Rxx(j)z^{-j}
+   \\&\eqd& \Zh^\ast\left(\frac{1}{z^\ast}\right) \Sxx(z)
+\\
+\\
+   \Syy(z)
+     &\eqd& \opZ \Ryy(m)
+   \\&\eqd& \sum_m \Ryy(m) z^{-m}
+   \\&=&    \sum_m \left[ \Rxy(m) \conv h(m) \right] z^{-m}
+   \\&=&    \sum_m \left[ \sum_k h(k) \Rxy(m-k)  \right] z^{-m}
+   \\&=&    \sum_k h(k) \sum_m \Rxy(m-k) z^{-m}
+   \\&=&    \sum_k h(k) \sum_m \Rxy(j) z^{-(j+k)}
+            \hspace{3em}\mbox{ where $j=m-k\iff m=j+k$}
+   \\&=&    \sum_k h(k)z^{-k}   \sum_m \Rxy(j) z^{-j}
+   \\&\eqd& \Z\Zh(z) \Sxy(z)
+\\
+\\
+   \Syy(z)
+     &=& \Z\Zh(z) \Sxy(z)
+   \\&=& \Z\Zh(z) \Zh^\ast\left(\frac{1}{z^\ast}\right) \Sxx(z)
+\end{eqnarray*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\index{conjugate symmetric}
+%---------------------------------------
+Let $\rvx:\Z\to\C$ be a WSS random process with
+auto-correlation $\Rxx(m)$.
+Then $\Rxx(m)$ is {\em conjugate symmetric} such that
+\thmbox{ \Rxx^\ast(-m) = \Rxx(m). }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \Rxx^\ast(-m)
+     &\eqd& \left( \Eb{\rvx(n-m)\rvx^\ast(n)}\right)^\ast
+   \\&=&           \Eb{\rvx^\ast(n-m)\rvx(n)}
+   \\&=&           \Eb{\rvx(n)\rvx^\ast(n-m)}
+   \\&=&           \Eb{\rvx(n+m)\rvx^\ast(n)}
+   \\&\eqd&        \Rxx(m)
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+
+%---------------------------------------
+\subsection{Whitening}
+\index{whitening filter}
+\label{sec:d-whiten}
+%---------------------------------------
+%---------------------------------------
+\begin{definition}
+\index{rational expression}
+\index{poles}
+\index{zeros}
+%---------------------------------------
+A \textbf{rational expression} $\fp(z)a$ is a polynomial divided by a polynomial
+such that
+\defbox{
+   \fp(z) = \frac{\ds\sum_{n=0}^N b_n z^{-n}}{\ds\sum_{n=0}^M a_n z^{-n}}.
+}
+The \textbf{zeros} of a rational expression are the roots of its numerator polynomial. \\
+The \textbf{poles} of a rational expression are the roots of its denominator polynomial.
+\end{definition}
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,300)(-150,-130)
+  %\graphpaper[10](0,0)(200,200)
+  \thinlines
+  \put(-130,   0){\line(1,0){260} }
+  \put(   0,-130){\line(0,1){260} }
+  \put( 140,   0){\makebox(0,0)[l]{$\Re$}}
+  \put(   0, 140){\makebox(0,0)[b]{$\Im$}}
+
+  \put(  30,  60){\makebox(0,0){$\times$}}
+  \put(  30,- 60){\makebox(0,0){$\times$}}
+  \put(- 20,  20){\makebox(0,0){$\times$}}
+  \put(- 20,- 20){\makebox(0,0){$\times$}}
+  \put(  70,  20){\circle{10}}
+  \put(  70,- 20){\circle{10}}
+  \put(- 80,  40){\circle{10}}
+  \put(- 80,- 40){\circle{10}}
+
+ \input{../common/circ128.inc}
+\end{picture}
+\end{fsL}
+\caption{
+   Poles ($\times$) and zeros ($o$) of a minimum phase filter
+   \label{fig:w_pz_minphase}
+   }
+\end{center}
+\end{figure}
+
+
+%---------------------------------------
+\begin{definition}
+\index{minimum phase}
+\index{rational expression}
+%---------------------------------------
+Let $\Zh(z)$ be the z-transform of the impulse response of a filter.
+If $\Zh(z)$ can be expressed as a rational expression with poles and zeros
+$r_ne^{i\theta_n}$,
+then the filter is \textbf{minimum phase} if each $r_n<1$
+(all roots lie inside the unit circle in the complex $z$-plane).
+\end{definition}
+See \prefp{fig:w_pz_minphase}.
+
+Note that if $L(z)$ has a root at $z=re^{i\theta}$, then
+$L^\ast(1/z^\ast)$ has a root at
+\begin{eqnarray*}
+   \frac{1}{z^\ast}
+     &=& \frac{1}{\left(re^{i\theta}\right)^\ast}
+      = \frac{1}{re^{-i\theta}}
+      = \frac{1}{r} e^{i\theta}.
+\end{eqnarray*}
+That is, if $L(z)$ has a root inside the unit circle,
+then $L^\ast(1/z^\ast)$ has a root directly opposite across the unit circle
+boundary (see \prefp{fig:z-roots}).
+A causal stable filter $\Z\Zh(z)$ must have all of its poles inside
+the unit circle.
+A minimum phase filter is a filter with both its poles and zeros inside the
+unit circle.
+One advantage of a minimum phase filter is that its recipricol
+(zeros become poles and poles become zeros)
+is also causal and stable.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,300)(-130,-130)
+  %\graphpaper[10](0,0)(200,200)
+  \thicklines%
+  \color{axis}%
+    \put(-130 ,   0 ){\line(1,0){260} }%
+    \put(   0 ,-130 ){\line(0,1){260} }%
+    \put( 140 ,   0 ){\makebox(0,0)[l]{$\Re$}}%
+    \put(   0 , 140 ){\makebox(0,0)[b]{$\Im$}}%
+  \color{zero}%
+    \qbezier[24](  0,  0)( 56.5,56.5)(113,113)
+    %\put(   0 ,   0 ){\line(1,1){120}}%
+    \put(  28 ,  28 ){\circle{10}}%
+    \put( 113 , 113 ){\circle{10}}%
+    \put(  38 ,  28 ){\makebox(0,0)[l]{zero of $L(z)$}}%
+    \put( 123 , 113 ){\makebox(0,0)[l]{zero of $L^\ast\left(\frac{1}{z^\ast}\right)$}}%
+  \color{pole}%
+    \qbezier[24](0,0)(-61.5,-26.5)(-123,-53)%
+    %\put(   0 ,   0 ){\line(-3,-1){130}}%
+    \put( -76 , -25 ){\makebox(0,0){$\times$}}%
+    \put(-119 , -40 ){\makebox(0,0){$\times$}}%
+    \put( -76 , -25 ){\makebox(0,0)[lt]{pole of $L(z)$}}%
+    \put(-119 , -40 ){\makebox(0,0)[lt]{pole of $L^\ast\left(\frac{1}{z^\ast}\right)$}}%
+  \color{circle}%
+    \input{../common/circle.inp}
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Mirrored roots in complex-z plane
+   \label{fig:z-roots}
+   }
+\end{figure}
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{fsK}
+\begin{center}
+  \setlength{\unitlength}{0.2mm}
+  \begin{picture}(700,100)(-100,-60)
+  \thinlines
+  %\graphpaper[10](0,0)(160,80)
+  \put(-100,  10 ){\makebox (100, 40)[b]{$\rvx(n)$}                  }
+  \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(m)$}                  }
+  \put(-100, -50 ){\makebox (100, 40)[b]{$\Sxx(z)$}                  }
+  \put(-100,   0 ){\vector  (  1,  0){100}                           }
+
+  \put(   0, -50 ){\framebox(100,100)   {$\conv\gamma(n)$}           }
+  \put(   0, -40 ){\makebox (100, 80)[t]{whitening}                  }
+  \put(   0, -40 ){\makebox (100, 80)[b]{$\Gamma(z)$}                }
+  \put( 100,   0 ){\vector  (  1,  0)   {200}                        }
+  \put( 100,  10 ){\makebox (200, 40)[t]{white noise process}        }
+  \put( 100,  10 ){\makebox (200, 40)[b]{$\vw(n)$}                 }
+  \put( 100, -50 ){\makebox (200, 40)[t]{$\Rww(m)=\delta(m)$}  }
+  \put( 100, -50 ){\makebox (200, 40)[b]{$\Sww(z)=1$}                }
+
+  \put( 300, -50 ){\framebox(100,100)   {$\conv l(n)$}               }
+  \put( 300, -40 ){\makebox (100, 80)[t]{innovations}                }
+  \put( 300, -40 ){\makebox (100, 80)[b]{$L(z)$}                     }
+  \put( 400,   0 ){\vector  (  1,  0)   {100}                        }
+  \put( 400,  10 ){\makebox (100, 40)[b]{$\rvx(n)$}                  }
+  \put( 400, -50 ){\makebox (200, 40)[t]{$\Rxx(m)=l(m)\conv l^\ast(-m)$}  }
+  \put( 400, -50 ){\makebox (200, 40)[b]{$\Sxx(z)=L(z) L^\ast\left(\frac{1}{z^\ast}\right)$}  }
+  \end{picture}
+\caption{
+   Innovations and whitening filters
+   \label{fig:d-innovations}
+   }
+\end{center}
+\end{fsK}
+\end{figure}
+
+
+The next theorem demonstrates a method for ``whitening"
+a random process $\fx(n)$ with a filter constructed from a decomposition
+of $\Rxx(m)$.
+The technique is stated precisely in \prefp{thm:d-innovations}
+and illustrated in \prefp{fig:d-innovations}.
+Both imply two filters with impulse responses $l(n)$ and $\gamma(n)$.
+Filter $l(n)$ is referred to as the \textbf{innovations filter}
+(because it generates or ``innovates" $\fx(n)$ from a white noise
+process $\fw(n)$)
+and $\gamma(n)$ is referred to as the \textbf{whitening filter}
+because it produces a white noise sequence when the input sequence
+is $\fx(n)$.\footnote{\citerpp{papoulis}{401}{402}}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:d-innovations}
+%---------------------------------------
+Let $\fx(n)$ be a WSS random process with autocorrelation $\Rxx(m)$
+and spectral density $\Sxx(z)$.
+\textbf{If} $\Sxx(z)$ has a \textbf{rational expression},
+then the following are true:
+
+\begin{enume}
+   \item There exists a rational expression $L(z)$ with minimum phase
+         such that
+         \[ \Sxx(z) = L(z)L^\ast\left(\frac{1}{z^\ast}\right). \]
+   \item An LTI filter for which the Laplace transform of
+         the impulse response $\gamma(n)$ is
+         \[ \Gamma(z) = \frac{1}{L(z)} \]
+         is both causal and stable.
+   \item If $\fx(n)$ is the input to the filter $\gamma(n)$,
+         the output $\fy(n)$ is a \textbf{white noise sequence} such that
+         \[ \Syy(z)=1 \hspace{2cm} \Ryy(m)=\kdelta(m).\]
+\end{enume}
+\end{theorem}
+
+
+\begin{proof}
+\begin{eqnarray*}
+   \Sww(z)
+     &=& \Gamma(z)\Gamma^\ast\left(\frac{1}{z^\ast}\right) \Sxx(z)
+   \\&=& \frac{1}{L(z)} \frac{1}{L^\ast\left(\frac{1}{z^\ast}\right)} \Sxx(z)
+   \\&=& \frac{1}{L(z)} \frac{1}{L^\ast\left(\frac{1}{z^\ast}\right)}
+         L(z) L^\ast\left(\frac{1}{z^\ast}\right)
+   \\&=& 1
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+
+
+

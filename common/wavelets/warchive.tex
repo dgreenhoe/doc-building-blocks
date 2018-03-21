@@ -1,0 +1,1649 @@
+%============================================================================
+% Wavelet Structure and Design
+% Archive file
+% Daniel J. Greenhoe
+%============================================================================
+
+
+
+%=======================================
+\section{First section}
+%=======================================
+
+
+Therefore, for the projection of any function $\ff(x)$ onto the subspace
+$\spV_n$ (the approximation of $\ff(x)$ at scale $n$) is
+\begin{align*}
+  \mcomr{\opV_n \ff(x)}{projection of $\ff(x)$ onto scaling subspace $\spV_n$}
+    &= \mcom{\sum_m \inprod{\ff(x)}{\fphi(2^nx-m)}\;\fphi(2^nx-m)}{in terms of scaling basis functions}.
+  \\
+  \mcomr{\opW_n \ff(x)}{projection of $\ff(x)$ onto wavelet subspace $\spW_n$}
+    &= \mcom{\sum_m \inprod{\ff(x)}{\fpsi(2^nx-m)}\;\fpsi(2^nx-m)}{in terms of wavelet basis functions}.
+\end{align*}
+
+Furthermore, by expanding $\opV_n$ into a coarser scaling operator $\spV_{n-j}$
+and $j$ wavelet operators, we can project a function $\ff(x)$ onto the scaling
+subspace $\spV_n$ as
+\begin{align*}
+  \opV_n \ff(x)
+    &= \mcom{\sum_m \inprod{\ff(x)}{\fphi(2^{n-j}x-m)}\;\fphi(2^{n-j}x-m)}
+            {scaling expansion in space $\spV_{n-j}$}
+     + \mcom{\sum_{k=1}^j\sum_m \inprod{\ff(x)}{\fpsi(2^{n-k}x-m)}\;\fpsi(2^{n-k}x-m)}
+            {wavelet expansion over spaces $\spW_{n-j},\ldots,\spW_{n-2},\spW_{n-1}$}.
+\end{align*}
+
+
+\begin{figure}[th]
+\begin{tabular}{ccc}
+  $ h_n $, $ g_n $ & $\fphi(t)$ & $\fpsi(t)$  \\
+  \hline
+\\
+  \parbox[][5\tw/16][t]{5\tw/16}{
+    rectangular:\\
+    \begin{tabular}[b]{l|r|r}
+      $n$ & $\sqrt{2} h_n $ & $\sqrt{2} g_n $ \\
+      \hline
+      0   & $1$  & $ 1$  \\
+      1   & $1$  & $-1$
+    \end{tabular}
+    } &
+  \parbox[][5\tw/16][t]{5\tw/16}{\includegraphics*[width=5\tw/16, clip=true]{d1sc_x3125.eps}}
+  \parbox[][5\tw/16][t]{5\tw/16}{\includegraphics*[width=5\tw/16, clip=true]{d1wc_x3125.eps}}
+\\
+  \parbox[][5\tw/16][t]{5\tw/16}{
+    tent: \\
+    \begin{tabular}[b]{l|r|r}
+      $n$ & $\sqrt{2} h_n $ & $\sqrt{2} g_n $ \\
+      \hline
+      0   & $\frac{1}{2}$  & $ \frac{1}{2}$  \\
+      1   & $1$            & $-1$            \\
+      2   & $\frac{1}{2}$  & $ \frac{1}{2}$
+    \end{tabular}
+    } &
+  \parbox[][4cm][t]{5cm}{\epsfig{file=tents.eps, width=5\tw/16, clip=}} &
+  \parbox[][4cm][t]{5cm}{\epsfig{file=tentw.eps, width=5\tw/16, clip=}}
+\\
+  \parbox[][4cm][t]{4cm}{
+    B-spline: \\
+    \begin{tabular}[b]{l|r|r}
+      $n$ & $\sqrt{2} h_n $ & $\sqrt{2} g_n $ \\
+      \hline
+      0   & $\frac{1}{8}$  & $ \frac{1}{8}$  \\
+      1   & $\frac{4}{8}$  & $-\frac{4}{8}$  \\
+      2   & $\frac{6}{8}$  & $ \frac{6}{8}$  \\
+      3   & $\frac{4}{8}$  & $-\frac{4}{8}$  \\
+      4   & $\frac{1}{8}$  & $-\frac{1}{8}$
+    \end{tabular}
+    } &
+  \parbox[][4cm][t]{5cm}{\epsfig{file=Bspls.eps, width=5\tw/16, clip=}} &
+  \parbox[][4cm][t]{5cm}{\epsfig{file=Bsplw.eps, width=5\tw/16, clip=}}
+\\
+  \parbox[][4cm][t]{4cm}{
+    Daubechies-4: \\
+    \begin{tabular}[b]{l|r|r}
+      $n$ & $\sqrt{2} h_n $ & $\sqrt{2} g_n $ \\
+      \hline
+      0   & $\frac{1+\sqrt{3}}{4}$  & $ \frac{1-\sqrt{3}}{4}$  \\
+      1   & $\frac{3+\sqrt{3}}{4}$  & $-\frac{3-\sqrt{3}}{4}$  \\
+      2   & $\frac{3-\sqrt{3}}{4}$  & $ \frac{3+\sqrt{3}}{4}$  \\
+      3   & $\frac{1-\sqrt{3}}{4}$  & $-\frac{1+\sqrt{3}}{4}$  \\
+    \end{tabular}
+    } &
+  \parbox[][4cm][t]{5cm}{\epsfig{file=D2sc_x3125.eps, width=5\tw/16, clip=}} &
+  \parbox[][4cm][t]{5cm}{\epsfig{file=D2wc_x3125.eps, width=5\tw/16, clip=}}
+\end{tabular}
+\caption{
+  Examples of scaling functions.
+  \label{fig:scaling_ex}
+  }
+\end{figure}
+
+
+
+Definition~\ref{def:hn} includes a mysterious ``$\sqrt{2}$" factor.
+This factor is not really necessary.
+Some authors do not include it (use ``$1$" instead);
+other authors replace it with a factor of $2$.
+However, one reason for using the $\sqrt{2}$ factor is that
+with it and if $\seq{\fphi(t-n)}{n\in\Z}$ is orthonormal,
+then the square of the norm of the scaling function is simply the
+sum of the squared absolute values of the scaling coefficients.
+This result is presented in the next proposition.
+%--------------------------------------
+\begin{proposition}
+%--------------------------------------
+Let $\fphi(t)$ be a scaling function with
+scaling coefficients $\seq{ h_n }{n\in\Z}$. Then
+\formbox{
+  \mcom{\inprod{\fphi(t-n)}{\fphi(t-m)}=\kdelta_{n-m}}
+       {$\seq{\fphi(t-n)}{n\in\Z}$ is orthnormal}
+  \hs{4ex}\implies\hs{4ex}
+  \norm{\fphi(t)}^2 = \sum_n | h_n |^2
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \norm{\fphi(t)}^2
+    &= \norm{\sqrt{2}\sum_n  h_n \fphi(2t-n)}^2
+    && \text{by dilation equation---Theorem~\ref{thm:h->phi}}
+  \\&= |\sqrt{2}|^2 \norm{\sum_n  h_n \fphi(2t-n)}^2
+    && \text{by definition of $\norm{\cdot}$ (page~\pageref{def:norm})}
+  \\&= 2 \sum_n \norm{ h_n \fphi(2t-n)}^2
+    && \text{by Pythagorean Theorem (page~\pageref{thm:pythag})}
+  \\&= 2 \sum_n | h_n |^2 \; \norm{\fphi(2t-n)}^2
+    && \text{by definition of $\norm{\cdot}$ (page~\pageref{def:norm})}
+  \\&= 2 \sum_n | h_n |^2 \; \int_t \fphi(2t-n) \fphi^\ast(2t-n) \dt
+    && \text{by definition of $\norm{\cdot}$ in $\spLL$}
+  \\&= 2 \sum_n | h_n |^2 \; \int_u \fphi(u-n) \fphi^\ast(u-n) \frac{1}{2}\du
+    && \text{let } u=2t \implies t=\frac{1}{2}u
+  \\&= \frac{2}{2} \sum_n | h_n |^2 \; \mcom{\inprod{\fphi(u-n)}{\fphi(u-n)}}{1}
+    && \text{by definition of $\norm{\cdot}$ in $\spLL$}
+  \\&= \sum_n | h_n |^2
+    && \text{by left hypothesis}
+\end{align*}
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{definition}
+\label{def:ws}
+\index{wavelet system}
+%--------------------------------------
+Let $\fh,\fg\in\spII$.
+A {\bf wavelet system} is the
+ordered pair $(\fh,\fg)$ that satisfies
+\defbox{\begin{array}{ll@{\qquad}D}
+  1. & \fphi(t) = \sqrt{2} \sum_n  h_n  \fphi(2t-n)
+     & \text{($\fh$ generates $\fphi(t)$)}  \\
+  2. & \fpsi(t) = \sqrt{2} \sum_n  g_n  \fphi(2t-n)
+     & \text{($\fg$ generates $\fpsi(t)$)} \\
+  3. & \seq{2^{j}\fphi(2^jt-n)}{n\in\Z} \spans \spV_j
+     & \text{($\{\fphi(t-n)\}$ generates $\seq{\spV_j}{j\in\Z}$)} \\
+  4. & \seq{2^{j}\fpsi(2^jt-n)}{n\in\Z} \spans \spW_j
+     & \text{($\{\fpsi(t-n)\}$ generates $\seq{\spW_j}{j\in\Z}$)} \\
+  5. & \inprod{\fphi(t-n)}{\fphi(t-m)}=\kdelta_{nm}
+     & \text{($\seq{\fphi(t-n)}{n\in\Z}$ is orthonormal)} \\
+  6. & \inprod{\fpsi(t-n)}{\fpsi(t-m)}=\kdelta_{nm}
+     & \text{($\seq{\fpsi(t-n)}{n\in\Z}$ is orthonormal)} \\
+  7. & \spV_0 \perp \spW_0
+     & \text{($\spV_0$ is orthogonal to $\spW_0$)}
+\end{array}}
+and generates the 4-tuple
+$\left(\seq{\spV_j}{j\in\Z}, \seq{\spW_j}{j\in\Z}, \fphi, \fpsi \right)$.
+\addtocounter{footnote}{-1}
+\footnotetext{
+   {\em multiresolutional analysis}:
+   Definition~\ref{def:mra} page~\pageref{def:mra}
+   }
+\stepcounter{footnote}
+\footnotetext{
+   {\em complimentary subspaces}:
+   Definition~\ref{def:direct_sum} page~\pageref{def:direct_sum}
+   }
+\end{definition}
+
+\begin{figure}[t] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.10mm}
+\begin{picture}(300,300)(-130,-130)
+  %\graphpaper[10](0,0)(200,200)
+  \thinlines
+  \input{circ512.inc}
+  \put(-130 ,   0){\line(1,0){260} }
+  \put(   0 ,-130){\line(0,1){260} }
+  \put( 140 ,   0){\makebox(0,0)[l]{$\Reb{z}$}}
+  \put(   0 , 140){\makebox(0,0)[b]{$\Imb{z}$}}
+
+  \put( 120 , 120){\makebox(0,0)[lb]{$z=e^{i\omega}$}}
+  %\put(-100,    0){\circle{15}}
+  \put( 115 , 115){\vector(-1,-1){43}}
+
+  %\put(-150 , -50){\makebox(0,0)[tr]{$\Zh(-1)=\Fh(\pi)=0$}}
+  %\put(-150 , -50){\vector( 1, 1){43}}
+
+  \put( 150 , -50){\makebox(0,0)[tl]{$\Zh(1)=\Fh(0)=\sqrt{2}$}}
+  \put( 150 , -50){\vector(-1, 1){50}}
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Scaling functions requirements at $\Zh(1)$
+   \label{fig:h(z)=sqrt2}
+   }
+\end{figure}
+
+
+%=======================================
+\section{Approximation using wavelets}
+%=======================================
+%=======================================
+\subsection {Wavelet function families}
+%=======================================
+The scaling function $\fphi(x)$ generates a family
+of related scaling functions $\{\fphi_{k,n}(x)\}$.
+Likewise the wavelet function $\fpsi(x)$ generates a family
+of wavelet functions $\{\fpsi_{k,n}(x)\}$.
+Each element in these sets has
+has a {\em scale} parameter $k$ and a {\em translation} parameter $n$.
+%Figure~\ref{fig:haar-jn} shows the Haar scaling function at multiple
+%scales and translations.
+
+%--------------------------------------
+\begin{definition}
+\label{def:phi_family}
+\index{scaling family}
+\label{def:psi_family}
+\index{wavelet family}
+%--------------------------------------
+Let {\bf the set of scaling functions}
+$\set{\fphi_{j,n}:\R\to\C}{j,n\in\Z}$ generated by $\fphi(x)$ and
+{\bf the set of wavelet functions}
+$\set{\fpsi_{j,n}:\R\to\C}{j,n\in\Z}$ generated by $\fpsi(x)$
+be defined as
+\defbox{\begin{array}{rcl}
+   \fphi_{j,n}(x) &\eqd& \sqrt{2^j} \fphi(2^jx-n)  \\
+   \fpsi_{j,n}(x) &\eqd& \sqrt{2^j} \fpsi(2^jx-n)
+\end{array}}
+where $j$ represents the {\bf scale}
+and $n$ represents {\bf translation} or {\em shift} of each element.
+\end{definition}
+
+
+
+%=======================================
+\subsection{Choices of function representation}
+%=======================================
+\setlength{\unitlength}{8mm}
+\begin{figure}[h] \color{figcolor}
+\begin{center}
+\begin{picture}(16,6)
+\put(0,5){\framebox(16,1){$\spV_j$}}
+
+\put(0,4){\framebox(8,1){$\spV_{j-1}$}}
+\put(8,4){\framebox(8,1){$\spW_{j-1}$}}
+
+\put(0,3){\framebox(4,1){$\spV_{j-2}$}}
+\put(4,3){\framebox(4,1){$\spW_{j-2}$}}
+\put(8,3){\framebox(8,1){$\spW_{j-1}$}}
+
+\put(0,2){\framebox(2,1){$\spV_{j-3}$}}
+\put(2,2){\framebox(2,1){$\spW_{j-3}$}}
+\put(4,2){\framebox(4,1){$\spW_{j-2}$}}
+\put(8,2){\framebox(8,1){$\spW_{j-1}$}}
+
+\put(0,1){\makebox(16,1){$\vdots$}}
+
+\put(0,0){\framebox(1,1){$\spV_{0}$}}
+\put(1,0){\framebox(1,1){$\spW_{0}$}}
+\put(2,0){\framebox(2,1){$\spW_{1}$}}
+\put(4,0){\makebox (4,1){$\cdots$}}
+\put(8,0){\framebox(8,1){$\spW_{j-1}$}}
+\end{picture}
+\caption{
+   Decomposition of $\spV_j$ into $1$ scaling space and $j$ wavelet subspaces
+   \label{fig:Vj_V0_Wj}
+   }
+\end{center}
+\end{figure}
+
+
+
+
+\setlength{\unitlength}{8mm}
+\begin{figure}[h] \color{figcolor}
+\begin{center}
+\begin{picture}(16,6)
+\put(0,5){\framebox(16,1){$\spV_j$}}
+
+\put(0,4){\framebox(8,1){$\spV_{j-1}$}}
+\put(8,4){\framebox(8,1){$\spW_{j-1}$}}
+
+\put(0,3){\framebox(4,1){$\spV_{j-2}$}}
+\put(4,3){\framebox(4,1){$\spW_{j-2}$}}
+\put(8,3){\framebox(8,1){$\spW_{j-1}$}}
+
+\put(0,2){\framebox(2,1){$\spV_{j-3}$}}
+\put(2,2){\framebox(2,1){$\spW_{j-3}$}}
+\put(4,2){\framebox(4,1){$\spW_{j-2}$}}
+\put(8,2){\framebox(8,1){$\spW_{j-1}$}}
+
+\put(0,1){\makebox(16,1){$\vdots$}}
+
+\put(0,0){\framebox(1,1){}}
+\put(0.0625,0){\framebox(0.0625,1){}}
+\put(0.125,0){\framebox(0.125,1){}}
+\put(0.25,0){\framebox(0.25,1){}}
+\put(0.5,0){\framebox(0.5,1){}}
+\put(1,0){\framebox(1,1){$\cdots$}}
+\put(2,0){\framebox(2,1){$\spW_{j-3}$}}
+\put(4,0){\framebox(4,1){$\spW_{j-2}$}}
+\put(8,0){\framebox(8,1){$\spW_{j-1}$}}
+\end{picture}
+\caption{
+   Decomposition of $\spV_j$ into wavelet subspaces only
+   \label{fig:Vj_Wj}
+   }
+\end{center}
+\end{figure}
+
+
+
+
+Wavelet analysis provides three forms for representing a function
+$\ff(t)$ in the scaling space $\spV_j$: \\
+\begin{tabular}{clll}
+   1. & using one high resolution scaling function\footnotemark     & (Theorem~\ref{thm_fx_v}) \\
+   2. & using one low  resolution scaling function and $j$ wavelets & (Theorem~\ref{thm_fx_vw}) \\
+   3. & using an infinite number of wavelet functions               & (Theorem~\ref{thm_fx_w})
+\end{tabular}
+\footnotetext{
+   The ultimate example of using a single high resolution function to represent
+   a function is when $\fphi(x)=\delta(x)$ (Dirac delta function).
+   In this case the scale is effectively $m=\infty$ and
+      \[
+         \sum_n \inprod{\ff(x)}{\fphi_{m,n}(x)} \fphi_{m,n}(x)
+              = \int_x \inprod{\ff(y)}{\delta(y-x)} \delta(x) \dx
+              = \int_x \ff(x) \delta(x)  \dx
+              = \ff(x).
+      \]
+   Reference: \cite[page 37]{burrus}
+}
+
+When a function is decomposed using a scaling function and multiple wavelet functions,
+the portion of $\ff(t)$ extracted by the scaling function can be interpretted as
+the ``corse approximation" of $\ff(t)$, while
+the portion extracted by the wavelet functions can be interpretted
+as the ``detail" of $\ff(t)$.
+
+
+The space $\spV_j$ can be made arbitrariliy large ($k$ can be made arbitrarily large)
+to accomodate $\ff(t)$.
+However, if the size of $\spV_j$ is limited such that $\ff(t)$ does not ``fit" in $\spV_j$,
+then the wavelet analysis will not give an exact representatioin of $\ff(t)$
+but rather will give an {\em approximation} of $\ff(t)$.
+
+
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:Vk}
+%--------------------------------------
+The scaling subspace $\spV_j$ is composed of the smaller space $\spV_0$
+and $j$ wavelet subspaces $\spW_0, \spW_1, \ldots, \spW_{j-1}$ such that
+(see Figure~\ref{fig:Vj_V0_Wj})
+\formbox{
+   \spV_j = \spV_0 \oplus \spW_0 \oplus \spW_1 \oplus \cdots \oplus \spW_{j-1}
+%       = \spV_0 \oplus \bigoplus\limits_{m=0}^{k-1}{\spW_{m}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{eqnarray*}
+   \spV_j &=& \spV_{j-1} \oplus \spW_{j-1} \\
+       &=& \spV_{j-2} \oplus \spW_{j-2} \oplus \spW_{j-1} \\
+       &=& \spV_{j-3} \oplus \spW_{j-3} \oplus \spW_{j-2} \oplus \spW_{j-1} \\
+       &\vdots&  \\
+       &=& \spV_{0} \oplus \spW_{0} \oplus \spW_1 \oplus \cdots \oplus \spW_{j-1} \\
+       &=& \spV_{0} \oplus \bigoplus\limits_{m=0}^{j-1}{\spW_{m}}
+\end{eqnarray*}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:VkW}
+%--------------------------------------
+The scaling subspace $V_j$ can be decomposed into an infinite number of
+wavelet subspaces $\spW_{j-1}, \spW_{j-2}, \spW_{j-3}, \ldots, \spW_{-\infty}$ such that
+(see Figure~\ref{fig:Vj_Wj}) \citepp{burrus}{12}{16}
+\formbox{
+  \spV_j = \spW_{j-1} \oplus \spW_{j-2} \oplus \spW_{j-3} \oplus \cdots \oplus \spW_{-\infty}
+  }
+\end{proposition}
+\begin{proof}
+\begin{eqnarray*}
+   \spV_j &=& \spV_{j-1} \oplus \spW_{j-1} \\
+       &=& \spV_{j-2} \oplus \spW_{j-2} \oplus \spW_{j-1} \\
+       &=& \spV_{j-3} \oplus \spW_{j-3} \oplus \spW_{j-2} \oplus \spW_{j-1} \\
+       &=& \cdots \\
+       &=& \bigoplus\limits_{m=-\infty}^{j-1}{\spW_m}
+\end{eqnarray*}
+\end{proof}
+
+The next theorem demonstrates representing $\ff(t)$ with scaling functions only.
+%--------------------------------------
+\begin{theorem}
+\label{thm_fx_v}
+%--------------------------------------
+Let $\left(\{\spV_j\},\{\spW_j\}, \fphi,\fpsi,\fh,\fg\right)$
+be a wavelet system and
+$\opP_j:\spLL\to\spV_j$ the $j$-scale projection operator.
+\formbox{\begin{array}{>{\ds}l}
+   \exists \seq{\alpha_n}{n\in\Z} \st
+   \\ \\
+   \opP_j\ff(t) = \mcoml{\sum_n \alpha_n \fphi_{j,n}(t)}{only scaling functions at scale $j$}
+  \end{array}}
+\end{theorem}
+\begin{proof}
+By Definition~\ref{def:mra} (MRA, page~\pageref{def:mra}),
+$\fphi(t)$ is a Riesz basis for $\spV_0$.
+Throught the MRA scaling property,
+this can be extended to any other space $\spV_j$.
+\end{proof}
+
+The next theorem demonstrates
+representing $\ff(t)$ with one scaling function and multiple wavelets.
+%--------------------------------------
+\begin{theorem}
+\label{thm_fx_vw}
+%--------------------------------------
+Let $\left(\{\spV_j\},\{\spW_j\}, \fphi,\fpsi,\fh,\fg\right)$
+be a wavelet system and
+$\opP_j:\spLL\to\spV_j$ the $j$-scale projection operator.
+\formbox{\begin{array}{>{\ds}l}
+   \exists \seq{\alpha_n}{n\in\Z}\text{ and } \seq{\beta_{mn}}{m,n\in\Z} \st
+   \\ \\
+   \opP_j \ff(t) =
+     \mcom {\sum_n \alpha_n \fphi_{0,n}(x)}{scaling at scale $0$} +
+     \mcoml{\sum_{m=0}^{j-1} \sum_n \beta_{mn} \fpsi_{m,n}(t)}{wavelets at scales $0,1,\ldots,(j-1)$}
+   \end{array}}
+\end{theorem}
+\begin{proof}
+See Proposition~\ref{prop:Vk} (page~\pageref{prop:Vk});
+\end{proof}
+
+The next theorem demonstrates
+representing \ff(t) with wavelets only (and no scaling function).
+%--------------------------------------
+\begin{theorem}
+\label{thm_fx_w}
+%--------------------------------------
+Let $\left(\{\spV_j\},\{\spW_j\}, \fphi,\fpsi,\fh,\fg\right)$
+be a wavelet system and
+$\opP_j:\spLL\to\spV_j$ the $j$-scale projection operator.
+\formbox{\begin{array}{>{\ds}l}
+   \exists \seq{\alpha_{mn}}{m,n\in\Z} \st
+   \\ \\
+   \opP_j \ff(t)
+     = \mcoml{\sum_{m=-\infty}^{j-1} \sum_n \alpha_{mn} \fpsi_{m,n}(t)}
+             {no scaling, countably infinite number of wavelets}
+  \end{array}}
+\end{theorem}
+\begin{proof}
+See Proposition~\ref{prop:VkW} (page~\pageref{prop:VkW});
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}[Neumann Expansion Theorem]
+\index{Neumann Expansion Theorem}
+\index{theorems!Neumann Expansion Theorem}
+\label{thm:op_net2}
+\citep{michel}{415}
+%---------------------------------------
+Let $\opA:\spX\to\spX$ be an operator on a vector space $\spX$.
+Let $\opA^0\eqd \opI$.
+\formbox{\begin{array}{ll}
+  \left.\begin{array}{lrclD}
+    1. & \opA          &\in& \oppB(\spX,\spX) & ($\opA$ is bounded) \\
+    2. & \normop{\opA} &<&   1         
+  \end{array}\right\}
+  \implies
+  \left\{\begin{array}{lrc>{\ds}l}
+    1. & (\opI-\opA)^{-1} &&\text{ exists} \\
+    2. & \normop{(\opI-\opA)^{-1}} &\le& \frac{1}{1-\normop{\opA}} \\
+    3. & (\opI-\opA)^{-1} &=& \sum_{n=0}^\infty \opA^n  \\
+       & \mc{3}{c}{\text{ with uniform convergence}}
+  \end{array}\right.
+\end{array}}
+\end{theorem}
+
+
+
+
+
+
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:wav_net}
+%--------------------------------------
+Let $\wavsys$ be a \hi{wavelet system}.
+\formbox{
+  \sum_n \abs{h_n} \ge 1
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  &&
+  \vphi &= \sum_n h_n \opT^n \opD \vphi
+  \\\implies&&
+  \left(\opI - \sum_n h_n \opT^n \opD \right)\vphi &= \vzero
+  \\\implies&&
+  \left(\opI - \sum_n h_n \opT^n \opD \right)^{-1} & \text{must not exist}
+  \\\implies&&
+  \normop{\sum_n h_n \opT^n \opD} & \ge 1 
+    && \text{by Neumann Expansion Theorem \prefpo{thm:op_net2}}
+  \\\implies&&
+  1
+      &\le \normop{\sum_n h_n \opT^n \opD}
+     &&    \text{by Neumann Expansion Theorem \prefpo{thm:op_net2}}
+  \\&&&\le \sum_n  \normop{h_n \opT^n \opD}
+     &&    \text{by generalized triangle inequality \prefpo{thm:norm_tri}}
+  \\&&&=   \sum_n  \abs{h_n}\; \cancelto{1}{\normop{ \opT^n \opD}}
+     &&    \text{by homogeneous property of norm \prefpo{def:norm}}
+  \\&&&=   \sum_n  \abs{h_n}
+     &&    \text{by \prefp{thm:unitary_prop}}
+\end{align*}
+\end{proof}
+
+
+
+
+%--------------------------------------
+\begin{example}
+\label{ex:sw_gh_d3}
+%--------------------------------------
+The figure below illustrates scaling and wavelet coefficients and functions
+for the \hie{Daubechies-$p3$} wavelet system.\\
+  \parbox[b][35\tw/160][c]{5\tw/16}{\footnotesize\begin{tabular}[b]{l|r|r}
+    $n$ & $h_n $ & $ g_n $ \\
+    \hline
+      0   & $ 0.332671$  & $ 0.035226$  \\
+      1   & $ 0.806892$  & $ 0.085441$  \\
+      2   & $ 0.459878$  & $-0.135011$  \\
+      3   & $-0.135011$  & $-0.459878$  \\
+      4   & $-0.085441$  & $ 0.806892$  \\
+      5   & $ 0.035226$  & $-0.332671$  \\
+  \end{tabular}}
+  \includegraphics*[width=5\tw/16, clip=true]{../common/wavelets/d3sc_x3125.eps}
+  \includegraphics*[width=5\tw/16, clip=true]{../common/wavelets/d3wc_x3125.eps}
+\end{example}
+
+%--------------------------------------
+\begin{example}
+\label{ex:sw_gh_d4}
+%--------------------------------------
+The figure below illustrates scaling and wavelet coefficients and functions
+for the \hie{Daubechies-$p4$} wavelet system.\\
+  \parbox[b][35\tw/160][c]{5\tw/16}{\footnotesize\begin{tabular}[b]{l|r|r}
+    $n$ & $h_n $ & $ g_n $ \\
+    \hline
+      0   & $ 0.230378$  & $-0.010597$  \\
+      1   & $ 0.714847$  & $-0.032883$  \\
+      2   & $ 0.630881$  & $ 0.030841$  \\
+      3   & $-0.027984$  & $ 0.187035$  \\
+      4   & $-0.187035$  & $-0.027984$  \\
+      5   & $ 0.030841$  & $-0.630881$  \\
+      6   & $ 0.032883$  & $ 0.714847$  \\
+      7   & $-0.010597$  & $-0.230378$  \\
+  \end{tabular}}
+  \includegraphics*[width=5\tw/16, clip=true]{../common/wavelets/d4sc_x3125.eps}
+  \includegraphics*[width=5\tw/16, clip=true]{../common/wavelets/d4wc_x3125.eps}
+\end{example}
+
+%--------------------------------------
+\begin{example}
+\citep{strang89}{616}
+\label{ex:sw_gh_tent}
+%--------------------------------------
+The figure below illustrates scaling and wavelet coefficients and functions
+for the \hie{tent function}.\\
+  \parbox[b][35\tw/160][c]{5\tw/16}{\begin{tabular}[b]{l|r|r}
+    $n$ & $\sqrt{2} h_n $ & $\sqrt{2} g_n $ \\
+    \hline
+      0   & $\frac{1}{2}$  & $ \frac{1}{2}$  \\
+      1   & $1$            & $-1$            \\
+      2   & $\frac{1}{2}$  & $ \frac{1}{2}$
+  \end{tabular}}
+  \includegraphics*[width=5\tw/16, clip=true]{../common/wavelets/tents.eps}
+  \includegraphics*[width=5\tw/16, clip=true]{../common/wavelets/tentw.eps}
+\end{example}
+
+%--------------------------------------
+\begin{example}
+\citep{strang89}{616}
+\label{ex:sw_gh_bspline}
+%--------------------------------------
+The figure below illustrates scaling and wavelet coefficients and functions
+for a \hie{B-sline}.\\
+  \parbox[b][35\tw/160][c]{5\tw/16}{\begin{tabular}[b]{l|r|r}
+    $n$ & $\sqrt{2} h_n $ & $\sqrt{2} g_n $ \\
+    \hline
+      0   & $\frac{1}{8}$  & $ \frac{1}{8}$  \\
+      1   & $\frac{4}{8}$  & $-\frac{4}{8}$  \\
+      2   & $\frac{6}{8}$  & $ \frac{6}{8}$  \\
+      3   & $\frac{4}{8}$  & $-\frac{4}{8}$  \\
+      4   & $\frac{1}{8}$  & $-\frac{1}{8}$
+  \end{tabular}}
+  \includegraphics*[width=5\tw/16, clip=true]{../common/wavelets/Bspls.eps}
+  \includegraphics*[width=5\tw/16, clip=true]{../common/wavelets/Bsplw.eps}
+\end{example}
+
+
+
+\parbox[c][][c]{\textwidth/2}{
+%\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.10mm}
+\begin{picture}(500,600)(-400,-600)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(   0,   0){\line(-1,-1){100} }  \put(   0,   0){\line( 1,-1){100} }
+  \put(-100,-100){\line(-1,-1){100} }  \put(-100,-100){\line( 1,-1){100} }
+  \put(-200,-200){\line(-1,-1){100} }  \put(-200,-200){\line( 1,-1){100} }
+  \put(-400,-400){\line(-1,-1){100} }  \put(-400,-400){\line( 1,-1){100} }
+
+  \put( 100,-100){\line(-1,-5){100} }
+  \put(   0,-200){\line( 0,-1){400} }
+  \put(-100,-300){\line( 1,-3){100} }
+  \put(-200,-400){\line( 1,-1){200} }
+  \put(-300,-500){\line( 3,-1){300} }
+  \put(-500,-500){\line( 5,-1){500} }
+
+  \put(   0,   0){\circle*{15}}
+  \put(-100,-100){\circle*{15}}  \put( 100,-100){\circle*{15}}
+  \put(-200,-200){\circle*{15}}  \put(   0,-200){\circle*{15}}
+  \put(-300,-300){\circle*{15}}  \put(-100,-300){\circle*{15}}
+  \put(-400,-400){\circle*{15}}  \put(-200,-400){\circle*{15}}
+  \put(-500,-500){\circle*{15}}  \put(-300,-500){\circle*{15}}
+  \put(   0,-600){\circle*{15}}
+
+  \put(   0,  10){\makebox(0,0)[b] { $\opV_n$}}
+  \put(-110,-100){\makebox(0,0)[r] { $\opV_{n-1}$}}
+  \put( 110,-100){\makebox(0,0)[l] { $\opW_{n-1}$}}
+  \put(-210,-200){\makebox(0,0)[r] { $\opV_{n-2}$}}
+  \put(  10,-200){\makebox(0,0)[l] { $\opW_{n-2}$}}
+  \put(-310,-300){\makebox(0,0)[r] { $\opV_{n-3}$}}
+  \put( -90,-300){\makebox(0,0)[l] { $\opW_{n-3}$}}
+  \put(-410,-400){\makebox(0,0)[r] { $\opV_{2}$}}
+  \put(-190,-400){\makebox(0,0)[l] { $\opW_{2}$}}
+  \put(-510,-500){\makebox(0,0)[r] { $\opV_{1}$}}
+  \put(-290,-500){\makebox(0,0)[l] { $\opW_{1}$}}
+  \put(   0,-610){\makebox(0,0)[t] { $\setn{0}$}}
+  \put(-350,-350){\makebox(0,0)[c] { $\vdots$}}
+  \put(-250,-350){\makebox(0,0)[c] { $\vdots$}}
+\end{picture}
+\end{fsL}
+\end{center}
+}
+\parbox[c][][c]{\textwidth/2}{
+%---------------------------------------
+\begin{example}[Multiresolutional Analysis]
+\label{ex:lat_mra}
+%---------------------------------------
+A {\em \hi{multiresolutional analysis}} (\hi{MRA}) is a technique for
+partitioning a Hilbert space into {\em scaling spaces} $\seqn{\spV_n}{n\in\Z}$
+and {\em\hi{wavelet subspaces}} $\seqn{\spW_n}{n\in\Z}$ such that
+$\spV_{n+1} = \spV_n \oplus \spW_n$, where $\oplus$ is the
+{\em\hi{direct product}}.
+\exbox{\begin{tabular}{l@{\quad}lll}
+  \mc{4}{l}{The MRA  subspaces form a lattice}\\
+  \mc{4}{l}{$(\set{\spV_k,\spW_k}{k=1,2,\ldots,n},\subseteq,\oplus,\seti)$ that is}\\
+   & 1. & non-distributive  & (lattice contains $N5$)\\
+   & 2. & non-modular       & (lattice contains $N5$)  \\
+   & 3. & non-complemented
+\end{tabular}}
+The MRA lattice is illustrated in the figure to the left.
+Alternatively, this could be the lattice of \hi{projection operator}s that
+project onto the subspaces.
+\end{example}
+}
+
+
+%=======================================
+\section{Approximation using wavelets}
+%=======================================
+Suppose a vector (e.g. a function) is a member of some large space $\spX$.
+In practice, it is normally not possible to represent that vector exactly;
+rather, some approximation of the vector is necessary.
+Of course many approximations are possible depending on the amount of ``resolution"
+or scale selected.
+\prefpp{thm:wav_approx} shows that in a wavelet system, 
+the approximation of a vector $\vx$ at some scale $n$ can be performed in three ways:
+\begin{dingautolist}{"C0}
+  \item Projecting $\vx$ onto one high resolution scaling subspace $\spV_n$
+        (and {\em no} wavelet subspaces).
+  \item Projecting $\vx$ onto one low resolution scaling subspace $\spV_1$ 
+        and $n-1$ wavelet subspaces $\spW_1,\,\spW_2,\,\dots,\,\spW_{n-1}$.
+  \item Projecting $\vx$ onto one an infinite number of wavelet subspaces
+        $\spW_{n-1},\spW_{n-2},\spW_{n-3},\ldots$
+        (and {\em no} scaling subspaces).
+\end{dingautolist}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:wav_approx}
+%---------------------------------------
+Let $\spX$ be a vector space with 
+wavelet subspace lattice
+$\wavlatsubs$
+and wavelet operator lattice
+$(\setn{\seq{\opP_n}{n\in\Z},\seq{\opQ_n}{n\in\Z}},\,\sqsubseteq,\,+,\,\cdot)$.
+\formbox{\begin{array}{rcl@{\qquad}>{\scriptsize}p{7\tw/16}}
+  \spV_n
+    &=& \opP_n \spX
+    &   (one high resolution scaling subspace) 
+  \\&=& (\opP_1 + \opQ_1 + \opQ_2 + \cdots + \opQ_{n-1})\spX
+    &   (one low resolution scaling subsspace and $n-1$ wavelet subspaces)
+  \\&=& (\opQ_{-\infty} + \cdots + \opQ_{n-2} + \opQ_{n-1})\spX
+    &   (infinite number of wavelet subspaces)
+  \end{array}}
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    \spV_n
+      &= \spV_{n-1} + \spW_{n-1}
+      && \text{by \prefp{def:seqWn}}
+    \\&= \spV_{n-2} + \spW_{n-2} + \spW_{n-1}
+      && \text{by \prefp{def:seqWn}}
+    \\&= \spV_{n-3} + \spW_{n-3} + \spW_{n-2} + \spW_{n-1}
+      && \text{by \prefp{def:seqWn}}
+    \\&\quad\vdots
+    \\&= \spV_{1} + \spW_{1} + \spW_{2} +\cdots+ \spW_{n-1}
+      && \text{by \prefp{def:seqWn}}
+    \\&\quad\vdots
+    \\&= \spW_{\infty}+\cdots + \spW_{1} + \spW_{2} +\cdots+ \spW_{n-1}
+      && \text{by \prefp{def:seqWn}}
+  \end{align*}
+\end{proof}
+
+
+ 
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX File
+%============================================================================
+
+%======================================
+\chapter{The Structure of Wavelets}
+%======================================
+
+%=======================================
+%\section {Vector space architecture}
+%=======================================
+%=======================================
+\section{Wavelet transversal operators}
+\label{sec:wav_lat_op}
+%=======================================
+All Hilbert spaces can be constructed as a lattice of subspaces.
+Transforms in Hilbert spaces are a collection of projection operators that 
+project a given vector onto those subspaces.
+Thus a transform is essentially defined by the subspace lattice structure.
+
+In such a subspace lattice structure, we define two \hie{transversal operators}
+that move vectors within the lattice.
+These transversal operators are\\
+  \begin{tabular}{ll<{:}ll}
+    \circOne & \hie{translation operator} & $\opT$ &---moves a vector within a subspace. \\
+    \circTwo & \hie{dilation operator}    & $\opD$ &---moves a vector ``up" one subspace.
+  \end{tabular}
+
+\begin{minipage}[t]{8\tw/16}
+%\begin{figure}[t]%
+%  \color{figcolor}%
+  \begin{center}%
+  \begin{fsL}%
+  \setlength{\unitlength}{\textwidth/800}%
+  \begin{picture}(500,200)(-250,-50)%
+    %{\color{graphpaper}\graphpaper[10](-250,-50)(500,200)}%
+    {\color{axis}%
+      \put(-220, 0){\line(1, 0){440} }%
+      \put(0, 0){\line(0, 1){120} }%
+      \multiput(-200,-10)(50,0){9}{\line(0, 1){20}}%
+      \put( 230,  0){\makebox(0,0)[l]{$t$}}%
+      \put( 200,-20){\makebox(0,0)[t]{$2$}}%
+      \put( 100,-20){\makebox(0,0)[t]{$1$}}%
+      \put(   0,-20){\makebox(0,0)[t]{$0$}}%
+      \put(-100,-20){\makebox(0,0)[t]{$-1$}}%
+      \put(-200,-20){\makebox(0,0)[t]{$-2$}}%
+    }%
+    {\color{figcolor}%
+      \put(   0,110){\makebox(0,0)[b]{$\fx(t)$}}%
+      \put(-100, 0){\line( 1, 1){100} }%
+      \put( 100, 0){\line(-1, 1){100} }%
+    }%
+    {\color{red}%
+      \put( 150,110){\makebox(0,0)[b]{$\opT \fx(t)$}}%
+      \put( 150,100){\vector( 0,-1){50} }%
+      \put(   0, 0){\line( 1, 1){100} }%
+      \put( 200, 0){\line(-1, 1){100} }%
+    }%
+    {\color{green}%
+      \put(-150,110){\makebox(0,0)[b]{$\opTi\fx(t)$}}%
+      \put(-150,100){\vector( 0,-1){50} }%
+      \put(-200, 0){\line( 1, 1){100} }%
+      \put(   0, 0){\line(-1, 1){100} }%
+    }%
+  \end{picture}%
+  \end{fsL}%
+  \end{center}%
+  \begin{center}%
+  \begin{fsL}%
+  \setlength{\unitlength}{\textwidth/800}%
+  \begin{picture}(500,200)(-250,-50)%
+    %{\color{graphpaper}\graphpaper[10](-250,-50)(500,200)}%
+    {\color{axis}%
+      \put(-220, 0){\line(1, 0){440} }%
+      \put(0, 0){\line(0, 1){150} }%
+      \multiput(-200,-10)(50,0){9}{\line(0, 1){20}}%
+      \put( 230,  0){\makebox(0,0)[l]{$t$}}%
+      \put( 200,-20){\makebox(0,0)[t]{$2$}}%
+      \put( 100,-20){\makebox(0,0)[t]{$1$}}%
+      \put(   0,-20){\makebox(0,0)[t]{$0$}}%
+      \put(-100,-20){\makebox(0,0)[t]{$-1$}}%
+      \put(-200,-20){\makebox(0,0)[t]{$-2$}}%
+    }%
+    {\color{figcolor}%
+      \put( 130,80){\makebox(0,0)[l]{$\fx(t)$}}%
+      \put( 130,70){\vector( -1,-1){50} }%
+      \put(-100, 0){\line( 1, 1){100} }%
+      \put( 100, 0){\line(-1, 1){100} }%
+    }%
+    {\color{red}%
+      \put( 110,120){\makebox(0,0)[l]{$\opD \fx(t)$}}%
+      \put( 100,120){\vector(-1,0){90} }%
+      \put( -50, 0){\line( 1, 3){50} }%
+      \put(  50, 0){\line(-1, 3){50} }%
+    }%
+    {\color{green}%
+      \put(-100,110){\makebox(0,0)[b]{$\opDi\fx(t)$}}%
+      \put(-100,100){\vector( 0,-1){65} }%
+      \put(-200, 0){\line( 3, 1){200} }%
+      \put( 200, 0){\line(-3, 1){200} }%
+    }%
+  \end{picture}%
+  \end{fsL}%
+  \end{center}%
+%  \caption{
+%    Translation $\opT$ and dilation operator $\opD$
+%    \label{fig:wav_TD}
+%    }
+%\end{figure}
+\end{minipage}
+\begin{minipage}[c]{8\tw/16}
+These two operators are illustrated in the figures to the left
+and defined in \prefpp{def:wav_opD}.
+Additionally, translation and dilation in the case of the \hie{Haar} wavelet transform
+is illustrated in \prefpp{fig:haar-jn}.
+\end{minipage}
+\footnotetext{\hie{operator:} \prefpp{def:operator}}
+
+\begin{figure}[t]
+\setlength{\unitlength}{8mm}
+\begin{center}
+\begin{tabular}{cc}
+   \includegraphics*[width=6\tw/16, height=6\tw/16, clip=true]{../common/wavelets/haar_sj.eps} &
+   \includegraphics*[width=6\tw/16, height=6\tw/16, clip=true]{../common/wavelets/haar_sk.eps} \\
+   \footnotesize varying dilation, constant translation   & 
+   \footnotesize varying translation, constant dilation
+\end{tabular}
+\caption{
+   \label{fig:haar-jn}
+   Haar scaling function at varying dilations and translations.
+   }
+\end{center}
+\end{figure}
+
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:wav_opD}
+\label{def:wav_opT}
+\index[xsym]{$\opD$|textbf}
+\index[xsym]{$\opT$|textbf}
+%---------------------------------------
+\defbox{\begin{array}{lcll}
+  \opT  \fx(t) &\eqd&         \fx(t-1)  & \text{where $\opT$  is called the \hid{translation operator}} \\
+  \opD  \fx(t) &\eqd& \sqrt{2}\fx(2t)  & \text{where $\opD$  is called the \hid{dilation operator}} \\
+\end{array}}
+\end{definition}
+
+
+
+\begin{minipage}[t]{8\tw/16}
+%\begin{figure}[t]
+\begin{fsL}
+\[\begin{array}{*{5}{>{\ds}c}}
+     && \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {operator}}} \index{operator}
+  \\ & \Nearrow & \Uparrow & \Nwarrow
+  \\ \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {normal} $\opNa\opN=\opN\opNa$}} \index{operator!normal}
+     && \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {projection} $\opP^2=\opP$}}  \index{operator!projection}
+     && \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {isometric} $\opAa\opA=\opI$}} \index{operator!isometric}
+  \\ \Uparrow & \Nwarrow  & & \Nearrow
+  \\ \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {self-adjoint} $\opA=\opAa$}}  \index{operator!self-adjoint}
+     && \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {invertible} $\opAa=\opAi$}} \index{operator!invertible}
+  \\ && \Uparrow
+  \\ && \fcolorbox{red}{bg_red}{\parbox[c]{3\tw/16}{\centering {unitary} $\opU\opUa=\opUa\opU=\opI$}} \index{operator!unitary}
+\end{array}\]
+\end{fsL}
+%\caption{
+%   Relations between operator properties
+%   \label{fig:op_prop}
+%   }
+%\end{figure}
+\end{minipage}
+\begin{minipage}[t]{8\tw/16}
+  \paragraph{Properties of operators.}
+  The translation operator $\opT$ and dilation operator $\opD$ are both
+  \hie{unitary} (\prefp{thm:TD_unitary})
+  but are \hie{not commutative} with respect to each other (\prefp{thm:TD_DT}).
+  The unitary property is especially powerful, because this implies that the operators are also
+  \hie{invertible}, \hie{normal}, and \hie{isometric}.\footnotemark
+  These relationships are illustrated in the figure to the left.
+  These properties imply many other properties;
+  noteably the isometric property implies that the operators preserve the ``length" 
+  of any vector (\prefp{cor:wav_TD_prop}).
+\end{minipage}
+\footnotetext{\hie{operator types}: \prefpp{def:op_types}}
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:wav_opTi}
+\label{thm:wav_opDi}
+\index[xsym]{$\opDi$|textbf}
+\index[xsym]{$\opTi$|textbf}
+%---------------------------------------
+Let $\spX$ be a vector space, $\opT$ the translation operator on $\spX$,
+$\opD$ the dilation operator on $\spX$.
+Then the \hie{inverse} \footnote{\hie{inverse operator:} \prefp{def:op_inv}} $\opTi$ of $\opT$ 
+and  the \hie{inverse} $\opDi$ of $\opD$
+are
+\formbox{
+  \opTi \fx(t) \eqd \fx(t+1)  
+  \qquad\text{and}\qquad
+  \opDi \fx(t) \eqd \cwt \:\fx\left(\frac{1}{2}t\right)  
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1a. Proof that $\opTi\opT = \opI$:}
+  \opTi\opT\fx(t)
+    &= \opTi\fx(t-1)
+    && \text{by defintion of $\opT$ \prefpo{def:wav_opT}}
+  \\&= \fx([t+1]-1)
+    && \text{by hypothesis}
+  \\&= \opI\fx(t)
+    && \text{by definition of $\opI$ \prefpo{def:opI}}
+  \\
+  \intertext{1b. Proof that $\opT\opTi = \opI$:}
+  \opT\opTi\fx(t)
+    &= \opT\fx(t+1)
+    && \text{by hypothesis}
+  \\&= \fx([t-1]+1)
+    && \text{by defintion of $\opT$ \prefpo{def:wav_opT}}
+  \\&= \opI\fx(t)
+    && \text{by definition of $\opI$ \prefpo{def:opI}}
+  \\
+  \intertext{2a. Proof that $\opDi\opD = \opI$:}
+  \opDi\opD\fx(t)
+    &= \opDi \sqrt{2}\fx(2t)
+    && \text{by defintion of $\opD$ \prefpo{def:wav_opT}}
+  \\&= \left(\cwt \right)\sqrt{2}\fx\left(2\left[\frac{1}{2}t\right]\right)
+    && \text{by hypothesis}
+  \\&= \opI\fx(t)
+    && \text{by definition of $\opI$ \prefpo{def:opI}}
+  \\
+  \intertext{2b. Proof that $\opD\opDi = \opI$:}
+  \opD\opDi\fx\left(t\right)
+    &= \opD \left[\cwt \fx\left(\frac{1}{2}t\right) \right]
+    && \text{by hypothesis}
+  \\&= \sqrt{2} \left[\cwt \fx\left(\frac{1}{2}[2t]\right) \right]
+    && \text{by defintion of $\opD$ \prefpo{def:wav_opT}}
+  \\&= \opI\fx(t)
+    && \text{by definition of $\opI$ \prefpo{def:opI}}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:TD_DT}
+%---------------------------------------
+Let $\spV$ be a vector space,
+$\opD:\spV\to\spV$ be a dilation operator and $\opT:\spV\to\spV$ a translation operator.
+\formbox{
+  \opT^{2n}\opD = \opD \opT^n 
+  \qquad\scriptstyle
+  \forall n\in\Z
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof for $n=0$:}
+    \left.\opT^{2n}\opD \fx(t)\right|_{n=0}
+      &= \opT^{2\cdot0}\opD
+    \\&= \opI \opD
+    \\&= \opD \opI
+    \\&= \opD \opT^0
+    \\&= \left. \opD \opT^n \right|_{n=0}
+  \\
+  \intertext{2. Proof for $n>0$:}
+    \opT^{2n}\opD \fx(t)
+      &= \opT^{2n} \sqrt{2}\,\fx(2t)
+      && \text{by \prefp{def:wav_opD}}
+    \\&= \sqrt{2}\,\fx\brp{2t-2n}
+      && \text{by \prefp{def:wav_opT}}
+    \\&= \sqrt{2}\,\fx\brp{2\brs{t-n}}
+    \\&= \opD \fx\brp{t-n}
+      && \text{by \prefp{def:wav_opD}}
+    \\&= \opD \opT^n \fx\brp{t}
+      && \text{by \prefp{def:wav_opT}}
+  \\
+  \intertext{3. Proof for $n<0$:}
+    \opT^{2n}\opD \fx(t)
+      &= \opT^{2n} \sqrt{2}\,\fx(2t)
+      && \text{by \prefp{def:wav_opD}}
+    \\&= \sqrt{2}\,\fx\brp{2t-2n}
+      && \text{by \prefp{thm:wav_opTi}}
+    \\&= \sqrt{2}\,\fx\brp{2\brs{t-n}}
+    \\&= \opD \fx\brp{t-n}
+      && \text{by \prefp{def:wav_opD}}
+    \\&= \opD \opT \fx\brp{t}
+      && \text{by \prefp{thm:wav_opTi}}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:TD_unitary}
+%---------------------------------------
+Let $\opT$ the translation operator with inverse $\opTi$ and adjoint $\opTa$.
+Let $\opD$ the dilation    operator with inverse $\opDi$ and adjoint $\opDa$.
+\footnote{\hie{operator adjoint}: \prefp{def:op_adjoint}}
+\formbox{\begin{array}{l rcl @{\qquad}D}
+  1. & \opTa &=& \opTi  & (translation operator $\opT$ is \hie{unitary} and thus also normal and isometric) \\
+  2. & \opDa &=& \opDi  & (dilation   operator $\opD$ is \hie{unitary} and thus also normal and isometric)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\opTa=\opTi$:}
+  \inprod{\opT\ff(t)}{\fg(t)}
+    &= \inprod{\ff(t-1)}{\fg(t)}
+    && \text{by definition of $\opT$ \prefpo{def:wav_opT}}
+  \\&= \int_x\ff(t-1) \fg^\ast(t) \dt
+  \\&= \int_x\ff(t) \fg^\ast(t+1) \dt
+  \\&= \inprod{\ff(t)}{\fg(t+1)}
+  \\&= \inprod{\ff(t)}{\mcom{\opTi}{$\opTa$}\fg(t)}
+    && \text{by \prefp{thm:wav_opTi}}
+  \\
+  \intertext{2. Proof that $\opDa=\opDi$:}
+  \inprod{\opD\ff(t)}{\fg(t)}
+    &= \inprod{\sqrt{2}\ff(2t)}{\fg(t)}
+    && \text{by definition of $\opD$ \prefpo{def:wav_opD}}
+  \\&= \int_t  \sqrt{2} \ff(2t) \fg^\ast(t) \dt
+  \\&= \int_u  \sqrt{2} \ff(u) \fg^\ast\left(\frac{1}{2}u\right) \frac{1}{2}\du
+    && \text{let $u\eqd 2t \quad\implies\quad \dt=\frac{1}{2}\du$}
+  \\&= \int_u  \ff(u) \left[\frac{1}{\sqrt{2}}\fg\left(\frac{1}{2}u\right)\right]^\ast \du
+  \\&= \inprod{\ff(t)}{\frac{1}{\sqrt{2}}\fg\left(\frac{1}{2}t\right)}
+  \\&= \inprod{\ff(t)}{\mcom{\opDi}{$\opDa$}\fg(t)}
+    && \text{by \prefp{thm:wav_opDi}}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:wav_TD_prop}
+%---------------------------------------
+Let $\spV$ be a vector space,
+$\opD:\spV\to\spV$ be a dilation operator and $\opT:\spV\to\spV$ a translation operator.
+\formbox{\begin{array}{ll@{\qquad}l@{\qquad}D}
+  1. & \opTa\opT = \opT\opTa = \opI
+     & \opDa\opD = \opD\opDa = \opI
+     & (unitary)
+  \\
+  2. & \normop{\opT} = 1
+     & \normop{\opD} = 1
+     & (unit length)
+  \\
+  3. & \inprod{\opT\vx}{\opT\vy}  = \inprod{\vx}{\vy}  
+     & \inprod{\opD\vx}{\opD\vy}  = \inprod{\vx}{\vy}  
+     & (surjective) 
+  \\
+  4. & \norm{\opT\vx-\opT\vy} = \norm{\vx-\vy}             
+     & \norm{\opD\vx-\opD\vy} = \norm{\vx-\vy}             
+     & (isometric in distance) 
+  \\
+  5. & \norm{\opT\vx} = \norm{\vx}             
+     & \norm{\opD\vx} = \norm{\vx}             
+     & (isometric in length) 
+\end{array}}
+\end{corollary}
+\begin{proof}
+\begin{liste}
+  \item By \prefpp{thm:TD_unitary}, $\opT$ and $\opD$ are \hie{unitary}.
+  \item The properties listed follow from the unitary property and \prefpp{thm:unitary_equiv}
+        and \prefpp{thm:unitary_prop}.
+\end{liste}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:wav_FD}
+%---------------------------------------
+Let $\spV$ be a vector space,
+$\opD:\spV\to\spV$ be a dilation operator and $\opT:\spV\to\spV$ a translation operator.
+Let $\opFT$ be the Fourier Transform operator.
+\formbox{\begin{array}{rcl}
+  \opFT\opD &=& \opDi\opFT  \\
+  \opD\opFT &=& \opFT\opDi
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opFT\opD\ff(t)
+    &= \opF \brs{\sqrt{2}\,\ff(2t)}
+    && \text{by definition of $\opD$ \prefpo{def:wav_opD}}
+  \\&= \frac{1}{\sqrt{2\pi}}\,\int_t \brs{\sqrt{2}\,\ff(2t)} e^{-i\omega t} \dt
+    && \text{by definition of $\opFT$ \prefpo{def:opFT}}
+  \\&= \frac{1}{\sqrt{2\pi}}\,\int_u \brs{\sqrt{2}\,\ff(u)} e^{-i\omega \frac{u}{2}} \frac{1}{2}\du
+    && \text{let $u\eqd 2t \implies t=\frac{1}{2}u$}
+  \\&= \cwt \, \frac{1}{\sqrt{2\pi}}\,
+       \int_u \ff(u) e^{-i\frac{\omega}{2} u} \du
+  \\&= \cwt \, \frac{1}{\sqrt{2\pi}}\,
+       \int_u \ff(u) e^{-i\frac{\omega}{2} u} \du
+  \\&= \opDi\,\brs{ \frac{1}{\sqrt{2\pi}}\,
+       \int_u \ff(u) e^{-i\omega u} \du}
+    && \text{by \prefp{thm:wav_opDi}}
+  \\&= \opDi\, \opFT \, \ff(t)
+  \\
+  \opD\opFT\,\ff(t)
+    &= \opD \brs{\frac{1}{\sqrt{2\pi}} \int_t \ff(t) e^{-i\omega t} \dt  }
+    && \text{by definition of $\opFT$ \prefpo{def:opFT}}
+  \\&= \frac{\sqrt{2}}{\sqrt{2\pi}} \int_t \ff(t) e^{-i2\omega t} \dt
+    && \text{by definition of $\opD$ \prefpo{def:wav_opD}}
+  \\&= \frac{\sqrt{2}}{\sqrt{2\pi}} \int_u \ff\brp{\frac{u}{2}} e^{-i\omega u} \frac{1}{2}\du
+    && \text{let $u\eqd 2t \implies t=\frac{1}{2}u$}
+  \\&= \frac{1}{\sqrt{2\pi}} \int_u \brs{\cwt  \ff\brp{\frac{u}{2}} }e^{-i\omega u} \du
+  \\&= \frac{1}{\sqrt{2\pi}} \int_u \brs{\opDi \ff}(u) \,e^{-i\omega u} \du
+    && \text{by \prefp{thm:wav_opDi}}
+  \\&= \opFT\opDi \ff(t)
+    && \text{by definition of $\opFT$ \prefpo{def:opFT}}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:wav_DFD}
+%---------------------------------------
+Let $\spV$ be a vector space,
+$\opD:\spV\to\spV$ be a dilation operator and $\opT:\spV\to\spV$ a translation operator.
+Let $\opFT$ be the Fourier Transform operator.
+\formbox{\begin{array}{rcl cl}
+  \opD  &=& \opFT\opDi\opFTi &=& \opFTi\opDi\opFT \\
+  \opFT &=& \opD\opFT\opD &=& \opDi\opFT\opDi  
+\end{array}}
+\end{corollary}
+\begin{proof}
+These results follow from \prefpp{thm:wav_FD}.
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:wav_FT}
+%---------------------------------------
+Let $\spV$ be a vector space,
+$\opD:\spV\to\spV$ be a dilation operator and $\opT:\spV\to\spV$ a translation operator.
+Let $\opFT$ be the Fourier Transform operator.
+\formbox{\begin{array}{rcl}
+  \opFT\opT^n  &=& e^{-i\omega n} \opFT
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opFT\opT^n \ff(t)
+    &= \opFT \ff(t-n)
+    && \text{by definition of $\opT$ \prefpo{def:wav_opT}}
+  \\&= \frac{1}{\sqrt{2\pi}} \int_t \ff(t-n) e^{-i\omega t} \dt
+    && \text{by definition of $\opFT$ \prefpo{def:opFT}}
+  \\&= \frac{1}{\sqrt{2\pi}} \int_u \ff(u) e^{-i\omega (u+n)} \du
+    && \text{where $u\eqd t-n$}
+  \\&= e^{-i\omega (n)}\;\brs{\frac{1}{\sqrt{2\pi}} \int_u \ff(u) e^{-i\omega u} \du}
+  \\&= e^{-i\omega (n)}\;\opFT \ff(t)
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $\opT$ the \hie{translation operator} such that
+$\opT\seqn{x_n} = \seqn{x_{n-1}}$.
+That is,
+\[
+  \opT
+  \mcom{\begin{array}{|l||*{16}{c|}}
+    \hline
+    n   & \cdots &  -2 & -1  & 0   & 1    & 2   & 3   & \cdots \\
+    \hline
+    x_n & \cdots & x_{-2} & x_{-1} & x_0 &  x_1 & x_2 & x_3 & \cdots \\
+    \hline
+  \end{array}}{original sequence $\vx=\seq{x_n}{n\in\Z}$}
+  =
+  \mcom{\begin{array}{|l||*{16}{c|}}
+    \hline
+    n   & \cdots &  -2 & -1  & 0   & 1    & 2   & 3    & \cdots \\
+    \hline
+    x_n & \cdots & x_{-3} & x_{-2} & x_{-1} &  x_0 & x_1 & x_2 & \cdots \\
+    \hline
+  \end{array}}{shifted sequence $\opT\vx=\seq{x_{n-1}}{n\in\Z}$}.
+\]
+Then
+\formbox{
+  \vphi 
+  =
+  \mcom{\begin{array}{|l||*{16}{c|}}
+    \hline
+    n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+    \hline
+    \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda \phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+    \hline
+  \end{array}}{\hie{geometric progression} with \hie{common ratio} $\lambda$}
+  \iff
+  \mcom{\opT\vphi = \lambda\vphi}{$\vphi$ is an eigenvector}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{$\imark$ Proof that 
+    $\vphi=
+       \begin{array}{|>{\scriptscriptstyle}l||*{16}{>{\scriptscriptstyle}c|}}
+         \hline
+         n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+         \hline
+         \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda^{1}\phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+         \hline
+       \end{array}
+    $
+    $\implies$
+    $\opT\vphi=\lambda\vphi$:}
+  %   
+  \opT\vphi 
+    &= \opT\;
+       \begin{array}{|l||*{16}{c|}}
+         \hline
+         n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+         \hline
+         \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda^{1}\phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+         \hline
+       \end{array}
+    && \text{by left hypothesis}
+  \\&= \quad\begin{array}{|l||*{16}{c|}}
+         \hline
+         n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+         \hline
+         \phi_n & \cdots & \lambda^{3}\phi_0 & \lambda^{2}\phi_0 & \lambda \phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0  & \cdots \\
+         \hline
+       \end{array}
+    && \text{by definition of $\opT$}
+  \\&= \lambda\vphi
+    && \text{by left hypothesis}
+\end{align*}
+
+
+
+\begin{align*}
+  \intertext{$\imark$ Proof that 
+    $\vphi=
+       \begin{array}{|>{\scriptscriptstyle}l||*{16}{>{\scriptscriptstyle}c|}}
+         \hline
+         n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+         \hline
+         \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda^{1}\phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+         \hline
+       \end{array}
+    $
+    $\impliedby$
+    $\opT\vphi=\lambda\vphi$:}
+  %   
+  \opT\vphi &= \opT \seqn{\phi_n} = \seqn{\phi_{n-1}}
+  \\
+  \lambda\vphi &= \lambda\seqn{\phi_n} = \seqn{\lambda\phi_n}
+  \\ \opT\vphi = \lambda\vphi  \implies \phi_{n-1} &= \lambda\phi_n \qquad \forall n\in\Z
+  \\ \implies \phi_{n} &= \lambda^{-1}\phi_{n-1} \qquad \forall n\in\Z
+  \\ \implies \phi_{1} &= \lambda^{-1}\phi_{0}
+  \\ \implies \phi_{2} &= \lambda^{-1}\phi_{1} = \lambda^{-2} \phi_0
+  \\ \implies \phi_{3} &= \lambda^{-1}\phi_{2} = \lambda^{-3} \phi_0
+  \\ \phi_n = \lambda^{-n}\phi_0 \implies \phi_{n+1} = \lambda^{-n-1}\phi_0
+  \\ \implies \phi_n &= \lambda^{-n}\phi_0 \qquad \forall n\in\Z
+  \\ \implies \vphi &= 
+     \begin{array}{|l||*{16}{c|}}
+       \hline
+       n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+       \hline
+       \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda \phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+       \hline
+     \end{array}
+\end{align*}
+
+\end{proof}
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $\opD$ the \hie{dilation operator} such that
+$\opD\seqn{x_n} = \seqn{x_{2n}}$.
+That is,
+\[
+  \opD
+  \mcom{\begin{array}{|l||*{16}{c|}}
+    \hline
+    n   & \cdots &  -2 & -1  & 0   & 1    & 2   & 3   & \cdots \\
+    \hline
+    x_n & \cdots & x_{-2} & x_{-1} & x_0 &  x_1 & x_2 & x_3 & \cdots \\
+    \hline
+  \end{array}}{original sequence $\vx=\seq{x_n}{n\in\Z}$}
+  =
+  \mcom{\begin{array}{|l||*{16}{c|}}
+    \hline
+    n   & \cdots &  -2 & -1  & 0   & 1    & 2   & 3    & \cdots \\
+    \hline
+    x_n & \cdots & x_{-4} & x_{-2} & x_{0} &  x_2 & x_4 & x_6 & \cdots \\
+    \hline
+  \end{array}}{dilated sequence $\opD\vx=\seq{x_{2n}}{n\in\Z}$}.
+\]
+Then
+\formbox{\begin{array}{>{\ds}l}
+  \vphi 
+  = \seq{\phi_n \st \phi_{2n}=\lambda^{\ffr(n)} \phi_{\fo(n)}}{n\in\Z}
+  \iff
+  \mcom{\opD\vphi = \lambda\vphi}{$\vphi$ is an eigenvector}
+  \\
+  \text{where}\footnotemark
+  \quad\left\{\begin{array}{rc>{\ds}ll}
+    \ffr(n) &\eqd& \text{number of factors of $2$ in $2n$} & \text{(the \hie{ruler function})}\\
+    \fo(n)  &\eqd& \frac{2n}{2^{\ffr(n)}}                  & \text{(the \hie{odd part} of $n$)}
+  \end{array}\right.
+\end{array}}
+\footnotetext{\begin{tabular}[t]{ll}
+  $\ffr(n)$: & \citer{sloane}, \href{http://www.research.att.com/~njas/sequences/A001511}{A001511} \\
+             & \citerpp{thomae1875}{14}{15} \\
+  $\fo(n)$:  & \citer{sloane}, \href{http://www.research.att.com/~njas/sequences/A000265}{A000265}
+\end{tabular}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{$\imark$ Proof that 
+    $\vphi= \seq{\phi_n \st \lambda^{\ffr(n)} \phi_{\fo(n)}}{n\in\Z}
+     \impliedby
+     \opD\vphi = \lambda\vphi
+    $:}
+  \opD\seqn{\phi_n} &= \seqn{\phi_{2n}} \\
+  \lambda \seqn{\phi_n} &= \seqn{\lambda\phi_n}
+  \\ \opD\vphi = \lambda\vphi \implies \phi_{2n} = \lambda\phi_n \qquad \forall n\in\Z
+  \\ \implies \phi_{0 } &= \lambda \phi_0    &&= \lambda   \phi_0
+  \\          \phi_{2 } &= \lambda \phi_1    &&= \lambda   \phi_1
+  \\          \phi_{4 } &= \lambda \phi_2    &&= \lambda^2 \phi_1
+  \\          \phi_{6 } &= \lambda \phi_3    &&= \lambda   \phi_3
+  \\          \phi_{8 } &= \lambda \phi_4    &&= \lambda^3 \phi_1 
+  \\          \phi_{10} &= \lambda \phi_5    &&= \lambda   \phi_5
+  \\          \phi_{12} &= \lambda \phi_6    &&= \lambda^2 \phi_3 
+  \\          \phi_{14} &= \lambda \phi_7    &&= \lambda   \phi_7
+  \\          \phi_{16} &= \lambda \phi_8    &&= \lambda^4 \phi_1 
+  \\          \phi_{18} &= \lambda \phi_9    &&= \lambda   \phi_9
+  \\          \phi_{20} &= \lambda \phi_{10} &&= \lambda^2 \phi_5
+  \\                  & \vdots
+  \\ \implies \phi_n  &= \lambda^{\ffr(n)} \phi_{\fo(n)} 
+  \\
+  \intertext{$\imark$ Proof that 
+    $\vphi= \seq{\phi_n \st \lambda^{\ffr(n)} \phi_{\fo(n)}}{n\in\Z}
+     \implies
+     \opD\vphi = \lambda\vphi
+    $:}
+  \opD\vphi
+    &= \opD\seq{\phi_n \st \phi_{2n}=\lambda^{\ffr(n)} \phi_{\fo(n)}}{n\in\Z}
+    && \text{by left hypothesis}
+  \\&= \seqn{\phi_{2n} \st \phi_{2n}=\lambda^{\ffr(n)} \phi_{\fo(n)}}
+    && \text{by definition of $\opD$}
+  \\&= \seqn{\phi_{2n} \st \phi_{2n}=\lambda \phi_n}
+    && \text{by previous development}
+  \\&= \seqn{\lambda \phi_n}
+  \\&= \lambda \vphi
+\end{align*}
+\end{proof}
+
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:wav_opT_spectrum}
+%---------------------------------------
+Let $\opT\in\oppB(\spX,\spX)$ be the \hie{translation operator}.
+\formbox{\begin{array}{l}
+  \begin{array}{l>{\ds}rc>{\ds}l}
+    1. & \opT &=& \sum_n \lambda_n \opP_n  \\
+    2. & \sum_n \opP_n &=& \opI \\
+    3. & \opP_n\opP_m &=& \kdelta_{n-m} \opP_n \\
+    4. & \oppDim(\spH_n) &<& \infty \\
+    5. & \mc{3}{l}{\seto{\set{\lambda_n}{\lambda_n\ne 0}}  \text{is countably infinite}} \\
+  \end{array}
+  \\
+  where \quad\left\{
+    \begin{array}{>{\ds}rcl@{\qquad}D}
+      \seq{\lambda_n}{n\in\Z} &\eqd& \oppSpecp(\opT) & (eigenvalues of $\opT$) \\
+      \spH_n &\eqd& \oppN(\opT-\lambda_n\opI)        & ($\lambda_n$ is the eigenspace of $\opT$ at $\lambda_n$ in $\spY$) \\
+      \spH_n &=& \opP_n \spY                         & ($\opP_n$ is the projection operator that generates $\spH_n$)
+    \end{array}
+  \right.
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{dingautolist}{"AC}
+  \item By \prefpp{thm:TD_unitary}, $\opT$ is \hie{unitary}.
+  \item Because $\opT$ is unitary, by \prefpp{def:op_types} $\opT$ is also \hie{normal}.
+  \item Because $\opT$ is normal and compact, by the \hie{Spectral Theorem} (\prefp{thm:spectral_theorem}), 
+        it has the expansion shown in this theorem (\pref{thm:wav_opT_spectrum}).
+\end{dingautolist}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:wav_opD_spectrum}
+%---------------------------------------
+Let $\opD\in\oppB(\spX,\spX)$ be the \hie{dilation operator}.
+\formbox{\begin{array}{l}
+  \begin{array}{l>{\ds}rc>{\ds}l}
+    1. & \opD &=& \sum_n \lambda_n \opP_n  \\
+    2. & \sum_n \opP_n &=& \opI \\
+    3. & \opP_n\opP_m &=& \kdelta_{n-m} \opP_n \\
+    4. & \oppDim(\spH_n) &<& \infty \\
+    5. & \mc{3}{l}{\seto{\set{\lambda_n}{\lambda_n\ne 0}}  \text{is countably infinite}} \\
+  \end{array}
+  \\
+  where \quad\left\{
+    \begin{array}{>{\ds}rcl@{\qquad}D}
+      \seq{\lambda_n}{n\in\Z} &\eqd& \oppSpecp(\opD) & (eigenvalues of $\opD$) \\
+      \spH_n &\eqd& \oppN(\opD-\lambda_n\opI)        & ($\lambda_n$ is the eigenspace of $\opD$ at $\lambda_n$ in $\spY$) \\
+      \spH_n &=& \opP_n \spY                         & ($\opP_n$ is the projection operator that generates $\spH_n$)
+    \end{array}
+  \right.
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{dingautolist}{"AC}
+  \item By \prefpp{thm:TD_unitary}, $\opD$ is \hie{unitary}.
+  \item Because $\opD$ is unitary, by \prefpp{def:op_types} $\opD$ is also \hie{normal}.
+  \item Because $\opD$ is normal and compact, by the \hie{Spectral Theorem} (\prefp{thm:spectral_theorem}), 
+        it has the expansion shown in this theorem (\pref{thm:wav_opD_spectrum}).
+\end{dingautolist}
+\end{proof}
+
+
+
+
+
+
+\begin{enumerate}
+
+%\if 0
+\item Proof 2:
+\begin{enumerate}
+\item Proof that $\fP_m^{(n)}(0)=\frac{(p+n-1)!}{(p-1)!}$:\\
+  \begin{align*}
+  \left.\deriv{^n}{y^n} \fP_m(y) \right|_{y=0}
+    &= \left.
+       \deriv{^n}{y^n}
+       \sum_{k=0}^{p-1} {p-1+k\choose k} y^k
+       \right|_{y=0}
+  \\&= \left.
+       \sum_{k=n}^{p-1} {p-1+k\choose k} \left[\frac{k!}{(k-n)!}y^{k-n}\right]
+       \right|_{y=0}
+  \\&= \sum_{k=n}^{p-1} {p-1+k\choose k} \left[\frac{k!}{(k-n)!} \kdelta_{kn}\right]
+  \\&= {p-1+n\choose n} [n!]
+  \\&= \frac{(p-1+n)!)}{(p-1)!n!} [n!]
+  \\&= \frac{(p+n-1)!}{(p-1)!}
+  \end{align*}
+
+
+\item Proof that
+\begin{align*}
+  \fP_m(y)
+    &= \sum_{n=0}^\infty \frac{1}{n!} P^{(n)}(0) y^p
+    && \text{by Maclaurin series \prefpo{thm:taylor}}
+  \\&= \sum_{n=0}^{p-1} \frac{1}{n!} P^{(n)}(0) y^p
+    && \text{by B\'ezout's Theorem \prefpo{thm:bezout}}
+  \\&= \sum_{n=0}^{p-1} \frac{1}{n!} \frac{(p+n-1)!}{(p-1)!}  y^p
+    && \text{by (a).}
+  \\&= \sum_{n=0}^{p-1} {p+n-1 \choose n}  y^p
+    && \text{by definition of ${n\choose k}$}
+\end{align*}
+\end{enumerate}
+%\fi
+
+
+%\if 0
+\item Proof that
+  \[
+    P^{(n)}(0) =  \kdelta_n +
+    (-1)^{n-1} p!
+    \sum_{m=0}^{n-1} {n\choose n-m} (-1)^m \frac{1}{(p-n+m)!}
+    P^{(m)}(0):
+  \]
+
+\begin{eqnarray*}
+  \kdelta_n
+    &=& \left. \kdelta_n \right|_{y=0}
+  \\&=& \left.
+        \deriv{^p}{y^p} 1
+        \right|_{y=0}
+  \\&=& \left.
+        \deriv{^p}{y^p} \left[ (1-y)^p P(y) + y^p P(1-y) \right]
+        \right|_{y=0}
+  \\&=& \left.\left[
+        \sum_{k=0}^p {n\choose k} \left[\deriv{^k}{y^k}(1-y)^p\right] P^{(n-k)}(y)
+      + \sum_{k=0}^p {n\choose k} \left[\deriv{^k}{y^k} y^p\right] \left[(-1)^{n-k} P^{(n-k)}(1-y)\right]
+        \right]\right|_{y=0}
+  \\&=& \left.\left[
+        \sum_{k=0}^p {n\choose k} (-1)^k \frac{p!}{(p-k)!} (1-y)^{p-k} P^{(n-k)}(y  )
+      + \sum_{k=0}^p {n\choose k}        \frac{p!}{(p-k)!}    y^{p-k} (-1)^{n-k} P^{(n-k)}(1-y)
+        \right]\right|_{y=0}
+  \\&=& \sum_{k=0}^p {n\choose k} (-1)^k \frac{p!}{(p-k)!} P^{(n-k)}(0)
+  \\&=& \sum_{m=0}^p {n\choose n-m} (-1)^{n-m} \frac{p!}{(p-n+m)!} P^{(m)}(0)
+        \hs{6ex}m=n-k \iff k=n-m
+  \\&=& P^{(n)}(0)
+      + \sum_{m=0}^{n-1} {n\choose n-m} (-1)^{n-m} \frac{p!}{(p-n+m)!} P^{(m)}(0)
+  \\&=& P^{(n)}(0)
+      + (-1)^p p! \sum_{m=0}^{n-1} {n\choose n-m} (-1)^m \frac{1}{(p-n+m)!} P^{(m)}(0)
+\end{eqnarray*}
+%\fi
+
+
+
+%\if 0
+\item $p$ even case:
+
+\[\begin{array}{|r||l|l|l|l|}
+  \hline
+  n  & r_n   & q_n   & s_n=s_{n-2}-q_ns_{n-1} & t_n=t_{n-2}-q_nt_{n-1}  \\
+  \hline
+  -1  & \ds (1-y)^p
+      & \ds -
+      & \ds 1
+      & \ds 0
+      \\
+   0  & \ds y^p
+      & \ds -
+      & \ds 0
+      & \ds 1
+      \\
+  \hline
+   1  & \ds  \sum_{k=0}^{p-1} {p\choose k}(-1)^k y^k
+      & \ds  1
+      & \ds  1
+      & \ds -1
+      \\
+   2  & \ds \frac{1}{p} y \sum_{k=0}^{p-2} {p\choose k}(-1)^k y^k
+      & \ds -\frac{1}{p} y
+      & \ds \frac{1}{p} y
+      & \ds 1 - \frac{1}{p} y
+      \\
+   3  & \ds \sum_{k=0}^{p-2} {p\choose k}(-1)^k
+            \frac{(p-1)(p-k+1)-2k}{(p-1)(p-k+1)}\;y^k
+      & \ds -\frac{2p}{p-1}
+      & \ds 1 +\frac{2}{p-1}y
+      & \ds \frac{p+1}{p-1} - \frac{2}{p-1}y
+      \\
+   4  & \ds
+      & \ds \frac{3(p-1)}{p(p+1)} y
+      & \ds \frac{-2p+4}{p(p+1)} y  -\frac{6}{p(p+1)} y^2
+      & \ds 1 -\frac{4}{p} y + \frac{6}{p(p+1)} y^2
+      \\
+ \vdots & \ds \vdots
+      & \ds \vdots
+      & \ds \vdots
+      & \ds \vdots
+      \\
+ 2p-1 & \ds 1
+      & \ds
+      & \ds P(y)
+      & \ds P(1-y)
+      \\
+  \hline
+ 2p   & \ds 0
+      & \ds
+      & \ds -
+      & \ds -
+      \\
+  \hline
+\end{array}\]
+\begin{eqnarray*}
+  \sum_{k=0}^{p-2} {p\choose k}(-1)^k y^k
+  + \frac{2}{p-1} y \sum_{k=0}^{p-3} {p\choose k}(-1)^k y^k
+    &=& \sum_{k=0}^{p-2} {p\choose k}(-1)^k y^k
+      + \frac{2}{p-1} \sum_{k=0}^{p-3} {p\choose k}(-1)^k y^{k+1}
+  \\&=& \sum_{k=0}^{p-2} {p\choose k}(-1)^k y^k
+      + \frac{2}{p-1} \sum_{k=1}^{p-2} {p\choose k-1}(-1)^{k-1} y^{k}
+  \\&=& \sum_{k=0}^{p-2} {p\choose k}(-1)^k y^k
+      - \frac{2}{p-1} \sum_{k=1}^{p-2} \frac{k}{p-k+1}{p\choose k}(-1)^k y^{k}
+  \\&=& \sum_{k=0}^{p-2} {p\choose k}(-1)^k y^k
+      - \sum_{k=1}^{p-2} \frac{2k}{(p-1)(p-k+1)}{p\choose k}(-1)^k y^{k}
+  \\&=& \sum_{k=0}^{p-2} {p\choose k}(-1)^k y^k
+      - \sum_{k=0}^{p-2} \frac{2k}{(p-1)(p-k+1)}{p\choose k}(-1)^k y^{k}
+  \\&=& \sum_{k=0}^{p-2} {p\choose k}(-1)^k
+        \left[1-\frac{2k}{(p-1)(p-k+1)}\right]y^k
+  \\&=& \sum_{k=0}^{p-2} {p\choose k}(-1)^k
+        \left[\frac{(p-1)(p-k+1)-2k}{(p-1)(p-k+1)}\right]y^k
+\end{eqnarray*}
+%\fi
+\end{enumerate}
+
+

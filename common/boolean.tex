@@ -1,0 +1,2473 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+%============================================================================
+
+
+%=======================================
+\chapter{Boolean Lattices}
+\label{chp:boolean}
+%=======================================
+\qboxnpq
+  {\href{http://en.wikipedia.org/wiki/Augustus_De_Morgan}{Augustus de Morgan}
+   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineE.html}{(1806--1871)},
+   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/UK.html}{British mathematician and logician},
+   \index{de Morgan, Augustus}
+   \index{quotes!de Morgan, Augustus}
+   \footnotemark
+  }
+  {../common/people/demorgan.jpg}
+  {That the symbolic processes of algebra,
+   invented as tools of numerical calculation,
+   should be competent to express every act of thought,
+   and to furnish the grammar and dictionary of an all-containing system of logic,
+   would not have been believed until it was proved.\ldots
+   by Mr. Boole.
+   The unity of the forms of thought in all the applications of reason,
+   however remotely separated,
+   will one day be matter of notoriety and common wonder:
+   and Boole's name will be remembered in connection with one of the most important steps
+   towards the attainment of knowledge.}
+  \citetblt{
+    %quote: & \citerpg{demorgan1872}{80}{0836951190} \\
+    quote: & \citerpu{demorgan1872}{80}{http://books.google.com/books?id=E2tC2EHgSGwC\&pg=PA80} \\
+    image: & \url{http://en.wikipedia.org/wiki/Augustus_De_Morgan}
+    }
+
+%=======================================
+\section{Definition and properties}
+%=======================================
+%%---------------------------------------
+%\begin{definition}%[\thm{Huntington's \textsc{fourth set}}]
+%\citetbl{
+%  \citorpc{huntington1933}{280}{``4th set"}
+%  }
+%\label{def:booalg}
+%%---------------------------------------
+%Let $\setX$ be a set, $\orel$ an order relation, $\join$ and $\meet$ binary operations,
+%$\bnot$ an unary operation, and $\bzero$ and $\bid$ nullary operations.
+%Define $\orel$ such that
+%$x\orel y \quad\iff\quad x\meet y=x \quad \forall x,y\in\setX$.
+%\defboxt{
+%$\latticed$ is a \hid{Boolean algebra} if
+%\\$\begin{array}{@{\qquad}llcl @{\qquad}C@{\qquad}D@{\qquad}D}
+%     1. & x \join  x              &=&  x                        & \forall x    \in\setX & (\prope{idempotent})  & and \\
+%     2. & x \join  y              &=&  y \join  x               & \forall x,y  \in\setX & (\prope{commutative}) & and \\
+%     3. & \brp{x \join  y}\join z &=&  x \join \brp{y \join z}  & \forall x,y,z\in\setX & (\prope{associative}) & and \\
+%    %4. & \brp{x'\join y'}' \join \brp{x'\join y}' &=& x        & \forall x,y  \in\setX.& (\prope{Huntington's axiom})  &
+%     4. & \brp{x\meet y} \join \brp{x\meet y'} &=& x            & \forall x,y  \in\setX.& (\prope{Huntington's axiom})  &
+%\end{array}$}
+%\end{definition}
+
+A \structe{Boolean algebra} (next definition) is a \prope{bounded} \xref{def:latb},
+\prope{distributive} \xref{def:latd}, and \prope{complemented} \xref{def:latc}, \structe{lattice} \xref{def:lattice}.
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerpg{maclane1999}{488}{0821816462},
+  %\citorp{birkhoff1948}{149???}\\
+  \citor{jevons1864}
+  }
+\label{def:boolean}
+\label{def:booalg}
+\label{def:l2n}
+%---------------------------------------
+%Let $\latA\eqd\booalgX$ be an \structe{algebraic structure}.
+\defboxt{
+  The \structe{bounded lattice} \xref{def:latb} $\latL\eqd\latbX$ is \propd{Boolean} if
+  \\$\indentx\begin{array}{FMDD}
+    1. & $\latL$ is \prope{complemented} & \xref{def:latc} & and\\
+    2. & $\latL$ is \prope{distributive} & \xref{def:latd} & .
+  \end{array}$
+  \\
+  A \structe{bounded lattice} $\latL$ that is \prope{Boolean} is a \structd{Boolean algebra}
+  or a \structd{Boolean lattice}.\\
+  A \structe{Boolean lattice} with $2^\xN$ elements is denoted $\hxs{\latL_2^\xN}$.
+  }
+\end{definition}
+
+Several examples of \structe{Boolean lattice}s are illustrated in \prefpp{ex:latoc}.
+
+%---------------------------------------
+\begin{proposition}
+%\citetbl{
+%  \citerpg{maclane1999}{488}{0821816462}\\
+%  %\citorp{birkhoff1948}{149???}\\
+%  \citor{jevons1864}
+%  }
+\label{prop:boolean}
+%---------------------------------------
+%Let $\latA\eqd\booalgX$ be an \structe{algebraic structure}.
+\propboxt{
+  The algebraic structure $\latA\eqd\booalgX$ is a \structd{Boolean algebra} \xref{def:boolean} if
+  \\$\indentx\begin{array}{FlclCDD}
+    1. & \mc{5}{M}{$\latbX$ is a \structe{bounded lattice} \xref{def:latb}}                                              & and\\
+    2. & x\meet\brp{y\join z}&=& \brp{x\meet y}\join\brp{x\meet z} & \forall x,y,z\in\setX & (\prope{distributive})      & and\\
+    3. & x\meet x'           &=& \lzero                            & \forall x\in\setX     & (\prope{non-contradiction}) & and\\
+    4. & x\join x'           &=& \lid                              & \forall x\in\setX     & (\prope{excluded middle}).  & 
+  \end{array}$.
+  }
+\end{proposition}
+\begin{proofns}
+This follows directly from \prefpp{def:boolean}.
+\end{proofns}
+
+%Because the axioms 1--4 of \pref{def:booalg} (previous definition) are \prope{self-dual}
+%and just as in the more general case of lattices (\prefp{thm:lat_duality}),
+Boolean algebras support the \prope{principle of duality} (next theorem).
+%---------------------------------------
+\begin{theorem}[\thmd{Principle of duality}]
+\label{thm:boo_duality}
+\citetbl{
+  \citerppgc{givant2009}{20}{22}{0387402934}{Chapter 4},
+  \citerp{sikorski1969}{8}
+  }
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a Boolean algebra.
+\thmboxt{
+  $\brb{\parbox{5\tw/16}{\raggedright
+    $\phi$ is an identity on $\latB$ in terms of the operations\\
+    $\join$, $\meet$, $\bnot$, $\bzero$, and $\bid$}}$
+  $\qquad\implies\qquad$
+  $\opT\phi$ is also an identity on $\latB$
+  \\[1ex]
+  where the operator $\opT$ performs the following mapping on the operations in $\clFxx$:
+  \\\indentx $0\rightarrow1,\qquad 1\rightarrow0,\qquad \join\rightarrow\meet,\qquad \meet\rightarrow\join$
+  }
+\end{theorem}
+\begin{proof}
+For each of the identities in the definition of Boolean algebras (\prefp{prop:boo_char_H1}),
+the operator $\opT$ produces another identity that is also in the definition:
+\[\begin{array}{lc lcl c lcl cl}
+  \opT(1a) &=& \opT[x \join  y        &=&  y \join  x                    ] &=& [x \meet  y        &=&  y \meet  x                   ] &=& (1b) \\
+  \opT(1b) &=& \opT[x\meet  y         &=&  y \meet  x                    ] &=& [x\join  y         &=&  y \join  x                   ] &=& (1a) \\
+  \opT(2a) &=& \opT[x\join( y\meet z) &=& ( x\join y) \meet ( x\join z)  ] &=& [x\meet( y\join z) &=& ( x\meet y) \join ( x\meet z) ] &=& (2b) \\
+  \opT(2b) &=& \opT[x\meet( y\join z) &=& ( x\meet y) \join  ( x\meet z) ] &=& [x\join( y\meet z) &=& ( x\join y) \meet  ( x\join z)] &=& (2a) \\
+  \opT(3a) &=& \opT[x \join \bzero    &=& x                              ] &=& [x \meet \bid      &=& x                             ] &=& (3b) \\
+  \opT(3b) &=& \opT[x \meet \bid      &=& x                              ] &=& [x \join \bzero    &=& x                             ] &=& (3a) \\
+  \opT(4a) &=& \opT[x \join x'        &=& \bid                           ] &=& [x \meet x'        &=& \bzero                        ] &=& (4b) \\
+  \opT(4b) &=& \opT[x \meet x'        &=& \bzero                         ] &=& [x \join x'        &=& \bid                          ] &=& (4a)
+\end{array}\]
+
+Therefore, if the statement $\phi$ is consistent with regards to the Boolean algebra $\latB$,
+then $\opT\phi$ is also consistent with regards to the Boolean algebra $\latB$.
+\end{proof}
+
+
+%=======================================
+\section{Order properties}
+%=======================================
+The definition of Boolean algebras given by \pref{def:booalg}
+is a set of postulates known as \thme{Huntington's \textsc{first set}}.
+\pref{lem:boo_H1c} (next) gives a link between \thme{Huntington's \textsc{first set}}
+of Boolean algebra postulates and the \thme{classic 10} set of Boolean algebra postulates
+(\prefp{thm:boo_prop}).
+%This lemma is used exclusivley in the proofs of
+%\prefpp{prop:boo_char_H1} and \prefpp{thm:boo_prop}.
+%---------------------------------------
+\begin{lemma}
+\label{lem:boo_H1c}
+\citetbl{
+  \citePppc{huntington1904}{292}{296}{``1st set"},
+  \citerppg{joshi1989}{224}{227}{8122401201}
+  }
+%---------------------------------------
+Let $\latL\eqd\booalgd$ be a bounded lattice.
+\lemboxt{
+\textbf{If \quad$\forall x,y,z\in\setX$}
+\\\footnotesize%
+$\brb{\begin{array}{l|lcl | lcl | D D}%
+  \circOne
+     & x \join  y         &=&  y \join  x
+     &  x\meet  y         &=&  y \meet  x
+     & (\prope{commutative})
+     & and
+  \\\circTwo
+     & x\join( y\meet z) &=& ( x\join y) \meet ( x\join z)
+     & x\meet( y\join z) &=& ( x\meet y) \join  ( x\meet z)
+     & (\prope{distributive})
+     & and
+  \\\circThree
+     & x \join 0           &=& x
+     & x \meet 1           &=& x
+     & (\prope{identity})
+     & and
+  \\\circFour
+     & x \join x'        &=& \bid
+     & x \meet x'        &=& \bzero
+     & (\prope{complemented})
+     &
+\end{array}}$
+\\
+\normalsize
+\textbf{then \quad$\forall x,y,z\in\setX$}
+\footnotesize
+\\$\brb{\begin{array}{F| lcl | lcl | DD}
+   1.& x \join  x         &=&  x
+     &  x\meet  x         &=&  x
+     & (\prope{idempotent})
+     & and
+  \\
+   2.& x\join ( y\join  z) &=& ( x\join   y) \join   z
+     & x\meet ( y\meet  z) &=& ( x\meet   y) \meet   z
+     & (\prope{associative})\footnotemark
+     & and
+  \\
+   3.& x \join (x \meet  y) &=&  x
+     & x \meet (x \join  y) &=&  x
+     & (\prope{absorptive})% \prope{contractive}
+     & and
+  \\
+   4.& x \join \bid        &=& \bid
+     & x \meet \bzero      &=& \bzero
+     & (\prope{bounded})
+     & and
+  \\
+  % 5.& \brp{x'}'         &=& x
+  %   &                   &&
+  %   & (\prope{involutory})
+  %   & and
+  %\\
+   5.& (x\join y)'       &=& x' \meet y'
+     & (x\meet y)'       &=& x' \join y'
+     & (\prope{de Morgan's laws}).
+     &
+\end{array}}$
+}
+\footnotetext{
+  K.D. Joshi comments that having the \prope{associative} property as a result of an axiom
+  rather than as an axiom, is a very unusual and ``remarkable property" in the world of algebras.
+  \citerppg{joshi1989}{225}{226}{8122401201}
+  }
+\end{lemma}
+\begin{proof}
+For each pair of properties, it is only necessary to prove one of them,
+as the other follows by the \hie{principle of duality} (\prefp{thm:boo_duality}).
+Let the \ope{join} $\join$ be represented by $+$,
+the operation \ope{meet} $\meet$ represented by $\cdot$ or juxtaposition,
+and let $\meet$ have algebraic precedence over $\join$.
+\begin{enumerate}
+  \item Proof that $x + x =  x$ and $xx =  x$
+        (\prope{idempotent} properties):
+        \label{item:boo_H1c_idempotent}
+        \begin{align*}
+          x + x
+            &= (x + x) \cdot \bid
+            && \text{by \prope{identity} property,}
+            && \text{\circThree b}
+          \\&= (x + x)(x + x')
+            && \text{by \prope{complemented} property,}
+            && \text{\circFour a}
+          \\&= x + (x x')
+            && \text{by \prope{distributive} property,}
+            && \text{\circTwo a}
+          \\&= x + \bzero
+            && \text{by \prope{complemented} property,}
+            && \text{\circFour b}
+          \\&= x
+            && \text{by \prope{identity} property,}
+            && \text{\circThree a}
+        \end{align*}
+
+  \item Proof that $x + \bid =  \bid$  and $x \cdot \bzero=\bzero$
+        (\prope{bounded} properties):
+        \label{item:boo_H1c_bounded}
+        \begin{align*}
+          x + \bid
+            &= (x + \bid) \cdot \bid
+            && \text{by \prope{identity} property,}
+            && \text{\circThree b}
+          \\&= \bid \cdot (x + \bid)
+            && \text{by \prope{commutative} property,}
+            && \text{\circOne b}
+          \\&= (x + x') (x + \bid)
+            && \text{by \prope{complemented} property,}
+            && \text{\circFour a}
+          \\&= x + (x' \cdot \bid)
+            && \text{by \prope{distributive} property,}
+            && \text{\circTwo a}
+          \\&= x + x'
+            && \text{by \prope{identity} property,}
+            && \text{\circThree b}
+          \\&= \bid
+            && \text{by \prope{complemented} property,}
+            && \text{\circFour a}
+        \end{align*}
+
+  \item Proof that $x + (x y) =  x$ and $x(x+ y)=x$:
+        (\prope{absorptive} properties)
+        \label{item:boo_H1c_absorptive}
+        \begin{align*}
+          x + (x\cdot y)
+            &= (x \cdot \bid) + (xy)
+            && \text{by \prope{identity} property,}
+            && \text{\circThree b}
+          \\&= x \cdot (\bid + y)
+            && \text{by \prope{distributive} property,}
+            && \text{\circTwo b}
+          \\&= x \cdot (y + \bid)
+            && \text{by \prope{commutative} property,}
+            && \text{\circOne a}
+          \\&= x \cdot \bid
+            && \text{by \pref{item:boo_H1c_bounded}}
+          \\&= x
+            && \text{by \prope{identity} property,}
+            && \text{\circThree b}
+        \end{align*}
+
+  \item Proof that $(x+y)+z=x+(y+z)$ and $(xy)z=x(yz)$
+        (\prope{associative} properties):
+        \label{item:boo_H1c_associative}\\
+        Let $a\eqd x(yz)$ and $b\eqd(xy)z$.
+          \begin{enumerate}
+            \item Proof that $a+ x=b+ x$: \label{item:boo_H1c_axbx}
+              \begin{align*}
+                a + x
+                  &= x(yz) + x
+                  && \text{by definition of $a$}
+                \\&= x(yz) + x\bid
+                  && \text{by \prope{identity} property,}
+                  && \text{\circThree b}
+                \\&= x\brp{yz + \bid}
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo a}
+                \\&= x\brp{\bid}
+                  && \text{by \prope{bounded} property,}
+                  && \text{\pref{item:boo_H1c_bounded}}
+                \\&= x
+                  && \text{by \prope{identity} property,}
+                  && \text{\circThree b}
+                \\&= x(x+ z)
+                  && \text{by \prope{absorptive} property,}
+                  && \text{\pref{item:boo_H1c_absorptive}}
+                \\&= (x+ xy)(x+ z)
+                  && \text{by \prope{absorptive} property,}
+                  && \text{\pref{item:boo_H1c_absorptive}}
+                \\&= x+(xy)z
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo b}
+                \\&= (xy)z + x
+                  && \text{by \prope{commutative} property,}
+                  && \text{\circOne a,b}
+                \\&= b + x
+                  && \text{by definition of $b$}
+              \end{align*}
+
+            \item Proof that $a+x'=b+x'$: \label{item:boo_H1c_axpbxp}
+              \begin{align*}
+                a + x'
+                  &= x(yz) + x'
+                  && \text{by definition of $a$}
+                \\&= x' + x(yz)
+                  && \text{by \prope{commutative} property,}
+                  && \text{\circOne a,b}
+                \\&= (x' + x)(x'+yz)
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo b}
+                \\&= \bid\cdot(x'+yz)
+                  && \text{by \prope{complemented} property,}
+                  && \text{\circFour a}
+                \\&= x'+yz
+                  && \text{by \prope{identity} property,}
+                  && \text{\circThree b}
+                \\&= (x'+y)(x'+z)
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo b}
+                \\&= \brs{(x'+y)\cdot\bid}(x'+z)
+                  && \text{by \prope{identity} property,}
+                  && \text{\circThree b}
+                \\&= \brs{\bid\cdot(x'+y)}(x'+z)
+                  && \text{by \prope{commutative} property,}
+                  && \text{\circOne b}
+                \\&= \brs{(x+x')(x'+y)}(x'+z)
+                  && \text{by \prope{complemented} property,}
+                  && \text{\circFour a}
+                \\&= (x'+xy)(x'+z)
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo b}
+                \\&= x'+(xy)z
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo b}
+                \\&= (xy)z+x'
+                  && \text{by \prope{commutative} property,}
+                  && \text{\circOne a}
+                \\&= b+x'
+                  && \text{by definition of $b$}
+              \end{align*}
+
+            \item Proof that $x(yz)=(xy)z$:
+              \begin{align*}
+                x(yz)
+                  &\eqd a
+                  && \text{by definition of $a$}
+                \\&= a + a
+                  && \text{by \prope{idempotent} property,}
+                  && \text{\pref{item:boo_H1c_idempotent}}
+                \\&= a + a\bid + \bzero
+                  && \text{by \prope{identity} property,}
+                  && \text{\circThree a,b}
+                \\&= a + a(x+ x') + xx'
+                  && \text{by \prope{complemented} property,}
+                  && \text{\circFour a,b}
+                \\&= a + ax + ax' + xx'
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo a}
+                \\&= a + ax' + xa + xx'
+                  && \text{by \prope{commutative} property,}
+                  && \text{\circOne a,b}
+                \\&= aa + ax' + xa + xx'
+                  && \text{by \prope{idempotent} property,}
+                  && \text{\pref{item:boo_H1c_idempotent}}
+                \\&= a(a + x') + x(a + x')
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo a}
+                \\&= (a + x)(a + x')
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo a}
+                \\&= (b + x)(a + x')
+                  && \text{by \pref{item:boo_H1c_axbx}}
+                \\&= (b + x)(b + x')
+                  && \text{by \pref{item:boo_H1c_axpbxp}}
+                \\&= (b + x)b + (b+x)x'
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo a}
+                \\&= b(b + x) + x'(b+x)
+                  && \text{by \prope{commutative} property,}
+                  && \text{\circOne b}
+                \\&= bb + bx + x'b + x'x
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo a}
+                \\&= b + bx + x'b + x'x
+                  && \text{by \prope{idempotent} property,}
+                  && \text{\pref{item:boo_H1c_idempotent}}
+                \\&= b + bx + bx' + x'x
+                  && \text{by \prope{commutative} property,}
+                  && \text{\circOne b}
+                \\&= b + b(x + x') + x'x
+                  && \text{by \prope{distributive} property,}
+                  && \text{\circTwo a}
+                \\&= b + b\cdot\bid + \bzero
+                  && \text{by \prope{complemented} property,}
+                  && \text{\circFour a,b}
+                \\&= b + b
+                  && \text{by \prope{identity} property,}
+                  && \text{\circThree a,b}
+                \\&= b
+                  && \text{by \prope{idempotent} property,}
+                  && \text{\pref{item:boo_H1c_idempotent}}
+                \\&\eqd (xy)z
+                  && \text{by definition of $b$}
+              \end{align*}
+          \end{enumerate}
+
+
+  \item Proof that $\brp{x + y}' = x'y'$ and $\brp{xy}' = x'+ y'$:
+        (\prope{de Morgan} properties)
+        \label{item:boo_H1c_demorgan}
+    \begin{enumerate}
+      \item Proof that $(x+y)+(x'y')=\bid$: \label{item:boo_H1c_demorgan_1}
+        \begin{align*}
+          &(x+ y)+ (x' y')
+          \\&= \brs{(x+ y)+ x'} \brs{(x+ y)+ y'}
+            && \text{by \prope{distributive} property,}
+            && \text{\circTwo a}
+          \\&= \brs{x'+(x+ y)} \brs{y'+(x+ y)}
+            && \text{by \prope{commutative} property,}
+            && \text{\circOne a}
+          \\&= \brs{\brp{x'+(x+ y)}\bid} \brs{\brp{y'+(x+ y)}\bid}
+            && \text{by \prope{identity} property,}
+            && \text{\circThree b}
+          \\&= \brs{\bid\brp{x'+(x+ y)}} \brs{\bid\brp{y'+(y+ x)}}
+            && \text{by \prope{distributive} property,}
+            && \text{\circTwo b}
+          \\&= \brs{\brp{x'+ x}\brp{x'+(x+ y)}} \brs{\brp{y'+ y}\brp{y'+(y+ x)}}
+            && \text{by \prope{complemented} property,}
+            && \text{\circFour a}
+          \\&= \brs{x'+\brp{x (x+ y)}} \brs{y'+\brp{y(y+ x)}}
+            && \text{by \prope{distributive} property,}
+            && \text{\circTwo a}
+          \\&= \brs{x'+ x} \brs{y'+ y}
+            && \text{by \prope{absorptive} property,}
+            && \text{\pref{item:boo_H1c_absorptive}}
+          \\&= \brs{\bid} \brs{\bid}
+            && \text{by \prope{complemented} property,}
+            && \text{\circFour a}
+          \\&= \bid
+            && \text{by \prope{bounded} property,}
+            && \text{\pref{item:boo_H1c_bounded}}
+        \end{align*}
+
+      \item Proof that $(x+y)(x'y')=\bzero$:\label{item:boo_H1c_demorgan_0}
+        \begin{align*}
+          (x+ y)(x' y')
+            &= \brs{x(x' y')} + \brs{y(x'y')}
+            && \text{by \prope{distributive} property,}
+            && \text{\circTwo b}
+          \\&= \brs{\bzero+ x(x' y')} + \brs{\bzero + y(x'y')}
+            && \text{by \prope{identity} property,}
+            && \text{\circThree a}
+          \\&= \brs{(xx')+ x(x' y')} + \brs{(yy') + y(x'y')}
+            && \text{by \prope{complemented} property,}
+            && \text{\circFour b}
+          \\&= \brs{x\brp{x' + x' y'}} + \brs{y\brp{y' + x'y'}}
+            && \text{by \prope{distributive} property,}
+            && \text{\circTwo b}
+          \\&= \brs{xx'} + \brs{yy'}
+            && \text{by \prope{absorptive} property,}
+            && \text{\pref{item:boo_H1c_absorptive}}
+          \\&= \brs{\bzero} + \brs{\bzero}
+            && \text{by \prope{complemented} property,}
+            && \text{\circFour b}
+          \\&= \bzero
+            && \text{by \prope{bounded} property,}
+            && \text{\pref{item:boo_H1c_bounded}}
+        \end{align*}
+
+      \item Proof that $(x+y)'=x'y'$:\\
+        The quanities $(x+y)$ and $x'y'$ are \hie{complements} of each other
+        as demonstrated by \pref{item:boo_H1c_demorgan_1} ($(x+y)+(x'y')=\bid$)
+        and                \pref{item:boo_H1c_demorgan_0} ($(x+y)(x'y')=\bzero$).
+        Therefore, $(x+y)'=x'y'$.
+    \end{enumerate}
+\end{enumerate}
+
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:boo_poset}
+\citetbl{
+  \citerp{sikorski1969}{7}
+  }%
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a Boolean algebra.
+\propboxt{
+  The pair $\opair{\setX}{\orel}$ is an \hie{ordered set}. In particular,
+  \\\indentx$\begin{array}{F lDl l l CDD}
+    1. & x \orel x  &     &           &          &           & \forall x    \in\setX   & (\prope{reflexive})       & and \\
+    2. & x \orel y  & and & y \orel z & \implies & x \orel z & \forall x,y,z\in\setX   & (\prope{transitive})      & and \\
+    3. & x \orel y  & and & y \orel x & \implies & x =     y & \forall x,y  \in\setX   & (\prope{anti-symmetric}). &
+  \end{array}$
+  }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\orel$ is \prope{reflexive}      in $\opair{\setX}{\orel}$:
+    \begin{align*}
+      x \orel x
+        &\iff x \join x = x
+        &&    \text{by definition of $\orel$ \xref{def:booalg}}
+      \\&\iff \text{true}
+        &&    \text{by \prefp{lem:boo_H1c}}
+    \end{align*}
+
+  \item Proof that $\orel$ is \prope{transitive}     in $\opair{\setX}{\orel}$:
+    \begin{align*}
+      \brb{\brp{x\orel y} \text{ and } \brp{y\orel z}}
+        &\iff     \brb{\brp{x \join y = y} \text{ and } \brp{y \join z = z} }
+        &&        \text{by definition of $\orel$ \xref{def:booalg}}
+      \\&\implies \brp{x \join z}
+      \\&=        x \join \brp{y \join z}
+      \\&=        \brp{x\join y} \join z
+        &&        \text{by \prope{associative} property of \prefp{lem:boo_H1c}}
+      \\&=        y \join z
+      \\&=        z
+    \end{align*}
+
+  \item Proof that $\orel$ is \prope{anti-symmetric} in $\opair{\setX}{\orel}$:
+    \begin{align*}
+      \brb{\brp{x\orel y} \text{ and } \brp{y\orel x}}
+        &\iff     \brb{\brp{x \join y = y} \text{ and } \brp{y \join x = x} }
+        &&        \text{by definition of $\orel$ \xref{def:booalg}}
+      \\&\iff     \brb{\brp{x \join y = y} \text{ and } \brp{x \join y = x} }
+        &&        \text{by \prope{commutative} property of \prefp{def:booalg}}
+      \\&\iff     x = x \join y = y
+      \\&\implies x = y
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+%=======================================
+%\section{Lattice properties}
+%=======================================
+%Boolean algebras are actually equivalent to distributive complemented lattices
+%(next theorem).
+%Note that in the proof of the next theorem, that \prope{boundedness} is not actually
+%necessary.
+%---------------------------------------
+\begin{proposition}
+\label{prop:boo_bounds}
+%---------------------------------------
+Let $\booalgd$ be a Boolean algebra.
+\propboxt{
+  $\begin{array}{lMM}
+    x \join y & is the \hie{least upper bound   } & of $x$ and $y$ in $\opair{\setX}{\orel}$.\\
+    x \meet y & is the \hie{greatest lower bound} & of $x$ and $y$ in $\opair{\setX}{\orel}$.
+  \end{array}$
+  }
+\end{proposition}
+
+
+
+%---------------------------------------
+\begin{theorem}[\thmd{classic 10 Boolean properties}]
+\footnote{
+  \citePppc{huntington1904}{292}{293}{``1st set"},
+  \citorpc{huntington1933}{280}{``4th set"},
+  \citerpg{maclane1999}{488}{0821816462},
+  \citerpg{givant2009}{10}{0387402934},
+  \citorpp{muller1909}{20}{21},
+  \citor{schroder1890},
+  \citorppu{whitehead1898}{35}{37}{http://books.google.com/books?id=P_A8AAAAIAAJ\&pg=PA35}
+  }
+\label{thm:boo_prop}
+\label{thm:boolean}
+%---------------------------------------
+\thmboxt{
+$\latA\eqd\booalgd$ is a \structb{Boolean algebra} $\quad\iff\quad$ $\forall x,y,z\in\setX$
+%\textbf{if and only if} all of the following equations are true for all $x,y,z\in\setX$
+\footnotesize
+\\${\begin{array}{lcl | lcl || DD}
+       x \join  x         &=&  x
+     &  x\meet  x         &=&  x
+     & (\prope{idempotent})
+     & and
+  \\
+       x \join  y         &=&  y \join  x
+     &  x\meet  y         &=&  y \meet  x
+     & (\prope{commutative})
+     & and
+  \\
+       x\join ( y\join  z)   &=& ( x\join   y) \join   z
+     & x\meet  ( y\meet   z) &=& ( x\meet   y) \meet   z
+     & (\prope{associative})
+     & and
+  \\
+       x \join ( x\meet  y) &=&  x
+     & x\meet ( x \join  y) &=&  x
+     & (\prope{absorptive})% \prope{contractive}
+     & and
+  \\
+       x\join( y\meet z) &=& ( x\join y) \meet ( x\join z)
+     & x\meet( y\join z) &=& ( x\meet y) \join  ( x\meet z)
+     & (\prope{distributive})
+     & and
+  \\
+       x \join 0           &=& x
+     & x \meet 1           &=& x
+     & (\prope{identity})
+     & and
+  \\
+       x \join 1           &=& 1
+     & x \meet 0           &=& 0
+     & (\prope{bounded})
+     & and
+  \\
+       x \join x'        &=& 1
+     & x \meet x'        &=& 0
+     & (\prope{complemented})
+     & and
+  \\
+       (x\join y)'       &=& x' \meet y'
+     & (x\meet y)'       &=& x' \join y'
+     & (\prope{de Morgan})
+     & and
+  \\
+       \brp{x'}'         &=& x
+     &                   &&
+     & (\prope{involutory}) .
+  \\\hline
+       \mc{3}{H|} {property with emphasis on $\join$}
+     & \mc{3}{H||}{dual property with emphasis on $\meet$}
+     & \mc{2}{H}{property name}
+\end{array}}$}
+\end{theorem}
+\begin{proof}
+%By \prefpp{prop:boo_char_H1},
+%  \[ \text{$\latA$ is a \prope{Boolean algebra} (\pref{def:booalg}) }
+%     \qquad\iff\qquad
+%     \text{$\latA$ satisfies the identities of \pref{prop:boo_char_H1}}
+%  \]
+%Therefore to prove \pref{thm:boo_prop} (this theorem), it is sufficient to prove
+%  \[ \text{$\latA$ satisfies the identities of \pref{prop:boo_char_H1}}
+%     \qquad\iff\qquad
+%     \text{$\latA$ satisfies the identities of \pref{thm:boo_prop} (this theorem)}
+%  \]
+%
+\begin{enumerate}
+  \item Proof that \prefpp{prop:boo_char_H1} $\implies$ \prefpp{thm:boo_prop}:
+    \\\begin{longtable}{rllll}
+       1. & Proof that $\latA$ is \prope{idempotent}:              & by  1 & of \pref{lem:boo_H1c}      & \prefpo{lem:boo_H1c}      \\
+       2. & Proof that $\latA$ is \prope{commutative}:             & by  1 & of \pref{prop:boo_char_H1} & \prefpo{prop:boo_char_H1} \\
+       3. & Proof that $\latA$ is \prope{associative}:             & by  2 & of \pref{lem:boo_H1c}      & \prefpo{lem:boo_H1c}      \\
+       4. & Proof that $\latA$ is \prope{absorptive}:              & by  3 & of \pref{lem:boo_H1c}      & \prefpo{lem:boo_H1c}      \\
+       5. & Proof that $\latA$ is \prope{distributive}:            & by  2 & of \pref{prop:boo_char_H1} & \prefpo{prop:boo_char_H1} \\
+       6. & Proof that $\latA$ is \prope{identity}:                & by  3 & of \pref{prop:boo_char_H1} & \prefpo{prop:boo_char_H1} \\
+       7. & Proof that $\latA$ is \prope{bounded}:                 & by  4 & of \pref{lem:boo_H1c}      & \prefpo{lem:boo_H1c}      \\
+       8. & Proof that $\latA$ is \prope{complemented}:            & by  4 & of \pref{prop:boo_char_H1} & \prefpo{prop:boo_char_H1} \\
+       9. & Proof that $\latA$ is \prope{involutory}:     & by    &    \pref{cor:latcd_uniquecomp}      & \prefpo{cor:latcd_uniquecomp}      \\
+      10. & Proof that $\latA$ is \prope{de Morgan}: & by  5 & of \pref{lem:boo_H1c}      & \prefpo{lem:boo_H1c}      \\
+    \end{longtable}
+
+  \item Proof that \prefpp{prop:boo_char_H1} $\impliedby$ \prefpp{thm:boo_prop}:
+    \\\begin{tabular}{lllll}
+       1. & Proof that $\latA$ is \prope{commutative}:             & by  2 & of \pref{thm:boo_prop} & \prefpo{thm:boo_prop} \\
+       2. & Proof that $\latA$ is \prope{distributive}:            & by  5 & of \pref{thm:boo_prop} & \prefpo{thm:boo_prop} \\
+       3. & Proof that $\latA$ is \prope{identity}:                & by  6 & of \pref{thm:boo_prop} & \prefpo{thm:boo_prop} \\
+       4. & Proof that $\latA$ is \prope{complemented}:            & by  8 & of \pref{thm:boo_prop} & \prefpo{thm:boo_prop} \\
+    \end{tabular}
+
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{lemma}%[\lemd{Sasaki hook}]
+\label{lem:boa_xcxy}
+%---------------------------------------
+\lembox{
+  \brbr{\begin{array}{M}
+    $\booalgd$\\
+    is a \structe{Boolean algebra}
+  \end{array}}
+  \implies
+  \brbl{\begin{array}{FrclCDD}
+     1. & x' \join (x \meet y) &=& x' \join y & \forall x,y\in\setX & (\fncte{Sasaki hook}) & and\\
+     2. & x  \join (x'\meet y) &=& x  \join y & \forall x,y\in\setX &                       &
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  x' \join (x\meet y) 
+    &= \mcom{x'\join(x'\meet y)}{$x'$} \join (x\meet y) 
+    && \text{by \prope{absorption} property \xref{thm:boolean}}
+  \\&= x'\join \brs{(x' \join x)\meet y }
+    && \text{by \prope{associative} and \prope{distributive} properties \xref{thm:boolean}}
+  \\&= x'\join \brs{\lid\meet y}
+    && \text{by \prope{excluded middle} property \xref{thm:boolean}}
+  \\&= x' \join y 
+    && \text{by definition of $\lid$ \xref{def:lub}}
+  \\
+  x \join (x'\meet y) 
+    &= \mcom{x\join(x\meet y)}{$x$} \join (x\meet y) 
+    && \text{by \prope{absorption} property \xref{thm:boolean}}
+  \\&= x\join \brs{(x \join x')\meet y }
+    && \text{by \prope{associative} and \prope{distributive} properties \xref{thm:boolean}}
+  \\&= x\join \brs{\lid\meet y}
+    && \text{by \prope{excluded middle} property \xref{thm:boolean}}
+  \\&= x \join y 
+    && \text{by definition of $\lid$ \xref{def:lub}}
+\end{align*}
+\end{proof}
+
+%%---------------------------------------
+%\begin{theorem}
+%\citetbl{
+%  \citerpg{joshi1989}{234}{8122401201}
+%  }
+%\label{thm:balg_atomic}
+%%---------------------------------------
+%Let $\latL\eqd\latticed$ be a lattice.
+%\thmbox{
+%  \text{$\latL$ is a \prope{Boolean algebra}}
+%  \qquad\implies\qquad
+%  \text{$\latL$ is \prope{atomic}}
+%  }
+%\end{theorem}
+
+%%---------------------------------------
+%\begin{theorem}[\thm{Stone Representation Theorem}]
+%\citetbl{
+%  \citerpg{joshi1989}{235}{8122401201}\\
+%  %\citor{stone1936}
+%  }
+%\label{thm:srt}
+%%---------------------------------------
+%Let $\latL\eqd\latticed$ be a lattice.
+%\thmboxt{
+%  $\latL$ is \hie{Boolean}
+%  $\qquad\iff\qquad$
+%  $\latL$ is isomorphic to the power set of it's atoms
+%  }
+%\end{theorem}
+
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpg{joshi1989}{237}{8122401201}
+  }
+%---------------------------------------
+Let $\seto{\setX}$ be the number of elements in a finite set $\setX$.
+\thmboxt{
+  $\latA$ is a \prope{Boolean algebra}
+  $\qquad\implies\qquad$
+  $\seto{\latA} = 2^n$ for some $n\in\Zp$.
+  }
+\end{theorem}
+
+%\begin{minipage}{8\tw/16-3ex}%
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Here are some lattices that are Boolean algebras.
+\exbox{\begin{tabular}{ccc}
+\mc{3}{c}{Boolean algebras as algebras of sets}
+  \\\hline
+   \includegraphics{graphics/lat2_l2_setx.pdf}%
+  &\includegraphics{graphics/lat4_m2_setxy.pdf}%
+  &\includegraphics{graphics/lat8_2e3_setxyz.pdf}%
+  %\\\hline
+\end{tabular}}
+\end{example}
+
+%---------------------------------------
+\begin{theorem}
+\index{de Morgan's Laws}
+\index{distributive laws}
+\label{thm:cdl_seq}
+%---------------------------------------
+\thmboxt{
+  If $\booalgd$ is a \prope{Boolean algebra} then
+  \\$\ds
+  \brb{\begin{array}{>{\ds}lc>{\ds}l @{\qquad\qquad} >{\ds}lc>{\ds}l @{\qquad}C}
+    \mc{3}{c}{\text{tautology}} & \mc{3}{c}{\text{dual}} \\
+    \hline
+    \lnot \left( \meetop_{n=1}^N x_n \right)
+      &=& \joinop_{n=1}^N (\lnot x_n)
+      &
+    \lnot \left( \joinop_{n=1}^N x_n \right)
+      &=& \meetop_{n=1}^N (\lnot x_n)
+    & \forall x_n\in \setX, N\in\Zp
+    \\
+    \left( \meetop_{n=1}^N x_n \right) \lor y
+      &=& \meetop_{n=1}^N (x_n \lor y)
+    &
+    \left( \joinop_{n=1}^N x_n \right) \land y
+      &=& \joinop_{n=1}^N (x_n \land y)
+  \end{array}}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+\intertext{1. Proof that
+  $\lnot \left( \meetop_{n=1}^N x_n \right)
+     = \joinop_{n=1}^N (\lnot x_n)
+  $ (by induction):}
+\intertext{Proof for $N=1$ case:}
+  \lnot \left( \meetop_{n=1}^{N=1} x_n \right)
+    &= \lnot x_n
+    && \text{by definition of $\land$}
+  \\&= \joinop_{n=1}^{N=1} (\lnot x_n)
+    && \text{by definition of $\lor$}
+  \\
+\intertext{Proof for $N=2$ case:}
+  \lnot \left( \meetop_{n=1}^{N=2} x_n \right)
+    &= (\lnot x_1) \lor (\lnot x_2)
+    && \text{by \prefp{thm:boo_prop} }
+  \\&= \joinop_{n=1}^{N=2} (\lnot x_n)
+    && \text{by definition of $\lor$}
+  \\
+\intertext{Proof that ($N$ case) $\implies$ ($N+1$ case):}
+  \lnot \left( \meetop_{n=1}^{N+1} x_n \right)
+    &= \lnot \left[ \left( \meetop_{n=1}^{N} x_n \right) \land x_N \right]
+    && \text{by definition of $\land$}
+  \\&= \left( \lnot \meetop_{n=1}^{N} x_n \right) \lor (\lnot x_{N+1})
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \left[ \joinop_{n=1}^{N}(\lnot x_n) \right] \lor (\lnot x_{N+1})
+    && \text{by left hypothesis}
+  \\&= \joinop_{n=1}^{N+1} (\lnot x_n)
+    && \text{by definition of $\lor$}
+  \\
+\intertext{2. Proof that
+  $\lnot \left( \joinop_{n=1}^N x_n \right)
+     = \meetop_{n=1}^N (\lnot x_n)
+  $:}
+  \lnot \left( \joinop_{n=1}^N x_n \right)
+    &= \lnot \left( \joinop_{n=1}^N (\lnot\lnot x_n) \right)
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \lnot \lnot \left( \meetop_{n=1}^N (\lnot x_n) \right)
+    && \text{by previous result 1.}
+  \\&= \meetop_{n=1}^N (\lnot x_n)
+    && \text{by \prefp{thm:boo_prop}}
+  \\
+\intertext{3. Proof that
+  $\left( \meetop_{n=1}^N x_n \right) \lor y
+     = \joinop_{n=1}^N (x_n \lor y)
+  $ (by induction):}
+\intertext{Proof for $N=1$ case:}
+  \left( \meetop_{n=1}^{N=1} x_n \right) \lor y
+    &= x_1 \lor y
+    && \text{by definition of $\land$}
+  \\&= \meetop_{n=1}^{N=1} (x_n \lor y)
+    && \text{by definition of $\land$}
+  \\
+\intertext{Proof for $N=2$ case:}
+  \left( \meetop_{n=1}^{N=2} x_n \right) \lor y
+    &= (x_1 \lor y) \land (x_2 \lor y)
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \meetop_{n=1}^{N=2} (x_n \lor y)
+    && \text{by definition of $\land$}
+  \\
+\intertext{Proof that ($N$ case) $\implies$ ($N+1$ case):}
+  \left( \meetop_{n=1}^{N+1} x_n \right) \lor y
+    &= \left[ \left( \meetop_{n=1}^{N} x_n \right) \land x_{N+1} \right] \lor y
+    && \text{by definition of $\land$}
+  \\&= \left[\left(\meetop_{n=1}^{N} x_n \right) \lor y\right] \land (x_{N+1} \lor y)
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \left[ \meetop_{n=1}^{N}(x_n \lor y) \right] \land (x_{N+1} \lor y)
+    && \text{by left hypothesis}
+  \\&= \meetop_{n=1}^{N+1} (x_n \lor y)
+    && \text{by definition of $\land$}
+  \\
+\intertext{4. Proof that
+  $\left( \joinop_{n=1}^N x_n \right) \land y
+     = \meetop_{n=1}^N (x_n \land y)
+  $:}
+  \left( \joinop_{n=1}^N x_n \right) \land y
+    &= \lnot \lnot \left[ \left( \joinop_{n=1}^N x_n \right) \land y \right]
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \lnot \left[ \lnot \left( \joinop_{n=1}^N x_n \right) \lor (\lnot y) \right]
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \lnot \left[ \left( \meetop_{n=1}^N (\lnot x_n) \right) \lor (\lnot y) \right]
+    && \text{by previous result 2.}
+  \\&= \lnot \left( \meetop_{n=1}^N [(\lnot x_n)\lor (\lnot y)] \right)
+    && \text{by previous result 3.}
+  \\&= \left( \joinop_{n=1}^N \lnot [(\lnot x_n)\lor (\lnot y)] \right)
+    && \text{by previous result 1.}
+  \\&= \joinop_{n=1}^N (x_n \land y)
+    && \text{by \prefp{thm:boo_prop}}
+\end{align*}
+\end{proof}
+
+
+
+%=======================================
+\section{Additional operations}
+%=======================================
+Propositional logic has a total of $2^4=16$ operations
+in the class of functions
+$\clF{\setft^2}{\setft}$ (see \prefpo{ba_log_set_cs}).
+The 16 logic operations of propositional logic can all
+be represented using the logic operations of \hie{disjunction} $\lor$,
+\hie{conjunction} $\land$, and \hie{negation} $\lnot$.
+Using these representations, all 16 operations can be generalized to
+\hie{Boolean algebras} using the equivalent Boolean algebra/lattice operations of
+\hie{join}, \hie{meet}, and \hie{complement}.\citepg{givant2009}{32}{0387402934}
+Several of these additional operations for Boolean algebras are defined in
+\pref{def:boo_rel} (next).
+
+%---------------------------------------
+\begin{definition}[additional Boolean algebra operations]
+\label{def:boo_rel}
+\footnote{
+  \citerppg{givant2009}{32}{33}{0387402934},
+  \citorpc{bernstein1934}{876}{implication $\supset$},
+  \citorp{huntington1933}{276},
+  \citorp{taylor1920}{243},
+  \citorp{bernstein1914}{93},
+  \citorpp{sheffer1913}{487}{488},
+  \citorpu{peirce1902}{216}{http://www.ams.org/bull/1936-42-11/S0002-9904-1936-06439-6/S0002-9904-1936-06439-6.pdf},
+  \citorppg{peirce1880}{218}{221}{0253372046}
+  }
+%---------------------------------------
+Let $\booalgd$ be a Boolean algebra.
+The following table defines additional operations in $\clFxxx$ in terms of
+$\join$, $\meet$, and $\bnot$.
+Let $x'\eqd \bnot x$ and $y'\eqd \bnot y$.%, and juxtaposition represent $\band$.
+\\\begin{tabular}{|l|N|MNM>{\scriptstyle}M|}
+  \hline
+  \mc{1}{|R|}{name}        & \mc{1}{R|}{symbol} & \mc{4}{R|}{definition}
+  \\\hline
+  \opd{rejection}          & \indxsh{\rejection}  & x \rejection  y &\eqd& x' \meet y'                            & \forall x,y\in\setX \label{def:rejection} \\ % 0001
+  \opd{exception}          & \indxsh{\exception}  & x \exception  y &\eqd& x  \meet y'                            & \forall x,y\in\setX \label{def:exception} \\ % 0100
+  \opd{adjunction}         & \indxsh{\adjunction} & x \adjunction y &\eqd& x  \join y'                            & \forall x,y\in\setX \label{def:adjunction}\\ % 1101
+  \opd{Sheffer stroke}     & \indxsh{\stroke}     & x \stroke     y &\eqd& x'\join y'                             & \forall x,y\in\setX \label{def:stroke}    \\ % 0111
+  \opd{Boolean addition}   & \indxsh{\bxor}       & x \bxor       y &\eqd& \brp{x' \meet y} \join \brp{x \meet y'}& \forall x,y\in\setX \label{def:bxor}      \\ % 0110
+  \opd{inhibit $x$}        & \indxsh{\binx}       & x \binx       y &\eqd& x' \meet y                             & \forall x,y\in\setX \label{def:binx}      \\ % 0010
+  \opd{implication}        & \indxsh{\bimpl}      & x \bimpl      y &\eqd& x'\join y                              & \forall x,y\in\setX \label{def:bimpl}     \\ % 1011
+  \opd{biconditional}      & \indxsh{\bequiv}     & x \bequiv     y &\eqd& \brp{x\meet y} \join \brp{x'\meet y'}  & \forall x,y\in\setX \label{def:bequiv}    \\ % 1001
+  \hline
+\end{tabular}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpg{givant2009}{33}{0387402934}
+  }
+%---------------------------------------
+\thmbox{$\begin{tabular}{NllNl}
+  \join       & (\op{join})             & is the dual of & \rejection  & (\op{rejection}) \\
+  \meet       & (\op{meet})             & is the dual of & \stroke     & (\op{Sheffer stroke}) \\
+  \bxor       & (\op{Boolean addition}) & is the dual of & \bequiv     & (\op{biconditional}) \\
+  \exception  & (\op{exception})        & is the dual of & \bimpl      & (\op{implication}) \\
+  \adjunction & (\op{adjunction})       & is the dual of & \binx       & (\op{inhibit $x$}) \\
+\end{tabular}$}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \text{(\ope{join})}\quad\brp{x \join y}'
+    &= x' \meet y'
+    && \text{by \prope{de Morgan's law} property \xref{thm:boo_prop}}
+  \\&= x \rejection y \quad\text{(\ope{rejection})}
+    && \text{by definition of \ope{rejection} $\rejection$ \xref{def:rejection}}
+  \\
+  \text{(\ope{meet})}\quad\brp{x \meet y}'
+    &= x' \join y'
+    && \text{by \prope{de Morgan's law} property \xref{thm:boo_prop}}
+  \\&= x \stroke y \quad\text{(\ope{Sheffer stroke})}
+    && \text{by definition of \ope{Sheffer stroke} $\stroke$ \xref{def:stroke}}
+  \\
+  \text{(\ope{Boolean addition})}\quad\brp{x \bxor y}'
+    &= \brp{x'y \join xy'}'
+    && \text{by def. of \ope{Boolean addition} $\bxor$ \xref{def:bxor}}
+  \\&= \brp{x\join y'}\brp{x'\join y}
+    && \text{by \prope{de Morgan's law} property \xref{thm:boo_prop}}
+  \\&= xx' \join xy \join y'x' \join y'y
+    && \text{by \prope{distributive} property \xref{thm:boo_prop}}
+  \\&= xy \join x'y'
+  \\&= x \bequiv y \quad\text{(\ope{biconditional})}
+    && \text{by def. of \ope{biconditional} $\bequiv$ \xref{def:bequiv}}
+  \\
+  \text{(\ope{exception})}\quad\brp{x \exception y}'
+    &= \brp{xy'}'
+    && \text{by definition of \ope{exception} $\exception$ \xref{def:exception}}
+  \\&= x'\join y
+    && \text{by \prope{de Morgan's law} property \xref{thm:boo_prop}}
+  \\&= x\bimpl y \quad\text{(\ope{implication})}
+    && \text{by definition of \ope{implication} $\bimpl$ \xref{def:bimpl}}
+  \\
+  \text{(\ope{adjunction})}\quad\brp{x \adjunction y}'
+    &= \brp{x \join y'}'
+    && \text{by definition of \ope{adjunction} $\adjunction$ \xref{def:adjunction}}
+  \\&= x'y
+    && \text{by \prope{de Morgan's law} property \xref{thm:boo_prop}}
+  \\&= x\binx y \quad\text{(\ope{inhibit $x$})}
+    && \text{by definition of \ope{inhibit $x$} $\binx$ \xref{def:binx}}
+  \\
+  \text{(\ope{complement $x$)}}\quad \brp{x\bnotx y}'
+    &= \brp{x'}'
+    && \text{by definition of \ope{complement $x$} $\bnotx$}
+  \\&= x
+    && \text{by \prope{involutory} property \xref{thm:boo_prop}}
+  \\&= x \btranx y \quad\text{(\ope{transfer $x$})}
+    && \text{by definition of \ope{transfer $x$} $\btranx$}
+  \\
+  \text{(\ope{complement $y$)}}\quad \brp{x\bnoty y}'
+    &= \brp{y'}'
+    && \text{by definition of \ope{complement $y$} $\bnoty$}
+  \\&= y
+    && \text{by \prope{involutory} property \xref{thm:boo_prop}}
+  \\&= x \btrany y \quad\text{(\ope{transfer $y$})}
+    && \text{by definition of \ope{transfer $y$} $\btrany$}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpg{givant2009}{39}{0387402934}
+  }
+%---------------------------------------
+Let $\booalgd$ be a \prope{Boolean algebra}.
+\thmbox{
+  \begin{array}{l@{\qquad}c@{\qquad}lcl@{\qquad}C}
+    x\orel y &\iff& y' &\orel     & x'   &\forall x,y\in\setX \\
+    x\orel y &\iff& x  &\exception& y=0  &\forall x,y\in\setX \\
+    x\orel y &\iff& x  &\bimpl    & y=1  &\forall x,y\in\setX
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $x\orel y \iff y' \orel x'$:
+    \begin{align*}
+      x \orel y
+        &\iff x\meet y = x
+        &&    \text{by definition of \ope{meet} $\meet$,}
+        &&    \text{\prefp{def:meet}}
+      \\&\iff \brp{x\meet y}' = x'
+        &&    \text{by \prope{de Morgan's law} property,}
+        &&    \text{\prefp{thm:boo_prop}}
+      \\&\iff x'\join y' = x'
+        &&    \text{by \prope{de Morgan's law} property,}
+        &&    \text{\prefp{thm:boo_prop}}
+      \\&\iff y'\orel x'
+        &&    \text{by definition of \ope{join} $\join$,}
+        &&    \text{\prefp{def:join}}
+    \end{align*}
+
+  \item Proof that $x\orel y \implies x\exception y=0$:
+    \begin{align*}
+      x\exception y
+        &=     x\meet y'
+        &&     \text{by definition of \ope{exception} $\exception$,}
+        &&     \text{\prefp{def:exception}}
+      \\&\orel y\meet y'
+        &&     \text{by left hypothesis}
+      \\&=     \bzero
+        &&     \text{by definition of \ope{complement},}
+        &&     \text{\prefp{def:latc}}
+    \end{align*}
+
+  \item Proof that $x\orel y \impliedby x\exception y=0$: \problem
+    \begin{align*}
+      x\exception y=0
+        &\iff x\meet y' = 0
+        &&     \text{by definition of \ope{exception} $\exception$,}
+        &&     \text{\prefp{def:exception}}
+      \\&\iff
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%=======================================
+\section{Representation}
+%=======================================
+A Boolean algebra $\booalgd$ can be represented in terms of
+five operators (see \prefp{thm:boo_prop}):
+\begin{liste}
+  \item the binary operators join $\join$ and meet $\meet$,
+  \item the unary operator complement $\bnot$, and
+  \item the nullary opeartors $0$ and $1$.
+\end{liste}
+However, it is also possible to represent a Boolean algebra with fewer operators---
+in fact, as few as one operator.
+When a set of operators can completely represent all the operators of a Boolean algebra,
+then that set is called \prope{functionally complete} (next definition).
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerpg{whitesitt1995}{69}{0486684830}
+  }
+\label{def:ba_fcomplete}
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a Boolean algebra.
+\defboxt{
+  A set of operators $\Phi$ is \hid{functionally complete} in $\latB$ if
+  \\\indentx$\bor$, $\band$, $\bnot$, $\bzero$, and $\bid$\\ 
+  can all be expressed in terms of $\Phi$.
+  }
+\end{definition}
+
+Here are some examples of functionally complete sets:
+\\\begin{tabular}{@{\qquad}>{\imark\quad }Mlll}
+  \setn{\rejection}                  & (\hie{rejection})                                        & \pref{thm:boo_fc_rejection}       & \prefpo{thm:boo_fc_rejection}      \\
+  \setn{\stroke}                     & (\hie{Sheffer stroke})                                    & \pref{thm:boo_fc_stroke}       & \prefpo{thm:boo_fc_rejection}      \\
+  \setn{\adjunction,\,0}             & (\hie{adjunction} and $0$)                                  & \pref{thm:boo_fc_adjunction_0}    & \prefpo{thm:boo_fc_adjunction_0}   \\
+  \setn{\exception,\,1}              & (\hie{exception} and $1$)                                   & \pref{thm:boo_fc_exception_1}     & \prefpo{thm:boo_fc_exception_1}    \\
+  \setn{\join,\,\bnot}               & (\hie{join} and \hie{complement})                           & \pref{thm:boo_fc_join_not}        & \prefpo{thm:boo_fc_join_not}       \\
+  \setn{\meet,\,\bnot}               & (\hie{meet} and \hie{complement})                           & \pref{thm:boo_fc_meet_not}        & \prefpo{thm:boo_fc_meet_not}       \\
+  \setn{\bxor,\, \meet,\,1}          & (\hie{Boolean addition}, \hie{meet}, and $1$)                   & \pref{thm:boo_fc_xor_meet_1}      & \prefpo{thm:boo_fc_xor_meet_1}     \\
+  \setn{\bxor,\, \join,\,1}          & (\hie{Boolean addition}, \hie{join}, and $1$)                   & \pref{thm:boo_fc_xor_join_1}      & \prefpo{thm:boo_fc_xor_join_1}     \\
+  \setn{\bxor,\, \exception,\,\bnot} & (\hie{Boolean addition}, \hie{exception}, and \hie{complement}) & \pref{thm:boo_fc_xor_except_not}  & \prefpo{thm:boo_fc_xor_except_not}
+\end{tabular}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:boo_fc_join_not}
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+\thmboxt{
+  The set $\setn{\join,\,\bnot}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \meet y &=& \brp{x' \join y}' & \forall x,y\in\setX \\
+    0         &=& \brp{x \join x'}' & \forall x\in\setX \\
+    1         &=& x \join x'        & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x \meet y
+    &= \brp{x \meet y}''
+    && \text{by \prope{involutory} property \prefp{thm:boo_prop}}
+  \\&= \brp{x' \join y'}'
+    && \text{by de Morgan's Law property \prefp{thm:boo_prop}}
+  \\
+  1 &= x \join x'
+    && \text{by complement property \prefp{thm:boo_prop}}
+  \\
+  0 &= 1'
+  \\&= \brp{x \join x'}'
+    && \text{by complement property \prefp{thm:boo_prop}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:boo_fc_meet_not}
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+\thmboxt{
+  The set $\setn{\meet,\,\bnot}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \join y &=& \brp{x' \meet y}' & \forall x,y\in\setX \\
+    0         &=& x \meet x'        & \forall x\in\setX \\
+    1         &=& \brp{x \meet x'}' & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x \join y
+    &= \brp{x \join y}''
+    && \text{by \prope{involutory} property \prefp{thm:boo_prop}}
+  \\&= \brp{x' \meet y'}'
+    && \text{by de Morgan's Law property \prefp{thm:boo_prop}}
+  \\
+  0 &= x \meet x'
+    && \text{by complement property \prefp{thm:boo_prop}}
+  \\
+  1 &= 0'
+  \\&= \brp{x \meet x'}'
+    && \text{by complement property \prefp{thm:boo_prop}}
+\end{align*}
+\end{proof}
+
+%%---------------------------------------
+%\begin{definition}[joint denial]
+%\label{def:rejection}
+%\citetbl{
+%  \citerpg{givant2009}{33}{0387402934}\\
+%  \citerpg{shiva1998}{83}{0824700821} \\
+%  \citerpg{whitesitt1995}{69}{0486684830}\\
+%  \citerpg{quine1979}{45}{0674554515}\\
+%  \citorp{sheffer1913}{487} \\
+%  \citorppg{peirce1880}{218}{221}{0253372046}\\
+%  %\url{http://www.swif.uniba.it/lei/foldop/foldoc.cgi?dagger+function}
+%  }
+%%---------------------------------------
+%Let $\booalgd$ be a \hie{Boolean algebra}.
+%\defboxt{\indxs{\rejection}
+%  The \hid{rejection} operation $\rejection\in\clBx$ is defined as
+%  \\\indentx
+%    $\ds x\rejection y \eqd \brp{x \join y}' \qquad \forall x,y\in\setX$
+%  }
+%\end{definition}
+%The joint denial operation is also called the \hid{rejection} operator.
+%The symbol $\rejection$ itself is often referred to as the \hid{Sheffer stroke},
+%sometimes denoted as $|$, or the \hid{dagger function}, denoted $\psi$.
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:boo_fc_rejection}
+\citetbl{
+  \citerpg{givant2009}{33}{0387402934}
+  }
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+Let $\rejection$ represent the \hie{rejection} operator (\prefp{def:rejection}).
+\thmboxt{
+  The set $\setn{\rejection}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \join y &=& \brp{x\rejection y} \rejection \brp{x \rejection y} & \forall x,y\in\setX\\
+    x \meet y &=& \brp{x\rejection x} \rejection \brp{y \rejection y} & \forall x,y\in\setX\\
+    x'        &=& x \rejection x & \forall x\in\setX \\
+    0         &=& x \rejection \brp{x\rejection x}  & \forall x\in\setX \\
+    1         &=& \brs{x \rejection \brp{x\rejection x}} \rejection \brs{x \rejection \brp{x\rejection x}} & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x'
+    &= \brp{x \join x}'
+    && \text{by \prefp{thm:boo_prop}}
+  %\\&= x' \meet x'
+  %  && \text{by de Morgan's Law \prefpo{thm:boo_prop}}
+  \\&= x \rejection x
+    && \text{by definition of $\rejection$ \prefpo{def:rejection}}
+  \\
+  x \join y
+    &= \brp{x \join y}''
+    && \text{by \prefp{thm:boo_prop}}
+  %\\&= \brp{x' \meet y'}'
+  %  && \text{by de Morgan's Law \prefpo{thm:boo_prop}}
+  \\&= \brp{x \rejection y}'
+    && \text{by definition of $\rejection$ \prefpo{def:rejection}}
+  \\&= \brp{x \rejection y}\rejection\brp{x \rejection y}
+    && \text{by previous result}
+  \\
+  x \meet y
+    &= \brp{x \meet y}''
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x' \join y'}'
+    && \text{by de Morgan's Law \prefpo{thm:boo_prop}}
+  \\&= x' \rejection y'
+    && \text{by definition of $\rejection$ \prefpo{def:rejection}}
+  \\&= \brp{x\rejection x} \rejection \brp{y\rejection y}
+    && \text{by previous result}
+  \\
+  0
+    &= 1'
+  \\&= \brp{x  \join x'}'
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= x \rejection \brp{x'}
+    && \text{by definition of $\rejection$ \prefpo{def:rejection}}
+  \\&= x \rejection \brp{x\rejection x}
+  \\
+  1
+    &= \brp{x  \join x'}
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x  \join x'}''
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x  \join x'}' \rejection \brp{x  \join x'}'
+    && \text{by definition of $\rejection$ \prefpo{def:rejection}}
+  \\&= \brs{x \rejection \brp{x'}} \rejection \brs{x \rejection \brp{x'}}
+  \\&= \brs{x \rejection \brp{x\rejection x}} \rejection \brs{x \rejection \brp{x\rejection x}}
+\end{align*}
+\end{proof}
+
+
+%%---------------------------------------
+%\begin{definition}[Sheffer stroke]
+%\label{def:stroke}
+%\citetbl{
+%  \citerppg{whitesitt1995}{68}{69}{0486684830}\\
+%  \citerppg{quine1979}{48}{49}{0674554515}\\
+%  \citorp{sheffer1913}{488}\\
+%  \citorpu{peirce1902}{216}{http://www.ams.org/bull/1936-42-11/S0002-9904-1936-06439-6/S0002-9904-1936-06439-6.pdf}
+%  %\url{http://www.swif.uniba.it/lei/foldop/foldoc.cgi?Sheffer+stroke}
+%  }
+%%---------------------------------------
+%Let $\booalgd$ be a \hie{Boolean algebra}.
+%\defboxt{\indxs{\stroke}
+%  The \hid{Sheffer stroke} operation $\stroke\in\clBx$ is defined as
+%  \\\indentx
+%    $\ds x\stroke y \eqd \brp{x \meet y}' \qquad \forall x,y\in\setX$
+%  }
+%\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:boo_fc_stroke}
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+Let $\stroke$ represent the \hie{Sheffer stroke} operator (\prefp{def:stroke}).
+\thmboxt{
+  The set $\setn{\stroke}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \join y &=& \brp{x\stroke x} \stroke \brp{y \stroke y}  & \forall x,y\in\setX \\
+    x \meet y &=& \brp{x\stroke y} \stroke \brp{x \stroke y}  & \forall x,y\in\setX \\
+    x'        &=& x \stroke x  & \forall x\in\setX \\
+    0         &=& \brs{x \stroke \brp{x\stroke x}} \stroke \brs{x \stroke \brp{x\stroke x}} & \forall x\in\setX \\
+    1         &=& x \stroke \brp{x\stroke x}  & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x'
+    &= \brp{x \meet x}'
+    && \text{by \prefp{thm:boo_prop}}
+  %\\&= x' \join x'
+  %  && \text{by de Morgan's Law \prefpo{thm:boo_prop}}
+  \\&= x \stroke x
+    && \text{by definition of $\stroke$ \prefpo{def:stroke}}
+  \\
+  x \join y
+    &= \brp{x \join y}''
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x' \meet y'}'
+    && \text{by de Morgan's Law \prefpo{thm:boo_prop}}
+  \\&= x' \stroke y'
+    && \text{by definition of $\stroke$ \prefpo{def:stroke}}
+  \\&= \brp{x\stroke x} \stroke \brp{y\stroke y}
+    && \text{by first result}
+  \\
+  x \meet y
+    &= \brp{x \meet y}''
+    && \text{by \prefp{thm:boo_prop}}
+  %\\&= \brp{x' \join y'}'
+  %  && \text{by de Morgan's Law \prefpo{thm:boo_prop}}
+  \\&= \brp{x \stroke y}'
+    && \text{by definition of $\stroke$ \prefpo{def:stroke}}
+  \\&= \brp{x \stroke y}\stroke\brp{x \stroke y}
+    && \text{by first result}
+  \\
+  1
+    &= 0'
+  \\&= \brp{x  \meet x'}'
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= x \stroke \brp{x'}
+    && \text{by definition of $\stroke$ \prefpo{def:stroke}}
+  \\&= x \stroke \brp{x\stroke x}
+  \\
+  0
+    &= \brp{x  \meet x'}
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x  \meet x'}''
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x  \meet x'}' \stroke \brp{x  \meet x'}'
+    && \text{by definition of $\stroke$ \prefpo{def:stroke}}
+  \\&= \brs{x \stroke \brp{x'}} \stroke \brs{x \stroke \brp{x'}}
+  \\&= \brs{x \stroke \brp{x\stroke x}} \stroke \brs{x \stroke \brp{x\stroke x}}
+\end{align*}
+\end{proof}
+
+Besides the \hie{rejection} singleton $\setn{\rejection}$ and
+the Sheffer stroke singleton $\setn{\stroke}$,
+there are no single opertor sets that are \prope{functionally complete}
+(next theorem).
+%---------------------------------------
+\begin{theorem}
+\label{thm:denial}
+\citetbl{
+  \citerpg{quine1979}{49}{0674554515},
+  \citorpc{zylinski1925}{208}{$\rejection=\phi_{15}$, $\stroke=\phi_2$}
+  %\citorpc{zylinski1925}{208}{$\rejection=\phi_{15}=$``joint falsehood, $\stroke=\phi_2=$``incompatibility}
+  }
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a Boolean algebra.
+Let $\rejection$ be the \hie{rejection} operator and
+    $\stroke$ be the \hie{Sheffer stroke} operator.
+\thmbox{
+  \text{$\setn{+}$ is \prope{functionally complete} in $\latB$}
+  \qquad\implies\qquad
+  + = \rejection \quad\text{ or }\quad +=\stroke
+  }
+\end{theorem}
+
+%%---------------------------------------
+%\begin{definition}[adjunction]
+%\label{def:adjunction}
+%\citetbl{
+%  \citorp{huntington1933}{276}\\
+%  \citorp{bernstein1914}{93} \\
+%  }
+%\index{adjunction}
+%%---------------------------------------
+%Let $\booalgd$ be a \hie{Boolean algebra}.
+%\defboxt{\indxs{\adjunction}
+%  The \hid{adjunction} operation $\adjunction\in\clBx$ is defined as
+%  \\\indentx
+%    $\ds x\adjunction y \eqd x \join y' \qquad \forall x,y\in\setX$
+%  }
+%\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:boo_fc_adjunction_0}
+%---------------------------------------
+
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+Let $\adjunction$ represent the \hie{adjunction} operator (\prefp{def:adjunction}).
+\thmboxt{
+  The set $\setn{\adjunction,\,0}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \join y &=& x \adjunction \brp{0\adjunction y}                   & \forall x,y\in\setX \\
+    x \meet y &=& 0\adjunction\brs{\brp{0\adjunction x} \adjunction y} & \forall x,y\in\setX \\
+    x'        &=& 0 \adjunction x                                      & \forall x\in\setX \\
+    1         &=& x \adjunction x                                      & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x'
+    &= 0 \join x'
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= 0 \adjunction x
+    && \text{by definition of $\adjunction$ \xref{def:adjunction}}
+  \\
+  x \join y
+    &= x \join y''
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= x \adjunction \brp{y'}
+    && \text{by definition of $\adjunction$ \xref{def:adjunction}}
+  \\&= x \adjunction \brp{0\adjunction y}
+    && \text{by previous result}
+  \\
+  x \meet y
+    &= \brp{x' \join y'}'
+    && \text{by \prope{de Morgan's law} property \prefp{thm:boo_prop}}
+  \\&= \brp{x' \adjunction y}'
+    && \text{by definition of $\adjunction$ \xref{def:adjunction}}
+  \\&= \brs{\brp{0\adjunction x} \adjunction y}'
+    && \text{by previous result}
+  \\&= 0\adjunction\brs{\brp{0\adjunction x} \adjunction y}
+    && \text{by previous result}
+  \\
+  1
+    &= x \join x'
+    && \text{by \prope{complement} property \prefp{thm:boo_prop}}
+  \\&= x \adjunction x
+    && \text{by definition of $\adjunction$ \xref{def:adjunction}}
+\end{align*}
+\end{proof}
+
+%%---------------------------------------
+%\begin{definition}[exception]
+%\label{def:exception}
+%\citetbl{
+%  \citerpg{givant2009}{32}{0387402934}\\
+%  \citorp{huntington1933}{276}\\
+%  \citorp{taylor1920}{243}\\
+%  \citor{bernstein1914}
+%  }
+%\index{exception}\index{subtraction}
+%%---------------------------------------
+%Let $\booalgd$ be a \hie{Boolean algebra}.
+%\defboxt{\indxs{\exception}
+%  The \hid{exception} operation $\exception\in\clBx$ is defined as
+%  \\\indentx
+%    $\ds x\exception y \eqd x \meet y' \qquad \forall x,y\in\setX$
+%  }
+%\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citorpp{bernstein1914}{89}{91}
+  }
+\label{thm:boo_fc_exception_1}
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+Let $\exception$ represent the \hie{exception} operator (\prefp{def:exception}).
+\thmboxt{
+  The set $\setn{\exception,\,1}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \join y &=& 1\exception\brs{\brp{1\exception x} \exception y} & \forall x,y\in\setX \\
+    x \meet y &=& x \exception \brp{1\exception y}                  & \forall x,y\in\setX \\
+    x'        &=& 1 \exception x                                    & \forall x\in\setX \\
+    0         &=& x \exception x                                    & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x'
+    &= 1 \meet x'
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= 1 \exception x
+    && \text{by definition of $\exception$ \xref{def:adjunction}}
+  \\
+  x \meet y
+    &= x \meet y''
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= x \exception \brp{y'}
+    && \text{by definition of $\exception$ \xref{def:adjunction}}
+  \\&= x \exception \brp{1\exception y}
+    && \text{by previous result}
+  \\
+  x \join y
+    &= \brp{x' \meet y'}'
+    && \text{by \prope{de Morgan's law} property \prefp{thm:boo_prop}}
+  \\&= \brp{x' \exception y}'
+    && \text{by definition of $\exception$ \xref{def:adjunction}}
+  \\&= \brs{\brp{1\exception x} \exception y}'
+    && \text{by previous result}
+  \\&= 1\exception\brs{\brp{1\exception x} \exception y}
+    && \text{by previous result}
+  \\
+  0
+    &= x \meet x'
+    && \text{by \prope{complement} property \prefp{thm:boo_prop}}
+  \\&= x \exception x
+    && \text{by definition of $\exception$ \xref{def:adjunction}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpg{roth2006}{42}{0521845041}
+  }
+\label{thm:boo_fc_xor_meet_1}
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+\thmboxt{
+  The set $\setn{\bxor,\, \meet,\,1}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \join y &=& xy \bxor x \bxor y & \forall x,y\in\setX \\
+    x'        &=& x \bxor 1          & \forall x\in\setX \\
+    0         &=& x \bxor x          & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x'
+    &= x' \join 0
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x'\meet 1} \join \brp{x\meet 0}
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x'\meet1} \join \brp{x\meet 1'}
+  \\&= x\bxor 1
+    && \text{by definition of $\bxor$ \xref{def:bxor}}
+  \\
+  0
+    &= 0 \join 0
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x'\meet x} \join \brp{x\meet x'}
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= x \bxor x
+    && \text{by definition of $\bxor$ \xref{def:bxor}}
+  \\
+  xy \lxor x \lxor y
+    &= (xy) \bxor (x \bxor y)
+    && \text{by \prope{associative} property \prefp{thm:boo_prop}}
+  \\&= (xy) \lxor \brp{x'y \join  xy'}
+    && \text{by definition of $\bxor$ \xref{def:bxor}}
+  \\&= (xy)'\brp{x'y \join  xy'} \join (xy)\brp{x'y \join  xy'}'
+    && \text{by definition of $\bxor$ \xref{def:bxor}}
+  \\&= \brp{x'\join y'}\brp{x'y \join  xy'} \join (xy)\brs{\brp{x'y}' \brp{xy'}'}
+    && \text{by \prope{de Morgan's law} \prefp{thm:boo_prop}}
+  \\&= \brp{x'\join y'}\brp{x'y \join  xy'} \join (xy)\brs{\brp{x''\join y'} \brp{x'\join y''}}
+    && \text{by \prope{de Morgan's law} \prefp{thm:boo_prop}}
+  \\&= \brp{x'\join y'}\brp{x'y \join  xy'} \join (xy)\brs{\brp{x\join y'} \brp{x'\join y}}
+  \\&= \brp{x'y \join  xy'} \join (xy)\brs{xy\join x'y'}
+  \\&= \brp{x'y \join  xy'} \join xy
+  \\&= \brp{x'y \join  xy'} \join \brp{xy \join xy}
+    && \text{by \prope{idempotent} property \pref{thm:boo_prop}}
+  \\&= \brp{xy \join x'y} \join \brp{xy \join  xy'}
+    %&& \text{by \prope{associative} and \prope{commutative} properties \prefpo{thm:boo_prop}}
+    && \text{by \prefp{thm:boo_prop}}
+  \\&= \brp{x \join x'}y \join x\brp{y \join  y'}
+    && \text{by \prope{distributive} property \pref{thm:boo_prop}}
+  \\&= \brp{1}y \join x\brp{1}
+  \\&= x \join y
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:boo_fc_xor_join_1}
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+\thmboxt{
+  The set $\setn{\bxor,\, \join,\, \,1}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \meet y &=& \brs{\brp{x\bxor1} \join \brp{y\bxor1}} \bxor 1 & \forall x,y\in\setX \\
+    x'        &=& x \bxor 1                                       & \forall x\in\setX \\
+    0         &=& x \bxor x                                       & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  0
+    &= x \bxor x
+  \\
+  x'
+    &= x \bxor 1
+  \\
+  x \meet y
+    &= \brp{x' \join y'}'
+  \\&= \brs{\brp{x\bxor1} \join \brp{y\bxor1}} \bxor 1
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:boo_fc_xor_except_not}
+%---------------------------------------
+Let $\latB\eqd\booalgd$ be a \hie{Boolean algebra}.
+\thmboxt{
+  The set $\setn{\bxor,\, \exception,\,\bnot}$ is \prope{functionally complete} with respect to $\latB$.
+  In particular,
+  \\$\begin{array}{@{\qquad}rcl@{\qquad}C}
+    x \join y &=& \brp{x\exception y}\bxor y        & \forall x,y\in\setX \\
+    x \meet y &=& x \exception \brp{x \exception y} & \forall x,y\in\setX \\
+    0         &=& x \bxor x                         & \forall x\in\setX
+  \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x \join y
+    &= x(y\join y') \join y
+  \\&= xy \join xy' \join y
+    && \text{by \prope{distributive} property \xref{thm:boo_prop}}
+  \\&= (y \join xy) \join xy'
+    && \text{by \prope{associative} property \xref{thm:boo_prop}}
+  \\&= y \join xy'
+    && \text{by \prope{absorptive} property \xref{thm:boo_prop}}
+  \\&= (y \join x'y) \join xy'
+    && \text{by \prope{absorptive} property \xref{thm:boo_prop}}
+  \\&= (y \join x')y \join (xy')y'
+    && \text{by \prope{distributive} and \prope{idempotent} properties \xref{thm:boo_prop}}
+  \\&= (xy')'y \join (xy')y'
+    && \text{by \prope{de Morgan's law} property \xref{thm:boo_prop}}
+  \\&= (xy') \bxor y
+    && \text{by definition of $\bxor$ \xref{def:bxor}}
+  \\&= (x \exception y) \bxor y
+    && \text{by definition of $\exception$ \xref{def:exception}}
+  \\
+  x\meet  y
+    &= xx' \join xy
+  \\&= x(x' \join y)
+    && \text{by \prope{distributive} and \prope{idempotent} properties \xref{thm:boo_prop}}
+  \\&= x(x''y')'
+    && \text{by \prope{de Morgan's law} property \xref{thm:boo_prop}}
+  \\&= x(xy')'
+    && \text{by \prope{involutory} property \xref{thm:boo_prop}}
+  \\&= x(x\exception y)'
+    && \text{by definition of $\exception$ \xref{def:exception}}
+  \\&= x \exception (x\exception y)
+    && \text{by definition of $\exception$ \xref{def:exception}}
+  \\
+  0 &= x x'
+  \\&= x \exception (x\exception x')
+    && \text{by previous result}
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Characterizations}
+%=======================================
+\qboxnps
+  {\href{http://en.wikipedia.org/wiki/Edward_V._Huntington}{Edward V. Huntington}
+   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineF.html}{(1874--1952)},
+   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/USA.html}{American} mathematician\footnotemark
+  }
+  {../common/people/huntington.jpg}
+  {The algebra of symbolic logic\ldots
+   %although originally studies merely as a means of handling certain problems in the logic of
+   %classes and the logic of propositions,
+   has recently assumed some importance as an independent calculus;
+   it may therefore be not without interest to consider it from a purely mathematical or 
+   abstract point of view\ldots%
+  }
+  \citetblt{
+    quote: & \citePp{huntington1904}{288} \\
+    image: & \url{http://en.wikipedia.org/wiki/Edward_V._Huntington}
+    }
+
+
+%=======================================
+\subsubsection{Order characterizations}
+%=======================================
+An order characterization of Boolean algebras has already been given by \prefpp{def:boolean}: 
+A lattice is a Boolean algebra if and only if it is 
+\index{characterizations!Boolean algebra}
+\prope{distributive} and \prope{complemented}.
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:boo_char_elkan}
+\citetbl{
+  \citorp{kondo2008}{1035},
+  \citerpc{elkan1994}{3}{\prope{Elkan's law}}
+  }
+%---------------------------------------
+Let $\algA\eqd\booalgd$ be a \prope{bounded} and \prope{complemented} \emph{lattice}.
+\propbox{%
+  \brb{\begin{array}{M}
+    $\algA$ is a\\ 
+    \structb{Boolean algebra}
+  \end{array}}
+  \quad\iff\quad
+  \brb{\begin{array}{FlCDD}
+     %1. & \joinop\setX,\,\meetop\setX\,\in\setX  &                     & (\prope{bounded})      \\
+     %2. & x\in\setX \implies x'\in\setX          & \forall x\in\setX   & (\prope{complemented}) \\
+     1. & 1' = 0                                 &                     &                       & and\\
+     2. & (x\meet y')' = y \join (x' \meet y')   & \forall x,y\in\setX & (\prope{Elkan's law})
+  \end{array}}
+  }
+\end{proposition}
+
+
+%=======================================
+\subsubsection{Algebraic characterizations}
+%=======================================
+This section presents several algebraic characterizations.
+One such characterization has already been provided by \prefpp{thm:boo_prop}---
+the standard properties of Boolean algebras characterized by 19 identities.
+If a system satisfies these 19 identities, then that system \emph{is} a Boolean algebra.
+However, the set of 19 identities is very much an \emph{over}-specification.
+It is possible to characterize Boolean algebras using much fewer relationships,
+from which all of the 19 identities of \pref{thm:boo_prop} can be derived.
+Here are some of these reduced characterizations:
+\\\begin{tabular}{cl *{4}{>{\footnotesize}l}}
+ %$\imark$ &                                 &        &10 relationships, & \pref{thm:boo_char_10} & \prefpo{thm:boo_char_10} \\
+  $\imark$ & \thme{Huntington's first set}:          & (1904) & 8 relationships, & \pref{prop:boo_char_H1}  & \prefpo{prop:boo_char_H1} \\
+  $\imark$ & \thme{Huntington's fourth set}:         & (1933) & 4 relationships, & \pref{prop:boo_char_H4}  & \prefpo{prop:boo_char_H4} \\
+  $\imark$ & \thme{Huntington's fifth set}:          & (1933) & 3 relationships, & \pref{prop:boo_char_H5}  & \prefpo{prop:boo_char_H5} \\
+  $\imark$ & \thme{Stone}:                           & (1935) & 7 relationships, & \pref{prop:boo_char_stone}  & \prefpo{prop:boo_char_stone} \\
+  $\imark$ & \thme{Byrne's Formulation A}:           & (1946) & 3 relationships, & \pref{prop:boo_char_Ba}  & \prefpo{prop:boo_char_Ba} \\
+  $\imark$ & \thme{Byrne's Formulation B}:           & (1946) & 2 relationships, & \pref{prop:boo_char_Bb}  & \prefpo{prop:boo_char_Bb} \\
+ %$\imark$ & \thme{Elkan's law on bounded lattices}: & (2008) & 2 relationships, & \pref{prop:boo_char_elkan} & \prefpo{prop:boo_char_elkan}
+\end{tabular}
+
+All of these characterizations use 3 variables.
+It might be reasonable to ask if there exists a characterization that uses only two variables.
+The answer is ``No", as demonstrated by the next theorem.
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerp{sikorski1969}{3},
+  \citorp{diamond1947}{961},
+  \citerp{gerrish1978}{36}
+  }
+%---------------------------------------
+\thmboxt{There does \emph{not} exist a characterization of Boolean algebras
+  consisting of only 2 variables.}
+\end{theorem}
+
+
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:boo_char_10}
+%\citetbl{
+%  \citerp{sikorski1969}{1}
+%  }
+%%---------------------------------------
+%Let $\latL\eqd\latticed$ be a bounded lattice
+%with $\joinop\setX\eqd1$ (least upper bound) and $\meetop\setX\eqd0$ (greatest lower bound).
+%\propboxt{
+%$\latL$ is a Boolean algebra \textbf{if and only if} for all $x,y,z\in\setX$%
+%\footnotesize%
+%\\$\begin{array}{@{\qquad}llcl lcl D D}%
+%  1. & x \join  y         &=&  y \join  x
+%     &  x\meet  y         &=&  y \meet  x
+%     & (\prope{commutative})
+%     & and
+%  \\
+%  2. & x \join \brp{y \join z} &=&  \brp{x \join y} \join z
+%     & x \meet \brp{y \meet z} &=&  \brp{x \meet y} \meet z
+%     & (\prope{associative})
+%     & and
+%  \\
+%  3. & x \join ( x\meet  y) &=&  x
+%     & x\meet ( x \join  y) &=&  x
+%     & (\prope{absorptive})
+%     & and
+%  \\
+%  4. & x\join( y\meet z) &=& ( x\join y) \meet ( x\join z)
+%     & x\meet( y\join z) &=& ( x\meet y) \join  ( x\meet z)
+%     & (\prope{distributive})
+%     & and
+%  \\
+%  5. & \brp{x \meet x'} \join y &=& y
+%     & \brp{x \join x'} \meet y &=& y
+%     &
+%\end{array}$}
+%\end{theorem}
+
+%---------------------------------------
+\begin{proposition}[\thmd{Huntington's first set}]
+\footnote{
+  \citerp{gerrish1978}{35},
+  \citerpgc{salii1988}{33}{0821845225}{``Huntington's Theorem"},
+  \citerpgc{joshi1989}{222}{8122401201}{(B1)--(B4)},
+  \citePppc{huntington1904}{292}{293}{``1st set"},
+  \citorpc{huntington1933}{277}{``1st set"},
+  \citerpg{givant2009}{10}{0387402934}
+  }
+\label{prop:boo_char_H1}
+%---------------------------------------
+Let $\setX$ be a set, $\orel$ a relation in $\clRxx$,
+$\join$ and $\meet$ binary operations in $\clFxxx$,
+$\bnot$ an unary operation in $\clFxx$,
+and $\bzero$ and $\bid$ nullary operations on $\setX$.
+\propboxt{
+$\booalgd$ is a \structd{Boolean algebra} if for all $x,y,z\in\setX$%
+\footnotesize%
+\\$\begin{array}{Flcl lcl D}%
+  1. & x \join  y         &=&  y \join  x
+     &  x\meet  y         &=&  y \meet  x
+     & (\prope{commutative})
+  \\
+  2. & x\join( y\meet z) &=& ( x\join y) \meet ( x\join z)
+     & x\meet( y\join z) &=& ( x\meet y) \join  ( x\meet z)
+     & (\prope{distributive})
+  \\
+  3. & x \join \bzero      &=& x
+     & x \meet \bid        &=& x
+     & (\prope{identity})
+  \\
+  4. & x \join x'        &=& \bid
+     & x \meet x'        &=& \bzero
+     & (\prope{complemented})
+\end{array}$
+\\
+and where the relation $\orel$ is defined as
+$\begin{array}{lclC}
+  x \orel y &\iff& x \join y = y & \forall x,y\in\setX.
+\end{array}$
+}
+
+The property $x\join x'=\bid$ is referred to as ``the law of the \prope{excluded middle}".
+The property $x\meet x'=\bzero$ is referred to as ``the law of \prope{non-contradiction}".
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\latA$ is a Boolean algebra $\implies$   $\latA$ is a \prope{distributive} \prope{complemented} \hie{lattice}:
+    \begin{enumerate}
+      \item Proof that $\latA$ is \prope{distributive}: by \prefp{def:booalg}
+      \item Proof that $\latA$ is \prope{complemented}: by \prefp{def:booalg}
+      \item Proof that $\latA$ is \prope{bounded}:      by \prefp{lem:boo_H1c}
+      \item Proof that $\latA$ is a \hie{lattice}:
+        \begin{enumerate}
+          \item Proof that $\latA$ is \prope{idempotent}:   by \prefp{lem:boo_H1c}
+          \item Proof that $\latA$ is \prope{commutative}:  by \prefp{def:booalg}
+          \item Proof that $\latA$ is \prope{associative}:  by \prefp{lem:boo_H1c}
+          \item Proof that $\latA$ is \prope{absorptive}:   by \prefp{lem:boo_H1c}
+          \item Therefore, by \prefpp{thm:lattice}, $\latA$ is a \hie{lattice}
+        \end{enumerate}
+    \end{enumerate}
+
+  \item Proof that $\latA$ is a Boolean algebra $\impliedby$ $\latA$ is a \prope{distributive} \prope{complemented} \hie{lattice}:
+    \begin{enumerate}
+      \item Proof that $\latA$ is \prope{commutative}:  by property of lattices, \prefp{thm:lattice}
+      \item Proof that $\latA$ is \prope{distributive}: by right hypothesis
+      \item Proof that $\latA$ has \prope{identity}:
+        \begin{align*}
+          x \join \bzero
+            &= x \join \brp{x \meet x'}
+            && \text{by \prope{complemented} property in right hypothesis}
+          \\&= x
+            && \text{by \prope{absorptive} property of lattices \prefp{thm:lattice}}
+          \\
+          x \meet \bid
+            &= x \meet \brp{x \join x'}
+            && \text{by \prope{complemented} property in right hypothesis}
+          \\&= x
+            && \text{by \prope{absorptive} property of lattices \prefp{thm:lattice}}
+        \end{align*}
+      \item Proof that $\latA$ is \prope{complemented}: by right hypothesis
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+
+
+
+
+\thme{Huntington's fourth set} (next)
+characterizes Boolean algebras in terms of the standard properties of
+\prope{idempotent}, \prope{commutative}, and \prope{associative} (see \prefp{thm:boo_prop}),
+and also in terms of an additional property called \prope{Huntington's axiom},%
+\citetbl{
+  \citerpgc{givant2009}{13}{0387402934}{problem 7}
+  }
+or (in terms of $x$ and $y$), \prope{$x$ commutes $y$}.
+Huntington's axiom is significant in the context of \prope{orthomodular} lattices
+in that an orthomodular lattice that satisfies Huntington's axiom is
+a Boolean algebra.%
+\citetbl{
+  \citerpc{renedo2003}{72}{Definition 3},
+  \citerpg{beran1985}{52}{902771715X},
+  \citor{beran1982}
+  }
+%---------------------------------------
+\begin{proposition}[\thmd{Huntington's fourth set}]
+\label{prop:boo_char_H4}
+\citetbl{
+  %\citerpg{givant2009}{13}{0387402934} \\
+  \citorpc{huntington1933}{280}{``4th set"}
+  }
+%---------------------------------------
+Let $\algA\eqd\latticed$ be an \emph{algebraic structure}.
+\propboxt{
+$\algA$ is a \structb{Boolean algebra} \quad$\iff$
+\\\indentx$\brb{\begin{array}{Flcl @{\qquad}C@{\qquad}D@{\qquad}D}
+     1. & x \join  x              &=&  x                        & \forall x    \in\setX & (\prope{idempotent})  & and \\
+     2. & x \join  y              &=&  y \join  x               & \forall x,y  \in\setX & (\prope{commutative}) & and \\
+     3. & \brp{x \join  y}\join z &=&  x \join \brp{y \join z}  & \forall x,y,z\in\setX & (\prope{associative}) & and \\
+     4. & \brp{x'\join y'}' \join \brp{x'\join y}' &=& x        & \forall x,y  \in\setX.& (\prope{Huntington's axiom})  &
+    %4. & \brp{x\meet y} \join \brp{x\meet y'} &=& x            & \forall x,y  \in\setX.& (\prope{Huntington's axiom})  &
+\end{array}}$}
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that [$\latA$ is a \prope{Boolean algebra}] $\implies$ [$\latA$ satisfies the 4 pairs of properties]:
+    \begin{enumerate}
+      \item Proof that $x \join  x = x$ (\prope{idempotent} property with respect to $\join$):
+            \\by 1a of \prefpp{lem:boo_H1c}.
+      \item Proof that $x \join  y = y \join  x$ (\prope{commutative} property with respect to $\join$):
+            \\by 1a of this proposition.
+      \item Proof that $\brp{x \join  y}\join z = x \join \brp{y \join z}$ (\prope{associative} property with respect to $\join$):
+            \\by 2a of \prefpp{lem:boo_H1c}.
+      \item Proof that $\brp{x\meet y} \join \brp{x\meet y'} = x$ (\prope{Huntington's axiom}):
+        \begin{align*}
+          \brp{x\meet y} \join \brp{x\meet y'}
+            &= x \meet \brp{y \join y'}
+            && \text{by 2a}
+            && \text{(\prope{distributive} property wrt $\join$)}
+          \\&= x \meet \bid
+            && \text{by 3a}
+            && \text{(\prope{complemented} property wrt $\join$)}
+          \\&= x
+            && \text{by 4b}
+            && \text{(\prope{identity} property wrt $\meet$)}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof that [$\latA$ is a \prope{Boolean algebra}] $\impliedby$ [$\latA$ satisfies the 4 pairs of properties]:
+    \begin{enumerate}
+      \item Proof that $x \join  y =  y \join  x$: by 2 of \prefp{def:booalg}.
+      \item Proof that $x \meet  y =  y \meet  x$:
+      \item Proof that $x\join( y\meet z) = ( x\join y) \meet ( x\join z)$:
+      \item Proof that $x\meet( y\join z) = ( x\meet y) \join  ( x\meet z)$:
+      \item Proof that $x \join x' = \bid$:
+      \item Proof that $x \meet x' = \bzero$:
+      \item Proof that $x \join \bzero= x$:
+      \item Proof that $x \meet \bid = x$:
+    \end{enumerate}
+
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}[\thmd{Huntington's fifth set}]
+\label{prop:boo_char_H5}
+\citetbl{
+  \citerpg{givant2009}{13}{0387402934},
+  \citorpc{huntington1933}{286}{``5th set"}
+  }
+%---------------------------------------
+Let $\algA\eqd\latticed$ be an \emph{algebraic structure}.
+\propboxt{
+$\algA$ is a \structb{Boolean algebra} \quad$\iff$
+\\\indentx$\brb{\begin{array}{Flcl @{\qquad}C@{\qquad}D@{\qquad}D}
+     1. & x''                      &=& x                                            & \forall x,y,z\in\setX & & and \\
+     2. & x \join \brp{y\join y'}' &=& x                                            & \forall x,y  \in\setX & & and \\
+     3. & x \join \brp{y\join z}'  &=& \brs{\brp{y'\join x}'\join\brp{z'\join x}'}' & \forall x,y,z\in\setX.& &
+\end{array}}$}
+\end{proposition}
+
+%---------------------------------------
+\begin{proposition}[Stone]
+\label{prop:boo_char_stone}
+\citetbl{
+  \citorp{stone1935}{705}
+  }
+%---------------------------------------
+Let $\algA\eqd\latticed$ be an \emph{algebraic structure}.
+\propboxt{
+$\algA$ is a \structb{Boolean algebra} \quad$\iff$
+\\$\brb{\begin{array}{Flcl @{\qquad}C@{\qquad}D@{\quad}D}
+     1. & x \join y         &=& y \join x                 & \forall x,y\in\setX   & (\prope{join commutative})   & and \\
+     2. & x \meet(y\join z) &=& (x\meet y)\join(x\meet z) & \forall x,y,z\in\setX & (\prope{left distributive})  & and \\
+     3. & (x\join y)\meet z &=& (x\meet z)\join(y\meet z) & \forall x,y,z\in\setX & (\prope{right distributive}) & and \\
+     4. & x \join \bzero    &=& x                         & \forall x\in\setX     & (\prope{join identity})      & and \\
+     5. & \exists x' \st x \join x'  &=& \bid \text{ and } x\meet x'=\bzero    & \forall x\in\setX     & (\prope{complemented})    & and \\
+     6. & x \join x         &=& x                         & \forall x\in\setX & (\prope{idempotent}) & and \\
+     7. & x \meet x         &=& x                         & \forall x\in\setX &   &
+\end{array}}$}
+\end{proposition}
+
+
+%---------------------------------------
+\begin{proposition}[\thm{Byrne's \textsc{Formulation A}}]
+\label{prop:boo_char_Ba}
+\citetbl{
+  \citerpg{givant2009}{13}{0387402934},
+  \citorpc{byrne1946}{270}{\textsc{``Formulation A"}}
+  }
+%---------------------------------------
+Let $\algA\eqd\latticed$ be an \emph{algebraic structure}.
+\propboxt{
+  $\algA$ is a \structb{Boolean algebra} \quad$\iff$
+  \\\indentx$\brb{\begin{array}{Flcl @{\qquad}C@{\qquad}D@{\qquad}D}
+     1. & x \join  y              &=&  y \join  x               & \forall x,y  \in\setX & (\prope{commutative}) & and \\
+     2. & \brp{x \join  y}\join z &=&  x \join \brp{y \join z}  & \forall x,y,z\in\setX & (\prope{associative}) & and \\
+     3. & x\join y' = z\join z' &\iff& x\join y=x               & \forall x,y,z\in\setX.&                      &
+  \end{array}}$
+  }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\algA$ is a Boolean algebra $\implies$ 3 identities:
+    \begin{enumerate}
+      \item \prope{commutative} property: By \prefpp{thm:boo_prop}, all Boolean algebras are \prope{commutative}.
+      \item \prope{associative} property: By \prefpp{thm:boo_prop}, all Boolean algebras are \prope{associative}.
+      \item Proof that $x\join y' = y\join y' \implies x\join y=x$:
+        \begin{align*}
+          x \join y
+            &= y \join x
+            && \text{by Boolean hypothesis and \prefp{thm:boo_prop}}
+          \\&= y \join \brp{x'}'
+            && \text{by Boolean hypothesis and \prefp{thm:boo_prop}}
+          \\&= y \join \brp{x'}'
+            && \text{by Boolean hypothesis and \prefp{thm:boo_prop}}
+          \\&= x' \join \brp{x'}'
+            && \text{by $x\join y' = y\join y'$ hypothesis}
+          \\&= x' \join x
+            && \text{by Boolean hypothesis and \prefp{thm:boo_prop}}
+          \\&= x
+            && \text{by Boolean hypothesis and \prefp{thm:boo_prop}}
+        \end{align*}
+
+      \item Proof that $x\join y' = y\join y' \impliedby x\join y=x$:
+        \begin{align*}
+          x\join y'
+            &= \brp{x \join y} \join y'
+            && \text{by $x\join y=x$ hypothesis}
+          \\&= x \join \brp{y \join y'}
+            && \text{by Boolean hypothesis and \prefp{thm:boo_prop}}
+          \\&= x \join 1
+            && \text{by Boolean hypothesis and \prefp{thm:boo_prop}}
+          \\&= x
+            && \text{by Boolean hypothesis and \prefp{thm:boo_prop}}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof that $\algA$ is a Boolean algebra $\impliedby$ 3 identities:
+    \begin{enumerate}
+      \item Proof that $x\join x = x$ (\prope{idempotent} property): \label{item:boo_char_Ba_idempotent}
+            because $x\join x'=x \join x'$ and by identity 3
+
+      \item Proof that $x\join x' = y\join y'$: \label{item:boo_char_Ba_xxyy}
+            by \pref{item:boo_char_Ba_idempotent} and identity 3
+
+      \item Proof that $x\join y=x$ and $y\join z=y$ $\implies$ $x\join z=x$: \label{item:boo_char_Ba_xzx}
+        \begin{align*}
+          x \join z
+            &= (x\join y) \join z
+            && \text{by $x\join y=x$ hypothesis}
+          \\&= x\join (y \join z)
+            && \text{by identity 2 (\prope{associative} property)}
+          \\&= x\join y
+            && \text{by $y\join z=y$ hypothesis}
+          \\&= x
+            && \text{by $x\join y=x$ hypothesis}
+        \end{align*}
+
+      \item Proof that $x''=x$ (\prope{involutory} property): \label{item:boo_char_Ba_double_complement}
+        \begin{align}
+          x''\join x' \label{equ:boo_char_Ba_complement_21zz}
+            &= x'\join x''
+            && \text{by identity 1 (\prope{commutative} property)}
+          \\&= z\join z'
+            && \text{by \pref{item:boo_char_Ba_xxyy}}\notag
+          \\
+          x''\join x \label{equ:boo_char_Ba_complement_202}
+            &= x''
+            && \text{by \pref{equ:boo_char_Ba_complement_21zz} and identity 3}
+          \\
+          x'''\join x' \label{equ:boo_char_Ba_complement_313}
+            &= x'''
+            && \text{by \pref{equ:boo_char_Ba_complement_202}}
+          \\
+          x''''\join x'' \label{equ:boo_char_Ba_complement_424}
+            &= x''''
+            && \text{by \pref{equ:boo_char_Ba_complement_202}}
+          \\
+          x''''\join x \label{equ:boo_char_Ba_complement_404}
+            &= x''''
+            && \text{by \pref{equ:boo_char_Ba_complement_424}, \pref{equ:boo_char_Ba_complement_404}, and \pref{item:boo_char_Ba_xzx}}
+          \\
+          x''''\join x' \label{equ:boo_char_Ba_complement_41zz}
+            &= z\join z'
+            && \text{by \pref{equ:boo_char_Ba_complement_404} and identity 3}
+          \\
+          x'\join x''' \label{equ:boo_char_Ba_complement_131}
+            &= x'
+            && \text{by \pref{equ:boo_char_Ba_complement_41zz} and identity 3}
+          \\
+          x''' \label{equ:boo_char_Ba_complement_31}
+            &= x'''\join x'
+            && \text{by \pref{equ:boo_char_Ba_complement_313}}
+          \\&= x'\join x'''
+            && \text{by identity 1 (\prope{commutative} property)}\notag
+          \\&= x'
+            && \text{by \pref{equ:boo_char_Ba_complement_131}}\notag
+          \\
+          x\join x''' \label{equ:boo_char_Ba_complement_13zz}
+            &= x\join x'
+            && \text{by \pref{equ:boo_char_Ba_complement_31}}
+          \\&= z \join z'
+            && \text{by \pref{item:boo_char_Ba_xxyy}}\notag
+          \\
+          x\join x'' \label{equ:boo_char_Ba_complement_020}
+            &= x
+            && \text{by \pref{equ:boo_char_Ba_complement_13zz} and identity 3}
+          \\
+          x''
+            &= x'' \join x
+            && \text{by \pref{equ:boo_char_Ba_complement_202}}\notag
+          \\&= x \join x''
+            && \text{by identity 1 (\prope{commutative} property)}\notag
+          \\&= x
+            && \text{by \pref{equ:boo_char_Ba_complement_020}}\notag
+        \end{align}
+
+      \item Proof that $x\join(x'\join y)''=z\join z'$: \label{item:boo_char_Ba_xxyzz}
+        \begin{align*}
+          x\join (x'\join y)''
+            &= x\join (x'\join y)
+            && \text{by \pref{item:boo_char_Ba_double_complement} (\prope{involutory} property)}
+          \\&= (x\join x')\join y
+            && \text{by identity 2 (\prope{associative} property)}
+          \\&= y\join(x\join x')
+            && \text{by identity 1 (\prope{commutative} property)}
+          \\&= y\join (y\join y')
+            && \text{by \pref{item:boo_char_Ba_xxyy}}
+          \\&= (y\join y)\join y'
+            && \text{by identity 2 (\prope{associative} property)}
+          \\&= y\join y'
+            && \text{by \pref{item:boo_char_Ba_idempotent}}
+          \\&= z\join z'
+            && \text{by \pref{item:boo_char_Ba_xxyy}}
+        \end{align*}
+
+      \item Proof that $x\join(x'\join y)'=x$: \label{item:boo_char_Ba_xxyx}
+            by \pref{item:boo_char_Ba_xxyzz} and identity 3
+
+      \item Proof that $x\join y''\join(x\join y)'=z \join z'$: \label{item:boo_char_Ba_xyxyzz}
+        \begin{align*}
+          x\join y''\join(x\join y)'
+            &= x\join y\join(x\join y)'
+            && \text{by \pref{item:boo_char_Ba_double_complement}}
+          \\&= z\join z'
+            && \text{by \pref{item:boo_char_Ba_xxyy}}
+        \end{align*}
+
+      \item Proof that $x\join(x\join y)'=x\join y'$: \label{item:boo_char_Ba_xxyxy}
+        \begin{align*}
+          x\join(x\join y)'
+            &= x \join (x\join y)' \join y'
+            && \text{by \pref{item:boo_char_Ba_xyxyzz} and identity 3}
+          \\&= x\join y' \join (x\join y)'
+            && \text{by identity 1 (\prope{commutative} property)}
+          \\&= x\join y' \join \brs{(x\join y')'z}
+            && \text{by \pref{item:boo_char_Ba_xxyx}}
+          \\&= x\join y'
+            && \text{by \pref{item:boo_char_Ba_xxyx}}
+        \end{align*}
+
+      \item Proof that $\brs{\brp{x'\join y'}'\join\brp{x'\join y}'}\join x'=z\join z'$: \label{item:boo_char_Ba_zz}
+        \begin{align*}
+          \brs{\brp{x'\join y'}' \join\brp{x'\join y}'}\join x'
+            &= x' \join \brs{\brp{x'\join y'}' \join\brp{x'\join y}'}
+            && \text{by identity 1 (\prope{commutative} property)}
+          \\&= \brs{x' \join \brp{x'\join y'}'} \join\brp{x'\join y}'
+            && \text{by identity 2 (\prope{associative} property)}
+          \\&= \brp{x'\join y''}\join\brp{x'\join y}'
+            && \text{by \pref{item:boo_char_Ba_xxyxy}}
+          \\&= \brp{x'\join y}\join\brp{x'\join y}'
+            && \text{by \pref{item:boo_char_Ba_double_complement} (\prope{involutory})}
+          \\&= z\join z'
+            && \text{by \pref{item:boo_char_Ba_xxyy}}
+        \end{align*}
+
+      \item Proof that $\brp{x'\join y'}'\join\brp{x'\join y}'=x$ (\prope{Huntington's axiom}): \label{item:boo_char_Ba_ha}
+        \begin{align*}
+          \mcom{\brp{x'\join y'}'\join\brp{x'\join y}'}{``$x$" in identity 3}
+            &= \mcom{(x'\join y')' \join (x'\join y)'}{``$x$" in identity 3} \join \mcom{x}{``$y$"}
+            && \text{by \pref{item:boo_char_Ba_zz} and identity 3}
+          %\\&= \mcom{x}{``$y$"} \join \mcom{(x'\join y')' \join (x'\join y)'}{``$x$" in identity 3}
+          %  && \text{by \pref{item:boo_char_Ba_zz} and identity 3}
+          \\&= \mcom{x \join (x'\join y)'}{$x$ by \pref{item:boo_char_Ba_xxyx}} \join (x'\join y')'
+            && \text{by identity 1 (\prope{commutative} property)}
+          \\&= \mcom{x \join (x'\join y')'}{$x$ by \pref{item:boo_char_Ba_xxyx}}
+            && \text{by \pref{item:boo_char_Ba_xxyx}}
+          \\&= x
+            && \text{by \pref{item:boo_char_Ba_xxyx}}
+        \end{align*}
+
+      \item The three identities therefore imply that $\algA$
+        \begin{enumerate}
+          \item is \prope{idempotent}  (\pref{item:boo_char_Ba_idempotent}),
+          \item is \prope{commutative} (identity 1),
+          \item is \prope{associative} (identity 2), and
+          \item satisfies \prope{Huntington's axiom} (\pref{item:boo_char_Ba_ha}).
+        \end{enumerate}
+        Therefore, by \prefp{prop:boo_char_H4} (\thme{Huntington's Fourth Set}),
+        $\algA$ is a \prope{Boolean algebra}.
+
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{proposition}[\thm{Byrne's \textsc{Formulation B}}]
+\label{prop:boo_char_Bb}
+\citetbl{
+  \citorpc{byrne1946}{271}{\textsc{``Formulation B"}}
+  }
+%---------------------------------------
+Let $\algA\eqd\latticed$ be an \emph{algebraic structure}.
+\propboxt{
+$\algA$ is a \structb{Boolean algebra} \quad$\iff$
+\\\indentx$\brb{\begin{array}{Flcl @{\qquad}C@{\qquad}D@{\qquad}D}
+     1. & x \join  y' = z\join z' &\iff&  x\join y = x           & \forall x,y,z\in\setX &  & and \\
+     2. & \brp{x\join y}\join z   &=&     \brp{y\join z}\join x  & \forall x,y,z\in\setX.&  &
+\end{array}}$}
+\end{proposition}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citorppcu{sholander1951}{28}{29}{$P1,\, P2,\, P3^\ast$}{http://books.google.com/books?hl=en\&lr=\&id=dKDdYkMCfAIC\&pg=PA28}
+  }
+\label{thm:boo_char_s1951}
+%---------------------------------------
+Let $\latA\eqd\latticed$ be an \hie{algebraic structure}.
+\thmboxt{
+  $\latA$ is a \structb{Boolean algebra} \quad$\iff$
+  \\\indentx$\brb{\begin{array}{FlclCD}
+       1. & x \meet (x\join y)  &=& x                             & \forall x,y\in\setX   & and \\
+       2. & x \meet (y \join z) &=& (z \meet x) \join (y \meet x) & \forall x,y,z\in\setX & and \\
+       3. & \exists y' \st x \meet (y \join y')&=& x \join (y\meet y')  & \forall x,y\in\setX.
+     \end{array}}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\latA$ is a \prope{distributive} \emph{lattice}:\label{item:boo_char_s1951_latd}
+        by 1 and 2 and by \prefpp{thm:lat_char_s1951}.
+
+  \item Define $\bzero\eqd x\meet x'$ and $\bid\eqd x\join x'$. \label{item:boo_char_s1951_01}
+
+  \item Proof that $\bzero$ is the \prope{join-identity} element 
+        and   that $\bid$   is the \prope{meet-identity} element:\label{item:boo_char_s1951_id}
+    \begin{align*}
+      x \join \bzero
+        &= x \join \brp{y\meet y'}
+        && \text{by definition of $\bzero$ \xref{item:boo_char_s1951_01}}
+      \\&= \brp{x\join x} \join \brp{y\meet y'}
+        && \text{by \prope{idempotent} property of lattices \xref{thm:lattice}}
+      \\&= x\join \brs{x \join \brp{y\meet y'}}
+        && \text{by \prope{associative} property of lattices \xref{thm:lattice}}
+      \\&= x\join \brs{x \meet \brp{y\join y'}}
+        && \text{by 3}
+      \\&= x
+        && \text{by \prope{absorptive} property of lattices \xref{thm:lattice}}
+      \\
+      \\
+      x \meet \bid
+        &= x \meet \brp{y\join y'}
+        && \text{by definition of $\bid$ \xref{item:boo_char_s1951_01}}
+      \\&= \brp{x\meet x} \meet \brp{y\join y'}
+        && \text{by \prope{idempotent} property of lattices \xref{thm:lattice}}
+      \\&= x\meet \brs{x \meet \brp{y\join y'}}
+        && \text{by \prope{associative} property of lattices \xref{thm:lattice}}
+      \\&= x\meet \brs{x \join \brp{y\meet y'}}
+        && \text{by 3}
+      \\&= x
+        && \text{by \prope{absorptive} property of lattices \xref{thm:lattice}}
+    \end{align*}
+
+  \item Proof that $\latA$ is \prope{bounded} with 
+        $\bzero$ being the \hie{greatest lower bound} and 
+        $\bid$ being the \hie{least upper bound}:\label{item:boo_char_s1951_bnd}
+    \begin{align*}
+      x \meet \bzero
+        &= \brp{x \join \bzero} \meet \bzero
+        && \text{by \prope{identity} property \xref{item:boo_char_s1951_id}}
+      \\&= \bzero \meet \brp{\bzero \join x}
+        && \text{by \prope{commutative} property of lattices \xref{thm:lattice}}
+      \\&= \bzero
+        && \text{by \prope{absorptive} property of lattices \xref{thm:lattice}}
+      \\
+      \\
+      x \join \bid
+        &= \brp{x \meet \bid} \join \bid
+        && \text{by \prope{identity} property \xref{item:boo_char_s1951_id}}
+      \\&= \bid \join \brp{\bid \meet x}
+        && \text{by \prope{commutative} property of lattices \xref{thm:lattice}}
+      \\&= \bid
+        && \text{by \prope{absorptive} property of lattices \xref{thm:lattice}}
+    \end{align*}
+
+  \item Proof that $\latA$ is \prope{complemented}:\label{item:boo_char_s1951_latc}
+    Because $\latA$ is \prope{bounded} with greatest lower bound $\bzero$ and 
+    least upper bound $\bid$ (\pref{item:boo_char_s1951_bnd}) and because 
+    $x\meet x'=\bzero$ and $x\join x'=\bid$ 
+    (definition of $\bzero$ and $\bid$ \xref{item:boo_char_s1951_01}).
+
+  \item Proof that $\latA$ is a \prope{Boolean} \emph{algebra}:
+    Because $\latA$ is \prope{distributive} (\pref{item:boo_char_s1951_latd}) and 
+    \prope{complemented} (\pref{item:boo_char_s1951_latc}), 
+    and by \prefpp{def:boolean}.
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+\section{Literature}
+%=======================================
+\begin{survey}
+\begin{enumerate}
+  \item General information about Boolean algebras:
+    \\\citer{sikorski1969}
+    \\\citer{dwinger1971}
+      \\\indentdr\citer{dwinger1961}
+    \\\citer{halmos1972}
+    \\\citer{monk1989}
+    \\\citer{givant2009}
+
+  \item Characterizations:
+    \begin{enumerate}
+      \item Survey of characterizations:
+        \\\citer{padmanabhan2008}
+
+      \item Characterizations in terms of traditional \prope{binary} operations
+            \ope{join} $\join$, \ope{meet} $\meet$, and \ope{complement} $\bnot$:
+        \\\citePc{huntington1904}
+        \\\citorc{huntington1933}
+        \\\citor {diamond1933}
+        \\\citor {diamond1934}
+        \\\citor {stone1935}
+        \\\citor {hoberman1937}
+        \\\citorc{frink1941}{4 identities involving $\join$, $\meet$, $\bnot$}
+        \\\citor {newman1941}
+        \\\citor {braithwaite1942}
+        \\\citorc{byrne1946}{Form. A and B}
+        \\\citerc{gerrish1978}{independence of Huntington's characterizations}
+      
+      \item Characterizations in terms of non-traditional \prope{binary} operations:
+        \\\citorc{sheffer1913}{rejection $\rejection$}
+        \\\citorc{bernstein1914}{exception $\exception$}
+        \\\citorc{bernstein1916}{rejection $\rejection$}
+        \\\citorc{bernstein1933}{rejection $\rejection$}
+        \\\citorc{bernstein1934}{implication $\bimpl$}
+        \\\citorc{bernstein1936}{complete disjuction $\bxor$}
+        \\\citorc{byrne1948}{inclusion}
+        \\\citorc{byrne1951}{ring operations}
+        \\\citorc{miller1952}{ring operations}
+      
+      \item Characterizations in terms of \prope{ternary} operations:
+        \\\citor {whiteman1937}{\ope{ternary rejection}}
+      
+      \item Characterizations involving \prope{Elkan's law}:
+        \\\citorc{kondo2008}{for bounded lattices}
+        \\\citorc{renedo2003}{for orthomodular lattices}
+        \\\citorc{trillas2004}{for orthocomplemented lattices}
+
+    \end{enumerate}
+
+  \item Analytic properties:
+    \\\citer{vladimirov2002}
+
+  \item Miscellaneous:
+    \\\citer {montague1954}
+    \\\citerc{rudeanu1961}{referenced by \citer{sikorski1969}}
+
+  \item Actually, ``Boolean algebras" are not really ``algebras". Rather, they are
+    ``a commutative ring with unit, without nilpotents, and having idempotents which stood for classes"
+    \\\citerp{hailperin1981}{184}
+
+  \item Pioneering works related to Boolean algebras:
+    \\\citor{boole1847}
+    \\\citor{boole1854}
+    \\\citorc{jevons1864}{join and meet operations}
+    \\\citorc{peirce1870}{order concepts}
+    \\\citePc{huntington1904}{axiomization}
+
+  \item History of development of Boolean algebra:
+    \\\citer{burris2000lbt}
+
+\end{enumerate}
+\end{survey}
+
+
+

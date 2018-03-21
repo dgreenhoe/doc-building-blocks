@@ -1,0 +1,1537 @@
+﻿%============================================================================
+% Daniel J. Greenhoe
+% LaTeX File
+%============================================================================
+
+
+%======================================
+\chapter{Transversal Operators}
+%======================================
+
+\qboxnpqt
+  {Ren\'e Descartes, philosopher and mathematician (1596--1650)
+   \index{Descartes, Ren\'e}
+   \index{quotes!Descartes, Ren\'e}
+   \footnotemark}
+  {../common/people/descartes_fransHals_bw_wkp_pdomain.jpg}
+  {Je me plaisois surtout aux math\'ematiques,
+    \`a cause de la certitude et de l'\'evidence de leurs raisons:
+    mais je ne remarquois point encore leur vrai usage;
+    et, pensant qu'elles ne servoient qu'aux arts m\'ecaniques,
+    je m'\'etonnois de ce que leurs fondements \'etant si fermes et si solides,
+    on n'avoit rien b\^ati dessus de plus relev\'e:}
+  {I was especially delighted with the mathematics,
+    on account of the certitude and evidence of their reasonings;
+    but I had not as yet a precise knowledge of their true use;
+    and thinking that they but contributed to the advancement of the mechanical arts,
+    I was astonished that foundations, so strong and solid,
+    should have had no loftier superstructure reared on them.}
+  \citetblt{
+    quote: & \citer{descartes_method} \\
+    translation: & \citerc{descartes_method_eng}{part I, paragraph 10} \\
+    image: & \scs\url{http://en.wikipedia.org/wiki/File:Frans_Hals_-_Portret_van_Ren\%C3\%A9_Descartes.jpg}, public domain
+    }
+
+%In a linear space, a vector (such as a function) can be represented in terms of the elements of a
+%\structe{basis}.\footnote{\begin{tabular}{ll}
+%  \structe{Hamel basis}:    & \prefp{def:basis_hamel}\\
+%  \structe{Schauder basis}: & \prefp{def:basis_schauder}
+%\end{tabular}}
+%One of the most commonly used bases is the set of trigonometric functions used in Fourier analysis.
+%However, these basis vectors are \prope{non-localized}; that is, their support extends over the entire set of real numbers.
+%This makes representation of functions with finite support difficult in the sense that
+%the partial sums of such representations tend to converge slowly,
+%which in turn means that they tend to require many coefficients
+%to attain an acceptable approximation in real-world applications.
+%
+%
+
+%======================================
+\section{Families of Functions}
+%======================================
+This text is largely set in the space of
+\structe{Lebesgue square-integrable functions} $\spLLR$ \xref{def:spLLR}.
+The space $\spLLR$ is a subspace of the space $\hxs{\spRR}$, the set of all functions with \structe{domain}
+$\hxs{\R}$ (the set of real numbers) and \structe{range} $\R$.
+The space $\spRR$ is a subspace of the space $\hxs{\spCC}$, the set of all functions with \structe{domain}
+$\hxs{\C}$ (the set of complex numbers) and \structe{range} $\C$.
+That is,
+$\ds\spLLR \subseteq \spRR \subseteq \spCC$.
+In general, the notation $\clFxy$ represents the set of all functions with domain $\setX$ and range $\setY$ \xref{def:spXY}.
+Although this notation may seem curious, note that for finite $\setX$ and finite $\setY$, the number of functions (elements)
+in $\clFxy$ is $\seto{\clFxy}=\seto{\setY}^\seto{\setX}$.
+%---------------------------------------
+\begin{definition}
+\label{def:spXY}
+%---------------------------------------
+Let $\hxs{\setX}$ and $\hxs{\setY}$ be sets.
+\defbox{\begin{array}{M}
+  The space $\clFxy$ represents the set of all functions with \structe{domain} $\setX$ and \structe{range} $\setY$ such that
+  \\\indentx$\ds \hxs{\clFxy} \eqd \set{\ff(x)}{\ff(x):\setX\to\setY}$
+\end{array}}
+\end{definition}
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:spLLR}
+%%---------------------------------------
+%Let $\R$ be the set of real numbers, $\borel$ the set of \structe{Borel sets} on $\R$, and
+%$\msm$ the standard \fncte{Borel measure} on $\borel$.
+%Let $\clFrr$ be as in \prefp{def:spXY}.
+%\defbox{\begin{array}{M}
+%  The space of \hid{Lebesgue square-integrable functions} $\spLLRBu$ (or $\spLLR$) is defined as
+%  \\\indentx$\ds\hxs{\spLLR}\eqd\hxs{\spLLRBu}\eqd\set{\ff\in\clFrr}{\brp{\int_\R \abs{\ff}^2}^\frac{1}{2} \dmu < \infty}$.\\
+%  The \hid{standard inner product} $\inprodn$ on $\spLLR$ is defined as
+%  \\\indentx$\ds\inprod{\ff(x)}{\fg(x)} \eqd \int_{\R}\ff(x)\fg^\ast(x)\dx$.\\
+%  The \hid{standard norm} $\normn$ on $\spLLR$ is defined as $\norm{\ff(x)}\eqd\inprod{\ff(x)}{\ff(x)}^\frac{1}{2}$
+%  %and $\opair{\spLLRBu}{\inprodn}$ is a \structe{Hilbert space}.
+%\end{array}}
+%\end{definition}
+
+\ifdochasnot{relation}{%
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerp{ab}{126},
+  %\citerp{halmos1950}{15},
+  \citerp{hausdorff1937e}{22},
+  \citorp{poussin1915}{440}
+  }
+\label{def:setind}
+\index{function!characteristic}
+\index{function!indicator}
+%---------------------------------------
+Let $\setX$ be a set.
+\defbox{\begin{array}{M}
+  The \fnctd{indicator function} $\hxs{\setind}\in\clF{\psetx}{\setn{0,1}}$ is defined as
+  \\\indentx$\ds
+  \setind_{\setA}(x) =
+    \brbl{\begin{array}{ll @{\qquad}C}
+      1  & $ for $ x\in \setA       & \forall x\in\setX,\; \setA\in\psetx \\
+      0  & $ for $ x\notin \setA   & \forall x\in\setX,\; \setA\in\psetx
+    \end{array}}
+    $
+  \\
+  The indicator function $\setind$ is also called the \fnctd{characteristic function}.
+\end{array}}
+\end{definition}
+}
+
+%=======================================
+\section{Definitions and algebraic properties}
+%=======================================
+Much of the wavelet theory developed in this text is constructed using the \opb{translation operator} $\opTrn$
+and the \opb{dilation operator} $\opDil$ (next).
+%These operators are illustrated below.
+%and in \prefp{fig:haar-jn} for the \hie{Haar} MRA\cittr{haar1910}.
+%
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerppgc{walnut2002}{79}{80}{0817639624}{Definition 3.39},
+  \citerppg{christensen2003}{41}{42}{0817642951},
+  \citerpgc{wojtaszczyk1997}{18}{0521578949}{Definitions 2.3,2.4},
+  \citerpg{kammler2008}{A-21}{0521883407},
+  \citerpg{bachman2000}{473}{0387988998},
+  \citerpg{packer2004}{260}{0821834029}, %{section 3.1}\\
+  \citerpg{zayed2004}{}{0817643044},
+  \citerpgc{heil2011}{250}{0817646868}{Notation 9.4},
+  \citerpg{casazza1998}{74}{0817639594},
+  \citerp{goodman1993}{639},
+  \citePpc{heil1989}{633}{Definition 1.3.1},
+  \citerp{dai1996}{81},
+  \citerpg{dai1998}{2}{0821808001}
+  %\citerpg{dai1998}{21}{0821808001}
+  }
+\label{def:opT}
+\label{def:opD}
+\label{def:opTD}
+%---------------------------------------
+\defbox{\begin{array}{Mrc>{\ds}lCM}
+    $\hxs{\opTrn_\tau}$   is a \opd{translation operator} on $\spCC$ if & \hxs{\opTrn_\tau}  \ff(x) &\eqd& \ff(x-\tau)  & \forall \ff\in\spCC & .
+  \\$\hxs{\opDil_\alpha}$ is a \opd{dilation operator}    on $\spCC$ if & \hxs{\opDil_\alpha}\ff(x) &\eqd& \ff(\alpha x)& \forall \ff\in\spCC & .
+  \\\mc{5}{M}{Moreover, $\hxs{\opTrn}\eqd\opTrn_1$ \quad{and}\quad $\opDil\eqd\sqrt{2}\opDil_2$} & .
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Let $\opT$ and $\opD$ be defined as in \prefpp{def:opTD}.
+\exbox{
+\begin{array}{cc}
+  \includegraphics{graphics/opTrn.pdf}&\includegraphics{graphics/opDil.pdf}%
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:opT_periodic}
+%---------------------------------------
+Let $\opTrn_\tau$ be a \fncte{translation operator} \xref{def:opT}.
+\propbox{
+  \sum_{n\in\Z}\opTrn_\tau^n\ff(x) = \sum_{n\in\Z}\opTrn_\tau^n\ff(x+\tau)
+  \qquad \scy \forall \ff\in\spRR
+  \qquad \brp{\text{\scs$\ds\sum_{n\in\Z}\opTrn_\tau^n\ff(x)$ is \prope{periodic} with period $\tau$}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \sum_{n\in\Z}\opTrn_\tau^n\ff(x+\tau)
+    &= \sum_{n\in\Z}\ff(x-n\tau+\tau)
+    && \text{by definition of $\opTrn_\tau$} && \text{\xref{def:opT}}
+  \\&= \sum_{m\in\Z}\ff(x-m\tau)
+    && \text{where $m\eqd n-1$}         && \implies\;n=m+1
+  \\&= \sum_{m\in\Z}\opTrn_\tau^m\ff(x)
+    && \text{by definition of $\opTrn_\tau$} && \text{\xref{def:opT}}
+\end{align*}
+\end{proof}
+
+
+
+In a linear space, every operator has an \structe{inverse}\ifsxref{relation}{def:rel_inverse}.
+Although the inverse always exists as a \rele{relation}\ifsxref{relation}{def:relation},
+it may not exist as a \rele{function}\ifsxrefs{relation}{def:function}or as an \rele{operator}\ifsxref{relation}{def:operator}.
+But in some cases the inverse of an operator is itself an operator.
+%\ifdochas{operator}{\footnote{\hie{operator inverse}: \prefp{def:op_inv}}}
+The inverses of the operators $\opTrn$ and $\opDil$ both exist as operators,
+as demonstrated next.
+
+%---------------------------------------
+\begin{proposition}[\thmd{transversal operator inverses}]
+\label{prop:opTi}
+\label{prop:opDi}
+%---------------------------------------
+Let $\opTrn$ and $\opDil$ be as defined in \prefp{def:opT}.
+\propbox{
+  \begin{array}{lrcl C@{\qquad}D}
+    \mc{6}{M}{$\opTrn$ has an \ope{inverse} $\opTrni$ in $\spCC$ expressed by the relation}
+      \\& \opTrni\ff(x) &=& \ff(x+1)               & \forall \ff\in\spCC  & (\hid{translation operator inverse}).
+      \\
+    \mc{6}{M}{$\opDil$ has an \ope{inverse} $\opDili$ in $\spCC$ expressed by the relation}
+      \\& \opDili\ff(x) &=& \cwt\:\ff\brp{\half x} & \forall \ff\in\spCC  & (\hid{dilation operator inverse}).
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\opTrni$ is the inverse of $\opTrn$:}
+  \opTrni\opTrn\ff(x)
+    &= \opTrni\ff(x-1)
+    && \text{by defintion of $\opTrn$}                       && \text{\xref{def:opT}}
+  \\&= \ff([x+1]-1)                                          
+  \\&= \ff(x)                                                
+  \\&= \ff([x-1]+1)                                          
+  \\&= \opTrn\ff(x+1)                                        
+    && \text{by defintion of $\opTrn$}                       && \text{\xref{def:opT}}
+  \\&= \opTrn\opTrni\ff(x)
+  \\\implies & \opTrni\opTrn=\opI=\opTrn\opTrni
+  %
+  \intertext{2. Proof that $\opDili$ is the inverse of $\opDil$:}
+  \opDili\opDil\ff(x)
+    &= \opDili \sqrt{2}\ff\brp{2x}
+    && \text{by defintion of $\opDil$}                       && \text{\xref{def:opT}}
+  \\&= \brp{\cwt }\sqrt{2}\ff\brp{2\brs{\half x}}
+  \\&= \ff(x)
+  \\&= \sqrt{2} \brs{\cwt \ff\left(\half [2x]\right)}
+  \\&= \opDil \brs{\cwt \ff\brp{\half x}}
+    && \text{by defintion of $\opDil$}                       && \text{\xref{def:opT}}
+  \\&= \opDil\opDili\ff(x)
+  \\\implies & \opDili\opDil=\opI=\opDil\opDili
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:DjTn}
+%---------------------------------------
+Let $\opTrn$ and $\opDil$ be as defined in \prefp{def:opT}.\\
+Let $\opDil^0=\opTrn^0\eqd\opI$ be the \ope{identity operator}.
+\propbox{
+  \opDil^j\opTrn^n\ff(x) = 2^{j/2}\ff\brp{2^jx-n} \qquad\scy\forall j,n\in\Z,\,\ff\in\spCC
+  }
+\end{proposition}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof for $j=0$:
+%    \begin{align*}
+%      \opDil^0\opTrn^n\ff(x)
+%        &= \opI\opTrn^n\ff(x)
+%        && \text{by definition of $\opDil^0$}
+%      \\&= \opTrn^n\ff(x)
+%
+%        = 2^{j/2}\ff\brp{2^jx-n} \qquad\scy\forall j,n\in\Z,\,\ff\in\spCC
+%
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+
+%=======================================
+\section{Linear space properties}
+%=======================================
+
+%20171225%\ifdochasnot{sums}{
+%20171225%%--------------------------------------
+%20171225%\begin{definition}
+%20171225%\label{def:sum}
+%20171225%\footnote{
+%20171225%  \citerpgc{berberian1961}{8}{0821819127}{Definition~I.3.1},
+%20171225%  \citorpc{fourier1820}{280}{``$\sum$" notation}  %{http://gallica.bnf.fr/ark:/12148/bpt6k33707/f285.image}
+%20171225%  }
+%20171225%%--------------------------------------
+%20171225%Let $+$ be an addition operator on a tuple $\tuple{x_n}{m}{\xN}$.
+%20171225%\defbox{\begin{array}{M}
+%20171225%  The \hid{summation} of $\tuplen{x_n}$ from index $m$ to index $\xN$ with respect to $+$ is
+%20171225%  \\\qquad$\ds
+%20171225%  \sum_{n=m}^\xN x_n \eqd
+%20171225%    \brbl{\begin{array}{>{\ds}l@{\qquad}M}
+%20171225%      0                            & for $\xN<m$\\
+%20171225%     %x_\xN                          & for $N=m$ \\
+%20171225%    \brp{\sum_{n=m}^{\xN-1} x_n}+x_\xN & for $\xN\ge m$
+%20171225%    \end{array}}
+%20171225%  $
+%20171225%\end{array}}
+%20171225%\end{definition}
+%20171225%}
+%20171225%
+%20171225%\ifdochasnot{series}{
+%20171225%An infinite summation $\sum_{n=1}^\infty \fphi_n$ is meaningless outside some topological space (e.g. metric space, normed space, etc.).
+%20171225%The sum $\sum_{n=1}^\infty \fphi_n$ is an abbreviation for $\lim_{\xN\to\infty}\sum_{n=1}^\xN \fphi_n$
+%20171225%(the limit of partial sums). And the concept of limit is also itself meaningless outside of a topological space.
+%20171225%
+%20171225%%---------------------------------------
+%20171225%\begin{definition}
+%20171225%\footnote{
+%20171225%  \citerpg{klauder2010}{4}{0817647902},
+%20171225%  \citerpg{kubrusly2001}{43}{0817641742},
+%20171225%  \citerppg{bachman1966}{3}{4}{0486402517}
+%20171225%  %\citerppg{bachman2000fa}{3}{4}{0486402517}\\
+%20171225%  }
+%20171225%\label{def:suminf}
+%20171225%%---------------------------------------
+%20171225%Let $\topspaceX$ be a topological space and $\lim$ be the limit induced by the topology $\topT$.
+%20171225%\defbox{\begin{array}{>{\ds}rc>{\ds}lc>{\ds}l}
+%20171225%  \sum_{n=1}^\infty       \vx_n &\eqd& \sum_{n\in\Zp} \vx_n &\eqd& \lim_{\xN\to\infty} \sum_{n=1}^\xN \vx_n\\
+%20171225%  \sum_{n=-\infty}^\infty \vx_n &\eqd& \sum_{n\in\Z}  \vx_n &\eqd& \lim_{\xN\to\infty} \brp{\sum_{n=0}^\xN \vx_n} + \brp{\lim_{\xN\to-\infty} \sum_{n=-1}^\xN \vx_n}
+%20171225%\end{array}}
+%20171225%\end{definition}
+%20171225%}
+
+%%---------------------------------------
+%\begin{proposition}
+%\label{prop:opTD_sum}
+%\label{prop:opTDi_sum}
+%%---------------------------------------
+%%Let $\opTrn$ be the \fncte{translation operator} and $\opDil$ the \fncte{dilation operator}. % \xref{def:opD}.
+%Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.
+%\propbox{\begin{array}{>{\ds}rc>{\ds}l@{\qquad}C}
+%  \opDil^j\opTrn^n\sum_{m\in\Z} \ff(x) &=& \sum_{m\in\Z}\opDil^j\opTrn^n \ff(x) & \forall \ff\in\spCC,\,n,j\in\Z
+%  %\opDil\sum_{n\in\Z} \ff(x) &=& \sum_{n\in\Z}\opDil \ff(x) & \forall \ff\in\spCC
+%\end{array}}
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \opDil^j\opTrn^n \sum_{n\in\Z} \ff(x)
+%    &= \sum_{m\in\Z} 2^{j/2}\ff\brp{2^j-n}
+%  \\&= \sum_{m\in\Z}\opDil^j\opTrn^n\ff(x)
+%    && \text{by \prefp{thm:L_prop}}
+%\end{align*}
+%\end{proof}
+
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:DjTnfg}
+%--------------------------------------
+Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.
+\propbox{
+  \opDil^j\opTrn^n\brs{\ff\fg} = 2^{-j/2}\;\brs{\opDil^j\opTrn^n\ff}\;\brs{\opDil^j\opTrn^n\fg}
+  \qquad\scy\forall j,n\in\Z,\,\ff\in\spCC
+  }
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    \opDil^j\opTrn^n\brs{\ff(x)\fg(x)}
+      &= 2^{j/2}
+         \ff\brp{2^jx-n}
+         \fg\brp{2^jx-n}
+      && \text{by \prefp{prop:DjTn}}
+    \\&= 2^{-j/2}
+         \brs{2^{j/2}\ff\brp{2^jx-n}}
+         \brs{2^{j/2}\fg\brp{2^jx-n}}
+    \\&= 2^{-j/2}
+         \brs{\opDil^j\opTrn^n\ff(x)} \brs{\opDil^j\opTrn^n\fg(x)}
+      && \text{by \prefp{prop:DjTn}}
+  \end{align*}
+\end{proof}
+
+In general the operators $\opTrn$ and $\opDil$ are \prope{noncommutative} ($\opTrn\opDil\neq\opDil\opTrn$),
+as demonstrated by \pref{cnt:DTTD} (next) and \prefpp{prop:DTTD}.
+%---------------------------------------
+\begin{counterex}
+\label{cnt:DTTD}
+%---------------------------------------
+\cntboxt{%
+  \tbox{
+    As illustrated to the right,\\ % for the function $\ff\in\clFrr$,\\ 
+    it is \textbf{not} always true that\\ 
+    $\opTrn\opDil=\opDil\opTrn$:
+    }
+  \qquad
+  \begin{tabular}{ccc}
+     \includegraphics{graphics/tentfx.pdf}%
+    &\includegraphics{graphics/TD_tentfx.pdf}%
+    &\includegraphics{graphics/DT_tentfx.pdf}%
+  \end{tabular}%
+  }
+\end{counterex}
+
+%---------------------------------------
+\begin{proposition}[\thmd{commutator relation}]
+\footnote{
+  \citerpgc{christensen2003}{42}{0817642951}{equation (2.9)},
+  \citerpg{dai1998}{21}{0821808001},
+  \citerp{goodman1993}{641},
+  \citerp{goodman1993feb}{110}
+  }
+\label{prop:DTTD}
+%---------------------------------------
+Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.
+\propbox{
+  \begin{array}{>{\ds}rc>{\ds}lC}
+    \opDil^j\opTrn^n &=& \opTrn^{2^{-j/2}n}\opDil^j & \forall j,n\in\Z\\
+    \opTrn^n\opDil^j &=& \opDil^j\opTrn^{2^jn}      & \forall n,j\in\Z
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    \opDil^j \opTrn^{2^jn}\ff(x)
+      &= 2^{j/2}\,\ff(2^jx-2^jn)
+      && \text{by \prefp{prop:DjTnfg}}
+    \\&= 2^{j/2}\,\ff\brp{2^j\brs{x-n}}
+      && \text{by \prope{distributivity} of the field $\fieldR$} && \text{\xref{def:algebra}}
+    \\&= \opTrn^n 2^{j/2}\,\ff\brp{2^jx}
+      && \text{by definition of $\opTrn$}  && \text{\xref{def:opT}}
+    \\&= \opTrn^n \opDil^j\ff\brp{x}
+      && \text{by definition of $\opDil$}  && \text{\xref{def:opD}}
+    \\
+    \\
+    \opDil^j \opTrn^n\ff(x)
+      &= 2^{j/2}\,\ff(2^jx-n)
+      && \text{by \prefp{prop:DjTnfg}}
+    \\&= 2^{j/2}\,\ff\brp{2^j\brs{x-2^{-j/2}n}}
+      && \text{by \prope{distributivity} of the field $\fieldR$}  && \text{\xref{def:algebra}}
+    \\&= \opTrn^{2^{-j/2}n} 2^{j/2}\,\ff\brp{2^jx}
+      && \text{by definition of $\opTrn$}  && \text{\xref{def:opT}}
+    \\&= \opTrn^{2^{-j/2}n} \opDil^j\ff\brp{x}
+      && \text{by definition of $\opDil$}  && \text{\xref{def:opD}}
+  \end{align*}
+\end{proof}
+
+
+
+%=======================================
+\section{Inner product space properties}
+%=======================================
+%\prefp{def:opT} defines the dilation operator $\opDil$ and translation operator $\opTrn$.
+In an inner product space\ifsxref{vsinprod}{def:inprod},
+every operator has an \hie{adjoint} \ifxref{operator}{prop:op_adjoint}
+and this adjoint is always itself an operator.
+In the case where the adjoint and inverse of an operator $\opU$ coincide,
+then $\opU$ is said to be \prope{unitary}\ifsxref{operator}{def:op_unitary}.
+And in this case, $\opU$ has several nice properties (see \pref{prop:wavstrct_TD_unitary_1} and \prefp{thm:TD_unitary}).
+\pref{prop:wavstrct_Ta} (next) gives the adjoints of $\opDil$ and $\opTrn$,
+and \prefpp{prop:TD_unitary} demonstrates that both
+$\opDil$ and $\opTrn$ are \prop{unitary}.
+Other examples of unitary operators include the \hie{Fourier Transform operator} $\opFT$
+\ifsxref{harFour}{cor:ft_unitary} and the \hie{rotation matrix operator}\ifsxref{operator}{ex:operator_rotation_unitary}.
+%---------------------------------------
+\begin{proposition} %[Adjoints and inverses of transversal operators]
+\label{prop:wavstrct_Ta}
+\label{prop:wavstrct_Da}
+\label{prop:opTa}
+%---------------------------------------
+Let $\opTrn$ be the \ope{translation operator} \xref{def:opT} with \ope{adjoint} $\hxs{\opTrna}$
+and $\opDil$    the \ope{dilation operator} with \ope{adjoint} $\hxs{\opDila}$\ifsxref{operator}{def:adjoint}.
+%in the inner product space $\inprodspaceX[\clFrc]$.
+\propbox{
+  \begin{array}{rcl C@{\qquad}D@{\qquad}D}
+    \hxs{\opTrna}\ff(x) &=& \ff(x+1)
+                &   \forall \ff\in\spLLR
+       & (\ope{translation operator adjoint})
+    \\
+    \hxs{\opDila}\ff(x) &=& \cwt \:\ff\brp{\half x}
+                &   \forall \ff\in\spLLR
+       & (\ope{dilation operator adjoint})
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\opTrna\ff(x)=\ff(x+1)$:}
+  \inprod{\fg(x)}{\opTrna\ff(x)}
+    &= \inprod{\fg(u)}{\opTrna\ff(u)}
+    && \text{by change of variable $x\rightarrow u$}
+  \\&= \inprod{\opTrn\fg(u)}{\ff(u)}
+    && \text{by definition of adjoint $\opTrna$}             && \text{\xref{def:adjoint}}
+  \\&= \inprod{\fg(u-1)}{\ff(u)}
+    && \text{by definition of $\opTrn$}                      && \text{\xref{def:opT}}
+  \\&= \inprod{\fg(x)}{\ff(x+1)}
+    && \text{where $x\eqd u-1$ $\implies$ $u=x+1$}
+  \\\implies& \opTrna\ff(x) = \ff(x+1)
+  \\
+  \intertext{2. Proof that $\opDila\ff(x)=\cwt \:\ff\brp{\half x}$:}
+  \inprod{\fg(x)}{\opDila\ff(x)}
+    &= \inprod{\fg(u)}{\opDila\ff(u)}
+    && \text{by change of variable $x\rightarrow u$}   
+  \\&= \inprod{\opDil\fg(u)}{\ff(u)}
+    && \text{by definition of $\opDila$}                     && \text{\xref{def:adjoint}}
+  \\&= \inprod{\sqrt{2}\fg(2u)}{\ff(u)}
+    && \text{by definition of $\opDil$}                      && \text{\xref{def:opD}}
+  \\&= \int_{u\in\R} \sqrt{2}\fg(2u) \ff^\ast(u) \du
+    && \text{by definition of $\inprodn$}                    && \text{\xref{def:inprod}}
+  \\&= \int_{x\in\R} \fg(x) \brs{\sqrt{2}\ff\brp{\frac{x}{2}} \half }^\ast \dx
+    && \text{where $x=2u$}
+  \\&= \inprod{\fg(x)}{\cwt  \ff\brp{\frac{x}{2}}}
+    && \text{by definition of $\inprodn$}                    && \text{\xref{def:inprod}}
+  \\&\implies \opDila\ff(x)=\cwt \:\ff\brp{\frac{x}{2}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{christensen2003}{41}{0817642951}{Lemma 2.5.1},
+  \citerpgc{wojtaszczyk1997}{18}{0521578949}{Lemma 2.5}
+  }
+\label{prop:TD_unitary}
+%---------------------------------------
+%Let $\opTrn$ be the translation operator with inverse $\hxs{\opTrni}$ and adjoint $\opTrna$
+%and $\opDil$ be the dilation    operator with inverse $\hxs{\opDili}$ and adjoint $\opDila$.
+Let $\opTrn$ and $\opDil$ be as in \prefpp{def:opT}.\\
+Let $\opTrni$ and $\opDili$ be as in \prefpp{prop:opTi}.
+\propbox{
+  \begin{array}{MM}
+    $\opTrn$ is \prope{unitary} in $\spLLR$ & ($\opTrni=\opTrna$ in $\spLLR$).\\
+    $\opDil$ is \prope{unitary} in $\spLLR$ & ($\opDili=\opDila$ in $\spLLR$).
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+    \opTrni &= \opTrna && \text{by \prefp{prop:opTi} and \prefp{prop:wavstrct_Ta}}
+  \\      &\implies \quad \text{$\opTrn$ is \prope{unitary}}
+          && \text{by the definition of \prope{unitary} operators\ifsxref{operator}{def:op_unitary}}
+  \\
+  \\\opDili &= \opDila && \text{by \prefp{prop:opDi} and \prefp{prop:wavstrct_Da}}
+  \\      &\implies \quad \text{$\opDil$ is \prope{unitary}}
+          && \text{by the definition of \prope{unitary} operators\ifsxref{operator}{def:op_unitary}}
+\end{align*}
+\end{proof}
+
+
+
+%=======================================
+\section{Normed linear space properties}
+%=======================================
+%---------------------------------------
+\begin{proposition}
+\label{prop:opD_constant}
+%---------------------------------------
+Let $\opDil$ be the \fncte{dilation operator} \xref{def:opD}.
+\propbox{
+  \brb{\begin{array}{FMD}
+    (1). & $\ds\opDil\ff(x) = \sqrt{2}\ff(x)$ & and\\
+    (2). & $\ff(x)$ is \prope{continuous}
+  \end{array}}
+  \qquad\iff\qquad
+  \brb{\text{$\ff(x)$ is a \prope{constant}}}
+  \qquad\scy\forall \ff\in\spLLR
+  }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1)$\impliedby$ \prope{constant} property:
+    \begin{align*}
+      \opDil\ff(x)
+        &\eqd \sqrt{2}\ff\brp{2x}
+        &&    \text{by definition of $\opDil$}  && \text{\xref{def:opD}}
+      \\&=    \sqrt{2}\ff\brp{x}
+        &&    \text{by \prope{constant} hypothesis}
+    \end{align*}
+
+  \item Proof that (2)$\impliedby$ \prope{constant} property:
+    \begin{align*}
+      \norm{\ff(x)-\ff(x+h)}
+        &= \norm{\ff(x)-\ff(x)}
+           \qquad\text{by \prope{constant} hypothesis}
+      \\&= \norm{0}
+      \\&= 0
+           \qquad\text{by \prope{nondegenerate} property of $\normn$} && \text{\xref{def:norm}}
+      \\&\le \varepsilon
+      \\&\implies \forall h>0,\,\exists\varepsilon\st\norm{\ff(x)-\ff(x+h)}<\varepsilon
+      \\&\iffdef  \text{$\ff(x)$ is \prope{continuous}}
+    \end{align*}
+
+  \item Proof that (1,2)$\implies$ \prope{constant} property:
+    \begin{enumerate}
+      \item Suppose there exists $x,y\in\R$ such that $\ff(x)\neq\ff(y)$. \label{item:opD_constant_assumption}
+      \item Let $\seqnZp{x_n}$ be a sequence with limit $x$ and $\seqnZp{y_n}$ a sequence with limit $y$ \label{item:opD_constant_xn}
+      \item Then
+        \begin{align*}
+          0
+            &< \norm{\ff(x)-\ff(y)}
+            && \text{by assumption in \prefp{item:opD_constant_assumption}}
+          \\&= \lim_{n\to\infty}\norm{\ff\brp{x_n}-\ff\brp{y_n}}
+            && \text{by (2) and definition of $\seqn{x_n}$ and $\seqn{y_n}$ in \prefp{item:opD_constant_xn}}
+          \\&= \lim_{n\to\infty}\norm{\ff\brp{2^m x_n}-\ff\brp{2^\ell y_n}}\quad\forall m,\ell\in\Z
+            && \text{by (1)}
+          \\&= 0
+        \end{align*}
+      \item But this is a \emph{contradiction}, so $\ff(x)=\ff(y)$ for all $x,y\in\R$, and $\ff(x)$ is \prope{constant}.
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+\remboxt{
+  In \prefp{prop:opD_constant}, it is not possible to remove the \prope{continuous}\\
+  constraint outright, as demonstrated by the next two counterexamples.
+  }
+\end{remark}
+
+%---------------------------------------
+\begin{counterex}
+%---------------------------------------
+Let $\ff(x)$ be a function in $\spRR$.
+\cntbox{
+   \begin{array}{M}
+   Let $\ds\ff(x)\eqd\brbl{\begin{array}{lM}
+     0 & for $x=0$\\
+     1 & otherwise.
+   \end{array}}$
+   \\
+   Then $\opDil\ff(x)\eqd\sqrt{2}\ff\brp{2x}=\sqrt{2}\ff(x)$, but $\ff(x)$ is \prope{not constant}.
+   \end{array}
+   \hspace{10mm}
+   \begin{array}{M}
+   {\footnotesize
+   \psset{unit=8mm}%
+   \begin{pspicture}(-2.5,-0.6)(2.5,2)%
+     \psaxes[linecolor=axis,yAxis=false]{<->}(0,0)(-2.5,0)(2.5,2)%
+     \psaxes[linecolor=axis,xAxis=false]{ ->}(0,0)(-2.5,0)(2.5,2)%
+     \uput[0](2.5,0){$x$}%
+     \psline[linecolor=blue,linestyle=dotted]   (-2.5,1)(-2,  1)%
+     \psline[linecolor=blue,linestyle=solid,dotsize=5pt]{-o}(-2,  1)( 0,  1)%
+     \psline[linecolor=blue,linestyle=solid,dotsize=5pt]{o-}( 0,  1)( 2,  1)%
+     \psline[linecolor=blue,linestyle=dotted]   ( 2,  1)( 2.5,1)%
+     \psdot[dotsize=4pt](0,0)%
+     \rput[bl](0.5,0.6){$\ff(x)$}%
+   \end{pspicture}}%
+   \end{array}
+  }
+\end{counterex}
+
+%---------------------------------------
+\begin{counterex}
+%---------------------------------------
+Let $\ff(x)$ be a function in $\spRR$.\\ 
+Let $\hxs{\Q}$ be the set of \structe{rational numbers} and
+$\R\setd\Q$ the set of \structe{irrational numbers}.
+\cntbox{
+   \begin{array}{M}
+   Let $\ds\ff(x)\eqd\brbl{\begin{array}{rM}
+     1 & for $x\in\Q$\\
+    -1 & for $x\in\R\setd\Q$.
+   \end{array}}$
+   \\
+   Then $\opDil\ff(x)\eqd\sqrt{2}\ff\brp{2x}=\sqrt{2}\ff(x)$, but $\ff(x)$ is \prope{not constant}.
+   \end{array}
+   \hspace{10mm}
+   \begin{array}{M}
+   {\footnotesize
+   \psset{xunit=8mm,yunit=5mm}%
+   \begin{pspicture}(-2.5,-2)(2.5,2)%
+     \psaxes[linecolor=axis]{<->}(0,0)(-2.5,-1.9)(2.5,1.9)%
+     %\psaxes[linecolor=axis,xAxis=false]{ ->}(0,0)(-2.5,-1.9)(2.5,1.9)%
+     \uput[0](2.5,0){$x$}%
+     \psline[linecolor=blue,linestyle=dotted]   (-2.5,1)(2.5,  1)%
+     \psline[linecolor=red,linestyle=dotted]   (-2.5,-1)(2.5, -1)%
+     %\rput[bl](0.5,0.6){$\ff(x)$}%
+   \end{pspicture}}%
+   \end{array}
+  }
+\end{counterex}
+
+
+
+%--------------------------------------
+\begin{proposition}[Operator norm]
+\label{prop:wavstrct_TD_unitary_1}
+%--------------------------------------
+%Let $\opTrn$ be the translation operator with inverse $\opTrni$ and adjoint $\opTrna$
+%and $\opDil$ be the dilation    operator with inverse $\opDili$ and adjoint $\opDila$.
+%Let $\inprodn$ be the inner product induced by the operator $\int$ in $\spLLR$,
+%$\normn$ the norm induced by $\inprodn$, and
+%$\normopn$ be the \hi{operator norm}\ifsxref{operator}{def:op_norm} induced by $\normn$.
+Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.
+Let $\opTrni$ and $\opDili$ be as in \prefp{prop:opTi}.
+Let $\opTrna$ and $\opDila$ be as in \prefp{prop:opTa}.
+Let $\normn$ and $\inprodn$ be as in \prefp{def:spLLR}.
+Let $\normopn$ be the \hi{operator norm}\ifsxref{operator}{def:op_norm} induced by $\normn$.
+\propbox{
+  \normop{\opTrn} = \normop{\opDil} = \normop{\opTrna} = \normop{\opDila} = \normop{\opTrni} = \normop{\opDili} = 1 
+  }
+%\propbox{\begin{array}{lclclD}
+%    \normop{\opTrn}                   &=& \normop{\opDil}               &=& 1                 & (\prope{unit length})
+%  \\\normop{\opTrna}                  &=& \normop{\opDila}              &=& 1                 & (\prope{unit length})
+%  \\\normop{\opTrni}                  &=& \normop{\opDili}              &=& 1                 & (\prope{unit length})
+%\end{array}}
+\end{proposition}
+\begin{proof}
+  These results follow directly from the fact that $\opTrn$ and $\opDil$ are \prope{unitary}
+  \ifsxref{operator}{prop:TD_unitary} and from
+  \ifdochaselse{operator}{\prefp{thm:unitary_equiv} and \prefp{thm:unitary_prop}.}
+                         {properties of unitary operators.}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:TD_unitary}
+%--------------------------------------
+%Let $\opTrn$ be the translation operator with inverse $\opTrni$ and $\opDil$ the dilation operator with inverse $\opDili$.
+Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.\\
+Let $\opTrni$ and $\opDili$ be as in \prefp{prop:opTi}.
+Let $\normn$ and $\inprodn$ be as in \prefp{def:spLLR}.
+\thmbox{\begin{array}{Flclcl@{\qquad}C@{\qquad}D}
+    1. & \norm{\opTrn\ff}                    &=& \norm{\opDil\ff}                &=& \norm{\ff}        & \forall\ff    \in\spLLR & (\prope{isometric in length})
+  \\2. & \norm{\opTrn\ff-\opTrn\fg}          &=& \norm{\opDil\ff-\opDil\fg}      &=& \norm{\ff-\fg}    & \forall\ff,\fg\in\spLLR & (\prope{isometric in distance})
+  \\3. & \norm{\opTrni\ff-\opTrni\fg}        &=& \norm{\opDili\ff-\opDili\fg}    &=& \norm{\ff-\fg}    & \forall\ff,\fg\in\spLLR & (\prope{isometric in distance})
+  \\4. & \inprod{\opTrn\ff}{\opTrn\fg}       &=& \inprod{\opDil\ff}{\opDil\fg}   &=& \inprod{\ff}{\fg} & \forall\ff,\fg\in\spLLR & (\prope{surjective})
+  \\5. & \inprod{\opTrni\ff}{\opTrni\fg}     &=& \inprod{\opDili\ff}{\opDili\fg} &=& \inprod{\ff}{\fg} & \forall\ff,\fg\in\spLLR & (\prope{surjective})
+\end{array}}
+\end{theorem}
+\begin{proof}
+  These results follow directly from the fact that $\opTrn$ and $\opDil$ are \prope{unitary}
+  \xrefP{prop:TD_unitary} and from
+  \ifdochaselse{operator}{\prefp{thm:unitary_equiv} and \prefp{thm:unitary_prop}.}
+                         {properties of unitary operators.}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:vsmra_real_sa}
+%---------------------------------------
+%Let $\opTrn$ be the translation operator.
+Let $\opTrn$ be as in \prefp{def:opT}.
+%in a Hilbert space $\spH\eqd\HspaceX[\clFrc]$\ifsxref{seq}{def:hilbert}.
+Let $\opAa$ be the \ope{adjoint}\ifsxrefs{operator}{def:norm_adjoint} of an operator $\opA$.
+\ifdochas{operator}{Let the property ``\prope{self adjoint}" be defined as in \prefpp{def:op_selfadj}.}
+\propbox{
+  \begin{array}{lcl@{\qquad\qquad}C}
+  \ds\brp{\sum_{n\in\Z} \opTrn^n} &=& \ds\brp{\sum_{n\in\Z} \opTrn^n}^\ast
+    & \ds\brp{\text{The operator } \brs{\sum_{n\in\Z} \opTrn^n} \text{ is \prope{self-adjoint}}}
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+   %Let $\opA\eqd\brp{\sum_{n\in\Z} \opTrn^n}$.
+    \begin{align*}
+      %\inprod{(\opA\ff)(x)}{\fg(x)}
+        \inprod{\brp{\sum_{n\in\Z} \opTrn^n}\ff(x)}{\fg(x)}
+        &= \inprod{\sum_{n\in\Z} \ff(x-n)}{\fg(x)}
+        && \text{by definition of $\opTrn$}  && \text{\xref{def:opT}}
+      \\&= \inprod{\sum_{n\in\Z} \ff(x+n)}{\fg(x)}
+        && \text{by \prope{commutative} property} && \text{\xref{def:field}}
+      \\&= \sum_{n\in\Z} \inprod{\ff(x+n)}{\fg(x)}
+        && \text{by \prope{additive} property of $\inprodn$} && \text{\ifxref{vsinprod}{def:inprod}}
+      \\&= \sum_{n\in\Z} \inprod{\ff(u)}{\fg(u-n)}
+        && \text{where $u\eqd x+n$}
+      \\&= \inprodr{\ff(u)}{\sum_{n\in\Z} \fg(u-n)}
+        && \text{by \prope{additive} property of $\inprodn$} && \text{\ifxref{vsinprod}{def:inprod}}
+      %\\&= \inprod{\ff(u)}{\sum_{n\in\Z} \fg(u+n)}
+      %  && \text{by \prop{commutative} property of addition}
+      \\&= \inprodr{\ff(x)}{\sum_{n\in\Z} \fg(x-n)}
+        &&  \text{by change of variable: $u\rightarrow x$}
+      \\&= \inprodr{\ff(x)}{\sum_{n\in\Z} \opTrn^{n}\fg(x)}
+        && \text{by definition of $\opTrn$} && \text{\xref{def:opT}}
+      %\\&= \inprod{\ff(x)}{(\opA\fg)(x)}
+      %  && \text{by definition of $\opA$}
+      \\&\iff \brp{\sum_{n\in\Z}\opTrn^n} = \brp{\sum_{n\in\Z}\opTrn^n}^\ast
+      %\\&\iff \opA=\opAa
+        && \text{by definition of \ope{adjoint}} && \text{\ifsxref{operator}{prop:op_adjoint}}
+      \\&\iff \text{$\brp{\sum_{n\in\Z}\opTrn^n}$ is \prope{self-adjoint}}
+        && \text{by definition of \prope{self-adjoint}} && \text{\ifsxref{operator}{def:op_selfadj}}
+    \end{align*}
+\end{proof}
+
+
+
+
+%=======================================
+\section{Fourier transform properties}
+%=======================================
+%---------------------------------------
+\begin{proposition}
+\label{prop:wavstrct_BTD}
+%---------------------------------------
+%Let $\opTrn$ be the translation operator and $\opDil$ be the dilation operator in the space $\clFrc$.
+Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.\\
+Let $\opBT$ be the \hie{two-sided Laplace transform} defined as
+  $\brs{\opBT \ff}(s) \eqd \cft  \int_{\R} \ff(x) e^{-sx} \dx$.
+\propbox{
+  \begin{array}{F>{\ds}rc>{\ds}l c>{\ds}lCD}
+      1.& \opBT\opTrn^n      &=& e^{-s n} \opBT      & &        & \forall n\in\Z &
+    \\2.& \opBT\opDil^j      &=& \opDil^{-j}\opBT    & &        & \forall j\in\Z &
+    \\3.& \opDil\opBT        &=& \opBT\opDili        & &        & \forall n\in\Z &
+    \\4.& \opBT\opDili\opBTi &=& \opBTi\opDili\opBT  &=& \opDil & \forall n\in\Z & ($\opDili$ is \prope{similar} to $\opDil$)
+    \\5.& \opDil\opBT\opDil  &=& \opDili\opBT\opDili &=& \opBT  & \forall n\in\Z &
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \opBT\opTrn^n \ff(x)
+    &= \opBT \ff(x-n)
+    && \text{by definition of $\opTrn$} && \text{\xref{def:opT}}
+  \\&= \cft  \int_\R \ff(x-n) e^{-sx} \dx
+    && \text{by definition of $\opBT$}
+  \\&= \cft  \int_\R \ff(u) e^{-s (u+n)} \du
+    && \text{where $u\eqd x-n$}
+  \\&= e^{-sn}\;\brs{\cft  \int_\R \ff(u) e^{-s u} \du}
+  \\&= e^{-sn}\;\opBT \ff(x)
+    && \text{by definition of $\opBT$}
+  \\
+  \\
+  \opBT\opDil^j\ff(x)
+    &= \opBT \brs{2^{j/2}\,\ff\brp{2^jx}}
+    && \text{by definition of $\opDil$} && \text{\xref{def:opD}}
+  \\&= \cft \,\int_\R \brs{2^{j/2}\,\ff\brp{2^jx}} e^{-sx} \dx
+    && \text{by definition of $\opBT$}
+  \\&= \cft \,\int_\R \brs{2^{j/2}\,\ff(u)} e^{-s 2^{-j}} 2^{-j}\du
+    && \text{let $u\eqd 2^jx \implies x=2^{-j}u$}
+  \\&= \cwt \, \cft \,
+       \int_\R \ff(u) e^{-s 2^{-j} u} \du
+  \\&= \opDili\,\brs{ \cft \,
+       \int_\R \ff(u) e^{-s u} \du}
+    && \text{by \prefp{prop:wavstrct_Da} and} && \text{\prefp{prop:TD_unitary}}
+  \\&= \opDil^{-j}\, \opBT \, \ff(x)
+    && \text{by definition of $\opBT$}
+  \\
+  \opDil\opBT\,\ff(x)
+    &= \opDil \brs{\cft  \int_\R \ff(x) e^{-sx} \dx  }
+    && \text{by definition of $\opBT$}
+  \\&= \frac{\sqrt{2}}{\sqrt{2\pi}} \int_\R \ff(x) e^{-2sx} \dx
+    && \text{by definition of $\opDil$} && \text{\xref{def:opD}}
+  \\&= \frac{\sqrt{2}}{\sqrt{2\pi}} \int_\R \ff\brp{\frac{u}{2}} e^{-s u} \half \du
+    && \text{let $u\eqd 2x \implies x=\half u$}
+  \\&= \cft  \int_\R \brs{\cwt  \ff\brp{\frac{u}{2}} }e^{-s u} \du
+  \\&= \cft  \int_\R \brs{\opDili \ff}(u) \,e^{-s u} \du
+    && \text{by \prefp{prop:wavstrct_Da} and} &&\text{\prefp{prop:TD_unitary}}
+  \\&= \opBT\opDili \ff(x)
+    && \text{by definition of $\opBT$}
+  \\
+  \opBTi\opDili\opBT
+    &= \opBTi\opBT\opDil
+    && \text{by previous result}
+  \\&= \opDil
+    && \text{by definition of operator inverse} && \text{\ifxref{operator}{def:op_inv}}
+  \\
+  \opBT\opDili\opBTi
+    &= \opDil\opBT\opBTi
+    && \text{by previous result}
+  \\&= \opDil
+    && \text{by definition of operator inverse} && \text{\ifxref{operator}{def:op_inv}}
+  \\
+  \opDil\opBT\opDil
+    &= \opDil\opDili\opBT
+    && \text{by previous result}
+  \\&= \opBT
+    && \text{by definition of operator inverse} && \text{\ifxref{operator}{def:op_inv}}
+  \\
+  \opDili\opBT\opDili
+    &= \opDili\opDil\opBT
+    && \text{by previous result}
+  \\&= \opBT
+    && \text{by definition of operator inverse} && \text{\ifxref{operator}{def:op_inv}}
+\end{align*}
+%These results follow from \prefp{prop:vsmra_real_FD}.
+\end{proof}
+
+
+%---------------------------------------
+\begin{corollary}
+%\label{prop:vsmra_real_FT}
+%\label{prop:vsmra_real_FD}
+\label{cor:wavstrct_FTD}
+\label{cor:FTD}
+%---------------------------------------
+%Let $\opTrn$ be the translation operator and $\opDil$ be the dilation operator.
+%in the space $\clFrc$, and
+%Let $\opFT$ be the Fourier transform\ifsxref{harFour}{def:ft}. % as defined below:
+Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.
+Let $\Ff(\omega)\eqd\opFT\ff(x)$ be the \ope{Fourier Transform} \xref{def:opFT} of some function $\ff\in\spLLR$ \xref{def:spLLR}.
+%  \[\brs{\opFT \ff}(\omega) \eqd \cft  \int_{x\in\R} \ff(x) e^{-i\omega t} \dx\]
+\corbox{
+  \begin{array}{F>{\ds}rc>{\ds}l c>{\ds}l}
+      1.& \opFT\opTrn^n  &=& e^{-i\omega n} \opFT
+    \\2.& \opFT\opDil^j  &=& \opDil^{-j}\opFT
+    \\3.& \opDil\opFT    &=& \opFT\opDili
+    \\4.& \opDil         &=& \opFT\opDili\opFTi   &=& \opFTi\opDili\opFT
+    \\5.& \opFT          &=& \opDil\opFT\opDil    &=& \opDili\opFT\opDili
+  \end{array}
+  }
+\end{corollary}
+\begin{proof}
+These results follow directly from \prefp{prop:wavstrct_BTD} with $\opFT = \left.\opBT\right|_{s=i\omega}$.
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:FTDf}
+%---------------------------------------
+%Let $\opTrn$ be the translation operator and $\opDil$ be the dilation operator.
+%Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.
+%Let $\opFT$ be the Fourier transform\ifsxref{harFour}{def:ft}. % as defined below:
+%Let $\Ff(\omega)\eqd\opFT\ff(x)$ for some function $\ff\in\spLLR$.
+%  \[\brs{\opFT \ff}(\omega) \eqd \cft  \int_{x\in\R} \ff(x) e^{-i\omega t} \dx\]
+Let $\opTrn$ and $\opDil$ be as in \prefp{def:opT}.
+Let $\Ff(\omega)\eqd\opFT\ff(x)$ be the \ope{Fourier Transform} \xref{def:opFT} of some function $\ff\in\spLLR$ \xref{def:spLLR}.
+\propbox{
+  \opFT\opDil^j\opTrn^n \ff(x)  = \frac{1}{2^{j/2}} e^{-i\frac{\omega}{2^j} n} \Ff\brp{\frac{\omega}{2^j}}
+  }
+\end{proposition}
+\begin{proof}
+     \begin{align*}
+       \opFT\opDil^j\opTrn^n\ff(x)
+         &= \opDil^{-j}\opFT\opTrn^n\ff(x)
+         && \text{by \prefp{cor:FTD} (3)}
+       \\&= \opDil^{-j} e^{-i\omega n}\opFT\ff(x)
+         && \text{by \prefp{cor:FTD} (3)}
+       \\&= \opDil^{-j} e^{-i\omega n}\Ff\brp{\omega}
+       \\&= 2^{-j/2} e^{-i2^{-j}\omega n}\Ff\brp{2^{-j}\omega}
+         && \text{by \prefp{prop:opDi}}
+     \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:Fsum_af}
+%---------------------------------------
+Let $\opTrn$ be the translation operator \xref{def:opT}.
+Let $\Ff(\omega)\eqd\opFT\ff(x)$ be the \ope{Fourier Transform} \xref{def:opFT} of a function $\ff\in\spLLR$.
+Let $\Da(\omega)$ be the \ope{DTFT} \xref{def:dtft} of a sequence $\seqxZ{a_n}\in\spllR$ \xref{def:spllR}.
+\propbox{
+  \opFT\sum_{n\in\Z}a_n \opTrn^n\fphi(x) = \Da(\omega)\Fphi(\omega)
+  \qquad\scy\forall\seqn{a_n}\in\spllR,\,\fphi(x)\in\spLLR
+  }
+\end{proposition}
+\begin{proof}
+     \begin{align*}
+       \opFT\sum_{n\in\Z}a_n \opTrn^n\fphi(x)
+         &= \sum_{n\in\Z}a_n \opFT\opTrn^n\fphi(x)
+       \\&= \sum_{n\in\Z}a_n e^{-i\omega n}\opFT\fphi(x)
+         && \text{by \prefp{cor:FTD}}
+       \\&= \brs{\sum_{n\in\Z}a_n e^{-i\omega n}}\Fphi(\omega)
+         && \text{by definition of $\Fphi(\omega)$}
+       \\&= \Da(\omega)\Fphi(\omega)
+         && \text{by definition of \ope{DTFT} \xref{def:dtft}}
+     \end{align*}
+\end{proof}
+
+
+%======================================
+%\section{Poisson Summation Formulas}
+\label{sec:psf}
+%======================================
+%\qboxnps
+%  {
+%  Sim\'eon Denis Poisson (1781--1840) French mathematician and physicist
+%  \index{Poisson, Sim\'eon Denis}
+%  \index{quotes!Poisson, Sim\'eon Denis}
+%  \footnotemark
+%  }
+%  {../common/people/poisson.jpg}
+%  {Life is good for only two things, discovering mathematics and teaching mathematics.}
+%  \footnotetext{\begin{tabular}[t]{ll}
+%    %quote: & \url{http://www-history.mcs.sx-andrews.ac.uk/Biographies/Poisson.html} \\
+%    quote: & \citerpg{eves1990}{486}{0030295580}\\
+%    image: & \url{http://en.wikipedia.org/wiki/Poisson}
+%  \end{tabular}}
+
+%The \hie{Poisson Summation Formula} (PSF, \prefpo{thm:psf}) and
+%\hie{Inverse Poisson Summation Forumla} (IPSF, \prefpo{thm:ipsf})
+%are fundamental and extremely powerful theorems in Harmonic analysis.
+
+
+%--------------------------------------
+\begin{definition}
+\label{def:opS}
+%--------------------------------------
+Let $\spLLRBu$ be the \structe{space of Lebesgue square-integrable functions} \xref{def:spLLRBu}.
+Let $\spllR$ be the \structe{space of all absolutely square summable sequences over $\R$} \xref{def:spLLR}.
+\defboxt{
+  $\opS$  is the \opd{sampling operator} in $\clO{\spLLR}{\spllR}$ if
+  \quad$\ds\brs{\opS\ff(x)}(n) \eqd \ff\brp{\frac{2\pi}{\tau} n}\qquad \scy\forall \ff\in\spLLRBu,\,\tau\in\Rp$
+  }
+\end{definition}
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{Poisson Summation Formula}---\thmd{PSF}]
+\footnote{
+  \citerp{andrews}{624},
+  \citerpg{knappb2005}{389}{0817632506},
+  \citerp{lasser}{254},
+  %\citerp{goswami}{44}  \\
+  \citerpp{rudinr}{194}{195},
+  \citerp{folland}{337}
+  }
+\label{thm:psf}
+%--------------------------------------
+Let $\Ff(\omega)$ be the \fncte{Fourier transform} \xref{def:opFT} of a function $\ff(x)\in\spLLR$.
+Let $\opS$ be the \ope{sampling operator} \xref{def:opS}.
+%Let $\opFT$ be the \hie{Fourier Transform} operator,
+%    $\opFS$ the \hie{Fourier Series} operator,
+%    $\opFSi$ the \hie{inverse Fourier Series} operator,
+%and $\Ff(\omega)\eqd\opFT\ff(x)$ (the Fourier transform of a function $\ff(x)$).
+\thmboxt{
+   $\ds
+   \mcom{\ds\sum_{n\in\Z} \opTrn_{\tau}^n\ff\brp{x} =
+            \sum_{n\in\Z} \ff\brp{x+n\tau}}
+        {summation in ``time"}
+   =
+   \mcom{\ds\sqrt{\frac{2\pi}{\tau}}\: \opFSi \opS\opFT\brs{\ff(x)}}
+        {operator notation}
+        %{\parbox{6\tw/16}{proportional to the inverse Fourier series
+        % of the Fourier transform of $\ff(x)$
+        % sampled at $\frac{2\pi}{\tau}$ intervals}
+        %}
+   =
+   \mcom{\ds\frac{\sqrt{2\pi}}{\tau} \sum_{n\in\Z} \Ff\brp{\frac{2\pi}{\tau}n} e^{i\frac{2\pi}{\tau}nx}}
+        {summation in ``frequency"}
+  $
+  %\\\qquad
+  %  $\begin{array}{Ml}
+  %    where & \text{$\opS\in\clO{\spLLR}{\spllR}$ is the \ope{sampling operator} defined as}\\
+  %          & \brs{\opS\ff(x)}(n) \eqd \ff\brp{\frac{2\pi}{\tau} n}\qquad \forall \ff\in\spLLRBu,\,\tau\in\Rp
+  %  \end{array}$
+  }
+\end{theorem}
+
+\begin{proof}
+%\begin{enumerate}
+%\item Proof using Fourier series (\prefpo{def:opFS}):
+\begin{enumerate}
+  \item lemma: If $\ds \fh(x)    \eqd \sum_{n\in\Z} \ff(x+n\tau)$ then $\fh\equiv\opFSi\opFS\fh$.
+        Proof: \label{ilem:psf_h}\\
+        Note that $\fh(x)$ is \prope{periodic} with period $\tau$\ifsxref{sums}{lem:series_sumT}.
+        %\[
+        %   \fh(x+\tau) \eqd \sum_{n\in\Z} \ff(x+T+n\tau) = \sum_{n\in\Z} \ff(x+(n+1)\tau) = \sum_{n\in\Z} \ff(x+n\tau) \eqd \fh(x).
+        %\]
+        Because $\fh$ is periodic, it is in the domain of $\opFS$ and thus $\fh\equiv\opFSi\opFS\fh$.
+  \item Proof of PSF (this theorem---\pref{thm:psf}):
+    \begin{align*}
+       \sum_{n\in\Z} \ff(x+n\tau)
+           &= \opFSi \opFS \sum_{n\in\Z} \ff(x+n\tau)
+           && \text{by \prefp{ilem:psf_h}}
+         \\&= \opFSi \brn{
+                \mcom{\brs{
+                  \fsscale\int_0^\tau \brp{\sum_{n\in\Z} \ff(x+n\tau)} e^{-i\frac{2\pi}{\tau}kx} \dx
+                  }}{$\opFS \brs{\sum_{n\in\Z} \ff(x+n\tau)}$}
+                }
+            && \text{by definition of $\opFS$} && \text{\xref{def:opFS}}
+         \\&= \opFSi \brs{
+                \fsscale \sum_{n\in\Z}
+                \int_{0}^\tau \ff(x+n\tau) e^{-i\frac{2\pi}{\tau}kx} \dx
+                }
+         \\&= \opFSi \brs{
+                \fsscale
+                \sum_{n\in\Z}
+                \int_{u=n\tau}^{u=(n+1)\tau} \ff(u) e^{-i\frac{2\pi}{\tau}k(u-n\tau)} \du
+                }
+           && \text{where $u\eqd x+n\tau$ $\implies$} && \text{$x=u-n\tau$}
+         \\&= \opFSi \brs{
+                \fsscale \sum_{n\in\Z}
+                \cancelto{\scy1}{e^{i2\pi kn}}\;
+                \int_{u=n\tau}^{u=(n+1)\tau} \ff(u) e^{-i\frac{2\pi}{\tau}ku} \du
+                }
+         \\&= \sqrt{\frac{2\pi}{\tau}} \opFSi \brn{
+                \mcom{\brs{\fscale \int_{u\in\R} \ff(u) e^{-i\left(\frac{2\pi}{\tau}k\right)u} \du}}
+                     {$\brs{\opFT\ff}\brp{\frac{2\pi}{\tau}k}$}
+                }
+           && \text{by evaluation of $\opFSi$} && \text{\xref{thm:opFSi}}
+         \\&= \sqrt{\frac{2\pi}{\tau}}\: \opFSi \brs{\brs{\opFT\ff(x)}\brp{\frac{2\pi}{\tau}k}}
+           && \text{by definition of $\opFT$} && \text{\xref{def:opFT}}
+         \\&= \sqrt{\frac{2\pi}{\tau}}\: \opFSi\opS\opFT \ff
+           && \text{by definition of $\opS$}
+           && \text{\xref{def:opS}}
+         \\&= \frac{\sqrt{2\pi}}{\tau}\:
+              \sum_{n\in\Z} \Ff\brp{\frac{2\pi}{\tau}n} e^{i\frac{2\pi}{\tau}nx}
+           && \text{by evaluation of $\opFSi$} && \text{\xref{thm:opFSi}}
+    \end{align*}
+\end{enumerate}
+%\item Proof using \hie{spectral theorem}\ifdochas{operator}{ (\prefpo{thm:spectral_theorem})}:
+%\begin{enumerate}
+%  \item Define operator $\opA$ as
+%        \[ (\opA \ff)(x) \eqd \sum_{n\in\Z} \ff(x+n) \]
+%
+%  \item $\opA$ can be expressed as an integral operator with
+%        kernel $\fh(t,u) = \sum_{n\in\Z} \delta(u-x-n)$:
+%        \begin{align*}
+%          (\opA \ff)(x)
+%            &= \sum_{n\in\Z} \ff(x+n)
+%          \\&= \sum_{n\in\Z} \int_{u\in\R} \delta(u-x-n) \ff(u) \du
+%            && \text{by \prefp{def:dirac}}
+%          \\&= \int_{u\in\R} \mcom{\sum_{n\in\Z} \delta(u-x-n)}{kernel $\fh(t,u)$} \ff(u) \du
+%        \end{align*}
+%
+%  \item $\opA$ has eigenpairs $\brp{2\pi\sum_{n\in\Z} \delta(\omega-2\pi n),\, e^{i\omega x}}$:
+%        \begin{align*}
+%          \opA e^{i\omega x}
+%            &= \sum_{n\in\Z} e^{i\omega(x+n)}
+%          \\&= \mcomr{\brp{\sum_{n\in\Z} e^{i\omega n}}}{Dirichlet kernel}\: e^{i\omega x}
+%          \\&= \mcom{\brp{2\pi\sum_{n\in\Z} \delta(\omega-2\pi n)}}{eigenvalue}\:
+%               \mcoml{e^{-i\omega x}}{eigenvector}
+%            && \text{by \prefp{prop:dkernel}}
+%        \end{align*}
+%
+%  \item $\opA$ is \hie{self adjoint}:%
+%    \ifdochas{operator}{\footnote{\hie{self ajoint}: \prefp{def:op_selfadj}}}
+%        \begin{align*}
+%          \inprod{(\opA\ff)(x)}{\fg(x)}
+%            &= \inprod{\sum_{n\in\Z} \ff(x+n)}{\fg(x)}
+%          \\&= \sum_{n\in\Z} \inprod{\ff(x+n)}{\fg(x)}
+%            && \text{by additivity property of $\inprodn$ \ifdochas{vsinprod}{\prefpo{def:inprod}}}
+%          \\&= \sum_{n\in\Z} \inprod{\ff(u)}{\fg(u-n)}
+%            && \text{where $u=x+n$}
+%          \\&= \inprod{\ff(u)}{\sum_{n\in\Z} \fg(u-n)}
+%          \\&= \inprod{\ff(u)}{\sum_{n\in\Z} \fg(u+n)}
+%          \\&= \inprod{\ff(x)}{\sum_{n\in\Z} \fg(x+n)}
+%          \\&= \inprod{\ff(x)}{(\opA\fg)(x)}
+%          \\&\implies \opA=\opAa
+%        \end{align*}
+%
+%  \item Because the operator $\opA$ is self adjoint, it is also \hie{normal}.%
+%        \ifdochas{operator}{\footnote{\hie{normal}: \prefp{def:op_normal}}}
+%
+%  \item Because the operator $\opA$ is normal, it can be evaluated using the \hie{spectral theorem}
+%        \footnote{\hie{spectral theorem}: \ifdochas{operator}{\prefp{thm:spectral_theorem}}}.
+%        \begin{align*}
+%          \sum_{n\in\Z} \ff(x+n\tau)
+%            &= (\opA \ff)(x)
+%            && \text{by definition of $\opA$}
+%          \\&= \sum_{n\in\Z} \lambda_n \opP_n \ff
+%            && \text{by spectral theorem \ifdochas{operator}{\prefpo{thm:spectral_theorem}}}
+%          \\&= \sum_{n\in\Z} \brs{2\pi\sum_{m\in\Z} \delta(\omega_n-2\pi m)}\:
+%                      \inprod{\ff(x)}{e^{i\omega_n t}}
+%          \\&= \sum_{n\in\Z} \brs{2\pi\sum_{m\in\Z} \delta(\omega_n-2\pi m)}\:
+%                      \sqrt{2\pi}(\opFT\ff)(\omega_n)
+%          \\&= \brp{\sqrt{2\pi}}^\frac{3}{2}
+%               \sum_{n\in\Z} \brs{\sum_{m\in\Z} \delta(\omega_n-2\pi m)}\:
+%                      (\opFT\ff)(2\pi m)
+%        \end{align*}
+%\end{enumerate}
+%\end{enumerate}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{Inverse Poisson Summation Formula}---\thmd{IPSF}]
+\footnote{
+  \citerp{gauss1900werke8}{88}
+  }
+\label{thm:ipsf}
+\index{Inverse Poisson Summation Formula}
+\index{theorems!Inverse Poisson Summation Formula}
+\index{IPSF}
+%--------------------------------------
+\\Let $\Ff(\omega)$ be the \fncte{Fourier transform} \xref{def:opFT} of a function $\ff(x)\in\spLLR$.
+%Let $\opFT$ be the \hie{Fourier Transform} operator with inverse $\opFTi$,
+%    $\opFS$ be the \hie{Fourier Series} operator with inverse $\opFSi$,
+%and $\Ff(\omega)$ be the Fourier transform of a function $\ff(x)$
+%such that $\Ff \eqd \opFT\ff$.
+\thmbox{
+   \mcom{\sum_{n\in\Z} \opTrn_{2\pi/\tau}^n\Ff\brp{\omega} \eqd
+         \sum_{n\in\Z} \Ff\brp{\omega - \frac{2\pi}{\tau}n}}
+        {summation in ``frequency"}
+   \qquad=\qquad
+   %\mcom{\sqrt{\tau}\: \opFSi \opS \opFTi\Ff }
+   %     {\parbox{5\tw/16}{
+   %     proportional to the inverse Fourier series of the
+   %     inverse Fourier transform of $\Ff(\omega)$
+   %     sampled at $kT$ intervals and reversed in time about $x=0$
+   %     }}
+   %=
+   \mcom{\frac{\tau}{\sqrt{2\pi}} \sum_{n\in\Z} \ff(n\tau) e^{-i\omega n\tau}}
+        {summation in ``time"}
+%  \\\qquad
+%    \begin{array}{>{$}l<{$}>{\ds}l}
+%      where & \text{$\opS\in\clO{\spLLR}{\spllR}$ is the \ope{sampling operator} defined as}\\
+%            & \brs{\opS\ff(x)}(n) \eqd \ff\brp{-n\tau}\qquad\scriptstyle \forall \ff\in\spLLRBu
+%    \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: \label{ilem:ipsf_h}
+        If $\fh(\omega) \eqd \sum_{n\in\Z} \Ff\left( \omega + \frac{2\pi}{\tau}n  \right)$,
+               then  $\fh\equiv\opFSi\opFS\fh$. Proof: \\
+        Note that $\fh(\omega)$ is periodic with period $2\pi/T$:
+    \[
+       \fh\left(\omega+\frac{2\pi}{\tau}\right)
+       \eqd \sum_{n\in\Z} \Ff\left( \omega+\frac{2\pi}{\tau}+ \frac{2\pi}{\tau}n \right)
+       =      \sum_{n\in\Z} \Ff\left( \omega+ (n+1)\frac{2\pi}{\tau} \right)
+       =      \sum_{n\in\Z} \Ff\left( \omega + \frac{2\pi}{\tau}n  \right)
+       \eqd \fh(\omega)
+    \]
+    Because $\fh$ is periodic, it is in the domain of $\opFS$ and is equivalent to $\opFSi\opFS\fh$.
+  \item Proof of IPSF (this theorem---\pref{thm:ipsf}):
+    \begin{align*}
+      &\sum_{n\in\Z} \Ff\left( \omega + \frac{2\pi}{\tau}n \right)
+      \\&= \opFSi\opFS\brn{ \sum_{n\in\Z} \Ff\left( \omega + \frac{2\pi}{\tau}n \right) }
+        && \text{by \prefp{ilem:ipsf_h}}
+      \\&= \opFSi\brn{
+             \mcom{\brs{ \sqrt{\frac{\tau}{2\pi}}\int_0^\frac{2\pi}{\tau} \sum_{n\in\Z} \Ff\brp{\omega + \frac{2\pi}{\tau}n} e^{-i\omega\frac{2\pi}{2\pi/\tau}k} \dw }}
+                  {$\opFS\brs{\sum_{n\in\Z} \Ff\brp{\omega + \frac{2\pi}{\tau}n}}$}
+             }
+        && \text{by definition of $\opFS$} && \text{\xref{def:opFS}}
+      \\&= \opFSi\brn{
+             \brs{ \sqrt{\frac{\tau}{2\pi}}\sum_{n\in\Z} \int_0^\frac{2\pi}{\tau} \Ff\brp{\omega + \frac{2\pi}{\tau}n} e^{-i\omega Tk} \dw }
+             }
+      \\&= \opFSi\brn{
+             \brs{ \sqrt{\frac{\tau}{2\pi}}\sum_{n\in\Z} \int_{u=\frac{2\pi}{\tau}n}^{u=\frac{2\pi}{\tau}(n+1)}
+                   \Ff\brp{u} e^{-i\brp{u-\frac{2\pi}{\tau}n} Tk} \du }
+             }
+        && \text{where $u\eqd\omega + \frac{2\pi}{\tau}n$ $\implies$} && \text{$\omega=u-\frac{2\pi}{\tau}n$}
+      \\&= \opFSi\brn{
+             \brs{\sqrt{\frac{\tau}{2\pi}} \sum_{n\in\Z}
+                  \cancelto{\scy1}{e^{i2\pi nk}}\;
+                  \int_{\frac{2\pi}{\tau}n}^{\frac{2\pi}{\tau}(n+1)} \Ff(u) e^{-iu\tau k} \du
+                 }
+             }
+      \\&= \opFSi\brn{
+             \brs{\sqrt{\frac{\tau}{2\pi}}
+                  \int_{\R} \Ff(u) e^{-iu \tau k} \du
+                 }
+             }
+      \\&= \sqrt{\tau}\: \opFSi\brn{
+             \mcom{\brs{
+                  \fscalei
+                  \int_{\R} \Ff(u) e^{iu(-\tau k)} \du
+                 }}{$\brs{\opFTi\Ff}(-k\tau)$}
+             }
+      \\&= \sqrt{\tau}\: \opFSi \brs{ \brs{\opFTi\Ff}(-k\tau) }
+        && \text{by value of $\opFTi$} && \text{\xref{thm:opFTi}}
+      \\&= \sqrt{\tau}\: \opFSi \opS \opFTi \:\Ff
+        && \text{by definition of $\opS$}
+        && \text{\xref{def:opS}}
+      \\&= \sqrt{\tau}\: \opFSi \opS \ff(x)
+        && \text{by definition of $\opFT$} && \text{\xref{def:opFT}}
+      \\&= \sqrt{\tau}\: \opFSi \ff(-k\tau)
+        && \text{by definition of $\opS$}
+        && \text{\xref{def:opS}}
+      \\&= \sqrt{\tau}\: \frac{1}{\sqrt{\frac{2\pi}{\tau}}}\:
+           \sum_{k\in\Z} \ff(-k\tau)e^{i2\pi\frac{1}{\frac{2\pi}{\tau}} k\omega}
+        && \text{by definition of $\opFSi$} && \text{\xref{thm:opFSi}}
+      \\&= \frac{\tau}{\sqrt{\frac{2\pi}{\tau}}}\:
+           \sum_{k\in\Z} \ff(-k\tau)e^{i k\tau\omega}
+        && \text{by definition of $\opFSi$} && \text{\xref{thm:opFSi}}
+      \\&= \frac{\tau}{\sqrt{2\pi}}\sum_{m\in\Z} \ff(m\tau) e^{-i\omega m\tau}
+        && \text{let $m\eqd-k$}
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+  The left hand side of the \fncte{Poisson Summation Formula} \xref{thm:psf}
+  is very similar to the \fncte{Zak Transform} $\opZ$:
+  \footnote{
+    \citerp{janssen1988}{24},
+    \citerp{zayed}{482}
+    %\url{http://mathworld.wolfram.com/ZakTransform.html}
+    }
+  \\\indentx$\ds(\opZ\ff)(t,\omega) \eqd \sum_{n\in\Z} \ff(x+n\tau)e^{i2\pi n\omega}$
+\end{remark}
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+A generalization of the \fncte{Poisson Summation Formula} \xref{thm:psf} is the
+\hid{Selberg Trace Formula}.\footnote{
+  \citerp{lax}{349},
+  \citor{selberg1956},
+  \citer{terras1999}
+  }
+\end{remark}
+
+
+
+%%=======================================
+%\section{Basis theory properties}
+%%=======================================
+%=======================================
+%\subsection{Bases for function spaces}
+%=======================================
+
+
+
+%=======================================
+\section{Examples}
+%=======================================
+%--------------------------------------
+\begin{example}[\exmd{linear functions}]
+\footnote{
+  \citerpg{higgins1996}{2}{0198596995} %{1.1 General introduction}
+  }
+\label{ex:TD_flinear}
+%--------------------------------------
+Let $\opTrn$ be the \structe{translation operator} \xref{def:opT}.
+%Let $\ff$ be a function in $\spLLR$.
+Let $\hxs{\clLcc}$ be the set of all \prope{linear} functions in $\spLLR$.
+\exbox{\begin{array}{FMD}
+  1. & $\setn{x,\,\opTrn x}$ is a \structe{basis} for $\clLcc$ & and \\
+  2. & $\ff(x) = \ff(1)x - \ff(0)\opTrn x$                     & $\forall\ff\in\clLcc$
+\end{array}}
+\end{example}
+\begin{proof}
+By left hypothesis, $\ff$ is \prope{linear}; so let $\ff(x)\eqd ax + b$
+\begin{align*}
+  \ff(1)x - \ff(0)\opTrn x
+    &= \ff(1)x - \ff(0)(x-1)
+    && \text{by \prefp{def:opT}}
+  \\&= \left.(ax+b)\right|_{x=1}x - \left.(ax+b)\right|_{x=0}(x-1)
+    && \text{by left hypothesis and definition of $\ff$}
+  \\&= (a+b)x - b(x-1)
+  \\&= ax+bx-bx+b
+  \\&= ax+b
+  \\&= \ff(x)
+    && \text{by left hypothesis and definition of $\ff$}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{example}[\exmd{Cardinal Series}]
+\label{ex:TD_cardinalseries}
+%--------------------------------------
+Let $\opTrn$ be the \structe{translation operator} \xrefP{def:opT}.
+The \prope{Paley-Wiener} class of functions $\hxs{\spPW_\sigma^2}$\ifsxref{interpo}{def:PW}
+are those functions which are ``\hie{bandlimited}"
+with respect to their Fourier transform\ifsxref{harFour}{def:ft}.
+The cardinal series forms an orthogonal basis for such a space\ifsxref{interpo}{thm:cardinalSeries}.
+The \fncte{Fourier coefficients}\ifsxref{frames}{def:fcoef} for a projection of a function $\ff$ onto the Cardinal series basis elements is particularly
+simple---these coefficients are samples of $\ff(x)$ taken at regular intervals\ifsxref{interpo}{thm:t_sampling}.
+In fact, one could represent the coefficients using inner product notation with the
+\structe{Dirac delta distribution} $\delta$ \ifxref{relation}{def:dirac} as
+follows: %\footnote{see \prefp{sec:cardinal} for more details}
+  \\\indentx$\ds\inprod{\ff(x)}{\opTrn^n\delta(x)} \eqd \int_{\R} \ff(x)\delta(x-n) \dx \eqd \ff(n)$
+\exbox{\begin{array}{FMD}
+  1. & $\ds\setxZp{\opTrn^n\frac{\sin\brp{\pi x}}{\pi x}}$ is a \structe{basis} for $\spPW_\sigma^2$ & and\\
+  2. & $\ds\ff(x) = \mcom{\sum_{n=1}^\infty \ff(n) \opTrn^n\frac{\sin\brp{\pi x}}{\pi x}}{\structe{Cardinal series}}$ & $\forall \ff\in\spPW_\sigma^2,\,\sigma\le \half $
+\end{array}}
+\end{example}
+\ifdochas{interpo}{\begin{proof}
+See \prefp{thm:cardinalSeries}.
+\end{proof}}
+
+%--------------------------------------
+\begin{example}[\exmd{Fourier Series}]
+\label{ex:TD_fs}
+%--------------------------------------
+%Define an alternative dilation operator $\opDil_n$ as
+%\\\indentx$\ds\brs{\opDil_n\ff}(x)\eqd\ff(nx)$, $n\in\Z$.
+\exbox{\begin{array}{Frc>{\ds}lCD}
+  1. & \mc{4}{M}{$\ds\setxZ{\opDil_n e^{ix}}$ is a \structe{basis} for $\spL\intoo{0}{2\pi}$}         & and\\
+  2. & \ff(x)   &=&    \cft \sum_{n\in\Z} \alpha_n \opDil_n e^{ix}            & \forall x\in\intoo{0}{2\pi},\,\ff\in\spL\intoo{0}{2\pi}   & where\\
+  3. & \alpha_n &\eqd& \cft \int_0^{2\pi} \ff(x) \opDil_n e^{-ix} \dx         & \forall\ff\in\spL\intoo{0}{2\pi}
+\end{array}}
+\end{example}
+\begin{proof}
+See \prefp{thm:opFSi}.
+\end{proof}
+
+%--------------------------------------
+\begin{example}[\exmd{Fourier Transform}]
+\label{ex:TD_ft}
+\footnote{cross reference: \prefp{def:opFT}}
+%--------------------------------------
+%Define an alternative dilation operator $\opDil_\omega$ as
+%\\\indentx$\ds\brs{\opDil_\omega\ff}(x)\eqd\ff(\omega x)$, $\omega\in\R$.
+\exbox{\begin{array}{Frc>{\ds}lCD}
+  1. & \mc{4}{M}{$\ds\set{\opDil_\omega e^{ix}}{\scy\omega\in\R}$ is a \structe{basis} for $\spLLR$}         & and\\
+  2. & \ff(x)      &=&    \cft \int_\R \Ff(\omega) \opDil_x e^{i\omega} \dw  & \forall\ff\in\spLLR   & where\\
+  3. & \Ff(\omega) &\eqd& \cft \int_\R \ff(x) \opDil_\omega e^{-ix} \dx  & \forall\ff\in\spLLR
+\end{array}}
+\end{example}
+
+%--------------------------------------
+\begin{example}[\exmd{Gabor Transform}]
+\footnote{
+  \citeP{gabor1946},
+  \citergc{qian1996}{0132543842}{Chapter 3},
+  \citerpgc{forster2009}{32}{0817648909}{Definition 1.69}
+  }
+\label{ex:TD_gt}
+%--------------------------------------
+%Define an alternative dilation operator $\opDil_\omega$ and an alternative translation operator $\opTrn_\tau$ as
+%\\\indentx$\brs{\opDil_\omega\ff}(x)\eqd\ff(\omega x)$, \qquad and\qquad $\brs{\opTrn_\tau\ff}(x)\eqd\ff(x-\tau)$,\qquad$\scy\omega,\tau\in\R$.
+\exbox{\begin{array}{Frc>{\ds}lCD}
+  1. & \mc{4}{M}{$\ds\setbigleft{\brp{\opTrn_\tau e^{-\pi x^2}}\brp{\opDil_\omega e^{ix}}}{\scy\tau,\omega\in\R}$ is a \structe{basis} for $\spLLR$}         & and\\
+  2. & \ff(x)                  &=&    \int_\R \fG\opair{\tau}{\omega} \opDil_x e^{i\omega} \dw & \forall x\in\R,\,\ff\in\spLLR   & where\\
+  3. & \fG\opair{\tau}{\omega} &\eqd& \int_\R \ff(x) \brp{\opTrn_\tau e^{-\pi x^2}}\brp{\opDil_\omega e^{-ix}} \dx & \forall x\in\R,\,\ff\in\spLLR
+\end{array}}
+\end{example}
+
+%--------------------------------------
+\begin{example}[\exmd{wavelets}]
+\label{ex:TD_wavelets}
+%--------------------------------------
+Let $\fpsi(x)$ be a \fncte{wavelet}.
+\exbox{\begin{array}{Frc>{\ds}lCD}
+  1. & \mc{4}{M}{$\ds\setbigleft{\opDil^k\opTrn^n \fpsi(x)}{\scy k,n\in\Z}$ is a \structe{basis} for $\spLLR$}         & and\\
+  2. & \ff(x)    &=&    \sum_{k\in\Z}\sum_{n\in\Z} \alpha_{k,n} \opDil^k\opTrn^n\fpsi(x) & \forall \ff\in\spLLR        & where\\
+  3. & \alpha_n  &\eqd& \int_\R \ff(x) \opDil^k\opTrn^n\fpsi^\ast(x) \dx & \forall\ff\in\spLLR
+\end{array}}
+\end{example}
+
+%%\pref{def:opDalpha} gives some generalizations of \prefp{def:opD}, as well as some additional operators used
+%%in the remaining examples in this section.
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerppgc{walnut2002}{79}{80}{0817639624}{Definition 3.39}\\
+%  \citerppg{christensen2003}{41}{42}{0817642951}\\
+%  \citerpg{kammler2008}{A-21}{0521883407}\\
+%  \citerpg{bachman2000}{473}{0387988998}\\
+%  \citerpg{packer2004}{260}{0821834029}\\ %{section 3.1}\\
+%  \citerpg{zayed2004}{}{0817643044}\\
+%  \citerpgc{heil2011}{250}{0817646868}{Notation 9.4}\\
+%  \citerpg{casazza1998}{74}{0817639594}\\
+%  \citerp{goodman1993}{639}\\
+%  \citerp{dai1996}{81}\\
+%  \citerpg{dai1998}{2}{0821808001}
+%  %\citerpg{dai1998}{21}{0821808001}
+%  }
+%\label{def:opDalpha}
+%\label{def:opE}
+%\label{def:opM}
+%%---------------------------------------
+%%Let $\C$ be the set of complex numbers,
+%%and $\hxs{\spLLR}$ the set of all functions with range $\C$ and domain $\C$.
+%%We define the following operators in $\spLLR$.
+%%Define the operators $\opTrn:\spLLR\to\spLLR$ and $\opDil:\spLLR\to\spLLR$ as follows:
+%\defbox{\begin{array}{M}
+%  %The operator $\opTrn$ is a \hid{translation operator} and $\opDil$ is a \hid{dilation operator} if
+%  %\\\indentx
+%  $\begin{array}{F >{\ds}lc>{\ds}l @{\qquad}C@{\qquad}D@{\qquad}D@{\qquad}rcl}
+%    %1. & \hxs{\opTrn_\alpha}  \ff(x) &\eqd&         \ff(x-\alpha)
+%    %   & \forall \ff\in\spLLR
+%    %   & (\hid{generalized translation operator})
+%    %   & and
+%    %   & \hxs{\opTrn}&\eqd& \opTrn_1
+%    %   \\
+%    1. & \hxs{\opDil_\alpha}  \ff(x) &\eqd& \sqrt{\alpha}\ff(\alpha x)
+%       & \forall \ff\in\spRR
+%       & (\hid{generalized dilation operator})
+%      %& and
+%      %& \hxs{\opDil}&\eqd& \opDil_2
+%       \\
+%    2. & \hxs{\opE_\alpha}  \ff(x) &\eqd& e^{i2\pi\alpha x}\ff(x)
+%       & \forall \ff\in\spRR
+%       & (\hid{modulation operator})
+%      %& and
+%      %& \hxs{\opE}&\eqd& \opE_1
+%       \\
+%    %3. & \hxs{\opM_\ff}  \ff(x) &\eqd& \brs{\ff\circ\ff}(x)
+%    %   & \forall \ff,\ff\in\spLLR
+%    %   & (\hid{multiplication operator})
+%    %  %& and
+%    %  %& \hxs{\opM}&\eqd& \opM_x
+%  \end{array}$
+%  %\\
+%  %Moreover, $$, $\opDil\eqd\opDil_2$, $\opE\eqd\opE_1$, and $\opM\eqd\opM_x$.
+%\end{array}}
+%\end{definition}
+%
+%
+%
+%%--------------------------------------
+%\begin{example}[\exm{Poisson Summation Formula}]
+%\label{ex:psf}
+%\index{Poisson Summation Formula}
+%\index{theorems!Poisson Summation Formula}
+%%--------------------------------------
+%Let $\opE$ be the \structe{modulation operator} and $\opTrn$ the \structe{translation operator} \xrefP{def:opT}.
+%Let $\Ff(\omega)$ be the Fourier transform \ifxref{harFour}{def:opFT} of a function $\ff(x)$.
+%\exbox{
+%  %\mcom{\ds \sum_{n\in\Z} \Ff\brp{{2\pi}n} e^{i{2\pi}nt}}
+%  \mcom{\ds \sum_{n\in\Z} \opE_n\Ff\brp{{2\pi}n}}
+%       {modulated summation in ``frequency"}
+%  =
+%  \mcom{\ds\cft \sum_{n\in\Z} \opTrn^n\ff(x)}
+%       {summation in ``time"}
+%  \qquad\scy\forall \ff\in\spLLR
+%  }
+%\end{example}
+%\begin{proof}
+%See \prefp{thm:psf}.
+%\end{proof}
+%
+%%%--------------------------------------
+%%\begin{example}[\exm{Legendre Polynomials}]
+%%\footnote{
+%%  \citerpgc{jackson1941}{47}{0486438082}{(5)}
+%%  }
+%%\label{ex:legendre_polynomials}
+%%%---------------------------------------
+%%Let $\opM$ be the \structe{multiplication operator} \xrefP{def:opM}.
+%%Let $\fP_n(x)$ be the \structe{$n$th order Legendre polynomial}.
+%%\exbox{
+%%  \fP_{n+1}(x)   = 2x\fP_n(x) - \frac{n}{n+1}\fP_{n-1}(x)
+%%  }
+%%\end{example}
+%
+%%--------------------------------------
+%\begin{example}[\exm{B-splines}]
+%\label{ex:bspline_recursion}
+%%---------------------------------------
+%Let $\opM$ be the \structe{multiplication operator} and $\opTrn$ the \structe{translation operator} \xrefP{def:opT}.
+%Let $\fN_n(x)$ be the \structe{$n$th order cardinal B-spline}\ifsxref{spline}{def:Nn}.
+%\exbox{
+%  \fN_n(x)   = \frac{1}{n}x\fN_{n-1}(x) - \frac{1}{n}x\opTrn\fN_{n-1}(x) + \frac{n+1}{n}\opTrn\fN_{n-1}(x)  \qquad\scy\forall n\in\Znn\setd\setn{1},\,  \forall x\in\R
+%  }
+%\end{example}
+%\begin{proof}
+%See \prefp{thm:bspline_recursion}.
+%\end{proof}
+%
+%%--------------------------------------
+%\begin{example}[\exm{Fourier Series analysis}]
+%\label{ex:fs}
+%%---------------------------------------
+%Let $\opDil_\alpha$ be the \structe{dilation operator} and $\opE$ the \structe{modulation operator} \xrefP{def:opE}.
+%Let $\opFS$ be the Fourier Series operator\ifsxref{harPoly}{def:opFS}.
+%\exbox{\begin{array}{M}
+%  The \structe{inverse Fourier Series} operator $\opFSi$ is given by
+%  \\\indentx
+%  $\ds \ff(n) = \sum_{n\in\Z} \Ff(n) \frac{1}{\sqrt{n}}\opDil_n e^{-i2\pi t} = \sum_{n\in\Z} \opE_n \Ff(n)
+%  \qquad\scy\forall\ff\in\spLLR$
+%  \\where
+%  \\\indentx
+%  $\ds\Ff(\omega) \eqd \int_0^1 \opE_{-n} \ff(x) \dx$
+%\end{array}}
+%\end{example}
+%\begin{proof}
+%See \prefp{thm:opFSi}.
+%\end{proof}
+
+

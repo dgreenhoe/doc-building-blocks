@@ -1,0 +1,5174 @@
+﻿%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%--------------------------------------
+% Compile control
+%--------------------------------------
+\ProvidesPackage{language}
+
+%--------------------------------------
+% packages
+%--------------------------------------
+ \usepackage[nocenter,unboxed]{cwpuzzle}                % crossword puzzle support
+%\usepackage{random}                  % random number generator
+\usepackage[first=1, last=26]{lcg}    % linear congruential generator for pseudo-random number generation
+%\usepackage{genmisc}                  % includes random generator
+\usepackage{randtext}                %randomize text string. useage: \randomize{<text string>}
+
+
+%--------------------------------------
+% length
+%--------------------------------------
+\newlength{\length}
+\newlength{\lengtha}
+\newlength{\lengthb}
+
+%--------------------------------------
+% Language Bus
+%  \busegzkD{riverbank}  {n}  {??}      {h/'e /`an}          {"rIv{/@r}""b{/ae}Nk} {}{}                                                                               
+%  \busegzkD{telescope}  {n}  {???}    {w/`ang y/>uan j/`ing}{"tEl@""skop}      {}{}                                                                      
+
+% #1 = english
+% #2 = grammar
+% #3 = Chinese (traditional)
+% #4 = pinyin
+% #5 = KK
+% #6 = graphic
+% #7 = credit for graphic
+%--------------------------------------
+%\newcommand*{\Index}[2]{\mbox{\index[#1]{(Index marco) #2}}}% https://tex.stackexchange.com/questions/83132/using-counters-within-index
+\newcommand{\bxe}[1]{\textbf{#1}\index[xeng]{#1}}% bold and include in English index
+\newcommand{\busx}[7]{% bus index entry
+            %\index[xeng]{#1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4\arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+           %\index[xeng]{#1 (#2,{\fntzht #3/\fntzhs #3})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\index[xeng]{\expandafter\arabic{\thecntrIndex} #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4,\arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\Index{xeng}{\thecntrIndex #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4,\arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\Index{xeng}{\arabic{cntrIndex} #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4,\arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\index[xeng]{\arabic{cntrIndex} #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4,\arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\index[xeng]{\thecntrIndex #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4,\arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\index[xeng]{\expandafter\edef\thecntrIndex #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\mbox{\index[xeng]{\arabic{cntrIndex} #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4,\arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}}%
+            %\index[xeng]{\arabic{cntrIndex} #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4,\arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\index{#1}
+            %
+            \index{#1 (#2) {\fntzh#3}}%
+            \index[xeng]{#1(#2) {\fntzh#3}}%
+            \index[xchp]{{\scriptsize\arabic{cntrLesson}} #1(#2) {\fntzh#3}({#4})}%
+            %\index[xchar]{{\fntzht#3}/{\fntzhs#3} (#4) #1}
+            %\index[xpin]{#4 ({\fntzht#3/\fntzhs#3}) #1}
+            %\index[xchp]{\arabic{cntrLesson} #1(#2) {\fntzh#3}(#4)}%
+            %
+            %\index{\arabic{chapter} GI #1 (#2,{\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4 \arabic{chapter}})  \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\index[xeng]{#1(#2) {\fntzh#3} \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\index[xeng]{#1(#2) {\fntzh#3} \ifthenelse{\isempty{#6}}{empty}{not empty}}%
+            %\index[xchar]{{\fntzh#3} (\ifthenelse{\isempty{#4}}{}{#4,}#2,#1) \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+            %\index[xchp]{\arabic{chapter} #1 (#2) {\fntzh#3}\ifthenelse{\isempty{#4}}{}{,#4}}%
+            %\stepcounter{cntrIndex}
+            }%
+%%%\newcommand{\busxT}[7]{%
+%%%            %\index[xeng]{#1 (#2,{\fntzh#3})  \ifthenelse{\isempty{#6}}{}{{#6}}}%
+%%%            \index[xchar]{{\fntzh#3} (\ifthenelse{\isempty{#4}}{}{#4,}#2,#1) \ifthenelse{\isempty{#6}}{}{\rgraphic[-1mm]{8mm}{8mm}{#6}}}%
+%%%            %\index[xchar]{{\fntzht #3} (#2,#1) \ifthenelse{\isempty{#6}}{}{{#6}}}%
+%%%            }%
+
+\newcommand{\hrefx}[2]{\href{http://www.google.com/dictionary?source=translation\&hl=en\&q=#1\&langpair=en|zh-TW}{#2}}%
+%\newcommand{\hrefx}[2]{\href{http://dictionary.reference.com/browse/#1}{#2}}%
+\newcommand{\hrefe}[1]{\hrefx{#1}{#1}}%
+\newcommand{\hrefeB}[1]{\hrefx{#1}{\textbf{#1}}}%
+\newcommand{\hrefeE}[1]{\hrefx{#1}{\emph{#1}}}%
+%\newcommand{\hrefeB}[1]{\href{http://dictionary.reference.com/browse/#1}{\textbf{#1}}}%
+%\newcommand{\hrefeE}[1]{\href{http://dictionary.reference.com/browse/#1}{\emph{#1}}}%
+
+%\busegzkD{riverbank}  {n}  {??}      {h/'e /`an}          {"rIv{/@r}""b{/ae}Nk} {}{}                                                                               \busegzkD{telescope}  {n}  {???}    {w/`ang y/>uan j/`ing}{"tEl@""skop}      {}{}                                                                      
+
+
+\newcommand{\buse}    [7]{\hrefe{#1}\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\buseC}   [7]{\hrefe{#1}, \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\busz}    [7]{{\fntzhr #3}\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\busez}   [7]{\hrefe{#1} ({\fntzhr #3})\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\busezP}  [7]{\hrefe{#1} ({\fntzhr #3}). \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\busezS}  [7]{\hrefe{#1} ({\fntzhr #3}); \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\buseD}   [7]{\hrefe{#1},\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\buseP}   [7]{\hrefe{#1}.\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\buseB}   [7]{\hrefeB{#1}\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\buseE}   [7]{\emph{\hrefe{#1}}\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\buseEz}  [7]{\emph{\hrefe{#1}} ({\fntzhr #3})\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\buseCz}  [7]{#1&{\fntzhr #3}\busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+\newcommand{\busGeCz} [8][10mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \ifthenelse{\isempty{#7}}{}{\rgraphic{#1}{#1}{#7}}%
+  &#2&{\fntzhr #4}%
+  }%
+\newcommand{\busegzp} [7]{\degzp{#1}{#2}{#3}{#4}{#5}}%
+\newcommand{\busegzpD}[7]{\ddegzp{#1}{#2}{#3}{#4}{#5}}%
+\newcommand{\busezpD}[7]{\ddezp{#1}{#2}{#3}{#4}{#5}}%
+\newcommand{\busgABC} [8][12mm]{\gABCentry[#1]{#2}{#7}\busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}}%
+\newcommand{\busg}    [8][12mm]{\gentry[#1]{#2}{#7}\busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}}%
+\newcommand{\busgx}   [8][12mm]{\rgraphic{#1}{#1}{#7}\busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}}%
+\newcommand{\busge}   [8][30mm]{\gssentry[#1]{#2}{#7}\busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}}%
+\newcommand{\busgb}   [8][30mm]{\gsentry[#1]{#2}{#7}\busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}}%
+%\newcommand{\busNzCs} [8][30mm]{\zsentry{#3}{#1}\busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}}%
+
+\newenvironment{tegzpD}[1]{\begin{tdegzp}}{\end{tdegzp}}
+\newenvironment{tG}[2]{\begin{imagegrid}{#1}{#2}}{\end{imagegrid}}
+\newenvironment{tgABC}[2]{\begin{imagegrid}{#1}{#2}}{\end{imagegrid}}
+
+\newcommand{\storyref}[2][14mm]% reference section for stories
+  {{\setlength{\parindent}{0em}\scs 
+  %\begin{longtable}{|p{1.5ex}p{#1}p{\tw-#1-1.5em-5mm}|}
+  \begin{longtable}{|rp{#1}p{\tw-#1-1.5em-5mm}|}
+    \hline
+    \mc{3}{|c|}{\scshape References}
+    \\\hline
+    #2
+    \\\hline
+  \end{longtable}
+  }}
+
+\newcommand{\presentation}[2]{%
+  \ononepage{
+  \bannerPresentation
+  %\begin{tabular}{|>{\raggedright}m{26mm}|>{\raggedright}m{\tw-26mm-5mm}|}
+  %\begin{tabular}{|m{23mm}|m{\tw-23mm-5mm}|}
+  \begin{tabular}{|p{23mm}|p{\tw-23mm-5mm}|}
+    \hline
+      \scshape Introduce yourself: & Hello! My name is \blank[20mm]. #1 
+    \\\hline
+    \scshape Drama: & #2
+    \\\hline
+  \end{tabular}}}
+
+
+%--------------------------------------
+% Chinese character support
+%--------------------------------------
+% \newindex{xchar}{cdx}{cnd}{Index of Chinese Characters }
+% \newindex{xpinyin}{pdx}{pnd}{Index of Pin-Yin }
+% \newindex{xeng}{edx}{end}{Index of English Words }
+% \newindex{xeng}{edx}{end}{Index of English Words }
+
+
+
+%--------------------------------------
+% Both traditional and simplified
+%--------------------------------------
+\newcommand{\zhtss}[3]{% single character, pinyin above, english below
+  \begin{tabular}[t]{@{}c@{}}
+    \color{red}\footnotesize#2\\
+    \color{black}\large{\fntzht#1}\\
+    \color{black}\large{\fntzhs#1}\\
+    \color{blue}\footnotesize#3%
+  \end{tabular}%
+  \index[xchar]{{\fntzht#1}/{\fntzhs#1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht#1/\fntzhs#1}) #3}
+  \index[xeng]{#3 {\fntzht#1/\fntzhs#1} (#2)}
+  }
+
+\newcommand{\zhtssSerif}[3]{% single character, pinyin above, english below
+  \begin{tabular}[t]{@{}c@{}}
+    \color{red}\footnotesize#2\\
+    \color{black}\large{\fntzhtSerif#1}\\
+    \color{black}\large{\fntzhsSerif#1}\\
+    \color{blue}\footnotesize#3%
+  \end{tabular}%
+  \index[xchar]{{\fntzht#1}/{\fntzhs#1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht#1/\fntzhs#1}) #3}
+  \index[xeng]{#3 {\fntzht#1/\fntzhs#1} (#2)}
+  }
+
+\newcommand{\zhtssu}[4]{% single character, pinyin above, english below
+  \href{#4}{\begin{tabular}[t]{@{}c@{}}
+    \color{red}\footnotesize#2\\
+    \color{black}\large{\fntzht#1}\\
+    \color{black}\large{\fntzhs#1}\\
+    \color{blue}\footnotesize#3%
+  \end{tabular}}%
+  \index[xchar]{{\fntzht#1}/{\fntzhs#1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht#1/\fntzhs#1}) #3}
+  \index[xeng]{#3 {\fntzht#1/\fntzhs#1} (#2)}
+  }
+
+\newcommand{\zhtssp}[3]{% single character, pinyin above, english below
+  \begin{tabular}[t]{@{}c@{}}
+    \color{red}\footnotesize#2\\
+    \color{black}\large{\fntzht#1}\\
+    \color{black}\large{\fntzhs#1}
+    %\color{blue}\footnotesize#3%
+  \end{tabular}%
+  \index[xchar]{{\fntzht#1}/{\fntzhs#1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht#1/\fntzhs#1}) #3}
+  \index[xeng]{#3 {\fntzht#1/\fntzhs#1} (#2)}
+  }
+
+\newcommand{\zhtsd}[7]{% double character, pinyin above, english under each character, english under double character
+  \begin{tabular}[t]{@{}c@{\hspace{1ex}}c@{}}%
+    \color{red}\footnotesize#3&\color{red}\footnotesize #4\\%
+    \color{black}\large{\fntzht#1}&\color{black}\large{\fntzht#2}\\%
+    \color{black}\large{\fntzhs#1}&\color{black}\large{\fntzhs#2}\\%
+    \color{blue}\footnotesize#5&\color{blue}\footnotesize#6\\%
+    \hline%
+    \multicolumn{2}{c}{\color{blue}\footnotesize #7}%
+  \end{tabular}%
+  \index[xchar]{{\fntzht#1#2}/{\fntzhs#1#2} (#3 #4) #7}
+  %\index[xzhs]{{\fntzhs#1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzht#1#2/\fntzhs#1#2}) #7}
+  \index[xeng]{#7 {\fntzht#1#2/\fntzhs#1#2} (#3 #4)}
+  }
+
+\newcommand{\zhtsdh}[7]{% double character, hide pinyin and english
+  \begin{tabular}[t]{@{}c@{\hspace{1ex}}c@{}}%
+    %\color{red}\footnotesize#3&\color{red}\footnotesize #4\\%
+    \color{black}\large{\fntzht#1}&\color{black}\large{\fntzht#2}\\%
+    \color{black}\large{\fntzhs#1}&\color{black}\large{\fntzhs#2}\\%
+    %\color{blue}\footnotesize#5&\color{blue}\footnotesize#6\\%
+    \hline%
+    \multicolumn{2}{c}{\color{blue}\footnotesize #7}%
+  \end{tabular}%
+  \index[xchar]{{\fntzht#1#2}/{\fntzhs#1#2} (#3 #4) #7}
+  %\index[xzhs]{{\fntzhs#1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzht#1#2/\fntzhs#1#2}) #7}
+  \index[xeng]{#7 {\fntzht#1#2/\fntzhs#1#2} (#3 #4)}
+  }
+
+\newcommand{\zhtsde}[7]{% zhtsd but no english under single characters
+  \begin{tabular}[t]{@{}c@{\hspace{1ex}}c@{}}%
+    \color{red}\footnotesize#3&\color{red}\footnotesize #4\\%
+    \color{black}\large{\fntzht#1}&\color{black}\large{\fntzht#2}\\%
+    \color{black}\large{\fntzhs#1}&\color{black}\large{\fntzhs#2}\\%
+    %\color{blue}\footnotesize#5&\color{blue}\footnotesize#6\\%
+    \hline%
+    \multicolumn{2}{c}{\color{blue}\footnotesize #7}%
+  \end{tabular}%
+  \index[xchar]{{\fntzht#1#2}/{\fntzhs#1#2} (#3 #4) #7}
+  %\index[xzhs]{{\fntzhs#1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzht#1#2/\fntzhs#1#2}) #7}
+  \index[xeng]{#7 {\fntzht#1#2/\fntzhs#1#2} (#3 #4)}
+  }
+
+\newcommand{\zhtsds}[7]{% double character, pinyin above, english under each character, no english under double character
+  \begin{tabular}[t]{@{}c@{\hspace{1ex}}c@{}}%
+    \color{red}\footnotesize#3&\color{red}\footnotesize #4\\%
+    \color{black}\large{\fntzht#1}&\color{black}\large{\fntzht#2}\\%
+    \color{black}\large{\fntzhs#1}&\color{black}\large{\fntzhs#2}\\%
+    \color{blue}\footnotesize#5&\color{blue}\footnotesize#6%
+    %\hline%
+    %\multicolumn{2}{c}{\color{blue}\footnotesize #7}%
+  \end{tabular}%
+  \index[xchar]{{\fntzht#1#2}/{\fntzhs#1#2} (#3 #4) #7}
+  %\index[xzhs]{{\fntzhs#1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzht#1#2/\fntzhs#1#2}) #7}
+  \index[xeng]{#7 {\fntzht#1#2/\fntzhs#1#2} (#3 #4)}
+  }
+
+\newcommand{\zhtssH}[3]{% \zhtss with Huge character
+  \begin{tabular}[t]{c}
+    \color{red}\footnotesize #2 \\
+    \color{black}\Huge{\fntzht#1}\\
+    \color{black}\large{\fntzhs#1}\\
+    \color{blue}\footnotesize #3
+  \end{tabular}
+  \index[xchar]{{\fntzht#1}/{\fntzhs#1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht#1/\fntzhs#1}) #3}
+  \index[xeng]{#3 {\fntzht#1/\fntzhs#1} (#2)}
+  }
+
+\newcommand{\zhtssHserif}[3]{% \zhtss with Huge character
+  \begin{tabular}[t]{c}
+    \color{red}\footnotesize #2 \\
+    \color{black}\Huge{\fntzhtSerif#1}\\
+    \color{black}\large{\fntzhsSerif#1}\\
+    \color{blue}\footnotesize #3
+  \end{tabular}
+  \index[xchar]{{\fntzht#1}/{\fntzhs#1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht#1/\fntzhs#1}) #3}
+  \index[xeng]{#3 {\fntzht#1/\fntzhs#1} (#2)}
+  }
+
+\newcommand{\zhtsdH}[7]{% \zhtsd but with Huge characters
+  \begin{tabular}[t]{cc}
+    \color{red}\footnotesize #3  & \color{red}\footnotesize #4 \\
+    \color{black}\Huge {\fntzht#1}  & \color{black}\Huge {\fntzht#2} \\
+    \color{black}\large {\fntzhs#1}  & \color{black}\large {\fntzhs#2} \\
+    \color{blue}\footnotesize #5 & \color{blue}\footnotesize #6 \\
+    \hline
+    \multicolumn{2}{c}{\color{blue}\footnotesize #7}
+  \end{tabular}
+  \index[xchar]{{\fntzht#1#2}/{\fntzhs#1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzht#1#2/\fntzhs#1#2}) #7}
+  \index[xeng]{#7 {\fntzht#1#2/\fntzhs#1#2} (#3 #4)}
+  }
+
+\newcommand{\zhtsP}[0]{%
+  \begin{tabular}[t]{@{}c@{}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large{\fntzht?}\\%
+    \color{black}\large{\fntzhs?}\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  }%
+\newcommand{\zhtsC}[0]{%
+  \begin{tabular}[t]{@{}c@{}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large{\fntzht,}\\%
+    \color{black}\large{\fntzhs,}\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  }%
+\newcommand{\zhtsX}[0]{%
+  \begin{tabular}[t]{@{}c@{\hspace{3pt}}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large!\\%
+    \color{black}\large!\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  }%
+\newcommand{\zhtsQ}[0]{%
+  \begin{tabular}[t]{@{}c@{}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large?\\%
+    \color{black}\large?\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  }%
+
+\newcommand{\zhtssh}[3]{% single character, hide pinyin and english
+  \begin{tabular}[t]{@{}c@{}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large{\fntzhr #1}\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  \index[xchar]{{\fntzht#1}/{\fntzhs#1} (#2) #3}%
+  %\index[xzhs]{{\fntzhs#1} (#2) #3}%
+  \index[xpin]{#2 ({\fntzht#1/\fntzhs#1}) #3}%
+  \index[xeng]{#3 {\fntzht#1/\fntzhs#1} (#2)}%
+  }
+
+\newcommand{\zhtsstbl}[3]{% single Traditional, single Simpliefied, in 3 column table, pinyin above, english below
+  \large\color{black}{\fntzht#1}&\large\color{black}{\fntzhs#1}%
+                                   &\footnotesize\color{red}#2%
+                                   &\footnotesize\color{blue}#3%
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}%
+  %\index[xzhs]{{\fntzhs #1#2} (#3 #4) #7}
+  \index[xpin]{#2 ({\fntzht #1/\fntzhs #1}) #3}%
+  \index[xeng]{#3 {\fntzht #1/\fntzhs #1} (#2)}%
+  }%
+
+%--------------------------------------
+% Traditional/simplified selected by zhs Boolean switch
+%--------------------------------------
+\newcommand{\chars}[3]{% single character, pinyin above, english below
+  \begin{tabular}[t]{@{}c@{}}
+    \color{red}\footnotesize#2\\
+    \color{black}\large{\fntzhr #1}\\
+    \color{blue}\footnotesize#3%
+  \end{tabular}%
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}
+  %\index[xzhs]{{\fntzhs #1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht #1/\fntzhs #1}) #3}
+  \index[xeng]{#3 {\fntzh#1} (#2)}
+  }
+\newcommand{\charsh}[3]{% single character, hide pinyin and english
+  \begin{tabular}[t]{@{}c@{}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large{\fntzhr #1}\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}%
+  %\index[xzhs]{{\fntzhs #1} (#2) #3}%
+  \index[xpin]{#2 ({\fntzht #1/\fntzhs #1}) #3}%
+  \index[xeng]{#3 {\fntzh#1} (#2)}%
+  }
+\newcommand{\charsnp}[3]{% single character, pinyin above, english below
+  \begin{tabular}[t]{@{}c@{}}
+   %\color{red}\footnotesize#2\\
+    \color{black}\large{\fntzhr #1}\\
+    \color{blue}\footnotesize#3%
+  \end{tabular}%
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}
+  %\index[xzhs]{{\fntzhs #1} (#2) #3}%
+  \index[xpin]{#2 ({\fntzht #1/\fntzhs #1}) #3}
+  \index[xeng]{#3 {\fntzh#1} (#2)}
+  }
+\newcommand{\charsu}[4]{% single character, pinyin above, english below, url link
+  \begin{tabular}[t]{@{}c@{}}
+    \color{red}\footnotesize#2\\
+    \href{#4}{\color{black}\large{\fntzhr #1}}\\
+    \color{blue}\footnotesize#3%
+  \end{tabular}%
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht #1/\fntzhs #1}) #3}
+  \index[xeng]{#3 {\fntzh#1} (#2)}
+  }
+\newcommand{\chard}[7]{% double character, pinyin above, english under each character, english under double character
+  \begin{tabular}[t]{@{}c@{\hspace{1ex}}c@{}}%
+    \color{red}\footnotesize#3&\color{red}\footnotesize #4\\%
+    \color{black}\large{\fntzhr #1}&\color{black}\large{\fntzhr #2}\\%
+    \color{blue}\footnotesize#5&\color{blue}\footnotesize#6\\%
+    \hline%
+    \multicolumn{2}{c}{\color{blue}\footnotesize #7}%
+  \end{tabular}%
+  \index[xchar]{{\fntzh#1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzh#1#2}) #7}
+  \index[xeng]{#7 {\fntzh#1#2} (#3 #4)}
+  }
+\newcommand{\chardh}[7]{% double character, hide pinyin and english
+  \begin{tabular}[t]{@{}c@{}c@{}}%
+    \color{red}\footnotesize&\color{red}\footnotesize\\%
+    \color{black}\large{\fntzhr #1}&\color{black}\large{\fntzhr #2}\\%
+    \color{blue}\footnotesize&\color{blue}\footnotesize\\%
+  \end{tabular}%
+  \index[xchar]{{\fntzh#1#2} (#3 #4) #7}%
+  \index[xpin]{#3 #4 ({\fntzh#1#2}) #7}%
+  \index[xeng]{#7 {\fntzh#1#2} (#3 #4)}%
+  }
+\newcommand{\chardnp}[7]{% double character, no pinyin above, english under each character, english under double character
+  \begin{tabular}[t]{@{}c@{\hspace{1ex}}c@{}}%
+   %\color{red}\footnotesize#3&\color{red}\footnotesize #4\\%
+    \color{black}\large{\fntzhr #1}&\color{black}\large{\fntzhr #2}\\%
+    \color{blue}\footnotesize#5&\color{blue}\footnotesize#6\\%
+    \hline%
+    \multicolumn{2}{c}{\color{blue}\footnotesize #7}%
+  \end{tabular}%
+  \index[xchar]{{\fntzht #1#2}/{\fntzhs #1#2} (#3 #4) #7}
+  %\index[xzhs]{{\fntzhs #1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzh#1#2}) #7}
+  \index[xeng]{#7 {\fntzh#1#2} (#3 #4)}
+  }
+\newcommand{\chards}[7]{% chard but no english under double character
+  \begin{tabular}[t]{@{}c@{\hspace{1ex}}c@{}}%
+    \color{red}\footnotesize#3&\color{red}\footnotesize#4\\%
+    \color{black}\large{\fntzhr #1}&\color{black}\large{\fntzhr #2}\\%
+    \color{blue}\footnotesize#5&\color{blue}\footnotesize#6%
+  \end{tabular}%
+  \index[xchar]{{\fntzht #1#2}/{\fntzhs #1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzh#1#2}) #7}
+  \index[xeng]{#7 {\fntzh#1#2} (#3 #4)}
+  }
+\newcommand{\charde}[7]{% chard but no english under single characters
+  \begin{tabular}[t]{cc}
+    \color{red}\footnotesize #3 & \color{red}\footnotesize #4 \\
+    \color{black}\large {\fntzhr #1}       & \color{black}\large {\fntzhr #2} \\
+    \hline
+    \multicolumn{2}{c}{\color{blue}\footnotesize #7}
+  \end{tabular}
+  \index[xchar]{{\fntzh#1#2} (#3 #4) #7}
+  %\index[xzhs]{{\fntzhs #1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzh#1#2}) #7}
+  \index[xeng]{#7 {\fntzh#1#2} (#3 #4)}
+  }
+\newcommand{\chardH}[7]{% chard but with Huge characters
+  \begin{tabular}[t]{cc}
+    \color{red}\footnotesize #3  & \color{red}\footnotesize #4 \\
+    \color{black}\Huge {\fntzh #1}  & \color{black}\Huge {\fntzh #2} \\
+    \color{blue}\footnotesize #5 & \color{blue}\footnotesize #6 \\
+    \hline
+    \multicolumn{2}{c}{\color{blue}\footnotesize #7}
+  \end{tabular}
+  \index[xchar]{{\fntzh#1#2} (#3 #4) #7}
+  %\index[xzhs]{{\fntzhs #1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzh#1#2}) #7}
+  \index[xeng]{#7 {\fntzh#1#2} (#3 #4)}
+  }
+\newcommand{\chardb}[7]{% chard but with blanks (e.g. for homework problems)
+  \begin{tabular}[t]{cc}
+    \color{red}\blank[8ex] & \color{red}\blank[8ex] \\
+    \color{black}\Huge {\fntzh#1}       & \color{black}\Huge {\fntzh#2} \\
+    \color{blue}\blank[8ex] & \color{blue}\blank[8ex] \\
+    \multicolumn{2}{c}{\color{blue}\blank[12ex]}
+  \end{tabular}
+  \index[xchar]{{\fntzht #1#2}/{\fntzhs #1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzh#1#2}) #7}
+  \index[xeng]{#7 {\fntzh#1#2} (#3 #4)}
+  }
+
+\newcommand{\charstbl}[3]{% single character in 3 column table, pinyin above, english below
+  \large\color{black}{\fntzh#1}&\footnotesize\color{red}#2&\footnotesize\color{blue}#3%
+  \index[xchar]{{\fntzh#1} (#2) #3}%
+  \index[xpin]{#2 ({\fntzh#1}) #3}%
+  \index[xeng]{#3 {\fntzh#1} (#2)}%
+  }%
+\newcommand{\charsBlank}[1]{% blank
+  \begin{tabular}[t]{c}%
+    \color{red}\footnotesize\\%
+    \color{black}\large\blank[4ex]\\%
+    \color{blue}\footnotesize #1%
+  \end{tabular}%
+  }%
+\newcommand{\charP}[0]{%
+  \begin{tabular}[t]{@{}c@{}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large{\fntzh ?}\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  }%
+\newcommand{\charC}[0]{%
+  \begin{tabular}[t]{@{}c@{}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large{\fntzh ,}\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  }%
+\newcommand{\charX}[0]{%
+  \begin{tabular}[t]{@{}c@{\hspace{3pt}}}%
+    \color{red}\footnotesize\\%
+    \color{black}\large!\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  }%
+\newcommand{\charQ}[0]{%
+  \begin{tabular}[t]{@{}c@{}}%
+    \color{red}\footnotesize\\%
+    %\color{black}\large{\fntzh ?}\\%
+    \color{black}\large?\\%
+    \color{blue}\footnotesize%
+  \end{tabular}%
+  }%
+\newcommand{\charsp}[3]{% chars but with no english below
+  \begin{tabular}[t]{c}
+    \color{red}\footnotesize #2 \\
+    \color{black}\large {\fntzhr #1}\\
+  \end{tabular}
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}
+  %\index[xzhs]{{\fntzhs #1#2} (#3 #4) #7}
+  \index[xpin]{#2 ({\fntzh#1}) #3}
+  \index[xeng]{#3 {\fntzh#1} (#2)}
+  }
+\newcommand{\charsb}[3]{% chars but with blanks (e.g. for homework)
+  \begin{tabular}[t]{c}
+    \color{red}\blank[8ex] \\
+    \color{black}\Huge {\fntzh#1}\\
+    \color{blue}\blank[8ex]
+  \end{tabular}
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}
+  %\index[xzhs]{{\fntzhs #1} (#3 #4) #7}
+  \index[xpin]{#2 ({\fntzh#1}) #3}
+  \index[xeng]{#3 {\fntzh#1} (#2)}
+  }
+\newcommand{\charsH}[3]{% chars with Huge character
+  \begin{tabular}[t]{c}
+    \color{red}\footnotesize #2 \\
+    \color{black}\Huge {\fntzh#1}\\
+    \color{blue}\footnotesize #3
+  \end{tabular}
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}
+  %\index[xzhs]{{\fntzhs #1} (#3 #4) #7}
+  \index[xpin]{#2 ({\fntzh#1}) #3}
+  \index[xeng]{#3 {\fntzh#1} (#2)}
+  }
+
+\newcommand{\charshBlank}[1]{% blank
+  \begin{tabular}[t]{c}
+    \color{red}\footnotesize  \\
+    \color{black}\Huge \blank[4ex] \\
+    \color{blue}\footnotesize #1
+  \end{tabular}
+  }
+
+\newcommand{\charshPeriod}[0]{% blank
+  \begin{tabular}[t]{c}
+    \color{red}\footnotesize  . \\
+    \color{black}\Huge \charP \\
+    \color{blue}\footnotesize .
+  \end{tabular}
+  }
+
+\newcommand{\charshComma}[0]{% blank
+  \begin{tabular}[t]{c}
+    \color{red}\footnotesize  . \\
+    \color{black}\Huge {\fntzh ,} \\
+    \color{blue}\footnotesize .
+  \end{tabular}
+  }
+
+
+\newcommand{\words}[3]{% english word with single character below, pinyin below characters
+  \begin{tabular}[t]{c}
+    \color{blue} #3 \\
+    \color{black} {\fntzh #1}\\
+    \color{red}\footnotesize #2
+  \end{tabular}
+  \index[xchar]{{\fntzht #1}/{\fntzhs #1} (#2) #3}
+  \index[xpin]{#2 ({\fntzht #1/\fntzhs #1}) #3}
+  \index[xeng]{#3 {\fntzht #1/\fntzhs #1} (#2)}
+  }
+\newcommand{\wordd}[7]{% english word with double character below, pinyin below characters
+  \begin{tabular}[t]{cc}
+    \multicolumn{2}{c}{\color{blue} #7} \\
+    \color{black} {\fntzh #1}       & \color{black} {\fntzh #2} \\
+    \color{red}\footnotesize #3 & \color{red}\footnotesize #4
+  \end{tabular}
+  \index[xchar]{{\fntzht #1#2}/{\fntzhs #1#2} (#3 #4) #7}
+  \index[xpin]{#3 #4 ({\fntzht #1#2/\fntzhs #1#2}) #7}
+  \index[xeng]{#7 {\fntzht #1#2/\fntzhs #1#2} (#3 #4)}
+  }
+
+%\newcommand{\engbox}[1]{\begin{tabular}[t]{|l|}\hline#1\\\hline\end{tabular}}
+\newcommand{\engbox}[1]{{%
+  %\setlength{\arrayrulewidth}{0.5pt}%
+  %
+  %\begin{tabular}[t]{|l|}%
+  \begin{tabular}[t]{!{\color{greenbright}\vline}l!{\color{greenbright}\vline}}%
+    \arrayrulecolor{greenbright}\hline%
+    #1\\%
+    \hline%
+  \end{tabular}%
+  }}%
+\newcommand{\engboxc}[1]{{%
+  %\setlength{\arrayrulewidth}{0.5pt}%
+  %\arrayrulecolor{green}%
+  \begin{tabular}{|l|}\hline#1\\\hline\end{tabular}%
+  }}%
+
+\newenvironment{tblv}[3][\textwidth/4]
+  {
+    \index{#2}
+    \setlength{\arrayrulewidth}{1pt}
+    %\arrayrulecolor{red}
+    \arrayrulecolor[gray]{0.65}
+    \begin{longtable}[l]{|>{\raggedright}p{#1}|l|}
+      \caption{#2 \label{#3}}
+        \tblh
+        %\rowcolor[rgb]{1,0,0}
+        \mc{1}{|R|}{English}&\mc{1}{R||}{Chinese ({\fntzh ??})}
+        \tblh
+      \endfirsthead
+        \mc{2}{r}{\scriptsize\em\ldots continued from the previous page}
+        \tblh
+        \mc{1}{|g|}{English}&\mc{1}{g||}{Chinese ({\fntzh ??})}
+        \tblh
+      \endhead
+        \mc{2}{r}{\scriptsize\em continued on the next page \ldots}
+      \endfoot
+        \hline
+      \endlastfoot
+  }
+  {
+    \end{longtable}        % end table
+  }
+
+\newenvironment{tblvv}[3][3\textwidth/16] % vocabulary table: double width
+  {
+    \index{#2}
+    \setlength{\arrayrulewidth}{1pt}
+    %\arrayrulecolor{red}
+    \arrayrulecolor[gray]{0.65}
+    \begin{longtable}[l]{*{2}{|>{\raggedright}p{#1}|>{\raggedright}p{\textwidth/2-#1-5ex}|}}
+      \caption{#2 \label{#3}}
+        \tblh
+        \mc{1}{|R|}{English}&\mc{1}{R||}{Chinese ({\fntzh ??})}&\mc{1}{R|}{English}&\mc{1}{R|}{Chinese ({\fntzh ??})}%
+        \tblh
+      \endfirsthead
+        \mc{4}{r}{\scriptsize\em\ldots continued from the previous page}
+        \tblh
+        \mc{1}{|g|}{English}&\mc{1}{g||}{Chinese ({\fntzh ??})}&\mc{1}{g|}{English}&\mc{1}{g|}{Chinese ({\fntzh ??})}%
+        \tblh
+      \endhead
+        \mc{4}{r}{\scriptsize\em continued on the next page \ldots}
+      \endfoot
+        \hline
+      \endlastfoot
+  }
+  {
+    \end{longtable}        % end table
+  }
+
+\newenvironment{tblmw}[3][3\textwidth/32] % quantifiers / measure words
+  {
+    \index{#2}
+    \setlength{\arrayrulewidth}{1pt}
+    \arrayrulecolor[gray]{0.65}
+    \begin{longtable}[l]{|>{\raggedright\centering}p{#1}|>{\raggedright}p{2\textwidth/16}|>{\raggedright}p{14\textwidth/16-#1-7ex}|}
+      \caption{#2 \label{#3}}
+        \tblh
+        \rowcolor[rgb]{1,0,0}
+          \textcolor{white}{\bfseries quantifier} &
+          \textcolor{white}{\bfseries useage}     &
+          \textcolor{white}{\bfseries examples}
+        \tblh
+      \endfirsthead
+        \mc{3}{r}{\scriptsize\em\ldots continued from the previous page}
+        \tblh
+        \rowcolor[gray]{0.65}quantifier & useage & examples
+        \tblh
+      \endhead
+        \mc{3}{r}{\scriptsize\em continued on the next page \ldots}
+      \endfoot
+        \hline
+      \endlastfoot
+  }
+  {
+    \end{longtable}        % end table
+  }
+
+\newenvironment{tbls}[3][3\textwidth/16]
+  {
+    \index{#2}
+    \setlength{\arrayrulewidth}{1pt}
+    %\arrayrulecolor{blue}
+    \arrayrulecolor[gray]{0.65}
+    \begin{longtable}[l]{|>{\raggedright}p{#1}|>{\raggedright}p{\textwidth-#1-5ex}|}
+      %\arrayrulecolor[gray]{0.65}
+      \caption{#2 \label{#3}}
+        \tblh
+          \mc{1}{|B|}{English}&\mc{1}{B|}{Chinese ({\fntzh ??})}%
+        \tblh
+      \endfirsthead
+        \mc{2}{r}{\scriptsize\em\ldots continued from the previous page}
+        \tblh
+        \mc{1}{|g|}{English}&\mc{1}{g|}{Chinese ({\fntzh ??})}%
+        \tblh
+      \endhead
+        \mc{2}{r}{\scriptsize\em continued on the next page \ldots}
+      \endfoot
+        \hline
+      \endlastfoot
+  }
+  {
+    \end{longtable}        % end table
+  }
+
+\newenvironment{tblsn}[3][3\textwidth/16]
+  {
+    \index{#2}
+    \setlength{\arrayrulewidth}{1pt}
+    %\arrayrulecolor{blue}
+    \arrayrulecolor[gray]{0.65}
+    \begin{longtable}[l]{|>{\raggedright}p{#1}|>{\raggedright}p{\textwidth-#1-5ex}|}
+      %\caption{#2 \label{#3}}
+        %\tblh
+        \hline
+          \mc{1}{|B|}{English}&\mc{1}{B|}{Chinese ({\fntzh ??})}%
+        \tblh
+      \endfirsthead
+        \mc{2}{r}{\scriptsize\em\ldots continued from the previous page}
+        \tblh
+        \mc{1}{|g|}{English}&\mc{1}{g|}{Chinese ({\fntzh ??})}%
+        \tblh
+      \endhead
+        \mc{2}{r}{\scriptsize\em continued on the next page \ldots}
+      \endfoot
+        \hline
+      \endlastfoot
+  }
+  {
+    \end{longtable}        % end table
+  }
+
+
+\newenvironment{tblss}[3][\textwidth/8]% vocabulary table: double width
+  {
+    \index{#2}
+    \setlength{\arrayrulewidth}{1pt}
+    \arrayrulecolor[gray]{0.65}
+    \begin{longtable}[l]{*{2}{|>{\raggedright}p{#1}|>{\raggedright}p{\textwidth/2-#1-5ex}|}}
+      \caption{#2 \label{#3}}
+        \tblh
+          \mc{1}{|B|}{English}&\mc{1}{B||}{Chinese ({\fntzh ??})}&\mc{1}{B|}{English}&\mc{1}{B|}{Chinese ({\fntzh ??})}%
+        \tblh
+      \endfirsthead
+        \mc{4}{r}{\scriptsize\em\ldots continued from the previous page}
+        \tblh
+        %\rowcolor[gray]{0.65}English & Chinese & English & Chinese
+        \mc{1}{|g|}{English}&\mc{1}{g||}{Chinese ({\fntzh ??})}&\mc{1}{g|}{English}&\mc{1}{g|}{Chinese ({\fntzh ??})}%
+        \tblh
+      \endhead
+        \mc{4}{r}{\scriptsize\em continued on the next page \ldots}
+      \endfoot
+        \hline
+      \endlastfoot
+  }
+  {
+    \end{longtable}        % end table
+  }
+
+\newenvironment{tblhhh}[2]% homework table: width = 3
+  {
+    \index{#1}
+    \setlength{\arrayrulewidth}{1pt}
+    %\arrayrulecolor{green}
+    \arrayrulecolor[gray]{0.65}
+    \begin{longtable}[l]{|*{3}{c|}}
+      \caption{#1 \label{#2}}
+        \tblh
+        \mc{3}{|c|}{\cellcolor[rgb]{0,1,0}\color{white}\bfseries fill in the blanks}
+        \tblh
+      \endfirsthead
+        \mc{3}{r}{\scriptsize\em\ldots continued from the previous page}
+        \tblh
+        \mc{3}{|c|}{\cellcolor[gray]{0.65}fill in the blanks}
+        \tblh
+      \endhead
+        \mc{3}{r}{\scriptsize\em continued on the next page \ldots}
+      \endfoot
+        \hline
+      \endlastfoot
+  }
+  {
+    \end{longtable}        % end table
+  }
+
+\newenvironment{tblhhhhh}[2]% homework table: width = 3
+  {
+    \index{#1}
+    \setlength{\arrayrulewidth}{1pt}
+    %\arrayrulecolor{green}
+    \arrayrulecolor[gray]{0.65}
+    \begin{longtable}[l]{|*{5}{c|}}
+      \caption{#1 \label{#2}}
+        \tblh
+        \mc{5}{|c|}{\cellcolor[rgb]{0,1,0}\color{white}\bfseries fill in the blanks}
+        \tblh
+      \endfirsthead
+        \mc{5}{r}{\scriptsize\em\ldots continued from the previous page}
+        \tblh
+        \mc{5}{|c|}{\cellcolor[gray]{0.65}fill in the blanks}
+        \tblh
+      \endhead
+        \mc{5}{r}{\scriptsize\em continued on the next page \ldots}
+      \endfoot
+        \hline
+      \endlastfoot
+  }
+  {
+    \end{longtable}        % end table
+  }
+
+
+
+\newcommand{\textboxxyz}[4]{%text box template
+  \hspace{1pt}\newline{
+  \setlength{\arrayrulewidth}{1pt}
+  \arrayrulecolor{#1}
+  \begin{tabular}{|l|l|}
+    %\arrayrulecolor{#1}
+    \hline
+    \cellcolor{#1}\text{\color{white}\scshape\normalsize\bfseries#3}
+    &\cellcolor{#2} #4\\
+    \hline
+  \end{tabular}
+  \arrayrulecolor{arrayrulecolorNormal}
+  }}
+
+\newenvironment{problembox}[1]{%
+  \cntreset
+  %\renewcommand{\arraystretch}{1.25}
+  \ifthenelse
+    {\boolean{multipage}}
+    {\begin{longtable}{*{2}{|rl|l|} }}
+    {\begin{tabular}  {*{2}{|rl|l|} }}
+    \hline
+    \mc{6}{|P|}{\scshape #1}
+  }{
+  \\\hline
+  \ifthenelse
+    {\boolean{multipage}}
+    {\end{longtable}}
+    {\end{tabular}}
+  }
+
+\newenvironment{unscramble}{% unscramble letters
+  %\cntreset
+  %\renewcommand{\arraystretch}{1.25}
+  \ifthenelse
+    {\boolean{multipage}}
+    {\begin{longtable}{*{2}{|rl|l|} }}
+    {\begin{tabular}  {*{2}{|rl|l|} }}
+    \hline
+    \mc{6}{|c|}{\scshape Unscramble the letters ({\fntzhr ????})}
+  }{
+  \\\hline
+  \ifthenelse
+    {\boolean{multipage}}
+    {\end{longtable}}
+    {\end{tabular}}
+  }
+
+\newenvironment{rhymefind}{% find rhyming words
+  %\renewcommand{\arraystretch}{1.25}
+  \cntreset
+  \ifthenelse
+    {\boolean{multipage}}
+    {\begin{longtable}{*{2}{|rll|l|} }}
+    {\begin{tabular}  {*{2}{|rll|l|} }}
+    \hline
+    \mc{8}{|c|}{\scshape Find the rhyming word ({\fntzhr ??????})}
+  }{
+  \\\hline
+  \ifthenelse
+    {\boolean{multipage}}
+    {\end{longtable}}
+    {\end{tabular}}
+  }
+
+\newenvironment{phonicsfind}{% phonics
+  %\renewcommand{\arraystretch}{1.25}
+  %\cntreset
+  \ifthenelse
+    {\boolean{multipage}}
+    {\begin{longtable}{*{2}{|rl|l|} }}
+    {\begin{tabular}  {*{2}{|rl|l|} }}
+    \hline
+    \mc{6}{|P|}{\scshape Write the word with the given sound. ({\fntzhr ?????????})}
+  }{
+  \\\hline
+  \ifthenelse
+    {\boolean{multipage}}
+    {\end{longtable}}
+    {\end{tabular}}
+  }
+
+\newcommand{\phsentry}[3]{% phonics problem solution entry
+  \refstepcounter{cntr}
+  \scriptsize\arabic{cntr}. & \fntipa\ifIPA{#1}{#2} & \parbox[l][7mm][c]{4\tw/16}{\solution{#3}}
+  \index[xeng]{#3}
+  }
+
+\newenvironment{translate}{% translate from Chinese to English
+  %\cntreset
+  \ifthenelse
+    {\boolean{multipage}}
+    {\begin{longtable}{*{2}{|rl|l|} }}
+    {\begin{tabular}  {*{2}{|rl|l|} }}
+  \hline
+  \mc{6}{|c|}{\scshape Translate ({\fntzhr ??})}
+  }{
+  \\\hline
+  \ifthenelse
+    {\boolean{multipage}}
+    {\end{longtable}}
+    {\end{tabular}}
+  }
+
+\newenvironment{translatenh}{% translate from Chinese to English, no header
+  %\cntreset
+  \ifthenelse
+    {\boolean{multipage}}
+    {\begin{longtable}{*{2}{|rl|l|} }}
+    {\begin{tabular}  {*{2}{|rl|l|} }}
+  \hline
+  %\mc{6}{|P|}{\scshape Translate ({\fntzhr ??})}
+  }{
+  \\\hline
+  \ifthenelse
+    {\boolean{multipage}}
+    {\end{longtable}}
+    {\end{tabular}}
+  }
+
+
+
+
+\newcommand{\proverb}[5][15mm]{%
+  \begin{tabular}{|m{8\textwidth/16-(#1/2)-3\tabcolsep-\arrayrulewidth}m{#1}>{\fntzhr}m{8\textwidth/16-(#1/2)-3\tabcolsep-\arrayrulewidth}|}
+    \hline
+    %\mc{3}{|c|}{\scshape Proverb ({\fntzhr ??}) \normalsize\footnotemark}
+    \\\hline
+     %{\usefont{T1}{augie}{m}{n}\quoteo{\small #3}\quotec}
+     \fntprv#3%
+     &
+     \includegraphics*[width=#1,height=#1, keepaspectratio=true]{#2}%
+     &
+     \quoteo #4\quotec%
+    \\\hline
+  \end{tabular}
+  {\scriptsize\citetblt{#5}}
+  }
+
+\newcommand{\proverbnh}[5][15mm]{%
+  \begin{tabular}{|m{8\textwidth/16-(#1/2)-3\tabcolsep-\arrayrulewidth}m{#1}>{\fntzhr}m{8\textwidth/16-(#1/2)-3\tabcolsep-\arrayrulewidth}|}
+    \hline
+     \fntprv#3
+     &
+     \includegraphics*[width=#1,height=#1, keepaspectratio=true]{#2}\footnotemark%
+     &
+     %\quoteo #4\quotec%
+    \\\hline
+  \end{tabular}
+  \citetblt{#5}
+  }
+
+\newcommand{\proverbire}[4][15mm]{% \proverbire[10mm]{image.jpg}{\url{...}}{proverb text}
+  \textimgl[#1]{#2}{\quoteo{\fntprv#4}\quotec \footnotemark}
+  \citetblt{#3}
+  }
+
+
+%\newcommand{\textp}[1]{{\usefont{T1}{augie}{m}{n}\small#1}}% text for proverbs
+\newcommand{\textp}[1]{{\small\emph#1}}% text for proverbs
+
+\newcommand{\equote}[5]{%
+  \begin{tabular}{|m{7\textwidth/16}m{2\textwidth/16}>{\fntzhr}m{5\textwidth/16}|}
+    \hline
+    \mc{3}{|B|}{\scshape Quote ({\fntzhr ??})}
+    \\\hline
+     {\usefont{T1}{pzc}{m}{n}\quoteo {\Large#3}\quotec} 
+     &\includegraphics*[width=2\textwidth/16-2ex, keepaspectratio=true]{#2}%
+     &\quoteo #4\quotec%
+    \\ \mc{3}{|c|}{#1}
+    \\\hline
+  \end{tabular}
+  \footnotemark
+  \citetblt{#5}
+  }
+
+\newenvironment{asktelld}{%
+  \cntreset
+  %\sffamily
+  %\ifthenelse{\boolean{multipage}}%
+    \begin{longtable}{|>{\scriptsize}r*{2}{p{15\textwidth/32-2ex}|}}
+  %  {\begin{tabular}  {|>{\scriptsize}r*{2}{p{15\textwidth/32-2ex}|}}}
+  \hline
+  \mc{3}{|G|}{\scshape $\downarrow$A\qquad\qquad Ask me tell me drill ({\fntzhr ????})\qquad\qquad B$\downarrow$}
+  \\\hline
+  }{
+  \\\hline
+  %\ifthenelse{\boolean{multipage}}%
+    \end{longtable}
+  %  {\end{tabular}}
+  }
+
+\newcommand{\cf}[6][16mm]{\cfr[#1]{#2}{#3}{#4}{#5}{#6}}% comic frame: text, image to the right
+\newcommand{\cfr}[6][16mm]{% comic frame: text, image to the right
+  % 1: frame height
+  % 2: total width (image width + text width) minus 1mm
+  % 3: image width
+  % 4: image height
+  % 5: image
+  % 6: text
+  \fbox{%
+    \begin{minipage}[t][#1][t]{#2-6.3mm-\widthof{\hbox{\includegraphics*[width=#3,height=#4,keepaspectratio=true]{#5}}}}%
+      \raggedright%                    no left justification
+      {\scriptsize\cntx\hspace{1ex}}%  frame numbering
+      #6%                              text
+    \end{minipage}%
+    \hspace{3mm}%
+    \vtop{% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=topgraph
+      \vskip0mm%
+      \hbox{\includegraphics*[width=#3,height=#4,keepaspectratio=true]{#5}}%
+      }%
+    }%
+  }%
+
+\newcommand{\cfl}[6][16mm]{% comic frame: text, image to the left
+  % 1: frame height
+  % 2: total width (image width + text width) minus 1mm
+  % 3: image width
+  % 4: image height
+  % 5: image
+  % 6: text
+  \fbox{%
+    \vtop{% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=topgraph
+      \vskip0mm%
+      \hbox{\includegraphics*[width=#3,height=#4,keepaspectratio=true]{#5}}%
+      }%
+    \hspace{3mm}%
+    \begin{minipage}[t][#1][t]{#2-6.3mm-\widthof{\hbox{\includegraphics*[width=#3,height=#4,keepaspectratio=true]{#5}}}}%
+      \raggedright%                    no left justification
+      {\scriptsize\cntx\hspace{1ex}}%  frame numbering
+      #6%                              text
+    \end{minipage}%
+    }%
+  }%
+
+\newcommand{\ezpr}[4][15mm]{%
+  \stepcounter{cntr}%
+  \begin{minipage}[t]{8\tw/16-#1-2ex}{\raggedright\scriptsize\arabic{cntr}.} #2 {\color{blue}({\fntzhr #3})}\end{minipage}%
+  \hfill%
+  \vtop{% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=topgraph
+    \vskip-2ex
+    %\vskip0pt%
+    \hbox{\includegraphics*[width=#1,height=#1,keepaspectratio=true]{#4}}%
+    }%
+  }
+
+\newcommand{\ezprl}[4][20mm]{%
+  \stepcounter{cntr}%
+  \begin{minipage}[t]{\tw-#1-2ex}\raggedright{\scriptsize\arabic{cntr}.} #2 \color{blue}({\fntzhr #3})\end{minipage}%
+  \hfill%
+  \vtop{% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=topgraph
+    \vskip-2ex
+    %\vskip0pt%
+    \hbox{\includegraphics*[width=#1,height=#1,keepaspectratio=true]{#4}}%
+    }%
+  }
+
+\newcommand{\ez}[2]{
+  \stepcounter{cntr}%
+  \begin{minipage}[t]{8\tw/16-2ex}\raggedright{\scriptsize\arabic{cntr}.} #1 \color{blue}{\fntzhr #2}\end{minipage}%
+  }
+
+\newcommand{\ezl}[2]{
+  \stepcounter{cntr}%
+  {\scriptsize\arabic{cntr}.} #1 {\color{blue}({\fntzhr #2})}%
+  }
+
+\newcommand{\ezhpr}[4][15mm]{%
+  \stepcounter{cntr}%
+  \begin{minipage}[t]{8\tw/16-#1-2ex}\raggedright{\scriptsize\arabic{cntr}.} #2 \end{minipage}%
+  \hfill%
+  \vtop{% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=topgraph
+    \vskip-2ex
+    %\vskip0pt%
+    \hbox{\includegraphics*[width=#1,height=#1,keepaspectratio=true]{#4}}%
+    }%
+  }
+
+\newenvironment{comprehension}[0]{%
+  \cntreset%
+  \ifthenelse
+    {\boolean{multipage}}
+    {\begin{longtable}{|rp{15\textwidth/16}|}}
+    {\begin{tabular}  {|rp{15\textwidth/16}|}}
+    \hline
+    \mc{2}{|P|}{\scshape Reading Comprehension ({\fntzhr ?????})}
+    \\\hline
+  }{
+  \\\hline
+  \ifthenelse
+    {\boolean{multipage}}
+    {\end{longtable}}
+    {\end{tabular}}
+  }
+
+\newenvironment{discussionh}{%
+  \begin{tabular}{|>{\cellcolor[rgb]{0,0.6,0}\upshape\bfseries\color{white}\scshape}m{\textwidth-2ex}|}
+    \hline
+    Discussion ({\fntzhr ??})
+    \\\hline%
+  \end{tabular}%
+  }
+
+\newenvironment{discussion}{%
+  \cntreset%
+  \ifthenelse
+    {\boolean{multipage}}
+    {\begin{longtable}{|rp{15\textwidth/16}|}}
+    {\begin{tabular}  {|rp{15\textwidth/16}|}}
+    \hline
+    \mc{2}{|G|}{\scshape Discussion ({\fntzhr ??})}
+    \\\hline
+  }{
+  \\\hline
+  \ifthenelse
+    {\boolean{multipage}}
+    {\end{longtable}}
+    {\end{tabular}}
+  }
+
+\newenvironment{sentences}{%
+  \cntreset%
+  \ifthenelse{\boolean{multipage}}%
+    {\begin{longtable}{|rp{15\textwidth/16}|}}%
+    {\begin{tabular}  {|rp{15\textwidth/16}|}}%
+    \hline%
+    \mc{2}{|B|}{\scshape Sentences ({\fntzhr ??})}%
+    \\\hline%
+  }{\\\hline\ifthenelse{\boolean{multipage}}{\end{longtable}}{\end{tabular}}}%
+
+\newenvironment{sentencezd}{%
+  \cntreset%
+  \ifthenelse{\boolean{multipage}}%
+    {\begin{longtable}{|l||l|}}%
+    {\begin{tabular}  {|l||l|}}%
+    \hline%
+    \mc{2}{|B|}{\scshape Sentences ({\fntzhr ??})}%
+    \\\hline%
+  }{\\\hline\ifthenelse{\boolean{multipage}}{\end{longtable}}{\end{tabular}}}%
+
+\newenvironment{songd}{%
+  \cntreset%
+  \ifthenelse{\boolean{multipage}}%
+    {\begin{longtable}{|l||l|}}%
+    {\begin{tabular}  {|l||l|}}%
+    \hline%
+   %\mc{2}{|P|}{\scshape \textmusicalnote Song ({\fntzhr ?}) \textmusicalnote}%
+    \mc{2}{|P|}{\scshape Song ({\fntzhr ?})}%
+    \\\hline%
+  }{\\\hline\ifthenelse{\boolean{multipage}}{\end{longtable}}{\end{tabular}}}%
+
+\newenvironment{conversationd}{%
+  \cntreset%
+  \ifthenelse{\boolean{multipage}}%
+    {\begin{longtable}{|@{}>{\small}l@{}||@{}>{\small}l@{}|}}%
+    {\begin{tabular}  {|*{2}{>{\small}m{\tw/2-2\tabcolsep-\arrayrulewidth/2}|}}}%
+    \hline%
+    \mc{2}{|c|}{A$\downarrow$\qquad\qquad{\scshape Conversation ({\fntzhr ??})}\qquad\qquad$\downarrow$B}%
+    \\\hline%
+%  }{\\\hline\end{tabular}}%
+  %}{\\\hline\ifthenelse{\boolean{multipage}}{\end{tabular}}{\end{tabular}}}%
+  }{\\\hline\ifthenelse{\boolean{multipage}}{\end{longtable}}{\end{tabular}}}%
+
+\newenvironment{conversationdl}{%
+  \cntreset%
+    \begin{longtable}{|@{}>{\small}l@{}||@{}>{\small}l@{}|}%
+      \hline%
+      \mc{2}{|c|}{A$\downarrow$\qquad\qquad{\scshape Conversation ({\fntzhr ??})}\qquad\qquad$\downarrow$B}%
+      \\\hline%
+  }%
+  {%
+      \\\hline%
+    \end{longtable}%
+  }%
+
+%\newenvironment{discussionm}[0]{%
+%  %\renewcommand{\arraystretch}{1}
+%  \cntreset%
+%  \begin{longtable}{|>{\cntx}rp{15\textwidth/16}|}
+%    \hline
+%    \mc{2}{|G|}{\scshape Discussion ({\fntzhr ??})}
+%    \\\hline
+%    \endfirsthead
+%    \mc{2}{r}{\scriptsize\em\ldots continued from the previous page}
+%    \endhead
+%    \mc{2}{r}{\scriptsize\em continued on the next page \ldots}
+%    \endfoot
+%    \hline
+%    \endlastfoot
+%  }{
+%  \\\hline
+%  \end{longtable}
+%  }
+%
+%\newenvironment{discussionl}[0]{%
+%  %\renewcommand{\arraystretch}{1}
+%  \cntreset%
+%  \begin{longtable}{|>{\cntx}rp{15\textwidth/16}|}
+%    \hline
+%    \mc{2}{|G|}{\scshape Discussion ({\fntzhr ??})}
+%    \\\hline
+%    \endfirsthead
+%    \mc{2}{r}{\scriptsize\em\ldots continued from the previous page}
+%    \endhead
+%    \mc{2}{r}{\scriptsize\em continued on the next page \ldots}
+%    \endfoot
+%    \hline
+%    \endlastfoot
+%  }{
+%  \\\hline
+%  \end{longtable}
+%  }
+
+\newenvironment{cwpuzzle}[0]{%
+  \cntreset%
+  \begin{tabular}{|m{\textwidth-5mm}|}
+    \hline
+    %\mc{1}{|c|}{\scshape Crossword Puzzle ({\fntzhr ??????})}
+    %\\\hline
+  }{
+  \\\hline
+  \end{tabular}
+  }
+
+\newenvironment{vocabex}[0]{%
+  \cntreset%
+  \begin{longtable}{|rp{14\textwidth/16}|}
+    \hline
+    \mc{2}{|P|}{\scshape Vocabulary Practice ({\fntzhr ????})}
+    \\\hline
+    \mc{2}{|c|}{}
+    \endfirsthead
+    \mc{2}{r}{\scriptsize\em\ldots continued from the previous page}
+    \\\mc{2}{|c|}{}
+    \endhead
+    \mc{2}{r}{\scriptsize\em continued on the next page \ldots}
+    \endfoot
+    \hline
+    \endlastfoot
+  }{
+  \\\mc{2}{|c|}{}
+  \\\hline
+  \end{longtable}
+  }
+
+\newenvironment{translateex}[0]{%
+  \cntreset%
+  \begin{longtable}{|>{\cntx}r>{\LARGE\fntzhr}l|*{3}{p{3\textwidth/16}|}}
+    \hline
+    \mc{5}{|P|}{\scshape Vocabulary Practice ({\fntzhr ????})}
+    \\\hline
+    \endfirsthead
+    \mc{5}{r}{\scriptsize\em\ldots continued from the previous page}
+    \endhead
+    \mc{5}{r}{\scriptsize\em continued on the next page \ldots}
+    \endfoot
+    \hline
+    \endlastfoot
+  }{
+  \\\hline
+  \end{longtable}
+  }
+
+\newenvironment{grammarex}[0]{%
+  \cntreset%
+  \begin{longtable}{|>{\cntx}rp{15\textwidth/16}|}
+    \hline
+    \mc{2}{|P|}{\scshape Grammar Practice ({\fntzhr ????})}
+    \\\hline
+    \mc{2}{|c|}{}
+    \endfirsthead
+    \mc{2}{r}{\scriptsize\em\ldots continued from the previous page}
+    \\\mc{2}{|c|}{}
+    \endhead
+    \mc{2}{r}{\scriptsize\em continued on the next page \ldots}
+    \endfoot
+    \hline
+    \endlastfoot
+  }{
+  \\\mc{2}{|c|}{}
+  \\\hline
+  \end{longtable}
+  }
+
+\newcommand{\writingex}[4][15mm]{%
+  \begin{tabular}{|m{\textwidth-#1-4\tabcolsep-2\arrayrulewidth}m{#1}|}
+    \hline
+    \mc{2}{|P|}{\scshape Writing Practice ({\fntzhr ????}) \normalsize\footnotemark}
+    \\\hline
+    #4 &\includegraphics*[width=#1,height=#1,keepaspectratio=true]{#2}%
+    \\\hline
+  \end{tabular}
+  \citetblt{#3}
+  }
+
+\newcommand{\tcom}[3][c]{\ensuremath{% text comment: text with underbrace and text comment below
+  \begin{array}[t]{#1}
+    \underbrace{\text{#2}}\\
+    \text{\color{blue}\footnotesize #3}
+  \end{array}
+  }
+  \index[xeng]{#3}
+  }
+
+\newcommand{\lcom}[2]
+  {\begin{tabular}[t]{@{}c@{}}
+    \underline{#1}\\
+    \color{blue}#2
+  \end{tabular}}
+
+\newcommand{\bcom}[1]{
+  \ensuremath{\begin{array}[t]{@{}c@{}}
+    \\
+    \overline{\text{\color{blue}#1}}
+  \end{array}}
+  \index[xeng]{#1}
+  }
+
+\newcommand{\zcom}[2]{
+  \begin{tabular}[t]{@{}c@{}}
+    \underline{#1}\\
+    \color{blue}{\fntzh#2}
+  \end{tabular}
+  \index[xchar]{{\fntzh#2}(#1)}
+  \index[xeng]{#1({\fntzh#2})}
+  }
+
+\newcommand{\ztransx}[2]{
+  \begin{tabular}[t]{@{}c@{}}
+    {#1}\\
+    \color{blue}{\fntzh#2}
+  \end{tabular}
+  \index[xchar]{{\fntzh#2}(#1)}
+  \index[xeng]{#1({\fntzh#2})}
+  }
+
+\newcommand{\zcomi}[2]{%
+  \underline{#1} ({\color{blue}{\fntzh#2}})%
+  \index[xchar]{{\fntzh#2} (#1)}%
+  \index[xeng]{#1({\fntzh#2})}%
+  }%
+
+\newcommand{\zcomegzki}[7]{%
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \underline{#1} ({\color{blue}{\fntzh#3}})%
+  }%
+
+\newcommand{\zcomhdr}[2]{%
+  #1 ({\fntzhr #2})
+  \index[xchar]{{\fntzh#2}(#1)}%
+  \index[xeng]{#1({\fntzh#2})}%
+  }%
+
+\newcommand{\zcomh}[2]{%
+  #1%
+  \index[xchar]{{\fntzh#2}(#1)}%
+  \index[xeng]{#1({\fntzh#2})}%
+  }%
+
+\newcommand{\lessonHeader}[3][0]{%
+  \arrayrulecolor{gray}%
+  \setlength{\tabcolsep}{1mm}%
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\arraystretch}{1}%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  %\onepage%
+  \cleartooddpage%
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}%
+  %\setcounter{chapter}{cntrLesson}%
+  %\setcounter{chapter}{#1}%
+  %\textbf{\bfseries{\Large\raggedright{\pagepencil} \scshape\large Lesson \arabic{cntrLesson}:} \large#2 ({\fntzhr #3})}%
+  \textbf{\bfseries{\Large\raggedright{\pagepencil} \scshape\large Lesson \arabic{cntrLesson}:} \large#2}%
+  \newline%
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}%
+  %\markleft{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  \markboth{{\scshape Lesson \arabic{cntrLesson}: #2}}{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  }%
+
+\newcommand{\lessonHeaderx}[3][0]{%
+  \arrayrulecolor{gray}%
+  \setlength{\tabcolsep}{1mm}%
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\arraystretch}{1}%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  \cleartooddpage%
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}%
+  %\textbf{\bfseries{\Large\raggedright{\pagepencil} \scshape\large Lesson \arabic{cntrLesson}:} \large#2}%
+  %\newline%
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}%
+  \markboth{{\scshape Lesson \arabic{cntrLesson}: #2}}{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  }%
+
+\newcommand{\lessonHdr}[2][0]{%
+  \arrayrulecolor{gray}%
+  \setlength{\tabcolsep}{1mm}%
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\arraystretch}{1}%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  %\onepage%
+  \cleartooddpage%
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}%
+  %\setcounter{chapter}{cntrLesson}%
+  %\setcounter{chapter}{#1}%
+  \textbf{\bfseries{\Large\raggedright{\pagepencil} \scshape\large Lesson \arabic{cntrLesson}:} \large#2}%
+  \newline%
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}%
+  %\markleft{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  \markboth{{\scshape Lesson \arabic{cntrLesson}: #2}}{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  }%
+
+\newcommand{\examHeader}{%
+  \arrayrulecolor{gray}%
+  \setlength{\tabcolsep}{1mm}%
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\arraystretch}{1}%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  \cleartooddpage%
+  %\ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}%
+  \textbf{\bfseries{\Large\raggedright{\books} \scshape\large Exam}}
+  \newline%
+  %\addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}%
+  \markboth{{\scshape Exam}}{{\scshape Exam}}%
+  }%
+
+\newcommand{\dayHeader}[3][0]{%
+  \arrayrulecolor{gray}%
+  \setlength{\tabcolsep}{1mm}%
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\arraystretch}{1}%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  %\onepage%
+  \cleartooddpage%
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}%
+  %\setcounter{chapter}{cntrLesson}%
+  %\setcounter{chapter}{#1}%
+  \textbf{\bfseries{\Large\raggedright{\book} \scshape\large Day \arabic{cntrLesson}:} \large#2 ({\fntzhr #3})}%
+  \newline%
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}%
+  %\markleft{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  \markboth{{\scshape Lesson \arabic{cntrLesson}: #2}}{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  }%
+
+\newcommand{\zhtBookReview}[3][0]{
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  %\onepage%
+  \cleartooddpage%
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}
+  \textbf{{\large\raggedright{\book} \scshape{\fntzhr ??} \arabic{cntrLesson}:} {\fntzhr #2} ({#3})}
+  \newline
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}:{\fntzhr #2}}
+  %\markleft{{\scshape Lesson \arabic{cntrLesson}: #2}}
+  \markboth{{\scshape {\fntzhr ??} \arabic{cntrLesson}: {\fntzhr #2}}}
+           {{\scshape {\fntzhr ??} \arabic{cntrLesson}: {\fntzhr #2}}}
+  }
+
+\newcommand{\lessonHeaderb}[4][0]{%
+  \arrayrulecolor{gray}%
+  \setlength{\tabcolsep}{1mm}%
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\arraystretch}{1}%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  %\onepage%
+  \cleartooddpage%
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}%
+  %\setcounter{chapter}{cntrLesson}%
+  %\setcounter{chapter}{#1}%
+  \textbf{{\Large\raggedright{\pagepencil} \scshape\large Lesson \arabic{cntrLesson}:} \large#2 ({\fntzhr #3})}%
+  \newline%
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}%
+  %\markboth{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  \markboth{{\scshape Lesson \arabic{cntrLesson}: #2}}{#4}%
+  }%
+
+\newcommand{\lessonHdrb}[3][0]{%
+  \arrayrulecolor{gray}%
+  \setlength{\tabcolsep}{1mm}%
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\arraystretch}{1}%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  %\onepage%
+  \cleartooddpage%
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}%
+  %\setcounter{chapter}{cntrLesson}%
+  %\setcounter{chapter}{#1}%
+  \textbf{{\Large\raggedright{\pagepencil} \scshape\large Lesson \arabic{cntrLesson}:} \large#2}%
+  \newline%
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}%
+  %\markboth{{\scshape Lesson \arabic{cntrLesson}: #2}}%
+  \markboth{{\scshape Lesson \arabic{cntrLesson}: #2}}{#3, \scshape Lesson \arabic{cntrLesson}}%
+  }%
+
+\newcommand{\examHeaderb}[1]{%
+  \arrayrulecolor{gray}%
+  \setlength{\tabcolsep}{1mm}%
+  \mpcntreset%
+  \cntreset%
+  \renewcommand{\arraystretch}{1}%
+  \renewcommand{\thefootnote}{\arabic{footnote}}%
+  \setcounter{footnote}{0}%
+  \cleartooddpage%
+  %\ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}%
+  \textbf{{\Large\raggedright{\pagec} \scshape\large Exam }}
+  \newline%
+  %\addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}%
+  \markboth{{\scriptsize\scshape #1}}{{\scriptsize\scshape #1}}
+  }%
+
+\newcommand{\themeHeader}[3][0]{
+  \mpcntreset%
+  %\onepage
+  \cleartooddpage
+  \setcounter{footnote}{0}%
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}
+  %\textbf{{\large\raggedright{\book} \scshape \large Theme \arabic{cntrLesson}:} #2 ({\fntzhr #3})}
+  \section*{{{\book}}\scshape Theme \arabic{cntrLesson}: #2 ({\fntzhr #3})}
+  %\newline
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}
+  \markboth{{\scshape Theme \arabic{cntrLesson}: #2}}{{\scshape Theme \arabic{cntrLesson}: #2}}
+  }
+
+
+\newcommand{\grammarLessonHeader}[3][0]{
+  \mpcntreset%
+  \cleartooddpage
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}
+  \section*{{{\book}}\scshape Grammar Lesson \arabic{cntrLesson}: #2 ({\fntzhr #3})}
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}
+  \markright{{\scshape Grammar Lesson \arabic{cntrLesson}: #2}}
+  }
+
+\newcommand{\writexHeader}[3][0]{
+  \cleartooddpage
+  \ifthenelse{#1=0}{\refstepcounter{cntrLesson}}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}
+  \section*{{{\book}}\scshape Writing Exercise \arabic{cntrLesson}: #2 ({\fntzhr #3})}
+  \addcontentsline{toc}{section}{\arabic{cntrLesson}: #2}
+  \markright{{\scshape Writing Exercise \arabic{cntrLesson}: #2}}
+  }
+
+\newcommand{\quizHeader}[1][0]{
+  \mpcntreset%
+ %\cleartooddpage
+  \clearpage
+  %\setcounter{page}{1}
+  \quizHeaderb[#1]\\
+  }
+
+\newcommand{\quizHeaderb}[1][0]{%bottom quiz header for half sheet quiz
+  \mpcntreset%
+  \ifthenelse{#1=0}{}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}
+  \cntreset
+  \textbf{{\large\raggedright\pencilTipDown\hspace{1ex}\scshape Quiz} }\\
+  \begin{tabular}{|c|c|}
+    \hline
+    \zcomi{English name}{????}& \zcomi{Chinese name}{????} 
+    \\&
+    \\\hline
+  \end{tabular}\\
+  }
+
+\newcommand{\testHeader}[2][0]{%
+  \clearpage%
+  \mpcntreset%
+  \ifthenelse{#1=0}{}{\setcounter{cntrLesson}{#1}\setcounter{page}{1}}
+  \cntreset
+  \textbf{{\large\raggedright\pencilTipDown\hspace{1ex}\scshape {#2} }}\\
+  %\textbf{{\large\raggedright\pencilTipDown\hspace{1ex}\scshape {\fntzht ?????????}: 2018 January} }\\
+  %\textbf{{\large\raggedright\pencilTipDown\hspace{1ex}\scshape {\fntzht ?????????}: 2017 July} }\\
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \zcomi{English name}{????}& \zcomi{Chinese name}{????} & Class & number
+    \\                            &                                &       &
+    \\\hline
+  \end{tabular}\\
+  }
+
+\newcommand{\hwHeader}[1][0]{
+  \mpcntreset%
+  %\cleartooddpage%
+  \newpage
+  \setcounter{footnote}{0}
+  \ifthenelse{#1=0}{}{\setcounter{page}{#1}}
+  \cntreset
+  %\textbf{{\large\pencilTipDown\hspace{1ex}\scshape \zcomhdr{Homework}{??}  }}
+  \textbf{{\large\pencilTipDown\hspace{1ex}\scshape \zcomhdr{Worksheet}{???}}}
+  \\\begin{tabular}{|m{4\tw/16}|m{4\tw/16}|m{2\tw/16}|m{2\tw/16}|m{2\tw/16}|}
+    \hline
+    \zcomh{English name}{?????} & {\fntzhr ????} & \zcomh{number}{??} & \zcomh{class}{?} & \zcomh{date}{??} 
+    \\&&&&
+    \\\hline
+  \end{tabular}\\%
+  }
+
+\newcommand{\hwHeaderx}[1][0]{
+  \mpcntreset%
+  %\newpage
+  \setcounter{footnote}{0}
+  \ifthenelse{#1=0}{}{\setcounter{page}{#1}}
+  \cntreset
+  \textbf{{\large\pencilTipDown\hspace{1ex}\scshape \zcomhdr{Worksheet}{???}}}
+  \\\begin{tabular}{|m{4\tw/16}|m{4\tw/16}|m{2\tw/16}|m{2\tw/16}|m{2\tw/16}|}
+    \hline
+    \zcomh{English name}{?????} & {\fntzhr ????} & \zcomh{number}{??} & \zcomh{class}{?} & \zcomh{date}{??} 
+    \\&&&&
+    \\\hline
+  \end{tabular}\\%
+  }
+
+\newcommand{\hwHeadern}[2][0]{
+  \mpcntreset%
+  \cleartooddpage%
+  %\newpage
+  \setcounter{footnote}{0}
+  \ifthenelse{#1=0}{}{\setcounter{page}{#1}}
+  \cntreset
+  %\textbf{{\large\pencilTipDown\hspace{1ex}\scshape \zcomhdr{Worksheet}{???}}}
+  \textbf{{\large\pencilTipDown\hspace{1ex}\scshape Worksheet for Lesson #2}}
+  \\\begin{tabular}{|m{4\tw/16}|m{4\tw/16}|m{2\tw/16}|m{2\tw/16}|m{2\tw/16}|}
+    \hline
+    \zcomh{English name}{?????} & {\fntzhr ????} & \zcomh{number}{??} & \zcomh{class}{?} & \zcomh{date}{??} 
+    \\&&&&
+    \\\hline
+  \end{tabular}\\%
+  }
+
+
+\definecolor{xword}{gray}{0.7}
+\PuzzleDefineCell{g}{{%
+  \put(#1,#2){\makebox(1,1){%
+  \fboxsep=0pt
+  \colorbox{xword}{\makebox(1,1){}}}}
+  }}
+
+\newboolean{showSolution}
+\newcommand{\hideSolution}{\setboolean{showSolution}{false}}
+\newcommand{\showSolution}{\setboolean{showSolution}{true}}
+\newcommand{\solution}[1]{\ifthenelse{\boolean{showSolution}}{{{#1}}}{\hspace{1ex}}}
+\newcommand{\ifthenelsesol}[2]{\ifthenelse{\boolean{showSolution}}{\color{blue}{#1}\normalcolor}{#2}}
+\newboolean{multipage}
+\newcommand{\multipage} {\setboolean{multipage}{true}}
+\newcommand{\onepage}   {\setboolean{multipage}{false}}
+\newboolean{showKK}   \setboolean{showKK} {false}
+\newboolean{showIPA}  \setboolean{showIPA}{false}
+\newboolean{showZHT}  \setboolean{showZHT}{true}
+\newcommand{\showKK} {\setboolean{showKK} {true} }
+\newcommand{\hideKK} {\setboolean{showKK} {false} }
+\newcommand{\showIPA}{\setboolean{showIPA}{true}}
+\newcommand{\hideIPA}{\setboolean{showIPA}{false}}
+
+\newenvironment{tegzk}[1][0]{% table environment: english, grammar, Chinese, KK phonics
+  %\cntreset
+  \ifthenelse{#1>-1}{\setcounter{cntr}{#1}}{}%
+  %\setcounter{arga}{#1}
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  %\begin{tabular}{|@{\extracolsep{0pt}}>{\scriptsize}rl|>{\scriptsize\columncolor[gray]{0.8}}c|>{\columncolor[gray]{0.8}}l|>{\fntzhr}l@{}|}%
+  \begin{tabular}{|@{\extracolsep{0pt}}>{\scriptsize}r%    number
+                  l|%                                      English
+                  >{\scriptsize\columncolor[gray]{0.8}}c|% grammar
+                  >{\columncolor[gray]{0.8}\fntipa}l|%     IPA/KK
+                  >{\fntzh}l@{}|%                          Chinese
+                  }%
+    \hline%
+     \mc{2}{|c|}{\footnotesize\scshape english}%
+    &\mc{1}{c|} {\tiny\cellcolor[gray]{0.8}\scshape (grammar)}%
+    &\mc{1}{c|} {\footnotesize\cellcolor[gray]{0.8}\scshape kk}%
+    &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline
+  }{
+    \hline
+  \end{tabular}
+  }%
+
+\newenvironment{tegzs}[1][0]{% table environment: english, grammar, Chinese, KK phonics
+  %\cntreset
+  \ifthenelse{#1>-1}{\setcounter{cntr}{#1}}{}%
+  %\setcounter{arga}{#1}
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \begin{tabular}{|@{\extracolsep{0pt}}>{\scriptsize}rl|>{\scriptsize\columncolor[gray]{0.8}}c|>{\columncolor[gray]{0.8}}l|>{\fntzhr}l@{}|}%
+    \hline%
+     \mc{2}{|c|}{\footnotesize\scshape english}%
+    &\mc{1}{c|} {\tiny\cellcolor[gray]{0.8}\scshape (grammar)}%
+    &\mc{1}{c|} {\footnotesize\cellcolor[gray]{0.8}\scshape{Spanish}}%
+    &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline
+  }{
+    \hline
+  \end{tabular}
+  }%
+
+\newenvironment{tBegzk}{% table environment: english, grammar, Chinese, KK phonics
+  \cntreset
+  %\setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \begin{tabular}{|@{\extracolsep{1pt}}c|>{\scriptsize}rl|>{\scriptsize\columncolor[gray]{0.8}}c|>{\columncolor[gray]{0.8}}l|>{\fntzhr}l@{}|}%
+    \hline%
+     \footnotesize solution
+    &\mc{2}{c|}{\footnotesize\scshape english}%
+    &\mc{1}{c|} {\tiny\cellcolor[gray]{0.8}\scshape (grammar)}%
+    &\mc{1}{c|} {\footnotesize\cellcolor[gray]{0.8}\scshape kk}%
+    &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline
+  }{
+    \hline
+  \end{tabular}
+  }%
+
+\newenvironment{tez}{% table environment: english, Chinese
+  \cntreset
+  %\setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \begin{tabular}{|>{\scriptsize}rl|>{\fntzhr}l|}%
+    \hline%
+     \mc{2}{|c|}{\footnotesize\scshape english}%
+    &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline
+  }{
+    \\\hline
+  \end{tabular}
+  }%
+\newenvironment{tLegzk}{% table environment: english, grammar, Chinese, KK phonics
+  \cntreset
+  %\setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \begin{longtable}{|@{\extracolsep{0pt}}>{\scriptsize}rl|>{\scriptsize\columncolor[gray]{0.8}}c|>{\columncolor[gray]{0.8}\fntipa}l|>{\fntzhr}l@{}|}%
+    \hline%
+     \mc{2}{|c|}{\footnotesize\scshape english}%
+    &\mc{1}{c|} {\tiny\cellcolor[gray]{0.8}\scshape (grammar)}%
+    &\mc{1}{c|} {\footnotesize\cellcolor[gray]{0.8}\scshape kk}%
+    &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline
+  }{
+    \hline
+  \end{longtable}
+  }%
+
+\newcommand{\busegzk}[7]{% vocabulary entry
+  \refstepcounter{cntr}
+  \scriptsize\arabic{cntr}. &\hrefe{#1}&(#2)&\fntipa\footnotesize#5&\large#3%
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \tabularnewline
+  }
+
+\newcommand{\busegsk}[7]{% vocabulary entry
+  \refstepcounter{cntr}
+  \scriptsize\arabic{cntr}. &\hrefe{#1}&(#2)&#4&#3%
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \tabularnewline
+  }
+
+\newcommand{\busscramble}[7]{% vocabulary entry
+  %\refstepcounter{cntr}%
+  %\scriptsize\arabic{cntr}. &\scramble{#1}&\solution{#1}%
+  \scramble{#1}&\solution{#1}%
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  %\tabularnewline
+  }
+
+\newcommand{\busBegzk}[9][10mm]{% vocabulary entry with blank of width #1 and solution #2
+  \refstepcounter{cntr}
+  \bso[#1]{#2}&\scriptsize\arabic{cntr}. &\hrefe{#3}&(#4)&\fntipa#7&#5%
+  \busx{#3}{#4}{#5}{#6}{#7}{#8}{#9}%
+  \tabularnewline
+  }
+
+\newcommand{\busegzkr}[8]{% vocabulary entry
+  \refstepcounter{cntr}
+  \rnode{#8}{\scriptsize\arabic{cntr}}. &\hrefe{#1}&(#2)&\fntipa\footnotesize#5&#3%
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \tabularnewline
+  }
+
+\newenvironment{tGegzkD}[2]{% table environment: graphic, english, grammar, Chinese, KK; double width
+  \cntreset
+  \setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \addtocounter{footnote}{1}%
+  \footnotetext{\scriptsize{Source(s) of images.} #2}%
+  \addtocounter{footnote}{-1}%
+  \begin{tabular}{*{2}{|>{\scriptsize}rcl|>{\columncolor[gray]{0.8}}l|}}%
+    \hline%
+     \mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}}%       number, graphic, English/Chinese
+    &\mc{1}{>{\columncolor[gray]{0.8}}c||}{\footnotesize\scshape KK/(g)}% KK/grammar
+    &\mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}}%       number, graphic, English/Chinese
+    &\mc{1}{>{\columncolor[gray]{0.8}}c|}{\footnotesize\scshape KK/(g)}% KK/grammar
+    \\\hline
+  }{
+  \\\hline
+  \end{tabular}\footnotemark
+  %\addtocounter{cntr}{\value{cntr}}
+  %\setcounter{cntr}{\value{cntb}}%
+  \addtocounter{cntr}{\value{arga}}%
+  }%
+
+\newenvironment{tFegzkD}[2]{% table environment: graphic, english, grammar, Chinese, KK; double width
+  \cntreset
+  \setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \addtocounter{footnote}{1}%
+  \footnotetext{\scriptsize{Source(s) of images.} #2}%
+  \addtocounter{footnote}{-1}%
+  \begin{tabular}{*{2}{|>{\scriptsize}rcl|>{\columncolor[gray]{0.8}}l|}}%
+    \hline%
+     \mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}}%       number, graphic, English/Chinese
+    &\mc{1}{>{\columncolor[gray]{0.8}}c||}{\footnotesize\scshape KK/(g)}% KK/grammar
+    &\mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}}%       number, graphic, English/Chinese
+    &\mc{1}{>{\columncolor[gray]{0.8}}c|}{\footnotesize\scshape KK/(g)}% KK/grammar
+    \\\hline
+  }{
+  \\\hline
+  \end{tabular}\footnotemark\\
+  \addtocounter{cntr}{\value{cntr}}
+  }%
+
+\newenvironment{tlGegzkD}[2]{% table environment: graphic, english, grammar, Chinese, KK; double width
+  \cntreset
+  \setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \begin{longtable}{*{2}{|>{\scriptsize}rcl|>{\columncolor[gray]{0.8}}l|}}%
+    \hline%
+     \mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}\footnotemark}%       number, graphic, English/Chinese
+     \addtocounter{footnote}{-1}%
+    &\mc{1}{>{\columncolor[gray]{0.8}}c||}{\footnotesize\scshape KK/(g)}% KK/grammar
+    &\mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}\footnotemark}%       number, graphic, English/Chinese
+     \footnotetext{\scriptsize{Source(s) of images.} #2}%
+    &\mc{1}{>{\columncolor[gray]{0.8}}c|}{\footnotesize\scshape KK/(g)}% KK/grammar
+    \\\hline
+  }{
+  \\\hline
+  \end{longtable}
+  \addtocounter{cntr}{\value{cntr}}
+  }%
+
+\newenvironment{tzBD}[1]{% table environment: Chinese, blank, double width
+  \cntreset%
+  \setcounter{arga}{#1}%
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \begin{tabular}{*{2}{|>{\scriptsize}rl|m{\tw/4}|}}%
+    \hline%
+     \mc{2}{|c|}{\footnotesize{\fntzh ??}}%       number, Chinese
+    &\mc{1}{c||}{\footnotesize English}% 
+    &\mc{2}{|c|}{\footnotesize{\fntzh ??}}%       number, Chinese
+    &\mc{1}{c||}{\footnotesize English}% 
+    \\\hline
+  }{
+  \\\hline
+  \end{tabular}
+  }%
+
+\newenvironment{tkBD}[1]{% table environment: Chinese, blank, double width
+  \cntreset%
+  \setcounter{arga}{#1}%
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \begin{tabular}{*{2}{|>{\scriptsize}rl|m{\tw/4}|}}%
+    \hline%
+     \mc{2}{|c|}{\footnotesize KK}%       number, KK
+    &\mc{1}{c||}{\footnotesize English}% 
+    &\mc{2}{|c|}{\footnotesize KK}%       number, KK
+    &\mc{1}{c||}{\footnotesize English}% 
+    \\\hline
+  }{
+  \\\hline
+  \end{tabular}
+  \addtocounter{cntr}{\value{cntr}}
+  }%
+
+\newenvironment{tTezD}[1]{% table environment: text, english, Chinese, KK; double width
+  \cntreset
+  \setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+%  \begin{longtable}{*{2}{|>{\scriptsize}rcl|}}%
+  \stepcounter{footnote}
+  \addtocounter{footnote}{-1}
+  \begin{tabular}{*{2}{|>{\scriptsize}rcl|}}%
+    \hline%
+     \mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}}%       number, graphic, English/Chinese
+     \addtocounter{footnote}{-1}%
+    &\mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}}%       number, graphic, English/Chinese
+    \\\hline
+  }{
+  \\\hline
+  \end{tabular}
+  \addtocounter{cntr}{\value{cntr}}
+  }%
+
+\newenvironment{tGezD}[2]{% table environment: graphic, english, grammar, Chinese, KK; double width
+  \cntreset
+  \setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+%  \begin{longtable}{*{2}{|>{\scriptsize}rcl|}}%
+  \stepcounter{footnote}
+  \footnotetext{\scriptsize{Source(s) of images.} #2}%
+  \addtocounter{footnote}{-1}
+  \begin{tabular}{*{2}{|>{\scriptsize}rcl|}}%
+    \hline%
+     \mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}\footnotemark}%       number, graphic, English/Chinese
+     \addtocounter{footnote}{-1}%
+    &\mc{3}{|c|}{\footnotesize\scshape English/{\fntzh ??}\footnotemark}%       number, graphic, English/Chinese
+     %\footnotetext{\scriptsize{Source(s) of images.} #2}%
+    \\\hline
+  }{
+  \\\hline
+  \end{tabular}
+  \addtocounter{cntr}{\value{cntr}}
+  }%
+
+\newenvironment{tGegzk}[1]{% table environment: graphic, english, grammar, Chinese, KK
+  \cntreset
+  %\setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \stepcounter{footnote}
+  \footnotetext{\scriptsize{Source(s) of images.} #1}%
+  \addtocounter{footnote}{-1}
+%  \begin{tabular}[t]{|@{}>{\scriptsize}r@{}c@{}l@{}|>{\columncolor[gray]{0.8}}l|}%
+%  \begin{tabular}[t]{|@{}>{\scriptsize}r@{}c@{}l@{}|>{\columncolor[gray]{0.8}}l@{}|}%
+  \begin{tabular}{|>{\scriptsize}rcl|>{\columncolor[gray]{0.8}}l|}%
+    \hline%
+    %                                                             number
+    &%                                                            graphic
+    &\mc{1}{|c|}{\footnotesize\scshape English/{\fntzh ??}}%       English/Chinese
+    &\mc{1}{c|}{\footnotesize\cellcolor[gray]{0.8}\scshape KK/(g)}% KK/grammar
+    \\\hline
+  }{
+  \end{tabular}\footnotemark
+  }%
+
+\newenvironment{tlGegzk}[1]{% table environment: graphic, english, grammar, Chinese, KK
+  \cntreset
+  %\setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \stepcounter{footnote}
+  \footnotetext{\scriptsize{Source(s) of images.} #1}%
+  \addtocounter{footnote}{-1}
+  \begin{longtable}[t]{|@{}>{\scriptsize}r@{}c@{}l@{}|>{\columncolor[gray]{0.8}}l|}%
+    \hline%
+    %                                                             number
+    &%                                                            graphic
+    &\mc{1}{|c|}{\footnotesize\scshape English/{\fntzh ??}}%       English/Chinese
+    &\mc{1}{c|}{\footnotesize\cellcolor[gray]{0.8}\scshape KK/(g)}% KK/grammar
+    \\\hline
+  }{
+  \end{longtable}\footnotemark
+  }%
+
+%----------------------------------------------------------------------------
+% Table: English, grammar, Chinese, IPA, double column
+%   argument #1: starting number, 
+%                -1 = continue counting using previous counter value
+%   argument #2: number of entries in the left column
+%   Entries may inserted using the \busegzkD command.
+%----------------------------------------------------------------------------
+\newenvironment{tegzkD}[2][0]{% double column table environment: english, grammar, Chinese, phonetics
+  \ifthenelse{#1>-1}{\setcounter{cntr}{#1}}{}%
+  \setcounter{arga}{#2}%
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \begin{tabular}{*{2}{|@{\extracolsep{0pt}}>{\scriptsize}r%    number
+                       l|%                                      English
+                       >{\scriptsize\columncolor[gray]{0.8}}c|% grammar
+                       >{\columncolor[gray]{0.8}\fntipa}l|%     IPA/KK
+                       >{\fntzh}l@{}|%                          Chinese
+                      }}%
+    \hline%
+    \mc{2}{|c|}{\footnotesize\scshape english}%
+      &\mc{1}{c|}{\tiny\cellcolor[gray]{0.8}(grammar)}%
+      &\mc{1}{c|}{\footnotesize\cellcolor[gray]{0.8}\scshape kk}%
+      &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}%
+      &%
+    \mc{2}{c|}{\footnotesize\scshape english}%
+      &\mc{1}{c|}{\tiny\cellcolor[gray]{0.8}(grammar)}%
+      &\mc{1}{c|}{\footnotesize\cellcolor[gray]{0.8}\scshape kk}%
+      &\mc{1}{c|}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline%
+  }{% end of environment
+    \\\hline%
+    \end{tabular}%
+    \addtocounter{cntr}{\value{arga}}%
+  }%
+
+\newenvironment{tegzsD}[2][0]{% double column table environment: english, grammar, Chinese, phonetics
+  %\cntreset
+  \ifthenelse{#1>-1}{\setcounter{cntr}{#1}}{}%
+  \setcounter{arga}{#2}%
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \begin{tabular}{*{2}{|@{\extracolsep{0pt}}>{\scriptsize}rl|>{\scriptsize\columncolor[gray]{0.8}}c|>{\columncolor[gray]{0.8}}l|>{\fntzhr}l@{}|}}%
+    \hline%
+    \mc{2}{|c|}{\footnotesize\scshape english}%
+      &\mc{1}{c|}{\tiny\cellcolor[gray]{0.8}(grammar)}%
+      &\mc{1}{c|}{\footnotesize\cellcolor[gray]{0.8}\scshape{Spanish}}%
+      &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}%
+      &%
+    \mc{2}{c|}{\footnotesize\scshape english}%
+      &\mc{1}{c|}{\tiny\cellcolor[gray]{0.8}(grammar)}%
+      &\mc{1}{c|}{\footnotesize\cellcolor[gray]{0.8}\scshape{Spanish}}%
+      &\mc{1}{c|}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline%
+  }{%
+    \\\hline%
+    \end{tabular}%
+    %\addtocounter{cntr}{\value{cntr}}%
+    \addtocounter{cntr}{\value{arga}}%
+  }%
+
+%----------------------------------------------------------------------------
+% Table: English, Chinese, IPA, double column
+%   argument #1: number of entries in a single column
+%   Entries may inserted using the \busezkD command.
+%----------------------------------------------------------------------------
+\newenvironment{tezkD}[1]{%
+  \cntreset
+  \setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \begin{tabular}{*{2}{|@{\extracolsep{0pt}}>{\scriptsize}rl|>{\columncolor[gray]{0.8}\fntipa}l|>{\fntzhr}l@{}|}}%
+    \hline%
+    \mc{2}{|c|}{\footnotesize\scshape english}%
+      &\mc{1}{c|}{\footnotesize\cellcolor[gray]{0.8}\scshape kk}%
+      &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}
+      &%
+    \mc{2}{c|}{\footnotesize\scshape english}%
+      &\mc{1}{c|}{\footnotesize\cellcolor[gray]{0.8}\scshape kk}%
+      &\mc{1}{c|}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline
+  }{
+    \\\hline
+    \end{tabular}
+    \addtocounter{cntr}{\value{cntr}}
+  }%
+\newenvironment{tezD}[1]{% double column table environment: english, Chinese
+  \cntreset
+  \setcounter{arga}{#1}
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \begin{tabular}{*{2}{|@{\extracolsep{0pt}}>{\scriptsize}rl|>{\fntzhr}l@{}|}}%
+    \hline%
+    \mc{2}{|c|}{\footnotesize\scshape english}%
+      &\mc{1}{c||}{\footnotesize\scshape {\fntzh ??}}
+      &%
+    \mc{2}{c|}{\footnotesize\scshape english}%
+      &\mc{1}{c|}{\footnotesize\scshape {\fntzh ??}}%
+    \\\hline
+  }{
+    \\\hline
+    \end{tabular}
+    \addtocounter{cntr}{\value{cntr}}
+  }%
+\newcommand{\busezkD}[7]{% vocabulary entry left-right columns
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\scriptsize\arabic{cntr}. &\hrefe{#1}&\fntipa#5&#3%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+    \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline}%
+    \refstepcounter{cntr}%
+    \scriptsize\arabic{cntr}. &\hrefe{#1}&\fntipa#5&#3%
+    \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+\newcommand{\busezsD}[7]{% vocabulary entry left-right columns
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\scriptsize\arabic{cntr}. &\hrefe{#1}&#4&#3%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+    \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline}%
+    \refstepcounter{cntr}%
+    \scriptsize\arabic{cntr}. &\hrefe{#1}&#4&#3%
+    \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+\newcommand{\busezD}[7]{% vocabulary entry left-right columns
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\scriptsize\arabic{cntr}. &\hrefe{#1}&#3%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+    \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline}%
+    \refstepcounter{cntr}%
+    \scriptsize\arabic{cntr}. &\hrefe{#1}&#3%
+    \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+%----------------------------------------------------------------------------
+% Table Bus: English, grammar, Chinese, IPA, double column
+% This may be used for entries in the tegzkD table environment
+% Counters on entry:
+%   arga: the number of entries in left column 
+%   cnta: don't care
+%   cntb: don't care
+%   cntr: counter for the entry number
+%         If in left column, cntr is incremented by 1 prior to output. 
+%         If in right column, cntr is incremented by arga prior to output,
+%                             and then decremented after output.
+% Counters on exit:
+%   arga: not changed
+%   cnta: the number of entries to be in completed table including possible final blank entry (changed)
+%   cntb: on exit, the total number of entries that have been output (changed)
+%   cntr: the last entry number
+%----------------------------------------------------------------------------
+\newcommand{\busegzkD}[7]{% vocabulary entry left-right columns
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \stepcounter{cntb}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {% left column entries
+      \refstepcounter{cntr}%
+      \ifthenelse{\isempty{#1}}{}{\scriptsize\arabic{cntr}.}% counter
+      &\hrefe{#1}%                         English
+      &\ifthenelse{\isempty{#2}}{}{(#2)}%  grammar
+      &\hspace{1pt}\fntipa\footnotesize#5% IPA
+      &\large#3%                           Chinese 
+    }{% right column entries
+      \addtocounter{cntr}{\value{arga}}% increment counter by number of elements in left column
+      &\ifthenelse{\isempty{#1}}{}{\scriptsize\arabic{cntr}.}%
+      &\hrefe{#1}&\ifthenelse{\isempty{#1}}{}{(#2)}&\hspace{1pt}\fntipa\footnotesize#5&\large#3%
+      \addtocounter{cntr}{-\value{arga}}%
+      \setcounter{cnta}{\value{arga}}% cnta = arga
+      \addtocounter{cnta}{\value{arga}}% cnta = total number of entries to be in table (including possible final blank entry)
+      \ifthenelse{\cnttest{\value{cntb}}{=}{\value{cnta}}}{}{\tabularnewline}% if not at end, newline
+    }%
+  }%
+
+\newcommand{\busegzsD}[7]{% vocabulary entry left-right columns
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \stepcounter{cntb}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {% left column entries
+      \refstepcounter{cntr}%
+      \ifthenelse{\isempty{#1}}{}{\scriptsize\arabic{cntr}.}%
+      %&\hrefe{#1}&\ifthenelse{\isempty{#2}}{}{(#2)}&\hspace{1pt}\fntipa\footnotesize#5&\footnotesize#3%
+      &\hrefe{#1}&\ifthenelse{\isempty{#2}}{}{(#2)}&\hspace{1pt}#4&#3%
+    }{% right column entries
+      \addtocounter{cntr}{\value{arga}}% increment counter by number of elements in left column
+      &\ifthenelse{\isempty{#1}}{}{\scriptsize\arabic{cntr}.}%
+      %&\scriptsize\arabic{cntr}.% 
+      %&\hrefe{#1}&\ifthenelse{\isempty{#1}}{}{(#2)}&\hspace{1pt}\fntipa\footnotesize#5&\footnotesize#3%
+      &\hrefe{#1}&\ifthenelse{\isempty{#1}}{}{(#2)}&\hspace{1pt}#4&#3%
+      \addtocounter{cntr}{-\value{arga}}%
+      \setcounter{cnta}{\value{arga}}% cnta = arga
+      \addtocounter{cnta}{\value{arga}}% cnta = total number of entries to be in table (including possible final blank entry)
+      \ifthenelse{\cnttest{\value{cntb}}{=}{\value{cnta}}}{}{\tabularnewline}% if not at end, newline
+    }%
+  }%
+
+\newcommand{\busegzkDr}[8]{% vocabulary entry left-right columns
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\rnode{#8}{\scriptsize\arabic{cntr}}. &\hrefe{#1}&(#2)&\hspace{1pt}\fntipa\footnotesize#5&\footnotesize#3%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+    \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline}%
+    \refstepcounter{cntr}%
+    \rnode{#8}{\scriptsize\arabic{cntr}}. &\hrefe{#1}&(#2)&\hspace{1pt}\fntipa\footnotesize#5&\footnotesize#3%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+\newcommand{\busGegzk}[8][10mm]{% vocabulary entry
+  %\busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \refstepcounter{cntr}%
+  \scriptsize\arabic{cntr}.%
+  &\ifthenelse{\isempty{#7}}{}{\rgraphic{#1}{#1}{#7}}%
+  &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+  &\begin{tabular}[b]{l}\fntipa#6\\\footnotesize(#3)\end{tabular}%
+   \\\hline
+  }
+
+%----------------------------------------------------------------------------
+% Table Bus: English, grammar, Chinese, IPA, double column
+% This may be used for entries in the tegzkD table environment
+% Counters on entry:
+%   arga: the number of entries in left column 
+%   cnta: don't care
+%   cntb: don't care
+%   cntr: counter for the entry number
+%         If in left column, cntr is incremented by 1 prior to output. 
+%         If in right column, cntr is incremented by arga prior to output,
+%                             and then decremented after output.
+% Counters on exit:
+%   arga: not changed
+%   cnta: the number of entries to be in completed table including possible final blank entry (changed)
+%   cntb: on exit, the total number of entries that have been output (changed)
+%   cntr: the last entry number
+%----------------------------------------------------------------------------
+\newcommand{\busGegzkD}[8][10mm]{% vocabulary entry
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     %&\scriptsize\arabic{cntr}.%
+     &\ifthenelse{\isempty{#2}}{}{\scriptsize\arabic{cntr}.}%
+     &\ifthenelse{\isempty{#7}}{}{\rgraphic{#1}{#1}{#7}}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     &\begin{tabular}[b]{l}\footnotesize\fntipa#6\\\footnotesize\ifthenelse{\isempty{#3}}{}{(#3)}\end{tabular}%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+     \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+     \stepcounter{cntr}%
+     %\scriptsize\arabic{cntr}.%
+     \ifthenelse{\isempty{#2}}{}{\scriptsize\arabic{cntr}.}%
+     &\ifthenelse{\isempty{#7}}{}{\rgraphic{#1}{#1}{#7}}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     &\begin{tabular}[b]{l}\footnotesize\fntipa#6\\\footnotesize\ifthenelse{\isempty{#3}}{}{(#3)}\end{tabular}%
+    }%
+  \ifthenelse{\isempty{#2}}{}{\stepcounter{cntb}}%
+  }%
+
+\newcommand{\busGegzkDr}[9][10mm]{% vocabulary entry
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\rnode{#9}{\scriptsize\arabic{cntr}}.%
+     &\ifthenelse{\isempty{#7}}{}{\rgraphic{#1}{#1}{#7}}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     %&\begin{tabular}[b]{l}\rnode{#9}{#2}\\{\fntzhr#4}\end{tabular}%
+     &\begin{tabular}[b]{l}\footnotesize\fntipa#6\\\footnotesize(#3)\end{tabular}%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+     \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+     \stepcounter{cntr}%
+      \rnode{#9}{\scriptsize\arabic{cntr}}.%
+     &\ifthenelse{\isempty{#7}}{}{\rgraphic{#1}{#1}{#7}}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     &\begin{tabular}[b]{l}\footnotesize\fntipa#6\\\footnotesize(#3)\end{tabular}%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+\newcommand{\busFegzkD}[8][10mm]{% vocabulary entry with file (e.g. image file)
+  \busx{#2}{#3}{#4}{#5}{#6}{}{}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\scriptsize\arabic{cntr}.%
+     &\ifthenelse{\isempty{#7}}{}{\srfile{#1}{0mm}{#7}}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     &\begin{tabular}[b]{l}\footnotesize\fntipa#6\\\footnotesize(#3)\end{tabular}%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+     \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+     \stepcounter{cntr}%
+      \scriptsize\arabic{cntr}.%
+     &\ifthenelse{\isempty{#7}}{}{\srfile{#1}{0mm}{#7}}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     &\begin{tabular}[b]{l}\footnotesize\fntipa#6\\\footnotesize(#3)\end{tabular}%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+\newcommand{\buszBD}[8][10mm]{% translation entry
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\scriptsize\arabic{cntr}.%
+     &\large{\fntzhr #4}%
+     &\solution{#2}%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+     \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+     \stepcounter{cntr}%
+      \scriptsize\arabic{cntr}.%
+     &\large{\fntzhr #4}%
+     &\solution{#2}%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+\newcommand{\buskBD}[8][10mm]{% translation entry
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\scriptsize\arabic{cntr}.%
+     &\Large\fntipa#6%
+     &\solution{#2}%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+     \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+     \stepcounter{cntr}%
+      \scriptsize\arabic{cntr}.%
+     &\Large\fntipa#6%
+     &\solution{#2}%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+\newcommand{\busTezD}[7][10mm]{% vocabulary entry
+  \busxT{#2}{#3}{#4}{#5}{#6}{#7}{}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\scriptsize\arabic{cntr}.%
+     &\Huge{#7}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     %&\begin{tabular}[b]{l}\fntipa#6\\\footnotesize(#3)\end{tabular}%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+     \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+     \stepcounter{cntr}%
+      \scriptsize\arabic{cntr}.%
+     &\Huge{#7}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     %&\begin{tabular}[b]{l}\fntipa#6\\\footnotesize(#3)\end{tabular}%
+    }%
+  \stepcounter{cntb}%
+  }%
+\newcommand{\busTe}[7][15mm]{% text and English word
+  \busxT{#2}{#3}{#4}{#5}{#6}{#7}{}%
+  #7 \blanksso[#1]{#2} 
+  }%
+
+\newcommand{\busGezD}[8][10mm]{% vocabulary entry
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     &\scriptsize\arabic{cntr}.%
+     &\ifthenelse{\isempty{#7}}{}{\rgraphic[-1mm]{#1}{#1}{#7}}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+     \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+     \stepcounter{cntr}%
+      \scriptsize\arabic{cntr}.%
+     &\ifthenelse{\isempty{#7}}{}{\rgraphic[-1mm]{#1}{#1}{#7}}%
+     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+    }%
+  \stepcounter{cntb}%
+  }%
+
+\newcommand{\busnGez}[8][10mm]{% vocabulary entry with graphic
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \stepcounter{cntr}%
+  \scriptsize\arabic{cntr}.%
+  &\ifthenelse{\isempty{#7}}{}{\rgraphic[-1mm]{#1}{#1}{#7}}%
+  &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+  }%
+
+\newcommand{\busnTez}[8][10mm]{% vocabulary entry with text
+  \busx{#2}{#3}{#4}{#5}{#6}{}{#8}%
+  \stepcounter{cntr}%
+  \scriptsize\arabic{cntr}.%
+%  &#7%\ifthenelse{\isempty{#7}}{}{{#7}}%
+  &\parbox{#1}{#7}%\ifthenelse{\isempty{#7}}{}{{#7}}%
+  &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+  }%
+\newcommand{\busnTezr}[9][10mm]{% vocabulary entry with text and raisebox
+  \busx{#3}{#4}{#5}{#6}{#7}{}{#9}%
+  \stepcounter{cntr}%
+  \scriptsize\arabic{cntr}.%
+  &\raisebox{#2}{\parbox{#1}{#8}}%\ifthenelse{\isempty{#7}}{}{{#7}}%
+  &\begin{tabular}[b]{l}\hrefe{#3}\\{\fntzhr#5}\end{tabular}%
+  }%
+\newcommand{\busnFez}[8][10mm]{% vocabulary entry with picture filename
+  \busx{#2}{#3}{#4}{#5}{#6}{}{#8}%
+  \stepcounter{cntr}%
+  \scriptsize\arabic{cntr}.%
+  %&\raisebox{#2}{\parbox{#1}{#8}}%\ifthenelse{\isempty{#7}}{}{{#7}}%
+  &\srfile{#1}{0mm}{#7}%
+  &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+  }%
+\newcommand{\busnFezr}[9][10mm]{% vocabulary entry with picture filename and raisebox
+  \busx{#3}{#4}{#5}{#6}{#7}{}{#9}%
+  \stepcounter{cntr}%
+  \scriptsize\arabic{cntr}.%
+  %&\raisebox{#2}{\parbox{#1}{#8}}%\ifthenelse{\isempty{#7}}{}{{#7}}%
+  &\srfile{#1}{#2}{#8}%
+  &\begin{tabular}[b]{l}\hrefe{#3}\\{\fntzhr#5}\end{tabular}%
+  }%
+
+%    }
+%{%
+%     \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+%     \stepcounter{cntr}%
+%      \scriptsize\arabic{cntr}.%
+%     &\ifthenelse{\isempty{#7}}{}{\rgraphic[-1mm]{#1}{#1}{#7}}%
+%     &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+%    }%
+%  \stepcounter{cntb}%
+%  }%
+
+\newcommand{\busGez}[8][10mm]{% vocabulary entry
+  \refstepcounter{cntr}
+   \scriptsize\arabic{cntr}.%
+  &\rgraphic{#1}{#1}{#7}%
+  &\begin{tabular}[b]{l}\hrefe{#2}\\{\fntzhr#4}\end{tabular}%
+   \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+   \\\hline
+  }
+
+\newcommand{\busGblank}[8][10mm]{% vocabulary entry
+  \refstepcounter{cntr}
+   \scriptsize\arabic{cntr}.%
+  &\ifthenelse{\isempty{#7}}{\fntzhr#4}{\rgraphic{#1}{#1}{#7}}%
+  &\solution{#2}%
+   \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+   %\\\hline
+  }
+
+\newcommand{\buszSe}[7]{%Chinese with Enlish translation
+  \ifthenelse{\isodd{\value{cntb}}}%
+    {\addtocounter{cntr}{\value{arga}}%
+     & \scriptsize\arabic{cntr}. &#3 & \solution{\hrefe{#1}}
+     \addtocounter{cntr}{-\value{arga}}%
+    }{%
+    \ifthenelse{\cnttest{\value{cntr}}{=}{0}}{}{\tabularnewline\hline}%
+     \stepcounter{cntr}
+     \scriptsize\arabic{cntr}. &#3 & \solution{\hrefe{#1}}
+    }%
+  \stepcounter{cntb}%
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  }%
+
+\newcommand{\psentry}[2]{% problem solution entry
+  \refstepcounter{cntr}
+  \scriptsize\arabic{cntr}. & #1 & \parbox[l][7mm][c]{4\tw/16}{\solution{#2}}
+  \index[xeng]{#2}
+  }
+
+\newcommand{\gentry}[3][12mm]{%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {\scriptsize1 }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \refstepcounter{cnta}%
+         \scriptsize\arabic{cnta}
+         \addtocounter{cnta}{-1}
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {\parbox[c][][c]{#1}{%
+    \centering%
+    \vfill%
+    \rgraphic[-2mm]{#1}{#1}{#3}\\\vfill%
+    \color{black}%
+  }}%
+  %\index[xeng]{#2}
+  }%
+
+\newcommand{\busG}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {\scriptsize1 }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \refstepcounter{cnta}%
+         {\scriptsize\arabic{cnta}}%
+         \addtocounter{cnta}{-1}%
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {%
+    \ifthenelse{\boolean{showSolution}}%
+      {%
+        %\renewcommand{\baselinestretch}{0.15}%
+        \parbox[c][][c]{#1}{%
+        \centering%
+        \vfill%
+        {\scriptsize\textcolor{blue}{#2}}%
+        }%
+        %\renewcommand{\baselinestretch}{1}%
+      }%
+      {\parbox[c][#1][c]{#1}{%
+        \centering%
+        \vfill%
+        \ifthenelse{\isempty{#7}}{\parbox[c][#1][c]{#1}{\raggedright\scriptsize{\fntzhr #4}}}{\rgraphic[-2mm]{#1}{#1}{#7}}%
+        \\\vfill%
+        }}%
+    \color{black}%
+  }%
+  }%
+
+\newcommand{\busGe}[8][10mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {\scriptsize1 }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \refstepcounter{cnta}%
+         %{\scriptsize\arabic{cnta}}%
+         \addtocounter{cnta}{-1}%
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {%
+%      {\parbox[c][#1][c]{#1}{%
+      {\parbox{#1}{%
+        \centering%
+        \vfill%
+        \ifthenelse{\isempty{#7}}{%
+%          \parbox[c][#1][c]{#1}{\raggedright\scriptsize{\fntzhr #4}}%
+          {\raggedright\scriptsize{\fntzhr #4}\\
+           \raggedright\scriptsize{#2}%
+          }%
+          }{%
+          %\parbox[c][#1][c]{#1}{%
+            \rgraphic[-2mm]{#1}{#1}{#7}\\%
+            \raggedright\scriptsize{#2}%
+          %  }%
+          }%
+        \\\vfill%
+        }}%
+    \color{black}%
+  }%
+  }%
+
+\newcommand{\busFe}[8][10mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{}{}
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {\scriptsize1 }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \refstepcounter{cnta}%
+         {\scriptsize\arabic{cnta}}%
+         \addtocounter{cnta}{-1}%
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {%
+%      {\parbox[c][#1][c]{#1}{%
+      {\parbox{#1}{%
+        \centering%
+        \vfill%
+        \ifthenelse{\isempty{#7}}{%
+%          \parbox[c][#1][c]{#1}{\raggedright\scriptsize{\fntzhr #4}}%
+          {\raggedright\scriptsize{\fntzhr #4}}%
+          }{%
+          %\parbox[c][#1][c]{#1}{%
+            \srfile{#1}{-2mm}{#7}\\
+            %\rgraphic[-2mm]{#1}{#1}{#7}\\%
+            \raggedright\scriptsize{#2}%
+          %  }%
+          }%
+        \\\vfill%
+        }}%
+    \color{black}%
+  }%
+  }%
+
+
+\newcommand{\busGs}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {}{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \refstepcounter{cnta}%
+         {\scriptsize}
+         \addtocounter{cnta}{-1}
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {%
+    \ifthenelse{\boolean{showSolution}}%
+      {%
+        %\renewcommand{\baselinestretch}{0.15}%
+        \parbox[c][][c]{#1}{%
+        \centering%
+        \vfill%
+        {\scriptsize\textcolor{blue}{#2}}%
+        }
+        %\renewcommand{\baselinestretch}{1}%
+      }%
+      {\parbox[c][#1][c]{#1}{%
+        \centering%
+        \vfill%
+        \rgraphic[-2mm]{#1}{#1}{#7}\\\vfill%
+        }}%
+    \color{black}%
+  }%
+  }%
+
+\newcommand{\busB}[1][12mm]{%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {\scriptsize1 }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \refstepcounter{cnta}%
+         {\scriptsize\arabic{cnta}}
+         \addtocounter{cnta}{-1}
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {%
+    \ifthenelse{\boolean{showSolution}}%
+      {\parbox[c][][c]{#1}{%
+        \centering%
+        \vfill%
+        {\scriptsize\textcolor{blue}{ }}%
+        }}%
+      {\parbox[c][#1][c]{#1}{ }}%
+    \color{black}%
+  }%
+  }%
+
+\newcommand{\busbe}[8][30mm]{%blank with English solution
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}% index
+  \bso[#1]{#2}%
+  }
+\newcommand{\busso}[8][30mm]{%blank with English solution
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}% index
+  \bso[#1]{#2}%
+  }
+\newcommand{\bussoC}[8][30mm]{%blank with comma and English solution
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}% index
+  \bso[#1]{#2}, %
+  }
+\newcommand{\bussoP}[8][30mm]{%blank with period and English solution
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}% index
+  \bso[#1]{#2}. %
+  }
+  
+\newcommand{\busI}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphicb[-2mm]{#1}{#1}{#7}%
+  }%
+\newcommand{\busIrnode}[9][12mm]{% with rnode
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rnode{#9}{\rgraphicb[-2mm]{#1}{#1}{#7}}%
+  }%
+\newcommand{\busIT}[7][12mm]{%
+  \busxT{#2}{#3}{#4}{#5}{#6}{#7}{}%
+  {#7}%
+  }%
+\newcommand{\busIfsr}[9][12mm]{%
+ %\busxT{#3}{#4}{#5}{#6}{#7}{\srfile{#1}{#2}{#8}}{}%
+  \srfile{#1}{#2}{#8}%
+  }%
+\newcommand{\busIfs}[8][12mm]{%
+ %\busxT{#3}{#4}{#5}{#6}{#7}{\srfile{#1}{#2}{#8}}{}%
+  \srfile{#1}{0mm}{#7}%
+  }%
+\newcommand{\busIr}[9][12mm]{%
+  \busx{#3}{#4}{#5}{#6}{#7}{#8}{#9}%
+  \rgraphicb[#2]{#1}{#1}{#8}%
+  }%
+
+\newcommand{\busImg}[9]{% width, height, English, grammar, Chinese, ...
+  \busx{#3}{#4}{#5}{#6}{#7}{#8}{#9}%
+  {\raisebox{-2mm}{{\parbox[c][#2][c]{#1}{\includegraphics*[width=#1,height=#2,keepaspectratio=false]{#8}}}}}%
+  }%
+
+\newcommand{\buseI}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  #2 \rgraphicb[-2mm]{#1}{#1}{#7}%
+  }%
+
+\newcommand{\busIC}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphic[-2mm]{#1}{#1}{#7}, 
+  }%
+
+\newcommand{\busIP}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphic[-2mm]{#1}{#1}{#7}, 
+  }%
+
+\newcommand{\busIB}[8][30mm]{% image and blank
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphic[-2mm]{12mm}{12mm}{#7} \blanksol[#1]{#2} 
+  }%
+\newcommand{\busFB}[8][30mm]{% file image and blank
+  \busx{#2}{#3}{#4}{#5}{#6}{}{}%
+  \srfile{12mm}{0mm}{#7} \blanksol[#1]{#2} 
+  }%
+\newcommand{\busIe}[8][15mm]{% image and English word
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphic[-2mm]{12mm}{12mm}{#7}\blanksso[#1]{#2} 
+  }%
+\newcommand{\busIeC}[8][15mm]{% image and English word followed by comma
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphic[-2mm]{12mm}{12mm}{#7}\blanksso[#1]{#2},
+  }%
+\newcommand{\busIez}[8][15mm]{% image, English word, Chinese characters
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphic[-2mm]{12mm}{12mm}{#7}\blanksso[#1]{#2} ({\fntzhr #4})
+  }%
+\newcommand{\busIeP}[8][15mm]{% image and English word
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphic[-2mm]{12mm}{12mm}{#7}\blanksso[#1]{#2}.
+  }%
+\newcommand{\busIBP}[8][30mm]{% image, blank, and period
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \rgraphic[-2mm]{12mm}{12mm}{#7} \blanksol[#1]{#2}. 
+  }%
+
+\newcommand{\busBl}[8][12mm]{% blank line
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \blanksol{#2} 
+  }%
+
+\newcommand{\busT}[7][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{}{}
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {\scriptsize1 }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \refstepcounter{cnta}%
+         \scriptsize\arabic{cnta}
+         \addtocounter{cnta}{-1}
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  \ifthenelse{\boolean{showSolution}}%
+    {\parbox[c][][c]{#1}{%
+      \centering%
+      \vfill%
+      {\scriptsize\textcolor{blue}{#2}}%
+      }}%
+    {\parbox[c][][c]{#1}{%
+      \centering%
+      \vfill%
+      \Huge{#7}
+      \\\vfill%
+      \color{black}%
+    }}%
+  }%
+
+\newcommand{\busF}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{}{}
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {\scriptsize1 }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \refstepcounter{cnta}%
+         \scriptsize\arabic{cnta}
+         \addtocounter{cnta}{-1}
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  \ifthenelse{\boolean{showSolution}}%
+    {\parbox[c][][c]{#1}{%
+      \centering%
+      \vfill%
+      {\scriptsize\textcolor{blue}{#2}}%
+      }}%
+    {\parbox[c][][c]{#1}{%
+      \centering%
+      \vfill%
+      \srfile{#1}{0mm}{#7}%
+      \\\vfill%
+      \color{black}%
+    }}%
+  }%
+
+\newcommand{\busGabc}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    { }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         %\arabic{cnta} 
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {\parbox[c][#1+1em][c]{#1}{%
+    \centering%
+    \vfill%
+    \rgraphic[-2mm]{#1}{#1}{#7}\\\vfill%
+    \color{black}%
+    {\footnotesize%
+     \ifthenelse{\cnttest{\value{cnta}}{>}{26}}%
+                {\hspace{1.5em}%
+                 \setcounter{cnta}{0}%
+                }%
+                {\Alph{cnta}\alph{cnta}}%
+    }%
+  }}%
+  }%
+
+\newcommand{\busFabc}[8][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{}{}%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    { }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         %\arabic{cnta} 
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {\parbox[c][#1+1em][c]{#1}{%
+    \centering%
+    \vfill%
+    %\rgraphic[-2mm]{#1}{#1}{#7}\\\vfill%
+    \srfile{#1}{-2mm}{#7}\\\vfill%
+    \color{black}%
+    {\footnotesize%
+     \ifthenelse{\cnttest{\value{cnta}}{>}{26}}%
+                {\hspace{1.5em}%
+                 \setcounter{cnta}{0}%
+                }%
+                {\Alph{cnta}\alph{cnta}}%
+    }%
+  }}%
+  }%
+
+\newcommand{\gABCentry}[3][12mm]{%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    { }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         %\arabic{cnta} 
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {\parbox[c][#1+1em][c]{#1}{%
+    \centering%
+    \vfill%
+    \rgraphic[-2mm]{#1}{#1}{#3}\\\vfill%
+    \color{black}%
+    {\footnotesize%
+     \ifthenelse{\cnttest{\value{cnta}}{>}{26}}%
+                {\hspace{1.5em}%
+                 \setcounter{cnta}{0}%
+                }%
+                {\Alph{cnta}\alph{cnta}}%
+    }%
+  }}%
+  %\index[xeng]{#2}
+  }%
+
+\newcommand{\bustABC}[7][12mm]{%
+  \busx{#2}{#3}{#4}{#5}{#6}{}{}%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    { }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         %\arabic{cnta} 
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {\parbox[c][#1+1em][c]{#1}{%
+    \centering%
+    \vfill%
+    #7
+    %\rgraphic[-2mm]{#1}{#1}{#3}\\\vfill%
+    \color{black}%
+    {\footnotesize%
+     \ifthenelse{\cnttest{\value{cnta}}{>}{26}}%
+                {\hspace{1.5em}%
+                 \setcounter{cnta}{0}%
+                }%
+                {\Alph{cnta}\alph{cnta}}%
+    }%
+  }}%
+  }%
+
+\newcommand{\gsentry}[3][30mm]{%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    { }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {\parbox[c][20mm][c]{#1}{%
+    \centering%
+    \vfill%
+    \rgraphic{#1}{15mm}{#3}\\\vfill%
+    \raggedright%
+    \color{black}%
+    {\scriptsize\arabic{cnta}.} \solution{#2}%
+  }}%
+  %\index[xeng]{#2}
+  }%
+
+\newcommand{\gssentry}[3][30mm]{%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    { }{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \hline%
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  {\parbox[c][20mm][c]{#1}{%
+    \centering%
+    \vfill%
+    \rgraphic{#1}{15mm}{#3}\\\vfill%
+    \raggedright%
+    \color{black}%
+    {\scriptsize\arabic{cnta}.} \textcolor{blue}{#2}%
+  }}%
+  }%
+
+\newcommand{\zsentry}[2]{% Chinese with English solution entry
+  %\tabularnewline
+  %\hline
+  \refstepcounter{cntr}
+ %\scriptsize\arabic{cntr}. & \href{http://www.mdbg.net/chindict/chindict.php?page=worddictbasic\&wdqb=#1\&wdrst=0\&wddmtm=1\&wdeac=1}{\large{\fntzhr #1}} & \parbox[l][7mm][c]{4\tw/16}{\solution{#2}}
+  \scriptsize\arabic{cntr}. & \large{\fntzhr #1} & \parbox[l][7mm][c]{4\tw/16}{\solution{#2}}
+ %%\index[xeng]{#2 ({\fntzhr #1})}
+  %\index[xeng]{#2}
+  %\index[xchar]{{\fntzhr #1} (#2)}
+  }
+
+\newcommand{\lzentry}[3][13\tw/32]{% list entry with Chinese
+  %\tabularnewline
+  %\hline
+  \refstepcounter{cntr}
+  \begin{tabular}[t]{>{\scriptsize}lp{#1}}
+    \arabic{cntr}. &#2\\%
+                   &\fntzhr#3%
+  \end{tabular}%
+  }
+
+\newcommand{\ezs}[2]{% English Chinese stack
+  \begin{tabular}[t]{@{}l@{}}%
+    \raggedright#1\tabularnewline%
+    \raggedright{\color{blue}\fntzhr#2}%
+  \end{tabular}%
+  }%
+\newcommand{\ezsn}[2]{% English Chinese stack preceded by newline
+  \newline
+  \begin{tabular}[t]{@{}l@{}}%
+    \raggedright#1\tabularnewline%
+    \raggedright{\color{blue}\fntzhr#2}%
+  \end{tabular}%
+  }%
+\newcommand{\ezsh}[2]{% English Chinese stack preceded by hline
+  \newline\hline
+  \begin{tabular}[t]{@{}l@{}}%
+    \raggedright#1\tabularnewline%
+    \raggedright{\color{blue}\fntzhr#2}%
+  \end{tabular}%
+  }%
+\newcommand{\ezsc}[2]{{% number English Chinese stack with count
+  \refstepcounter{cntr}
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}l@{}}
+    \scriptsize\arabic{cntr}. &#1\\
+                   &\raggedright {\color{blue}\fntzhr#2}%
+  \end{tabular}} %\newline
+  }
+\newcommand{\ezso}[2]{{% number English Chinese stack with count set to one
+  \cntreset%
+  \refstepcounter{cntr}%
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}l@{}}%
+    \scriptsize\arabic{cntr}. &#1\\%
+                   &\raggedright {\color{blue}\fntzhr#2}%
+  \end{tabular}} %\newline
+  }%
+\newcommand{\ezscn}[2]{{% English Chinese stack with count and preceded by newline
+  \tabularnewline%
+  \refstepcounter{cntr}%
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}l@{}}
+    \scriptsize\arabic{cntr}. &#1\\
+                   &\raggedright {\color{blue}\fntzhr#2}%
+  \end{tabular}} %\newline
+  }
+\newcommand{\ezsct}[2]{{% English Chinese stack with count and preceded by a tab
+  %&%
+  \refstepcounter{cntr}%
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}l@{}}%
+    \scriptsize\arabic{cntr}. &#1\tabularnewline%
+                   &\raggedright {\color{blue}\fntzhr#2}%
+  \end{tabular}} %\newline
+  }%
+\newcommand{\ezsch}[2]{{% number English Chinese stack with count set preceded by hline
+  \tabularnewline\hline%
+  \refstepcounter{cntr}%
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}l@{}}
+    \scriptsize\arabic{cntr}. &#1\tabularnewline
+                   &\raggedright {\color{blue}\fntzhr#2}%
+  \end{tabular}} %\newline
+  }
+%\newcommand{\ezs}[2]{% English Chinese stack
+%%  #1 #2
+%  \begin{tabular}[t]{@{}l@{}}%
+%%    \raggedright #1\\%
+%%    \raggedright{\color{blue}\fntzhr#2}%
+%  \end{tabular}%
+%  }%
+\newcommand{\ezsp}[3][\tw-2ex]{{% English Chinese stack for poster
+  \refstepcounter{cntr}
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}p{\tw-10mm}@{}}
+    \large\arabic{cntr}. &\raggedright#2\normalsize\\%
+                   &\large\raggedright{\color{blue}\fntzhr#3}%
+  \end{tabular}} %\newline
+  }
+\newcommand{\ezsr}[3][\tw-2ex]{{% English Chinese stack -- review
+  \refstepcounter{cntr}%
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}l@{}}%
+    \scriptsize\arabic{cntr}. & #2\\%
+                   &\small\raggedright \color{blue}\fntzht#3%
+  \end{tabular}}%
+  }%
+
+\newcommand{\ezhsr}[3][\tw-2ex]{{% English Chinese stack -- review
+  \refstepcounter{cntr}
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}l@{}}
+    \scriptsize\arabic{cntr}. & #2%\\
+                  % &\raggedright {\color{blue}\fntzhr#3}%
+  \end{tabular}} %
+  }
+\newcommand{\ezhs}[3][\tw-2ex]{{% English Chinese stack, hide Chinese
+  %\tabularnewline
+  %\hline
+  \refstepcounter{cntr}
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}l@{}}
+    \scriptsize\arabic{cntr}. &\large#2%\\
+                   %&\raggedright {\color{blue}\fntzhr#3}%
+  \end{tabular}} %
+  }
+
+%\newcommand{\ezsm}[3][\tw-2ex]{{% English Chinese stack -- multiline
+%  %\tabularnewline
+%  %\hline
+%  \refstepcounter{cntr}
+%  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}p{#1}@{}}
+%    \scriptsize\arabic{cntr}. &\large#2\\
+%                   &\raggedright {\color{blue}\fntzhr#3}%
+%  \end{tabular}} %
+%  }
+
+%\newcommand{\ezsm}[3][\tw-2ex]{{% English Chinese stack -- multiline
+%  %\tabularnewline
+%  %\hline
+%  \refstepcounter{cntr}
+%  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}p{#1}@{}}
+%    \scriptsize\arabic{cntr}. &#2 %\\
+%                   \raggedright {\color{blue}\fntzhr#3}%
+%  \end{tabular}} %
+%  }
+
+\newcommand{\ezsm}[3][\tw-2ex]{{% English Chinese stack -- multiline
+  \begin{tabular}[t]{p{#1}}
+    #2 %\\
+    \raggedright {\color{blue}\fntzhr#3}%
+  \end{tabular}} %
+  }
+
+\newcommand{\ezhsm}[3][\tw-2ex]{{% English Chinese stack -- multiline, hide Chinese characters
+  %\tabularnewline
+  %\hline
+  \refstepcounter{cntr}
+  \begin{tabular}[t]{@{}p{1ex}@{\hspace{1ex}}p{#1}@{}}
+    \scriptsize\arabic{cntr}. &\large#2%\\
+%                   &\raggedright {\color{blue}\fntzhr#3}%
+  \end{tabular}} %\newline
+  }
+
+\newcommand{\ezsx}[2]{
+  \refstepcounter{cntr}
+  1 2 3 \begin{tabular}{l}
+    #1 %\tabularnewline 
+    %#1
+  \end{tabular} x y z\newline
+  }
+
+\newcommand{\ztrans}[3][13\tw/32]{% Chinese translation
+  \parbox[t]{#1}{%
+    #2\\%
+    {\color{blue}\fntzhr#3}%
+    }%
+  }
+
+\newcommand{\lzhentry}[3][13\tw/32]{% list entry with Chinese
+  %\tabularnewline
+  %\hline
+  \refstepcounter{cntr}
+  \begin{tabular}[t]{>{\scriptsize}lm{#1}}
+    \arabic{cntr}. &#2%\\%
+                %   &{\fntzhr#3%
+  \end{tabular}%
+  }
+
+\newcommand{\lsentry}[3][30mm]{% list entry with solution
+  %\tabularnewline
+  %\hline
+  \refstepcounter{cntr}
+  \scriptsize\arabic{cntr}. & #2 \blanksol[#1]{#3}
+  \index[xeng]{#3}
+  }
+
+\newcommand{\bso}[2][]{\blanksol[#1]{#2}}% blank with solution
+\newcommand{\bsox}[2][]{\blank[#1]}% blank with extraneous (extra) unused paramter
+\newcommand{\blanksol}[2][]{% blank with solution
+  \ifthenelse{\isempty{#1}}{\settowidth{\length}{#2#2}}{\setlength{\length}{#1}}
+  %\ifthenelse{#1=0}{\settowidth{\length}{#2#2}}{\setlength{\length}{#1}}
+  \ifthenelse{\boolean{showSolution}}%
+    {\underline{\parbox[l][1em][c]{\length}{\centering\textcolor{blue}{#2}}}}%
+    {\underline{\parbox[l][1em][c]{\length}{\hspace{1ex}}}}%
+  %\ifthenelse{\isempty{#2}}{}{\index[xeng]{#2}}
+  }
+\newcommand{\bsoAo}[2][]{\cntreset\refstepcounter{cntr}\blankopt[#1]{\Alph{cntr}}{#2}}%blank with ABC counter set to A
+\newcommand{\bsoA} [2][]{\refstepcounter{cntr}\blankopt[#1]{\Alph{cntr}}{#2}}%blank with ABC counter
+
+\newcommand{\bss}[2][30mm]{\blanksso[#1]{#2}}% blank with shown solution
+\newcommand{\blanksso}[2][30mm]{% blank with shown solution
+  \underline{\parbox[l][1em][c]{#1}{\centering\color{blue}#2}}%
+  \index[xeng]{#2}
+  }
+
+%\newcommand{\blankops}[3][]{% blank with option and solution
+%  {\showSolution\blankopt[#1]{#2}{#3}}
+%  }
+
+%\newcommand{\blank}   [1][10mm]{\blankopt[#1]{}{}}%blank with hint
+\newcommand{\blank}   [1][10mm]{\underline{\hspace{#1}}}% blank line
+\newcommand{\bhint}   [2][]{\blankopt[#1]{#2}{}}%blank with hint
+\newcommand{\bzyhint} [2][]{\blankopt[#1]{{\fntzhr#2}}{}}%blank with hint in Chinese with bopomofo
+\newcommand{\bcopy}   [2][]{\blankopt[#1]{#2}{#2}}%blank with what to copy
+\newcommand{\bhintx}  [3][]{\blankopt[#1]{#2}{}}%blank with hint and extraneous (unused) parameter (used for making writing exercises from listening exercises
+\newcommand{\bop}     [3][]{\blankopt[#1]{#2}{#3}}%blank with options and hidden solution
+
+
+\newcommand{\bops}[3][]{\blankops[#1]{#2}{#3}}%blank with options and shown solution
+\newcommand{\blankopt}[3][]%blank with options and solution
+  {%
+    \ifthenelse{\not\isempty{#2}}{\settowidth{\lengtha}{#2#2}}{\settowidth{\lengtha}{1em}}%
+    \ifthenelse{\not\isempty{#3}}{\settowidth{\lengthb}{#3#3}}{\settowidth{\lengthb}{1em}}%
+    \ifthenelse{\not\isempty{#1}}%
+      {\setlength{\length}{#1}}%
+      {\ifthenelse{\isempty{#3}}%
+        {\settowidth{\length}{#2#2}}%
+        {\settowidth{\length}{#3#3}}%
+      }%
+      %{\ifthenelse{\lengthtest{\lengtha>\lengthb}}%      
+      %  {\settowidth{\length}{\lengtha}}%
+      %  {\settowidth{\length}{\lengthb}}%
+      %}%
+    \renewcommand{\arraystretch}{0.5}%
+    \begin{tabular}[t]{@{}c@{}}%
+      \blanksol[\length]{#3}%
+      \\%
+      \scriptsize\textcolor{blue}{#2}%
+    \end{tabular}%
+    \renewcommand{\arraystretch}{1}%
+  }%
+
+\newcommand{\blankp}[3][2em]{%phonics blank with options and solution
+  \renewcommand{\arraystretch}{0.5}
+  \begin{tabular}[t]{@{}c@{}}%
+    \blanksol[#1]{\fntipa#3}%
+    \\%
+    \scriptsize\textcolor{blue}{\fntipa#2}%
+  \end{tabular}%
+  \renewcommand{\arraystretch}{1}
+  }%
+
+\newcommand{\blankops}[3][30mm]{%blank with options and solution
+  \renewcommand{\arraystretch}{0.5}
+  \begin{tabular}[t]{@{}c@{}}%
+    \blanksso[#1]{#3}%
+    \\%
+    \scriptsize\textcolor{blue}{#2}%
+  \end{tabular}%
+  \renewcommand{\arraystretch}{1}
+  }%
+
+\newcommand{\circledopx}[1]{%
+  \ifthenelse{\boolean{showSolution}}%
+    {\declareslashed{}{#1}{0}{0}{\ensuremath{\bigcirc}}\slashed{\ensuremath{\bigcirc}}}%
+    {#1}
+  }
+
+\newcommand{\circledop}[1]{%
+  \ifthenelse{\boolean{showSolution}}%
+    {\fbox{#1}}%
+    {#1}
+  }
+
+\newcommand{\cwpuzzlesol}[1]{%crossword puzzle with solution
+  \ifthenelse
+    {\boolean{showSolution}}
+    {%
+      \newpage
+      %\begin{cwpuzzle}#1\end{cwpuzzle}
+      #1
+      \subsection*{Crossword puzzle solution {\fntzhr ?????????}}
+      %{\PuzzleSolution\begin{cwpuzzle}#1\end{cwpuzzle}}
+      {\PuzzleSolution#1}
+      \newpage
+    }{
+      %\begin{cwpuzzle}#1\end{cwpuzzle}
+      #1
+    }
+  }
+
+%---------------------------------------
+% Stacked data buses
+%---------------------------------------
+\newcommand{\bussez}[7]{%stacked bus with English and Chinese
+  \busx{#1}{#2}{#3}{#4}{#5}{#6}{#7}%
+  \begin{tabular}[t]{c}%
+    #1\tabularnewline%
+    {\fntzhr #3}%
+  \end{tabular}}%
+
+\newcommand{\busseT}[6]{%stacked bus with English and text (e.g. text specified graphic)
+  \busx{#1}{#2}{#3}{#4}{#5}{}{}%
+  \begin{tabular}[t]{c}%
+    #1\tabularnewline%
+    \ifthenelse{\isempty{#6}}{{\fntzhr #3}}{{#6}}%
+  \end{tabular}}%
+
+\newcommand{\busseTz}[7][10mm]{%stacked bus with English, text (e.g. text specified graphic), and Chinese
+  \busx{#2}{#3}{#4}{#5}{#6}{}{}%
+  \begin{tabular}[t]{c}%
+    #2\tabularnewline%
+    \parbox[c][#1][c]{#1}{%
+      \centering%
+      \ifthenelse{\isempty{#7}}{}{{#7}}%
+      }%
+    \tabularnewline%
+    {\fntzhr #4}
+  \end{tabular}}%
+
+\newcommand{\busseG}[8][10mm]{%stacked bus with English and graphic
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \begin{tabular}[t]{c}%
+    #2\tabularnewline%
+    \ifthenelse{\isempty{#7}}{{\fntzhr #4}}{\rgraphic{#1}{#1}{#7}}
+  \end{tabular}}%
+
+\newcommand{\busseGz}[8][10mm]{%stacked bus with English, graphic, and Chinese
+  \busx{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  \begin{tabular}[t]{c}%
+    #2\tabularnewline%
+    \parbox[c][#1][c]{#1}{%
+      \centering%
+      \ifthenelse{\isempty{#7}}{}{\rgraphic{#1}{#1}{#7}}%
+      }%
+    \tabularnewline%
+    {\fntzhr #4}%
+  \end{tabular}}%
+
+%---------------------------------------
+% Banners
+%---------------------------------------
+%\newcommand{\banner}[3][blue]{%
+%  {\raggedleft%
+%  \begin{tabular}{m{\tw-2mm}}%
+%    \cellcolor{blue}\color{white}\scshape\textbf{\mpcnt #2} \dashrulefill[-1.1mm]{1mm 1mm}{1em}\fntXits\textbf{\sun}%
+%    %\cellcolor{blue}\color{white}\scshape\textbf{\mpcnt #2} \ifthenelse{\isempty{#3}}{}{(\fntzhr #3)}\dashrulefill[-1.1mm]{1mm 1mm}{1em}\fntXits\textbf{\sun}%
+%   % \cellcolor[rgb]{#1}\color{white}\scshape\textbf{\mpcnt #2} ({\fntzhr #3})\dashrulefill[-1.1mm]{1mm 1mm}{1em}\fntXits\textbf{\sun}%
+%  \end{tabular}\newline%
+%%  \end{tabular}\newline\nopagebreak[4]%
+%  }}%
+
+\newcommand{\banner}[3][blue]{%
+  {\raggedleft%
+  \begin{tabular}{m{\tw-4.5mm}}%
+    %\cellcolor{blue}\color{white}\scshape\textbf{\mpcnt #2} \ifthenelse{\isempty{#3}}{}{(\fntzht\bfseries{#3})}\dashrulefill[-1.1mm]{1mm 1mm}{1em}%
+%    \cellcolor{blue}\color{white}\scshape\textbf{\mpcnt #2} \ifthenelse{\isempty{#3}}{}{\fntzht\bfseries{}}\dashrulefill[-1.1mm]{1mm 1mm}{1em}%
+    \cellcolor{blue}\color{white}\scshape\textbf{\mpcnt #2} \ifthenelse{\isempty{#3}}{}{\fntzht\bfseries{}}\dashrulefill[-1.1mm]{1mm 1mm}{1em}%
+    \colorbox{white}{\includegraphics[height=2mm]{../common/graphics/watercraft/ghind_djg_blue.eps}}%
+   % \cellcolor[rgb]{#1}\color{white}\scshape\textbf{\mpcnt #2} ({\fntzhr #3})\dashrulefill[-1.1mm]{1mm 1mm}{1em}\fntXits\textbf{\sun}%
+  \end{tabular}\newline%
+%  \end{tabular}\newline\nopagebreak[4]%
+  }}%
+
+ \newcommand{\bannerABC}            [1][]{\banner[blue]{Alphabet}    {??}}%
+ \newcommand{\bannerPenmanship}     [1][]{\banner[blue]{Penmanship}  {??}}%
+ \newcommand{\bannerLessonPlan}     [1][]{\banner[blue]{Lesson Plan} {????}}
+ \newcommand{\bannerRiddles}        [1][]{\banner[blue]{Riddles}     {??}}
+ \newcommand{\bannerRiddle}         [1][]{\banner[blue]{Riddle}      {??}}
+ \newcommand{\bannerInNews}         [1][]{\banner[blue]{In the News} {????}}
+ \newcommand{\bannerQuiz}           [1][]{\banner[blue]{Quiz --- please see additional sheet}{??,????????}}
+ \newcommand{\bannerQuote}          [1][]{\banner[blue]{Quote}       {??}}
+ \newcommand{\bannerReview}         [1][]{\banner[blue]{Review}      {??}}
+ \newcommand{\bannerReviewSentences}[1][]{\banner[blue]{Review Sentences} {????}}
+ \newcommand{\bannerReviewtz}       [3][]{\banner[blue]{Review: #2}  {??: #3}}
+ \newcommand{\bannerWarmUp}         [1][]{\banner[blue]{Warm-up}     {??}}
+ \newcommand{\bannerVocabulary}     [1][]{\banner[blue]{Vocabulary}  {??}\cntreset}
+ \newcommand{\bannerVocabularytz}   [3][]{\banner[blue]{Vocabulary: #2}{??: #3}}
+ \newcommand{\bannerConversation}   [1][]{\banner[blue]{Conversation}{??}}
+ \newcommand{\bannerConversationtz} [3][]{\banner[blue]{Conversation: #2}{??: #3}}
+ \newcommand{\bannerGrammar}        [1][]{\banner[blue]{Grammar}{??}}
+ \newcommand{\bannerGrammartz}      [3][]{\banner[blue]{Grammar: #2}{???#3}}
+ \newcommand{\bannerPhonetics}      [1][]{\banner[blue]{Phonetics}{???}}
+ \newcommand{\bannerPhonics}        [1][]{\banner[blue]{Phonics}{???}}
+ \newcommand{\bannerPoem}           [1][]{\banner[blue]{Poem}{?}}
+ \newcommand{\bannerKK}             [1][]{\banner[blue]{KK Phonics}{KK??}}
+ \newcommand{\bannerKKtz}           [3][]{\banner[blue]{KK Phonics: #2}{KK???#3}}
+ \newcommand{\bannerReading}        [1][]{\banner[blue]{Reading}{??}}
+ \newcommand{\bannerReadingtz}      [3][]{\banner[blue]{Reading: #2\normalsize\footnotemark}{??: #3}}
+ \newcommand{\bannerWriting}        [1][]{\banner[blue]{Writing (#1)}{??}}
+ %\newcommand{\bannerWriting}        [1]e]{\banner[#1]{Writing }{??}}
+ \newcommand{\bannerWS}             [1][]{\banner[blue]{Write and Speak}{?????}}
+ \newcommand{\bannerWritingtz}      [3][]{\banner[blue]{Writing: #2\normalsize\footnotemark}{??: #3}}
+ \newcommand{\bannerChangeStory}    [1][]{\banner[blue]{Writing: change the story}{??: ????} \cntreset}
+ \newcommand{\bannerDrill}          [1][]{\banner[blue]{Drill}{??}}
+%\newcommand{\bannerChangeStory}    [1][]{\banner[#1]{Writing: change the story; make your own story. \normalsize\footnotemark}{??: ????; ???????} \cntreset}
+ \newcommand{\bannerChangeSong}     [1][]{\banner[blue]{Writing: change the song}{??: ???} \cntreset}
+ \newcommand{\bannerTranslation}    [1][]{\banner[blue]{Translation}{??} \cntreset}
+ \newcommand{\bannerTranslate}      [1][]{\banner[blue]{Translate}{??} \cntreset}
+ \newcommand{\bannerDiscussion}     [1][]{\banner[blue]{Discussion}{??}}
+ \newcommand{\bannerSitDial}        [1][]{\banner[blue]{Situation Dialog}{????}}
+ \newcommand{\bannerSentences}      [1][]{\banner[blue]{Sentences}{??}\cntreset}
+ \newcommand{\bannerSP}             [1][]{\banner[blue]{Sentence Patterns}{??}}
+ \newcommand{\bannerSentencestz}    [3][]{\banner[blue]{Sentences: #2}{??: #3}}
+ \newcommand{\bannerIdioms}         [1][]{\banner[blue]{Idioms \footnotemark}{???}}
+ \newcommand{\bannerIdiom}          [1][]{\banner[blue]{Idiom \footnotemark}{???}}
+ \newcommand{\bannerPhrasals}       [1][]{\banner[blue]{Phrasals\footnotemark}{??}}
+ \newcommand{\bannerSongtz}         [3][]{\banner[blue]{Song: #2}{?: #3}}
+ \newcommand{\bannerSong}           [1][]{\banner[blue]{Song}{?}}
+ \newcommand{\bannerLesson}         [1][]{\banner[blue]{Lesson}{?}}
+ \newcommand{\bannerHomework}       [1][]{\banner[blue]{Homework}{??}}
+ \newcommand{\bannerExercises}      [1][]{\banner[blue]{Exercises}{??}}
+ \newcommand{\bannerExercise}       [1][]{\banner[blue]{Exercise}{??}}
+ \newcommand{\bannerPuzzle}         [1][]{\banner[blue]{Puzzle}{?}}
+ \newcommand{\bannerPuzzles}        [1][]{\banner[blue]{Puzzles}{?}}
+ \newcommand{\bannerTheme}          [3][]{\banner[blue]{Theme: #2}{??: #3}}
+ \newcommand{\bannerThemetz}        [3][]{\banner[blue]{Theme: #2}{??: #3}}
+ \newcommand{\bannerListen}         [1][]{\banner[blue]{Listen}{??}}
+ \newcommand{\bannerLOR}            [1][]{\banner[blue]{Listen, Order, and Read}{?,???,??}}
+ \newcommand{\bannerOR}             [1][]{\banner[blue]{Order and Read}{???,??}}
+ \newcommand{\bannerLR}             [1][]{\banner[blue]{Listen and Read}{???}}
+ \newcommand{\bannerSpeak}          [1][]{\banner[blue]{Speak}{??}}
+ \newcommand{\bannerSpeaking}       [1][]{\banner[blue]{Speaking}{??}}
+ \newcommand{\bannerSL}             [1][]{\banner[blue]{Speak and Listen}{?????}}
+ \newcommand{\bannerNotice}         [1][]{\banner[blue]{Notice}{??}}
+ \newcommand{\bannerPractice}       [1][]{\banner[blue]{Practice}{??}}
+ \newcommand{\bannerProverb}        [1][]{\banner[blue]{Proverb}{??}}
+ \newcommand{\bannerDrilltz}        [3][]{\banner[blue]{Drill: #2}{??: #3}}
+ \newcommand{\bannerAskMeTellMe}    [1][]{\banner[blue]{Ask me tell me drill}{????}}
+ \newcommand{\bannerRC}             [1][]{\banner[blue]{Reading Comprehension}{??}}
+ \newcommand{\bannerLC}             [1][]{\banner[blue]{Listening Comprehension}{??}}
+ \newcommand{\bannerQA}             [1][]{\banner[blue]{Questions and Answers}{??}}
+ \newcommand{\bannerActivities}     [1][]{\banner[blue]{Activities}{??}}
+ \newcommand{\bannerPrediction}     [1][]{\banner[blue]{Prediction}{??}}
+ \newcommand{\bannerPresentation}   [1][]{\banner[blue]{Presentation}{}}
+ \newcommand{\bannerGame}           [1][]{\banner[blue]{Let's Play a Game}{????}}
+ \newcommand{\bannerGametz}         [3][]{\banner[blue]{Game: #2}{???#3}}
+ \newcommand{\bannerSolutions}      [1][]{\banner[blue]{Solutions}{??}}
+ \newcommand{\bannerLetEnglishBingo}[1][]{\bannerEnglishBingo[blue]}
+ \newcommand{\bannerEnglishBingo}   [1][]{\banner[blue]{English Bingo}{????}}
+ \newcommand{\bannerEverydayEnglish}[1][]{\banner[blue]{Everyday English}{?????}}
+ \newcommand{\bannerWordSearch}     [1][]{\banner[blue]{Word Search (#1)}{????}}
+ \newcommand{\bannerWordSearchSol}  [1][]{\banner[blue]{Solutions: Word Search}{??????}}
+ \newcommand{\bannerTextBook}       [1][]{\banner[blue]{Text Book}{??}}
+ \newcommand{\bannerUnscramble}     [1][]{\banner[blue]{Unscramble (#1)}{??}}
+ \newcommand{\bannerWhatsUp}        [1][]{\banner[blue]{What's Up?}{????}}
+ \newcommand{\bannerDraw}           [1][]{\banner[blue]{Draw}{??}}
+ \newcommand{\bannerDS}             [1][]{\banner[blue]{Draw and Speak}{?????}}
+ \newcommand{\bannerLD}             [1][]{\banner[blue]{Listen and Draw}{????}}
+ \newcommand{\bannerLDR}            [1][]{\banner[blue]{Listen, Draw, and Riddle}{?,??,???}}
+ \newcommand{\bannerLTP}            [1][]{\banner[blue]{Lateral Thinking Puzzle}{??}}
+ \newcommand{\bannerMysHis}         [1][]{\banner[blue]{Mystery from History}{??????}}%
+ \newcommand{\bannerHistory}        [1][]{\banner[blue]{History}{??}}%
+ \newcommand{\bannerWhatMean}       [1][]{\banner[blue]{What Does It Mean?}{??????}}%
+ \newcommand{\bannerMysMath}        [1][]{\banner[blue]{Mystery from Mathematics}{??????}}%
+ \newcommand{\bannerRD}             [1][]{\banner[blue]{Read and Draw}{????}}
+ \newcommand{\bannerRef}            [1][]{\banner[blue]{References}{??}}
+ \newcommand{\bannerPoster}         [1][]{\banner[blue]{Poster}{??}\cntreset}
+ \newcommand{\bannerPosterez}       [3][]{\banner[blue]{Poster ({\fntzhr ??}): #2}{#3}\cntreset}
+ \newcommand{\bannerJoke}           [1][]{\banner[blue]{Joke}{??}}
+ \newcommand{\bannerJokes}          [1][]{\banner[blue]{Jokes}{??}}
+ \newcommand{\bannerPhysics}        [1][]{\banner[blue]{Physics}{??}}
+ \newcommand{\bannerDebate}         [1][]{\banner[blue]{Debate}{???}}
+ \newcommand{\bannerGeography}      [1][]{\banner[blue]{Geography}{???}}
+ \newcommand{\bannerVideo}          [1][]{\banner[blue]{Video}{??}}
+ \newcommand{\bannerBible}          [1][]{\banner[blue]{The Bible}{??}}
+ \newcommand{\bannerMath}           [1][]{\banner[blue]{Math}{??}}
+ \newcommand{\bannerCrossWord}      [1][]{\banner[blue]{Crossword Puzzle (#1)}{??????}}
+ \newcommand{\bannerWhatDiff}       [1][]{\banner[blue]{What's the Difference?}{??????}}
+
+
+
+%---------------------------------------
+% Game boards
+%---------------------------------------
+\newenvironment{envSnakeGame}[2]{% 1=number of squares in a row;  2=credits
+  \arrayrulecolor{black}%
+  \setlength{\sqsize}{\textwidth/#1-2mm}   % square size for games
+  \setlength{\imgsize}{\sqsize-1mm}  % image size for games
+  \begin{footnotesize}
+  \footnotetext{\scriptsize Sources of images: #2}%
+  %\begin{tabular}{@{}*{10}{c@{}}}
+  %\begin{tabular}{|@{}*{10}{c@{}|}}
+  \begin{tabular}{|@{}*{10}{p{\sqsize}@{}|}}
+    \hline%
+  }
+  {
+    \\\hline%
+  \end{tabular}\footnotemark%
+  \end{footnotesize}%
+  }%
+
+\newenvironment{envGameBoard}[5]{%  ****** deprecated  ********
+  \arrayrulecolor{black}%
+  \setlength{\sqsize}{\textwidth/#1-1mm}   % square size for games
+  \setlength{\imgsize}{\sqsize-1mm}  % image size for games
+  \begin{footnotesize}
+  \banner{#3 \footnotemark}{#4}%
+  \footnotetext{\scriptsize Sources of images: #2}\\%
+  \nopagebreak#5\nopagebreak\\\nopagebreak%
+  %\begin{tabular}{@{}*{10}{c@{}}}
+  %\begin{tabular}{|@{}*{10}{c@{}|}}
+  \begin{tabular}{|@{}*{10}{p{\sqsize}@{}|}}
+    \hline%
+  }
+  {
+    \vline\\\hline%
+  \end{tabular}%
+  \end{footnotesize}%
+  }%
+
+\newenvironment{envGameBoardAAA}[5]{%
+  \newpage
+  \arrayrulecolor{black}%
+  \begin{landscape}
+  %\setlength{\sqsize}{\textheight/#1}   % square size for games
+  \setlength{\sqsize}{330mm/#1}   % square size for games
+  \setlength{\imgsize}{\sqsize-1mm}  % image size for games
+  \begin{Large}
+  \banner{#3 \footnotemark}{#4}%
+  \footnotetext{\scriptsize Sources of images: #2}\\
+  #5\\%
+  \vfill
+  \begin{tabular}{@{}*{10}{c@{}}}
+    \hline%
+  }
+  {
+    \vline\\\hline%
+  \end{tabular}%
+  \end{Large}%
+  \vfill
+  \end{landscape}
+  \newpage
+  }%
+
+\newenvironment{envSayTwoAAA}[2]{%
+  \begin{envGameBoardAAA}
+    {#1}
+    {#2 games very similar to this one: \emph{Say Two Things and Ask a Questions}, 
+     \emph{Say Two Things}, and \emph{Say Four Things}: 
+     \url{http://bogglesworldesl.com/esl_games.htm}.
+    }
+    {Game: Say Something!}
+    {??:?????}
+    {Roll the dice. Move your game piece. If you land on a picture, say something about it.}
+  }%
+  {\end{envGameBoardAAA}}%
+
+\newenvironment{envSayTwo}[2]{%
+  \begin{envGameBoard}
+    {#1}
+    {#2 games very similar to this one: \emph{Say Two Things and Ask a Questions}, 
+     \emph{Say Two Things}, and \emph{Say Four Things}: 
+     \url{http://bogglesworldesl.com/esl_games.htm}.
+    }
+    {Game: Say Something!}
+    {??:?????}
+    {Roll the dice. Move your game piece. If you land on a picture, say something about it.}
+  }%
+  {\end{envGameBoard}}%
+
+\newcommand{\gameSqT}[1]{%
+  \parbox[c][\sqsize][c]{\sqsize}{\centering\raggedright#1}%
+  }%
+\newcommand{\gameSqTr}[2]{%
+  \rnode{#1}{\parbox[c][\sqsize][c]{\sqsize}{\centering\raggedright#2}}%
+  }%
+\newcommand{\gameSqBusI}[7]{%
+  \parbox[c][\sqsize][c]{\sqsize}{\busI[\imgsize]{#1}{#2}{#3}{#4}{#5}{#6}{#7}}%
+  }%
+\newcommand{\gameSqBusIr}[8]{%
+  \rnode{#1}{\parbox[c][\sqsize][c]{\sqsize}{\busI[\imgsize]{#2}{#3}{#4}{#5}{#6}{#7}{#8}}}%
+  }%
+\newcommand{\gameSqBusT}[6]{%
+  \parbox[c][\sqsize][c]{\sqsize}{#6\busx{#1}{#2}{#3}{#4}{#5}{}{}}%
+  }%
+\newcommand{\gameSqBusTr}[6]{%
+  \rnode{#1}{\parbox[c][\sqsize][c]{\sqsize}{#6\busx{#2}{#3}{#4}{#5}{#6}{}{}}}%
+  }%
+
+
+%---------------------------------------
+% Language environments
+%---------------------------------------
+\newenvironment{envReading}[4][0,0,1]{%
+  \cntreset%
+  \bannerReadingtz[#1]{#2}{#3}
+  \footnotetext{\scriptsize #4}%
+  %\begin{longtable}{|>{\raggedright}m{\tw}|}
+  \begin{longtable}{|p{\tw}|}
+  \hline
+  }{
+  \\\hline
+  \end{longtable}
+  }
+
+\newenvironment{envRiddle}[4][0,0,1]{%
+  \cntreset%
+  \banner[#1]{Riddle: #2}{??: #3}
+  \footnotetext{\scriptsize #4}%
+  \begin{longtable}{|p{\tw}|}
+  \hline
+  }{
+  \\\hline
+  \end{longtable}
+  }
+
+\newenvironment{envSong}[7]{%
+  \cntreset%
+  %\ifthenelse{\boolean{showSolution}}{\scriptsize}{\bannerSong}
+  \bannerSong\nopagebreak
+  \begin{footnotesize}%
+  \begin{tabstr}{0.5}%
+  \begin{tabular}{|ll|p{\tw-42mm}|}
+    \hline
+    song title & ({\fntzhr ??}) & #1 ({\fntzhr #2})\\
+    singer     & ({\fntzhr ??}) & #3 \\
+    lyrics     & ({\fntzhr ??}) & #4 \\
+    %\ifthenelse{\boolean{showSolution}}{}{
+      \hline
+      lyrics     & ({\fntzhr ??})   & \scriptsize\url{#5} \\
+      mp3        & ({\fntzhr mp?})   & \scriptsize\url{#6} \\
+      video      & ({\fntzhr ???}) & \scriptsize\url{#7} \\
+    %  }
+    \hline
+  \end{tabular}%
+  \end{tabstr}%
+  \end{footnotesize}%
+  \begin{longtable}{|>{\scriptsize}r|p{\tw-15mm}|}
+  \hline
+  }{
+  \\\hline
+  \end{longtable}
+  }
+
+\newcommand{\songHeader}[8]{%
+  \bannerSong%
+  \begin{footnotesize}%
+  \begin{tabstr}{0.5}%
+  \begin{tabular}{|l<{:}l || l<{:}l|}
+    \hline
+    song title &  \emph{#1} (#2)  & album      &  \emph{#3} \\
+   %year       &  #2 \\
+    singer     &  #4       & lyrics     &  #5 \\
+    \hline
+    lyrics     &  \mc{3}{|l|}{\scriptsize\url{#6}}\\
+    mp3        &  \mc{3}{|l|}{\scriptsize\url{#7}}\\
+    video      &  \mc{3}{|l|}{\scriptsize\url{#8}}\\
+    \hline
+  \end{tabular}%
+  \end{tabstr}%
+  \newline%
+  \end{footnotesize}%
+  }%
+
+\newenvironment{envSentences}[3][0,0,1]{%
+  \cntreset%
+  \bannerSentencestz[#1]{#2}{#3}
+  \begin{tabular}{|l|}
+  \hline
+  }{
+  \\\hline
+  \end{tabular}
+  }
+
+\newenvironment{envSentencesd}[3][0,0,1]{%
+  \cntreset%
+  \bannerSentencestz[#1]{#2}{#3}
+ %\begin{tabular}{|*{2}{p{\tw/2}|}}
+  \begin{tabular}{|*{2}{l|}}
+  \hline
+  }{
+  \\\hline
+  \end{tabular}
+  }
+\newenvironment{envSentencesdnt}[1][0,0,1]{%
+  \cntreset%
+  \bannerSentences
+ %\begin{tabular}{|*{2}{p{\tw/2}|}}
+  \begin{tabular}{|*{2}{l|}}
+  \hline
+  }{
+  \\\hline
+  \end{tabular}
+  }
+
+\newenvironment{envIdiomsD}[1][0,0,1]{%
+  \cntreset%
+  \bannerIdioms[#1]
+  \begin{tabular}{|*{2}{m{\tw/2}|}}
+  \hline
+  }{
+  \\\hline
+  \end{tabular}
+  }
+
+\newenvironment{envSolutions}[1][0,0,1]{%
+  \bannerSolutions[#1]%
+  \showSolution%
+  }{%
+  %\hideSolution%
+  }
+
+\newenvironment{envReviewSentencesd}{%
+  \cntreset%
+  %\renewcommand{\arraystretch}{1}%
+ %\begin{tabular}{|*{2}{m{\tw/2}|}}%
+  \begin{tabular}{|*{2}{l|}}%
+  \hline%
+  }{
+  \\\hline%
+  \end{tabular}%
+  %\renewcommand{\arraystretch}{1}%
+  }%
+
+\newenvironment{envlReviewSentencesd}{%
+  \cntreset%
+  \begin{longtable}{|*{2}{l|}}%
+  \hline%
+  }{
+  \\\hline%
+  \end{longtable}%
+  }%
+
+\newenvironment{envQA}[1][0,0,1]{%
+  \cntreset%
+  \bannerQA[#1]
+  \begin{longtable}{|*{2}{m{\tw/2}|}}
+  \hline
+  }{
+  \\\hline
+  \end{longtable}
+  }
+
+\newenvironment{envLC}[2]{%
+  \cntreset%
+  \bannerLC
+  Listen to the story ``{\fnthw#1}" ({\fntzhr ???}``{\fntzhhw#2}").
+  Answer the following questions.
+  }{
+  }
+
+\newenvironment{envChangeStory}[4][1]{%
+  \cntreset%
+  %\banner{Writing Exercise: change the story\normalsize\footnotemark}{????: ????}
+  %Change the story ``{\fnthw #2}";\footnotemark  make your own story. 
+  Change the story ``\emph{#2}";\footnotemark  make your own story. 
+  ({\fntzhr ????} ``{\fntzhhw#3}"{\fntzhr ; ????????})%
+  %({\fntzhr ????}``{\fntzhhw#3}"{\fntzhr ; ???????? ????})%
+  \footnotetext{\scriptsize #4}%
+  \begin{tabstr}{#1}
+  \begin{longtable}{|m{\tw}|}
+  \hline
+  \bcs[\tw/2]{Title of your story ({\fntzhr ??????})}{#2}
+  \\\hline
+  }{
+  \\\hline
+  \end{longtable}
+  \end{tabstr}
+  }
+
+%\newenvironment{envTellStory}[2]{%
+%  \cntreset%
+%  \banner{Speaking Exercise: change the story\normalsize\footnotemark}{????: ????}
+%  %Change the story ``{\fnthw #1}";\footnotemark  make your own story. Tell this story to the class.
+%  %({\fntzhr ????}``{\fntzhhw#2}"{\fntzhr ; ???????? ????????})%
+%  }{
+%  }
+
+\newcommand{\bcs}[3][40mm]{%change story blank: blank with hint and original content
+  \renewcommand{\arraystretch}{0.5}
+  \begin{tabular}[t]{@{}c@{}}%
+    \blanksol[#1]{#3}%
+    \\%
+    \scriptsize\textcolor{blue}{#2}%
+  \end{tabular}%
+  \renewcommand{\arraystretch}{1}
+  }%
+
+
+%=======================================
+% Double image flash card: two image flash cards on a single sheet of paper
+% 1: height of each card
+% 2: card 1 word
+% 3: card 1 word font size
+% 4: card 1 image path and file name
+% 5: card 1 image credit
+% 6: card 2 word
+% 7: card 2 word font size
+% 8: card 2 image path and file name
+% 9: card 2 image credit
+%=======================================
+\newcommand{\flashcardd}[9][180mm]{%
+  \arrayrulecolor{white}%
+  %\arrayrulecolor{black}%
+  \cleartooddpage%
+  \center%
+  \begin{tabular}{r|@{}c@{}|@{}c@{}|l}%
+      &&&\\\hline&%
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \centering%
+      \vfill%
+      \rgraphic{115mm}{160mm}{#4}\\\vfill%
+      \color{black}%
+      \tiny{#5}\\\vspace{5mm}%
+      \index{#5}%
+    \end{minipage}}%
+    &%
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \centering%
+      \vfill%
+      \rgraphic{115mm}{160mm}{#8}\\\vfill%
+      \tiny{#9}\\\vspace{5mm}%
+      \index{#9}%
+    \end{minipage}}%
+    &\\\hline&&&%
+    %\\%
+    %\cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  \end{tabular}%
+  \cleartoevenpage%
+  \arrayrulecolor{black}%
+  \begin{tabular}{r|@{}c@{}|@{}c@{}|l}%
+      &&&\\\hline%
+  %\begin{tabular}{r@{}c@{}c@{}l}%
+  %    \mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  %    \\\cline{1-1}\cline{4-4}%
+      &%
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{8mm}%
+      \tiny\indentx\rightmark \hfill %card \arabic{cntr}\indentx
+      \ifthenelse{\isempty{#2}}{\hspace{1pt}}{%
+        card \arabic{cntr}\indentx%
+        }%
+      \vfill%
+      \fontsize{#3}{#3}\normalfont%
+      \ifthenelse{\isempty{#2}}{\hspace{1pt}}{%
+        %#2%
+        \rotatebox[origin=c]{90}{#2}% reference: http://tex.stackexchange.com/questions/93797/how-to-rotate-text-inline
+        \index[xeng]{#2}%
+      }%
+      \tiny\\\vfill%
+      %\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/26280/}\indentx%
+      \raggedleft\indentx Daniel J. Greenhoe\hfill\mbox{}%
+      \\\vspace{5mm}%
+    \end{minipage}}%
+    &%
+   {\begin{minipage}[c][#1][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{8mm}%
+      \tiny\indentx\rightmark \hfill % card \arabic{cntr}\indentx
+      \ifthenelse{\isempty{#2}}{\hspace{1pt}}{%
+        card \arabic{cntr}\indentx%
+        }%
+      \vfill%
+      \fontsize{#7}{#7}\normalfont%
+      \ifthenelse{\isempty{#6}}{\hspace{1pt}}{%
+        %#6%
+        \rotatebox[origin=c]{90}{#6}% reference: http://tex.stackexchange.com/questions/93797/how-to-rotate-text-inline
+        \index[xeng]{#2}%
+      }%
+      \index[xeng]{#6}%
+      \tiny\\\vfill%
+      %\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/26280/}\indentx%
+      \raggedleft\indentx Daniel J. Greenhoe\hfill\mbox{}%
+      \\\vspace{5mm}%
+    \end{minipage}}%
+    &%
+    %\\
+    %\cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\hline&&&%
+  \end{tabular}%
+  }%
+
+
+%=======================================
+% Double file flash card: two text flash cards with credit line on a single sheet of paper
+% 1: size of image
+% 2: card 1 word
+% 3: card 1 word font size
+% 4: card 1 filename
+% 5: card 1 credit
+% 6: card 2 word
+% 7: card 2 word font size
+% 8: card 2 filename
+% 9: card 2 credit
+%=======================================
+\newcommand{\flashcardfcd}[9][115mm]{%
+  \arrayrulecolor{black}%
+  \cleartooddpage%
+  \begin{tabular}{r@{}c@{}c@{}l}%
+    \mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\cline{1-1}\cline{4-4}%
+    &%
+    {\begin{minipage}[c][175mm][c]{125mm}%
+      \centering%
+      \vfill%
+      {\srfile{#1}{0mm}{#4}}\\\vfill%
+      \tiny{#5}\\\vspace{5mm}%
+    \end{minipage}}%
+    &
+    {\begin{minipage}[c][175mm][c]{125mm}%
+      \centering%
+      \vfill%
+      {\srfile{#1}{0mm}{#8}}\\\vfill%
+      \tiny{#9}\\\vspace{5mm}%
+    \end{minipage}}%
+    &%
+    \\%
+    \cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  \end{tabular}%
+  \cleartoevenpage%
+  \arrayrulecolor{black}%
+  \begin{tabular}{r@{}c@{}c@{}l}%
+      \mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+      \\\cline{1-1}\cline{4-4}%
+      &%
+    \fbox{\begin{minipage}[c][175mm][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \begin{sffamily}%
+      \vspace{3mm}
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx
+      \vfill%
+      \fontsize{#3}{#3}\usefont{T1}{put}{n}{n}
+      \sffamily #2 %
+      \index[xeng]{#2}%
+      \tiny\\\vfill
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/26280/}\indentx%
+      \\\vspace{3mm}%
+      \end{sffamily}%
+    \end{minipage}}%
+    &
+    \fbox{\begin{minipage}[c][175mm][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \begin{sffamily}%
+      \vspace{3mm}
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx
+      \vfill%
+      \fontsize{#7}{#7}\usefont{T1}{put}{n}{n}
+      \sffamily #6 %
+      \index[xeng]{#6}%
+      \tiny\\\vfill
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/26280/}\indentx%
+      \\\vspace{3mm}%
+      \end{sffamily}%
+    \end{minipage}}%
+    &%
+    \\
+    \cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  \end{tabular}
+  }
+
+%=======================================
+% Double text flash card: two text flash cards with credit line on a single sheet of paper
+% 1: height of each card
+% 2: card 1 word
+% 3: card 1 word font size
+% 4: card 1 LaTeX commands
+% 5: card 1 credit
+% 6: card 2 word
+% 7: card 2 word font size
+% 8: card 2 LaTeX commands
+% 9: card 2 credit
+%=======================================
+\newcommand{\flashcardtcd}[9][175mm]{%
+  \arrayrulecolor{black}%
+  \cleartooddpage%
+  \begin{tabular}{r@{}c@{}c@{}l}%
+    \mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\cline{1-1}\cline{4-4}%
+    &%
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \centering%
+      \vfill%
+      {#4}\\\vfill%
+      \tiny{#5}\\\vspace{5mm}%
+    \end{minipage}}%
+    &
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \centering%
+      \vfill%
+      {#8}\\\vfill%
+      \tiny{#9}\\\vspace{5mm}%
+    \end{minipage}}%
+    &%
+    \\%
+    \cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  \end{tabular}%
+  \cleartoevenpage%
+  \arrayrulecolor{black}%
+  \begin{tabular}{r@{}c@{}c@{}l}%
+      \mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+      \\\cline{1-1}\cline{4-4}%
+      &%
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \begin{sffamily}%
+      \vspace{3mm}
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx
+      \vfill%
+      \fontsize{#3}{#3}\usefont{T1}{put}{n}{n}
+      \sffamily #2 %
+      \index[xeng]{#2}%
+      \tiny\\\vfill
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/26280/}\indentx%
+      \\\vspace{3mm}%
+      \end{sffamily}%
+    \end{minipage}}%
+    &
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \begin{sffamily}%
+      \vspace{3mm}
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx
+      \vfill%
+      \fontsize{#7}{#7}\usefont{T1}{put}{n}{n}
+      \sffamily #6 %
+      \index[xeng]{#6}%
+      \tiny\\\vfill
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/26280/}\indentx%
+      \\\vspace{3mm}%
+      \end{sffamily}%
+    \end{minipage}}%
+    &%
+    \\
+    \cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  \end{tabular}
+  }
+
+%=======================================
+% Double text flash card: two text flash cards on a single sheet of paper
+% 1: height of each card
+% 2: card 1 word
+% 3: card 1 word font size
+% 4: card 1 LaTeX commands
+% 5: card 2 word
+% 6: card 2 word font size
+% 7: card 2 LaTeX commands
+%=======================================
+\newcommand{\flashcardtd}[7][175mm]{%
+  \arrayrulecolor{white}%
+  \cleartooddpage%
+  \begin{tabular}{r@{}c@{}c@{}l}%
+    \mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\cline{1-1}\cline{4-4}%
+    &%
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \centering%
+      \vfill%
+      {#4}\\\vfill%
+    \end{minipage}}%
+    &
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \centering%
+      \vfill%
+      %\hspace{1pt}\\\vfill%
+      {#7}\\\vfill%
+      %{#7}\\\hspace{1pt}\\\vfill%
+    \end{minipage}}%
+    &%
+    \\%
+    \cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  \end{tabular}%
+  \cleartoevenpage%
+  \arrayrulecolor{black}%
+  \begin{tabular}{r@{}c@{}c@{}l}%
+      \mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+      \\\cline{1-1}\cline{4-4}%
+      &%
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \begin{sffamily}%
+      \vspace{3mm}
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx
+      \vfill%
+      \fontsize{#3}{#3}\usefont{T1}{put}{n}{n}
+      \sffamily #2 %
+      \index[xeng]{#2}%
+      \tiny\\\vfill
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/26280/}\indentx%
+      \\\vspace{3mm}%
+      \end{sffamily}%
+    \end{minipage}}%
+    &
+    {\begin{minipage}[c][#1][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \begin{sffamily}%
+      \vspace{3mm}
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx
+      \vfill%
+      \fontsize{#6}{#6}\usefont{T1}{put}{n}{n}
+      \sffamily #5 %
+      \index[xeng]{#5}%
+      \tiny\\\vfill
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/26280/}\indentx%
+      \\\vspace{3mm}%
+      \end{sffamily}%
+    \end{minipage}}%
+    &%
+    \\
+    \cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  \end{tabular}
+  }
+
+%=======================================
+% Double Chinese character flash card: two Chinese character flash cards on a single sheet of paper
+% 1: height of each card
+% 2: card 1 Chinese character
+% 3: card 1 pinyin
+% 4: card 1 English translation
+% 5: card 2 Chinese character
+% 6: card 2 pinyin
+% 7: card 2 English translation
+%=======================================
+\newcommand{\flashcardzd}[7][\textheight/2]{%
+  %\arrayrulecolor{white}%
+  \raggedright\centering
+  \clearpage%
+  \begin{tabular}{cc|}%
+    %\hline%
+    % upper left quad
+    \begin{minipage}[c][#1][c]{\textwidth/2-5mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \begin{sffamily}%
+      \vspace{3mm}%
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx%
+      \vfill%
+      \Huge#3%    pinyin
+      \vfill%
+      \fontsize{50mm}{50mm}\usefont{T1}{put}{n}{n}%
+      {\fntzhr #2}% Chinese character with zhuyin
+      \normalsize\sffamily%
+      \index[xchar]{{\fntzh #2}}%
+      \vfill%
+      \Large#4%
+      \index[xeng]{#4}%
+      \tiny\\\vfill%
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/dgreenhoe/}\indentx%
+      \\\vspace{10mm}%
+      \end{sffamily}%
+    \end{minipage}%
+    &% upper right quad
+    \begin{minipage}[c][#1][c]{\textwidth/2-5mm}%
+      \centering%
+      \vfill%
+      \fontsize{70mm}{70mm}\usefont{T1}{put}{n}{n}%
+      {\fntzh #2}%
+      \normalsize%
+ %     \vfill%
+      \index[xchar]{{\fntzh #2}}%
+      \vfill\hspace{1pt}%
+    \end{minipage}%
+    \\\hline%
+    % lower left quad
+    \begin{minipage}[c][#1][c]{\textwidth/2-5mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \begin{sffamily}%
+      \vspace{10mm}%
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx%
+      \vfill%
+      \Huge#6%    pinyin
+      \vfill%
+      \fontsize{50mm}{50mm}\usefont{T1}{put}{n}{n}%
+      {\fntzhr #5}% Chinese character with zhuyin
+      \normalsize\sffamily%
+      \index[xchar]{{\fntzhr #5}}%
+      \vfill%
+      \Large#7%
+      \index[xeng]{#7}%
+      \tiny\\\vfill%
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/dgreenhoe/}\indentx%
+      \\\vspace{3mm}%
+      \end{sffamily}%
+    \end{minipage}%
+    &% lower right quad
+    \begin{minipage}[c][#1][c]{\textwidth/2-5mm}%
+      \centering%
+      \vfill%
+      \fontsize{70mm}{70mm}\usefont{T1}{put}{n}{n}%
+      {\fntzh #5}%
+      \normalsize%
+      \index[xchar]{{\fntzhr #5}}%
+      \vfill\hspace{1pt}%
+    \end{minipage}%
+    %\\\hline%
+  \end{tabular}%
+  }%
+
+
+\newcommand{\multiimg}[3][10mm]{% #1=image size  #2=number of images #3=image file
+  \renewcommand{\arraystretch}{0}%
+  \ifthenelse{#2=1} {\begin{tabular}{*{1}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}\end{tabular}}{%
+  \ifthenelse{#2=2} {\begin{tabular}{*{2}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{%
+  \ifthenelse{#2=3} {\begin{tabular}{*{3}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{%
+  \ifthenelse{#2=4} {\begin{tabular}{*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{%
+  \ifthenelse{#2=5} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{%
+  \ifthenelse{#2=6} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=7} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=8} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=9} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=10}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=11}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=12}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=13}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=14}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=15}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=16}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=17}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \ifthenelse{#2=18}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}& \imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\\\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}&\imgwh{#1}{#1}{#3}\end{tabular}}{% 
+  \begin{tabular}{c}\hspace{1pt}\end{tabular}%
+  }}}}}}}}}}}}}}}}}}%
+  \renewcommand{\arraystretch}{1}%
+  }%
+
+\newcommand{\multitext}[2]{% #1=number #2=text
+  \renewcommand{\arraystretch}{0}%
+  \ifthenelse{#1=1} {\begin{tabular}{*{1}{@{\hspace{1mm}}c}}#2\end{tabular}}{%
+  \ifthenelse{#1=2} {\begin{tabular}{*{2}{@{\hspace{1mm}}c}}#2&#2\end{tabular}}{%
+  \ifthenelse{#1=3} {\begin{tabular}{*{3}{@{\hspace{1mm}}c}}#2&#2&#2\end{tabular}}{%
+  \ifthenelse{#1=4} {\begin{tabular}{*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2\end{tabular}}{%
+  \ifthenelse{#1=5} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2\end{tabular}}{%
+  \ifthenelse{#1=6} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2\\#2\end{tabular}}{% 
+  \ifthenelse{#1=7} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2\\#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=8} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2\\#2&#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=9} {\begin{tabular}{*{5}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2\\#2&#2&#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=10}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=11}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\\#2\end{tabular}}{% 
+  \ifthenelse{#1=12}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\\#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=13}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\\#2&#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=14}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\\#2&#2&#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=15}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\\#2&#2&#2&#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=16}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\\#2&#2&#2&#2&#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=17}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\\#2&#2&#2&#2&#2&#2&#2\end{tabular}}{% 
+  \ifthenelse{#1=18}{\begin{tabular}{*{5}{@{\hspace{1mm}}c}@{\hspace{10mm}}c*{4}{@{\hspace{1mm}}c}}#2&#2&#2&#2&#2& #2&#2&#2&#2&#2\\#2&#2&#2&#2&#2&#2&#2&#2\end{tabular}}{% 
+  \begin{tabular}{c}\hspace{1pt}\end{tabular}%
+  }}}}}}}}}}}}}}}}}}%
+  \renewcommand{\arraystretch}{1}%
+  }%
+
+\newcommand{\flashcarddadd}[8]{%
+  \aflashquad{+}{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}%
+  }%
+
+\newcommand{\showop}[1]{%
+  \ifthenelse{\equal{#1}{+}}{%  addition binary operator
+    +%
+    }{
+  \ifthenelse{\equal{#1}{-}}{%  subtraction binary operator
+    -%
+    }{
+  \ifthenelse{\equal{#1}{*}}{%  mulitiplication binary operator
+    $\times$%
+    }{%
+  \ifthenelse{\equal{#1}{/}}{%  divide binary operator
+    $\div$%
+    }{%
+    }}}}%
+  }%
+\newcommand{\xflashquad}[5]{% index flash quad
+  \ifthenelse{\equal{#1}{+}}{%  addition binary operator
+    \index{+}%
+    \index{\fbox{#2}}\index{\fbox{#3}}\index{\fbox{#2+#3}}%
+    \index{\fbox{#4}}\index{\fbox{#5}}\index{\fbox{#4+#5}}%
+    }{
+  \ifthenelse{\equal{#1}{-}}{%  subtraction binary operator
+    \index{-}%
+    \index{\fbox{#2}}\index{\fbox{#3}}\index{\fbox{#2+#3}}%
+    \index{\fbox{#4}}\index{\fbox{#5}}\index{\fbox{#4+#5}}%
+    }{
+  \ifthenelse{\equal{#1}{*}}{%  mulitiplication binary operator
+    \index{$\times$}%
+    \index{\fbox{#2}}\index{\fbox{#3}}\index{\fbox{#2*#3}}%
+    \index{\fbox{#4}}\index{\fbox{#5}}\index{\fbox{#4*#5}}%
+    }{%
+  \ifthenelse{\equal{#1}{/}}{%  divide binary operator
+    \index{$\div$}%
+    \index{\fbox{#2}}\index{\fbox{#3}}\index{\fbox{#2*#3}}%
+    \index{\fbox{#4}}\index{\fbox{#5}}\index{\fbox{#4*#5}}%
+    }{%
+    }}}}%
+  }%
+
+
+
+\newcommand{\aflashquad}[9]{% arithmetic flash quad box.  1:operator 
+  \arrayrulecolor{white}%
+  \cleartooddpage%
+  \ifthenelse{\equal{#1}{+}}{%  + binary operator
+    \setcounter{cnta}{#3}%      cnta + cntb = cntc
+    \setcounter{cntb}{#2}%
+    \setcounter{cntc}{#2+#3}%
+    \setcounter{cntd}{#7}%      cntd + cnte = cntf
+    \setcounter{cnte}{#6}%
+    \setcounter{cntf}{#6+#7}%
+    }{
+  \ifthenelse{\equal{#1}{-}}{%  - binary operator
+    \setcounter{cnta}{#2+#3}%   (#2+#3) - #2 = #3
+    \setcounter{cntb}{#2}%
+    \setcounter{cntc}{#3}%
+    \setcounter{cntd}{#6+#7}%      (#6+#7) - #6 = #7
+    \setcounter{cnte}{#6}%
+    \setcounter{cntf}{#7}%
+    }{
+  \ifthenelse{\equal{#1}{*}}{%  multiplication binary operator
+    \setcounter{cnta}{#3}%      
+    \setcounter{cntb}{#2}%
+    \setcounter{cntc}{#2*#3}%
+    \setcounter{cntd}{#7}%      
+    \setcounter{cnte}{#6}%
+    \setcounter{cntf}{#6*#7}%
+    }{%
+  \ifthenelse{\equal{#1}{/}}{%  division binary operator
+    \setcounter{cnta}{#2*#3}%      
+    \setcounter{cntb}{#2}%
+    \setcounter{cntc}{#3}%
+    \setcounter{cntd}{#6*#7}%      
+    \setcounter{cnte}{#6}%
+    \setcounter{cntf}{#7}%
+    }{%
+    }}}}%
+  \xflashquad{#1}{#2}{#3}{#6}{#7}%
+  \begin{tabular}{r@{}c@{}c@{}l}%
+    \mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\cline{1-1}\cline{4-4}%
+    &%
+    {\begin{minipage}[c][175mm][c]{125mm}% front left flash card
+      \centering%
+      \vfill%
+      %\multiimg{\value{cnta}}{#4}\\%
+      \multiimg{#2}{#4}\\%
+      \vfill%
+      \fontsize{50mm}{50mm}\sffamily%\usefont{T1}{put}{n}{n}%
+      \begin{tabular}[t]{cr}%
+          &#2\\%\arabic{cnta}\\%
+        \showop{#1}&#3%\arabic{cntb}%
+      \end{tabular}%
+      \normalsize%
+      \vfill%
+      \ifthenelse{\equal{#1}{*}}%
+        %{\multitext{\value{cnte}}{{\Huge $\bigcirc$}}}{% if binary op is multiplication
+        %{\multiimg{\value{cnte}}{../common/graphics/house/house4950412x.jpg}}{%                   % if binary op is *
+        {\multiimg{#3}{../common/graphics/house/house4950412x.jpg}}{%                   % if binary op is *
+      \ifthenelse{\equal{#1}{/}}%
+        {\multitext{\value{cnte}}{{\Huge $\boxempty$}}}% if binary op is divide
+        {\multiimg{\value{cnte}}{#4}}%                   % if binary op is +,-
+      }%
+      \vfill%
+      \color{black}%
+      \tiny{source of images: #5}\vspace{5mm}%
+      \index{#5}%
+    \end{minipage}}%
+    &
+    {\begin{minipage}[c][175mm][c]{125mm}% front right flash card
+      \centering%
+      \vfill%
+      %\multiimg{\value{cntd}}{#8}\\%
+      \multiimg{#6}{#8}\\%
+      \vfill%
+      \fontsize{50mm}{50mm}\sffamily%\usefont{T1}{put}{n}{n}%
+      \begin{tabular}[t]{cr}%
+          &#6\\%\arabic{cntd}\\%
+        \showop{#1}&#7%\arabic{cnte}%
+      \end{tabular}%
+      \normalsize
+      %\usefont{OT1}{put}{n}{n}%
+      \vfill%
+      \ifthenelse{\equal{#1}{*}}%
+        %{\multitext{\value{cnte}}{{\Huge $\bigcirc$}}}{% if binary op is multiplication
+        %{\multiimg{\value{cnte}}{../common/graphics/house/house4950412x.jpg}}{%                   % if binary op is *
+        {\multiimg{#7}{../common/graphics/house/house4950412x.jpg}}{%                   % if binary op is *
+      \ifthenelse{\equal{#1}{/}}%
+        {\multitext{\value{cnte}}{{\Huge $\boxempty$}}}% if binary op is divide
+        {\multiimg{\value{cnte}}{#4}}%                   % if binary op is +,-
+      }%
+      \vfill%
+      %\usefont{T1}{put}{n}{n}%
+      \color{black}%
+      \tiny{source of images: #9}\vspace{5mm}%
+      \index{#9}%
+    \end{minipage}}%
+    &%
+    \\%
+    \cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+  \end{tabular}%
+  \cleartoevenpage%
+  \arrayrulecolor{black}%
+  %\arrayrulecolor{flashbox}%
+  \xflashquad{#1}{#2}{#3}{#6}{#7}%
+  \begin{tabular}{r|@{}c@{}|@{}c@{}|l}%
+      &&&\\\hline%
+      %\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+      %\\\cline{1-1}\cline{4-4}%
+      &%
+    \begin{minipage}[c][175mm][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{5mm}%
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\qquad\qquad\mbox{}%
+      \vfill%
+      %\textcolor[gray]{0.6}{\Large\arabic{cnta} \showop{#1} \arabic{cntb} =}\\[8mm]
+      \textcolor[gray]{0.6}{\Large#2 \showop{#1} #3 =}\\[8mm]
+      \fontsize{80mm}{80mm}%\usefont{T1}{put}{n}{n}%
+      \sffamily\arabic{cntc}%
+      \tiny\\\vfill%
+      %\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})%\hfill\url{http://www.youpublish.com/files/29851/}\indentx%
+      \raggedleft\indentx Daniel J. Greenhoe\qquad\qquad\mbox{}%\hfill\url{http://www.youpublish.com/files/29851/}\indentx%
+      \\\vspace{5mm}%
+    \end{minipage}%
+    &%
+    \begin{minipage}[c][175mm][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{5mm}%
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\qquad\qquad\mbox{}%
+      \vfill%
+      %\textcolor[gray]{0.6}{\Large\arabic{cntd} \showop{#1} \arabic{cnte} =}\\[8mm]
+      \textcolor[gray]{0.6}{\Large#6 \showop{#1} #7 =}\\[8mm]
+      \fontsize{80mm}{80mm}%\usefont{T1}{put}{n}{n}%
+      \sffamily\arabic{cntf}%
+      \tiny\\\vfill%
+      %\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})%\hfill\url{http://www.youpublish.com/files/29851/}\indentx%
+      \raggedleft\indentx Daniel J. Greenhoe\qquad\qquad\mbox{}%\hfill\url{http://www.youpublish.com/files/29851/}\indentx%
+      \\\vspace{5mm}%
+    \end{minipage}%
+    &%
+    %\\%
+    %\cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\hline&&&%
+  \end{tabular}%
+  }%
+
+
+\newcommand{\numberd}[7][80mm]{% 2 numbers with multi-pictures
+  \clearpage%
+  \clearpage%
+  \arrayrulecolor{black}%
+  %\xflashquad{#1}{#2}{#3}{#6}{#7}%
+  \begin{tabular}{r|@{}c@{}|@{}c@{}|l}%
+      &&&\\\hline%
+      %\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+      %\\\cline{1-1}\cline{4-4}%
+      &%
+    \begin{minipage}[c][175mm][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{5mm}%
+      %\tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx%
+      \tiny\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})%
+      \vfill%
+      %\textcolor[gray]{0.6}{\Large\arabic{cnta} \showop{#1} \arabic{cntb} =}\\[8mm]
+      \fontsize{#1}{#1}\usefont{T1}{put}{n}{n}%
+      \center\sffamily#2%
+      \vfill%
+      \multiimg[15mm]{#2}{#3}%
+      \tiny\\\vfill%
+      \raggedleft\indentx source of image(s): #4%
+      \\\vspace{5mm}%
+    \end{minipage}%
+    &%
+    \begin{minipage}[c][175mm][c]{125mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{5mm}%
+      %\tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx%
+      \tiny\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})%
+      \vfill%
+      %\textcolor[gray]{0.6}{\Large\arabic{cntd} \showop{#1} \arabic{cnte} =}\\[8mm]
+      \fontsize{#1}{#1}\usefont{T1}{put}{n}{n}%
+      \center\sffamily#5%
+      \vfill%
+      \multiimg[15mm]{#5}{#6}%
+      \tiny\\\vfill%
+      %\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/29851/}\indentx%
+      \raggedleft\indentx source of image(s): #7%
+      \\\vspace{5mm}%
+    \end{minipage}%
+    &%
+    %\\%
+    %\cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\hline&&&%
+  \end{tabular}%
+  }%
+
+
+\newcommand{\flashcarddaddDemo}[5][87.5mm]{%
+  \arrayrulecolor{black}%
+%  \begin{tabular}{r@{}|c|@{}c|@{}l}%
+  \begin{tabular}{r|c|c|l}%
+    %\hline
+    %\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    %\\\cline{1-1}\cline{4-4}%
+    &&&\\\hline
+    &%
+    {\begin{minipage}[c][#1][c]{62.5mm}%
+      \centering%
+      \vfill%
+      \multiimg{#2}{#4}\\%
+      \vfill%
+      \fontsize{25mm}{25mm}\usefont{T1}{put}{n}{n}%
+      \begin{tabular}[t]{cc}%
+         &#2\\%
+        +&#3%
+      \end{tabular}%
+      \normalsize
+      \vfill%
+      \multiimg{#3}{#4}%
+      \vfill%
+      \color{black}%
+      \tiny{source of images: #5}\vspace{5mm}%
+      \index{#5}%
+    \end{minipage}}%
+    &
+    {\begin{minipage}[c][#1][c]{62.5mm}%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{3mm}
+      \tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx
+      \fontsize{40mm}{40mm}\usefont{T1}{put}{n}{n}
+      \vfill%
+      \setcounter{cnta}{#2}%
+      \addtocounter{cnta}{#3}%
+      \sffamily \arabic{cnta}
+      \tiny\\\vfill
+      \raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/29851/}\indentx%
+      \\\vspace{5mm}%
+    \end{minipage}}%
+    &%
+    %\\%
+    %\cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\hline
+    &&&
+  \end{tabular}%
+  }
+
+\newcommand{\fillblanksR}[1]{%
+  \hline
+  \mc{#1}{|R|}{\zcomhdr{Fill in the blanks with the correct word or words}{??????????}\normalsize\footnotemark}%
+  \\\hline
+  }%
+\newcommand{\fillblanksG}[1]{%
+  \hline
+  \mc{#1}{|G|}{\zcomhdr{Fill in the blanks with the correct word or words}{??????????}\normalsize\footnotemark}%
+  \\\hline
+  }%
+\newcommand{\fillblanksB}[1]{%
+  \hline
+  \mc{#1}{|B|}{\zcomhdr{Fill in the blanks with the correct word or words}{??????????}\normalsize\footnotemark}%
+  \\\hline
+  }%
+
+\newenvironment{sunscramble}[1][10\tw/16]{
+  \renewcommand{\arraystretch}{2}
+  \begin{tabular}{|>{\scriptsize}rm{\textwidth-#1-5mm}|m{#1}|}
+    \hline
+   %\mc{3}{|B|}{\zcomhdr{Unscramble the words}{???}}%
+    \mc{3}{|c|}{\zcomhdr{Make sentences using the words on the left}{?????????}:}%
+    \\\hline
+  }{%
+    \\\hline
+  \end{tabular}
+  \renewcommand{\arraystretch}{1}
+  }%
+                               
+%=======================================
+% Image Grids
+%=======================================
+\newenvironment{imagegrid}[2]{%
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \setcounter{arga}{#1}%
+  \setlength{\tabcolsep}{1mm}%
+  \ifthenelse{\not\boolean{showSolution}}{%
+    \stepcounter{footnote}%
+    \footnotetext{\scriptsize Source(s) of images. #2}%
+    \addtocounter{footnote}{-1}%
+    }{}%
+  \begin{tabular}{|@{}*{#1}{c@{}|}}%
+    \hline%
+  }{%
+    \\\hline%
+  \end{tabular}\ifthenelse{\boolean{showSolution}}{}{\footnotemark}\newline%
+  }%
+
+\newenvironment{tGe}[2]{%
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \setcounter{arga}{#1}%
+  \stepcounter{footnote}%
+  \footnotetext{\scriptsize images. #2}%
+  \addtocounter{footnote}{-1}%
+  \begin{tabular}{|@{}*{#1}{c@{}|}}%
+    \hline%
+  }{%
+    \\\hline%
+  \end{tabular}\footnotemark%
+  }%
+
+%\newenvironment{tGez}[2]{%
+%  \setcounter{cnta}{0}%
+%  \setcounter{cntb}{0}%
+%  \setcounter{arga}{#1}%
+%  \stepcounter{footnote}%
+%  \footnotetext{\scriptsize images. #2}%
+%  \addtocounter{footnote}{-1}%
+%  \begin{tabular}{|@{}*{#1}{c@{}|}}%
+%    \hline%
+%  }{%
+%    \\\hline%
+%  \end{tabular}\footnotemark%
+%  }%
+
+\newenvironment{tgb}[2]{
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \setcounter{arga}{#1}%
+  %\ifthenelse{\not\boolean{showSolution}}{
+    \stepcounter{footnote}%
+    \footnotetext{\scriptsize{Source(s) of images.} #2}%
+    \addtocounter{footnote}{-1}
+   % }{}%
+  \begin{tabular}{|@{}*{#1}{c@{}|}}
+    \hline
+  }{%
+    \\\hline
+  \end{tabular}\footnotemark%
+  }
+
+\newenvironment{tGfm}[1]{% footnotemark only, footnotetext must be added separately
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \setcounter{arga}{#1}%
+  \begin{tabular}{|@{}*{#1}{c@{}|}}
+    \hline
+  }{%
+    \\\hline
+  \end{tabular}\ifthenelse{\not\boolean{showSolution}}{\footnotemark}{}%
+  }
+
+\newenvironment{tGs}[1]{  %simple: no frame no credit no numbers
+  \setcounter{cnta}{0}
+  \setcounter{cntb}{0}
+  \setcounter{arga}{#1}
+  \begin{tabular}{@{\hspace{1pt}}*{#1}{c@{\hspace{1pt}}}}
+  }{
+  \end{tabular}
+  }
+
+\newenvironment{imageblanks}[2]{
+  \stepcounter{footnote}%
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \setcounter{arga}{#1}%
+  \footnotetext{\scriptsize{Source(s) of images.} #2}%
+  \addtocounter{footnote}{-1}
+  \begin{tabular}{|@{}*{#1}{c@{}|}}
+    \mc{#1}{|R|}{\zcomhdr{Fill in the blanks with the correct word or words}{??????????}\normalsize\footnotemark}%
+    \\
+  }{%
+    \\\hline
+  \end{tabular}%
+  }
+
+\newenvironment{imageblanksnh}[2]{
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \setcounter{arga}{#1}%
+  \stepcounter{footnote}
+  \footnotetext{\scriptsize{Source(s) of images.} #2}%
+  \addtocounter{footnote}{-1}
+  \begin{tabular}{|@{}*{#1}{c@{}|}}
+    \hline
+    %\mc{#1}{|R|}{\zcomhdr{Fill in the blanks with the correct word or words}{??????????}\normalsize\footnotemark}%
+    %\\\hline
+  }{%
+    \\\hline
+  \end{tabular}\footnotemark%
+  }
+
+%2012nov09 moved to dan.sty\newenvironment{tabstr}[1]
+%2012nov09 moved to dan.sty  {\renewcommand{\arraystretch}{#1}}
+%2012nov09 moved to dan.sty  {\renewcommand{\arraystretch}{1}}
+
+%\newcommand{\noteEmailList}[2]{
+%  \bannerNotice
+%  \textpr{Dear Parents and Students,
+%  If you would like to receive regular learning material for this class, 
+%  please send me an email at \url{dgreenhoe@gmail.com} with your name and ``#1"
+%  in the subject.
+%  }{../common/people/small/dan.jpg}
+%  \\
+%  {\fntzh \raggedright
+%  Dear ?????, 
+%  ??????????????????,
+%  ???email???
+%  \url{dgreenhoe@gmail.com}
+%  ?email??, ??????????
+%  ?email???, ????``#2"?\\
+%  }
+%  \begin{personal}\textcolor{signature}{Daniel}\end{personal}
+%  %\textcolor{signature}{Daniel {\fntzhhw(???)}}
+%  }
+
+%\newcommand{\noteEmailList}[2]{
+%  \bannerNotice
+%  \textpr{Dear Parents and Students,
+%  If you would like to every week receive an mp3 audio file and pdf text file
+%  for this class, 
+%  please send me an email at \url{dgreenhoe@gmail.com} with your name and ``#1"
+%  in the subject.
+%  }{../common/people/small/dan.jpg}
+%  \\
+%  {\fntzh \raggedright
+%  Dear ?????, 
+%  ??????????????mp3????pdf?????,
+%  ???email???
+%  \url{dgreenhoe@gmail.com}
+%  ?email??, ??????????
+%  ?email???, ????``#2"?\\
+%  }
+%  \begin{personal}\textcolor{signature}{Daniel}\end{personal}
+%  %\textcolor{signature}{Daniel {\fntzhhw(???)}}
+%  }
+
+\newcommand{\noteEmailList}[2]{}
+\newcommand{\noteEmailListx}[2]{
+  \bannerNotice
+  \\\begin{tabular}{m{\tw/2-15mm}}
+%    \fnthw Do you want an mp3 and pdf file for each week's lesson?
+    \fnthw Do you want a pdf file for each week's lesson?
+    Then send me an email like this: $\Rightarrow$
+  \end{tabular}
+  \hfill
+  \begin{tabular}{|p{20mm}|p{56mm}|}
+  \hline
+    To:      & \url{dgreenhoe@gmail.com} 
+  \\\hline
+    Subject: & (your English name) #1 
+  \\\hline
+  \mc{2}{|l|}{:)}
+  \\\hline
+  \end{tabular}
+  
+  \begin{tabular}{m{\tw/2-15mm}}
+    {\fntzhhw\raggedright
+    ???????????? pdf???????
+%    ???????????? mp3????pdf???????
+    ????????email???$\Rightarrow$}
+  \end{tabular}
+  \hfill
+  \begin{tabular}{|p{20mm}|p{56mm}|}
+  \hline
+    \fntzht ?:      & \url{dgreenhoe@gmail.com} 
+  \\\hline
+    \fntzht ??: & \fntzht (???????) #2 
+  \\\hline
+  \mc{2}{|l|}{:)}
+  \\\hline
+  \end{tabular}
+  \\
+  \begin{personal}\textcolor{signature}{Daniel}\end{personal}
+  %\textcolor{signature}{Daniel {\fntzhhw(???)}}
+  }
+
+
+\newlength{\sqsize}
+\newlength{\imgsize}
+%\setlength{\sqsize}{\textwidth/10}   % square size for games
+%\setlength{\imgsize}{\sqsize-1mm}  % image size for games
+%\setlength{\sqsize}{32mm}   % square size for games
+%\setlength{\imgsize}{\sqsize-1mm}  % image size for games
+
+
+%\newcommand*{\grand}{%fix by Philipp Stephani  \url{http://groups.google.com/group/comp.text.tex/msg/282192c9018d4605}
+%  \begingroup
+%    \globaldefs=1
+%    \rand
+%  \endgroup
+%  }
+%---------------------------------------
+%fix for lcg package by Philipp Stephani \url{http://groups.google.com/group/comp.text.tex/msg/4182440405af8480}
+  \usepackage{etoolbox}
+  \makeatletter
+  \appto\r@nd{\global\cr@nd\cr@nd}
+  \makeatother 
+%end fix
+%---------------------------------------
+\newcommand{\wse}[1]{%
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {}{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \refstepcounter{cnta}%
+         \addtocounter{cnta}{-1}%
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  \ifthenelse{\isempty{#1}}{%
+   \ifthenelse{\boolean{showSolution}}{.}{\rand\alph{rand}}%
+    }{%
+    \MakeLowercase{#1}%
+    }%
+  }%
+
+\newcommand{\wsr}[1]{%raw entry
+  \ifthenelse{\cnttest{\value{cntb}}{=}{0} }%
+    {}{%
+      \ifthenelse{\cnttest{\value{cntb}}{<}{\value{arga}}}%
+        {&}%
+        {\tabularnewline%
+         \refstepcounter{cnta}%
+         \addtocounter{cnta}{-1}
+         \setcounter{cntb}{0}%
+        }%
+      }%
+  \refstepcounter{cnta}%
+  \refstepcounter{cntb}%
+  #1
+  }%
+
+\newcommand{\wordSearch}[3][5\tw/16]{
+\banner{Word Search}{???}
+\begin{minipage}[t]{\tw-#1-5mm}
+  #2
+\end{minipage}
+\hfill
+\begin{minipage}[t]{#1-5mm}
+  \ttfamily
+  \hspace{1pt}\\
+  #3
+\end{minipage}
+}
+
+\newcommand{\wordSearchb}[3][0]{
+\begin{tabular}
+  \ttfamily
+  \hspace{1pt}\\
+  #3
+\end{minipage}
+}
+
+\newenvironment{envWordSearch}[2][0]{
+  \chgrand[first=1,last=26]% \rand will generate a number between 1 and 26 inclusive (1~a,...,26~z)
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \setcounter{arga}{#2}%
+  %\chgrand[seed=#1]%
+  \begin{tabular}{*{#2}{c@{\hspace{1ex}}}}%
+ %\begin{tabular}{*{#2}{c@{\hspace{0ex}}}}%
+  }{%
+  \end{tabular}%
+  }
+\newenvironment{envWordSearchSol}[2][0]{
+  \showSolution%
+  \setcounter{cnta}{0}%
+  \setcounter{cntb}{0}%
+  \setcounter{arga}{#2}%
+  %\chgrand[seed=#1]%
+  \begin{tabular}{*{#2}{c@{\hspace{1ex}}}}%
+  }{%
+  \end{tabular}%
+  }
+
+\newcommand{\wordSearchSol}[3][5\tw/16]{
+\banner{Solutions: Word Search}{??????}
+\begin{minipage}[t]{\tw-#1-5mm}\scriptsize
+  #2
+\end{minipage}
+\hfill
+\begin{minipage}[t]{#1-5mm}\scriptsize\showSolution
+  \ttfamily
+  \hspace{1pt}\\
+  #3
+\end{minipage}
+}
+
+\newcommand{\apadd}[2]{% arithmetic problem addition
+  \ifthenelse{\isempty{#1}}{\rand\setcounter{cnta}{\value{rand}}}{\setcounter{cnta}{#1}}
+  \ifthenelse{\isempty{#2}}{\rand\setcounter{cntb}{\value{rand}}}{\setcounter{cntb}{#2}\setcounter{rand}{#2}}
+  \addtocounter{rand}{\value{cnta}}%     rand = cnta + cntb
+  \scriptsize \stepcounter{cntr}\arabic{cntr}. 
+    & \Large\arabic{cnta} &\Large+& \Large\arabic{cntb} &\Large=& \Large\blanksol[2em]{\arabic{rand}}
+  }
+
+\newcommand{\apsub}{% arithmetic problem subtraction
+  \rand\setcounter{cnta}{\value{rand}}%  cnta
+  \rand\setcounter{cntb}{\value{rand}}%  cntb
+  \addtocounter{rand}{\value{cnta}}%     rand = cnta + cntb
+  \scriptsize \stepcounter{cntr}\arabic{cntr}. 
+    & \Large\arabic{rand} &\Large-& \Large\arabic{cnta} &\Large=& \Large\blanksol[2em]{\arabic{cntb}}
+  }
+
+\newcommand{\whattimeh}[1][0]{%What time is it? using pseudo-random hour value when #1=0
+  \ifthenelse{#1=0}{\rand\Large\clock{\value{rand}}{00} \blanksol[40mm]{\arabic{rand} o'clock}}
+                   {\Large\clock{#1}{00} \blanksol[40mm]{#1 o'clock}}
+  }
+
+\newcommand{\whattimeq}[1][0]{%What time is it? using pseudo-random hour value when #1=0
+  \ifthenelse{#1=0}{%
+    \chgrand[first=1,last=12]%
+    \rand%
+    \setcounter{cnta}{\value{rand}}%
+    \chgrand[first=0,last=3]%
+    \rand%
+    \setcounter  {cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \addtocounter{cntb}{\value{rand}}%
+    \Large\clock{\value{cnta}}{\value{cntb}} \blanksol[40mm]{\arabic{cnta}:\arabic{cntb}}%
+    }
+  {\Large\clock{#1}{00} \blanksol[40mm]{#1 o'clock}}
+  }
+
+
+
+%=======================================
+% Pictures
+%=======================================
+%---------------------------------------
+% Box with image
+% 1: box face width with unit
+% 2: box face height with unit
+% 3: image width and height with unit
+% 4: box   bottom left x coordinate / #1
+% 5: box   bottom left y coordinate / #2
+% 6: image bottom left x coordinate / #1
+% 7: image bottom left y coordinate / #2
+% 8: image file name and path
+% 9: image region:  0=image does not coincide with box  
+%                   1=image is inside box
+%                   2=image is in forground
+%                   3=image is in background
+%                   9=image is hidden
+%
+%examples:
+% \boxwimg{ 2mm}{10mm}{10mm}{0}{0}{1 }   {0}    {../common/graphics/animals/foxsmile4944346.jpg}{0}%
+%---------------------------------------
+\newcommand{\boxwimg}[9]{%
+  \psset{xunit=#1,yunit=#2,fillcolor=brown}%
+  \ifthenelse{#9=1}{\psset{fillstyle=none}}{\psset{fillstyle=solid}}
+  \begin{pspicture}(0,0)(2,1.50)%
+   %\psgrid[subgriddiv=1,gridcolor=graph,](0,0)(2,2)
+    \ifthenelse{#9=0}{\rput[bl](#6,#7){\rgraphic{#3}{#3}{#8}}}{}
+    \ifthenelse{#9=3}{\rput[bl](#6,#7){\rgraphic{#3}{#3}{#8}}}{}
+    \rput[bl](#4,#5){% box
+      \pspolygon(0  ,0  )(0.5, 0.5 )(0.5, 1.5)(0, 1  ) % left side 
+      \pspolygon(0  ,0  )(0.5, 0.5 )(1.5, 0.5)(1, 0  ) % bottom
+      \pspolygon(0  ,0  )(1,   0   )(1,   1  )(0, 1  ) % front
+      }
+    \ifthenelse{#9=1}{\rput[bl](#6,#7){\rgraphic{#3}{#3}{#8}}}{}
+    \rput[bl](#4,#5){% box
+      \pspolygon(0  ,1  )(0.5, 1.5)(1.5, 1.5)(1,  1  ) % top
+      \pspolygon(1  ,0  )(1.5, 0.5)(1.5, 1.5)(1,  1  ) % right side 
+      }
+    \ifthenelse{#9=2}{\rput[bl](#6,#7){\rgraphic{#3}{#3}{#8}}}{}
+  \end{pspicture}%
+  }
+
+
+%%============================================================================
+%% Code from email from Paul Isambert (2012 August 25 Saturday 2:49pm)
+%%============================================================================
+%% Code 1
+%\newcount\letters
+%\newcount\random
+%\newcount\scratch
+%\def\endofword{\endofword}
+%
+%\def\scramble#1{%
+%  \letters=0
+%  \countletters#1\endofword
+%  \extractletters{#1}%
+%  }
+%
+%\def\countletters#1{%
+%  \unless\ifx #1\endofword
+%    \advance\letters 1
+%    \expandafter\countletters
+%  \fi
+%  }
+%
+%%\def\extractletters#1{%
+%%  \advance\letters-1
+%%  \def\rest{}%
+%%  \ifnum\letters>0
+%%    \random=\pdfuniformdeviate\numexpr\letters+1\relax
+%%    \scratch=0
+%%    \getletter#1\endofword%
+%%  \else
+%%    #1%
+%%  \fi
+%%  }
+%
+%\def\extractletters#1{%  from email from Paul Isambert (2012 August 26 Sunday 8:55pm)
+%  \def\rest{}%
+%  \ifnum\letters>1
+%    %\chgrand[first=1,last=\letters]% \rand will generate a number between 1 and 26 inclusive (1~a,...,26~z)
+%    \setrannum{\random}{1}{\letters}%
+%    \advance\letters-1 \scratch=1
+%    \getletter#1\endofword%
+%  \else
+%    #1%
+%  \fi
+%  }
+%
+%\def\getletter#1{%
+%  \ifnum\scratch=\random
+%    #1%
+%    \expandafter\getrestofword
+%  \else
+%    \advance\scratch 1
+%    \edef\rest{\rest#1}%
+%    \expandafter\getletter
+%  \fi
+%  }
+%
+%\def\getrestofword#1\endofword{%
+%  \expandafter\extractletters\expandafter{\rest#1}%
+%  }
+%
+%%\scramble{scramble}
+%% End of code 1
+
+%============================================================================
+% Code: see email from Paul Isambert (2012 August 25 Saturday 2:49pm)
+%============================================================================
+% Code 1
+\newcount\letters
+%\newcount\random
+\newcount\scratch
+\def\endofword{\endofword}
+
+\def\scramble#1{%
+  \letters=0
+  \countletters#1\endofword
+  \extractletters{#1}%
+  }
+
+\def\countletters#1{%
+  \unless\ifx #1\endofword
+    \advance\letters 1
+    \expandafter\countletters
+  \fi
+  }
+
+\def\extractletters#1{%  see email from Paul Isambert (2012 August 26 Sunday 8:55pm)
+  \def\rest{}%
+  \ifnum\letters>1
+    \chgrand[first=1,last=\letters]%   <--edit
+    \rand%                             <--edit
+    %\setrannum{\random}{1}{\letters}%   <--previous 
+    \advance\letters-1 \scratch=1
+    \getletter#1\endofword%
+  \else
+    #1%
+  \fi
+  }
+
+\def\getletter#1{%
+  \ifnum\scratch=\value{rand}%  <--edit
+    #1%
+    \expandafter\getrestofword
+  \else
+    \advance\scratch 1
+    \edef\rest{\rest#1}%
+    \expandafter\getletter
+  \fi
+  }
+
+\def\getrestofword#1\endofword{%
+  \expandafter\extractletters\expandafter{\rest#1}%
+  }
+
+
+
+%\scramble{scramble}
+% End of code 1
+
+
+
+\newcommand{\seatnum}[1][90mm]{% 2 numbers with multi-pictures
+  \clearpage%
+  \clearpage%
+  \arrayrulecolor{black}%
+  \begin{tabular}{r|@{}c@{}|@{}c@{}|l}%
+      &&&\\\hline%
+      &%
+    \begin{minipage}[c][175mm][c]{125mm}%
+     \begin{center}%
+     \bfseries%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{8mm}%
+      \hrule%
+      %\tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx%
+      %\tiny\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})%
+      \vfill%
+      %\textcolor[gray]{0.6}{\Large\arabic{cnta} \showop{#1} \arabic{cntb} =}\\[8mm]
+      \fontsize{#1}{#1}\normalfont% \usefont{T1}{put}{n}{n}%
+      \arabic{cntr}% %#2 %\sffamily#2%
+      %\vfill%
+      %\multiimg[15mm]{#2}{#3}%
+      %\tiny\\\vfill%
+      %\raggedleft\indentx source of image(s): #4%
+      \vspace{15mm}%
+      \end{center}%
+    \end{minipage}%
+    &%
+    \begin{minipage}[c][175mm][c]{125mm}%
+      \begin{center}%
+      \bfseries%
+      \refstepcounter{cntr}%
+      \centering%
+      \vspace{8mm}%
+      \hrule%
+      %\tiny\indentx\rightmark \hfill card \arabic{cntr}\indentx%
+      %\tiny\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})%
+      \vfill%
+      %\textcolor[gray]{0.6}{\Large\arabic{cntd} \showop{#1} \arabic{cnte} =}\\[8mm]
+      \fontsize{#1}{#1}\normalfont% %\usefont{T1}{put}{n}{n}%
+      \arabic{cntr}% %#3 %\sffamily#5%
+      %\vfill%
+      %\multiimg[15mm]{#5}{#6}%
+      %\tiny\\\vfill%
+      %\raggedleft\indentx Daniel J. Greenhoe ({\fntzh ???})\hfill\url{http://www.youpublish.com/files/29851/}\indentx%
+      %\raggedleft\indentx source of image(s): #7%
+      \vspace{15mm}%
+      \end{center}%
+    \end{minipage}%
+    &%
+    %\\%
+    %\cline{1-1}\cline{4-4}\mc{1}{r|}{}&\mc{1}{r|}{}&\mc{1}{|l}{}&\mc{1}{|l}{}%
+    \\\hline&&&%
+  \end{tabular}%
+  }%
+
+
+
+

@@ -1,0 +1,2884 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{B-Splines}
+\label{app:bspline}
+%======================================
+
+
+
+
+%=======================================
+\section{Definitions}
+%=======================================
+%\ifdochasnot{relation}{
+%The \fncte{indicator function} (next) is a convenient
+%``indicator" of whether or not a particular element is in a set.
+%%and has several interesting properties (next theorem).
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerp{ab}{126},
+%  %\citerp{halmos1950}{15},
+%  \citerp{hausdorff1937e}{22},
+%  \citePp{poussin1915}{440}
+%  }
+%\label{def:setind}
+%\index{function!characteristic}
+%\index{function!indicator}
+%%---------------------------------------
+%Let $\setX$ be a set.
+%\defbox{\begin{array}{M}\indxs{\setind}
+%  The \fnctd{indicator function} $\setind\in\clF{\psetx}{\setn{0,1}}$ is defined as
+%  \\\indentx$\ds
+%  \setind_{\setA}(x) \eqd
+%    \brbl{\begin{array}{ll @{\qquad}C}
+%      1  & $ for $ x\in    \setA   & \forall x\in\setX,\; \setA\in\psetx \\
+%      0  & $ for $ x\notin \setA   & \forall x\in\setX,\; \setA\in\psetx
+%    \end{array}}
+%    $
+%  \\
+%  The indicator function is also called the \fnctd{characteristic function}.
+%\end{array}}
+%\end{definition}
+%}
+
+\begin{minipage}{\tw-65mm}
+%---------------------------------------
+\begin{definition}
+\label{def:fstep}
+\index{function!step}
+%---------------------------------------
+Let $\setX$ be a set.
+\defboxt{
+  The \fnctd{step function} $\hxs{\fstep}\in\clFrr$ is defined as
+  \\\indentx$\ds \fstep(x)\eqd \setind_\intco{0}{\infty}(x) \qquad\scy\forall x\in\R$.
+  }
+\end{definition}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/fstep.pdf}}
+
+%---------------------------------------
+\begin{lemma}
+%---------------------------------------
+Let $\fstep(x)$ be the \fncte{step function} \xref{def:fstep}.
+\lembox{
+  \brb{\fg(x)>0}
+  \quad\implies\quad
+  \brb{
+    \fstep\brs{\fg(x)\ff(x)} = \fstep\brs{\ff(x)}}
+    \qquad
+    \scy\forall \ff,\fg\in\clFrr
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \fstep\brs{\fg(x)\ff(x)} 
+    &\eqd \setind_\intco{0}{\infty}\brs{\fg(x)\ff(x)}
+    && \text{by definition of $\fstep(x)$}
+    && \text{\xref{def:fstep}}
+  \\&\eqd \brbl{\begin{array}{lM}
+           1  & for $\fg(x)\ff(x)\ge 0$       \\
+           0  & otherwise 
+         \end{array}}
+    && \text{by definition of $\setind_\setA(x)$}
+    && \text{\xref{def:setind}}
+  \\&= \brbl{\begin{array}{lM}
+           1  & for $\ff(x)\ge 0$       \\
+           0  & otherwise 
+         \end{array}}
+    && \text{by $\fg(x)>0$ hypothesis}
+  \\&\eqd \setind_\intco{0}{\infty}\brs{\ff(x)}
+    && \text{by definition of $\setind_\setA(x)$}
+    && \text{\xref{def:setind}}
+  \\&\eqd \fstep\brs{\ff(x)} 
+    && \text{by definition of $\fstep(x)$}
+    && \text{\xref{def:fstep}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{chui}{85}{0121745848}{(4.2.1)},
+  \citerpg{christensen2008}{140}{0817646779},
+  \citerpg{chui1988}{1}{1611970172}
+  }
+\label{def:Nn}
+\label{def:Bspline}
+%---------------------------------------
+Let $\setind$ be the \hie{set indicator} function \xref{def:setind}.
+Let $\ff(x)\conv\fg(x)$ represent the \ope{convolution} operation \xref{def:conv}. % of $\ff$ and $\fg$ such that
+%\\\indentx$\ds \ff(x)\conv\fg(x)\eqd \int_{\R} \ff(x-\tau)\fg(\tau) \dtau$.
+%\\
+\defboxt{
+  The \hid{$n$th order cardinal B-spline} $\hxs{\fN_n(x)}$ for $n\in\Znn$ is defined as
+  \\\indentx
+  $\ds \fN_n(x) \eqd 
+  \brb{\begin{array}{lM}
+     \setind_\intco{0}{1}(x)    & for $n=0$\\
+     \fN_{n-1}(x)\conv \fN_0(x) & for $n\in\Znn\setd0$
+  \end{array}}\qquad\forall x\in\R$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpg{christensen2008}{140}{0817646779},
+  \citerpgc{chui}{85}{0121745848}{(4.2.1)},
+  \citerpg{chui1988}{1}{1611970172},
+  \citerpg{prasad}{145}{0849331692}
+  }
+\label{lem:Nn}
+%---------------------------------------
+\lembox{
+  \fN_n(x) = \int_{\tau=0}^{\tau=1}\fN_{n-1}(x-\tau)\dtau\qquad\forall n\in\setn{1,2,3,\ldots}
+  }
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    \fN_{n}(x)
+      &\eqd \fN_{n-1}(x)\conv\fN_0(x)
+      && \text{by definition of $\fN_n(x)$} 
+      && \text{\xref{def:Nn}}
+    \\&\eqd \int_\R\fN_{n-1}(x-\tau)\fN_0(\tau)\dtau
+      && \text{by definition of convolution operation $\conv$} 
+      && \text{\xref{def:conv}}
+    \\&\eqd \int_\R\fN_{n-1}(x-\tau)\setind_\intco{0}{1}(\tau)  \dtau
+      && \text{by definition of $\fN_0(x)$} 
+      && \text{\xref{def:Nn}}
+    \\&= \int_\intco{0}{1} \fN_{n-1}(x-\tau)\dtau
+      && \text{by definition of $\setind_\setA(x)$} 
+      && \text{\xref{def:setind}}
+    \\&= \int_\intcc{0}{1} \fN_{n-1}(x-\tau)\dtau
+    \\&\eqd \int_0^1 \fN_{n-1}(x-\tau)\dtau
+  \end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:intfstep}
+%---------------------------------------
+Let $\ff(x)$ be a \structe{function} in $\clFrr$.
+Let $\fF(x)$ be the \fncte{anti-derivative} of $\ff(x)$.\\
+Let $\fstep(x)$ be the \fncte{step function} \xref{def:fstep}.
+\lembox{\begin{array}{>{\ds}rc>{\ds}l}
+  \mc{3}{>{\ds}l}{\int_{y=a}^{y=b} \ff(x-y)\fstep(x-y) \dy} 
+    \\\qquad&=& \brb{\begin{array}{>{\ds}lM}
+          -\int_{y=x-a}^{y=x-b} \ff(y) \dy   & for $x\ge b$\\
+          -\int_{y=x-a}^{y=0}   \ff(y) \dy   & for $a\le x\le b$\\
+          0                                  & for $x\le a$
+        \end{array}}
+     =  \brb{\begin{array}{>{\ds}lM}
+          \fF(x-a) - \fF(x-b)               & for $x\ge b$\\     
+          \fF(x-a) - \fF(0)                 & for $a\le x\le b$\\
+          0                                 & for $x\le a$
+        \end{array}}
+  \\\qquad&=& \brs{\fF(x-a)-\fF(0)}\fstep(x-a) + \brs{\fF(0)-\fF(x-b)}\fstep(x-b)
+  \end{array}}
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    \int_{y=a}^{y=b} \ff(x-y)\fstep(x-y) \dy 
+      &= \brb{\begin{array}{lD}
+           \int_{y=a}^{y=b} \ff(x-y) \dy & for $x\ge b$\\     
+           \int_{y=a}^{y=x} \ff(x-y) \dy & for $a\le x\le b$\\
+           0                             & for $x\le a$
+         \end{array}}
+      && \text{by definition of $\fstep$ \xref{def:fstep}} 
+    \\&= \brb{\begin{array}{lD}
+           -\int_{u=x-a}^{u=x-b} \ff(u) \du & for $x\ge b$\\     
+           -\int_{u=x-a}^{u=0}   \ff(u) \du & for $a\le x\le b$\\
+            0                              & for $x\le a$
+         \end{array}}
+      && \text{where $u\eqd x-y\,\implies\,y=x-u$} 
+    \\&= \brb{\begin{array}{lD}
+           -\int_{y=x-a}^{y=x-b} \ff(y) \dy & for $x\ge b$\\     
+           -\int_{y=x-a}^{y=0}   \ff(y) \dy & for $a\le x\le b$\\
+            0                               & for $x\le a$
+         \end{array}}
+      && \text{by change of dummy variable ($u\to y$)} 
+    \\&= \brb{\begin{array}{lD}
+           \fF(x-a) - \fF(x-b)           & for $x\ge b$\\     
+           \fF(x-a) - \fF(0)             & for $a\le x\le b$\\
+           0                             & for $x\le a$
+        \end{array}}
+      && \text{by \thme{Fundamental Theorem of Calculus}}
+    \\&=\mathrlap{\brs{\fF(x-a) - \fF(x-b)}\fstep(x-b) 
+                 +\brs{\fF(x-a) - \fF(0)}\brs{\fstep(x-a)-\fstep(x-b)}}
+     %&& \text{by definition of $\fstep$ \xref{def:fstep}} 
+    \\&=\mathrlap{\brs{\fF(x-a) - \fF(0)}\fstep(x-a)
+                 +\brs{\fF(x-a) - \fF(x-b)- \fF(x-a) + \fF(0)}\fstep(x-b)}
+    \\&=\mathrlap{\brs{\fF(x-a) - \fF(0)}\fstep(x-a) + \brs{\fF(0)   - \fF(x-b)}\fstep(x-b)}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:intfstepk}
+%---------------------------------------
+Let $\fstep(x)$ be the \fncte{step function} \xref{def:fstep}.
+\lembox{
+  \int_{\tau=0}^{\tau=1} (x-\tau-k)^n\fstep(x-\tau-k) \dtau
+    = \frac{1}{n+1}\brs{(x-k)^{n+1}\fstep(x-k) - (x-k-1)^{n+1}\fstep(x-k-1)}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  &\int_{\tau=0}^{\tau=1} (x-\tau-k)^n \fstep(x-\tau-k)\dtau
+  \\&= \int_{y=k}^{y=k+1} (x-y)^n \fstep(x-y)\dy
+    && \text{where $y\eqd\tau+k\,\implies\,\tau=y-k$}
+  \\&= \brs{\fF(x-k)-\fF(0)}\fstep(x-k) + \brs{\fF(0)-\fF(x-k-1)}\fstep(x-k-1)
+    && \text{by \prefpp{lem:intfstep}, where $\ff(x)\eqd x^n$}
+  \\&= \frac{\brs{(x-k)^{n+1}-0}\fstep(x-k) + \brs{0-(x-k-1)^{n+1}}\fstep(x-k-1)}{n+1}
+    && \text{because $\fF(x)\eqd\int\ff(x)\dx=\frac{x^{n+1}}{n+1}+c$}
+  \\&= \frac{1}{n+1}\brs{(x-k)^{n+1}\fstep(x-k) - (x-k-1)^{n+1}\fstep(x-k-1)}
+\end{align*}
+\end{proof}
+
+\begin{figure}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \includegraphics{graphics/n0.pdf}&\includegraphics{graphics/n1.pdf}&\includegraphics{graphics/n2.pdf}\\
+    $\fN_0(x)$                       &$\fN_1(x)$                       &$\fN_2(x)$\\
+    \hline
+    \mc{2}{|c|}{\includegraphics{graphics/n3.pdf}}&\includegraphics{graphics/n4.pdf}\\
+    \mc{2}{|c|}{$\fN_3(x)$}&$\fN_4(x)$\\
+    \hline
+    \mc{2}{|c|}{\includegraphics{graphics/n5.pdf}}&\includegraphics{graphics/n6.pdf}\\
+    \mc{2}{|c|}{$\fN_5(x)$}&$\fN_6(x)$\\
+    \hline
+    \mc{3}{|c|}{\includegraphics{graphics/n7.pdf}}\\
+    \mc{3}{|c|}{$\fN_7(x)$}\\
+    \hline
+  \end{tabular}
+  \caption{\label{fig:N012}
+           some low order B-splines
+           \xref{ex:bspline_N0}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerpgc{schumaker2007}{136}{0521705126}{Table 1}
+  }
+\label{ex:bspline_N0}
+%---------------------------------------
+Let $\fstep(x)$ be the \fncte{step function} \xref{def:fstep}.
+Let $\bcoef{n}{k}$ be the \fncte{binomial coefficient} \xref{def:bcoef}.
+The \fncte{$0$th order B-spline} \xref{def:Bspline} $\fN_0(x)$ can be expressed as follows:
+\exbox{
+      \fN_0(x)  =  \brb{\begin{array}{lM}
+                           1   & for $x\in\intco{0}{1}$\\
+                           0   & otherwise
+                         \end{array}}
+                =  \brb{\sum_{k=0}^{1} (-1)^k \bcoef{1}{k} (x-k)^{0} \fstep(x-k)
+                   \quad{\scy\forall x\in\R}}
+  }
+  \\
+  The B-spline $\fN_0(x)$ is illustrated in \prefpp{fig:N012}.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \fN_0(x) 
+    &= \setind_\intco{0}{1}(x)
+    && \text{by definition of $\fN_0(x)$}     
+    &&\text{\xref{def:Nn}}
+  \\&= \fstep(x) - \fstep(x-1)
+    && \text{by definition of $\fstep(x)$} 
+    &&\text{\xref{def:fstep}}
+  \\&= \brs{\bcoef{1}{0}\fstep(x) - \bcoef{1}{1}\fstep(x-1)}
+    && \text{by definition of \fncte{binomial coefficient} $\bcoef{n}{k}$}
+    && \text{\xref{def:bcoef}}
+  \\&= \sum_{k=0}^{1} (-1)^k \bcoef{1}{k} (x-k)^{0} \fstep(x-k) 
+    && \text{by definition of $\sum$ operator} 
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerpgc{christensen2008}{148}{0817646779}{Exercise 6.2},
+  \citerpgc{christensen2010}{212}{0817649794}{Exercise 10.2},
+  \citerppgc{heil2011}{142}{143}{0817646868}{Definition 4.22 (The Schauder System)},
+  \citerpgc{schumaker2007}{136}{0521705126}{Table 1},
+  \citerpg{stoer2002}{124}{9780387954523}
+  }
+\label{ex:bspline_N1}
+%---------------------------------------
+Let $\fstep(x)$ be the \fncte{step function}. % \xref{def:fstep}.
+Let $\bcoef{n}{k}$ be the \fncte{binomial coefficient}.\\ % \xref{def:bcoef}.
+The \fncte{$1$st order B-spline} $\fN_1(x)$ can be expressed as follows:
+\exbox{
+  \fN_1(x)  =  \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                        &x& &   & for $x\in\intcc{0}{1}$\\
+                       -&x&+&2  & for $x\in\intcc{1}{2}$\\
+                        & & &0  & otherwise
+                     \end{array}}
+            =  \brb{\sum_{k=0}^{2} (-1)^k \bcoef{2}{k} (x-k) \fstep(x-k)
+               \quad{\scy\forall x\in\R}}
+  }
+  \\
+  The B-spline $\fN_1(x)$ is illustrated in \prefpp{fig:N012}.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \fN_1(x)
+    &= \int_{\tau=0}^{\tau=1}\fN_0(x-\tau)\dtau
+    && \text{by \prefp{lem:Nn}}
+  \\&= \int_{\tau=0}^{\tau=1} \sum_{k=0}^{1} (-1)^k \bcoef{1}{k} (x-\tau-k)^0 \fstep(x-\tau-k) \dtau
+    && \text{by \prefp{ex:bspline_N0}}
+  \\&= \sum_{k=0}^{1} (-1)^k \bcoef{1}{k} \int_{\tau=0}^{\tau=1} (x-\tau-k)^0 \fstep(x-\tau-k) \dtau
+    && \text{by \prope{linearity} of $\int\dtau$ operator}
+  \\&= \sum_{k=0}^{1} (-1)^k \bcoef{1}{k} \frac{1}{0+1}\brs{(x-k)^{0+1}\fstep(x-k)-(x-k-1)^{0+1}\fstep(x-k-1)}
+    && \text{by \prefp{lem:intfstepk}}
+  \\&= \brp{\begin{array}{@{}r@{}l}
+         1& \brb{(x-0)\fstep(x-0) - (x-1)\fstep(x-1)}\\
+        -1& \brb{(x-1)\fstep(x-1) - (x-2)\fstep(x-2)}
+       \end{array}}
+  \\&= x\fstep(x) - 2(x-1)\fstep(x-1) + (x-2)\fstep(x-2)
+  \\&= \sum_{k=0}^{2} (-1)^k \bcoef{2}{k} (x-k) \fstep(x-k)
+    && \text{by def. of $\bcoef{n}{k}$ \xref{def:bcoef}}
+  \\&= \brb{\begin{array}{lM}
+              x    & for $x\in\intco{0}{1}$\\
+              -x+2 & for $x\in\intcc{1}{2}$\\
+               0   & otherwise
+              \end{array}}
+    && \text{by def. of $\fstep(x)$ \xref{def:fstep}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerpgc{christensen2008}{148}{0817646779}{Exercise 6.2},
+  \citerpgc{christensen2010}{212}{0817649794}{Exercise 10.2},
+  \citerpgc{schumaker2007}{136}{0521705126}{Table 1},
+  \citerpg{stoer2002}{124}{9780387954523}
+  }
+\label{ex:bspline_N2}
+%---------------------------------------
+Let $\fstep(x)$ be the \fncte{step function}. % \xref{def:fstep}.
+Let $\bcoef{n}{k}$ be the \fncte{binomial coefficient}.\\ % \xref{def:bcoef}.
+The \fncte{$2$nd order B-spline} $\fN_2(x)$ can be expressed as follows:
+\exbox{
+  \fN_2(x) = \frac{1}{2}\brb{\begin{array}{*{3}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                      & x^2 & &    & &   & for $x\in\intco{0}{1}$\\
+                     -&2x^2 &+& 6x &-& 3 & for $x\in\intcc{1}{2}$\\
+                      & x^2 &-& 6x &+& 9 & for $x\in\intcc{2}{3}$\\
+                      &     & &    & & 0 & otherwise
+                  \end{array}}
+           = \brb{\frac{1}{2}\sum_{k=0}^{3} (-1)^k \bcoef{3}{k} (x-k)^2 \fstep(x-k)
+                  \quad{\scy\forall x\in\R}}
+  }
+  \\
+  The B-spline $\fN_2(x)$ is illustrated in \prefpp{fig:N012}.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \fN_2(x)
+    &= \int_{\tau=0}^{\tau=1}\fN_1(x-\tau)\dtau
+    && \text{by \prefp{lem:Nn}}
+  \\&= \int_{\tau=0}^{\tau=1} \sum_{k=0}^{2} (-1)^k \bcoef{2}{k} (x-\tau-k) \fstep(x-\tau-k) \dtau
+    && \text{by \prefp{ex:bspline_N1}}
+  \\&= \sum_{k=0}^{2} (-1)^k \bcoef{2}{k} \int_{\tau=0}^{\tau=1} (x-\tau-k) \fstep(x-\tau-k) \dtau
+    && \text{by \prope{linearity} of $\int\dtau$ operator}
+  \\&= \sum_{k=0}^{2} (-1)^k \bcoef{2}{k} \frac{1}{1+1}\brs{(x-k)^{1+1}\fstep(x-k)-(x-k-1)^{1+1}\fstep(x-k-1)}
+    && \text{by \prefp{lem:intfstepk}}
+  \\&= \frac{1}{2}\brp{\begin{array}{@{\hspace{2pt}}rlll}
+         1& \brb{(x-0)^2\fstep(x-0) - (x-1)^2\fstep(x-1)}\\
+        -2& \brb{(x-1)^2\fstep(x-1) - (x-2)^2\fstep(x-2)}\\
+        +1& \brb{(x-2)^2\fstep(x-2) - (x-3)^2\fstep(x-3)}
+       \end{array}}
+  \\&= \frac{1}{2}\brs{x^2\fstep(x) - 3(x-1)^2\fstep(x-1) + 3(x-2)^2\fstep(x-2) - (x-3)^2\fstep(x-3)}
+  \\&= \frac{1}{2}\sum_{k=0}^{3} (-1)^k \bcoef{3}{k} (x-k)^2 \fstep(x-k)
+    && \text{by def. of $\bcoef{n}{k}$ \xref{def:bcoef}}
+  \\&= \frac{1}{2}\brb{\begin{array}{*{3}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                & x^2 & &    & &   & for $x\in\intco{0}{1}$\\
+               -&2x^2 &+& 6x &-& 3 & for $x\in\intcc{1}{2}$\\
+                & x^2 &-& 6x &+& 9 & for $x\in\intcc{2}{3}$\\
+                &     & &    & & 0 & otherwise
+            \end{array}}
+    && \text{by def. of $\fstep(x)$ \xref{def:fstep}}
+   %&& \text{by definition of $\fstep(x)$ \xref{def:fstep}}
+\end{align*}
+The final steps of this proof can be calculated ``by hand" 
+or by using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bspline_max}.
+\end{proof}
+
+
+%=======================================
+\section{Algebraic properties}
+%=======================================
+\pref{thm:Nnx} (next) presents a closed form expression for an \fncte{$n$th order B-spline} $\fN_n(x)$
+based on the definition of $\fN_n(x)$ given in \prefpp{def:Nn}.
+Alternatively, \pref{thm:Nnx} could serve as the definition and \pref{def:Nn} as a property.
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{christensen2008}{142}{0817646779}{Theorem 6.1.3},
+  \citerpgc{chui}{84}{0121745848}{(4.1.12)}
+  }
+\label{thm:Nnx}
+%---------------------------------------
+Let $\fN_n(x)$ be the \fncte{$n$th order B-spline} \xref{def:Bspline}.\\
+Let $\fstep(x)$ be the \fncte{step function} \xref{def:fstep}.
+\thmbox{
+  \fN_n(x) = \frac{1}{n!} \sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{k} (x-k)^{n} \fstep(x-k) 
+  \qquad \forall n\in\setn{0,1,2,\ldots}=\Znn
+  }
+\end{theorem}
+\begin{proof}
+Proof follows by induction:
+\begin{enumerate}
+  \item base case (choose one):
+    \qquad\begin{tabular}[t]{cll}
+            \imark & Proof for $n=0$ case:& by \prefpp{ex:bspline_N0}.\\
+            \imark & Proof for $n=1$ case:& by \prefpp{ex:bspline_N1}.\\
+            \imark & Proof for $n=2$ case:& by \prefpp{ex:bspline_N2}.
+          \end{tabular} 
+
+  \item inductive step\ldots proof that $n$ case $\implies$ $n+1$ case:
+    \begin{align*}
+      &\fN_{n+1}(x) 
+      \\&= \int_0^1 \fN_n(x-\tau) \dtau
+        && \text{by \prefp{lem:Nn}}
+      \\&= \int_0^1 \frac{1}{n!} \sum_{k=0}^{k=n+1} (-1)^k \bcoef{n+1}{k} (x-\tau-k)^{n} \fstep(x-\tau-k) \dtau
+        && \text{by induction hypothesis}
+      \\&= \frac{1}{n!} \sum_{k=0}^{k=n+1} (-1)^k \bcoef{n+1}{k} \int_0^1 (x-\tau-k)^{n} \fstep(x-\tau-k) \dtau
+        && \text{by \prope{linearity} of $\int\dtau$ operator}
+      \\&=\mathrlap{%
+            \frac{1}{n!} \sum_{k=0}^{k=n+1} (-1)^k \bcoef{n+1}{k} 
+            \frac{1}{n+1}\brs{(x-k)^{n+1}\fstep(x-k) -(x-k-1)^{n+1}\fstep(x-k-1)}
+            \quad\text{by \prefp{lem:intfstepk}}
+            }
+      \\&=\mathrlap{%
+            \frac{1}{(n+1)!} \sum_{k=0}^{k=n+1} (-1)^k \bcoef{n+1}{k} 
+            \brs{(x-k)^{n+1}\fstep(x-k) -(x-k-1)^{n+1}\fstep(x-k-1)}
+            }
+      \\&= \mathrlap{\frac{1}{(n+1)!}\brs{ 
+             \sum_{k=0}^{k=n+1} (-1)^k \bcoef{n+1}{k}(x-k  )^{n+1}\fstep(x-k) 
+            -\sum_{k=0}^{k=n+1} (-1)^k \bcoef{n+1}{k}(x-k-1)^{n+1}\fstep(x-k-1)}}
+      %\\&\qquad\text{by \prope{linearity} of sum operator}
+      \\&= \mathrlap{\frac{1}{(n+1)!}\brs{ 
+             \sum_{k=0}^{k=n+1} (-1)^k \bcoef{n+1}{k}(x-k  )^{n+1}\fstep(x-k) 
+            -\sum_{m=1}^{m=n+2} (-1)^{m-1} \bcoef{n+1}{m-1}(x-m)^{n+1}\fstep(x-m)}} 
+        \\&\qquad\text{where $m\eqd k+1\,\implies k=m-1$}
+      \\&= \frac{1}{(n+1)!}\brp{\begin{array}{@{}r@{}>{\ds}l}
+             &\sum_{k=0}^{k=n+1} (-1)^k \bcoef{n+1}{k}(x-k  )^{n+1}\fstep(x-k)\\ 
+            -&\sum_{m=1}^{m=n+2} (-1)^{m-1}\brs{\bcoef{n+2}{m}-\bcoef{n+1}{m}}(x-m)^{n+1}\fstep(x-m)%
+           \end{array}}
+        &&\begin{array}{M}
+            by \thme{by Pascal's identity} /\\
+            \thme{Stifel formula}\\ 
+            \xref{thm:stifel}
+          \end{array}
+      \\&=\frac{1}{(n+1)!}\brp{\begin{array}{@{}r@{}>{\ds}l@{}>{\ds}l} 
+             &\sum_{m=1}^{m=n+2}&(-1)^{m}\bcoef{n+2}{m}(x-m)^{n+1}\fstep(x-m)\\ 
+            -&\sum_{m=1}^{m=n+2}&(-1)^{m}\bcoef{n+1}{m}(x-m)^{n+1}\fstep(x-m)\\ 
+            +&\sum_{k=0}^{k=n+1}&(-1)^{k}\bcoef{n+1}{k}(x-k)^{n+1}\fstep(x-k)
+            \end{array}}
+        && \text{note $(-1)^{m-1}=-(-1)^m$}
+      \\&=\mathrlap{
+            \frac{1}{(n+1)!}\brp{\begin{array}{@{}r@{}>{\ds}l@{}l|DD} 
+               &\sum_{m=0}^{m=n+2}&(-1)^{m}  \bcoef{n+2}{m}  (x-m)^{n+1}\fstep(x-m)  &(A)&desired $n+1$ case\\ 
+              -&                  &(-1)^{0}  \bcoef{n+2}{0}  (x-0)^{n+1}\fstep(x-0)  &(B)&cancelled by (F)\\ 
+              -&\sum_{m=1}^{m=n+1}&(-1)^{m}  \bcoef{n+1}{m}  (x-m)^{n+1}\fstep(x-m)  &(C)&cancelled by (E)\\ 
+              -&                  &(-1)^{n+2}\bcoef{n+1}{n+2}(x-n-2)^{n+1}\fstep(x-n-2)&(D)&$\bcoef{n+1}{n+2}=0$ by \prefp{prop:bcoef}\\ 
+              +&\sum_{k=1}^{k=n+1}&(-1)^{k}  \bcoef{n+1}{k}  (x-k)^{n+1}\fstep(x-k)  &(E)&cancelled by (C)\\
+              +&                  &(-1)^{0}  \bcoef{n+1}{0}  (x-0)^{n+1}\fstep(x-0)  &(F)&$\bcoef{n+2}{0}=\bcoef{n+1}{0}=1$, so (F) is cancelled by (B)
+              \end{array}}}
+      \\&=\frac{1}{(n+1)!} \sum_{m=0}^{m=n+2} (-1)^{m} \bcoef{n+2}{m}(x-m)^{n+1} \fstep(x-m)
+        && \text{($n+1$ case)}
+    \end{align*}
+    % Praise the Lord!!!
+    % 2017 April 22 Saturday
+\end{enumerate}
+\end{proof}
+
+
+%\begin{table}
+%  \centering
+%  $\begin{array}{|l|*{8}{c}|}
+%    \hline
+%             &0\le{x}\le1      & 1\le{x}\le2                         & 2\le{x}\le3                          & 3\le{x}\le4                          & 4\le{x}\le5 & 5\le{x}\le6 & 6\le{x}\le7 & 7\le{x}\le8 \\
+%    \hline                                                                                                                                         
+%    \fN_0(x) & 1               & 0                                   & 0                                    & 0                                    & 0           & 0           & 0           & 0           \\
+%    \fN_1(x) & x               & -x+2                                & 0                                    & 0                                    & 0           & 0           & 0           & 0           \\
+%    \fN_2(x) & \frac{1}{2}x^2  & -x^2+3x-\frac{3}{2}                 & \frac{1}{2}x^2-3x+\frac{9}{2}        & 0                                    & 0           & 0           & 0           & 0           \\
+%    \fN_3(x) & \frac{1}{6}x^3  & -\frac{1}{2}x^3+2x^2-2x+\frac{2}{3} & \frac{1}{2}x^3-4x^2+10x-\frac{22}{3} & -\frac{1}{6}x^3+2x^2-8x+\frac{32}{3} & 0           & 0           & 0           & 0           \\
+%    \fN_4(x) & \frac{1}{24}x^4                                                                % 0 <= x <= 1
+%             & -\frac{1}{6}x^4+\frac{5}{6}x^3-\frac {5}{4}x^2+\frac {5}{6}x-\frac{5}{24}      % 0 <= x <= 1
+%             & +\frac{1}{4}x^4-\frac{5}{2}x^3+\frac{35}{4}x^2-\frac{25}{2}x+\frac{155}{24}    % 0 <= x <= 1
+%             & -\frac{1} {6}x^4+\frac{5}{2}x^3-\frac {55}{4}x^2+\frac {65}{2}x-\frac{655}{24} % 0 <= x <= 1
+%             & +\frac{1}{24}x^4-\frac{5}{6}x^3+\frac{25}{4}x^2-\frac{125}{6}x+\frac{625}{24}  % 0 <= x <= 1
+%             \\
+%    \hline
+%  \end{array}$
+%  \caption{some \fncte{B-splines} $\fN_n(x)$ \label{tab:bsplines}}
+%\end{table}
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerpgc{schumaker2007}{136}{0521705126}{Table 1},
+  \citerpgc{shizgal2015}{92}{9401794545}{(2.199)},
+  \citePpc{szabo2004}{146}{(4)},
+  \citePpc{wei2006}{578}{Table 1},
+  \citePc{maleknejad2013}{(9)}
+  }
+\label{ex:bspline_N3}
+%---------------------------------------
+Let $\fN_3(x)$ be the \fncte{$3$rd order B-spline} \xref{def:Bspline}.\footnote{%
+  For help with plotting \fncte{B-spline}s, see \prefpp{app:sourcecode}.}
+  \exbox{
+  \fN_3(x) = \frac{1}{6}\brb{\begin{array}{*{4}{@{\hspace{2pt}}c@{\hspace{2pt}}r}M}
+     & x^3 & &      & &     & &      & for $0\le x\le 1$ \\
+    -&3x^3 &+& 12x^2 &-& 12x &+&  4  & for $1\le x\le 2$ \\
+     &3x^3 &-& 24x^2 &+& 60x &-& 44  & for $2\le x\le 3$ \\
+    -& x^3 &+& 12x^2 &-& 48x &+& 64  & for $3\le x\le 4$ \\
+     &               & &     & &  0 & &               & otherwise
+  \end{array}}
+  \tbox{\includegraphics{graphics/n3.pdf}}
+  }
+\end{example}
+\begin{proof}
+This expression can be calculated ``by hand" using \prefpp{thm:Nnx}
+or by using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bspline_max}.
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-04-29 23:28:36.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bsplineout.txt>
+%Daniel J. Greenhoe 
+%Maxima script file for nth order B-spline Nn(x) calculation, n= 3 
+%6 N(x)=  0  for x<=0 
+%6 N(x)=  x^3  for  0 <x< 1 
+%6 N(x)=  (-3*x^3)+12*x^2-12*x+4  for  1 <x< 2 
+%6 N(x)=  3*x^3-24*x^2+60*x-44  for  2 <x< 3 
+%6 N(x)=  (-x^3)+12*x^2-48*x+64  for  3 <x< 4 
+%6 N(x)=  0  for x> 4 
+%------------------------------------------------------- 
+% values at some specific points x:                      
+%------------------------------------------------------- 
+%N( 2 )=  2/3  (center value) 
+%N( 5/2 )=  23/48 
+%N( 3 )=  1/6 
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-04-29 23:28:36.
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\label{ex:bspline_N4}
+%---------------------------------------
+Let $\fN_4(x)$ be the \fncte{$4$th order B-spline} \xref{def:Bspline}.
+\exbox{
+  \fN_4(x) = \frac{1}{24}\brb{\begin{array}{*{5}{@{\hspace{2pt}}c@{\hspace{2pt}}r}M}
+                & x^4 & &       & &        & &      & &      & for $0 \le x \le= 1$\\
+               -&4x^4 &+& 20x^3 &-&  30x^2 &+&  20x &-&   5  & for $1 \le x \le= 2$\\ 
+                &6x^4 &-& 60x^3 &+& 210x^2 &-& 300x &+& 155  & for $2 \le x \le= 3$\\
+               -&4x^4 &+& 60x^3 &-& 330x^2 &+& 780x &-& 655  & for $3 \le x \le= 4$\\
+                & x^4 &-& 20x^3 &+& 150x^2 &-& 500x &+& 625  & for $4 \le x \le= 5$\\
+                &     & &       & &        & &      & &   0  & otherwise             
+  \end{array}}
+  %\tbox{\includegraphics{graphics/n4.pdf}}
+  }
+\end{example}
+\begin{proof}
+This expression can be calculated ``by hand" using \prefpp{thm:Nnx}
+or by using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bspline_max}.
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-04-29 23:57:54.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bsplineout.txt>
+%====================================================================== 
+%Daniel J. Greenhoe 
+%Maxima script file for nth order B-spline Nn(x) calculation, n= 4 
+%====================================================================== 
+%------------------------------------------------------- 
+%24 N(x)=  0  for x<=0 
+%24 N(x)=  x^4  for  0 <x< 1 
+%24 N(x)=  (-4*x^4)+20*x^3-30*x^2+20*x-5  for  1 <x< 2 
+%24 N(x)=  6*x^4-60*x^3+210*x^2-300*x+155  for  2 <x< 3 
+%24 N(x)=  (-4*x^4)+60*x^3-330*x^2+780*x-655  for  3 <x< 4 
+%24 N(x)=  x^4-20*x^3+150*x^2-500*x+625  for  4 <x< 5 
+%24 N(x)=  0  for x> 5 
+%------------------------------------------------------- 
+% values at some specific points x:                      
+%------------------------------------------------------- 
+%N( 5/2 )=  115/192  (center value) 
+%N( 3 )=  11/24 
+%N( 7/2 )=  19/96 
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-04-29 23:57:55.
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\label{ex:bspline_N5}
+%---------------------------------------
+Let $\fN_5(x)$ be the \fncte{$5$th order B-spline} \xref{def:Bspline}.
+\exbox{
+  \fN_5(x) = \frac{1}{120}\brb{\begin{array}{*{6}{@{\hspace{2pt}}c@{\hspace{2pt}}r}M}
+                &   x^5 & &        & &         & &         & &        & &        & for $0 \le x \le= 1$\\
+               -&  5x^5 &+&  30x^4 &-&   60x^3 &+&   60x^2 &-&    30x &+&     6  & for $1 \le x \le= 2$\\
+                & 10x^5 &-& 120x^4 &+&  540x^3 &-& 1140x^2 &+&  1170x &-&   474  & for $2 \le x \le= 3$\\
+               -& 10x^5 &+& 180x^4 &-& 1260x^3 &+& 4260x^2 &-&  6930x &+&  4386  & for $3 \le x \le= 4$\\
+                &  5x^5 &-& 120x^4 &+& 1140x^3 &-& 5340x^2 &+& 12270x &-& 10974  & for $4 \le x \le= 5$\\
+               -&   x^5 &+&  30x^4 &-&  360x^3 &+& 2160x^2 &-&  6480x &+&  7776  & for $5 \le x \le= 6$\\
+                &       & &        & &         & &         & &        & &     0  & otherwise             
+  \end{array}}
+  %\tbox{\includegraphics{graphics/n5.pdf}}
+  }
+  \\
+  The \fncte{$5$th order B-spline} $\fN_5(x)$ is illustrated in \prefpp{fig:N012}.
+\end{example}
+\begin{proof}
+This expression can be calculated ``by hand" using \prefpp{thm:Nnx}
+or by using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bspline_max}.
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-04-30 00:04:25.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bsplineout.txt>
+%====================================================================== 
+%Daniel J. Greenhoe 
+%Maxima script file for nth order B-spline Nn(x) calculation, n= 5 
+%====================================================================== 
+%120 N(x)=  0  for x<=0 
+%120 N(x)=  x^5  for  0 <x< 1 
+%120 N(x)=  (-5*x^5)+30*x^4-60*x^3+60*x^2-30*x+6  for  1 <x< 2 
+%120 N(x)=  10*x^5-120*x^4+540*x^3-1140*x^2+1170*x-474  for  2 <x< 3 
+%120 N(x)=  (-10*x^5)+180*x^4-1260*x^3+4260*x^2-6930*x+4386  for  3 <x< 4 
+%120 N(x)=  5*x^5-120*x^4+1140*x^3-5340*x^2+12270*x-10974  for  4 <x< 5 
+%120 N(x)=  (-x^5)+30*x^4-360*x^3+2160*x^2-6480*x+7776  for  5 <x< 6 
+%120 N(x)=  0  for x> 6 
+%------------------------------------------------------- 
+% values at some specific points x:                      
+%------------------------------------------------------- 
+%N( 3 )=  11/20  (center value) 
+%N( 7/2 )=  841/1920 
+%N( 4 )=  13/60 
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-04-30 00:04:25.
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\label{ex:bspline_N6}
+%---------------------------------------
+Let $\fN_6(x)$ be the \fncte{$6$th order B-spline} \xref{def:Bspline}.
+\exbox{
+  \fN_6(x) = \frac{1}{720}\brb{\begin{array}{*{7}{@{\hspace{2pt}}c@{\hspace{2pt}}r}D}
+              &   x^6 & &        & &        & &           & &           & &         & &         & for $ 0 \le x \le 1$ \\
+             -&  6x^6 &+&  42x^5 &-&  105x^4 &+&   140x^3 &-&    105x^2 &+&     42x &-& 7       & for $ 1 \le x \le 2$ \\
+              & 15x^6 &-& 210x^5 &+& 1155x^4 &-&  3220x^3 &+&   4935x^2 &-&   3990x &+& 1337    & for $ 2 \le x \le 3$ \\
+             -& 20x^6 &+& 420x^5 &-& 3570x^4 &+& 15680x^3 &-&  37590x^2 &+&  47040x &-& 24178   & for $ 3 \le x \le 4$ \\
+              & 15x^6 &-& 420x^5 &+& 4830x^4 &-& 29120x^3 &+&  96810x^2 &-& 168000x &+& 119182  & for $ 4 \le x \le 5$ \\
+             -&  6x^6 &+& 210x^5 &-& 3045x^4 &+& 23380x^3 &-& 100065x^2 &+& 225750x &-& 208943  & for $ 5 \le x \le 6$ \\
+              &   x^6 &-&  42x^5 &+&  735x^4 &-&  6860x^3 &+&  36015x^2 &-& 100842x &+& 117649  & for $ 6 \le x \le 7$ \\
+              &       & &        & &         & &         & &          & &           & &      0  & otherwise              
+  \end{array}}
+  %\tbox{\includegraphics{graphics/n4.pdf}}
+  }
+  \\
+  The \fncte{$6$th order B-spline} $\fN_6(x)$ is illustrated in \prefpp{fig:N012}.
+\end{example}
+\begin{proof}
+This expression can be calculated ``by hand" using \prefpp{thm:Nnx}
+or by using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bspline_max}.
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-04-30 00:14:09.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bsplineout.txt>
+%====================================================================== 
+%Daniel J. Greenhoe 
+%Maxima script file for nth order B-spline Nn(x) calculation, n= 6 
+%====================================================================== 
+%720 N(x)=  0  for x<=0 
+%720 N(x)=  x^6  for  0 <x< 1 
+%720 N(x)=  (-6*x^6)+42*x^5-105*x^4+140*x^3-105*x^2+42*x-7  for  1 <x< 2 
+%720 N(x)=  15*x^6-210*x^5+1155*x^4-3220*x^3+4935*x^2-3990*x+1337  for  2 <x< 3
+%    
+%720 N(x)=  (-20*x^6)+420*x^5-3570*x^4+15680*x^3-37590*x^2+47040*x-24178  for  
+%   3 <x< 4 
+%720 N(x)=  15*x^6-420*x^5+4830*x^4-29120*x^3+96810*x^2-168000*x+119182  for  4
+%    <x< 5 
+%720 N(x)=  (-6*x^6)+210*x^5-3045*x^4+23380*x^3-100065*x^2+225750*x-208943 
+%    for  5 <x< 6 
+%720 N(x)=  x^6-42*x^5+735*x^4-6860*x^3+36015*x^2-100842*x+117649  for  6 <x< 7
+%    
+%720 N(x)=  0  for x> 7 
+%------------------------------------------------------- 
+% values at some specific points x:                      
+%------------------------------------------------------- 
+%N( 7/2 )=  5887/11520  (center value) 
+%N( 4 )=  151/360 
+%N( 9/2 )=  10543/46080 
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-04-30 00:14:10.
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\label{ex:bspline_N7}
+%---------------------------------------
+Let $\fN_7(x)$ be the \fncte{$7$th order B-spline} \xref{def:Bspline}.
+\exboxt{%
+  $7!\fN_7(x) = 5040\fN_7(x) =$\\
+  $\brb{\begin{array}{*{8}{@{\hspace{1pt}}>{\scy}c@{\hspace{1pt}}r}D}
+     &    x^7 & &          & &          & &             & &            & &             & &           & &          & for $ 0 \le x \le 1$ \\
+    -&  7 x^7 &+&   56 x^6 &-&   168 x^5 &+&    280 x^4 &-&    280 x^3 &+&     168 x^2 &-&      56 x &+&       8  & for $ 1 \le x \le 2$ \\
+     & 21 x^7 &-&  336 x^6 &+&  2184 x^5 &-&   7560 x^4 &+&  15400 x^3 &-&   18648 x^2 &+&   12488 x &-&    3576  & for $ 2 \le x \le 3$ \\
+    -& 35 x^7 &+&  840 x^6 &-&  8400 x^5 &+&  45360 x^4 &-& 143360 x^3 &+&  267120 x^2 &-&  273280 x &+&  118896  & for $ 3 \le x \le 4$ \\
+     & 35 x^7 &-& 1120 x^6 &+& 15120 x^5 &-& 111440 x^4 &+& 483840 x^3 &-& 1238160 x^2 &+& 1733760 x &-& 1027984  & for $ 4 \le x \le 5$ \\
+    -& 21 x^7 &+&  840 x^6 &-& 14280 x^5 &+& 133560 x^4 &-& 741160 x^3 &+& 2436840 x^2 &-& 4391240 x &+& 3347016  & for $ 5 \le x \le 6$ \\
+     &  7 x^7 &-&  336 x^6 &+&  6888 x^5 &-&  78120 x^4 &+& 528920 x^3 &-& 2135448 x^2 &+& 4753336 x &-& 4491192  & for $ 6 \le x \le 7$ \\
+    -&    x^7 &+&   56 x^6 &-&  1344 x^5 &+&  17920 x^4 &-& 143360 x^3 &+&  688128 x^2 &-& 1835008 x &+& 2097152  & for $ 7 \le x \le 8$ \\
+     &        & &          & &           & &            & &            & &             & &           & &       0  & otherwise
+  \end{array}}$
+  %\tbox{\includegraphics{graphics/n7.pdf}}
+  }
+  \\
+  The \fncte{$7$th order B-spline} $\fN_7(x)$ is illustrated in \prefpp{fig:N012}.
+\end{example}
+\begin{proof}
+This expression can be calculated ``by hand" using \prefpp{thm:Nnx}
+or by using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bspline_max}.
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-04-30 00:50:43.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bsplineout.txt>
+%====================================================================== 
+%Daniel J. Greenhoe 
+%Output file for nth order B-spline Nn(x) calculation, n= 7  . 
+%Output produced using Maxima running the script file bspline.max 
+%====================================================================== 
+%5040 N(x)=  0  for x<=0 
+%5040 N(x)=  x^7  for  0 <x< 1 
+%5040 N(x)=  (-7*x^7)+56*x^6-168*x^5+280*x^4-280*x^3+168*x^2-56*x+8  for  1 <x<   2 
+%5040 N(x)=  21*x^7-336*x^6+2184*x^5-7560*x^4+15400*x^3-18648*x^2+12488*x-3576    for  2 <x< 3 
+%5040 N(x)=  (-35*x^7)+840*x^6-8400*x^5+45360*x^4-143360*x^3+267120*x^2-273280*x+118896  for  3 <x< 4 
+%5040 N(x)=  35*x^7-1120*x^6+15120*x^5-111440*x^4+483840*x^3-1238160*x^2+1733760*x      -1027984  for  4 <x< 5 
+%5040 N(x)=  (-21*x^7)+840*x^6-14280*x^5+133560*x^4-741160*x^3+2436840*x^2-4391240*x           +3347016  for  5 <x< 6 
+%5040 N(x)=   7*x^7-336*x^6+6888*x^5-78120*x^4+528920*x^3-2135448*x^2+4753336*x-4491192      for  6 <x< 7 
+%5040 N(x)=  (-x^7)+56*x^6-1344*x^5+17920*x^4-143360*x^3+688128*x^2-1835008*x+2097152      for  7 <x< 8 
+%5040 N(x)=  0  for x> 8 
+%------------------------------------------------------- 
+% values at some specific points x:                      
+%------------------------------------------------------- 
+%N( 4 )=  151/315  (center value) 
+%N( 9/2 )=  259723/645120 
+%N( 5 )=  397/1680 
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-04-30 00:50:43.
+\end{proof}
+
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citeP{oeisA289358}
+  }
+\label{ex:Nn}
+%---------------------------------------
+The $(n+1)^2$ coefficients of the order $n,n-1,\ldots,0$ monomials
+of each \fncte{B-spline} $\fN_n(x)$ multiplied by $n!$ 
+induce an \fncte{integer sequence} 
+\\\quad$\seqX\eqd\seqn{
+              1,
+              1,     0,
+             -1,     2,
+              1,     0,        0,
+             -2,     6,       -3,
+              1,    -6,        9,
+              1,     0,        0,        0,
+             -3,    12,    -  12,        4,
+              3,  - 24,       60,    -  44,
+             -1,    12,    -  48,       64, 
+             \ldots}$\\
+as more fully listed in \prefpp{tbl:Nn}.
+In this sequence $\seqX\eqd\seqn{x_0,x_1,x_2,\ldots}$, 
+the coefficients for the \fncte{order $n$ B-spline} $\fN_n(x)$ 
+begin at the sequence index value 
+  \\\indentx$\ds p\eqd\sum_{k=0}^{n}k^2 = \frac{1}{6}n(n+1)(2n+1)$ 
+    \indentx and end at index value $p+(n+1)^2-1$.\\
+For example, the coefficients for $\fN_3(x)$ begin at index value
+$p\eqd 0+1+4+9=14$ and end at index value $p+4^2-1=29$.
+Using these coefficients gives the following expression for $\fN_3(x)$:
+\\\indentx$\ds
+  \fN_3(x) = \brs{\begin{array}{rrrr|D}
+                1 &    0 &       0 &       0 & for $0 \le x < 1$\\
+               -3 &   12 &   -  12 &       4 & for $1 \le x < 2$\\
+                3 & - 24 &      60 &   -  44 & for $2 \le x < 3$\\
+               -1 &   12 &   -  48 &      64 & for $3 \le x < 4$
+             \end{array}}
+             \brs{\begin{array}{l}
+               x^3\\
+               x^2\\
+               x  \\
+               1
+             \end{array}}
+             =
+             \brbl{\begin{array}{rrrrD}
+                 x^3 &         &      &     & for $0 \le x < 1$\\
+               -3x^3 & + 12x^2 & -12x & + 4 & for $1 \le x < 2$\\
+                3x^3 & - 24x^2 & +60x & -44 & for $2 \le x < 3$\\
+               - x^3 & + 12x^2 & -48x & +64 & for $3 \le x < 4$\\
+                     &         &      &   0 & otherwise
+             \end{array}}
+  $\\
+\ldots which agrees with the result presented in \prefpp{ex:bspline_N3}.
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item The coefficients for the sequence $\seqX$ may be computed with assistance from \hie{Maxima} 
+        together with the script file listed in \prefpp{sec:src_bspline_max}.
+
+  \item Proof that $\sum_{k=0}^{n}k^2 = \frac{1}{6}n(n+1)(2n+1)$: The summation is a \fncte{power sum}. \label{item:Nn_powersum}
+        The relation may be proved using \thme{induction}.\citetbl{\citerppc{greenhoe2017sams}{186}{187}{Proposition 11.2 (Power Sums)}}
+        %For a full proof, see \citerppc{greenhoe2017sams}{186}{187}{Proposition 11.2 (Power Sums)}.
+    \begin{enumerate}
+      \item Base case: n=0 case \ldots
+        \begin{align*}
+          \sum_{k=0}^{k=0} k^2 
+            &= 0
+          \\&= \frac{0(0+1)(2\cdot0+1)}{6}
+          \\&= \left.\frac{n(n+1)(2n+1)}{6}\right|_{n=0} 
+        \end{align*}
+
+      \item Base case: n=1 case \ldots
+        \begin{align*}
+          \sum_{k=0}^{k=1} k^2 
+            &= 0 + 1
+          \\&= \frac{1(1+1)(2\cdot1+1)}{6}
+          \\&= \left.\frac{n(n+1)(2n+1)}{6}\right|_{n=1} 
+        \end{align*}
+
+      \item inductive step: proof that $n$ case $\implies$ $n+1$ case:
+        \begin{align*}
+          \sum_{k=0}^{n+1} k^2
+            &= \Bigg(\sum_{k=0}^n k^2\Bigg) + \Bigg(n+1\Bigg)^2
+          \\&= \Bigg(\frac{n(n+1)(2n+1)}{6}\Bigg) + \Bigg(n+1\Bigg)^2
+            && \text{by $n$ case hypothesis}
+          \\&= \Bigg(n+1\Bigg)\Bigg(\frac{n(2n+1)+6(n+1)}{6}\Bigg) 
+          \\&= \Bigg(n+1\Bigg)\Bigg(\frac{2n^2+7n+6}{6}\Bigg) 
+          \\&= \Bigg(n+1\Bigg)\Bigg(\frac{(n+2)(2n+3)}{6}\Bigg) 
+          \\&= \frac{(n+1)[(n+1)+1][2(n+1)+1]}{6} 
+        \end{align*}
+  \end{enumerate}
+\end{enumerate}
+\end{proof}
+\begin{table}[h]
+\centering%
+\exbox{%
+  \begin{array}{@{}M|l|*{9}{@{\hspace{2pt}}r}@{\hspace{1pt}}}
+             n=0,& (\div0!)&  1;\\
+      \hline n=1,& (\div1!)&  1,&    0;\\
+                 &         & -1,&    2;\\
+      \hline n=2,& (\div2!)&  1,&    0,&       0;\\
+                 &         & -2,&    6,&      -3;\\
+                 &         &  1,&   -6,&       9;\\
+      \hline n=3,& (\div3!)&  1,&    0,&       0,&       0;\\
+                 &         & -3,&   12,&   -  12,&       4;\\
+                 &         &  3,& - 24,&      60,&   -  44;\\
+                 &         & -1,&   12,&   -  48,&      64;\\  
+      \hline n=4,& (\div4!)&  1,&    0,&       0,&       0,&       0;\\
+                 &         & -4,&   20,&   -  30,&      20,&   -   5;\\ 
+                 &         &  6,& - 60,&     210,&   - 300,&     155;\\
+                 &         & -4,&   60,&   - 330,&     780,&   - 655;\\
+                 &         &  1,& - 20,&     150,&   - 500,&     625;\\
+      \hline n=5,& (\div5!)&  1,&    0,&       0,&       0,&       0,&        0;\\
+                 &         &- 5,&   30,&   -  60,&      60,& -    30,&        6;\\
+                 &         & 10,& -120,&     540,&  - 1140,&    1170,&  -   474;\\
+                 &         &-10,&  180,&   -1260,&    4260,& -  6930,&     4386;\\
+                 &         &  5,& -120,&    1140,&  - 5340,&   12270,&  - 10974;\\
+                 &         &- 1,&   30,&   - 360,&    2160,& -  6480,&     7776;\\
+      \hline n=6,& (\div6!)&  1,&    0,&       0,&       0,&       0,&        0,&        0;\\ 
+                 &         & -6,&   42,&    -105,&     140,&    -105,&       42,&       -7;\\
+                 &         & 15,& -210,&    1155,&   -3220,&    4935,&    -3990,&     1337;\\
+                 &         &-20,&  420,&   -3570,&   15680,&  -37590,&    47040,&   -24178;\\
+                 &         & 15,& -420,&    4830,&  -29120,&   96810,&  -168000,&   119182;\\
+                 &         & -6,&  210,&   -3045,&   23380,& -100065,&   225750,&  -208943;\\
+                 &         &  1,&  -42,&     735,&   -6860,&   36015,&  -100842,&   117649;\\
+      \hline n=7,& (\div7!)&  1,&     0,&      0,&       0,&       0,&        0,&        0,&        0;\\ 
+                 &         &- 7,&    56,& -  168,&     280,& -   280,&      168,& -     56,&        8;\\
+                 &         & 21,& - 336,&   2184,& -  7560,&   15400,& -  18648,&    12488,& -   3576;\\
+                 &         &-35,&   840,& - 8400,&   45360,& -143360,&   267120,& - 273280,&   118896;\\
+                 &         & 35,& -1120,&  15120,& -111440,&  483840,& -1238160,&  1733760,& -1027984;\\
+                 &         &-21,&   840,& -14280,&  133560,& -741160,&  2436840,& -4391240,&  3347016;\\
+                 &         &  7,& - 336,&   6888,& - 78120,&  528920,& -2135448,&  4753336,& -4491192;\\
+                 &         &- 1,&    56,& - 1344,&   17920,& -143360,&   688128,& -1835008,&  2097152;\\
+      \hline n=8,& (\div8!)&\scy  1,&\scy     0,&\scy       0,&\scy        0,&\scy         0,&\scy          0,&\scy          0,&\scy          0,&\scy           0;\\ 
+                 &         &\scy -8,&\scy    72,&\scy    -252,&\scy      504,&\scy      -630,&\scy        504,&\scy       -252,&\scy         72,&\scy           -9\\ 
+                 &         &\scy 28,&\scy  -504,&\scy    3780,&\scy   -15624,&\scy     39690,&\scy     -64008,&\scy      64260,&\scy     -36792,&\scy         9207\\ 
+                 &         &\scy-56,&\scy  1512,&\scy  -17388,&\scy   111384,&\scy   -436590,&\scy    1079064,&\scy   -1650348,&\scy    1432872,&\scy      -541917\\ 
+                 &         &\scy 70,&\scy -2520,&\scy   39060,&\scy  -340200,&\scy   1821330,&\scy   -6146280,&\scy   12800340,&\scy  -15082200,&\scy      7715619\\ 
+                 &         &\scy-56,&\scy  2520,&\scy  -49140,&\scy   541800,&\scy  -3691170,&\scy   15903720,&\scy  -42324660,&\scy   63667800,&\scy    -41503131\\ 
+                 &         &\scy 28,&\scy -1512,&\scy   35532,&\scy  -474264,&\scy   3929310,&\scy  -20674584,&\scy   67410252,&\scy -124449192,&\scy     99584613\\ 
+                 &         &\scy -8,&\scy   504,&\scy  -13860,&\scy   217224,&\scy  -2121210,&\scy   13208328,&\scy  -51179940,&\scy  112731192,&\scy   -107948223\\ 
+                 &         &\scy  1,&\scy   -72,&\scy    2268,&\scy   -40824,&\scy    459270,&\scy   -3306744,&\scy   14880348,&\scy  -38263752,&\scy     43046721
+  \end{array}
+  }
+\caption{Coefficients of the \fncte{B-spline}s $\fN_n(x)$ multiplied by $n!$ \xref{ex:Nn} \label{tbl:Nn}}
+\end{table}
+%1,1,0,-1,2,1,0,0,-2,6,-3,1,-6,9,1,0,0,0,-3,12,-12,4,3,-24,60,-44,-1,12,-48,64,1,0,0,0,0,-4,20,-30,20,-5,6,-60,210,-300,155,-4,60,-330,780,-655,1,-20,150,-500,625,1,0,0,0,0,0,-5,30,-60,60,-30,6,10,-120,540,-1140,1170,-474,-10,180,-1260,4260,-6930,4386,5,-120,1140,-5340,12270,-10974,-1,30,-360,2160,-6480,7776,1,0,0,0,0,0,0,-6,42,-105,140,-105,42,-7,15,-210,1155,-3220,4935,-3990,1337,-20,420,-3570,15680,-37590,47040,-24178,15,-420,4830,-29120,96810,-168000,119182,-6,210,-3045,23380,-100065,225750,-208943,1,-42,735,-6860,36015,-100842,117649,...
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{hollig2003}{25}{0898715334}{3.2},
+  \citerpgc{schumaker2007}{121}{0521705126}{Theorem 4.16}
+  }
+\label{thm:bspline_DxNn}
+%---------------------------------------
+\thmbox{
+  \opddx\fN_n(x) = \fN_{n-1}(x)-\fN_{n-1}(x-1)   \qquad\forall n\in\Zp,\,\forall x\in\R    
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof using \prefpp{lem:Nn} and the \thme{Fundamental Theorem of Calculus}:  %2012mar07wed
+    \begin{align*}
+      \opddx\fN_n(x)
+        &= \opddx\int_0^1 \fN_{n-1}(x-\tau)\dtau
+        && \text{by \prefp{lem:Nn}}
+      \\&= \opddx\int_{x-u=0}^{x-u=1} \fN_{n-1}(u)(-1)\du
+        && \text{where $u\eqd x-\tau\implies\tau=x-u$}
+      \\&= \opddx\int_{u=x-1}^{u=x} \fN_{n-1}(u)\du
+      \\&= \brb{\opddx\left.\int\fN_{n-1}(u)\du\right|_{u=x}}-\brb{\opddx\left.\int\fN_{n-1}(u)\du\right|_{u=x-1}}
+        && \text{by \thme{Fundamental Theorem of Calculus}\footnotemark}
+      \\&= \brb{\fN_{n-1}(x)\opddx(x)}-\brb{\fN_{n-1}(x-1)\opddx(x-1)}
+        && \text{by \hie{Chain Rule}\footnotemark}
+      \\&= \fN_{n-1}(x)-\fN_{n-1}(x-1)
+    \end{align*}
+    \addtocounter{footnote}{-1}
+    \citetblt{
+      \citerpgc{hijab2011}{163}{1441994874}{Theorem 4.4.3}
+      }
+    \stepcounter{footnote}
+    \citetblt{
+      \citerppgc{hijab2011}{73}{74}{1441994874}{Theorem 3.1.2}
+      }
+
+  \item Proof using \prefpp{lem:Nn} and \thme{induction}:  %2012feb16thrs-2012feb19sun
+    \begin{enumerate}
+      \item Base case \ldots proof for $n=1$ case:
+        \begin{align*}
+          \fN_0(x) - \fN_0(x-1)
+            &= \mcom{\fstep(x)-\fstep(x-1)}{$\fN_0(x)$}
+                -\mcom{\brs{\fstep(x-1)-\fstep(x-2)}}{$\fN_0(x-1)$}
+            && \text{by \prefp{ex:bspline_N0}}
+          \\&= \fstep(x)-2\fstep(x-1)+\fstep(x-2)
+          \\&= \sum_{k=0}^2 (-1)^k \bcoef{2}{k}\fstep(x-k)
+          \\&= \opddx\sum_{k=0}^2 (-1)^k \bcoef{2}{k} (x-k)\fstep(x-k)
+          \\&= \opddx\fN_1(x) 
+            && \text{by \prefp{ex:bspline_N1}}
+        \end{align*}
+
+      \item Base case \ldots proof for $n=2$ case:
+        \begin{align*}
+          &\fN_1(x) - \fN_1(x-1)
+            \\&= \mcom{x\fstep(x)  -2(x-1)\fstep(x-1)   +(x-2)\fstep(x-2)}{$\fN_1(x)$}
+               \\&\qquad- \mcom{\brs{ (x-1)\fstep(x-1)  -2(x-2)\fstep(x-2)   +(x-3)\fstep(x-3) }}{$\fN_1(x-1)$}
+                 &&\text{by \prefp{ex:bspline_N1}}
+          \\&=\mathrlap{%
+               x              \fstep(x) 
+             + \brs{-2x+2-x+1}\fstep(x-1)   
+             + \brs{x-2+2x-4} \fstep(x-2)
+             + \brs{-x+3}     \fstep(x-3)
+             }%
+          \\&= x              \fstep(x) 
+             + \brs{-3x+3}    \fstep(x-1)   
+             + \brs{3x-6}     \fstep(x-2)
+             + \brs{-x+3}     \fstep(x-3)
+          \\&= \opddx\brb{\begin{array}{l} 
+               \frac{1}{2}x^2                       \fstep(x)  
+             + \brs{-\frac{3}{2}x^2+3x-\frac{1}{2}} \fstep(x-1)
+             + \brs{\frac{3}{2}x^2-6x+3}            \fstep(x-2) 
+             \\\qquad+ \brs{-\frac{1}{2}x^2+3x-\frac{5}{2}} \fstep(x-3)
+             \end{array}}
+          \\&= \opddx\fN_2(x)
+            && \text{by \prefp{ex:bspline_N2}}
+        \end{align*}
+
+      \item Proof that $n$ case $\implies$ $n+1$ case:
+        \begin{align*}
+          \opddx\fN_{n+1}(x)
+            &= \opddx \int_0^1 \fN_n(x-\tau) \dtau
+            && \text{by \prefp{lem:Nn}}
+          \\&= \int_0^1 \oppptau \fN_n(x-\tau) \dtau  
+            && \text{see note later}
+            %&& \text{see \citetbl{
+            %     \citer{flanders1973}\\
+            %     \citer{talvia2001}
+            %     % http://planetmath.org/encyclopedia/DifferentiationUnderIntegralSign.html
+            %     }}
+          \\&= \int_0^1 \brs{\fN_{n-1}(x-\tau)-\fN_{n-1}(x-1-\tau)} \dtau
+            && \text{by left hypothesis}
+          \\&= \int_0^1 \fN_{n-1}(x-\tau)\dtau -\int_0^1\fN_{n-1}(x-1-\tau) \dtau
+          \\&= \fN_n(x) - \fN_n(x-1)
+            && \text{by \prefp{lem:Nn}}
+        \end{align*}
+    \end{enumerate}
+
+  %\item Proof for $N_n = 2^{n-1} \sum_{k=0}^n {n \choose k} N_n(2x-k)$:
+
+  %\item Proof for $\ft{N}_n(\omega) = \left( \frac{1-e^{-i\omega}}{i\omega}\right)^n$:
+\end{enumerate}
+
+Note: For information about differentiation of an integral, see
+  \citer{flanders1973},
+  \citer{talvila2001}, and
+  \citerpgc{knappb2005}{389}{0817632506}{Chapter VII}.
+  %\item \url{http://planetmath.org/encyclopedia/DifferentiationUnderIntegralSign.html}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}[\thme{B-spline recursion}]
+\footnote{
+  \citerpgc{christensen2008}{140}{0817646779}{Theorem 6.1.1},
+  %\citerp{goswami}{46}
+  \citerpgc{hollig2003}{27}{0898715334}{3.4},
+  \citerpgc{schumaker2007}{120}{0521705126}{Theorem 4.15},
+  \citerpgc{deboor2001}{90}{0387953663}{B-Spline Property (i)},
+  \citerpgc{chui1988}{2}{1611970172}{Theorem 1.1},
+  \citerpgc{wojtaszczyk1997}{53}{0521578949}{Theorem 3.7},
+  \citeP{cox1972},
+  \citeP{deboor1972}
+  }
+\label{thm:bspline_recursion}
+%---------------------------------------
+Let $\fN_n(x)$ be the \fncte{$n$th order B-spline} \xref{def:Nn}.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}lll>{\scs}M}
+          \fN_n(x)   &=& \mc{4}{l}{\ds\frac{x}{n}\fN_{n-1}(x) + \frac{n+1-x}{n}\fN_{n-1}(x-1) \quad\forall n\in\setn{1,2,3,\ldots},\, \forall x\in\R} 
+\end{array}}
+\end{theorem}
+\begin{proof}
+    \begin{enumerate}
+      \item Base case \ldots proof for $n=1$ case:
+        \begin{align*}
+          \frac{x}{1}\fN_0(x) + \frac{1+1-x}{1}\fN_0(x-1)
+            &= \frac{x}{1}    \mcom{\brs{\fstep(x)-\fstep(x-1)}}{$\fN_0(x)$} 
+             + \frac{1+1-x}{1}\mcom{\brs{\fstep(x-1)-\fstep(x-2)}}{$\fN_0(x-1)$}
+          \\&= x\fstep(x) + \brs{-x-x+2}\fstep(x-1) + \brs{x-2}\fstep(x-2)
+          \\&= \fN_1(x)
+            \qquad\text{by \prefp{ex:bspline_N1}}
+        \end{align*}
+    
+      \item Induction step \ldots proof that $n$ case $\implies$ $n+1$ case:
+        \begin{align*}
+          &\frac{x}{n+1}\fN_{n}(x) + \frac{n+2-x}{n+1}\fN_{n}(x-1) + c_1
+          \\&= \int\opddx\brb{\frac{x}{n+1}\fN_{n}(x) + \frac{n+2-x}{n+1}\fN_{n}(x-1)} \dx
+          \\&= \int
+               \mcom{\frac{ 1}{n+1}\fN_{n}(x)  +\frac{x}{n+1}  \opddx\fN_n(x)}{$\opddx\frac{x}{n+1}\fN_{n}(x)$} 
+             + \mcom{\frac{-1}{n+1}\fN_{n}(x-1)+\frac{n+2-x}{n}\opddx\fN_n(x-1)}{$\opddx\frac{n+2-x}{n+1}\fN_{n}(x-1)$} 
+             \dx
+            \\&\qquad\text{by \hie{product rule}}
+          \\&= \int
+               \frac{ 1}{n+1}\mcom{\brs{\frac{x}{n}\fN_{n-1}(x) + \frac{n+1-x}{n}\fN_{n-1}(x-1)}}{by $n$ hypothesis}
+             +\frac{x}{n+1}  \mcom{\brs{\fN_{n-1}(x) -\fN_{n-1}(x-1)}}                           {by \prefp{thm:bspline_DxNn}} 
+             \\&\qquad-\mcom{\brs{\frac{x-1}{n^2+n}\fN_{n-1}(x-1) + \frac{n-x+2}{n(n+1)}\fN_{n-1}(x-2)}}{by induction hypothesis}
+             \\&\qquad+\frac{n+2-x}{n+1}\mcom{\brs{\fN_{n-1}(x-1)-\fN_{n-1}(x-2)}}                        {by \prefp{thm:bspline_DxNn}} 
+             \dx
+          \\&= \int
+               \brs{\frac{x}{n(n+1)}+\frac{x}{n+1}}                             \fN_{n-1}(x)
+             + \brs{\frac{n-x+1}{n(n+1)}-\frac{x-1}{n(n+1)}+\frac{n+2-2x}{n+1}} \fN_{n-1}(x-1)
+             \\&\qquad+ \brs{\frac{-n-2+x}{n(n+1)} + \frac{-n-2+x}{n+1}}        \fN_{n-1}(x-2)
+             \dx
+          \\&= \int
+               \brs{\frac{x+nx}{n(n+1)}} \fN_{n-1}(x)
+             + \brs{\frac{n+2-2x+n(n+2-2x)}{n(n+1)}}\fN_{n-1}(x-1)
+             \\&\qquad+ \brs{\frac{-n-2+x+n(-n-2+x)}{n(n+1)}}\fN_{n-1}(x-2)
+             \dx
+          %\\&= \int
+          %     \brs{\frac{x(n+1)}{n(n+1)}} \fN_{n-1}(x)
+          %   + \brs{\frac{(-2x+2+n)(n+1)}{n(n+1)}}\fN_{n-1}(x-1)
+          %   + \brs{\frac{(x-2-n)(n+1)}{n(n+1)}}\fN_{n-1}(x-2)
+          %   \dx
+          \\&= \int
+               \brs{\frac{x}     {n}} \fN_{n-1}(x)
+             + \brs{\frac{n+2-2x}{n}} \fN_{n-1}(x-1)
+             + \brs{\frac{-n-2+x}{n}} \fN_{n-1}(x-2)
+             \dx
+          \\&= \int
+             \mcom{
+                 \brs{\frac{x}    {n}} \fN_{n-1}(x)
+                +\brs{\frac{n+1-x}{n}} \fN_{n-1}(x-1)
+               }{$\fN_n(x)$}
+          \\&\qquad 
+             -\mcom{
+                 \brs{\frac{x-1}  {n}} \fN_{n-1}(x-1)
+               - \brs{\frac{n+2-x}{n}} \fN_{n-1}(x-2)
+               }{$\fN_{n-1}(x-1)$}
+             \dx
+          \\&= \int \fN_n(x) - \fN_n(x-1) \dx
+            \qquad\text{by $n$ hypothesis}
+          \\&= \int \opddx \fN_{n+1}(x) \dx
+            \qquad\text{by \prefp{thm:bspline_DxNn}}
+          \\&= \fN_{n+1}(x) + c_2
+        \end{align*}
+    
+      Proof that $c_1=c_2$:
+          By \prefpp{item:bspline_Nprop_supp}, $\fN_n(x)=0$ for $x<0$.
+          Therefore, $c_1=c_2$.
+    \end{enumerate}
+\end{proof}
+
+
+%For someone not already familiar with \fncte{B-splines}, the properties listed in 
+%\pref{thm:bspline_Nprop} (next) may be surprising.
+
+%---------------------------------------
+\begin{theorem}[\thme{B-spline general form}]
+\footnote{
+  \citerpgc{christensen2008}{140}{0817646779}{Theorem 6.1.1},
+  %\citerp{goswami}{46}
+  \citerpgc{hollig2003}{27}{0898715334}{3.4},
+  \citerpgc{schumaker2007}{120}{0521705126}{Theorem 4.15},
+  \citerpgc{deboor2001}{90}{0387953663}{B-Spline Property (i)},
+  \citerpgc{chui1988}{2}{1611970172}{Theorem 1.1},
+  \citerpgc{wojtaszczyk1997}{53}{0521578949}{Theorem 3.7},
+  \citeP{cox1972},
+  \citeP{deboor1972},
+  \citerppgc{prasad}{145}{146}{0849331692}{Theorem 6.2}
+  }
+\label{thm:bspline_Nprop}
+%---------------------------------------
+Let $\fN_n(x)$ be the \fncte{$n$th order B-spline} \xref{def:Nn}.\\
+Let $\support\ff$ be the \structe{support} of a function $\ff\in\clFrr$.
+\thmbox{\begin{array}{>{\scs}O >{\ds}rc>{\ds}lll>{\scs}M}
+  \cnto & \fN_n(x)                   &\ge& 0              & \forall n\in\Znn,\,    & \forall x\in\R   & (\prope{non-negative})
+  \cntn & \support \fN_n(x)          &=&   \intcc{0}{n+1} & \forall n\in\Znn       &                  & (\prope{closed support})
+  \cntn & \int_\R\fN_n(x)\dx         &=&   1              & \forall n\in\Znn       &                  & (\prope{unit area})
+  \cntn & \fN_n\brp{\frac{n+1}{2}-x} &=& \fN_n\brp{\frac{n+1}{2}+x} & \forall n\in\Zp & \forall x\in\R & (\prope{symmetric} about $x=\frac{n+1}{2}$)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\fN_n(x) \ge 0$ (proof by induction): \label{item:bspline_Nprop_ge0}
+    \begin{enumerate}
+      \item base case\ldots proof that $\fN_0(x)\ge0$:
+        \begin{align*}
+          \fN_0(x)
+            &\eqd \setind_\intco{0}{1}(x) 
+            &&    \text{by definition of $\fN_0(x)$}         &&\text{\xref{def:Bspline}}
+          \\&\ge  0
+            &&    \text{by definition of $\setind_\setA(x)$} &&\text{\xref{def:setind}}
+        \end{align*}
+
+      \item inductive step\ldots proof that $\brb{\fN_n(x)\ge0}\implies\brb{\fN_{n+1}(x)\ge0}$:
+        \begin{align*}
+          \fN_{n+1}(x)
+            &= \int_{\tau=0}^{\tau=1} \fN_n(x-\tau) \dtau
+            && \text{by \prefp{lem:Nn}}
+          \\&\ge 0
+            && \text{by induction hypothesis ($\fN_n(x)\ge0$)}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof that $\support\fN_n(x) = \intcc{0}{n+1}$ (proof by induction):  \label{item:bspline_Nprop_supp}
+    \begin{enumerate}
+      \item Base case \ldots proof that $\support\fN_0=\intcc{0}{1}$: 
+        \begin{align*}
+          \support\fN_0
+            &\eqd \support\setind_\intco{0}{1}
+            && \text{by definition of $\fN_0(x)$}
+            && \text{\xref{def:Nn}}
+          \\&= \clsb{\intco{0}{1}}
+            && \text{by definition of \ope{support} operator}
+          \\&= \intcc{0}{1}
+            && \text{by definition of \ope{closure} operator}
+        \end{align*}
+      \item Induction step \ldots proof that $\brb{\support\fN_n=\intcc{0}{n+1}}\implies\brb{\support\fN_{n+1}=\intcc{0}{n+2}}$:
+        \begin{align*}
+          \support\fN_{n+1}(x)
+            &= \support\int_{\tau=0}^{\tau=1} \fN_n(x-\tau) \dtau
+            && \text{by \prefp{lem:Nn}}
+          \\&= \support\int_\intcc{0}{1} \fN_n(x-\tau) \dtau
+            && \text{by def. of \ope{Lebesgue integration}}
+          \\&= \cls{\set{x\in\R}{(x-\tau)\in\intcc{0}{n+1} \text{ for some } \tau\in\intcc{0}{1}}}
+            && \text{by induction hypothesis}
+          \\&= \cls{\intcc{0}{n+1}\setu\intcc{0+1}{n+1+1}}
+          \\&= \cls{\intcc{0}{n+2}}
+          \\&= \intcc{0}{n+2}
+            && \text{by property of \ope{closure} operator}
+        \end{align*}
+      %\item Note in particular that $(n+1)\notin\support\fN_n$:
+      %  \begin{align*}
+      %    \fN_n(n+1) 
+      %      &= \frac{1}{n!} \sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{k} (n+1-k)^{n} \fstep(n+1-k) 
+      %      && \text{by \prefp{thm:Nnx}}
+      %    \\&= \frac{1}{n!} (-1)^{n+1} \bcoef{n+1}{n+1} \brp{n+1-[n+1]}^{n} 
+      %      && \text{by definition of $\fstep(x)$}
+      %      && \text{\xref{def:fstep}}
+      %    \\&= 0
+      %    \\&\implies (n+1)\notin\support\fN_n
+      %  \end{align*}
+    \end{enumerate}
+
+  \item Proof that $\int_\R\fN_n(x)\dx=1$ (proof by induction): 
+    \begin{enumerate}
+      \item Base case \ldots proof that $\int_\R\fN_0(x)=1$: 
+        \begin{align*}
+          \int_\R\fN_0(x)\dx
+            &= \int_\R\setind_\intco{0}{1}\dx
+            && \text{by definition of $\fN_0(x)$}
+            && \text{\xref{def:Nn}}
+          \\&= \int_\intco{0}{1}1\dx
+            && \text{by definition of $\setind_\setA(x)$}
+            && \text{\xref{def:setind}}
+          \\&= \int_\intcc{0}{1}1\dx
+            && \mathrlap{\text{by property of \ope{Lebesgue integration}}}
+          \\&= 1
+        \end{align*}
+      \item Induction step \ldots proof that $\brb{\int_\R\fN_n(x)=1}\implies\brb{\int_\R\fN_{n+1}=1}$:
+        \begin{align*}
+          \int_\R\fN_{n+1}(x)\dx
+            &= \int_\R\int_0^1\fN_n(x-\tau)\dtau\dx
+            && \text{by \prefp{lem:Nn}}
+          \\&= \int_0^1\int_\R\fN_n(x-\tau)\dx\dtau
+          \\&= \int_0^1\int_\R\fN_n(u)\du\dtau
+            && \text{where $u\eqd x-\tau$ $\implies$ $\tau=x-u$}
+          \\&= \int_0^1 1 \dtau
+            && \text{by induction hypothesis}
+          \\&= 1
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof that $\fN_n(x)$ is \prope{symmetric} for $n\in\setn{1,2,3,\ldots}$:
+    \begin{enumerate}
+      \item Note that $\fN_0(x)$ ($n=0$) is \prope{not symmetric} (in particular it fails at $x=1/2$) because
+        \\\indentx $ \fN_0\brp{\frac{0+1}{2}-\frac{1}{2}}
+                       = \fN_0\brp{0}
+                       = 1
+                       \neq 0
+                       = \fN_1\brp{1}
+                       = \fN_0\brp{\frac{0+1}{2}+\frac{1}{2}}
+                   $
+    
+      %\item First, a ``direct proof" for $n=1,2,3,\ldots$:
+      %  \begin{align*}
+      %    \fN_n\brp{\frac{n+1}{2}-x}
+      %      &= \frac{1}{n!}\sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{k} \brp{\frac{n+1}{2}-x-k}^n \fstep\brp{\frac{n+1}{2}-x-k}
+      %      && \text{by \prefp{thm:Nnx}}
+      %    \\&= \frac{1}{n!}\sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{n+1-k} \brp{\frac{n+1}{2}-x-k}^n \fstep\brp{\frac{n+1}{2}-x-k}
+      %      && \text{by \prefp{thm:bcoef_symmetry}}
+      %    \\&= \frac{1}{n!}\sum_{m=n+1}^{m=0} (-1)^{n-m+1} \bcoef{n+1}{m} \brp{\frac{n+1}{2}-x-n+m-1}^n \fstep\brp{\frac{n+1}{2}-x-n+m-1}
+      %      && \text{where $m\eqd n-k+1 \implies k=n-m+1$}
+      %    \\&= \frac{1}{n!}\sum_{m=0}^{m=n+1} (-1)^{m-n-1} \bcoef{n+1}{m} \brp{-\frac{n+1}{2}-x+m}^n \fstep\brp{-\frac{n+1}{2}-x+m}
+      %    \\&= \frac{1}{n!}\sum_{m=0}^{m=n+1} (-1)^{m-n-1+n} \bcoef{n+1}{m} \brp{\frac{n+1}{2}+x-m}^n \fstep\brp{-\frac{n+1}{2}-x+m}
+      %    \\&\text{... fail ...}
+      %    \\&= \fN_n\brp{\frac{n+1}{2}+x}
+      %      && \text{by \prefp{thm:Nnx}}
+      %  \end{align*}
+
+      \item Base case \ldots proof for $n=1$ case:
+        \begin{align*}
+          %\fN_1\brp{\frac{1+1}{2}+x}  
+          %  &= \fN_1\brp{1+x}  
+          %\\&= \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+          %             &(1+x)& &   & for $1+x\in\intcc{0}{1}$\\
+          %            -&(1+x)&+&2  & for $1+x\in\intcc{1}{2}$\\
+          %             &0    & &   & otherwise
+          %          \end{array}}
+          %   && \text{by \prefp{ex:bspline_N1}}
+          %\\&= \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+          %             &x&+&1  & for $x\in\intcc{-1}{0}$\\
+          %            -&x&+&1  & for $x\in\intcc{0}{1}$\\
+          %             &0& &   & otherwise
+          %          \end{array}}
+          %\\ \\
+          \fN_1\brp{\frac{1+1}{2}-x}  
+            &= \fN_1\brp{1-x}  
+          \\&= \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                       &(1-x)& &   & for $1-x\in\intcc{0}{1}$\\
+                      -&(1-x)&+&2  & for $1-x\in\intcc{1}{2}$\\
+                       &     & &0  & otherwise
+                    \end{array}}
+             && \text{by \prefp{ex:bspline_N1}}
+          \\&= \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                      -&x&+&1  & for $-x\in\intcc{-1}{0}$\\
+                       &x&+&1  & for $-x\in\intcc{0}{1}$\\
+                       & & &0  & otherwise
+                    \end{array}}
+          \\&= \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                       &x&+&1  & for $x\in\intcc{-1}{0}$\\
+                      -&x&+&1  & for $x\in\intcc{0}{1}$\\
+                       & & &0  & otherwise
+                    \end{array}}
+          \\&= \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                       &(1+x)& &   & for $1+x\in\intcc{0}{1}$\\
+                      -&(1+x)&+&2  & for $1+x\in\intcc{1}{2}$\\
+                       &     & &0  & otherwise
+                    \end{array}}
+           \\&= \fN_1\brp{1+x}  
+             && \text{by \prefp{ex:bspline_N1}}
+           \\&= \fN_1\brp{\frac{1+1}{2}+x}  
+        \end{align*}
+
+      \item Induction step \ldots proof that $n-1$ case $\implies$ $n$ case:
+        \begin{align*}
+          &\fN_n\brp{\frac{n+1}{2} + x}
+          \\&= \frac{\frac{n+1}{2}+x}{n}\fN_{n-1}\brp{\frac{n+1}{2} + x}
+             + \frac{n+1-\brp{\frac{n+1}{2}+x}}{n}\fN_{n-1}\brp{\frac{n+1}{2} + x-1}
+            && \text{by \prefp{thm:bspline_recursion}}
+          \\&= \frac{n+1-\brp{\frac{n+1}{2}-x}}{n}\fN_{n-1}\brp{\frac{n}{2}+\brs{x+\frac{1}{2}}}
+             + \frac{\frac{n+1}{2}-x}{n}\fN_{n-1}\brp{\frac{n}{2} + \brs{x-\frac{1}{2}}}
+          \\&= \frac{n+1-\brp{\frac{n+1}{2}-x}}{n}\fN_{n-1}\brp{\frac{n}{2}-\brs{x+\frac{1}{2}}}
+             + \frac{\frac{n+1}{2}-x}{n}\fN_{n-1}\brp{\frac{n}{2} - \brs{x-\frac{1}{2}}}
+            && \text{by induction hypothesis}
+          \\&= \frac{n+1-\brp{\frac{n+1}{2}-x}}{n}\fN_{n-1}\brp{\brs{\frac{n+1}{2}-x}-1}
+             + \frac{\frac{n+1}{2}-x}{n}\fN_{n-1}\brp{\frac{n+1}{2} - x}
+          \\&= \fN_n\brp{\frac{n+1}{2} - x}
+            && \text{by \prefp{thm:bspline_recursion}}
+        \end{align*}
+  \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+
+%=======================================
+\section{Projection properties}
+%=======================================
+%=======================================
+\subsection{Projection onto B-splines}
+%=======================================
+In the case where $\seqkZ{\fN_n(x-k)}$ is to be used as a basis in some subspace of $\spLLR$,
+one may want to \ope{project} a function $\ff(x)$ onto a basis function $\fN_n(x-k)$.
+This is especially true when $\seqn{\fN_n(x-k)}$ is \prope{orthogonal};
+but in the case of \fncte{B-spline}s this is only true when $n=0$ \xref{thm:Northo}.
+Nevertheless, projection of a function onto $\fN_n(x-k)$, or the projection 
+of $\fN_n(x)$ onto another basis fucntion 
+(such as the complex exponential in the case of \ope{Fourier analysis} as in \prefp{lem:FTNn}),
+is still useful. 
+Projection in an \structe{inner product space} is typically performed using the \fncte{inner product} 
+$\inprod{\ff(x)}{\fN_n(x-k)}$; and in the space $\spLLR$,
+this inner product is typically defined as an \ope{integral} such that 
+  \\\indentx$\inprod{\ff(x)}{\fN_n(x-k)}\eqd\int_\R\ff(x)\fN_n(x-k)\dx$.\\
+As it turns out, there is a way to compute this inner product that only involves the function $\ff(x)$ 
+and the order parameter $n$ (next theorem).
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{chui}{85}{0121745848}{(4.2.2), (4.2.3)},
+  \citerpgc{christensen2008}{140}{0817646779}{Theorem 6.1.1}
+  %\citerp{goswami}{46}
+  }
+\label{thm:int_fNn}
+%---------------------------------------
+Let $\ff$ be a \prope{continuous} function in $\spLLR$
+and $\ff^{(n)}$ the \fncte{$n$th derivative} of $\ff(x)$.
+\thmbox{\begin{array}{F>{\ds}rc>{\ds}l}
+  (1). & \int_\R \ff(x) \fN_n(x)\dx &=& \int_{\intco{0}{1}^{n+1}} \ff(x_1+x_2+\cdots+x_{n+1}) \dx_1\,\dx_2\,\cdots\dx_{n+1}\\
+  (2). & \int_\R \ff^{(n)}(x) \fN_n(x)\dx  &=& \sum_{k=0}^{n+1} (-1)^{n-k+1}\bcoef{n+1}{k}\ff(k)
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Proof for (1) (proof by induction):
+  \begin{enumerate}
+    \item Base case \ldots proof for $n=0$ case: 
+      \begin{align*}
+        \int_\R \ff(x)\fN_0(x)\dx 
+          &= \int_{\intco{0}{1}} \ff(x)\dx 
+          && \text{by definition of $\fN_0(x)$}
+          && \text{\xref{def:Nn}}
+      \end{align*}
+
+    \item Inductive step \ldots proof that $n$ case $\implies$ $n+1$ case:
+      \begin{align*}
+        &\int_\R \ff(x) \fN_{n+1}(x)\dx 
+        \\&= \int_\R \brs{\int_0^1\fN_n(x-\tau)\dtau} \ff(x)\dx 
+          && \text{by \prefp{lem:Nn}}
+        \\&= \int_\intco{0}{1}\int_\R \fN_n(x-\tau) \ff(x) \dx \dtau 
+        \\&= \int_\intco{0}{1}\int_\R \fN_n(u) \ff(u+\tau) \du \dtau 
+          && \text{where $u\eqd x-\tau \implies x=u+\tau$}
+        \\&= \int_\intco{0}{1}\int_{\intco{0}{1}^{n+1}} \ff(u_1+u_2+\cdots+u_{n+1}+\tau) \du_1\,\du_2\,\cdots\du_{n+1}\, \dtau 
+          && \text{by induction hypothesis}
+        \\&= \int_{{\intco{0}{1}}^{n+2}} \ff(u_1+u_2+\cdots+u_{n+1}+u_{n+2}) \du_1\,\du_2\,\cdots\du_{n+2}\, \dtau 
+        \\&= \int_{\intco{0}{1}^{n+2}} \ff(x_1+x_2+\cdots+x_{n+1}+x_{n+2}) \dx_1\,\dx_2\,\cdots\dx_{n+2}
+          && \text{by change of variables $u_k\rightarrow x_k$}
+      \end{align*}
+  \end{enumerate}
+
+\item Proof for (2): 
+  \begin{align*}
+    \int_\R \ff^{(n)}(x) \fN_n(x)\dx  
+      &= \int_{\intco{0}{1}^{n+1}} \ff^{(n)}\brp{\sum_{k=1}^{n+1} x_k} \dx_1\dx_2\cdots\dx_{n+1}  
+      && \text{by (1)}
+    \\&= \sum_{k=0}^{n+1} (-1)^{n-k+1}\bcoef{n+1}{k}\ff(k)
+      && \text{by \prefp{thm:int01}}
+  \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.10mm}
+\begin{picture}(300,300)(-130,-130)
+  %\graphpaper[10](0,0)(200,200)                  
+  \thicklines
+  \input{../common/circle.inp}
+  \put(-130 ,   0){\line(1,0){260} }
+  \put(   0 ,-130){\line(0,1){260} }
+  \put( 140 ,   0){\makebox(0,0)[l]{$\Reb{z}$}}
+  \put(   0 , 140){\makebox(0,0)[b]{$\Imb{z}$}}
+
+  \put( 120 , 120){\makebox(0,0)[lb]{$z=e^{i\omega}$}}
+  \put(-100,    0){\circle{15}}
+  \put( 115 , 115){\vector(-1,-1){42}}
+
+  \put(-150 , -50){\makebox(0,0)[tr]{$n$ zeros at $\Zh(\pi)$}}
+  \put(-150 , -50){\vector( 1, 1){43}}
+
+  %\put( 150 , -50){\makebox(0,0)[tl]{$\Zh(1)=\Fh(0)=\sqrt{2}$}}
+  %\put( 150 , -50){\vector(-1, 1){50}}
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Zero locations for B-cardinal spline $N_n(x)$ scaling coefficients
+   \label{fig:spline_zero}
+   }
+\end{figure}
+
+%=======================================
+\subsection{Projection of B-splines onto complex exponentials}
+%=======================================
+Simply put, no matter what new and fancy basis sequences are discovered,
+the \ope{Fourier transform} never goes out of style. 
+This is largely because the \fncte{kernel} of the Fourier transform%
+---the \fncte{complex exponential} function---%
+has two properties that makes it extremely special:
+\\\indentx\begin{tabular}{cl}
+    \imark & The complex exponential is an eigenvalue of any \prope{linear time invariant} (\prope{LTI}) operator
+         \\& \xref{thm:Le=he}.
+         \\
+    \imark & The complex exponential generates a \fncte{continuous point spectrum} for the \ope{differential operator}. 
+\end{tabular}\\
+Thus, we might expect the projection of the \fncte{B-spline} function $\fN_n(x)$ onto the complex exponential
+(essentially the \ope{Fourier transform} of $\fN_n(x)$,\ldots next lemma)
+to be useful. 
+Such a hunch would be demonstrated correct because it is useful for proving that 
+\\\indentx\begin{tabular}{cl}
+    \imark & the sequence $\seqkZ{\fN_n(x-k)}$ is a \structe{Riesz basis} \xxref{lem:Nriesz}{thm:Nriesz} \scs and\\
+    \imark & the sequence $\seqkZ{\fN_n(x-k)}$ is a \structe{multiresolution analysis} \xref{thm:Nmra}.
+\end{tabular}\\
+%---------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpgc{christensen2008}{142}{0817646779}{Corollary 6.1.2}
+  %\citerp{goswami}{46}
+  }
+\label{lem:FTNn}
+%---------------------------------------
+Let $\opFT$ be the \hie{Fourier Transform} operator \xref{def:ft}.
+\thmbox{%
+  \opFT\fN_n(\omega) =   \fscale\brp{\frac{\ds 1-e^{-i\omega}}{\ds i\omega}}^{n+1}
+                     =   \fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\frac{\sin\brp{\sfrac{\omega}{2}}}{\sfrac{\omega}{2}}}^{n+1}
+                     \eqd\fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\sinc{\frac{\omega}{2}}                              }^{n+1}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \opFT\fN_n(\omega)       
+    &= \fscale \int_\R \fN_n(x) e^{-i\omega x}\dx
+    && \text{by definition of $\opFT$}
+    && \text{\xref{def:opFT}}
+  \\&= \fscale \int_{\intco{0}{1}^{n+1}} e^{-i\omega(x_1+x_2+\cdots+x_{n+1})}\dx_1\,\dx_2\,\cdots,\,\dx_{n+1}
+    && \text{by \prefp{thm:int_fNn}}
+  \\&= \fscale \prod_{k=1}^{n+1} \brp{\int_\intco{0}{1} e^{-i\omega x_k}\dx_k}
+    && \text{because $e^{x+y}=e^x e^y$}
+  \\&= \fscale \brp{\int_0^1 e^{-i\omega x}\dx}^{n+1}
+  \\&= \fscale \brp{\left.\frac{\ds e^{-i\omega x}}{\ds-i\omega}\right|_0^1}^{n+1}
+  \\&= \fscale \brp{\frac{\ds 1-e^{-i\omega}}{\ds i\omega}}^{n+1}
+  \\&= \fscale \brs{e^{-i\frac{\omega}{2}} \brp{\frac{e^{i\frac{\omega}{2}} - e^{-i\frac{\omega}{2}}}{i\omega}}}^{n+1}
+  \\&= \fscale \brs{e^{-i\frac{\omega}{2}} \brp{\frac{2i\sin\brp{\frac{\omega}{2}}}{\frac{2i\omega}{2}}}}^{n+1}
+    && \text{by \thme{Euler formulas}}
+    && \text{\xref{cor:trig_ceesee}}
+  \\&= \fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\frac{\sin\brp{\sfrac{\omega}{2}}}{\sfrac{\omega}{2}}}^{n+1}
+\end{align*}
+%
+%  \item Proof for $\Fh(\omega) = \sqrt{2}\left( \frac{1 + e^{-i\omega/2}}{2}\right)^n$:
+%    \begin{align*}
+%      \Fh(\omega)
+%        &= \sqrt{2} \frac{\Fphi(2\omega)}{\Fphi\left(\omega\right)}
+%      \\&= \sqrt{2} \frac{\left(\frac{1-e^{-i2\omega}}{i2\omega}\right)^n}
+%                {\left(\frac{1-e^{-i\omega}}{i\omega}\right)^n}
+%      \\&= \frac{\sqrt{2}}{2^n}
+%           \frac{\left(1-e^{-i2\omega  }\right)^n}
+%                {\left(1-e^{-i\omega}\right)^n}
+%      \\&= \frac{\sqrt{2}}{2^n}
+%           \frac{\left(1-e^{-i\omega  }\right)^n\left(1+e^{-i\omega  }\right)^n}
+%                {\left(1-e^{-i\omega}\right)^n}
+%      \\&= \sqrt{2} 
+%           \left(\frac{1+e^{-i\omega}}{2}\right)^n
+%    \end{align*}
+\end{proof}
+
+%-------------------------------------
+\begin{minipage}{\tw-125mm}
+\begin{example}
+%-------------------------------------
+%Here is the Fourier transform $\brs{\opFT\ff}(\omega)$ of $\fN_0(x)$:
+%\begin{align*}
+%   \opFT\ff(x)
+%     &\eqd \fscale \int_0^1 e^{-i\omega x} \dx
+%      && \text{by definition of $\opFT$ \prefpo{def:opFT}}
+%    \\&= \left. \frac{1}{-i\omega } \fscale e^{-i\omega x}  \right|_0^1
+%    \\&= \frac{1}{-i\omega }\fscale \brp{e^{-i\omega\frac{1}{2}} - e^{i\omega \frac{1}{2}}}e^{-i\omega\frac{1}{2}}
+%    \\&= \frac{1}{-i\omega }\fscale \left[ -2i\sin\brp{\frac{\omega}{2}} \right]e^{-i\omega\frac{1}{2}}
+%      && \text{by \prefp{cor:trig_ceesee}}
+%    \\&= \frac{2}{2}\fscale  \frac{\sin\brp{\frac{\omega}{2}}}{\omega \frac{1}{2}}e^{-i\omega\frac{1}{2}}
+%    \\&= \fscale \frac{\sin\brp{\frac{\omega}{2}}}{\frac{\omega}{2}}e^{-i\omega\frac{1}{2}}
+%\end{align*}
+%
+The \ope{Fourier transform magnitude} $\abs{\brs{\opFT\fN_0}(\omega)}$ of 
+the \fncte{0 order B-spline} $\fN_0(x)$
+is illustrated to the right.
+\end{example}
+\end{minipage}%
+\hfill\tbox{\includegraphics{graphics/Fpulse.pdf}}
+
+%-------------------------------------
+\begin{minipage}{\tw-125mm}
+\begin{example}
+%-------------------------------------
+  The \ope{Fourier transform magnitude} $\abs{\brs{\opFT\fN_1}(\omega)}$ of the 
+  \fncte{1st order B-spline} $\fN_1(x)$
+  is illustrated to the right.
+\end{example}
+\end{minipage}%
+\hfill\tbox{\includegraphics{graphics/Ftent012.pdf}}%
+
+%-------------------------------------
+\begin{minipage}{\tw-125mm}
+\begin{example}
+%-------------------------------------
+  The \ope{Fourier transform magnitude} $\abs{\brs{\opFT\fN_2}(\omega)}$ of the 
+  \fncte{2nd order B-spline} $\fN_2(x)$
+  is illustrated to the right.
+\end{example}
+\end{minipage}%
+\hfill\tbox{\includegraphics{graphics/FN2.pdf}}%
+
+%=======================================
+\section{Basis properties}
+%=======================================
+%=======================================
+\subsection{Uniqueness properties}
+%=======================================
+Coefficients of a \structe{basis sequence} are not always \prope{unique}.
+Take for example a very trivial sequence $\opair{\alpha_1}{\alpha_2}$ in which the coefficients are summed.
+If $\ff(x)\eqd\alpha_1+\alpha_2$ and $\fg(x)\eqd\beta_1+\beta_2$, 
+\\\indentx$\begin{array}{Mlcl}
+  then  &\brb{\opair{\alpha_1}{\alpha_2}=\opair{\beta_1}{\beta_2}} &\implies& \ff(x)=\fg(x)\\
+  but   &\ff(x)=\fg(x) &\notimplies& \brb{\opair{\alpha_1}{\alpha_2}=\opair{\beta_1}{\beta_2}},
+\end{array}$\\
+because for example if $\opair{\alpha_1}{\alpha_2}=\opair{1}{2}$ and 
+$\opair{\beta_1}{\beta_2}=\opair{-6}{9}$, then $\ff(x)=\fg(x)$, but 
+$\opair{\alpha_1}{\alpha_2}\neq\opair{\beta_1}{\beta_2}$.
+This example demonstrates that the ``if and only if" condition $\iff$ does not 
+hold and coefficients are not unique in all \structe{basis sequence}s. 
+But arguably a minimal requirement for any practical basis sequence is that the 
+coefficients are \prope{unique} (the ``if and only if" condition $\iff$ holds).
+And indeed, in a \fncte{B-spline} basis sequence $\seqkZ{\fN_n(x-k)}$,
+the coefficients $\seqkZ{\alpha_k}$ are \prope{unique}, as demonstrated by
+\pref{thm:Sn_unique} (next).
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{wojtaszczyk1997}{55}{0521578949}{Theorem 3.11}
+  }
+\label{thm:Sn_unique}
+%---------------------------------------
+Let $\fN_n(x)$ be the \fncte{$n$th-order B-spline} \xref{def:Bspline}.
+Let
+\\\indentx
+  $\ds\ff(x)\eqd\sum_{k\in\Z} \alpha_k \fN_n(x-k)$
+  \quad and\quad
+  $\ds\fg(x)\eqd\sum_{k\in\Z} \beta_k \fN_n(x-k)$.
+\\
+\thmbox{
+  \mcom{
+  \brb{\begin{array}{ll}\ff(x)=\fg(x) & \forall x\in\R\end{array}}
+  \quad\iff\quad
+  \brb{\seqkZ{\alpha_k} = \seqkZ{\beta_k}}
+  }{coefficients are \prope{unique}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\impliedby$ condition holds:
+    \begin{align*}
+      \ff(x) 
+        &\eqd \sum_{k\in\Z} \alpha_k \fN_n(x-k)
+        &&    \text{by definition of $\ff(x)$}
+      \\&=    \sum_{k\in\Z} \beta_k \fN_n(x-k)
+        &&    \text{by right hypothesis}
+      \\&\eqd \fg(x)
+        &&    \text{by definition of $\fg(x)$}
+    \end{align*}
+
+  \item Proof that $\implies$ condition holds (proof by contradiction):
+    \begin{enumerate}
+      \item Suppose it does \emph{not} hold. 
+      \item Then there exists sequences $\seqkZ{\alpha_k}$ and $\seqkZ{\beta_k}$ such that 
+        \\\indentx$\seqn{\alpha_k}-\seqn{\beta_k}\eqd\seqn{alpha_k-\beta_k}\neq\seqn{0,0,0,\cdots}$\\
+        but also such that $\ff(x)-\fg(x)=0$ $\forall x\in\R$.
+      \item If this were possible, then 
+        \begin{align*}
+          0
+            &= \ff(x)-\fg(x)
+          \\&= \sum_{m\in\Z}\alpha_m \fN_n(x-m) - \sum_{m\in\Z}\beta_m \fN_n(x-m)
+          \\&= \sum_{m\in\Z}\brp{\alpha_m-\beta_m} \fN_n(x-m) 
+          \\&= \sum_{m=0}^{m=n} \brp{\alpha_m-\beta_m} \frac{1}{n!} \brs{\sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{k} (x-k)^{n} \fstep(x-k)} 
+            && \text{by \prefp{thm:Nnx}}
+        \end{align*}
+      \item But this is \prope{impossible} because $\fN(x)$ is \prope{non-negative} \xref{thm:bspline_Nprop}.
+      \item Therefore, there is a contradiction, and the $\implies$ condition \emph{does} hold.
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%=======================================
+\subsection{Partition of unity properties}
+%=======================================
+In the case in which a sequence of \fncte{B-spline}s $\seqkZ{\fN_n(x-k)}$
+is to be used as a \structe{basis} for some subspace of $\spLLR$,
+arguably one of the most important properties for the sequence to have is the \prope{partition of unity} property
+such that $\sum_{k\in\Z}\fN_n(x-k)=1$.
+This allows for convenient representation of the most basic functions, such as constants.\footnote{\citePp{jawerth}{8}}
+As it turns out, B-splines \emph{do} have this property (next theorem).
+
+%---------------------------------------
+\begin{theorem}[\thme{B-spline partition of unity}]
+\footnote{
+  \citerpgc{christensen2008}{140}{0817646779}{Theorem 6.1.1},
+  %\citerp{goswami}{46}
+  \citerpgc{hollig2003}{27}{0898715334}{3.4},
+  \citerpgc{schumaker2007}{120}{0521705126}{Theorem 4.15},
+  \citerpgc{deboor2001}{90}{0387953663}{B-Spline Property (i)},
+  \citerpgc{chui1988}{2}{1611970172}{Theorem 1.1},
+  \citerpgc{wojtaszczyk1997}{53}{0521578949}{Theorem 3.7},
+  \citeP{cox1972},
+  \citeP{deboor1972}
+  }
+\label{thm:bspline_punity}
+%---------------------------------------
+Let $\fN_n(x)$ be the \fncte{$n$th order B-spline} \xref{def:Nn}.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}lll>{\scs}M}
+  \sum_{k\in\Z} \fN_n(x-k) &=&   1              & \forall n\in\Znn &                  & (\prope{partition of unity})
+\end{array}}
+\end{theorem}
+\begin{proof}
+    \begin{enumerate}
+      \item lemma: $\sum_{k\in\Z}\fN_0(x-k)=1$. Proof: \label{ilem:bspline_punity_n0}\\
+        \begin{align*}
+          \sum_{k\in\Z}\fN_0(x-k)
+            &= \sum_{k\in\Z} \setind_\intco{0}{1}(x-k)
+            && \text{by definition of $\fN_0(x)$} 
+            && \text{\xref{def:Nn}}
+          \\&= 1
+            && \text{by definition of $\setind_\setA(x)$} 
+            && \text{\xref{def:setind}}
+        \end{align*} 
+      
+      \item Proof for this theorem follows from the $n=0$ case \xref{ilem:bspline_punity_n0},
+            the definition of $\fN_n(x)$ \xref{def:Bspline},  and \prefpp{cor:pun_pulse}.
+
+      \item Alternatively, this theorem can be proved by \thme{induction}:
+        \begin{enumerate}
+          \item Base case ($n=0$ case): by \pref{ilem:bspline_punity_n0}.
+          \item Inductive step \ldots proof that $\sum_{k\in\Z}\fN_n(x-k)=1 \implies \sum_{k\in\Z}\fN_{n+1}(x-k)=1$:
+            \begin{align*}
+              \sum_{k\in\Z}\fN_{n+1}(x-k)
+                &= \sum_{k\in\Z}\int_{\tau=0}^{\tau=1}\fN_{n}(x-k-\tau)\dtau
+                && \text{by \prefp{lem:Nn}}
+              \\&= \sum_{k\in\Z}\int_{x-u=0}^{x-u=1}\fN_{n}(u-k)(-1)\du
+                && \text{where $u\eqd x-\tau \implies \tau=x-u$}
+              \\&= \sum_{k\in\Z}\int_{u=x-1}^{u=x}\fN_{n}(u-k)\du
+              \\&= \int_{u=x-1}^{u=x}\brp{\sum_{k\in\Z}\fN_{n}(u-k)}\du
+              \\&= \int_{u=x-1}^{u=x}1\du
+                && \text{by induction hypothesis}
+              \\&= 1
+            \end{align*}
+        \end{enumerate}
+    \end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{minipage}{\tw-105mm}%
+\begin{example}
+\label{ex:n0_pounity}
+%---------------------------------------
+The \prope{partition of unity} property for the 
+\fncte{$0$ order B-spline} $\fN_0(x)$ \xref{ex:bspline_N0} 
+is illustrated to the right.
+\end{example}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/n0punity.pdf}}
+
+%---------------------------------------
+\begin{minipage}{\tw-105mm}%
+\begin{example}
+\label{ex:n1_pounity}
+%---------------------------------------
+The \prope{partition of unity} property for the 
+\fncte{$1$st order B-spline} $\fN_1(x)$ \xref{ex:bspline_N1} 
+is illustrated to the right.
+\end{example}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/n1punity.pdf}}
+
+%---------------------------------------
+\begin{minipage}{\tw-105mm}%
+\begin{example}
+\label{ex:n2_pounity}
+%---------------------------------------
+The \prope{partition of unity} property for the 
+\fncte{$2$nd order B-spline} $\fN_2(x)$ \xref{ex:bspline_N2} 
+is illustrated to the right.
+\end{example}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/n2punity.pdf}}
+
+%%-------------------------------------
+%\begin{example}[centered cubic B-spline]
+%\index{B-spline}
+%\index{cubic B-spline}
+%\footnote{
+%  %\citerpgc{christensen2008}{140}{0817646779}{Theorem 6.1.1},
+%  \citerpgc{christensen2008}{146}{0817646779}{Corollary 6.2.1},
+%  \citerpg{bankman2008}{479}{0123739047},
+%  \citerg{deboor2001}{0387953663}
+%  }
+%%-------------------------------------
+%Let a function $\ff$ be the \hie{centered cubic B-spline} defined as follows:
+%\\\begin{minipage}{\tw/2-2mm}
+%  \[ \ff(x) \eqd \brbl{%
+%       \begin{array}{lM}
+%          \frac{2}{3} -\frac{1}{2}\abs{x}^2(2-\abs{x})  & for $\abs{x}<1$  \\
+%          \frac{1}{6} \brp{2-\abs{x}}^3                 & for $1\le\abs{x}<2$   \\
+%          0    & otherwise
+%       \end{array}}
+%  \]
+%\end{minipage}%
+%\indentx\tbox{\includegraphics{graphics/cencubs.pdf}}
+%
+%%\begin{minipage}{\tw/2-2mm}
+%%  \psset{unit=8mm}
+%%  \begin{pspicture}(-3,-1.5)(3,1.5)
+%%    %\psset{%
+%%    %  linecolor=blue,
+%%    %  linewidth=0.05,
+%%    %  }
+%%    \psaxes[linewidth=0.75pt,linecolor=axis,yAxis=false]{<->}(0,0)(-2.5,0)(2.5,1.5)%
+%%    \psaxes[linewidth=0.75pt,linecolor=axis,xAxis=false]{->}(0,0)(-2.5,0)(2.5,1.5)%
+%%    \psplot[plotpoints=64]{-1}{1}{2 x abs sub x mul x mul 2 div -1 mul 2 3 div add}%
+%%    \psplot[plotpoints=64]{1}{2}{2 x sub 3 exp 6 div}%
+%%    %\psplot[plotpoints=64]{0}{-1}{2 x abs sub x mul x mul 2 div -1 mul 2 3 div add}%
+%%    \psplot[plotpoints=64]{-1}{-2}{2 x abs sub 3 exp 6 div}%
+%%  \end{pspicture}
+%%\end{minipage}
+%
+%\begin{minipage}{\tw-125mm}
+%  Then $\ff$ forms a \hie{partition of unity} because $\sum_{n\in\Z} \ff(x-n) = 1$.
+%\end{minipage}
+%\hfill\tbox{\includegraphics{graphics/cencubs_pun.pdf}}
+%
+%%\psset{unit=8mm}
+%%\begin{pspicture}(-6,-1.5)(6,1.5)
+%%  %\psset{%
+%%  %  linecolor=blue,
+%%  %  linewidth=0.05,
+%%  %  }
+%%  \psaxes[linewidth=0.75pt,linecolor=axis,yAxis=false]{<->}(0,0)(-5.5,0)(5.5,1.5)%
+%%  \psaxes[linewidth=0.75pt,linecolor=axis,xAxis=false]{->}(0,0)(-5.5,0)(5.5,1.5)%
+%%  \multirput(-4,0)(1,0){9}{%
+%%    \psplot[plotpoints=64]{1}{2}{2 x sub 3 exp 6 div}%
+%%    \psplot[plotpoints=64]{-1}{1}{2 x abs sub x mul x mul 2 div -1 mul 2 3 div add}%
+%%    \psplot[plotpoints=64]{-1}{-2}{2 x abs sub 3 exp 6 div}%
+%%    }
+%%  \psline[linecolor=red](-5,1)(5,1)%
+%%  \psline[linecolor=red,linestyle=dotted](-5,1)(-6,1)
+%%  \psline[linecolor=red,linestyle=dotted](5,1)(6,1)
+%%\end{pspicture}
+%\end{example}
+%\begin{proof}
+%Note that the function $\fh(x)\eqd\sum_{n\in\Z} \ff(x-n)$ is periodic with period $1$ \xref{prop:opT_periodic}.
+%%(see \prefp{lem:series_sumT}).
+%So it is only necessary to examine a single interval of length one.
+%Here we use the interval $\intco{0}{1}$.
+%In this interval, there are four functions contributing to the sum
+%$\sum_{n\in\Z} \ff(x-n)$ (see previous illustration).
+%\begin{align*}
+%  \sum_{n=-1}^{n=2} \ff(x-n)
+%    &= \mcom{\frac{1}{6} \brp{2-\abs{x+1}}^3}                   {$\ff(x+1)$}
+%     + \mcom{\frac{2}{3} -\frac{1}{2}\abs{x}^2(2-\abs{x})}      {$\ff(x)$}
+%     + \mcom{\frac{2}{3} -\frac{1}{2}\abs{x-1}^2(2-\abs{x-1})}  {$\ff(x-1)$}
+%     + \mcom{\frac{1}{6} \brp{2-\abs{x-2}}^3}                   {$\ff(x-2)$}
+%  \\
+%    &= \mcom{\frac{1}{6} \brp{2-\brp{x+1}}^3}                   {$\ff(x+1)$}
+%     + \mcom{\frac{2}{3} -\frac{1}{2}x^2(2-x)}                  {$\ff(x)$}
+%     + \mcom{\frac{2}{3} -\frac{1}{2}\brp{1-x}^2(2-\brp{1-x})}  {$\ff(x-1)$}
+%     + \mcom{\frac{1}{6} \brp{2-\brp{2-x}}^3}                   {$\ff(x-2)$}
+%  \\
+%    &= \mcom{\frac{1}{6} \brp{-x^3+3x^2-3x+1}}                  {$\ff(x+1)$}
+%     + \mcom{\frac{2}{3} -\frac{1}{2}\brp{-x^3+2x^2}}           {$\ff(x)$}
+%     + \mcom{\frac{2}{3} -\frac{1}{2}\brp{x^2-2x+1}\brp{x+1}}   {$\ff(x-1)$}
+%     + \mcom{\frac{1}{6} x^3}                                   {$\ff(x-2)$}
+%  \\
+%    &= \mcom{\frac{1}{6} \brp{-x^3+3x^2-3x+1}}                  {$\ff(x+1)$}
+%     + \mcom{\frac{2}{3} -\frac{1}{2}\brp{-x^3+2x^2}}           {$\ff(x)$}
+%     + \mcom{\frac{2}{3} -\frac{1}{2}\brp{x^3-x^2-x+1}}         {$\ff(x-1)$}
+%     + \mcom{\frac{1}{6} x^3}                                   {$\ff(x-2)$}
+%  \\
+%    &= x^3\brp{-\frac{1}{6}+\frac{1}{2}-\frac{1}{2}+\frac{1}{6}} 
+%     + x^2\brp{\frac{3}{6}-\frac{2}{2}+\frac{1}{2}}
+%     + x  \brp{-\frac{3}{6}+\frac{1}{2}}
+%     +    \brp{\frac{1}{6} + \frac{2}{3} + \frac{2}{3} -\frac{1}{2}}
+%  \\&=1 
+%\end{align*}
+%\end{proof}
+
+
+%%=======================================
+%\subsection{Vanishing moment properties}
+%%=======================================
+%A basis function with $p$ \prope{vanishing moment}s \xref{def:vanish} 
+%can perfectly represent any polynomial of order $p$ or less \xref{thm:vanish_poly}.
+%As it turns out, the \fncte{$n$th order B-spline} has $n$ vanishing moments (next theorem),
+%and thus can perfectly represent any polynomial of order $n$ or less.
+%%---------------------------------------
+%\begin{theorem}
+%%---------------------------------------
+%Let $\fN_n(x)$ be the \fncte{$n$th order B-spline} \xref{def:Bspline}.
+%\thmboxt{
+%  $\fN_n(x)$ has $n$ \prope{vanishing moment}s.
+%  }
+%\end{theorem}
+%\begin{proof}
+%
+%\end{proof}
+
+%=======================================
+\subsection{Riesz basis properties}
+%=======================================
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpgc{wojtaszczyk1997}{52}{0521578949}{Definition 3.5}
+%  }
+%\label{def:Sn}
+%%---------------------------------------
+%Let $\fN_n(x)$ be an \fncte{$n$th order cardinal B-spline} \xref{def:Nn}.
+%\defboxt{
+%  The \structd{space of all splines of order n} is denoted $\spS^n(a\Z)$ and is defined as
+%  \\\indentx$\spS^n(a\Z) \eqd \linspan\set{\opTrn^m\fN_n(ax)}{\scy m\in\Z}$.
+%  }
+%\end{definition}
+%
+%%---------------------------------------
+%\begin{definition}
+%%\footnote{
+%%  \citerpgc{wojtaszczyk1997}{55}{0521578949}{Theorem 3.11}
+%%  }
+%\label{def:spPn}
+%%---------------------------------------
+%\defboxt{
+%  The \structe{set} $\spP_n$ is defined as the \structd{space of all polynomials of order n or less} such that
+%  \\\indentx$\ds\spP_n\eqd\set{\ff(x)\in\spLLR}{\exists\seqn{\alpha_k}_{k=0}^{k=n}\st \ff(x)=\sum_{k=0}^{k=n}\alpha_k x^k}$
+%  }
+%\end{definition}
+%
+%%---------------------------------------
+%\begin{definition}
+%%\footnote{
+%%  \citerpgc{wojtaszczyk1997}{55}{0521578949}{Theorem 3.11}
+%%  }
+%\label{def:spSn}
+%%---------------------------------------
+%\defboxt{
+%  The \structe{set} $\spS_n$ is defined as the \structd{space of all splines of order n or less} such that
+%  \\\indentx$\ds\spS_n\eqd\set{\ff(x)\in\spLLR}{\begin{array}{FMD}
+%                                                  1. & $\ff(x)|\intco{k}{k+1}\in\spP_n$ & and
+%                                                \end{array}
+%                                               }$
+%  }
+%\end{definition}
+%
+%%---------------------------------------
+%\begin{theorem}
+%%---------------------------------------
+%Let $\fN_n(x)$ be an \fncte{$n$th order cardinal B-spline} \xref{def:Nn}.
+%Let $\spS_n$ be the \structe{space of all splines of order n} \xref{def:Sn}.
+%\thmbox{
+%  \linspan\seqkZ{\fN_n(x-k)} = \spS_n
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $\linspan\seqkZ{\fN_n(x-k)} \subseteq \spS_n$:
+%    \begin{align*}
+%      \ff\in\linspan\seqkZ{\fN_n(x-k)} 
+%        &\implies \ff\in\spP_n
+%      \\&\implies \ff|\intco{k}{k+1} \in\spP_n
+%      \\&\implies \ff \in\spS_n
+%        && \text{by definition of $\spS_n$}
+%        && \text{\xref{def:spSn}}
+%    \end{align*}
+%
+%  \item Proof that $\linspan\seqkZ{\fN_n(x-k)} \supseteq \spS_n$:
+%\end{enumerate}
+%\end{proof}
+
+
+%---------------------------------------
+\begin{figure}
+%---------------------------------------
+  \centering%
+  \includegraphics{graphics/Snn_bspline.pdf}
+  \caption{
+    \fncte{auto-power spectrum} $\Swn(\omega)$ plots of \fncte{B-splines} $\fN_n(x)$ \xref{lem:Nriesz}
+    For C and {\LaTeX} source code to generate such a plot, see \prefpp{sec:src_Nriesz}.
+    \label{fig:Nriesz}
+    }
+\end{figure}
+%---------------------------------------
+\begin{lemma}
+\label{lem:Nriesz}
+%---------------------------------------
+%Let $\spS^n(\Z)$ be the \structe{space of all splines of order n} \xref{def:Sn}.
+%\footnote{\structe{Riesz basis}: \xref{def:basis_riesz}}
+%Let $\ds\Swn(\omega)\eqd \sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2(n+1)}$
+Let $\fN_n(x)$ be the \fncte{$n$th order B-spline} \xref{def:Bspline}.\\
+Let $\Swn(\omega)\eqd 2\pi\sum_{k\in\Z}\abs{\opFT\fN_n(\omega-2\pi k)}^2$ 
+be the \fncte{auto-power spectrum} \xref{def:Swff} of $\fN_n(x)$.
+\lembox{\begin{array}{FrlDl|Fll}
+    (1). & 0<\Swn(\omega) \le 1    & \forall\omega\in\R &,  & \forall n\in\Znn & (3). & \Swn(0)=1               & \forall n\in\Znn              
+  \\(2). & \Swn(\omega)=1          & \forall\omega\in\R &,  & \text{for $n=0$} & (4). & \Swn(\pi)\le\frac{1}{3} & \forall n\in\Znn\setd\setn{0}              
+\end{array}}\hfill
+$\brp{\begin{array}{@{\hspace{1pt}}>{\footnotesize}M@{\hspace{1pt}}}
+  Note: see illustration\\
+  in \prefp{fig:Nriesz}.
+\end{array}}$
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  %\item Definition: Let $\ds
+  %     \Swn(\omega)\eqd
+  %       \sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2(n+1)}$
+  %     \label{item:Nriesz_Gdef}
+
+  %\item lemma: $\Swn(\omega)=2\pi\sum_{k\in\Z}\abs{\opFT\fN_n(\omega-2\pi k)}^2$. Proof: \label{ilem:Nriesz_Geq}
+  \item lemma: $\Swn(\omega)=\sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2(n+1)}$.
+        Proof: \label{ilem:Nriesz_Geq}
+        \begin{align*}
+          \Swn(\omega)
+            &\eqd 2\pi\sum_{k\in\Z}\abs{\opFT\fN_n(\omega-2\pi k)}^2
+            && \text{by \prefp{def:Swff}}
+          \\&= 2\pi\sum_{k\in\Z}\abs{\fscale e^{-i\frac{(n+1)(\omega-2\pi k)}{2}} \brp{\frac{\sin\brp{\frac{\omega-2\pi k}{2}}}{\frac{\omega-2\pi k}{2}}}^{n+1}}^2
+            && \text{by \prefp{lem:FTNn}}
+          \\&= \sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega-2\pi k}{2}}}{\frac{\omega-2\pi k}{2}}}^{2(n+1)}
+          \\&= \sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}-k\pi}}
+                                      {k\pi-\frac{\omega}{2}}}^{2(n+1)}
+          \\&= \sum_{k\in\Z}\brs{\frac{(-1)^k\sin\brp{\frac{\omega}{2}}}
+                                      {k\pi-\frac{\omega}{2}}}^{2(n+1)}
+          \\&= \sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}
+                                      {k\pi-\frac{\omega}{2}}}^{2(n+1)}
+          %\\&\eqd \Swn(\omega)
+          %  && \text{by \pref{item:Nriesz_Gdef}}
+        \end{align*}
+
+  %\item lemma: $\ds\Swn(\omega)$ is the \fncte{auto-power spectrum} of $\fN_n(x)$: \label{ilem:Nriesz_Gaps} 
+  %      \begin{align*}
+  %        \Swn(\omega)
+  %          &\eqd \sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2(n+1)}$
+  %          && \text{by \pref{item:Nriesz_Gdef}}
+  %        \\&= \text{\fncte{auto-power spectrum} of $\fN_n(x)$}
+  %          && \text{by \prefp{def:Swff}}
+  %      \end{align*}
+
+  \item lemma (one sided series form):\label{ilem:Nriesz_Gone}
+    \begin{align*}
+       \Swn(\omega)
+         &= \sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2(n+1)}
+         && \text{by \pref{ilem:Nriesz_Geq}}
+       \\&=  \brs{\frac{\sin(\omega/2)}{(\omega/2)}}^{2(n+1)} 
+            +\brs{\frac{\sin(\omega/2)}{(\pi/2)}}^{2(n+1)}\brp{
+               \sum_{k=1}^\infty\brs{\frac{1}{2k-\frac{\omega}{\pi}}}^{2(n+1)}
+              +\sum_{k=1}^\infty\brs{\frac{1}{2k+\frac{\omega}{\pi}}}^{2(n+1)}
+              }
+    \end{align*}
+
+  \item lemma: $\Swn(\omega)$ is \prope{continuous} for all $\omega\in\R$. \label{ilem:Nriesz_Gcontinuous}
+        \\Proof: $\sin(\omega/2)$ and $\omega/2$ are \prope{continuous}, so $\Swn(\omega)$ is \prope{continuous} as well.
+
+  \item lemma: $\Swn(\omega)$ is \prope{periodic} with period $2\pi$ \label{ilem:Nriesz_periodic}
+        (and so we only need to examine $\Swn(\omega)$ for $\omega\in\intco{0}{2\pi}$).
+        Proof of \prope{periodicity}: This follows directly from \prefpp{prop:ps_periodic}.
+
+  \item lemma: $\Swn(-\omega)=\Swn(\omega)$ (\prope{symmetric} about $0$) \label{ilem:Nriesz_symmetry}
+        and   $\Swn(\pi-\omega)=\Swn(\pi+\omega)$ (\prope{symmetric} about $\pi$).
+        Proof: This follows directly from \prefpp{prop:ps_symmetry}.
+
+  \item Proof that $\Swn(0)=1$: \label{item:Nriesz_G0}
+    \begin{align*}
+      \Swn(0)
+        &= \lim_{\omega\to0}\Swn(\omega)
+        && \text{by \pref{ilem:Nriesz_Gcontinuous}}
+      \\&= \lim_{\omega\to0}\brs{
+          \brs{\frac{\sin(\omega/2)}{(\omega/2)}}^{2(n+1)} 
+         +\brs{\frac{\sin(\omega/2)}{(\pi/2)}}^{2(n+1)}\brp{
+            \sum_{k=1}^\infty\brs{\frac{1}{2k-\frac{\omega}{\pi}}}^{2(n+1)}
+           +\sum_{k=1}^\infty\brs{\frac{1}{2k+\frac{\omega}{\pi}}}^{2(n+1)}
+           }
+          }
+        && \text{by \pref{ilem:Nriesz_Gone}}
+      \\&= \lim_{\omega\to0}\brs{\frac{\cos\brp{\frac{\omega}{2}}}{-\frac{1}{2}}}^{2(n+1)}
+         + 0
+       \qquad\text{by \thme{l'H{/<o}pital's rule}}
+      \\&= (-1)^{2(n+1)} = 1
+    \end{align*}
+
+  \item Proof that $\Swn(\pi)$ converges to some value $>0$: \label{item:Nriesz_Gpi}
+    \begin{enumerate}
+      \item Proof that $\Swn(\pi)>0$: \label{item:Nriesz_Gpi0}
+        \begin{align*}
+          \Swn(\pi)
+            &= \brs{\frac{\sin(\pi/2)}{(\pi/2)}}^{2(n+1)} 
+              +\brs{\frac{\sin(\pi/2)}{(\pi/2)}}^{2(n+1)}\brp{
+                 \sum_{k=1}^\infty\brs{\frac{1}{2k-\frac{\pi}{\pi}}}^{2(n+1)}
+                +\sum_{k=1}^\infty\brs{\frac{1}{2k+\frac{\pi}{\pi}}}^{2(n+1)}
+                }
+            && \text{by \pref{ilem:Nriesz_Gone}}
+          \\&=\mathrlap{
+               \brp{\frac{2}{\pi}}^{2(n+1)}\brs{
+                 1                         + 
+                 \brp{\frac{1}{1}}^{2(n+1)}+
+                 \brp{\frac{1}{3}}^{2(n+1)}+
+                 \brp{\frac{1}{3}}^{2(n+1)}+
+                 \brp{\frac{1}{5}}^{2(n+1)}+
+                 \brp{\frac{1}{5}}^{2(n+1)}+\cdots
+                 }
+               }
+          \\&= 2\brp{\frac{2}{\pi}}^{2(n+1)}\mcom{\sum_{k=1}^{\infty} \brs{\frac{1}{2k-1}}^{2(n+1)}}
+                                                 {\fncte{Dirichlet Lambda function} $\lambda(2n+2)$}
+          \\&> 0
+            \qquad\text{because $x^2>0$ for all $x\in\R\setd\setn{0}$}
+        \end{align*}
+
+      \item Proof that $\Swn(\pi)$ \prope{converges}:
+        \begin{align*}
+          \Swn(\pi)
+            &= 2\brp{\frac{2}{\pi}}^{2(n+1)}\sum_{k=1}^{\infty} \brp{\frac{1}{2k-1}}^{2(n+1)}
+            && \text{by \pref{item:Nriesz_Gpi0}}
+          \\&\le 2\brp{\frac{2}{\pi}}^{2(n+1)}\sum_{k=1}^{\infty} \brp{\frac{1}{k}}^{2(n+1)}
+          \\&\le 2\brp{\frac{2}{\pi}}^{2(n+1)}\sum_{k=1}^{\infty} \brp{\frac{1}{k}}^{2}
+          \\&\implies \text{\prope{convergence}}
+            && \text{by \thme{comparison test}}
+        \end{align*}
+
+      \item Tighter bounds for $\Swn(\pi)$ for certain values of $n\in\setn{0,1,2,3,4}$: \label{item:Nriesz_Gpitight}
+        {\begin{align*}
+          \Swn(\pi)
+            &= 2\brp{\frac{2}{\pi}}^{2(n+1)}\sum_{k=1}^{\infty} \brp{\frac{1}{2k-1}}^{2(n+1)}
+            && \text{by \pref{item:Nriesz_Gpi0}}
+          \\&= 2\brp{\frac{2}{\pi}}^{2(n+1)}U_{2(n+1)}
+            && \text{by \citerppc{jolley1961}{56}{57}{(307)}}
+          \\&= 2\brp{\frac{2}{\pi}}^{2(n+1)}\brs{\frac{\pi^{2(n+1)}\alpha_{n+1}}{(4)[(2n+2)!]}}
+            && \text{by \citerppc{jolley1961}{56}{57}{(307)}}
+          \\&= \frac{2^{2n+1}\alpha_{n+1}}
+                    {(2n+2)!}
+          \\&=\brb{\begin{array}{cMl}
+                \frac{2^1(1)}{2!}   & for $n=0$ & (\alpha_1=1)\\
+                \frac{2^3(1)}{4!}   & for $n=1$ & (\alpha_2=1)\\
+                \frac{2^5(3)}{6!}   & for $n=2$ & (\alpha_3=3)\\
+                \frac{2^7(17)}{8!}  & for $n=3$ & (\alpha_4=17)\\
+                \frac{2^9(155)}{10!}& for $n=4$ & (\alpha_5=155)
+              \end{array}}
+            && \text{by \citerpc{jolley1961}{234}{(1130)}}
+          \\&=\mathrlap{
+              \brb{\begin{array}{cM}
+                1                   & for $n=0$ \\
+                \frac{1}{3}         & for $n=1$ \\ % 8/24 = 1/3
+                \frac{2}{15}        & for $n=2$ \\ %(32*3)/720 = 32/240 = 2/15
+                \frac{17}{315}      & for $n=3$ \\ %(128*17)/40320 = 17/315
+                \frac{62}{2835}     & for $n=4$    %(512*155)/3628800 = 310/14175 = 62/2835
+              \end{array}}
+             =\brb{\begin{array}{lM}
+                1                      & for $n=0$ \\
+                0.3333333333333\cdots  & for $n=1$ \\ % 8/24 = 1/3
+                0.1333333333333\cdots  & for $n=2$ \\ % 0.13333333333333333333333333333333
+                0.0539682539682\cdots  & for $n=3$ \\ % 0.05396825396825396825396825396825
+                0.0218694885361\cdots  & for $n=4$    % 0.02186948853615520282186948853616
+              \end{array}}
+              }
+        \end{align*}}
+      \item Being important for the $n=0$ case, note that\footnote{
+            \citerpg{nahin2011}{153}{1400838479},
+            \citerpgc{bailey2013}{334}{3319323776}{Catalan's Constant},
+            \citePc{bailey2011}{(15)},
+            \citerpgc{wells1987}{36}{0140080295}{Dictionary entry for $\pi$: pages 31--37},
+            \citerpgc{heinbockel2010}{94}{1426949545}{(2.27) \fncte{Dirichlet Lambda function}}
+            } 
+        \\\indentx$\ds\mcom{\sum_{k=1}^{\infty} \brp{\frac{1}{2k-1}}^{2}}
+                           {\fncte{Dirichlet Lambda function} $\lambda(2)$}
+                   = 1 + \frac{1}{3^2} + \frac{1}{5^2} + \frac{1}{7^2} + \cdots 
+                   = \frac{\pi^2}{8}$
+
+      \item Proof that $\Swn(\pi)\le\frac{1}{3}$:
+            because $\Swn(\pi)=\frac{1}{3}$ for $n=1$ \xref{item:Nriesz_Gpitight} and because 
+            $\Swn(\pi)$ is decreasing for increasing $n$.
+    \end{enumerate}
+
+  \item lemma: $\Swn(\omega)$ \prope{converges} to some value $>0$ $\forall\omega\in\R$. Proof: \label{ilem:Nriesz_Ggt0}
+    \begin{enumerate}
+      \item For $\omega=0$, $\Swn(\omega)=1$ by \pref{item:Nriesz_G0}.
+      \item Proof that $\Swn(\omega)>0$ for $\omega\in\intoo{0}{2\pi}$: \label{item:Nriesz_Ggt002pi}
+            \begin{align*}
+              \Swn(\omega)
+                &=    \brs{\frac{\sin(\omega/2)}{(\omega/2)}}^{2(n+1)} 
+                     +\brs{\frac{\sin(\omega/2)}{(\pi/2)}}^{2(n+1)}\brp{
+                      \sum_{k=1}^\infty\brs{\frac{1}{2k-\frac{\omega}{\pi}}}^{2(n+1)}
+                     +\sum_{k=1}^\infty\brs{\frac{1}{2k+\frac{\omega}{\pi}}}^{2(n+1)}
+                     }
+                && \text{by \pref{ilem:Nriesz_Gone}}
+              \\&> 0
+            \end{align*}
+
+      \item Proof that $\Swn(\omega)$ \prope{converges}: \label{item:Nriesz_Gw_converges}
+        \begin{enumerate}
+          \item lemma: $\ds\sum_{k=1}^\infty \brs{\frac{1}{2k\pm\frac{\omega}{\pi}}}^{2(n+1)}$ \prope{converges}. Proof: \label{ilem:Nriesz_Gw_converges_pm}
+            \begin{align*}
+              \lim_{b\to\infty}\int_1^b \brs{\frac{1}{2y\pm\frac{\omega}{\pi}}}^{2(n+1)} \dy
+                &= \lim_{b\to\infty}\int_1^b \brs{2y\pm\frac{\omega}{\pi}}^{-2n-2} \dy
+              \\&= \lim_{b\to\infty} \brlr{\frac{\brs{2y\pm\frac{\omega}{\pi}}^{-2n-1}}{2(-2n-1)}}_1^b
+              \\&= \lim_{b\to\infty} \brp{\frac{-1}{2(2n+1)}}
+                                     \brs{\frac{1}{\brs{2b\pm\frac{\omega}{\pi}}^{2n+1}}
+                                         -\frac{1}{\brs{2 \pm\frac{\omega}{\pi}}^{2n+1}}
+                                         }
+              \\&= 0 + \frac{1}{2(2n+1)\brs{2 \pm\frac{\omega}{\pi}}^{2n+1}}
+              \\&< \infty 
+                && \forall \omega\in\intco{0}{2\pi}
+              \\&\implies \sum_{k=1}^\infty \brs{\frac{1}{2k\pm\frac{\omega}{\pi}}}^{2(n+1)} \quad\text{\prope{converges}}
+                && \text{by \thme{integral test}}
+            \end{align*}
+
+          \item completion of proof using \pref{ilem:Nriesz_Gw_converges_pm} \ldots
+            \begin{align*}
+              &\Swn(\omega)
+              \\&=    \brs{\frac{\sin(\omega/2)}{(\omega/2)}}^{2(n+1)} 
+                     +\brs{\frac{\sin(\omega/2)}{(\pi/2)}}^{2(n+1)}\brp{
+                      \sum_{k=1}^\infty\brs{\frac{1}{2k-\frac{\omega}{\pi}}}^{2(n+1)}
+                     +\sum_{k=1}^\infty\brs{\frac{1}{2k+\frac{\omega}{\pi}}}^{2(n+1)}
+                     }
+                &&\text{by \pref{ilem:Nriesz_Gone}}
+              %
+              %
+              %&\Swn(\omega)
+              %\\&= \brs{\frac{2}{\pi}\sin\brp{\frac{\omega}{2}}}^{2(n+1)}
+              %     \sum_{k\in\Z}\brs{\frac{1}{2k-\frac{\omega}{\pi}}}^{2(n+1)}
+              %  && \text{by \pref{item:Nriesz_Ggt002pi}}\hspace{70mm}\mbox{}
+              %\\&=\mathrlap{
+              %     \brs{\frac{2}{\pi}\frac{\sin\brp{\frac{\omega}{2}}}{\brp{-\frac{\omega}{\pi}}}}^{2(n+1)}
+              %   + \brs{\frac{2}{\pi}\sin\brp{\frac{\omega}{2}}}^{2(n+1)}
+              %     \sum_{k=1}^\infty\brs{\frac{1}{-2k-\frac{\omega}{\pi}}}^{2(n+1)}
+              %   + \brs{\frac{2}{\pi}\sin\brp{\frac{\omega}{2}}}^{2(n+1)}
+              %     \sum_{k=1}^\infty \brs{\frac{1}{2k-\frac{\omega}{\pi}}}^{2(n+1)}
+              %     }
+              %\\&=\mathrlap{
+              %     \brs{\frac{\sin\brp{\frac{\omega}{2}}}{\frac{\omega}{2}}}^{2(n+1)}
+              %   + \brs{\frac{2}{\pi}\sin\brp{\frac{\omega}{2}}}^{2(n+1)}
+              %     \sum_{k=1}^\infty\brs{\frac{1}{2k-\frac{\omega}{\pi}}}^{2(n+1)}
+              %   + \brs{\frac{2}{\pi}\sin\brp{\frac{\omega}{2}}}^{2(n+1)}
+              %     \sum_{k=1}^\infty \brs{\frac{1}{2k+\frac{\omega}{\pi}}}^{2(n+1)}
+              %     }
+              \\&\implies\text{$\Swn(\omega)$ \prope{converges} $\forall\omega\in\intoo{0}{2\pi}$}
+                \qquad\text{by \pref{ilem:Nriesz_Gw_converges_pm}}
+            \end{align*}
+      \end{enumerate}
+    \end{enumerate}
+
+  \item lemma (an expression for $\Swn'(\omega)$): \label{ilem:Nriesz_Gprime}
+    \begin{align*}
+      \Swn'(\omega)
+        &\eqd \ddw \Swn(\omega)
+      \\&=    \ddw \sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2(n+1)}
+        && \text{by \prefp{ilem:Nriesz_Geq}}
+      \\&=  \sum_{k\in\Z}\ddw\brs{\frac{\sin\brp{\frac{\omega}{2}}}
+                                 {k\pi-\frac{\omega}{2}}}^{2(n+1)}
+        && \text{by \prope{linearity} of $\ddw$ operator}
+      \\&=  \sum_{k\in\Z}2(n+1)\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2n+1}
+                           \ddw\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}
+        && \text{by \thme{power rule}}
+      \\&=  2(n+1)\sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2n+1}
+                               \brs{\frac{\frac{1}{2}\cos\brp{\frac{\omega}{2}}\brp{k\pi-\frac{\omega}{2}}-\sin\brp{\frac{\omega}{2}}\brp{-\frac{1}{2}}}
+                                         {\brp{k\pi-\frac{\omega}{2}}^2}
+                                   }
+        && \text{by \thme{quotient rule}}
+      \\&=  (n+1)\sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2n+1}
+                              \brs{\frac{\cos\brp{\frac{\omega}{2}}\brp{k\pi-\frac{\omega}{2}}+\sin\brp{\frac{\omega}{2}}}
+                                        {\brp{k\pi-\frac{\omega}{2}}^2}
+                                  }
+    \end{align*}
+
+  \item lemma: $\Swn'(0)=\Swn'(\pi)=0$. Proof: \label{ilem:Nriesz_Gprime0}
+        This follows from \prefpp{prop:ps_symmetry}. Here is alternate proof:
+    \begin{align*}
+      \Swn'(0)
+        &= \lim_{\omega\to0}\Swn'(\omega)
+      \\&= \lim_{\omega\to0}
+           (n+1)\sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2n+1}
+                              \brs{\frac{\cos\brp{\frac{\omega}{2}}\brp{k\pi-\frac{\omega}{2}}+\sin\brp{\frac{\omega}{2}}}
+                                        {\brp{k\pi-\frac{\omega}{2}}^2}
+                                  }
+        && \text{by \pref{ilem:Nriesz_Gprime}}
+      \\&= \lim_{\omega\to0}
+           (n+1)\brs{\frac{\sin\brp{\frac{\omega}{2}}}{-\frac{\omega}{2}}}^{2n+1}
+                \brs{\frac{\cos\brp{\frac{\omega}{2}}\brp{-\frac{\omega}{2}}+\sin\brp{\frac{\omega}{2}}}
+                          {\brp{-\frac{\omega}{2}}^2}
+                                  }
+      \\&= (n+1)\lim_{\omega\to0}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{-\frac{\omega}{2}}}^{2n+1}
+                \lim_{\omega\to0}\brs{\frac{\cos\brp{\frac{\omega}{2}}\brp{-\frac{\omega}{2}}+\sin\brp{\frac{\omega}{2}}}
+                                          {\brp{-\frac{\omega}{2}}^2}
+                                  }
+      \\&= (n+1)\brs{-1}^{2n+1}
+                \lim_{\omega\to0}\brs{\frac{-\frac{1}{2}\sin\brp{\frac{\omega}{2}}\brp{-\frac{\omega}{2}}+\cos\brp{\frac{\omega}{2}}\brp{-\frac{1}{2}}+\cos\brp{\frac{\omega}{2}}\brp{\frac{1}{2}}}
+                                           {-\frac{2}{2}\brp{-\frac{\omega}{2}}}
+                                  }
+       && \text{by \thme{l'H{/<o}pital's rule}}
+      \\&= (1)(0) 
+      \\&= 0
+      \\
+      \\
+      \Swn'(\pi)
+        &= (n+1)\sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\pi}{2}}}{k\pi-\frac{\pi}{2}}}^{2n+1}
+                              \brs{\frac{\cos\brp{\frac{\pi}{2}}\brp{k\pi-\frac{\pi}{2}}+\sin\brp{\frac{\pi}{2}}}
+                                        {\brp{k\pi-\frac{\pi}{2}}^2}
+                                  }
+        && \text{by \pref{ilem:Nriesz_Gprime}}
+      \\&= (n+1)\sum_{k\in\Z}\brs{\frac{1}{k\pi-\frac{\pi}{2}}}^{2n+1}
+                              \brs{\frac{0\brp{k\pi-\frac{\pi}{2}}+1}
+                                        {\brp{k\pi-\frac{\pi}{2}}^2}
+                                  }
+      \\&= (n+1)\brp{\frac{2}{\pi}}^{2n+3}
+                 \sum_{k\in\Z}\brs{\frac{1}{2k-1}}^{2n+3}
+      \\&=\mathrlap{ 
+            (n+1)\brp{\frac{2}{\pi}}^{2n+3}
+                 \brs{\brp{\frac{1}{1}}^{2n+3}+\brp{\frac{1}{-1}}^{2n+3}+\brp{\frac{1}{3}}^{2n+3}+\brp{\frac{1}{-3}}^{2n+3} + \ldots}
+            }
+      \\&=\mathrlap{ 
+            (n+1)\brp{\frac{2}{\pi}}^{2n+3}\sum_{k=1}^{\infty} (-1)^{k+1} \alpha_k
+            \qquad\text{where } \alpha_k\eqd
+            \brb{\begin{array}{rMl}
+                   \brp{\frac{1}{k}}^{2n+3}   & for $k$ odd\\
+                   \brp{\frac{1}{k-1}}^{2n+3} & for $k$ even
+            \end{array}}
+            }
+       \\&=\mathrlap{%
+           0
+           \qquad\text{because $\lim_{k\to\infty}\alpha_k=0$ and by \thme{Alternating Series Test}}
+           }
+    \end{align*}
+
+  \item lemma: $\Swn(\omega)$ is \prope{decreasing} with respect to $\omega\in\intcc{0}{\pi}$.
+        \label{ilem:Nriesz_Gdecreasing}
+        Proof:
+    \begin{align*}
+      \Swn'(\omega)
+        &=  (n+1)\sum_{k\in\Z}\brs{\frac{\sin\brp{\frac{\omega}{2}}}{k\pi-\frac{\omega}{2}}}^{2n+1}
+                              \brs{\frac{\cos\brp{\frac{\omega}{2}}\brp{k\pi-\frac{\omega}{2}}+\sin\brp{\frac{\omega}{2}}}
+                                        {\brp{k\pi-\frac{\omega}{2}}^2}
+                                  }
+        && \text{by \prefp{ilem:Nriesz_Gprime}}
+      \\&=\mathrlap{
+            \mcom{(n+1)\brp{\sin\frac{\omega}{2}}^{2n+1}}{$\ge0$ for $\omega\in\intco{0}{2\pi}$}
+            \mcom{\sum_{k\in\Z}\brs{\frac{1}{k\pi-\frac{\omega}{2}}}^{2n+2}}{$>0$}
+                         \brs{\mcom{\brp{\cos\frac{\omega}{2}}}{sign change at $\omega=\pi$}
+                        +     \frac{\ocom{\sin\frac{\omega}{2}}{$>0$ for $\omega\in\intoo{0}{2\pi}$}}
+                                   {\mcom{k\pi-\frac{\omega}{2}}{\prope{decreasing} w.r.t. $\omega\in\R$}}
+                                  %{\mcom{k\pi-\frac{\omega}{2}}{\begin{tabular}{c}causes $\Swn'$ to\\start going negative\\for small $\omega>0$\end{tabular}}}
+                                  %{\mcom{k\pi-\frac{\omega}{2}}{causes $\Swn'$ to start going negative for small $\omega>0$}}
+                             }
+             }
+    \end{align*}
+
+  \item lemma: $\Swn(\omega)$ is \prope{increasing} with respect to $\omega\in\intco{\pi}{2\pi}$. 
+        \label{ilem:Nriesz_Gincreasing}
+        Proof: This is true because 
+               $\Swn(\omega)$ is \prope{decreasing} in $\intcc{0}{\pi}$ (\pref{ilem:Nriesz_Gdecreasing}) and 
+               because $\Swn(\omega)$ is \prope{symmetric} about $\omega=\pi$ (\pref{ilem:Nriesz_symmetry}).
+
+  \item Proof that $0<\Swn(\omega) \le 1$: \label{item:Nriesz_01}
+    \begin{enumerate}
+      \item $\Swn(\omega)>0$ by \pref{ilem:Nriesz_Ggt0} and
+      \item $\Swn(0)=1$ by \pref{item:Nriesz_G0} and 
+      \item $\Swn(\omega)$ is \prope{decreasing} from $\omega=0$ to $\omega=\pi$ by \pref{ilem:Nriesz_Gdecreasing} and
+      \item $\Swn(\omega)$ is \prope{increasing} from $\omega=\pi$ to $\omega=2\pi$ by \pref{ilem:Nriesz_Gincreasing} and
+      \item $\Swn(2\pi)=1$ because $\Swn(2\pi)=\Swn(0)$ by \pref{ilem:Nriesz_periodic}.
+     \end{enumerate}
+
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{wojtaszczyk1997}{56}{0521578949}{Proposition 3.12},
+  \citerpgc{prasad}{148}{0849331692}{Theorem 6.3},
+  \citerpgc{forster2009}{66}{0817648909}{Theorem 2.25}
+  }
+\label{thm:Nriesz}
+\label{thm:Northo}
+%---------------------------------------
+%Let $\spS^n(\Z)$ be the \structe{space of all splines of order n} \xref{def:Sn}.
+%\footnote{\structe{Riesz basis}: \xref{def:basis_riesz}}
+\thmbox{\begin{array}{FMMMcl}
+  1. & $\seqkZ{\fN_n(x-k)}$ is a  &\structe{Riesz basis}      & for $\linspan\seqkZ{\fN_n(x-k)}$ &      & \forall n\in\Znn\\
+  2. & $\seqkZ{\fN_n(x-k)}$ is an &\structe{orthonormal basis}& for $\linspan\seqkZ{\fN_n(x-k)}$ & \iff & n=0
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\seqkZ{\fN_n(x-k)}$ is a \structe{Riesz basis} for $\linspan\seqkZ{\fN_n(x-k)}$:
+    \begin{align*}
+      0 &<\Swn(\omega) \le 1  
+        && \text{by \prefp{lem:Nriesz} (1)}
+      \\&\implies \text{$\seqkZ{\fN_n(x-k)}$ is a \structe{Riesz basis} for $\linspan\seqkZ{\fN_n(x-k)}$}
+        && \text{by \prefp{thm:rbasis_S}}
+    \end{align*}
+
+  \item Proof that $\brb{n=0}$ $\iff$ $\seqkZ{\fN_n(x-k)}$ is an \structe{orthonormal basis} for $\linspan\seqkZ{\fN_n(x-k)}$:
+    \begin{align*}
+      n=0 
+        &\iff \Swn(\omega)=1  
+        && \text{by \prefp{lem:Nriesz} (2), (4)}
+      \\&\iff \text{$\seqkZ{\fN_n(x-k)}$ is an \structe{orthonormal basis} for $\linspan\seqn{\fN_n(x-k)}$}
+        && \text{by \prefp{thm:Swfgo}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%=======================================
+\section{Mutiresolution properties}
+%=======================================
+%=======================================
+\subsection{Introduction}
+%=======================================
+In 1989, St{/'e}phane G. Mallat introduced the \structe{Multiresolution Analysis} (MRA) structure \xref{def:mra}
+%  method for wavelet construction. The MRA has since become the dominate wavelet construction method.
+%  Moreover, P.G. Lemari{/'e} has proved that all wavelets with \prope{compact support} are generated by an MRA.\footnotemark
+%\end{minipage}
+%\hfill\tbox{\includegraphics{graphics/latwav.pdf}}%
+An MRA is very powerful because it can be used to approximate functions at incrementally increasing ``scales" of 
+resolution, and furthermore induces a \fncte{wavelet}.
+In fact, the MRA has become the dominate wavelet construction method.
+Moreover, P.G. Lemari{/'e} has proved that all wavelets with \prope{compact support} are generated by an MRA.
+\footnote{
+  \citerpg{mallat}{240}{012466606X},
+  \prefpp{def:mra}
+  %\citerpg{greenhoe2013wsd}{28}{0983801134}
+  }
+
+%=======================================
+\subsection{B-spline dyadic decomposition}
+%=======================================
+One key feature of an MRA is \prope{dyadic decomposition} such that $\fN_n(x)=\sum_k \alpha_n\fN_n(2x-n)$ for some 
+sequence $\seqn{\alpha_n}$.
+As it turns out, \fncte{B-spline}s also have this property (next theorem).
+
+%---------------------------------------
+\begin{theorem}[\thme{B-spline dyadic decomposition}]
+\footnote{
+  \citerppgc{prasad}{151}{152}{0849331692}{proof using Fourier transform}
+  }
+\label{thm:bspline_2x}
+%---------------------------------------
+Let $\fN_n(x)$ be the \fncte{$n$th order B-spline}. % \xref{def:Nn}.
+\thmbox{
+  \fN_n(x) = \frac{1}{2^n}\sum_{k=0}^{n+1} \bcoef{n+1}{k} \fN_n(2x-k)   \qquad\forall n\in\Znn,\,\forall x\in\R    
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Base case \ldots proof for $n=0$ case:
+    \begin{align*}
+      \fN_0(x)
+        &= \setind_\intco{0}{1}(x)
+        && \text{by definition of $\setind_\setA(x)$}
+        && \text{\xref{def:setind}}
+      \\&= \setind_\intco{0}{\sfrac{1}{2}}(x) + \setind_\intco{\sfrac{1}{2}}{1}(x)
+      \\&= \setind_\intco{2\times0}{2\times\sfrac{1}{2}}(2x) + \setind_\intco{2\times\sfrac{1}{2}-1}{2\times1-1}(2x-1)
+      \\&= \setind_\intco{0}{1}(2x) + \setind_\intco{0}{1}(2x-1)
+      \\&= \frac{1}{2^0}\sum_{k=0}^{0+1} \bcoef{0+1}{k} \fN_n(2x-k) 
+    \end{align*}
+
+  \item Induction step\ldots proof that $n$ case $\implies$ $n+1$ case:
+    \begin{align*}
+      \fN_{n+1}(x)
+        &= \int_0^1 \fN_n(x-\tau) \dtau
+        && \text{by \prefp{lem:Nn}}
+      \\&= \int_0^1 \frac{1}{2^n}\sum_{k=0}^{n+1} \bcoef{n+1}{k} \fN_n(2x-2\tau-k) \dtau
+        && \text{by induction hypothesis}
+      \\&= \frac{1}{2^n}\sum_{k=0}^{n+1} \bcoef{n+1}{k} \int_{\tau=0}^{\tau=1}\fN_n(2x-2\tau-k) \dtau
+        && \text{by \prope{linearity} of $\sum$ operator}
+      \\&= \frac{1}{2^n}\sum_{k=0}^{n+1} \bcoef{n+1}{k} \int_{u=0}^{u=2}\fN_n(2x-u-k) \frac{1}{2}\du
+        && \text{where $u\eqd2\tau\implies\tau=\frac{1}{2}u$}
+      \\&=\mathrlap{
+             \frac{1}{2^{n+1}}\sum_{k=0}^{n+1} \bcoef{n+1}{k} \brs{
+               \int_{u=0}^{u=1}\fN_n(2x-k-u) \du +
+               \int_{u=1}^{u=2}\fN_n(2x-k-u) \du
+               }}
+      \\&=\mathrlap{ 
+            \frac{1}{2^{n+1}}\sum_{k=0}^{n+1} \bcoef{n+1}{k} \brs{
+              \int_{u=0}^{u=1}\fN_n(2x-k-u) \du +
+              \int_{v=0}^{v=1}\fN_n(2x-k-v-1) \dv
+              }
+         \begin{array}{M}
+           where $v\eqd u-1$\\
+           $\implies u=v+1$
+         \end{array}
+         }
+      \\&= \frac{1}{2^{n+1}}\sum_{k=0}^{n+1} \bcoef{n+1}{k} \brs{\fN_n(2x-k) + \fN_n(2x-k-1)}
+        && \text{by \prefp{lem:Nn}}
+      \\&= \frac{1}{2^{n+1}}\brs{\sum_{k=0}^{n+1} \bcoef{n+1}{k}   \fN_n(2x-k)   
+                               + \sum_{m=1}^{n+2} \bcoef{n+1}{m-1} \fN_n(2x-m)}
+        && \text{where $m\eqd k+1\implies k=m-1$}
+      \\&=\mathrlap{\frac{1}{2^{n+1}}\brs{
+                \mcom{\sum_{k=1}^{n+1}\brs{ \bcoef{n+1}{k} + \bcoef{n+1}{k-1}} \fN_n(2x-k)}{common indices of above two summations}
+               +\mcom{\bcoef{n+1}{0}  \fN_n(2x-0)}{$k=0$ term}
+               +\mcom{\bcoef{n+2}{n+2}\fN_n(2x-n-2)}{$m=n+2$ term}
+              }}
+      \\&=\mathrlap{\frac{1}{2^{n+1}}\brs{
+                \mcom{\sum_{k=1}^{n+1}\bcoef{n+2}{k} \fN_n(2x-k)}{by \thme{Stifel formual} \xref{thm:stifel}}
+               +\mcom{\bcoef{n+2}{0}  \fN_n(2x-0)}{because $\bcoef{n+1}{0}=1=\bcoef{n+2}{0}$}
+               +      \bcoef{n+2}{n+2}\fN_n(2x-n-2)
+              }}
+      %\\&=\frac{1}{2^{n+1}}\brb{\begin{array}{>{\ds}lc>{\ds}l} 
+      %       \sum_{k=1}^{n+1}\bcoef{n+2}{k} \fN_n(2x-k) &+&\sum_{k=0}^{0}\bcoef{n+1}{k}      \fN_n(2x-k)
+      %                                                \\&+&\sum_{k=n+2}^{n+2} \bcoef{n+2}{k} \fN_n(2x-k)   
+      %    \end{array}}
+      %  && \text{by \thme{Stifel formula} \xref{thm:stifel}}
+      \\&=\frac{1}{2^{n+1}}\sum_{k=0}^{n+2}\bcoef{n+2}{k} \fN_n(2x-k)
+    \end{align*}
+\end{enumerate}
+% Praise the Lord!!!
+% 2017 May 03 Wednesday
+\end{proof}
+
+%---------------------------------------
+\begin{minipage}{\tw-80mm}
+\begin{example}\footnotemark
+%---------------------------------------
+The \ope{$0$ order B-spline dyadic decomposition} 
+\\\indentx$\ds\fN_0(x) = \frac{1}{1}\sum_{k=0}^{k=1} \bcoef{1}{k} \fN_0(2x-k)$\\
+is illustrated to the right.
+\end{example}%
+\end{minipage}\tbox{\includegraphics{graphics/n0dyadic.pdf}}
+\footnotetext{
+  \citePpc{strang89}{615}{Box function},
+  \citerpgc{strang1996}{441}{0961408871}{Box function}
+  }
+
+%---------------------------------------
+\begin{minipage}{\tw-80mm}
+\begin{example}\footnotemark
+%---------------------------------------
+The \ope{$1$st order B-spline dyadic decomposition} 
+\\\indentx$\ds\fN_1(x) = \frac{1}{2}\sum_{k=0}^{k=2} \bcoef{2}{k} \fN_1(2x-k)$\\
+is illustrated to the right.
+\end{example}%
+\end{minipage}\tbox{\includegraphics{graphics/n1dyadic.pdf}}
+\footnotetext{
+  \citePpc{strang89}{615}{Hat function},
+  \citerpgc{strang1996}{442}{0961408871}{Hat function},
+  \citerpgc{heil2011}{380}{0817646868}{Fig. 12.10}
+  }
+
+%---------------------------------------
+\begin{minipage}{\tw-80mm}
+\begin{example}%
+%---------------------------------------
+The \ope{$2$nd order B-spline dyadic decomposition} 
+\\\indentx$\ds\fN_2(x) = \frac{1}{4}\sum_{k=0}^{k=3} \bcoef{3}{k} \fN_2(2x-k)$\\
+is illustrated to the right.
+\end{example}%
+\end{minipage}\tbox{\includegraphics{graphics/n2dyadic.pdf}}
+
+%=======================================
+\subsection{B-spline MRA scaling functions}
+%=======================================
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpgc{wojtaszczyk1997}{57}{0521578949}{Theorem 3.13}
+%  }
+%\label{thm:Sn_mra}
+%%---------------------------------------
+%%Let $\fN_n(x)$ be an \fncte{nth order cardinal B spline} \xref{def:Nn}.
+%Let $\spS^n(\Z)$ be the \structe{space of all B-splines of order n} \xref{def:Sn}.
+%\thmboxt{
+%  For each $n\in\Znn$,\\
+%  $\spS^n(2^k\Z)$ is a \structe{multiresolution analysis} (an \structe{MRA}).
+%  }
+%\end{theorem}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:Nmra}
+%---------------------------------------
+Let $fN_n(x)$ be the \fncte{$n$th order B-spline} \xref{def:Bspline}.\\
+Let $\spV_j\eqd\linspan\seqkZ{\fN_n\brp{2^jx-k}}$.
+\thmboxt{$\seqjZ{\spV_j}$ is a \structe{multiresolution analysis} on $\spLLR$\\
+with \fncte{scaling function} $\fphi(x)\eqd\fN_n(x)$}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: $\seqkZ{\fN_n(x-k)}$ is a \structe{Riesz sequence}. \label{ilem:Nmra_riesz}
+        Proof: by \prefpp{thm:Nriesz}.
+
+  \item lemma: $\ds\exists \seqn{h_k} \st \fN_n(x)=\sum_{k\in\Z}h_k\fN_n(2x-k)$. \label{ilem:Nmra_2x}
+        Proof: by \prefpp{thm:bspline_2x}.
+        In fact, note that $h_k = \frac{1}{2^n\sqrt{2}}\bcoef{n+1}{k}$
+
+  \item lemma: $\opFT\fN_n(\omega)$ is \prope{continuous} at $0$. \label{ilem:Nmra_continuous} Proof:
+    \begin{align*}
+      \opFT\fN_n(\omega) 
+        &= \fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\sinc{\frac{\omega}{2}}}^{n+1}
+        && \text{by \prefp{lem:FTNn}}
+      \\&\implies\text{\prope{continuous} at $0$} 
+        && \text{by known property of $\sinc$ function}
+    \end{align*}
+
+  \item lemma: $\Fphi(0)\neq0$. \label{ilem:Nmra_neq0} Proof:
+    \begin{align*}
+      \opFT\fN_n(0) 
+        &= \brlr{\fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\sinc{\frac{\omega}{2}}}^{n+1}}_{\omega=0}
+        && \text{by \prefp{lem:FTNn}}
+      \\&= 1\cdot\frac{1}{1/2} = 2
+        && \text{by \thme{l'H{/<o}pital's rule}}
+      \\&\neq 0
+    \end{align*}
+
+  \item The completion of this proof follows directly from 
+        \pref{ilem:Nmra_riesz}, \pref{ilem:Nmra_2x}, \pref{ilem:Nmra_continuous}, \pref{ilem:Nmra_neq0}, and 
+        \prefpp{thm:mra_rdc}.
+\end{enumerate}
+\end{proof}
+
+%=======================================
+\subsection{B-spline MRA coefficient sequences}
+%=======================================
+Because each \fncte{B-spline} $\fN_n(x)$ is the \fncte{scaling function} for an \structe{MRA} \xref{thm:Nmra}, 
+each \fncte{B-spline} also satisfies the \fncte{dilation equation} \xref{thm:dilation_eq} such that
+\\\indentx$\ds\fN_n(x) = \sqrt{2}\sum_{k\in\Z} h_k \fN(2x-k)$ 
+          \quad where\quad 
+          $\ds h_k = \brb{\begin{array}{lM}
+                       \frac{\sqrt{2}}{2^{n+1}}\bcoef{n+1}{k} & for $n=0,1,\ldots,n$\\
+                       0                                      & otherwise
+                     \end{array}}$
+\\
+The resulting \fncte{sequence} $\seqkZ{h_k}$ is the \fncte{order $n$ B-spline MRA coefficient sequence} induced
+by the \fncte{order $n$ B-spline MRA scaling sequence} $\fphi(x)\eqd\fN_n(x)$.\footnote{
+For \hie{Octave}/\hie{MatLab} code useful for plotting a function given a sequence of coefficients
+$\seqn{h_k}$, see \prefpp{sec:src_Ry}.}
+
+\begin{figure}
+  \centering%
+  $\begin{array}{|*{3}{>{\ds}c|}}
+     \hline
+      \includegraphics{graphics/n0_h.pdf}
+     &\includegraphics{graphics/n1_h.pdf}
+     &\includegraphics{graphics/n2_h.pdf}
+    %&\includegraphics{graphics/bspline_phi_h.pdf}
+     \\
+      \fN_0(x) %= \sqrt{2}\sum_{k=0}^1 \brp{\frac{1}{\sqrt{2}}\bcoef{1}{k}} \fN_0(2x-k)
+     &\fN_1(x) %= \sqrt{2}\sum_{k=0}^2 \brp{\frac{1}{\sqrt{2}}\bcoef{2}{k}} \fN_1(2x-k)
+     &\fN_2(x) %= \sqrt{2}\sum_{k=0}^2 \brp{\frac{1}{\sqrt{2}}\bcoef{2}{k}} \fN_1(2x-k)
+     \\\hline
+       \mc{2}{|c|}{\includegraphics{graphics/n3_h.pdf}}
+      &\includegraphics{graphics/n4_h.pdf}
+     \\
+       \mc{2}{|c|}{\fN_3(x)} %= \sqrt{2}\sum_{k=0}^4 \brp{\frac{1}{\sqrt{2}}\bcoef{4}{k}} \fN_3(2x-k)
+      &\fN_4(x)
+     \\\hline
+  \end{array}$
+  \caption{\thme{dilation equation} demonstrations for selected B-splines \xref{ex:Nde}\label{fig:Nde}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\label{ex:Nde}
+%---------------------------------------
+See \prefpp{fig:Nde} for some \thme{dilation equation} demonstrations of selected B-splines.
+\end{example}
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{B-spline scaling coefficients}]
+\label{thm:Bsplineh}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+Let $\fN_n(x)$ be a \fncte{$n$th order B-spline} \xref{def:Bspline}.
+%\fncte{scaling function} \xref{def:mra} with \fncte{scaling coefficient sequence} $\seq{h_k}{\scy k\in\Z}$ \xref{def:mrasys}.
+\thmbox{\begin{array}{>{\ds}lc>{\ds}lD}
+  \mcom{\fphi(x)\eqd\fN_n(x)}{(1) B-spline scaling function}
+  &\implies&
+  \seqn{h_k} = \brbl{\begin{array}{>{\ds}lD}
+                       \frac{\sqrt{2}}{2^{n+1}}\bcoef{n}{k} & for $k=0,1,\ldots,n$\\
+                       0                                & otherwise
+                     \end{array}}
+  & (2) scaling sequence in ``time"
+  \\&\iff&
+  \Zh(z)\Big|_{z\eqd e^{i\omega}} = \frac{\sqrt{2}}{2^n}\brp{1+z^{-1}}^{n+1}\Big|_{z\eqd e^{i\omega}}
+  & (3) scaling sequence in ``z domain"
+  \\&\iff&
+  \Fh(\omega) = 2\sqrt{2} e^{-i\frac{n+1}{2}\omega}\brs{\cos\brp{\frac{\omega}{2}}}^{n+1}
+  & (4) scaling sequence in ``frequency"
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1)$\implies$(3):
+        By \prefp{thm:Nmra} we know that $\fN_n(x)$ is a \fncte{scaling function} \xref{def:mra}.
+        So then we know that we can use \prefp{lem:Fphi}.
+        \begin{align*}
+          \Fh(\omega)
+            &= \sqrt{2}\frac{\Fphi(2\omega)}{\Fphi(\omega)}
+            && \text{by \prefp{lem:Fphi}}
+          \\&= \sqrt{2}\frac{\FN_n(2\omega)}{\FN_n(\omega)}
+            && \text{by (1)}
+          \\&= \sqrt{2}\frac{{\cft}\brp{\frac{1-e^{-i2\omega}}{2i\omega}}^{n+1}}
+                            {{\cft}\brp{\frac{1-e^{-i\omega}}{i\omega}}^{n+1}}
+            && \text{by \prefp{lem:FTNn}}
+          \\&= \left.\frac{\sqrt{2}}{2^{n+1}} 
+               \brp{\frac{1-z^{-2}}{1-z^{-1}}}^{n+1}\right|_{z=e^{i\omega}}
+          \\&= \left.\frac{\sqrt{2}}{2^{n+1}} 
+               \brs{\brp{\frac{1-z^{-2}}{1-z^{-1}}}
+               \brp{\frac{1+z^{-1}}{1+z^{-1}}}}^{n+1}\right|_{z=e^{i\omega}}
+          \\&= \left.\frac{\sqrt{2}}{2^{n+1}} 
+               \brp{\frac{ \brp{1-z^{-2}}  \brp{1+z^{-1}}}{1-z^{-2}}}^{n+1}\right|_{z=e^{i\omega}}
+          \\&= \frac{\sqrt{2}}{2^n}\brp{1+z^{-1}}^{n+1}\Big|_{z\eqd e^{i\omega}}
+        \end{align*}
+
+  \item Proof that (3)$\iff$(2):\\
+    \begin{align*}
+      \Zh(z)\Big|_{z\eqd e^{i\omega}}
+            &= \brlr{\frac{\sqrt{2}}{2^n}\brp{1+z^{-1}}^{n+1}}_{z\eqd e^{i\omega}}
+            && \text{by (3)}
+          \\&= \brlr{\frac{\sqrt{2}}{2^n}\brp{\sum_{k=0}^{n+1} \bcoef{n}{k} z^{-k}}}_{z\eqd e^{i\omega}}
+            && \text{by \thme{binomial theorem}}
+          \\&\iff \qquad h_k = \frac{\sqrt{2}}{2^{n+1}} \bcoef{n}{k}
+            && \text{by definition of \fncte{Z transform} \xref{def:opZ}}
+    \end{align*}
+
+  \item Proof that (3)$\implies$(4):\\
+    \begin{align*}
+      \Fh(\omega)
+          &= \Zh(z)\Big|_{z\eqd e^{i\omega}}
+          && \text{by definition of \ope{DTFT} \xref{def:dtft}}
+        \\&= \brlr{\frac{\sqrt{2}}{2^n}\brp{1+z^{-1}}^{n+1}}_{z\eqd e^{i\omega}}
+          && \text{by (3)}
+        \\&= \frac{\sqrt{2}}{2^n}\brp{1+e^{-i\omega}}^{n+1}
+          && \text{by definition of $z$}
+        \\&= \frac{\sqrt{2}}{2^n} \brs{ e^{-i\frac{1}{2}\omega}\brp{e^{i\frac{\omega}{2}}+e^{-i\frac{\omega}{2}}}}^{n+1}
+        \\&= \frac{\sqrt{2}}{2^n} e^{-i\frac{n+1}{2}\omega}\brs{2\cos\brp{\frac{\omega}{2}}}^{n+1}
+        \\&= 2\sqrt{2} e^{-i\frac{n+1}{2}\omega}\brs{\cos\brp{\frac{\omega}{2}}}^{n+1}
+    \end{align*}
+
+  \item Proof that (3)$\impliedby$(4):
+    \begin{align*}
+      \Zh(z)\Big|_{z\eqd e^{i\omega}}
+          &= \Zh\brp{e^{i\omega}}
+        \\&= \Fh(\omega)
+        \\&= 2\sqrt{2} e^{-i\frac{n+1}{2}\omega}\brs{\cos\brp{\frac{\omega}{2}}}^{n+1}
+          && \text{by (4)}
+        \\&= \frac{\sqrt{2}}{2^n} e^{-i\frac{n+1}{2}\omega}\brs{2\cos\brp{\frac{\omega}{2}}}^{n+1}
+        \\&= \frac{\sqrt{2}}{2^n} \brs{ e^{-i\frac{1}{2}\omega}\brp{e^{i\frac{\omega}{2}}+e^{-i\frac{\omega}{2}}}}^{n+1}
+        \\&= \frac{\sqrt{2}}{2^n}\brp{1+e^{-i\omega}}^{n+1}
+        \\&= \brlr{\frac{\sqrt{2}}{2^n}\brp{1+z^{-1}}^{n+1}}_{z\eqd e^{i\omega}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%%--------------------------------------
+%\begin{figure}
+%%--------------------------------------
+%  \centering%
+%  $\begin{array}{|c|}
+%     \hline
+%       \includegraphics{graphics/n0_h.pdf}
+%     \\\fN_0(x)
+%     \\\hline
+%  \end{array}$
+%  \caption{\thme{dilation equation} demonstrations for selected B-splines \xref{ex:Nde}\label{fig:Nde}}
+%\end{figure}
+%--------------------------------------
+\begin{example}[\exmd{2 coefficient case}]%/\exmd{Haar wavelet system}/\exmd{order 0 B-spline wavelet system}
+\footnote{
+  \citor{haar1910},
+  \citerppgc{wojtaszczyk1997}{14}{15}{0521578949}{``Sources and comments"}
+  }
+\label{ex:N0_h}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+\exbox{
+  \mcom{\brb{\begin{array}{FMD}
+    1. & $\support\fphi(x)=\intcc{0}{1}$     & and\\
+    2. & $\seqn{\fphi(x-k)}$ forms a&\\
+       & \prope{partition of unity}  &
+  \end{array}}}{\scs(A)}
+  \iff
+  \mcom{h_n=
+    \brb{\begin{array}{rM}%
+      \cwt &{\scs for} $n=0$ \\
+      \cwt &{\scs for} $n=1$ \\
+      0    &{\scs otherwise}
+    \end{array}}}{\scs(B)}
+  \iff
+  \mcom{\brb{\begin{array}{@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}l@{\hspace{1pt}}}
+    \fphi(x)&=&\fN_0(x)\\
+  \end{array}}}{\scs(C)}
+  }%
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (A)$\implies$(B):
+    \begin{enumerate}
+      \item lemma: Only $h_0$ and $h_1$ are \prope{non-zero}; All other coefficients $h_k$ are $0$. \label{ilem:N0_h_nonzero} Proof:
+                   This follows from $\support\fphi(x)=\intcc{0}{1}$ \xref{def:support} and by \prefp{thm:support}.
+    
+      \item lemma (equations for $\seqn{h_k}$):\label{ilem:N0_h_equ}
+            Because $\seqn{h_k}$ is a \fncte{scaling coefficient sequence} \xref{def:mra}, 
+            it must satisfy the \prope{admissibility equation} \xref{thm:admiss}.
+            And because $\seqn{\fphi(x-k)}$ forms a \prope{partition of unity}, it must satisfy the equations
+            given by \prefpp{thm:pun_zero}. \pref{ilem:N0_h_nonzero} and 
+            these two constraints yield two simultaneous equations and two unknowns:
+            \\\indentx$\ds\begin{array}{rcc@{\qquad}M}
+              h_0 + h_1 &=& \sqrt{2}    & (\prope{admissibility condition})\\
+              h_0 - h_1 &=& 0           & (\prope{partition of unity}/\prope{zero at $-1$}/\prope{vanishing 0th moment})
+            \end{array}$
+      
+      \item lemma: \label{ilem:N0_h_Ah}
+            The equations provided by \pref{ilem:N0_h_equ} can be expressed in matrix algebra form as follows\ldots
+            \begin{align*}
+              \mcom{\brs{\begin{array}{rr}1 &  1\\1 & -1\end{array}}}{$\opA$}\brs{\begin{array}{r}h_0\\h_1\end{array}}
+                &= \brs{\begin{array}{r}\sqrt{2}\\0\end{array}}
+            \end{align*}
+    
+      \item lemma: \label{ilem:N0_h_Ai}
+            The \ope{inverse} $\opAi$ of $\opA$ can be expressed as demonstrated below\ldots
+            \begin{align*}
+              \brs{\begin{array}{rr|rr}1 & 1 & 1 & 0\\1 & -1 & 0 & 1\end{array}}
+                &\rightarrow  \brs{\begin{array}{rr|rr}2 & 0 & 1 & 1\\1 & -1 & 0 & 1\end{array}}
+                 \rightarrow  \brs{\begin{array}{rr|rr}2 & 0 & 1 & 1\\0 & -1 & -\sfrac{1}{2} & \sfrac{1}{2}\end{array}}
+                 \rightarrow  \brs{\begin{array}{rr|rr}1 & 0 & \sfrac{1}{2} & \sfrac{1}{2}\\0 &  1 &  \sfrac{1}{2} & -\sfrac{1}{2}\end{array}}
+              \\\implies \opAi &= \frac{1}{2}\brs{\begin{array}{rr}1 & 1\\1 & -1\end{array}}
+            \end{align*}
+        
+      \item Proof for the values of $\seqn{h_k}$ (B):\label{item:N0_h_h}
+        \begin{align*}
+          \brs{\begin{array}{r}h_0\\h_1\end{array}}
+             = \opAi\opA\brs{\begin{array}{r}h_0\\h_1\end{array}}
+            &= \opAi\brs{\begin{array}{rr}1 & 1\\1 & -1\end{array}}\brs{\begin{array}{r}h_0\\h_1\end{array}}
+            && \text{by \pref{ilem:N0_h_Ah}}
+          \\&= \opAi\brs{\begin{array}{r}\sqrt{2}\\0\end{array}}
+            && \text{by \pref{ilem:N0_h_Ah}}
+          \\&= \frac{1}{2}\brs{\begin{array}{rr}1 & 1\\1 & -1\end{array}}
+                          \brs{\begin{array}{r}\sqrt{2}\\0\end{array}}
+            && \text{by \pref{ilem:N0_h_Ai}}
+          \\&= \frac{\sqrt{2}}{2}\brs{\begin{array}{r}1\\1\end{array}}
+        \end{align*}
+    
+    \end{enumerate}
+
+  \item Proof that (B)$\implies$(C): 
+    \begin{align*}
+      \text{(B)}\implies
+      \fphi(x)
+        &= \sum_{k\in\Z} h_k \sqrt{2}\fphi(2x-k)
+        && \text{\fncte{dilation equation}}
+        && \text{\xref{thm:dilation_eq}}
+      \\&= \sum_{k=0}^{k=1} \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fphi(2x-k)
+        && \text{by \prefp{item:N0_h_h}}
+      \\&= \sum_{k=0}^{k=1} \fphi(2x-k)
+      \\&= \sum_{k=0}^{k=1} \bcoef{1}{k}\fphi(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(D)}
+        && \text{by \thme{B-spline dyadic decomposition}}
+        && \text{\xref{thm:bspline_2x}}
+    \end{align*}
+
+  \item Proof that (B)$\impliedby$(C): 
+    \begin{align*}
+      \text{(C)}\implies
+      \fN_0(x)
+        &= \sum_{k=0}^{k=1} \bcoef{1}{k}\fN_0(2x-k)
+        && \text{by \thme{B-spline dyadic decomposition}}
+        && \text{\xref{thm:bspline_2x}}
+      \\&= \sum_{k=0}^{k=1} \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fN_0(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&= \sum_{k\in\Z} h_k \sqrt{2}\fN_0(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(B)}
+    \end{align*}
+
+  \item Proof that (A)$\impliedby$(C):\\
+    $\begin{array}{FMM}
+       1. & Proof that (C) $\implies$ $\support\fphi(x)=\intcc{0}{1}$:                        & by \prefpp{thm:bspline_Nprop}\\
+       2. & Proof that (C) $\implies$ $\seqn{\fphi(x-k)}$ forms a \prope{partition of unity}: & by \prefpp{thm:bspline_punity}
+    \end{array}$
+\end{enumerate}
+\end{proof}
+
+
+%%=======================================
+%\section{Transform calculation}
+%%=======================================
+%In mathematics, a \ope{transform} $\opT$ is typically an \fncte{operator} that maps a given function $\ff(x)$ 
+%into a sequence $\brs{\opT\ff}(n)\eqd\seqnZ{\alpha_n}$ of coefficients such that 
+%$\ff(x)=\sum_{n\in\Z} \alpha_n \fphi(x-n)$, where the elements of the sequence $\seqnZ{\fphi(x-n)}$ are the 
+%\fncte{basis function}s for the transform $\opT$.
+%In the case where the basis functions $\seqn{\fphi(x-n)}$ are \prope{orthonormal} with respect to each other, 
+%the calculation of the coefficients $\seqn{\alpha_n}$ tends to be relatively simple because for any given 
+%$k\in\Z$ we have
+%\\\indentx$\ds
+%     \alpha_k
+%   = \sum_{n\in\Z} \alpha_n \kdelta_{kn}
+%   = \sum_{n\in\Z} \alpha_n\inprod{\fphi_n(x-n)}{\fphi(x-k)}
+%   = \inprod{\sum_{n\in\Z} \alpha_n\fphi_n(x-n)}{\fphi(x-k)}
+%   = \inprod{\ff(x)}{\fphi(x-k)} 
+%  $.\\
+%And so, all that remains to be done is compute the inner product $\inprod{\ff(x)}{\fphi(x-k)}$,
+%which is often the integral $\int_\R \ff(x)\fphi(x-k) \dx$.
+%
+%For $n=0$ order \fncte{B-spline}s, the elements of sequence $\seqnZ{\fN_n(x-n)}$ are \prope{orthonormal}.
+%However, for $n\ge1$, these elements are \emph{not}.
+%For help in calculating the coefficients for these basis functions, we have \thme{Marsden's identity} 
+%(next theorem).
+%%---------------------------------------
+%\begin{theorem}[\thmd{Marsden's Identity}]
+%\footnote{
+%  \citeP{marsden1970},
+%  \citerpgc{schumaker2007}{125}{0521705126}{Theorem 4.21},
+%  \citerpgc{deboor2001}{95}{0387953663}{B-Spline Property (iii)},
+%  \citerppgc{hollig2003}{30}{32}{0898715334}{3.7},
+%  \citerppg{deboor1993}{67}{68}{0387941010},
+%  \citerpgc{hollig1986}{112}{0821800981}{Theorem 2S, multivariate extension}
+%  }
+%%---------------------------------------
+%\thmbox{
+%  \begin{array}{>{\ds}rc>{\ds}lM>{\ds}rc>{\ds}l}
+%    (x-y)^n       &=&    \sum_{k\in\Z} \fpsi^n_{k,h}(y) \fN_n(x)
+%    &where&
+%    \fpsi^n_{k,h} &\eqd& \prod_{k=1}^{n-1} (y-k)
+%  \end{array}
+%  }
+%\end{theorem}
+%
+

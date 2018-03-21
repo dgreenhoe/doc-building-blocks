@@ -1,0 +1,24 @@
+move 20090604       c:\dan\r2\common
+move ap             c:\dan\r2\common
+move bib            c:\dan\r2\common
+move Bible          c:\dan\r2\common
+move bst            c:\dan\r2\common
+move chinese        c:\dan\r2\common
+move circle         c:\dan\r2\common
+move cls            c:\dan\r2\common
+move deprecated     c:\dan\r2\common
+move engk6          c:\dan\r2\common
+move english        c:\dan\r2\common
+move graphics       c:\dan\r2\common
+move language       c:\dan\r2\common
+move logic          c:\dan\r2\common
+move m              c:\dan\r2\common
+move plot           c:\dan\r2\common
+move save           c:\dan\r2\common
+move sty            c:\dan\r2\common
+move sunday         c:\dan\r2\common
+move symseq         c:\dan\r2\common
+move t.bat          c:\dan\r2\common
+move teckit         c:\dan\r2\common
+move zht            c:\dan\r2\common
+

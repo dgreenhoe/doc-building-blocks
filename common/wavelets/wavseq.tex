@@ -1,0 +1,830 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+
+%=======================================
+\chapter{Wavelet Design on Sequences}
+%=======================================
+
+\begin{minipage}[t]{8\tw/16}
+%\begin{figure}[t]%
+%  \color{figcolor}%
+  \begin{center}%
+  \begin{fsL}%
+  \setlength{\unitlength}{\textwidth/800}%
+  \begin{picture}(500,200)(-250,-50)%
+    %{\color{graphpaper}\graphpaper[10](-250,-50)(500,200)}%
+    {\color{axis}%
+      \put(-220, 0){\line(1, 0){440} }%
+      \put(0, 0){\line(0, 1){120} }%
+      \multiput(-200,-10)(50,0){9}{\line(0, 1){20}}%
+      \put( 230,  0){\makebox(0,0)[l]{$t$}}%
+      \put( 200,-20){\makebox(0,0)[t]{$2$}}%
+      \put( 100,-20){\makebox(0,0)[t]{$1$}}%
+      \put(   0,-20){\makebox(0,0)[t]{$0$}}%
+      \put(-100,-20){\makebox(0,0)[t]{$-1$}}%
+      \put(-200,-20){\makebox(0,0)[t]{$-2$}}%
+    }%
+    {\color{figcolor}%
+      \put(   0,110){\makebox(0,0)[b]{$\seqn{x_n}$}}%
+      \put(-100, 0){\line( 1, 1){100} }%
+      \put( 100, 0){\line(-1, 1){100} }%
+    }%
+    {\color{red}%
+      \put( 150,110){\makebox(0,0)[b]{$\opT\seqn{x_n}$}}%
+      \put( 150,100){\vector( 0,-1){50} }%
+      \put(   0, 0){\line( 1, 1){100} }%
+      \put( 200, 0){\line(-1, 1){100} }%
+    }%
+    {\color{green}%
+      \put(-150,110){\makebox(0,0)[b]{$\opTi\seqn{x_n}$}}%
+      \put(-150,100){\vector( 0,-1){50} }%
+      \put(-200, 0){\line( 1, 1){100} }%
+      \put(   0, 0){\line(-1, 1){100} }%
+    }%
+  \end{picture}%
+  \end{fsL}%
+  \end{center}%
+  \begin{center}%
+  \begin{fsL}%
+  \setlength{\unitlength}{\textwidth/800}%
+  \begin{picture}(500,200)(-250,-50)%
+    %{\color{graphpaper}\graphpaper[10](-250,-50)(500,200)}%
+    {\color{axis}%
+      \put(-220, 0){\line(1, 0){440} }%
+      \put(0, 0){\line(0, 1){150} }%
+      \multiput(-200,-10)(50,0){9}{\line(0, 1){20}}%
+      \put( 230,  0){\makebox(0,0)[l]{$t$}}%
+      \put( 200,-20){\makebox(0,0)[t]{$2$}}%
+      \put( 100,-20){\makebox(0,0)[t]{$1$}}%
+      \put(   0,-20){\makebox(0,0)[t]{$0$}}%
+      \put(-100,-20){\makebox(0,0)[t]{$-1$}}%
+      \put(-200,-20){\makebox(0,0)[t]{$-2$}}%
+    }%
+    {\color{figcolor}%
+      \put( 130,80){\makebox(0,0)[l]{$\seqn{x_n}$}}%
+      \put( 130,70){\vector( -1,-1){50} }%
+      \put(-100, 0){\line( 1, 1){100} }%
+      \put( 100, 0){\line(-1, 1){100} }%
+    }%
+    {\color{red}%
+      \put( 110,120){\makebox(0,0)[l]{$\opD\seqn{x_n}$}}%
+      \put( 100,120){\vector(-1,0){90} }%
+      \put( -50, 0){\line( 1, 3){50} }%
+      \put(  50, 0){\line(-1, 3){50} }%
+    }%
+    {\color{green}%
+      \put(-100,110){\makebox(0,0)[b]{$\opDi\seqn{x_n}$}}%
+      \put(-100,100){\vector( 0,-1){65} }%
+      \put(-200, 0){\line( 3, 1){200} }%
+      \put( 200, 0){\line(-3, 1){200} }%
+    }%
+  \end{picture}%
+  \end{fsL}%
+  \end{center}%
+\end{minipage}
+\begin{minipage}[c]{8\tw/16}
+For real sequences, the translation operator $\opT$ and dilation operator $\opD$ 
+can be defined as in \prefpp{def:vsmra_seq_T} and illustrated to the left.
+Under these definitions, the operators form a \vsmratext (\prefp{thm:vsmra_seq}).
+\end{minipage}
+
+That is,
+\[\begin{array}{rcl}
+  \opT\mcom{\seqSix{x_{-2}}{x_{-1}}{x_0}{x_1}{x_2}{x_3}}
+           {original sequence $\vx=\seq{x_n}{n\in\Z}$}
+   &=&\mcom{\seqSix{x_{-3}}{x_{-2}}{x_{-1}}{x_0}{x_1}{x_2}}
+           {shifted sequence $\opT\vx=\seq{x_{n-1}}{n\in\Z}$}
+   \\
+  \opD\mcom{\seqSix{x_{-2}}{x_{-1}}{x_0}{x_1}{x_2}{x_3}}
+           {original sequence $\vx=\seq{x_n}{n\in\Z}$}
+   &=&\mcom{\seqSix{x_{-4}}{x_{-2}}{x_0}{x_2}{x_4}{x_6}}
+           {dilated sequence $\opD\vx=\seq{x_{2n}}{n\in\Z}$}
+\end{array}\]
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:vsmra_seq_T}
+\label{def:vsmra_seq_D}
+%---------------------------------------
+Let $\spII$ be the set of real absolutely square summable sequences.
+Define the operators $\opT$ and $\opD$ on $\spII$ as follows:
+\defbox{\begin{array}{l>{\ds}lc>{\ds}l@{\qquad}C@{\qquad}D}
+  1. & \opT  \seq{x_n}{n\in\Z} &\eqd&  \seq{x_{n-1}}{n\in\Z} 
+     & \forall \seqn{x_n}\in\spII 
+     & (\hie{translation operator})
+     \\
+  2. & \opD  \seq{x_n}{n\in\Z} &\eqd&  \seq{x_{2n}}{n\in\Z}  
+     & \forall \seqn{x_n}\in\spII 
+     & (\hie{dilation operator})
+\end{array}}
+\end{definition}
+
+
+\[\begin{array}{rcl}
+  \opTa\mcom{\seqSix{x_{-2}}{x_{-1}}{x_0}{x_1}{x_2}{x_3}}
+           {original sequence $\vx=\seq{x_n}{n\in\Z}$}
+   &=&\mcom{\seqSix{x_{-2}}{x_{-1}}{x_{0}}{x_1}{x_2}{x_4}}
+           {adjoint shifted sequence}
+   \\
+  \opDa\mcom{\seqSix{x_{-2}}{x_{-1}}{x_0}{x_1}{x_2}{x_3}}
+           {original sequence $\vx=\seq{x_n}{n\in\Z}$}
+   &=&\mcom{\seqSix{x_{-1}}{0}{x_0}{0}{x_1}{0}}
+           {adjont dilated sequence}
+\end{array}\]
+
+
+%---------------------------------------
+\begin{proposition}[Adjoints of transversal operators]
+\label{prop:vsmra_seq_Ta}
+\label{prop:vsmra_seq_Da}
+%---------------------------------------
+%Let $\vsmrasysLL$ be the \vsmratext of real functions.
+%Then the {inverse} $\opTi$ of $\opT$ 
+%and  the {inverse} $\opDi$ of $\opD$ are
+\formbox{
+  \mcom{\left.\begin{array}{llcl}
+    1. & \opT  \seqn{x_n} &\eqd&         \seqn{x_{n-1}} \\ %  & \forall \seqn{x_n}\in\spII \\
+    2. & \opD  \seqn{x_n} &\eqd& \sqrt{2}\seqn{x_{2n}}     %  & \forall \seqn{x_n}\in\spII
+  \end{array}\right\}}{definition of $\opT$ and $\opD$ (\prefp{def:vsmra_seq_T})}
+  \implies
+  \mcom{\left\{\begin{array}{lcl @{\qquad}C}
+    \opTa \seqn{x_n} &=& \seqn{x_{n+1}}
+      & \forall \seqn{x_n}\in\spII
+      \\
+    \opDa\seq{x_n}{n\in\Z} &=& 
+      \seq{\begin{array}{l>{\footnotesize}l}
+             x_{n/2} & \text{for $n$ even} \\
+             0       & \text{for $n$ odd}
+           \end{array}
+          }{n\in\Z} 
+      & \forall \seqn{x_n}\in\spII
+  \end{array}\right.}{adjoints of $\opT$ and $\opD$}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \inprod{\opT\seqn{x_n}}{\seqn{y_n}}
+    &= \inprod{\seqn{x_{n-1}}}{\seqn{y_n}}
+    && \text{by definition of $\opT$ \prefpo{def:vsmra_seq_T}}
+  \\&= \sum_n \seqn{x_{n-1}} \seqn{y_n}
+    && \text{by definition of $\inprodn$}
+  \\&= \sum_m \seqn{x_{m}} \seqn{y_{m+1}}
+    && \text{where $m=n-1$}
+  \\&= \inprod{ \seqn{x_m}}{\mcom{\seqn{y_{m+1}}}{$\opTa\seqn{y_m}$}}
+    && \text{by definition of $\inprodn$}
+  \\
+  \inprod{\opD\seqn{x_n}}{\seqn{y_n}}
+    &= \inprod{\seqn{x_{2n}}}{\seqn{y_n}}
+    && \text{by definition of $\opD$ \prefpo{def:vsmra_seq_D}}
+  \\&= \sum_n x_{2n} \;y_n
+    && \text{by definition of $\inprodn$}
+  \\&= \sum_n x_n \; 
+         \left\{\begin{array}{ll}
+           y_{n/2} & \text{for $n$ even} \\
+           0       & \text{for $n$ odd}
+         \end{array}\right\}
+  \\&= \inprod{\seqn{x_n}}
+         {\mcom{\seqn{\begin{array}{ll}
+           y_{n/2} & \text{for $n$ even} \\
+           0       & \text{for $n$ odd}
+         \end{array}}}{$\opDa\seqn{y_n}$}}
+\end{align*}
+\end{proof}
+
+
+\[\begin{array}{rcl}
+  \opTi\mcom{\seqSix{x_{-2}}{x_{-1}}{x_0}{x_1}{x_2}{x_3}}
+           {original sequence $\vx=\seq{x_n}{n\in\Z}$}
+   &=&\mcom{\seqSix{x_{-2}}{x_{-1}}{x_{0}}{x_1}{x_2}{x_4}}
+           {inverse shifted sequence}
+  % \\
+  %\opDi\mcom{\seqSix{x_{-2}}{x_{-1}}{x_0}{x_1}{x_2}{x_3}}
+  %         {original sequence $\vx=\seq{x_n}{n\in\Z}$}
+  % &=&\mcom{\seqSix{x_{-1}}{0}{x_0}{0}{x_1}{0}}
+  %         {adjont dilated sequence}
+\end{array}\]
+
+%---------------------------------------
+\begin{proposition}[Inverses of transversal operators]
+\label{prop:vsmra_seq_Ti}
+%\label{prop:vsmra_seq_Di}
+%---------------------------------------
+\formbox{
+  \mcom{\left.\begin{array}{llclC}
+     & \opT  \seqn{x_n} &\eqd&         \seqn{x_{n-1}} & \forall \seqn{x_n}\in\spLL \\
+    %2. & \opD  \seqn{x_n} &\eqd& \sqrt{2}\seqn{x_n}(2t)  & \forall \seqn{x_n}\in\spLL
+  \end{array}\right\}}{definition of $\opT$ (\prefp{def:vsmra_seq_T})}
+  \quad\implies\quad
+  \mcom{\left\{\begin{array}{lcl @{\qquad}C}
+    \opTi \seqn{x_n} &=& \seqn{x_{n+1}}
+      & \forall \seqn{x_n}\in\spLL  
+    %  \\
+    %\opDi \seqn{x_n} &=& \cwt \:\seqn{x_n}\left(\frac{1}{2}t\right)  
+    %  & \forall \seqn{x_n}\in\spLL
+  \end{array}\right.}{inverse of $\opT$}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \opTi\opT\seqn{x_n}
+    &= \opTi\seqn{x_{n-1}}
+    && \text{by defintion of $\opT$ \prefpo{def:vsmra_seq_T}}
+  \\&= \seqn{x_{n-1+1}}
+    && \text{by defintion of $\opTi$}
+  \\&= \seqn{x_{n}}
+  \\&= \opI\seqn{x_n}
+    && \text{by definition of $\opI$ \prefpo{def:opI}}
+  \\
+  \\
+  \opT\opTi\seqn{x_n}
+    &= \opT\seqn{x_{n+1}}
+    && \text{by defintion of $\opTi$}
+  \\&= \seqn{x_{n-1+1}}
+    && \text{by defintion of $\opT$ \prefpo{def:vsmra_seq_T}}
+  \\&= \seqn{x_{n}}
+  \\&= \opI\seqn{x_n}
+    && \text{by definition of $\opI$ \prefpo{def:opI}}
+\end{align*}
+\end{proof}
+
+
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:vsmra_seq_commute}
+%---------------------------------------
+Let $\spII$ be the space of square absolutely summable real sequences.
+\formbox{
+  \mcom{\left.\begin{array}{llclC}
+    1. & \opT  \seq{x_n}{n\in\Z} &\eqd&  \seq{x_{n-1}}{n\in\Z} & \forall x\in\spII \\
+    2. & \opD  \seq{x_n}{n\in\Z} &\eqd&  \seq{x_{2n}}{n\in\Z}  & \forall x\in\spII 
+  \end{array}\right\}}{definition of $\opT$ and $\opD$ (\prefp{def:vsmra_seq_T})}
+  \qquad\implies\qquad
+  \opT^n\opD = \opD\opT^{2n}
+}
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    \intertext{1a. Proof for $n=0$:}
+      \left.\opD\opT^{2n} \fx(t)\right|_{n=0}
+        &= \opD\opT^{2\cdot0}
+      \\&= \opD\opI 
+      \\&= \opI\opD
+      \\&= \opT^0\opD 
+      \\&= \left. \opT^n \opD \right|_{n=0}
+    \\
+    \intertext{1b. Proof for $n>0$:}
+      \opD \opT^{2n}\seqn{x_m}
+        &= \opD \seqn{x_{m-2n}}
+        && \text{by \prefp{def:vsmra_seq_T}}
+      \\&= \sqrt{2}\,\seqn{x_{2m-2n}}
+        && \text{by \prefp{def:vsmra_seq_D}}
+      \\&= \sqrt{2}\,\seqn{x_{2(m-n)}}
+      \\&= \opT^n \sqrt{2}\,\seqn{x_{2m}}
+      \\&= \opT^n \opD \seqn{x_{m}}
+        && \text{by \prefp{def:vsmra_seq_D}}
+    \\
+    \intertext{1c. Proof for $n<0$:}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:vsmra_seq_sa}
+%---------------------------------------
+%Let $\vsmrasysII$ be the \vsmratext of real absolutely square summable sequences.
+\formbox{
+  \mcom{\left.\begin{array}{llclC}
+    1. & \opT  \seq{x_n}{n\in\Z} &\eqd&  \seq{x_{n-1}}{n\in\Z} & \forall x\in\spII \\
+    2. & \opD  \seq{x_n}{n\in\Z} &\eqd&  \seq{x_{2n}}{n\in\Z}  & \forall x\in\spII 
+  \end{array}\right\}}{definition of $\opT$ and $\opD$ (\prefp{def:vsmra_seq_T})}
+  \qquad\implies\qquad
+  \mcom{\brp{\sum_n \opT^n} = \brp{\sum_n \opT^n}^\ast}
+       {$\brp{\sum_n \opT^n}$ is self-adjoint}
+}
+\end{proposition}
+\begin{proof}
+   Let $\opA\eqd\brp{\sum_n \opT^n}$. 
+    \begin{align*}
+      \inprod{\sum_n \opT^n\seqn{x_m}}{\seqn{y_m}}
+        &= \sum_n \inprod{\opT^n\seqn{x_m}}{\seqn{y_m}}
+        && \text{by additivity property of $\inprodn$ \prefpo{def:inprod}}
+      \\&= \sum_n \inprod{\seqn{x_{m-n}}}{\seqn{y_m}}
+        && \text{by definition of $\opT$ \prefpo{def:vsmra_seq_T}}
+      \\&= \sum_n \inprod{\seqn{x_{k}}}{\seqn{y_{k+n}}}
+        && \text{where $k=m-n$}
+      \\&= \sum_n \inprod{\seqn{x_{k}}}{\seqn{y_{k-n}}}
+      \\&= \sum_n \inprod{\seqn{x_{k}}}{\opT^n\seqn{y_{k}}}
+        && \text{by definition of $\opT$ \prefpo{def:vsmra_seq_T}}
+      \\&= \inprod{\seqn{x_{k}}}{\mcom{\sum_n \opT^n}{$\brp{\sum_n \opT^n}^\ast$}\seqn{y_{k}}}
+        && \text{by additivity property of $\inprodn$ \prefpo{def:inprod}}
+      \\&\implies \brp{\sum_n \opT^n} = \brp{\sum_n \opT^n}^\ast
+      \\&\implies \brp{\sum_n \opT^n}\text{ is self-adjoint}
+    \end{align*}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:vsmra_seq}
+%---------------------------------------
+Let $\spII$ be the set of real absolutely square summable sequences.
+\formbox{
+  \mcom{\left.\begin{array}{llclC}
+    1. & \opT  \seq{x_n}{n\in\Z} &\eqd&  \seq{x_{n-1}}{n\in\Z} & \forall x\in\spII \\
+    2. & \opD  \seq{x_n}{n\in\Z} &\eqd&  \seq{x_{2n}}{n\in\Z}  & \forall x\in\spII 
+  \end{array}\right\}}{definition of $\opT$ and $\opD$ (\prefp{def:vsmra_seq_T})}
+  \quad\implies\quad
+  \begin{array}{l}
+    \vsmrasysII \\
+    \text{is a \vsmratext}.
+  \end{array}
+}
+\end{theorem}
+\begin{proof}
+  \begin{enumerate}
+    \item Proof that $\opT^n\opD = \opD\opT^{2n}$:  By \prefpp{prop:vsmra_seq_commute}
+    \item Proof that $\brp{\sum_n \opT^n}$ is normal:
+      \begin{enumerate}
+        \item By \prefpp{prop:vsmra_seq_sa}, $\brp{\sum_n \opT^n}$ is self-adjoint.
+        \item Because self-adjoint $\implies$ normal, 
+              $\brp{\sum_n \opT^n}$ is also normal.
+      \end{enumerate}
+  \end{enumerate}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:vsmra_seq_FT}
+%---------------------------------------
+Let $\vsmrasysII$ be the \vsmratext of real absolutely square summable sequences.
+\formbox{
+  \opF\opT^n  = e^{-i\omega n} \opF 
+  \qquad\qquad
+  \text{where} \qquad \opF\seqn{x_n} \eqd \sum_n x_n e^{-i\omega n}
+  \qquad\msizes
+  \forall \seqn{x_n}\in\spII
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \opF\opT^n \seqn{x_m}
+    &= \opF \seqn{x_{m-n}}
+    && \text{by definition of $\opT$ \prefpo{def:vsmra_seq_T}}
+  \\&= \sum_m \seqn{x_{m-n}} e^{-i\omega m}
+  \\&= \sum_k \seqn{x_{k}} e^{-i\omega (k+n)}
+    && \text{let $k\eqd m-n$ $\implies$ $m=k+n$}
+  \\&= e^{-i\omega n} \sum_k \seqn{x_{k}} e^{-i\omega k} 
+  \\&= e^{-i\omega n} \opF \seqn{x_k}
+\end{align*}
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:vsmra_seq_Fphi}
+%--------------------------------------
+Let $\vsmrasysII$ be the \vsmratext of real absolutely square summable sequences.
+\formbox{
+  \opF\seqn{\phi_n}   
+     = \brs{\opF\seqn{h_n}}\brp{\frac{\omega}{2}}\;
+       \brs{\opF\seqn{\phi_n}}\brp{\frac{\omega}{2}}\;
+  \qquad\text{where}\qquad
+  \opF\seqn{x_n} \eqd \sum_n x_n e^{-i\omega n}
+  \qquad\scriptstyle\forall\seqn{x_n}\in\spII
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \opF\seq{\phi_m}{m\in\Z}
+    &= \opF \sum_n h_n \opD \opT^n \seqn{\phi_m}
+    && \text{by dilation equation \prefpo{thm:vsmra_dilation}}
+  \\&= \opF \sum_n h_n \opD \seqn{\phi_{m-n}}
+    && \text{by definition of $\opT$ \prefpo{def:vsmra_seq_T}}
+  \\&= \opF \sum_n h_n \seqn{\phi_{2m-n}}
+    && \text{by definition of $\opD$ \prefpo{def:vsmra_seq_D}}
+  \\&= \sum_m \brp{\sum_n h_n \phi_{2m-n}}e^{-i\omega m}
+    && \text{by definition of $\opF$}
+  \\&= \sum_n h_n \sum_m \phi_{2m-n} e^{-i\omega m}
+  \\&= \sum_n h_n \sum_k \phi_k e^{-i\omega\brp{\frac{n}{2}+\frac{k}{2}}}
+    && \text{where $k\eqd 2m-n$}
+  \\&= \sum_n h_n e^{-i\brp{\frac{\omega}{2}}n}
+       \sum_k \phi_k e^{-i \brp{\frac{\omega}{2}}k}
+  \\&= \brs{\opF\seqn{h_n}}\brp{\frac{\omega}{2}}\;
+       \brs{\opF\seqn{\phi_n}}\brp{\frac{\omega}{2}}\;
+\end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}[Partition of unity]
+\label{thm:vsmra_seq_unity}
+\index{partition of unity}
+\index{theorems!partition of unity}
+%--------------------------------------
+Let $\vsmrasysII$ be the \vsmratext of real absolutely square summable sequences.
+\formbox{
+  \mcom{\sum_n \opT^n \vphi = 1}
+       {partition of unity}
+  \qquad\iff\qquad
+  \mcom{\sum_n (-1)^n h_n=0}
+       {zero at $z=-1$}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that 
+  $\sum_n \opT^n \vphi = 1 \impliedby \sum_n (-1)^n h_n=0$:}
+  \sum_n \opT^n \vphi
+    &= \sum_n \sum_m h_m \opT^m \opD \brp{\opT^n \vphi}
+    && \text{by dilation equation \prefpo{thm:vsmra_dilation}}
+  \\&= \sum_m h_m \sum_n \opT^m \opT^{2n} \opD \vphi
+    && \text{by \prefp{prop:vsmra_seq_commute}}
+  \\&= \sum_m h_m \sum_n \opT^{2n}\brp{\opT^m \opD \vphi}
+  \\&= \sum_m h_m \sqrt{\frac{2\pi}{2}}\:\opFSi \opS \opFT \brp{\opT^m \opD \vphi}
+    && \text{by PSF \prefpo{thm:psf}}
+  \\&= \sqrt{\pi} \sum_m h_m \opFSi \opS e^{-i\omega m}\opFT \opD \vphi
+    && \text{by \prefp{prop:vsmra_seq_FT}}
+  \\&= \sqrt{\pi} \sum_m h_m \opFSi e^{-i\frac{2\pi}{2}km}\opS \opFT\opD  \vphi
+    && \text{by definition of $\opS$ \prefpo{thm:psf}}
+  \\&= \sqrt{\pi} \sum_m h_m \opFSi (-1)^{km} \opS \opFT\opD  \vphi
+  \\&= \sqrt{\pi} \sum_k \brp{\opS \opFT\opD\vphi} \:e^{i\frac{2\pi}{2}kt}\: 
+                  \sum_m (-1)^{km} h_m 
+  \\&= \sqrt{\pi} \sum_{k\text{ even}} \brp{\opS \opFT\opD\vphi} \:e^{i\pi kt}\: 
+                  \sum_m (-1)^{km} h_m 
+     + \sqrt{\pi} \sum_{k\text{ odd}} \brp{\opS \opFT\opD\vphi} \:e^{i\pi kt}\: 
+                  \sum_m (-1)^{km} h_m 
+  \\&= \sqrt{\pi} \sum_k \brp{\opS \opFT\opD\vphi} \:e^{i\pi2kt}\: 
+                  \cancelto{\sqrt{2}}{\sum_m h_m}
+     + \sqrt{\pi} \sum_k \brp{\opS \opFT\opD\vphi} \:e^{i\pi(2k+1)t}\: 
+                  \cancelto{0}{\sum_m (-1)^m h_m}
+  \\&= \sqrt{\pi} \sum_k \brp{\opS \opFT\opD\vphi} \:e^{i\pi2kt}\: 
+                  \sum_m h_m
+    && \text{by right hypothesis}
+  \\&= \sqrt{\pi} \sqrt{2}\:\sum_k \brp{\opS \opFT\opD\vphi} \:e^{i\pi2kt}\: 
+    && \text{by \prefp{thm:vsmra_admiss}}
+  \\&= \sqrt{2\pi} \: \brs{\opFT\opD\vphi}(0)
+     + \sqrt{2\pi} \:\mcoml{\sum_{k\ne 0} \brp{\opS \opFT\opD\vphi} \:e^{i\pi2kt}}{0 because no $\sum_n\opT^n\vphi$ has no imaginary part}
+  \\&= \sqrt{2\pi} \: \brs{\opDi\opFT\vphi}(0)
+    && \text{by \prefp{prop:wav_FD}}
+  \\&= \sqrt{\pi} \: \brs{\opFT\vphi}(0)
+    && \text{by \prefp{prop:vsmra_seq_Di}}
+  \\
+  \intertext{2. Proof that 
+  $\sum_n \opT^n \vphi = 1 \implies \sum_n (-1)^n h_n=0$:}
+  1
+    &= \sum_n \opT^n \vphi
+    && \text{by left hypothesis}
+  \\&= \sqrt{2\pi}\: \opFSi \opS \opF \vphi
+    && \text{by PSF \prefpo{thm:psf}}
+  \\&= \sqrt{2\pi}\: \opFSi \opS 
+       \brp{\opDi\sum_n h_n e^{-i\omega n}}\: 
+       \brp{\opDi \opF \vphi}
+    && \text{by \prefp{prop:vsmra_seq_Fphi}}
+  \\&= \sqrt{2\pi}\: \opFSi 
+       \brp{\opS\opDi\sum_n h_n e^{-i\omega n}}\: 
+       \brp{\opS \opF\opD \vphi}
+    && \text{by \prefp{prop:wav_FD}}
+  \\&= \sqrt{2\pi}\: \opFSi 
+       \brp{\opS\frac{1}{\sqrt{2}}\sum_n h_n e^{-i\frac{\omega}{2} n}}\: 
+       \brp{\opS \opF\opD \vphi}
+    && \text{by \prefp{prop:vsmra_seq_Di}}
+  \\&= \sqrt{\pi}\: \opFSi 
+       \brp{\sum_n h_n e^{-i\frac{2\pi k}{2} n}}\: 
+       \brp{\opS \opF\opD \vphi}
+    && \text{by definition of $\opS$ \prefpo{thm:psf}}
+  \\&= \sqrt{\pi}\: \opFSi 
+       \brp{\sum_n h_n (-1)^{kn}}\: 
+       \brp{\opS \opDi\opF \vphi}
+  \\&= \sqrt{\pi}\: \opFSi 
+       \brp{\sum_n h_n (-1)^{kn}}\: 
+       \brp{\opS\frac{1}{\sqrt{2}}\Fphi\brp{\frac{\omega}{2}}}
+  \\&= \sqrt{\pi}\: \opFSi 
+       \brp{\sum_n h_n (-1)^{kn}}\: 
+       \brp{\frac{1}{\sqrt{2}}\Fphi\brp{\frac{2\pi k}{2}}}
+  \\&= \sqrt{\frac{\pi}{2}}\: \opFSi 
+       \brp{\sum_n h_n (-1)^{kn}}\: 
+       \brp{\Fphi\brp{\frac{2\pi k}{2}}}
+  \\&= \sqrt{\frac{\pi}{2}}\: \sum_k 
+       \sum_n h_n (-1)^{kn}\: 
+       \Fphi\brp{\pi k}
+       e^{i 2\pi k t}
+  \\&= \sqrt{\frac{\pi}{2}}\brs{
+       \sum_{\text{$k$ even}} 
+       \sum_n h_n (-1)^{kn}\: 
+       \Fphi\brp{\pi k}
+       e^{i 2\pi k t}
+       +
+       \sum_{\text{$k$ odd}} 
+       \sum_n h_n (-1)^{kn}\: 
+       \Fphi\brp{\pi k}
+       e^{i 2\pi k t}
+       }
+  \\&= \sqrt{\frac{\pi}{2}}\brs{
+       \sum_{\text{$k$ even}} 
+       \brp{\cancelto{\sqrt{2}}{\sum_n h_n}} \: 
+       \Fphi\brp{\pi k}
+       e^{i 2\pi k t}
+       +
+       \sum_{\text{$k$ odd}} 
+       \brp{\sum_n h_n (-1)^{n}}\: 
+       \Fphi\brp{\pi k}
+       e^{i 2\pi k t}
+       }
+  \\&= \sqrt{\frac{\pi}{2}}\sum_k \brs{
+       \sqrt{2} \: 
+       \Fphi\brp{\pi 2k}
+       e^{i 2\pi 2k t}
+       +
+       \brp{\sum_n h_n (-1)^{n}}\: 
+       \Fphi\brp{\pi [2k+1]}
+       e^{i 2\pi [2k+1] t}
+       }
+  \\&= \sqrt{\frac{\pi}{2}}\sum_k\brs{
+       \sqrt{2} 
+       \Fphi\brp{2\pi k}
+       +
+       \brp{\sum_n h_n (-1)^{n}}\: 
+       \Fphi\brp{\pi [2k+1]}
+       e^{i 2\pi t}
+       }e^{i 4\pi k t}
+  \\&= \sqrt{\frac{\pi}{2}}\brs{
+       \sqrt{2} 
+       \Fphi(0)
+       +
+       \brp{\sum_n h_n (-1)^{n}}\: 
+       \Fphi(\pi)
+       e^{i 2\pi t}
+       }
+    && \text{$k$ must be $0$ to make real constant for all $t$}
+  \\&= \sqrt{\frac{\pi}{2}}\brs{
+       \sqrt{2} 
+       \Fphi(0)
+       +
+       \brp{\sum_n h_n (-1)^{n}}\: 
+       \Fphi(\pi)
+       e^{i 2\pi t}
+       }
+    && \text{$k$ must be $0$ to make real constant for all $t$}
+  \\&\implies \qquad \brp{\sum_n h_n (-1)^{n}}=0
+\end{align*}
+\end{proof}
+
+
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $\vsmrasysII$ be the \vsmratext of real absolutely square summable sequences.
+\formbox{
+  \vphi 
+  =
+  \mcom{\begin{array}{|l||*{16}{c|}}
+    \hline
+    n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+    \hline
+    \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda \phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+    \hline
+  \end{array}}{\hie{geometric progression} with \hie{common ratio} $\lambda$}
+  \iff
+  \mcom{\opT\vphi = \lambda\vphi}{$\vphi$ is an eigenvector}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{$\imark$ Proof that 
+    $\vphi=
+       \begin{array}{|>{\scriptscriptstyle}l||*{16}{>{\scriptscriptstyle}c|}}
+         \hline
+         n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+         \hline
+         \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda^{1}\phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+         \hline
+       \end{array}
+    $
+    $\implies$
+    $\opT\vphi=\lambda\vphi$:}
+  %   
+  \opT\vphi 
+    &= \opT\;
+       \begin{array}{|l||*{16}{c|}}
+         \hline
+         n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+         \hline
+         \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda^{1}\phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+         \hline
+       \end{array}
+    && \text{by left hypothesis}
+  \\&= \quad\begin{array}{|l||*{16}{c|}}
+         \hline
+         n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+         \hline
+         \phi_n & \cdots & \lambda^{3}\phi_0 & \lambda^{2}\phi_0 & \lambda \phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0  & \cdots \\
+         \hline
+       \end{array}
+    && \text{by definition of $\opT$}
+  \\&= \lambda\vphi
+    && \text{by left hypothesis}
+\end{align*}
+
+
+
+\begin{align*}
+  \intertext{$\imark$ Proof that 
+    $\vphi=
+       \begin{array}{|>{\scriptscriptstyle}l||*{16}{>{\scriptscriptstyle}c|}}
+         \hline
+         n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+         \hline
+         \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda^{1}\phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+         \hline
+       \end{array}
+    $
+    $\impliedby$
+    $\opT\vphi=\lambda\vphi$:}
+  %   
+  \opT\vphi &= \opT \seqn{\phi_n} = \seqn{\phi_{n-1}}
+  \\
+  \lambda\vphi &= \lambda\seqn{\phi_n} = \seqn{\lambda\phi_n}
+  \\ \opT\vphi = \lambda\vphi  \implies \phi_{n-1} &= \lambda\phi_n \qquad \forall n\in\Z
+  \\ \implies \phi_{n} &= \lambda^{-1}\phi_{n-1} \qquad \forall n\in\Z
+  \\ \implies \phi_{1} &= \lambda^{-1}\phi_{0}
+  \\ \implies \phi_{2} &= \lambda^{-1}\phi_{1} = \lambda^{-2} \phi_0
+  \\ \implies \phi_{3} &= \lambda^{-1}\phi_{2} = \lambda^{-3} \phi_0
+  \\ \phi_n = \lambda^{-n}\phi_0 \implies \phi_{n+1} = \lambda^{-n-1}\phi_0
+  \\ \implies \phi_n &= \lambda^{-n}\phi_0 \qquad \forall n\in\Z
+  \\ \implies \vphi &= 
+     \begin{array}{|l||*{16}{c|}}
+       \hline
+       n   & \cdots &  -2     & -1     & 0   & 1   & 2   & 3   & 4   & \cdots \\
+       \hline
+       \phi_n & \cdots & \lambda^{2}\phi_0 & \lambda \phi_0 & \phi_0 & \lambda^{-1} \phi_0 & \lambda^{-2} \phi_0 & \lambda^{-3} \phi_0 & \lambda^{-4} \phi_0 & \cdots \\
+       \hline
+     \end{array}
+\end{align*}
+
+\end{proof}
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $\vsmrasysII$ be the \vsmratext of real absolutely square summable sequences.
+\formbox{\begin{array}{>{\ds}l}
+  \vphi 
+  = \seq{\phi_n \st \phi_{2n}=\lambda^{\ffr(n)} \phi_{\fo(n)}}{n\in\Z}
+  \iff
+  \mcom{\opD\vphi = \lambda\vphi}{$\vphi$ is an eigenvector}
+  \\
+  \text{where}\footnotemark
+  \quad\left\{\begin{array}{rc>{\ds}ll}
+    \ffr(n) &\eqd& \text{number of factors of $2$ in $2n$} & \text{(the \hie{ruler function})}\\
+    \fo(n)  &\eqd& \frac{2n}{2^{\ffr(n)}}                  & \text{(the \hie{odd part} of $n$)}
+  \end{array}\right.
+\end{array}}
+\footnotetext{\begin{tabular}[t]{ll}
+  $\ffr(n)$: & \citer{sloane}, \href{http://www.research.att.com/~njas/sequences/A001511}{A001511} \\
+             & \citerpp{thomae1875}{14}{15} \\
+  $\fo(n)$:  & \citer{sloane}, \href{http://www.research.att.com/~njas/sequences/A000265}{A000265}
+\end{tabular}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{$\imark$ Proof that 
+    $\vphi= \seq{\phi_n \st \lambda^{\ffr(n)} \phi_{\fo(n)}}{n\in\Z}
+     \impliedby
+     \opD\vphi = \lambda\vphi
+    $:}
+  \opD\seqn{\phi_n} &= \seqn{\phi_{2n}} \\
+  \lambda \seqn{\phi_n} &= \seqn{\lambda\phi_n}
+  \\ \opD\vphi = \lambda\vphi \implies \phi_{2n} = \lambda\phi_n \qquad \forall n\in\Z
+  \\ \implies \phi_{0 } &= \lambda \phi_0    &&= \lambda   \phi_0
+  \\          \phi_{2 } &= \lambda \phi_1    &&= \lambda   \phi_1
+  \\          \phi_{4 } &= \lambda \phi_2    &&= \lambda^2 \phi_1
+  \\          \phi_{6 } &= \lambda \phi_3    &&= \lambda   \phi_3
+  \\          \phi_{8 } &= \lambda \phi_4    &&= \lambda^3 \phi_1 
+  \\          \phi_{10} &= \lambda \phi_5    &&= \lambda   \phi_5
+  \\          \phi_{12} &= \lambda \phi_6    &&= \lambda^2 \phi_3 
+  \\          \phi_{14} &= \lambda \phi_7    &&= \lambda   \phi_7
+  \\          \phi_{16} &= \lambda \phi_8    &&= \lambda^4 \phi_1 
+  \\          \phi_{18} &= \lambda \phi_9    &&= \lambda   \phi_9
+  \\          \phi_{20} &= \lambda \phi_{10} &&= \lambda^2 \phi_5
+  \\                  & \vdots
+  \\ \implies \phi_n  &= \lambda^{\ffr(n)} \phi_{\fo(n)} 
+  \\
+  \intertext{$\imark$ Proof that 
+    $\vphi= \seq{\phi_n \st \lambda^{\ffr(n)} \phi_{\fo(n)}}{n\in\Z}
+     \implies
+     \opD\vphi = \lambda\vphi
+    $:}
+  \opD\vphi
+    &= \opD\seq{\phi_n \st \phi_{2n}=\lambda^{\ffr(n)} \phi_{\fo(n)}}{n\in\Z}
+    && \text{by left hypothesis}
+  \\&= \seqn{\phi_{2n} \st \phi_{2n}=\lambda^{\ffr(n)} \phi_{\fo(n)}}
+    && \text{by definition of $\opD$}
+  \\&= \seqn{\phi_{2n} \st \phi_{2n}=\lambda \phi_n}
+    && \text{by previous development}
+  \\&= \seqn{\lambda \phi_n}
+  \\&= \lambda \vphi
+\end{align*}
+\end{proof}
+
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:wav_opT_spectrum}
+%---------------------------------------
+Let $\vsmrasysII$ be the \vsmratext of real absolutely square summable sequences.
+\formbox{\begin{array}{l}
+  \begin{array}{l>{\ds}rc>{\ds}l}
+    1. & \opT &=& \sum_n \lambda_n \opP_n  \\
+    2. & \sum_n \opP_n &=& \opI \\
+    3. & \opP_n\opP_m &=& \kdelta_{n-m} \opP_n \\
+    4. & \oppDim(\spH_n) &<& \infty \\
+    5. & \mc{3}{l}{\seto{\set{\lambda_n}{\lambda_n\ne 0}}  \text{is countably infinite}} \\
+  \end{array}
+  \\
+  where \quad\left\{
+    \begin{array}{>{\ds}rcl@{\qquad}D}
+      \seq{\lambda_n}{n\in\Z} &\eqd& \oppSpecp(\opT) & (eigenvalues of $\opT$) \\
+      \spH_n &\eqd& \oppN(\opT-\lambda_n\opI)        & ($\lambda_n$ is the eigenspace of $\opT$ at $\lambda_n$ in $\spY$) \\
+      \spH_n &=& \opP_n \spY                         & ($\opP_n$ is the projection operator that generates $\spH_n$)
+    \end{array}
+  \right.
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{dingautolist}{"AC}
+  \item By \prefpp{thm:TD_unitary}, $\opT$ is \hie{unitary}.
+  \item Because $\opT$ is unitary, by \prefpp{def:op_types} $\opT$ is also \hie{normal}.
+  \item Because $\opT$ is normal and compact, by the \hie{Spectral Theorem} (\prefp{thm:spectral_theorem}), 
+        it has the expansion shown in this theorem (\pref{thm:wav_opT_spectrum}).
+\end{dingautolist}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:wav_opD_spectrum}
+%---------------------------------------
+Let $\vsmrasysII$ be the \vsmratext of real absolutely square summable sequences.
+\formbox{\begin{array}{l}
+  \begin{array}{l>{\ds}rc>{\ds}l}
+    1. & \opD &=& \sum_n \lambda_n \opP_n  \\
+    2. & \sum_n \opP_n &=& \opI \\
+    3. & \opP_n\opP_m &=& \kdelta_{n-m} \opP_n \\
+    4. & \oppDim(\spH_n) &<& \infty \\
+    5. & \mc{3}{l}{\seto{\set{\lambda_n}{\lambda_n\ne 0}}  \text{is countably infinite}} \\
+  \end{array}
+  \\
+  where \quad\left\{
+    \begin{array}{>{\ds}rcl@{\qquad}D}
+      \seq{\lambda_n}{n\in\Z} &\eqd& \oppSpecp(\opD) & (eigenvalues of $\opD$) \\
+      \spH_n &\eqd& \oppN(\opD-\lambda_n\opI)        & ($\lambda_n$ is the eigenspace of $\opD$ at $\lambda_n$ in $\spY$) \\
+      \spH_n &=& \opP_n \spY                         & ($\opP_n$ is the projection operator that generates $\spH_n$)
+    \end{array}
+  \right.
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{dingautolist}{"AC}
+  \item By \prefpp{thm:TD_unitary}, $\opD$ is \hie{unitary}.
+  \item Because $\opD$ is unitary, by \prefpp{def:op_types} $\opD$ is also \hie{normal}.
+  \item Because $\opD$ is normal and compact, by the \hie{Spectral Theorem} (\prefp{thm:spectral_theorem}), 
+        it has the expansion shown in this theorem (\pref{thm:wav_opD_spectrum}).
+\end{dingautolist}
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

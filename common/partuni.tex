@@ -1,0 +1,438 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+%============================================================================
+
+
+
+%=======================================
+\chapter{Partition of Unity}
+%=======================================
+
+%20171226%%=======================================
+%20171226%\section{Motivation}
+%20171226%%=======================================
+%20171226%\begin{figure}[ht] \color{figcolor}
+%20171226%\begin{center}
+%20171226%  \psset{
+%20171226%    doubleline=true,
+%20171226%    nodesep=2mm,
+%20171226%    }
+%20171226%  \begin{tabular}{ccc}
+%20171226%                                & \rnode{pounityp}{partition of unity} &\\
+%20171226%  \rnode{pounityq}{quadrature}  & \parbox[][30mm][]{30mm}{\mbox{}}     & \rnode{pounityz}{zero at $z=-1$}\\
+%20171226%                                & \rnode{pounityo}{orthonormality}
+%20171226%  \end{tabular} %{thm:pun_zero}
+%20171226%  \ncline{->}{pounityo}{pounityp}
+%20171226%  \ncline{->}{pounityo}{pounityq}
+%20171226%  \ncline{->}{pounityo}{pounityz}
+%20171226%  \ncline{->}{pounityq}{pounityz}
+%20171226%  \ncline{->}{pounityq}{pounityp}
+%20171226%  \ncline{<->}{pounityp}{pounityz}
+%20171226%\end{center}
+%20171226%\caption{
+%20171226%   Implications of scaling function properties
+%20171226%   \label{fig:phi_prop}
+%20171226%   }
+%20171226%\end{figure}
+%20171226%
+%20171226%A very common property of scaling functions \xrefP{def:mra} is the \prope{partition of unity} property \xrefP{def:pun}.
+%20171226%The partition of unity is a kind of generalization of \prope{orthonormality}\ifsxref{vsinprod}{def:orthog};
+%20171226%that is, \emph{all} orthonormal scaling functions form a partition of unity\ifsxref{ortho}{thm:quad=>zero_unity}.
+%20171226%But the partition of unity property is not just a consequence of orthonormality, but
+%20171226%also a generalization of orthonormality, in that if you remove the
+%20171226%orthonormality constraint, the partition of unity is still a
+%20171226%reasonable constraint in and of itself.
+%20171226%
+%20171226%There are two reasons why the partition of unity property is a reasonable
+%20171226%constraint on its own:
+%20171226%\begin{liste}
+%20171226%   \item Without a partition of unity, it is difficult to represent a function as simple as a
+%20171226%         constant.\footnote{\citePp{jawerth}{8}}
+%20171226%
+%20171226%  \item For a multiresolution system $\mrasys$, the partition of unity property is equivalent to
+%20171226%        $\sum_{n\in\Z} (-1)^n h_n = 0$ \xrefP{thm:pun_zero}.
+%20171226%        As viewed from the perspective of \hi{discrete time signal processing} \xref{app:dsp},
+%20171226%        %\footnote{\hie{discrete time signal processing}: see \prefpp{app:dsp}.} 
+%20171226%        this implies that the scaling coefficients form a ``\structe{lowpass filter}"; 
+%20171226%        lowpass filters provide a kind of ``coarse approximation"
+%20171226%        of a function. And that is what the scaling function is ``supposed" to do---to provide a coarse approximation 
+%20171226%        at some resolution or ``scale" \xrefP{def:mra}.
+%20171226%\end{liste}
+
+%=======================================
+\section{Definition and results}
+%=======================================
+%-------------------------------------
+\begin{definition}
+\index{partition of unity}
+\footnote{
+  \citerpg{kelley1955}{171}{0387901256},
+  \citerpg{munkres2000}{225}{0131816292},
+  \citerpg{klaus1984}{116}{0387908927},
+  \citerpc{willard1970}{152}{item 20C},
+  \citerpgc{willard2004}{152}{0486434796}{item 20C}
+  }
+\label{def:pun}
+%-------------------------------------
+\defbox{\begin{array}{M} 
+  {A function $\ff\in\spRR$ forms a \hid{partition of unity} if}
+  \\\indentx$\ds\sum_{n\in\Z} \opTrn^n\ff(x) = 1 \qquad \forall x\in\R$.
+\end{array}}
+\end{definition}
+
+
+
+
+
+
+%--------------------------------------
+\begin{theorem} %[Partition of unity]
+\footnote{
+  \citePp{jawerth}{8}
+  }
+\label{thm:pounity_freq}
+%--------------------------------------
+Let $\mrasys$ be a multiresolution system \xrefP{def:mrasys}. % wavelet system.
+Let $\opFT\ff(\omega)$ be the \fncte{Fourier transform} \xref{def:opFT} of a function $\ff\in\spLLR$.
+Let $\kdelta_n$ be the \fncte{Kronecker delta function}\ifsxref{relation}{def:kdelta}.
+%Let $c$ be a contant in $\R$.
+\thmbox{
+  \mcom{\sum_{n\in\Z} \opTrn^n \ff = c}
+       {\prope{partition of unity} in ``time"}
+   \quad\iff\quad
+   \mcom{\brs{\opFT\ff}(2\pi n) = \kdelta_n}{\prope{partition of unity} in ``frequency"}
+  }
+\end{theorem}
+\begin{proof}
+Let $\Ze$ be the set of even integers and $\Zo$ the set of odd integers.
+\begin{enumerate}
+  \item Proof for ($\implies$) case:
+    \begin{align*}
+       c
+         &= \sum_{m\in\Z} \opTrn^m\ff(x)
+         && \text{by left hypothesis}
+       \\&= \sum_{m\in\Z} \ff(x-m)
+         && \text{by definition of $\opTrn$} && \text{\xref{def:opT}}
+       \\&= \sqrt{2\pi}\,\sum_{m\in\Z} \Ff(2\pi m) e^{i2\pi mx}
+         && \text{by \thme{PSF}} && \text{\xref{thm:psf}}
+       \\&= \mcom{\sqrt{2\pi}\,\Ff(2\pi n)e^{i2\pi nx}}{real and constant for $n=0$}
+          + \mcom{\sqrt{2\pi}\,\sum_{m\in\Z\setd n} \Ff(2\pi m) e^{i2\pi mx}}{complex and non-constant}
+       \\&\quad\implies
+       \sqrt{2\pi}\Ff(2\pi n) = c\kdelta_n
+         && \mathrlap{\text{because $c$ is real and constant for all $x$}}
+    \end{align*}
+
+  \item Proof for ($\impliedby$) case:
+  %\item Proof that $\brs{\sum_{n\in\Z} \opTrn^n\ff(x)=c} \impliedby \brs{\Ff(2\pi n) = \frac{c}{\sqrt{2\pi}}\kdelta_n}$:
+    \begin{align*}
+      \sum_{n\in\Z} \opTrn^n\ff(x)
+         &= \sum_{n\in\Z} \ff(x -n)
+         && \text{by definition of $\opTrn$} && \text{ \xref{def:opT}}
+       \\&= \sqrt{2\pi}\,\sum_{n\in\Z} \Ff(2\pi n) e^{-i2\pi nx}
+         && \text{by \thme{PSF}} && \text{\xref{thm:psf}}
+       \\&= \sqrt{2\pi}\,\sum_{n\in\Z} \frac{c}{\sqrt{2\pi}}\kdelta_n e^{-i2\pi nx}
+         && \text{by right hypothesis}
+       \\&= \sqrt{2\pi}\, \frac{c}{\sqrt{2\pi}} e^{-i2\pi 0x}
+         && \text{by definition of $\kdelta_n$} && \text{\xref{def:kdelta}}
+       \\&= c
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%-------------------------------------
+\begin{corollary}
+\label{cor:pun_pulse}
+%-------------------------------------
+\corbox{
+  \brb{\begin{array}{M}
+    $\exists \fg\in\spLLR$ such that\\
+    $\ff(x) = \setind_\intco{-1}{1}(x) \conv \fg(x)$
+  \end{array}}
+  %\qquad\impnotimpby\qquad
+  \qquad\implies\qquad
+  \brb{\begin{array}{M}
+    $\ff(x)$ generates\\
+    a \prope{partition of unity}
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+%\begin{enumerate}
+%  \item Proof for $\implies$ statement:
+    \begin{align*}
+      \ff(x) = \setind_\intco{0}{1}(x) \conv \fg(x)
+        &\implies \Ff(\omega) = \opFT\brs{\setind_\intco{-1}{1}}(\omega) \Fg(\omega)
+        && \text{by \thme{convolution theorem}} && \text{\xref{thm:conv}}
+      \\&\iff \Ff(\omega) = \cft\frac{\sin(\omega)}{\omega} \Fg(\omega)
+        && \text{by \exme{rectangular pulse} ex.} && \text{\xref{ex:ft_pulse}}
+      \\&\implies \Ff(2\pi n) = 0
+      \\&\iff \text{$\ff(x)$ generates a \prope{partition of unity}}
+        &&    \text{by \prefp{thm:pounity_freq}}
+    \end{align*}
+
+%  \item Proof for $\notimpliedby$ statement: 
+%\end{enumerate}
+\end{proof}
+
+%=======================================
+\section{Examples}
+%=======================================
+%-------------------------------------
+\begin{example}
+\label{ex:pun_Bspline}
+%-------------------------------------
+All \fncte{B-splines} \xref{def:Bspline} form a partition of unity \xref{thm:bspline_Nprop}.
+All B-splines of order $n=1$ or greater can be generated by convolution with a \fncte{pulse} function,
+similar to that specified in \prefpp{cor:pun_pulse} and as illustrated below:
+\\\indentx\tbox{\includegraphics{graphics/n0punity.pdf}}\quad\xref{ex:n0_pounity}
+\\\indentx\tbox{\includegraphics{graphics/n1punity.pdf}}\quad\xref{ex:n1_pounity}
+\\\indentx\tbox{\includegraphics{graphics/n2punity.pdf}}\quad\xref{ex:n2_pounity}
+\end{example}
+
+%-------------------------------------
+\begin{example}
+\label{ex:pun_cos2}
+%-------------------------------------
+Let a function $\ff$ be defined in terms of the cosine function \xref{def:cos} as follows:
+
+%\exbox{\begin{array}{m{58mm}m{\tw-76mm}}
+\exbox{\begin{array}{Mm{88mm}}
+%\begin{minipage}{\tw/2-2mm}
+  %\[ 
+      $\ff(x) \eqd \brbl{%
+       \begin{array}{>{\ds}lM}
+          \cos^2\brp{\frac{\pi}{2}x}  & for $\abs{x}\le 1$  \\
+          0    & otherwise
+       \end{array}}$
+  %\]
+%\end{minipage}%
+&\includegraphics{graphics/coscos11.pdf}
+\\Then $\ff$ induces a \structe{partition of unity}: % because $\sum_{n\in\Z} \ff(x-n) = 1$.
+&\includegraphics{graphics/sinsin02_pun.pdf}
+\\\mc{2}{M}{Note that $\ds\Ff(\omega)= \frac{1}{2\sqrt{2\pi}}\Big[{\mcom{\frac{2\sin\omega}{\omega}}{$2\sinc(\omega)$}+\mcom{\frac{\sin(\omega-\pi)}{(\omega-\pi)}}{$\sinc(\omega-\pi)$} + \mcom{\frac{\sin(\omega+\pi)}{(\omega+\pi)}}{$\sinc(\omega+\pi)$}}\Big]$}
+\\and so $\Ff(2\pi n)=\frac{1}{\sqrt{2\pi}}\kdelta_n$:
+&\includegraphics{graphics/coscos11ft.pdf}
+\end{array}}
+\end{example}
+\begin{proof}
+Let $\setind_\setA(x)$ be the \fncte{set indicator function} \xref{def:setind} on a set $\setA$.
+\begin{enumerate}
+  
+  \item Proof that $\sum_{n\in\Z} \opTrn^n\ff=1$ (time domain proof):
+    \begin{align*}
+      \sum_{n\in\Z} \opTrn^n\ff(x)
+        &= \sum_{n\in\Z} \opTrn^n\cos^2(x)\setind_\intcc{-1}{1}(x)
+        \qquad\text{by definition of $\ff(x)$}
+      \\&= \sum_{n\in\Z} \opTrn^n\cos^2(x)\setind_\intco{-1}{1}(x)
+        \qquad\text{because $\cos^2\brp{\frac{\pi}{2}x}=0$ when $x=1$}
+      \\&= \sum_{n\in\Z} \cos^2\brp{\frac{\pi}{2}(x-n)}\setind_\intco{-1}{1}(x-n)
+        \qquad\text{by definition of $\opTrn$ \xref{def:opT}}
+      \\&= \mcom{\sum_{n\in\Zo} \cos^2\brp{\frac{\pi}{2}(x-n)}                   \setind_\intco{-1}{1}(x-n)}{odd part}
+         + \mcom{\sum_{n\in\Ze} \cos^2\brp{\frac{\pi}{2}(x-n)}                   \setind_\intco{-1}{1}(x-n)}{even part}
+      \\&= \sum_{n\in\Z} \cos^2\brp{\frac{\pi}{2}(x-2n)}                   \setind_\intco{-1}{1}(x-2n)
+         + \sum_{n\in\Z} \cos^2\brp{\frac{\pi}{2}(x-2n-1)}                 \setind_\intco{-1}{1}(x-2n-1)
+      \\&= \sum_{n\in\Z} \cos^2\brp{\frac{\pi}{2}x-n\pi}                   \setind_\intco{-1}{1}(x-2n)
+         + \sum_{n\in\Z} \cos^2\brp{\frac{\pi}{2}x-n\pi-\frac{\pi}{2}}     \setind_\intco{-1}{1}(x-2n-1)
+      \\&= \sum_{n\in\Z} (-1)^{2n}\cos^2\brp{\frac{\pi}{2}x}               \setind_\intco{-1}{1}(x-2n)  
+         + \sum_{n\in\Z} (-1)^{2n}\cos^2\brp{\frac{\pi}{2}x-\frac{\pi}{2}} \setind_\intco{-1}{1}(x-2n-1)
+      \\&= \sum_{n\in\Z} \cos^2\brp{\frac{\pi}{2}x}                        \setind_\intco{-1}{1}(x-2n)  
+         + \sum_{n\in\Z} \sin^2\brp{\frac{\pi}{2}x}                        \setind_\intco{-1}{1}(x-2n-1)
+        \quad\text{by \prefp{thm:trig_sq}}
+      \\&= \cos^2\brp{\frac{\pi}{2}x}  \sum_{n\in\Z}                       \setind_\intco{-1}{1}(x-2n)  
+         + \sin^2\brp{\frac{\pi}{2}x}  \sum_{n\in\Z}                       \setind_\intco{-1}{1}(x-2n-1)
+      \\&= \cos^2\brp{\frac{\pi}{2}x}\cdot 1
+         + \sin^2\brp{\frac{\pi}{2}x}\cdot 1
+      \\&= 1
+        \qquad\text{by \thme{square identity} \xref{thm:trig_sq}}
+    \end{align*}
+
+  \item Proof that $\Ff(\omega)=\cdots$: by \prefp{ex:ft_cos2}
+\end{enumerate}
+\end{proof}
+
+%-------------------------------------
+\begin{example}
+\label{ex:pun_sin2}
+%-------------------------------------
+Let a function $\ff$ be defined in terms of the sine function \xref{def:sin} as follows:
+\cntbox{\begin{array}{m{\tw-85mm-18mm}m{85mm}}
+      $\ff(x) \eqd \brbl{%
+       \begin{array}{>{\ds}lM}
+          \sin^2\brp{\frac{\pi}{2}x}  & for $x\in\intcc{0}{2}$  \\
+          0    & otherwise
+       \end{array}}$
+&\includegraphics{graphics/sinsin02.pdf}
+\\Then $\int_\R\ff(x)\dx=1$ and $\ff$ induces a \structe{partition of unity}
+&\includegraphics{graphics/sinsin02_pun.pdf}
+%\\\textbf{but} $\setxZ{\opTrn^n\ff}$ does \textbf{not} generate an \structe{MRA}.
+\end{array}}
+\end{example}
+\begin{proof}
+%Let $\setind_\setA(x)$ be the \fncte{set indicator function} \xref{def:setind} on a set $\setA$.
+\begin{enumerate}
+  \item Proof that $\int_\R\ff(x)\dx=1$:
+    \begin{align*}
+      \int_\R \ff(x) \dx
+        &= \int_\R \sin^2\brp{\frac{\pi}{2}x}\setind_\intcc{0}{2}(x) \dx
+        && \text{by definition of $\ff(x)$}
+      \\&= \int_0^2 \sin^2\brp{\frac{\pi}{2}x} \dx
+        && \text{by definition of $\setindAx$ \xref{def:setind}}
+      \\&= \int_0^2 \frac{1}{2}\brs{1-\cos\brp{\pi x}} \dx
+        && \text{by \prefp{thm:trig_sq}}
+      \\&= \frac{1}{2}\brs{x-\frac{1}{\pi}\sin\brp{\pi x}}_0^2
+      \\&= \frac{1}{2}\brs{2-0-0-0}
+      \\&= 1
+    \end{align*}
+  
+  \item Proof that $\ff(x)$ forms a \prope{partition of unity}:
+    \begin{align*}
+      \sum_{n\in\Z} \opTrn^n\ff(x)
+        &= \sum_{n\in\Z} \opTrn^n\sin^2\brp{\frac{\pi}{2}x}\setind_\intcc{0}{2}(x)
+        && \text{by definition of $\ff(x)$}
+      \\&= \sum_{n\in\Z} \opTrn^n\sin^2\brp{\frac{\pi}{2}x}\setind_\intco{0}{2}(x)
+        && \text{because $\sin^2\brp{\frac{\pi}{2}x}=0$ when $x=2$}
+      \\&= \sum_{m\in\Z} \opTrn^{m-1}\sin^2\brp{\frac{\pi}{2}x}\setind_\intco{0}{2}(x)
+        && \text{where $m\eqd n+1$ $\implies$ $n=m-1$}
+      \\&= \sum_{m\in\Z} \sin^2\brp{\frac{\pi}{2}(x-m+1)}\setind_\intco{0}{2}(x-m+1)
+        && \text{by definition of $\opTrn$ \xref{def:opT}}
+      \\&= \sum_{m\in\Z} \sin^2\brp{\frac{\pi}{2}(x-m)+\frac{\pi}{2}}\setind_\intco{-1}{1}(x-m)
+      \\&= \sum_{m\in\Z} \cos^2\brp{\frac{\pi}{2}(x-m)}\setind_\intco{-1}{1}(x-m)
+        && \text{by \prefp{thm:trig_sq}}
+      \\&= \sum_{m\in\Z} \opTrn^m\cos^2\brp{\frac{\pi}{2}x}\setind_\intco{-1}{1}(x)
+        && \text{by definition of $\opTrn$ \xref{def:opT}}
+      \\&= \sum_{m\in\Z} \opTrn^m\cos^2\brp{\frac{\pi}{2}x}\setind_\intcc{-1}{1}(x)
+        && \text{because $\cos^2\brp{\frac{\pi}{2}x}=0$ when $x=1$}
+      \\&= 1
+        && \text{by \prefp{ex:pun_cos2}}
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+
+
+%-------------------------------------
+\begin{example}[\exmd{raised cosine}]
+\label{ex:pun_rcos}
+\footnote{
+  \citerppg{proakis}{560}{561}{0-07-232111-3}
+  }
+%-------------------------------------
+Let a function $\ff$ be defined in terms of the cosine function \xref{def:cos} as follows:
+%\exbox{\begin{array}{m{58mm}m{\tw-76mm}}
+\exbox{\begin{array}{Mm{88mm}}
+%\begin{minipage}{\tw/2-2mm}
+  %\[ 
+      Let $\ff(x) \eqd \brbl{%
+       \begin{array}{>{\ds}lM>{\ds}l}
+          1 
+            & for & 0 \le \abs{x} < \frac{1-\beta}{2}
+            \\
+          \frac{1}{2}\brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{\abs{x} - \frac{1-\beta}{2}}}}
+            & for & \frac{1-\beta}{2} \le \abs{x} < \frac{1+\beta}{2}
+            \\
+          0    & \mc{2}{M}{otherwise}
+       \end{array}}$
+  %\]
+%\end{minipage}%
+\\\includegraphics{graphics/rcos.pdf}
+\\Then $\ff$ induces a \structe{partition of unity}: % because $\sum_{n\in\Z} \ff(x-n) = 1$.
+\\\includegraphics{graphics/rcos_pun.pdf}
+%\\\mc{2}{M}{Note that $\ds\Ff(\omega)= \frac{1}{2\sqrt{2\pi}}\Big[{\mcom{\frac{2\sin\omega}{\omega}}{$2\sinc(\omega)$}+\mcom{\frac{\sin(\omega-\pi)}{(\omega-\pi)}}{$\sinc(\omega-\pi)$} + \mcom{\frac{\sin(\omega+\pi)}{(\omega+\pi)}}{$\sinc(\omega+\pi)$}}\Big]$}
+%\\and so $\Ff(2\pi n)=\frac{1}{\sqrt{2\pi}}\kdelta_n$:
+%&\psset{xunit=7mm,yunit=14mm}\input{../common/math/graphics/coscos11ft.tex}
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item definition: Let $\setind_\setA(x)$ be the \fncte{set indicator function} \xref{def:setind} on a set $\setA$. \label{idef:pun_rcos_def}
+    \\Let $\setA\eqd\intco{\frac{1+\beta}{-2}}{\frac{1-\beta}{-2}}$,\qquad
+          $\setB\eqd\intco{\frac{1-\beta}{-2}}{\frac{1-\beta}{2}}$, and\qquad
+          $\setC\eqd\intco{\frac{1-\beta}{2}}{\frac{1+\beta}{2}}$
+  \item lemma: $\ds\setind_\setA(x-1) = \setind_\setC(x)$. Proof: \label{ilem:pun_rcos_Ax1C}
+        \begin{align*}
+          \setind_\setA(x-1)
+            &\eqd \brbl{\begin{array}{cM}
+                    1 & if $-\frac{1+\beta}{2} \le x-1 < -\frac{1-\beta}{2}$\\
+                    0 & otherwise
+                  \end{array}}
+            && \text{by definition of $\setind$ \xref{def:setind} and $\setA$ \xref{ilem:pun_rcos_Ax1C}}
+          \\&=    \brbl{\begin{array}{cM}
+                    1 & if $1-\frac{1+\beta}{2} \le x < 1-\frac{1-\beta}{2}$\\
+                    0 & otherwise
+                  \end{array}}
+          \\&=    \brbl{\begin{array}{cM}
+                    1 & if $\frac{1-\beta}{2} \le x < \frac{1+\beta}{2}$\\
+                    0 & otherwise
+                  \end{array}}
+           \\&\eqd \setind_\setC(x)
+            && \text{by definition of $\setind$ \xref{def:setind} and $\setC$ \xref{ilem:pun_rcos_Ax1C}}
+        \end{align*}
+  %\item lemma: $\fg(x-1)\setind_\setA(x) = \fg(-x)\setind_\setC(x)$ \label{item:pun_rcos_xAC}
+  %\item lemma: $\ds 1 - \frac{1-\beta}{2} = \frac{2-1+\beta}{2} = \frac{1+\beta}{2}$ \label{item:pun_rcos_lem11b}
+  \item lemma: $\ds -1 + \frac{1-\beta}{2} = -\beta - \frac{1-\beta}{2}$. Proof: \label{ilem:pun_rcos_lem11b2}
+    \begin{align*}
+      -1 + \frac{1-\beta}{2}
+        &= \frac{-2+1-\beta}{2}
+        &= \frac{-1-\beta}{2}
+        &= \brp{-\beta+\beta}-\brp{\frac{1+\beta}{2}}
+        &= -\beta + \frac{2\beta-1-\beta}{2}
+        &= -\beta - \frac{1-\beta}{2}
+    \end{align*}
+  %\item lemma: $\ds\beta - \frac{1+\beta}{2} = \frac{2\beta-1-\beta}{2} = \frac{1-\beta}{-2}$ \label{item:pun_rcos_lemb1b}
+
+  \item Proof that $\sum_{n\in\Z} \opTrn^n\ff=1$:
+    \begin{align*}
+      &\sum_{n\in\Z} \opTrn^n\ff(x)
+         = \sum_{n\in\Z} \ff(x-n)
+        && \text{by \pref{def:opT}}
+      \\&= \sum_{n\in\Z} \ff(x-n)\setind_\setC(x-n)
+         + \sum_{n\in\Z} \ff(x-n)\setind_\setA(x-n)
+         + \sum_{n\in\Z} \ff(x-n)\setind_\setB(x-n)
+        && \text{by \prefp{idef:pun_rcos_def}}
+      \\&= \sum_{n\in\Z} \ff(x-n)\setind_\setC(x-n)
+         \\&\qquad+ \sum_{n\in\Z} \ff(x-n-1)\setind_\setA(x-n-1)
+         + \sum_{n\in\Z} \ff(x-n)\setind_\setB(x-n)
+        && \text{by \pref{prop:opT_periodic}}
+      \\&= \sum_{n\in\Z} \ff(x-n)\setind_\setC(x-n)
+         + \sum_{n\in\Z} \ff(x-n-1)\setind_\setC(x-n)
+         + \sum_{n\in\Z} \ff(x-n)\setind_\setB(x-n)
+        && \text{by \prefp{ilem:pun_rcos_Ax1C}}
+      \\&=          \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{\abs{x-n  } - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+         \\&\qquad+ \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{\abs{x-n-1} - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+                  + \sum_{n\in\Z} \setind_\setB(x-n)
+        && \text{by definition of $\ff(x)$}
+      \\&=          \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{\brp{x-n  } - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+         \\&\qquad+ \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{-\brp{x-n-1} - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+                  + \sum_{n\in\Z} \setind_\setB(x-n)
+        && \text{by def. of $\setind_\setC(x)$}
+      \\&=          \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+         \\&\qquad+ \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n-1 + \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+                  + \sum_{n\in\Z} \setind_\setB(x-n)
+     % \\&=          \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+     %    \\&\qquad+ \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1+\beta}{2}}}}\setind_\setC(x-n)
+     %             + \sum_{n\in\Z} \setind_\setB(x-n)
+     % \\&=          \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+     %    \\&\qquad+ \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n -\beta+\beta- \frac{1+\beta}{2}}}}\setind_\setC(x-n)
+     %             + \sum_{n\in\Z} \setind_\setB(x-n)
+      \\&=          \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+         \\&\qquad+ \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n -\beta- \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+                  + \sum_{n\in\Z} \setind_\setB(x-n)
+        && \text{by \prefp{ilem:pun_rcos_lem11b2}}
+      \\&=          \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+         \\&\qquad+ \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1-\beta}{2}-\frac{\pi\beta}{\beta}}}}\setind_\setC(x-n)
+                  + \sum_{n\in\Z} \setind_\setB(x-n)
+      \\&=          \frac{1}{2}\sum_{n\in\Z} \brb{1 + \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+         \\&\qquad+ \frac{1}{2}\sum_{n\in\Z} \brb{1 - \cos\brs{\frac{\pi}{\beta}\brp{x-n - \frac{1-\beta}{2}}}}\setind_\setC(x-n)
+                  + \sum_{n\in\Z} \setind_\setB(x-n)
+      \\&=          \frac{1}{2}\sum_{n\in\Z} \setind_\setC(x-n)
+                  + \frac{1}{2}\sum_{n\in\Z} \setind_\setC(x-n)
+                  + \sum_{n\in\Z} \setind_\setB(x-n)
+      \\&=          \sum_{n\in\Z} \setind_{\setB\setu\setC}(x-n)
+      \\&= 1
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+

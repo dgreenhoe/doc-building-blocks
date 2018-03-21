@@ -1,0 +1,560 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX File
+%============================================================================
+
+%=======================================
+\chapter{Lie Algebras}
+%=======================================
+
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerp{carter2005}{1} \\
+  \citerp{jacobson1979}{}
+  }
+\label{def:lie}
+\index[xsym]{$\lpairn$}
+%---------------------------------------
+Let $\spV=(\setX,F,\oplus,\otimes)$ be a vector space.
+\defbox{\begin{array}{M}
+The pair $\opair{\spV}{\lpairn}$ is a \hid{lie algebra} if
+  \\\qquad
+  $\begin{array}{llCD}
+    1. & \lpair{a\vx + b\vy}{\vz} = a \lpair{\vx}{\vz} + b \lpair{\vy}{\vz} 
+       & \forall \vx,\vy,\vz \in \spV
+       & (linear in the first argument)
+       \\
+    2. & \lpair{\vz}{a\vx + b\vy} = a \lpair{\vz}{\vx} + b \lpair{\vz}{\vy} 
+       & \forall \vx,\vy,\vz \in \spV
+       & (linear in the second argument)
+       \\
+    3. & \lpair{\vx}{\vx} = 0
+       & \forall \vx \in \spV
+       & 
+       \\
+    4. & \lpair{\lpair{\vx}{\vy}}{\vz} + \lpair{\lpair{\vy}{\vz}}{\vx}
+       + \lpair{\lpair{\vz}{\vx}}{\vy}
+       = 0
+       & \forall \vx,\vy,\vz \in \spV
+       & (\hie{Jacobi identity}\footnotemark)
+  \end{array}$
+\end{array}}
+\citetblt{
+  \citorp{jacobi1862}{41}
+  }
+\end{definition}
+
+
+%---------------------------------------
+\begin{proposition}
+\citetbl{
+  \citerp{carter2005}{1}
+  }
+\label{prop:lie_xy-yx}
+%---------------------------------------
+Let $\opair{\spX}{\lpairn}$ be a lie algebra.
+\formbox{\begin{array}{lCD}
+  \lpair{\vx}{\vy} = - \lpair{\vy}{\vx}
+  & \forall \vx,\vy \in \spX
+  & (\hie{anticommutative})
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \lpair{\vx}{\vy}
+    &= \lpair{\vx}{\vy} + \mcom{\lpair{\vy}{\vx} - \lpair{\vy}{\vx}}{$0$}
+  \\&= - \lpair{\vy}{\vx} + \brp{0 + \lpair{\vx}{\vy} + \lpair{\vy}{\vx} + 0}
+  \\&= - \lpair{\vy}{\vx} + \brp{\lpair{\vx}{\vx} + \lpair{\vx}{\vy} + \lpair{\vy}{\vx} + \lpair{\vy}{\vy}}
+  \\&= - \lpair{\vy}{\vx} + \cancelto{0}{\lpair{(\vx+\vy)}{(\vx+\vy)}}
+  \\&= - \lpair{\vy}{\vx}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerp{carter2005}{1}
+  }
+%---------------------------------------
+Let $\opair{\spX}{\lpairn}$ be a lie algebra.
+Let $\bar{\spX}$ be the set of all subspaces of $\spX$.
+\formbox{\begin{array}{rcl@{\qquad}C@{\qquad}D}
+  \lpair{\spV}{\spW} &=& \lpair{\spW}{\spV}
+    & \forall \spV,\spW \in \bar{\spX}
+    & (commutative)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \lpair{\spV}{\spW}
+    &= \set{\lpair{\vv}{\vw}}{\vv\in\spV \text{ and } \vw\in\spW}
+    && %\text{by \prefp{def:}}
+  \\&= \set{-\lpair{\vw}{\vv}}{\vv\in\spV \text{ and } \vw\in\spW}
+    && \text{by \prefp{prop:lie_xy-yx}}
+  \\&= \set{\lpair{\vw}{-\vv}}{\vv\in\spV \text{ and } \vw\in\spW}
+    && \text{by \prefp{def:lie} (linearity)}
+  \\&= \set{\lpair{\vw}{\vv}}{\vv\in\spV \text{ and } \vw\in\spW}
+    && \text{because $\spV$ is a subspace}
+  \\&= \lpair{\spW}{\spV}
+    && %\text{by \prefp{def:}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citerp{carter2005}{2}
+  }
+%---------------------------------------
+Let $\spX$ be a set.
+\exbox{
+  \left.\begin{array}{rclCD}
+    \lpair{x}{y} &\eqd& xy-yx   & \forall x,y\in\spX \\
+    z(x+y)       &=&    zx + zy & \forall x,y,z\in\spX & (left distributive) \\
+    (x+y)z       &=&    xz + yz & \forall x,y,z\in\spX & (right distributive) 
+  \end{array}\right\}
+  \implies
+  \text{The pair $\opair{\spX}{\lpair{x}{y}}$ is a lie algebra.}
+  }
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\lpairn$ is linear in the first variable:
+    \begin{align*}
+      \lpair{ax+by}{z}
+        &= (ax+by)(z) - (z)(ax+by)
+        && \text{by definition of $\lpairn$}
+      \\&= (axz+byz) - (azx+bzy)
+      \\&= a(xz-zx) + b(yz-zy)
+      \\&= a\lpair{x}{z} + b\lpair{y}{z}
+        && \text{by definition of $\lpairn$}
+    \end{align*}
+
+  \item Proof that $\lpairn$ is linear in the first variable:
+    \begin{align*}
+      \lpair{z}{ax+by}
+        &= (z)(ax+by) - (ax+by)(z)
+        && \text{by definition of $\lpairn$}
+      \\&= (azx+bzy) - (axz+byz)
+      \\&= a(zx-xz) + b(zy-yz)
+      \\&= a\lpair{z}{x} + b\lpair{z}{y}
+        && \text{by definition of $\lpairn$}
+    \end{align*}
+
+  \item Proof that $\lpair{x}{x}=0$:
+    \begin{align*}
+      \lpair{x}{x}
+        &= xx - xx
+        && \text{by definition of $\lpairn$}
+      \\&= 0
+    \end{align*}
+
+  \item Proof that the Jacobi identity holds true:
+    \begin{align*}
+      &\lpair{\lpair{x}{y}}{z} + \lpair{\lpair{y}{z}}{x} + \lpair{\lpair{z}{x}}{y}
+      \\&= \lpair{(xy-yx)}{z} + \lpair{(yz-zy)}{x} + \lpair{(zx-xz)}{y}
+        && \text{by definition of $\lpairn$}
+      \\&= \brp{(xy-yx)z-z(xy-yx)} + \brp{(yz-zy)x-x(yz-zy)} + \brp{(zx-xz)y-y(zx-xz)}
+        && \text{by definition of $\lpairn$}
+      \\&= \brp{xyz-yxz-zxy+zyx} + \brp{yzx-zyx-xyz+xzy} + \brp{zxy-xzy-yzx+yxz}
+        && \text{by distributive hypotheses}
+      \\&= (xyz-xyz)+(zyx-zyx) + (yzx-yzx)+(xzy-xzy) + (zxy-zxy)+(yxz-yxz)
+      \\&= 0
+    \end{align*}
+  \end{enumerate}
+
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{example}[Cross-product]
+\label{ex:lie_cross}
+%---------------------------------------
+Let $\spX$ be a set and $\times$ the vector \hie{cross-product}.
+\exbox{
+  \left.\begin{array}{rclCD}
+    \lpair{\vx}{\vy} &\eqd& \vx \times \vy   & \forall \vx,\vy\in\spX \\
+  \end{array}\right\}
+  \quad\implies\quad
+  \text{The pair $\opair{\spX}{\lpair{\vx}{\vy}}$ is a lie algebra.}
+  }
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\lpairn$ is linear in the first variable:
+    \begin{align*}
+      \lpair{a\vx+b\vy}{\vz}
+        &= (a\vx+b\vy) \times \vz
+        && \text{by definition of $\lpairn$}
+    \end{align*}
+
+  \item Proof that $\lpairn$ is linear in the first variable:
+    \begin{align*}
+      \lpair{\vz}{a\vx+by}
+        &= \vz \times (a\vx+b\vy)
+        && \text{by definition of $\lpairn$}
+    \end{align*}
+
+  \item Proof that $\lpair{\vx}{\vx}=0$:
+    \begin{align*}
+      \lpair{\vx}{\vx}
+        &= \vx \times \vx
+        && \text{by definition of $\lpairn$}
+      \\&= 0
+    \end{align*}
+
+  \item Proof that the Jacobi identity holds true:
+    \begin{align*}
+      &\lpair{\lpair{\vx}{\vy}}{\vz} + \lpair{\lpair{\vy}{\vz}}{\vx} + \lpair{\lpair{\vz}{\vx}}{\vy}
+      \\&= \lpair{(\vx\times\vy)}{\vz} + \lpair{(\vy\times\vz)}{\vx} + \lpair{(\vz\times\vx)}{\vy}
+        && \text{by definition of $\lpairn$}
+      \\&= \lpair{\vz}{\vz} + \lpair{\vx}{\vx} + \lpair{\vy}{\vy}
+      \\&= 0 + 0 + 0
+      \\&= 0
+    \end{align*}
+  \end{enumerate}
+
+\end{proof}
+
+
+\if 0
+%=======================================
+\section{Application to wavelet systems}
+%=======================================
+\begin{dingautolist}{"AC}
+  \item The cross-product is a lie algebra which generates new dimensions from existing dimensions
+       ---see \prefpp{ex:lie_cross} and \prefpp{fig:lie_cross}.
+
+  \item Now define a lie algebra that performs essentially the same function but on 
+        wavelet subspace structures---
+        see \prefpp{fig:lie_d1} and \prefpp{fig:lie_d2}.
+
+\end{dingautolist}
+
+
+  \begin{figure}[th]
+  \begin{center}
+  \begin{minipage}[c]{7\tw/16}
+  \footnotesize
+  \setlength{\unitlength}{\tw/400}%
+  \begin{picture}(400,520)(-200,0)%
+    \thicklines
+    %{\color{graphpaper}\graphpaper[50](-200,0)(400,520)}%
+    {\color{picbox}%
+      %\put( -50,400){\framebox(100,100){}}%
+      \put(-125,250){\framebox(100,100){}}%
+      \put( 100,100){\framebox(100,100){}}%
+      \put( -50,100){\framebox(100,100){}}%
+      \put(-200,100){\framebox(100,100){}}%
+      \put( -25,  0){\framebox(50,50){}}%
+      }%
+    {\color{black}%
+      \put(   0,400){\line( 3,-4){150}}%
+      \put(   0,400){\line(-3,-2){ 75}}%
+      \put( -75,250){\line( 3,-2){ 75}}%
+      \put( -75,250){\line(-3,-2){ 75}}%
+      \put(   0, 50){\line(-3, 1){150}}%
+      \put(   0, 50){\line( 0, 1){ 50}}%
+      \put(   0, 50){\line( 3, 1){150}}%
+      }%
+    \put(0,450){%
+      \setlength{\unitlength}{\tw/(330*3)}%
+      \begin{picture}(0,0)(0,0)%
+        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+        {\color{red}%
+          \put( -50,  50){\line( 1, 1){100} }%
+          \put(   0,   0){\line(-1,-1){ 50} }%
+          \put(   0,-100){\line(-1,-1){ 50} }%
+          \put( -50, -50){\line( 1, 1){ 50} }%
+          \put(-150, -50){\line( 1, 1){ 50} }%
+          \put(  50, -50){\line( 1, 1){100} }%
+          }%
+        {\color{green}%
+          \put(-150, -50){\line( 1, 0){200} }%
+         %\put( -75,  25){\line( 1, 0){ 50} }%
+         %\put(  25,  25){\line( 1, 0){100} }%
+          \put(   0,   0){\line( 1, 0){100} }%
+          \put(-100,   0){\line( 1, 0){ 50} }%
+          \put(-100, 100){\line( 1, 0){200} }%
+          \put(-100,-100){\line( 1, 0){ 50} }%
+          \put(   0,-100){\line( 1, 0){100} }%
+          \put( 150,  50){\line(-1, 0){ 50} }%
+          }%
+        {\color{blue}%
+          \put( -50,-150){\line( 0, 1){200} }%
+         %\put(  25,  25){\line( 0, 1){100} }%
+          \put(  50, 150){\line( 0,-1){ 50} }%
+         %\put(  25, -75){\line( 0, 1){ 50} }%
+          \put(-100,-100){\line( 0, 1){ 50} }%
+          \put(-100,   0){\line( 0, 1){100} }%
+          \put( 100,-100){\line( 0, 1){200} }%
+          \put(   0,-100){\line( 0, 1){ 50} }%
+          \put(   0,   0){\line( 0, 1){100} }%
+          }%
+      \end{picture}%
+    }
+    \put(-75,300){%
+      \setlength{\unitlength}{1\tw/(400*3)}%
+      \begin{picture}(0,0)(0,0)%
+        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+        {\color{red}%
+          \put(-150, -50){\line( 1, 1){100} }%
+          \put(  50, -50){\line( 1, 1){100} }%
+          }%
+        {\color{green}%
+          \put(-150, -50){\line( 1, 0){200} }%
+          \put( 150,  50){\line(-1, 0){200} }%
+          }%
+      \end{picture}%
+    }
+    \put(-150,150){%
+      \setlength{\unitlength}{1\tw/(400*3)}%
+      \begin{picture}(0,0)(0,0)%
+        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+        {\color{red}%
+          \put(0,0){\vector( 1, 1){100} }%
+          \put(0,0){\vector(-1,-1){100} }%
+          }%
+      \end{picture}%
+    }
+    \put(0,150){%
+      \setlength{\unitlength}{1\tw/(400*3)}%
+      \begin{picture}(0,0)(0,0)%
+        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+        {\color{green}%
+          \put(0,0){\vector( 1, 0){100} }%
+          \put(0,0){\vector(-1, 0){100} }%
+          }%
+      \end{picture}%
+    }
+    \put(150,150){%
+      \setlength{\unitlength}{1\tw/(400*3)}%
+      \begin{picture}(0,0)(0,0)%
+        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+        {\color{blue}%
+          \put(0,0){\vector( 0, 1){100} }%
+          \put(0,0){\vector( 0,-1){100} }%
+          }%
+      \end{picture}%
+    }
+    \put(0,25){%
+      \setlength{\unitlength}{1\tw/(400*3)}%
+      \begin{picture}(0,0)(0,0)%
+        %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+        {\color{black}%
+          \put(0,0){\circle*{15}}%
+          }%
+      \end{picture}%
+    }
+  \end{picture}
+  \end{minipage}%
+  \end{center}
+  \caption{
+    Cross product lattice for Euclidean 3-dimensional space
+    \label{fig:lie_cross}
+    }
+  \end{figure}
+
+
+
+\begin{figure}[th]
+\begin{center}
+\begin{minipage}[c]{7\tw/16}
+\footnotesize
+\setlength{\unitlength}{\tw/(550)}%
+\begin{picture}(550,670)(-200,0)%
+  \thicklines
+  %{\color{graphpaper}\graphpaper[50](-200,0)(550,670)}%
+  {\color{picbox}%
+    \put(  25,550){\framebox(100,100){}}%
+    \put( -50,400){\framebox(100,100){}}%
+    \put(-125,250){\framebox(100,100){}}%
+    \put( 250,100){\framebox(100,100){}}%
+    \put( 100,100){\framebox(100,100){}}%
+    \put( -50,100){\framebox(100,100){}}%
+    \put(-200,100){\framebox(100,100){}}%
+    \put(  50,  0){\framebox(50,50){}}%
+    }%
+  {\color{black}%
+    \qbezier(75,550)(187.5,375)(300,200)
+    \put(  75,550){\line(-3,-2){ 75}}%
+    \put(   0,400){\line( 3,-4){150}}%
+    \put(   0,400){\line(-3,-2){ 75}}%
+    \put( -75,250){\line( 3,-2){ 75}}%
+    \put( -75,250){\line(-3,-2){ 75}}%
+    \qbezier(75,50)(-37.5,75)(-150,100)
+    \qbezier(75,50)( 37.5,75)(   0,100)
+    \qbezier(75,50)(112.5,75)( 150,100)
+    \qbezier(75,50)(187.5,75)( 300,100)
+    }%
+  \put(75,600){%
+    \setlength{\unitlength}{1\tw/(5*600)}%
+    \begin{picture}(0,0)(200,0)%
+      %{\color{graphpaper}\graphpaper[50](-100,-300)(600,600)}%
+      {\color{axis}%
+        \put(-50,0){\line( 1, 0){500} }%
+        \put(0,-350){\line( 0, 1){700} }%
+        }%
+      {\color{blue}%
+        \put(  0,  0){\line( 0, 1){280} }%
+        \put(  0,280){\line( 1, 0){50} }%
+        \put(50,  0){\line( 0, 1){280} }%
+        }%
+    \end{picture}%
+  }
+  \put(0,450){%
+    \setlength{\unitlength}{1\tw/(5*600)}%
+    \begin{picture}(0,0)(200,0)%
+      %{\color{graphpaper}\graphpaper[50](-100,-300)(600,600)}%
+      {\color{axis}%
+        \put(-50,0){\line( 1, 0){500} }%
+        \put(0,-350){\line( 0, 1){700} }%
+        }%
+      {\color{blue}%
+        \put(  0,  0){\line( 0, 1){200} }%
+        \put(  0,200){\line( 1, 0){100} }%
+        \put(100,  0){\line( 0, 1){200} }%
+        }%
+    \end{picture}%
+  }
+  \put(-75,300){%
+    \setlength{\unitlength}{1\tw/(5*600)}%
+    \begin{picture}(0,0)(200,0)%
+      %{\color{graphpaper}\graphpaper[50](-100,-300)(600,600)}%
+      {\color{axis}%
+        \put(-50,0){\line( 1, 0){500} }%
+        \put(0,-350){\line( 0, 1){700} }%
+        }%
+      {\color{blue}%
+        \put(  0,  0){\line( 0, 1){150} }%
+        \put(  0,150){\line( 1, 0){200} }%
+        \put(200,  0){\line( 0, 1){150} }%
+        }%
+    \end{picture}%
+  }
+  \put(-150,150){%
+    \setlength{\unitlength}{1\tw/(5*600)}%
+    \begin{picture}(0,0)(200,0)%
+      %{\color{graphpaper}\graphpaper[50](-100,-300)(600,600)}%
+      {\color{axis}%
+        \put(-50,0){\line( 1, 0){500} }%
+        \put(0,-350){\line( 0, 1){700} }%
+        }%
+      {\color{blue}%
+        \put(  0,  0){\line( 0, 1){100} }%
+        \put(  0,100){\line( 1, 0){400} }%
+        \put(400,  0){\line( 0, 1){100} }%
+        }%
+    \end{picture}%
+  }
+  \put(0,150){%
+    \setlength{\unitlength}{1\tw/(5*600)}%
+    \begin{picture}(0,0)(200,0)%
+      %{\color{graphpaper}\graphpaper[50](-100,-300)(600,600)}%
+      {\color{axis}%
+        \put(-50,0){\line( 1, 0){500} }%
+        \put(0,-350){\line( 0, 1){700} }%
+        }%
+      {\color{red}%
+        \multiput(  0,0)(200,0){2}{\line( 0, 1){100} }%
+        \multiput(200,0)(200,0){2}{\line( 0,-1){100} }%
+        \multiput(0,100)(400,0){1}{\line( 1,0){200} }%
+        \multiput(200,-100)(400,0){1}{\line( 1,0){200} }%
+        }%
+    \end{picture}%
+    }%
+  \put(150,150){%
+    \setlength{\unitlength}{1\tw/(5*600)}%
+    \begin{picture}(0,0)(200,0)%
+      %{\color{graphpaper}\graphpaper[50](-100,-300)(600,600)}%
+      {\color{axis}%
+        \put(-50,0){\line( 1, 0){500} }%
+        \put(0,-350){\line( 0, 1){700} }%
+        }%
+      {\color{red}%
+        \multiput(  0,0)(100,0){2}{\line( 0, 1){140} }%
+        \multiput(100,0)(100,0){2}{\line( 0,-1){140} }%
+        \multiput(0,140)(200,0){1}{\line( 1,0){100} }%
+        \multiput(100,-140)(200,0){1}{\line( 1,0){100} }%
+        }%
+    \end{picture}%
+    }%
+  \put(300,150){%
+    \setlength{\unitlength}{1\tw/(5*600)}%
+    \begin{picture}(0,0)(200,0)%
+      %{\color{graphpaper}\graphpaper[50](-100,-300)(600,600)}%
+      {\color{axis}%
+        \put(-50,0){\line( 1, 0){500} }%
+        \put(0,-350){\line( 0, 1){700} }%
+        }%
+      {\color{red}%
+        \multiput(  0,0)(50,0){2}{\line( 0, 1){200} }%
+        \multiput(50,0)(50,0){2}{\line( 0,-1){200} }%
+        \multiput(0,200)(100,0){1}{\line( 1,0){50} }%
+        \multiput(50,-200)(100,0){1}{\line( 1,0){50} }%
+        }%
+    \end{picture}%
+    }%
+  \put(75,25){%
+    \setlength{\unitlength}{1\tw/(400*3)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{black}%
+        \put(0,0){\circle*{15}}%
+        }%
+    \end{picture}%
+  }
+\end{picture}
+\end{minipage}%
+\end{center}
+\caption{Daubechies-1 wavelet system \label{fig:lie_d1}}
+\end{figure}
+
+
+\begin{figure}[th]
+\begin{center}
+\begin{minipage}[c]{7\tw/16}
+  \begin{fsL}
+  \setlength{\unitlength}{\tw/550}%
+  \begin{picture}(550,650)(-50,-150)%
+    %{\color{graphpaper}\graphpaper[50](-50,-150)(550,650)}%
+    \thicklines%
+    \qbezier(225,400)(337.5,225)(450,50)%
+    \put(225,400){\line(-3,-2){75}}%
+    \put(150,250){\line( 3,-4){150}}%
+    \put(150,250){\line(-3,-2){75}}%
+    \put(75,100){\line(-3,-2){75}}%
+    \put(75,100){\line(3,-2){75}}%
+    \qbezier(225,-100)(112.5,-75)(  0,-50)%
+    \qbezier(225,-100)(185.5,-75)(150,-50)%
+    \qbezier(225,-100)(263.5,-75)(300,-50)%
+    \qbezier(225,-100)(312.5,-75)(450,-50)%
+    {\color{picbox}%
+      \put(225,450){\makebox(0,0){\framebox(100,100){%
+        \includegraphics*[width=1\tw/32, height=4\tw/16, clip=true]{../common/wavelets/d2s_x1250.eps}}}}%
+      \put(150,300){\makebox(0,0){\framebox(100,100){%
+        \includegraphics*[width=1\tw/16, height=4\tw/16, clip=true]{../common/wavelets/d2s_x1250.eps}}}}%
+      \put(75,150){\makebox(0,0){\framebox(100,100){%
+        \includegraphics*[width=2\tw/16, height=4\tw/16, clip=true]{../common/wavelets/d2s_x1875.eps}}}}%
+      \put(0,0){\makebox(0,0){\framebox(100,100){%
+        \includegraphics*[width=4\tw/16, height=4\tw/16, clip=true]{../common/wavelets/d2s_x2500.eps}}}}%
+      \put(150,0){\makebox(0,0){\framebox(100,100){%
+        \includegraphics*[width=4\tw/16, height=4\tw/16, clip=true]{../common/wavelets/d2w_x2500.eps}}}}%
+      \put(300,0){\makebox(0,0){\framebox(100,100){%
+        \includegraphics*[width=2\tw/16, height=4\tw/16, clip=true]{../common/wavelets/d2w_x1875.eps}}}}%
+      \put(450,0){\makebox(0,0){\framebox(100,100){%
+        \includegraphics*[width=1\tw/16, height=4\tw/16, clip=true]{../common/wavelets/d2w_x1250.eps}}}}%
+      \put(225,-125){\makebox(0,0){\framebox(50,50){$\spZero$}}}%
+    }%
+  \end{picture}%
+  \end{fsL}
+\end{minipage}%
+\end{center}
+\caption{Daubechies-2 wavelet system \label{fig:lie_d2}}
+\end{figure}
+
+
+\fi
+

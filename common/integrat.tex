@@ -1,0 +1,454 @@
+﻿%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+
+
+%=======================================
+\chapter{Integration}
+%=======================================
+
+%=======================================
+%\section{Definitions}
+%=======================================
+
+\footnote{The name \hie{integral calculus} and its operational symbol $\int$ were the 
+  product of a collaboration between 
+  \href{http://en.wikipedia.org/wiki/Gottfried_Leibniz}{Gottfried Leibnitz} (1646--1716) 
+  and \href{http://en.wikipedia.org/wiki/Johann_Bernoulli}{Johann Bernoulli} (1667--1748).
+  Leibnitz preferred the terminology \hie{calculus summatorius} (summation calculus)
+  and the operational symbol $\int$ (an enlongated ``S").
+  Bernoulli preferred the terminology \hie{calculus integralis} (integral calculs)
+  and the operational symbol $I$.
+  In the end, a compromise was reached which is the currently used terminology 
+  ``integral calculs" with symbol $\int$.
+  Reference: \citerpp{cajori2}{181}{182}
+  }
+%---------------------------------------
+\begin{definition}
+\label{def:intR}
+\citetbl{
+  \citerp{jahnke2003}{262},
+  \citor{cauchy1823}
+  }
+\index{integral operators!Cauchy}
+%---------------------------------------
+Let $\ms$ be a measure space.
+Let $\seq{\ssetP_n}{n\in\Z}$ be sequence of increasingly fine partitions 
+of a set $\setE\subseteq\setX$.
+\defboxp{\indxs{\intC}
+  The \hid{Cauchy integral operator} $\intC$ of a function $\ff$ over a set $\setE\subseteq\setX$
+  on the measure space $\ms$ is
+  \[ \intC_\setE \ff(x) \dmu \eqd \sum_n \ff(x_n) \mu(\setE_n)  \]
+  where 
+  $x_n\in\setE_n$ and 
+  $\ds\setE_n \in \lim_{m\to\infty}\ssetP_m \eqd \set{\setE_n}{n\in\Z}$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:intR}
+\citetbl{
+  \citerp{jahnke2003}{264},
+  \citor{riemann1854}
+  }
+\index{integral operators!Riemann}
+%---------------------------------------
+Let $\ms$ be a measure space.
+Let $\seq{\ssetP_n}{n\in\Z}$ be sequence of increasingly fine partitions 
+of a set $\setE\subseteq\setX$.
+\defboxp{\indxs{\intR}
+  \[\begin{array}{>{\ds}rc>{\ds}l@{\qquad}D}
+    \intR_E      \ff \dmu  &=& \inf_{x_i \in\setP_i} \setn{\sum_n \ff(x_n) \mu(\setE_n) } 
+      & (lower integral)
+      \\
+    \intR_E^\ast \ff \dmu  &=& \sup_{x_i \in\setP_i} \setn{\sum_n \ff(x_n) \mu(\setE_n) }
+      & (upper integral)
+  \end{array}\]
+  where 
+  $x_n\in\setE_n$ and 
+  $\ds\setE_n \in \lim_{m\to\infty}\ssetP_m \eqd \set{\setE_n}{n\in\Z}$.
+  The sum $\intR_\setE\ff \dmu$ is \hid{Riemann integrable} if
+  $\intR_\setE\ff\dmu = \intR_\setE^\ast \ff\dmu$ and in this case 
+  the \hid{Riemann integral operator} $\intR$ of $\ff$ over $\setE\subseteq\setX$
+  on $\ms$ is $\intR_E\ff\dmu$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:intL}
+\citetbl{
+  \citer{lebesgue1902},
+  \citer{lebesgue1902b} 
+  }
+%---------------------------------------
+Let $\ms$ be a measure space.
+Let $\seq{\ssetP_n}{n\in\Z}$ be sequence of increasingly fine partitions 
+of a set $\setE\subseteq\setX$.
+\defboxp{\indxs{\intL}
+  The \hid{Lebesgue integral operator} $\intL$ of $\ff$ over $\setE\subseteq\setX$
+  on $\ms$ is 
+  \[
+    \intL_\setE  \ff \dmu  \eqd \sum_{y\in\setY} y \mu\brp{\ff^{-1}(y)}
+  \]
+  }
+\end{definition}
+
+
+\begin{figure}[ht]%\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{\tw/1100}
+\begin{picture}(1000,430)(0,-30)
+  %{\color{graphpaper}\graphpaper[20](0,0)(1000,400)}
+  \thicklines
+  \put(   0 ,   0 ){\line(1,0){1000} }%
+  \put(   0 ,   0 ){\line(0,1){400} }%
+  \thicklines
+  \put(   0 , -10 ){\makebox(0,0)[t]{$0$}}%
+  \put( 100 , -10 ){\makebox(0,0)[t]{$1$}}%
+  \put( 200 , -10 ){\makebox(0,0)[t]{$2$}}%
+  \put( 300 , -10 ){\makebox(0,0)[t]{$3$}}%
+  \put( 400 , -10 ){\makebox(0,0)[t]{$4$}}%
+  \put( 500 , -10 ){\makebox(0,0)[t]{$5$}}%
+  \put( 600 , -10 ){\makebox(0,0)[t]{$6$}}%
+  \put( 700 , -10 ){\makebox(0,0)[t]{$7$}}%
+  \put( 800 , -10 ){\makebox(0,0)[t]{$8$}}%
+  \put( 900 , -10 ){\makebox(0,0)[t]{$9$}}%
+  \put(1000 , -10 ){\makebox(0,0)[t]{$10$}}%
+  {\color{blue}%
+    \qbezier(0,50)(300,600)(600,200)%
+    \qbezier(600,200)(800,-67)(1000,400)%
+    }%
+  {\color{red}%
+    \put( 150, 30){\makebox(0,0)[c]{$\leftarrow\Delta x\rightarrow$}}%
+    \put(   0,  0){\line(0,1){ 50}} \put(   0, 50){\line(1,0){100}} \put(   0, 50){\circle*{20}}%
+    \put( 100,  0){\line(0,1){200}} \put( 100,200){\line(1,0){100}} \put( 100,200){\circle*{20}}%
+    \put( 200,  0){\line(0,1){310}} \put( 200,310){\line(1,0){100}} \put( 200,310){\circle*{20}}%
+    \put( 300,  0){\line(0,1){360}} \put( 300,360){\line(1,0){100}} \put( 300,360){\circle*{20}}%
+    \put( 400,  0){\line(0,1){360}} \put( 400,360){\line(1,0){100}} \put( 400,360){\circle*{20}}%
+    \put( 500,  0){\line(0,1){360}} \put( 500,310){\line(1,0){100}} \put( 500,310){\circle*{20}}%
+    \put( 600,  0){\line(0,1){310}} \put( 600,200){\line(1,0){100}} \put( 600,200){\circle*{20}}%
+    \put( 700,  0){\line(0,1){200}} \put( 700,110){\line(1,0){100}} \put( 700,110){\circle*{20}}%
+    \put( 800,  0){\line(0,1){110}} \put( 800,110){\line(1,0){100}} \put( 800,110){\circle*{20}}%
+    \put( 900,  0){\line(0,1){210}} \put( 900,210){\line(1,0){100}} \put( 900,210){\circle*{20}}%
+    \put(1000,  0){\line(0,1){400}} \put(1000,400){\circle*{20}}%
+    %
+    \put(  50 , 60 ){\makebox(0,0)[b]{$\frac{1}{2}$}}
+    \put( 150 ,210 ){\makebox(0,0)[b]{$2$}}
+    \put( 250 ,320 ){\makebox(0,0)[b]{$3$}}
+    \put( 350 ,380 ){\makebox(0,0)[b]{$3\frac{1}{2}$}}
+    \put( 450 ,380 ){\makebox(0,0)[b]{$3\frac{1}{2}$}}
+    \put( 550 ,320 ){\makebox(0,0)[b]{$3$}}
+    \put( 650 ,210 ){\makebox(0,0)[b]{$2$}}
+    \put( 750 ,120 ){\makebox(0,0)[b]{$1$}}
+    \put( 850 ,120 ){\makebox(0,0)[b]{$1$}}
+    \put( 950 ,220 ){\makebox(0,0)[b]{$2$}}
+    }%
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Curve for example \prefpp{ex:int_curve}
+   \label{fig:int_curve}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{example}
+\label{ex:int_curve}
+%---------------------------------------
+Suppose we want to compute the area under the curve in \prefpp{fig:int_curve}
+from $x=0$ to $x=10$.
+This can be accomplished using either Riemann or Lebesgue integration. 
+Riemann integration adds up the areas one by one, starting from $x=0$ and ending 
+with $x=10$ such that
+\begin{align*}
+  \intr_0^{10} 
+    &= \sum_{n=0}^{n=9} x_n \mcom{\mu\set{x\in\setE}{x_n\le x<x_{n+1}}}{$\Delta x=1$}
+  \\&= \sum_{n=0}^{n=9} x_n \cdot 1
+  \\&= \frac{1}{2} + 2 + 3 + 3\frac{1}{2} + 3\frac{1}{2} + 3 + 2 + 1 + 1 + 2
+  \\&= 21\frac{1}{2}
+\end{align*}
+On the other hand, Lebesgue integration first groups together all equal values
+into their own set and then sums the value of each set times the size of the set such that
+\begin{align*}
+  \int_0^{10} 
+    &= \sum_{k=1}^{n=5} y_k \mu\set{x\in\setE}{\ff(x)=y_k}
+  \\&= \mcom{\frac{1}{2}}{$y_1$}  \times 1 + 
+       \mcom{1}{$y_2$}            \times 2 +   
+       \mcom{2}{$y_3$}            \times 3 + 
+       \mcom{3}{$y_4$}            \times 2 + 
+       \mcom{3\frac{1}{2}}{$y_5$} \times 2
+  \\&= 21\frac{1}{2}
+\end{align*}
+Of course in this case and in the case of all other ``well behaved" functions, 
+the two approaches yield the same result.
+\end{example}
+
+
+\begin{figure}
+\centering
+\begin{tabular}{*{11}{c}}
+  $\scriptstyle \seto{ 2}=1$ &
+  $\scriptstyle \seto{ 3}=2$ &
+  $\scriptstyle \seto{ 4}=3$ &
+  $\scriptstyle \seto{ 5}=4$ &
+  $\scriptstyle \seto{ 6}=5$ &
+  $\scriptstyle \seto{ 7}=6$ &
+  $\scriptstyle \seto{ 8}=5$ &
+  $\scriptstyle \seto{ 8}=4$ &
+  $\scriptstyle \seto{10}=3$ &
+  $\scriptstyle \seto{11}=2$ &
+  $\scriptstyle \seto{12}=1$  
+  \\                  &                  &                  &                  &                  & \diceF\diceA &                  &                  &                  &                  &                  
+  \\                  &                  &                  &                  & \diceE\diceA & \diceE\diceB & \diceF\diceB &                  &                  &                  &                  
+  \\                  &                  &                  & \diceD\diceA & \diceD\diceB & \diceD\diceC & \diceE\diceC & \diceF\diceC &                  &                  &                  
+  \\                  &                  & \diceC\diceA & \diceC\diceB & \diceC\diceC & \diceC\diceD & \diceD\diceD & \diceE\diceD & \diceF\diceD &                  &                  
+  \\                  & \diceB\diceA & \diceB\diceB & \diceB\diceC & \diceB\diceD & \diceB\diceE & \diceC\diceE & \diceD\diceE & \diceE\diceE & \diceF\diceE &                  
+  \\ \diceA\diceA & \diceA\diceB & \diceA\diceC & \diceA\diceD & \diceA\diceE & \diceA\diceF & \diceB\diceF & \diceC\diceF & \diceD\diceF & \diceE\diceF & \diceF\diceF
+\end{tabular}
+  \caption{
+    Pair of dice distribution for \prefpp{ex:int_two_dice}
+    \label{fig:int_two_dice}
+    }
+\end{figure}
+
+
+%---------------------------------------
+\begin{example}
+\label{ex:int_two_dice}
+\hspace{1pt}\\
+%---------------------------------------
+\begin{minipage}{6\tw/16}%
+  \begin{tabular}{c|*{6}{c}|c}
+             & \diceA & \diceB & \diceC & \diceD & \diceE & \diceF \\
+    \hline     
+    \diceA &    2     &     3    &    4     &     5    &     6    &     7    \\
+    \diceB &    3     &     4    &    5     &     6    &     7    &     8    \\
+    \diceC &    4     &     5    &    6     &     7    &     8    &     9    \\
+    \diceD &    5     &     6    &    7     &     8    &     9    &    10    \\
+    \diceE &    6     &     7    &    8     &     9    &    10    &    11    \\
+    \diceF &    7     &     8    &    9     &    10    &    11    &    12    \\
+  \end{tabular}%
+\end{minipage}%
+\hfill
+\begin{minipage}{9\tw/16}%
+Suppose we want to find the sum of all possible outcomes of the sum of a pair of dice.
+All the possible outcomes are summarized in the table at the left.
+Riemann integration would start in the upper left hand corner (\diceA\diceA)
+and sum across each row such that:
+\begin{align*}
+  \intr_{\setE} \ff(x) \dx
+    &= \sum_{n=1}^{36} \ff(x_n) \cdot 1
+  \\&= \text{\diceA\diceA} + \text{\diceA\diceB} + 
+       \text{\diceA\diceC} + \cdots +
+       \text{\diceF\diceE} + \text{\diceF\diceF}
+  \\&= \mcom{2 + 3 + 4 + \cdots + 11 + 12}{36 terms}
+  \\&= 250
+\end{align*}
+\end{minipage}\\
+Lebesgue integration, on the other hand, groups like values into sets and 
+thus actually adds diagonally---because like values occur along diagonal lines.
+This organization of like values is illustrated in \prefpp{fig:int_two_dice}
+and calculated below:
+\begin{align*}
+  \int_{\setE} \ff \dd{\mu}
+    &= \sum_{k=2}^{k=12} k \mu\set{\text{sum of dice pair}}{\text{sum }=k}
+  \\&= \mcom{2\times1 + 3\times2 +  4\times3 +  5\times4 + 6\times5 + 7\times6 + 
+       8\times5 + 9\times4 + 10\times3 + 11\times2 + 12\times1}{11 terms}
+  \\&= 250 
+\end{align*}
+\end{example}
+
+%---------------------------------------
+\begin{example}[Salt and pepper function/Dirichlet monster]
+\citetbl{
+  \citerp{jahnke2003}{263},
+  \citor{dirichlet1829},
+  \citor{dirichlet1829b} 
+  }
+\index{salt and pepper function}
+\index{Dirichlet monster}
+\index{functions!salt and pepper}
+\index{functions!Dirichlet monster}
+%---------------------------------------
+\exbox{
+  \ff(x) \eqd \left\{\begin{array}{ll}
+    0 & \text{for $x$ rational} \\
+    1 & \text{for $x$ irrational}
+  \end{array}\right.
+  \qquad\implies\qquad
+  \text{$\ff$ is not Riemann integrable}
+  }
+\end{example}
+
+%---------------------------------------
+\begin{definition}
+\label{def:spLLR}
+%---------------------------------------
+Let $\int_\setA \ff \dmu$ be the \structe{Lebesgue integral} on a \structe{measure space} $\ms$.
+\defbox{\begin{array}{M}
+  The space $\spLLR$ is defined as
+  \\\indentx$\ds\set{\ff\in\clFrr}{\int_\R \abs{\ff(x)}^2 \dmu < \infty}$
+\end{array}}
+\end{definition}
+
+%=======================================
+%\section{Fredholm integral operators}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:op_int}
+\citetbl{
+  \citerp{michel1993}{425}
+  }
+\index{Fredholm integral equation of the first kind|textbf}
+%---------------------------------------
+\defbox{\begin{array}{l@{\qquad}l}
+  \mc{2}{l}{\text{A \hid{Fredholm operator} $\opK$ is defined as}}
+  \\&
+  \brs{\opK\ff}(t) 
+  \eqd 
+  \mcom{\int_a^b \mcom{\kappa(t,s)}{kernel} \ff(s) \dd{s} }
+       {Fredholm integral equation of the first kind \footnotemark}
+  \qquad \forall \ff\in \spL_2([a,b])
+  \end{array}}
+\footnotetext{
+   The equation $\int_u \kappa(t,s) \ff(s) \dd{s}$ is a 
+   \hid{Fredholm integral equation of the first kind} and
+   $\kappa(t,u)$ is the {\bf kernel} of the equation.
+   References: \\
+   \begin{tabular}{l}
+     \citer{fredholm1900} \\
+     \citerp{fredholm1903}{365} \\
+     \citerp{michel1993}{97} \\
+     \citerp{keener}{101}
+   \end{tabular}
+   }
+\end{definition}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Examples of \prop{Fredholm operators} include
+\[
+\begin{array}{llrclrcl}
+  1. & \text{Fourier Transform}
+     & [\opFT \fx](f) &=& \int_t \fx(t) e^{-i2\pi ft}\dt 
+     & \kappa(t,f)    &=& e^{-i2\pi ft}
+\\
+  2. & \text{Inverse Fourier Transform}
+     & [\opFTi \Fx](t) &=& \int_f \Fx(f) e^{i2\pi ft}\df 
+     & \kappa(f,t)    &=& e^{i2\pi ft}
+\\
+  3. & \text{Laplace operator}
+     & [\opL \fx](s) &=& \int_t \fx(t) e^{-st}\dt 
+     & \kappa(t,s)   &=& e^{-st}
+\\
+  4. & \text{autocorrelation operator}
+     & [\opR \fx](t) &=& \int_s R(t,s) \fx(s) \dds 
+     & \kappa(t,s)   &=& R(t,s) %\text{ (autocorrelation function)}
+\end{array}
+\]
+\end{example}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:intop_KkKk}
+%---------------------------------------
+Let $\opK$ be a \prop{Fredholm operator} with kernel $\kappa(t,s)$ and adjoint $\opKa$.
+\formbox{
+  \brs{\opK\ff}(t) = \int_\setA \kappa(t,s) \ff(s) \dds
+  \qquad\iff\qquad
+  \brs{\opKa\ff}(t) = \int_\setA \kappa^\ast(s,t) \ff(s) \dds
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \brs{\opK\ff}(t) 
+     &= \int_\setA \kappa(t,s) \ff(s) \dds
+   \\\iff
+   \inprod{\brs{\opK \ff}(t)}{\fg(t)}
+     &= \inprod{\int_s \kappa(t,s) \ff(s) \dds}{\fg(t)}
+     && \text{by left hypothesis}
+   \\&= \int_s \ff(s) \inprod{\kappa(t,s)  }{\fg(t)} \dds
+     && \text{by additivity property of $\inprodn$ (\prefpo{def:inprod})}
+   \\&= \int_s \ff(s) \inprod{\fg(t)}{\kappa(t,s)}^\ast \dds
+     && \text{by conjugate symmetry property of $\inprodn$ (\prefpo{def:inprod})}
+   \\&= \inprod{ \ff(s) }{\inprod{\fg(t)}{\kappa(t,s)} }
+     && \text{by local definition of $\inprodn$}
+   \\&= \inprod{ \ff(s) }{\mcom{\int_t \kappa^\ast(t,s) \fg(t) \dt}{$\brs{\opKa\fg}(s)$} }
+     && \text{by local definition of $\inprodn$}
+   \\\iff
+   \brs{\opKa\fg}(s) 
+     &= \int_\setA \kappa^\ast(t,s) \fg(t) \dt
+     && \text{by right hypothesis}
+   \\\iff
+   \brs{\opKa\fg}(\sigma) 
+     &= \int_\setA \kappa^\ast(\tau,\sigma) \fg(\tau) \dtau
+     && \text{by change of variable: $\tau=t,\, \sigma=s$}
+   \\\iff
+   \brs{\opKa\ff}(t) 
+     &= \int_\setA \kappa^\ast(s,t) \ff(s) \dds
+     && \text{by change of variable: $t=\sigma,\, s=\tau,\, \ff=\fg$}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:intop_KKkk}
+\citetbl{
+  \citerp{michel1993}{430}
+  }
+%---------------------------------------
+Let $\opK$ be an \prop{Fredholm operator} with kernel $\kappa(t,s)$ and adjoint $\opKa$.
+\formbox{
+  \mcom{\opK=\opKa}{$\opK$ is self-adjoint}
+  \qquad\iff\qquad
+  \mcom{\kappa(t,s) = \kappa^\ast(s,t)}{kernel is \prop{conjugate symmetric}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opK = \opKa
+    &\iff \int_\setA \kappa(t,s) \ff(s) \dds = \int_\setA \kappa^\ast(s,t) \ff(s) \dds
+    &&    \text{by \prefp{thm:intop_KkKk}}
+  \\&\iff \kappa(t,s) =  \kappa^\ast(s,t) 
+\end{align*}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}[Mercer's Theorem]
+\label{thm:mercer}
+\citetbl{
+  \citerp{gohberg}{198},
+  \citerpp{courant}{138}{140},
+  \citerp{mercer1909}{439}
+  }
+\index{Mercer's Theorem}
+\index{theorems!Mercer's Theorem}
+%---------------------------------------
+Let $\opK$ be an \prop{Fredholm operator} with kernel $\kappa(t,s)$ and
+eigensystem $\seq{(\lambda_n,\phi_n(t))}{n\in\Z}$.
+\formbox{
+  \left.\begin{array}{ll}
+    1.& \mcom{\int_a^b \int_a^b \kappa(t,s) \ff(t) \ff^\ast(s) \ds\dt \ge 0}{positive} \quad \text{and }\\
+    2.& \kappa(t,s) \text{ is continuous on } [a,b]\times[a,b]
+  \end{array}\right\}
+  \implies
+  \left\{\begin{array}{ll}
+    1.& \kappa(t,s) = \sum_n \lambda_n \fphi_n(t) \fphi_n^\ast(s) \quad\text{and}\\
+    2.& \kappa(t,s) \text{ converges absolutely and} \\
+      & \text{uniformly on $[a,b]\times[a,b]$}
+  \end{array}\right.
+  }
+\end{theorem}
+\begin{proof}
+
+\end{proof}

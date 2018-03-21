@@ -1,0 +1,236 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%--------------------------------------
+\chapter{Matrix Algebra}
+\label{app:ma}
+\index{matrix algebra}
+%--------------------------------------
+%\paragraph{Key results:}
+%\formbox{\begin{array}{rcl@{\qquad}D@{\qquad}DD}
+%     \pderiv{}{\vx}{\left(A\vx\right)}          &=& A^T   
+%     &
+%     & \pref{thm:mc_Ax} & \prefpo{thm:mc_Ax}
+%  \\ \pderiv{}{\vx}{\left(\vx^T B\right)}       &=& B     
+%     & 
+%     & \pref{thm:mc_Ax} & \prefpo{thm:mc_Ax}
+%  \\ \pderiv{}{\vx}{\left( \vx^T A \vx \right)} &=& A \vx  + A^T \vx 
+%     & (quadratic form)
+%     & \pref{thm:mc_xAx} & \prefpo{thm:mc_xAx}
+%  \\ \pderiv{}{\vx}{(\vx ^T\vx )}               &=& 2\vx  
+%     & (quadratic form, $\opA=\opI$)
+%     & \pref{thm:mc_xAx} & \prefpo{thm:mc_xAx}
+%  \\ \pderiv{}{\vx}\vz^T\vy &=& \pderiv{\vz}{\vx} \vy + \pderiv{\vy}{\vx} \vz 
+%     & (product rule)
+%     & \pref{thm:mc_product_rule} & \prefpo{thm:mc_product_rule}
+%  \\ \pderiv{\vz}{\vx} &=& \pderiv{\vy}{\vx} \pderiv{\vz}{\vy}
+%     & (chain rule)
+%     & \pref{thm:mc_chain_rule} & \prefpo{thm:mc_chain_rule}
+%\end{array}}
+
+
+%=======================================
+\section{Matrices}
+%=======================================
+%\showSolution
+%--------------------------------------
+\begin{definition}
+\label{def:ma_matrix}
+%--------------------------------------
+\defboxp{An $n \times m$ \hid{matrix} over a set $\setX$ is defined as\\
+  $\vA \eqd
+    \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      {x_{11}} & {x_{12}} & \cdots & {x_{1m}} \\
+      {x_{21}} & {x_{22}} & \cdots & {x_{2m}} \\
+      \vdots   & \vdots   & \ddots & \vdots   \\
+      {x_{n1}} & {x_{n2}} & \cdots & {x_{nm}} 
+    \end{array}}
+    }{$n\times m$ matrix}
+    \qquad\qquad
+    \forall x_{ij}\in\setX
+  $
+  \\
+  An element in $\setX$ is called a \hid{scalar}. \\
+  If $m=1$, then the matrix $\vA$ is also called a \hid{vector} over $\setX$. \\
+  If both $m=n=1$, then the matrix $\vA$ is a \hid{scalar} in $\setX$.
+  }
+\end{definition}
+
+
+
+%--------------------------------------
+\begin{example}
+\label{ex:ma_matrix}
+%\footnote{\url{http://en.wikipedia.org/wiki/Jacobian}}
+%--------------------------------------
+\[
+    \mcom{\brs{\begin{array}{*{4}{>{\ds}c}}
+      {x_{11}} & {x_{12}} & \cdots & {x_{1m}} \\
+      {x_{21}} & {x_{22}} & \cdots & {x_{2m}} \\
+      \vdots   & \vdots   & \ddots & \vdots   \\
+      {x_{n1}} & {x_{n2}} & \cdots & {x_{nm}} 
+    \end{array}}}{matrix}
+    \hspace{10mm}
+    \mcom{\brs{\begin{array}{*{1}{>{\ds}c}}
+      {x_{1}} \\
+      {x_{2}} \\
+      \vdots  \\
+      {x_{n}} 
+    \end{array}}}{vector}
+    \hspace{10mm}
+    \mcom{\brs{\begin{array}{*{1}{>{\ds}c}}
+      {x_{1}} 
+    \end{array}}}{scalar}
+\]
+\end{example}
+
+
+%--------------------------------------
+\begin{definition}
+\label{def:ma_smpy}
+%--------------------------------------
+Let $F$ be a field.
+\defboxp{\hid{Scalar multiplication} of a scalar $\alpha\in F$ and $\vA$ an $n \times m$ \hid{matrix} over a $F$ is defined as \\
+  $\begin{array}{rc cccC}
+  \alpha\vA 
+    &\eqd&
+    \alpha \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      {x_{11}} & {x_{12}} & \cdots & {x_{1m}} \\
+      {x_{21}} & {x_{22}} & \cdots & {x_{2m}} \\
+      \vdots   & \vdots   & \ddots & \vdots   \\
+      {x_{n1}} & {x_{n2}} & \cdots & {x_{nm}} 
+    \end{array}}
+    }{$n\times m$ matrix}
+   &\eqd&
+    \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      {\alpha x_{11}} & {\alpha x_{12}} & \cdots & {\alpha x_{1m}} \\
+      {\alpha x_{21}} & {\alpha x_{22}} & \cdots & {\alpha x_{2m}} \\
+      \vdots   & \vdots   & \ddots & \vdots   \\
+      {\alpha x_{n1}} & {\alpha x_{n2}} & \cdots & {\alpha x_{nm}} 
+    \end{array}}
+    }{$n\times m$ matrix}
+    &
+    \forall x_{ij}\in\setX
+  \end{array}$
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{example}
+\label{ex:ma_smpy}
+%--------------------------------------
+  $\begin{array}{cccC}
+    10 \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      1 & 2 & 3 \\
+      4 & 5 & 6 
+    \end{array}}
+    }{$2\times 3$ matrix}
+   &=&
+    \solution{
+    \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      10 & 20 & 30 \\
+      40 & 50 & 60 
+    \end{array}}
+    }{$2\times 3$ matrix}
+    }
+  \end{array}$
+\end{example}
+
+%--------------------------------------
+\begin{definition}
+\label{def:ma_matrix}
+%--------------------------------------
+Let $F$ be a field.
+\defboxp{\hid{Matrix multiplication} of an $n \times m$ \hid{matrix} $\vA$ over a $F$
+         and an $m \times n$ \hid{matrix} $\vB$ over a $F$ is defined as\\
+  \begin{align*}
+  \vA\vB
+    &\eqd
+    \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      {x_{11}} & {x_{12}} & \cdots & {x_{1m}} \\
+      {x_{21}} & {x_{22}} & \cdots & {x_{2m}} \\
+      \vdots   & \vdots   & \ddots & \vdots   \\
+      {x_{n1}} & {x_{n2}} & \cdots & {x_{nm}} 
+    \end{array}}
+    }{$n\times m$ matrix}
+    \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      {y_{11}} & {y_{12}} & \cdots & {y_{1n}} \\
+      {y_{21}} & {y_{22}} & \cdots & {y_{2n}} \\
+      \vdots   & \vdots   & \ddots & \vdots   \\
+      {y_{m1}} & {y_{m2}} & \cdots & {y_{mn}} 
+    \end{array}}
+    }{$m\times n$ matrix}
+    &&\forall x_{ij}\in\setX
+   \\&\eqd
+    \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      x_{11}y_{11}+\cdots+x_{1m}y_{m1} & x_{11}y_{12}+\cdots+x_{1m}y_{m2} & \cdots & x_{11}y_{1n}+\cdots+x_{1m}y_{mn} \\
+      x_{21}y_{11}+\cdots+x_{2m}y_{m1} & x_{21}y_{12}+\cdots+x_{2m}y_{m2} & \cdots & x_{21}y_{1n}+\cdots+x_{2m}y_{mn} \\
+      \vdots   & \vdots   & \ddots & \vdots   \\
+      x_{n1}y_{11}+\cdots+x_{nm}y_{m1} & x_{n1}y_{12}+\cdots+x_{nm}y_{m2} & \cdots & x_{n1}y_{1n}+\cdots+x_{nm}y_{mn}
+    \end{array}}
+    }{$n\times n$ matrix}
+    &&\forall x_{ij}\in\setX
+  \end{align*}
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{example}
+\label{ex:ma_AB}
+%--------------------------------------
+  $\begin{array}{cccC}
+    \mcom{
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      1 & 2 & 3 \\
+      4 & 5 & 6 
+    \end{array}}
+    }{$2\times 3$ matrix}
+    \mcom{
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      1 & 2 & 3 & 4 \\
+      5 & 6 & 7 & 8 \\
+      9 & 10& 11& 12
+    \end{array}}
+    }{$3\times 4$ matrix}
+   &=&
+    \solution{
+    \mcom{
+    %\renewcommand{\arraystretch}{2}
+    \brs{\begin{array}{*{4}{>{\ds}c}}
+      38 &  44 &  50 &  56 \\
+      83 &  98 & 113 & 128
+    \end{array}}
+    }{$2\times 4$ matrix}
+    }
+  \end{array}$
+\end{example}
+
+
+%=======================================
+\section{Gaussian Elimination}
+%=======================================
+
+
+
+
+
+
+

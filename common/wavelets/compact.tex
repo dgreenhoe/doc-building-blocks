@@ -1,0 +1,608 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Wavelets with Compact Support}
+%======================================
+
+
+
+%=======================================
+\section {Using simultaneous equations to compute scaling coefficients}
+%=======================================
+The scaling coefficients can be directly computed using
+simultaneous equations generated from the following 
+necessary conditions. \cittrpp{vidakovic}{92}{93}
+They can be solved using a symbolic equation software package 
+\footnote{
+\begin{tabular}[t]{lll}
+  {\em Maxima}\texttrademark      & \url{http://maxima.sourceforge.net/}  & free and open source   \\
+  {\em Macsyma}\texttrademark     & \url{http://www.scientek.com/macsyma/mxmain.htm} & a very non-free relative of {\em Maxima}\\
+  {\em MuPAD}\texttrademark       & \url{http://www.mupad.de/}            & 30 day free trial   \\
+  {\em Maple}\texttrademark       & \url{http://www.maplesoft.com/} & \\
+  {\em Mathematica}\texttrademark & \url{http://www.wolfram.com/} & 
+  \end{tabular}
+  }
+or by hand.
+\[\begin{array}{llcllll}
+  1. & \ds\sum_n  h_n   &=& \sqrt{2} 
+     & \text{(admissiblility condition)}
+     & \text{\pref{thm:admiss}}
+     & \text{page~\pageref{thm:admiss}}
+\\
+\\
+  2. & \ds\sum_m h_m \fh^\ast_{m-2n} &=& \kdelta_n
+     & \text{(quadrature condition)}
+     & \text{\pref{thm:quadcon}}
+     & \text{page~\pageref{thm:quadcon}}
+\\
+\\
+  3. & \ds\sum_m (-1)^m m^p  h_m   &=& 0
+     & \text{(vanishing $p$th moment)}
+     & \text{\pref{thm:vanish}} 
+     & \text{page~\pageref{thm:vanish}}
+\end{array}\]
+
+Note that the ``zero at $z=-1$" constraint 
+(\pref{thm:zero_unity_evenodd} page~\pageref{thm:zero_unity_evenodd})
+is just the vanishing 0th moment (and hence included in 3. for $p=0$).
+Also, the ``partition of unity" and ``even-odd" constraints 
+are, by the same theorem, equivalent  to the 
+``zero at $z=-1$" constraint.
+
+
+%=======================================
+\subsection {Simultaneous system of 2 coefficients}
+\label{sec:sim_two}
+%=======================================
+Several methods can be used to compute the values of the 
+two scaling coefficient case.
+All of the methods use the admissibility equation plus one other equation.
+All of these methods yield the same result.
+That is, there is no degrees of freedom for the two scaling coefficient
+case.
+\exbox{\begin{array}{r|l}
+  n  &  h_n  \\
+  \hline
+  0  & \ds \frac{1}{\sqrt{2}}  \\
+  1  & \ds \frac{1}{\sqrt{2}}
+\end{array}}
+
+\begin{enumerate}
+\item Admissibility and 1 vanishing moment constraints:\\
+\begin{align*}
+  h_0 + h_1 &= \sqrt{2}    &&\text{(admissibility equation)} \\
+  h_0 - h_1 &= 0           &&\text{(zero at $-1$ equation)}  \\
+  \\
+  2h_0 &= \sqrt{2}         &&\text{(add two equations together)}\\
+  2h_1 &= \sqrt{2}         &&\text{(subtract second from first)} \\
+  \\
+  h_0 &= \frac{1}{\sqrt{2}} \\
+  h_1 &= \frac{1}{\sqrt{2}} 
+\end{align*}
+
+
+\item Admissibility and partition of unity with $\int_t\phi(t)\dt=1$ constraints:\\
+By \pref{thm:zero_unity_evenodd} (page~\pageref{thm:zero_unity_evenodd}),
+this is equivalent to ``1." above.
+
+\item Admissibility and orthogonal quadrature constraints:
+\begin{align*}
+  h_0 + h_1 &= \sqrt{2}    &&\text{(admissibility constraint)} \\
+  h_0^2 + h_1^2 &= 1       &&\text{(quadrature constraint)}  \\
+  \\
+  h_0^2 + (\sqrt{2}-h_0)^2        &= 1  \\
+  h_0^2 + (h_0^2 -2\sqrt{2}h_0+2) &= 1  \\
+  2h_0^2 + -2\sqrt{2}h_0+1        &= 0  
+\end{align*}
+\begin{align*}
+  h_0 & = \frac{2\sqrt{2} \pm \sqrt{8-8}}{4}  
+      &&= \frac{2\sqrt{2}}{4}  
+      &&= \frac{1}{\sqrt{2}}  
+      \\
+  h_1 &= \sqrt{2} - \frac{1}{\sqrt{2}} 
+      &&= \frac{1}{\sqrt{2}}  
+\end{align*}
+
+\end{enumerate}
+
+
+
+%=======================================
+\subsection {Simultaneous system of 4 coefficients}
+\label{sec:sim_four}
+%=======================================
+\begin{proof}
+\begin{enumerate}
+
+\item Solution using admissibility constraint, one quadrature constraint, and two vanishing moment constraints:
+
+\begin{enumerate}
+\item Set of simultaneous equations:
+\[\begin{array}{*{9}{r}l}
+  h_0      &+& h_1      &+& h_2   &+& h_3   &=& \sqrt{2}      
+  &\text{(admissibility)} \\
+  h_0      &-& h_1      &+& h_2   &-& h_3   &=& 0          
+  &\text{(vanishing 0th moment, partition of unity, zero at $-1$)} \\
+           &-& h_1      &+& 2h_2  &-&3h_3   &=& 0
+  &\text{(vanishing 1st moment)} \\
+  h_0^2    &+& h_1^2    &+& h_2^2 &+& h_3^2 &=& 1                  
+  &\text{($m=0$ orthonormal quadrature condition)} \\
+\end{array}\]
+
+\item Solve the 3 linear equations in terms of $h_3$:
+\begin{align*}
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  1 &  1 &  1 & \sqrt{2}   \\
+    1 & -1 &  1 & -1 & 0          \\
+    0 & -1 &  2 & -3 & 0
+\end{array}\right]
+&\rightarrow&
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  1 &  1 &  1 & \sqrt{2}   \\
+    0 & -2 &  0 & -2 &-\sqrt{2}   \\
+    0 & -1 &  2 & -3 & 0          
+\end{array}\right]
+&\rightarrow&
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  0 &  3 & -2 & \sqrt{2}   \\
+    0 &  0 & -4 &  4 &-\sqrt{2}   \\
+    0 &  1 & -2 &  3 & 0          
+\end{array}\right]
+&\rightarrow&
+\\ 
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  0 &  3 & -2 & \sqrt{2}   \\
+    0 &  1 & -2 &  3 & 0          \\
+    0 &  0 &  1 & -1 & \frac{\sqrt{2}}{4}
+\end{array}\right]
+&\rightarrow&
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  0 &  0 &  1 & \frac{\sqrt{2}}{4}   \\
+    0 &  1 &  0 &  1 & \cwt    \\
+    0 &  0 &  1 & -1 & \frac{\sqrt{2}}{4}
+\end{array}\right]
+\end{align*}
+\begin{align*}
+  h_0 &= \frac{\sqrt{2}}{4} - h_3  \\
+  h_1 &= \cwt  - h_3  \\
+  h_2 &= \frac{\sqrt{2}}{4} + h_3  \\
+\end{align*}
+
+\item Solve the forth quadratic equation in terms of $h_3$:
+\begin{align*}
+  1 
+    &=  \left(\frac{\sqrt{2}}{4}-h_3\right)^2
+    &&+ \left(\cwt -h_3\right)^2
+    &&+ \left(\frac{\sqrt{2}}{4}+h_3\right)^2
+    &&+ h_3^2 \hs{1cm}
+  \\&=  \left(\frac{1}{8}-\sqrt{2}{2}h_3+h_3^2\right)
+    &&+ \left(\frac{1}{2}-\sqrt{2}h_3+h_3\right)
+    &&+ \left(\frac{1}{8}+\cwt +h_3^2\right)
+    &&+ h_3^2 \hs{1cm}
+  \\&=  4h_3^2 -\sqrt{2}h_3 + \frac{3}{4}
+\\
+  4h_3^2 -\sqrt{2}h_3 - \frac{1}{4} &=0
+\\
+  h_3 
+    &= \frac{\sqrt{2}\pm\sqrt{2+4}}{8}
+  \\&= \frac{\sqrt{2}\pm\sqrt{6}}{8}
+  \\&= \frac{\sqrt{2}}{8}(1\pm\sqrt{3})
+\end{align*}
+
+\item The results:
+\exbox{\begin{array}{r*{4}{cl}}
+  h_3 &=& \frac{\sqrt{2}}{8}(1-\sqrt{3})  
+\\
+  h_2 &=& \frac{\sqrt{2}}{4} + h_3  
+      &=& \frac{\sqrt{2}}{4} + \frac{\sqrt{2}}{8}(1-\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(2+1-\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(3-\sqrt{3})
+\\      
+  h_1 &=& \cwt  - h_3
+      &=& \cwt  - \frac{\sqrt{2}}{8}(1-\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(4-1+\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(3+\sqrt{3})
+\\      
+  h_0 &=& \frac{\sqrt{2}}{4} - h_3  
+      &=& \frac{\sqrt{2}}{4} - \frac{\sqrt{2}}{8}(1-\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(2-1+\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(1+\sqrt{3})
+\end{array}}
+
+\item Solution using {\em Maxima}\texttrademark \hspace{1ex}(2 sets of solutions): \\
+{\scriptsize
+\begin{verbatim}
+(%i36) solve([h0+h1+h2+h3=sqrt(2),h0-h1+h2-h3=0,-h1+2*h2-3*h3=0,h0^2+h1^2+h2^2+h3^2=1],[h0,h1,h2,h3]);
+                SQRT(6) - SQRT(2)         SQRT(2) SQRT(3) - 3 SQRT(2)
+(%o36) [[h0 = ------------------, h1 = ----------------------------, 
+                       8                             8
+
+     SQRT(2) SQRT(3) + 3 SQRT(2)       SQRT(2) SQRT(3) + SQRT(2)
+h2 =---------------------------, h3 =-------------------------], 
+                 8                               8
+
+      SQRT(6) + SQRT(2)	      SQRT(2) SQRT(3) + 3 SQRT(2)
+[h0 =-----------------, h1 =---------------------------, 
+              8                           8
+
+       SQRT(2) SQRT(3) - 3 SQRT(2)         SQRT(2) SQRT(3) - SQRT(2)
+h2 = ----------------------------, h3 = --------------------------]]
+                  8                                   8
+\end{verbatim}
+}
+\end{enumerate}
+
+
+
+
+\item Solution using admissibility constraint, two quadrature constraints, and one vanishing moment constraint:
+\begin{enumerate}
+\item Set of simultaneous equations:
+\[\begin{array}{*{9}{r}l}
+  h_0      &+& h_1      &+& h_2   &+& h_3   &=& \sqrt{2}      
+  &\text{(admissibility)} 
+  \\
+  h_0      &-& h_1      &+& h_2   &-& h_3   &=& 0          
+  &\text{(vanishing 0th moment, partition of unity, zero at $-1$)} 
+  \\
+  h_0^2    &+& h_1^2    &+& h_2^2 &+& h_3^2 &=& 1                  
+  &\text{($m=0$ orthonormal quadrature condition)} 
+  \\
+  \fh_0\fh_2 &+& \fh_1\fh_3 & &         & &         &=& 0
+  &\text{($m=1$ orthonormal quadrature condition)} 
+\end{array}\]
+
+\item These equations are linearly independent, however they are 
+      still dependent\footnote{
+        Many thanks to X\=in L\'in X\`ie for pointing this out to me!!!
+%        \begin{tabular}[t]{ccc}
+%          {\MiQ\cH225} & \z{\MgQ\cH106} & \z{\MjQ\cH204}  \\
+%          X\`ie        & X\=in          & L\'in           \\
+%          to thank     & glad           & continuous heavy rain
+%        \end{tabular}
+        }
+      as shown next:
+  \begin{align*}
+    &  [(h_0+h_1+h_2+h_3)+(h_0-h_1+h_2-h_3)]^2+[(h_0+h_1+h_2+h_3)-(h_0-h_1+h_2-h_3)]^2
+  \\&= [2h_0+2h_2]^2+[2h_1+2h_3]^2
+  \\&= 4[h_0+h_2]^2+4[h_1+h_3]^2
+  \\&= 4[h_0^2+2h_0h_2+h_2^2]+4[h_1^2+2h_1h_3+h_3^2]
+  \\&= 4[h_0^2 + h_1^2 + h_2^2 + h_3^2 + 2h_0h_2 + 2h_1h_3]
+  \\&= 4(h_0^2 + h_1^2 + h_2^2 + h_3^2) + 8(h_0h_2 + h_1h_3)
+  \\ \implies & \text{The last two equations are (non-linearly) dependent on the first two.}
+  \end{align*}
+
+\item Because of this dependence, the system of equations has one degree of freedom.
+
+\item Solutions using {\em Maxima}\texttrademark \\
+  \begin{verbatim}
+    solve([h0+h1+h2+h3=sqrt(2),h0-h1+h2-h3=0,h0^2+h1^2+h2^2+h3^2=1,h0*h2+h1*h3=0],
+          [h0,h1,h2,h3]
+         );
+  \end{verbatim}
+\begin{enumerate}
+\item {\em Maxima} first solution:
+  \begin{align*}
+    h_1 &= \frac{\sqrt{2}}{4}\left(\sqrt{-8h_0^2+4\sqrt{2}h_0+1}+1\right)
+  \\h_2 &= \frac{2h_0-\sqrt{2}}{2}
+  \\h_3 &= \frac{\sqrt{2}}{4}\left(\sqrt{-8h_0^2+4\sqrt{2}h_0+1}-1\right)
+  \end{align*}
+
+\item {\em Maxima} second solution:
+  \begin{align*}
+    h_1 &= \frac{\sqrt{2}}{4}\left(\sqrt{-8h_0^2+4\sqrt{2}h_0+1}-1\right)
+  \\h_2 &= -\frac{2h_0-\sqrt{2}}{2}
+  \\h_3 &= \frac{\sqrt{2}}{4}\left(\sqrt{-8h_0^2+4\sqrt{2}h_0+1}+1\right)
+  \end{align*}
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%=======================================
+\subsection {Simultaneous system of 6 coefficients}
+\label{sec:sim_six}
+%=======================================
+\begin{proof}
+\begin{enumerate}
+
+\item Solution using admissibility constraint, two quadrature constraints, 
+      and three vanishing moment constraints:
+
+\begin{enumerate}
+\item Set of simultaneous equations:
+\[\begin{array}{*{13}{r}l}
+  h_0 &+& h_1 &+& h_2 &+& h_3 &+& h_4 &+& h_5   &=& \sqrt{2}      
+  &\text{(admissibility)} 
+  \\
+  h_0 &-& h_1 &+& h_2 &-& h_3 &+& h_4 &-& h_5 &=& 0          
+  &\text{(vanishing 0th moment, partition of unity, zero at $-1$)} 
+  \\
+      &-& h_1 &+& 2h_2 &-& 3h_3 &+& 4h_4 &-& 5h_5   &=& 0
+  &\text{(vanishing 1st moment)} 
+  \\
+      &-& h_1 &+& 4h_2 &-& 9h_3 &+& 16h_4 &-& 25h_5  &=& 0
+  &\text{(vanishing 2nd moment)} 
+  \\
+  h_0^2 &+& h_1^2 &+& h_2^2 &+& h_3^2 &+& h_4^2 &+& h_5^2 &=& 1                  
+  &\text{($m=0$ orthonormal quadrature condition)} 
+  \\
+  h_0h_2 &+& h_1h_3 &+& h_2h_4 &+& h_3h_5  &&  &&    &=& 0
+  &\text{($m=1$ orthonormal quadrature condition)}
+%  \\
+%  h_0h_4 &+& h_1h_5 &&  &&  &&    &=& 0  
+%  &\text{($m=2$ orthonormal quadrature condition)}
+\end{array}\]
+
+\item Solutions using {\em Maxima}\texttrademark \\
+  \begin{verbatim}
+    solve([h0+h1+h2+h3+h4+h5=sqrt(2),h0-h1+h2-h3+h4-h5=0,
+           -h1+2*h2-3*h3+4*h4-5*h5=0, -h1+4*h2-9*h3+16*h4-25*h5=0,
+           h0^2+h1^2+h2^2+h3^2+h4^2+h5^2=1,h0*h2+h1*h3+h2*h4+h3*h5=0],
+          [h0,h1,h2,h3,h4,h5]
+         );
+  \end{verbatim}
+  
+  No solutions at this time. \problem
+\end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%=======================================
+\section {Pollen Parameterized Wavelets}
+%=======================================
+David Pollen showed that there are an uncountably infinite number of 
+compactly supported scaling functions (and wavelets) available for 
+coefficient length 4 and greater.
+This is stated in \pref{thm:pollen},
+demonstrated in Example~\ref{ex:pollen4} and 
+illustrated in Figure~\ref{fig:pollen4}.
+%---------------------------------------
+\begin{theorem}[Pollen parameterization theorem]
+\label{thm:pollen}
+\citetbl{
+  \citerp{ak}{3}
+  }
+\index{Pollen parameterization theorem}
+\index{theorems!Pollen parameterization theorem}
+%---------------------------------------
+\formbox{
+\begin{aligned}
+  \Zh(z) 
+    &= \cwt 
+       \left[-1 \quad 1 \right]
+       E(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\[1ex]
+    & \text{where}
+  \\[2ex]
+  E(z)
+    &= \begin{cases}
+         U_1 U_2 \dotsm U_{2k}    & \text{for $ h_n $ of length $4k+2$, $k\in\Znn$} \\
+         U_1 U_2 \dotsm U_{2k+1}  & \text{for $ h_n $ of length $4k+4$, $k\in\Znn$}
+       \end{cases}
+  \\
+  U(z)
+    &= \left[\begin{array}{rr}
+         \fu(z)      & \fv(z) \\
+        -\fv(z^{-1}) & \fu(z^{-1})
+       \end{array}\right]
+  \\
+  \fu(z) &= \frac{1}{2}\left[(1-\cos\theta)z + (1+\cos\theta) \right]
+  \\
+  \fv(z) &= \frac{1}{2}\left[(-\sin\theta) + (\sin\theta)z^{-1} \right]
+\end{aligned}
+}
+\end{theorem}
+\begin{proof}
+No proof at this time.
+\end{proof}
+
+%---------------------------------------
+\begin{example}[Pollen length-4 scaling coefficients]
+\label{ex:pollen4}
+\citetbl{
+  \citerp{ak}{3}\\
+  \citerp{burrus}{66}
+  }
+%---------------------------------------
+\exbox{\begin{array}{r|l}
+  n  &  h_n  \\
+  \hline
+  0  & \ds \frac{\sqrt{2}}{4}(1-\cos\theta+\sin\theta)  \\
+  1  & \ds \frac{\sqrt{2}}{4}(1+\cos\theta+\sin\theta)  \\ 
+  2  & \ds \frac{\sqrt{2}}{4}(1+\cos\theta-\sin\theta)  \\ 
+  3  & \ds \frac{\sqrt{2}}{4}(1-\cos\theta-\sin\theta)
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \Zh(z) 
+    &= \cwt 
+       \left[-1 \quad 1 \right]
+       E(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       U(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       \left[\begin{array}{rr}
+         \fu(z^2)      & \fv(z^2) \\
+        -\fv(z^{-2})   & \fu(z^{-2})
+       \end{array}\right]
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       \left[\begin{array}{cc}
+           \frac{1}{2}\left[(1-\cos\theta)z^2 + (1+\cos\theta) \right]
+       &   \frac{1}{2}\left[(-\sin\theta) + (\sin\theta)z^{-2} \right]
+       \\ -\frac{1}{2}\left[(-\sin\theta) + (\sin\theta)z^{2} \right]
+       &   \frac{1}{2}\left[(1-\cos\theta)z^{-2} + (1+\cos\theta) \right]
+       \end{array}\right]
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \frac{\sqrt{2}}{4}
+       \left[\begin{array}{ll}
+          -\left[(1-\cos\theta)z^2 + (1+\cos\theta) \right]
+          +\left[(-\sin\theta) + (\sin\theta)z^{2} \right]
+       \\ -\left[(-\sin\theta) + (\sin\theta)z^{-2} \right]
+          +\left[(1-\cos\theta)z^{-2} + (1+\cos\theta) \right]
+       \end{array}\right]^T
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \frac{\sqrt{2}}{4}
+       \Bigg[
+          (1-\cos\theta)z +(1+\cos\theta)z^{-1}
+          -(\sin\theta)z^{-1} +(\sin\theta)z
+          + \sin\theta -(\sin\theta)z^{-2}
+          +(1-\cos\theta)z^{-2} + (1+\cos\theta)
+       \Bigg]
+  \\&= \frac{\sqrt{2}}{4}
+       \Bigg[
+           (1-\cos\theta+\sin\theta)z
+          +(1+\cos\theta+\sin\theta)
+  \\&\qquad          +(1+\cos\theta-\sin\theta)z^{-1}
+          +(1-\cos\theta-\sin\theta)z^{-2}
+       \Bigg]
+\end{align*}
+\end{proof}
+
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}cc}
+   \epsfig{file=../common/wavelets/pollen4h.eps, height=7cm, width=7cm}  &
+   \epsfig{file=../common/wavelets/pollen4g.eps, height=7cm, width=7cm}
+   \\
+   $h_n(\theta)$ & $g_n(\theta)$
+   \\
+   \epsfig{file=../common/wavelets/pollen4s.eps, height=7cm, width=7cm}  &
+   \epsfig{file=../common/wavelets/pollen4w.eps, height=7cm, width=7cm}
+   \\
+   $\fphi(t)$ & $\fpsi(t)$
+\end{tabular*}
+\caption{Pollen scaling and wavelet functions with varying parameter $\theta$
+  \label{fig:pollen4}
+  }
+\end{center}
+\end{figure}
+
+
+\clearpage
+%---------------------------------------
+\begin{example}[Pollen length-6 scaling coefficients]
+\label{ex:pollen6}
+\citetbl{
+  \citerp{burrus}{66}\\
+  \citerp{vidakovic}{95}
+  }
+%---------------------------------------
+Length-6 scaling coefficients have two parameters, 
+here designated $\alpha$ and $\beta$.
+The scaling coefficients are as follows.
+\exbox{
+ \begin{array}{c|l}
+   n & h_n
+   \\ \hline
+      0 & \frac{1}{4\sqrt{2}} [(1+\cos(\alpha)+\sin(\alpha))(1-\cos(\beta)-\sin(\beta)) + 2\sin(\beta)\cos(\alpha)] 
+   \\ 1 & \frac{1}{4\sqrt{2}}[(1-\cos(\alpha)+\sin(\alpha))(1+\cos(\beta)-\sin(\beta)) - 2\sin(\beta)\cos(\alpha)] 
+   \\ 2 & \frac{1}{2\sqrt{2}}[(1+\cos(\alpha-\beta)+\sin(\alpha-\beta)] 
+   \\ 3 & \frac{1}{2\sqrt{2}}[(1+\cos(\alpha-\beta)-\sin(\alpha-\beta)] 
+   \\ 4 & \frac{1}{ \sqrt{2}} - h(0) - h(2) 
+   \\ 5 & \frac{1}{ \sqrt{2}} - h(1) - h(3) 
+  \end{array}
+}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \Zh(z) 
+    &= \cwt 
+       \left[-1 \quad 1 \right]
+       E(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       U_\alpha(z^2)
+       U_\beta(z^2)
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[-1 \quad 1 \right]
+       \left[\begin{array}{rr}
+         \fu_\alpha(z^2)      & \fv_\alpha(z^2) \\
+        -\fv_\alpha(z^{-2})   & \fu_\alpha(z^{-2})
+       \end{array}\right]
+       \left[\begin{array}{rr}
+         \fu_\beta(z^2)      & \fv_\beta(z^2) \\
+        -\fv_\beta(z^{-2})   & \fu_\beta(z^{-2})
+       \end{array}\right]
+       \left[\begin{array}{c}-z^{-1}\\ 1 \end{array}\right]
+  \\&= \cwt 
+       \left[\begin{array}{c@{\qquad}c}
+         -\fu_\alpha(z^2)-\fv_\alpha(z^{-2}) &
+         -\fv_\alpha(z^2)+\fu_\alpha(z^{-2})
+       \end{array}\right]
+       \left[\begin{array}{r}
+         -z^{-1}\fu_\beta(z^2)+ \fv_\beta(z^2) \\
+        z^{-1}\fv_\beta(z^{-2}) +\fu_\beta(z^{-2})
+       \end{array}\right]
+  \\&= \cwt 
+       \left[
+         \left(-\fu_\alpha(z^2)        - \fv_\alpha(z^{-2}) \right)
+         \left(-z^{-1}\fu_\beta(z^2)   + \fv_\beta(z^2)     \right)+
+         \left(-\fv_\alpha(z^2)        + \fu_\alpha(z^{-2}) \right)
+         \left(z^{-1}\fv_\beta(z^{-2}) + \fu_\beta(z^{-2})  \right)
+       \right]
+  \\&= \cwt 
+       \Bigg[
+         \left(
+            z^{-1}\fu_\alpha(z^2)   \fu_\beta(z^2) 
+           -      \fu_\alpha(z^2)   \fv_\beta(z^2)
+           +z^{-1}\fv_\alpha(z^{-2})\fu_\beta(z^2)
+           -      \fv_\alpha(z^{-2})\fv_\beta(z^2)
+         \right)
+       \\&\qquad+
+         \left(
+           -z^{-1}\fv_\alpha(z^2)   \fv_\beta(z^{-2})
+           -      \fv_\alpha(z^2)   \fu_\beta(z^{-2})
+           +z^{-1}\fu_\alpha(z^{-2})\fv_\beta(z^{-2})
+           +      \fu_\alpha(z^{-2})\fu_\beta(z^{-2})
+         \right)
+       \Bigg]
+  \\&= \cwt  \frac{1}{4}
+       \Bigg[
+            z^{-1}\left[(1-\cos\alpha)z^2       + (1+\cos\alpha)     \right]   
+                  \left[(1-\cos\beta)z^2        + (1+\cos\beta)      \right] 
+       \\&\qquad\qquad
+           -      \left[(1-\cos\alpha)z^2       + (1+\cos\alpha)     \right]
+                  \left[(-\sin\beta)            + (\sin\beta)z^{-2}  \right]
+       \\&\qquad\qquad
+           +z^{-1}\left[(-\sin\alpha)           + (\sin\alpha)z^{2}  \right]
+                  \left[(1-\cos\beta)z^2        + (1+\cos\beta)      \right]
+       \\&\qquad\qquad
+           -      \left[(-\sin\alpha)           + (\sin\alpha)z^{2}  \right]
+                  \left[(-\sin\beta)            + (\sin\beta)z^{-2}  \right]
+       \\&\qquad\qquad
+           -z^{-1}\left[(-\sin\alpha)           + (\sin\alpha)z^{-2} \right]
+                  \left[(-\sin\beta)            + (\sin\beta)z^{2}   \right]
+       \\&\qquad\qquad
+           -      \left[(-\sin\alpha)           + (\sin\alpha)z^{-2} \right] 
+                  \left[(1-\cos\beta)z^{-2}     + (1+\cos\beta)      \right]
+       \\&\qquad\qquad
+           +z^{-1}\left[(1-\cos\alpha)z^{-2}    + (1+\cos\alpha)     \right]
+                  \frac{1}{2}\left[(-\sin\beta) + (\sin\beta)z^{2}   \right]
+       \\&\qquad\qquad
+           +      \left[(1-\cos\alpha)z^{-2}    + (1+\cos\alpha)     \right]
+                  \left[(1-\cos\beta)z^{-2}     + (1+\cos\beta)      \right]
+       \Bigg]
+  \\ \vdots
+\end{align*}
+Proof not yet complete. Current result taken from  \problem \\
+\cite[page 66]{burrus}
+\end{proof}
+
+
+
+

@@ -1,0 +1,1035 @@
+﻿%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+
+
+
+
+%======================================
+\chapter{Finite Sums}
+%======================================
+
+%=======================================
+%\section{Combinitorial relations}
+%=======================================
+%``Some modern appraisals of the cavalier style of 18th-century mathematicians in handling 
+%infinite series conveys the impression that these poor men set their brains aside when 
+%confronted by them."
+%--- \citerpg{grattan1990}{163}{3764322373}
+
+
+\qboxnps
+  { 
+    \href{http://en.wikipedia.org/wiki/G.H._Hardy}{G.H. Hardy} 
+    \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineG.html}{(1877--1947)}
+    in his ``Presidential Address" to the 
+    \href{http://en.wikipedia.org/wiki/London_mathematical_society}{London Mathematical Society}
+    on November 8, 1928, about a remark that he suggested was from 
+    \href{http://en.wikipedia.org/wiki/Harald_Bohr}{Harald Bohr}
+    \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineG.html}{(1887--1951)}, 
+    \href{http://www-history.mcs.st-andrews.ac.uk/Countries/Denmark.html}{Danish} 
+    mathematician and pictured to the left.
+    \index{Bohr, Harald} \index{Hardy, G.H.}
+    \index{quotes!Bohr, Harald}
+    \index{quotes!Hardy, G.H.}
+    \footnotemark
+  }
+  {../common/people/bohrh.jpg}
+  {I think that it was Harald Bohr who remarked to me that 
+   ``all analysts spend half their time hunting through the literature 
+   for inequalities which they want to use and cannot prove." }
+  \citetblt{
+    quote: & \citerp{hardy1928}{64} \\
+    image: & \url{http://www-history.mcs.st-andrews.ac.uk/PictDisplay/Bohr_Harald.html}
+    }
+
+
+%=======================================
+\section{Summation}
+%=======================================
+%--------------------------------------
+\begin{definition}
+\label{def:sum}
+\footnote{\begin{tabular}{ll}
+  ref: & \citerpgc{berberian1961}{8}{0821819127}{Definition~I.3.1}\\
+  ``$\sum$" notation: & \citorp{fourier1820}{280}  %{http://gallica.bnf.fr/ark:/12148/bpt6k33707/f285.image}
+\end{tabular}}
+%--------------------------------------
+Let $+$ be an addition operator on a tuple $\tuple{x_n}{m}{\xN}$.
+\defbox{\begin{array}{M}
+  The \hid{summation} of $\tuplen{x_n}$ from index $m$ to index $N$ with respect to $+$ is
+  \\\qquad$\ds
+  \sum_{n=m}^\xN x_n \eqd 
+    \brbl{\begin{array}{>{\ds}l@{\qquad}M}
+      0                            & for $\xN<m$\\
+     %x_\xN                          & for $N=m$ \\
+    \brp{\sum_{n=m}^{\xN-1} x_n}+x_\xN & for $\xN\ge m$
+    \end{array}}
+  $
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}[\thmd{Generalized associative property}]
+\footnote{
+  \citerppgc{berberian1961}{9}{10}{0821819127}{Theorem I.3.1}
+  }
+\label{thm:sum_assoc}
+%--------------------------------------
+Let $+$ be an addition operator on a tuple $\tuple{x_n}{m}{\xN}$.
+\thmbox{\begin{array}{M}
+  $+$ is \prope{associative}
+  $\quad\implies$
+  \\$\ds
+  \mcom{\ds
+    \sum_{n=m}^{\xL} x_n + \brp{\sum_{n=\xL+1}^{\xM} x_n + \sum_{n=\xM+1}^{\xN} x_n}
+    =\brp{\sum_{n=m}^{\xL} x_n + \sum_{n=\xL+1}^{\xM} x_n} + \sum_{n=\xM+1}^{\xN} x_n 
+    \text{\qquad\scs for $m<\xL<\xM\le\xN$}
+   }{$\ds\sum_{n=m}^\xN$ is \prope{associative}}
+  $
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for $\xN<m$ case: $\ds \sum_{n=m}^\xN x_n = 0$.
+  \item Proof for $N=m$ case: $\ds \sum_{n=m}^m x_n = \brp{\sum_{n=m}^{m-1} x_n}+x_m = 0+x_m = x_m$.
+  \item Proof for $N=m+1$ case: \label{item:sum_assoc_m1}
+        $\ds \sum_{n=m}^{m+1} x_n = \brp{\sum_{n=m}^{m} x_n}+x_{m+1} = x_{m} + x_{m+1}$
+
+  \item Proof for $N=m+2$ case: 
+    \begin{align*}
+      \sum_{n=m}^{m+2} x_n 
+        &= \brp{\sum_{n=m}^{m+1} x_n }  +  x_{m+2}
+        && \text{by \prefp{def:sum}}
+      \\&= \brp{x_{m} + x_{m+1}}        +  x_{m+2}
+        && \text{by \pref{item:sum_assoc_m1}}
+      \\&= x_{m} + \brp{x_{m+1} + x_{m+2}}
+        && \text{by left hypothesis}
+    \end{align*}
+
+  \item Proof that $N$ case $\implies$ $N+1$ case:
+    \begin{align*}
+      \sum_{n=m}^{\xN+1} x_n 
+        &= \mcom{\brp{\sum_{n=m}^{\xN} x_n}}{\prope{associative}} + x_{\xN+1}
+        && \text{by \prefp{def:sum}}
+      \\&= \brp{\sum_{n=m}^{\xL} x_n + \brp{\sum_{n=\xL+1}^{\xM} x_n + \sum_{n=\xM+1}^{\xN} x_n}} + x_{\xN+1}
+      \\&= \brp{\brp{\sum_{n=m}^{\xL} x_n + \sum_{n=\xL+1}^{\xM} x_n} + \sum_{n=\xM+1}^{\xN} x_n} + x_{\xN+1}
+      \\&= \brp{\sum_{n=m}^{\xL} x_n + \sum_{n=\xL+1}^{\xM} x_n} + \brp{\sum_{n=\xM+1}^{\xN} x_n + x_{\xN+1}}
+      \\&= \brp{\sum_{n=m}^{\xL} x_n + \sum_{n=\xL+1}^{\xM} x_n} + \brp{\sum_{n=\xM+1}^{\xN+1} x_n}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%%=======================================
+%\section{Convexity}
+%%=======================================
+%%--------------------------------------
+%\begin{theorem}[\thm{Jensen's Inequality}]
+%\footnote{
+%  \citerpg{mitrinovic2010}{6}{9048142253}\\
+%  \citerpg{bollobas1999}{3}{0521655773} \\
+%  %\citerpg{lay1982}{7}{0471095842}\\
+%  \citorpp{jensen1906}{179}{180}
+%  }
+%\label{thm:seq_jensen_ineq}
+%\index{inequalities!Jensen's}
+%%--------------------------------------
+%Let $\ff\in\clFrr$ be a function.
+%\thmbox{
+%  \brb{\begin{array}{FMD}
+%    1. & \text{$\ff$ is \prope{convex}}  & and \\
+%    2. & $\ds\sum_{n=1}^\xN \lambda_n=1$ & (\structe{weights})
+%  \end{array}}
+%  \implies
+%  \brb{
+%    \ff\brp{\sum_{n=1}^\xN \lambda_n \: \vx_n} 
+%    \le \sum_{n=1}^\xN \lambda_n\:\ff\brp{\vx_n}
+%    \qquad
+%    \forall \vx_n \in \setD,\;\xN\in\Zp
+%    }
+%  }
+%\end{theorem}
+%\begin{proof}
+%Proof is by induction:
+%\begin{align*}
+%  \intertext{1. Proof that statement is true for $\xN=1$:} 
+%    \ff\left(\sum_{n=1}^{\xN=1} \lambda_n \: x_n\right) 
+%      &=   \ff(1\cdot  x_1)
+%      &&   \text{by $\xN=1$ hypothesis}
+%    \\&=   \sum_{n=1}^{\xN=1} \ff(x_n)
+%      &&   \text{by $\xN=1$ hypothesis}
+%    \\&=   \sum_{n=1}^{\xN=1} \lambda_n\:\ff(x_n)
+%    \\
+%  \intertext{2. Proof that statement is true for $\xN=2$:} 
+%    \ff\left(\sum_{n=1}^{\xN=2} \lambda_n \:  x_n\right) 
+%      &=   \ff(\lambda_1  x_1 + \lambda_2 x_2) 
+%    \\&\le \lambda_1 \ff( x_1) + \lambda_2 \ff( x_2)
+%      &&   \text{by convexity hypothesis}
+%    \\&=   \sum_{n=1}^{\xN=2} \lambda_n\:\ff( x_n)
+%    \\
+%  \intertext{3. Proof that if the statement is true for $\xN$, then it is also true for $\xN+1$:} 
+%    \ff\left(\sum_{n=1}^{\xN+1} \lambda_n \:  x_n\right) 
+%      &=   \ff\left(\sum_{n=1}^{\xN} \lambda_n \:  x_n + \lambda_{\xN+1} x_{\xN+1}\right) 
+%    \\&=   \ff\left([1-\lambda_{\xN+1}]\sum_{n=1}^{\xN} \frac{\lambda_n}{1-\lambda_{\xN+1}} \:  x_n + \lambda_{\xN+1} x_{\xN+1}\right) 
+%    \\&\le [1-\lambda_{\xN+1}]\ff\left(\sum_{n=1}^{\xN} \frac{\lambda_n}{1-\lambda_{\xN+1}} \:  x_n \right) 
+%         + \lambda_{\xN+1}\ff( x_{\xN+1}) 
+%      &&   \text{by convexity hypothesis}
+%    \\&\le [1-\lambda_{\xN+1}]\sum_{n=1}^{\xN} \frac{\lambda_n}{1-\lambda_{\xN+1}}\ff( x_n) 
+%         + \lambda_{\xN+1}\ff( x_{\xN+1}) 
+%      &&   \text{by ``true for $\xN$" hypothesis}
+%    \\&=   \sum_{n=1}^{\xN} \lambda_n \ff( x_n) + \lambda_{\xN+1}\ff( x_{\xN+1}) 
+%    \\&=   \sum_{n=1}^{\xN+1} \lambda_n \ff( x_n)
+%    \\
+%  \intertext{4. Since the statement is true for $\xN=1$, $\xN=2$, and 
+%                true for $\xN$ $\implies$ true for $\xN+1$,
+%                then it is true for $\xN=1,2,3,4,\ldots$}
+%\end{align*}
+%\end{proof}
+
+
+%=======================================
+\section{Means}
+%=======================================
+
+
+%=======================================
+\subsection{Weighted {\fntFreeSerif\textphi}-means}
+%=======================================
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{bollobas1999}{5}{0521655773}
+  }
+\label{def:seq_Mphi}
+%---------------------------------------
+\defbox{\begin{array}{M}
+  The $\tuple{\lambda_n}{1}{\xN}$ weighted \hid{$\fphi$-mean} of a tuple $\tuple{x_n}{1}{\xN}$ is defined as
+  \\\indentx$\ds \fM_\fphi\brp{\tuplen{x_n}} \eqd \fphi^{-1}\brp{\sum_{n=1}^\xN \lambda_n \fphi\brp{x_n}}$
+  \\where $\fphi$ is a \prope{continuous} and \prope{strictly monotonic} function in $\clF{\Rnn}{\R}$
+  \\and   $\tuple{\lambda_n}{n=1}{\xN}$ is a sequence of weights for which $\ds\sum_{n=1}^\xN\lambda_n=1$.
+  \end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpg{pecaric1992}{107}{0125492502},
+  \citerpg{bollobas1999}{5}{0521655773},
+  \citorpg{hardy1934}{75}{0521358809}
+  }
+\label{lem:seq_Mphi}
+%---------------------------------------
+Let $\fM_\fphi\brp{\tuplen{x_n}}$ be the $\tuple{\lambda_n}{1}{\xN}$ weighted $\fphi$-mean of a tuple $\tuple{x_n}{1}{\xN}$.
+\ifdochas{convex}{Let the property \prope{convex} be defined as in \prefpp{def:convexf}.}
+\lembox{
+  \begin{array}{MMMc>{\ds}l}
+    $\fphi\fpsi^{-1}$  is \prope{convex}  &and& $\fphi$ is \prope{increasing} &\implies& \fM_\fphi\brp{\tuplen{x_n}} \ge \fM_\fpsi\brp{\tuplen{x_n}}\\
+    $\fphi\fpsi^{-1}$  is \prope{convex}  &and& $\fphi$ is \prope{decreasing} &\implies& \fM_\fphi\brp{\tuplen{x_n}} \le \fM_\fpsi\brp{\tuplen{x_n}}\\
+    $\fphi\fpsi^{-1}$  is \prope{concave} &and& $\fphi$ is \prope{increasing} &\implies& \fM_\fphi\brp{\tuplen{x_n}} \le \fM_\fpsi\brp{\tuplen{x_n}}\\
+    $\fphi\fpsi^{-1}$  is \prope{concave} &and& $\fphi$ is \prope{decreasing} &\implies& \fM_\fphi\brp{\tuplen{x_n}} \ge \fM_\fpsi\brp{\tuplen{x_n}}\\
+  \end{array}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Case where $\fphi\fpsi^{-1}$  is \prope{convex} and $\fphi$ is \prope{increasing}:} 
+  \fM_\fphi\brp{\tuplen{x_n}} 
+    &\eqd \fphi^{-1}\brp{\sum_{n=1}^{\xN} \lambda_n \fphi\brp{x_n}}
+    &&    \text{by definition of $\fM_\fphi$ (\prefp{def:seq_Mphi})}
+  \\&=    \fphi^{-1}\brp{\sum_{n=1}^{\xN} \lambda_n \fphi\fpsi^{-1}\fpsi\brp{x_n}}
+    &&    \text{by definition of $\fpsi^{-1}$}
+  \\&\ge  \fphi^{-1}\brp{\fphi\fpsi^{-1}\sum_{n=1}^{\xN} \lambda_n \fpsi\brp{x_n}}
+    &&    \text{by \thme{Jensen's Inequality}\ifsxref{convex}{thm:jensen_ineq}}
+  \\&=    \brp{\fpsi^{-1}\sum_{n=1}^{\xN} \lambda_n \fpsi\brp{x_n}}
+    &&    \text{by definition of $\fpsi^{-1}$}
+  \\&\eqd \fM_\fpsi\brp{\tuplen{x_n}}
+    &&    \text{by definition of $\fM_\fpsi$ (\prefp{def:seq_Mphi})}
+  %
+  \intertext{2. Case where $\fphi\fpsi^{-1}$  is \prope{convex} and $\fphi$ is \prope{decreasing}:} 
+  \fM_\fphi\brp{\tuplen{x_n}} 
+    &\eqd \fphi^{-1}\brp{\sum_{n=1}^{\xN} \lambda_n \fphi\brp{x_n}}
+    &&    \text{by definition of $\fM_\fphi$ (\prefp{def:seq_Mphi})}
+  \\&=    \fphi^{-1}\brp{\sum_{n=1}^{\xN} \lambda_n \fphi\fpsi^{-1}\fpsi\brp{x_n}}
+    &&    \text{by definition of $\fpsi^{-1}$}
+  \\&\le  \fphi^{-1}\brp{\fphi\fpsi^{-1}\sum_{n=1}^{\xN} \lambda_n \fpsi\brp{x_n}}
+    &&    \text{by \thme{Jensen's Inequality} and because $\fphi^{-1}$ is \prope{decreasing}}
+  \\&=    \brp{\fpsi^{-1}\sum_{n=1}^{\xN} \lambda_n \fpsi\brp{x_n}}
+    &&    \text{by definition of $\fpsi^{-1}$}
+  \\&\eqd \fM_\fpsi\brp{\tuplen{x_n}}
+    &&    \text{by definition of $\fM_\fpsi$ (\prefp{def:seq_Mphi})}
+\end{align*}
+\end{proof}
+
+One of the most well known inequalities in mathematics is \thme{Minkowski's Inequality}
+(1910, \prefp{thm:lp_minkowski}). % which demonstrates
+%\\\indentx$\ds
+%  \brp{\sum_{n=1}^{\xN} \abs{x_n+y_n}^p}^\frac{1}{p}
+%  \le
+%  \brp{\sum_{n=1}^{\xN} \abs{x_n}^p}^\frac{1}{p}
+%  +
+%  \brp{\sum_{n=1}^{\xN} \abs{y_n}^p}^\frac{1}{p}
+%  \qquad
+%  \forall \; 1<p<\infty
+%$\\
+In 1946, H.P. Mulholland submitted a result\footnote{\citeP{mulholland1950}} 
+that generalizes Minkowski's Inequality to an equal weighted \textphi-mean.
+%\\\indentx$\ds
+%  \fphi^{-1}\brp{\sum_{n=1}^{\xN} \fphi\brp{x_n+y_n}}
+%  \le
+%  \fphi^{-1}\brp{\sum_{n=1}^{\xN} \fphi\brp{x_n}}
+%  +
+%  \fphi^{-1}\brp{\sum_{n=1}^{\xN} \fphi\brp{y_n}}
+%$\\
+And Milovanovi/'c and Milovanov/'c (1979) generalized this even further to a \hie{weighted} \textphi-mean
+(\pref{thm:lp_wphi}, next).
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:lp_wphi}
+\footnote{
+  \citor{milovanovic1979},
+  \citerpgc{bullen2003}{306}{1402015224}{Theorem 9}
+  }
+%---------------------------------------
+\thmboxt{
+  $\ds\brb{\begin{array}{FMD}
+    1. & $\fphi$ is \prope{convex} & and \\
+    2. & $\fphi$ is \prope{strictly monotonic} & and \\
+    3. & $\fphi(0)=0$ & and \\
+    4. & $\log\circ\fphi\circ\exp$ is \prope{convex}
+  \end{array}}
+  \quad\implies\quad$
+  \\\qquad\qquad
+  $\ds{
+  \fphi^{-1}\brp{\sum_{n=1}^{\xN} \lambda_n \fphi\brp{x_n+y_n}}
+  \le
+  \fphi^{-1}\brp{\sum_{n=1}^{\xN} \lambda_n \fphi\brp{x_n}}
+  +
+  \fphi^{-1}\brp{\sum_{n=1}^{\xN} \lambda_n \fphi\brp{y_n}}
+  }$
+}
+\end{theorem}
+
+%=======================================
+\subsection{Power means}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{bullen2003}{175}{1402015224},
+  \citerpg{bollobas1999}{6}{0521655773}
+  %\citerpg{pecaric1992}{108}{0125492502}
+  }
+\label{def:seq_Mr}
+%---------------------------------------
+Let $\fM_{\fphi(x;r)}\brp{\tuplen{x_n}}$ be the $\tuple{\lambda_n}{1}{\xN}$ weighted $\fphi$-mean of a \prope{non-negative} tuple $\tuple{x_n}{1}{\xN}$
+(\prefp{def:seq_Mphi}).
+%Let $\Rx$ be the set of extended real numbers $\brp{\Rx\eqd\R\setu\setn{-\infty,\,\infty}}$.%
+%\footnote{
+%  \citerppgc{rana2002}{385}{388}{0821829742}{Appendix A}
+%  }
+\defboxt{
+  A mean $\fM_{\fphi(x;r)}\brp{\tuplen{x_n}}$ is a \hid{power mean} with parameter $r$ if $\fphi(x)\eqd x^r$. That is,
+  \\\indentx$\ds \fM_{\fphi(x;r)}\brp{\tuplen{x_n}} = \brp{\sum_{n=1}^{\xN} \lambda_n \brp{x_n}^r}^{\frac{1}{r}}$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppgc{bullen2003}{175}{177}{1402015224}{see also page 203},
+  \citerppg{bollobas1999}{6}{8}{0521655773},
+  %\citerpg{pecaric1992}{108}{0125492502}
+  \citor{besso1879},
+  \citorp{bienayme1840}{68}
+  }
+\label{thm:seq_Mr}
+%---------------------------------------
+Let $\fM_{\fphi(x;r)}\brp{\tuplen{x_n}}$ be \hie{power mean} with parameter $r$ of an $\xN$-tuple $\tuplexn{x_n}$.
+Let $\Rx$ be the set of extended real numbers $\brp{\Rx\eqd\R\setu\setn{-\infty,\,\infty}}$.%
+\footnote{
+  \citerppgc{rana2002}{385}{388}{0821829742}{Appendix A}
+  }
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l}
+  \ds\fM_{\fphi(x;r)}\brp{\tuplen{x_n}} &\eqd& \brp{\sum_{n=1}^{\xN} \lambda_n \brp{x_n}^r}^{\frac{1}{r}}
+  \text{ is \prope{continuous} and \prope{strictly increasing} in $\Rx$.}
+  \\
+    \ds \fM_{\fphi(x;r)}\brp{\tuplen{x_n}} &=& 
+    \brbl{\begin{array}{>{\ds}lM}
+      \min_{n=1,2,\ldots,\xN}  \tuplen{x_n}          & for $r=-\infty$\\
+      \prod_{n=1}^{\xN} x_n^{\lambda_n}  & for $r=0$\\
+      \max_{n=1,2,\ldots,\xN}\tuplen{x_n}                     & for $r=+\infty$
+    \end{array}}
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $M_{\fphi(x;r)}$ is \prope{strictly increasing} in $r$:
+    \begin{enumerate}
+      \item Let $r$ and $s$ be such that $-\infty<r<s<\infty$.
+      \item Let $\fphi_r\eqd x^r$ and $\fphi_s\eqd x^s$. Then $\ds\fphi_r\fphi_s^{-1}=x^\frac{r}{s}$.
+      \item The composite function $\ds\fphi_r\fphi_s^{-1}$ is \prope{convex} or \prope{concave} depending on the values of $r$ and $s$:
+        \\\begin{tabular}{c||c|c}
+                & $r<0$ ($\fphi_r$ decreasing) & $r>0$ ($\fphi_r$ increasing) 
+        \\\hline\hline
+          $s<0$ & \prope{convex}               & (not possible)
+        \\\hline
+          $s>0$ & \prope{convex}               & \prope{concave}
+        \\\hline
+        \end{tabular}
+      \item Therefore by \prefpp{lem:seq_Mphi}, 
+        \\\indentx$\ds-\infty<r<s<\infty\qquad\implies\qquad\fM_{\fphi(x;r)}\brp{\tuplen{x_n}}<\fM_{\fphi(x;s)}\brp{\tuplen{x_n}}$.
+    \end{enumerate}
+  \item Proof that $\fM_{\fphi(x;r)}$ is continuous in $r$ for $r\in\R\setd0$:
+        The sum of continuous functions is continuous.
+        \\For the cases of $r\in\setn{-\infty,\,0,\,\infty}$, see the items that follow. 
+
+  \item Lemma: $\fM_{\fphi(x;-r)}\brp{\tuplen{x_n}}=\brb{\fM_{\fphi(x;r)}\brp{\tuplen{x_n^{-1}}}}^{-1}$.\label{item:Mr_lemma} Proof:
+    \begin{align*}
+      \brb{\fM_{\fphi(x;r)}\brp{\tuplen{x_n^{-1}}}}^{-1}
+        &= \brb{\brp{\sum_{n=1}^{\xN} \lambda_n \brp{x_n^{-1}}^{r}}^{\frac{1}{r}}}^{-1}
+        && \text{by definition of $\fM_\fphi$}
+      \\&= \brp{\sum_{n=1}^{\xN} \lambda_n \brp{x_n}^{-r}}^{\frac{1}{-r}}
+      \\&= \fM_{\fphi(x;-r)} \brp{\tuplen{x_n}}
+        && \text{by definition of $\fM_\fphi$}
+    \end{align*}
+
+  \item Proof that $\ds\lim_{r\to\infty} \fM_\fphi\brp{\tuplen{x_n}} = \max_{n\in\Z} \tuplen{x_n}$: \label{item:Mr_max}
+    \begin{enumerate}
+      \item Let $\ds x_m\eqd \max_{n\in\Z}\tuplen{x_n}$ \label{item:Mr_xm}
+
+      \item Note that $\ds\lim_{r\to\infty}\fM_\fphi \le \max_{n\in\Z} \tuplen{x_n}$ because
+            \begin{align*}
+              \lim_{r\to\infty} \fM_\fphi\brp{\tuplen{x_n}}
+                &=   \lim_{r\to\infty} \brp{\sum_{n=1}^{\xN}\lambda_n x_n^r}^\frac{1}{r}
+                &&   \text{by definition of $\fM_\fphi$}
+              \\&\le \lim_{r\to\infty} \brp{\sum_{n=1}^{\xN}\lambda_n x_m^r}^\frac{1}{r}
+                &&   \text{\parbox[t]{80mm}{by definition of $x_m$ in \pref{item:Mr_xm} and because
+                          $\fphi(x)\eqd x^r$ and $\fphi^{-1}$ are both increasing or both decreasing}}
+              \\&=   \lim_{r\to\infty} \brp{x_m^r\mcom{\sum_{n=1}^{\xN}\lambda_n}{$1$} }^\frac{1}{r}
+                &&   \text{because $x_m$ is a constant}
+              \\&=   \lim_{r\to\infty} \brp{x_m^r\cdot1 }^\frac{1}{r}
+              \\&= x_m
+              \\&= \max_{n\in\Z}\tuplen{x_n}
+                &&   \text{by definition of $x_m$ in \pref{item:Mr_xm}}
+            \end{align*}
+
+      \item But also note that $\ds\lim_{r\to\infty}\fM_\fphi \ge \max_{n\in\Z} \tuplen{x_n}$ because
+            \begin{align*}
+              \lim_{r\to\infty} \fM_\fphi\brp{\tuplen{x_n}}
+                &=   \lim_{r\to\infty} \brp{\sum_{n=1}^{\xN}\lambda_n x_n^r}^\frac{1}{r}
+                &&   \text{by definition of $\fM_\fphi$}
+              \\&\ge \lim_{r\to\infty} \brp{w_m x_m^r}^\frac{1}{r}
+                &&   \text{\parbox[t]{80mm}{by definition of $x_m$ in \pref{item:Mr_xm} and because
+                          $\fphi(x)\eqd x^r$ and $\fphi^{-1}$ are both increasing or both decreasing}}
+              \\&=   \lim_{r\to\infty} w_m^\frac{1}{r} x_m^\frac{r}{r}
+              \\&=   x_m
+              \\&=   \max_{n\in\Z}\tuplen{x_n}
+                &&   \text{by definition of $x_m$ in \pref{item:Mr_xm}}
+            \end{align*}
+
+      \item Combining items (b) and (c) we have
+            $\ds\lim_{r\to\infty}\fM_\fphi = \max_{n\in\Z}\tuplen{x_n}$.
+    \end{enumerate}
+
+  \item Proof that $\ds\lim_{r\to-\infty} \fM_\fphi\brp{\tuplen{x_n}} = \min_{n\in\Z} \tuplen{x_n}$:
+    \begin{align*}
+      \lim_{r\to-\infty}\fM_{\fphi(x;r)}\brp{\tuplen{x_n}} 
+      &= \lim_{r\to\infty} \fM_{\fphi(x;-r)}\brp{\tuplen{x_n}} 
+      && \text{by change of variable $r$}
+    \\&= \lim_{r\to\infty} \brb{\fM_{\fphi(x;r)}\brp{\tuplen{x_n^{-1}}}}^{-1}
+      && \text{by Lemma in \prefp{item:Mr_lemma}}
+    \\&= \lim_{r\to\infty} \frac{1}{\fM_{\fphi(x;r)}\brp{\tuplen{x_n^{-1}}}}
+    \\&= \frac{\lim_{r\to\infty}1}{\lim_{r\to\infty}\fM_{\fphi(x;r)}\brp{\tuplen{x_n^{-1}}}}
+      && \text{by property of $\lim$ \footnotemark}
+    \\&= \frac{1}{\ds\max_{n\in\Z}\tuplen{x_n^{-1}}}
+      && \text{by \pref{item:Mr_max}}
+    \\&= \frac{1}{\ds\brp{\min_{n\in\Z}\tuplen{x_n}}^{-1}}
+    \\&= \min_{n\in\Z}\tuplen{x_n}
+    \end{align*}
+    \citetblt{
+      \citerpgc{rudinp}{85}{007054235X}{4.4 Theorem}
+      }
+
+  \item Proof that $\ds\lim_{r\to0} \fM_\fphi\brp{\tuplen{x_n}} = \prod_{n=1}^{\xN} x_n^{\lambda_n}$:
+    \begin{align*}
+      \lim_{r\to0} \fM_\fphi\brp{\tuplen{x_n}}
+        &= \lim_{r\to0} \exp\brb{\ln\brb{\fM_\fphi\brp{\tuplen{x_n}}}} 
+      \\&= \lim_{r\to0} \exp\brb{\ln\brb{\brp{\sum_{n=1}^{\xN}\lambda_n\brp{x_n^r}}^\frac{1}{r}}}
+        && \text{by definition of $\fM_\fphi$}
+      \\&= \exp\brb{\frac{\ds\pderiv{}{r}\ln\brp{\sum_{n=1}^{\xN}\lambda_n\brp{x_n^r}}}{\ds\pderiv{}{r}r}}_{r=0}
+        && \text{by \thm{l'H{/<o}pital's rule}\footnotemark}
+      \\&= \exp\brb{\frac{\ds\sum_{n=1}^{\xN}\lambda_n\pderiv{}{r}\brp{x_n^r}}
+                         {\ds\sum_{n=1}^{\xN}\lambda_n\brp{x_n^r}}
+                   }_{r=0}
+      \\&= \exp\brb{\frac{\ds\sum_{n=1}^{\xN}\lambda_n\pderiv{}{r}\exp\brp{\ln\brp{x_n^r}}}
+                         {\ds\sum_{n=1}^{\xN}\lambda_n}
+                   }_{r=0}
+      \\&= \exp\brb{\frac{\ds\sum_{n=1}^{\xN}\lambda_n\pderiv{}{r}\exp\brp{r\ln\brp{x_n}}}
+                         {1}
+                   }_{r=0}
+      \\&= \exp\brb{\sum_{n=1}^{\xN}\lambda_n\pderiv{}{r}\exp\brp{r\ln\brp{x_n}}
+                   }_{r=0}
+      \\&= \exp\brb{\sum_{n=1}^{\xN}\lambda_n\exp\brb{r\ln{x_n}}\ln\brp{x_n}
+                   }_{r=0}
+      \\&= \exp\brb{\sum_{n=1}^{\xN}\lambda_n\ln\brp{x_n}}
+      \\&= \exp\brb{\sum_{n=1}^{\xN}\ln\brp{x_n^{\lambda_n}}}
+      \\&= \exp\brb{\ln\prod_{n=1}^{\xN}x_n^{\lambda_n}}
+      \\&= \prod_{n=1}^{\xN} x_n^{\lambda_n}
+    \end{align*}
+    \footnotetext{
+      \citerpgc{rudinp}{109}{007054235X}{5.13 Theorem}
+      }
+\end{enumerate}
+\end{proof}
+
+
+
+
+
+
+%--------------------------------------
+\begin{corollary}
+\footnote{
+  \citerpg{bullen2003}{71}{1402015224},
+  \citerpg{bollobas1999}{5}{0521655773},
+  \citorppc{cauchy1821}{457}{459}{Note II, theorem 17},
+  \citorp{jensen1906}{183}
+  }
+\index{AM-GM inequality}
+\index{arithmetic mean geometric mean inequality}
+\index{generalized arithmetic mean geometric mean inequality} 
+\index{inequalities!AM-GM}
+%--------------------------------------
+Let $\tuplen{x_n}_1^\xN$ be a tuple. Let $\tuplen{\lambda_n}_1^\xN$ be a tuple of weighting values such that 
+$\ds\sum_{n=1}^\xN\lambda_n=1$.
+\corbox{
+  \min\tuplen{x_n}
+  \le
+  \mcoml{\ds\brp{\sum_{n=1}^\xN \lambda_n \frac{1}{x_n}}^{-1}}{harmonic mean}
+  \le 
+  \mcomr{\ds\prod_{n=1}^\xN x_n^{\lambda_n}}{geometric mean} 
+  \le 
+  \mcoml{\ds\sum_{n=1}^\xN \lambda_n x_n}{arithmetic mean}
+  \le
+  \max\tuplen{x_n}
+  }
+\end{corollary}
+\begin{proof}
+\begin{enumerate}
+  \item These five means are all special cases of the \hie{power mean} $\fM_{\fphi(x:r)}$ (\prefp{def:seq_Mr}):
+    \\\begin{tabular}{ll}
+        $r=\infty$:  & $\max\tuplen{x_n}$
+      \\$r=1$:       & arithmetic mean
+      \\$r=0$:       & geometric mean
+      \\$r=-1$:      & harmonic mean
+      \\$r=-\infty$: & $\min\tuplen{x_n}$
+    \end{tabular}
+
+  \item The inequalities follow directly from \prefpp{thm:seq_Mr}.
+
+  \item \thm{Generalized AM-GM inequality}: If one is only concerned with the arithmetic mean and 
+        geometric mean, their relationship can be established directly using \thme{Jensen's Inequality}:
+    \begin{align*}
+      \sum_{n=1}^\xN \lambda_n x_n
+        &=   b^{\log_b\left(\sum_{n=1}^\xN \lambda_n x_n\right)}
+      \\&\ge b^{\left(\sum_{n=1}^\xN \lambda_n \log_b x_n\right)}
+        &&   \text{by \thme{Jensen's Inequality}\ifsxref{convex}{thm:jensen_ineq}}
+      \\&=   \prod_{n=1}^\xN b^{\left(\lambda_n \log_b x_n\right)}
+      \\&=   \prod_{n=1}^\xN b^{\left(\log_b x_n\right)\lambda_n }
+      \\&=   \prod_{n=1}^\xN x_n^{\lambda_n} 
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%=======================================
+%\section{Inequalities}
+%=======================================
+
+%--------------------------------------
+\begin{lemma}[\thmd{Young's Inequality}]
+\footnote{
+  \citerp{carothers2000}{43},
+  \citerp{tolsted1964}{5},
+  \citerp{maligranda1995}{257},
+  \citergc{hardy1934}{0521358809}{Theorem 24},
+  \citorp{young1912}{226}
+  }
+\label{lem:lp_young}
+\index{inequalities!Young}
+%--------------------------------------
+\lembox{\renewcommand{\arraystretch}{2}
+  \begin{array}{rc>{\ds}l lll}
+    xy  &<& \frac{x^p}{p} + \frac{y^q}{q} & \text{with $\frac{1}{p} + \frac{1}{q} = 1$} & \forall 1<p<\infty,\; x,y\ge0, & \text{but $y \ne  x^{p-1}$} \\
+    xy  &=& \frac{x^p}{p} + \frac{y^q}{q} & \text{with $\frac{1}{p} + \frac{1}{q} = 1$} & \forall 1<p<\infty,\; x,y\ge0, & \text{and $y     = x^{p-1}$} 
+  \end{array}
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\frac{1}{p-1}=q-1$:  \label{item:lp_young_q-1}
+    \begin{align*}
+      \frac{1}{p} + \frac{1}{q} = 1
+        &\iff \frac{q}{q} + \frac{q}{p} = q
+      \\&\iff q\brp{1-\frac{1}{p}} = 1
+      \\&\iff q = \frac{1}{1-\frac{1}{p}}
+      \\&\iff q = \frac{p}{p-1}
+      \\&\iff q-1 = \frac{p}{p-1} - \frac{p-1}{p-1}
+      \\&\iff q-1 = \frac{p-(p-1)}{p-1}
+      \\&\iff q-1 = \frac{1}{p-1}
+    \end{align*}
+
+  \item Proof that $v=u^{p-1}$ $\iff$ $u=v^{q-1}$:
+    \begin{align*}
+      u
+        &= v^{\frac{1}{p-1}}
+        && \text{by left hypothesis}
+      \\&= v^{q-1}
+        && \text{by \pref{item:lp_young_q-1}}
+    \end{align*}
+
+  \item Proof that $v=u^{p-1}$ is monotonically increasing in $u$ and 
+                   $u=v^{q-1}$ is monotonically increasing in $v$:
+    \begin{align*}
+      \deriv{v}{u} 
+        &= \deriv{}{u} u^{p-1}
+      \\&= (p-1) u^{p-2}
+      \\&> 0
+      \\
+      \deriv{u}{v} 
+        &= \deriv{}{v} v^{q-1}
+      \\&= (q-1) v^{q-2}
+      \\&> 0
+    \end{align*}
+
+  \item Proof that $xy \le \frac{x^p}{p} + \frac{y^q}{q}$:\\
+    \begin{minipage}{8\tw/16}
+      \begin{align*}
+        xy
+          &\le \int_0^x u^{p-1} \du + \int_0^y v^{q-1} \dv
+        \\&=   \left. \frac{u^p}{p} \right|_0^x + \left. \frac{v^q}{q} \right|_0^y 
+        \\&=   \frac{x^p}{p}  + \frac{y^q}{q} 
+      \end{align*}
+    \end{minipage}
+    \begin{minipage}{7\tw/16}
+      \begin{center}%
+      \begin{fsL}%
+      \setlength{\unitlength}{\tw/240}%
+      \begin{picture}(140,140)(-20,-20)%
+      %{\color{graphpaper}\graphpaper[10](0,0)(100,100)}%
+        \thinlines%
+        \color{axis}%
+          \put(0,0){\line(0,1){110}}%
+          \put(0,0){\line(1,0){110}}%
+          \put(115,0){\makebox(0,0)[l]{$u$}}%
+          \put(0,115){\makebox(0,0)[b]{$v$}}%
+        \thicklines%
+        \color{blue}%
+          \qbezier(0,0)(80,0)(100,100)%
+          \put(75,85){\makebox(0,0)[r]{$v=u^{p-1},\;u=v^{q-1}$}}%
+          \put(80,85){\vector(1,0){16}}%
+        \color{red}%
+          \put(90,-5){\makebox(0,0)[t]{$x$}}%
+          \put(-5,30){\makebox(0,0)[t]{$y$}}%
+          \put(0,30){\line(1,0){90}}%
+          \put(90,0){\line(0,1){65}}%
+        \color{purple}%
+          \put(65,65){\makebox(0,0)[br]{error}}%
+          \put(60,60){\vector(1,-1){24}}%
+      \end{picture}%
+      \end{fsL}%
+      \end{center}%
+    \end{minipage}
+\end{enumerate}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{H/:older's Inequality}]
+\footnote{
+  \citerpgc{bullen2003}{178}{1402015224}{2.1},
+  \citerp{carothers2000}{44},
+  \citerp{tolsted1964}{6},
+  \citerp{maligranda1995}{257},
+  \citergc{hardy1934}{0521358809}{Theorem 11},
+  \citor{holder1889}
+  }
+\label{thm:lp_holder}
+\index{inequalities!H/:older}
+%--------------------------------------
+Let $\tuplexn{x_n\in\C}$ and $\tuplexn{y_n\in\C}$ be complex $\xN$-tuples. 
+\thmbox{
+  \mcom{\ds\sum_{n=1}^{\xN} \abs{x_n y_n}}{$\norm{\vx\cdot\vy}_1$} \le 
+  \mcom{\brp{\ds\sum_{n=1}^{\xN} \abs{x_n}^p}^\frac{1}{p}}{$\norm{\vx}_p$}
+  \mcom{\brp{\ds\sum_{n=1}^{\xN} \abs{y_n}^q}^\frac{1}{q}}{$\norm{\vy}_q$}
+  \qquad\text{with}\qquad
+  \frac{1}{p} + \frac{1}{q} = 1
+  \qquad
+  \forall \; 1<p<\infty
+  }
+\end{theorem}
+\begin{proof}
+  Let $\ds \norm{x_n}_p \eqd \brp{\sum_{n=1}^{\xN} \abs{x_n}^p}^\frac{1}{p}$.
+\begin{align*}
+  \sum_{n=1}^{\xN} \abs{x_n y_n}
+    &= \norm{\seqn{x_n}}_p\norm{\seqn{y_n}}_q
+       \sum_{n=1}^{\xN} \frac{\abs{x_n y_n}}{\norm{\seqn{x_n}}_p\norm{\seqn{y_n}}_q}
+  \\&= \norm{\seqn{x_n}}_p\norm{\seqn{y_n}}_q
+       \sum_{n=1}^{\xN} \frac{\abs{x_n}}{\norm{\seqn{x_n}}_p} \frac{\abs{y_n}}{\norm{\seqn{y_n}}_q}
+  \\&\le \norm{\seqn{x_n}}_p\norm{\seqn{y_n}}_q
+       \sum_{n=1}^{\xN} \brp{\frac{1}{p}\frac{\abs{x_n}^p}{\norm{\seqn{x_n}}_p^p} +
+                          \frac{1}{q}\frac{\abs{y_n}^q}{\norm{\seqn{y_n}}_q^q}}
+    && \text{by \thme{Young's Inequality} \xref{lem:lp_young}}
+  \\&= \norm{\seqn{x_n}}_p\norm{\seqn{y_n}}_q
+       \brp{
+         \frac{1}{p} \cdot \frac{\ds\sum\abs{x_n}^p}{\norm{\seqn{x_n}}_p^p} 
+         +
+         \frac{1}{q} \cdot \frac{\ds\sum\abs{y_n}^q}{\norm{\seqn{y_n}}_q^q}
+         }
+  \\&= \norm{\seqn{x_n}}_p \norm{\seqn{y_n}}_q
+       \brp{
+         \frac{1}{p} \frac{\norm{\seqn{x_n}}_p^p}{\norm{\seqn{x_n}}_p^p} 
+         +
+         \frac{1}{q} \frac{\norm{\seqn{y_n}}_q^q}{\norm{\seqn{y_n}}_q^q}
+         }
+    && \text{by definition of $\normn$}
+  \\&= \norm{\seqn{x_n}}_p \norm{\seqn{y_n}}_q \mcom{\brp{\frac{1}{p} + \frac{1}{q} }}{1}
+  \\&= \norm{\seqn{x_n}}_p \norm{\seqn{y_n}}_q 
+    && \text{by $\frac{1}{p}+\frac{1}{q}=1$ constraint}
+\end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{Minkowski's Inequality for sequences}]
+\footnote{
+  \citerpg{bullen2003}{179}{1402015224},
+  \citerp{carothers2000}{44},
+  \citerp{tolsted1964}{7},
+  \citerp{maligranda1995}{258},
+  \citergc{hardy1934}{0521358809}{Theorem 24},
+  \citorp{minkowski1910}{115} 
+  }
+\label{thm:lp_minkowski}
+\index{inequalities!Minkowski (sequences)}
+%--------------------------------------
+Let $\tuplexn{x_n\in\C}$ and $\tuplexn{y_n\in\C}$ be complex $\xN$-tuples. 
+\thmbox{
+  \brp{\sum_{n=1}^{\xN} \abs{x_n+y_n}^p}^\frac{1}{p}
+  \le
+  \brp{\sum_{n=1}^{\xN} \abs{x_n}^p}^\frac{1}{p}
+  +
+  \brp{\sum_{n=1}^{\xN} \abs{y_n}^p}^\frac{1}{p}
+  \qquad
+  \forall \; 1<p<\infty
+  }
+\end{theorem}
+\begin{proof}
+\mbox{}\\
+\begin{enumerate}
+  \item Define $q$ in terms of $p$ such that $\frac{1}{p}+\frac{1}{q}=1$
+
+  \item Proof that $\frac{1}{q} = \frac{p-1}{p}$:  \label{item:lp_minkowski_qp}
+    \begin{align*}
+      \frac{1}{p}+\frac{1}{q}=1
+        &\iff \frac{1}{q} = 1-\frac{1}{p}
+      \\&\iff \frac{1}{q} = \frac{p-1}{p}
+    \end{align*}
+
+  \item Define $\normn$ as follows:
+    \[ \norm{\vx}_p \eqd \brp{\sum_{n=1}^{\xN} \abs{x_n}^p}^\frac{1}{p} \]
+
+  \item Proof that $\norm{x_n+y_n}_p \le \norm{x_n}_p + \norm{y_n}_p$:
+    \begin{align*}
+      \norm{x_n+y_n}_p^p
+        &= \sum_{n=1}^{\xN} \abs{x_n+y_n}^p
+        && \text{by definition of $\normn_p$}
+      \\&= \sum_{n=1}^{\xN} \abs{x_n+y_n} \abs{x_n+y_n}^{p-1}
+        && \text{by homogeneous property of $\absn$\ifdochas{numsys}{ \prefpo{thm:C_norm}}}
+      \\&\le \sum_{n=1}^{\xN} \abs{x_n} \abs{x_n+y_n}^{p-1} +
+                \sum_{n=1}^{\xN} \abs{y_n} \abs{x_n+y_n}^{p-1}
+        && \text{by subadditive property of $\absn$\ifdochas{numsys}{ \prefpo{thm:C_norm}}}
+      \\&= \sum_{n=1}^{\xN} \abs{x_n (x_n+y_n)^{p-1}} +
+                \sum_{n=1}^{\xN} \abs{y_n (x_n+y_n)^{p-1}}
+        && \text{by homogeneous property of $\absn$\ifdochas{numsys}{ \prefpo{thm:C_norm}}}
+      \\&\le \norm{x_n}_p \norm{(x_n+y_n)^{p-1}}_q + \norm{y_n}_p \norm{(x_n+y_n)^{p-1}}_q
+        && \text{by H/:older's Inequality \prefpo{thm:lp_holder}}
+      \\&= \brp{\norm{x_n}_p+\norm{y_n}_p} \norm{(x_n+y_n)^{p-1}}_q
+      \\&= \brp{\norm{x_n}_p+\norm{y_n}_p} \brp{\sum_{n=1}^{\xN}\abs{(x_n+y_n)^{p-1}}^q}^\frac{1}{q}
+        && \text{by definition of $\normn_p$}
+      \\&= \brp{\norm{x_n}_p+\norm{y_n}_p} \brp{\sum_{n=1}^{\xN}\abs{(x_n+y_n)^{p-1}}^\frac{p}{p-1}}^\frac{p-1}{p}
+        && \text{by \pref{item:lp_minkowski_qp}}
+      \\&= \brp{\norm{x_n}_p+\norm{y_n}_p} \brp{\sum_{n=1}^{\xN}\abs{(x_n+y_n)}^p}^\frac{p-1}{p}
+      \\&= \brp{\norm{x_n}_p+\norm{y_n}_p} \norm{x_n+y_n}^{p-1}
+      \\&\implies \norm{x_n+y_n}_p \le \norm{x_n}_p+\norm{y_n}_p
+    \end{align*}
+
+  \end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\qboxnps % 1826 quote by Abel
+%---------------------------------------
+  {
+  in an 1826 letter written by Niels Henrik Abel
+  \index{Abel}
+  \index{quotes!Abel}
+  \footnotemark
+  }
+  {../common/people/cauchy_wkp_pdomain.jpg}
+  {Cauchy is the only one occupied with pure mathematics: Poisson, Fourier, Ampere, etc., 
+   busy themselves exclusively with magnetism and other physical subjects.}
+  \footnotetext{\begin{tabular}[t]{ll}
+    quote: & \citerpg{boyer2011}{462}{0470525487}\\
+    image: & \scs\url{http://en.wikipedia.org/wiki/File:Augustin-Louis_Cauchy_1901.jpg}, public domain
+  \end{tabular}}
+
+%---------------------------------------
+\begin{theorem}[\thm{Cauchy-Schwarz Inequality}]
+\footnote{
+  %\citerpg{bullen2003}{183}{1402015224}\\ ???
+  \citerp{ab}{278},
+  \citor{schwarz1885},
+  \citor{bouniakowsky1859},
+  \citerpgc{hardy1934}{25}{0521358809}{Theorem 11},
+  \citorpc{cauchy1821}{455}{???}
+  }
+\label{thm:seq_cs}
+\index{inequalities!Cauchy-Schwarz}
+\index{inequalities!Cauchy-Bunyakovsky-Schwarz}
+%---------------------------------------
+Let $\tuplexn{x_n\in\C}$ and $\tuplexn{y_n\in\C}$ be complex $\xN$-tuples. 
+ \thmbox{\begin{array}{>{\ds}rc>{\ds}l@{\qquad}C}
+   \abs{\sum_{n=1}^{\xN} x_n y_n^\ast }^2 &\le& \brp{\sum_{n=1}^{\xN} \abs{x_n}^2}\;\brp{\sum_{n=1}^{\xN} \abs{y_n}^2}
+     & \forall \vx,\vy\in\spX
+     \\
+   \abs{\sum_{n=1}^{\xN} x_n y_n^\ast }^2 &=& \brp{\sum_{n=1}^{\xN} \abs{x_n}^2}\; \brp{\sum_{n=1}^{\xN} \abs{y_n}^2}
+   \quad\iff\quad \exists a\in\C \st \vy=a\vx
+     & \forall \vx,\vy\in\spX
+ \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item The Cauchy-Schwarz inequality for sequences is a special case of the H/:older inequality (\pref{thm:lp_holder})
+        for $p=q=2$.
+
+  \item Alternatively, the Cauchy-Schwarz inequality for sequences is a special case of 
+        the \hie{Cauchy-Schwarz inequality} in inner-product spaces:
+    \begin{enumerate}
+      \item $\inprod{x_n}{y_n}\eqd\sum_{n=1}^{\xN}x_n y_n$ is an inner-product and $\opair{\tuplen{x_n}}{\inprodn}$ is an inner-product space.
+      \item By the \hie{Cauchy-Schwarz Inequality for inner-product spaces}\ifdochas{vsinprod}{ (\prefp{thm:cs})}, 
+        \[\abs{\inprod{\vx}{\vy}}^2 \le \inprod{\vx}{\vx} \; \inprod{\vy}{\vy}\]
+    \end{enumerate}
+
+  \item Not only does the H/:older inequality imply the Cauchy-Schwarz inequality, but somewhat surprisingly,
+        the converse is also true: The Cauchy-Schwarz inequality implies the H/:older inequality.%
+        \footnote{
+            \citerppgc{bullen2003}{183}{185}{1402015224}{Theorem 5}
+          }
+\end{enumerate}
+\end{proof}
+
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerp{carothers2000}{43}
+  }
+%--------------------------------------
+\propbox{
+  (x+y)^p \le 2^p(x^p + y^p)
+  \qquad
+  \forall x,y\ge 0,\; 1<p<\infty
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  (x+y)^p
+    &\le \brp{2\max\setn{x,y}}^p 
+  \\&=   2^p \brp{\max\setn{x,y}}^p 
+  \\&=   2^p \brp{\max\setn{x^p,y^p}} 
+  \\&\le 2^p(x^p + y^p)
+\end{align*}
+\end{proof}
+
+
+% see calculus.tex% %=======================================
+% see calculus.tex% \section{Differentiation}
+% see calculus.tex% %=======================================
+% see calculus.tex% Some proofs require differentiation multiple times.
+% see calculus.tex% This is simplified thanks to the \thme{Leibniz rule}, also called the 
+% see calculus.tex% \hie{generalized product rule} (\hie{GPR}, next lemma).
+% see calculus.tex% The Leibniz rule is remarkably similar in form to the \thme{binomial theorem}.
+% see calculus.tex% %--------------------------------------
+% see calculus.tex% \begin{lemma}[Leibniz rule]
+% see calculus.tex% %\footnote{\url{http://en.wikipedia.org/wiki/Leibniz_rule_(generalized_product_rule)}}
+% see calculus.tex% \index{Leibniz rule}
+% see calculus.tex% \index{generalized product rule}
+% see calculus.tex% \index{binomial coefficient}
+% see calculus.tex% \label{lem:LGPR}
+% see calculus.tex% \footnote{
+% see calculus.tex%   \citerpg{benisrael2002}{154}{3211829245},
+% see calculus.tex%   \citor{leibniz1710}
+% see calculus.tex%   }
+% see calculus.tex% %--------------------------------------
+% see calculus.tex% Let $\ff(x),\fg(x)\in\spLL$ with derivatives
+% see calculus.tex% $\ff^{(n)}(x)\eqd\deriv{^n}{x^n}\ff(x)$ and
+% see calculus.tex% $\fg^{(n)}(x)\eqd\deriv{^n}{x^n}\fg(x)$ for $n=0,1,2,\ldots$,
+% see calculus.tex% and ${n\choose k}\eqd\frac{n!}{(n-k)!k!}$ (binomial coefficient).
+% see calculus.tex% Then
+% see calculus.tex% \lembox{
+% see calculus.tex%   \deriv{^n}{x^n}[\ff(x)\fg(x)] =
+% see calculus.tex%   \sum_{k=0}^n {n\choose k} \ff^{(k)}(x) \fg^{(n-k)}(x)
+% see calculus.tex%   }
+% see calculus.tex% \end{lemma}
+
+
+% see calculus.tex% %---------------------------------------
+% see calculus.tex% \begin{theorem}
+% see calculus.tex% \footnote{
+% see calculus.tex%   \citerpgc{chui}{86}{0121745848}{item (ii)}
+% see calculus.tex%   }
+% see calculus.tex% \label{thm:int01}
+% see calculus.tex% %---------------------------------------
+% see calculus.tex% Let $\ff$ be a continuous function in $\clFrc$ and $\ff^{(n)}$ the $n$th derivative of $\ff$.
+% see calculus.tex% \thmbox{
+% see calculus.tex%   \int_{\intcc{0}{1}^n} \ff^{(n)}\brp{\sum_{k=1}^n x_k} \dx_1\dx_2\cdots\dx_n = \sum_{k=0}^n (-1)^{n-k}\bcoef{n}{k}\ff(k)
+% see calculus.tex%   \qquad\forall n\in\Zp
+% see calculus.tex%   }
+% see calculus.tex% \end{theorem}
+% see calculus.tex% \begin{proof}
+% see calculus.tex% Proof by induction:
+% see calculus.tex%   \begin{enumerate}
+% see calculus.tex%     \item Proof for $n=1$ case:
+% see calculus.tex%       \begin{align*}
+% see calculus.tex%         \int_\intcc{0}{1} \ff^{(1)}\brp{x} \dx
+% see calculus.tex%           &= \left.\ff(x)\right|_0^1
+% see calculus.tex%         \\&= \ff(1)-\ff(0)
+% see calculus.tex%         \\&= (-1)^{1+1}\bcoef{1}{1}\ff(1) + (-1)^{1+0}\bcoef{1}{0}\ff(0)
+% see calculus.tex%         \\&= \sum_{k=0}^n (-1)^{n-k}\bcoef{n}{k}\ff(k)
+% see calculus.tex%       \end{align*}
+% see calculus.tex% 
+% see calculus.tex%     \item Proof that $n$ case $\implies$ $n+1$ case:
+% see calculus.tex%       \begin{align*}
+% see calculus.tex%         &\int_{\intcc{0}{1}^{n+1}} \ff^{(n+1)}\brp{\sum_{k=1}^n x_k} \dx_1\dx_2\cdots\dx_{n+1}
+% see calculus.tex%         \\&= \int_{\intcc{0}{1}^n}\brb{\left. \ff^{(n)}\brp{x_{n+1}+\sum_{k=1}^n x_k}\right|_0^1} \dx_1\dx_2\cdots\dx_n
+% see calculus.tex%         \\&= \int_{\intcc{0}{1}^n}{\ff^{(n)}\brp{1+\sum_{k=1}^n x_k}-\ff^{(n)}\brp{0+\sum_{k=1}^n x_k}} \dx_1\dx_2\cdots\dx_n
+% see calculus.tex%         \\&= \sum_{k=0}^n (-1)^{n-k}\bcoef{n}{k}\ff(k+1) - \sum_{k=0}^n (-1)^{n-k}\bcoef{n}{k}\ff(k)
+% see calculus.tex%           \qquad\text{by $n$ case hypothesis}
+% see calculus.tex%         \\&= \sum_{k=1}^{n+1} (-1)^{n-k+1}\bcoef{n}{k-1}\ff(k) + \sum_{k=0}^n (-1)(-1)^{n-k}\bcoef{n}{k}\ff(k)
+% see calculus.tex%         \\&= \brb{ \ff(n+1)+ \sum_{k=1}^{n} (-1)^{n-k+1}\bcoef{n}{k-1}\ff(k) }
+% see calculus.tex%            + \brb{ (-1)^{n+1} \ff(0) + \sum_{k=1}^n (-1)^{n-k+1}\bcoef{n}{k}\ff(k)}
+% see calculus.tex%         \\&= \ff(n+1) + (-1)^{n+1}\ff(0) 
+% see calculus.tex%             + \sum_{k=1}^{n} (-1)^{n-k+1}\brs{\bcoef{n}{k-1}+\bcoef{n}{k}}\ff(k) 
+% see calculus.tex%         \\&= \ff(n+1) + (-1)^{n+1}\ff(0) 
+% see calculus.tex%             + \sum_{k=1}^{n} (-1)^{n-k+1}\bcoef{n+1}{k}\ff(k) 
+% see calculus.tex%           \qquad\text{by \thme{Pascal's Recursion} \ifxref{binomial}{thm:stifel}}
+% see calculus.tex%         \\&= \sum_{k=0}^{n+1} (-1)^{n-k+1}\bcoef{n+1}{k}\ff(k) 
+% see calculus.tex%       \end{align*}
+% see calculus.tex%   \end{enumerate}
+% see calculus.tex% \end{proof}
+
+
+%=======================================
+\section{Power Sums}
+%=======================================
+%--------------------------------------
+\begin{theorem}[\thmd{Geometric Series}]
+\footnote{
+  \citerpc{hall1894}{39}{article 55}
+  }
+\label{thm:series_geometric}
+%--------------------------------------
+\thmbox{
+  \sum_{k=0}^{n-1} r^k = \frac{1-r^n}{1-r}
+  \qquad
+  \forall r\in\C\setd0
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \sum_{k=0}^{n-1} r^k
+    &= \brp{\frac{1}{1-r}}\brs{\brp{1-r}\sum_{k=0}^{n-1} r^k}
+  \\&= \brp{\frac{1}{1-r}}\brs{\sum_{k=0}^{n-1} r^k - r\sum_{k=0}^{n-1} r^k}
+  \\&= \brp{\frac{1}{1-r}}\brs{\sum_{k=0}^{n-1} r^k - \brp{\sum_{k=0}^{n-1} r^k -1 + r^n}}
+  \\&= \brp{\frac{1}{1-r}}\brs{1 - r^n}
+  \\&= \frac{1-r^n}{1-r}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{lemma}
+\label{lem:series_sumT}
+%--------------------------------------
+Let $\ff(t)$ be a function.
+\lembox{
+  \fS(x)\eqd\sum_{n\in\Z} \ff(x+n\tau) = \fS(x+\tau) \qquad \text{($\fS(x)$ is \prope{periodic} with period $\tau$)}
+}
+\end{lemma}
+\begin{proof}
+\begin{align*} 
+  \fS(x+\tau) 
+    &\eqd \sum_{n\in\Z} \ff(x+\tau+n\tau) 
+  \\&=    \sum_{n\in\Z} \ff(x+(n+1)\tau) 
+  \\&=    \sum_{m\in\Z} \ff(x+m\tau) 
+    &&    \text{where $m\eqd n+1$}
+  \\&\eqd \fS(x)
+\end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{proposition}[\thmd{Power Sums}]
+\footnote{
+  \citerppg{amann2008}{51}{57}{3764374721},
+  \citerpgc{menini2004}{91}{0824709853}{Exercises 5.36--5.39}
+  %http://mathworld.wolfram.com/PowerSum.html
+  }
+\label{prop:powersums}
+%--------------------------------------
+\propbox{\begin{array}{>{\ds}lc>{\ds}l @{\qquad}C}
+  \sum_{k=1}^n k   &=& \frac{n(n+1)}{2}        &\forall n\in\Zp  \\
+  \sum_{k=1}^n k^2 &=& \frac{n(n+1)(2n+1)}{6}  &\forall n\in\Zp  \\
+  \sum_{k=1}^n k^3 &=& \frac{n^2(n+1)^2}{4}  &\forall n\in\Zp  \\
+  \sum_{k=1}^n k^4 &=& \frac{n(n+1)(2n+1)(3n^2+3n-1)}{30}  &\forall n\in\Zp
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+\intertext{1. Proof that $\sum_{k=1}^n k=\frac{n(n+1)}{2}$: (proof by induction)}
+  \sum_{k=1}^{n=1} k
+    &= 1
+  \\&= \frac{1(1+1)}{2}
+  \\&= \left.\frac{n(n+1)}{2}\right|_{n=1} 
+  \\
+  \sum_{k=1}^{n+1} k
+    &= \Bigg(\sum_{k=1}^n k\Bigg) + \Bigg(n+1\Bigg)
+  \\&= \Bigg(\frac{n(n+1)}{2}\Bigg) + \Bigg(n+1\Bigg)
+    && \text{by left hypothesis}
+  \\&= \Bigg(n+1\Bigg)\Bigg(\frac{n}{2}+1\Bigg)  
+  \\&= \Bigg(n+1\Bigg)\Bigg(\frac{n+2}{2}\Bigg)  
+  \\&= \frac{(n+1)(n+2)}{2} 
+  \\
+\intertext{2. Proof that $\sum_{k=1}^n k^2 = \frac{n(n+1)(2n+1)}{6}$: (proof by induction)}
+  \sum_{k=1}^{n=1} k^2 
+    &= 1
+  \\&= \frac{1(1+1)(2+1)}{6}
+  \\&= \left.\frac{n(n+1)(2n+1)}{6}\right|_{n=1} 
+  \\
+  \sum_{k=1}^{n+1} k^2
+    &= \Bigg(\sum_{k=1}^n k^2\Bigg) + \Bigg(n+1\Bigg)^2
+  \\&= \Bigg(\frac{n(n+1)(2n+1)}{6}\Bigg) + \Bigg(n+1\Bigg)^2
+    && \text{by left hypothesis}
+  \\&= \Bigg(n+1\Bigg)\Bigg(\frac{n(2n+1)+6(n+1)}{6}\Bigg) 
+  \\&= \Bigg(n+1\Bigg)\Bigg(\frac{2n^2+7n+6}{6}\Bigg) 
+  \\&= \Bigg(n+1\Bigg)\Bigg(\frac{(n+2)(2n+3)}{6}\Bigg) 
+  \\&= \frac{(n+1)[(n+1)+1][2(n+1)+1]}{6} 
+\end{align*}
+\end{proof}
+
+

@@ -1,0 +1,1051 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+
+
+
+
+%======================================
+\chapter{Linear spaces}
+%======================================
+\qboxnpq
+  {\href{http://en.wikipedia.org/wiki/Giuseppe_Peano}{Giuseppe Peano}
+   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineF.html}{(1858--1932)},
+   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Italy.html}{Italian} mathematician,
+   credited with being one of the first to introduce the concept of the \structe{linear space} (\structe{vector space}).\footnotemark}
+  {../common/people/PeanoGiuseppe_wkp_pdomain.jpg}
+  {The geometric \struct{calculus}, in general, 
+   consists in a system of operations on geometric entities, and their consequences, 
+   analogous to those that \struct{algebra} has on the numbers.
+   It permits the expression in formulas of the results of geometric constructions,
+   the representation with equations of propositions of \struct{geometry},
+   and the substitution of a transformation of equations for a verbal argument.}
+  \citetblt{
+    quote: & \citerp{peano1888e}{ix} \\
+    image  & \scs\url{http://en.wikipedia.org/wiki/File:Giuseppe_Peano.jpg}, public domain
+    }
+%\qboxnpqt
+%  {
+%    Jules Henri Poincar\'e (1854-1912), physicist and mathematician
+%    \index{Poincar\'e, Jules Henri}
+%    \index{quotes!Poincar\'e, Jules Henri}
+%    \footnotemark
+%  }
+%  {../common/people/poincare.jpg}
+%  {
+%    \ldots et que nous nommons le temps et l'espace. \ldots
+%    ce n'est pas la nature qui nous les impose,
+%    c'est nous qui les imposons \`a la nature parce que nous les trouvons
+%    commodes, \ldots
+%  }
+%  {
+%    \ldots and which are called time and space. \ldots
+%    it is not nature which imposes them upon us,
+%    it is we who impose them upon nature because
+%    we find them convenient.
+%  }
+%\citetblt{
+%  quote:       & \citorc{poincare_vos}{Introduction, paragraph 10}  \\
+%  translation: & \citorp{poincare_vos_e}{13}  \\
+%  image:       & \url{http://en.wikipedia.org/wiki/Image:Poincare_jh.jpg}
+%  }
+
+
+%\qboxnpq
+%  {
+%    Karl Friedrich Gauss, mathematician (1777--1855)
+%    in an November 8, 1824 letter to Franz Adolph Taurinus
+%    \index{Gauss, Karl Friedrich}
+%    \footnotemark
+%  }
+%  {../common/people/gauss.jpg}
+%  {But it seems to me that in spite of the word-mastery of the metaphysicians,
+%   we know really too little, or even nothing at all,
+%   about the true nature of space to be able to confuse something that seems
+%   unnatural with absolutely impossible.
+%   If non-Euclidean geometry is the real one and the constant is incomparable
+%   to the magnitudes that we encounter on earth or in the heavens then it can be
+%   determined aposteriori.
+%   I have therefore occasionally for fun expressed the wish that Euclidean geometry
+%   not be the real one, for then we would have a priori an absolute measure.}
+%  \footnotetext{\begin{tabular}[t]{ll}
+%    quote: & \url{http://www.ltn.lv/~podnieks/} \\
+%           & Burris(2003), \url{http://www.math.uwaterloo.ca/~snburris/htdocs/noneucl.pdf}, page 12 \\
+%           & \url{http://resolver.sub.uni-goettingen.de/purl?PPN236010751} \\
+%    image: & \url{http://en.wikipedia.org/wiki/Karl_Friedrich_Gauss}
+%  \end{tabular}}
+
+
+\begin{figure}[th]
+  \centering
+  \psset{yunit=1.5\latunit}
+  \input{../common/math/graphics/spaces.tex}
+  \caption{Lattice of mathematical spaces\label{fig:vector_spaces}}
+\end{figure}%
+
+
+
+
+%======================================
+\section{Definition and basic results}
+%======================================
+A \structe{metric space}\ifsxref{metric}{def:metric} is a \structe{set} together with nothing else save a \structe{metric} 
+that gives the space a \structe{topology} \xref{def:topology}.
+A \structe{linear space} (next definition) in general has no topology but does have some additional 
+\structe{algebraic} structure\ifsxref{algebra}{app:algebra} that 
+is useful in generalizing a number of mathematical concepts.
+If one wishes to have both algebraic structure and a topology, then this can be accomplished by appending 
+a \structe{topology} to a \structe{linear space} giving a \structe{topological linear space} \xref{def:toplinspace}, 
+a \structe{metric} giving a \structe{metric linear space}\ifsxref{metric}{def:metric},
+an \structe{inner product} giving an \structe{inner product space} \xref{def:inprod}, % or a \hie{Hilbert space} \xref{def:hilbert},
+or a \structe{norm} giving a \structe{normed linear space} \xref{def:norm}. % or a \structe{Banach space} \xref{def:banach}.
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerppgc{kubrusly2001}{40}{41}{0817641742}{Definition 2.1 and following remarks},
+  \citerp{haaser1991}{41},
+  \citerpp{halmos1948}{1}{2},
+  \citerc{peano1888}{Chapter IX},
+  \citerpp{peano1888e}{119}{120},
+  \citePpp{banach1922}{134}{135}
+  }
+\label{def:vspace}
+\index{space!vector}
+\index{space!linear}
+%---------------------------------------
+%Let $\F\eqd\otriple{\setS}{+}{\cdot}$ be a field.
+Let $\fieldF$ be a \structe{field}\ifsxref{algebra}{def:field}.
+Let $\setX$ be a set, 
+let $+$ be an \structe{operator} \xref{def:operator} in $\clF{\setX^2}{\setX}$, 
+and let $\otimes$ be an operator in $\clF{\F\times\setX}{\setX}$.
+\defboxp{
+  The structure $\spO\eqd\linearspaceX$ is a \structd{linear space} over $\fieldF$ if
+  %\\\indentx$\ds\begin{array}{l rcl @{\quad}C @{\quad}D@{}r@{}}
+  \\\indentx$\ds\begin{array}{>{\scriptstyle}r rcl @{\quad}C @{\quad}D@{}r@{}}
+    \cline{7-7}
+    1.& \exists \vzero\in\setX \st \vx + \vzero &=& \vx
+      & \forall \vx\in\setX
+      & ($+$ \structe{identity})
+      & \ast\vline
+      \\
+    2.& \exists \vy\in\setX \st \vx+\vy &=& \vzero
+      & \forall \vx \in\setX
+      & ($+$ \structe{inverse})
+      & \vline
+      \\
+    3.& (\vx+\vy)+\vz &=& \vx+(\vy+\vz)
+      & \forall \vx,\vy,\vz\in\setX
+      & ($+$ is \prope{associative})
+      & \text{ }\vline
+      \\
+    4.& \vx+\vy &=& \vy+\vx
+      & \forall \vx,\vy\in\setX
+      & ($+$ is \prope{commutative})
+      & \vline
+      \\\cline{7-7}
+    5.& 1\cdot \vx &=& \vx
+      & \forall \vx\in\setX
+      & ($\cdot$ \prope{identity})
+      \\
+    6.& \alpha\cdot(\beta\cdot\vx) &=& (\alpha\cdot\beta)\cdot\vx
+      & \forall \alpha,\beta\in\setS \text{ and } \vx\in\setX
+      & ($\cdot$ \prope{associates} with $\cdot$)
+      \\
+    7.& \alpha\cdot(\vx+\vy) &=& (\alpha \cdot\vx)+(\alpha\cdot\vy)
+      & \forall \alpha\in\setS \text{ and } \vx,\vy\in\setX
+      & ($\cdot$ \prope{distributes} over $+$)
+      \\
+    8.& (\alpha+\beta)\cdot\vx &=& (\alpha\cdot \vx)+(\beta\cdot \vx)
+      & \forall \alpha,\beta\in\setS \text{ and } \vx\in\setX
+      & ($\cdot$ \prope{pseudo-distributes} over $+$)
+  \end{array}$
+  \\
+  The set $\setX$ is called the \structd{underlying set}.
+  The elements of $\setX$ are called \structd{vectors}.
+  The elements of $\F$ are called \structd{scalars}.
+  A \structe{linear space} is also called a \structd{vector space}.
+  If $\F\eqd\R$, then $\spO$ is a \structd{real linear space}.
+  If $\F\eqd\C$, then $\spO$ is a \structd{complex linear space}.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:lsub}
+%---------------------------------------
+Let $\spL_1\eqd\linearspace{\setX_1}{+}{\cdot}{\F_1}{\addf}{\dottimes}$
+and $\spL_2\eqd\linearspace{\setX_2}{+}{\cdot}{\F_2}{\addf}{\dottimes}$.
+\defboxt{$\spO_2$ is a \structd{linear subspace} of $\spO_1$ if
+  \\\indentx$\begin{array}{FrcllD}
+      1. & \mc{3}{M}{$\spL_1$ is a \structe{linear space}} & \xref{def:vspace} & and 
+    \\2. & \mc{3}{M}{$\spL_2$ is a \structe{linear space}} & \xref{def:vspace} & and 
+    \\3. & \F_2    &\subseteq& \F_1                        &                   & and
+    \\4. & \setX_2 &\subseteq& \setX_1                     &                   & and
+  \end{array}$}
+\end{definition}
+
+%---------------------------------------
+\begin{remark}
+\footnote{
+  \citerp{akhiezer1e}{1},
+  \citerp{haaser1991}{41}
+  }
+%---------------------------------------
+By the first four conditions ($\ast]$) listed in \pref{def:vspace},
+$\opair{\setX}{+}$ is a \hib{commutative group} (or \hib{abelian group}).
+\end{remark}
+
+Often when discussing a linear space, %the operator $+$ is expressed simply as $+$ and
+the operator $\cdot$ is simply expressed with juxtaposition
+(e.g. $\alpha\vx$ is equivalent to $\alpha\cdot\vx$). %is equivalent to $\alpha\otimes\vx$).
+In doing this, there is no risk of ambiguity between %vector-vector addition
+scalar-vector multiplication and scalar-scalar multiplication
+because the operands uniquely identify the precise operator.\footnote{
+  {\em Operator overload} is a technique in which
+  two fundamentally different operators or functions
+  share the same symbol or label. It is
+  inherent in the programming language {\em C++} and is therein called
+  {\em operator overload}.
+  In C++, you can define two (or more) operators or functions that
+  share the same symbol or name, but yet are completely different.
+  Two such operators (or functions) are distinguished from each other
+  by the type of their operands.
+  So for example, in C++, you can define an
+  $m\times n$ matrix {\em type} and use operator overload to
+  define a $+$ operator that operates on this new matrix type.
+  So if variables $x$ and $y$ are of floating point type and
+  $A$ and $B$ are of the matrix type,
+  you can then add either type using the same syntax style:\\
+    \begin{tabular}{l@{\hs{6ex}}l}
+      x+y  & (add two floating point numbers) \\
+      A+B  & (add two matrices)
+    \end{tabular}\\
+  Even though both of these operations ``look" the same, they
+  are of course fundamentally different.
+  }
+
+
+%---------------------------------------
+\begin{example}[\exmd{tuples in $\F^\xN$}]
+\footnote{
+  \citerpgc{kubrusly2001}{41}{0817641742}{Example 2D}
+  }
+\label{ex:lsp_FN}
+%---------------------------------------
+Let $\tuplexn{x_n}$ be an \structe{$\xN$-tuple} \xref{def:tuple} over a \structe{field}\ifsxref{algebra}{def:field} $\fieldF$.
+\exbox{\begin{array}{N>{\ds}rc>{\ds}l@{\qquad}C@{\qquad}D}
+  Let    & \setX                     &\eqd& \set{\tuplexn{x_n}}{x_n\in\F}         &                              & and
+  \\     & \tuplexn{x_n}+\tuplexn{y_n} &\eqd& \tuplexn{x_n\dotplus y_n}             & \forall \tuplen{x_n}\in\setX & and
+  \\     & \alpha\cdot\tuplexn{x_n}   &\eqd& \tuplexn{\alpha\dottimes x_n}         & \forall \tuplen{x_n}\in\setX, \alpha\in\F. & 
+  \\\mc{6}{M}{Then the structure $\linearspaceX$ is a \prope{linear space}.}
+\end{array}}
+\end{example}
+
+%%---------------------------------------
+%\begin{remark}
+%\footnote{
+%  \citerpgc{kubrusly2001}{41}{0817641742}{Example 2D}
+%  }
+%%---------------------------------------
+%Note that the tuples $\tuplexn{x_n}$ in example \pref{ex:lsp_FN} can not be extended a sequence $\seqxn{x_n}$
+%without first equipping the linear space with a \hie{topology}.
+%This is because 
+%\end{remark}
+
+%---------------------------------------
+\begin{example}[real numbers]
+\footnote{
+  \citerpgc{kubrusly2001}{41}{0817641742}{Example 2D},
+  \citor{hamel1905}
+  }
+%---------------------------------------
+Let  $\field{\R}{+}{\cdot}$ be the field of real numbers.
+\exbox{\begin{array}{M}%\begin{array}{N>{\ds}rc>{\ds}l@{\qquad}C@{\qquad}D}
+  %Let    & x+y      &\eqd& x\dotplus y     & \forall x,y\in\R  & and
+  %\\     & x\cdot y &\eqd& x\dottimes y    & \forall x,y\in\R. &
+  %\\\mc{6}{M}{Then the structure $\linearspaceXR[\R]$ is a \prope{linear space}}.
+  %\\\mc{6}{M}{That is, the field $\fieldR$ with $+$ and $\cdot$ is a linear space over itself.}
+    {The structure $\linearspace{\R}{+}{\cdot}{\R}{+}{\cdot}$ is a \prope{linear space}}.
+  \\{That is, the field of real numbers forms a linear space over itself.}
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{example}[functions]
+\footnote{
+  \citerpgc{kubrusly2001}{42}{0817641742}{Example 2F}
+  }
+%---------------------------------------
+Let $\fieldF$ be a field.
+Let $\clFxy$ be the set of all functions with domain $\setX$ and range $\setY$.
+\exbox{\begin{array}{N>{\ds}rc>{\ds}l@{\qquad}C@{\qquad}D@{\qquad}D}
+  Let    & \brs{\ff+\fg}(x)          &\eqd& \ff(x) + \fg(x)                  & \forall \ff,\fg\in\clFxy & (\prope{pointwise addition}) & and
+  \\     & \brs{\alpha\cdot\ff}(x)   &\eqd& \alpha\cdot\brs{\ff(x)}          & \forall \ff\in\clFxy, \alpha\in\F. & 
+  \\\mc{7}{M}{Then the structure $\linearspace{\clFxy}{+}{\cdot}{\F}{\dotplus}{\dottimes}$ is a \prope{linear space}.}
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{example}[functions onto $\F$]
+\footnote{
+  \citerpgc{kubrusly2001}{41}{0817641742}{Example 2E}
+  }
+%---------------------------------------
+Let $\field{\F}{+}{\cdot}$ be a field.
+Let $\clFxf$ be the set of all functions with domain $\setX$ and range $\F$.
+\exbox{\begin{array}{N>{\ds}rc>{\ds}l@{\qquad}C@{\qquad}D@{\qquad}D}
+  Let    & \brs{\ff+\fg}(x)          &\eqd& \ff(x) + \fg(x)                  & \forall \ff,\fg\in\clFxf & (\prope{pointwise addition}) & and
+  \\     & \brs{\alpha\cdot\ff}(x)   &\eqd& \alpha\cdot\brs{\ff(x)}          & \forall \ff\in\clFxf,\, \alpha\in\F. & 
+  \\\mc{7}{M}{Then the structure $\linearspace{\clFxf}{+}{\cdot}{\F}{+}{\cdot}$ is a \prope{linear space}.}
+\end{array}}
+\end{example}
+
+%---------------------------------------
+\begin{theorem}[Additive identity properties]
+\footnote{
+  \citerpgc{berberian1961}{6}{0821819127}{Theorem 1},
+  \citerpg{michel1993}{77}{048667598X}
+  }
+\label{thm:vs_addid}
+\index{additive identity}
+%--------------------------------------
+Let $\linearspaceX$ be a linear space,
+$0$ the \structe{additive identity element} \xref{def:group} with respect to $\dotplus$,
+and $\vzero$ the \structe{additive identity element} with respect to $+$.
+\thmbox{\begin{array}{F lcl cMC}
+    1. & 0\vx             &=& \vzero                 &        &                             & \forall \vx\in\setX
+  \\2. & \alpha\vzero     &=& \vzero                 &        &                             & \forall \alpha\in\F
+  \\3. & \alpha\vx        &=& \vzero                 &\implies& $\alpha=0$ or $\vx=\vzero$  & 
+  \\4. & \vx+\vx          &=& \vx                    &\implies& $\vx=\vzero$                & 
+  \\5. & \mc{3}{M}{$\alpha\neq0$ and $\vx\neq\vzero$}&\implies& $\alpha\vx\neq\vzero$       & 
+\end{array}}
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    \intertext{1. Proof that $0\vx=\vzero$:}
+      0\vx
+        &= 0\vx + 0\vzero
+        && \text{by definition of $+$ additive identity element}
+      \\&= 0\vx + 0\vx + (-0\vx)
+        && \text{by definition of $+$ additive inverse}
+      \\&= (0+0)\vx + (-0\cdot\vx)
+        && \text{by definition of $+$ additive identity element}
+      \\&= 0\vx + (-0\vx)
+        && \text{by \pref{def:vspace} property 4}
+      \\&= \vzero
+        && \text{by definition of $+$ additive identity element}
+      %
+    \intertext{2. Proof that $\alpha\vzero=\vzero$:}
+      \alpha\vzero
+        &= \alpha\brp{0\vx}
+        && \text{by item 1}
+      \\&= \brp{\alpha0}\vx
+        && \text{by \pref{def:vspace} property 6}
+      \\&= 0\vx
+      \\&= \vzero
+        && \text{by item 1}
+      %
+    \intertext{3. Proof that $\alpha\neq0$ and $\vx\neq\vzero$ $\implies$ $\alpha\vx\neq\vzero$: Suppose $\alpha\vx=\vzero$. Then}
+      \vx 
+        &= \brp{\frac{1}{\alpha}\alpha}\vx
+      \\&= \frac{1}{\alpha}\brp{\alpha\vx}
+      \\&= \frac{1}{\alpha}\vzero
+      \\&= \vzero
+        && \text{by item 2}
+      \\&\implies \vx=\vzero 
+      \\&\text{This is a \hie{contradiction} and so $\alpha\vx\neq\vzero$.}
+      %  
+    \intertext{4. Proof that $\alpha\vx=\vzero$ $\implies$ $\alpha=0$ or $\vx=\vzero$: contrapositive argument of item 3}
+      %  
+    \intertext{5. Proof that $\vx+\vx=\vx\implies\vx=\vzero$:}
+      \vx
+        &= \vx + \vzero
+        && \text{by \prope{additive identity} property \xref{def:vspace}}
+      \\&= \vx + \brs{\vx+(-\vx)}
+        && \text{by \prope{additive inverse} property \xref{def:vspace}}
+      \\&= \brs{\vx + \vx}+(-\vx)
+        && \text{by \prope{associative} property \xref{def:vspace}}
+      \\&= \vx+(-\vx)
+        && \text{by left hypothesis}
+      \\&= \vzero
+        && \text{by \prope{additive inverse} property \xref{def:vspace}}
+  \end{align*}
+  
+\end{proof}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{berberian1961}{7}{0821819127}{Definition~1}
+  }
+\label{def:vs_addinv}
+\index{additive inverse}
+%--------------------------------------
+Let $\spO\eqd\linearspaceX$ be a linear space with vectors $\vx,\vy\in\setX$.
+Let $-\vy$ be the additive inverse of $\vy$ such that $\vy+(-\vy)=\vzero$.
+\defbox{\begin{array}{M}
+  The \hid{difference} of $\vx$ and $\vy$ is $\vx+(-\vy)$ and is denoted
+  \\\qquad$\vx-\vy$.
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}[Additive inverse properties]
+\footnote{
+  \citerpgc{berberian1961}{7}{0821819127}{Corollary 1},
+  \citerpg{michel1993}{77}{048667598X},
+  %\citerp{prasad}{13} \\
+  \citorc{peano1888}{Chapter IX},
+  \citorpp{peano1888e}{119}{120},
+  \citorpp{banach1922}{134}{135}
+  }
+\index{additive inverse}
+\label{thm:vs_addinv}
+%--------------------------------------
+Let $\spO\eqd\linearspaceX$ be a linear space,
+   $\vzero$ the \structe{additive identity element} with respect to $+$,
+and $-\vx$ the \structe{additive inverse} \xref{def:group} of $\vx$ with respect to $+$.
+\thmbox{\begin{array}{Flcl@{\qquad}C@{\qquad}D}
+ %\\1.& (-1)\vx           &=& -\vx                          & \forall \vx\in\setX
+    1.& \vx+\vy           &=& \vzero \qquad \implies \vx = -\vy & \forall \vx,\vy\in\setX                 & (additive inverse is \prope{unique})
+  \\2.& (-\alpha)\vx      &=& -(\alpha\vx) = \alpha(-\vx)       & \forall \vx\in\setX,\,\alpha\in\F       & 
+  \\3.& \alpha(\vx-\vy)   &=& \alpha\vx - \alpha\vy             & \forall \vx,\vy\in\setX,\,\alpha\in\F   & (\prope{distributive})
+  \\4.& (\alpha-\beta)\vx &=& \alpha\vx - \beta\vx              & \forall \vx\in\setX,\,\alpha,\beta\in\F & (\prope{distributive})
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  %\item Proof that $(-1)\vx=-\vx$:
+  %  \begin{align*}
+  %    \vx + [(-1)\vx]
+  %      &= [1\vx] + [(-1)\vx]
+  %      && \text{by definition of $\otimes$ multiplicative identity element}
+  %    \\&= (1-1)\vx
+  %      && \text{by \pref{def:vspace} property 4}
+  %    \\&= 0\vx
+  %      && \text{by property of $+$ additive inverse element}
+  %    \\&= \vzero
+  %      && \text{by previous result 1.}
+  %  \end{align*} 
+  \item Proof that $\vx+\vy=0 \implies \vx=-\vy$: \label{item:vs_addinv_unique}
+    \begin{align*}
+      \vx
+        &= \vx - \vzero
+      \\&= \vx - (\vx+\vy)
+        && \text{by left hypothesis}
+      \\&= (\vx-\vx)-\vy
+      \\&= \vzero - \vy
+      \\&= -\vy
+    \end{align*}
+    
+  \item Proof that $(-\alpha)\vx=-(\alpha\vx)$: \label{item:vs_addinv_minus1}
+    \begin{align*}
+      \vzero
+        &= 0\vx
+        && \text{by \prefp{thm:vs_addid}}
+      \\&= (\alpha-\alpha)\vx
+        && \text{by field property of $\F$}
+      \\&= \brs{\alpha+(-\alpha)}\vx
+        && \text{by field property of $\F$}
+      \\&= \alpha\vx + (-\alpha)\vx
+        && \text{by \prefp{def:vspace}}
+      \\\implies -(\alpha\vx) &= (-\alpha)\vx
+        && \text{by \prefp{item:vs_addinv_unique}}
+    \end{align*}
+
+  \item Proof that $\alpha(-\vx)=-(\alpha\vx)$: \label{item:vs_addinv_minus2}
+    \begin{align*}
+      \vzero
+        &= \alpha\vzero
+        && \text{by \prefp{thm:vs_addid}}
+      \\&= \alpha\brs{\vx+(-\vx)}
+        && \text{by definition of additive identity element $-\vx$}
+      \\&= \alpha\vx + \alpha(-\vx)
+        && \text{by \prefp{def:vspace}}
+      \\&= \alpha\vx + \alpha(-\vx)
+      \\\implies -(\alpha\vx) &= \alpha(-\vx)
+        && \text{by \prefp{item:vs_addinv_unique}}
+    \end{align*}
+
+  \item Proof that $\alpha(\vx-\vy) = \alpha\vx - \alpha\vy$:
+    \begin{align*}
+      \alpha(\vx-\vy)
+        &= \alpha\brs{\vx+(-\vy)}
+        && \text{by \prefp{def:vs_addinv}}
+      \\&= \alpha\vx+ \alpha(-\vy)
+        && \text{by \prefp{def:vspace}}
+      \\&= \alpha\vx+ (-\alpha\vy)
+        && \text{by \prefp{item:vs_addinv_minus2}}
+      \\&= \alpha\vx-\alpha\vy
+        && \text{by \prefp{def:vs_addinv}}
+    \end{align*}
+
+  \item Proof that $(\alpha-\beta)\vx = \alpha\vx - \beta\vx$: 
+    \begin{align*}
+      (\alpha-\beta)\vx
+        &= \brs{\alpha+(-\beta)}\vx
+        && \text{by field properties of $\F$}
+      \\&= \alpha\vx + (-\beta)\vx
+        && \text{by \pref{def:vspace}}
+      \\&= \alpha\vx + \brs{-(\beta\vx)}
+        && \text{by \prefp{item:vs_addinv_minus1}}
+      \\&= \alpha\vx -(\beta\vx)
+        && \text{by \prefp{def:vs_addinv}}
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{michel1993}{77}{048667598X},
+  %\citerp{prasad}{13},
+  \citorc{peano1888}{Chapter IX},
+  \citorpp{peano1888e}{119}{120},
+  \citorpp{banach1922}{134}{135}
+  }
+\index{additive identity}
+\index{additive inverse}
+%--------------------------------------
+Let $\linearspaceX$ be a linear space,
+$\vzero$ the additive identity element with respect to $+$,
+and $-\vx$ additive inverse of $\vx$ with respect to $+$.
+\thmbox{
+  \begin{array}{Fllrcl@{\qquad}C}
+      1. & \alpha\vx = \alpha\vy \text{ and } \alpha\ne 0     &\implies&    \vx    &=& \vy   & \forall \vx,\vy\in\setX
+    \\2. & \alpha\vx = \beta\vx \text{ and } \vx\ne \vzero    &\implies&    \alpha &=& \beta & \forall \vx,\vy\in\setX,\; \alpha,\beta\in\F
+    \\3. & \vz+\vx=\vz+\vy                                    &\implies&    \vx    &=& \vy   & \forall \vx,\vy,\vz\in\setX
+   %\\4. & \vx_1+\vy=\vz \text{\quad and\quad} \vx_2+\vy=\vz  &\implies&    \vx_1  &=&\vx_2  & \forall \vx_1,\vx_2,\vy,\vz\in\setX
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\alpha\vx = \alpha\vy$ and $\alpha\ne 0$ $\implies \vx = \vy$:}
+    \vzero &= \frac{1}{\alpha}(\vzero)
+      && \text{by left hypothesis ($\alpha\ne 0$)}
+    \\&= \frac{1}{\alpha}\Big( \alpha\vx - \alpha\vy \Big)
+      && \text{by left hypothesis ($\alpha\vx = \alpha\vy$)}
+    \\&= \frac{1}{\alpha}\alpha\Big( \vx - \vy \Big)
+      && \text{by \prefp{def:vspace}}
+    \\&= \vx - \vy
+  %
+  \intertext{2. Proof that $\alpha\vx = \beta\vx$ and $\vx\ne \vzero$ $\implies \alpha = \beta$:}
+    \vzero
+      &= \alpha\vx + (-\alpha\vx)
+      && \text{by definition of additive inverse}
+    \\&= \beta\vx + (-\alpha\vx)
+      && \text{by left hypothesis}
+    \\&= \beta\vx + (-\alpha)\vx
+      && \text{by \prefp{thm:vs_addinv}}
+    \\&= \brs{\beta+(-\alpha)}\vx
+      && \text{by \prefp{def:vspace}}
+    \\\implies \beta-\alpha&=0
+      && \text{by \prefp{thm:vs_addid}}
+    \\\implies \alpha&=\beta
+      && \text{by field properties of $\F$}
+  %
+  \intertext{3. Proof that $\vz+\vx=\vz+\vy \implies \vx = \vy$: }
+    \vzero
+      &= (\vz+\vx)-(\vz+\vy)
+    \\&= (\vx+\vz)-(\vz+\vy)
+      && \text{by \pref{def:vspace} property 1}
+    \\&= (\vx+\vz)+[(-1)\vz+(-1)\vy]
+      && \text{by \pref{def:vspace} property 3}
+    \\&= (\vx+\vz)+(-\vz-\vy)
+      && \text{by previous result 2.}
+    \\&= \vx+(\vz-\vz)-\vy
+    \\&= \vx-\vy
+  %
+  %\intertext{4. Proof that $\vx_1+\vy=\vz$ and $\vx_2+\vy=\vz$ $\implies$ $\vx_1=\vx_2$:}
+  %    \vx_1+\vy &= \vx_2+\vy                 && \text{by item 3}
+  %  \\(\vx_1+\vy)+(-\vy) &= (\vx_2+\vy)+(-\vy) && 
+  %  \\\vx_1+(\vy-\vy) &= \vx_2+(\vy-\vy) && 
+  %  \\\vx_1+\vzero   &= \vx_2+\vzero   && 
+  %  \\\vx_1          &= \vx_2          && 
+\end{align*}
+\end{proof}
+
+
+
+
+%======================================
+\section{Order on Linear Spaces}
+%======================================
+%--------------------------------------
+\begin{definition}
+\label{def:lsp_order}
+\footnote{
+  \citerppg{ab2006}{1}{2}{1402050070}
+ }
+%--------------------------------------
+Let $\spO\eqd\RlinearspaceX$ be a real linear space.
+\defbox{\begin{array}{>{\qquad\scriptstyle}rlcl@{\qquad}CF}
+  \mc{5}{M}{The pair $\opair{\spO}{\orel}$ is an \hid{ordered linear space} if}
+  \\
+    1. & \vx\orel\vy &\implies& \vx+\vz\orel\vy+\vz     & \forall \vz\in\setX  & and\\
+    2. & \vx\orel\vy &\implies& \alpha\vx\orel\alpha\vy & \forall \alpha\in\F
+  \\
+  \mc{5}{M}{A vector $\vx$ is \hid{positive} if $\vzero\orel\vx$.}
+  \\
+  \mc{5}{M}{The \hid{positive cone} $\spX^+$ of $\opair{\spX}{\orel}$ is the set $\spXp\eqd\set{\vx\in\spX}{\vzero\orel\vx}$.}
+  %\\
+  %The ordered linear space $\opair{\spX}{\orel}$ may also be represented as 
+  %$\lattice{\spX}{\orel}{\join}{\meet}$,
+  %where $\join$ is the greatest lower bound induced by $\orel$, and
+  %$\meet$ is the least upper bound induced by $\orel$.
+  \end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{ab2006}{2}{1402050070}
+ }
+\label{def:lsp_lattice}
+\label{def:rieszspace}
+%--------------------------------------
+Let $\opair{\spX}{\orel}$ be an ordered linear space.
+\defbox{\begin{array}{M}
+  The tuple $\latL\eqd\lattice{\spX}{\orel}{\join}{\meet}$ is a \hid{Riesz space} if 
+  $\latL$ is a \hib{lattice}.\\
+  A \structe{Riesz space} is also called a \hid{vector lattice}.
+  \end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{ab2006}{3}{1402050070}{Theorem 1.2}
+ }
+\label{thm:lsp_lat_prop}
+%--------------------------------------
+Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a Riesz space \xref{def:rieszspace}.
+\thmbox{
+  \begin{array}{lcl|lcl|C}
+       \vx \join \vy &=& -\brs{\brp{-\vx}\meet\brp{-\vy}}              
+    &  \vx \meet \vy &=& -\brs{\brp{-\vx}\join\brp{-\vy}}              
+    &  \forall \vx,\vy    \in\spX 
+    \\ 
+       \vx + \brp{\vy\join\vz} &=& \brp{\vx+\vy} \join \brp{\vx+\vz}   
+    &  \vx + \brp{\vy\meet\vz} &=& \brp{\vx+\vy} \meet \brp{\vx+\vz}   
+    &  \forall \vx,\vy,\vz\in\spX 
+    \\ 
+       \alpha\brp{\vx\join\vy} &=& \brp{\alpha\vx}\join\brp{\alpha\vy}
+    &  \alpha\brp{\vx\meet\vy} &=& \brp{\alpha\vx}\meet\brp{\alpha\vy} 
+    & \forall \vx,\vy    \in\spX, \alpha\oreld0 
+    \\ 
+      \vx + \vy     &=& \brp{\vx \meet \vy} + \brp{\vx\join\vy}
+    &&&
+    & \forall \vx,\vy    \in\spX, \alpha\in\F 
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\vx \join \vy = -\brs{\brp{-\vx}\meet\brp{-\vy}}$: \label{item:lsp_lat_prop_xVy}
+    %\begin{longtable}{|ONM|ONM|}
+    \\$\ds\begin{array}{|rcl|rcl|}
+      \hline
+      (-\vx) \meet (-\vy) &\orel& -\vx        &     (-\vx) \meet (-\vy) &\orel& -\vy \\
+      \vx &\orel& -\brs{(-\vx) \meet (-\vy)}  &   \vy &\orel& -\brs{(-\vx) \meet (-\vy)} \\
+      \vx\join \vy &\orel& -\brs{(-\vx) \meet (-\vy)}  &&& \\
+      \hline
+      \vx                  &\orel& \vx \join \vy      &     \vy                 &\orel& \vx \join \vy\\
+      -\brp{\vx \join \vy} &\orel& -\vx               &    -\brp{\vx \join \vy} &\orel& -\vy         \\
+      -\brp{\vx \join \vy} &\orel& (-\vx) \meet (-\vy)&                         &     &              \\
+      -\brs{(-\vx) \meet (-\vy)} &\orel& \vx \join \vy&                         &     &              \\
+      \hline
+    %\end{longtable}
+    \end{array}$
+
+  \item Proof that $\vx \meet \vy = -\brs{\brp{-\vx}\join\brp{-\vy}}$: \label{item:lsp_lat_prop_xmy}
+    \begin{longtable}{|ONM@{\qquad}E|}
+      \hline
+      \vx\join \vy         &=& -\brs{(-\vx) \meet (-\vy)}        & by \pref{item:lsp_lat_prop_xVy} \\
+      (-\vx)\join (-\vy)   &=& -\brs{(-(-\vx)) \meet (-(-\vy))}  & replace $\vx$ with $-\vx$ and $\vy$ with $\-\vy$\\
+      (-\vx)\join (-\vy)   &=& -\brs{\vx \meet \vy}              & $-(-\vx)=\vx$\\ 
+      -\brs{\vx \meet \vy} &=& (-\vx) \join (-\vy)               & by symmetry of $=$ relation\\
+      \vx \meet \vy        &=& -\brs{(-\vx) \join (-\vy)}        & multipy both sides by $-1$\\
+      \hline
+    \end{longtable}
+
+  \item Proof that $\vx + \brp{\vy\join\vz} = \brp{\vx+\vy} \join \brp{\vx+\vz}$: \label{item:lsp_lat_prop_xyVz}
+    \begin{longtable}{|ONM|ONM|}
+         \hline
+         \vx+\vy &\orel& \vx+\brp{\vy\join\vz}  & \vx+\vz &\orel& \vx+\brp{\vy\join\vz}
+      \\ \brp{\vx+\vy} \join \brp{\vx+\vz} &\orel& \vx+\brp{\vy\join\vz} &&&
+      \\ \hline
+         \vy &=&     -\vx+\brp{\vx+\vy}                         &  \vz &=& -\vx+\brp{\vx+\vz}
+      \\     &\orel& -\vx+\brs{\brp{\vx+\vy}\join\brp{\vx+\vz}} &      &\orel& -\vx+\brs{\brp{\vx+\vy}\join\brp{\vx+\vz}} 
+      \\ \vy\join\vz  &\orel& -\vx+\brs{\brp{\vx+\vy}\join\brp{\vx+\vz}} &&&
+      \\ \vx + \brp{\vy\join\vz}  &\orel& \brp{\vx+\vy}\join\brp{\vx+\vz} &&&
+      \\ \hline
+    \end{longtable}
+
+  \item Proof that $\vx + \brp{\vy\meet\vz} = \brp{\vx+\vy} \meet \brp{\vx+\vz}$: %\label{item:lsp_lat_prop_xyVz}
+    \begin{longtable}{|ONM|ONM|}
+         \hline
+         \vx+\vy &\oreld& \vx+\brp{\vy\meet\vz}  & \vx+\vz &\oreld& \vx+\brp{\vy\meet\vz}
+      \\ \brp{\vx+\vy} \meet \brp{\vx+\vz} &\oreld& \vx+\brp{\vy\meet\vz} &&&
+      \\ \hline
+         \vy &=&     -\vx+\brp{\vx+\vy}                         &  \vz &=& -\vx+\brp{\vx+\vz}
+      \\     &\oreld& -\vx+\brs{\brp{\vx+\vy}\meet\brp{\vx+\vz}} &      &\oreld& -\vx+\brs{\brp{\vx+\vy}\meet\brp{\vx+\vz}} 
+      \\ \vy\meet\vz  &\oreld& -\vx+\brs{\brp{\vx+\vy}\meet\brp{\vx+\vz}} &&&
+      \\ \vx + \brp{\vy\meet\vz}  &\oreld& \brp{\vx+\vy}\meet\brp{\vx+\vz} &&&
+      \\ \hline
+    \end{longtable}
+
+  \item Proof that $\alpha\brp{\vx\join\vy} = \brp{\alpha\vx}\join\brp{\alpha\vy}$ for $\alpha\ge0$:
+    \begin{longtable}{|ONM|ONM|E|}
+        \hline
+        \vx       &\orel& \vx\join\vy              & \vy       &\orel& \vx\join\vy             &
+      \\\alpha\vx &\orel& \alpha\brp{\vx\join\vy}  & \alpha\vy &\orel& \alpha\brp{\vx\join\vy} & by \prefp{def:lsp_order}
+      \\\brp{\alpha\vx} \join \brp{\alpha\vy} &\orel& \alpha\brp{\vx\join\vy}  &&&&
+      \\\hline
+        \alpha\vx &\orel& \brp{\alpha\vx}\join\brp{\alpha\vy} & \alpha\vy &\orel& \brp{\alpha\vx}\join\brp{\alpha\vy} &
+      \\\vx &\orel& \alpha^{-1}\brp{\alpha\vx}\join\brp{\alpha\vy} & \vy &\orel& \alpha^{-1}\brp{\alpha\vx}\join\brp{\alpha\vy}  &
+      \\\vx \join \vy &\orel& \alpha^{-1}\brp{\alpha\vx} \join \brp{\alpha\vy} &&&&
+      \\\alpha\brp{\vx \join \vy} &\orel& \brp{\alpha\vx} \join \brp{\alpha\vy} &&&&
+      \\\hline
+    \end{longtable}
+
+  \item Proof that $\alpha\brp{\vx\meet\vy} = \brp{\alpha\vx}\meet\brp{\alpha\vy}$ for $\alpha\ge0$:
+    \begin{longtable}{|ONM|ONM|E|}
+        \hline
+        \vx       &\oreld& \vx\meet\vy             & \vy       &\oreld& \vx\meet\vy               &
+      \\\alpha\vx &\oreld& \alpha\brp{\vx\meet\vy} & \alpha\vy &\oreld& \alpha\brp{\vx\meet\vy}   & by \prefp{def:lsp_order}
+      \\\brp{\alpha\vx} \meet \brp{\alpha\vy} &\oreld& \alpha\brp{\vx\meet\vy} &&&&
+      \\\hline
+        \alpha\vx &\oreld& \brp{\alpha\vx}\meet\brp{\alpha\vy} & \alpha\vy &\oreld& \brp{\alpha\vx}\meet\brp{\alpha\vy} &
+      \\\vx &\oreld& \alpha^{-1}\brp{\alpha\vx}\meet\brp{\alpha\vy} & \vy &\oreld& \alpha^{-1}\brp{\alpha\vx}\meet\brp{\alpha\vy} &
+      \\\vx \meet \vy &\oreld& \alpha^{-1}\brp{\alpha\vx} \meet \brp{\alpha\vy} &&&&
+      \\\alpha\brp{\vx \meet \vy} &\oreld& \brp{\alpha\vx} \meet \brp{\alpha\vy} &&&&
+      \\\hline
+    \end{longtable}
+
+  \item Proof that $\vx+\vy=\brp{\vx \meet \vy} + \brp{\vx\join\vy}$:
+    \begin{longtable}{|ONM|ONM|}
+      \hline
+         \vx &\orel& \vx\join\vy         & \vy &\orel& \vx\join\vy                             
+      \\ \vx+\vy &\orel& \brp{\vx\join\vy}+\vy         & \vx+vy &\orel& \vx+\brp{\vx\join\vy} 
+      \\ \vx+\vy-\brp{\vx\join\vy} &\orel& \vy         & \vx+vy-\brp{\vx\join\vy} &\orel& \vx
+      \\ \vx+\vy-\brp{\vx\join\vy} &\orel& \vx\meet\vy &&&
+      \\ \vx+\vy &\orel& \brp{\vx\join\vy} + \brp{\vx\meet\vy} &&&
+      \\ \hline
+         \vx\meet\vy &\orel& \vx         & \vx\meet\vy &\orel& \vy 
+      \\ 0 &\orel& \vx-\brp{\vx\meet\vy} & 0 &\orel& \vy-\brp{\vx\meet\vy}
+      \\ \vy &\orel& \vy+\vx-\brp{\vx\meet\vy} & \vx &\orel& \vx+\vy-\brp{\vx\meet\vy}
+      \\ \vy &\orel& \vx+\vy-\brp{\vx\meet\vy} & \vx &\orel& \vx+\vy-\brp{\vx\meet\vy}
+      \\ \vx\join\vy &\orel& \vx+\vy-\brp{\vx\meet\vy}            &&&
+      \\ \brp{\vx\meet\vy} + \brp{\vx\join\vy} &\orel& \vx+\vy    &&&
+      \\ \hline
+    \end{longtable}
+
+
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{ab2006}{4}{1402050070},
+  \citerpg{istratescu1987}{129}{9027721823}
+  %\citerpgc{istratescu1987}{129}{9027721823}{differs from Deza}\\
+  }
+\label{def:vs_vxp}
+\label{def:vs_vxn}
+\label{def:vs_vxa}
+\index[xsym]{$\vxp$}
+\index[xsym]{$\vxn$}
+\index[xsym]{$\vxa$}
+%--------------------------------------
+Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+\defbox{\begin{array}{l@{\quad}M@{\quad}M}
+    \vxp & is defined as $\vxp\eqd\vx\join\vzero$         & and is called the \hid{positive part}  of $\vx$.\\
+    \vxn & is defined as $\vxn\eqd\brp{-\vx}\join\vzero$  & and is called the \hid{negative part}  of $\vx$. \\
+    \vxa & is defined as $\vxa\eqd\vx\join\brp{-\vx}$     & and is called the \hid{absolute value} of $\vx$.
+  \end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{ab2006}{4}{1402050070}{Theorem 1.3}
+  }
+\label{thm:vs_xpxn}
+%--------------------------------------
+Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+\thmbox{
+  \brbr{\begin{array}{rclD}
+    \vy-\vz &=& \vx & and \\
+    \vy \meet \vz &=& \vzero
+  \end{array}}
+  \qquad\iff\qquad
+  \brbl{\begin{array}{rclD}
+    \vy &=& \vxp & and \\
+    \vz &=& \vxn
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+  \begin{enumerate}
+    \item Proof that left hypothesis $\implies$ right hypothesis:
+      \begin{align*}
+        \vxp
+          &= \vx \join \vzero
+          && \text{by definition of $\vxp$ \prefp{def:vs_vxp}}
+        \\&= \brp{\vy-\vz} \join \vzero
+          && \text{by left hypothesis}
+        \\&= \brp{\vy-\vz} \join \brp{\vz-\vz}
+          && 
+        \\&= \brp{\vy\join\vz} - \vz
+          && \text{by \prefp{thm:lsp_lat_prop}}
+        \\&= \brs{\vy+\vz-\brp{\vy\meet\vz}} - \vz
+          && \text{by \prefp{thm:lsp_lat_prop}}
+        \\&= \vy-\brp{\vy\meet\vz}
+          && 
+        \\&= \vy-\vzero
+          && \text{by left hypothesis}
+        \\&= \vy
+        \\
+        \vxn
+          &= \brp{-\vx} \join \vzero
+          && \text{by definition of $\vxn$ \prefp{def:vs_vxn}}
+        \\&= \brp{\vz-\vy} \join \vzero
+          && \text{by left hypothesis}
+        \\&= \brp{\vz-\vy} \join \brp{\vy-\vy}
+          && 
+        \\&= \brp{\vz\join\vy} - \vy
+          && \text{by \prefp{thm:lsp_lat_prop}}
+        \\&= \brs{\vz+\vy-\brp{\vz\meet\vy}} - \vz
+          && \text{by \prefp{thm:lsp_lat_prop}}
+        \\&= \vz-\brp{\vz\meet\vy}
+          && 
+        \\&= \vz-\vzero
+          && \text{by left hypothesis}
+        \\&= \vz
+      \end{align*}
+
+    \item Proof that left hypothesis $\impliedby$ right hypothesis:
+      \begin{align*}
+        \vy - \vz
+          &= \vxp - \vxn
+          && \text{by right hypothesis}
+        \\&= \brs{\vx\join\vzero} - \brs{\brp{-\vx}\join\vzero}
+          && \text{by \prefp{def:vs_vxp}}
+        \\&= \brp{\vx\join\vzero} + \brp{\vx\meet{\vzero}}
+          && \text{by \prefp{thm:lsp_lat_prop}}
+        \\&= \vx
+          && \text{by \prefp{thm:lsp_lat_prop}}
+        \\
+        \vy \meet \vz
+          &= \vxp \meet \vxn
+          && \text{by right hypothesis}
+        \\&= \brs{\vxn + \brp{\vxp - \vxn}} \meet \brs{\vxn + \vzero}
+        \\& \vxn + \brs{\brp{\vxp-\vxn} \meet \vzero}
+          && \text{by \prefp{thm:lsp_lat_prop}}
+        \\& \vxn + \brs{\brp{\vy-\vz} \meet \vzero}
+          && \text{by right hypothesis}
+        \\& \vxn + \brp{\vx \meet \vzero}
+          && \text{by previous result}
+        \\& \vxn - \brs{-\vx \join \vzero}
+          && \text{by \prefp{thm:lsp_lat_prop}}
+        \\& \vxn - \vxn
+          && \text{by definition of $\vxn$ \xref{def:vs_vxn}}
+        \\& \vzero
+      \end{align*}
+  \end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{ab2006}{4}{1402050070}
+  }
+%--------------------------------------
+Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \fncte{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+\thmbox{
+  \begin{array}{rclCD}
+    \vxa   &=& \vxp + \vxn       & \forall \vx\in\spX \\
+    \vx    &=& \brp{\vx-\vy}^+ + \brp{\vx\meet\vy}  & \forall \vx\in\spX
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \vxa
+    &= \vx \join \brp{-\vx}
+    && \text{by definition of $\vxa$ \xref{def:vs_vxa}}
+  \\&= \brp{2\vx-\vx} \join \brp{\vzero-\vx}
+  \\&= \brp{-\vx+2\vx} \join \brp{-\vx+\vzero}
+    && \text{by \prope{commutative} property \xref{def:vspace}}
+  \\&= \brp{-\vx} + \brp{2\vx \join \vzero}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= \brp{2\vx \join 2\vzero} - \vx
+    && \text{by the \prope{commutative} property \xref{def:vspace}}
+  \\&= 2\brp{\vx \join \vzero} - \vx
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= 2\vxp - \vx
+    && \text{by definition of $\vxp$ \xref{def:vs_vxp}}
+  \\&= 2\vxp - \brp{\vxp - \vxn}
+    && \text{by 1}
+  \\&= \vxp + \vxn
+  \\
+  \vx 
+    &= \vx + \vzero
+    && \vx + \vy - \vy
+  \\&= \brp{\vx\join\vy}+\brp{\vx\meet\vy} - \vy
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= \brs{\brp{\vx-\vy}\join\brp{\vy-\vy}}+\brp{\vx\meet\vy}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= \brs{\brp{\vx-\vy}\join\vzero}+\brp{\vx\meet\vy}
+  \\&= \brp{\vx-\vy}^+ +\brp{\vx\meet\vy}
+    && \text{by definition of $\vxp$ \xref{def:vs_vxp}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{ab2006}{5}{1402050070}{Theorem 1.4}
+  }
+%--------------------------------------
+Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \structe{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+\thmbox{
+  \begin{array}{>{\scriptstyle}rrcl@{\qquad}C}
+    1. & \vx\join\vy &=& \frac{1}{2}\brp{\vx+\vy+\abs{\vx-\vy}}       & \forall \vx,\vy\in\spX \\
+    2. & \vx\meet\vy &=& \frac{1}{2}\brp{\vx+\vy-\abs{\vx-\vy}}       & \forall \vx,\vy\in\spX \\
+    3. & \abs{\vx-\vy} &=& \brp{\vx\join\vy} - \brp{\vx\meet\vy}      & \forall \vx,\vy\in\spX \\
+    4. & \abs{\vx}\join\abs{\vy} &=& \frac{1}{2}\brp{\abs{\vx+\vy}+\abs{\vx-\vy}} & \forall \vx,\vy\in\spX \\
+    5. & \vxa\join\vya &=& \frac{1}{2}\abs{\abs{\vx+\vy}-\abs{\vx-\vy}} & \forall \vx,\vy\in\spX 
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \brp{\vx+\vy+\abs{\vx-\vy}}
+    &= \brp{\vx+\vy} + \brs{\brp{\vx-\vy}\join\brp{\vy-\vx}}
+   %&& \text{by definition of $\vxa$ \xref{def:vs_vxa}}
+    && \text{by \prefp{def:vs_vxa}}
+  \\&= \brs{\brp{\vx+\vy} + \brp{\vx-\vy}} \join \brs{\brp{\vx+\vy}+\brp{\vy-\vx}}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= \brp{2\vx} \join \brp{2\vy}
+  \\&= 2\brp{\vx\join\vy}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\
+  \brp{\vx+\vy-\abs{\vx-\vy}}
+    &= \brp{\vx+\vy} - \brs{\brp{\vx-\vy}\join\brp{\vy-\vx}}
+   %&& \text{by definition of $\vxa$ \xref{def:vs_vxa}}
+    && \text{by \prefp{def:vs_vxa}}
+  \\&= \brp{\vx+\vy} - \brs{\brp{-\brp{\vy-\vx}}\join\brp{-\brp{\vx-\vy}}}
+  \\&= \brp{\vx+\vy} + \brs{\brp{\vy-\vx}\meet\brp{\vx-\vy}}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= \brs{\brp{\vx+\vy}+\brp{\vy-\vx}}  \meet \brs{\brp{\vx+\vy}+\brp{\vx-\vy}}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= \brp{2\vy}  \meet \brp{2\vx}
+  \\&= 2\brp{\vy\meet\vx}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= 2\brp{\vx\meet\vy}
+  \\
+  \abs{\vx-\vy}
+    &= \frac{1}{2}\brp{\vx+\vy+\abs{\vx-\vy}} - \frac{1}{2}\brp{\vx+\vy+\abs{\vx-\vy}}
+  \\&= \brp{\vx\join\vy} - \brp{\vx\meet\vy}
+    && \text{by 1 and 2}
+  \\
+  \abs{\vx+\vy}+\abs{\vx-\vy}
+    &= \frac{1}{2}\brp{\vzero + \abs{2\vx+2\vy}} + \abs{\vx-\vy}
+  \\&= \frac{1}{2}\brs{\brp{\vx+\vy}+\brp{-\vx-\vy} + \abs{\brp{\vx+\vy}-\brp{-\vx-\vy}}} + \abs{\vx-\vy}
+  \\&= \brs{\brp{\vx+\vy}\join\brp{-\vx-\vy}} + \abs{\vx-\vy}
+    && \text{by 1}
+  \\&= \brs{\brp{\vx+\vy}+\abs{\vx-\vy}}\join\brs{\brp{-\vx-\vy}+\abs{\vx-\vy}}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+  \\&= 2\brp{\vx\join\vy} \join 2\brs{\brp{-\vy}+\brp{-\vx}+\abs{\brp{-\vy}-\brp{-\vx}}}
+    && \text{by 1}
+  \\&= 2\brp{\vx\join\vy} \join 2\brs{\brp{-\vy}\join\brp{-\vx}}
+    && \text{by 1}
+  \\&= 2\brp{\brs{\vx\join\brp{-\vx}}\join \brp{\vy\join\brp{-\vy}}}
+  \\&= 2\brp{\abs{\vx}\join\abs{\vy}}
+   %&& \text{by definition of $\vxa$ \xref{def:vs_vxa}}
+    && \text{by \prefp{def:vs_vxa}}
+  \\
+  \abs{\abs{\vx+\vy}-\abs{\vx-\vy}}
+    &= 2\brp{\abs{\vx+\vy}\join\abs{\vx-\vy}}-\brp{\abs{\vx+\vy}+\abs{\vx-\vy}}
+    && \text{by 1}
+  \\&= \brp{\abs{\vx+\vy+\vx-\vy}+\abs{\vx+\vy-\vx+\vy}}-2\brp{\vxa\join\vya}
+    && \text{by 3}
+  \\&= 2\brp{\abs{\vx}+\abs{\vy}}-2\brp{\vxa\join\vya}
+  \\&= 2\brp{\vxa\join\vya}
+    && \text{by \prefp{thm:lsp_lat_prop}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{definition}
+\label{def:vs_disjoint}
+\footnote{
+  \citerpg{ab2006}{5}{1402050070}
+  }
+\index[xsym]{$\perp$}
+%--------------------------------------
+Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \structe{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+\defbox{\begin{array}{M}
+  {$\vx$ and $\vy$ are \hid{disjoint}, denoted by $\vx\perp\vy$, if }
+  \\\qquad$\abs{\vx}\meet\abs{\vy}=\vzero$.
+  \\
+  {Two subsets $\spU$ and $\spV$ of $\spX$ are \hid{disjoint}, denoted by $\spU\perp\spV$ if}
+  \\\qquad$\vx\perp\vy \qquad \forall \vx\in\spU\text{ and }\vy\in\spV$
+  \end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\label{def:vs_disjointc}
+\footnote{
+  \citerpg{ab2006}{5}{1402050070}
+  }
+\index[xsym]{$d$}
+%--------------------------------------
+Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \structe{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+Let $\spY$ be a subset of $\spX$.
+\defbox{\begin{array}{M}
+  $\spY^d$ is the \hid{disjoint complement} of $\spY$ if \qquad$\spY^d \eqd \set{\vx\in\spX}{\vx\perp\vy \quad\forall \vy\in\spY}$.
+  \\The quantity $\spY^{dd}$ is defined as $\brp{\spY^d}^d$.
+  \end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{ab2006}{7}{1402050070}
+  }
+%--------------------------------------
+Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \structe{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+\defbox{
+  \begin{array}{rcl}
+    \abs{\setA}     &\eqd& \set{\abs{\va}}{\va\in\setA}  \\
+    \setA^+         &\eqd& \set{\va^+}{\va\in\setA}  \\
+    \setA^-         &\eqd& \set{\va^-}{\va\in\setA}  \\
+    \setA\join\setB &\eqd& \set{\va\join\vb}{\va\in\setA\text{ and }\vb\in\setB}  \\
+    \setA\meet\setB &\eqd& \set{\va\meet\vb}{\va\in\setA\text{ and }\vb\in\setB}  \\
+    \vx\join\setA   &\eqd& \set{\vx\join\va}{\va\in\setA}  \\
+    \vx\meet\setA   &\eqd& \set{\vx\meet\va}{\va\in\setA}  
+  \end{array}
+  }
+\end{definition}
+
+

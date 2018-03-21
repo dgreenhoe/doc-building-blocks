@@ -1,0 +1,1182 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Foundational Construction}
+\label{chp:found}
+%======================================
+\paragraph{Fundamental mathematical structures.}
+This chapter presents six of the most fundamental structures in mathematics:
+\\\indentx\begin{tabular}{cl>{\footnotesize(}l>{\footnotesize}l<{)}}
+    \circOne   & \hie{sets}                  & \pref{def:naive}    & \prefpo{def:naive}
+  \\\circTwo   & \hie{relations}             & \pref{def:fnd_relation} & \prefpo{def:fnd_relation}
+  \\\circThree & \hie{equivalence relations} & \pref{def:eq_rel}    & \prefpo{def:eq_rel}
+  \\\circFour  & \hie{functions}             & \pref{def:fnd_f(x)}     & \prefpo{def:fnd_f(x)}
+  \\\circFive  & \hie{logic operators}       & \pref{def:flogic}     & \prefpo{def:flogic}
+  \\\circSix   & \hie{set operations}        & \pref{def:set_ops}   & \prefpo{def:set_ops}
+\end{tabular}\\
+These structures are ``fundamental" in the sense that much of the remaining concepts of mathematics
+is built on them.
+%\paragraph{Construction blueprint.}
+We construct these structures as outlined next:
+\begin{liste}
+  \item We start with the concept of a \hie{set}: a collection of objects
+        that is uniquely defined by the objects that constitute the collection
+        and that can be specified by any intelligible statement \xref{def:set}.        
+  \item Using sets, we can construct an \hie{ordered pair} \xref{def:(a,b)}.
+  \item The collection of all ordered pairs on a pair of sets
+        is a \hie{Cartesian product} \xref{def:AxB}.
+  \item Any subset of a Cartesian product is a \hie{relation} \xref{def:fnd_relation}.
+  \item An \hie{equivalence relation} is a relation that is 
+        \prope{reflexive}, \prope{symmetric}, and \prope{transitive} \xref{def:eq_rel}.
+  \item A relation is a \hie{function} if 
+        no value from the primary set is mapped to 
+        two different values in the secondary set \xref{def:fnd_f(x)}.
+  \item Using the concept of the function, we define the the logical operators 
+        \hie{not} $\lnot$, \ope{logical and} $\land$, and \ope{logical or} $\lor$,\ldots
+        which are also functions \xref{def:flogic}.
+  \item Using logic operators, we can easily define the set operators
+        \ope{complement} $\hxs{\setopc}$, \ope{union} $\hxs{\setu}$, \ope{intersection} $\hxs{\seti}$,
+        \ope{set difference} $\hxs{\setd}$, and \ope{symmetric difference} $\hxs{\sets}$ \xref{def:set_ops}.
+\end{liste}
+
+%=======================================
+\section{Sets}
+\index{sets}
+\index{Naive set theory}
+%=======================================
+We accept without definition the concepts of \hie{true} and \prope{false}
+and that any given statement is either true or false, but never both,
+and never anything inbetween (next axiom).
+%---------------------------------------
+\begin{axiom}[axiom of the excluded middle]
+\label{ax:plogic}
+\citetbl{
+  \citePpp{cantor_manifolds_3}{114}{115}  
+  }
+\index{axiom of the excluded middle}
+\index{axioms!excluded middle}
+%---------------------------------------
+\axbox{\begin{array}{M}
+  There exists a pair of properties $\ltrue$ and $\lfalse$,\\
+  such that any given statement has exactly one of these properties.\\
+  The symbol $\ltrue$ is called \hid{true} and $\lfalse$ is called \hid{false}.
+\end{array}}
+\end{axiom}
+
+%\qboxnpqt
+\qboxnpq
+  {
+    \href{http://en.wikipedia.org/wiki/Georg_Cantor}{Georg Cantor} 
+    (\href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineF.html}{1845--1918}), 
+    \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Germany.html}{German}
+    set theory pioneer
+    \index{Cantor, Georg}
+    \index{quotes!Cantor, Georg}
+    \footnotemark
+  }
+  {../common/people/cantor.jpg}
+  %{Eine Mannichfaltigkeit (ein Inbegriff, eine Menge) von Elementen,
+  %  die irgend welcher Begriffssph\"are angeh\"oren, nenne ich {\em wohldefinirt},
+  %  wenn auf Grund ihrer Definition und in Folge des logischen
+  %  Princips vom ausgeshchlossenen Dritten es als {\em intern bestimmt} angesehen
+  %  werden muss, {\em sowohl} ob irgend ein derselben Begriffssph\"are angeh\"origes
+  %  Object zu der gedachten Mannichfaltigkeit als Element geh\"ort oder
+  %  nicht, {\em wie auch} ob zwei zur Menge geh\"orige Objecte, trotz formaler
+  %  Unterschiede in der Art des Gegebenseins einander gleich sind oder nicht.}
+  {I call a manifold (an aggregate, a set) of elements,
+    which belong to any conceptual sphere, well-defined, if on the
+    basis of its definition and in consequence of the logical principle
+    of excluded middle, it must be recognized that it is internally
+    determined whether an arbitrary object of this conceptual sphere
+    belongs to the manifold or not, and also, whether two objects in
+    the set , in spite of formal differences in the manner in which they
+    are given, are equal or not.}
+    % In general the relevant distinctions
+    % cannot in practice be made with certainty and exactness by the
+    % capabilities or methods presently availabe. But that is not of any
+    % concern. The only concern is the internal determination from
+    % which in concrete cases, where it is required, an actual (external)
+    % determination is to be developed by means of a perfection of
+    % resources. [1932, p. 150]
+  \citetblt{
+    quote:       & \citePpp{cantor_manifolds_3}{114}{115}  \\
+    translation: & \citerp{tait}{271}  \\
+    image:       & \url{http://en.wikipedia.org/wiki/Image:Georg_Cantor.jpg}
+    }
+
+There is more than one definition of a \hie{set}.
+The most basic form of set theory is called \hie{naive set theory} (\pref{def:naive}---next).
+However, in general, Naive set theory is flawed as shown by
+\hie{Russell's Paradox} and illustrated by the \hie{Barber of Seville} anecdote.
+The most commonly used replacement for the flawed Naive set theory
+is \hie{Zermelo-Fraenkel (ZF) set theory}.%
+\footnote{
+  \citePpp{zermelo1908}{263}{267} (7 axioms),
+  \citer{zermelo1908e} (English translation),
+  \citeP{fraenkel1922},
+  \citerp{wolf}{139}
+  }
+
+%---------------------------------------
+\begin{definition}[Naive set theory]
+\label{def:set}
+\label{def:naive}
+\citetbl{
+  \citerppg{halmos1960}{1}{6}{0387900926}
+  }
+\index{Naive set}
+\index{axiom of extension}
+\index{axiom of specification}
+%---------------------------------------
+\defbox{\begin{tabular}{lp{10\tw/16}@{\qquad}>{\scriptsize}l}
+  \mc{3}{l}{A \hid{set} is any collection of objects that satisfies the following axioms:}
+  \\
+  1. & Any two sets are equal if and only if their elements are the same.
+     & (\hie{axiom of extension})
+     \\
+  2. & For every set $\setX$ and statement $s(x)$,
+       there exists a set $\setA$ consisting exactly of elements $x$ from set $\setX$
+       such that $s(x)$ is true.
+     & (\hie{axiom of specification})
+  \end{tabular}}
+\end{definition}
+
+The \hie{axiom of extension} states that
+the collection completely defines the set,
+and there is no other characteristic (no {\em extension})
+which further defines the set.
+So if two sets have exactly the same elements,
+then the two sets are equal.
+The \hie{axiom of specification} states that,
+you can form any subset $\setA$ of a set $\setX$ as long as 
+you can \emph{specify} which elements of $\setX$ you want included in $\setA$ 
+by any possible intelligible statement $\fs(x)$:
+  \[ \setA = \set{x\in\setX}{\fs(x) \text{ is true}} \]
+
+An element $x$ that is included in a set $\setX$ is denoted $x\in\setX$ 
+(next definition). 
+A set that has no elements is called the \hie{empty set} 
+and is denoted by the symbol $\emptyset$ \xref{def:set_emptyset}.
+\xref{prop:set_emptyset} shows that, under the axioms of \prope{naive set theory},
+the emptyset exists and that there is 
+only one set that is the emptyset.
+%---------------------------------------
+\begin{definition}
+\label{def:set_in}
+\citetbl{
+  \citerpg{halmos1960}{2}{0387900926},
+  \citerpg{hausdorff1937e}{12}{0828401195},
+  \citePp{kuratowski1921}{161}
+  }
+%---------------------------------------
+\defbox{\indxs{\in}\indxs{\notin}
+  \begin{array}{ll}
+    \text{An element $x$ is a member of a set $\setX$ is denoted by} & x\hxsd{\in}\setX. \\
+    \text{An element $x$ is \emph{not} a member of a set $\setX$ is denoted by} & x\hxsd{\notin}\setX.
+  \end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:set_emptyset}
+\citetbl{
+  \citerpg{halmos1960}{8}{0387900926},
+  \citerpg{kelley1955}{3}{0387901256},
+  \citerp{kuratowski_stt}{26}
+  }
+%---------------------------------------
+\defbox{\indxs{\emptyset}
+  \begin{array}{>{\ds}c}
+    \text{The \structd{empty set} $\hxsd{\emptyset}$ is defined as} \\
+    \emptyset \eqd \set{x\in\setX}{x\ne x}
+  \end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:set_emptyset}
+\citetbl{
+  \citerpg{halmos1960}{8}{0387900926},
+  \citerpg{hausdorff1937e}{13}{0828401195}
+  }
+%---------------------------------------
+Let $\emptyset$ be the empty set.
+\propbox{\begin{tabular}{ll}
+  1. & $\emptyset\;$ exists. \\
+  2. & $\emptyset\;$ is unique.
+\end{tabular}}
+\end{proposition}
+\begin{proof}
+  \begin{enumerate}
+    \item $\emptyset$ exists by the \hie{axiom of specification} \xref{def:naive}
+            $\emptyset \eqd \set{x\in\setX}{x\ne x}$.
+    \item $\emptyset$ is unique by the \hie{axiom of extension} \xref{def:naive}.
+  \end{enumerate}
+\end{proof}
+
+
+
+\begin{minipage}[c]{2\tw/3}
+  \pref{def:fnd_powerset} (next) defines the \hie{power set} $\psetx$ of a set $\setX$.
+  The power set is simply the set of all subsets of $\setX$.
+  The notation $\psetx$ is meaningful because the number of elements (subsets of $\setX$)
+  in a finite set $\setX$ is $2^\seto{\setX}$ \xref{prop:pset_order}.
+  The tuple $\lattice{\psetx}{\subseteq}{\seti}{\setu}$ forms a \structe{lattice} \xref{def:lattice}.
+  The lattice $\lattice{\pset{\setn{x,y,z}}}{\subseteq}{\seti}{\setu}$
+  is illustrated to the right.
+\end{minipage}%
+\hfill%
+\begin{tabular}{c}%
+  \includegraphics{graphics/lat8_2e3_setxyz.pdf}%
+\end{tabular}
+%\begin{minipage}[c]{\tw/3}%
+%  \begin{center}%
+%  \input{../common/math/graphics/lat2xyz.tex}%
+%  \end{center}%
+%\end{minipage}
+
+%---------------------------------------
+\begin{definition}
+\label{def:fnd_powerset}
+\index{set!power}
+%---------------------------------------
+\defbox{\begin{array}{M}\indxs{\psetx}
+  The \structd{power set} $\hxsd{\psetx}$ on a set $\setX$ is defined as
+    \\\indentx$\ds\psetx \eqd \set{\setA}{\setA\subseteq\setX}$
+      \qquad\scriptsize(the set of all subsets of $\setX$)
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:pset_order}
+%---------------------------------------
+Let $\seto{\setX}$ represent the number of elements in a finite set $\setX$.
+\propbox{
+  \seto{\psetx} = 2^{\seto{\setX}}
+  } 
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Let $n=\seto{\setX}$ be the number of elements in a set.
+  \item Let $\setX\eqd\setn{x_1,\,x_2,\,x_3,\,\ldots,\,x_n}$.
+  \item Each subset of $\setX$ (each element in $\psetx$) has 2 possibilities for each of
+        the $n$ elements of $\setX$: Either the subset \emph{has} a given element of $\setX$
+       (represent by $1$), or does \emph{not} have it (represented by a $0$).
+  \item Therefore, the number of possible subsets (the number of elements in $\psetx$) is
+    \begin{align*}
+      \seto{\psetx}
+        &= \mcom{\seto{\setn{\text{has $x_1$},\,\text{not have $x_1$}}} \cdot
+                 \seto{\setn{\text{has $x_2$},\,\text{not have $x_2$}}} \cdots
+                 \seto{\setn{\text{has $x_n$},\,\text{not have $x_n$}}} 
+                }{$n$ times}
+      \\&= \mcom{2\cdot2\cdots2}{$n$ times}
+      \\&= 2^n
+      \\&= 2^\seto{\setX}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+
+
+%=======================================
+\section{Relations}
+\label{sec:relations}
+%=======================================
+
+\paragraph{Ordered pair.}
+In the set $\setn{a,b}$, the order in which the elements are listed
+does \emph{not} matter. That is, $\setn{a,b}$ is equivalent to $\setn{b,a}$.
+However, in some applications the order does (very much) matter.
+To help with this, we have the concept of the \structe{ordered pair}.
+In an ordered pair $\opair{a}{b}$, the order in which the elements are listed \emph{is} significant.
+That is, $\opair{a}{b}$ is equivalent to $(b,a)$ if and only if $a=b$.
+The ordered pair can be defined in different ways.
+One of the most common definitions is due to
+mathematician Kazimierz Kuratowski \index{Kuratowski, Kazimierz}
+in 1921 and is presented next:%
+\footnote{\emph{Alternative ordered pair definition}:
+  As an alternative to the Kuratowski definition, 
+  the ordered pair can also be taken as an \emph{axiom}. References: 
+  \\\begin{tabular}{l}
+      \citerp{bourbaki_tos}{72},
+      \citerp{munkres2000}{13}
+    \end{tabular}
+  }
+%---------------------------------------
+\begin{definition}
+\label{def:(a,b)}
+\footnote{
+  \citerpg{suppes1972}{32}{0486616304},
+  \citerpg{halmos1960}{23}{0387900926},
+  %\citerp{menini2004}{39} \\
+  %\citerp{wolf}{164}  \\
+  \citerp{kuratowski_stt}{39},
+  \citePc{kuratowski1921}{Def. V, page 171},
+  \citeP{wiener1914}
+  %\citer{veblen1904} -- I did not find any reference to ordered pairs in this paper (42 pages long) ,
+  }
+%---------------------------------------
+\defbox{\indxs{\opairn}
+  \text{The \structd{ordered pair} $\hxsd{\opair{a}{b}}$ is defined as }
+  \qquad
+  \opair{a}{b} \eqd \setn{ \setn{a},\setn{a,b} } }
+\end{definition}
+
+This definition may seem a little strange---it even has the strange consequence
+that $\setn{a,b}\in\opair{a}{b}$.
+But the crucial test of validity is if 
+  \[\opair{a}{b}=\opair{c}{d} \qquad\iff\qquad a=c \text{ and } b=d.\]
+This statement is true under \pref{def:(a,b)} but is most easily proved once we have defined
+the \ope{set intersection operator} $\seti$ and 
+\hie{set symmetric difference operator} $\sets$.
+These are not defined until \prefpp{def:set_ops}.
+And subsequently the above ordered pair equality is proved in 
+\prefpp{cor:(a,b)=(c,d)}.
+
+
+
+\paragraph{Cartesian product.}
+%---------------------------------------
+\begin{definition}
+\label{def:rel_and}
+%---------------------------------------
+Let $\setX$ and $\setY$ be sets, $\hxs{\ltrue}$ denote the logical property of ``true", 
+and $\hxs{\lfals}$ the logical property of ``false" \xref{ax:plogic}.
+\defbox{\begin{array}{M}\indxs{\owedge}
+  $\hxsd{\owedge}$ is the ``\opd{relational and}" defined as
+  \\\indentx$\ds 
+  \owedge \eqd 
+    \setn{
+      \opair{\opair{\lfals}{\lfals}}{\lfals},\;
+      \opair{\opair{\lfals}{\ltrue}}{\lfals},\;
+      \opair{\opair{\ltrue}{\lfals}}{\lfals},\;
+      \opair{\opair{\ltrue}{\ltrue}}{\ltrue}
+      }$
+\end{array}}
+\end{definition}
+
+
+\begin{minipage}{3\tw/4}
+  The ``relational and" of \pref{def:rel_and} can be illustrated
+  using the \structe{truth table} to the right $\rightarrow$.
+  Later, the relational and will be replaced by the \ope{logical and};
+  but the \ope{logical and} is a \ope{function}, and functions are not defined
+  until \prefpp{def:fnd_f(x)}.
+\end{minipage}%
+\begin{minipage}{\tw/4}
+  \[\begin{array}[t]{cc|c}
+      x & y & x\owedge y  \\
+      \hline
+      \lfals & \lfals & \lfals \\
+      \lfals & \ltrue & \lfals \\
+      \ltrue & \lfals & \lfals \\
+      \ltrue & \ltrue & \ltrue
+    \end{array}\]
+\end{minipage}
+
+%---------------------------------------
+\begin{definition}
+\label{def:AxB}
+\footnote{
+  \citerpg{halmos1960}{24}{0387900926},
+  G. Frege, 2007 August 25, \url{http://groups.google.com/group/sci.logic/msg/3b3294f5ac3a76f0}
+  }
+%---------------------------------------
+Let $\setX$ and $\setY$ be sets, and
+let $\hxs{\owedge}$ be the ``relational and" relation of \prefpp{def:rel_and}.
+\defbox{\begin{array}{M}
+  The \opd{Cartesian product} $\hxsd{\cprodXY}$ is defined as
+  \\\indentx$\ds \cprodXY \eqd \set{\opair{x}{y}}{(x\in\setX)\; \owedge \; (y\in\setY)}$
+\end{array}}
+\end{definition}
+
+
+
+
+\paragraph{Relations.}
+%In general, a relation from a set $\setX$ to a set $\setY$
+%is just \emph{some} of the possible combinations of elements from $\setX$ as the 
+%first element and elements from $\setY$ as the second element. 
+%But suppose we have a relation $\relation$ which includes \emph{all} of 
+%the possible ordered pairs of $\setX$ and $\setY$ such that
+% \[ \relation \eqd \set{\opair{x}{y}}{x\in\setX \text{ and } y\in\setY}. \]
+%Then this relation is called the \hie{Cartesian product} $\cprodXY$
+%(next definition).
+%In particular, relations from a set $\setX$ to a set $\setY$ are a special 
+%case of the Cartesian product of $\setX$ to $\setY$. 
+%In fact, such a relation is a \emph{subset} of the Cartesian product $\cprodXY$
+%(\pref{prop:relation}---next proposition).
+A set of ordered pairs represents a \emph{relationship} between
+the set formed by the first elements of the ordered pairs 
+and the set formed by the second elements of the ordered pairs.
+Any such set is called a \structe{relation} (next definition).
+The set of all relations in $\cprodXY$ is denoted $\clRxy$.
+This notation is meaningful because the number of relations in $\clRxy$ is
+$2^{\seto{\setX}\seto{\setY}}$ \xref{prop:rel_order}.
+
+%---------------------------------------
+\begin{definition}
+\label{def:fnd_relation}
+\citetbl{
+  \citerpg{halmos1960}{26}{0387900926}
+  }
+%---------------------------------------
+Let $\setX$ and $\setY$ be sets.
+\defbox{\begin{array}{M}\indxs{\relation}\indxs{\clRxy}
+  A \reld{relation} $\hxsd{\relation}:\setX\to\setY$ 
+  is any subset of $\hxs{\cprodXY}$. That is,
+    \\\indentx$\ds\relation \subseteq \cprodXY $
+    \\
+  The set of all relations that are subsets of $\cprodXY$ is denoted $\clRxy$. That is,
+    \\\indentx$\ds\clRxy \eqd \set{\relation}{\relation\subseteq\brp{\cprodXY}} $
+\end{array}}
+\end{definition}
+
+
+
+%%---------------------------------------
+%\begin{proposition}
+%\label{prop:relation}
+%\citetbl{
+%  \citerp{kelley1955}{7} ,
+%  \citerp{halmos1960}{27} ,
+%  %\citerp{kbr}{107}
+%  }
+%%---------------------------------------
+%Let $\relation:\setX\to\setY$ be a \hie{relation} from a set $\setX$ to a set $\setY$
+%and $\cprodXY$ be the \hie{Cartesian product} of the sets $\setX$ and $\setY$.
+%\propbox{
+%  \mcom{\relation:\setX\to\setY \text{ is a relation}}
+%       {$\relation$ is a relation from $\setX$ to $\setY$}
+%  \qquad\implies\qquad
+%  \mcoml{\relation \subseteq \cprodXY}
+%        {$\relation$ is a \hie{subset} of the Cartesian product $\cprodXY$}
+%  }
+%\end{proposition}
+%
+
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:rel_comp}
+%%---------------------------------------
+%The compostion operator $\circ$ on a pair of functions $\ff\in\clFxy$ and $\fg\in\clF{\setY}{\setZ}$ is defined as 
+%\defbox{\indxs{\circ}
+%  \brbr{\begin{array}{rcl}
+%    \ff &\eqd& \set{\opair{x_i}{y_i}}{i\in\setI_f} \\
+%    \fg &\eqd& \set{\opair{y_i}{z_i}}{i\in\setI_g} 
+%  \end{array}}
+%  \qquad\implies\qquad
+%  \fg\circ\ff \eqd\set{\opair{x_i}{z_i}}{i\in\setI_f}
+%  }
+%\end{definition}
+
+
+
+%=======================================
+\section{Equivalence relations}
+%=======================================
+%\qboxnpq
+%  {\href{http://en.wikipedia.org/wiki/Aristotle}{Aristotle}
+%   (\href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineA.html}{384BC--322BC}),
+%   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Greece.html}{Greek} philosopher
+%   \index{Aristotle}
+%   \index{quotes!Aristotle}
+%   \footnotemark}
+%  {../common/people/aristot}
+%  {Things are said to be named 'equivocally' when,
+%   though they have a common name,
+%   the definition corresponding with the name differs for each.
+%   \ldots
+%   On the other hand, things are said to be named 'univocally'
+%   which have both the name and the definition answering to the name in common.
+%   \ldots
+%   Things are said to be named 'derivatively',
+%   which derive their name from some other name, but differ from it in termination.}
+%  \citetblt{
+%    quote: & \citorp{aristotle_categoriae}{7} \\
+%    image: & \url{http://en.wikipedia.org/wiki/Aristotle}
+%    }
+%
+\qboxnps
+  {\href{http://en.wikipedia.org/wiki/Robert_Recorde}{Robert Recorde}
+   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineC.html}{(1510--1558)},
+   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/UK.html}{Welsh} 
+   physician and mathematician
+   \footnotemark
+  }
+  %{../common/people/recorde.jpg}
+  {../common/people/wow_eq.jpg}
+  {To avoide the tedious repetition of these woordes: is equal to:
+   I will sette as I doe often in woorke use, a paire of parralles,
+   or Gemowe lines of one lengthe, thus: $=\!=\!=\!=\!=$,
+   bicause noe 2 thynges, can be moare equalle.}
+  \citetblt{
+    quote: & \citerpu{potts1860}{109}{http://books.google.com/books?id=eck2AAAAMAAJ\&pg=PA109} \\
+           & \citer{recorde1557} \\
+    image: & \url{http://nsm1.nsm.iup.edu/gsstoudt/history/images/witte.jpg}  \\
+           & \url{http://www-gap.dcs.st-and.ac.uk/~history/PictDisplay/Recorde.html} \\
+           & \url{http://members.aol.com/jeff94100/witte.jpg}
+    }
+
+
+
+%Examples of special types of relations include the following:
+%\\\begin{tabular}{>{$\imark$ }lp{5\tw/16}ll}
+%  \hie{equivalence relation}:
+%    & a relation that is reflexive, symmetric, and transitive.
+%    & \pref{def:eq_rel}
+%    & \prefpo{def:eq_rel}
+%  \\
+%  \hie{ordering relation}:
+%    & a relation that is reflexive, anti-symmetric, and transitive.
+%    & \pref{def:order_rel}
+%    & \prefpo{def:order_rel}
+%\end{tabular}
+
+%---------------------------------------
+\begin{definition}
+\label{def:eq_rel}
+\citetbl{
+  \citerp{ab}{7},
+  \citerp{peano1889e}{91}
+  }
+\index{relation!equivalence}
+%---------------------------------------
+\defbox{\begin{array}{M}\indxs{\eqcirc}
+  A relation $\hxsd{\eqcirc}\in\clRxx$ is an \reld{equivalence relation} on a set $\setX$ if
+  \\\indentx$\ds\begin{array}{l l@{\qquad}C@{\qquad}D@{\qquad}D}
+    1. & x\eqcirc x
+       & \forall x\in\setX
+       & (\prope{reflexive})
+       & and
+       \\
+    2. & x\eqcirc y \implies y\eqcirc x
+       & \forall x,y\in\setX
+       & (\prope{symmetric})
+       & and
+       \\
+    3. & x\eqcirc y \mbox{ and }  y\eqcirc z \implies x\eqcirc z
+       & \forall x,y,z\in\setX
+       & (\prope{transitive})
+  \end{array}$
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Examples of equivalence relations include
+\exbox{\begin{array}{ll}
+  1. & \text{The equality relation $\hxs{=}$ on the set of integers $\Z$.} \\
+  2. & \text{The set equality relation $=$ ($\setA=\setB\implies \setA\subsetneq \setB$ and $\setB\subsetneq \setA$) on the set of all sets.} \\
+  3. & \text{The similarity relation $\hxs{\sim}$ (all angles equal) on the set of triangles.} \\
+  4. & \text{The modulo relation $\sim$ of all whole numbers that divide $60$ ($60|\cdot$).}
+\end{array}}
+\end{example}
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:eqclass}
+%---------------------------------------
+\defbox{\begin{array}{M}
+  A set $\setE$ is an \structd{equivalence class} with respect to the equivalence relation $=$
+  if
+  \\\indentx
+  $x=y \qquad \forall x,y\in\setE$
+\end{array}}
+\end{definition}
+
+Equivalence relations occur, of course, in the context of relations.
+In the context of sets, a structure that is ``equivalent" to the equivalence relation
+is the \structe{partition}\ifsxref{setstrct}{def:ss_partition}.
+In particular, an equivalence relation on a set generates a partition,
+and a partition on a set defines an equivalence relation.
+
+%=======================================
+\section{Functions}
+%=======================================
+\qboxnpqt
+  { \href{http://www-history.mcs.st-andrews.ac.uk/Biographies/Poincare.html}{Jules Henri Poincar\'e} 
+    %\href{http://en.wikipedia.org/wiki/Henri_Poincar%C3%A9}{Jules Henri Poincar\'e} 
+    \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineF.html}{(1854--1912)}, 
+    \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/France.html}{French physicist and mathematician}
+    \index{Poincar\'e, Jules Henri}
+    \index{quotes!Poincar\'e, Jules Henri}
+    \footnotemark
+  }
+  {../common/people/poincare.jpg}
+  {La logique parfois engendre des monstres. 
+   Depuis un demi-sie`cle on a vu surgir une foule de fonctions bizarres qui 
+   semblent s'efforcer de ressembler aussi peu que possible aux honn\^etes 
+   fonctions qui servent \`a quelque chose.}
+  %{Logic sometimes makes monsters. 
+  % For half a century we have seen a mass of bizarre functions which appear 
+  % to be forced to resemble as little as possible honest functions which serve some purpose.}
+  {Logic sometimes breeds monsters. 
+   For half a century there has been springing up a host of weird functions, 
+   which seem to strive to have as little resemlence as possible to honest functions
+   that are of some use.}
+  \citetblt{
+    quote:      & \citerc{poincare_sam}{book 2, chap. 2, sec. 5, par. 3} \\
+    translation & \citerpg{poincare_sam_eng}{125}{0486432696}\\
+    image:  & \url{http://www-groups.dcs.st-and.ac.uk/~history/PictDisplay/Poincare.html}
+    }
+
+A \structe{relation} is a kind of mapping between two sets.
+A relation $\relation\subseteq \cprodXY$ permits
+a single point in $\setX$ to map to two or more points in $\setY$.
+That is, it is possible that $\opair{x}{y_1}$ and $\opair{x}{y_2}$ with $y_1\ne y_2$
+are both members of some
+relation $\relation\subseteq \cprodXY$.
+%($x\in\setX$ is related to both $y_1$ and $y_2$).
+An example of this is the relation $\le$ in the set $\Z\cprod\Z$ where
+$1\le2$ {\bf and} $1\le3$; so in this example the element $1\in\setX$ has a
+relationship with both $2\in\setY$ and $3\in\setY$.
+Alternatively, we can say that both $\opair{1}{2}$ and $\opair{1}{3}$ are 
+elements of the relation $\le$.
+However, there is a special case of relations where this is not allowed;
+\structe{functions} (next definition) are a kind of relation where
+the only way that both $\opair{x}{y_1}$ and $\opair{x}{y_2}$ can be elements 
+of the \prope{relation} is if $y_1=y_2$.
+The set of all functions in $\cprodXY$ is denoted $\clFxy$.
+This notation is meaningful because the number of functions in $\clFxy$ is
+$\seto{\setY}^{\seto{\setX}}$ \xref{prop:f_order}.
+%---------------------------------------
+\begin{definition}
+\label{def:fnd_f(x)}
+\citetbl{
+  %\citerpg{halmos1960}{30}{0387900926}
+  \citerpg{suppes1972}{86}{0486616304},
+  \citerpg{kelley1955}{10}{0387901256},
+  %\citerp{kbr}{161},
+  \citer{bourbaki1939}
+  %\cithrp{bottazzini}{7}
+  }
+%---------------------------------------
+Let $\setX$ and $\setY$ be sets.
+Let $\hxs{\owedge}$ be the ``relational and" \xref{def:rel_and}.
+\defbox{\begin{array}{M}\indxs{\ff}\indxs{\clF{\setX}{\setY}}
+  A relation $\hxsd{\ff}\in\clRxy$ is a \reld{function} if
+    \\\indentx$\ds
+       \opair{x}{y_1}\in\ff \; \owedge \; \opair{x}{y_2}\in\ff \implies y_1=y_2
+       \qquad\scriptstyle
+       \text{(for each $x$, there is only one $\ff(x)$)}
+    $\\
+  The set of all functions in $\hxs{\clRxy}$ is denoted 
+    \\\indentx
+      $\ds\hxsd{\clFxy} \eqd \set{\ff\in\clRxy}{\text{$\ff$ is a function}}.$
+\end{array}}
+\end{definition}
+
+
+%=======================================
+\section{Logic}
+%=======================================
+\qboxnpq
+  {
+    \href{http://en.wikipedia.org/wiki/Paul_halmos}{Paul R. Halmos}
+    \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineG.html}{(1916--2006)},
+    \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMapsOld/Places/Germany.html}{Hungarian}-born
+    Jewish-\href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMapsOld/Places/USA.html}{American} mathematician
+    \index{Halmos, Paul R.}
+    \index{quotes!Halmos, Paul R.}
+    \footnotemark
+  }
+  {../common/people/halmos.jpg}
+  {My most nearly immortal contributions are an abbreviation and a typographical symbol.
+      I invented ``iff", for ``if and only if"---but I could never believe that I was really
+      its first inventor.%
+      \ldots
+      %I am quite prepared to beieve that it existed before me,
+      %but I don't know that it did, and my invention (re-invention?)
+      %of it is what spread it thorugh the mathematical world.
+      The symbol is definitely not my invention---it appeared in popular magazines
+      (not mathematical ones) before I adopted it,%
+      \ldots
+      %but, once again,
+      %I seem to have introduced it into mathematics.
+      It is the symbol that sometimes looks like $\hxsd{\mdlgwhtsquare}$, %$\square$,
+      and is used to indicate an end, usually the end of a proof.}
+      %It is most frequently called the ``tombstone", but at least one generous author
+      %referred to it as the ``halmos".}
+  \citetblt{
+    quote: & \citerpg{halmos1985}{403}{3540960783}  \\
+    image: & \url{http://en.wikipedia.org/wiki/Image:Paul_Halmos.jpeg}
+    }
+
+
+
+%---------------------------------------
+\begin{definition}[logic order relation]
+%\citep{wolf}{20}
+\label{def:==>}
+\label{def:implies}
+\label{def:onlyif}
+%---------------------------------------
+Let $\ltrue$ and $\lfalse$ represent the logical properties of ``\prope{true}" and
+``\prope{false}", respectively \xref{ax:plogic}.
+\defbox{\begin{array}{M}\indxs{\implies}\index{logical operations!implies}
+  The \opd{implies}, or \opd{only if}, relation $\implies$ is defined as
+  \\\indentx$\hxsd{\implies}\quad\eqd\quad\setn{\opair{\opair{\lfals}{\lfals}}{\ltrue},\; \opair{\opair{\lfals}{\ltrue}}{\ltrue},\; \opair{\opair{\ltrue}{\lfals}}{\lfals},\; \opair{\opair{\ltrue}{\ltrue}}{\ltrue}}$
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:<==}
+\label{def:<==>}
+\label{def:impliedby}
+\label{def:if}
+%\label{def:iff}
+%---------------------------------------
+Let $\ltrue$ and $\lfalse$ represent the logical properties of ``\prope{true}" and
+``\prope{false}", respectively.
+\defbox{
+  %\indxs{\impliedby}\indxs{\iff}
+  \index{logical operations!implied by}\index{logical operations!if and only if}
+  \begin{array}{lMlDl@{\qquad}C}
+    x \hxsd{\impliedby} y & if & y \implies x &     &                & \forall x,y\in\setft \\
+    x \hxsd{\iff}       y & if & x \implies y & and & y \implies x   & \forall x,y\in\setft
+  \end{array}}
+\end{definition}
+
+Alternatively, the relations presented in \xref{def:==>} and \xref{def:<==}
+can be represented in the form of truth tables:
+\[\begin{array}[t]{l@{\qquad}l@{\qquad}l}
+   \begin{array}[t]{|cc|c|}
+      \hline
+      \mc{3}{|Z|}{``implies" or ``only if"}\\
+      \mc{3}{|c|}{\implies:\setft^2\to\setft}\\
+      \hline
+      x & y & x\implies y  \\
+      \hline
+      \lfals & \lfals & \ltrue \\
+      \lfals & \ltrue & \ltrue \\
+      \ltrue & \lfals & \lfals \\
+      \ltrue & \ltrue & \ltrue \\
+      \hline
+   \end{array}
+&
+   \begin{array}[t]{|cc|c|}
+      \hline
+      \mc{3}{|Z|}{``implied by" or ``if"}\\
+      \mc{3}{|c|}{\impliedby:\setft^2\to\setft}\\
+      \hline
+      x & y & x\impliedby y  \\
+      \hline
+      \lfals & \lfals & \ltrue \\
+      \lfals & \ltrue & \lfals \\
+      \ltrue & \lfals & \ltrue \\
+      \ltrue & \ltrue & \ltrue \\
+      \hline
+   \end{array}
+&
+   \begin{array}[t]{|cc|c|}
+      \hline
+      \mc{3}{|Z|}{``if and only if"}\\
+      \mc{3}{|c|}{\iff:\setft^2\to\setft}\\
+      \hline
+      x & y & x\iff y  \\
+      \hline
+      \lfals & \lfals & \ltrue \\
+      \lfals & \ltrue & \lfals \\
+      \ltrue & \lfals & \lfals \\
+      \ltrue & \ltrue & \ltrue \\
+      \hline
+   \end{array}
+\end{array}\]
+
+
+
+
+
+
+
+%---------------------------------------
+\begin{definition}[Propositional logic]
+\label{def:flogic}
+%\label{def:lnot}
+%\label{def:land}
+%\label{def:lor}
+%\label{def:lxor}
+\index{propositional logic}
+\index{logic!propositional}
+\index{logical operation}
+\index{logical operation!AND}
+\index{logical operation!OR}
+\index{logical operation!NOT}
+\index{logical operation!XOR}
+%---------------------------------------
+Let $\ltrue$ and $\lfalse$ represent the logical properties of ``\prope{true}" and 
+``\prope{false}", respectively \xref{ax:plogic}.
+The following binary operators are defined according to the expressions below:
+\defbox{%\indxs{\land}\indxs{\lor}\indxs{\lnot}\indxs{\lxor}
+  \begin{array}{rclD}
+    \hxsd{\lnot} &\eqd& \setn{\opair{\lfals}{\ltrue},\; \opair{\ltrue}{\lfals}}                                                                                                                     & (\prope{logical not})
+  \\\hxsd{\lor}  &\eqd& \setn{\opair{\opair{\lfals}{\lfals}}{\lfals},\; \opair{\opair{\lfals}{\ltrue}}{\ltrue},\; \opair{\opair{\ltrue}{\lfals}}{\ltrue},\; \opair{\opair{\ltrue}{\ltrue}}{\ltrue}} & (\prope{logical or})
+  \\\hxsd{\land} &\eqd& \setn{\opair{\opair{\lfals}{\lfals}}{\lfals},\; \opair{\opair{\lfals}{\ltrue}}{\lfals},\; \opair{\opair{\ltrue}{\lfals}}{\lfals},\; \opair{\opair{\ltrue}{\ltrue}}{\ltrue}} & (\prope{logical and})
+  \\\hxsd{\lxor} &\eqd& \setn{\opair{\opair{\lfals}{\lfals}}{\lfals},\; \opair{\opair{\lfals}{\ltrue}}{\ltrue},\; \opair{\opair{\ltrue}{\lfals}}{\ltrue},\; \opair{\opair{\ltrue}{\ltrue}}{\lfals}} & (\prope{logical exclusive or})
+\end{array}}
+\end{definition}
+
+Alternatively, the relations presented in \pref{def:flogic}
+can be represented in the form of truth tables:
+\[\begin{array}{l*{3}{@{\qquad}l}}
+   \begin{array}[t]{|c|c|}
+      \hline
+      \mc{2}{|c|}{\cellcolor{blue}\text{\bfseries\color{white}\ope{logical not}}}\\
+      %\mc{2}{|c|}{\lnot:\setft\to\setft}\\
+      \hline
+      x & \lnot x  \\
+      \hline
+       \lfals & \ltrue \\
+       \ltrue & \lfals \\
+      \hline
+   \end{array}
+&
+   \begin{array}[t]{|cc|c|}
+      \hline
+      \mc{3}{|c|}{\cellcolor{blue}\text{\bfseries\color{white}\ope{logical or}}}\\
+      %\mc{3}{|c|}{\lor:\setft^2\to\setft}\\
+      \hline
+      x & y & x\lor y  \\
+      \hline
+      \lfals & \lfals & \lfals \\
+      \lfals & \ltrue & \ltrue \\
+      \ltrue & \lfals & \ltrue \\
+      \ltrue & \ltrue & \ltrue \\
+      \hline
+   \end{array}
+&
+   \begin{array}[t]{|cc|c|}
+      \hline
+      \mc{3}{|c|}{\cellcolor{blue}\text{\bfseries\color{white}\ope{logical and}}}\\
+      %\mc{3}{|c|}{\land:\setft^2\to\setft}\\
+      \hline
+      x & y & x\land y  \\
+      \hline
+      \lfals & \lfals & \lfals \\
+      \lfals & \ltrue & \lfals \\
+      \ltrue & \lfals & \lfals \\
+      \ltrue & \ltrue & \ltrue \\
+      \hline
+   \end{array}
+&
+   \begin{array}[t]{|cc|c|}
+      \hline
+      \mc{3}{|c|}{\cellcolor{blue}\text{\bfseries\color{white}\ope{logical exclusive-or}}}\\
+      %\mc{3}{|c|}{\lxor:\setft^2\to\setft}\\
+      \hline
+      x & y & x\lxor y  \\
+      \hline
+      \lfals & \lfals & \lfals \\
+      \lfals & \ltrue & \ltrue \\
+      \ltrue & \lfals & \ltrue \\
+      \ltrue & \ltrue & \lfals \\
+      \hline
+   \end{array}
+\end{array}\]
+
+
+Note that the ``logical and" \emph{function} $\land$ as defined in \pref{def:flogic} (previous)
+and the ``\prope{relational and} "\emph{relation} $\owedge$ as defined in \prefpp{def:AxB} 
+are equivalent relations.
+
+\ifdochas{logic}{%
+  More information about logic structure is presented in \prefpp{chp:logic}.
+  Key concepts concerning the structure of logic is more conveniently demonstrated 
+  once the concepts of
+  \structe{order}            \ifsxref{order}{chp:order},
+  \structe{lattices}         \ifsxref{lattice}{chp:lattice}, and
+  \structe{Boolean algebras} \ifsxref{boolean}{chp:boolean}
+  have been introduced.
+  }
+
+
+%---------------------------------------
+\begin{definition}[predicate logic]
+\label{def:predicate_logic}
+\index{existensial quantifier}
+\index{universal quantifier}
+%---------------------------------------
+\defbox{\begin{array}{rc>{\ds}l @{\qquad}D}
+  \exists i\in I \st p(x_i) \text{ is true}
+    &\iff& \hxsd{\bigvee_{i\in I}} [ p(x_i) \text{ is true}]
+    & (\propd{existensial quantifier})
+  \\
+  \forall i\in I,\; p(x_i) \text{ is true}
+  &\iff& \hxsd{\bigwedge_{i\in I}} [ p(x_i) \text{ is true}]
+  & (\propd{universal quantifier})
+\end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{theorem}
+\citep{wolf}{62}
+\label{thm:notQuant}
+%---------------------------------------
+Let $x$ be a condition and $P(x)$ be a logical statement dependent on $x$.
+\thmbox{\begin{array}{l@{\hs{8ex}}c@{\hs{8ex}}l}
+  \lnot \left[\forall x,\; P(x)\right]
+  &\text{is equivalent to}&
+  \exists x \st \lnot P(x)
+\\
+  \lnot \left[\exists x,\st P(x)\right]
+  &\text{is equivalent to}&
+  \forall x,\; \lnot P(x)
+\end{array}}
+\end{theorem}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citeP{godel1930},
+  \citeP{godel1930e},
+  \citeP{henkin1949},
+  \citerpgc{takeuti1975}{43}{0444104925}{Theorem 8.2}
+  }
+\label{thm:found_firstpred_complete}
+%---------------------------------------
+\thmbox{\begin{array}{M}
+  Any statement constructed using first order predicate logic is \prope{complete}.
+\end{array}}
+\end{theorem}
+
+%=======================================
+\section{Set operations}
+%=======================================
+Equipped with the concept of the \structe{relation},
+we are now in a position to construct the following fundamental relationships
+between sets:
+  \\\begin{tabular}{@{\quad}>{$\imark$ }llll}
+    The \ope{set inclusion} relation  & $\setA\subseteq\setB$      &means& $x\in\setA \implies x\in\setB$. \\
+    The \ope{equality}      relation  & $\setA=\setB$              &means& $\setA\subseteq\setB$ and $\setB\subseteq\setA$. \\
+    The \ope{non-equality}  relation  & $\setA\ne \setB$           &means& $\setA=\setB$ is false ($\lfalse$). \\
+    The \ope{proper subset} relation  & $\setA\subsetneq\setB$     &means& $\setA\subseteq\setB$ and $\setA\ne \setB$. \\
+  \end{tabular}\\
+These informal set relation descriptions are reinforced with their formal
+definitions next.
+%---------------------------------------
+\begin{definition}
+%\label{def:subset}
+\citetbl{
+  \citerpg{kelley1955}{2}{0387901256}
+  }
+%---------------------------------------
+Let $\setA$ and $\setB$ be sets.
+\defbox{\indxs{\subseteq}\indxs{=}\indxs{\ne }\indxs{\subset}
+  %\begin{array}{p{6\tw/16}@{\qquad} >{\ds}l}
+  \begin{array}{MD>{\ds}l}
+  \text{The relation ``\reld{subset}" $\hxsd{\subseteq}$ } 
+    & is defined as the set
+    & \set{\opair{\setA}{\setB}}{x\in\setA \implies x\in\setB}
+    \\
+  \text{The relation ``\reld{set equality}" $\hxsd{=}$ } 
+    & is defined as the set
+    & \set{\opair{\setA}{\setB}}
+          {\brp{\setA \subseteq \setB} \;\land\; \brp{\setB \subseteq \setA}}
+    \\
+  \text{The relation ``\reld{set non-equality}" $\hxsd{\ne}$ } 
+    & is defined as the set
+    & \set{\opair{\setA}{\setB}}{\setA=\setB \text{ is false ($\lfalse$)}}
+    \\
+  \text{The relation ``\reld{proper subset}" $\hxsd{\subsetneq}$ } 
+    & is defined as the set
+    & \set{\opair{\setA}{\setB}}
+          {\brp{\setA\subseteq\setB} \;\land\; \brp{\setA\ne \setB}}
+\end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:set_ops}
+\citetbl{
+  \citerppg{verescagin2002}{1}{2}{0821827316},
+  \citerpp{ab}{2}{4}
+  }
+\footnote{Origin of $\setu$ and $\seti$: \citer{peano1888}, \citer{peano1888e}}
+%  \\\begin{tabular}{l}
+%    \citer{peano1888}  \\
+%    \citer{peano1888e}
+%  \end{tabular}}
+\index{sets!operations}
+%---------------------------------------
+Let $\ssP{\setX}$ be the \structe{power set} \xref{def:fnd_powerset} on a set $\setX$.
+\defbox{%\indxs{\setu}\indxs{\seti}\indxs{\setd}\indxs{\sets}
+  \begin{array}{l>{\eqd}cl@{\qquad}C@{\qquad}D}
+   \hxsd{\cmpA}
+     && \set{x\in\setX}{\lnot(x\in\setA)  }
+     & \forall \setA\in\ssP{\setX}
+     &(\opd{complement})
+     \\
+   \setA\hxsd{\setu}\setB
+     && \set{x\in\setX}{ (x\in\setA) \lor  (x\in\setB) }
+     & \forall \setA,\setB\in\ssP{\setX}
+     &(\opd{union})
+     \\
+   \setA\hxsd{\seti}\setB
+     && \set{x\in\setX}{ (x\in\setA) \land (x\in\setB) }
+     & \forall \setA,\setB\in\ssP{\setX}
+     &(\opd{intersection})
+   \\
+   \setA\hxsd{\setd}\setB
+     && \set{x\in\setX}{ (x\in\setA) \land \lnot(x\in\setB) }
+     & \forall \setA,\setB\in\ssP{\setX}
+     &(\opd{difference})
+     \\
+   \setA\hxsd{\sets}\setB
+     && \set{x\in\setX}{(x\in\setA) \lxor (x\in\setB)}
+     & \forall \setA,\setB\in\ssP{\setX}
+     &(\opd{symmetric difference})
+\end{array}}
+\end{definition}
+
+
+\prefpp{def:(a,b)} defined the \structe{ordered pair} using Kuratowski's
+somewhat cryptic expression
+ $\opair{a}{b} \eqd \setn{\setn{a},\, \setn{a,b}}$.
+\pref{thm:(a,b)_extract} (next) helps show that this expression is reasonable
+in that $a$ and $b$ can be extracted
+from the set $\setn{\; \setn{a},\; \setn{a,b}\; }$
+by simple set operations on its elements.
+Also, a key test to the usefulness of the definition of ordered pairs is whether
+or not $\opair{a}{b}=\opair{c}{d}$ if and only if $a=c \text{ and } b=d$.
+In fact, this statement is true and demonstrated by \prefpp{cor:(a,b)=(c,d)}.
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:(a,b)_extract}
+%---------------------------------------
+\thmbox{\begin{array}{rcl clcl}
+   \setn{a} &=&  \setopi\opair{a}{b} &=& \setopi\setn{ \setn{a},\setn{a,b} } &=& \setn{a}\seti\setn{a,b} \\
+   \setn{b} &=&  \setops\opair{a}{b} &=& \setops\setn{ \setn{a},\setn{a,b} } &=& \setn{a}\sets\setn{a,b}
+\end{array}}
+\end{theorem}
+
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:(a,b)=(c,d)}
+\citetbl{
+  \citerpg{apostol1975}{33}{0201002884},
+  \citerpg{hausdorff1937e}{15}{0828401195}
+  }
+%---------------------------------------
+\corbox{
+  \opair{a}{b}=(c,d)
+  \qquad\iff\qquad
+  a=c \text{ and } b=d
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\opair{a}{b}=(c,d) \implies a=c \text{ and } b=d$:}
+    \setn{a}
+      &= \Seti\opair{a}{b}
+      && \text{by \prefp{thm:(a,b)_extract}}
+    \\&= \Seti(c,d)
+      && \text{by left hypothesis}
+    \\&= \setn{c}
+      && \text{by \prefp{thm:(a,b)_extract}}
+    \\
+    \setn{b}
+      &= \Sets\opair{a}{b}
+      && \text{by \prefp{thm:(a,b)_extract}}
+    \\&= \Sets(c,d)
+      && \text{by left hypothesis}
+    \\&= \setn{d}
+      && \text{by \prefp{thm:(a,b)_extract}}
+    \\
+  \intertext{2. Proof that $\opair{a}{b}=(c,d) \impliedby a=c \text{ and } b=d$:}
+    \opair{a}{b}
+      &= (c,d)
+      && \text{by right hypothesis}
+\end{align*}
+\end{proof}
+
+
+
+%=======================================
+\section{Abstract Mathematical Spaces}
+\label{sec:space}
+%=======================================
+\begin{figure}[th]
+  \centering
+  \includegraphics{graphics/spaces.pdf}%
+  \caption{Lattice of mathematical spaces\label{fig:found_spaces}}
+\end{figure}%
+The abstract space was introduced by Maurice Fr{/'e}chet in his 1906 Ph.D. thesis.%
+\citetbl{
+  \citeP{frechet1906},
+  \citer{frechet1928}
+  %\citePp{frechet1950}{147}
+  }
+An abstract \hid{space} in mathematics does not really have a rigorous definition;
+but in general it is a set together with some other unifying structure.
+
+\qboxnps
+  {\href{http://en.wikipedia.org/wiki/Frechet}{Marice Ren{/'e} Fr{/'e}chet}
+   (\href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineF.html}{1878--1973}),
+   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/France.html}{French mathematician}
+   who in his 1906 Ph.D. dissertation introduced the concept of the \structe{metric space}
+   \index{Fr/'echet, Marice Ren/'e}
+   \index{quotes!Fr/'echet, Marice Ren/'e}
+   \footnotemark
+  }
+  {../common/people/frechet.jpg}
+  {\ldots
+   A collection of these abstract elements will be called an \emph{abstract set}.
+   If to this set there is added some rule of association of these elements,
+   or some relation between them,
+   the set will be called an \emph{abstract space}.}
+  \citetblt{
+    quote: & \citePp{frechet1950}{147} \\
+            %\citerp{carothers2000}{36}
+    image: & \url{http://en.wikipedia.org/wiki/Frechet}
+    }
+
+Examples of common abstract spaces include the following:
+\begin{enumerate}
+  \item \structe{linear space}:
+        a set of ``vectors" over a field
+        with a vector-vector addition operator $+$ such vectors can be added together
+        and a scalar-vector multiplication operator $\cprod$
+        such that field elements can be multiplied with vectors.
+        \\\citor{peano1888}
+
+  \item \structe{metric space}:
+        A set of elements together with a metric $\metricn$ such giving the ``distance"
+        between any two elements.
+        \\\citeP{frechet1906}
+
+  \item \structe{measure space}:
+        A set of sets and a measure $\msm$ that measures the ``size" of a set.
+
+  \item \structe{normed vector space}:
+        A vector space together with a norm $\normn$ that measures the ``length" of a vector.
+        \\\citor{banach1922}
+
+  \item \structe{inner-product space}:
+        A vector space together with an inner-product $\inprodn$.
+
+  \item \structe{Banach space}:
+        a normed vector space that is ``complete" with respect to the norm $\normn$.
+        \\\citor{banach1922}
+
+  \item \structe{Hilbert space}:
+        an inner-product space that is ``complete" with respect to the norm induced by the
+        inner-product $\inprodn$.
+        \\\citor{vonNeumann1929}
+\end{enumerate}
+

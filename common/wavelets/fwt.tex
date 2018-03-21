@@ -1,0 +1,179 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+%============================================================================
+
+%=======================================
+\chapter{Fast Wavelet Transform (FWT) }
+\index{fast wavelet transform}
+\index{FWT}
+%=======================================
+The Fast Wavelet Transform can be computed using simple 
+discrete filter operations (as a conjugate mirror filter).
+
+%--------------------------------------
+\begin{definition}[Wavelet Transform]
+\label{def:wt}
+\index{wavelet transform}
+%--------------------------------------
+Let the wavelet transform 
+$\opW:\{f:\R\to\C\}\to \{w:\Z^2\to\C\}$ be defined as \footnotemark
+\defbox{\begin{array}{rcl}
+   [\opW \ff](j,n) &\eqd& \inprod{\ff(x)}{\fpsi_{k,n}(x)} 
+\end{array}}
+\end{definition}
+\footnotetext{
+Notice that this definition is similar to the definition of transforms 
+of other analysis systems:
+\[
+\begin{array}{cllllll}
+   \imark                             &
+   \mbox{Laplace Transform}            & 
+   \mathcal{L}f(s)                     & 
+   \eqd& \inprod{\ff(x)}{e^{sx}}       & 
+   \eqd& \int_x \ff(x) e^{-sx} \dx 
+   \\
+   \imark                             &
+   \mbox{Continuous Fourier Transform} & 
+   \mathcal{F}f(\omega)                & 
+   \eqd& \inprod{\ff(x)}{e^{i\omega x}} & 
+   \eqd& \int_x \ff(x) e^{-i\omega x} \dx 
+   \\
+   \imark                             &
+   \mbox{Fourier Series Transform}     & 
+   \mathcal{F}_sf(k)                     & 
+   \eqd& \inprod{\ff(x)}{e^{i\frac{2\pi}{T}kx}} & 
+   \eqd& \int_x \ff(x) e^{-i\frac{2\pi}{T}kx} \dx 
+   \\
+   \imark                             &
+   \mbox{Z-Transform}                  & 
+   \mathcal{Z}f(z)                     & 
+   \eqd& \inprod{\ff(x)}{z^n} & 
+   \eqd& \sum_n \ff(x) z^{-n} 
+   \\
+   \imark                             &
+   \mbox{Discrete Fourier Transform}                  & 
+   \mathcal{F}_df(k)                     & 
+   \eqd& \inprod{f(n)}{e^{i\frac{2\pi}{N}kn}} & 
+   \eqd& \sum_n \ff(x) e^{-i\frac{2\pi}{N}kn} 
+   \\
+\end{array}
+\]
+}
+
+%--------------------------------------
+\begin{definition}
+\index{scaling coefficients}
+\index{wavelet coefficients}
+\index{scaling filter coefficients}
+\index{wavelet filter coefficients}
+%--------------------------------------
+The following relations are defined as described below:
+\defbox{\begin{array}{lllrcl}
+   \mbox{scaling coefficients} & v_j:\Z\to\C & \mbox{such that} & 
+   v_j(n) &\eqd& \ds \inprod{f(x)}{\fphi_{j,n}(x)}
+\\
+   \mbox{wavelet coefficients} & w_j:\Z\to\C & \mbox{such that} & 
+   w_j(n) &\eqd& \ds \inprod{f(x)}{\fpsi_{j,n}(x)}
+\\
+   \mbox{scaling filter coefficients} & \fhb:\Z\to\C & \mbox{such that} & 
+   \fhb(n) &\eqd& \ds \fh(-n)
+\\
+   \mbox{wavelet filter coefficients} & \fgb:\Z\to\C & \mbox{such that} & 
+   \fgb(n) &\eqd& \ds \fg(-n)
+\end{array}}
+\end{definition}
+
+The scaling and wavelet filter coefficients at scale~$j$ are 
+equal to the filtered and downsampled \xref{thm:downsample}
+scaling filter coefficients at scale~$j+1$:%
+\footnote{
+  \citerp{mallat}{257},
+  \citerp{burrus}{35}
+  }
+
+\begin{liste}
+   \item The convolution \xref{def:convd} of $v_{j+1}(n)$ with $\fhb(n)$ 
+         and then downsampling by 2 produces $v_j(n)$.
+   \item The convolution of $v_{j+1}(n)$ with $\fgb(n)$ 
+         and then downsampling by 2 produces $w_j(n)$.
+\end{liste}
+This is formally stated and proved in the next theorem.
+%--------------------------------------
+\begin{theorem}
+\index{scaling filters}
+\index{wavelet filters}
+%--------------------------------------
+\formbox{
+   \begin{array}{rcl}
+      v_j(n) &=& [\fhb \conv v_{j+1}](2n) \\
+      w_j(n) &=& [\fgb \conv v_{j+1}](2n)
+   \end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+    v_j(n) 
+      &= \inprod{\ff(x)}{\fphi_{j,n}(x)} 
+    \\&= \inprod{\ff(x)}{\sqrt{2^j}\fphi\left(2^jx-n \right)}
+    \\&= \inprod{\ff(x)}{\sqrt{2^j}\sqrt{2}\sum_m h(m)\fphi\left(2(2^jx-n)-m \right)}
+    \\&= \inprod{\ff(x)}{\sum_m h(j)\sqrt{2^{j+1}}\fphi\left(2^{j+1}x-2n -m \right)}
+    \\&= \sum_m h(m)\inprod{\ff(x)}{\sqrt{2^{j+1}}\fphi\left(2^{j+1}x-2n -m \right)}
+    \\&= \sum_m h(m)\inprod{\ff(x)}{\fphi_{j+1,2n+m}(x)}
+    \\&= \sum_m h(m)v_{j+1}(2n+m)
+    \\&= \sum_p h(p-2n)v_{j+1}(p)
+      && \text{let }p=2n+m \iff m=p-2n
+    \\&= \sum_p \fhb(2n-p) v_{j+1}(p)
+    \\&= [\fhb \conv v_{j+1}](2n)
+\\ 
+\\
+    w_j(n)
+      &= \inprod{\ff(x)}{\fpsi_{j,n}(x)} 
+    \\&= \inprod{\ff(x)}{\sqrt{2^j}\fpsi\left(2^jx-n \right)}
+    \\&= \inprod{\ff(x)}{\sqrt{2^j}\sqrt{2}\sum_m \fg(j)\fphi\left(2(2^jx-n)-m \right)}
+    \\&= \inprod{\ff(x)}{\sum_m \fg(m)\sqrt{2^{j+1}}\fphi\left(2^{j+1}x-2n -m \right)}
+    \\&= \sum_m \fg(m)\inprod{\ff(x)}{\sqrt{2^{j+1}}\fphi\left(2^{j+1}x-2n -m \right)}
+    \\&= \sum_m \fg(m)\inprod{\ff(x)}{\fphi_{j+1,2n+m}(x)}
+    \\&= \sum_m \fg(m)v_{j+1}(2n+m)
+    \\&= \sum_p \fg(p-2n)v_{j+1}(p)
+      && \text{let }p=2n+m \iff m=p-2n
+    \\&= \sum_p \fgb(2n-p)v_{j+1}(p) 
+    \\&= [\fgb \conv v_{j+1}](2n)
+   \end{align*}
+\end{proof}
+
+
+
+These filtering and downsampling operations are equivalent to the 
+operations performed by a filter bank.  
+Therefore, a filter bank can be 
+used to implement a Fast Wavelet Transform (FWT).
+This is illustrated in \prefp{fig:fwt}.
+
+\begin{figure}[h] %\color{figcolor}
+\centering\gsize\input{../common/wavelets/graphics/fwt_diagram.tex}
+\caption{
+   $k$-Stage Fast Wavelet Transform
+   \label{fig:fwt}
+   }
+\end{figure}
+
+
+
+%\begin{center}
+%\begin{figure}[h] \color{figcolor}
+%\begin{small}
+%\begin{tabular}{c}
+%   \ingr{\tw-5mm}{20mm}{../common/wavelets/pare.eps} \\
+%      $\ff(x)$: truncated parabola                           \\
+%   \ingr{\tw/2-10mm}{60mm}{../common/wavelets/d2_par_fwte.eps} \\
+%      $[\opW \ff](k,n)$ using Haar                     \\
+%   \ingr{\tw/2-10mm}{60mm}{../common/wavelets/d4_par_fwte.eps} \\
+%      $[\opW \ff](k,n)$ using Daubechies-4            
+%\end{tabular}
+%\end{small}
+%\caption{Fast Wavelet Transforms using Haar and Daubechies-4 basis}
+%\end{figure}
+%\end{center}
+
+

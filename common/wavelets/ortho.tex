@@ -1,0 +1,2864 @@
+﻿%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Orthonormality Constraint}
+\label{chp:ortho}
+%======================================
+
+
+%=======================================
+\section{Definition}
+%=======================================
+In any Hilbert space $\spLLR$ with a subspace $\spY$, $\spY\adds\spYo=\spLLR$
+(\thme{Projection Theorem}\ifdochas{subspace}{, \xrefp{thm:projection}}).
+The subspace $\spYo$ is the \structe{orthogonal complement} of $\spY$ in $\spLLR$.
+In wavelet theory, the orthogonal complement of a scaling subspace $\spV_n$ in the subspace $\spV_{n+1}$
+is the \structe{wavelet subspace} $\spW_n$ (next definition).
+The wavelet subspace $\spW_n$ is \prope{unique} with respect to $\spV_n$ because
+in a Hilbert space, $\spW_n^\orthog = \spV_n^{\orthog\orthog} = \spV_n$\ifsxref{subspace}{thm:inprod_orthog}.
+
+\prefpp{def:wavsys} defines a \hie{general} wavelet system.
+An \hie{orthonormal wavelet system} is simply a wavelet system
+with additional constraints of orthonormality \xref{def:ows}.
+
+%\ifdochasnot{relation}{
+%%---------------------------------------
+%\begin{definition}
+%\label{def:kdelta}
+%%---------------------------------------
+%\defbox{\begin{array}{M}
+%The \hid{Kronecker delta function} $\hxs{\kdelta_n}$ is defined as
+%  \qquad
+%  $\ds\kdelta_n\eqd
+%    \brbl{\begin{array}{cMD}
+%      1 & for $n=0$ & and \\
+%      0 & for $n\ne 0$\..
+%    \end{array}}
+%  \qquad\scy
+%  \forall n\in\Z$
+%\end{array}}
+%\end{definition}
+%}
+
+%--------------------------------------
+\begin{definition}
+\label{def:oms}
+\label{def:ows}
+%--------------------------------------
+Let $\spO\eqd\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}
+and $\spGm\eqd\mrasys$ its component \structe{MRA system} \xref{def:mrasys}.
+Let $\kdelta_n$ be the \structe{Kronecker delta function} \xref{def:kdelta}.
+\defbox{\begin{array}{FMMlC}
+  1. & The \structe{MRA system} $\spGm$    & is \hid{orthonormal} if & \inprod{\fphi}{\opTrn^n\fphi}=\kdelta_n & \forall n\in\Z. \\
+  2. & The \structe{wavelet system} $\spO$ & is \hid{orthonormal} if & \inprod{\fpsi}{\opTrn^n\fpsi}=\kdelta_n & \forall n\in\Z  \\
+  \mc{3}{r}{\text{and}}                                            & \inprod{\fphi}{\opTrn^n\fpsi}=0         & \forall n\in\Z. \\
+  \mc{5}{M}{In the case of (1), $\spGm$ is an \hid{orthonormal MRA system}.}\\
+  \mc{5}{M}{In the case of (2), $\spO$  is an \hid{orthonormal wavelet system}.}
+\end{array}}
+%
+%\defbox{\begin{array}{M}
+%  A wavelet system $\wavsys$ is \hid{orthonormal} if
+%  \\\indentx
+%  $\begin{array}{F>{\ds}l@{\qquad}D}
+%    1. & \inprod{\fphi}{\opTrn^n\fphi}=\kdelta_n
+%       & ($\setxZ{\opTrn^n\fphi}$ is \prope{orthonormal} in $\spLLR$)
+%       \\
+%    2. & \spV_0 \orthog \spW_0
+%       & ($\spV_0$ and $\spW_0$ are \structe{orthonormal complementary subspaces})
+%  \end{array}$
+%\end{array}}
+\end{definition}
+
+
+%=======================================
+\section{Orthonormal MRA systems}
+%=======================================
+%=======================================
+\subsection{Scaling coefficients from scaling function}
+%=======================================
+The \thme{dilation equation} \xref{thm:dilation_eq} demonstrates that if we know
+the \fncte{scaling coefficients} $\seqn{\fh_n}$ \xref{def:hn}, we can
+(recursively) compute the scaling function $\fphi$ \xref{def:mra}.
+The converse is in general not so easy to compute.
+However, in an \structe{orthonormal MRA system},
+we can compute the scaling coefficients $\seqn{\fh_n}$ from the scaling function $\fphi$ (next).
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{mallat}{228}{012466606X}{(7.29)},
+  \citerpg{wojtaszczyk1997}{38}{0521578949}
+  }
+\label{prop:phi->h}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+\propbox{
+  \mcom{{\inprod{\fphi}{\opTrn^n\fphi}=\kdelta_n}}{$\setn{\opTrn^n\fphi}$ is \prope{orthonormal}}  %{$\setn{\fphi_n}$ is \prope{orthonormal} in $\spLLR$}
+  \qquad\implies\qquad
+ \fh_n  = \ds \inprod{\fphi}{\opDil\opTrn^n\fphi}
+        =\ds \cwt \int_\R \fphi(x)\fphi^\ast(2x-n)\dt
+  \qquad\scy\forall n\in\Z
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+   \inprod{\fphi}{\opDil\opTrn^n\fphi}
+     &= \inprod{\sum_{m\in\Z}h_m\opDil\opTrn^m \fphi}{\opDil\opTrn^n\fphi}
+     && \text{by the \thme{dilation equation}}
+     && \text{\xref{thm:dilation_eq}}
+   \\&= \sum_{m\in\Z}h_m\inprod{\opDil\opTrn^m \fphi}{\opDil\opTrn^n\fphi}
+     && \text{by \prope{additive} property of $\inprodn$} 
+     && \text{\xref{def:inprod}}
+   \\&= \sum_{m\in\Z}h_m \inprod{\sqrt{2}\fphi(2x-m)}{\sqrt{2}\fphi(2x-n)}
+     && \text{by definition of $\opTrn$ and $\opDil$}
+     && \text{\xref{def:opTD}}
+   \\&= \sum_{m\in\Z}h_m \int_{x\in\R} \sqrt{2}\fphi(2x-m)\sqrt{2}\fphi^\ast(2x-n) \dx
+     && \text{by definition of $\inprodn$ in $\spLLR$}
+     && \text{\xref{def:spLLR}}
+   \\&= \sum_{m\in\Z}h_m \int_{u\in\R} \sqrt{2}\fphi(u-m)\sqrt{2}\fphi^\ast(u-n) \half \du
+     && \text{where $u\eqd2x$ $\implies$}
+     && \text{$\du=2\dx$}
+   \\&= \sum_{m\in\Z}h_m \int_{u\in\R} \fphi(u-m)\fphi^\ast(u-n) \du
+   \\&= \sum_{m\in\Z}h_m \int_{u\in\R} \fphi(u-m)\fphi^\ast(u-n) \du
+   \\&= \sum_{m\in\Z}h_m \int_{v\in\R} \fphi(v)\fphi^\ast(v-(n-m)) \dv
+     && \text{where $v\eqd u-m$ $\implies$}
+     && \text{$u=v+m$}
+   \\&= \sum_{m\in\Z}h_m \inprod{\fphi}{\opTrn^{n-m}\fphi}
+     && \text{by definition of $\inprodn$ in $\spLLR$}
+     && \text{\xref{def:spLLR}}
+   \\&= \sum_{m\in\Z}h_m \kdelta_{m-n}
+     && \text{by left hypothesis}
+   \\&=\fh_n
+     && \text{by definition of $\kdelta$}
+     && \text{\xref{def:kdelta}}
+   \\
+   \\
+   \inprod{\fphi}{\opDil\opTrn^n\fphi}
+     &= \inprod{\fphi}{\opDil\fphi(x-n)}
+     && \text{by definition of $\opTrn$}
+     && \text{\xref{def:opT}}
+   \\&= \inprod{\fphi}{\cwt\fphi(2x-n)}
+     && \text{by definition of $\opDil$}
+     && \text{\xref{def:opD}}
+   \\&= \cwt \int_\R \fphi(x)\fphi^\ast(2x-n)\dt
+     && \text{by definition of $\inprodn$ in $\spLLR$}
+     && \text{\xref{def:spLLR}}
+\end{align*}
+\end{proof}
+
+
+%-------------------------------------
+\begin{example}[\exm{Haar scaling function}]
+\index{Haar scaling function}
+\label{ex:haarphi}
+%-------------------------------------
+%Let a function $\fphi$ be defined as follows:
+\exbox{\begin{array}{Mclm{37mm}}
+    Let $\fphi(x)$ &\eqd&
+      \brbl{\begin{array}{lM}
+         1  & for $x\in\intco{0}{1}$  \\
+         0  & otherwise.
+      \end{array}}
+    &\includegraphics{graphics/d1_phi.pdf}
+  \\
+    Then, $\fh_n$ &=&
+      \brbl{\begin{array}{MM}
+        $\cwt$ & for $n\in\setn{0,1}$\\
+        $0$                  & otherwise.
+      \end{array}}
+    &\includegraphics{graphics/d1_h.pdf}%
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+ \fh_{n}
+    &= \inprod{\fphi}{\opDil\opTrn^n\fphi}
+    && \text{by \prefp{prop:phi->h}}
+  \\&= \inprod{\setind_{[0,1)}(x)}{\opDil\opTrn^{-n}\setind_{[0,1)}(x)}
+    && \text{by definition of $\fphi$}
+  \\&= \inprod{\setind_{[0,1)}(x)}{\sqrt{2}\setind_{[0,1)}(2x-n)}
+     && \text{by definition of $\opTrn$ and $\opDil$}
+     && \text{\xref{def:opTD}}
+  \\&= \sqrt{2}\inprod{\setind_{[0,1)}(x)}{\setind_{[0,1)}(2x-n)}
+    && \text{by properties of $\inprodn$}
+    && \text{\xref{def:inprod}}
+  \\&= \sqrt{2}\int_\R \setind_{[0,1)}(x)\,\setind_{[0,1)}(2x-n)\dx
+    && \text{by definition of $\inprodn$ in $\spLLR$}
+    && \text{\xref{def:spLLR}}
+  \\&= \sqrt{2}\int_0^1 \setind_{[0,1)}(2x-n)\dx
+    && \text{by definition of $\setind$}
+    && \text{\xref{def:setind}}
+  \\&= \brbl{\begin{array}{lclM}
+         \sqrt{2}\int_0^\half  1\dx &=& \cwt & for $n=0$ \\
+         \sqrt{2}\int_\half ^1 1\dx &=& \cwt & for $n=1$ \\
+         0                               &=& 0                  & otherwise
+       \end{array}}
+    && \text{by definition of $\setind$}
+    && \text{\xref{def:setind}}
+\end{align*}
+\end{proof}
+
+%=======================================
+\subsection{Necessary conditions}
+%=======================================
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{wojtaszczyk1997}{31}{0521578949}{Proposition 2.16},
+  \citerppgc{pinsky2002}{315}{316}{0534376606}{6.4.3.1 Additional remarks}
+  }
+\label{prop:oms_phi1}
+%--------------------------------------
+Let $\spO\eqd\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+Let $\Fphi(\omega)$ be the \ope{Fourier transform} \xref{def:opFT} of $\fphi(x)$.
+\propbox{
+  \brb{\begin{array}{FMD}
+    (A).  & $\seqn{\opTrn^n\fphi}$ is \prope{orthonormal} & and \\
+    (B).  & $\Fphi(\omega)$ is \prope{continuous} at $0$  &
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lD}
+    (1). & \abs{\Fphi(0)}            &=& \frac{1}{\sqrt{2\pi}} & and \\
+    (2). & \abs{\int_\R \fphi(x)\dx} &=& 1
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Let $\opP_j$ be the \ope{projection operator} that generates the scaling subspace $\spV_j$ such that \label{item:oms_phi1_Pj}
+    \\\indentx$\ds\opV_j=\set{\opP_j\ff}{\ff\in\spH}$
+
+  \item Let $\fg(x)$ a function in $\spLLR$ such that its \ope{Fourier transform} \xref{def:opFT} $\Fg(\omega)$
+        has support $\support\Fg\subseteq\intcc{-1}{1}$ \label{item:oms_phi1_g}
+
+  \item lemma: The set $\ds\setnZ{\frac{1}{2^{j/2}{\sqrt{2\pi}}}e^{-i\frac{\omega}{2^j}n}}$ \label{ilem:oms_phi1_fs}
+        is an \structe{orthonormal basis} for functions in $\spLLR$ that have support in $\intcc{-2^j\pi}{2^j\pi}$.
+        Proof: This follows from \prefp{thm:opFSc}.
+        {\begin{align*}
+          \int_{-2^j\pi}^{2^j\pi} \brs{\frac{1}{2^{j/2}\sqrt{2\pi}}e^{-i\frac{\omega}{2^j}n}}
+                                  \brs{\frac{1}{2^{j/2}\sqrt{2\pi}}e^{-i\frac{\omega}{2^j}m}}^\ast \dw
+            &= \int_{-2^j\pi}^{2^j\pi} \frac{1}{2^{j}(2\pi)}e^{-i\frac{\omega}{2^j}(n-m)} \dw
+          \\&= \frac{1}{2^{j}(2\pi)}\brp{2^j\pi+2^j\pi} \kdelta_{nm}
+          \\&= \kdelta_{nm}
+        \end{align*}}
+
+  \item  Proof for (1): Let $\setA\eqd\intcc{-1}{1}$. \label{item:oms_phi_Fphi}
+    \begin{align*}
+      \norm{\fg}^2
+        &=   \norm{\lim_{j\to\infty}\opP_j\fg}^2
+      \\&=   \lim_{j\to\infty}\sum_{n\in\Z}\abs{\inprod{\opP_j\fg}{\opD^j\opTrn^n\fphi}}^2
+        &&   \text{by (A) and \thme{Parseval's Identity}}
+        &&   \text{\xref{thm:fst}}
+      \\&=   \lim_{j\to\infty}\sum_{n\in\Z}\abs{\inprod{\fg}{\opD^j\opTrn^n\fphi}}^2
+        &&   \text{by definition of $\opP_j$}
+        &&   \text{\xref{item:oms_phi1_Pj}}
+      \\&=   \lim_{j\to\infty}\sum_{n\in\Z}\abs{\inprod{\opFT\fg}{\opFT\opD^j\opTrn^n\fphi}}^2
+        &&   \text{by \prope{unitary} property of $\opFT$}
+        &&   \text{\xref{thm:ft_unitary}}
+      \\&=   \lim_{j\to\infty}\sum_{n\in\Z}\abs{\inprodr{\Fg(\omega)}{\frac{1}{2^{j/2}}e^{-i\frac{\omega}{2^j} n}\Fphi\brp{\frac{\omega}{2^j}}}}^2
+        &&   \text{by \prefp{prop:FTDf}}
+      \\&=   \lim_{j\to\infty}\sum_{n\in\Z}\abs{\int_\R{\Fg(\omega)\Fphi^\ast\brp{\frac{\omega}{2^j}}} \, \frac{1}{2^{j/2}}e^{i\frac{\omega}{2^j} n}}^2 \dw
+        &&   \text{by definition of $\inprodn$ in $\spLLR$}
+        &&   \text{\xref{def:spLLR}}
+      \\&=   \mathrlap{%
+             \lim_{j\to\infty}\sum_{n\in\Z}\abs{\inprod{\sqrt{2\pi}\Fg(\omega)
+             \Fphi^\ast\brp{\frac{\omega}{2^j}}}{\frac{1}{2^{j/2}\sqrt{2\pi}}e^{-i\frac{\omega}{2^j} n}}}^2
+             \quad\text{by definition of $\inprodn$ in $\spLLR$ \xref{def:spLLR}}
+             }
+      \\&=   \lim_{j\to\infty}\norm{\sqrt{2\pi}\Fg(\omega)\Fphi^\ast\brp{\frac{\omega}{2^{j}}}}^2
+        &&   \text{by \pref{ilem:oms_phi1_fs} and \thme{Parseval's Identity}}
+        &&   \text{\xref{thm:fst}}
+      \\&=   \norm{\sqrt{2\pi}\Fg(\omega)\Fphi^\ast(0)}^2
+      \\&=   2\pi\abs{\Fphi^\ast(0)}^2\,\norm{\Fg(\omega)}^2
+        &&   \text{by \prope{homogeneous} property of $\normn$}
+        &&   \text{\xref{def:norm}}
+      \\&=   2\pi\abs{\Fphi(0)}^2\,\norm{\fg}^2
+        &&   \text{by \prope{unitary} property of $\opFT$}
+        &&   \text{\xref{thm:ft_unitary}}
+      \\&\implies \abs{\Fphi(0)}=\frac{1}{\sqrt{2\pi}}
+    \end{align*}
+
+  \item  Proof for (2): \label{item:oms_fphi}
+    \begin{align*}
+      \abs{\int_\R\fphi(x)\dx}
+        &= {\abs{\sqrt{2\pi}\frac{1}{\sqrt{2\pi}}\int_\R\fphi(x)e^{-i\omega x}\dx}}_{\omega=0}
+      \\&= {\abs{\sqrt{2\pi}\Fphi(\omega)}}_{\omega=0}
+        && \text{by definition of $\opFT$}
+        && \text{\xref{def:opFT}}
+      \\&= \abs{\sqrt{2\pi}\frac{1}{\sqrt{2\pi}}}
+        && \text{by (1)}
+        && \text{\xref{item:oms_phi_Fphi}}
+      \\&= 1
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+Every \structe{MRA system} $\mrasys$, regardless of whether it is \prope{orthonormal} or not,
+has the following necessary conditions on $\seqn{\fh_n}$:
+\\$\begin{array}{F>{\ds}lDD}
+  1. & \sum_{n\in\Z}h_n = \sqrt{2}
+     & \prope{admissibility condition}
+     & \xref{thm:admiss}
+     \\
+  2. & \inprod{\fphi}{\opTrn^n \fphi} = \sum_{m\in\Z}\fh_m \sum_{k\in\Z}\fh_k^\ast \inprod{\fphi}{\opTrn^{2n-m+k} \fphi}
+     & \prope{quadrature condition} in ``time"
+     & \xref{thm:wav_quadcon}
+     \\
+  3. & \Fphi\brp{\omega} = \cwt\: \Dh\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}
+     & \thme{frequency dilation equation}
+     & \xref{lem:Fphi}
+     \\
+  4. & \abs{\Dh\left(\omega     \right)}^2 \Sphi(\omega) + \abs{\Dh\brp{\omega+\pi }}^2 \Sphi(\omega+\pi) = 2\Sphi(2\omega)
+     & \prope{quadrature condition} in ``frequency"
+     & \xref{thm:Sphi}
+\end{array}$
+
+In an \structe{orthonormal MRA system}, the \prope{orthonormal} property is equivalent to
+ $\Swphi(\omega)=1$ (where $\Swphi$ is the \structe{auto-power spectrum}),
+and so the quadrature conditions simplify considerably (next theorem).
+%But although the \prope{orthonormal} and \prope{unitary auto-power spectrum} properties are equivalent,
+The \prope{orthonormal quadrature condition}s in ``time" and ``frequency" are also equivalent to each other
+and are implied by the $\Swphi(\omega)=1$ condition.
+However, the \prope{orthonormal quadrature condition}s are \emph{not} equivalent to the $\Swphi(\omega)=1$ condition \xref{cnt:Swphi_quadcon}.
+%--------------------------------------
+\begin{lemma}[\lemd{orthonormal quadrature condition}s]
+\footnote{
+  \citerp{chui}{135},
+  \citerppg{mallat}{229}{238}{012466606X},
+  \citerp{goswami}{110},
+  \citerp{vaidyanathan1990}{65}
+  }
+\label{lem:oms_quadcon}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+Let $\Dh(\omega)$ be the \structe{discrete time Fourier transform} of $\seqn{\fh_n}$ \xref{def:dtft}.
+Let $\Swphi(\omega)$ be the \structe{auto-power spectrum} of $\fphi(x)$ \xref{def:Swfg}.
+\lembox{\begin{array}{clcl}
+  &
+  \mcom{\inprod{\fphi}{\opTrn^n\fphi} = \kdelta_n \quad\scy\forall n\in\Z}
+       {(1) $\setn{\opTrn^n\fphi}$ is \prope{orthonormal}}
+  &\iff&
+  \mcom{\Swphi(\omega)=1}{(2) auto-power spectrum is 1}
+  \\\impnotimpby&
+  \mcom{\brb{\begin{array}{>{\ds}rclC}
+    \sum_{m\in\Z}\fh_m\fh_{m-2n}^\ast &=& \kdelta_n &\forall n\in\Z
+  \end{array}}}{(3) \prope{orthogonal quadrature condition} in ``time"}
+  &\iff&
+  \mcom{\brb{\begin{array}{>{\ds}rc>{\ds}lcl}
+   \abs{\Dh(\omega)}^2  &+& \abs{\Dh(\omega+\pi)}^2        &=& 2
+  \end{array}}}{(4) \prope{orthogonal quadrature condition} in ``frequency"}
+\end{array}}
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1)$\iff$(2): by \prefp{thm:Swfgo}.
+  \item Proof that [(1)/(2)]$\implies$(3):
+    \begin{align*}
+      \sum_{m\in\Z}h_m\fh_{m-2n}^\ast
+        &= \sum_{m\in\Z}h_m \sum_{k\in\Z}\fh_k^\ast \kdelta_{k-m+2n}
+        && \text{by definition of $\kdelta$}
+        && \text{\xref{def:kdelta}}
+      \\&= \sum_{m\in\Z}h_m \sum_{k\in\Z}\fh_k^\ast\inprod{\fphi }{\opTrn^{2n-m+k} \fphi}
+        && \text{by (1)}
+      \\&= \inprod{\fphi}{\opTrn^n \fphi}
+        && \text{by \thme{quadrature condition in ``time"}}
+        && \text{\xref{thm:wav_hh}}
+      \\&= \kdelta_n
+        && \text{by (1)}
+    \end{align*}
+
+  \item Proof that (3)$\notimplies$[(1)/(2)]: by \prefp{cnt:Swphi_quadcon}.
+  \item Proof that (3)$\iff$(4): by \prefp{lem:ows_quadcon}.
+%    \begin{align*}
+%      \mcom{\inprod{\fphi}{\opTrn^n\fphi} = \kdelta_n}
+%           {$\mrasys$ is \prope{orthonormal}}
+%      &\implies
+%          \mcom{\brb{\begin{array}{>{\ds}rcl}
+%            \sum_{m\in\Z}\fh_m\fh_{m-2n}^\ast &=& \kdelta_n
+%          \end{array}}}{orthogonal quadrature condition in ``time"}
+%        && \text{by \prefp{lem:oms_quadcon}}
+%      \\&\iff
+%          \mcom{\brb{\begin{array}{>{\ds}rc>{\ds}lcl}
+%           \abs{\Dh(\omega)}^2  &+& \abs{\Dh(\omega+\pi)}^2        &=& 2
+%          \end{array}}}{orthogonal quadrature condition in ``frequency"}
+%        && \text{by \prefp{lem:ows_quadcon}}
+%    \end{align*}
+\end{enumerate}
+%\begin{align*}
+%  \abs{\Dh(\omega)}^2  + \abs{\Dh(\omega+\pi)}^2
+%  \\&= \abs{\Dh(\omega)}^2 \cancelto{1}{\Sphi(\omega)} + \abs{\Dh(\omega+\pi)}^2 \cancelto{1}{\Sphi(\omega+\pi)}
+%    && \text{by left hypothesis and \prefp{thm:Swfgo}}
+%  \\&= 2\cancelto{1}{\Sphi(2\omega)}
+%    && \text{by \prefp{thm:gen_quadcon}}
+%  \\&= 2
+%    && \text{by left hypothesis and \prefp{thm:Swfgo}}
+%\end{align*}
+\end{proof}
+%--------------------------------------
+\begin{counterex}
+\footnote{
+  \citerpgc{vidakovic}{57}{0471293652}{Remark 3.3.3}
+  }
+\label{cnt:Swphi_quadcon}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+\cntbox{\begin{array}{Mm{50mm}}
+    Let $\fphi(x) \eqd
+      \brbl{\begin{array}{lM}
+         \frac{1}{3}  & for $x\in\intco{0}{3}$  \\
+         0            & otherwise.
+      \end{array}}$
+    &\includegraphics{graphics/pulse03.pdf}
+  \\\mc{2}{M}{
+    Then,
+      $\brb{\begin{array}{rclD}
+        \Dh(\omega) + \Dh(\omega+\pi) &=& 2 & but\\
+        %\Swphi(\omega) &=& e^{-i\frac{3}{2}\omega}\frac{\sin(3\omega/2)}{3\omega/2} & and so\\
+        \Swphi(\omega)  &=& \frac{1}{9}\brs{3 + 4\cos(\omega) + 2\cos(2\omega)} & and so \\
+        \Dh(\omega) + \Dh(\omega+\pi) = 2 &\notimplies& \Swphi(\omega)=1 .
+      \end{array}}$
+    }
+\end{array}}
+\end{counterex}
+\begin{proof}
+\begin{align*}
+  \Fphi(\omega)
+    &\eqd \opFT\fphi(x)
+  \\&\eqd \cft\int_\R \fphi(x) e^{-i\omega x} \dx
+    &&    \text{by definition of $\opFT$}
+    &&    \text{\xref{def:opFT}}
+  \\&=    \cft\int_\R \setind_\intco{0}{3} e^{-i\omega x} \dx
+    &&    \text{by definition of $\fphi(x)$}
+  \\&=    \cft\int_0^3  e^{-i\omega x} \dx
+    &&    \text{by definition of $\setind$}
+    &&    \text{\xref{def:setind}}
+  \\&=    \left.\cft\brp{\frac{e^{-i\omega x}}{-i\omega}}\right|_0^3
+  \\&=    \brp{\frac{3i}{\sqrt{2\pi}}}\brp{\frac{e^{-i3\omega}-1}{3\omega}}
+  \\
+  \\
+  \Dh(\omega)
+    &= \sqrt{2}\frac{\Fphi(2\omega)}{\Fphi(\omega)}
+    && \text{by \prefp{lem:Fphi}}
+  \\&= \sqrt{2}\frac{\brp{\frac{3i}{\sqrt{2}\pi}}\brp{\frac{e^{-i4\omega}-1}{6\omega}}}
+                    {\brp{\frac{3i}{\sqrt{2}\pi}}\brp{\frac{e^{-i2\omega}-1}{3\omega}}}
+    && \text{by \prefp{lem:FTNn}}
+   %&& \text{by previous $\Fphi(\omega)$ result}
+  \\&= \cwt
+       \brp{\frac{e^{-i6\omega}-1}{e^{-i3\omega}-1}}
+  \\&= \cwt
+       \brp{\frac{e^{-i6\omega}-1}{e^{-i3\omega}-1}}
+       \brp{\frac{e^{-i3\omega}+1}{e^{-i3\omega}+1}}
+  \\&= \cwt
+       \brp{\frac{ \brp{e^{-i6\omega}-1}  \brp{e^{-i3\omega}+1}}{e^{-i6\omega}-1}}
+  \\&= \cwt\brp{1+e^{-i3\omega}}
+  \\&= \brp{\cwt} e^{-i\frac{3}{2}\omega}\brp{e^{i\frac{3}{2}\omega}+e^{-i\frac{3}{2}\omega}}
+  \\&= \brp{\cwt} e^{-i\frac{3}{2}\omega}\brs{2\cos\brp{\frac{3}{2}\omega}}
+  \\&= \sqrt{2} e^{-i\frac{3}{2}\omega}\cos\brp{\frac{3}{2}\omega}
+  \\
+  \\
+  \Dh(\omega+\pi)
+  \\&= \cwt\brp{1+e^{-i3(\omega+\pi)}}
+    && \text{by previous $\Dh(\omega)$ result}
+  \\&= \cwt\brp{1+e^{-i3\omega}e^{-i3\pi}}
+  \\&= \cwt\brp{1-e^{-i3\omega}}
+  \\&= \cwt e^{-i\frac{3}{2}\omega}\brp{e^{i\frac{3}{2}\omega}-e^{-i\frac{3}{2}\omega}}
+  \\&= \cwt e^{-i\frac{3}{2}\omega}\brs{2i\sin\brp{\frac{3}{2}\omega}}
+  \\&= i\sqrt{2} e^{-i\frac{3}{2}\omega}\sin\brp{\frac{3}{2}\omega}
+  \\
+  \\
+  &\abs{\Dh(\omega)}^2+\abs{\Dh(\omega+\pi)}^2
+  \\&= \abs{\sqrt{2} e^{-i\frac{3}{2}\omega}\cos\brp{\frac{3}{2}\omega}}^2
+     + \abs{i\sqrt{2} e^{-i\frac{3}{2}\omega}\sin\brp{\frac{3}{2}\omega}}^2
+  \\&= 2\cos^2\brp{\frac{3}{2}\omega} + 2\sin^2\brp{\frac{3}{2}\omega}
+  \\&= 2\brs{\cos^2\brp{\frac{3}{2}\omega} + \sin^2\brp{\frac{3}{2}\omega}}
+  \\&= 2
+    && \text{by \thme{half-angle formulas}}
+    && \text{\xref{thm:trig_sq}}
+  \\
+  \\
+  \Swphi(\omega)
+    &\eqd \left.\Szphi(z)\right|_{z=e^{in\omega}}
+    &&    \text{by definition of $\Swphi$}
+    &&    \text{\xref{def:Swff}}
+  \\&\eqd \left.\sum_{n\in\Z} \inprod{\fphi}{\opTrn^n\fphi} z^{-n}\right|_{z=e^{i\omega}}
+    &&    \text{by definition of $\Sphi$}
+    &&    \text{\xref{def:Szff}}
+  \\&\eqd \left.\sum_{n\in\Z}\brs{ \int_\R {\frac{1}{3}\setind_\intco{0}{3}(x)} {\frac{1}{3}\setind_\intco{-n}{3-n}(x)} \dx} z^{-n}\right|_{z=e^{i\omega}}
+    &&    \text{by definition of $\fphi$}
+  \\&=    \left.\frac{1}{9}\sum_{n\in\Z}\brs{ \int_0^3 \setind_\intco{-n}{3-n}(x) \dx} z^{-n}\right|_{z=e^{i\omega}}
+    &&    \text{by definition of $\setind$}
+    &&    \text{\xref{def:setind}}
+  \\&=    \left.\frac{1}{9}\brs{z^{-2}+2z^{-1}+3+2z+z^2}\right|_{z=e^{i\omega}}
+  \\&=    \frac{1}{9}\brs{e^{-i2\omega}+2e^{-i\omega}+3+2e^{-i\omega}+e^{-i2\omega}}
+  \\&=    \frac{1}{9}\brs{3 + 4\cos(\omega) + 2\cos(2\omega)}
+\end{align*}
+\end{proof}
+
+%Besides the quadrature condition,
+%other necessary conditions of an orthonormal wavelet system include
+%a zero at $z=-1$ and partition of unity:
+%--------------------------------------
+\begin{theorem}
+\label{thm:quad=>zero_unity}
+%--------------------------------------
+Let $\spO\eqd\mrasys$ be a wavelet system \xref{def:wavsys}.
+\\Let $\Zh(z)$ be the \fncte{z-transform} \xref{def:opZ} of $ h$.
+\thmbox{
+  \mcom{\inprod{\fphi}{\opTrn^n\fphi} = \kdelta_n\qquad\scy\forall n\in\Z}
+       {$\setn{\opTrn^n\fphi}$ is \prope{orthonormal}}
+  \quad\implies\quad
+  \brb{\begin{array}{F>{\ds}lclDD}
+    1. & \sum_{m\in\Z} (-1)^m \fh_m    &=& 0  &  (\prope{low-pass filter})    & and \\
+    2. & \sum_{m\in\Z} \opTrn^m \fphi &=& 1  &  (\prope{partition of unity}) & and \\
+    3. & \Zh(z)\big|_{z=-1}           &=& 0  &  (\prope{zero at $z=-1$})
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for (1):
+    \begin{align*}
+       0 &= \brs{-2 + \abs{\Dh(\omega)}^2 + \abs{\Dh(\omega+\pi)}^2}_{\omega=0}
+         && \text{by \prope{orthonormal quadrature condition}}
+         && \text{\xref{lem:ows_quadcon}}
+       \\&= -2 + \abs{\Dh(0)}^2 + \abs{\Dh(\pi)}^2
+       \\&= -2 + \abs{\sqrt{2}}^2 + \abs{\Dh(\pi)}^2
+         && \text{by \prope{admissibility condition}}
+         && \text{\xref{thm:admiss}}
+       \\&= 0 + \abs{\Dh(\pi)}^2
+       \\&= \abs{\sum_{n\in\Z}h_n e^{-i\omega n}}^2_{\omega=\pi}
+         && \text{by definition of $\Dh$}
+         && \text{\xref{def:dtft}}
+       \\&= \abs{\sum_{n\in\Z} (-1)^n\fh_n }^2
+         && \text{because $e^{-i\pi n}=\brp{e^{-i\pi}}^n=(-1)^n$}
+       \\\implies&\sum_{n\in\Z} (-1)^n\fh_n = \pm 0 = 0
+    \end{align*}
+
+  \item Proof for (2): by (1) and \prefp{thm:pun_zero}.
+
+  \item Proof for (3): by (1) and \prefp{prop:dsp_zminone}.
+\end{enumerate}
+\end{proof}
+
+
+
+
+%=======================================
+\subsection{Sufficient conditions}
+%=======================================
+%The \prope{admissibility condition} \xref{thm:admiss} and
+%\prope{quadrature condition} \xref{lem:ows_quadcon} give
+%\hib{necessary} conditions for $\seqn{\fh_n}$ to generate an
+%orthogonal scaling function.
+%\pref{thm:admiss_quad==>tight}
+%shows that these two conditions are
+%not only \hib{necessary}, but also \hib{sufficient}
+%for a partition of unity of the scaling function and
+%a tight frame of the wavelets.
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerp{mallat89}{76}
+%  }
+%\index{quadrature condition}
+%\index{admissibility condition}
+%\index{suport}
+%\index{scaling coefficients!sufficient conditions}
+%%--------------------------------------
+%Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+%\thmbox{
+%  \brbr{\begin{array}{F>{\ds}lDD}
+%  1. & {\abs{\fh_n} = \mathcal{O}\frac{1}{1+n^2}}
+%     & (\prope{exponential decay})
+%     & and
+%     \\
+%  2. & {\sum_{n\in\Z} \fh_n = \sqrt{2}}
+%     & (\prope{admissibility condition})
+%     & and
+%     \\
+%  3. & {\sum_{m\in\Z}\fh_m h^\ast_{m-2n} = \kdelta_n}
+%     & (\prope{quadrature condition})
+%     & and
+%     \\
+%  4. & {\Dh(\omega)\ne 0 \quad\scy \forall \omega\in\intcc{-\frac{\pi}{2}}{\frac{\pi}{2}}}
+%     & (\prope{low-pass response})
+%  \end{array}}
+%  \implies
+%  %\qquad\implies\qquad
+%  \brbl{\begin{array}{FlD}
+%  1. & \mcom{\inprod{\fphi}{\opTrn^n\fphi}=\kdelta_n}
+%            {$\setxZ{\opTrn^n\fphi}$ is \prope{orthonormal}}
+%     & and
+%     \\
+%  2. & \mcom{\linspan\setxZ{\opTrn^n\fphi}=\spV_0}
+%            {$\setxZ{\opTrn^n\fphi}$ is a \structe{basis} for $\spV_0$}
+%  \end{array}}
+%}
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item The proof of this theorem uses the \hie{Lebesgue dominated convergence theorem}.\\
+%    Reference: \cite{mallat89}.
+%  \item Note: A generalization to this theorem is available in \\
+%    \citerp{lawton91}{58}.
+%\end{enumerate}
+%\end{proof}
+
+
+The \prope{admissibility condition} \xref{thm:admiss} and
+\prope{quadrature condition} \xref{lem:ows_quadcon} give
+\hib{necessary} conditions for $\seqn{\fh_n}$ to generate an orthogonal scaling function.
+\pref{thm:ortho_sc} (next) shows that these two conditions are
+not only \hib{necessary}, but also \hib{sufficient} conditions.
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppg{mallat}{229}{234}{012466606X},
+  \citerp{mallat89}{76},
+  \citerppgc{mallat2009}{271}{276}{0123743702}{Theorem 7.2},
+  \citer{meyer1992}
+  }
+\label{thm:ortho_sc}
+\label{thm:h_ns}
+\index{scaling coefficients!necessary and sufficient conditions}
+%--------------------------------------
+%Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+Let $\opTrn$ be the \ope{translation operator} and $\opDil$ the \ope{dilation operator} \xref{def:opT}.
+Let $\setxZ{\fh_n}$ be a sequence in $\spllF$ over some field $\F$ and with \ope{DTFT} \xref{def:dtft} $\Dh(\omega)$.
+Let $\fphi(x)$ be a function in $\spLLR$ with \ope{Fourier Transform} \xref{def:opFT} $\Fphi(\omega)$
+and defined in terms of $\seqn{\fh_n}$ as
+%\\\indentx          $\ds\fphi(x)\eqd\sum_{n\in\Z}h_n\opDil\opTrn^n\fphi(x)$
+\\\indentx          $\ds\Fphi(\omega)\eqd \cft\prod_{k=1}^{\infty}\cwt\Dh\brp{\frac{\omega}{2^k}}$
+  \qquad and \qquad $\spV_j\eqd\linspan\setnZ{\opDil^j\opTrn^n\fphi(x)}$ ${\scy\forall j\in\Z}$.
+\\
+  Let an \structe{MRA} be defined as in \prefp{def:mra}.
+\\
+\thmbox{
+  \brb{\begin{array}{F>{\ds}lD}
+    (A). & \sum_{n\in\Z} \fh_{n}  =  \sqrt{2}                         & and
+  \\(B). & \sum_{m\in\Z}\fh_m h^\ast_{m-2n} = \kdelta_n               & and
+  %\\(C). & \Dh(\omega) = \Dh(\omega+2\pi)
+  %       & and
+  %\\(C). & $$\Dh(\omega)$ is continuously$
+  %\\     & $differentiable about $0$$
+  \\(C). & $$\Fphi(\omega)$ is \prope{continuous} at $0$$             & and
+  \\(D). & \inf_{\omega\in\intcc{-\pi/2}{\pi/2}}\abs{\Dh(\omega)}>0  &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{M}
+    $\mrasys$ is an\\
+    \structe{orthonormal MRA system}\\
+    \xref{def:mrasys}
+  \end{array}}
+  %\brb{\begin{array}{FMD}
+  %  %(2). & $\fphi(x)$ is a \fncte{scaling function}
+  %  (1). & $\seqjZ{\spV_j}$ is an \structe{MRA}\qquad\scs and \\
+  %  (2). & $\setnZ{\opTrn^n\fphi(x)}$ is \prope{orthonormal} &
+  %\end{array}}
+}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (A)$\impliedby$(right hypothesis): by \prefp{thm:admiss}.
+  \item Proof that (B)$\impliedby$(right hypothesis): by \prefp{lem:ows_quadcon}.
+  %\item Proof for  (C): by \prefp{prop:dtft_2pi}.
+  %\item Proof for  (D):
+  %\item Proof for  (E):
+  \item Proof that $\seqn{\opTrn^n\fphi}$ is \prope{orthonormal}: \label{item:h_ns_ortho}
+    \begin{enumerate}
+      \item lemma: $\seqn{\opTrn^n\fphi}$ is \prope{orthonormal} $\iff$
+            $\int_\R\abs{\Fphi(\omega)}^2 e^{in\omega}\dw = \kdelta_n$. Proof: \label{ilem:h_ns_intkdelta}
+        \begin{align*}
+          \kdelta_n
+            &= \inprod{\fphi}{\opTrn^n\fphi}
+            && \text{by left hypothesis}
+            && \text{(for $\implies$ case)}
+          \\&= \inprod{\opFT\fphi}{\opFT\opTrn^n\fphi}
+            && \text{by \prope{unitary} property of $\opFT$}
+            && \text{\xref{thm:ft_unitary}}
+          \\&= \inprod{\Fphi(\omega)}{e^{-i\omega n}\Fphi(\omega)}
+            && \text{by \prefp{cor:FTD}}
+          \\&= \int_\R \Fphi(\omega) \brs{\Fphi(\omega) e^{-i\omega n}}^\ast \dw
+            && \text{by definition of $\inprodn$ in $\spLLR$}
+            && \text{\xref{def:inprod}}
+          \\&= \int_\R \abs{\Fphi(\omega)}^2 e^{in\omega} \dw
+          \\&= \kdelta_n
+            && \text{by right hypothesis}
+            && \text{(for $\impliedby$ case)}
+        \end{align*}
+
+      \item definition: \label{idef:h_ns_FphiN}
+        $\ds\Fphi_\xN(\omega)\eqd \cft\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}\setind_\setA(\omega)$
+        \qquad and where\qquad $\setA\eqd\intcc{-2^\xN\pi}{2^\xN\pi}$.
+
+      %\item lemma: $\ds\lim_{\xN\to\infty}\Fphi_\xN(\omega)=\Fphi(\omega)$ \label{ilem:h_ns_FphiN2}
+      %  \begin{align*}
+      %    \lim_{\xN\to\infty}\Fphi_\xN(\omega)
+      %      &\eqd \lim_{\xN\to\infty} \cft\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}\setind_\setA(\omega)
+      %      &&    \text{by definition of $\Fphi_\xN(\omega)$ \xref{idef:h_ns_FphiN}}
+      %    \\&=    \Fphi(\omega)
+      %      && \text{by definition of $\Fphi(\omega)$}
+      %  \end{align*}
+
+      \item definition: \label{idef:h_ns_In}
+        Let $\qquad\ds\fI_\xN(n) \eqd \int_0^{2^\xN\pi}e^{in\omega}\prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw\qquad$
+
+      \item lemma: \label{ilem:h_ns_In}
+        $\ds\fI_\xN(n)=2\pi\kdelta_n{\quad\scy\forall\xN\in\Zp}$.
+        Proof:
+        \begin{enumerate}
+          \item $\xN=1$ case: \label{ilem:h_ns_In_N=1}
+            \begin{align*}
+              \fI_1(n)
+                &\eqd \brlr{\int_0^{2^\xN\pi}e^{in\omega}\prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw}_{\xN=1}
+                &&    \text{by definition of $\fI_\xN$}
+                &&    \text{\xref{idef:h_ns_In}}
+              \\&=    \int_0^{2\pi}e^{in\omega}\prod_{k=1}^0\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+              \\&=    \int_0^{2\pi}e^{in\omega}\dw
+              \\&=    2\pi\kdelta_n
+            \end{align*}
+
+          \item Proof that $\fI_{\xN+1}(n)=\fI_{\xN}(n)$:\label{ilem:h_ns_In_N}
+            {\begin{align*}
+              &\fI_{\xN+1}(n)
+              \\&=  \int_{0}^{2^{\xN+1}\pi} e^{in\omega}\prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2\dw
+                    \qquad\text{by definition of $\fI_\xN$ \xref{idef:h_ns_In}}
+              \\&=  \int_{0}^{2^{\xN}\pi}            e^{in\omega}\prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2\dw
+                   +\int_{\omega=2^{\xN}\pi}^{\omega=2^{\xN+1}\pi} e^{in\omega}\prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2\dw
+              \\&=  \int_{0}^{2^{\xN}\pi}     e^{in\omega}      \prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2\dw
+                 +  \int_{v=0}^{v=2^{\xN}\pi} e^{i(v-2^\xN\pi)n} \prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{v+2^\xN\pi}{2^k}}}^2\dv
+                    \\&\qquad\text{where $v\eqd\omega-2^\xN\pi\implies\omega=v+2^\xN\pi$}
+              \\&=  \int_{0}^{2^{\xN}\pi} e^{in\omega}\half \abs{\Dh\brp{\frac{\omega}{2^\xN}}}^2
+                    \prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2\dw
+                \\&+\quad  \int_{v=0}^{v=2^{\xN}\pi} e^{in(v}\half \abs{\Dh\brp{\frac{v}{2^\xN}+\pi}}
+                    \prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{v}{2^k}+2^{\xN-k}\pi}}^2\dv
+              \\&= \int_{0}^{2^\xN\pi} e^{in\omega}\half
+                   \brs{\abs{\Dh\brp{\frac{\omega}{2^\xN}}}^2+\abs{\Dh\brp{\frac{\omega}{2^\xN}+\pi}}^2}
+                   \prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+                   \qquad\text{by \prefp{prop:dtft_2pi}}
+              \\&= \int_{0}^{2^\xN\pi} e^{in\omega}\half
+                   \brs{2}
+                   \prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2  \dw
+                   \qquad\text{by (B) and \thme{orthonormal quad. cond.} \xref{lem:oms_quadcon}}
+              \\&= \fI_\xN(n)
+                   \qquad\text{by definition of $\fI_\xN(n)$ \xref{idef:h_ns_In}}
+            \end{align*}}
+
+          \item Proof that $\fI_{\xN}(n)=2\pi\kdelta_n$:
+            \begin{align*}
+              \fI_{\xN}(n)
+                &= \fI_1(n)
+                && \text{by induction and \prefp{ilem:h_ns_In_N}}
+              \\&= 2\pi\kdelta_n
+                && \text{by \prefp{ilem:h_ns_In_N=1}}
+            \end{align*}
+        \end{enumerate}
+
+      \item lemma: \label{ilem:h_ns_FphiN}
+            $\ds\int_\R\abs{\Fphi_\xN(\omega)}^2e^{in\omega} \dw=\kdelta_n\quad{\scy\forall\xN\in\Zp}$.
+            Proof:
+        \begin{align*}
+          &\int_\R\abs{\Fphi_\xN(\omega)}^2e^{in\omega} \dw
+          \\&=  \int_\R e^{in\omega}  \abs{\cft\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}\setind_\intcc{-2^\xN\pi}{2^\xN\pi}}^2 \dw
+            \qquad\text{by definition of $\Fphi_\xN(\omega)$ \xref{idef:h_ns_FphiN}}
+          \\&=  \ootpi \int_{-2^\xN\pi}^{2^\xN\pi} e^{in\omega}  \prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+          \\&=  \ootpi \int_{-2^\xN\pi}^{0} e^{in\omega}  \prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+             +  \ootpi \int_{0}^{2^\xN\pi}  e^{in\omega}  \prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+          \\&=  \ootpi \int_{v=0}^{v=2^\xN\pi} e^{i(v-2^\xN\pi) n}  \prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{v}{2^k}-2^{\xN-k}\pi}}^2  \dv
+            \\&\qquad+  \ootpi \int_{0}^{2^\xN\pi}  e^{in\omega}  \prod_{k=1}^\xN\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+               \qquad\text{where $v\eqd\omega+2^\xN\pi\implies\omega=v-2^\xN\pi$}
+          \\&=  \ootpi \int_{v=0}^{v=2^\xN\pi} e^{ivn} \half \abs{\Dh\brp{\frac{v}{2^k}-\pi}}^2\prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{v}{2^k}}}^2 \dv
+            \\&\qquad+  \ootpi \int_{0}^{2^\xN\pi}  e^{in\omega}  \half \abs{\Dh\brp{\frac{\omega}{2^\xN}}}^2\prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2  \dw
+               \qquad\text{by \prefp{prop:dtft_2pi}}
+          \\&=  \ootpi \int_{0}^{2^\xN\pi} e^{in\omega}  \half \abs{\Dh\brp{\frac{\omega}{2^\xN}-\pi+2\pi}}^2\prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+            \\&\qquad+  \ootpi \int_{0}^{2^\xN\pi}  e^{in\omega}  \half \abs{\Dh\brp{\frac{\omega}{2^\xN}}}^2\prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+               \qquad\text{by \prefp{prop:dtft_2pi}}
+          \\&=  \ootpi \int_{0}^{2^\xN\pi} e^{in\omega}  \half
+               \brs{\abs{\Dh\brp{\frac{\omega}{2^\xN}}}^2+\abs{\Dh\brp{\frac{\omega}{2^\xN}+\pi}}^2}
+               \prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2  \dw
+          \\&=  \ootpi \int_{0}^{2^\xN\pi} e^{in\omega}  \half
+               \brs{2}
+               \prod_{k=1}^{\xN-1}\half \abs{\Dh\brp{\frac{\omega}{2^k}}}^2 \dw
+               \qquad\text{by (B) and \prefp{lem:ows_quadcon}}
+          \\&=    \ootpi \fI_\xN(n)
+               \qquad\text{by definition of $\fI_\xN(n)$ \xref{idef:h_ns_In}}
+          \\&=   \kdelta_n
+               \qquad\text{by \prefp{ilem:h_ns_In}}
+          %\\&\implies\quad\text{$\seqn{\opTrn^n\fphi}$ is \prope{orthonormal}}
+          %  \qquad\text{by \prefp{ilem:h_ns_intkdelta}}
+        \end{align*}
+
+      \item lemma: \label{ilem:h_ns_spLLR}
+            $\Fphi(\omega)$ is in $\spLLR$ (alternatively, proof that $\abs{\Fphi(\omega)}^2$ is \prope{integrable}).
+            Proof:
+            \begin{align*}
+              \int_\R \abs{\Fphi(\omega)}^2 \dw
+                &=   \int_\R \lim_{\xN\to\infty}\abs{\Fphi_\xN(\omega)}^2\dw
+                &&   \text{by definition of $\Fphi_\xN(\omega)$}
+                &&   \text{\xref{idef:h_ns_FphiN}}
+              \\&\le \lim_{\xN\to\infty}\int_\R \abs{\Fphi_\xN(\omega)}^2\dw
+                &&   \text{by \thme{Fatou's Lemma}}
+              \\&=   1
+                &&   \text{by \prefp{ilem:h_ns_FphiN}}
+              \\&\implies\quad\text{$\Fphi(\omega)$ is in $\spLLR$}
+               %&&   \text{by definition of $\spLLR$ \xref{def:spLLR}}
+                && \text{by definition of $\inprodn$ in $\spLLR$}
+                && \text{\xref{def:spLLR}}
+            \end{align*}
+
+      \item lemma (\prope{upper-bound condition}): \label{ilem:h_ns_ubc}
+            $\ds\exists C\ge1 \st \abs{\abs{\Fphi_\xN(\omega)}^2 e^{in\omega}}\le C \abs{\Fphi(\omega)}^2$.
+            Proof:
+        \begin{enumerate}
+          %\item Proof that \prope{upper-bound condition} is equivalent to
+          %  $\ds\abs{\Fphi_\xN(\omega)}^2\le C\abs{\Fphi(\omega)}^2$:
+          %  \begin{align*}
+          %    \abs{\abs{\Fphi_\xN(\omega)}^2 e^{in\omega}}
+          %      &= \abs{\Fphi_\xN(\omega)}^2
+          %    \\&\le C\abs{\Fphi(\omega)}^2.
+          %  \end{align*}
+
+          \item Proof for $\abs{\omega} >  2^\xN\pi$:  \label{item:h_ns_wge}
+            \begin{align*}
+              \abs{\abs{\Fphi_\xN(\omega)}^2 e^{in\omega}}
+                &= \abs{\Fphi_\xN(\omega)}^2
+                && \text{by definition of $\absn$}
+              \\&= \abs{\cft\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}\setind_\intcc{-2^\xN\pi}{2^\xN\pi}(\omega)}^2
+               %&& \text{by definition of $\Fphi_\xN(\omega)$ \xref{idef:h_ns_FphiN}}
+                && \text{by def. of $\Fphi_\xN(\omega)$}
+                && \text{\xref{idef:h_ns_FphiN}}
+              \\&= 0 \qquad\forall\abs{\omega}>2^\xN\pi
+                && \text{by definition of $\setind$}
+                && \text{\xref{def:setind}}
+              \\&\le\abs{\Fphi(\omega)}^2
+                && \text{by definition of $\absn$}
+            \end{align*}
+          \item lemma: \label{ilem:h_ns_wequ}
+            $\ds\abs{\Fphi(\omega)}^2\ge \frac{1}{2\pi C}\,{\scy\forall\abs{\omega}\le\pi}
+            \quad\implies\quad
+            \abs{\abs{\Fphi_\xN(\omega)}^2 e^{in\omega}}\le C \abs{\Fphi(\omega)}^2\,{\scy\forall\abs{\omega}\le2^\xN\pi}$
+              \begin{align*}
+                \abs{\Fphi(\omega)}^2
+                  &= \abs{\cft\prod_{k=1}^\infty\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+                  && \text{by definition of $\Fphi(\omega)$}
+                \\&= \abs{\Fphi\brp{\frac{\omega}{2^\xN}}\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+                  && \text{by \prefp{lem:Fphi_infty}}
+                \\&= 2\pi \abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\abs{\cft\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+                \\&= 2\pi \abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\abs{\Fphi_\xN(\omega)}^2
+                  && \text{by def. of $\Fphi_\xN(\omega)$}
+                  && \text{\xref{idef:h_ns_FphiN}}
+                \\&\ge (2\pi)\frac{1}{2\pi C}\abs{\Fphi_\xN(\omega)}^2 %\qquad\forall\abs{\omega}<\pi
+                  && \text{by left hypothesis}
+                \\&= \frac{1}{C}\abs{\abs{\Fphi_\xN(\omega)}^2e^{in\omega}} %\qquad\forall\abs{\omega}<\pi
+                \\\implies& \text{right hypothesis}
+              \end{align*}
+            %\begin{enumerate}
+            %  \item Proof for ($\implies$) case:
+            %    \begin{align*}
+            %      \abs{\Fphi_\xN(\omega)}^2
+            %        &= \abs{\abs{\Fphi_\xN(\omega)}^2 e^{in\omega}}
+            %        && \text{by property of $\absn$}
+            %      \\&\le C\abs{\Fphi(\omega)}^2
+            %        && \text{by left hypothesis}
+            %      \\&= C\abs{\cft\prod_{k=1}^\infty\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+            %        && \text{by definition of $\Fphi(\omega)$}
+            %      \\&= C\abs{\Fphi\brp{\frac{\omega}{2^\xN}}\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+            %        && \text{by \prefp{lem:Fphi_infty}}
+            %      \\&= 2\pi C\abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\abs{\cft\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+            %      \\&= 2\pi C\abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\abs{\Fphi_\xN(\omega)}^2
+            %        && \text{by def. of $\Fphi_\xN(\omega)$ \xref{idef:h_ns_FphiN}}
+            %      \\\implies& \abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\ge\frac{1}{2\pi C}
+            %      \\\implies& \abs{\Fphi(\omega)}^2\ge\frac{1}{2\pi C}
+            %        && \text{letting $\xN=0$}
+            %      \\\implies& \abs{\Fphi(\omega)}^2>0
+            %        && \text{because $C\ge1$}
+            %    \end{align*}
+            %
+            %  \item Proof for ($\impliedby$) case:
+            %    \begin{align*}
+            %      1
+            %        &\le C\abs{\Fphi(\omega)}^2
+            %        && \text{by right hypothesis}
+            %      \\&= C\abs{\cft\prod_{k=1}^\infty\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+            %        && \text{by definition of $\Fphi(\omega)$}
+            %      \\&= C\abs{\Fphi\brp{\frac{\omega}{2^\xN}}\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+            %        && \text{by \prefp{lem:Fphi_infty}}
+            %      \\&= 2\pi C\abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\abs{\cft\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+            %      \\&= 2\pi C\abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\abs{\Fphi_\xN(\omega)}^2
+            %        && \text{by def. of $\Fphi_\xN(\omega)$ \xref{idef:h_ns_FphiN}}
+            %      \\&= 2\pi C\abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\abs{\abs{\Fphi_\xN(\omega)}^2 e^{in\omega}}
+            %        && \text{by def. of $\Fphi_\xN(\omega)$ \xref{idef:h_ns_FphiN}}
+            %      \\\implies& \abs{\abs{\Fphi_\xN\brp{\frac{\omega}{2^\xN}}}^2 e^{in\omega}}\ge 2\pi C\abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2
+            %    \end{align*}
+            %\end{enumerate}
+
+          \item Proof for $0\le\abs{\omega}<\varepsilon$:
+            \begin{enumerate}
+              \item lemma: \label{ilem:h_ns_0ew}
+                    There exists $\varepsilon>0$ such that $\abs{\Dh(\omega)}^2 \le 2 = \abs{\Dh(0)}^2$.
+                    Proof:
+                \begin{align*}
+                  \abs{\Dh(\omega)}^2
+                    &\le \abs{\Dh(\omega)}^2 + \abs{\Dh(\omega+\pi)}^2
+                  \\&= 2
+                    && \text{by (B) and \xref{lem:oms_quadcon}}
+                  \\&= \abs{\Dh(0)}^2
+                    && \text{by (A) and \prefp{prop:tzf}}
+                \end{align*}
+
+               \item It follows from \pref{ilem:h_ns_0ew} that there exists $\varepsilon>0$ such that $\forall\abs{\omega}\le\varepsilon$
+                 \begin{align*}
+                   0 & \ge \log_e\brp{\half\abs{\Dh(\omega)}^2}
+                     && \text{by \pref{ilem:h_ns_0ew}}
+                   \\
+                   -\abs{\omega} & \le \log_e\brp{\half\abs{\Dh(\omega)}^2} \le 0
+                     %&& \text{because $\abs{\Dh(\omega)}^2\le 2$ and decreasing with $\abs{\omega}$ \xref{ilem:h_ns_0ew}}
+                 \end{align*}
+
+               %\item lemma: For any $\varepsilon>0$ $\ds\Fphi(\omega)\ge \ootpi e^{-\varepsilon}$:
+               \item last step in proof for $0<\varepsilon<\abs{\omega}\le 2^\xN\pi$:\label{ilem:h_ns_0ew_last}
+                 \begin{align*}
+                   \abs{\Fphi(\omega}^2
+                     &= \abs{\cft\prod_{k=1}^\infty\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+                     && \text{by definition of $\Fphi(\omega)$}
+                   \\&= \ootpi\prod_{k=1}^\infty\half\abs{\Dh\brp{\frac{\omega}{2^k}}}^2
+                   \\&= \ootpi\exp\log_e\brs{\prod_{k=1}^\infty\half\abs{\Dh\brp{\frac{\omega}{2^k}}}^2}
+                   \\&= \ootpi\exp\brb{\log_e\brs{\prod_{k=1}^\infty\half\abs{\Dh\brp{\frac{\omega}{2^k}}}^2}}
+                   \\&= \ootpi\exp\brb{\sum_{k=1}^\infty\log_e\brs{\half\abs{\Dh\brp{\frac{\omega}{2^k}}}^2}}
+                   \\&\ge \ootpi\exp\brb{\log_e\brs{\half\abs{\Dh\brp{\frac{\omega}{2^0}}}^2}}
+                   \\&\ge \ootpi e^{-\abs{\omega}}
+                   \\&\ge \ootpi e^{-\varepsilon}
+                   \\&\implies \quad \text{upper bound condition}
+                     && \text{by \prefp{ilem:h_ns_wequ}}
+                 \end{align*}
+            \end{enumerate}
+
+          \item Proof for $\varepsilon\le\abs{\omega}\le \pi$: \label{item:h_ns_ew}
+            \begin{enumerate}
+              \item Choose $\xN$ such that $2^{-\xN}\pi < \varepsilon$ \label{item:h_ns_ew_N}
+              \item Let $K=\ds\inf_{\omega\in\intcc{-\omega/2}{\omega/2}}\abs{\Dh(\omega)}>0$  \label{idef:h_ns_ew_K}
+              \item Then
+              \begin{align*}
+                \abs{\Fphi(\omega)}^2
+                  &= \abs{\cft\prod_{k=1}^\infty\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+                  && \text{by definition of $\Fphi(\omega)$}
+                \\&= \abs{\Fphi\brp{\frac{\omega}{2^\xN}}\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+                  && \text{by \prefp{lem:Fphi_infty}}
+                \\&= 2\pi \abs{\Fphi\brp{\frac{\omega}{2^\xN}}}^2\abs{\cft\prod_{k=1}^\xN\cwt\Dh\brp{\frac{\omega}{2^k}}}^2
+                \\&\ge 2\pi \ootpi e^{-\varepsilon} \ootpi\prod_{k=1}^\xN\half\abs{\Dh\brp{\frac{\omega}{2^k}}}^2
+                  && \text{by \pref{item:h_ns_ew_N} and \prefp{ilem:h_ns_0ew_last}}
+                \\&\ge \ootpi e^{-\varepsilon} \prod_{k=1}^\xN\half\abs{K}^2
+                \\&=   \ootpi e^{-\varepsilon} \frac{K^{2\xN}}{2^\xN}
+              \end{align*}
+            \end{enumerate}
+        \end{enumerate}
+
+      \item Final step in proof for (2) (proof that $\seqn{\opTrn^n\fphi}$ is \prope{orthonormal}):
+        \begin{align*}
+          \int_\R\abs{\Fphi(\omega)e^{in\omega}}^2\dw
+            &= \int_\R \lim_{\xN\to\infty}\abs{\Fphi_\xN(\omega)e^{in\omega}}^2\dw
+          \\&= \lim_{\xN\to\infty}\int_\R \abs{\Fphi_\xN(\omega)e^{in\omega}}^2\dw
+            && \text{by \pref{ilem:h_ns_ubc} and \thme{Dominated Convergence Theorem}}
+          \\&= \kdelta_n
+            && \text{by \prefp{ilem:h_ns_FphiN}}
+          \\\implies& \text{(2)}
+            && \text{by \prefp{ilem:h_ns_intkdelta}}
+        \end{align*}
+    \end{enumerate}
+
+
+  \item Proof that $\seqn{\spV_j}$ is an \structe{MRA} \xref{def:mra}:
+    \begin{enumerate}
+      \item $\spV_j\eqd\linspan\seqn{\opTrn^n\opD^j\fphi}$, so we just need to prove that $\fphi$ is a \structe{scaling function} \xref{def:mra},
+            and then the claim that $\seqn{\spV_j}$ is an \structe{MRA} follows from \prefp{thm:mra_rdc}.
+      \item Proof that $\setn{\opTrn^n\fphi}$ is an \structe{MRA}:
+        \begin{enumerate}
+          \item Proof that $\seqn{\opTrn^n\fphi}$ is a \structe{Riesz basis}: by (1) (\prope{orthonormal} property, \prefp{item:h_ns_ortho})
+                and by \prefp{thm:rieszAB}.
+          \item Proof that  $\ds\exists \seqn{\fh_n} \st \fphi(x)=\sum_{n\in\Z}h_n\opDil\opTrn^n\fphi(x)$:
+                by definition of $\Fphi(\omega)$, hypothesis (C), and \prefp{lem:Fphi_infty}.
+          \item Proof that $\Fphi(\omega)$ is \prope{continuous} at $0$: by hypothesis (C).
+          \item Proof that $\Fphi(0)\neq0$: by hypothesis (D).
+        \end{enumerate}
+    \end{enumerate}
+
+  \item Proof that $\seqn{\fh_n}$ is a \structe{scaling coefficient sequence} \xref{def:hn}:
+    \begin{align*}
+      &\Fphi(\omega)\eqd \cft\prod_{k=1}^{\infty}\cwt\Dh\brp{\frac{\omega}{2^k}}
+      && \text{by definition of $\Fphi(\omega)$}
+    \\&\implies \fphi(x) = \sum_{n\in\Z} \fh_n \opDil \opTrn^n \fphi(x)
+      && \text{by \prefp{lem:Fphi_infty}}
+    \\&\implies \quad\text{$\seqn{\fh_n}$ is a \structe{scaling coefficient sequence}}
+      && \text{by \xref{def:hn}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+\subsection{Orthonormal basis from Riesz basis}
+%=======================================
+The definition of a general wavelet system \xrefP{def:wavsys} requires an MRA.
+The last condition of the definition of an MRA \xrefP{def:mra}
+only requires that a \hie{Riesz basis} exist for
+the scaling subspace $\spV_0$.
+The MRA definition does \hie{not} require this basis to be \hie{orthonormal}.
+However, the definition of an \hie{orthonormal wavelet system}
+\xrefP{def:ows}
+does require an orthonormal basis for $\spV_0$.
+The good news is that if you have a Riesz basis for $\spV_0$
+(which of course you do since you have an MRA),
+then from this Riesz basis you can generate an
+orthonormal basis.
+One way of doing this is given by \pref{thm:riesz->ortho} (next). That is,
+\pref{thm:riesz->ortho}
+gives a sufficient condition for generating
+an orthonormal basis $\setn{\opTrn^n\fphi}$ from a
+Riesz basis $\setn{\opTrn^n\theta}$.
+
+%--------------------------------------
+\begin{theorem}[\thmd{Battle-Lemari{/'e} orthogonalization}]
+\label{thm:riesz->ortho}
+\index{Riesz basis}
+\footnote{
+  \citerp{vidakovic}{71},
+  \citerp{mallat89}{72},
+  \citerpg{mallat}{225}{012466606X}
+  }
+%--------------------------------------
+\ragr
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+Let $\Fphi(\omega)$ be the Fourier Transform \xref{def:ft} of an arbitrary function $\fphi\in\spLLR$.
+\thmbox{
+  \brb{\begin{array}{F>{\ds}lD}
+    1. & \text{$\setxZ{\opTrn^n\ftheta}$ is a \structe{Riesz basis} for $\spV_0$} & and \\ \\
+    2. & \Fphi(\omega) \eqd \frac{\Ftheta(\omega)}{\sqrt{2\pi\sum_n\abs{\Ftheta(\omega+2\pi n)}^2}}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{M}%
+    $\ds\setxZ{\opDil^m\opTrn^n\fphi}$\\
+    is an \structe{orthonormal basis} for $\spV_m$%
+    \end{array}
+    }%
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Proof that $\setxZ{\opTrn^n\fphi}$ is orthonormal: by \prefp{thm:blo}  %\cittrp{mallat}{225}
+%\begin{align*}
+%  \Sphi(\omega)
+%    &= 2\pi\sum_{n\in\Z} \abs{\Fphi(\omega+2\pi n)}^2
+%    && \text{by \pref{thm:Swfg}}
+%  \\&= 2\pi\sum_{n\in\Z} \abs{\frac{\Ftheta(\omega+2\pi n)}{\sqrt{\ds2\pi\sum_{m\in\Z}\abs{\Ftheta(\omega+2\pi(n-m))}^2}}}^2
+%    && \text{by left hypothesis}
+%  \\&= \sum_{n\in\Z} \abs{\frac{\Ftheta(\omega+2\pi n)}{\sqrt{\ds\sum_{m\in\Z}\abs{\Ftheta(\omega+2\pi m)}^2}}}^2
+%  \\&= \sum_{n\in\Z} \abs{ \frac{1}{\sqrt{\ds\sum_{m\in\Z}\abs{\Ftheta(\omega+2\pi m)}^2}} }^2
+%               \abs{\Ftheta(\omega+2\pi n)}^2
+%  \\&= \frac{1}{\ds\sum_{m\in\Z}\abs{\Ftheta(\omega+2\pi m)}^2}
+%        \sum_{n\in\Z} \abs{\Ftheta(\omega+2\pi n)}^2
+%  \\&= 1
+%  \\ \implies & \text{$\set{\opTrn^n\fphi}{n\in\Z}$ is orthonormal}
+%    && \text{by \prefp{thm:Swfgo}}
+%\end{align*}
+
+\item Proof that $\setxZ{\opTrn^n\fphi}$ is a basis for $\spV_0$: by \prefp{lem:bases_opFT}.
+
+\item Proof that $\setxZ{\opDil^m\opTrn^n\fphi}$ is a basis for $\spV_m$: by \prefp{thm:V0Vn}.
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+\section{Orthonormal wavelet systems}
+%=======================================
+%=======================================
+\subsection{Subspace properties}
+%=======================================
+%If an \structe{MRA system} is \prope{orthonormal}, then its associated \structe{wavelet system} is \prope{orthonormal} as well (next).
+%%---------------------------------------
+%\begin{proposition}
+%\label{prop:ortho_mrawav}
+%\footnote{
+%  \citerpgc{hernandez1996}{58}{0849382742}{proof of \scshape Proposition 2.13}
+%  }
+%%---------------------------------------
+%Let $\wavsys$ be a \structe{wavelet system}.
+%\propbox{
+%  \mcom{\inprod{\fphi}{\opTrn^n\fphi}=\kdelta_n}{$\setn{\opTrn^n\fphi}$ is \prope{orthonormal}}
+%  \qquad\implies\qquad
+%  \mcom{\inprod{\fpsi}{\opTrn^n\fpsi}=\kdelta_n}{$\setn{\opTrn^n\fpsi}$ is \prope{orthonormal}}
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \Spsi(\omega)
+%    &= 2\pi\sum_{n\in\Z} \abs{\fpsi\brp{\omega + 2\pi n}}^2
+%    && \text{by \prefp{thm:Swff}}
+%  \\&= 2\pi\sum_{n\in\Z}        \abs{\Fg\brp{\frac{\omega + 2\pi n}{2}}\fphi\brp{\frac{\omega + 2\pi n}{2}}}^2
+%  \\&= 2\pi\sum_{n\in\Z}        \abs{\Fg\brp{\frac{\omega}{2} + \pi n}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2} + \pi n}}^2
+%  \\&= \mcom{2\pi\sum_{n\in\Ze} \abs{\Fg\brp{\frac{\omega}{2} + \pi n}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2} + \pi n}}^2}{even terms}
+%     + \mcom{2\pi\sum_{n\in\Zo} \abs{\Fg\brp{\frac{\omega}{2} + \pi n}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2} + \pi n}}^2}{odd terms}
+%  \\&= 2\pi\sum_{n\in\Z}        \abs{\Fg  \brp{\frac{\omega}{2} + \pi (2n)}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2} + \pi (2n)}}^2
+%     + 2\pi\sum_{n\in\Z}        \abs{\Fg  \brp{\frac{\omega}{2} + \pi (2n+1)}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2} + \pi (2n+1)}}^2
+%  \\&= 2\pi\sum_{n\in\Z}        \abs{\Fg  \brp{\frac{\omega}{2} + 2\pi n}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2} + 2\pi n}}^2
+%    +  2\pi\sum_{n\in\Z}        \abs{\Fg  \brp{\frac{\omega}{2} + 2\pi n + \pi}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2} + 2\pi n + \pi}}^2
+%  \\&= 2\pi\sum_{n\in\Z}        \abs{\Fg  \brp{\frac{\omega}{2}}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2}}}^2
+%     + 2\pi\sum_{n\in\Z}        \abs{\Fg  \brp{\frac{\omega}{2} + \pi}}^2
+%                                \abs{\fphi\brp{\frac{\omega}{2} + \pi}}^2
+%    && \text{by \prope{periodic} property of \ope{DTFT} \xref{prop:dtft_2pi}}
+%  \\&=  2
+%    && \text{by \prefp{lem:ows_quadcon}}
+%  \\\iff& \inprod{\fpsi}{\opTrn^n\fpsi} = \kdelta_n
+%    && \text{by \prefp{thm:Swfgo}}
+%\end{align*}
+%\end{proof}
+%
+\prefpp{def:ows} requires that the scaling subspace $\spV_0$ and
+the wavelet subspace $\spW_0$ be orthogonal.
+However, \pref{prop:VperpW} (next) shows that
+this constraint implies that for all scales $n$, $\spV_n$ is orthogonal to $\spW_n$:
+%---------------------------------------
+\begin{proposition}
+\label{prop:VperpW}
+\footnote{
+  \citerpp{jawerth}{10}{11}
+  }
+%---------------------------------------
+Let $\wavsys$ be a wavelet system \xref{def:wavsys}.
+\propbox{
+  \mcom{\spV_0 \perp \spW_0}{orthogonal subspaces}
+  \quad\implies\quad
+  \mcom{\spV_{n} \perp \spW_{n} \quad \forall n\in\Z}
+       {orthogonal subspaces}
+  }
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    0
+      &= \inprod{\fphi(x)}{\fpsi(x)}
+      && \text{because $\spV_0 \perp \spW_0$}
+    \\&= \inprod{\fphi(2^ju)}{\fpsi(2^ju)}
+      && \text{where } u=2^{-j}x \iff x=2^ju
+    \\ \implies \hs{4ex} \spV_j &\perp \spW_j
+  \end{align*}
+\end{proof}
+
+%=======================================
+\subsection{Wavelet coefficients from wavelet and scaling functions}
+%=======================================
+In an \structe{orthonormal MRA system} \xref{def:oms}, the scaling coefficients $\seqn{\fh_n}$
+can be computed from $\fphi$ \xref{prop:phi->h}.
+In an \structe{orthonormal wavelet system} \xref{def:ows}, the wavelet coefficients $\seqn{\fg_n}$
+can be computed from $\fphi$ and $\fpsi$ (next proposition).
+%--------------------------------------
+\begin{proposition}
+\label{prop:psiphi->g}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+\propbox{
+  \mcom{{\inprod{\fphi}{\opTrn^n\fphi}=\kdelta_n}}{$\setn{\opTrn^n\fphi}$ is \prope{orthonormal}}  %{$\setn{\fphi_n}$ is \prope{orthonormal} in $\spLLR$}
+  \qquad\implies\qquad
+  {\fg_n  = \ds \inprod{\fpsi}{\opDil\opTrn^n\fphi}}
+  \qquad\scy\forall n\in\Z
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+   \inprod{\fpsi}{\opDil\opTrn^n\fphi}
+     &= \inprod{\sum_{m\in\Z}g_m\opDil\opTrn^m \fphi}{\opDil\opTrn^n\fphi}
+     && \text{by \prefp{thm:g->psi}}
+   \\&= \sum_{m\in\Z}g_m\inprod{\opDil\opTrn^m \fphi}{\opDil\opTrn^n\fphi}
+   \\&= \sum_{m\in\Z}g_m \inprod{\sqrt{2}\fphi(2x-m)}{\sqrt{2}\fphi(2x-n)}
+     && \text{by definitions of $\opT$ and $\opD$}
+     && \text{\xref{def:opTD}}
+   \\&= \sum_{m\in\Z}g_m \int_{x\in\R} \sqrt{2}\fphi(2x-m)\sqrt{2}\fphi^\ast(2x-n) \dx
+     && \text{by definition of $\inprodn$ in $\spLLR$}
+     && \text{\xref{def:spLLR}}
+   \\&= \sum_{m\in\Z}g_m \int_{u\in\R} \sqrt{2}\fphi(u-m)\sqrt{2}\fphi^\ast(u-n) \half \du
+     && u=2x\qquad \du=2\dx
+   \\&= \sum_{m\in\Z}g_m \int_{u\in\R} \fphi(u-m)\fphi^\ast(u-n) \du
+   \\&= \sum_{m\in\Z}g_m \int_{u\in\R} \fphi(u-m)\fphi^\ast(u-n) \du
+   \\&= \sum_{m\in\Z}g_m \int_{v\in\R} \fphi(v)\fphi^\ast(v-(n-m)) \dv
+     && \text{where $v\eqd u-m$ $\implies$ $u=v+m$}
+   \\&= \sum_{m\in\Z}g_m \inprod{\fphi}{\opTrn^{n-m}\fphi}
+     && \text{by definition of $\inprodn$ in $\spLLR$}
+     && \text{\xref{def:spLLR}}
+   \\&= \sum_{m\in\Z}g_m \kdelta_{m-n}
+     && \text{by left hypothesis}
+   \\&=\fg_n
+\end{align*}
+\end{proof}
+
+
+
+%-------------------------------------
+\begin{example}[\exm{Haar wavelet}]
+\index{Haar scaling function}
+%-------------------------------------
+%Let a function $\fphi$ be defined as follows:
+\exbox{
+  \begin{array}{Mclm{37mm}}
+    Let $\fphi(x)$ &\eqd&
+      \brbl{\begin{array}{lM}
+         1  & for $x\in\intco{0}{1}$  \\
+         0  & otherwise
+      \end{array}}
+    &\includegraphics{graphics/d1_phi.pdf}
+  \\
+    and $\fpsi(x)$ &\eqd&
+      \brbl{\begin{array}{rM}
+          1  & for $x\in\intco{0}{\half }$  \\
+         -1  & for $x\in\intco{\half }{1}$  \\
+          0  & otherwise.
+      \end{array}}
+    &\includegraphics{graphics/d1_psi.pdf}
+  \\
+    Then, $\fg_n$ &=&
+      \brbl{\begin{array}{rM}
+         \cwt  & for $n=0$\\
+        -\cwt  & for $n=1$\\
+         0                   & otherwise.
+      \end{array}}
+    &\includegraphics{graphics/d1_g.pdf}
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+ \fg_{n}
+    &= \inprod{\fpsi}{\opDil\opTrn^n\fphi}
+    && \text{by \prefp{prop:psiphi->g}}
+  \\&= \inprod{\setind_\intco{0}{1}(x)-2\setind_\intco{\half }{1}(x)}{\sqrt{2}\setind_{[0,1)}(2x-n)}
+    && \text{by definition of $\fphi$ and $\fpsi$}
+  \\&= \mathrlap{%
+          \sqrt{2} \inprod{\setind_\intco{0}{1}(x)}{\setind_{[0,1)}(2x-n)} 
+       - 2\sqrt{2}\inprod{\setind_\intco{\half }{1}(x)}{\setind_{[0,1)}(2x-n)}
+       \quad\text{by property of $\inprodn$}
+       }
+  \\&=\fh_n - 2\sqrt{2}\int_\R \setind_\intco{\half }{1}(x) \setind_{[0,1)}(2x-n) \dx
+    && \text{by \prefp{ex:haarphi}}
+  \\&=\fh_n - 2\sqrt{2}\int_\intco{\half }{1}(x) \setind_{[0,1)}(2x-n) \dx
+    && \text{by definition of $\setind$}
+    && \text{\xref{def:setind}}
+  \\&=\fh_n - 2\sqrt{2}\half \kdelta_{n-1}
+    && \text{by definition of $\setind$}
+    && \text{\xref{def:setind}}
+  \\&= \brbl{\begin{array}{lcrM}
+         \cwt - 0                   &=&  \cwt    & for $n=0$ \\
+         \cwt - \frac{2\sqrt{2}}{2} &=& -\cwt    & for $n=1$ \\
+         0                                        &=&  0                     & otherwise
+       \end{array}}
+    && \text{by definition of $\kdelta$}
+    && \text{\xref{def:kdelta}}
+\end{align*}
+\end{proof}
+
+
+%=======================================
+\subsection{Necessary conditions}
+%=======================================
+%--------------------------------------
+\begin{lemma}[\lemd{orthonormal quadrature condition}s]
+\footnote{
+  \citerp{chui}{135},
+  \citerppg{mallat}{229}{238}{012466606X},
+  \citerp{goswami}{110},
+  \citerp{vaidyanathan1990}{65}
+  }
+\label{lem:ows_quadcon}
+\index{quadrature condition}
+%--------------------------------------
+Let $\spO\eqd\wavsys$ be a wavelet system \xref{def:wavsys}.
+Let $\Dh(\omega)$ and $\Fg(\omega)$ be the \structe{discrete time Fourier transform}s \xref{def:dtft}
+of $\seqn{\fh_n}$ and $\seqn{\fg_n}$, respectively.
+\lembox{\begin{array}{M}
+  $\mcom{\brb{\begin{array}{FrclD}
+    1. & \inprod{\fphi}{\opTrn^n\fphi} &=& \kdelta_n & and \\
+    2. & \inprod{\fpsi}{\opTrn^n\fpsi} &=& \kdelta_n & and \\
+    3. & \inprod{\fphi}{\opTrn^n\fpsi} &=& 0         &
+  \end{array}}}
+  {$\spO$ is \prope{orthonormal} \xref{def:ows}}
+  \qquad\implies\qquad
+  \mcom{\brb{\begin{array}{F>{\ds}rclD}
+    A. & \sum_{m\in\Z}\fh_m\fh_{m-2n}^\ast &=& \kdelta_n & and \\
+    B. & \sum_{m\in\Z}\fg_m\fg_{m-2n}^\ast &=& \kdelta_n & and \\
+    C. & \sum_{m\in\Z}\fh_m\fg_{m-2n}^\ast &=& 0         &
+  \end{array}}}{\fncte{orthonormal quadrature condition}s in ``time"}
+  \qquad\scy\forall n\in\Z$
+  \\\indentx$\iff\qquad
+  \mcom{\brb{\begin{array}{F>{\ds}rc>{\ds}lclD}
+   a. & \abs{\Dh(\omega)}^2  &+& \abs{\Dh(\omega+\pi)}^2        &=& 2   &and\\
+   b. & \abs{\Fg(\omega)}^2  &+& \abs{\Fg(\omega+\pi)}^2        &=& 2   &and\\
+   c. & \Dh(\omega)\Fg^\ast(\omega) &+& \Dh(\omega +\pi) \Fg^\ast(\omega +\pi)&=& 0 &
+  \end{array}}}{\fncte{orthonormal quadrature condition}s in ``frequency"}$
+\end{array}}
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1,2,3)$\implies$(A): by \prefp{lem:oms_quadcon}.
+  \item Proof that (1,2,3)$\implies$(B):
+    \begin{align*}
+      \sum_{m\in\Z}g_m\fg_{m-2n}^\ast
+        &= \sum_{m\in\Z}g_m \sum_{k\in\Z}\fg_k^\ast \kdelta_{k-m+2n}
+        && \text{by definition of $\kdelta_n$}
+        && \text{\xref{def:kdelta}}
+      \\&= \sum_{m\in\Z}g_m \sum_{k\in\Z}\fg_k^\ast\inprod{\fphi }{\opTrn^{2n-m+k} \fphi}
+        && \text{by hypothesis (1)}
+      \\&= \inprod{\fpsi}{\opTrn^n \fpsi}
+        && \text{by \thme{quadrature conditions in ``time"}}
+        && \text{\xref{thm:wavsys_quadcon}}
+      \\&= \kdelta_n
+        && \text{by hypothesis (2)}
+    \end{align*}
+
+  \item Proof that (1,2,3)$\implies$(C):
+    \begin{align*}
+      \sum_{m\in\Z}h_m\fg_{m-2n}^\ast
+        &= \sum_{m\in\Z}h_m \sum_{k\in\Z}\fg_k^\ast \kdelta_{k-m+2n}
+        && \text{by definition of $\kdelta_n$}
+        && \text{\xref{def:kdelta}}
+      \\&= \sum_{m\in\Z}h_m \sum_{k\in\Z}\fg_k^\ast\inprod{\fphi }{\opTrn^{2n-m+k} \fphi}
+        && \text{by hypothesis (1)}
+      \\&= \inprod{\fphi}{\opTrn^n\fpsi}
+        && \text{by \thme{quadrature conditions in ``time"}}
+        && \text{\xref{thm:wavsys_quadcon}}
+      \\&= 0
+        && \text{by hypothesis (3)}
+    \end{align*}
+
+  \item Proof that (A,B,C)$\iff$(a,b,c): by \prefp{lem:ows_quadcon}.
+\end{enumerate}
+%\begin{enumerate}
+%  \item Proof for (1): by \prefp{lem:oms_quadcon}.
+%
+%  \item Proof for (2):
+%    \begin{align*}
+%      2
+%        &= 2\cancelto{1}{\Spsi(2\omega)}
+%        && \text{by \prefp{thm:Swfgo}}
+%      \\&= \left|\Fg(\omega    )\right|^2  \cancelto{1}{\Sphi(\omega    )}
+%          + \left|\Fg(\omega+\pi)\right|^2 \cancelto{1}{\Sphi(\omega+\pi)}
+%        && \text{by \prefp{thm:gen_quadcon}}
+%      \\&= \left|\Fg(\omega    )\right|^2
+%          + \left|\Fg(\omega+\pi)\right|^2
+%        && \text{by \prefp{thm:Swfgo}}
+%    \end{align*}
+%
+%  \item Proof for (3):
+%    \begin{align*}
+%      0
+%        &= \Shs(2\omega)
+%        && \text{by \prefp{thm:Swfgo}}
+%      \\&=  \Dh(\omega     ) \Fg^\ast(\omega     )\cancelto{1}{\Sphi(\omega)}
+%          + \Dh(\omega +\pi) \Fg^\ast(\omega +\pi)\cancelto{1}{\Sphi(\omega+\pi)}
+%        && \text{by \prefp{thm:gen_quadcon}}
+%      \\&= \Dh(\omega)\Fg^\ast(\omega) + \Dh(\omega+\pi) \Fg^\ast(\omega +\pi)
+%        && \text{by \prefp{thm:Swfgo}}
+%    \end{align*}
+%\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerppgc{wojtaszczyk1997}{32}{36}{0521578949}{Proposition 2.18},
+  \citerppgc{hernandez1996}{55}{57}{0849382742}{Lemma 2.11}
+  }
+\label{prop:ortho_fW0}
+%--------------------------------------
+Let $\spO\eqd\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $\Fv(\omega)$ be a \prope{$2\pi$ periodic} and \prope{measurable} function in $\spLLR$ \xref{def:spLLR}.
+\propboxt{
+  Let $\spV_0\orthog\spW_0$ and $\setn{\opTrn^n\fphi}$ be \prope{orthonormal}. Then
+  \\\indentx
+  $\mcom{\ff\in\spW_0}{(A)}
+  \iff
+  \brb{\begin{array}{FMD}
+    (1). & $\ff \in \spV_1$ & and \\
+    (2). & There exists a \prope{measurable} function $\ds\Fv(\omega)\in\spLLR$ such that
+       \\& $\ds\Fv(\omega)= \Fv(\omega+2\pi)$ (\prope{$2\pi$ periodic}) and
+       \\& $\Ff(\omega)= \cwt\ds e^{i\frac{\omega}{2}}\Fv(\omega)\Dh^\ast\brp{\frac{\omega}{2}+\pi}\Fphi\brp{\frac{\omega}{2}}$
+  \end{array}}$
+  }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (A)$\implies$(1):
+    \begin{align*}
+      \ff\in\spW_0
+        &\implies \ff\in\spW_0\adds\spV_0
+        && \text{by definition of \ope{Minkowski addition} $\adds$}
+        && \text{\xref{def:mph_add}}
+      \\&\iff     \ff\in\spV_1
+        && \text{because $\spV_1=\spV_0\adds\spW_0$}
+        && \text{\xref{def:seqWn}}
+    \end{align*}
+
+  \item Proof that (A)$\implies$(2):
+    \begin{enumerate}
+      \item There exists a \prope{$2\pi$ periodic} function $\Fa(\omega)$ such that \label{item:ortho_fW0_faphi}
+            $\Ff(\omega)= \Fa\brp{\frac{\omega}{2}}\Fphi\brp{\frac{\omega}{2}}$. Proof:
+            \begin{align*}
+              \Ff(\omega)
+                &= \opFT \ff(x)
+                && \text{by definition of $\opFT$}
+                && \text{\xref{def:opFT}}
+              \\&= \opFT \sum_{n\in\Z} a_n \opDil\opTrn^n\fphi
+                && \text{by (A),\, $\ff\in\spW_0\subseteq\spV_1$}
+              \\&= \sum_{n\in\Z} a_n \opFT \opDil\opTrn^n\fphi
+              \\&= \sum_{n\in\Z} a_n e^{i\frac{\omega}{2}}\Fphi\brp{\frac{\omega}{2}}
+                && \text{by \prefp{prop:FTDf}}
+              \\&= \Fa\brp{\frac{\omega}{2}}\Fphi\brp{\frac{\omega}{2}}
+                && \text{by definition of \ope{DTFT}}
+                && \text{\xref{def:dtft}}
+            \end{align*}
+
+      \item \label{item:ortho_fW0_ahah}
+            $\Fa\brp{\omega}\Dh^\ast\brp{\omega} + \Fa\brp{\omega+\pi}\Dh^\ast\brp{\omega+\pi} = 0$. Proof:
+        \begin{align*}
+          0
+            &= \Sfphi(\omega)
+            \qquad\text{by $\spV_0\orthog\spW_0$ hypothesis and \prefp{thm:Swfgo}}
+          \\&= \sum_{n\in\Z} \Ff\brp{\omega+2\pi n} \Fphi^\ast\brp{\omega+2\pi n}
+            \qquad\text{by \prefp{thm:Swfg}}
+          \\&= \sum_{n\in\Z} \mcom{\Fa     \brp{\frac{\omega+2\pi n}{2}}\Fphi     \brp{\frac{\omega+2\pi n}{2}}}{$\Ff       (\omega+2\pi n)$}\,
+                             \mcom{\Dh^\ast\brp{\frac{\omega+2\pi n}{2}}\Fphi^\ast\brp{\frac{\omega+2\pi n}{2}}}{$\Fphi^\ast(\omega+2\pi n)$}
+            \qquad\text{by \prefp{item:ortho_fW0_faphi}}
+          \\&= \mcom{
+               \sum_{n\in\Z} \Fa\brp{\frac{\omega}{2}+2\pi n}\Dh^\ast\brp{\frac{\omega}{2}+2\pi n}\abs{\Fphi^\ast\brp{\frac{\omega}{2}+2\pi n}}^2
+               }{even terms}
+            \\&\qquad+ \mcom{
+               \sum_{n\in\Z} \Fa\brp{\frac{\omega}{2}+2\pi n+\pi}\Dh^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}\abs{\Fphi^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}}^2
+               }{odd terms}
+          \\&= \sum_{n\in\Z} \Fa\brp{\frac{\omega}{2}}    \Dh^\ast\brp{\frac{\omega}{2}}    \abs{\Fphi^\ast\brp{\frac{\omega}{2}+2\pi n}}^2
+             + \sum_{n\in\Z} \Fa\brp{\frac{\omega}{2}+\pi}\Dh^\ast\brp{\frac{\omega}{2}+\pi}\abs{\Fphi^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}}^2
+          \\&= \Fa\brp{\frac{\omega}{2}}    \Dh^\ast\brp{\frac{\omega}{2}}    \Sphi\brp{\frac{\omega}{2}}
+             + \Fa\brp{\frac{\omega}{2}+\pi}\Dh^\ast\brp{\frac{\omega}{2}+\pi}\Sphi\brp{\frac{\omega}{2}+\pi}
+          \\&= \Fa\brp{\frac{\omega}{2}}    \Dh^\ast\brp{\frac{\omega}{2}}
+             + \Fa\brp{\frac{\omega}{2}+\pi}\Dh^\ast\brp{\frac{\omega}{2}+\pi}
+            \qquad\text{by \prope{orthonormality} and \prefp{thm:Swfgo}}
+          \\&\implies \Fa\brp{\omega}\Dh^\ast\brp{\omega} + \Fa\brp{\omega+\pi}\Dh^\ast\brp{\omega+\pi} = 0
+        \end{align*}
+
+      \item The vectors
+          $\opairs{\Fa\brp{\omega}}{\Fa\brp{\omega+\pi}}$ and $\opairs{\Dh\brp{\omega}}{\Dh\brp{\omega+\pi}}$
+          are \prope{orthogonal}. Proof: \label{item:ortho_fW0_ortho}
+        \begin{align*}
+          \brs{\begin{array}{c}
+            \Dh\brp{\omega}\\
+            \Dh\brp{\omega+\pi}
+          \end{array}}^H
+          \brs{\begin{array}{c}
+            \Fa\brp{\omega}\\
+            \Fa\brp{\omega+\pi}
+          \end{array}}
+          &=
+          \brs{\begin{array}{cc}
+            \Dh^\ast\brp{\omega} &
+            \Dh^\ast\brp{\omega+\pi}
+          \end{array}}
+          \brs{\begin{array}{c}
+            \Fa\brp{\omega}\\
+            \Fa\brp{\omega+\pi}
+          \end{array}}
+        \\&= \Fa\brp{\omega}\Dh^\ast\brp{\omega} + \Fa\brp{\omega+\pi}\Dh^\ast\brp{\omega+\pi}
+        \\&= 0
+          && \text{by \prefp{item:ortho_fW0_ahah}}
+        \end{align*}
+
+      \item There exists a \prope{$2\pi$ periodic} function $\Fb(\omega)$ such that \label{item:ortho_fW0_aabhh}
+          $\opairs{\Fa\brp{\omega}}{\Fa\brp{\omega+\pi}} = \Fb(\omega)\opairs{\Dh^\ast\brp{\omega+\pi}}{-\Dh^\ast\brp{\omega}}$. Proof:
+        Because the two vectors are \prope{orthogonal} \xref{item:ortho_fW0_ortho},
+        if one vector is rotated by $90^\circ$, then for fixed $\omega$ it is a scalar multiple of the other\ldots
+        \begin{align*}
+          \opairs{\Fa\brp{\omega}}{\Fa\brp{\omega+\pi}}
+            &= \Fb(\omega)\opairs{\Dh^\ast\brp{\omega}}{\Dh^\ast\brp{\omega+\pi}}
+               \mcom{\brs{\begin{array}{rr}
+                 \cos90^\circ & -\sin90^\circ\\
+                 \sin90^\circ &  \cos90^\circ
+               \end{array}}}{\ope{rotation matrix}}
+            && \text{by \prefp{item:ortho_fW0_ortho}}
+          \\&= \Fb(\omega)\opairs{\Dh^\ast\brp{\omega}}{\Dh^\ast\brp{\omega+\pi}}
+               \brs{\begin{array}{rr}
+                 0      & -1     \\
+                 1      &  0
+               \end{array}}
+          \\&= \Fb(\omega)\opairs{\Dh^\ast\brp{\omega+\pi}}{-\Dh^\ast\brp{\omega}}
+        \end{align*}
+
+      \item By \pref{item:ortho_fW0_aabhh},
+            $\opairs{\Fa\brp{\omega+\pi}}{\Fa\brp{\omega}} = \Fb(\omega+\pi)\opairs{\Dh^\ast\brp{\omega}}{-\Dh^\ast\brp{\omega+\pi}}$.
+            \label{item:ortho_fW0_aabhh_pi}
+            Proof:
+        \begin{align*}
+          \opairs{\Fa\brp{\omega+\pi}}{\Fa\brp{\omega}}
+            &= \opairs{\Fa\brp{\omega+\pi}}{\Fa\brp{\omega+\pi+\pi}}
+          \\&= \Fb(\omega+\pi)\opairs{\Dh^\ast\brp{\omega+\pi+\pi}}{-\Dh^\ast\brp{\omega+\pi}}
+            && \text{by \prefp{item:ortho_fW0_aabhh}}
+          \\&= \Fb(\omega+\pi)\opairs{\Dh^\ast\brp{\omega}}{-\Dh^\ast\brp{\omega+\pi}}
+        \end{align*}
+
+      \item By \pref{item:ortho_fW0_aabhh} and \pref{item:ortho_fW0_aabhh_pi},\quad $\Fb(\omega)=-\Fb(\omega+\pi)$. Proof:
+            \label{item:ortho_fW0_b-b}
+        \\$\ds\begin{array}{c}
+          \underbrace{\begin{array}{rclD}
+            \Fa(\omega) &=&  \Fb(\omega)\Dh^\ast(\omega+\pi)     & by \pref{item:ortho_fW0_aabhh}\\
+            \Fa(\omega) &=& -\Fb(\omega+\pi)\Dh^\ast(\omega+\pi) & by \pref{item:ortho_fW0_aabhh_pi}
+          \end{array}}
+          \\\Downarrow
+          \\\Fb(\omega)=-\Fb(\omega+\pi)
+        \end{array}$
+        \hspace{10mm}
+        $\ds\begin{array}{c}
+          \underbrace{\begin{array}{rclD}
+            \Fa(\omega+\pi) &=& -\Fb(\omega)\Dh^\ast(\omega)     & by \pref{item:ortho_fW0_aabhh}\\
+            \Fa(\omega+\pi) &=&  \Fb(\omega+\pi)\Dh^\ast(\omega) & by \pref{item:ortho_fW0_aabhh_pi}
+          \end{array}}
+          \\\Downarrow
+          \\\Fb(\omega)=-\Fb(\omega+\pi)
+        \end{array}$
+
+      \item Note that $\Fb(\omega)=-\Fb(\omega+\pi)$ $\iff$ $e^{-i(\omega+\pi)}\Fb(\omega+\pi)=e^{-i(\omega)}\Fb(\omega)$. Proof:
+        \begin{align*}
+          -\Fb(\omega+\pi)
+            &= -e^{i(\omega+\pi)}e^{-i(\omega+\pi)}\Fb(\omega+\pi)
+          \\&= -e^{i(\omega+\pi)}e^{-i\omega}\Fb(\omega)
+            && \text{by right hypothesis}
+          \\&= e^{-i\pi}e^{i(\omega+\pi)}e^{-i\omega}\Fb(\omega)
+          \\&= e^{i\omega}e^{-i\omega}\Fb(\omega)
+          \\&= \Fb(\omega)
+          \\
+          \\
+          e^{-i(\omega+\pi)}\Fb(\omega+\pi)
+            &= -e^{-i\omega}\Fb(\omega+\pi)
+          \\&= e^{-i\omega}\Fb(\omega)
+            && \text{by left hypothesis}
+        \end{align*}
+
+      \item Let $\Fv(\omega)\eqd \sqrt{2}e^{-i\frac{\omega}{2}}\Fb\brp{\frac{\omega}{2}}$. Then (2) is true \ldots
+        \begin{enumerate}
+          \item $\Fv(\omega)$ is \prope{$2\pi$ periodic}. Proof:
+            \begin{align*}
+              \Fv(\omega+2\pi)
+                &\eqd \sqrt{2}e^{-i\frac{\omega}{2}}\Fb\brp{\frac{\omega}{2}}
+                && \text{by definition of $\Fv(\omega)$}
+              \\&= \sqrt{2}e^{-i\frac{\omega+2\pi}{2}}\Fb\brp{\frac{\omega+2\pi}{2}}
+              \\&= \sqrt{2}e^{-i\frac{\omega}{2}+\pi}\Fb\brp{\frac{\omega}{2}+\pi}
+              \\&= -\sqrt{2}e^{-i\frac{\omega}{2}}\Fb\brp{\frac{\omega}{2}+\pi}
+              \\&= -\sqrt{2}e^{-i\frac{\omega}{2}}\brs{-\Fb\brp{\frac{\omega}{2}}}
+                && \text{by \prefp{item:ortho_fW0_b-b}}
+              \\&= \sqrt{2}e^{-i\frac{\omega}{2}}\Fb\brp{\frac{\omega}{2}}
+                && \text{by \prefp{item:ortho_fW0_b-b}}
+              \\&\eqd \Fv(\omega)
+                && \text{by definition of $\Fv(\omega)$}
+            \end{align*}
+          \item $\Ff(\omega)= \cwt e^{i\frac{\omega}{2}}\Fv(\omega)\Dh^\ast\brp{\frac{\omega}{2}+\pi}\Fphi\brp{\frac{\omega}{2}}$. Proof:
+            \begin{align*}
+              \Ff(\omega)
+                &= \Fa\brp{\frac{\omega}{2}}\Fphi\brp{\frac{\omega}{2}}
+                && \text{by \prefp{item:ortho_fW0_faphi}}
+              \\&= \Fb\brp{\frac{\omega}{2}}\Dh\brp{\frac{\omega}{2}+\pi}\Fphi\brp{\frac{\omega}{2}}
+                && \text{by \prefp{item:ortho_fW0_aabhh}}
+              \\&= \cwt e^{i\frac{\omega}{2}}\Fv(\omega)\Dh^\ast\brp{\frac{\omega}{2}+\pi}\Fphi\brp{\frac{\omega}{2}}
+                && \text{by definition of $\Fv(\omega)$}
+            \end{align*}
+        \end{enumerate}
+    \end{enumerate}
+
+  \item lemma: proof that (2)$\implies\ff\orthog\spV_0$: \label{item:ortho_fW0_V0}
+    \begin{align*}
+      &\Sfphi(\omega)
+      \\&= 2\pi\sum_{n\in\Z} \Fphi\brp{\omega + 2\pi n}\Ff^\ast\brp{\omega + 2\pi n}
+        \qquad\text{by \prefp{thm:Swfg}}
+      \\&= 2\pi\sum_{n\in\Z} \Fphi\brp{\omega + 2\pi n}
+                             \brs{\cwt e^{i\brp{\frac{\omega + 2\pi n}{2}}}\Fv\brp{\omega + 2\pi n}\Dh^\ast\brp{\frac{\omega+2\pi n}{2}+\pi}\Fphi\brp{\frac{\omega+2\pi n}{2}}}^\ast
+        \qquad\text{by (A)}
+      \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}
+           \sum_{n\in\Z} \Fphi\brp{\omega + 2\pi n}
+                              \brs{e^{-i\brp{\frac{\omega}{2} + \pi n}}\Dh\brp{\frac{\omega}{2}+\pi n+\pi}\Fphi^\ast\brp{\frac{\omega}{2}+\pi n}}
+        \qquad\text{by (C)}
+      \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}
+           \mcom{\sum_{n\in\Ze} \Fphi\brp{\omega + 2\pi n}
+                         \brs{e^{-i\brp{\frac{\omega}{2} + \pi n}}\Dh\brp{\frac{\omega}{2}+\pi n+\pi}\Fphi^\ast\brp{\frac{\omega}{2}+\pi n}}}{even terms}
+        \\&\qquad+ \sqrt{2}\pi\Fv^\ast\brp{\omega}
+           \mcom{\sum_{n\in\Zo} \Fphi\brp{\omega + 2\pi n}
+                         \brs{e^{-i\brp{\frac{\omega}{2} + \pi n}}\Dh\brp{\frac{\omega}{2}+\pi n+\pi}\Fphi^\ast\brp{\frac{\omega}{2}+\pi n}}}{odd terms}
+      \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}
+           \mcom{\sum_{n\in\Z} \Fphi\brp{\omega + 4\pi n}
+                         \brs{e^{-i\brp{\frac{\omega}{2} + 2\pi n}}\Dh\brp{\frac{\omega}{2}+2\pi n+\pi}\Fphi^\ast\brp{\frac{\omega}{2}+2\pi n}}}{even terms}
+        \\&\qquad+ \sqrt{2}\pi\Fv^\ast\brp{\omega}
+           \mcom{\sum_{n\in\Z} \Fphi\brp{\omega + 4\pi n+2\pi}
+                         \brs{e^{-i\brp{\frac{\omega}{2} + 2\pi n+\pi}}\Dh\brp{\frac{\omega}{2}+2\pi n+2\pi}\Fphi^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}}}{odd terms}
+      \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}\Dh\brp{\frac{\omega}{2}+\pi}e^{-i\brp{\frac{\omega}{2}}}
+           \sum_{n\in\Z} \Fphi\brp{\omega + 4\pi n}
+                         \Fphi^\ast\brp{\frac{\omega}{2}+2\pi n}
+        \\&\qquad- \sqrt{2}\pi\Fv^\ast\brp{\omega}\Dh\brp{\frac{\omega}{2}}e^{-i\brp{\frac{\omega}{2}}}
+           \sum_{n\in\Z} \Fphi\brp{\omega + 4\pi n+2\pi}
+                         \Fphi^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}
+          \qquad\text{by \prefp{prop:dtft_2pi}}
+      \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}\Dh\brp{\frac{\omega}{2}+\pi}e^{-i\brp{\frac{\omega}{2}}}
+           \sum_{n\in\Z} \cwt\Dh\brp{\frac{\omega}{2} + 2\pi n}\Fphi\brp{\frac{\omega}{2} + 2\pi n}
+                         \Fphi^\ast\brp{\frac{\omega}{2}+2\pi n}
+        \\&\qquad- \sqrt{2}\pi\Fv^\ast\brp{\omega}\Dh\brp{\frac{\omega}{2}}e^{-i\brp{\frac{\omega}{2}}}
+           \sum_{n\in\Z} \cwt\Dh\brp{\frac{\omega}{2} + 2\pi n+\pi}\Fphi\brp{\frac{\omega}{2} + 2\pi n+\pi}
+                         \Fphi^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}
+      \\&= \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}+\pi}\Dh\brp{\frac{\omega}{2}}
+           \brs{2\pi\sum_{n\in\Z} \abs{\Fphi\brp{\frac{\omega}{2} + 2\pi n}}^2}
+        \\&\qquad- \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}}\Dh\brp{\frac{\omega}{2}+\pi}
+           \brs{2\pi\sum_{n\in\Z} \abs{\Fphi\brp{\frac{\omega}{2}+\pi+2\pi n}}^2}
+          \qquad\text{by \prefp{prop:dtft_2pi}}
+      \\&= \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}+\pi}\Dh\brp{\frac{\omega}{2}}
+           \Sphi\brp{\frac{\omega}{2}}
+        - \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}}\Dh\brp{\frac{\omega}{2}+\pi}
+           \Sphi\brp{\frac{\omega}{2}+\pi}
+      \\&= \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}+\pi}\Dh\brp{\frac{\omega}{2}}
+        - \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}}\Dh\brp{\frac{\omega}{2}+\pi}
+        \qquad\text{by \prefp{thm:Swfgo}}
+      \\&=  0
+        \qquad \text{by \prefp{lem:ows_quadcon}}
+      \\\iff& \inprod{\ff}{\opTrn^n\fphi}=\kdelta_n
+      %\\\iff& \inprod{\Fphi}{\opTrn^n\Fpsi} = 0
+        \qquad \text{by \prefp{thm:Swfgo}}
+      \\\iff& \ff\orthog\linspan\setn{\opTrn^n\fphi}
+      \\\iff& \ff\orthog\spV_0
+    \end{align*}
+
+
+  \item Proof that (A)$\impliedby$(1,2):
+    \begin{enumerate}
+      \item by (1), $\ff\in\spV_1=\spV_0\adds\spW_0$
+      \item by hypothesis, $\spV_0\orthog\spW_0$
+      \item by \prefp{item:ortho_fW0_V0}, $\ff\orthog\spV_0$
+      \item so $\ff\in\spW_0$
+    \end{enumerate}
+
+
+\end{enumerate}
+
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppgc{wojtaszczyk1997}{32}{37}{0521578949}{Section 2.4, Theorem 2.20},
+  \citerpgc{hernandez1996}{57}{0849382742}{\scshape Proposition 2.13},
+  \citerppgc{mallat}{236}{238}{012466606X}{Theorem 7.3},
+  %\citerppg{vidakovic}{58}{59}{0471293652},
+  \citerpg{dau}{133}{0898712742}
+  }
+\label{thm:ows_g}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+%with an orthonormal MRA system such that $\linspan\setn{\opTrn^n\fphi}=\spV_0$.
+Let $\Fv(\omega)$ be a measurable function in $\spLLR$ \xref{def:spLLR}.
+\thmboxt{
+  If $\set{\fphi}{\opTrn^n\fphi}=\kdelta_n$ then\\
+  $
+    \brb{\begin{array}{FMD}
+      (A). & $\Fpsi(\omega) = \cwt \mcom{e^{i\frac{\omega}{2}}\Fv(\omega)\Dh^\ast\brp{\frac{\omega}{2}+\pi}}{$\Fg\brp{\frac{\omega}{2}}$ \xref{def:gn}}\Fphi\brp{\frac{\omega}{2}}$ & and \\
+      (B). & $\Fv(\omega)=\Fv(\omega+2\pi)$ & and \\
+      (C). & $\abs{\Fv(\omega)}=1$ &
+    \end{array}}
+    \iff
+    \mcom{\brb{\begin{array}{FrclD}
+      (1). & \inprod{\fpsi}{\opTrn^n\fpsi} &=& \kdelta_n & and \\
+      (2). & \inprod{\fphi}{\opTrn^n\fpsi} &=& 0         & and \\
+      (3). & \linspan\setn{\opTrn^n\fpsi}  &=& \spW_0
+    \end{array}}}{$\begin{array}{D}$\spV_0\orthog\spW_0$ and\\$\fpsi$ is an \structe{orthonormal wavelet} for $\spLLR$\end{array}$}
+  $
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: proof that (A) and $\setn{\opTrn^n\fphi}=\kdelta_n$ $\implies$ $\Spsi(\omega)=\abs{\Fv(\omega)}^2$:
+        \label{item:ows_g_Spsi}
+    \begin{align*}
+      &\Spsi(\omega)
+      \\&= 2\pi\sum_{n\in\Z} \abs{\Fpsi\brp{\omega + 2\pi n}}^2
+        \qquad\text{by \prefp{thm:Swff}}
+      \\&= 2\pi\sum_{n\in\Z} \abs{\cwt e^{i\brp{\frac{\omega + 2\pi n}{2}}}\Fv\brp{\omega + 2\pi n}\Dh^\ast\brp{\frac{\omega+2\pi n}{2}+\pi}\Fphi\brp{\frac{\omega+2\pi n}{2}}}^2
+        \qquad\text{by (A)}
+      \\&= \pi\sum_{n\in\Z} \mcom{\abs{e^{i\brp{\frac{\omega + 2\pi n}{2}}}}^2}{$1$} \abs{\Fv\brp{\omega + 2\pi n}}^2 \abs{\Dh^\ast\brp{\frac{\omega+2\pi n}{2}+\pi}\Fphi\brp{\frac{\omega+2\pi n}{2}}}^2
+        \qquad\text{by property of $\abs{\cdot}$}
+      \\&= \pi\abs{\Fv\brp{\omega}}^2\sum_{n\in\Z}  \abs{\Dh^\ast\brp{\frac{\omega+2\pi n}{2}+\pi}\Fphi\brp{\frac{\omega+2\pi n}{2}}}^2
+        \qquad\text{by (B) and (C)}
+      \\&= \pi\abs{\Fv\brp{\omega}}^2\sum_{n\in\Ze}  \mcom{\abs{\Dh^\ast\brp{\frac{\omega}{2}+\pi n+\pi}  \Fphi\brp{\frac{\omega}{2}+\pi n}}^2}{even terms}
+         + \pi\abs{\Fv\brp{\omega}}^2\sum_{n\in\Zo}  \mcom{\abs{\Dh^\ast\brp{\frac{\omega}{2}+\pi n+\pi}  \Fphi\brp{\frac{\omega}{2}+\pi n}}^2}{odd terms}
+      \\&= \pi\abs{\Fv\brp{\omega}}^2\sum_{n\in\Z}   \mcom{\abs{\Dh^\ast\brp{\frac{\omega}{2}+2\pi n}            \Fphi\brp{\frac{\omega}{2}+2\pi n}}^2      }{even terms}
+         + \pi\abs{\Fv\brp{\omega}}^2\sum_{n\in\Z}   \mcom{\abs{\Dh^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}        \Fphi\brp{\frac{\omega}{2}+2\pi n + \pi}}^2}{odd terms}
+      \\&= \frac{\abs{\Fv\brp{\omega}}^2}{2}\brb{
+           \abs{\Dh^\ast\brp{\frac{\omega}{2}}    }^2 \mcom{\brs{2\pi\sum_{n\in\Z} \abs{\Fphi\brp{\frac{\omega}{2}+2\pi n}}^2      }}{$\Sphi\brp{\frac{\omega}{2}}      $}
+         + \abs{\Dh^\ast\brp{\frac{\omega}{2}+\pi}}^2 \mcom{\brs{2\pi\sum_{n\in\Z} \abs{\Fphi\brp{\frac{\omega}{2}+\pi+2\pi n}}^2}}{$\Sphi\brp{\frac{\omega}{2} + \pi}$}
+           }
+        \\&\qquad\text{because \ope{DTFT} is $2\pi$ \prope{periodic} \xref{prop:dtft_2pi}}
+      \\&= \frac{\abs{\Fv\brp{\omega}}^2}{2}\brb{
+           \abs{\Dh^\ast\brp{\frac{\omega}{2}}    }^2 \Sphi\brp{\frac{\omega}{2}}
+         + \abs{\Dh^\ast\brp{\frac{\omega}{2}+\pi}}^2 \Sphi\brp{\frac{\omega}{2} + \pi}
+           }
+      \\&= \frac{\abs{\Fv\brp{\omega}}^2}{2}\brb{
+           \abs{\Dh^\ast\brp{\frac{\omega}{2}}    }^2 \cancelto{1}{\Sphi\brp{\frac{\omega}{2}}}
+         + \abs{\Dh^\ast\brp{\frac{\omega}{2}+\pi}}^2 \cancelto{1}{\Sphi\brp{\frac{\omega}{2} + \pi}}
+           }
+        \qquad\text{by \prefp{thm:Swfgo}}
+     %\\&= \half \brs{\abs{\Dh^\ast\brp{\frac{\omega}{2}}    }^2 + \abs{\Dh^\ast\brp{\frac{\omega}{2}+\pi}}^2}
+      \\&=  \abs{\Fv\brp{\omega}}^2
+        \qquad\text{by \prefp{lem:ows_quadcon}}
+    \end{align*}
+
+  \item Proof that (A,B,C)$\implies$(1):
+    \begin{align*}
+      \Spsi(\omega)
+        &= \abs{\Fv(\omega)}^2
+        && \text{by \prefp{item:ows_g_Spsi}}
+      \\&=  1
+        && \text{by (B)}
+      \\\iff& \inprod{\Fpsi}{\opTrn^n\Fpsi} = \kdelta_n
+        \qquad\text{by \prefp{thm:Swfgo}}
+    \end{align*}
+
+  \item Proof that (A,B)$\implies$(2): by \prefp{prop:ortho_fW0} with $\Ff(\omega)\eqd\Fpsi(\omega)$.
+    %\begin{align*}
+    %  &\Shs(\omega)
+    %  \\&= 2\pi\sum_{n\in\Z} \Fphi\brp{\omega + 2\pi n}\Fpsi^\ast\brp{\omega + 2\pi n}
+    %    \qquad\text{by \prefp{thm:Swfg}}
+    %  \\&= 2\pi\sum_{n\in\Z} \Fphi\brp{\omega + 2\pi n}
+    %                         \brs{\cwt e^{i\brp{\frac{\omega + 2\pi n}{2}}}\Fv\brp{\omega + 2\pi n}\Dh^\ast\brp{\frac{\omega+2\pi n}{2}+\pi}\Fphi\brp{\frac{\omega+2\pi n}{2}}}^\ast
+    %    \qquad\text{by (A)}
+    %  \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}
+    %       \sum_{n\in\Z} \Fphi\brp{\omega + 2\pi n}
+    %                          \brs{e^{-i\brp{\frac{\omega}{2} + \pi n}}\Dh\brp{\frac{\omega}{2}+\pi n+\pi}\Fphi^\ast\brp{\frac{\omega}{2}+\pi n}}
+    %    \qquad\text{by (C)}
+    %  \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}
+    %       \mcom{\sum_{n\in\Ze} \Fphi\brp{\omega + 2\pi n}
+    %                     \brs{e^{-i\brp{\frac{\omega}{2} + \pi n}}\Dh\brp{\frac{\omega}{2}+\pi n+\pi}\Fphi^\ast\brp{\frac{\omega}{2}+\pi n}}}{even terms}
+    %    \\&\qquad+ \sqrt{2}\pi\Fv^\ast\brp{\omega}
+    %       \mcom{\sum_{n\in\Zo} \Fphi\brp{\omega + 2\pi n}
+    %                     \brs{e^{-i\brp{\frac{\omega}{2} + \pi n}}\Dh\brp{\frac{\omega}{2}+\pi n+\pi}\Fphi^\ast\brp{\frac{\omega}{2}+\pi n}}}{odd terms}
+    %  \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}
+    %       \mcom{\sum_{n\in\Z} \Fphi\brp{\omega + 4\pi n}
+    %                     \brs{e^{-i\brp{\frac{\omega}{2} + 2\pi n}}\Dh\brp{\frac{\omega}{2}+2\pi n+\pi}\Fphi^\ast\brp{\frac{\omega}{2}+2\pi n}}}{even terms}
+    %    \\&\qquad+ \sqrt{2}\pi\Fv^\ast\brp{\omega}
+    %       \mcom{\sum_{n\in\Z} \Fphi\brp{\omega + 4\pi n+2\pi}
+    %                     \brs{e^{-i\brp{\frac{\omega}{2} + 2\pi n+\pi}}\Dh\brp{\frac{\omega}{2}+2\pi n+2\pi}\Fphi^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}}}{odd terms}
+    %  \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}\Dh\brp{\frac{\omega}{2}+\pi}e^{-i\brp{\frac{\omega}{2}}}
+    %       \sum_{n\in\Z} \Fphi\brp{\omega + 4\pi n}
+    %                     \Fphi^\ast\brp{\frac{\omega}{2}+2\pi n}
+    %    \\&\qquad- \sqrt{2}\pi\Fv^\ast\brp{\omega}\Dh\brp{\frac{\omega}{2}}e^{-i\brp{\frac{\omega}{2}}}
+    %       \sum_{n\in\Z} \Fphi\brp{\omega + 4\pi n+2\pi}
+    %                     \Fphi^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}
+    %      \qquad\text{by \prefp{prop:dtft_2pi}}
+    %  \\&= \sqrt{2}\pi\Fv^\ast\brp{\omega}\Dh\brp{\frac{\omega}{2}+\pi}e^{-i\brp{\frac{\omega}{2}}}
+    %       \sum_{n\in\Z} \cwt\Dh\brp{\frac{\omega}{2} + 2\pi n}\Fphi\brp{\frac{\omega}{2} + 2\pi n}
+    %                     \Fphi^\ast\brp{\frac{\omega}{2}+2\pi n}
+    %    \\&\qquad- \sqrt{2}\pi\Fv^\ast\brp{\omega}\Dh\brp{\frac{\omega}{2}}e^{-i\brp{\frac{\omega}{2}}}
+    %       \sum_{n\in\Z} \cwt\Dh\brp{\frac{\omega}{2} + 2\pi n+\pi}\Fphi\brp{\frac{\omega}{2} + 2\pi n+\pi}
+    %                     \Fphi^\ast\brp{\frac{\omega}{2}+2\pi n+\pi}
+    %  \\&= \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}+\pi}\Dh\brp{\frac{\omega}{2}}
+    %       \brs{2\pi\sum_{n\in\Z} \abs{\Fphi\brp{\frac{\omega}{2} + 2\pi n}}^2}
+    %    \\&\qquad- \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}}\Dh\brp{\frac{\omega}{2}+\pi}
+    %       \brs{2\pi\sum_{n\in\Z} \abs{\Fphi\brp{\frac{\omega}{2}+\pi+2\pi n}}^2}
+    %      \qquad\text{by \prefp{prop:dtft_2pi}}
+    %  \\&= \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}+\pi}\Dh\brp{\frac{\omega}{2}}
+    %       \Sphi\brp{\frac{\omega}{2}}
+    %    - \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}}\Dh\brp{\frac{\omega}{2}+\pi}
+    %       \Sphi\brp{\frac{\omega}{2}+\pi}
+    %  \\&= \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}+\pi}\Dh\brp{\frac{\omega}{2}}
+    %    - \frac{1}{4}\Fv^\ast\brp{\omega}e^{-i\brp{\frac{\omega}{2}}}\Dh\brp{\frac{\omega}{2}}\Dh\brp{\frac{\omega}{2}+\pi}
+    %    \qquad\text{by \prefp{thm:Swfgo}}
+    %  \\&=  0
+    %    \qquad \text{by \prefp{lem:ows_quadcon}}
+    %  \\\iff& \inprod{\Fphi}{\opTrn^n\Fpsi} = 0
+    %    \qquad \text{by \prefp{thm:Swfgo}}
+    %\end{align*}
+
+  \item lemma: Proof that $\setn{\opTrn^n\fphi}=\kdelta_n$ and (A,B,C) $\implies$ \label{item:ows_g_abc}
+        for all $\seqn{a_n}$, there exists $\seqn{b_n}$ and $\seqn{c_n}$ such that
+          \\\qquad$\Fa\brp{\frac{\omega}{2}} = \Fb\brp{\omega}\Dh  \brp{\frac{\omega}{2}} + \Fc\brp{\omega}\Fg\brp{\frac{\omega}{2}}$\\
+    \begin{enumerate}
+      \item First note the following relations hold in this case:
+        \\\indentx$\begin{array}{rclccD}
+          \abs{\Dh(\omega)}^2  &+& \abs{\Dh(\omega+\pi)}^2        &=& 2   & by $\setn{\opTrn^n\fphi}=\kdelta_n$ and by \prefp{lem:ows_quadcon}\\
+          \abs{\Fg(\omega)}^2  &+& \abs{\Fg(\omega+\pi)}^2        &=& 2   & by (1) and by \prefp{lem:ows_quadcon}\\
+          \Dh(\omega)\Fg^\ast(\omega) &+& \Dh(\omega +\pi) \Fg^\ast(\omega +\pi)&=& 0  & by (2) and by \prefp{lem:ows_quadcon} \\
+          \mc{5}{l}{\Fg\brp{\frac{\omega}{2}}=e^{i\frac{\omega}{2}}\Fv(\omega)\Dh^\ast\brp{\frac{\omega}{2}+\pi}}  & by (A)
+        \end{array}$
+
+      \item Then, the following values of $\seqn{b_n}$ and $\seqn{c_n}$ are solutions for all $\seqn{a_n}$ \label{item:ows_g_abcsol}
+        \\\indentx$\begin{array}{rclcl}
+          \fb\brp{\omega} &=& \half \Fa\brp{\frac{\omega}{2}}\Dh^\ast\brp{\frac{\omega}{2}} &+& \half \Fa\brp{\frac{\omega}{2}+\pi}\Dh^\ast\brp{\frac{\omega}{2}+\pi}\\
+          \fc\brp{\omega} &=& \half \Fa\brp{\frac{\omega}{2}}\Fg^\ast\brp{\frac{\omega}{2}} &+& \half \Fa\brp{\frac{\omega}{2}+\pi}\Fg^\ast\brp{\frac{\omega}{2}+\pi}
+        \end{array}$
+    \end{enumerate}
+    Proof:
+    \begin{align*}
+      &\Fb\brp{\omega}\Dh  \brp{\frac{\omega}{2}} + \Fc\brp{\omega}\Fg\brp{\frac{\omega}{2}}
+      \\&=         \half \Fa\brp{\frac{\omega}{2}}\abs{\Dh\brp{\frac{\omega}{2}}}^2 + \half \Fa\brp{\frac{\omega}{2}+\pi}\Dh  \brp{\frac{\omega}{2}}\Dh^\ast\brp{\frac{\omega}{2}+\pi}
+        \\&\quad + \half \Fa\brp{\frac{\omega}{2}}\abs{\Fg\brp{\frac{\omega}{2}}}^2 + \half \Fa\brp{\frac{\omega}{2}+\pi}\Fg\brp{\frac{\omega}{2}}\Fg^\ast\brp{\frac{\omega}{2}+\pi}
+        \qquad\text{by \prefp{item:ows_g_abcsol}}
+      \\&=         \half \Fa\brp{\frac{\omega}{2}}\abs{\Dh\brp{\frac{\omega}{2}}}^2
+                 + \half \Fa\brp{\frac{\omega}{2}+\pi}\Dh  \brp{\frac{\omega}{2}}\Dh^\ast\brp{\frac{\omega}{2}+\pi}
+        \\&\quad + \half \Fa\brp{\frac{\omega}{2}}\abs{e^{i\frac{\omega}{2}}\Fv(\omega)\Dh^\ast\brp{\frac{\omega}{2}+\pi}}^2
+                 + \half \Fa\brp{\frac{\omega}{2}+\pi}e^{i\frac{\omega}{2}}\Fv(\omega)\Dh^\ast\brp{\frac{\omega}{2}+\pi}e^{-i\brp{\frac{\omega}{2}+\pi}}\Fv^\ast(\omega+2\pi)\Dh\brp{\frac{\omega}{2}+2\pi}
+      \\&=         \half \Fa\brp{\frac{\omega}{2}}\abs{\Dh\brp{\frac{\omega}{2}}}^2
+                 + \half \Fa\brp{\frac{\omega}{2}+\pi}\Dh  \brp{\frac{\omega}{2}}\Dh^\ast\brp{\frac{\omega}{2}+\pi}
+        \\&\quad + \half \Fa\brp{\frac{\omega}{2}}\abs{\Dh^\ast\brp{\frac{\omega}{2}+\pi}}^2
+                 - \half \Fa\brp{\frac{\omega}{2}+\pi}\Fv(\omega)\Dh^\ast\brp{\frac{\omega}{2}+\pi}\abs{\Fv(\omega)}^2\Dh\brp{\frac{\omega}{2}}
+      \\&=         \half \Fa\brp{\frac{\omega}{2}}\brs{
+                     \abs{\Dh\brp{\frac{\omega}{2}}}^2 + \abs{\Dh^\ast\brp{\frac{\omega}{2}+\pi}}^2
+                     }
+        \\&\quad + \half \Fa\brp{\frac{\omega}{2}+\pi}\brs{
+                       \Dh     \brp{\frac{\omega}{2}}\Dh^\ast\brp{\frac{\omega}{2}+\pi}
+                     - \Dh^\ast\brp{\frac{\omega}{2}+\pi}\Dh\brp{\frac{\omega}{2}}
+                     }
+      \\&=         \half \Fa\brp{\frac{\omega}{2}}\brs{2}
+                 + \half \Fa\brp{\frac{\omega}{2}+\pi}\brs{0}
+        \qquad\text{by \prefp{lem:ows_quadcon}}
+      \\&= \Fa\brp{\frac{\omega}{2}}
+    \end{align*}
+
+  \item Proof that (A,B,C)$\implies$(3):
+    {\begin{align*}
+      &\linspan\setn{\opTrn^n\fpsi}  = \spW_0
+      \\&\iff  \spV_1 = \spV_0 \adds \mcom{\linspan\setn{\opTrn^n\fpsi}}{$\spW_0$}
+        \qquad\text{by \prefp{def:seqWn}}
+      \\&\iff  \mcom{\linspan\setn{\opDil\opTrn^n\fphi}}{$\spV_1$}
+                 = \mcom{\linspan\setn{\opTrn^n\fphi}}{$\spV_0$}
+             \adds \mcom{\linspan\setn{\opTrn^n\fpsi}}{$\spW_0$}
+        \qquad\text{by \prefp{def:mra}}
+      \\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+                 \sum_{n\in\Z}a_n \opDil\opTrn^n\fphi
+               = \sum_{n\in\Z}b_n \opTrn^n\fphi
+               + \sum_{n\in\Z}c_n \opTrn^n\fpsi
+        \qquad\text{by \prefp{def:span}}
+       %&&     \text{by definition of $\linspan$ \xref{def:span}}
+      \\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+                 \opFT\brs{\sum_{n\in\Z}a_n \opDil\opTrn^n\fphi}
+               = \opFT\brs{\sum_{n\in\Z}b_n \opTrn^n\fphi    }
+               + \opFT\brs{\sum_{n\in\Z}c_n \opTrn^n\fpsi    }
+        \qquad\text{by \prefp{def:ft}}
+       %&&     \text{by definition of $\opFT$ \xref{def:ft}}
+      \\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+                 \sum_{n\in\Z}a_n \opFT\opDil\opTrn^n\fphi
+               = \sum_{n\in\Z}b_n \opFT\opTrn^n\fphi
+               + \sum_{n\in\Z}c_n \opFT\opTrn^n\fpsi
+      %\\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+      %           \sum_{n\in\Z}a_n \opDili\opFT\opTrn^n\fphi
+      %         = \sum_{n\in\Z}b_n e^{-i\omega n}\Fphi(\omega)
+      %         + \sum_{n\in\Z}c_n e^{-i\omega n}\Fpsi(\omega)
+      %  \qquad\text{by \prefp{cor:FTD}}
+      %\\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+      %           \sum_{n\in\Z}a_n \opDili\brs{e^{-i\omega n} \Fphi(\omega)}
+      %         = \sum_{n\in\Z}b_n e^{-i\omega n}\Fphi(\omega)
+      %         + \sum_{n\in\Z}c_n e^{-i\omega n}\Fpsi(\omega)
+      %  \qquad\text{by \pref{cor:FTD}}
+      \\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+                 \sum_{n\in\Z}a_n \brs{\cwt e^{-i\frac{\omega}{2} n} \Fphi\brp{\frac{\omega}{2}}}
+               = \sum_{n\in\Z}b_n e^{-i\omega n}\Fphi(\omega)
+               + \sum_{n\in\Z}c_n e^{-i\omega n}\Fpsi(\omega)
+        \\&\qquad\qquad\text{by \prefp{cor:FTD}}
+      \\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+                 \cwt \Fphi\brp{\frac{\omega}{2}} \sum_{n\in\Z}a_n e^{-i\frac{\omega}{2} n}
+               = \Fphi(\omega)\sum_{n\in\Z}b_n e^{-i\omega n}
+               + \Fpsi(\omega)\sum_{n\in\Z}c_n e^{-i\omega n}
+      \\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+                 \cwt \Fphi\brp{\frac{\omega}{2}} \Fa\brp{\frac{\omega}{2}}
+               =      \Fphi\brp{\omega}           \Fb\brp{\omega}
+               +      \Fpsi\brp{\omega}           \Fc\brp{\omega}
+               \qquad\text{by def. of \ope{DTFT} \xref{def:dtft}}
+      \\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+               \text{(by \prefp{lem:Fphi})}
+         \\&\qquad\qquad \cwt \Fa\brp{\frac{\omega}{2}} \Fphi\brp{\frac{\omega}{2}}
+                       = \cwt \Fb\brp{\omega}           \Dh  \brp{\frac{\omega}{2}} \Fphi\brp{\frac{\omega}{2}}
+                       + \cwt \Fc\brp{\omega}           \Fg  \brp{\frac{\omega}{2}} \Fphi\brp{\frac{\omega}{2}}
+      \\&\iff  \begin{array}{C}\forall \seqn{a_n}\exists\seqn{b_n},\seqn{c_n}\\\st\end{array}\quad
+                 \Fa\brp{\frac{\omega}{2}}
+               = \Fb\brp{\omega}           \Dh  \brp{\frac{\omega}{2}}
+               + \Fc\brp{\omega}           \Fg  \brp{\frac{\omega}{2}}
+      \\&\implies (3) \qquad\text{by \prefp{item:ows_g_abc}}
+    \end{align*}}
+
+  \item Proof that (A,B)$\impliedby$(3): \label{item:ows_g_AB3}
+    \begin{align*}
+      \linspan\setn{\opTrn^n\fpsi}=\spW_0
+        &\implies \fpsi\in\spW_0
+      \\&\implies \text{(A) and (C)}
+        && \text{by \prefp{prop:ortho_fW0}}
+    \end{align*}
+
+  \item Proof that (C)$\impliedby$(3) and $\setn{\opTrn^n\fphi}=\kdelta_n$:
+    \begin{align*}
+      1
+        &= \Spsi(\omega)
+        && \text{by right hypothesis and \prefp{thm:Swfgo}}
+      \\&= \abs{\Fv(\omega)}^2
+        && \text{by \prefp{item:ows_g_Spsi}}
+     \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+\subsection{Sufficient conditions}
+%=======================================
+If we know the \structe{scaling coefficient sequence} $\seqn{\fh_n}$ \xref{def:hn}, then
+\prefp{thm:ows_g} gives a necessary and sufficient condition for the
+\structe{wavelet coefficient sequence} $\seqn{\fg_n}$ \xref{def:gn} to generate a \structe{wavelet system} \xref{def:wavsys}.
+The actual value of $\seqn{\fg_n}$ depends on $\seqn{\fh_n}$ and the choice of $\Fv(\omega)$ \xref{thm:ows_g}.
+Here are some possible choices:\footnote{
+  \citerpgc{strang1996}{109}{0961408871}{``A Brief History of $\fh_1$"},
+  \citerpg{vidakovic}{59}{0471293652}
+  }
+\\$\begin{array}{|Frclcrclp{55mm}|}
+  \hline
+  1. & \Fv(\omega) &\eqd& 1
+     & \implies
+     & \fg_n       &=&    (-1)^n \fh_{-1-n}^\ast
+     &
+     \\
+  2. & \Fv(\omega) &\eqd& e^{i\omega}
+     & \implies
+     & \fg_n       &=&    (-1)^n \fh_{-3-n}^\ast
+     &
+     \\
+  3. & \Fv(\omega)&\eqd&  e^{-i\omega}
+     &\implies
+     & \fg_n       &=&    (-1)^n \fh_{1-n}^\ast
+     & \scs\ragr\prope{conjugate mirror filter} (CMF)
+     \tabularnewline
+  4. & \Fv(\omega) &\eqd& \pm(-1)^{\xN+1}e^{-i\frac{\omega}{2}(\xN+1)}
+     & \implies
+     & \fg_n       &=&    \pm (-1)^n \fh_{\xN-n}^\ast
+     & \scs\ragr\prope{conjugate quadrature filter} (CQF), $\xN\in\Z$,\\\xref{def:cqf}
+     \tabularnewline
+  \hline
+\end{array}$
+
+%, many choices
+%a sufficient condition for $\seqn{\fg_n}$ \xref{def:gn} is the \prope{conjugate quadrature filter condition}
+%\xref{def:cqf} $\fg_n=\pm(-1)^n h^\ast_{N-n}$.
+%This condition is used repeatedly in this text.
+%\prefpp{thm:ortho_qmr} supplies a sufficient condition for computing a sequence of
+%\structe{wavelet coefficients} $\seqn{\fg_n}$ \xref{def:gn}.
+
+
+%%--------------------------------------
+% weaker version of {thm:ows_g}
+%\begin{theorem}
+%\footnote{
+%  \citerpgc{hernandez1996}{57}{0849382742}{\scshape Proposition 2.13},
+%  \citerppg{vidakovic}{58}{59}{0471293652},
+%  \citerpg{dau}{133}{0898712742}
+%  }
+%
+%%--------------------------------------
+%Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+%%with an orthonormal MRA system such that $\linspan\setn{\opTrn^n\fphi}=\spV_0$.
+%Let $\Fv$ be a measurable function in $\spLLR$ \xref{def:spLLR}.
+%\thmbox{
+%  \brb{\begin{array}{FMD}
+%    1. & $\Fpsi(2\omega) = e^{i\omega}\Fv(2\omega)\Fg^\ast(\omega+\pi)\Fphi(\omega)$ & and \\
+%    2. & $\Fv(\omega)=1$ & and \\
+%    3. & $\Fv(\omega)=\Fv(\omega+2\pi)$
+%  \end{array}}
+%  \quad\implies\quad
+%  \mcom{\brb{\begin{array}{FrclD}
+%    %1. & \inprod{\fpsi}{\opTrn^n\fpsi} &=& \kdelta_n & and \\
+%    %2. & \inprod{\fphi}{\opTrn^n\fpsi} &=& 0         & and \\
+%     & \linspan\setn{\opTrn^n\fpsi}  &=& \spW_0
+%  \end{array}}}{$\fpsi$ is a \structe{wavelet} for $\spLLR$}
+%  }
+%\end{theorem}
+
+
+%--------------------------------------
+\begin{theorem} %[\thmd{quadrature mirror relation}]
+\label{thm:ortho_qmr}
+\footnote{
+  %\citerpg{vidakovic}{59}{0471293652},
+  \citerppg{mallat}{236}{238}{012466606X}
+  }
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:ows}.
+\thmbox{
+  \brb{\begin{array}{FlD}
+    (A). & \mcom{\inprod{\fphi}{\opTrn^n\fphi}=\kdelta_n}{$\setn{\opTrn^n\fphi}$ is \prope{orthonormal}} & and \\
+    (B). & \fg_n  = \mcom{\pm (-1)^n \fh_{\xN-n}^\ast}{\prope{CQF} condition} & $\forall n\in\Z$
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{FlclD}
+    (1). & \inprod{\fphi}{\opTrn^n\fpsi}   &=&  0            & and \\
+    (2). & \inprod{\fpsi}{\opTrn^n\fpsi}   &=&  \kdelta_n    & and \\
+    (3). & \linspan\setxZ{\opTrn^n\fpsi}   &=&  \spW_0       &
+  \end{array}}
+  \quad\scy \forall n\in\Z
+  }
+%\thmboxt{
+%  $\brb{\begin{array}{FlDD}
+%    (1). & \inprod{\fphi}{\opTrn^n\fphi}=\kdelta_n  & ($\setn{\opTrn^n\fphi}$ is \prope{orthonormal}) & and \\
+%    (2). & \fg_n  = \pm (-1)^n \fh_{\xN-n}^\ast      & (\prope{CQF} \xref{def:cqf})                    & $\forall n\in\Z$
+%  \end{array}}$
+%  \\\indentx$\implies$\qquad
+%  $\brb{\begin{array}{FlclDD}
+%    (A). & \inprod{\fphi}{\opTrn^n\fpsi}   &=&  0            & ($\setn{\opTrn^n\fphi}$ is \prope{orthonormal})         & and \\
+%    (B). & \inprod{\fpsi}{\opTrn^n\fpsi}   &=&  \kdelta_n    & ($\spV_0\orthog\spW_0$)                                 & and \\
+%    (C). & \linspan\setxZ{\opTrn^n\fpsi}   &=&  \spW_0       & ($\setn{\opTrn^n\fpsi}$ is a\prope{basis} for $\spW_0$) &
+%  \end{array}}$
+%  \\$\scy \forall n\in\Z$
+%  }
+\end{theorem}
+\begin{proof}
+
+ %\item Proof that (2)$\implies$(1,2,3) of \prefp{thm:ows_g}:
+    \begin{align*}
+     \fg_n = \pm(-1)^n h^\ast_{\xN-n}
+        &\iff \Fg(\omega)=\pm(-1)^\xN e^{-i\omega\xN}\Dh^\ast(\omega+\pi)
+        &&    \text{by \thme{CQF theorem} \xref{thm:cqf}}
+      \\&\implies \Fpsi(2\omega)=\cwt \mcom{\pm(-1)^\xN e^{-i\omega\xN}\Dh^\ast(\omega+\pi)}{$\Fg(\omega)$} \Fphi(\omega)
+        &&    \text{by \prefp{prop:psi_g_phi}}
+      \\&\implies \Fpsi(2\omega)=\cwt \mcom{\brs{\pm(-1)^\xN e^{-i\omega(\xN+1)}}}{$v(2\omega)$} e^{i\omega}
+                                 \Dh^\ast(\omega+\pi)\,\Fphi(\omega)
+      \\&\implies
+           \brb{\begin{array}{FlclD}
+             (1). & \inprod{\fphi}{\opTrn^n\fpsi}   &=&  0         & and \\
+             (2). & \inprod{\fpsi}{\opTrn^n\fpsi}   &=&  \kdelta_n & and \\
+             (3). & \linspan\setxZ{\opTrn^n\fpsi}   &=&  \spW_0    &
+           \end{array}}
+        && \text{by \prefp{thm:ows_g}}
+    \end{align*}
+
+%\begin{enumerate}
+%Let $s\eqd\pm1$.
+%\begin{enumerate}
+%  %\item Proof that $\fg_{n}  = \pm (-1)^n  h(\xN-n) \iff \Fg(\omega)=\pm (-1)^\xN e^{-i\xN\omega} \Dh^\ast(\omega+\pi)$: See \prefp{thm:ortho_qmr}
+%%
+%  \item Proof that $\inprod{\fphi}{\opTrn^n\fpsi}=0$:
+%    \begin{align*}
+%      \Shs(2\omega)
+%        &=  \Dh(\omega)\Fg^\ast(\omega)\cancelto{1}{\Swphi(\omega)}
+%          + \Dh(\omega+\pi)\Fg^\ast(\omega+\pi)\cancelto{1}{\Swphi(\omega+\pi)}
+%        &&  \text{by \prefp{thm:gen_quadcon}}
+%      \\&=  \Dh(\omega)\Fg^\ast(\omega) + \Dh(\omega+\pi)\Fg^\ast(\omega+\pi)
+%        &&  \text{by hypothesis (1) and \prefp{thm:Swfgo}}
+%      \\&=  \Dh(\omega)
+%            \left[s(-1)^\xN e^{-i\xN\omega} \Dh^\ast(\omega+\pi) \right]^\ast
+%          \\&\indentx+ \Dh(\omega+\pi)
+%            \left[s(-1)^\xN e^{-i\xN(\omega+\pi)} \Dh^\ast(\omega+2\pi) \right]^\ast
+%        &&  \text{by hypothesis (2) and \prefp{thm:ortho_qmr}}
+%      \\&=  \Dh(\omega)
+%            s(-1)^\xN e^{-i\xN\omega} \Dh(\omega+\pi)
+%          \\&\indentx+ s(-1)^\xN \Dh(\omega+\pi)
+%            e^{-i\xN\omega}e^{-i\xN\pi} \Dh(\omega)
+%      \\&=  s(-1)^\xN \Dh(\omega)\Dh(\omega+\pi) e^{-i\xN\omega}
+%            \cancelto{0}{[1+e^{-i\pi\xN}]}
+%      \\&=  0
+%      \\\iff &\inprod{\fphi(x)}{\opTrn^n\fpsi(x)}=0
+%        &&  \text{by \prefp{thm:Swfgo}}
+%    \end{align*}
+%
+%\item Proof that $\inprod{\fpsi}{\opTrn^n\fpsi}=\kdelta_n$:
+%\begin{align*}
+%  2\Spsi(2\omega)
+%    &=  \abs{\Fg(\omega)}^2 \cancelto{1}{\Sphi(\omega)} + \abs{\Fg(\omega+\pi)}^2 \cancelto{1}{\Sphi(\omega+\pi)}
+%    && \text{by \pref{thm:gen_quadcon}}
+%  \\&=  \abs{\Fg(\omega)}^2 + \abs{\Fg(\omega+\pi)}^2
+%        &&  \text{by \prefp{thm:Swfgo}}
+%  \\&=  \abs{s(-1)^\xN  e^{-i\xN\omega} \Dh^\ast(\omega+\pi)}^2
+%    \\&\indentx  + \abs{s(-1)^\xN  e^{-i\xN(\omega+\pi)} \Dh^\ast(\omega+\pi+\pi)}^2
+%    &&  \text{by hypothesis (2) and \prefp{thm:ortho_qmr}}
+%  \\&=  \abs{\Dh^\ast(\omega+\pi)}^2 + \abs{\Dh^\ast(\omega+\pi+\pi)}^2
+%  \\&=  \abs{\Dh^\ast(\omega+\pi)}^2 + \abs{\Dh^\ast(\omega)}^2
+%    &&  \text{by \prefp{prop:dtft_2pi}}
+%  \\&=  2
+%    && \text{by \prefp{lem:ows_quadcon}}
+%  \\\iff& \inprod{\fpsi}{\opTrn^n\fpsi} = \kdelta_n
+%    && \text{by \prefp{thm:Swfgo}}
+%\end{align*}
+
+%\item Proof that $\linspan\setn{\opTrn^n\fpsi}=\spW_0$: by \prefp{thm:ows_g}.
+%  This follows from \pref{lem:ows_quadcon}.
+%  \begin{enumerate}
+%    \item Proof that
+%      $\Fg(\omega)=s(-1)^\xN e^{i\xN\omega} \Dh^\ast(\omega+\pi)
+%       \implies
+%       \Dh(\omega)\Fg^\ast(\omega)+\Dh(\omega+\pi)\Fg^\ast(\omega+\pi)=0
+%      $:
+%    \begin{align*}
+%      &\Dh(\omega)\Fg^\ast(\omega)+\Dh(\omega+\pi)\Fg^\ast(\omega+\pi)
+%      \\&=  \Dh(\omega)
+%            \left[ s(-1)^\xN e^{i\xN\omega} \Dh^\ast(\omega+\pi) \right]^\ast
+%          + \Dh(\omega+\pi)
+%            \left[ s(-1)^\xN e^{i\xN(\omega+\pi)} \Dh^\ast(\omega+2\pi) \right]^\ast
+%            \quad\text{by left hypothesis}
+%      \\&=  \Dh(\omega)
+%            s(-1)^\xN e^{-i\xN\omega} \Dh(\omega+\pi)
+%          + \Dh(\omega+\pi)
+%            s(-1)^\xN e^{-i\xN\omega}e^{-i\xN\pi} \Dh(\omega)
+%      \\&=  s(-1)^\xN \Dh(\omega)\Dh(\omega+\pi) e^{-i\xN\omega}
+%            \left[1+e^{-i\xN\pi}\right]
+%      \\&=  0
+%    \end{align*}
+%
+%
+%
+%    \item Proof that $\left|\Fg(\omega)\right|^2 + \left|\Fg(\omega+\pi)\right|^2 = 2$:
+%    \begin{align*}
+%      &\left|\Fg(\omega)\right|^2 + \left|\Fg(\omega+\pi)\right|^2
+%      \\&=  \left| s(-1)^\xN e^{i\xN\omega} \Dh^\ast(\omega+\pi)  \right|^2
+%          + \left| s(-1)^\xN e^{i\xN(\omega+\pi)} \Dh^\ast(\omega+\pi+\pi) \right|^2
+%            \quad\text{by left hypothesis}
+%      \\&=  \left|\Dh^\ast(\omega+\pi)  \right|^2
+%          + \left|\Dh^\ast(\omega) \right|^2
+%      \\&=  \left|\Dh(\omega    ) \right|^2
+%          + \left|\Dh(\omega+\pi) \right|^2
+%      \\&=  2
+%            \qquad\text{by \prefpp{thm:gen_quadcon} and \prefpp{thm:Swfgo}}
+%    \end{align*}
+%  \end{enumerate}
+%
+%\item
+%\begin{align*}
+%  0
+%    &= \inprod{\fphi(x)}{\fpsi(x-k)}
+%%   && \text{by \pref{def:psi}}
+%  \\&= \inprod{\sqrt{2}\sum_{n\in\Z} \fh_{n} \fphi(2x-n)}
+%              {\sqrt{2}\sum_{m\in\Z}\fg(m)\fphi(2x-2k-m)}
+%    && \text{by \pref{thm:dilation_eq}}
+%  \\&= \sqrt{2}\sqrt{2}\sum_{n\in\Z} \sum_{m\in\Z}\fh_{n}  \fg^\ast(m)
+%       \inprod{\fphi(2x-n)}{\fphi(2x-2k-m)}
+%  \\&= 2\sum_{n\in\Z} \sum_{m\in\Z}\fh_{n}  \fg^\ast(m) \kdelta(n-2k-m)
+%  \\&= 2\sum_{n\in\Z} \fh_{n}  \fg^\ast(n-2k)
+%  \\&= 2\sum_{n\mathrm{\;even}} \fh_{n}  \fg^\ast(n-2k)
+%       +   2\sum_{n\mathrm{\;odd}} \fh_{n}  \fg^\ast(n-2k)
+%  \\&= 2\sum_{n\in\Z}  h(2n) \fg^\ast(2n-2k)
+%        +   2\sum_{n\in\Z}  h(2n+1) \fg^\ast(2n-2k+1)
+%\end{align*}
+%
+%Proof not yet complete. \problem
+%References: \\
+%\begin{liste}
+%  \item \citerp{burrus}{58}
+%  \item \citerpp{burrus}{250}{251}
+%  \item \citerpp{mallat}{236}{238}
+%\end{liste}
+%\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:ows_sc}
+%---------------------------------------
+Let $\spO\eqd\wavsys$ be a tuple. %\structe{wavelet system} \xref{def:wavsys}.
+\thmboxt{
+  $\brb{\begin{array}{F>{\ds}lc>{\ds}lDD}
+    (A). & \sum_n\fh_n                      &=& \sqrt{2}                             & [\prope{admissibility}                    \xref{thm:admiss}]     & and\\
+    (B). & \sum_{m\in\Z}\fh_m h^\ast_{m-2n} &=& \kdelta_n                            & [\prope{ortho. quadrature condition}      \xref{lem:oms_quadcon}]& and\\
+    (C). & \sum_{k\in\Z}(-1)^k k^n\fh_k     &=& 0\quad{\scy\forall n=0,1,\ldots,p-1} & [\prope{$p$ vanishing moments}            \xref{thm:gh_cqf}]     & and\\
+    (D). & \inf_{\omega\in\intcc{-\pi/2}{\pi/2}}\abs{\Fh(\omega)}&>&0               & [\prope{low-pass response}]                                     & and\\
+    (E). &\fg_n                             &=& (-1)^n h^\ast_{N-n}                  & [\prope{CQF condition}                    \xref{def:cqf}]
+  \end{array}}$
+  \\\indentx$\implies$\qquad
+  $\brb{\begin{array}{FMD}
+    (1). & $\spO$ is an \structe{orthonormal wavelet system} & and \\
+    (2). & $\fpsi$ has \prope{$p$ vanishing moments}
+  \end{array}}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: $\mrasys$ is an \structe{orthonormal MRA system}. Proof: \label{ilem:ows_sc_oms}
+    \begin{enumerate}
+      \item If $p=1$, then this is the \structe{Haar MRA system}.
+      \item If $p\ge2$, then proof follows from \prefp{thm:ortho_sc}:
+        \begin{enumerate}
+          \item Proof that $\sum_{n\in\Z}h_{n}=\sqrt{2}$: by left hypothesis (A)
+          \item Proof that $\sum_{m\in\Z}h_m h^\ast_{m-2n} = \kdelta_n$: by left hypothesis (B)
+          \item Proof that $\Fphi(\omega)$ is \prope{continuous} at $0$: 
+            \begin{align*}
+              (C) &\implies \sum_{k\in\Z}(-1)^k k^n\fh_k = 0\quad{\scy\forall n=0,1,\ldots,p-1,\,p\ge2}
+                \\&\implies \text{$\fpsi$ has \prope{$p$ vanishing moments}}
+                  && \text{by \prefp{thm:gh_cqf}}
+                \\&\implies \text{$\Fphi(\omega)$ is \prope{continuous} at $\omega=0$}
+                  && \text{by \prefp{thm:vanish_continuous}}
+            \end{align*}
+          \item Proof that $\ds\inf_{\omega\in\intcc{-\pi/2}{\pi/2}}\abs{\Dh(\omega)}>0$: by left hypothesis (D)
+        \end{enumerate}
+    \end{enumerate}
+  \item Proof for (1): by \pref{ilem:ows_sc_oms}, (E), and \prefp{thm:ortho_qmr}.
+  \item Proof for (2): by (C) and \prefp{thm:gh_cqf}.
+\end{enumerate}
+\end{proof}
+
+
+
+
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerp{lawton90}{1899}
+%  }
+%\label{thm:admiss_quad==>tight}
+%\index{quadrature condition}
+%\index{admissibility condition}
+%\index{quadrature mirror relation}
+%\index{partition of unity}
+%\index{frame!tight}
+%\index{tight frame}
+%\index{scaling coefficients!necessary and sufficient conditions}
+%%--------------------------------------
+%Let $\fphi(x)$ be a scaling function
+%with scaling coefficients $\seq{\fh_{n} }{n\in\Z}$
+%and $\fpsi(x)=\sum_{n\in\Z}\fg_{n} \fphi(2x-n)$ be a wavelet function.
+%\ifdochas{frames}{\footnote{
+%  \structe{tight frame}: \prefp{def:frame}
+%  }}
+%\thmbox{
+%  \brbr{\begin{array}{FllD}
+%       1. & \mcom{\sum_{n\in\Z} \fh_{n}  =  \sqrt{2}}{admissibility condition} & and
+%     \\2. & \mcom{\sum_{m\in\Z} h(m) h^\ast(m-2n) = \kdelta_n}{quadrature condition} & and
+%     \\3. & \mcom{\fg_n\eqd \pm(-1)^n \fh_{\xN-n},\quad\xN\in\Zo}{quadrature mirror condition} &
+%  \end{array}}
+%  \implies
+%  \brbl{\begin{array}{FlC}
+%       1. & \mcom{\sum_{n\in\Z} \fphi(x-n) = 1}{partition of unity} & \text{and}
+%     \\2. & \mcom{\ff(x) = \sum_j\sum_{n\in\Z} \inprod{\ff(x)}{\fpsi_{jn}(x)}\fpsi_{jn}(x)}{tight frame}&\scy\forall\ff\in\spLLR
+%  \end{array}}
+%  }
+%\end{theorem}
+
+
+
+
+
+
+%=======================================
+\section{Examples}
+%=======================================
+The scaling coefficients can be directly computed using
+simultaneous equations generated from the following
+necessary conditions.\cittrpp{vidakovic}{92}{93}
+They can be solved using a symbolic equation software package%
+\footnote{\begin{tabular}[t]{lll}
+  {\em Maxima}\texttrademark      & \url{http://maxima.sourceforge.net/}  & free and open source   \\
+  {\em Macsyma}\texttrademark     & \url{http://www.scientek.com/macsyma/mxmain.htm} & a very non-free relative of {\em Maxima}\\
+  {\em MuPAD}\texttrademark       & \url{http://www.mupad.de/}            & 30 day free trial   \\
+  {\em Maple}\texttrademark       & \url{http://www.maplesoft.com/} & \\
+  {\em Mathematica}\texttrademark & \url{http://www.wolfram.com/} &
+  \end{tabular}}
+or by hand.
+
+%--------------------------------------
+\begin{example}[\exmd{2 coefficient case}---\exmd{Haar wavelet system}]
+\label{ex:ortho_n=2}
+\index{Haar wavelet}
+\index{wavelets!Haar}
+%--------------------------------------
+Let $\wavsys$ be an \emph{orthogonal} wavelet system with two non-zero scaling coefficients.
+\exbox{
+  \brb{\begin{array}{FMMD}
+    1. & $\support\fphi(x)=\intcc{0}{1}$                             & \xref{thm:support}     & and\\
+    2. & \prope{admissibility condition}                             & \xref{thm:admiss}      & and \\
+    3. & $\setn{\opTrn^n\fphi}$ is \prope{orthonormal}                & \xref{lem:ows_quadcon} & and\\
+    4. & $\fg_n  = \pm (-1)^n \fh_{\xN-n}^\ast$ $\scy\forall n\in\Z$  & \xref{thm:ortho_qmr}        &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{r|l|l}%
+    n  & \fh_{n}  &\fg_n\\
+    \hline
+    0  & \ds \cwt  & \ds \cwt  \\
+    1  & \ds \cwt  & \ds -\cwt \\
+    \text{other} & 0 & 0
+  \end{array}}
+  }%
+\\
+  \begin{tabular}{cc}
+    \includegraphics{graphics/d1_phi_h.pdf}&\includegraphics{graphics/d1_psi_g.pdf}
+  \end{tabular}
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1) $\implies$ that only $\fh_0$ and $\fh_1$ are non-zero: by \prefp{thm:support}.
+
+  \item Proof for values of $\fh_0$ and $\fh_1$:
+    \begin{align*}
+     \fh_0 +\fh_1 &= \sqrt{2} && \text{by admissibility condition---\prefp{thm:admiss}}\\
+     \fh_0^2 +\fh_1^2 &= 1    && \text{orthogonal quadrature condition---\prefp{lem:ows_quadcon}}
+    \end{align*}
+
+    \begin{align*}
+     \fh_0^2 + \brp{\sqrt{2}-h_0}^2 &= 1 \\
+      2h_0^2 - 2\sqrt{2}h_0 + 1 &= 0 \\
+     \fh_0 &= \frac{2\sqrt{2} \pm \sqrt{\brp{2\sqrt{2}}^2-4\cdot2\cdot1}}
+           {2\cdot2}
+        \\&= \cwt
+     \\
+     \\
+    \fh_1 &= \sqrt{2} -\fh_0
+       \\&= \sqrt{2} - \cwt
+        \\&= \cwt
+    \end{align*}
+
+
+  \item Note: $\fh_0$ and $\fh_1$ are the \hie{Haar scaling coefficients}.
+    They can also be produced using other systems of equations including the following:
+    \begin{dingautolist}{"AC}
+      \item Admissibility condition and \hie{partition of unity}---\prefpp{ex:pun_n=2}
+      \item \hie{Daubechies-$p1$} wavelets computed using spectral techniques---\prefpp{ex:dau-p1}
+    \end{dingautolist}
+
+  \item Proof for values of $\fg_0$ and $\fg_1$: by (4) and \prefp{thm:ortho_qmr}.
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerp{vidakovic}{92},
+  \citerpg{soman2010}{83}{9788120340534}
+  }
+\label{ex:pun_n=4}
+%---------------------------------------
+In this example,
+%we remove the orthonormality constraint and replace it with
+%the more general \hie{partition of unity} constraint
+%(all orthonormal wavelet systems possess the partition of unity property---\prefp{thm:quad=>zero_unity}).
+we constrain the system to have $p=2$ vanishing moments.
+%In this case, the equations are independent and the coefficients
+%can be calculated.
+This same wavelet system is identical to the \hie{Daubechies-$p2$} wavelet system
+which is computed using a spectral factorization technique---\prefpp{ex:dau-p2}.
+Here are the equations:
+
+\[\begin{array}{*{9}{r}D}
+ \fh_0      &+&\fh_1      &+&\fh_2   &+&\fh_3   &=& \sqrt{2}
+  &{(admissibility---\prefp{thm:admiss})} \\
+ \fh_0      &-&\fh_1      &+&\fh_2   &-&\fh_3   &=& 0
+  &{(vanishing 0th moment/partition of unity---\prefpo{thm:pun_zero})} \\
+           &-&\fh_1      &+& 2h_2  &-&3h_3   &=& 0
+  &{(vanishing 1st moment---\prefp{thm:gh_cqf})} \\
+ \fh_0^2    &+&\fh_1^2    &+&\fh_2^2 &+&\fh_3^2 &=& 1
+  &{($m=0$ ortho. quad. con.---\prefp{lem:ows_quadcon})}
+\end{array}\]
+Then the scaling coefficients have the following values:\\
+\begin{minipage}{5\tw/16}%
+  \exbox{\begin{array}{r|l|l}%
+    n & \sqrt{2}\fh_n  & \sqrt{2}\fg_n  \\
+    \hline
+      0   & \frac{1+\sqrt{3}}{4}  &  \frac{1-\sqrt{3}}{4}  \\
+      1   & \frac{3+\sqrt{3}}{4}  & -\frac{3-\sqrt{3}}{4}  \\
+      2   & \frac{3-\sqrt{3}}{4}  &  \frac{3+\sqrt{3}}{4}  \\
+      3   & \frac{1-\sqrt{3}}{4}  & -\frac{1+\sqrt{3}}{4}
+  \end{array}}%
+\end{minipage}%
+\begin{minipage}{11\tw/16}%
+  \begin{tabular}{cc}
+    \includegraphics{graphics/d2_phi_h.pdf}&\includegraphics{graphics/d2_psi_g.pdf}
+  \end{tabular}
+\end{minipage}
+\end{example}
+\begin{proof}
+\begin{enumerate}
+\item Solve the 3 linear equations in terms of $\fh_3$:
+\begin{align*}
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  1 &  1 &  1 & \sqrt{2}   \\
+    1 & -1 &  1 & -1 & 0          \\
+    0 & -1 &  2 & -3 & 0
+\end{array}\right]
+&\rightarrow&
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  1 &  1 &  1 & \sqrt{2}   \\
+    0 & -2 &  0 & -2 &-\sqrt{2}   \\
+    0 & -1 &  2 & -3 & 0
+\end{array}\right]
+&\rightarrow&
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  0 &  3 & -2 & \sqrt{2}   \\
+    0 &  0 & -4 &  4 &-\sqrt{2}   \\
+    0 &  1 & -2 &  3 & 0
+\end{array}\right]
+&\rightarrow&
+\\
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  0 &  3 & -2 & \sqrt{2}   \\
+    0 &  1 & -2 &  3 & 0          \\
+    0 &  0 &  1 & -1 & \frac{\sqrt{2}}{4}
+\end{array}\right]
+&\rightarrow&
+\left[\begin{array}{rrrr@{\hspace{3ex}}r}
+    1 &  0 &  0 &  1 & \frac{\sqrt{2}}{4}   \\
+    0 &  1 &  0 &  1 & \cwt   \\
+    0 &  0 &  1 & -1 & \frac{\sqrt{2}}{4}
+\end{array}\right]
+\end{align*}
+\begin{align*}
+ \fh_0 &= \frac{\sqrt{2}}{4} -\fh_3  \\
+ \fh_1 &= \cwt -\fh_3  \\
+ \fh_2 &= \frac{\sqrt{2}}{4} +\fh_3  \\
+\end{align*}
+
+\item Solve the forth quadratic equation in terms of $\fh_3$:
+\begin{align*}
+  1
+    &=  \left(\frac{\sqrt{2}}{4}-h_3\right)^2
+    &&+ \left(\cwt-h_3\right)^2
+    &&+ \left(\frac{\sqrt{2}}{4}+h_3\right)^2
+    &&+\fh_3^2 \hs{1cm}
+  \\&=  \left(\frac{1}{8}-\sqrt{2}{2}h_3+h_3^2\right)
+    &&+ \left(\half -\sqrt{2}h_3+h_3\right)
+    &&+ \left(\frac{1}{8}+\cwt+h_3^2\right)
+    &&+\fh_3^2 \hs{1cm}
+  \\&=  4h_3^2 -\sqrt{2}h_3 + \frac{3}{4}
+\\
+  4h_3^2 -\sqrt{2}h_3 - \frac{1}{4} &=0
+\\
+ \fh_3
+    &= \frac{\sqrt{2}\pm\sqrt{2+4}}{8}
+  \\&= \frac{\sqrt{2}\pm\sqrt{6}}{8}
+  \\&= \frac{\sqrt{2}}{8}(1\pm\sqrt{3})
+\end{align*}
+
+\item Simplify the results:
+\[\begin{array}{r*{4}{cl}}
+ \fh_3 &=& \frac{\sqrt{2}}{8}(1-\sqrt{3})
+\\
+ \fh_2 &=& \frac{\sqrt{2}}{4} +\fh_3
+      &=& \frac{\sqrt{2}}{4} + \frac{\sqrt{2}}{8}(1-\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(2+1-\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(3-\sqrt{3})
+\\
+ \fh_1 &=& \cwt -\fh_3
+      &=& \cwt - \frac{\sqrt{2}}{8}(1-\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(4-1+\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(3+\sqrt{3})
+\\
+ \fh_0 &=& \frac{\sqrt{2}}{4} -\fh_3
+      &=& \frac{\sqrt{2}}{4} - \frac{\sqrt{2}}{8}(1-\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(2-1+\sqrt{3})
+      &=& \frac{\sqrt{2}}{8}(1+\sqrt{3})
+\end{array}\]
+
+\item Solution using {\em Maxima}\texttrademark \hspace{1ex}(2 sets of solutions): \\
+%\begin{minipage}{120mm}
+\begin{lstlisting}[language=MuPAD,frame=single]
+  solve([h0+h1+h2+h3=sqrt(2),h0-h1+h2-h3=0,-h1+2*h2-3*h3=0,h0^2+h1^2+h2^2+h3^2=1],
+        [h0,h1,h2,h3]);
+\end{lstlisting}
+%\end{minipage}\\
+\[\begin{array}{rcl}
+   \fh_0 &=& -\frac{\sqrt{6}- \sqrt{2}}{8} \\
+   \fh_1 &=& -\frac{\sqrt{6}-3\sqrt{2}}{8} \\
+   \fh_2 &=&  \frac{\sqrt{6}+3\sqrt{2}}{8} \\
+   \fh_3 &=&  \frac{\sqrt{6}+ \sqrt{2}}{8} \\
+  \end{array}
+  \hspace{2cm}
+  \begin{array}{rcl}
+   \fh_0 &=&  \frac{\sqrt{6}+ \sqrt{2}}{8} \\
+   \fh_1 &=&  \frac{\sqrt{6}+3\sqrt{2}}{8} \\
+   \fh_2 &=& -\frac{\sqrt{6}-3\sqrt{2}}{8} \\
+   \fh_3 &=& -\frac{\sqrt{6}- \sqrt{2}}{8}
+  \end{array}\]
+%                SQRT(6) - SQRT(2)         SQRT(2) SQRT(3) - 3 SQRT(2)
+%(%o36) [[h0 = ------------------, h1 = ----------------------------,
+%                       8                             8
+%
+%     SQRT(2) SQRT(3) + 3 SQRT(2)       SQRT(2) SQRT(3) + SQRT(2)
+%h2 =---------------------------, h3 =-------------------------],
+%                 8                               8
+%
+%      SQRT(6) + SQRT(2)	      SQRT(2) SQRT(3) + 3 SQRT(2)
+%[h0 =-----------------, h1 =---------------------------,
+%              8                           8
+%
+%       SQRT(2) SQRT(3) - 3 SQRT(2)         SQRT(2) SQRT(3) - SQRT(2)
+%h2 = ----------------------------, h3 = --------------------------]]
+%                  8                                   8
+%\end{verbatim}
+\end{enumerate}
+\end{proof}
+
+
+
+
+%--------------------------------------
+\begin{example}[4 scaling coefficient case]
+\label{ex:ortho_n=4}
+%--------------------------------------
+This example attempts to use the admissibility condition (\prefp{thm:admiss})
+and orthonormal quadrature condition (\prefp{lem:ows_quadcon})
+to design a 4 coefficient wavelet system.
+However, it fails due to the failure of the equations to be independent.
+
+Let $\wavsys$ be an \emph{orthogonal} wavelet system with four non-zero scaling coefficients.
+\begin{dingautolist}{"AC}
+  \item We can use the following four equations to try to compute the values of the
+        four scaling coefficients,
+        and then compute the four wavelet coefficients from the four scaling coefficients.
+        Note that the second, third, and fourth equations all assume orthonormality.
+        \[\begin{array}{*{9}{r}l}
+         \fh_0      &+&\fh_1      &+&\fh_2   &+&\fh_3   &=& \sqrt{2}
+          &\text{(admissibility---\prefp{thm:admiss})}
+          \\
+         \fh_0      &-&\fh_1      &+&\fh_2   &-&\fh_3   &=& 0
+          &\text{(zero at $-1$ from orthonormality---\prefpo{thm:quad=>zero_unity})}
+          \\
+         \fh_0^2    &+&\fh_1^2    &+&\fh_2^2 &+&\fh_3^2 &=& 1
+          &\text{($m=0$ ortho. quad. con.---\prefpo{lem:ows_quadcon})}
+          \\
+          \fh_0\fh_2 &+& \fh_1\fh_3 & &         & &         &=& 0
+          &\text{($m=1$ ortho. quad. con.---\prefpo{lem:ows_quadcon})}
+        \end{array}\]
+
+\item These equations are linearly independent, however they are
+      still dependent
+  \footnote{\begin{minipage}[t]{2\tw/16+1ex}%
+      \ttfamily\fontsize{0.5mm}{0.5mm}%\fntmono% \usefont{T1}{put}{b}{n}%
+      \begin{Verbatim}[frame=single, gobble=8, label={\footnotesize\rmfamily email}]
+        Dear Dan,
+
+        (1) a   + b   +  c   +  d   = sqrt(2)
+        (2) a   - b   +  c   -  d   = 0
+        (3) a^2 + b^2 +  c^2 +  d^2 = 1
+        (4) ac  + bd                = 0
+        from the eq(1) and eq(2), we have
+        (5) a+c = 0.5 * sqrt(2)
+        (6) b+d = 0.5 * sqrt(2)
+
+        take square of (5) and (6), we have
+        (7) a^2 + 2ac + c^2 = 1/2
+        (8) b^2 + 2bd + d^2 = 1/2
+
+        Set equation(9) equals eq (7) + eq (8) , we have
+        (9) a^2 + b^2 + c^2 + d^2 + 2(ac + bd) = 1
+        Then, you see
+        eq (7), (8) , (3), (4) are dependent.
+
+
+        Shin-Lin
+      \end{Verbatim}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{13\tw/16-3ex}
+      Many many thanks to
+      \zht{\zhtXie\zhtXin\zhtLin} (Xi/`e X/-in L/'in) for pointing this out to me in a 2005 October 13 email.
+      (If you are viewing this text as a pdf file,
+       zoom in on the figure to the left to see text from \zht{\zhtXie\zhtXin\zhtLin}'s 2005 October 13 email.)
+    \end{minipage}
+  }
+  as shown next:
+  \begin{align*}
+    &  \brs{(h_0+h_1+h_2+h_3)+(h_0-h_1+h_2-h_3)}^2
+  \\&\qquad+\brs{(h_0+h_1+h_2+h_3)-(h_0-h_1+h_2-h_3)}^2
+  \\&= [2h_0+2h_2]^2+[2h_1+2h_3]^2
+  \\&= 4[h_0+h_2]^2+4[h_1+h_3]^2
+  \\&= 4[h_0^2+2h_0h_2+h_2^2]+4[h_1^2+2h_1h_3+h_3^2]
+  \\&= 4[h_0^2 +\fh_1^2 +\fh_2^2 +\fh_3^2 + 2h_0h_2 + 2h_1h_3]
+  \\&= 4(h_0^2 +\fh_1^2 +\fh_2^2 +\fh_3^2) + 8(h_0h_2 +\fh_1h_3)
+  \\ \implies & \text{The last two equations are (non-linearly) dependent on the first two.}
+  \end{align*}
+
+\item Because of this dependence, the system of equations has one degree of freedom.
+
+\item Solutions using {\em Maxima}\\ %\texttrademark \\
+  {\footnotesize
+  \begin{verbatim}
+    solve([h0+h1+h2+h3=sqrt(2),h0-h1+h2-h3=0,h0^2+h1^2+h2^2+h3^2=1,h0*h2+h1*h3=0],
+          [h0,h1,h2,h3]
+         );
+  \end{verbatim}
+  }
+  \begin{enumerate}
+    \item {\em Maxima} first solution:
+      \begin{align*}
+       \fh_1 &= \frac{\sqrt{2}}{4}\left(\sqrt{-8h_0^2+4\sqrt{2}h_0+1}+1\right)
+      \\h_2 &= \frac{2h_0-\sqrt{2}}{2}
+      \\h_3 &= \frac{\sqrt{2}}{4}\left(\sqrt{-8h_0^2+4\sqrt{2}h_0+1}-1\right)
+      \end{align*}
+
+    \item {\em Maxima} second solution:
+      \begin{align*}
+       \fh_1 &= \frac{\sqrt{2}}{4}\left(\sqrt{-8h_0^2+4\sqrt{2}h_0+1}-1\right)
+      \\h_2 &= -\frac{2h_0-\sqrt{2}}{2}
+      \\h_3 &= \frac{\sqrt{2}}{4}\left(\sqrt{-8h_0^2+4\sqrt{2}h_0+1}+1\right)
+      \end{align*}
+  \end{enumerate}
+\end{dingautolist}
+\end{example}
+
+
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerpg{soman2010}{84}{9788120340534}
+  }
+\label{ex:pun_n=6}
+%---------------------------------------
+This example gives the equations for a 6 coefficient wavelet system.
+%However, they are not solved at this time.
+See also the six coefficient \hie{Daubechies-$p3$} wavelet system
+which is computed using a spectral factorization technique \xref{ex:dau-p3}.
+%\begin{enumerate}
+%\item Here are the equations:
+
+{\scs
+\[\begin{array}{*{13}{r}D}
+ \fh_0 &+&\fh_1 &+&\fh_2 &+&\fh_3 &+&\fh_4 &+&\fh_5   &=& \sqrt{2}
+  &{(admissibility)}
+  \\
+ \fh_0 &-&\fh_1 &+&\fh_2 &-&\fh_3 &+&\fh_4 &-&\fh_5 &=& 0
+  &{(vanishing 0th moment)}%, partition of unity, zero at $-1$)}
+  \\
+      &-&\fh_1 &+& 2h_2 &-& 3h_3 &+& 4h_4 &-& 5h_5   &=& 0
+  &{(vanishing 1st moment)}
+  \\
+      &-&\fh_1 &+& 4h_2 &-& 9h_3 &+& 16h_4 &-& 25h_5  &=& 0
+  &{(vanishing 2nd moment)}
+  \\
+ \fh_0^2 &+&\fh_1^2 &+&\fh_2^2 &+&\fh_3^2 &+&\fh_4^2 &+&\fh_5^2 &=& 1
+  &{($m=0$ orthonormal quadrature condition)}
+  \\
+ \fh_0h_2 &+&\fh_1h_3 &+&\fh_2h_4 &+&\fh_3h_5  &&  &&    &=& 0
+  &{($m=1$ orthonormal quadrature condition)}
+%  \\
+% \fh_0h_4 &+&\fh_1h_5 &&  &&  &&    &=& 0
+%  &\text{($m=2$ orthonormal quadrature condition)}
+\end{array}\]
+}
+
+%\item Solutions using {\em Maxima}\texttrademark \\
+%  \begin{lstlisting}[language=MuPAD]
+%    solve([h0+h1+h2+h3+h4+h5=sqrt(2),h0-h1+h2-h3+h4-h5=0,
+%           -h1+2*h2-3*h3+4*h4-5*h5=0, -h1+4*h2-9*h3+16*h4-25*h5=0,
+%           h0^2+h1^2+h2^2+h3^2+h4^2+h5^2=1,h0*h2+h1*h3+h2*h4+h3*h5=0],
+%          [h0,h1,h2,h3,h4,h5]
+%         );
+%  \end{lstlisting}
+%
+%\item  No solutions at this time. %\problem
+%\end{enumerate}
+\end{example}
+
+
+
+
+
+
+%%We end this chapter with some simple wavelet design examples.
+%\begin{enumerate}
+%\item Let $\spV_0$ be the space of all piecewise constant functions
+%      on intervals $\set{[n,nb)}{n\in\Z}$.
+%
+%\item The sequence $\{\spV_j\}$ is an MRA:
+%  \begin{enumerate}
+%  \item $\spV_j \subset \spV_{j+1}$
+%  \item $\ff(x)\in\spV_j \iff    \ff(t-2^{-j}n)\in\spV_j $
+%  \item $\ff(x)\in\spV_j \iff    \ff(2x)\in\spV_{j+1}$
+%  \item $\ds \bigcap_{j\in\Z} \spV_j = \{0\}$
+%  \item $\ds \cls{\bigcup_{j\in\Z} \spV_j} = \spLL $
+%  \item Riesz basis
+%
+%   {\color{figcolor} \begin{fsL} \begin{center}
+%   \setlength{\unitlength}{0.10mm}
+%   \begin{picture}(350,200)(-100,-50)
+%     %\graphpaper[10](0,0)(200,200)
+%     \thinlines
+%     \put(-100,   0){\line(1,0){300} }
+%     \put(   0,   5){\line(0,1){ 95} }
+%     \put(   0, 100){\line(1,0){ 95} }
+%     \put( 100,   0){\line(0,1){ 95} }
+%
+%     \put(  0,   0){\circle {10}}
+%     \put(  0, 100){\circle*{10}}
+%     \put(100,   0){\circle*{10}}
+%     \put(100, 100){\circle {10}}
+%
+%     \put( 210,   0){\makebox(0,0)[l]{$t$}}
+%     \put(-10,100){\makebox(0,0)[r]{$a$}}
+%     \put(0,-10){\makebox(0,0)[t]{$0$}}
+%     \put(100,-10){\makebox(0,0)[t]{$b$}}
+%     \put(120,50){\makebox(0,0)[l]{$\ftheta(x)$}}
+%   \end{picture}
+%   \end{center} \end{fsL} }
+%  \end{enumerate}
+%
+%\item Find orthonormal basis $\{\fphi(x-n)\}$ for $\spV_0$:
+%
+%The set $\{\ftheta(x-n)\}$ is already orthogonal.
+%To make it orthonormal, let $a=1/\sqrt{b}$. Then
+%  \begin{eqnarray*}
+%    \norm{\theta(x)}^2
+%      &=& \norm{a\setind_{[0,b)}}^2
+%       =  a^2 \norm{\setind_{[0,b)}}^2
+%       =  a^2 \int_{x\in\R} \setind_{[0,b)} \setind_{[0,b)} \dx
+%       =  a^2 \int_0^b \dx
+%       =  a^2 b
+%       =  1
+%  \end{eqnarray*}
+%   {\color{figcolor} \begin{fsL} \begin{center}
+%   \setlength{\unitlength}{0.10mm}
+%   \begin{picture}(350,200)(-100,-50)
+%     %\graphpaper[10](0,0)(200,200)
+%     \thinlines
+%     \put(-100,   0){\line(1,0){300} }
+%     \put(   0,   5){\line(0,1){ 95} }
+%     \put(   0, 100){\line(1,0){ 95} }
+%     \put( 100,   0){\line(0,1){ 95} }
+%
+%     \put(  0,   0){\circle {10}}
+%     \put(  0, 100){\circle*{10}}
+%     \put(100,   0){\circle*{10}}
+%     \put(100, 100){\circle {10}}
+%
+%     \put( 210,   0){\makebox(0,0)[l]{$t$}}
+%     \put(-10,100){\makebox(0,0)[r]{$\ds a=\frac{1}{\sqrt{b}}$}}
+%     \put(0,-10){\makebox(0,0)[t]{$0$}}
+%     \put(100,-10){\makebox(0,0)[t]{$b$}}
+%     \put(120,50){\makebox(0,0)[l]{$\fphi(x)$}}
+%   \end{picture}
+%   \end{center} \end{fsL} }
+%
+%\item Compute $\seqn{\fh_n}$:
+%From Proposition~\ref{prop:phi->h}
+%\begin{eqnarray*}
+%  \fh_{n}
+%    &=& \sqrt{2}            \inprod{\fphi(x)}{\fphi(2x-n)}
+%  \\&=& \sqrt{2}            \inprod{\frac{1}{\sqrt{b}}\setind_{[0,b)}(x)}{\frac{1}{\sqrt{b}}\setind_{[0,b)}(2x-n)}
+%  \\&=& \sqrt{2}\frac{1}{b} \inprod{\setind_{[0,b)}(x)}{\setind_{[0,b)}(2x-n)}
+%  \\&=& \sqrt{2}\frac{1}{b} \inprod{\setind_{[0,b)}(x)}{\setind_{[0,b)}(2x-n)}
+%  \\&=& \left\{\begin{array}{ll}
+%          \sqrt{2}\frac{1}{b} \frac{b}{2} &:n=0,1 \\
+%          0                               &:\text{otherwise.}
+%        \end{array}\right.
+%  \\&=& \left\{\begin{array}{ll}
+%          \cwt &:n=0,1 \\
+%          0                  &:\text{otherwise.}
+%        \end{array}\right.
+%\end{eqnarray*}
+%
+%   {\color{figcolor} \begin{center}\begin{fsL}
+%   \setlength{\unitlength}{0.10mm}
+%   \begin{picture}(400,440)(-180,-220)
+%     %\graphpaper[10](0,0)(200,200)
+%     \thinlines
+%     \put(-100,   0){\line(1,0){300} }
+%     \put( 210,   0){\makebox(0,0)[l]{$n$}}
+%
+%     \put(   0,   0){\line(0,1){71} }
+%     \put(   0,  71){\circle*{10} }
+%     \put( 100,   0){\line(0,1){71} }
+%     \put( 100,  71){\circle*{10} }
+%
+%     \multiput(-100,-100)(100,0){4}{\line(0,1){10} }
+%     \put(-100, -110){\makebox(0,0)[t]{$-1$}}
+%     \put(   0, -110){\makebox(0,0)[t]{$0$}}
+%     \put( 100, -110){\makebox(0,0)[t]{$1$}}
+%     \put( 200, -110){\makebox(0,0)[t]{$2$}}
+%
+%     \multiput(-140,-100)(0,25){9}{\line(1,0){10} }
+%     \put(-150, 100){\makebox(0,0)[r]{$1.00$}}
+%     \put(-150,  50){\makebox(0,0)[r]{$0.50$}}
+%     \put(-150,   0){\makebox(0,0)[r]{$0$}}
+%     \put(-150, -50){\makebox(0,0)[r]{$-0.50$}}
+%     \put(-150,-100){\makebox(0,0)[r]{$-1.00$}}
+%   \end{picture}
+%   \end{fsL}\end{center}}
+%
+%
+%
+%\item Compute $\seqn{\fg_n}$:
+%From \pref{thm:ortho_qmr}
+%\begin{eqnarray*}
+%  \fg_{n}
+%    &=& \pm (-1)^n  h(\xN-n)
+%  \\&=& (-1)^n  h(1-n)
+%  \\&=& \left\{\begin{array}{ll}
+%          +\cwt &:n=0 \\
+%          -\cwt &:n=1 \\
+%          0                  &:\text{otherwise.}
+%        \end{array}\right.
+%\end{eqnarray*}
+%
+%   {\color{figcolor} \begin{center}\begin{fsL}
+%   \setlength{\unitlength}{0.10mm}
+%   \begin{picture}(400,440)(-180,-220)
+%     %\graphpaper[10](0,0)(200,200)
+%     \thinlines
+%     \put(-100,   0){\line(1,0){300} }
+%     \put( 210,   0){\makebox(0,0)[l]{$n$}}
+%
+%     \put(   0,   0){\line(0,1){71} }
+%     \put(   0,  71){\circle*{10} }
+%     \put( 100,   0){\line(0,-1){71} }
+%     \put( 100, -71){\circle*{10} }
+%
+%     \multiput(-100,-100)(100,0){4}{\line(0,1){10} }
+%     \put(-100, -110){\makebox(0,0)[t]{$-1$}}
+%     \put(   0, -110){\makebox(0,0)[t]{$0$}}
+%     \put( 100, -110){\makebox(0,0)[t]{$1$}}
+%     \put( 200, -110){\makebox(0,0)[t]{$2$}}
+%
+%     \multiput(-140,-100)(0,25){9}{\line(1,0){10} }
+%     \put(-150, 100){\makebox(0,0)[r]{$1.00$}}
+%     \put(-150,  50){\makebox(0,0)[r]{$0.50$}}
+%     \put(-150,   0){\makebox(0,0)[r]{$0$}}
+%     \put(-150, -50){\makebox(0,0)[r]{$-0.50$}}
+%     \put(-150,-100){\makebox(0,0)[r]{$-1.00$}}
+%   \end{picture}
+%   \end{fsL}\end{center}}
+%
+%\item Compute $\fpsi(x)$:
+%\begin{eqnarray*}
+%  \fpsi(x)
+%    &=& \sqrt{2} \sum_{n\in\Z} \fg_{n}  \fphi(2x-n)
+%  \\&=& \sqrt{2} \left[\cwt \fphi(2x-0)-\cwt \fphi(2x-1)\right]
+%  \\&=& \fphi(2x)-\fphi(2x-1)
+%\end{eqnarray*}
+%
+%   {\color{figcolor} \begin{fsL} \begin{center}
+%   \setlength{\unitlength}{0.10mm}
+%   \begin{picture}(350,300)(-100,-150)
+%     %\graphpaper[10](0,0)(200,200)
+%     \thinlines
+%     \put(-100,   0){\line(1,0){300} }
+%     \put(   0,   5){\line(0,1){ 95} }
+%     \put(   0, 100){\line(1,0){ 45} }
+%     \put(  50,-100){\line(0,1){195} }
+%     \put(  50,-100){\line(1,0){ 45} }
+%     \put( 100,- 95){\line(0,1){100} }
+%
+%     \put(  0,   0){\circle {10}}
+%     \put(  0, 100){\circle*{10}}
+%     \put( 50, 100){\circle {10}}
+%     \put( 50,-100){\circle*{10}}
+%     \put(100,   0){\circle*{10}}
+%     \put(100,-100){\circle {10}}
+%
+%     \put( 210,   0){\makebox(0,0)[l]{$t$}}
+%     \put(-20, 100){\makebox(0,0)[r]{$\ds  \frac{1}{\sqrt{b}}$}}
+%     \put(-20,-100){\makebox(0,0)[r]{$\ds -\frac{1}{\sqrt{b}}$}}
+%     \put(0,-10){\makebox(0,0)[t]{$0$}}
+%     \put(100,10){\makebox(0,0)[b]{$b$}}
+%     \put( 70,70){\makebox(0,0)[l]{$\fpsi(x)$}}
+%   \end{picture}
+%   \end{center} \end{fsL} }
+%\end{enumerate}
+
+
+
+
+
+
+

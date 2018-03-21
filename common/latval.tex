@@ -1,0 +1,341 @@
+%============================================================================
+% Daniel J. Greenhoe
+% lattice valuations
+%============================================================================
+
+%=======================================
+\chapter{Valuations on Lattices}
+%=======================================
+
+
+%---------------------------------------
+\begin{definition}
+\citetblp{
+  \citerpg{istratescu1987}{127}{9027721823},
+  \citerpgc{birkhoff1967}{230}{0821810251}{Definition X.1(V1)},
+  \citerpgc{blyth2005}{58}{1852339055}{Exercise 4.25},
+  \citerpgc{deza1997}{105}{354061611X}{(8.1.1)},
+  \citerpgc{deza2006}{143}{0444520872}{\textsection10.3},
+  \citerpgc{deza2009}{193}{0444520872}{\textsection10.3}
+  }
+\label{def:latval}
+%---------------------------------------
+Let $\latL\eqd\latX$ be a \structe{lattice} \xref{def:lattice}.
+\defboxt{
+  A function $\latval\in\clFxr$ is a \fnctd{valuation} on $\latL$ if
+  \\\indentx$\begin{array}{rclC}
+    \latval(x\join y) + \latval(x\meet y) &=& \latval(x) + \latval(y) & \forall x,y\in\setX
+  \end{array}$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:latval_linear}
+%---------------------------------------
+Let $\latval\in\clFxr$ be a \fncte{function} on a \structe{lattice} $\latL\eqd\latX$ \xref{def:lattice}.
+\propbox{
+  \brb{\begin{array}{M}
+    $\latL$ is \prope{linear} \xref{def:latlin}
+    %2. & x\orel y \implies \latval(x)\le\latval(y) & ($\latval$ is \prope{isotone})
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{N}
+    $\latval$ is a \fncte{valuation} 
+    \xref{def:latval}
+  \end{array}}
+  }
+\end{proposition}
+\begin{proofns}
+%Let $\setX\eqd\setxZ{x_n}$ such that $m\le n\implies x_m\orel x_n$.
+Let $x,y\in\setX$ such that $x\orel y$ or $y\lneq x$.
+\begin{align*}
+  \latval(x\join y) + \latval(x\meet y)
+    &= \latval(x) + \latval(y)
+    && \text{because $\latL$ is \prope{linear}}
+\end{align*}
+\end{proofns}
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citerpgc{khamsi2001}{119}{0471418250}{\textsection5.7}
+  }
+%---------------------------------------
+Consider the \structe{real valued lattice} $\latL\eqd\lattice{\R}{\le}{\join}{\meet}$.
+The \fncte{absolute value} function $\absn$ is a \fncte{valuation} on $\latL$.
+\end{example}
+\begin{proofns}
+  $\latL$ is \prope{linear} \xref{def:latlin}, so $\latval$ is a \fncte{valuation} by \prefpp{prop:latval_linear}.
+\end{proofns}
+
+%%---------------------------------------
+%\begin{example}
+%%---------------------------------------
+%Let $\latlen(\latL)$ be the \fncte{length} \xref{def:length} of a 
+%\structe{linearly ordered lattice} (a \structe{chain} \xrefnp{def:chain}) $\latL\eqd\latX$.
+%Then $\latlen$ is a 
+%Consider the \structe{real valued lattice} $\latL\eqd\lattice{\R}{\le}{\join}{\meet}$.
+%The \fncte{absolute value} function $\absn$ is a \fncte{valuation} on $\latL$.
+%\end{example}
+%\begin{proofns}
+%  $\latL$ is \prope{linear} \xref{def:latlin}, so $\latval$ is a \fncte{valuation} by \prefpp{prop:latval_linear}.
+%\end{proofns}
+
+
+%%---------------------------------------
+%\begin{example}
+%\citetbl{
+%  \citerpgc{khamsi2001}{119}{0471418250}{\textsection5.7}
+%  }
+%%---------------------------------------
+%Consider the \structe{rational number lattice} $\latL\eqd\lattice{\Q}{\le}{\join}{\meet}$.
+%The \fncte{p-adic valuation} function $\fp$ is a \fncte{valuation} on $\latL$ where
+%\\\indentx$\fp(x)\eqd \brbr{\begin{array}{rclC}
+%    p^{-n}  & \forall x\neq0\\
+%    0       & \forall x=0
+%  \end{array}$
+%\\
+%where $x$ has the \prope{unique factorization} $x=\brp{\frac{q}{r}}p^{-n}$ and $q$ and $r$ \prope{relatively prime} to $p$.
+%\end{example}
+%\begin{proof}
+%  Let $x\eqd\brp{\frac{q}{r}}p^{-n}$ and $y\eqd\brb{\frac{q}{r}}p^{-m}.
+%\begin{align*}
+%  \latval(x\join y) + \latval(x\meet y)
+%    &\eqd \latval{\brp{\frac{q}{r}}p^{-n} \join \brb{\frac{q}{r}}p^{-m}} +
+%          \latval{\brp{\frac{q}{r}}p^{-n} \meet \brb{\frac{q}{r}}p^{-m}}  
+%    &\eqd \latval{\brp{\frac{q}{r}}p^{-n} \join \brb{\frac{q}{r}}p^{-m}} +
+%          \latval{\brp{\frac{q}{r}}p^{-n} \meet \brb{\frac{q}{r}}p^{-m}}  
+%    && \text{by definition of $\latval$ in this example}
+%  \\&= \abs{x} + \abs{y}
+%    && \text{by definitions of $\join$ and $\meet$}
+%  \\&\eqd \latval(x) + \latval(y)
+%    && \text{by definition of $\latval$ in this example}
+%\end{align*}
+%\end{proof}
+
+\ifdochasnot{metric}{
+%---------------------------------------
+\begin{definition}
+\label{def:metric}
+\label{def:(X,d)}
+\footnote{
+  \citerp{dieudonne1969}{28},
+  \citerp{copson1968}{21},
+  \citorp{hausdorff1937e}{109},
+  \citor{frechet1928},
+  \citorp{frechet1906}{30}
+  %\citor{hausdorff1914}\\
+  %\cithrpg{ab}{34}{0120502577} 
+  }
+\index{space!metric}
+%---------------------------------------
+Let $\setX$ be a set and $\Rnn$ the set of non-negative real numbers.
+\defbox{
+  \begin{array}{lD rcl @{\qquad}C @{\qquad}DD}
+     \mc{8}{M}{A function $\hxs{\metricn}\in\clF{\setX\times\setX}{\Rnn}$ is a \hid{metric} on $\setX$ if}
+    \\&1. & \metric{x}{y} &\ge& 0                                 & \forall x,y   \in\setX & (\prope{non-negative})   & and 
+    \\&2. & \metric{x}{y} &=  & 0  \iff x=y                       & \forall x,y   \in\setX & (\prope{nondegenerate})  & and 
+    \\&3. & \metric{x}{y} &=  & \metricn(y,x)                     & \forall x,y   \in\setX & (\prope{symmetric})      & and 
+    \\&4. & \metric{x}{y} &\le& \metric{x}{z}+\metric{z}{y}       & \forall x,y,z \in\setX & (\prope{subadditive}/\prope{triangle inequality}).\footnotemark
+  \\\mc{8}{M}{A \hid{metric space} is the pair $\metspaceX$. A metric is also called a \hid{distance function}.}
+  \end{array}
+  }
+\end{definition}
+\citetblt{\citorc{euclid}{Book I Proposition 20}}
+
+Actually, it is possible to significantly simplify the definition of a metric
+to an equivalent statement requiring only half as many conditions.
+These equivalent conditions (a ``\hie{characterization}") are stated in \pref{thm:metric_equiv} (next).
+%---------------------------------------
+\begin{theorem}[metric characterization]
+\label{thm:metric_equiv}
+\citetbl{
+  \citerp{michel1993}{264},
+  \citerp{giles1987}{18}
+  }
+%---------------------------------------
+Let $\metricn$ be a function in $\clF{\setX\times\setX}{(\Rnn)}$.
+\thmbox{
+  \metric{x}{y} \text{ is a metric}
+  \qquad\iff\qquad
+  \brbl{\begin{array}{DrclCD}
+      1. & \metric{x}{y} &=  & 0  \iff x=y                  & \forall x,y   \in\setX & and
+    \\2. & \metric{x}{y} &\le& \metric{z}{x}+\metric{z}{y}  & \forall x,y,z \in\setX & 
+  \end{array}}
+  }
+\end{theorem}
+
+\pref{def:ball} (next) defines the \structe{open ball}.
+In a \structe{metric space} \xref{def:metric}\index{space!metric}, 
+sets are often specified in terms of an \prope{open ball};
+and an open ball is specified in terms of a metric.
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerp{ab}{35}
+  }
+\index{ball!open}
+\index{ball!closed}
+\label{def:ball}
+\label{def:ballc}
+%---------------------------------------
+Let $\metspaceX$ be a \structe{metric space} \xref{def:metric}\index{space!metric}.
+\defbox{\begin{array}{MM}
+  An \structd{open ball} centered at $x$ with radius $r$   &is the set $\ball{x}{r} \eqd \set{y\in\setX}{\metric{x}{y}<r}$.\\
+  A  \structd{closed ball} centered at $x$ with radius $r$ &is the set $\ballc{x}{r} \eqd \set{y\in\setX}{\metric{x}{y}\le r}$.\\
+  A  \structd{unit ball} centered at $x$                   &is the set $\ball{x}{1}$.\\
+  A  \structd{closed unit ball} centered at $x$            &is the set $\ballc{x}{1}$.
+\end{array}}
+\end{definition}
+}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpgc{deza1997}{105}{354061611X}{(8.1.2)},
+  \citerppg{birkhoff1967}{230}{231}{0821810251}
+  }
+\label{thm:latmetric}
+%---------------------------------------
+Let $\latval\in\clFxr$ be a function on a \structe{lattice} $\latL\eqd\latX$ \xref{def:lattice}.
+\thmbox{%
+  \brbr{\begin{array}{FlCDD}%
+    1. & \latval(x\join y)+\latval(x\meet y) = \latval(x)+\latval(y) & \forall x,y\in\setX & (\fncte{valuation}) & and\\%
+    2. & x\orel y \implies \latval(x)\le\latval(y)                   & \forall x,y\in\setX & (\prope{isotone})   &% 
+  \end{array}}%
+  \implies%
+  \brbl{\begin{array}{M}%
+    $\metric{x}{y}\eqd$\\
+    $\latval(x\join y)-\latval(x\meet y)$\\ 
+    is a \fncte{metric} 
+    %\xref{def:metric} on $\latL$
+    on $\latL$%
+  \end{array}}%
+  }
+\end{theorem}
+
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerpg{deza1997}{105}{354061611X},
+  \citerpgc{birkhoff1967}{231}{0821810251}{\textsection X.2}
+  }
+\label{def:latmetric}
+%---------------------------------------
+Let $\latval$ be a \fncte{valuation} \xref{def:latval} on a \structe{lattice} $\latL\eqd\latX$ \xref{def:lattice}.
+Let $\metric{x}{y}$ be the \fncte{metric} defined in \prefpp{thm:latmetric}.
+\defboxt{
+  The pair $\opair{\latL}{\metricn}$ is called a \structe{metric lattice}.
+  }
+\end{definition}
+
+For \prope{finite} \prope{modular} lattices, the \fncte{height} function $\height(x)$ \xref{def:height}
+can serve as the isotone valuation that induces a metric (next proposition).
+Such a height function actually satisfies the stronger condition of being \prope{positive} 
+(rather than just being \prope{isotone})---all \prope{positive} functions are also \prope{isotone}.
+%---------------------------------------
+\begin{proposition}
+\citetbl{
+  \citerpg{birkhoff1967}{230}{0821810251}
+  }
+\label{ex:latval_height}
+%---------------------------------------
+Let $\height(x)$ be the \fncte{height} \xref{def:height} of a point $x$ in a 
+\structe{bounded lattice} \xref{def:latb} $\latL\eqd\latbX$.
+\propboxt{
+  $\brb{\begin{array}{FMD}
+    1. & $\latL$ is \prope{modular} & and \\
+    2. & $\latL$ is \prope{finite} 
+  \end{array}}$
+\\\indentx$\begin{array}{cl}
+    \implies&\brb{\begin{array}{FlCDD}
+      1. & \height(x\join y)+\height(x\meet y)=\height(x)+\height(y) & \forall x,y\in\setX & (\fncte{valuation}) & and\\
+      2. & x\lneq y \implies \height(x)\lneq \height(y)              & \forall x,y\in\setX & (\prope{positive}) &
+    \end{array}}
+  \\\implies&\brb{\begin{array}{FlCDD}
+      1. & \height(x\join y)+\height(x\meet y)=\height(x)+\height(y) & \forall x,y\in\setX & (\fncte{valuation}) & and\\
+      2. & x\leq y \implies \height(x)\leq \height(y)                & \forall x,y\in\setX & (\prope{isotone}) &
+    \end{array}}
+\end{array}$
+}
+\end{proposition}
+%\begin{proofns}
+%\begin{enumerate}
+%  \item Proof that $\height(x)$ is a \fncte{valuation}:
+%    \begin{enumerate}
+%      \item Let $x$ and $y$ be any two \prope{comparable} \xref{def:comparable} elements in $\latL$ such that $y\orel x$.
+%      \item Let $\latC_x$ be the \structe{chain} \xref{def:chain} from $\lzero$ to $x$ and containing $y$,
+%            and with the least \vale{length} \xref{def:length} of all such chains.
+%      \item Then $\height(x\join y) + \height(x\meet y) = \height(x)+\height(y)$ 
+%      \item And so $\height$ is a \fncte{valuation} on $\latL$ \xxref{def:latval}{prop:latval_linear}.
+%    \end{enumerate}
+%  \item Proof that $\height(x)$ is \prope{isotone}: This follows from definition of \fncte{height} \xref{def:height}
+%        and \fncte{length} \xref{def:length}.
+%  \item Proof that $\height(x)$ is \prope{positive}: This follows from definition of \fncte{height} \xref{def:height}
+%        and \fncte{length} \xref{def:length}.
+%  \item Proof that $\metric{x}{y}$ is a \fncte{metric}: This follows from previous items and \prefpp{def:latmetric}.
+%\end{enumerate}
+%\end{proofns}
+
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{birkhoff1967}{232}{0821810251}{Theorem X.2},
+  \citerppg{deza1997}{105}{106}{354061611X},
+  \citerpgc{blyth2005}{58}{1852339055}{Exercise 4.25}
+  }
+\label{thm:latval_latm}
+%---------------------------------------
+Let $\latval$ be a \fncte{valuation} \xref{def:latval} on a \structe{lattice} $\latL\eqd\latX$ \xref{def:lattice}.
+Let $\metric{x}{y}$ be the \fncte{metric} defined in \prefpp{thm:latmetric}.
+\thmbox{
+  \brb{\begin{array}{N}
+    $\opair{\latL}{\metricn}$ is a \structe{metric lattice}\\
+    \xref{def:latmetric}
+  \end{array}}
+  \qquad\implies\qquad
+  \brb{\begin{array}{N}
+    $\latL$ is \prope{modular}\\
+    \xref{def:latm}
+  \end{array}}
+  }
+\end{theorem}
+
+
+%---------------------------------------
+\begin{minipage}{\tw-50mm}
+\begin{example}
+%---------------------------------------
+    The function $\height$ on the \prope{Boolean} (and thus also \prope{modular}) lattice $\latL_2^3$ 
+    illustrated to the right is a \prope{valuation} \xref{def:latval}
+    that is \prope{positive} (and thus also \prope{isotone}, \xrefnp{ex:latval_height}). Therefore
+    \\\indentx$\metric{x}{y}\eqd\height(x\join y)-\height(x\meet y)\qquad{\scy\forall x,y\in\setX}$\\
+    is a \fncte{metric} \xref{def:latmetric} on $\latL_2^3$.
+    For example, 
+    \\\indentx$\metric{b}{q} \eqd \height(b\join q)-\height(b\meet q) = \height(\lid)-\height(\lzero)=3-0=3$ .\\
+    The \structe{closed unit ball} centered at $b$ \xref{def:ball} and illustrated with solid dots to the right is 
+    \\\indentx$\ball{b}{1}\eqd\set{x\in\setX}{\metric{b}{x}\le1}=\setn{b,p,r,\lzero}$\\
+\end{example}%
+\end{minipage}%
+\hfill\tbox{\includegraphics{graphics/lat8_l2e3_abc_h.pdf}}%
+
+%---------------------------------------
+%\begin{example}
+%---------------------------------------
+\begin{minipage}{\tw-50mm}
+  \begin{example}
+  The \fncte{height} function $\height$ \xref{def:height} 
+  on the \prope{orthocomplemented} but \prope{non-modular} lattice O$_6$ illustrated to the right 
+  is \emph{not} a \prope{valuation} because for example
+  \\\indentx$\height(a\join c)+\height(a\meet c) = \height(\lid)+\height(\lzero) = 3+0=3
+        \neq 2 = 1 + 1 = \height(a) + \height(b)$.\\
+  Moreover, we might expect the ``distance" from $a$ to $c$ to be $2$. 
+  However, if we attempt to use $\height(x)$ to define a metric on O$_6$, then we get
+  \\\indentx$\metric{a}{c}\eqd\height(a\join c)-\height(a\meet c)=\height(\lid)-\height(\lzero)=3-0=3\neq2$.
+\end{example}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/lat6_o6_acpr_h.pdf}}%
+
+

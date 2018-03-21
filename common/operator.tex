@@ -1,0 +1,3148 @@
+﻿%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Operators on Linear Spaces}
+\label{chp:operator}
+%======================================
+\qboxnps
+  {\href{http://en.wikipedia.org/wiki/Gottfried_Leibniz}{Gottfried Leibniz}
+   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineC.html}{(1646--1716)},
+   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Germany.html}{German} mathematician,
+   in a September 8, 1679 letter to
+   \href{http://en.wikipedia.org/wiki/Christian_Huygens}{Christian Huygens}.
+   \index{Leibniz, Gottfried}
+   \index{quotes!Leibniz, Gottfried}
+   \footnotemark
+  }
+  {../common/people/leibniz_wkp_pdomain_bw.jpg}
+  {And I am not afraid to say that
+   there is a way to advance algebra as far beyond what Vieta and Descartes have left us
+   as Vieta and Descartes carried it beyond the ancients.\ldots
+   we need still another analysis which is distinctly geometrical or linear,
+   and which will express {\em situation} directly as algebra expresses {\em magnitude} directly.}
+  \citetblt{
+    quote: & \citorppg{leibniz_huygens1679}{248}{249}{902770693X} \\
+   %quote: & \citerpp{leibniz_letters}{248}{249} \\
+          %&\citerpp{leibniz_letters}{248}{249} \\
+          %   \cithrp{fearnley-sander}{1}
+    image: & \scs\url{http://en.wikipedia.org/wiki/File:Gottfried_Wilhelm_von_Leibniz.jpg}, public domain
+    }
+
+
+
+
+%=======================================
+\section{Operators on linear spaces}
+%=======================================
+%\begin{figure}[t]
+%\begin{fsL}
+%\[\begin{array}{*{5}{>{\ds}c}}
+%     && \fcolorbox{red}{bg_red}{\parbox[c]{3\tw/16}{\centering {operator}}} \index{operator}
+%  \\ & \Nearrow & \Uparrow & \Nwarrow
+%  \\ \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {normal} $\opNa\opN=\opN\opNa$}} \index{operator!normal}
+%     && \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {projection} $\opP^2=\opP$}}  \index{operator!projection}
+%     && \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {isometric} $\opAa\opA\eqo\opI$}} \index{operator!isometric}
+%  \\ \Uparrow & \Nwarrow  & & \Nearrow
+%  \\ \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {self-adjoint} $\opA\eqo\opAa$}}  \index{operator!self-adjoint}
+%     && \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {invertible} $\opAi$ is an operator}} \index{operator!invertible}
+%  \\ && \Uparrow
+%  \\ && \fcolorbox{blue}{bg_blue}{\parbox[c]{3\tw/16}{\centering {unitary} $\opU\opUa=\opUa\opU=\opI$}} \index{operator!unitary}
+%\end{array}\]
+%\end{fsL}
+%\caption{
+%   Relations between operator properties
+%  \label{fig:op_prop}
+%   }
+%\end{figure}
+\begin{figure}[t]
+  \begin{center}
+  \input{../common/math/graphics/oplat.tex}
+  \caption{Some operator types\label{fig:operator_oplat}}
+  \end{center}
+\end{figure}%
+
+%=======================================
+\subsection{Operator Algebra}
+%=======================================
+An operator is simply a function that maps from a linear space to another linear space (or to the same linear space).
+
+\ifdochasnot{vector}{
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerppgc{kubrusly2001}{40}{41}{0817641742}{Definition 2.1 and following remarks},
+  \citerp{haaser1991}{41},
+  \citerpp{halmos1948}{1}{2},
+  \citerc{peano1888}{Chapter IX},
+  \citerpp{peano1888e}{119}{120},
+  \citePpp{banach1922}{134}{135}
+  }
+\label{def:vspace}
+\index{space!vector}
+\index{space!linear}
+%---------------------------------------
+%Let $\F\eqd\otriple{\setS}{+}{\cdot}$ be a field.
+Let $\fieldF$ be a \structe{field}\ifsxref{algebra}{def:field}.
+Let $\setX$ be a set, 
+let $+$ be an \structe{operator} \xref{def:operator} in $\clF{\setX^2}{\setX}$, 
+and let $\otimes$ be an operator in $\clF{\F\times\setX}{\setX}$.
+\defboxp{
+  The structure $\spO\eqd\linearspaceX$ is a \hid{linear space} over $\fieldF$ if
+  %\\\indentx$\ds\begin{array}{l rcl @{\quad}C @{\quad}D@{}r@{}}
+  \\\indentx$\ds\begin{array}{>{\scriptstyle}r rcl @{\quad}C @{\quad}D@{}r@{}}
+    \cline{7-7}
+    1.& \exists \vzero\in\setX \st \vx + \vzero &=& \vx
+      & \forall \vx\in\setX
+      & ($+$ \structe{identity})
+      & \ast\vline
+      \\
+    2.& \exists \vy\in\setX \st \vx+\vy &=& \vzero
+      & \forall \vx \in\setX
+      & ($+$ \structe{inverse})
+      & \vline
+      \\
+    3.& (\vx+\vy)+\vz &=& \vx+(\vy+\vz)
+      & \forall \vx,\vy,\vz\in\setX
+      & ($+$ is \prope{associative})
+      & \text{ }\vline
+      \\
+    4.& \vx+\vy &=& \vy+\vx
+      & \forall \vx,\vy\in\setX
+      & ($+$ is \prope{commutative})
+      & \vline
+      \\\cline{7-7}
+    5.& 1\cdot \vx &=& \vx
+      & \forall \vx\in\setX
+      & ($\cdot$ \prope{identity})
+      \\
+    6.& \alpha\cdot(\beta\cdot\vx) &=& (\alpha\cdot\beta)\cdot\vx
+      & \forall \alpha,\beta\in\setS \text{ and } \vx\in\setX
+      & ($\cdot$ \prope{associates} with $\cdot$)
+      \\
+    7.& \alpha\cdot(\vx+\vy) &=& (\alpha \cdot\vx)+(\alpha\cdot\vy)
+      & \forall \alpha\in\setS \text{ and } \vx,\vy\in\setX
+      & ($\cdot$ \prope{distributes} over $+$)
+      \\
+    8.& (\alpha+\beta)\cdot\vx &=& (\alpha\cdot \vx)+(\beta\cdot \vx)
+      & \forall \alpha,\beta\in\setS \text{ and } \vx\in\setX
+      & ($\cdot$ \prope{pseudo-distributes} over $+$)
+  \end{array}$
+  \\
+  The set $\setX$ is called the \structd{underlying set}.
+  The elements of $\setX$ are called \structd{vectors}.
+  The elements of $\F$ are called \structd{scalars}.
+  A linear space is also called a \structd{vector space}.
+  If $\F\eqd\R$, then $\spO$ is a \structd{real linear space}.
+  If $\F\eqd\C$, then $\spO$ is a \structd{complex linear space}.
+  }
+\end{definition}
+}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{heil2011}{42}{0817646868}
+  }
+\label{def:operator}
+\index{operator!definition}
+%---------------------------------------
+%Let $\spX\eqd\linearspaceX$ and $\spY\eqd\linearspaceY$ be linear spaces.~%
+%Let $\setX$ and $\setY$ be sets.
+\defboxt{
+  A function $\opA$ in $\clOxy$ is an \hid{operator} in $\clOxy$ if\\
+  $\spX$ and $\spY$ are both \structe{linear spaces} \xref{def:vspace}.\\ %\footnotemark\\
+    %1. & $\opA$ is a \structe{function} in $\clFxy$                               & and\\
+    %2. & There exists a linear space $\spX\eqd\linearspaceX$ & and\\
+    %3. & There exists a linear space $\spY\eqd\linearspaceY$. &\\
+  %The set of all operators from $\spX$ to $\spY$ is denoted $\hxs{\clOxy}$.
+  %\mc{3}{M}{If $\spY=\F$, then $\opA$ is a \hid{functional}.}
+  }
+%\footnotetext{\begin{tabular}[t]{ll}
+%  \structe{function}:     & \prefp{def:rel_f}\\
+%  \structe{linear space}: & \prefp{def:vspace}
+%\end{tabular}}
+\end{definition}
+
+Two operators $\opA$ and $\opB$ in $\clOxy$ are \hid{equal} if 
+$\ds \opA\vx=\opB\vx$ for all $\vx\in\spX$\ifsxref{relation}{def:f=g}.
+The inverse relation\ifsxref{relation}{def:rel_inverse} of an operator $\opA$ in $\clOxy$
+always exists as a \hie{relation} in $\clR{\spX}{\spY}$\ifsxref{relation}{def:relation},
+but may not always be a \hie{function} (may not always be an operator)
+in $\clOxy$\ifsxref{relation}{def:rel_f}.
+
+
+The operator $\opI\in\clOxx$ is the \hie{identity} operator if $\opI\vx=\opI$ for all $\vx\in\spX$.
+%(see next definition and also\ifsxref{relation}{ex:opI}).
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{michel1993}{411}{048667598X}
+  }
+\label{def:opI}
+\label{def:op_inv}
+\index{operator!identity}
+\index{identity operator}
+%---------------------------------------
+Let $\clOxx$ be the set of all operators with from a \structe{linear space} $\spX$ to $\spX$.
+Let $\opI$ be an operator in $\clOxx$.
+Let $\relid(\spX)$ be the \structe{identity element}\ifsxref{relation}{def:rel_id} in $\clOxx$.
+\defbox{\text{
+  $\hxs{\opI}$ is the \hid{identity operator} in $\clOxx$ if \qquad $\opI=\relid(\spX)$.
+  }}
+\end{definition}
+
+
+
+
+%=======================================
+%\subsection{Functions of operators}
+%\index{operator!functions of}
+%\index{function!of operator}
+%=======================================
+%%---------------------------------------
+%\begin{definition}
+%\label{def:op_taylor}
+%\citepp{hassani}{53}{54}
+%%---------------------------------------
+%Let $\opA$ be an operator.
+%\defbox{\begin{array}{rc>{\ds}l@{\qquad}D}
+%  \ff(\opA) &=& \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!}(\opA-\opI a)^n
+%            &   (\prop{Taylor series} about the point $a$)
+%  \\
+%  \ff(\opA) &=& \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!}\opA^n
+%            &   (\prop{Maclaurin series})
+%  \end{array}}
+%\end{definition}
+%
+%%---------------------------------------
+%\begin{example}
+%\citep{hassani}{54}
+%%---------------------------------------
+%\exbox{
+%  e^{\opA} = \sum_{n=0}^\infty \frac{\opA^n}{n!}
+%  }
+%\end{example}
+%\begin{proof}
+%\begin{align*}
+%  e^{\opA}
+%    &= \sum_{n=0}^\infty \frac{e^{(n)}(0)}{n!}\opA^n
+%    && \text{by Maclaurin series (\prefp{def:op_taylor})}
+%  \\&= \sum_{n=0}^\infty \frac{1}{n!}\opA^n
+%\end{align*}
+%\end{proof}
+
+
+
+%=======================================
+\subsection{Linear operators}
+\index{linear operators}
+%=======================================
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{kubrusly2001}{55}{0817641742},
+  \citerpg{ab}{224}{0120502577},
+  %\citerpg{michel1993}{95,407}{048667598X} \\
+  \citorp{hilbert1927}{6},
+  \citorp{stone1932}{33}
+  }
+\label{def:linop}
+\label{def:clL}
+%---------------------------------------
+Let $\spX\eqd\linearspaceX$ and $\spY\eqd\linearspaceY$ be linear spaces.\\
+  \defbox{%
+    \indxs{\clOxy}
+    \index{operator!linear}
+    \begin{array}{>{\scy\qquad}r rcl @{\qquad}C @{\qquad}D@{\qquad}D}
+      \mc{7}{M}{An operator $\opL\in\clOxy$ is \hid{linear} if}
+        \\1. & \opL(\vx + \vy)    &=&  \opL \vx + \opL \vy & \forall \vx,\vy\in\spX  & (\prope{additive}) & and
+        \\2. & \opL(\alpha \vx) &=&  \alpha\opL \vx    & \forall \vx\in\spX,\quad \forall\alpha\in\F & (\prope{homogeneous}).
+    \\\mc{7}{M}{The set of all linear operators from $\spX$ to $\spY$ is denoted $\clLxy$ such that}
+    \\\mc{7}{l}{\qquad\clLxy \eqd \set{\opL\in\clOxy}{\text{$\opL$ is linear}}}.
+    \end{array}
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{berberian1961}{79}{0821819127}{Theorem~IV.1.1}
+  }
+\label{thm:L_prop}
+%---------------------------------------
+Let $\opL$ be an operator from a linear space $\spX$ to a linear space $\spY$, both over a field $\F$.
+\thmbox{
+  \text{$\opL$ is \prope{linear}}
+  \qquad\implies\qquad
+  \brbl{\begin{array}{>{\scy}r>{\ds}lc>{\ds}lC}
+      1. & \opL\vzero    &=& \vzero                           & 
+    \\2. & \opL(-\vx)    &=& -(\opL\vx)                       & \forall \vx\in\spX
+    \\3. & \opL(\vx-\vy) &=& \opL\vx - \opL\vy                & \forall \vx,\vy\in\spX
+    \\4. & \opL\brp{\sum_{n=1}^N \alpha_n\vx_n}  &=& \sum_{n=1}^N \alpha_n\brp{\opL\vx_n}  & \vx_n\in\spX,\,\alpha_n\in\F
+  \end{array}}
+}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\opL\vzero=\vzero$:
+    \begin{align*}
+      \opL\vzero
+        &= \opL\brp{0\cdot\vzero}
+        && \text{by additive identity property\ifsxref{vector}{thm:vs_addid}}
+      \\&= 0\cdot\brp{\opL\vzero}
+        && \text{by \prope{homogeneous} property of $\opL$ \xref{def:linop}}
+      \\&= \vzero
+        && \text{by additive identity property\ifsxref{vector}{thm:vs_addid}}
+    \end{align*}
+
+  \item Proof that $\opL(-\vx)    = -(\opL\vx)$:
+    \begin{align*}
+      \opL\brp{-\vx}
+        &= \opL\brp{-1\cdot\vx}
+        && \text{by additive inverse property\ifsxref{vector}{thm:vs_addinv}}
+      \\&= -1\cdot\brp{\opL\vx}
+        && \text{by \prope{homogeneous} property of $\opL$ \xref{def:linop}}
+      \\&= -\brp{\opL\vx}
+        && \text{by additive inverse property\ifsxref{vector}{thm:vs_addinv}}
+    \end{align*}
+
+  \item Proof that $\opL(\vx-\vy) = \opL\vx - \opL\vy$:
+    \begin{align*}
+      \opL(\vx-\vy)
+        &= \opL(\vx+(-\vy))
+        && \text{by additive inverse property\ifsxref{vector}{thm:vs_addinv}}
+      \\&= \opL(\vx) + \opL(-\vy)
+        && \text{by \prope{linearity} property of $\opL$ \xref{def:linop}}
+      \\&= \opL\vx - \opL\vy
+        && \text{by 2.}
+    \end{align*}
+
+  \item Proof that $\opL\brp{\sum_{n=1}^N \alpha_n\vx_n}  = \sum_{n=1}^N \alpha_n\brp{\opL\vx_n}$:
+    \begin{enumerate}
+      \item Proof for $N=1$:
+        \begin{align*}
+          \opL\brp{\sum_{n=1}^N \alpha_n\vx_n}
+            &= \opL\brp{\alpha_1\vx_1}
+            && \text{by $N=1$ hypothesis}
+          \\&= \alpha_1\brp{\opL\vx_1}
+            && \text{by \prope{homogeneous} property of \prefp{def:linop}}
+        \end{align*}
+
+      \item Proof that $N$ case $\implies$ $N+1$ case:
+        \begin{align*}
+          \opL\brp{\sum_{n=1}^{N+1} \alpha_n\vx_n}
+            &= \opL\brp{\alpha_{N+1}\vx_{N+1} + \sum_{n=1}^{N} \alpha_n\vx_n}
+          \\&= \opL\brp{\alpha_{N+1}\vx_{N+1}} + \opL\brp{\sum_{n=1}^{N} \alpha_n\vx_n}
+            && \text{by \prope{linearity} property of \prefp{def:linop}}
+          \\&= \alpha_{N+1}\opL\brp{\vx_{N+1}} + \sum_{n=1}^{N} \opL\brp{\alpha_n\vx_n}
+            && \text{by left $N+1$ hypothesis}
+          \\&= \sum_{n=1}^{N+1} \opL\brp{\alpha_n\vx_n}
+        \end{align*}
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppg{michel1993}{98}{104}{048667598X},
+  \citerppgc{berberian1961}{80}{85}{0821819127}{Theorem~IV.1.4 and Theorem~IV.3.1}
+  %\citep{prasad}{16}
+  }
+%---------------------------------------
+%Let $\clOxy$ be the set of linear operators from $\spX$ to $\spY$.
+Let $\clLxy$ be the set of all linear operators from a linear space $\spX$ to a linear space $\spY$.
+Let $\oppN(\opL)$ be the \hie{null space} of an operator $\opL$ in $\clOxy$
+and $\oppI(\opL)$ the \structe{image set}\ifsxref{relation}{def:rel_null} of $\opL$ in $\clOxy$.
+\thmbox{
+  \begin{array}{ll@{\qquad}C@{\qquad}D}
+    \clLxy & \text{ is a linear space}
+                     &
+                     & (\prop{space of linear transforms})
+                     \\
+    \oppN(\opL)      & \text{is a linear subspace of $\spX$}
+                     & \forall \opL\in\clOxy
+                     \\
+    \oppI(\opL)      & \text{is a linear subspace of $\spY$}
+                     & \forall \opL\in\clOxy
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\oppN(\opL)$ is a linear subspace of $\spX$:
+    \begin{enumerate}
+      \item $\vzero\in\oppN(\opL) \implies \oppN(\opL)\ne \emptyset$
+      \item $\oppN(\opL)\eqd\set{\vx\in\spX}{\opL\vx=\vzero}\subseteq\spX$
+      \item $\vx+\vy\in\oppN(\opL) \implies \vzero=\opL(\vx+\vy)=\opL(\vy+\vx)\implies \vy+\vx\in\oppN(\opL)$
+      \item $\alpha\in\F,\; \vx\in\spX
+            \implies \vzero=\opL\vx
+            \implies \vzero=\alpha\opL\vx
+            \implies \vzero=\opL(\alpha\vx)
+            \implies \alpha\vx \in \oppN(\opL)$
+    \end{enumerate}
+
+  \item Proof that $\oppI(\opL)$ is a linear subspace of $\spY$:
+    \begin{enumerate}
+      \item $\vzero\in\oppI(\opL) \implies \oppI(\opL)\ne \emptyset$
+      \item $\oppI(\opL)\eqd\set{\vy\in\spY}{\exists\vx\in\spX\st\vy=\opL\vx}\subseteq\spY$
+      \item $\vx+\vy\in\oppI(\opL) \implies \exists\vv\in\spX\st\opL\vv=\vx+\vy=\vy+\vx \implies \vy+\vx\in\oppI(\opL)$
+      \item $\alpha\in\F,\; \vx\in\oppI(\opL)
+            \implies \exists\vx\in\spX \st \vy=\opL\vx
+            \implies \alpha\vy=\alpha\opL\vx=\opL(\alpha\vx)
+            \implies \alpha\vx \in \oppI(\opL)$
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerpg{eidelman2004}{3}{0821836463}
+  }
+%---------------------------------------
+Let $\clC{\intcc{a}{b}}{\R}$ be the set of all \prope{continuous} functions from the closed real interval $\intcc{a}{b}$ to $\R$.
+\exbox{
+  \text{$\clC{\intcc{a}{b}}{\R}$ is a linear space.}
+  }
+\end{example}
+
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{berberian1961}{88}{0821819127}{Theorem~IV.1.4}
+  }
+%---------------------------------------
+Let $\clLxy$ be the set of linear operators from a linear space $\spX$ to a linear space $\spY$.
+Let $\oppN(\opL)$ be the \structe{null space} of a linear operator $\opL\in\clLxy$.
+\thmbox{\begin{array}{l@{\qquad}c@{\qquad}l}
+  \opL\vx = \opL\vy                  &\iff& \vx-\vy\in\oppN(\opL)\\
+  \text{$\opL$ is \prope{injective}} &\iff& \oppN(\opL)=\setn{\vzero}
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\opL\vx = \opL\vy \implies   \vx-\vy\in\oppN(\opL)$:
+    \begin{align*}
+      \opL(\vx-\vy)
+        &= \opL\vx - \opL\vy
+        && \text{by \prefp{thm:L_prop}}
+      \\&= \vzero
+        && \text{by left hypothesis}
+      \\&\implies\quad \vx-\vy\in\oppN(\opL)
+        && \text{by definition of \structe{null space}\ifsxref{relation}{def:rel_null}}
+    \end{align*}
+
+  \item Proof that $\opL\vx = \opL\vy \impliedby \vx-\vy\in\oppN(\opL)$:
+    \begin{align*}
+      \opL\vy
+        &= \opL\vy + \vzero
+        && \text{by definition of linear space (\prefp{def:vspace})}
+      \\&= \opL\vy + \opL(\vx-\vy)
+        && \text{by right hypothesis}
+      \\&= \opL\vy + (\opL\vx-\opL\vy)
+        && \text{by \prefp{thm:L_prop}}
+      \\&= (\opL\vy -\opL\vy) + \opL\vx
+        && \text{by \prope{associative} and \prope{commutative} properties (\prefp{def:vspace})}
+      \\&= \opL\vx
+    \end{align*}
+
+  \item Proof that $\opL$ is \prope{injective} $\iff$   $\oppN(\opL)=\setn{\vzero}$:
+    \begin{align*}
+      \text{$\opL$ is \prope{injective}}
+        &\iff \brb{\brp{\opL\vx=\opL\vy\quad\iff\quad\vx=\vy}\quad\forall\vx,\vy\in\setX}
+      \\&\iff \brb{\brs{\opL\vx-\opL\vy=\vzero\quad\iff\quad(\vx-\vy)=\vzero}\quad\forall\vx,\vy\in\setX}
+      \\&\iff \brb{\brs{\opL(\vx-\vy)=\vzero\quad\iff\quad(\vx-\vy)=\vzero}\quad\forall\vx,\vy\in\setX}
+      \\&\iff \oppN(\opL)=\setn{\vzero}
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{berberian1961}{88}{0821819127}{Theorem~IV.5.1}
+  }
+%---------------------------------------
+Let $\spW$, $\spX$, $\spY$, and $\spZ$ be linear spaces over a field $\F$.
+\thmbox{\begin{array}{>{\scy}rlcl@{\qquad}C@{\qquad}D}
+    1. & \opL\brp{\opM\opN}      &=& \brp{\opL\opM}\opN                          & \forall \opL\in\clLzw,\, \opM\in\clLyz,\, \opN\in\clLxy         & (\prope{associative})
+  \\2. & \opL\brp{\opM\addo\opN} &=& \brp{\opL\opM}\addo\brp{\opL\opN}           & \forall \opL\in\clLyz,\, \opM\in\clLxy,\, \opN\in\clLxy  & (\prope{left distributive})
+  \\3. & \brp{\opL\addo\opM}\opN &=& \brp{\opL\opN}\addo\brp{\opM\opN}           & \forall \opL\in\clLyz,\, \opM\in\clLyz,\, \opN\in\clLxy  & (\prope{right distributive})
+  \\4. & \alpha\brp{\opL\opM}    &=& \brp{\alpha\opL}\opM = \opL\brp{\alpha\opM} & \forall \opL\in\clLyz,\, \opM\in\clLxy,\, \alpha\in\F    & (\prope{homogeneous})
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\opL\brp{\opM\opN}      = \brp{\opL\opM}\opN$: Follows directly from property of \prope{associative} operators\ifsxref{relation}{thm:op_associative}.
+
+  \item Proof that $\opL\brp{\opM\addo\opN} = \brp{\opL\opM}\addo\brp{\opL\opN}$:  
+    \begin{align*}
+      \brs{\opL\brp{\opM\addo\opN}}\vx
+        &= \opL\brs{\brp{\opM\addo\opN}\vx} 
+        && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+      \\&= \opL\brs{\brp{\opM\vx}\addo\brp{\opN\vx}} 
+        && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+      \\&= \brs{\opL\brp{\opM\vx}} \addo \brs{\opL\brp{\opN\vx}}
+        && \text{by \prope{additive} property \prefp{def:linop}}
+      \\&= \brs{\brp{\opL\opM}\vx}\addo\brs{\brp{\opL\opN}\vx}
+        && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+    \end{align*}
+
+  \item Proof that $\brp{\opL\addo\opM}\opN = \brp{\opL\opN}\addo\brp{\opM\opN}$:  Follows directly from property of \prope{associative} operators\ifsxref{relation}{thm:op_associative}.
+
+  \item Proof that $\alpha\brp{\opL\opM} = \brp{\alpha\opL}\opM$: Follows directly from \prope{associative} property of linear operators\ifsxref{relation}{thm:op_associative}.
+  \item Proof that $\alpha\brp{\opL\opM} = \opL\brp{\alpha\opM}$:
+    \begin{align*}
+      \brs{\alpha\brp{\opL\opM}}\vx
+        &= \alpha\brs{\brp{\opL\opM}\vx}
+        && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+      \\&= \opL\brs{\alpha\brp{\opM\vx}}
+        && \text{by \prope{homogeneous} property \prefp{def:linop}}
+      \\&= \opL\brs{\brp{\alpha\opM}\vx}
+        && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+      \\&= \brs{\opL\brp{\alpha\opM}}\vx
+        && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+  
+%%---------------------------------------
+%\begin{theorem}[Fundamental theorem of linear equations]
+%\index{Fundamental theorem of linear equations}
+%\index{theorems!Fundamental theorem of linear equations}
+%\citerpg{michel1993}{99}{048667598X}
+%%---------------------------------------
+%%Let $\opL\in\clOxy$ be a linear operator.
+%Let $\clOxy$ be the set of all operators from a linear space $\spX$ to a linear space $\spY$.
+%Let $\oppN(\opL)$ be the \hie{null space} of an operator $\opL$ in $\clOxy$
+%and $\oppI(\opL)$ the \hie{image set} of $\opL$ in $\clOxy$
+%(\prefp{def:rel_null}).
+%\thmbox{
+%  \dim \oppI(\opL) + \dim\oppN(\opL) = \dim \spX
+%  \qquad\scriptstyle
+%  \forall \opL\in\clOxy
+%  }
+%\end{theorem}
+%\begin{proof}
+%Let $\set{\psi_k}{k=1,2,\ldots,p}$ be a basis for $\spX$
+%constructed such that $\{\psi_{p-n+1},\psi_{p-n+2},\ldots,\psi_p\}$
+%is a basis for $\oppN(\opL)$.
+%\begin{align*}
+%  \text{Let } p &\eqd \dim\spX.         \\
+%  \text{Let } n &\eqd \dim\oppN(\opL).  \\
+%  \\
+%  \dim\oppI(\opL)
+%    &= \dim \set{\vy\in\spY}{\exists\vx\in\spX \st \vy=\opL\vx}
+%  \\&= \dim \set{\vy\in\spY}{\exists(\alpha_1,\alpha_2,\ldots,\alpha_p) \st \vy=\opL\sum_{k=1}^p\alpha_k\psi_k}
+%  \\&= \dim \set{\vy\in\spY}{\exists(\alpha_1,\alpha_2,\ldots,\alpha_p) \st
+%            \vy=\sum_{k=1}^p\alpha_k\opL\psi_k}
+%  \\&= \dim \set{\vy\in\spY}{\exists(\alpha_1,\alpha_2,\ldots,\alpha_p) \st
+%            \vy=\sum_{k=1}^{p-n}\alpha_k\opL\psi_k+\sum_{k=1}^n\alpha_k\opL\psi_k}
+%  \\&= \dim \set{\vy\in\spY}{\exists(\alpha_1,\alpha_2,\ldots,\alpha_p) \st
+%            \vy=\sum_{k=1}^{p-n}\alpha_k\opL\psi_k+\vzero}
+%  \\&= p-n
+%  \\&= \dim\spX - \dim\oppN(\opL)
+%\end{align*}
+%Note: This ``proof" may be missing some necessary detail. \problem
+%\end{proof}
+
+
+
+
+
+
+%%=======================================
+%\section{Operators on Metric linear spaces}
+%%=======================================
+%An operator on metric linear spaces is \prope{isometric} (next definition) if it is an \structe{isometry} (\prefp{def:isometry}).
+%%--------------------------------------
+%\begin{definition}
+%\label{def:op_isometric}
+%%--------------------------------------
+%Let $\metlinspaceX$ and $\metlinspaceY$ be \structe{metric linear spaces}.\footnote{%
+%  \structe{metric linear space}: \prefp{def:vs_metric}}
+%\defbox{\begin{array}{M}
+%  An operator $\opM\in\clOxy$ is \hid{isometric} if
+%  \\\qquad$\ds\metric{\vx}{\vy}= \metrica{\opM\vx}{\opM\vy} \qquad\scy \forall \vx,\vy\in\setX$.
+%}
+%\end{definition}
+
+
+%=======================================
+\section{Operators on Normed linear spaces}
+%=======================================
+
+%=======================================
+\subsection{Operator norm}
+%=======================================
+\ifdocnot{vsnorm}{
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerppg{ab}{217}{218}{0120502577},
+  \citorp{banach1932}{53},
+  \citorp{banach1932e}{33},
+  \citorp{banach1922}{135}
+ %\citerpg{michel1993}{344}{048667598X} \\
+ %\citerp{horn}{259}  \\
+  }
+\label{def:norm}
+\index{space!normed vector}
+\index{inequality!triangle}
+\index[xsym]{$\normn$}
+%--------------------------------------
+Let $\spV=\oquad{\setX}{\F}{\adds}{\cdot}$ be a linear space and
+$\F$ be a field with absolute value function $\abs{\cdot}\in\clFfr$\ifsxref{algebra}{def:abs}.
+\defbox{\begin{array}{>{\qquad}F rcl @{\qquad}C @{\qquad}D @{\qquad}D}
+  \mc{7}{M}{A \fnctd{norm} is any functional $\normn$ in $\clFxr$ that satisfies}
+  \\1. & \norm{ \vx}      &\ge& 0                     & \forall \vx \in\setX            & (\prope{strictly positive})  \nocite{michel1993} & and  %page 115
+  \\2. & \norm{ \vx}      &=  & 0 \iff \vx=\vzero     & \forall \vx \in\setX            & (\prope{nondegenerate})                                    & and
+  \\3. & \norm{a\vx}      &=  & |a|\norm{\vx}         & \forall \vx \in\setX, \; a\in\C & (\prope{homogeneous})                                      & and
+  \\4. & \norm{\vx+\vy}   &\le& \norm{\vx}+\norm{\vy} & \forall \vx,\vy \in\setX        & (\prope{subadditive}/\prop{triangle inquality}).
+  \\
+  \mc{7}{M}{A \structd{normed linear space} is the pair $\opair{\spV}{\normn}$.}
+\end{array}}
+\end{definition}
+}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{rudinf}{92}{0070542252},
+  \citerpg{ab}{225}{0120502577}
+  }
+\label{def:op_norm}
+\label{def:normop}
+\label{def:opnorm}
+\index{operator!norm}   \index{norm}
+%---------------------------------------
+Let $\clLxy$ be the space of linear operators over normed linear spaces $\spX$ and $\spY$.
+\footnote{
+  The operator norm notation $\normop{\cdot}$ is introduced (as a Matrix norm) in \\
+  \citerp{horn}{290}
+  }
+\defbox{\indxs{\normopn}
+  \begin{array}{M}
+  The \hid{operator norm} $\normopn$ is defined as
+    \\\qquad$\ds
+      \normop{\opA} \eqd \sup_{\vx\in\spX}\set{\norm{\opA\vx}}{\norm{\vx} \le 1}
+      \qquad\forall\opA\in\clLxy
+      $
+    \\
+    The pair $\opair{\clLxy}{\normopn}$
+    is the \hid{normed space of linear operators} on $\opair{\spX}{\spY}$.
+  \end{array}}
+\end{definition}
+
+\pref{prop:op_norm} (next) shows that the functional defined in
+\pref{def:op_norm} (previous) is a \hie{norm}.%
+\ifdochas{vsnorm}{\footnote{
+  \emph{norm} $\normn$: \prefpp{def:norm}
+  }}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:op_norm}
+\footnote{
+  \citerpg{rudinf}{93}{0070542252}
+  }
+\index{triangle inequality}
+\index{inequality!triangle}
+%---------------------------------------
+Let $\opair{\clLxy}{\normopn}$ be the normed space of linear operators
+over the normed linear spaces
+$\spX\eqd\normspaceX$ and $\spY\eqd\normspaceY$.
+\propbox{\begin{array}{>{\qquad}F>{\ds}rc>{\ds}l @{\qquad}C @{\qquad}D @{\qquad}D}
+  \mc{7}{M}{The functional $\normopn$ is a \hib{norm} on $\clLxy$. In particular,}
+  \\
+    1.&\normop{\opA}        &\ge&   0
+    & \forall \opA\in\clLxy
+    & (\prope{non-negative})
+    & and
+    \\
+    2.&\normop{\opA}        &=&   0 \quad \iff \opA\eqo\vzero
+    & \forall \opA\in\clLxy
+    & (\prope{nondegenerate})
+    & and
+    \\
+    3.&\normop{\alpha\opA}  &=&   |\alpha|\normop{\opA}
+    & \forall \opA\in\clLxy,\, \alpha\in\F
+    & (\prope{homogeneous})
+    & and
+    \\
+    4.&\normop{\opA\addo  \opB} &\le& \normop{\opA} + \normop{\opB}
+    & \forall \opA\in\clLxy
+    & (\prope{subadditive}).
+  \\
+  \mc{7}{M}{Moreover, $\opair{\clLxy}{\normopn}$ is a \hid{normed linear space}.}
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\normop{\opA}>0$ for $\opA\ne \vzero$:}
+  \normop{\opA}
+    &\eqd \sup_{\vx\in\spX} \set{\norm{\opA\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\normopn$ \xref{def:opnorm}}
+  \\&>    0
+  \intertext{2. Proof that $\normop{\opA}=0$ for $\opA\eqo\vzero$:}
+  \normop{\opA}
+    &\eqd \sup_{\vx\in\spX} \set{\norm{\opA\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\normopn$ \xref{def:opnorm}}
+  \\&=    \sup_{\vx\in\spX} \set{\norm{\vzero\vx}}{\norm{\vx}\le1}
+  \\&=    0
+  \\
+  \intertext{3. Proof that $\normop{\alpha\opA}=|\alpha|\normop{\opA}$:}
+  \normop{\alpha\opA}
+    &\eqd \sup_{\vx\in\spX} \set{\norm{\alpha\opA\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\normopn$ \xref{def:opnorm}}
+  \\&=    \sup_{\vx\in\spX} \set{|\alpha|\norm{\opA\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\normopn$ \xref{def:opnorm}}
+  \\&=    |\alpha|\sup_{\vx\in\spX} \set{\norm{\opA\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\sup$}
+  \\&=    |\alpha| \; \normop{\opA}
+    &&    \text{by definition of $\normopn$ \xref{def:opnorm}}
+  \\
+  \intertext{4. Proof that $\normop{\opA\addo  \opB} \le \normop{\opA} + \normop{\opB}$:}
+  \normop{\opA\addo  \opB}
+    &\eqd \sup_{\vx\in\spX} \set{\norm{(\opA\addo \opB)\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\normopn$ \xref{def:opnorm}}
+  \\&=    \sup_{\vx\in\spX} \set{\norm{\opA\vx+\opB\vx}}{\norm{\vx}\le1}
+    && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+  \\&\le  \sup_{\vx\in\spX} \set{\norm{\opA\vx}+\norm{\opB\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\normopn$ \xref{def:opnorm}}
+  \\&\le  \sup_{\vx\in\spX} \set{\norm{\opA\vx}}{\norm{\vx}\le1}
+       +  \sup_{\vx\in\spX} \set{\norm{\opB\vx}}{\norm{\vx}\le1}
+  \\&\eqd \normop{\opA} + \normop{\opB}
+    &&    \text{by definition of $\normopn$ \xref{def:opnorm}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:opnorm}
+%---------------------------------------
+Let $\opair{\clLxy}{\normopn}$ be the normed space of linear operators over normed linear spaces
+$\spX\eqd\normspaceX$ and $\spY\eqd\normspaceY$.
+\lembox{
+  \normop{\opL}
+    %\eqd \sup_{\vx} \set{\norm{\opL\vx}}{\norm{\vx}\le1}
+    =    \sup_{\vx} \set{\norm{\opL\vx}}{\norm{\vx}=1}
+    \qquad\forall \vx\in\clLxy
+  }
+\end{lemma}
+\begin{proof}
+  \footnote{\begin{minipage}[t]{2\tw/16+1ex}%
+      \fontsize{0.5mm}{0.5mm}\usefont{T1}{put}{b}{n}%
+      \begin{Verbatim}[frame=single, gobble=8, label={\footnotesize\rmfamily email}]
+        Hi, Dan,
+        OK, let's discuss it in Friday,
+        Btw, there is something I missed in my last mail, the following is more
+        complete than previous one.
+        (a) sup_x { || Lx ||  : ||x||<=1 } >= sup_x { || Lx ||  : ||x|| =1 } , since
+        sup of a set is always greater than sup of its subset.
+        (b) Assume\vy_{1},..\vy_{n}.. be a sequence in the set {\vx : ||x||<=1 } that
+        can achieve sup_x { || Lx ||  : ||x||<=1 }, we can define z_{n}=\vy_{n} / ||
+       \vy_{n} ||, thus z_{n} is in {\vx : ||x||=1 } .
+        Also, we have sup_n { || L z_{n} || } >= sup_n { || L Y_{n} || },
+        since ||\vy_{n} || <= 1, and for each n,
+        || L z_{n} ||= || L Y_{n} || / ||\vy_{n} ||  >=  || L Y_{n} ||.
+        Thus, sup_x { || Lx ||  : ||x|| =1 } >= sup_n { || L z_{n} || }
+            >= sup_n { || L Y_{n} || } = sup_x { || Lx || : ||x||<=1 }
+        (c) From (a) and (b), we have
+        sup_x { || Lx ||  : ||x||<=1 } = sup_x { || Lx ||  : ||x|| =1 }.
+
+        Chien Yao
+      \end{Verbatim}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{13\tw/16-3ex}
+      Many many thanks to former NCTU Ph.D. student
+      \href{http://web.ntpu.edu.tw/~yshan/it07.pdf}{Chien Yao} (Chinese: \zht{\zhtYao\zhtJian}; PinYin: Y{/'a}o Ji/`an) 
+      for his brilliant help with this proof.
+      (If you are viewing this text as a pdf file,
+       zoom in on the figure to the left to see text from Chien Yao's 2007 April 16 email.)
+    \end{minipage}
+  }
+
+
+\begin{enumerate}
+  \item Proof that $\sup_{\vx} \set{\norm{\opL\vx}}{\norm{\vx}\le1}
+       \ge \sup_{\vx} \set{\norm{\opL\vx}}{\norm{\vx}=1}$:
+    \begin{align*}
+      \sup_{\vx} \set{\norm{\opL\vx}}{\norm{\vx}\le1}
+        &\ge \sup_{\vx} \set{\norm{\opL\vx}}{\norm{\vx}=1}
+        &&   \text{because $\setA\subseteq\setB \implies \sup\setA \le \sup\setB$}
+    \end{align*}
+
+  \item Let the subset $\setY\subsetneq\setX$ be defined as
+    \[ \setY \eqd \set{\vy\in\setX}
+                      {\begin{array}{l>{\ds}l}
+                         1. & \norm{\opL\vy} = \sup_{\vx\in\setX} \set{\norm{\opL\vx}}{\norm{\vx}\le1}
+                              \text{ and } \\
+                         2. & 0<\norm{\vy}\le 1
+                      \end{array}}
+    \]
+
+
+  \item Proof that $\sup_{\vx} \set{\norm{\opL\vx}}{\norm{\vx}\le1}
+       \le \sup_{\vx} \set{\norm{\opL\vx}}{\norm{\vx}=1}$:
+    \begin{align*}
+      \sup_{\vx\in\setX} \set{\norm{\opL\vx}}{\norm{\vx}\le1}
+        &=    \norm{\opL \vy}
+        &&    \text{by definition of set $\setY$}
+      \\&=    \frac{\norm{\vy}}{\norm{\vy}} \norm{\opL \vy}
+      \\&=    \norm{\vy} \norm{\frac{1}{\norm{\vy}}\opL \vy}
+        &&    \text{by homogeneous property (\prefpo{def:norm})}
+      \\&=    \norm{\vy} \norm{\opL \frac{\vy}{\norm{\vy}}}
+        &&    \text{by homogeneous property (\prefpo{def:linop})}
+      \\&\le  \norm{\vy} \sup_{\vy\in\setY} \setn{\norm{\opL \frac{\vy}{\norm{\vy}}}}
+        &&    \text{by definition of supremum}
+      \\&=    \norm{\vy} \sup_{\vy\in\setY} \set{\norm{\opL \frac{\vy}{\norm{\vy}}}}{\norm{\frac{\vy}{\norm{\vy}}}=1}
+        &&    \text{because $\norm{\frac{\vy}{\norm{\vy}}}=1$ for all $\vy\in\setY$}
+      \\&\le  \sup_{\vy\in\setY} \set{\norm{\opL \frac{\vy}{\norm{\vy}}}}{\norm{\frac{\vy}{\norm{\vy}}}=1}
+        &&    \text{because $0<\norm{\vy}\le1$}
+      \\&\le  \sup_{\vx\in\setX} \set{\norm{\opL \vx}}{\norm{\vx}=1}
+        &&    \text{because $\frac{\vy}{\norm{\vy}}\in\setX\qquad\forall \vy\in\setY$}
+    \end{align*}
+
+  \item By (1) and (3),
+    \[ \sup_{\vx\in\setX}\set{ \norm{\opL \vx}}{\norm{\vx}\le1}
+       =
+       \sup_{\vx\in\setX}\set{ \norm{\opL \vx}}{\norm{\vx}=1}
+    \]
+
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpg{michel1993}{410}{048667598X}
+  }
+%---------------------------------------
+Let $\opI$ be the identity operator in the normed space of linear operators
+$\opair{\clLxx}{\normopn}$.
+\propbox{
+  \normop{\opI} = 1
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \normop{\opI}
+    &\eqd \sup\set{\norm{\opI\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\normopn$ (\prefp{def:op_norm})}
+  \\&=    \sup\set{\norm{\vx}}{\norm{\vx}\le1}
+    &&    \text{by definition of $\opI$ (\prefp{def:opI})}
+  \\&=    1
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{rudinf}{103}{0070542252},
+  \citerpg{ab}{225}{0120502577}
+  }
+\label{thm:LxLx}
+\label{thm:KLKL}
+%---------------------------------------
+Let $\opair{\clLxy}{\normopn}$ be the normed space of linear operators over normed linear spaces
+$\spX$ and $\spY$.
+\thmbox{\begin{array}{rcl@{\qquad\qquad}l}
+  \norm  {\opL \vx}  &\le& \normop{\opL}\:\norm{\vx}    & \forall \opL\in\clLxy,\,\vx\in\spX \\
+  \normop{\opK \opL} &\le& \normop{\opK}\:\normop{\opL} & \forall \opK,\opL\in\clLxy
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\norm  {\opL \vx} \le \normop{\opL}\:\norm{\vx}$:}
+  \norm{\opL \vx}
+    &=    \frac{\norm{\vx}}{\norm{\vx}} \norm{\opL \vx}
+  \\&=    \norm{\vx} \norm{\frac{1}{\norm{\vx}}\opL \vx}
+    &&    \text{by property of norms}
+  \\&=    \norm{\vx} \norm{\opL \frac{\vx}{\norm{\vx}}}
+    &&    \text{by property of linear operators}
+  \\&\eqd \norm{\vx} \norm{\opL \vy}
+    &&    \text{where $y\eqd\frac{\vx}{\norm{\vx}}$}
+  \\&\le  \norm{\vx} \sup_y \norm{\opL \vy}
+    &&    \text{by definition of supremum}
+  \\&=    \norm{\vx} \sup_y\set{ \norm{\opL \vy}}{\norm{\vy}=1}
+    &&    \text{because $\norm{\vy}=\norm{\frac{\vx}{\norm{\vx}}}=\frac{\norm{\vx}}{\norm{\vx}}=1$}
+  \\&\eqd \norm{\vx} \norm{\opL}
+    &&    \text{by definition of operator norm}
+  \\
+  \intertext{2. Proof that $\normop{\opK \opL} \le \normop{\opK}\:\normop{\opL}$:}
+  \normop{\opK\opL}
+    &\eqd \sup_{\vx\in\spX} \set{\norm{(\opK\opL)\vx}}{\norm{\vx}\le1}
+    &&    \text{by \prefp{def:op_norm} ($\normop{\cdot}$)}
+  \\&=    \sup_{\vx\in\spX} \set{\norm{\opK(\opL\vx)}}{\norm{\vx}\le1}
+    && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+  \\&\le  \sup_{\vx\in\spX} \set{\normop{\opK}\;\norm{\opL\vx}}{\norm{\vx}\le1}
+    &&    \text{by 1.}
+  \\&\le  \sup_{\vx\in\spX} \set{\normop{\opK}\;\normop{\opL}\;\norm{\vx}}{\norm{\vx}\le1}
+    &&    \text{by 1.}
+  \\&=    \sup_{\vx\in\spX} \set{\normop{\opK}\;\normop{\opL}\;1}{\norm{\vx}\le1}
+    &&    \text{by definition of $\sup$}
+  \\&=    \normop{\opK}\;\normop{\opL}
+    &&    \text{by definition of $\sup$}
+\end{align*}
+\end{proof}
+
+
+
+%=======================================
+\subsection{Bounded linear operators}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerppg{rudinf}{92}{93}{0070542252}
+  }
+\label{def:clB}
+\label{def:op_bounded}
+\index{operator!bounded}   \index{bounded operator}
+\index{operator!unbounded}
+\indxs{\clBxy}
+%---------------------------------------
+Let $\opair{\clLxy}{\normopn}$ be a normed space of linear operators.
+\defbox{\begin{array}{M}
+  An operator $\opB$ is \hid{bounded} if $\normop{\opB} < \infty$.
+  \\
+  The quantity $\clBxy$ is the set of all \hid{bounded linear operators} on $\opair{\spX}{\spY}$ such that
+    \\\qquad$\ds\clBxy  \eqd \set{\opL\in\clLxy}{\normop{\opL}<\infty}$.
+\end{array}}
+\end{definition}
+
+%An operator $\opL$ is \hib{continuous} if for all $\epsilon>0$ there exists $\delta>0$ such that (see \prefp{def:ms_continous})
+%\\\qquad$\ds\norm{\vx-\vy}<\delta \qquad\implies\qquad \norm{\opL\vx - \opL\vy} < \epsilon.$
+
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpg{michel1993}{408}{048667598X}
+%  }
+%\label{def:clC}
+%\label{def:op_cont}
+%\index{operator!bounded}   \index{bounded operator}
+%\index{operator!unbounded}
+%%---------------------------------------
+%Let $\opair{\clLxy}{\normopn}$ be the normed space of linear operators over normed linear spaces
+%$\spX$ and $\spY$.
+%\defbox{\begin{array}{M}
+%  An operator $\opL$ is \hid{continuous} if\quad
+%    for all $\epsilon>0$ there exists $\delta>0$ such that
+%    \\\qquad$\ds\norm{\vx-\vy}<\delta \qquad\implies\qquad \norm{\opL\vx - \opL\vy} < \epsilon.$\\
+%  %The set $\clCxy$ is defined to be the set of all \hid{continuous operators} on $\opair{\spX}{\spY}$ such that
+%  %  \\\qquad$\ds\hxs{\clCxy} \eqd \set{\opC\in\clOxy}{\text{$\opC$ is continuous}}.$
+%\end{array}}
+%\end{definition}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:op_cont_eq}
+\footnote{
+  \citerpg{ab}{227}{0120502577}
+  %\citerpg{michel1993}{408}
+  %\citep{pedersen2000}{27}
+  }
+%---------------------------------------
+Let $\opair{\clLxy}{\normopn}$ be the set of linear operators over normed linear spaces\\
+$\spX\eqd\normspaceX$ and $\spY\eqd\normspaceY$.%
+%\crossreftbl{
+%  \crossrefp{continuous}{thm:ms_continous}\\  % {def:continuous}\\
+%  \crossrefp{bounded}{def:bounded}
+%  }
+\thmbox{\begin{array}{>{\qquad}FlCc}
+  \mc{3}{M}{The following conditions are all {\em equivalent}:}\\
+     1. & \text{$\opL$ is continuous at {\em a single point} $\vx_0\in\setX$}
+        & \forall \opL\in\clLxy
+        & \iff
+   \\2. & \text{$\opL$ is \emph{continuous} (at every point $\vx\in\setX$)}
+        & \forall \opL\in\clLxy
+        & \iff
+   \\3. & \normop{\opL}<\infty \text{ ($\opL$ is \emph{bounded})}
+        & \forall \opL\in\clLxy
+        & \iff
+   \\4. & \exists M\in\R \st \norm{\opL\vx} \le M\norm{\vx}
+        & \forall \opL\in\clLxy,\,\vx\in\setX
+        &
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $1\implies2$:
+    \begin{align*}
+      \epsilon &> \norm{\opL\vx - \opL\vx_0}
+        && \text{by hypothesis 1}
+      \\&= \norm{\opL(\vx - \vx_0)}
+        && \text{by linearity (\prefp{def:linop})}
+      \\&= \norm{\opL(\vx +\vy - \vx_0-\vy)}
+      \\&= \norm{\opL(\vx +\vy) - \opL(\vx_0+\vy)}
+        && \text{by linearity (\prefp{def:linop})}
+      \\\implies&\text{$\opL$ is continuous at point $\vx+\vy$}
+      \\\implies&\text{$\opL$ is continuous at every point in $\setX$}
+        && \text{(hypothesis 2)}
+    \end{align*}
+  %
+  \item Proof that $2\implies1$: obvious:
+  %
+  %\item Proof that $4\implies1$:
+  %  \begin{align*}
+  %    \lim_{n\to\infty} \norm{\opL\vx - \opL\vx_n}
+  %      &=   \lim_{n\to\infty} \norm{\opL(\vx - \vx_n)}
+  %      &&   \text{by linearity of $\opL$ (\prefp{def:linop})}
+  %    \\&\le \lim_{n\to\infty} \, M \, \norm{\vx - \vx_n}
+  %      &&   \text{by hypothesis 4}
+  %    \\&\le M \, \lim_{n\to\infty} \, \norm{\vx - \vx_n}
+  %    \\&\le M \cdot 0
+  %    \\&\le 0
+  %      &&   \text{because $M<\infty$}
+  %    \\\implies & \text{$\opL$ is continuous at point $x$}
+  %      &&   \text{(hypothesis 1)}
+  %  \end{align*}
+  %
+  \item Proof that $4\implies2$: \citep{bollobas1999}{29}
+    \begin{align*}
+      \normop{\opL\vx} \le M\norm{\vx}
+        &\implies \normop{\opL(\vx-\vy)} \le M\norm{\vx-\vy}
+        && \text{by hypothesis 4}
+      \\&\implies \normop{\opL\vx-\opL\vy} \le M\norm{\vx-\vy}
+        &&        \text{by linearity of $\opL$ \xref{def:linop}}
+      \\&\implies \normop{\opL\vx-\opL\vy}\le\epsilon \text{ whenever } M\norm{\vx-\vy}<\epsilon
+      \\&\implies \normop{\opL\vx-\opL\vy}\le\epsilon \text{ whenever } \norm{\vx-\vy}<\frac{\epsilon}{M}
+        && \text{(hypothesis 2)}
+    \end{align*}
+  %
+  \item Proof that $3\implies4$:
+    \begin{align*}
+      \norm  {\opL \vx}
+        &\le \mcom{\normop{\opL}}{$M$}\:\norm{\vx}
+        &&   \text{by \prefp{thm:LxLx}}
+      \\&=   M\:\norm{\vx}
+        &&   \text{where $M\eqd\normop{\opL}<\infty$ (by hypothesis 1)}
+    \end{align*}
+  %
+  \item Proof that $1\implies3$: \citep{ab}{227}
+    \begin{align*}
+      \normop{\opL} = \infty
+        &\implies \set{\norm{\opL\vx}}{\norm{\vx}\le1} = \infty
+      \\&\implies \exists\seqn{\vx_n} \st \norm{\vx_n}=1 \text{ and } \normop{\opL} = \set{\norm{\opL\vx_n}}{\norm{\vx_n}\le1} = \infty
+      \\&\implies \norm{\vx_n}=1 \text{ and } \infty=\normop{\opL} = \norm{\opL\vx_n}
+      \\&\implies \norm{\vx_n}=1 \text{ and } \norm{\opL\vx_n} \ge n
+      \\&\implies \frac{1}{n}\norm{\vx_n}=\frac{1}{n} \text{ and } \frac{1}{n}\norm{\opL\vx_n} \ge 1
+      \\&\implies \norm{\frac{\vx_n}{n}}=\frac{1}{n} \text{ and } \norm{\opL\frac{\vx_n}{n}} \ge 1
+      \\&\implies \lim_{n\to\infty}\norm{\frac{\vx_n}{n}}=0 \text{ and } \lim_{n\to\infty}\norm{\opL\frac{\vx_n}{n}} \ge 1
+      \\&\implies \text{$\opL$ is not continuous at $0$}
+    \end{align*}
+    But by hypothesis, $\opL$ {\em is} continuous.
+    So the statement $\normop{\opL}=\infty$ must be \emph{false} and thus
+    $\normop{\opL}<\infty$ ($\opL$ is \emph{bounded}).
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+\subsection{Adjoints on normed linear spaces}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:norm_adjoint}
+\label{def:adjoint}
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\spXd$ be the \structe{topological dual space}\ifsxref{vstopo}{def:spXd} of $\spX$.
+\defbox{\begin{array}{M}
+    $\opBa$ is the \opd{adjoint} of an operator $\opB\in\clBxy$ if\\
+    \qquad$\ds\ff(\opB\vx) = \brs{\opBa\ff}(\vx) \qquad\forall\ff\in\spXd,\,\vx\in\spX$
+  \end{array}
+  }
+\end{definition}
+
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{bollobas1999}{156}
+  }
+\label{thm:op_adjoint}
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+\thmbox{\begin{array}{rcl@{\qquad}C}
+  (\opA\addo  \opB)^\ast &=& \opAa \addo \opBa & \forall \opA,\opB\in\clBxy \\
+  (\lambda\opA)^\ast &=& \lambda\opAa  & \forall \opA,\opB\in\clBxy \\
+  (\opA\opB)^\ast    &=& \opBa\opAa    & \forall \opA,\opB\in\clBxy
+\end{array}}
+\end{theorem}
+\begin{proof}
+{\begin{align*}
+  \brs{\opA\addo \opB}^\ast\ff(\vx)
+    &= \ff\brp{\brs{\opA\addo \opB}\vx}
+    && \text{by definition of adjoint}&&\text{\xref{def:norm_adjoint}}
+  \\&= \ff\brp{\opA\vx+\opB\vx}
+    && \text{by definition of linear operators}&&\text{\xref{def:linop}}
+  \\&= \ff\brp{\opA\vx} + \ff\brp{\opB\vx}
+    && \text{by definition of \fncte{linear functional}}&&\text{\ifxref{functionals}{def:functional}}
+  \\&= \opAa\ff\brp{\vx} + \opBa\ff\brp{\vx}
+    && \text{by definition of \ope{adjoint}}&&\text{\xref{def:norm_adjoint}}
+  \\&= \brs{\opAa+\opBa}\ff\brp{\vx}
+    && \text{by definition of \fncte{linear functional}}&&\text{\ifxref{functionals}{def:functional}}
+  \\
+  \\
+  \brs{\lambda\opA}^\ast\ff(\vx)
+    &= \ff\brp{\brs{\lambda\opA}\vx}
+    && \text{by definition of \ope{adjoint}}&&\text{\xref{def:norm_adjoint}}
+  \\&= \lambda\ff\brp{\opA\vx}
+    && \text{by definition of \fncte{linear functional}}&&\text{\ifxref{functionals}{def:functional}}
+  \\&= \brs{\lambda\opAa}\ff\brp{\vx}
+    && \text{by definition of \ope{adjoint}}&&\text{\xref{def:norm_adjoint}}
+  \\
+  \\
+  \brs{\opA\opB}^\ast\ff(\vx)
+    &= \ff\brp{\brs{\opA\opB}\vx}
+    && \text{by definition of \ope{adjoint}}&&\text{\xref{def:norm_adjoint}}
+  \\&= \ff\brp{\opA\brs{\opB\vx}}
+    && \text{by definition of \ope{linear operators}}&&\text{\xref{def:linop}}
+  \\&= \brs{\opAa\ff}\brp{\opB\vx}
+    && \text{by definition of \ope{adjoint}}&&\text{\xref{def:norm_adjoint}}
+  \\&= \opBa\brs{\opAa\ff}\brp{\vx}
+    && \text{by definition of \ope{adjoint}}&&\text{\xref{def:norm_adjoint}}
+  \\&= \brs{\opBa\opAa}\ff\brp{\vx}
+    && \text{by definition of \ope{adjoint}}&&\text{\xref{def:norm_adjoint}}
+\end{align*}}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{rudinf}{98}{0070542252}
+  }
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\opBa$ be the adjoint of an operator $\opB$.
+\thmbox{
+  \normop{\opB} = \normop{\opBa}
+  \qquad\forall\opB\in\clBxy
+  }
+\end{theorem}
+\begin{proof}
+\problem
+\begin{align*}
+  \normop{\opB}
+    &\eqd \sup\set{\norm{\opB\vx}}{\norm{\vx}\le1}
+    &&    \text{by \prefp{def:op_norm}}
+  \\&\eqq \sup\set{|\fg(\opB\vx;\vyd)|}{\norm{\vx}\le1,\; \norm{\vyd}\le1}
+  \\&=    \sup\set{|\ff(\vx;\opBa\vyd)|}{\norm{\vx}\le1,\; \norm{\vyd}\le1}
+  \\&\eqd \sup\set{\norm{\opBa\vyd}}{\norm{\vx}\le1,\; \norm{\vyd}\le1}
+  \\&=    \sup\set{\norm{\opBa\vyd}}{\norm{\vyd}\le1}
+  \\&\eqd \normop{\opBa}
+    &&    \text{by \prefp{def:op_norm}}
+\end{align*}
+\end{proof}
+
+
+%%=======================================
+%\subsection{More properties}
+%%=======================================
+%\qboxnpq
+%  {\href{http://en.wikipedia.org/wiki/Stanis\%C5\%82aw_Ulam}{Stanislaus M. Ulam}
+%   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineG.html}{(1909--1984)},
+%   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Germany.html}{Polish mathematician}
+%    \index{Ulam, Stanislaus M.}
+%    \index{quotes!Ulam, Stanislaus M.}
+%    \footnotemark
+%  }
+%  {../common/people/ulam.jpg}
+%  {Beginning with the third\vyear of studies,
+%   most of my mathematical work was really started in conversations with Mazur and Banach.
+%   And according to Banach some of my own contributions were characterized by a certain ``strangeness"
+%   in the formulation of problems and in the outline of possible proofs.
+%   As he told me once some\vyears later,
+%   he was surprised how often these ``strange" approaches really worked.}
+%  \footnotetext{\begin{tabular}[t]{ll}
+%    quote: & \citerp{ulam1991}{33} \\
+%    image: & \url{http://www-history.mcs.st-andrews.ac.uk/Biographies/Ulam.html}
+%  \end{tabular}}
+%
+%
+%%---------------------------------------
+%\begin{theorem}[\thm{Mazur-Ulam theorem}]
+%\label{thm:mazur-ulam}
+%\footnote{
+%  \citerp{oikhberg2007}{598} \\
+%  \citerp{vaisala2003}{634} \\
+%  \citerp{giles2000}{11} \\
+%  \citerp{dunford1957}{91} \\
+%  \citor{mazur1932}
+%  }
+%%---------------------------------------
+%Let $\fphi\in\clLxy$ be a function on normed linear spaces
+%$\opair{\spX}{\normn_\spX}$ and $\opair{\spY}{\normn_\spY}$.
+%Let $\opI\in\clLxx$ be the identity operator on $\opair{\spX}{\normn_\spX}$.
+%\thmbox{\begin{array}{ll}
+%  \left.\begin{array}{llD}
+%    1. & \mcom{\fphi^{-1}\fphi = \fphi\fphi^{-1} = \opI}
+%              {\prop{bijective}}
+%       & and \\
+%    2. & \mcom{\norm{\fphi\vx-\fphi\vy}_\spY = \norm{\vx-\vy}_\spX  \quad\sst\forall \vx,\vy\in\spX}
+%              {\prop{isometric}}
+%  \end{array}\right\}
+%  \implies
+%  \mcom{\fphi\brp{[1-\lambda]\vx+\lambda\vy} = [1-\lambda]\fphi\vx + \lambda\fphi\vy
+%        \forall \lambda\in\R}
+%       {\prop{affine}}
+%\end{array}}
+%\end{theorem}
+%\begin{proof}
+%Proof not\vyet complete.\attention
+%\begin{enumerate}
+%  \item Let $\fpsi$ be the \hie{reflection} of $\vz$ in $\spX$ such that
+%        $\fpsi \vx = 2\vz - \vx$
+%        \label{item:mazur-ulam_psi}
+%    \begin{enumerate}
+%      \item $\norm{\fpsi\vx-\vz} = \norm{\vx-\vz}$
+%    \end{enumerate}
+%
+%  \item Let $\ds\lambda \eqd \sup_\fg\setn{\norm{\fg\vz-\vz}}$ \label{item:mazur-ulam_lambda}
+%
+%  \item Proof that $\fg\in\setW \implies \fg^{-1}\in\setW$: \label{item:mazur-ulam_gi}
+%    \begin{align*}
+%      \intertext{Let $\hat{\vx}\eqd \fg^{-1}\vx$ and $\hat{\vy}\eqd \fg^{-1}\vy$.}
+%      \norm{\fg^{-1}\vx - \fg^{-1}\vy}
+%        &= \norm{\hat{\vx} - \hat{\vy}}
+%        && \text{by definition of $\hat{\vx}$ and $\hat{\vy}$}
+%      \\&= \norm{\fg\hat{\vx} - \fg\hat{\vy}}
+%        && \text{by left hypothesis}
+%      \\&= \norm{\fg\fg^{-1}\vx - \fg\fg^{-1}\vy}
+%        && \text{by definition of $\hat{\vx}$ and $\hat{\vy}$}
+%      \\&= \norm{\vx - \vy}
+%        && \text{by definition of $\fg^{-1}$}
+%    \end{align*}
+%
+%  \item Proof that $\fg\vz = \vz$:
+%    \begin{align*}
+%      2\lambda
+%        &= 2\sup\setn{\norm{\fg\vz-\vz}}
+%        && \text{by definition of $\lambda$ \pref{item:mazur-ulam_lambda}}
+%      \\&\le 2\norm{\fg\vz-\vz}
+%        && \text{by definition of $\sup$}
+%      \\&= \norm{2\vz-2\fg\vz}
+%      \\&= \norm{\fpsi\fg\vz-\fg\vz}
+%        && \text{by definition of $\fpsi$ \pref{item:mazur-ulam_psi}}
+%      \\&= \norm{\fg^{-1}\fpsi\fg\vz-\fg^{-1}\fg\vz}
+%        && \text{by \pref{item:mazur-ulam_gi}}
+%      \\&= \norm{\fg^{-1}\fpsi\fg\vz-\vz}
+%        && \text{by definition of $\fg^{-1}$}
+%      \\&= \norm{\fpsi\fg^{-1}\fpsi\fg\vz-\vz}
+%      \\&= \norm{\fg^\ast\vz-\vz}
+%      \\&\le \lambda
+%        && \text{by definition of $\lambda$ \pref{item:mazur-ulam_lambda}}
+%      \\&\implies 2\lambda \le \lambda
+%      \\&\implies \lambda=0
+%      \\&\implies \fg\vz = \vz
+%    \end{align*}
+%
+%  \item Proof that $\fphi\brp{\frac{1}{2}\vx+\frac{1}{2}\vy} = \frac{1}{2}\fphi\vx + \frac{1}{2}\fphi\vy$:
+%    \begin{align*}
+%      \fphi\brp{\frac{1}{2}\vx+\frac{1}{2}\vy}
+%        &=
+%      \\&= \frac{1}{2}\fphi\vx + \frac{1}{2}\fphi\vy
+%    \end{align*}
+%
+%  \item Proof that $\fphi\brp{[1-\lambda]\vx+\lambda\vy} = [1-\lambda]\fphi\vx + \lambda\fphi\vy$:
+%    \begin{align*}
+%      \fphi\brp{[1-\lambda]\vx+\lambda\vy}
+%        &=
+%      \\&= [1-\lambda]\fphi\vx + \lambda\fphi\vy
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+%
+%
+%%---------------------------------------
+%\begin{theorem}[Neumann Expansion Theorem]
+%\index{Neumann Expansion Theorem}
+%\index{theorems!Neumann Expansion Theorem}
+%\label{thm:op_net}
+%\footnote{
+%  \citerpg{michel1993}{415}{048667598X}
+%  }
+%%---------------------------------------
+%Let $\opA\in\clOxx$ be an operator on a linear space $\spX$.
+%Let $\opA^0\eqd \opI$.
+%\thmbox{\begin{array}{ll}
+%  \left.\begin{array}{llD}
+%    1. & \opA          \in \clBxx  & ($\opA$ is bounded) \\
+%    2. & \normop{\opA} <   1
+%  \end{array}\right\}
+%  \implies
+%  \left\{\begin{array}{lrc>{\ds}l}
+%    1. & (\opI-\opA)^{-1} &&\text{ exists} \\
+%    2. & \normop{(\opI-\opA)^{-1}} &\le& \frac{1}{1-\normop{\opA}} \\
+%    3. & (\opI-\opA)^{-1} &=& \sum_{n=0}^\infty \opA^n  \\
+%       & \mc{3}{c}{\text{ with uniform convergence}}
+%  \end{array}\right.
+%\end{array}}
+%\end{theorem}
+
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:op_types}
+%\label{def:op_normal}
+%\label{def:op_isometric}
+%\label{def:op_unitary}
+%\footnote{
+%  \citerp{rudinf}{312} \\
+%  \citerpg{michel1993}{431}{048667598X}
+%  }
+%\index{operator!normal}      \index{normal operator}
+%\index{operator!isometric}   \index{isometric operator}
+%\index{operator!unitary}     \index{unitary operator}
+%%---------------------------------------
+%Let $\spX\eqd\normspaceX$ be a normed linear space.
+%Let $\opN$,  $\opM$,  and $\opU$   be operators in $\clBxx$ with adjoints
+%    $\opNa$, $\opMa$, and $\opUa$, respectively.
+%%Let $\spI$ be the identity operator.
+%\defbox{\begin{array}{M lclC}
+%  An operator $\opM$ is \hid{isometric} if & \norm{\opM\vx-\opM\vy} &=& \norm{\vx-\vy} & \forall \vx,\vy\in\setX.\\
+%  An operator $\opU$ is \hid{unitary}   if & \norm{\opU\vx}         &=& \norm{\vx}     & \forall \vx\in\setX.\\
+%  An operator $\opN$ is \hid{normal}    if & \norm{\opNa\vx}        &=& \norm{\opN\vx} & \forall \vx\in\setX.
+%\end{array}}
+%\end{definition}
+%\addtocounter{footnote}{-1}
+%\citetblt{
+%  \citor{frobenius1878} \\
+%  \citorp{frobenius1878b}{391}
+%  \cithrp{dieudonne1969}{167}
+%  }
+%\stepcounter{footnote}
+%\citetblt{
+%  \citorp{autonne1901}{209} \\
+%  \citor{autonne1902} \\
+%  \citor{schur1909}
+%  \cithr{steen1973}
+%  }
+
+
+%%--------------------------------------
+%\begin{theorem}
+%%--------------------------------------
+%Let $\normspaceX$ be a normed linear space.
+%\thmbox{
+%  \text{$\opM$ is \prope{isometric}}
+%  \qquad\implies\qquad
+%  \no
+%  }
+%\end{theorem}
+
+
+
+%=======================================
+\section{Operators on Inner product spaces}
+%=======================================
+%=======================================
+\subsection{General Results}
+%=======================================
+\ifdochasnot{vsinprod}{
+%--------------------------------------
+\begin{definition}
+\label{def:inprod}
+\footnote{
+  \citerp{haaser1991}{277},
+  \citerpg{ab}{276}{0120502577},
+  \citorp{peano1888e}{72}
+  }
+\index[xsym]{$\inprodn$}
+\index{$\inprodn$}
+\index{space!inner product}
+%--------------------------------------
+Let $\spO\eqd\linearspaceX$ be a linear space.
+\defboxt{
+  A function $\inprodn\in\clFxxf$ is an \fnctd{inner product} on $\spO$ if
+  \\\indentx$\ds\begin{array}{F rcl @{\qquad}C @{\qquad}D @{\qquad}D}
+   1. & \inprod{\vx    }{\vx} &\ge& 0
+      & \forall \vx\in\setX
+      & (\prop{non-negative})
+      & and
+      \\
+   2. & \inprod{\vx    }{\vx} &=& 0 \iff \vx=\vzero
+      & \forall \vx\in\setX
+      & (\prop{nondegenerate})
+      & and
+      \\
+   3. & \inprod{\alpha\vx}{\vy}    &=& \alpha\inprod{\vx}{{\vy}}
+      & \forall \vx,\vy\in\setX,\;\forall\alpha\in\C
+      & (\prop{homogeneous})
+      & and
+      \\
+   4. & \inprod{\vx+\vy}{\vu} &=& \inprod{\vx}{{\vu}} + \inprod{\vy}{{\vu}}
+      & \forall \vx,\vy,\vu\in\setX
+      & (\prop{additive})
+      & and
+      \\
+   5. & \inprod{\vx    }{\vy} &=& \inprod{\vy}{\vx}^\ast
+      & \forall \vx,\vy\in\setX
+      & (\prop{conjugate symmetric}).
+  \end{array}$\\
+  An inner product is also called a \fnctd{scalar product}.\\
+  An \structd{inner product space} is the pair $\opair{\spO}{\inprodn}$.
+  }
+\end{definition}
+}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:op_inprod}
+\footnote{
+  \citerpgc{rudinf}{310}{0070542252}{Theorem 12.7, Corollary}
+  }
+%---------------------------------------
+Let $\opA,\opB\in\clBxx$ be bounded linear operators on an inner product space $\spX\eqd\inprodspaceX$.
+\thmbox{\begin{array}{rclC @{\qquad}c@{\qquad} rclC}
+  \inprod{\opB\vx}{\vx}&=&0 &\forall \vx\in\setX
+  &\iff&
+  \opB\vx&=&\vzero &\forall\vx\in\setX
+  \\
+  \inprod{\opA\vx}{\vx}&=&\inprod{\opB\vx}{\vx} &\forall \vx\in\setX
+  &\iff&
+  \opA&=&\opB
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Proof that $\inprod{\opB\vx}{\vx}=0\implies\opB\vx=\vzero$:
+  \begin{align*}
+    0
+      &= \inprod{\opB(\vx+\opB\vx)}{(\vx+\opB\vx)} + i\inprod{\opB(\vx+i\opB\vx)}{(\vx+i\opB\vx)}
+      && \text{by left hypothesis}
+    \\&=  \brb{\inprod{\opB\vx+\opB^2\vx)}{\vx+\opB\vx}}
+       + i\brb{\inprod{\opB\vx+i\opB^2\vx)}{\vx+i\opB\vx}}
+      %&& \text{by \prope{additive} property of $\opB$} 
+      && \text{by \prefp{def:linop}}
+    \\&=  \brb{\inprod{\opB\vx}{\vx}+ \inprod{\opB\vx}{\opB\vx}+ \inprod{\opB^2\vx}{\vx}+   \inprod{\opB^2\vx}{\opB\vx}}
+      %&& \text{by \prope{additive} property of $\inprodn$} 
+      %&& \text{\xref{def:inprod}}
+       && \text{by \prefp{def:inprod}}
+      \\&\qquad + i\brb{\inprod{\opB\vx}{\vx}-i\inprod{\opB\vx}{\opB\vx}+i\inprod{\opB^2\vx}{\vx}-i^2\inprod{\opB^2\vx}{\opB\vx}}
+    \\&=\mathrlap{%
+          \brb{0                    + \inprod{\opB\vx}{\opB\vx}+ \inprod{\opB^2\vx}{\vx}+   0                          }
+       + i\brb{0                    -i\inprod{\opB\vx}{\opB\vx}+i\inprod{\opB^2\vx}{\vx}-i^20                          }
+       \quad\text{by left hypothesis}
+       }
+    \\&=  \brb{                       \inprod{\opB\vx}{\opB\vx}+ \inprod{\opB^2\vx}{\vx}                               }
+       +  \brb{                       \inprod{\opB\vx}{\opB\vx}- \inprod{\opB^2\vx}{\vx}                               }
+    \\&=  2\inprod{\opB\vx}{\opB\vx}
+    \\&=  2\norm{\opB\vx}^2
+    \\&\implies\opB\vx=\vzero
+      %&& \text{by \prope{nondegenerate} property of $\normn$} 
+      %&& \text{\xref{def:norm}}
+      && \text{by \prefp{def:norm}}
+  \end{align*}
+
+\item Proof that $\inprod{\opB\vx}{\vx}=0\impliedby\opB\vx=\vzero$: by property of inner products\ifsxref{vsinprod}{thm:inprod_prop}.
+
+\item Proof that $\inprod{\opA\vx}{\vx}=\inprod{\opB\vx}{\vx}\implies\opA\eqo\opB$:
+  \begin{align*}
+    0
+      &= \inprod{\opA\vx}{\vx}-\inprod{\opB\vx}{\vx}
+      && \text{by left hypothesis}
+    \\&= \inprod{\opA\vx-\opB\vx}{\vx}
+      && \text{by \prope{additivity} property of $\inprodn$ (\prefp{def:inprod})}
+    \\&= \inprod{(\opA-\opB)\vx}{\vx}
+      && \text{by definition of operator addition\ifsxref{relation}{def:op+x}}
+    \\\implies (\opA-\opB)\vx&=\vzero
+      && \text{by item 1}
+    \\\implies \opA &= \opB
+      && \text{by definition of operator subtraction\ifsxref{relation}{def:op+x}}
+  \end{align*}
+
+\item Proof that $\inprod{\opA\vx}{\vx}=\inprod{\opB\vx}{\vx}\impliedby\opA\eqo\opB$:
+  \begin{align*}
+    \inprod{\opA\vx}{\vx}
+      &= \inprod{\opB\vx}{\vx}
+      && \text{by $\opA\eqo\opB$ hypothesis}
+  \end{align*}
+\end{enumerate}
+\end{proof}
+
+%=======================================
+\subsection{Operator adjoint}
+%=======================================
+A fundamental concept of operators on inner product spaces is the
+\hie{operator adjoint} (\prefp{prop:op_adjoint}).
+The adjoint of an operator is a kind of generalization of the conjugate
+of a complex number in that
+\begin{liste}
+  \item Both are \hie{star-algebras} (\prefp{thm:op_star}).
+  \item Both support decomposition into ``real" and ``imaginary" parts\ifdochas{normalg}{ (\prefp{thm:nalg_re_im})}.
+\end{liste}
+Structurally, the operator adjoint provides a convenient symmetric relationship
+between the \hie{range space} and \hie{null space} of an operator
+(\prefp{thm:oppN_oppR}).
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:op_adjoint}
+\footnote{
+  \citerpg{michel1993}{220}{048667598X},
+  \citerpg{rudinf}{311}{0070542252},
+  \citerp{giles2000}{182},
+  %\nocite{pedersen2000} % page 55
+  %\nocite{ab} % page 297
+  \citorp{vonNeumann1929}{49},
+  \citorp{stone1932}{41}
+  }
+%---------------------------------------
+Let $\clBhh$ be the space of bounded linear operators on a Hilbert space $\spH$.\footnote{%
+  \structe{bounded operator}: \prefpp{def:clB}; 
+  \structe{adjoint}:          \prefpp{def:norm_adjoint}
+  }
+\propbox{\begin{array}{l@{\qquad}l}
+  \mc{2}{l}{\text{An operator $\opBa$ is the \structe{adjoint} of $\opB\in\clBhh$ if}}\\
+  \qquad\inprod{\opB\vx}{\vy} = \inprod{\vx}{\opBa\vy} \qquad \forall \vx,\vy\in\spH.
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item For fixed $\fy$, $\ff(\vx)\eqd\inprod{\vx}{\vy}$ is a \structe{functional} 
+        in $\clFxf$\ifsxref{functionals}{def:functional}.
+  \item $\opBa$ is the \structe{adjoint} of $\opB$ because
+    \begin{align*}
+      \inprod{\opB\vx}{\vy}
+        &\eqd \ff(\opB\vx)
+        && \ifdochas{functionals}{\text{by \prefpp{def:functional}}}
+      \\&\eqd \opBa\ff(\vx)
+        && \text{by \prefpp{def:norm_adjoint}}
+      \\&=    \inprod{\vx}{\opBa\vy}
+        && \ifdochas{functionals}{\text{by \prefpp{def:functional}}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{example}[Matrix algebra: $\opAa=\opA^H$]
+\index{adjoint}
+%---------------------------------------
+In matrix algebra,
+\exbox{\begin{tabular}{>{$\imark\quad$}l}
+  The inner product operation $\inprod{\vx}{\vy}$ is represented by
+         $\vy^H \vx$.  \\
+  The linear operator is represented as a matrix $\vA$. \\
+  The operation of $\vA$ on vector $\vx$ is represented as $\vA\vx$. \\
+  The adjoint of matrix $\vA$ is the Hermitian matrix $\vA^H$.
+  \end{tabular}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \inprod{\vA\vx}{\vy}
+    &\eqd  \vy^H \vA\vx
+     =     [(\vA\vx)^H \vy ]^H
+     =     [\vx^H\vA^H \vy ]^H
+     =      (\vA^H \vy)^H \vx
+     \eqd  \inprod{\vx}{\vA^H \vy}
+\end{align*}
+\end{proof}
+
+
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:op_ops}
+%\citep{bollobas1999}{205}
+%\index{square}         \index{operator!square}
+%\index{square root}    \index{operator!square root}
+%\index{absolute value} \index{operator!absolute value}
+%%---------------------------------------
+%Let $\opA\in\clOxy$ be an operator with adjoint $\opAa$.
+%\defbox{\begin{array}{>{$}l<{$} rcl}
+%  The {\bf square        } of an operator $\opA$ is          & \opA^2      &\eqd& \opA\opA           \\
+%  The {\bf square root   } of an operator $\opA$ is     & \sqrt{\opA} &\eqd& \opB \st \opB^2 = \opA  \\
+%  The {\bf absolute value} of an operator $\opA$ is  & \abs{\opA}  &\eqd& \sqrt{\opAa\opA}
+%\end{array}}
+%\end{definition}
+
+
+
+
+Structures that satisfy the four conditions of the next theorem are known as
+\structe{*-algebras} (``\hie{star-algebras}"\ifdochas{normalg}{, \prefp{def:star_algebra}}).
+Other structures which are *-algebras include
+the \structe{field of complex numbers} $\C$ and
+any \structe{ring of complex square $n\times n$ matrices}.\footnote{\citerpg{sakai}{1}{3540636331}}
+%---------------------------------------
+\begin{theorem}[\thm{operator star-algebra}]
+\footnote{
+  \citerpp{halmos}{39}{40},
+  \citerpg{rudinf}{311}{0070542252}
+  }
+\label{thm:op_star}
+%---------------------------------------
+Let $\spH$ be a Hilbert space with operators $\opA,\opB\in\clBhh$ and
+with adjoints $\opAa,\opBa\in\clBhh$.
+Let $\bar{\alpha}$ be the complex conjugate of some $\alpha\in\C$.
+\thmbox{\begin{array}{>{\qquad\scy}rrcl@{\qquad}C@{\qquad}D@{\qquad}D}
+  \mc{7}{M}{The pair $\opair{\spH}{\ast}$ is a \structe{$\ast$-algebra} (\structe{star-algebra}).
+  In particular,}
+  \\
+    1. & (\opA\addo \opB)^\ast   &=& \opAa + \opBa          & \forall \opA,\opB\in\spH & (\prope{distributive})     & and \\
+    2. & (\alpha \opA)^\ast      &=& \bar{\alpha} \opA^\ast & \forall \opA,\opB\in\spH & (\prope{conjugate linear}) & and \\
+    3. & (\opA \opB)^\ast        &=& \opBa \opAa            & \forall \opA,\opB\in\spH & (\prope{antiautomorphic})  & and \\
+    4. & \opA^{\ast\ast}         &=& \opA                   & \forall \opA,\opB\in\spH & (\prope{involutary})
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \inprod{\vx}{(\opA\addo \opB)^\ast\vy}
+    &= \inprod{(\opA\addo \opB)\vx}{\vy}
+    && \text{by definition of adjoint} &&\text{\xref{prop:op_adjoint}}
+  \\&= \inprod{\opA\vx}{\vy} + \inprod{\opB\vx}{\vy}
+    && \text{by definition of inner product} && \text{\xref{def:inprod}}
+  \\&= \inprod{\vx}{\opAa\vy} + \inprod{\vx}{\opBa\vy}
+    && \text{by definition of operator addition} &&\text{\ifxref{relation}{def:op+x}}
+  \\&= \inprod{\vx}{\opAa\vy +\opBa\vy}
+    && \text{by definition of inner product} &&\text{\xref{def:inprod}}
+  \\&= \inprod{\vx}{(\opAa +\opBa)\vy}
+    && \text{by definition of operator addition} &&\text{\ifxref{relation}{def:op+x}}
+  \\
+  \\
+  \inprod{\vx}{(\alpha\opA)^\ast\vy}
+    &= \inprod{(\alpha\opA)\vx}{\vy}
+    && \text{by definition of adjoint} &&\text{\xref{prop:op_adjoint}}
+  \\&= \inprod{\alpha (\opA\vx)}{\vy}
+    && \text{by definition of scalar multiplication} &&\text{\ifxref{relation}{def:op+x}}
+  \\&= \alpha \inprod{\opA\vx}{\vy}
+    && \text{by definition of inner product} &&\text{\xref{def:inprod}}
+  \\&= \alpha \inprod{\vx}{\opAa\vy}
+    && \text{by definition of adjoint} &&\text{\xref{prop:op_adjoint}}
+  \\&= \inprod{\vx}{\alpha^\ast \opAa\vy}
+    && \text{by definition of inner product} &&\text{\xref{def:inprod}}
+  \\
+  \\
+  \inprod{\vx}{(\opA\opB)^\ast\vy}
+    &= \inprod{(\opA\opB)\vx}{\vy}
+    && \text{by definition of adjoint} &&\text{\xref{prop:op_adjoint}}
+  \\&= \inprod{\opA(\opB\vx)}{\vy}
+    && \text{by definition of operator multiplication} &&\text{\ifsxref{relation}{def:op+x}}
+  \\&= \inprod{(\opB\vx)}{\opAa\vy}
+    && \text{by definition of adjoint} &&\text{\xref{prop:op_adjoint}}
+  \\&= \inprod{\vx}{\opBa \opAa\vy}
+    && \text{by definition of adjoint} &&\text{\xref{prop:op_adjoint}}
+  \\
+  \\
+  \inprod{\vx}{\opA^{\ast\ast}\vy}
+    &= \inprod{\opAa\vx}{\vy}
+    && \text{by definition of adjoint} &&\text{\xref{prop:op_adjoint}}
+  \\&= \inprod{\vy}{\opAa\vx}^\ast
+    && \text{by definition of inner product} &&\text{\xref{def:inprod}}
+  \\&= \inprod{\opA\vy}{\vx}^\ast
+    && \text{by definition of adjoint} &&\text{\xref{prop:op_adjoint}}
+  \\&= \inprod{\vx}{\opA\vy}
+    && \text{by definition of inner product} && \text{\xref{def:inprod}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:oppN_oppR}
+\footnote{
+  \citerpg{rudinf}{312}{0070542252}
+  }
+%\footnote{more properties in \citerpg{michel1993}{426}{048667598X}}
+\index{operator!null space}
+\index{operator!range}
+%---------------------------------------
+Let $\clOxy$ be the set of all operators from a linear space $\spX$ to a linear space $\spY$.
+Let $\oppN(\opL)$ be the \hie{null space} of an operator $\opL$ in $\clOxy$
+and $\oppI(\opL)$ the \hie{image set} of $\opL$ in $\clOxy$\ifsxref{relation}{def:rel_null}.
+\thmbox{\begin{aligned}
+  \oppN(\opA ) &= \oppI(\opAa)^\perp  \\
+  \oppN(\opAa) &= \oppI(\opA )^\perp
+  \end{aligned}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \oppI(\opAa)^\perp
+    &= \set{y\in\spH}{\inprod{\vy}{\vu}=0 \quad \forall u\in\oppI(\opAa)}
+    && %\text{by \prefp{def:space_op} \prefpo{def:space_op}}
+  \\&= \set{y\in\spH}{\inprod{\vy}{\opAa\vx}=0 \quad \forall\vx\in\spH}
+    && \ifdochas{relation}{\text{by \prefp{def:rel_range}}}
+  \\&= \set{y\in\spH}{\inprod{\opA\vy}{\vx}=0 \quad \forall\vx\in\spH}
+    && \text{by definition of $\opAa$}&&\text{\xref{prop:op_adjoint}}
+  \\&= \set{y\in\spH}{\opA\vy=0 }
+  \\&= \oppN(\opA)
+    && \text{by definition of $\oppN(\opA)$\ifsxref{relation}{def:rel_null}}
+  \\
+  \\
+  \oppI(\opA)^\perp
+    &= \set{y\in\spH}{\inprod{\vy}{\vu}=0 \quad \forall u\in\oppI(\opA)}
+    && %\text{by definition of $\opA^\perp$ \prefp{def:space_op}}
+  \\&= \set{y\in\spH}{\inprod{\vy}{\opA\vx}=0 \quad \forall\vx\in\spH}
+    && \text{by definition of $\oppI$ \ifdochas{relation}{\prefp{def:rel_range}}}
+  \\&= \set{y\in\spH}{\inprod{\opAa\vy}{\vx}=0 \quad \forall\vx\in\spH}
+    && \text{by definition of $\opAa$}&&\text{\xref{prop:op_adjoint}}
+  \\&= \set{y\in\spH}{\opAa\vy=0 }
+  \\&= \oppN(\opAa)
+    && \text{by definition of $\oppN(\opA)$\ifsxref{relation}{def:rel_null}}
+\end{align*}
+\end{proof}
+
+
+%=======================================
+\section{Special Classes of Operators}
+%=======================================
+%=======================================
+\subsection{Projection operators}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{rudinf}{133}{0070542252}{5.15 Projections},
+  \citerpg{kubrusly2001}{70}{0817641742},
+  \citerpg{bachman1966}{6}{0486402517},
+  \citerpgc{halmos1958}{73}{0387900934}{\textsection 41. Projections}
+  }
+\label{def:opP}
+\index{operator!projection}
+\index{projection operator}
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\opP$ be a bounded linear operator in $\clBxy$.
+\defbox{\text{
+  $\opP$ is a \opd{projection} operator if \quad $\opP^2=\opP$.
+  }}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:op_RPNP}
+\footnote{
+  \citerppg{michel1993}{120}{121}{048667598X}
+  }
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\opP$ be a bounded linear operator in $\clBxy$
+with \hie{null space} $\oppN(\opP)$ and \hie{image set} $\oppI(\opP)$\ifsxref{relation}{def:rel_null}.
+%\footnote{%
+%  \begin{tabular}{ll}
+%    \structe{null space}: & \prefp{def:rel_null} \\
+%    \structe{image set}:  & \prefp{def:rel_image}
+%  \end{tabular}}
+\thmbox{
+  \left.\begin{array}{>{\scy}rrclDD}
+    1. & \opP^2   &=& \opP                 & ($\opP$ is a projection operator)     & and \\
+    2. & \spO     &=& \spX \adds \spY      & ($\spY$ compliments $\spX$ in $\spO$) & and \\
+    3. & \opP\spO &=& \spX                 & ($\opP$ projects onto $\spX$)         &
+  \end{array}\right\}
+  \implies
+  \left\{\begin{array}{>{\scy}rrclD}
+    1. & \oppI(\opP) &=& \spX                           & and \\
+    2. & \oppN(\opP) &=& \spY                           & and \\
+    3. & \spO        &=& \oppI(\opP) \adds \oppN(\opP)
+  \end{array}\right.
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \oppI(\opP)
+    &= \opP\spO
+  \\&= \opP(\spO_1 + \spO_2)
+  \\&= \opP\spO_1 + \opP\spO_2
+  \\&= \spO_1 + \setn{\vzero}
+  \\&= \spO_1
+  \\
+  \\
+  \oppN(\opP)
+    &= \set{\vx\in\spO}{\opP\vx=\vzero}
+  \\&= \set{\vx\in(\spO_1+\spO_2)}{\opP\vx=\vzero}
+  \\&= \set{\vx\in\spO_1}{\opP\vx=\vzero} + \set{\vx\in\spO_2}{\opP\vx=\vzero}
+  \\&= \setn{\vzero} + \spO_2
+  \\&= \spO_2
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:op_PIP}
+\footnote{
+  \citerpg{michel1993}{121}{048667598X}
+  }
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\opP$ be a bounded linear operator in $\clBxy$.
+\thmbox{
+  \mcom{\opP^2=\opP}{$\opP$ is a projection operator}
+  \qquad\iff\qquad
+  \mcom{(\opI-\opP)^2=(\opI-\opP)}{$(\opI-\opP)$ is a projection operator}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{$\imark$ Proof that
+    $\opP^2=\opP \implies (\opI-\opP)^2=(\opI-\opP)$:}
+  (\opI-\opP)^2
+    &= (\opI-\opP)(\opI-\opP)
+    && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+  \\&= \opI(\opI-\opP) + (-\opP)(\opI-\opP)
+    && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+  \\&= \opI-\opP -\opP\opI + \opP^2
+    && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+  \\&= \opI-\opP -\opP + \opP
+    && \text{by left hypothesis}
+  \\&= \opI-\opP
+    && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+  \\
+  \intertext{$\imark$ Proof that
+    $\opP^2=\opP \impliedby (\opI-\opP)^2=(\opI-\opP)$:}
+  \opP^2
+    &= \mcom{\opI -\opP -\opP + \opP^2}{$(\opI-\opP)^2$} -(\opI -\opP-\opP)
+  \\&= (\opI-\opP)^2 -(\opI -\opP-\opP)
+  \\&= (\opI-\opP) -(\opI -\opP-\opP)
+    && \text{by right hypothesis}
+  \\&= \opP
+    && \ifdochas{relation}{\text{by \prefp{def:op+x}}}
+\end{align*}
+\end{proof}
+
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpg{rudinf}{314}{0070542252}
+%  }
+%%---------------------------------------
+%Let $\spH$ be a Hilbert space and $\opP$ an operator in $\clOhh$
+%with adjoint $\opPa$, \hie{null space} $\oppN(\opP)$, and \hie{image set} $\oppI(\opP)$.%
+%\footnote{%
+%  \begin{tabular}{ll}
+%    \structe{null space}: & \prefp{def:rel_null} \\
+%    \structe{image set}:  & \prefp{def:rel_image}
+%  \end{tabular}}
+%\thmbox{\begin{array}{>{\quad}F rcl CDc}
+%  \mc{7}{M}{If $\opP$ is a \structe{projection operator}, then the following are equivalent:}\\
+%  \cnto & \opPa     &=& \opP
+%        &
+%        &($\opP$ is \prope{self-adjoint})
+%        & \iff
+%  \cntn & \opPa\opP &=& \opP\opPa
+%        &
+%        &($\opP$ is \prope{normal})
+%        & \iff
+%  \cntn & \oppI(\opP) &=& \oppN(\opP)^\perp
+%        &
+%        &
+%        & \iff
+%  \cntn & \inprod{\opP\vx}{\vx} &=& \norm{\opP\vx}^2
+%        & \forall \vx\in\setX
+%        &
+%        &
+%  \end{array}}
+%\end{theorem}
+%\begin{proof}
+%This proof is incomplete at this time. \problem
+%\begin{align*}
+%\intertext{Proof that (1)$\implies$(2):}
+%  \opPa\opP
+%    &= \opP^{\ast\ast}\opPa
+%    && \text{by (1)}
+%  \\&= \opP\opPa
+%    && \text{by \prefp{thm:op_star}}
+%  \\
+%\intertext{Proof that (1)$\implies$(3):}
+%  \oppI(\opP)
+%    &= \oppN(\opPa)^\perp
+%    && \text{by \prefp{thm:oppN_oppR}}
+%  \\&= \oppN(\opP)^\perp
+%    && \text{by (1)}
+%  \\
+%\intertext{Proof that (3)$\implies$(4):}
+%\intertext{Proof that (4)$\implies$(1):}
+%\end{align*}
+%\end{proof}
+%
+
+
+
+
+
+%=======================================
+\subsection{Self Adjoint Operators}
+%=======================================
+%---------------------------------------
+\begin{definition}
+  \footnote{
+    Historical works regarding self-adjoint operators:
+    \quad  \citorp{vonNeumann1929}{49},
+    \qquad ``linearer Operator R selbstadjungiert oder Hermitesch",
+    \quad  \citorpc{stone1932}{50}{``self-adjoint transformations"}
+    }
+\label{def:op_selfadj}
+%---------------------------------------
+Let $\opB\in\clBhh$ be a bounded operator with adjoint $\opBa$ on a Hilbert space $\spH$.
+\defbox{
+  \text{The operator $\opB$ is said to be \propd{self-adjoint} or \propd{hermitian} if $\opB\eqo\opBa$}.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{example}[Autocorrelation operator]
+\index{autocorrelation}
+\index{operator!autocorrelation}
+%---------------------------------------
+Let $\fx(t)$ be a random process with autocorrelation
+\\\indentx$\Rxx(t,u) \eqd \mcom{\pE[ \fx(t)\fx^\ast(u) ]}{expectation}$.
+\\Let an autocorrelation operator $\opR$ be defined as
+  $\ds
+    [\opR \ff](t) \eqd \int_\R \mcom{\Rxx(t,u)}{kernel} \ff(u) \du.
+  $
+\exbox{
+  \opR = \opRa
+  \qquad
+  \text{(The autocorrelation operator $\opR$ is \prope{self-adjoint})}
+  }
+\end{example}
+\begin{proof}
+\begin{align*}
+  \intertext{1. First note that the \structe{autocorrelation kernel} $\Rxx(t,u)$ is \prope{hermitian symmetric}:}
+      \Rxx(t,u)
+        &\eqd \pE  \fx(t) \fx^\ast(u)
+         =     [\pE \fx^\ast(t) \fx(u)]^\ast
+         =     [\pE \fx(u) \fx^\ast(t)]^\ast
+      \\&=     \Rxx^\ast(u,t)
+  \intertext{2. Proof that the \structe{autocorrelation operator} $\opR$ is \prope{self-adjoint}:}
+      \inprod{\opR \ff}{\fg}
+        &= \inprod{\int_{u\in\R}\Rxx(t,u) \ff(u) \du}{\fg(t)}
+        && \text{by definition of $\opR$}
+      \\&= \int_{u\in\R}\ff(u) \inprod{\Rxx(t,u) }{\fg(t)} \du
+      \\&= \int_{u\in\R}\ff(u) \int_t \Rxx(t,u) \fg^\ast(t) \dt \du
+      \\&= \int_{u\in\R}\ff(u) \int_t \Rxx^\ast(u,t) \fg^\ast(t) \dt \du
+        && \text{by 1.}
+      \\&= \int_{u\in\R}\ff(u) \left[\int_t \Rxx(u,t) \fg(t) \dt\right]^\ast \du
+      \\&= \int_{u\in\R}\ff(u) \left[\opR \fg \right]^\ast \du
+        && \text{by definition of $\opR$}
+      \\&= \inprod{ \ff}{\opR \fg}
+  \end{align*}
+\end{proof}
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:self_adjoint}
+\index{operator!self-adjoint}
+\footnote{
+  \citerpp{lax}{315}{316},
+  \citerpp{keener}{114}{119}
+  }
+%---------------------------------------
+Let $\opS:\spH\to\spH$ be an operator over a Hilbert space $\spH$
+with eigenvalues $\{\lambda_n\}$ and eigenfunctions $\{\fpsi_n\}$
+such that $\opS \fpsi_n = \lambda_n\fpsi_n$ and let
+$\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$.
+\thmbox{
+  \mcom{\opS = \opSa}{$\opS$ is \prope{self adjoint}}
+  \implies
+  \left\{\begin{array}{rlp{52mm}}
+    1. & \inprod{\opS\vx}{\vx}\in\R
+       & {\scs
+         (the hermitian quadratic form of $\opS$ is real)}
+       \\
+    2. & \lambda_n \in \R
+       & {\scs
+         (eigenvalues of $\opS$ are real)}
+       \\
+    3. & \lambda_n\ne \lambda_m\implies\inprod{\psi_n}{\psi_m}=0
+       & {\scs
+         (eigenfunctions associated with distinct eigenvalues are orthogonal)}
+  \end{array}\right.
+}
+\end{theorem}
+
+\begin{proof}
+  \begin{align*}
+    \intertext{1. Proof that $\opS=\opSa  \implies  \inprod{\opS\vx}{\vx}\in\R$:}
+    \inprod{\vx}{\opS\vx}
+      &= \inprod{\opS\vx}{\vx}
+      && \text{by left hypothesis}
+    \\&= \inprod{\vx}{\opS\vx}^\ast
+      && \text{by definition of $\inprodn$ \prefp{def:inprod}}
+    \\
+    \intertext{2. Proof that $\opS=\opSa \implies \lambda_n \in \R $:}
+    \lambda_n\norm{\psi_n}^2
+      &= \lambda_n \inprod{\psi_n}{\psi_n}
+      && \text{by definition}
+    \\&= \inprod{\lambda_n \psi_n}{\psi_n}
+      && \text{by definition of $\inprodn$ \prefp{def:inprod}}
+    \\&= \inprod{\opS \psi_n}{\psi_n}
+      && \text{by definition of eigenpairs}
+    \\&= \inprod{\psi_n}{\opS \psi_n}
+      && \text{by left hypothesis}
+    \\&= \inprod{\psi_n}{\lambda_n \psi_n}
+      && \text{by definition of eigenpairs}
+    \\&= \lambda_n^\ast \inprod{\psi_n}{\psi_n}
+      && \text{by definition of $\inprodn$ \prefp{def:inprod}}
+    \\&= \lambda_n^\ast \norm{\psi_n}^2
+      && \text{by definition}
+    \\
+    \intertext{3. Proof that $\opS=\opSa \implies
+     [\lambda_n\ne \lambda_m\implies\inprod{\psi_n}{\psi_m}=0]$:}
+    \lambda_n\inprod{\psi_n}{\psi_m}
+      &= \inprod{\lambda_n\psi_n}{\psi_m}
+      && \text{by definition of $\inprodn$ \prefp{def:inprod}}
+    \\&= \inprod{\opS\psi_n}{\psi_m}
+      && \text{by definition of eigenpairs}
+    \\&= \inprod{\psi_n}{\opS\psi_m}
+      && \text{by left hypothesis}
+    \\&= \inprod{\psi_n}{\lambda_m\psi_m}
+      && \text{by definition of eigenpairs}
+    \\&= \lambda_m^\ast\inprod{\psi_n}{\psi_m}
+      && \text{by definition of $\inprodn$ \prefp{def:inprod}}
+    \\&= \lambda_m\inprod{\psi_n}{\psi_m}
+      && \text{because $\lambda_m$ is real}
+    \\
+    \intertext{This implies for $\lambda_n\ne \lambda_m\ne 0$,
+               $\inprod{\psi_n}{\psi_m}=0$.}
+\end{align*}
+\end{proof}
+
+
+
+%=======================================
+\subsection{Normal Operators}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{rudinf}{312}{0070542252},
+  \citerpg{michel1993}{431}{048667598X},
+  \citerp{dieudonne1969}{167},
+  \citor{frobenius1878},
+  \citorp{frobenius1878b}{391}
+  }
+\label{def:op_normal}
+\index{operator!normal}      \index{normal operator}
+\index{operator!isometric}   \index{isometric operator}
+\index{operator!unitary}     \index{unitary operator}
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\opNa$ be the adjoint of an operator $\opN\in\clBxy$.
+\defbox{\begin{array}{M rcl}
+  $\opN$ is \hid{normal} if & \opNa\opN &=& \opN\opNa .
+\end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppg{rudinf}{312}{313}{0070542252}
+  }
+\label{thm:op_norm_prop}
+\index{operator!normal}
+\index{normal}
+%---------------------------------------
+Let $\clBhh $ be the space of bounded linear operators on a Hilbert space $\spH$.
+Let $\oppN(\opN)$ be the \hie{null space} of an operator $\opN$ in $\clBhh$
+and $\oppI(\opN)$ the \hie{image set} of $\opN$ in $\clBhh$\ifsxref{relation}{def:rel_null}.
+%\footnote{\structe{image set}: \prefp{def:rel_null}}
+\thmbox{
+  \mcom{\opNa\opN=\opN \opNa}{$\opN$ is normal}
+  \qquad\iff\qquad
+  \norm{\opNa\vx} = \norm{\opN\vx} \qquad \forall\vx\in\spH
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that
+    $\opNa\opN=\opN \opNa  \implies \norm{\opNa\vx} = \norm{\opN\vx} $:}
+  \norm{\opN\vx}^2
+    &= \inprod{\opN\vx}{\opN\vx}
+    && \text{by definition}
+  \\&= \inprod{\vx}{\opNa \opN\vx}
+    && \text{by \prefp{prop:op_adjoint} (definition of $\opNa$)}
+  \\&= \inprod{\vx}{\opN \opNa\vx}
+    && \text{by left hypothesis ($\opN$ is normal)}
+  \\&= \inprod{\opN\vx}{\opNa\vx}
+    && \text{by \prefp{prop:op_adjoint} (definition of $\opNa$)}
+  \\&= \norm{\opNa\vx}^2
+    && \text{by definition}
+  \\
+  \intertext{2. Proof that
+    $\opNa\opN=\opN \opNa  \impliedby \norm{\opNa\vx} = \norm{\opN\vx} $:}
+  \inprod{\opNa \opN\vx}{\vx}
+    &= \inprod{\opN\vx}{\opN^{\ast\ast}\vx}
+    && \text{by \prefp{prop:op_adjoint} (definition of $\opNa$)}
+  \\&= \inprod{\opN\vx}{\opN\vx}
+    &&    \text{by \prefp{thm:op_star} (property of adjoint)}
+  \\&= \norm{\opN\vx}^2
+    && \text{by definition}
+  \\&= \norm{\opNa\vx}^2
+    && \text{by right hypothesis $(\norm{\opNa\vx} = \norm{\opN\vx})$ }
+  \\&= \inprod{\opNa\vx}{\opNa\vx}
+    && \text{by definition}
+  \\&= \inprod{\opN \opNa\vx}{\vx}
+    && \text{by \prefp{prop:op_adjoint} (definition of $\opNa$)}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppg{rudinf}{312}{313}{0070542252}
+  }
+\label{thm:op_norm_prop2}
+\index{operator!normal}
+\index{normal}
+%---------------------------------------
+Let $\clBhh $ be the space of bounded linear operators on a Hilbert space $\spH$.
+Let $\oppN(\opN)$ be the \hie{null space} of an operator $\opN$ in $\clBhh$
+and $\oppI(\opN)$ the \hie{image set} of $\opN$ in $\clBhh$\ifsxref{relation}{def:rel_null}.
+%\footnote{\structe{image set}: \prefp{def:rel_null}}
+\thmbox{
+  \mcom{\opNa\opN=\opN\opNa}{$\opN$ is normal}
+  \qquad\implies\qquad
+  \mcom{\oppN(\opNa) = \oppN(\opN)}{$\opN$ and $\opNa$ have the same null space}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \oppN(\opNa)
+    &= \set{\vx}{\opNa\vx=0 \quad \forall\vx\in\spX}
+    && \text{\ifdochas{relation}{by \ifdochas{relation}{\prefp{def:rel_null}}} (definition of $\oppN$)}
+  \\&= \set{\vx}{\norm{\opNa\vx}=0 \quad \forall\vx\in\spX}
+    && \text{by definition of $\normn$ (\prefp{def:norm})}
+  \\&= \set{\vx}{\norm{\opN\vx}=0 \quad \forall\vx\in\spX}
+%    && \text{by left hypothesis and \prefp{thm:norm_iff_prop} ($\norm{\opNa\vx}=\norm{\opN\vx}$)}
+  \\&= \set{\vx}{\opN\vx=0 \quad \forall\vx\in\spX}
+    && \text{by definition of $\normn$ (\prefp{def:norm})}
+  \\&= \oppN(\opN)
+    && \text{\ifdochas{relation}{by \ifdochas{relation}{\prefp{def:rel_null}}} (definition of $\oppN$)}
+  \end{align*}
+\end{proof}
+
+
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerppg{rudinf}{312}{313}{0070542252}
+%  }
+%\label{thm:op_norm_prop}
+%\index{operator!normal}
+%\index{normal}
+%%---------------------------------------
+%Let $\clBhh $ be the space of bounded linear operators on a Hilbert space $\spH$.
+%Let $\oppN(\opN)$ be the \hie{null space} of an operator $\opN$ in $\clBhh$
+%and $\oppI(\opN)$ the \hie{image set} of $\opN$ in $\clBhh$.
+%\footnote{\structe{image set}: \prefp{def:rel_null}}
+%\thmbox{
+%  \mcom{\opNa\opN=\opN\opNa}{$\opN$ is normal}
+%  \qquad\implies\qquad
+%  \brbl{\mcom{\lambda_n\ne \lambda_m\implies\inprod{\psi_n}{\psi_m}=0}
+%             {eigenfunctions associated with distinct eigenvalues are orthogonal}
+%       }
+%  }
+%\end{theorem}
+%\begin{proof}
+%The proof in (1) is flawed. This implies that (2) is also flawed. [Rudin] claims both to be true.\citep{rudinf}{313} \problem
+%\begin{align*}
+%  \intertext{1. Proof that
+%  $\opNa\opN=\opN\opNa \implies \opNa\fpsi = \lambda^\ast \fpsi$:}
+%  \opN \fpsi
+%    &= \lambda \fpsi
+%  \\\impliedby
+%  \\0
+%    &= \oppN(\opN - \lambda \opI)
+%  \\&= \oppN([\opN - \lambda \opI]^\ast)
+%    && \text{by $\oppN(\opN)=\oppN(\opNa)$}
+%  \\&= \oppN(\opNa - [\lambda \opI]^\ast)
+%    && \text{by \prefp{thm:op_star}}
+%  \\&= \oppN(\opNa - \lambda^\ast \opI^\ast)
+%    && \text{by \prefp{thm:op_star}}
+%  \\&= \oppN(\opNa - \lambda^\ast \opI)
+%  \\\implies
+%  \\(\opNa-\lambda^\ast \opI)\fpsi
+%    &= 0
+%  \\\iff \opNa \fpsi
+%    &= \lambda^\ast \fpsi
+%  \\
+%  \intertext{2. Proof that
+%  $\opNa\opN=\opN\opNa \implies
+%   [\lambda_n\ne \lambda_m\implies\inprod{\psi_n}{\psi_m}=0]
+%  $:}
+%  \lambda_n\inprod{\psi_n}{\psi_m}
+%    &= \inprod{\lambda_n\psi_n}{\psi_m}
+%    && \text{by definition of $\inprodn$ \prefp{def:inprod}}
+%  \\&= \inprod{\opN\psi_n}{\psi_m}
+%    && \text{by definition of eigenpairs}
+%  \\&= \inprod{\psi_n}{\opNa\psi_m}
+%    && \text{by \prefp{prop:op_adjoint} (definition of adjoint)}
+%  \\&= \inprod{\psi_n}{\lambda_m^\ast \psi_m}
+%    && \text{by (4.)}
+%  \\&= \lambda_m \inprod{\psi_n}{\psi_m}
+%    && \text{by definition of $\inprodn$ \prefp{def:inprod}}
+%  \intertext{This implies for $\lambda_n\ne \lambda_m\ne 0$,
+%             $\inprod{\psi_n}{\psi_m}=0$.}
+%  \end{align*}
+%\end{proof}
+
+%=======================================
+\subsection{Isometric operators}
+%=======================================
+An operator on a pair of normed linear spaces is \prope{isometric} (next definition) 
+if it is an \structe{isometry}. % \xrefP{def:isometry}.
+%--------------------------------------
+\begin{definition}
+\label{def:op_isometric}
+%--------------------------------------
+Let $\normspaceX$ and $\normspaceY$ be \structe{normed linear spaces} \xrefP{def:norm}.
+\defbox{\begin{array}{M}
+  An operator $\opM\in\clLxy$ is \hid{isometric} if
+  \\\qquad$\ds\norm{\opM\vx}= \norm{\vx} \qquad\scy \forall \vx\in\setX$.
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{kubrusly2001}{239}{0817641742}{Proposition 4.37},
+  \citerpgc{berberian1961}{27}{0821819127}{Theorem IV.7.5}
+  }
+\label{thm:op_normiso}
+%--------------------------------------
+Let $\normspaceX$ and $\normspaceY$ be \structe{normed linear spaces}.
+Let $\opM$ be a linear operator in $\clLxy$.
+\thmbox{
+  \mcom{\norm{\opM\vx}=\norm{\vx}\quad\scy\forall\vx\in\setX}{isometric in length}
+  \qquad\iff\qquad
+  \mcom{\norm{\opM\vx-\opM\vy}=\norm{\vx-\vy}\quad\scy\forall\vx,\vy\in\setX}{isometric in distance}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\norm{\opM\vx}=\norm{\vx}$ $\implies$ $\norm{\opM\vx-\opM\vy}=\norm{\vx-\vy}$:
+    \begin{align*}
+      \norm{\opM\vx-\opM\vy}
+        &= \norm{\opM(\vx-\vy)}
+        && \text{by definition of linear operators (\prefp{def:linop})}
+      \\&= \norm{\opM\vu}
+        && \text{let $\vu\eqd\vx-\vy$}
+      \\&=\norm{\vx-\vy}
+        && \text{by left hypothesis}
+    \end{align*}
+
+  \item Proof that $\norm{\opM\vx}=\norm{\vx}$ $\impliedby$ $\norm{\opM\vx-\opM\vy}=\norm{\vx-\vy}$:
+    \begin{align*}
+      \norm{\opM\vx}
+        &= \norm{\opM(\vx-\vzero)}
+      \\&= \norm{\opM\vx-\opM\vzero)}
+        && \text{by definition of linear operators (\prefp{def:linop})}
+      \\&= \norm{\vx-\vzero}
+        && \text{by right hypothesis}
+      \\&=\norm{\vx}
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+Isometric operators have already been defined \xrefP{def:op_isometric} in the more general normed linear spaces,
+while \prefpp{thm:op_normiso} demonstrated that in a normed linear space $\spX$,
+$\norm{\opM\vx}=\norm{\vx}\iff\norm{\opM\vx-\opM\vy}=\norm{\vx-\vy}$ for all $\vx,\vy\in\spX$.
+Here in the more specialized inner product spaces, \pref{thm:op_inprodiso} (next) demonstrates two additional
+equivalent properties.
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{michel1993}{432}{048667598X}{Theorem 7.5.8},
+  \citerpgc{kubrusly2001}{391}{0817641742}{Proposition 5.72}
+  }
+\label{thm:op_inprodiso}
+\label{thm:isometric_equiv}
+\index{operator!isometric}
+\index{isometric operator}
+%---------------------------------------
+Let $\clBxx $ be the space of bounded linear operators on a normed linear space $\spX\eqd\normspaceX$.
+Let $\opN$ be a bounded linear operator in $\clLxx$, and
+$\opI$ the identity operator in $\clLxx$.
+Let $\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$.
+\thmbox{\begin{array}{>{\qquad}FrclCDc}
+  \mc{7}{M}{The following conditions are all {\bf equivalent}:}
+  \\
+     1. & \opMa\opM &=& \opI
+        &
+        & %($\opM$ is isometric)
+        & \iff
+   \\2. & \inprod{\opM\vx}{\opM\vy} &=& \inprod{\vx}{\vy}
+        & \forall\vx,\vy\in\setX
+        & ($\opM$ is surjective)
+        & \iff
+   \\3. & \norm{\opM\vx-\opM\vy} &=& \norm{x-y}
+        & \forall\vx,\vy\in\setX
+        & (isometric in distance)
+        & \iff
+   \\4. & \norm{\opM\vx} &=& \norm{\vx}
+        & \forall\vx\in\setX
+        & (isometric in length)
+        &
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1)$\implies$(2):
+    \begin{align*}
+      \inprod{\opM\vx}{\opM\vy}
+        &= \inprod{\vx}{\opMa \opM\vy} && \text{by \prefp{prop:op_adjoint} (definition of adjoint)}
+      \\&= \inprod{\vx}{\opI\vy}       && \text{by (1)}
+      \\&= \inprod{\vx}{\vy}            && \text{by \prefp{def:opI} (definition of $\opI$)}
+    \end{align*}
+
+  %\item Proof that (1)$\implies$(3):
+  %  \begin{align*}
+  %    \inprod{\opMa\vx}{\opMa\vy}
+  %      &= \inprod{\vx}{\opMa^\ast \opMa\vy}
+  %      && \text{by \prefp{prop:op_adjoint} (definition of adjoint)}
+  %    \\&= \inprod{\vx}{\opM \opMa\vy}
+  %      && \text{by \prefp{thm:op_star} (involution)}
+  %    \\&= \inprod{\vx}{\opI\vy}
+  %      && \text{by (1)}
+  %    \\&= \inprod{\vx}{\vy}
+  %      && \text{by \prefp{def:opI} (definition of $\opI$)}
+  %  \end{align*}
+  %
+  %\item Proof that (3)$\implies$(4):
+  %  \begin{align*}
+  %    \norm{\opM\vx - \opM\vy}^2
+  %      &=    \inprod{\opM\vx - \opM\vy}{\opM\vx - \opM\vy}
+  %      &&    \text{by definition of induced norm $\normn$}
+  %    \\&=    \inprod{\opM\vx}{\opM\vx} - \inprod{\opM\vx}{\opM\vy}
+  %           -\inprod{\opM\vy}{\opM\vx} + \inprod{\opM\vy}{\opM\vy}
+  %      &&    \text{by definition of $\inprodn$ \prefp{def:inprod}}
+  %    \\&=    \inprod{\vx}{\vx} - \inprod{\vx}{\vy} -\inprod{\vy}{\vx} + \inprod{\vy}{\vy}
+  %      &&    \text{by left hypothesis}
+  %    \\&=    \inprod{\vx-\vy}{\vx-\vy}
+  %      &&    \text{by definition of $\inprodn$ \prefp{def:inprod}}
+  %    \\&=    \norm{\vx - \vy}^2
+  %      &&    \text{by definition of induced norm $\normn$}
+  %  \end{align*}
+
+  \item Proof that (2)$\implies$(4):
+    \begin{align*}
+      \norm{\opM\vx}
+        &= \sqrt{\inprod{\opM\vx}{\opM\vx}}
+        && \text{by definition of $\normn$}
+      \\&= \sqrt{\inprod{\vx}{\vx}}
+        && \text{by right hypothesis}
+      \\&= \norm{\vx}
+        && \text{by definition of $\normn$}
+    \end{align*}
+
+  \item Proof that (2)$\impliedby$(4):
+    \begin{align*}
+      4\inprod{\opM\vx}{\opM\vy}
+        &= \norm{\opM\vx+ \opM\vy}^2 -\norm{\opM\vx- \opM\vy}^2 +i\norm{\opM\vx+i\opM\vy}^2 -i\norm{\opM\vx-i\opM\vy}^2
+        && \text{by polarization id.}% \prefpo{thm:polar_id}}
+      \\&= \norm{\opM(\vx+\vy)}^2 -\norm{\opM(\vx-\vy)}^2 +i\norm{\opM(\vx+i\vy)}^2 -i\norm{\opM(\vx-i\vy)}^2
+        %&& \text{by \prope{lineararity} of $\opM$ (\prefp{def:linop})}
+        && \text{by \pref{def:linop}}
+      \\&= \norm{\vx+\vy}^2 -\norm{\vx-\vy}^2 +i\norm{\vx+i\vy}^2 -i\norm{\vx-i\vy}^2
+        && \text{by left hypothesis}
+    \end{align*}
+
+  \item Proof that (3)$\iff$(4): by \prefp{thm:op_normiso}
+
+  \item Proof that (4)$\implies$(1):
+    \begin{align*}
+      \inprod{\opMa\opM\vx}{\vx}
+        &=    \inprod{\opM\vx}{\opM^{\ast\ast}\vx}
+        &&    \text{by \prefp{prop:op_adjoint} (definition of adjoint)}
+      \\&=    \inprod{\opM\vx}{\opM\vx}
+        &&    \text{by \prefp{thm:op_star} (property of adjoint)}
+      \\&=    \norm{\opM\vx}^2
+        &&    \text{by definition}
+      \\&=    \norm{\vx}^2
+        &&    \text{by left hypothesis with $y=0$}
+      \\&=    \inprod{\vx}{\vx}
+        &&    \text{by definition}
+      \\&=    \inprod{\opI\vx}{\vx}
+        &&    \text{by \prefp{def:opI} (definition of $\opI$)}
+      \\\implies\qquad\opMa\opM &= \opI && \forall\vx\in\setX
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:isometric_prop}
+\footnote{
+  \citerpg{michel1993}{432}{048667598X}
+  }
+\index{operator!isometric}
+\index{isometric operator}
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\opM$ be a bounded linear operator in $\clBxy$, and
+$\opI$ the identity operator in $\clLxx$.
+Let $\Lambda$ be the set of eigenvalues of $\opM$.
+Let $\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$.
+\thmbox{
+  \mcom{\opMa\opM=\opI}{$\opM$ is isometric}
+  \qquad\implies\qquad
+  \brbl{\begin{array}{rclCDD}
+    \normop{\opM} &=& 1   &                     & (\prope{unit length}) & and \\
+    \abs{\lambda} &=& 1   & \forall \lambda\in\Lambda & &
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\opMa\opM=\opI \implies \normop{\opM} = 1$:}
+  \normop{\opM}
+    &= \sup_{\vx\in\setX}\set{\norm{\opM\vx}}{\norm{\vx}=1}
+    && \text{by \prefp{def:op_norm}}
+  \\&= \sup_{\vx\in\setX}\set{\norm{\vx}}{\norm{\vx}=1}
+    && \text{by \prefp{thm:isometric_equiv}}
+  \\&= \sup_{\vx\in\setX}\{1\}
+  \\&= 1
+  \\
+  \intertext{2. Proof that $\abs{\lambda}=1$: Let $\opair{\vx}{\lambda}$ be an eigenvector-eigenvalue pair.}
+  1 &= \frac{1}{\norm{\vx}}\; \norm{\vx}
+  \\&= \frac{1}{\norm{\vx}}\; \norm{\opM\vx}
+    && \text{by \prefp{thm:isometric_equiv}}
+  \\&= \frac{1}{\norm{\vx}}\; \norm{\lambda\vx}
+    && \text{by definition of $\lambda$}
+  \\&= \frac{1}{\norm{\vx}}\; \abs{\lambda}\;\norm{\vx}
+    && \text{by homogeneous property of $\normn$}
+  \\&= \abs{\lambda}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}[One sided shift operator]
+\footnote{
+  \citerpg{michel1993}{441}{048667598X}
+  }
+\index{shift operator}
+\index{one sided shift operator}
+\index{operator!shift}
+%---------------------------------------
+Let $\spX$ be the set of all sequences with range $\Znn$ ($0,1,2,\ldots$)
+and shift operators defined as
+\[\begin{array}{lrcl@{\qquad}D}
+  1. & \opS_r\seqn{x_0,x_1,x_2,\ldots} &\eqd& \seqn{0,x_0,x_1,x_2,\ldots}
+     & \text{(right shift operator)}
+     \\
+  2. & \opS_l\seqn{x_0,x_1,x_2,\ldots} &\eqd& \seqn{x_1,x_2,x_3,\ldots}
+     & \text{(left shift operator)}
+\end{array}\]
+\exbox{\begin{array}{>{\scy}rl}
+  1. & \opS_r \text{ is an isometric operator.}  \\
+  2. & \opS_r^\ast = \opS_l
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\opS_r^\ast = \opS_l$:}
+  \inprod{\opS_r\seqn{x_0,x_1,x_2,\ldots}}{\seqn{y_0,\vy_1,\vy_2,\ldots}}
+    &= \inprod{\seqn{0,x_0,x_1,x_2,\ldots}}{\seqn{y_0,\vy_1,\vy_2,\ldots}}
+  \\&= \sum_{n=1}^\infty\vx_{n-1} \;\vy_n^\ast
+  \\&= \sum_{n=0}^\infty\vx_{n} \;\vy_{n+1}^\ast
+  \\&= \sum_{n=0}^\infty\vx_{n} \;\vy_{n+1}^\ast
+  \\&= \inprod{\seqn{x_0,x_1,x_2,\ldots}}{\seqn{y_1,\vy_2,\vy_3,\ldots}}
+  \\&= \inprod{\seqn{x_0,x_1,x_2,\ldots}}{\mcom{\opS_l}{$\opS_r^\ast$}\seqn{y_0,\vy_1,\vy_2,\ldots}}
+  %
+  \intertext{2. Proof that $\opS_r$ is isometric ($\opS_r^\ast\opS_r=\opI$):}
+  \opS_r^\ast \opS_r
+    &= \opS_l \opS_r
+    && \text{by 1.}
+  \\&= \opI
+\end{align*}
+\end{proof}
+
+
+%=======================================
+\subsection{Unitary operators}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{rudinf}{312}{0070542252},
+  \citerpg{michel1993}{431}{048667598X},
+  \citorp{autonne1901}{209},
+  \citor{autonne1902},
+  \citor{schur1909},
+  \citer{steen1973}
+  }
+\label{def:op_unitary}
+\index{operator!normal}      \index{normal operator}
+\index{operator!isometric}   \index{isometric operator}
+\index{operator!unitary}     \index{unitary operator}
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\opU$ be a bounded linear operator in $\clBxy$,
+and $\spI$ the identity operator in $\clBxx$.
+\defbox{\begin{array}{M rcl}
+  The operator $\opU$ is \hid{unitary} if & \opUa\opU &=& \opU\opUa = \opI .
+\end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:op_unitary_UV}
+%---------------------------------------
+Let $\clBxy $ be the space of bounded linear operators on normed linear spaces $\spX$ and $\spY$.
+Let $\opU$ and $\opV$ be bounded linear operators in $\clBxy$.
+\propbox{
+  \brbr{\begin{array}{MD}
+    $\opU$ is \prope{unitary} & and\\
+    $\opV$ is \prope{unitary}
+  \end{array}}
+  \qquad\implies\qquad
+  \text{$\brp{\opU\opV}$ is \prope{unitary}.}
+  }
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    \brp{\opU\opV}\brp{\opU\opV}^\ast
+      &= \brp{\opU\opV}\brp{\opVa\opUa}
+      && \text{by \prefp{thm:op_adjoint}}
+    \\&= \opU\brp{\opV\opVa}\opUa
+      && \text{by \prop{associative} property\ifsxref{relation}{thm:op_associative}}
+    \\&= \opU\opI\opUa
+      && \text{by definition of \prop{unitary} operators---\prefp{def:op_unitary}}
+    \\&= \opI
+      && \text{by definition of \prop{unitary} operators---\prefp{def:op_unitary}}
+    \\ \\
+    \brp{\opU\opV}^\ast\brp{\opU\opV}
+      &= \brp{\opVa\opUa}\brp{\opU\opV}
+      && \text{by \prefp{thm:op_adjoint}}
+    \\&= \opVa\brp{\opUa\opU}\opV
+      && \text{by \prop{associative} property\ifsxref{relation}{thm:op_associative}}
+    \\&= \opVa\opI\opV
+      && \text{by definition of \prop{unitary} operators---\prefp{def:op_unitary}}
+    \\&= \opI
+      && \text{by definition of \prop{unitary} operators---\prefp{def:op_unitary}}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:unitary_equiv}
+\footnote{
+  \citerppgc{rudinf}{313}{314}{0070542252}{Theorem 12.13},
+  \citerpgc{knappa2005}{45}{0817643826}{Proposition 2.6}
+  }
+\index{operator!unitary}
+%---------------------------------------
+Let $\clBhh $ be the space of bounded linear operators on a Hilbert space $\spH$.
+Let $\opU$ be a bounded linear operator in $\clBhh$,
+and $\oppI(\opU)$ the \structe{image set}\ifsxref{relation}{def:rel_image} of $\opU$.
+\thmbox{\begin{array}{>{\qquad}FlDlDc}
+  \mc{6}{M}{The following conditions are {\bf equivalent}:}
+  \\
+     1. & \opU\opUa=\opUa\opU=\opI
+        &
+        &
+        & (unitary)
+        & \iff
+   \\2. & \inprod{\opU\vx}{\opU\vy}  = \inprod{\opUa\vx}{\opUa\vy} =  \inprod{\vx}{\vy}
+        & and
+        & \oppI(\opU)=\setX
+        & (surjective)
+        & \iff
+   \\3. & \norm{\opU\vx-\opU\vy} = \norm{\opUa\vx-\opUa\vy} = \norm{\vx-\vy}
+        & and
+        & \oppI(\opU)=\setX
+        & (isometric in distance)
+        & \iff
+   \\4. & \norm{\opU\vx} = \norm{\vx}
+        & and
+        & \oppI(\opU)=\setX
+        & (isometric in length)
+        &
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1) $\implies$ (2):
+  \begin{enumerate}
+    \item $\inprod{\opU\vx}{\opU\vy}  = \inprod{\opUa\vx}{\opUa\vy} =  \inprod{\vx}{\vy}$
+          by \prefpp{thm:isometric_equiv}.
+    \item Proof that $\oppI(\opU)=\setX$:
+      \begin{align*}
+        \setX
+          &\supseteq \oppI(\opU)
+          &&         \text{because $\opU\in\clFxx$}
+        \\&\supseteq \oppI(\opU\opUa)
+        \\&=         \oppI(\opI)
+          &&         \text{by left hypothesis ($\opUa\opU=\opU\opUa=\opI$)}
+        \\&=         \setX
+          &&         \text{by \prefp{def:opI} (definition of $\opI$)}
+        %\\
+        %\\
+        %\setX
+        %  &\supseteq \oppI(\opUa)
+        %\\&\supseteq \oppI(\opUa\opU)
+        %\\&=         \oppI(\opI)
+        %  &&         \text{by left hypothesis ($\opUa\opU=\opU\opUa=\opI$)}
+        %\\&=         \setX
+        %  &&         \text{by \prefp{def:opI} (definition of $\opI$)}
+      \end{align*}
+    \end{enumerate}
+  \item Proof that (2) $\iff$ (3) $\iff$ (4):    by \prefp{thm:isometric_equiv}.
+  \item Proof that (3) $\implies$ (1):
+    \begin{enumerate}
+      \item Proof that $\norm{\opU\vx-\opU\vy}=\norm{\vx-\vy}$ $\implies$ $\opUa\opU=\opI$:  by \prefp{thm:isometric_equiv}
+      \item Proof that $\norm{\opUa\vx-\opUa\vy}=\norm{\vx-\vy}$ $\implies$ $\opU\opUa=\opI$:
+        \begin{align*}
+          \norm{\opUa\vx-\opUa\vy}=\norm{\vx-\vy}
+            &\implies & \opU^{\ast\ast}\opUa &= \opI    && \text{by \prefp{thm:isometric_equiv}}
+          \\&         & \opU\opUa            &= \opI    && \text{by \prefp{thm:op_star}}
+        \end{align*}
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+%\footnote{
+%  \citerpg{lax}{372}{0471556041}
+%  }
+\label{thm:unitary_prop}
+\index{operator!unitary}
+%---------------------------------------
+Let $\clBhh $ be the space of bounded linear operators on a Hilbert space $\spH$.
+Let $\opU$ be a bounded linear operator in $\clBhh$,
+    $\oppN(\opU)$ the \structe{null space} of $\opU$,
+and $\oppI(\opU)$ the \structe{image set} of $\opU$.\ifdochas{relation}{\footnote{%
+  \begin{tabular}{ll}
+    \structe{null space}: & \prefp{def:rel_null} \\
+    \structe{image set}:  & \prefp{def:rel_image}
+  \end{tabular}}}
+%(\prefp{def:rel_null}).
+\thmbox{\begin{array}{l}
+  \mcom{\opU\opUa=\opUa\opU=\opI}{$\opU$ is unitary}
+  \implies
+  \left\{\begin{array}{rclclD}
+  \opUi                    &=& \opUa                     & &                     &  \\
+  \oppI(\opU)              &=& \oppI(\opUa)              &=& \setX               &  \\
+  \oppN(\opU)              &=& \oppN(\opUa)              &=& \setn{\vzero}    &  \\
+  \normop{\opU}            &=& \normop{\opUa}            &=&  1                  & (\prope{unit length})
+  \end{array}\right.
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Note that $\opU$, $\opUa$, and $\opUi$ are all both
+        {\bf isometric} and {\bf normal}:
+    \[\begin{array}{lclclll}
+      \opUa\opU & &           &=& \opI &\implies &\text{$\opU$ is isometric}  \\
+      \opU\opUa &=& \opUa\opU &=& \opI &\implies &\text{$\opUa$ is isometric} \\
+      \opUi     &=& \opUa     & &      &\implies &\text{$\opUi$ is isometric} \\
+      \\
+      \opUa\opU &=& \opU\opUa &=&      &\implies &\text{$\opU$ is normal}   \\
+      \opU\opUa &=& \opUa\opU &=&      &\implies &\text{$\opUa$ is normal}  \\
+      \opUi     &=& \opUa     & &      &\implies &\text{$\opUi$ is normal}
+    \end{array}\]
+
+  \item Proof that
+    $\opUa\opU=\opU\opUa=\opI
+     \implies
+     \oppI(\opU)=\oppI(\opUa)=\spH
+    $: by \prefp{thm:unitary_equiv}.
+
+  \item Proof that
+    $\opUa\opU=\opU\opUa=\opI
+     \implies
+     \oppN(\opU)=\oppN(\opUa)=\oppN(\opUi)
+    $:
+    \begin{align*}
+      \oppN(\opUa)
+        &= \oppN(\opU)
+        && \text{because $\opU$ and $\opUa$ are both normal
+                 and by \prefp{thm:op_norm_prop}}
+      \\&= \oppI(\opU)^\perp
+        && \text{by \prefp{thm:oppN_oppR}}
+      \\&= \setX^\perp
+        && \text{by above result}
+      \\&= \setn{\vzero}
+        && \ifdochas{vsinprod}{\text{by \prefp{prop:inprod_orthog}}}
+    \end{align*}
+
+  \item Proof that
+    $\opUa\opU=\opU\opUa=\opI
+     \implies
+     \norm{\opUi}=\norm{\opUa}=\norm{\opU}=1
+    $: \\
+    Because $\opU$, $\opUa$, and $\opUi$ are all isometric
+    and by \prefp{thm:isometric_prop}.
+\end{enumerate}
+\end{proof}
+
+%%---------------------------------------
+%\begin{theorem}
+%\index{group}
+%%---------------------------------------
+%Let $\mathcal{U} \eqd \set{\opU\in\clOxx}{\mcom{\opUa\opU=\opU\opUa=\opI}{$\opU$ is unitary}}$
+%be the set of all unitary operators on space $\spX$.
+%\thmbox{
+%  \text{$(\mathcal{U},\cdot)$ is a group.}
+%  }
+%\end{theorem}
+%\begin{proof}
+%\[\begin{array}{lll>{$}l<{$}}
+%  1. & \opU\opI = \opI\opU = \opU
+%     & \forall \opU\in\mathcal{U}
+%     & ($\opI\in\mathcal{U}$ is the identity element)
+%     \\
+%  2. & \opUa\opU = \opU\opUa = \opI
+%     & \forall \opU\in\mathcal{U}
+%     & ($\opUa$ is the inverse of $\opU$)
+%     \\
+%  3. & (\opU\opV)\opW = \opU(\opV\opW)
+%     & \forall \opU,\opV,\opW\in\mathcal{U}
+%     & ($(\mathcal{U},\cdot)$ is associative)
+%\end{array}\]
+%\end{proof}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Examples of \hie{Fredholm integral operators} include
+\[
+\begin{array}{llrclrcl}
+  1. & \mbox{Fourier Transform}
+     & [\opFT \fx](f) &=& \int_t \fx(t) e^{-i2\pi ft}\dt
+     & \kappa(t,f)    &=& e^{-i2\pi ft}
+\\
+  2. & \mbox{Inverse Fourier Transform}
+     & [\opFTi \Fx](t) &=& \int_f \Fx(f) e^{i2\pi ft}\df
+     & \kappa(f,t)    &=& e^{i2\pi ft}
+\\
+  3. & \mbox{Laplace operator}
+     & [\opL \fx](s) &=& \int_t \fx(t) e^{-st}\dt
+     & \kappa(t,s)   &=& e^{-st}
+\end{array}
+\]
+\end{example}
+
+
+
+%---------------------------------------
+\begin{example}[Translation operator]
+\index{translation}
+\index{operator!translation}
+%---------------------------------------
+Let $\spX=\spLLR$ and $\opT\in\clOxx$ be defined as
+\[\begin{array}{rcl @{\qquad}C @{\qquad}D}
+  \opT\ff(x)  &\eqd& \ff(x-1)
+              &\forall \ff\in\spLLR
+              &(translation operator)
+\end{array}\]
+\exbox{\begin{array}{l rcl @{\qquad}C @{\qquad}D}
+  1. & \opTi\ff(x) &=& \ff(x+1)
+     & \forall \ff\in\spLLR
+     & (inverse translation operator)
+     \\
+  2. & \opTa &=& \opTi
+     &
+     & ($\opT$ is invertible)
+     \\
+  3. & \opTa\opT &=& \opT\opTa = \opI
+     &
+     & ($\opT$ is unitary)
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\opTi\ff(x)=\ff(x+1)$:}
+  \opTi\opT &= \opI \\
+  \opT\opTi &= \opI
+  %
+  \intertext{2. Proof that $\opT$ is unitary:}
+  \inprod{\opT\ff(x)}{\fg(x)}
+    &= \inprod{\ff(x-1)}{\fg(x)}
+    && \text{by definition of $\opT$}
+  \\&= \int_x\ff(x-1) \fg^\ast(x) \dx
+  \\&= \int_x\ff(x) \fg^\ast(x+1) \dx
+  \\&= \inprod{\ff(x)}{\fg(x+1)}
+  \\&= \inprod{\ff(x)}{\mcom{\opTi}{$\opTa$}\fg(x)}
+    && \text{by 1.}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{example}[Dilation operator]
+\index{dilation}
+\index{operator!dilation}
+%---------------------------------------
+Let $\spX=\spLLR$ and $\opT\in\clOxx$ be defined as
+\[\begin{array}{rcl @{\qquad}C @{\qquad}D}
+  \opD\ff(x)  &\eqd& \sqrt{2}\ff(2x)
+              &\forall \ff\in\spLLR
+              &(dilation operator)
+\end{array}\]
+\exbox{\begin{array}{l rcl @{\qquad}C @{\qquad}D}
+  1. & \opDi\ff(x) &=& \frac{1}{\sqrt{2}} \ff\left(\frac{1}{2}x\right)
+     & \forall \ff\in\spLLR
+     & (inverse dilation operator)
+     \\
+  2. & \opDa &=& \opDi
+     &
+     & ($\opD$ is invertible)
+     \\
+  3. & \opDa\opD &=& \opD\opDa = \opI
+     &
+     & ($\opD$ is unitary)
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\opDi\ff(x)=\frac{1}{\sqrt{2}} \ff\left(\frac{1}{2}x\right)$:}
+  \opDi\opD &= \opI \\
+  \opD\opDi &= \opI
+  %
+  \intertext{2. Proof that $\opD$ is unitary:}
+  \inprod{\opD\ff(x)}{\fg(x)}
+    &= \inprod{\sqrt{2}\ff(2x)}{\fg(x)}
+    && \text{by definition of $\opD$}
+  \\&= \int_x  \sqrt{2} \ff(2x) \fg^\ast(x) \dx
+  \\&= \int_{u\in\R} \sqrt{2} \ff(u) \fg^\ast\left(\frac{1}{2}u\right) \frac{1}{2}\du
+    && \text{let $u\eqd 2x \quad\implies\quad \dx=\frac{1}{2}\du$}
+  \\&= \int_{u\in\R} \ff(u) \left[\frac{1}{\sqrt{2}}\fg\left(\frac{1}{2}u\right)\right]^\ast \du
+  \\&= \inprod{\ff(x)}{\frac{1}{\sqrt{2}}\fg\left(\frac{1}{2}x\right)}
+  \\&= \inprod{\ff(x)}{\mcom{\opDi}{$\opDa$}\fg(x)}
+    && \text{by 1.}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}[Delay operator]
+\index{delay}
+\index{operator!delay}
+%---------------------------------------
+Let $\spX$ be the set of all sequences and $\opD\in\clOxx$ be
+a delay operator.
+\exbox{
+  \text{The delay operator $\opD\seq{x_n}{n\in\Z}\eqd\seq{x_{n-1}}{n\in\Z}$
+  is unitary.}
+  }
+\end{example}
+\begin{proof}
+The inverse $\opDi$ of the delay operator $\opD$ is
+  \[\opDi\seq{x_n}{n\in\Z}\eqd\seq{x_{n+1}}{n\in\Z}.\]
+\begin{align*}
+  \inprod{\opD\seqn{x_n}}{\seqn{y_n}}
+    &= \inprod{\seqn{x_{n-1}}}{\seqn{y_n}}
+    && \text{by definition of $\opD$}
+  \\&= \sum_n\vx_{n-1}\;\vy_n^\ast
+  \\&= \sum_n\vx_n\;\vy_{n+1}^\ast
+  \\&= \inprod{\seqn{x_n}}{\seqn{y_{n+1}}}
+  \\&= \inprod{\seqn{x_n}}{\mcom{\opDi}{$\opDa$} \seqn{y_n}}
+\end{align*}
+Therefore,
+$\opDa=\opDi$. This implies that $\opD\opDa=\opDa\opD=\opI$
+which implies that $\opD$ is unitary.
+\end{proof}
+
+%---------------------------------------
+\begin{example}[Fourier transform]
+\index{Fourier transform}
+\index{unitary}
+\label{ex:operator_opFT_unitary}
+%---------------------------------------
+Let $\opFT$ be the \ope{Fourier Transform} and
+$\opFTi$ the \ope{inverse Fourier Transform} operator \ifxref{harPoly}{thm:opFSi}
+  \[
+    [\opFT \fx](f) \eqd \int_t \fx(t) \mcom{e^{-i2\pi ft}}{$\kappa(t,f)$} \dt
+    \qquad\qquad
+    \left[\opFTi \Fx\right](t) \eqd \int_f \Fx(f) \mcom{e^{i2\pi ft}}{$\kappa^\ast(t,f)$} \df.
+  \]
+\exbox{
+  \opFTa = \opFTi
+  \qquad
+  \text{(the Fourier Transform operator $\opFT$ is unitary)}
+  }
+\end{example}
+\begin{proof}
+  \begin{align*}
+    \inprod{\opFT \fx}{\Fy}
+      &= \inprod{\int_t \fx(t) e^{-i2\pi ft} \dt }{\Fy(f)}
+    \\&= \int_t \fx(t) \inprod{e^{-i2\pi ft} }{\Fy(f)} \dt
+    \\&= \int_t \fx(t) \int_f e^{-i2\pi ft} \Fy^\ast(f) \df \dt
+    \\&= \int_t \fx(t) \left[\int_f e^{i2\pi ft} \Fy(f) \df \right]^\ast \dt
+    \\&= \inprod{\fx(t)}{\int_f \Fy(f) e^{i2\pi ft} \df }
+    \\&= \inprod{\fx}{\mcom{\opFTi}{$\opFTa$} \Fy}
+  \end{align*}
+This implies that $\opFT$ is unitary ($\opFTa = \opFTi$).
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{example}[Rotation matrix]
+\citep{noble}{311}
+\index{rotation matrix}
+\index{matrix!rotation}
+\label{ex:operator_rotation_unitary}
+%---------------------------------------
+Let the rotation matrix $\opR_\theta:\R^2\to\R^2$ be defined as
+\[ \opR_\theta \eqd
+   \left[\begin{array}{rr}
+     \cos\theta & -\sin\theta   \\
+     \sin\theta &  \cos\theta
+   \end{array}\right]
+\]
+\exbox{\begin{array}{l rcl @{\qquad}D}
+  1. & \opRi_\theta &=& \opR_{-\theta}  \\
+  2. & \opRa_\theta &=& \opRi_\theta   & ($\opR$ is unitary)
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \opRa
+    &= \opR^H
+  \\&= \left[\begin{array}{rr}
+         \cos\theta & -\sin\theta   \\
+         \sin\theta &  \cos\theta
+       \end{array}\right]^H
+    && \text{by definition of $\opR$}
+  \\&= \left[\begin{array}{rr}
+          \cos\theta &  \sin\theta   \\
+         -\sin\theta &  \cos\theta
+       \end{array}\right]
+    && \text{by definition of Hermetian transpose operator $H$}
+  \\&= \left[\begin{array}{rr}
+          \cos(-\theta) & -\sin(-\theta)   \\
+          \sin(-\theta) &  \cos(-\theta)
+       \end{array}\right]
+    && \text{because $\cos(-\theta)=\cos\theta$ and $\sin(-\theta)=-\sin\theta$}
+  \\&= \opR_{-\theta}
+    && \text{by definition of $\opR$}
+  \\&= \opRi
+    && \text{by 1.}
+\end{align*}
+\end{proof}
+
+
+\ifexclude{wsd}{
+
+%=======================================
+\section{Operator order}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:op_ge}
+\footnote{
+  \citerpgc{michel1993}{429}{048667598X}{Definition 7.4.12}
+  %\citerpg{ab2006}{2}{1402050070}
+  %\citerp{pedersen2000}{87}
+  }
+\index{operator!positive}
+%---------------------------------------
+Let $\opP\in\clOxy$ be an operator.
+\defbox{\begin{array}{M}
+  $\opP$ is \hid{positive} if \qquad $\inprod{\opP\vx}{\vx} \ge 0$ $\forall\vx\in\spX$.
+  \\
+  This condition is denoted \qquad$\opP\ge0$.
+\end{array}}
+\end{definition}
+
+%%---------------------------------------
+%\begin{proposition}
+%\footnote{
+%  \citerpg{ab2006}{2}{1402050070}
+%  }
+%%---------------------------------------
+%Let $\opP\in\clOxy$ be an operator.
+%\propbox{\begin{array}{>{\qquad\scy}rl@{\qquad}D}
+%  \mc{3}{M}{The following statements are equivalent:}\\
+%    1. & \opP \ge 0  & ($\opP$ is \prope{positive}) \\
+%    2. & \opP(\spXp) \subseteq \spYp \\
+%    3. & \vx\orel \vy \implies \opP\vx \orel \opP\vy
+%\end{array}}
+%\end{proposition}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{michel1993}{429}{048667598X}
+  }
+%---------------------------------------
+\thmbox{
+  \mcom{\opP\ge0 \text{ and } \opQ\ge0}{$\opP$ and $\opQ$ are both positive}
+  \qquad\implies\qquad
+  \left\{\begin{array}{lcl@{\qquad}C@{\qquad}D}
+    (\opP+\opQ)    &\ge& 0 &                                 & ($(\opP+\opQ)$ is positive)\\
+    \opAa\opP\opA  &\ge& 0 & \forall \opA\in\clBxx  & ($\opAa\opP\opA$ is positive)\\
+    \opAa\opA      &\ge& 0 & \forall \opA\in\clBxx  & ($\opAa\opA$ is positive)\\
+  \end{array}\right.
+  }
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    \inprod{(\opP+\opQ)\vx}{\vx}
+      &=   \inprod{\opP\vx}{\vx} + \inprod{\opQ\vx}{\vx}
+      &&   \text{by additive property of $\inprodn$ (\prefp{def:inprod})}
+    \\&\ge \inprod{\opP\vx}{\vx}
+      &&   \text{by left hypothesis}
+    \\&\ge 0
+      &&   \text{by left hypothesis}
+    \\
+    \inprod{\opAa\opP\opA\vx}{\vx}
+      &=   \inprod{\opP\opA\vx}{\opA\vx}
+      &&   \text{by definition of adjoint (\prefp{prop:op_adjoint})}
+    \\&=   \inprod{\opP\vy}{\vy}
+      &&   \text{where $\vy\eqd\opA\vx$}
+    \\&\ge 0
+      &&   \text{by left hypothesis}
+    \\
+    \inprod{\opI\vx}{\vx}
+      &=   \inprod{\vx}{\vx}
+      &&   \text{by definition of $\opI$ (\prefp{def:opI})}
+    \\&\ge 0
+      &&   \text{by non-negative property of $\inprodn$ (\prefp{def:inprod})}
+    \\&\implies \text{$\opI$ is positive}
+    \\
+    \inprod{\opAa\opA\vx}{\vx}
+      &=   \inprod{\opAa\opI\opA\vx}{\vx}
+      &&   \text{by definition of $\opI$ (\prefp{def:opI})}
+    \\&\ge 0
+      &&   \text{by two previous results}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{michel1993}{429}{048667598X}
+  }
+\index{operator!positive}
+\label{def:op_A>B}
+%---------------------------------------
+Let $\opA,\opB\in\clBxy$ be bounded operators.
+\defbox{\indxs{\ge}
+  \mcom{\opA \ge \opB}{``$\opA$ is greater than or equal to $\opB$"}
+  \quad\iff\quad
+  \mcom{(\opA-\opB)\ge 0}{``$(\opA-\opB)$ is positive"}
+  }
+\end{definition}
+
+} % end wsd exclude
+
+
+%\begin{minipage}{5\tw/16}
+%  \color{figcolor}
+%  \begin{center}
+%  \begin{fsL}
+%  \setlength{\unitlength}{\textwidth/700}
+%  \begin{picture}(600,500)(-300,-200)
+%    %{\color{graphpaper}\graphpaper[100](-300,-200)(600,500)}
+%    \thinlines
+%    \put(-200,   0){\line( 1, 1){120} }
+%    \put(   0, 200){\line(-1,-1){ 40} }
+%    \put(-100,   0){\line(-1, 1){ 50} }
+%    \put(   0,   0){\line(-1, 1){100} }
+%    \put( 200,   0){\line(-1, 1){200} }
+%
+%    \put(-200,   0){\line( 1,-1){200} }
+%    \put(-100,   0){\line( 1,-2){100} }
+%    \put(   0,   0){\line( 0,-1){200} }
+%    \put( 200,   0){\line(-1,-1){200} }
+%
+%    \put(   0, 200){\circle*{15}}  %maximum element
+%    \put(   0,-200){\circle*{15}}  %minimum element
+%
+%    \put(-150,  50){\circle*{15}}
+%    \put(-100, 100){\circle*{15}}
+%
+%    \put(-200, 0){\circle*{15}}
+%    \put(-100, 0){\circle*{15}}
+%    \put(   0, 0){\circle*{15}}
+%    \put( 100, 0){$\cdots$}
+%    \put( 200, 0){\circle*{15}}
+%
+%    \put(   0, 210){\makebox(0,0)[b] {$\spX$}}
+%    \put(-110, 100){\makebox(0,0)[r] {$\spV_3$}}
+%    \put(-160,  50){\makebox(0,0)[r] {$\spV_2$}}
+%    \put(-210,   0){\makebox(0,0)[r] {$\spV_1$}}
+%    \put(-110,   0){\makebox(0,0)[r] {$\spW_1$}}
+%    \put(  10,   0){\makebox(0,0)[l] {$\spW_2$}}
+%    \put( 210,   0){\makebox(0,0)[l] {$\spW_{n-1}$}}
+%    \put(  . ,-210){\makebox(0,0)[t] {$0$}}
+%
+%    \put( -50, 15){\makebox(0,0)[c] {$\ddots$}}
+%    {\color{red}
+%      \put(-300,- 50){\dashbox{10}(600,80){}}
+%      \put(-300, 260){\makebox(0,0)[bl] {scaling subspaces}}
+%      \put( 300, 110){\makebox(0,0)[br] {wavelet subspaces}}
+%      \put( 200, 100){\vector(0,-1){70}}
+%      \put(-250, 250){\vector(1,-1){70}}
+%      \thicklines
+%      \qbezier[30](-300,  50)(-175, 175)( -50, 300)
+%      \qbezier[30](-200, -50)( -75,  75)(  50, 200)
+%      \qbezier[15](-200,-50)(-250,0)(-300,50)
+%      \qbezier[15](  50,200)(0,250)(-50,300)
+%    }
+%  \end{picture}
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}
+%\begin{minipage}{11\tw/16}
+%%---------------------------------------
+%\begin{example}
+%%---------------------------------------
+%A \hie{wavelet transform} partitions a space $\spX$ into a pair of sequences of subspaces:
+%\begin{liste}
+%  \item \hie{scaling subspace sequence} $\seqn{\spV_n}$
+%  \item \hie{wavelet subspace sequence} $\seqn{\spW_n}$
+%\end{liste}
+%Let $\opP_n$ be the projection operator onto subspace $\spV_n$ and
+%let $\opQ_n$ be the projection operator onto subspace $\spW_n$.
+%Then
+%\begin{liste}
+%  \item $\opP_n\ge\opP_m$ for $n\ge m$
+%  \item $\opP_{n+1} \ge \opQ_n$
+%  \item $\opQ_n$ is \hie{not comparable} to $\opQ_m$ for $n\ne m$
+%\end{liste}
+%Note that the tuple
+%$(\setn{\seq{\opP_n}{n\in\Z},\seq{\opQ_n}{n\in\Z}},\,\ge,\,+,\,\cdot)$
+%is a \hie{lattice}.
+%\end{example}
+%\end{minipage}
+
+
+
+
+
+
+%%=======================================
+%\section{Literature}
+%%=======================================
+%\begin{survey}
+%\begin{enumerate}
+%  \item Algebra of projection operators:
+%    \\\citer{murray1936}
+%
+%  \item John von Neumann's contributions to and use of lattice theory:
+%    \\\citer{birkhoff1958}
+%
+%\end{enumerate}
+%\end{survey}
+%

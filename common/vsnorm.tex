@@ -1,0 +1,1501 @@
+﻿%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+
+
+
+
+%======================================
+\chapter{Normed Linear Spaces}
+\label{sec:norm}
+%======================================
+%======================================
+\section{Definition and basic results}
+%======================================
+
+%Often in a linear space we have the option of appending additional structures
+%that offer useful functionality.
+%One of these structures is the \hie{norm} (next definition).
+%The norm of a vector can be described as the ``\hie{length}"
+%or the ``\hie{magnitude}" of the vector.
+%%A norm is similar to the concept of a \hie{measure}.
+%%\ifdochas{measure}{\footnote{{\em measure:} \prefp{def:measure}}}
+%%But a measure operates on a set, whereas a norm operates on a vector.
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpp{ab}{217}{218},
+  \citerp{banach1932}{53},
+  \citerp{banach1932e}{33},
+  \citePp{banach1922}{135}
+ %\citerp{michel1993}{344},
+ %\citerp{horn}{259},
+  }
+\label{def:norm}
+\index{space!normed vector}
+\index{triangle inequality}
+\index{inequality!triangle}
+\index[xsym]{$\normn$}
+%--------------------------------------
+Let $\linearspaceX$ be a \structe{linear space} \xref{def:vspace} and
+$\abs{\cdot}\in\clF{\F}{\R}$ the \fncte{absolute value} function\ifsxref{algebra}{def:abs}.
+\defbox{\begin{array}{>{\qquad\scy}r rcl @{\qquad}C @{\qquad}D @{\qquad}D}
+  \mc{7}{M}{A functional $\normn$ in $\clFxr$ is a \hid{norm} if}
+    \\1. & \norm{ \vx}      &\ge& 0                     & \forall \vx \in\setX                & (\prope{strictly positive})  \nocite{michel1993}           & and  %page 115 
+    \\2. & \norm{ \vx}      &=  & 0 \iff \vx=\vzero     & \forall \vx \in\setX                & (\prope{nondegenerate})                                    & and
+    \\3. & \norm{\alpha\vx} &=  & \abs{\alpha}\norm{\vx}& \forall \vx \in\setX,\; \alpha\in\C & (\prope{homogeneous})                                      & and
+    \\4. & \norm{\vx+\vy}   &\le& \norm{\vx}+\norm{\vy} & \forall \vx,\vy \in\setX            & (\prope{subadditive}/\prope{triangle inquality}).
+  \\\mc{7}{M}{A \hib{normed linear space} is the tuple $\normspaceX$.}
+\end{array}}
+\end{definition}
+
+The definition of the \structe{norm} \xref{def:norm} requires that any two vectors
+in a norm space be \prope{subadditive}
+(they satisfy the \hie{triangle inequality} property) such that
+$\norm{\vx_1+\vx_2}\le\norm{\vx_1}+\norm{\vx_2}$.
+Acutally, in {\bf any} normed linear space, this property holds true
+for {\bf any} finite number of vectors---not just two---such that
+$\norm{\vx_1+\vx_2+\cdots+\vx_\xN}\le\norm{\vx_1}+\norm{\vx_2}+\cdots+\norm{\vx_\xN}$ (next theorem).
+%We have not yet introduced a bifunctional called the \hie{inner-product}
+%and the property \hie{orthogonality} that it helps define;
+%but later the \hie{Pythagorean theorem} \xref{thm:pythag}
+%will show that if a set of vectors exist in an \hie{inner-product space}
+%and if they are mutually orthogonal,
+%then the following inequality actually becomes {\em equality}.
+%--------------------------------------
+\begin{theorem}[\thmd{triangle inequality}]
+\label{thm:norm_tri}
+\footnote{
+  \citerp{michel1993}{344}
+  %\citorc{euclid}{Book I Proposition 20}
+  }
+%--------------------------------------
+Let $\tuplexn{\vx_n\in\setX}$ be an \structe{$\xN$-tuple} \xref{def:tuple} of vectors in a 
+\structe{normed linear space} $\normspaceX$.
+\thmbox{
+  \norm{ \sum_{n=1}^\xN \vx_n }
+  \le
+  \sum_{n=1}^\xN \norm{\vx_n}
+  \qquad\scriptstyle
+  \forall \xN\in\Zp,\; \vx_n\in\spV
+  }
+\end{theorem}
+\begin{proof}
+Proof is by induction:
+\begin{align*}
+\intertext{1. Proof for the $\xN=1$ case:}
+  \norm{ \sum_{n=1}^1 \vx_n }
+    &=   \norm{ \vx_1 }
+  \\&=   \sum_{n=1}^1 \norm{ \vx_1 }
+    %
+\intertext{2. Proof for the $\xN=2$ case:}
+  \norm{ \sum_{n=1}^2 \vx_n }
+    &=   \norm{ \sum_{n=1}^2 \vx_n }
+  \\&=   \norm{ \vx_1 + \vx_2 }
+  \\&\le \norm{\vx_1} + \norm{\vx_2}
+    &&   \text{by \prefp{def:norm} (triangle inequality)} \index{equality!triangle}
+  \\&=   \sum_{n=1}^2\norm{\vx_n}
+    %
+\intertext{3. Proof that [$\xN$ case] $\implies$ [$\xN+1$ case]:}
+  \norm{ \sum_{n=1}^{\xN+1} \vx_n }
+    &=   \norm{ \sum_{n=1}^\xN \vx_n + \vx_{n+1} }
+  \\&\le \norm{\sum_{n=1}^\xN \vx_n} + \norm{\vx_{n+1}}
+    &&   \text{by \prefp{def:norm} (triangle inequality)} \index{equality!triangle}
+  \\&\le \sum_{n=1}^\xN \norm{\vx_n} + \norm{\vx_{n+1}}
+    &&   \text{by left hypothesis}
+  \\&=   \sum_{n=1}^{\xN+1} \norm{\vx_n}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[\thmd{Reverse Triangle Inequality}]
+\footnote{
+  \citerp{ab}{218},
+  \citerpg{giles2000}{2}{0521653754},
+  \citorp{banach1922}{136}
+  }
+\label{thm:shortest_dist}
+\label{thm:rti}
+%--------------------------------------
+Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\thmbox{
+  \begin{array}{rcl@{\qquad}C}
+  \mcom{\abs{\norm{\vx} - \norm{\vy}} \le \norm{{\vx}-{\vy}}}{\prope{reverse triangle inequality}} &\le& \norm{\vx}+\norm{\vy}
+  & \forall \vx,\vy\in \setX
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \abs{\norm{\vx} - \norm{\vy}}
+    &=   \abs{\norm{({\vx}-{\vy})+\vy} - \norm{\vy}}
+  \\&\le \abs{\norm{{\vx}-{\vy}} + \norm{\vy} - \norm{\vy}}
+    &&   \text{by \prefp{def:norm}}
+  \\&=   \abs{\norm{{\vx}-{\vy}} }
+  \\&=   \norm{{\vx}-{\vy}}
+    &&   \text{by \prefp{def:norm}}
+  \\
+  \\
+  \norm{{\vx}-{\vy}}
+    &\le \norm{{\vx}-\vzero}+\norm{\vzero-{\vy}}
+    &&   \text{by previous result with ${\vu}=0$}
+  \\&=   \norm{\vx}+|-1|\norm{\vy}
+    &&   \text{by \prefp{def:norm}}
+  \\&=   \norm{\vx}+    \norm{\vy}
+\end{align*}
+\end{proof}
+
+
+
+\parbox[c][][c]{\textwidth/3-2ex}{
+%\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(200,200)(-100,-100)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(-100,   0){\vector( 1, 1){100} }
+  \put( 100,   0){\vector(-1, 1){100} }
+  \put(   0,-100){\vector( 0, 1){200} }
+  \put( -50,  50 ){\makebox(0,0)[br]{$\vx$}}
+  \put(  50,  50 ){\makebox(0,0)[bl]{$\vu$}}
+  \put(   5,  35 ){\makebox(0,0)[l ]{$\vy$}}
+  {\color{red}
+    \thicklines
+    \put(-100,   0){\vector( 1,-1){100} }
+    \put( 100,   0){\vector(-1,-1){100} }
+    \put(-100,   0){\vector( 1, 0){200} }
+    \put( -55, -55 ){\makebox(0,0)[tr]{$\vx-\vy$}}
+    \put(  55, -55 ){\makebox(0,0)[tl]{$\vu-\vy$}}
+    \put( -55,   5 ){\makebox(0,0)[b ]{$\vx-\vu$}}
+  }
+\end{picture}
+\end{fsL}
+\end{center}
+}
+%\caption{
+%   Shortest distance between two points (see \pref{prop:shortest_dist})
+%   \label{fig:shortest_dist}
+%   }
+%\end{figure}
+\parbox[c][][c]{2\textwidth/3-2ex}{
+  The shortest distance between two vectors is always the difference of the vectors.
+  This is proven in next and illustrated to the left in
+  the Euclidean space $\R^2$ (the plane)
+  %\prefp{prop:shortest_dist} (next)
+  %and illustrated in Figure~\ref{fig:shortest_dist}.
+  }
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:shortest_dist}
+\footnote{
+  \citerp{ab}{218} 
+  }
+%--------------------------------------
+Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\propbox{
+  \begin{array}{rcl@{\qquad}C}
+  \norm{{\vx}-{\vy}} &\le& \norm{{\vx}-{\vu}} + \norm{{\vu}-{\vy}} & \forall \vx,\vy,\vu\in \setX
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \norm{{\vx}-{\vy}}
+    &=   \norm{(\vx-{\vu})+({\vu}-{\vy})}
+  \\&\le \norm{{\vx}-{\vu}} + \norm{{\vu}-{\vy}}
+    &&   \text{by \prefp{def:norm}}
+\end{align*}
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{example}[\exmd{The usual norm}]
+\footnote{
+  \citerp{giles1987}{3}
+  }
+\label{ex:ln_norm}
+\index{usual norm}
+\index{norm!usual}
+%--------------------------------------
+Let $\clFrr$ be the set of all functions with domain and range the set of \sete{real numbers} $\R$.
+\exbox{
+  \text{The \hib{absolute value} \xref{def:abs} $\abs{\cdot}\in\clFrr$ is a \structe{norm}.}
+  }
+\end{example}
+
+%--------------------------------------
+\begin{example}[$l_p$ norms]
+\label{ex:norms}
+%\citep{giles2000}{3}
+%  \citerpg{giles2000}{3}{0521653754}
+%\index{norm!$l_1$}  \index{norm!taxi cab}
+%\index{norm!$l_2$}  \index{norm!Euclidean}
+%\index{norm!$l_\infty$} \index{norm:sup}
+%--------------------------------------
+Let $\seqxZ{x_n}$ be a \structe{sequence} \xref{def:seq} of real numbers.
+An uncountably infinite number of norms is provided by the $\splpF$ norms $\norm{\seqn{x_n}}_p$:
+%which are defined as follows:
+\exbox{
+  \norm{\seqn{x_n}}_p \eqd  \brp{\sum_{n\in\Z} \abs{x_n}^p}^\frac{1}{p}   
+  \qquad\text{is a norm for $p\in\intcc{1}{\infty}$}
+  }
+\end{example}
+%\begin{proof}
+%See \prefpp{prop:lp_norm}.
+%\end{proof}
+%\exboxp{
+%  The following are all norms in the linear space $\C^n$:
+%  \\\indentx$\begin{array}{rc>{\ds}l@{\qquad}>{(}D<{)}}
+%    \norm{\vx}_1      &\eqd& \sum_{i=1}^n \abs{x_i}             & \prope{$l_1$-norm} or \prope{taxi cab norm} \\
+%    \norm{\vx}_2      &\eqd& \sqrt{\sum_{i=1}^n \abs{x_i}^2}    & \prope{$l_2$-norm} or \prope{Euclidean norm}  \\
+%    \norm{\vx}_\infty &\eqd& \max\set{\abs{x_i}}{i=1,2,\dots,n} & \prope{$l_\infty$-norm} or \prope{sup norm}
+%  \end{array}$
+%  }
+%\end{example}
+%\begin{proof}
+%\begin{align*}
+%  \intertext{1. Proof that $\normn_1$ is a norm:}
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}\ge0$:}
+%    \norm{\vx}
+%      &\eqd \sum_{i=1}^n \abs{x_i}
+%      &&    \text{by definition of $\normn$}
+%    \\&\ge  \sum_{i=1}^n 0
+%      &&    \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&=    0
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}=0\implies\vx=\vzero$:}
+%    0
+%      &= \norm{\vx}
+%      && \text{by left hypothesis}
+%    \\&= \sum_{i=1}^n \abs{x_i}
+%      && \text{by definition of $\normn$}
+%    \\&\implies x_i=0\quad i=1,2,\ldots,n
+%    \\&\implies \vx=\vzero
+%      && \text{by definition of $\vx$}
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}=0\impliedby\vx=\vzero$:}
+%    \norm{\vx}
+%      &= \sum_{i=1}^n \abs{x_i}
+%      && \text{by definition of $\normn$}
+%    \\&= \sum_{i=1}^n \abs{0}
+%      && \text{by right hypothesis}
+%    \\&= 0
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\alpha\vx}=\abs{\alpha}\norm{\vx}$:}
+%    \norm{\alpha\vx}
+%      &= \sum_{i=1}^n \abs{\alpha x_i}
+%      && \text{by definition of $\normn$}
+%    \\&= \sum_{i=1}^n \abs{\alpha}\abs{x_i}
+%      && \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&= \abs{\alpha}\sum_{i=1}^n \abs{x_i}
+%    \\&= \abs{\alpha}\norm{\vx}
+%      && \text{by definition of $\vx$}
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx+\vy}\le\norm{\vx}+\norm{\vy}$:}
+%    \norm{\vx+\vy}
+%      &= \sum_{i=1}^n \abs{x_i+y_i}
+%      && \text{by definition of $\normn$}
+%    \\&\le \sum_{i=1}^n \Big(\abs{x_i}+\abs{y_i}\Big)
+%      && \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&= \mcom{\sum_{i=1}^n \abs{x_i}}{$\norm{\vx}$} + \mcom{\sum_{i=1}^n \abs{y_i}}{$\norm{\vy}$}
+%    \\&= \norm{\vx} + \norm{\vy}
+%      && \text{by definition of $\normn$}
+%  \\
+%  \intertext{2. Proof that $\normn_2$ is a norm:}
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}\ge0$:}
+%    \norm{\vx}^2
+%      &\eqd \sum_{i=1}^n \abs{x_i}^2
+%      &&    \text{by definition of $\normn$}
+%    \\&\ge  \sum_{i=1}^n 0
+%      &&    \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&=    0
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}=0\implies\vx=\vzero$:}
+%    0 &= 0^2
+%    \\&= \norm{\vx}^2
+%      && \text{by left hypothesis}
+%    \\&= \sum_{i=1}^n \abs{x_i}^2
+%      && \text{by definition of $\normn$}
+%    \\&\implies x_i=0\quad i=1,2,\ldots,n
+%    \\&\implies \vx=\vzero
+%      && \text{by definition of $\vx$}
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}=0\impliedby\vx=\vzero$:}
+%    \norm{\vx}^2
+%      &= \sum_{i=1}^n \abs{x_i}^2
+%      && \text{by definition of $\normn$}
+%    \\&= \sum_{i=1}^n \abs{0}^2
+%      && \text{by right hypothesis}
+%    \\&= 0
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\alpha\vx}=\abs{\alpha}\norm{\vx}$:}
+%    \norm{\alpha\vx}
+%      &= \sqrt{\sum_{i=1}^n \abs{\alpha x_i}^2 }
+%      && \text{by definition of $\normn$}
+%    \\&= \sqrt{\sum_{i=1}^n \abs{\alpha}^2\abs{x_i}^2}
+%      && \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&= \abs{\alpha} \sqrt{\sum_{i=1}^n \abs{x_i}^2 }
+%    \\&= \abs{\alpha} \norm{\vx}
+%      && \text{by definition of $\vx$}
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx+\vy}\le\norm{\vx}+\norm{\vy}$:}
+%    \norm{\vx+\vy}
+%      &=   \left(\sum_{i=1}^n \abs{x_i+y_i}^2\right)^\frac{1}{2}
+%      &&   \text{by definition of $\normn$}
+%    \\&\le \left(\sum_{i=1}^n (\abs{x_i}+\abs{y_i})^2 \right)^\frac{1}{2}
+%      &&   \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&\le \left(\sum_{i=1}^n \abs{x_i}^2 \right)^\frac{1}{2}
+%       +   \left(\sum_{i=1}^n \abs{y_i}^2 \right)^\frac{1}{2}
+%      &&   \text{by \prope{Minkowski's inequality}}
+%    \\&=   \norm{\vx} + \norm{\vy}
+%  \\
+%  \\
+%  \intertext{3. Proof that $\normn_\infty$ is a norm:}
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}\ge0$:}
+%    \norm{\vx}
+%      &\eqd \max\set{|x_i|}{i=1,2,\dots,n}
+%      &&    \text{by definition of $\normn$}
+%    \\&\ge  \max\set{0}{i=1,2,\dots,n}
+%      &&    \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&=    0
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}=0\implies\vx=\vzero$:}
+%    0
+%      &= \norm{\vx}
+%      && \text{by left hypothesis}
+%    \\&= \max\set{|x_i|}{i=1,2,\dots,n}
+%      && \text{by definition of $\normn$}
+%    \\&\implies x_i=0\quad i=1,2,\ldots,n
+%    \\&\implies \vx=\vzero
+%      && \text{by definition of $\vx$}
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx}=0\impliedby\vx=\vzero$:}
+%    \norm{\vx}
+%      &= \max\set{|x_i|}{i=1,2,\dots,n}
+%      && \text{by definition of $\normn$}
+%    \\&= \sum_{i=1}^n \abs{0}
+%      && \text{by right hypothesis}
+%    \\&= 0
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\alpha\vx}=\abs{\alpha}\norm{\vx}$:}
+%    \norm{\alpha\vx}
+%      &= \max\set{\abs{\alpha x_i}}{i=1,2,\dots,n}
+%      && \text{by definition of $\normn$}
+%    \\&= \max\set{\abs{\alpha} \abs{x_i}}{i=1,2,\dots,n}
+%      && \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&= \abs{\alpha} \max\set{\abs{x_i}}{i=1,2,\dots,n}
+%    \\&= \abs{\alpha}\norm{\vx}
+%      && \text{by definition of $\vx$}
+%  \\
+%  \intertext{$\quad\imark$ Proof that $\norm{\vx+\vy}\le\norm{\vx}+\norm{\vy}$:}
+%    \norm{\vx+\vy}
+%      &=   \max\set{\abs{x_i+y_i}}{i=1,2,\dots,n}
+%      &&   \text{by definition of $\normn$}
+%    \\&\le \max\set{\abs{x_i}+\abs{y_i}}{i=1,2,\dots,n}
+%      && \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&\le \max\set{\abs{x_i}}{i=1,2,\dots,n} + \max\set{\abs{y_i}}{i=1,2,\dots,n}
+%      && \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+%    \\&= \norm{\vx} + \norm{\vy}
+%      && \text{by definition of $\normn$}
+%\end{align*}
+%\end{proof}
+
+
+
+
+
+
+
+%======================================
+\section{Relationship between metrics and norms}
+%======================================
+%======================================
+\subsection{Metrics generated by norms}
+%======================================
+
+
+The concept of \hie{length} is very closely related to the concept of \hie{distance}.
+Thus it is not surprising that a \structe{norm} (a ``length" function)
+can be used to define a \hie{metric} (a ``distance" function)
+on any \structe{metric linear space} \xref{def:vs_metric}.
+Another way to say this is that the norm of a normed linear space
+\hie{induces} a metric on this space.
+And %because every normed linear space has a norm (obviously),
+so every normed linear space also has a metric.
+And because every normed linear space has a metric,
+{\bf every normed linear space is also a metric space}.
+Actually this can be generalized one step further in that
+every metric space is also a \hie{topological space}.
+And so {\bf every normed linear space is also a topological space.}
+In symbols,
+\[ \color{figcolor}
+   \text{normed linear space}
+   \qquad\implies\qquad
+   \text{metric space}
+   \qquad\implies\qquad
+   \text{topological space}.
+\]
+%The next theorem states basically the same results as above but in a more technical manner.
+%---------------------------------------
+\begin{theorem}
+\label{thm:d=norm}
+\footnote{
+  \citerp{michel1993}{344},
+  \citorp{banach1932}{53} 
+  }
+\index{space!metric}
+\index{metric!induced by norm}
+%---------------------------------------
+Let $\metricn\in\clF{\spX\times\spX}{\R}$ be a function on a \prope{real} normed linear space $\normspaceXR$.
+Let $\ball{\vx}{r}\eqd\set{\vy\in\spX}{\norm{\vy-\vx}<r}$ be the \sete{open ball}\ifsxref{metric}{def:ball} of radius $r$ centered at a point $\vx$.
+\thmbox{
+  %\begin{array}{l}
+    \metric{\vx}{\vy} \eqd \norm{\vx-\vy} \text{ is a metric on $\spX$}
+    %2. & \tau \eqd \set{\ball{\vx}{r}}{\vx\in V,\;r>0} \text{ is a topology on $\spX$. }
+  %\end{array}
+  }
+%\footnotetext{\hie{open ball}: \prefp{def:ball}}
+\end{theorem}
+\begin{proof}
+The proof follows directly from the definition of a metric (\ifdochasni{metric}{\prefp{def:metric}})
+the definition of \structe{norm} \xref{def:norm}.
+\end{proof}
+
+The previous theorem defined a metric $\metric{\vx}{\vy}$ induced by the norm $\norm{\vx}$.
+The next definition defines this metric formally.
+%--------------------------------------
+\begin{definition}
+\label{def:d=norm}
+\footnote{
+  \citerpgc{giles2000}{1}{0521653754}{1.1 Definition}
+  }
+\index{metric!generated by norm}
+%--------------------------------------
+Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\defbox{\begin{array}{l@{\qquad}C}
+  \mc{2}{l}{\text{
+    The \hib{metric induced by the norm} $\normn$ is the function $\fd\in\clFxr$ such that
+  }}
+  \\ \qquad
+  \metric{\vx}{\vy} \eqd \norm{\vx-\vy} & \forall \vx,\vy\in\setX
+\end{array}}
+\end{definition}
+
+
+Due to its algebraic structure, every norm is \prope{continuous} \xref{cor:norm_continuous}.
+This makes norm spaces very useful in analysis.
+For a function $\ff$ be to \prope{continuous}, for every $\epsilon>0$ there must exist a $\delta>0$ such that 
+$\abs{\ff(x+\delta)-\ff(x)}<\epsilon$.
+The \hie{Reverse Triangle Inequality} \xref{thm:rti} shows this to be true when $\ffn\eqd\normn$.
+
+
+%--------------------------------------
+\begin{corollary}
+\label{cor:norm_continuous}
+\footnote{
+  \citerpg{giles2000}{2}{0521653754}
+  }
+%--------------------------------------
+Let $\spO\eqd\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\corbox{
+  \text{The norm $\normn$ is \prope{continuous} in $\spO$.}
+  }
+\end{corollary}
+\begin{proof}
+This follows from these concepts:
+\begin{enumerate}
+  \item The fact that $\fd(\vx,\vy)\eqd\norm{\vx-\vy}$ is a \structe{metric} \xref{thm:d=norm}.
+  \item \prope{Continuity} in a \struct{metric space}. % \xref{thm:ms_continuous}.
+  \item The \thme{Reverse Triangle Inequality} \xref{thm:rti}.
+\end{enumerate}
+\end{proof}
+
+\pref{thm:norm_convex} (next) demonstrates that {\bf all open or closed} balls in
+{\bf any normed linear space} are \prope{convex}.
+However, the converse is not true---that is, 
+a metric not generated by a norm may still produce a ball that is convex. 
+\ifdochas{metricex}{
+Here are some examples:\\
+\begin{tabular}{|l|ll|c|c|}
+     \hline
+     metric name       & example                 &                            & generated by norm & convex ball
+  \\ \hline
+     Taxi-cab metric    & \pref{ex:ms_taxi}      & \prefpo{ex:ms_taxi}       & $\checkmark$ & $\checkmark$  
+  \\ Euclidean metric   & \pref{ex:ms_euclidean} & \prefpo{ex:ms_euclidean}  & $\checkmark$ & $\checkmark$  
+  \\ Sup metric         & \pref{ex:ms_sup}       & \prefpo{ex:ms_sup}        & $\checkmark$ & $\checkmark$  
+  \\ Parabolic metric   & \pref{ex:ms_parabolic} & \prefpo{ex:ms_parabolic}  &              &          
+  \\ exponential metric & \pref{ex:ms_32x}       & \prefpo{ex:ms_32x}        &              &          
+  \\ Tangential metric  & \pref{ex:ms_tan}       & \prefpo{ex:ms_tan}        &              & $\checkmark$  
+  \\\hline
+\end{tabular}}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:norm_convex}
+\footnote{
+  \citerpgc{giles2000}{2}{0521653754}{1.2 Remarks},
+  \citerppgc{giles1987}{22}{26}{0521359287}{2.4 Theorem, 2.11 Theorem}
+  %\citerp{rudinp}{31} \\
+  %David C. Ullrich (2007), \url{http://groups.google.com/group/sci.math/msg/4a217391a5607f83}
+  }
+%--------------------------------------
+Let $\metlinspaceX$ be a \structe{metric linear space} \xref{def:vs_metric}.
+Let $\balln$ be the \structe{open ball}\ifsxref{metric}{def:ball} $\ball{\vp}{r}\eqd\set{\vx\in\spX}{\metric{\vp}{\vx}<r}$
+(open ball with respect to metric $\metricn$ centered at point $\vp$ and with radius $r$).
+\thmbox{
+  \left.\begin{array}{>{\ds}l}
+    \exists \normn\in\clFxr \st \\
+    \mcom{\metric{\vx}{\vy}=\norm{\vy-\vx}}
+         {$\metricn$ is generated by a norm}
+  \end{array}\right\}
+  \implies
+  \left\{\begin{array}{>{\scy}r>{\ds}lD}
+  %1. & \metric{\vx+\vz}{\vy+vz} = \metric{\vx}{\vy} & (\prope{translation invariant}) \\ % included in <norms generated by metrics> section
+  1. & \ball{\vx}{r} = \vx + B(0,r) \\
+  2. & \ball{\vzero}{r} = r\,\ball{\vzero}{1} \\
+  3. & \ball{\vx}{r} \text{ is \prope{convex}} \\
+  4. & \vx\in \ball{\vzero}{r} \iff -\vx\in \ball{\vzero}{r} & (\prope{symmetric}) 
+  \end{array}\right.
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\fd(\vx+\vz,\vy+vz) = \metric{\vx}{\vy}$ (invariant):
+        \begin{align*}
+          \fd(\vx+\vz,\vy+vz)
+            &= \norm{(\vy+vz)-(\vx+\vz)}
+            && \text{by left hypothesis}
+          \\&= \norm{\vy-\vx}
+          \\&= \metric{\vx}{\vy}
+            && \text{by left hypothesis}
+        \end{align*}
+
+  \item Proof that $\ball{\vx}{r} = \vx + B(0,r)$:
+        \begin{align*}
+          \ball{\vx}{r} 
+            &= \set{\vy\in\spX}{\metric{\vx}{\vy}<r}
+            && \text{by definition of open ball $B$}
+          \\&= \set{\vy\in\spX}{\fd(\vy-\vy,\vy-\vx)<r}
+            && \text{by right result 1.}
+          \\&= \set{\vy\in\spX}{\fd(\vzero,\vy-\vx)<r}
+          \\&= \set{\vu+\vx\in\spX}{\fd(\vzero,\vu)<r}
+            && \text{let $\vu\eqd\vy-\vx$}
+          \\&= \vx + \set{\vu\in\spX}{\fd(\vzero,\vu)<r}
+          \\&= \vx + B(0,r)
+            && \text{by definition of open ball $B$}
+        \end{align*}
+
+  \item Proof that $\ball{\vzero}{r} = r\,\ball{\vzero}{1}$:
+        \begin{align*}
+          \ball{\vzero}{r} 
+            &= \set{\vy\in\spX}{\fd(\vzero,\vy)<r}
+            && \text{by definition of open ball $B$}
+          \\&= \set{\vy\in\spX}{\frac{1}{r}\fd(\vzero,\vy)<1}
+          \\&= \set{\vy\in\spX}{\frac{1}{r}\norm{\vy-\vzero}<1}
+            && \text{by left hypothesis}
+          \\&= \set{\vy\in\spX}{\norm{\frac{1}{r}\vy-\frac{1}{r}\vzero}<1}
+            && \text{by homogeneous property of $\normn$ \prefpo{def:norm}}
+          \\&= \set{\vy\in\spX}{\fd\brp{\frac{1}{r}\vzero,\, \frac{1}{r}\vy}<1}
+            && \text{by left hypothesis}
+          \\&= \set{r\vu\in\spX}{\fd\brp{\vzero,\,\vu}<1}
+            && \text{let $\vu\eqd\frac{1}{r}{\vy}$}
+          \\&= r\, \set{\vu\in\spX}{\fd(\vzero,\vu)<1}
+          \\&= r\, B\brp{\vzero,\, 1}
+            && \text{by definition of open ball $B$}
+        \end{align*}
+
+  \item Proof that $\ball{\vp}{r}$ is convex:\\
+        We must prove that for any pair of points $\vx$ and $\vy$ in the open ball $\ball{\vp}{r}$,
+        any point $\lambda\vx + (1-\lambda)\vy$ is also in the open ball.
+        That is, the distance from any point $\lambda\vx + (1-\lambda)\vy$ to 
+        the ball's center $\vp$ must be less than $r$.
+        \begin{align*}
+          \fd(\vp,\lambda\vx + (1-\lambda)\vy)
+            &= \norm{\vp-\lambda\vx - (1-\lambda)\vy}
+            && \text{by left hypothesis}
+          \\&= \norm{\mcom{\lambda\vp+(1-\lambda)\vp}{$\vp$} -\lambda\vx - (1-\lambda)\vy}
+          \\&= \norm{\lambda\vp-\lambda\vx+(1-\lambda)\vp - (1-\lambda)\vy}
+          \\&\le \norm{\lambda\vp-\lambda\vx} + \norm{(1-\lambda)\vp - (1-\lambda)\vy}
+            && \text{by subadditivity property of $\normn$ \prefpo{def:norm}} 
+          \\&= \abs{\lambda}\norm{\vp-\vx} + \abs{1-\lambda}\norm{\vp - \vy}
+            && \text{by homogeneous property of $\normn$ \prefpo{def:norm}} 
+          \\&= \lambda\norm{\vp-\vx} + (1-\lambda)\norm{\vp - \vy}
+            && \text{because $0\le\lambda\le1$}
+          \\&\le \lambda r + (1-\lambda) r
+            && \text{because $\vx,\vy$ are in the ball $\ball{\vp}{r}$}
+          \\&= r
+        \end{align*}
+
+  \item Proof that $\vx\in \ball{\vzero}{r} \iff -\vx\in \ball{\vzero}{r}$ (symmetric):
+        \begin{align*}
+          \vx\in \ball{\vzero}{r} 
+            &\iff \vx\in\set{\vy\in\spX}{\fd(\vzero,\vy)<r}
+            &&    \text{by definition of open ball $B$}
+          \\&\iff \vx\in\set{\vy\in\spX}{\norm{\vy-\vzero}<r}
+            &&    \text{by left hypothesis}
+          \\&\iff \vx\in\set{\vy\in\spX}{\norm{\vy}<r}
+          \\&\iff \vx\in\set{\vy\in\spX}{\norm{(-1)(-\vy)}<r}
+          \\&\iff \vx\in\set{\vy\in\spX}{\abs{-1}\norm{-\vy}<r}
+            &&    \text{by homogeneous property of $\normn$ \prefpo{def:norm}}
+          \\&\iff \vx\in\set{\vy\in\spX}{\norm{-\vy-\vzero}<r}
+          \\&\iff \vx\in\set{\vy\in\spX}{\fd(\vzero,-\vy)<r}
+            &&    \text{by left hypothesis}
+          \\&\iff \vx\in\set{-\vu\in\spX}{\fd(\vzero,\vu)<r}
+            &&    \text{let $\vu\eqd -\vy$}
+          \\&\iff \vx\in \brp{-\set{\vu\in\spX}{\fd(\vzero,\vu)<r}}
+          \\&\iff \vx\in \brp{-\ball{\vzero}{r}}
+          \\&\iff -\vx\in \ball{\vzero}{r}
+        \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%--------------------------------------
+%\begin{remark}
+%--------------------------------------
+\prefpp{thm:norm_convex} demonstrates that if a metric $\metricn$ in a metric space $\metlinspaceX$
+is generated by a norm,
+then the ball $B(x,r)$ in that metric linear space is \prope{convex}.
+However, the converse is not true.
+That is, it is possible for the balls in a metric space $(\spY,\fp)$ to be \prope{convex},
+but yet the metric $\fp$ not be generated by a norm.
+\ifdochas{metricex}{\prefpp{ex:d_balls_nonorm_convex} gives one such example.}
+%\end{remark}
+
+
+
+
+\begin{figure}[th]
+%\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.07mm}
+\begin{tabular*}{\textwidth}{|l||@{\extracolsep\fill}c|c|c|c|}
+  \hline
+  & taxi-cab metric  & Euclidean Metric & sup metric & parabolic metric
+    \index{taxi-cab metric}  \index{metric!taxi-cab}
+    \index{Euclidean metric} \index{metric!Euclidean}
+    \index{sup metric}       \index{metric!sup}
+    \index{parabolic metric} \index{metric!parabolic}
+  \\\hline\hline
+  $\R^0$
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(0,   0){\circle*{32}}%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(0,   0){\circle*{32}}%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(0,   0){\circle*{32}}%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)%
+    %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+    \thicklines%
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(0,   0){\circle*{32}}%
+  \end{picture}
+  \\\hline
+  $\R^1$
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(-100,   0){\line( 1, 0){200} }%
+      \put(-100,   0){\makebox(0,0){$($} }%
+      \put( 100,   0){\makebox(0,0){$)$} }%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(-100,   0){\line( 1, 0){200} }%
+      \put(-100,   0){\makebox(0,0){$($} }%
+      \put( 100,   0){\makebox(0,0){$)$} }%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(-100,   0){\line( 1, 0){200} }%
+      \put(-100,   0){\makebox(0,0){$($} }%
+      \put( 100,   0){\makebox(0,0){$)$} }%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)%
+    %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+    \thicklines%
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(-100,   0){\line( 1, 0){200} }%
+      \put(-100,   0){\makebox(0,0){$($} }%
+      \put( 100,   0){\makebox(0,0){$)$} }%
+  \end{picture}
+  \\\hline
+  $\R^2$
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(-100,   0){\line( 1, 1){100} }%
+      \put(-100,   0){\line( 1,-1){100} }%
+      \put( 100,   0){\line(-1, 1){100} }%
+      \put( 100,   0){\line(-1,-1){100} }%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \input{../common/circle.inp}%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)
+    \thicklines
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \put(-100,-100){\line( 1, 0){200} }%
+      \put(-100,-100){\line( 0, 1){200} }%
+      \put( 100, 100){\line(-1, 0){200} }%
+      \put( 100, 100){\line( 0,-1){200} }%
+  \end{picture}
+  &
+  \begin{picture}(300,300)(-130,-130)%
+    %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+    \thicklines%
+    \color{axis}%
+      \put(-130,   0){\line(1,0){260} }%
+      \put(   0,-130){\line(0,1){260} }%
+      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+      \put(-100, -10){\line(0,1){20} }%
+      \put( 100, -10){\line(0,1){20} }%
+      \put( -10,-100){\line(1,0){20} }%
+      \put( -10, 100){\line(1,0){20} }%
+      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+    \color{blue}%
+      \qbezier( 100,0)(0,0)(0, 100)%
+      \qbezier( 100,0)(0,0)(0,-100)%
+      \qbezier(-100,0)(0,0)(0,-100)%
+      \qbezier(-100,0)(0,0)(0, 100)%
+  \end{picture}
+  %\\\hline
+  %$\R^3$ &
+  %\includegraphics*[width=3\textwidth/32, keepaspectratio=true, clip=true]{../common/cube_cab.eps}     &
+  %\includegraphics*[width=2\textwidth/16, keepaspectratio=true, clip=true]{../common/sphere.eps}       &
+  %\includegraphics*[width=2\textwidth/16, keepaspectratio=true, clip=true]{../common/cube.eps}         &
+  %\includegraphics*[width=2\textwidth/16, keepaspectratio=true, clip=true]{../common/sph_k3.eps}
+  \\\hline
+\end{tabular*}
+\end{fsL}
+\end{center}
+\caption{
+  Open balls in $(\R^0,\,\fd_n)$, $(\R,\,\fd_n)$, $(\R^2,\,\fd_n)$, and $(\R^3,\,\fd_n)$.
+  \label{fig:balls_R2_R3}
+  }
+\end{figure}
+
+
+
+
+
+
+%=======================================
+\subsection{Norms generated by metrics}
+%=======================================
+Every normed linear space is also a metric linear space \xref{thm:d=norm}. 
+That is, a metric linear space generates a \structe{normed linear space}.
+However, the converse is not true---not every metric linear space is a \structe{normed linear space}.
+A characterization of metric linear spaces that \emph{are} normed linear spaces is given by \prefp{thm:vsn_d2norm}.
+%---------------------------------------
+\begin{lemma}
+\footnote{
+  \citerp{oikhberg2007}{599}
+  }
+\label{lem:vsn_ti}
+%---------------------------------------
+Let $\metlinspaceX$ be a \structe{metric linear space}.
+Let $\norm{\vx}\eqd \metric{\vx}{\vzero}$ $\forall\vx\in\setX$.
+\lembox{
+  \mcom{\metric{\vx+\vz}{\vy+\vz} = \metric{\vx}{\vy} \quad\sst\forall \vx,\vy,\vz\in\setX}
+       {\prope{translation invariant}}
+  \implies
+  \brbl{\begin{array}{F rcl CD}
+    1.& \norm{\vx}     &=&   \norm{-\vx}             & \forall \vx\in\setX      & and  \\
+    2.& \norm{\vx}     &=&   0 \iff \vx=0            & \forall \vx\in\setX      & and  \\
+    3.& \norm{\vx+\vy} &\le& \norm{\vx} + \norm{\vy} & \forall \vx,\vy\in\setX  & 
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\norm{\vx} = \norm{-\vx}$:}
+    \norm{\vx}
+      &= \metric{\vx}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&= \metric{\vx-\vx}{\vzero-\vx}
+      && \text{by translation invariance hypothesis}
+    \\&= \metric{\vzero}{-\vx}
+    \\&= \norm{-\vx}
+      && \text{by definition of $\normn$}
+    \\
+  \intertext{2a. Proof that $\norm{\vx} = 0 \implies \vx=0$:}
+    0
+      &= \norm{\vx}
+      && \text{by left hypothesis}
+    \\&= \metric{\vx}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&= \metric{\vx}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&\implies \vx=\vzero
+      && \text{by property of metrics \ifdochas{metric}{\prefpo{def:metric}}}
+    \\
+  \intertext{2b. Proof that $\norm{\vx} = 0 \impliedby \vx=0$:}
+    \norm{\vx}
+      &= \metric{\vx}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&= \metric{\vzero}{\vzero}
+      && \text{by right hypothesis}
+    \\&= 0
+      && \text{by property of metrics \ifdochas{metric}{\prefpo{def:metric}}}
+    \\
+  \intertext{3. Proof that $\norm{\vx+\vy} \le \norm{\vx} + \norm{\vy}$:}
+    \norm{\vx+\vy}
+      &= \metric{\vx+\vy}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&= \metric{\vx+\vy-\vy}{\vzero-\vy}
+      && \text{by translation invariance hypothesis}
+    \\&= \metric{\vx}{-\vy}
+    \\&\le \metric{\vx}{\vzero} + \metric{\vzero}{\vy}
+      && \text{by property of metrics \ifdochas{metric}{\prefpo{def:metric}}}
+    \\&= \metric{\vx}{\vzero} + \metric{\vy}{\vzero}
+      && \text{by property of metrics \ifdochas{metric}{\prefpo{def:metric}}}
+    \\&= \norm{\vx} + \norm{\vy}
+      && \text{by definition of $\normn$}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{bollobas1999}{21} 
+  %\url{http://groups.google.com/group/sci.math/msg/35220b0e757aac90}
+  }
+\label{thm:vsn_d2norm}
+%---------------------------------------
+Let $\linearspaceX$ be a \structe{linear space}.
+Let $\metric{\vx}{\vy}\eqd\norm{\vx-\vy}$ $\forall\vx,\vy\in\setX$.
+\thmbox{
+  \left.\begin{array}{FlCDD}
+    1. & \metric{\vx+\vz}{\vy+\vz} = \metric{\vx}{\vy} 
+       & \forall \vx,\vy,\vz\in\setX 
+       & (\prope{translation invariant})
+       & and
+    \\
+    2. & \metric{\alpha\vx}{\alpha\vy} = \abs{\alpha}\metric{\vx}{\vy} 
+       & \forall \vx,\vy\in\setX,\,\alpha\in\F
+       & (\prope{homogeneous})
+  \end{array}\right\}
+  \iff
+  \text{$\normn$ is a \structe{norm}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof of $\implies$ assertion:
+    \begin{enumerate}
+      \item Proof that $\normn$ is \hie{strictly positive}: This follows directly from the definition of $\metricn$.
+      \item Proof that $\normn$ is \hie{nondegenerate}: This follows directly from \prefpp{lem:vsn_ti}.
+      \item Proof that $\normn$ is \hie{homogeneous}: This follows from the second left hypothesis.
+      \item Proof that $\normn$ satisfies the \hie{triangle-inequality}: This follows directly from \prefpp{lem:vsn_ti}.
+    \end{enumerate}
+
+  \item Proof of $\impliedby$ assertion:
+    \begin{align*}
+      \metric{\vx+\vz}{\vy+\vz}
+        &= \norm{(\vx+\vz)-(\vy+\vz)}
+        && \text{by definition of $\metricn$}
+      \\&= \norm{\vx-\vy}
+      \\&= \metric{\vx}{\vy}
+        && \text{by definition of $\metricn$}
+      \\
+      \metric{\alpha\vx}{\alpha\vy} 
+        &= \norm{(\alpha\vx)-(\alpha\vy)}
+        && \text{by definition of $\metricn$}
+      \\&= \norm{\alpha(\vx-\vy)}
+      \\&= \abs{\alpha}\norm{\vx-\vy}
+        && \text{by definition of $\normn$ \prefpo{def:norm}}
+      \\&= \abs{\alpha}\metric{\vx}{\vy} 
+        && \text{by definition of $\metricn$}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%\ifdochas{vector}{
+%%---------------------------------------
+%\begin{remark}
+%%---------------------------------------
+%Note that \pref{thm:vsn_d2norm} (previous theorem) is very similar to 
+%\prefpp{thm:vsm_convex_invariant}, which shows when the balls of a metric space are convex.
+%However, \pref{thm:vsn_d2norm} is actually the stronger theorem as it shows 
+%when a space is not only convex, but also a normed space.
+%This is a stronger result because the balls in all normed spaces are \prope{convex} \xref{thm:}.\problem
+%With the stronger result comes stronger conditions. 
+%In the weaker \pref{thm:vsm_convex_invariant}, we only need to prove homogeneity for 
+%$\lambda\in[0,1]$.
+%In the stronger \pref{thm:vsn_d2norm}, we need to prove homogeneity for 
+%$\lambda\in\F$.
+%\end{remark}}
+
+
+
+
+
+%\ifexclude{wsd}{
+%=======================================
+\section{Orthogonality on normed linear spaces}
+%=======================================
+Traditionally, \prope{orthogonality} \xref{def:orthog} is a property defined in \structe{inner product space}s \xref{def:inprod}
+However, the concept of orthogonality can be extended to \structe{normed linear space}s \xref{def:norm}.
+Here are some examples:
+  \\\begin{tabular}{@{\qquad}llll}
+    \circOne   & \hie{Isosceles orthogonality}:    & \pref{def:orthogj} & \prefpo{def:orthogj} \\
+    \circTwo   & \hie{Pythagorean orthogonality}:  & \pref{def:orthogp} & \prefpo{def:orthogp} \\
+    \circThree & \hie{Birkhoff orthogonality}:     & \pref{def:orthogb} & \prefpo{def:orthogb} 
+  \end{tabular}
+
+%\parbox[c][][c]{\textwidth/3-2ex}{
+\begin{fsL}
+\begin{tabular}[c]{c}
+  \setlength{\unitlength}{0.15mm}
+  \begin{picture}(300,150)(0,-30)%
+    %\graphpaper[10](0,0)(300,120)%
+    \thicklines%
+    {\color{uvect}%
+      \put(   0,   0){\vector( 1, 1){100} }%
+      \put( 100, 100){\vector( 1, 0){200} }%
+      \put(   0,   0){\vector( 1, 0){200} }%
+      \put( 200,   0){\vector( 1, 1){100} }%
+      \put(  40,  50 ){\makebox(0,0)[br]{$\vy$}}%
+      \put( 260,  50 ){\makebox(0,0)[tl]{$\vy$}}%
+      \put( 200, 110 ){\makebox(0,0)[b ]{$\vx$}}%
+      \put( 100, -10 ){\makebox(0,0)[t ]{$\vx$}}%
+      }%
+    {\color{vector}%
+      \put(   0,   0){\vector( 3, 1){300} }%
+      \put( 100, 100){\vector( 1,-1){100} }%
+      \put( 120,  80 ){\makebox(0,0)[bl]{$\vx-\vy$}}%
+      \put( 105,  35 ){\makebox(0,0)[tl]{$\vx+\vy$}}%
+      }%
+  \end{picture}%
+%  }
+\\
+%\parbox[c][][c]{\textwidth/3-2ex}{
+  \setlength{\unitlength}{0.20mm}
+  \begin{picture}(230,150)(-30,-30)%
+    %\graphpaper[10](0,0)(300,120)%
+    \thicklines%
+    {\color{uvect}%
+      \put(   0,   0){\vector( 1, 0){100} }%
+      \put(   0,   0){\vector( 1, 0){200} }%
+      \put(   0,   0){\vector( 0, 1){100} }%
+      \put( 100, -10 ){\makebox(0,0)[t]{$\vx+\vx$}}%
+      \put( -10,  50 ){\makebox(0,0)[r]{$\vy$}}%
+      }%
+    {\color{vector}%
+      \put(   0,   0){\vector( 1, 1){100} }%
+      \put( 100, 100){\vector( 1,-1){100} }%
+      \put(  60,  70 ){\makebox(0,0)[br]{$\vx+\vy$}}%
+      \put( 140,  70 ){\makebox(0,0)[bl]{$\vx-\vy$}}%
+      }%
+    {\color{axis}%
+      %\qbezier[10](0,0)(0,50)(0,100)%
+      \qbezier[20](100,0)(100,50)(100,100)%
+      \qbezier[20](200,0)(200,50)(200,100)%
+      \qbezier[40](0,100)(100,100)(200,100)%
+      }%
+  \end{picture}%
+%  }
+\end{tabular}
+\end{fsL}
+%
+\parbox[c][][c]{2\textwidth/3-2ex}{
+  \prope{Isosceles orthogonality} \xref{def:orthogj} can be illustrated using a \prope{parallelogram},
+  as illustrated in the figure to the upper left.
+  In this case,
+  orthogonality implies that the parallelogram is a rectangle,
+  which in turn implies that the lengths of the two diagonals are equal
+  ($\norm{\vx+\vy}=\norm{\vx-\vy}$).
+  Isosceles orthogonality can also be illustrated with a triangle
+  where the sides are of lengths $\norm{\vx+\vy}$ and $\norm{\vx-\vy}$
+  and base of length $\norm{\vx+\vx}$.
+  In this case if $\vx$ and $\vy$ are orthogonal, then the triangle
+  is \hie{isosceles}.
+  This is illustrated in figure to the lower left.
+  Isosceles orthogonality is formally defined next.
+  }
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citorpc{james1945}{292}{\textsc{Definition} 2.1},
+  \citerpg{amir1986}{24}{3764317744},
+  \citerp{dunford1957}{93} 
+  }
+\label{def:orthogj}
+\index{orthogonality!James}
+\index{orthogonality!isosceles}
+%--------------------------------------
+Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\defbox{\begin{array}{M}
+  Two vectors $\vx$ and $\vy$ are \hid{orthogonal in the sense of James} if
+  \\\qquad$\norm{\vx+\vy} = \norm{\vx-\vy}.$
+  \\
+  %This relationship between $\vx$ and $\vy$ is denoted $\vx \orthoga \vy$.
+  This property is also called \hid{isosceles orthogonality} or 
+  \hid{James orthogonality}.
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+Let $\inprodspaceXR$ be an \structe{inner-product space} \xref{def:inprod} with induced norm
+$\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$, \prope{isosceles orthogonality} \xref{def:orthogj} relation $\orthoga$,
+and inner-product relation \prope{orthogonality} \xref{def:orthog} relation $\orthog$.
+\thmbox{\indxs{\orthoga}
+  \mcomr{ \vx \orthoga \vy }{orthogonal in the sense of James}
+  \qquad\iff\qquad
+  \mcoml{ \vx \orthog \vy }{orthogonal in the sense of inner-product space}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\vx\orthoga\vy \quad\implies\quad \vx\orthog\vy$:
+    \begin{align*}
+        &4\inprod{\vx}{\vy}
+        \\&= \mcom{\norm{\vx+ \vy}^2  - \norm{\vx- \vy}^2}{$0$ by $\vx\orthoga\vy$ hypothesis} 
+           + i\norm{\vx+i\vy}^2 - i\norm{\vx-i\vy}^2
+          && \text{by \thme{polarization identity} \xref{thm:polar_id}}
+        \\&= 0  + i\norm{\vx+i\vy}^2 - i\norm{\vx-i\vy}^2
+          && \text{by $\vx\orthoga\vy$ hypothesis}
+        \\&= i\brs{\norm{\vx}^2 + \norm{i\vy}^2 + 2\Re\inprod{\vx}{i\vy}}
+           \\&\qquad- i\brs{\norm{\vx}^2 + \norm{-i\vy}^2 + 2\Re\inprod{\vx}{-i\vy}}
+          && \text{by \thme{Polar Identity} \xref{lem:polarid}}
+        \\&= i\brs{\norm{\vx}^2 + \norm{\vy}^2 + 2\Re\inprod{\vx}{i\vy}}
+          \\&\qquad - i\brs{\norm{\vx}^2 + \norm{\vy}^2 + 2\Re\inprod{\vx}{-i\vy}}
+          && \text{by \prefp{def:norm} and \prefp{def:inprod}}
+        \\&= 4i\Re\inprod{\vx}{i\vy}
+        \\&= 4i\Re\brs{i^\ast\inprod{\vx}{\vy}}
+        \\&= 0
+          && \text{because inner-product space is \prope{real} ($\F=\R$)}
+    \end{align*}
+
+  \item Proof that $\vx\orthoga\vy \quad\impliedby\quad \vx\orthog\vy$:
+    \begin{align*}
+      \norm{\vx + \vy}^2
+        &= \norm{\vx}^2 + \norm{\vy}^2 + 2\Re\inprod{\vx}{\vy}
+        && \text{by \thme{Polar Identity} \xref{lem:||x+y||}}
+      \\&= \norm{\vx}^2 + \norm{\vy}^2 + 0
+        && \text{by $\vx\orthog\vy$ hypothesis}
+      \\&= \norm{\vx}^2 + \norm{\vy}^2 - 2\Re\cancelto{0 \text{ when } \vx\orthog\vy}{\inprod{\vx}{\vy}}
+        && \text{by $\vx\orthog\vy$ hypothesis}
+      \\&= \norm{\vx}^2 + \norm{-\vy}^2 + 2\Re\inprod{\vx}{-\vy}
+        && %\text{by \pref{def:inprod} and \pref{def:norm}}
+      \\&= \norm{\vx-\vy}^2
+        && \text{by \thme{Polar Identity} \xref{lem:||x+y||}}
+  \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{amir1986}{24}{3764317744} 
+  }
+%--------------------------------------
+Let $\normspaceX$ be a normed linear space and
+with \prope{isosceles orthogonality} \xref{def:orthogj} relation $\orthoga$.
+\thmbox{
+  \vx \orthoga \vy
+  \qquad\iff\qquad
+  \vy \orthoga \vx
+  \qquad\iff\qquad
+  \alpha\vx \orthoga \alpha\vy
+  \qquad\scriptstyle \forall\alpha\in\F
+  }
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    \vx \orthoga \vy
+      &\implies \norm{\vx+\vy} &&= \norm{\vx-\vy} \hspace{4cm} %\hspace{1\textwidth/16}
+      &&        \text{by \prefp{def:orthogj}}
+    \\&\implies \norm{\vx+\vy} &&= \abs{-1}\,\norm{\vx-\vy}
+    \\&\implies \norm{\vx+\vy} &&= \norm{-(\vx-\vy)}
+      &&        \ifdochas{vsnorm}{\text{by \prefp{def:norm}}}
+    \\&\implies \norm{\vy+\vx} &&= \norm{\vy-\vx}
+      &&        \ifdochas{vector}{\text{by \prefp{def:vspace}}}
+    \\&\implies \vy \orthoga \vx
+      &&&&      \text{by \prefp{def:orthogj}}
+    \\
+    \\
+    \vy \orthoga \vx
+      &\implies \norm{\vy+\vx} &&= \norm{\vy-\vx}
+      &&        \text{by \prefp{def:orthogj}}
+    \\&\implies \abs{\alpha}\,\norm{\vy+\vx} &&= \abs{\alpha}\,\norm{\vy-\vx}
+    \\&\implies \norm{\alpha(\vy+\vx)} &&= \norm{\alpha(\vy-\vx)}
+      &&        \ifdochas{vsnorm}{\text{by \prefp{def:norm}}}
+    \\&\implies \norm{\alpha\vy+\alpha\vx} &&= \norm{\alpha\vy-\alpha\vx}
+    \\&\implies \norm{\alpha\vx+\alpha\vy} &&= \norm{-(\alpha\vx-\alpha\vy)}
+      &&        \ifdochas{vector}{\text{by \prefp{def:vspace}}}
+    \\&\implies \norm{\alpha\vx+\alpha\vy} &&= \abs{-1}\,\norm{\alpha\vx-\alpha\vy}
+      &&        \ifdochas{vsnorm}{\text{by \prefp{def:norm}}}
+    \\&\implies \norm{\alpha\vx+\alpha\vy} &&= \norm{\alpha\vx-\alpha\vy}
+      &&        \ifdochas{algebra}{\text{by \prefp{def:abs}}}
+    \\&\implies \alpha\vx \orthoga \alpha\vy
+      &&&&      \text{by \prefp{def:orthogj}}
+    \\
+    \\
+    \alpha\vx \orthoga \alpha\vy
+      &\implies \norm{\alpha\vx+\alpha\vy} &&= \norm{\alpha\vx-\alpha\vy}
+      &&        \text{by \prefp{def:orthogj}}
+    \\&\implies \norm{\alpha(\vx+\vy)} &&= \norm{\alpha(\vx-\vy)}
+      &&        \ifdochas{vector}{\text{by \prefp{def:vspace}}}
+    \\&\implies \abs{\alpha}\,\norm{\vx+\vy} &&= \abs{\alpha}\,\norm{\vx-\vy}
+      &&        \ifdochas{vsnorm}{\text{by \prefp{def:norm}}}
+    \\&\implies \norm{\vx+\vy} &&= \norm{\vx-\vy}
+      &&        \ifdochas{vsnorm}{\text{by \prefp{def:norm}}}
+    \\&\implies \vx \orthoga \vy
+      &&&&      \text{by \prefp{def:orthogj}}
+  \end{align*}
+\end{proof}
+
+
+
+\begin{minipage}{\tw/3}%
+  \begin{center}%
+  \begin{fsL}%
+  \setlength{\unitlength}{\tw/350}%
+  \begin{picture}(300,150)(0,-50)%
+    %\color{graphpaper}\graphpaper[10](0,0)(300,100)%
+    \thicklines%
+    \color{green}%
+      \qbezier[20](200,0)(250,50)(300,100)%
+      \qbezier[40](100,100)(200,100)(300,100)%
+      %
+    \color{uvect}%
+      \put(   0,   0){\vector( 1, 1){100} }%
+      \put(   0,   0){\vector( 1, 0){200} }%
+      \put( 100, -10 ){\makebox(0,0)[t ]{$\vx$}}%
+      \put(  40,  50 ){\makebox(0,0)[bl]{$\vy$}}%
+      %
+    \color{vector}%
+      \put( 100, 100){\vector( 1,-1){100} }%
+      \put( 160,  50 ){\makebox(0,0)[bl]{$\vx-\vy$}}%
+      %
+  \end{picture}%
+  \end{fsL}
+  \end{center}
+\end{minipage}%
+\begin{minipage}{2\tw/3}%
+  If a triangle in a plane has two perpendicular sides of lengths $a$ and $b$
+  and a hypotenuse of length $c$, then by the
+  \prope{Pythagorean Theorem} \xref{thm:pythag}, $a^2 + b^2 = c^2$.
+  This concept of orthogonality can be generalized to normed linear spaces.
+  Two vectors $\vx$ and $\vy$ (with lengths $\norm{\vx}$ and $\norm{\vy}$)
+  are orthogonal when
+  $\norm{\vx}^2 + \norm{\vy}^2 = \norm{\vx-\vy}^2$
+  ($\vx-\vy$ is a kind of ``\prope{hypotenuse}").
+  This kind of orthogonality is defined next and illustrated in the figure to the left.
+\end{minipage}
+
+%--------------------------------------
+\begin{definition}
+\label{def:orthogp}
+\footnote{
+  \citorpc{james1945}{292}{\textsc{Definition} 2.2},
+  \citerpg{amir1986}{57}{3764317744},
+  \citerpg{drljevic1989}{232}{9971506661}
+  }
+\index{Pythagorean orthogonality}
+\index{orthogonality!Pythagorean}
+%--------------------------------------
+Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\defbox{\begin{array}{M}
+  Two vectors $\vx$ and $\vy$ are \hid{orthogonal in the Pythagorean sense} if
+  \\\qquad$\norm{\vx-\vy}^2 = \norm{\vx}^2 + \norm{\vy}^2$.
+  \\This relationship is also called \hid{Pythagorean orthogonality}.
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{amir1986}{57}{3764317744}
+  }
+%--------------------------------------
+Let $\inprodspaceX$ be an \structe{inner-product space} \xref{def:inprod} with induced norm
+$\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$, \prope{Pythagorean orthogonality} \xref{def:orthogp} relation $\orthoga$,
+and inner-product relation \prope{orthogonality} \xref{def:orthog} relation $\orthog$.
+\thmbox{
+  \mcomr{ \vx \orthoga \vy }{orthogonal in the Pythagorean sense}
+  \qquad\iff\qquad
+  \mcoml{ \vx \orthog \vy }{orthogonal in the sense of inner-product space}
+  }
+\end{theorem}
+%\begin{proof}
+%\attention
+%  \begin{align*}
+%    \intertext{1. Proof that $\vx\orthoga\vy \quad\implies\quad \vx\orthog\vy$:}
+%    %
+%    \intertext{2. Proof that $\vx\orthoga\vy \quad\impliedby\quad \vx\orthog\vy$:}
+%    %
+%  \end{align*}
+%\end{proof}
+
+
+\begin{minipage}{\tw/3}%
+  %(see Figure~\ref{fig:parallelogram})
+  %\begin{figure}[ht]
+  \color{figcolor}
+  \begin{center}
+  \begin{fsL}
+  \setlength{\unitlength}{0.15mm}
+  \begin{picture}(250,80)(-50,0)%
+    %\graphpaper[10](-50,0)(300,100)%
+    \thicklines%
+    {\color{axis}%
+      \qbezier[15](200,0)(175,25)(150,50)
+      \qbezier[30](150,50)(50,50)(-50,50)
+      }%
+    {\color{uvect}%
+      \put(   0,   0){\vector(-1, 1){ 50} }%
+      \put(   0,   0){\vector( 1, 0){200} }%
+      \put( 100, -10 ){\makebox(0,0)[t ]{$\vx$}}%
+      \put( -30,  25 ){\makebox(0,0)[tr]{$\vy$}}%
+      }%
+    {\color{vector}%
+      \put(   0,   0){\vector( 3, 1){150} }%
+      \put(  60,  20 ){\makebox(0,0)[br]{$\vx+\vy$}}%
+      }%
+  \end{picture}%
+  \end{fsL}
+  \end{center}
+\end{minipage}%
+\begin{minipage}{2\tw/3-2mm}
+  Besides \prope{isosceles orthogonality} \xref{def:orthogj}, orthogonality in
+  normed linear spaces can be defined using \hie{Birkhoff orthogonality},
+  as defined in \pref{def:orthogb} (next) and illustrated to the left.
+\end{minipage}
+
+%--------------------------------------
+\begin{definition} %[Birkhoff orthogonality]
+\label{def:orthogb}
+\footnote{
+  \citerpg{amir1986}{33}{3764317744},
+  \citerp{dunford1957}{93},
+  \citorp{james1947march}{265}
+  }
+\index{Birkhoff orthogonality}
+\indxs{\orthoga}
+\index{orthogonality!Birkhoff}
+\indxs{\orthoga}
+%--------------------------------------
+Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\defbox{\begin{array}{M}
+  Two vectors $\vx$ and $\vy$ are \hid{orthogonal in the sense of Birkhoff} if 
+  \\\qquad$\norm{\vx} \le \norm{\vx+\alpha\vy} \quad \forall \alpha\in\F$.
+  \\This relationship is also called \hid{Birkhoff orthogonality}.
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+Let $\inprodspaceX$ be an \structe{inner-product space} \xref{def:inprod} with induced norm
+$\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$, \prope{Birkhoff orthogonality} relation $\orthoga$ \xref{def:orthogb},
+and inner-product relation \prope{orthogonality} relation $\orthog$ \xref{def:orthog}.
+\thmbox{
+  \mcomr{ \vx \orthoga \vy }{orthogonal in the sense of Birkhoff}
+  \qquad\iff\qquad
+  \mcoml{ \vx \orthog \vy }{orthogonal in the sense of inner-product space}
+  }
+\end{theorem}
+%\begin{proof}
+%\attention
+%  \begin{align*}
+%    \intertext{1. Proof that $\vx\orthoga\vy \quad\implies\quad \vx\orthog\vy$:}
+%    %
+%    \intertext{2. Proof that $\vx\orthoga\vy \quad\impliedby\quad \vx\orthog\vy$:}
+%    %
+%  \end{align*}
+%\end{proof}
+%}
+
+
+
+
+
+
+
+

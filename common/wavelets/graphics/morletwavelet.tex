@@ -1,0 +1,38 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% Morlet real-valued wavelet
+%============================================================================
+\begin{pspicture}(-4.5,-1.5)(4.5,1.5)%
+  \psset{%
+    linecolor=blue,%
+    dotsize=5pt,%
+    }%
+  \psset{linecolor=blue,linewidth=1pt}%
+  \psaxes[linecolor=axis]{<->}(0,0)(-4.5,-1.5)(4.5,1.5)%
+  %-------------------------------------
+  % envelope factor: e^{-x^2/2}
+  %-------------------------------------
+  \psplot[plotpoints=100,linecolor=red,linestyle=dotted]{-4.25}{4.25}{2.71828 x x mul neg 2 div exp}% e^{-x^2/2}: exponential envelope
+  \psplot[plotpoints=100,linecolor=red,linestyle=dotted]{-4.25}{4.25}{2.71828 x x mul neg 2 div exp neg}% -e^{-x^2/2}: exponential envelope
+  %-------------------------------------
+  % Morlet real valued wavelet: cos(5x) e^{-x^2/2}
+  %-------------------------------------
+  \psplot[plotpoints=512]{-4.25}{4.25}{x 360 mul 2 div 3.14159 div 5 mul cos 2.71828 x x mul neg 2 div exp mul}% Morlet real-valued wavelet
+  %                                    |-------------------------|           |---------------------------|
+  %                                    convert radians to degrees                    e^{-x^2/2}
+  %                                    |---------------------------------------------------------------------|
+  %                                                            cos(5x) e^{-x^2/2}
+  %-------------------------------------
+  % labeling
+  %-------------------------------------
+  \pnode(0.75,0.7548){Penv}% single point on envelope (for labeling)
+  \pnode(2,1.2){Lenv}% label for envelope
+  \psline[linecolor=red,linewidth=0.75pt]{->}(Lenv)(Penv)%
+  \uput{1pt}[30]{0}(Lenv){$\ds e^{-\sfrac{{x^2}}{2}}$}% exponential envelope
+  %
+  \pnode(1.2566,-0.4540){Pnenv}% single point on envelope (for labeling)
+  \pnode(2,-1){Lnenv}% label for envelope
+  \psline[linecolor=red,linewidth=0.75pt]{->}(Lnenv)(Pnenv)%
+  \uput{1pt}[-45]{0}(Lnenv){$\ds -e^{-\sfrac{{x^2}}{2}}$}% exponential envelope
+\end{pspicture}%

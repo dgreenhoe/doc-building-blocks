@@ -1,0 +1,739 @@
+﻿%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+
+
+
+
+%=======================================
+\chapter{Intervals and Convexity}
+\label{chp:convex}
+%=======================================
+
+
+%%=======================================
+%\section{Convexity spaces}
+%%=======================================
+%%---------------------------------------
+%\begin{definition}
+%\label{def:convex}
+%\footnote{
+%  \citerpg{vel1993}{3}{0444815058}\\
+%  \citerpg{khamsi2001}{35}{0471418250}
+%  }
+%\index{space!convex}
+%\index[xsym]{$\ssetC$}
+%%---------------------------------------
+%\defboxt{
+%  The family of sets $\ssetC$ is a \propd{convexity} on a set $\setX$ if
+%  \\\indentx
+%  $\begin{array}{F >{\ds}l C DD}
+%      1. & \emptyset \in \ssetC
+%         &
+%         & (\prop{union identity element})
+%         & and
+%    \\2. & \setX \in \ssetC
+%         &
+%         & (\prop{intersection identity element})
+%         & and
+%    \\3. & \brb{\begin{array}{ll}
+%             \ssetD \ne  \emptyset \\
+%             \ssetD \subseteq \ssetC
+%           \end{array}}
+%           \implies
+%           \setopi \ssetD \in \ssetC
+%         & 
+%         & (\prop{stable for intersections}) 
+%         & and
+%    \\4. & \brb{\begin{array}{ll}
+%             \ssetD \ne  \emptyset \\
+%             \ssetD \subseteq \ssetC \\
+%             \opair{\ssetD}{\subseteq} \text{ is totally ordered}
+%           \end{array}}
+%           \implies
+%           \setopu \ssetD \in \ssetC
+%         & 
+%         & (\prop{stable for nested unions}) 
+%         & 
+%  \end{array}$
+%  \\
+%  A set that is a member of the convexity $\ssetC$ is called a \structd{convex set};\\
+%  A set that is not a member is called a \structd{concave set}.\\
+%  The pair $\opair{\setX}{\ssetC}$ is called a \structd{convexity space}, 
+%  an \structd{aligned space}, or a \structd{convexity structure}.
+%  }
+%\end{definition}
+
+%=======================================
+\section{Intervals}
+%=======================================
+%=======================================
+%\subsection{Intervals}
+%=======================================
+In the real number system, for $a\le b$, the \structe{interval} $\intcc{a}{b}$
+is the set $a$ and $b$ and all the numbers inbetween, as in
+$\intcc{a}{b}\eqd\set{x\in\R}{a\le x\le b}$.
+This concept can be easily generalized:
+\begin{listi}
+  \item In an \structb{ordered set}\ifsxref{order}{def:order}, \label{item:intcc_order}
+        if two elements $x$ and $y$ are \prope{comparable} and $x\le y$,
+        then we say that $x$ and $y$ and all the elements inbetween,
+        as determined by the ordering relation $\le$, are the interval $\intcc{a}{b}$\ifsxref{order}{def:intcc_order}.
+
+  \item In a \structb{lattice}\ifsxref{lattice}{def:lattice},
+        the concept of the \structe{interval} can be generalized even further.
+        In an arbitrary ordered set, the interval $\intcc{x}{y}$ of \pref{item:intcc_order} is restricted to the case in 
+        which $x$ and $y$ are \prope{comparable}\ifsxref{order}{def:order}.
+        This restriction can be lifted \xref{def:intcc_lat} with the additional structure of 
+        upper and lower bounds provided by lattices.
+
+  \item A \structb{metric space}\ifsxref{metric}{def:metric} in general has no \rele{order relation} $\orel$\ifsxref{order}{def:order}. 
+        But intervals can still be defined \xref{def:intcc_metric} in a metric space in terms of the \prope{triangle inequality}.
+
+  \item A \structb{linear space}\ifsxref{vector}{def:vspace} over a real or complex field 
+       in general has no \rele{order relation} that compares \structe{vectors} in the space,
+       but the standard order relation $\orel$ for real numbers $\R$ can still be used \xref{def:intcc_linspace}
+       to define an interval in a linear space.
+\end{listi}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{apostol1975}{4}{0201002884},
+  \citorp{ore1935}{409}
+  }
+\label{def:intcc}
+\label{def:intcc_order}
+%---------------------------------------
+Let $\opair{\setX}{\le}$ be  an \structe{ordered set}\ifsxref{order}{def:order}.
+\defbox{\indxs{\intccn}\indxs{\intoon}\indxs{\intocn}\indxs{\intcon}
+  \begin{array}{MlclMD}
+    The set & \intcc{x}{y} &\eqd& \set{z\in\setX}{x\le z\le y} & is called a  \structd{closed interval}     & and \\
+    The set & \intoc{x}{y} &\eqd& \set{z\in\setX}{x<   z\le y} & is called a  \structd{half-open interval}  & and \\
+    The set & \intco{x}{y} &\eqd& \set{z\in\setX}{x\le z<   y} & is called a  \structd{half-open interval}  & and \\
+    The set & \intoo{x}{y} &\eqd& \set{z\in\setX}{x<   z<   y} & is called an \structd{open interval}.      & 
+  \end{array}
+  }
+\end{definition}
+
+%=======================================
+%\section{Intervals}
+%\label{sec:lat_intervals}
+%=======================================
+%---------------------------------------
+\begin{definition}[intervals on lattices]
+\footnote{
+  \citorp{duthie1942}{2}, %{$a$=\hie{lower extremity}, $b$=\hie{upper extremity}}\\
+  \citorpc{ore1935}{425}{\hie{quotient structures}}
+  }
+\label{def:lat_intervals}
+\label{def:intcc_lat}
+%---------------------------------------
+Let $\latticeX$ be  a \structe{lattice}\ifsxref{lattice}{def:lattice}.
+\defbox{\indxs{\intccn}\indxs{\intoon}\indxs{\intocn}\indxs{\intcon}
+  \begin{array}{Mcl@{\qquad}M}
+    The set $\intcc{x}{y}$ &\eqd& \set{z\in\setX}{x\meet y \le z\le x\join y} & is called a \hid{closed interval}.    \\
+    The set $\intoc{x}{y}$ &\eqd& \set{z\in\setX}{x\meet y <   z\le x\join y} & is called a \hid{half-open interval}. \\
+    The set $\intco{x}{y}$ &\eqd& \set{z\in\setX}{x\meet y \le z<   x\join y} & is called a \hid{half-open interval}. \\
+    The set $\intoo{x}{y}$ &\eqd& \set{z\in\setX}{x\meet y <   z<   x\join y} & is called an \hid{open interval}.
+  \end{array}
+  }
+\end{definition}
+When $x$ and $y$ \emph{are} comparable and $x\orel y$, 
+then \pref{def:intcc_lat} (previous) simplifies to \prefpp{item:intcc_order}.
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerp{maeda1970}{1}
+  }
+%---------------------------------------
+Let $\latL\eqd\latticed$ be a \hie{lattice} with dual $\latLd$.
+Let $\intcc{x}{y}$ be a \structe{closed interval} \xref{def:intcc_lat} on set $\setX$.
+The sublattices $\latL\intcc{x}{y}$ and $\latLd\intcc{x}{y}$ are defined as follows:
+\defbox{\begin{array}{lcl@{\qquad}C}
+  \latL \intcc{x}{y} &\eqd& \set{z\in\latL }{z\in\intcc{x}{y}} & \forall x,y\in\setX \\
+  \latLd\intcc{x}{y} &\eqd& \set{z\in\latLd}{z\in\intcc{x}{y}} & \forall x,y\in\setX 
+\end{array}}
+\end{definition}
+
+
+%--------------------------------------
+\begin{definition}
+\label{def:intcc_metric}
+\footnote{
+  %\citerpg{khamsi2001}{35}{0471418250}\\
+  \citerpg{vel1993}{8}{0444815058}
+  %\citer{hormander1994}\\
+  %\citorp{menger1928}{81?}
+  }
+%--------------------------------------
+%Let $\metspaceX$ be a \structe{metric space} \xref{def:metric}.
+\defboxt{
+  In a \structe{metric space} $\metspaceX$\ifsxref{metric}{def:metric},\\
+  the set $\intcc{a}{b}$ is the \structd{closed interval} from $x$ to $y$ and is defined as
+    \\\indentx$\intcc{x}{y} \eqd \set{z\in\setX}{\metric{x}{z} + \metric{z}{y} = \metric{x}{y}}$.\\
+  An element $z\in\setX$ is \propd{geodesically between} $x$ and $y$ if $z\in\intcc{x}{y}$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:intcc_linspace}
+\footnote{
+  \citerpg{barvinok2002}{2}{0821872311}
+  }
+%---------------------------------------
+\defboxt{\indxs{\intccn}\indxs{\intoon}\indxs{\intocn}\indxs{\intcon}
+  In a \structe{linear space} $\linearspaceX$\ifsxref{vector}{def:vspace},
+  \\\indentx$\begin{array}{lclMD}
+    \intcc{\vx}{\vy} &\eqd& \set{\lambda\vx + (1-\lambda)\vy=\vz}{0\leq\lambda\leq 1} & is called a  \structd{closed interval}    & and\\
+    \intoc{\vx}{\vy} &\eqd& \set{\lambda\vx + (1-\lambda)\vy=\vz}{0 <  \lambda\leq 1} & is called a  \structd{half-open interval} & and\\
+    \intco{\vx}{\vy} &\eqd& \set{\lambda\vx + (1-\lambda)\vy=\vz}{0\leq\lambda <   1} & is called a  \structd{half-open interval} & and\\
+    \intoo{\vx}{\vy} &\eqd& \set{\lambda\vx + (1-\lambda)\vy=\vz}{0 <  \lambda <   1} & is called an \structd{open interval}.     & 
+  \end{array}$%
+  }
+%\defboxt{\indxs{\intccn}\indxs{\intoon}\indxs{\intocn}\indxs{\intcon}
+%  In a \structe{linear space} $\linearspaceX$ \xref{def:vspace},
+%  \\$\begin{array}{lclMD}
+%    \intcc{\vx}{\vy} &\eqd& \set{\vz\in\setX}{\exists\lambda \st \begin{tabstr}{1}\begin{array}{l}0\leq\lambda\leq 1\,\text{\scs and}\\\lambda\vx + (1-\lambda)\vy=\vz\end{array}\end{tabstr}} & is a  \structd{closed interval}    & and\\\\
+%    \intoc{\vx}{\vy} &\eqd& \set{\vz\in\setX}{\exists\lambda \st \begin{tabstr}{1}\begin{array}{l}0 <  \lambda\leq 1\,\text{\scs and}\\\lambda\vx + (1-\lambda)\vy=\vz\end{array}\end{tabstr}} & is a  \structd{half-open interval} & and\\\\
+%    \intco{\vx}{\vy} &\eqd& \set{\vz\in\setX}{\exists\lambda \st \begin{tabstr}{1}\begin{array}{l}0\leq\lambda <   1\,\text{\scs and}\\\lambda\vx + (1-\lambda)\vy=\vz\end{array}\end{tabstr}} & is a  \structd{half-open interval} & and\\\\
+%    \intoo{\vx}{\vy} &\eqd& \set{\vz\in\setX}{\exists\lambda \st \begin{tabstr}{1}\begin{array}{l}0 <  \lambda <   1\,\text{\scs and}\\\lambda\vx + (1-\lambda)\vy=\vz\end{array}\end{tabstr}} & is an \structd{open interval}.     & 
+%  \end{array}$%
+%  \renewcommand{\arraystretch}{1}%
+%  }
+\end{definition}
+
+%=======================================
+\section{Convex sets}
+%=======================================
+Using the concept of the \structe{interval} (previous section),
+we can define the \structe{convex set} (next definition).
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{barvinok2002}{5}{0821872311}
+%  \citerpg{beran1985}{4}{902771715X}\\
+%  \citerpc{alfsen1963}{432}{(5.1)}\\
+%  \citerpg{vel1993}{6}{0444815058}\\
+%  \citerpg{stern1999}{284}{0521461057}\\
+%  \citerpg{denkowski2003}{116}{0306474565}
+  }
+\label{def:convex_set}
+%---------------------------------------
+Let $\setX$ be a \structe{set} in an \structe{ordered set} $\osetX$, a \structe{lattice} $\latticeX$, 
+  a \structe{metric space} $\metspaceX$, or a \structe{linear space} $\linearspaceX$.
+\defboxt{
+  A subset $\setD\subseteq\setX$ is a \structd{convex set} in $\setX$ if
+  \\\indentx$x,y\in\setD \qquad\implies\qquad \intcc{x}{y}\subseteq\setD$.\\
+  A set that is {\bf not} convex is \propd{concave}.
+  }
+\end{definition}
+
+
+%%--------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpg{mitrinovic2010}{1}{9048142253}\\
+%  \citerppg{vel1993}{5}{6}{0444815058}\\
+%  \citerp{bollobas1999}{2}
+%  }
+%\label{def:convex_set}
+%\label{def:convex}
+%\index{standard convexity}
+%\index{convexity!standard}
+%%--------------------------------------
+%Let $\spO\eqd\linearspaceX$ be a \structe{linear space} \xref{def:vspace}.
+%\defboxt{
+%  A set $\setD\subseteq\setX$ is a \structd{convex set} in $\spO$ if
+%  \\\indentx$\begin{array}{lCDC}
+%    \lambda \vx + (1-\lambda)\vy \in\setD  & \forall\vx,\vy\in\setD &and& \forall\lambda\in\opair{0}{1}
+%  \end{array}$\\
+%  A set that is {\bf not} convex is \hid{concave}.
+%  }
+%\end{definition}
+
+
+%--------------------------------------
+\begin{example}
+%--------------------------------------
+Consider the \structe{Euclidean space} $\R^2$ (a special case of a \structe{linear space}).\\
+\begin{minipage}{\tw/3}
+  \begin{center}
+  \color{figcolor}
+  \begin{fsL}
+  \setlength{\unitlength}{\tw/500}
+  \begin{picture}(300,300)(-130,-130)
+    %\graphpaper[10](0,0)(600,600)
+    \thicklines
+    \put(-130,   0){\line(1,0){260} }
+    \put(   0,-130){\line(0,1){260} }
+    \qbezier(-100,0)(0, 160)(100,0)
+    \qbezier(-100,0)(0,-160)(100,0)
+    {\color{red}
+      \put(0,0){\vector(1, 1){55}}
+      \put(0,0){\vector(1,-1){55}}
+      \put(  60, 60){\makebox(0,0)[bl]{$\vx$} }
+      \put(  60,-60){\makebox(0,0)[tl]{$\vy$} }
+      \put(55,-55){\line(0,1){110}}
+      \put(-100,100){\makebox(0,0)[bl]{$\lambda \vx + (1-\lambda)\vy$} }
+      \put(-50,90){\vector(3,-2){105}}
+    }
+  \end{picture}
+  \end{fsL}
+  \end{center}
+\end{minipage}%
+%
+\begin{minipage}{\tw/3}
+    \[
+      \Leftarrow
+      \left\{
+        \parbox[c][][c]{\tw-6ex}
+        {The figure to the left is a \prope{convex} set in $\R^2$.}
+      \right.
+    \]
+    \[
+      \left.
+        \parbox[c][][c]{\tw-6ex}
+        {The figure to the right is a \prope{concave} set in $\R^2$.}
+      \right\}
+      \Rightarrow
+    \]
+\end{minipage}%
+%
+\begin{minipage}{\tw/3}
+  \begin{center}
+  \color{figcolor}
+  \begin{fsL}
+  \setlength{\unitlength}{\tw/500}
+  \begin{picture}(300,300)(-130,-130)
+    %\graphpaper[10](-130,-130)(300,300)
+    \thicklines
+    \put(-130,   0){\line(1,0){260} }
+    \put(   0,-130){\line(0,1){260} }
+    \qbezier(-100,0)(0, 100)(100, 100)
+    \qbezier(-100,0)(0,-100)(100,-100)
+    \qbezier(100,100)(-50,0)(100,-100)
+    {\color{red}
+      %\put(0,0){\vector(1, 1){55}}
+      %\put(0,0){\vector(1,-1){55}}
+      \put(  75, 60){\makebox(0,0)[tl]{$\vx$} }
+      \put(  75,-60){\makebox(0,0)[bl]{$\vy$} }
+      \put(60,-68){\line(0,1){136}}
+      \put(-100,100){\makebox(0,0)[bl]{$\lambda \vx + (1-\lambda)\vy$} }
+      \put(-50,90){\vector(3,-2){105}}
+    }
+  \end{picture}
+  \end{fsL}
+  \end{center}
+\end{minipage}
+\end{example}
+
+%--------------------------------------
+\begin{example}
+%--------------------------------------
+In a \structe{metric space}\ifsxref{metric}{def:metric},
+examples of \structe{convex set}s are convex \structe{ball}s.
+Examples include those balls generated by the following metrics:\\
+\indentx\begin{tabular}{>{$\imark$}llll}
+  & Taxi-cab metric   \ifdochas{metric}{& \pref{ex:ms_taxi}       & \prefpo{ex:ms_taxi}} \\
+  & Euclidean metric  \ifdochas{metric}{& \pref{ex:ms_euclidean} & \prefpo{ex:ms_euclidean}} \\
+  & Sup metric        \ifdochas{metric}{& \pref{ex:ms_sup}       & \prefpo{ex:ms_sup}} \\
+  & Tangential metric \ifdochas{metric}{& \pref{ex:ms_tan}       & \prefpo{ex:ms_tan}}
+\end{tabular}
+
+Examples of metrics generating balls which are \emph{not} convex include the following:\\
+\indentx\begin{tabular}{>{$\imark$}llll}
+  & Parabolic metric    \ifdochas{metric}{& \pref{ex:ms_parabolic} & \prefpo{ex:ms_parabolic}} \\
+  & Exponential metric  \ifdochas{metric}{& \pref{ex:ms_32x}       & \prefpo{ex:ms_32x}} \\
+\end{tabular}
+\end{example}
+
+%%--------------------------------------
+%\begin{definition}
+%\label{def:convex_metric}
+%\footnote{
+%  \citerpg{khamsi2001}{35}{0471418250}\\
+%  \citerpg{vel1993}{8}{0444815058}\\
+%  \citer{hormander1994}\\
+%  \citorp{menger1928}{81?}
+%  }
+%\index{geodesic convexity}
+%\index{convexity!geodesic}
+%\index{metrically convex}
+%%--------------------------------------
+%\defboxt{
+%  A set $\setD\subseteq\setX$ is \propd{metrically convex} in the \hie{metric space} $\opair{\setX}{\metricn}$ if
+%  \\\indentx$\ds
+%    \brbr{\begin{array}{lD}
+%      x,y\in\setD           & and \\
+%      z\in\setX             & and \\
+%      \mcoml{\metric{x}{z} + \metric{z}{y} = \metric{x}{y}}{$z$ is \hie{geodesically between} $x$ and $y$}
+%    \end{array}}
+%    \qquad\implies\qquad
+%    z\in\setD
+%  $
+%  \\
+%  A set $\setD$ that is metrically convex is also said to be \propd{geodesically convex}.
+%  }
+%\end{definition}
+
+
+
+%=======================================
+\section{Convex functions}
+%=======================================
+%--------------------------------------
+\begin{definition}
+\label{def:convexf}
+\footnote{
+  \citerpg{simon2011}{2}{1107007313},
+  \citerpg{barvinok2002}{2}{0821872311},
+  \citerp{bollobas1999}{3},
+  \citerp{jensen1906}{176}
+  }
+\index{convex!functional}
+\index{convex!strictly}
+\index{strictly convex}
+%--------------------------------------
+Let $\linearspaceX$ be a \structe{linear space}\ifsxref{vector}{def:vspace} 
+and $\setD$ a \structe{convex set} \xref{def:convex_set} in $\setX$.
+\defbox{\begin{array}{rcl@{\qquad}l}
+  \mc{4}{M}{A function $\ff\in\clF{\setD}{F}$ is \hid{convex} if}\\
+  \indentx\ff\big(\lambda \vx + [1-\lambda]\vy\big) 
+    &\le& \lambda \ff(\vx) + (1-\lambda)\:\ff(\vy)  
+    &     \forall \vx,\vy\in\setD \text{ and } \forall\lambda\in(0,1)
+  \\ 
+  \mc{4}{M}{A function $\fg\in\clF{\setD}{F}$ is \hid{strictly convex} if }\\
+  \indentx\fg\big(\lambda \vx + [1-\lambda]\vy\big) 
+    &=&   \lambda \fg(\vx) + (1-\lambda)\:\fg(\vy)  
+    &     \forall \vx,\vy\in\setD,\;\vx\ne \vy,\; \text{and } \forall\lambda\in(0,1)
+  \\ 
+  \mc{4}{M}{A function $\ff\in\clF{\setD}{F}$ is \propd{concave} if $-\ff$ is \prope{convex}.}
+  \\ 
+  \mc{4}{M}{A function $\ff\in\clF{\setD}{F}$ is \propd{affine} if $\ff$ is \prope{convex} and \prope{concave}.}\\
+  \end{array}}
+\end{definition}
+
+%---------------------------------------
+%---------------------------------------
+\begin{minipage}{\tw/2-2mm}%
+  \begin{example}
+  %In analysis, one of the most useful properties that a function can possess is \prope{convexity}.
+  The function $\ff(x)=2^x$ is a \structe{convex function} \xref{def:convexf}, 
+  as illustrated to the right.
+  \end{example}
+\end{minipage}%
+\hfill%
+\begin{minipage}{\tw/2-2mm}%
+  \small%
+  \psset{unit=10mm}%
+  \input{../common/math/graphics/2expx_convex.tex}%
+\end{minipage}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{beer1993}{13}{0792325311}{\textsection 1.3},
+  \citerpg{aubin2009}{222}{0817648488},
+  \citerpg{aubin2011}{223}{1118030974}
+  }
+%--------------------------------------
+Let $\linearspaceXR$ be a \structe{linear space}\ifsxref{vector}{def:vspace}.
+\defboxt{
+  The \structd{epigraph} $\hxs{\epi(\ff)}$ and \structd{hypograph} $\hxs{\hyp(\ff)}$ of a functional $\ff\in\clFxr$ are defined as
+  \\\indentx$\begin{array}{rcl}
+    \epi(\ff) &\eqd& \set{\opair{x}{y}\in\setX\cprod\R}{y\ge\ff(x)}\\
+    \hyp(\ff) &\eqd& \set{\opair{x}{y}\in\setX\cprod\R}{y\le\ff(x)}
+  \end{array}$
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{example}
+\mbox{}\\
+%--------------------------------------
+\exbox{%
+  \begin{tabular}{m{50mm}cm{50mm}}%
+  \psset{unit=10mm}%
+  \small%
+  \input{../common/math/graphics/x2_epi.tex}%
+  &
+  %\begin{tabular}{clc}
+  %  $\leftarrow$&$x^2$   and $\epi(x^2)$.  &\\
+  %              &$1-x^2$ and $\epi(1-x^2)$.&$\rightarrow$
+  %\end{tabular}
+  &
+  \psset{unit=10mm}%
+  \small%
+  \input{../common/math/graphics/minusx2_epi.tex}%
+  \end{tabular}
+  }
+\end{example}
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpg{udriste1994}{63}{0792330021}, %{2.6 Theorem}\\
+  \citerpgc{kurdila2005}{178}{3764321989}{Proposition 6.1.1},
+  \citerpgc{rockafellar1970}{23}{0691015864}{Section 4 Convex Functions},
+  \citerpgc{cinlar2013}{86}{1461452570}{5.4 Theorem}
+  }
+%--------------------------------------
+Let $\linearspaceXR$ be a \structe{linear space}\ifsxref{vector}{def:vspace}.
+Let $\ff$ be a \structe{functional} in $\clFxr$.
+\propbox{
+  \brb{\begin{array}{M}
+    $\ff$ is a\\
+    \structe{convex function}
+  \end{array}}
+  \quad\iff\quad
+  \brb{\begin{array}{M}
+    $\epi(\ff)$ is a\\
+    \structe{convex set}
+  \end{array}}
+  }
+\end{proposition}
+
+%--------------------------------------
+\begin{theorem}[\thmd{Jensen's Inequality}]
+\footnote{
+  \citerpg{mitrinovic2010}{6}{9048142253},
+  \citerpg{bollobas1999}{3}{0521655773},
+  \citerpg{lay1982}{7}{0471095842},
+  \citorpp{jensen1906}{179}{180}
+  }
+\label{thm:jensen_ineq}
+\label{thm:jensenineq}
+\index{inequalities!Jensen's}
+%--------------------------------------
+Let $\linearspaceX$ be a \structe{linear space}\ifsxref{vector}{def:vspace},
+$\setD$ a subset of $\setX$, and 
+$\ff$ a functional in $\clF{\setD}{\F}$.
+Let $\sum$ be the \ope{summation operator}\ifsxref{sums}{def:sum}.
+\thmbox{
+  \brb{\begin{array}{FM@{\quad}D}
+    1. & $\setD$ is \prope{convex}       & and \\
+    2. & $\ff$ is \prope{convex}         & and \\
+    3. & $\ds\sum_{n=1}^\xN \lambda_n=1$ & (\structe{weights})
+  \end{array}}  
+  \quad\implies\quad
+  \ff\brp{\sum_{n=1}^\xN \lambda_n \: \vx_n} 
+  \le \sum_{n=1}^\xN \lambda_n\:\ff\brp{\vx_n}
+  \qquad
+  \forall \vx_n \in \setD,\;\xN\in\Zp
+  }
+\end{theorem}
+\begin{proof}
+Proof is by induction:
+\begin{align*}
+  \intertext{1. Proof that statement is true for $\xN=1$:} 
+    \ff\left(\sum_{n=1}^{\xN=1} \lambda_n \: \vx_n\right) 
+      &=   \ff(\lambda_1 \vx_1) 
+    \\&\le \ff(\lambda_1 \vx_1) 
+    \\&=   \sum_{n=1}^{\xN=1} \lambda_n\:\ff(\vx_n)
+    \\
+  \intertext{2. Proof that statement is true for $\xN=2$:} 
+    \ff\left(\sum_{n=1}^{\xN=2} \lambda_n \: \vx_n\right) 
+      &=   \ff(\lambda_1 \vx_1 + \lambda_2\vx_2) 
+    \\&\le \lambda_1 \ff(\vx_1) + \lambda_2 \ff(\vx_2)
+      &&   \text{by convexity hypothesis}
+    \\&=   \sum_{n=1}^{\xN=2} \lambda_n\:\ff(\vx_n)
+    \\
+  \intertext{3. Proof that if the statement is true for $\xN$, then it is also true for $\xN+1$:} 
+    \ff\left(\sum_{n=1}^{\xN+1} \lambda_n \: \vx_n\right) 
+      &=   \ff\left(\sum_{n=1}^{\xN} \lambda_n \: \vx_n + \lambda_{\xN+1}\vx_{\xN+1}\right) 
+    \\&=   \ff\left([1-\lambda_{\xN+1}]\sum_{n=1}^{\xN} \frac{\lambda_n}{1-\lambda_{\xN+1}} \: \vx_n + \lambda_{\xN+1}\vx_{\xN+1}\right) 
+    \\&\le [1-\lambda_{\xN+1}]\ff\left(\sum_{n=1}^{\xN} \frac{\lambda_n}{1-\lambda_{\xN+1}} \: \vx_n \right) 
+         + \lambda_{\xN+1}\ff(\vx_{\xN+1}) 
+      &&   \text{by convexity hypothesis}
+    \\&\le [1-\lambda_{\xN+1}]\sum_{n=1}^{\xN} \frac{\lambda_n}{1-\lambda_{\xN+1}}\ff(\vx_n) 
+         + \lambda_{\xN+1}\ff(\vx_{\xN+1}) 
+      &&   \text{by ``true for $\xN$" hypothesis}
+    \\&=   \sum_{n=1}^{\xN} \lambda_n \ff(\vx_n) + \lambda_{\xN+1}\ff(\vx_{\xN+1}) 
+    \\&=   \sum_{n=1}^{\xN+1} \lambda_n \ff(\vx_n)
+    \\
+  \intertext{4. Since the statement is true for $\xN=1$, $\xN=2$, and 
+                true for $\xN$ $\implies$ true for $\xN+1$,
+                then it is true for $\xN=1,2,3,4,\ldots$}
+\end{align*}
+\end{proof}
+
+
+
+\begin{figure}[ht]
+\color{figcolor}
+\setlength{\unitlength}{0.3mm}
+\begin{center}
+\begin{picture}(200,130)(-50,-30)
+  \put(  0,  0){\line(1, 0){120}}
+  \put(  0,  0){\line(0, 1){120}}
+  \put( 20, 80){\circle*{5}}
+  \put(100, 40){\circle*{5}}
+  \put( 20, 80){\line(2,-1){80}}
+  \put(125,  0){\makebox(0,0)[l]{$x$}}
+  \put( -5, 80){\makebox(0,0)[r]{$\ff(b)$}}
+  \put( -5, 40){\makebox(0,0)[r]{$\ff(a)$}}
+  \put( 20, -5){\makebox(0,0)[t]{$a$}}
+  \put(100, -5){\makebox(0,0)[t]{$b$}}
+  \qbezier(20,80)(70,120)(100,40)
+  \qbezier(20,80)(30,0)(100,40)
+  \qbezier[28](20,0)(20,40)(20,80)
+  \qbezier[14](100,0)(100,20)(100,40)
+  \qbezier[7](0,80)(10,80)(20,80)
+  \qbezier[32](0,40)(50,40)(100,40)
+  \put(120,90){\vector(-1,0){50}}
+  \put(120,60){\vector(-1,0){50}}
+  \put(120,30){\vector(-1,0){30}}
+  \put(125,90){\makebox(0,0)[l]{concave}}
+  \put(125,60){\makebox(0,0)[l]{chord $\fy(x)$}}
+  \put(125,30){\makebox(0,0)[l]{convex}}
+\end{picture}
+\end{center}
+\caption{
+  Convex and concave functions
+  \label{fig:convex}
+  }
+\end{figure}
+
+Often a function can be proven to be \hie{convex} or \hie{concave}.
+\hie{Convex} and \hie{concave} functions are
+defined in \prefpp{def:convex} (next) and
+illustrated in \prefpp{fig:convex}.
+%---------------------------------------
+\begin{definition}
+\label{def:convex}
+%---------------------------------------
+Let
+  \[ \fy(x) = \frac{\ff(b)-\ff(a)}{b-a} (x-a) + \ff(a). \]
+A function $\ff:\R\to\R$ is
+
+\defbox{
+  \begin{array}{llrcll}
+    \mbox{\bf convex}           \mbox{ in } (a,b) & \mbox{if} & \ff(x) &\le& \fy(x) & \mbox{for } x\in(a,b) \\
+    \mbox{\bf concave}          \mbox{ in } (a,b) & \mbox{if} & \ff(x) &\ge& \fy(x) & \mbox{for } x\in(a,b) \\
+    \mbox{\bf strictly convex}  \mbox{ in } (a,b) & \mbox{if} & \ff(x) &<  & \fy(x) & \mbox{for } x\in(a,b) \\
+    \mbox{\bf strictly concave} \mbox{ in } (a,b) & \mbox{if} & \ff(x) &>  & \fy(x) & \mbox{for } x\in(a,b)
+  \end{array}
+  }
+\end{definition}
+
+The next theorem gives another form of convex functions that is a little
+less intuitive but provides powerful analytic results.
+%---------------------------------------
+\begin{theorem}
+\label{thm:convex_lambda}
+%---------------------------------------
+Let $\ff:\R\to\R$.
+For every $x_1,x_2\in(a,b)$ and $\lambda\in[0,1]$
+\formbox{
+  \ff \mbox{ is convex in $(a,b)$ } \iff
+        \ff(\lambda x_1+(1-\lambda)x_2) \le \lambda\ff(x_1) + (1-\lambda)\ff(x_2)
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item prove $\ff$ is convex $\implies$
+        $\ff(\lambda x_1+(1-\lambda)x_2) \le \lambda\ff(x_1) + (1-\lambda)\ff(x_2)$:
+  \begin{eqnarray*}
+    \ff(\lambda x_1+(1-\lambda)x_2)
+      &\le& \frac{\ff(b)-\ff(a)}{b-a}[\lambda x_1+(1-\lambda)x_2-a] + \ff(a)
+    \\&=&   \frac{\ff(x_2)-\ff(x_1)}{x_2-x_1}[\lambda x_1+(1-\lambda)x_2-x_1] + \ff(x_1)
+    \\&=&   \frac{\ff(x_2)-\ff(x_1)}{x_2-x_1}[(x_2-x_1)(1-\lambda)] + \ff(x_1)
+    \\&=&   (1-\lambda)\ff(x_2)-(1-\lambda)\ff(x_1) + \ff(x_1)
+    \\&=&   \lambda\ff(x_1) + (1-\lambda)\ff(x_2)
+  \end{eqnarray*}
+  \item prove $\ff$ is convex $\impliedby$
+        $f(\lambda x_1+(1-\lambda)x_2) \le \lambda\ff(x_1) + (1-\lambda)\ff(x_2)$:
+
+  Let $x=\lambda(b-a)+a$ Notice that as $\lambda$ varies from $0$ to $1$,
+      $x$ varies from $b$ to $a$.
+      So free variable $\lambda$ works as a change of variable for
+      free variable $x$.
+  \begin{eqnarray*}
+    \lambda &=& \frac{x-a}{b-a} \\
+\\
+    \ff(x)
+      &=&   \ff(\lambda(b-a)+a)
+    \\&\le& \lambda\ff(b) + (1-\lambda)\ff(a)
+    \\&=&   \lambda[\ff(b)-\ff(a)] + \ff(a)
+    \\&=&   \frac{\ff(b)-\ff(a)}{b-a}(x-a) + \ff(a)
+  \end{eqnarray*}
+\end{enumerate}
+\end{proof}
+
+Taking the second derivative of a function provides a convenient test
+for whether that function is convex.
+%---------------------------------------
+\begin{theorem}
+\label{thm:convex_d2}
+\citepp{cover}{24}{25}
+%---------------------------------------
+\formbox{
+  \ff''(x)>0 \implies \ff \mbox{ is convex}
+  }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \ff(x)
+    &=&   \ff(x_0) + \ff'(x_0)(x-x_0) + \ff''(c)(x-x_0)^2
+  \\&\ge& \ff(x_0) + \ff'(x_0)(x-x_0)
+  \\&=&   \ff(x_0) + \ff'(x_0)(x-\lambda x_1 - (1-\lambda)x_2)
+\\
+\\
+  \ff(x_1)
+    &\ge& \ff(x_0) + \ff'(x_0)(x_1-\lambda x_1 - (1-\lambda)x_2)
+  \\&=&   \ff(x_0) + \ff'(x_0)(1-\lambda)(x_1-x_2)
+  \\&=&   \ff(x_0) - \ff'(x_0)(1-\lambda)(x_2-x_1)
+\\
+\\
+  \ff(x_2)
+    &\ge& \ff(x_0) + \ff'(x_0)(x_2-\lambda x_1 - (1-\lambda)x_2)
+  \\&=&   \ff(x_0) + \ff'(x_0)\lambda (x_2-x_1)
+\\
+\\
+  \lambda\ff(x_1) + (1-\lambda)\ff(x_2)
+    &\ge& \lambda\left[\ff(x_0) - \ff'(x_0)(1-\lambda)(x_2-x_1)\right] +
+          (1-\lambda)\left[\ff(x_0) + \ff'(x_0)\lambda (x_2-x_1)\right]
+  \\&=&   \lambda\left[\ff(x_0) - \ff'(x_0)(1-\lambda)(x_2-x_1)\right]
+          +\left[\ff(x_0) + \ff'(x_0)\lambda (x_2-x_1)\right]
+          -\lambda\left[\ff(x_0) + \ff'(x_0)\lambda (x_2-x_1)\right]
+  \\&=&  \ff(x_0)
+  \\&=&  \ff(\lambda x_1 + (1-\lambda)x_2)
+\end{eqnarray*}
+
+By \prefpp{thm:convex_lambda}, $\ff(x)$ is convex.
+\end{proof}
+
+
+
+
+%=======================================
+\section{Literature}
+%=======================================
+\begin{survey}
+\begin{enumerate}
+  \item Abstract convexity:
+    \\\citer{edelman1985}
+    \\\citer{vel1993} 
+    \\\citer{hormander1994}
+
+  \item Order convexity (lattice theory):
+    \\\citer{edelman1986}
+
+  \item Metric convexity:
+    \\\citer{menger1928}
+    \\\citerpgc{blumenthal1970}{41}{0828402426}{?}
+    \\\citerppg{khamsi2001}{35}{38}{0471418250}
+
+  \item Strictly convex:
+    \\\citor{clarkson1936}
+
+\end{enumerate}
+\end{survey}
+
+
+
+

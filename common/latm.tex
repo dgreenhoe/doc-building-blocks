@@ -1,0 +1,1021 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+%============================================================================
+
+%=======================================
+\chapter{Modular Lattices}
+%=======================================
+%=======================================
+\section{Modular relation}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerpg{stern1999}{11}{0521461057},
+  \citerpc{maeda1970}{1}{Definition (1.1)},
+  \citorp{maeda1966}{248}
+  }
+\label{def:lat_Mrel}
+%---------------------------------------
+Let $\latticed$ be a lattice.
+Let $\clRxx$ be the set of all \structe{relation}s in $\setX^2$.
+\defboxp{%
+  The \relxd{modularity}      relation $\modular \in\clRxx$ and
+  the \relxd{dual modularity} relation $\modulard\in\clRxx$ are defined as
+  \\$\begin{array}{@{\qquad}lcl}
+    x \symxd{\modular}  y &\iffdef& \set{\opair{x}{y}\in\setX^2}{a \orel  y \quad\implies\quad y \meet(x\join a) = (y\meet x) \join a \quad \forall a\in\setX} \\
+    x \symxd{\modulard} y &\iffdef& \set{\opair{x}{y}\in\setX^2}{a \oreld y \quad\implies\quad y \join(x\meet a) = (y\join x) \meet a \quad \forall a\in\setX}. 
+  \end{array}$
+  \\
+  A pair $\opair{x}{y}\in\modular$  is alternatively denoted as 
+  $\opair{x}{y}\modular$,
+  and is called a \propd{modular} pair.
+  A pair $\opair{x}{y}\in\modulard$  is alternatively denoted as
+  $\opair{x}{y}\modulard$,
+  and is called a \propd{dual modular} pair.
+  A pair $\opair{x}{y}$ that is \emph{not} a modular pair 
+  ($\opair{x}{y}\notin\modular$) is denoted $x\symxd{\notmodular} y$.
+  A pair $\opair{x}{y}$ that is \emph{not} a 
+  dual modular pair is denoted $x\symxd{\notmodulard} y$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+\citetbl{
+  \citerpc{maeda1970}{1}{Lemma (1.2)}
+  }
+\label{prop:latm_xmy}
+%---------------------------------------
+Let $\latL\eqd\latticed$ be a lattice.
+\propbox{
+  \brb{x \modular y \quad\iff\quad x \modulard y} \qquad\sst\forall x,y\in\setX
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  x \modular y
+    &\iff \brb{a\orel  y \quad\implies\quad y \meet (x\join a)=(y\meet x)\join a \quad \forall a\in\setX}
+    && \text{by definition of $\modular$ \xref{def:lat_Mrel}}
+  \\&\iff \brb{a\oreld y \quad\implies\quad a \meet (x\join y)=(a\meet x)\join y \quad \forall a\in\setX}
+    && \text{by definition of $\oreld$ \xref{def:oreld}}
+  \\&\iff \brb{a\oreld y \quad\implies\quad (a\meet x)\join y = a \meet (x\join y) \quad \forall a\in\setX}
+    && \text{by \prope{symmetric} property of $=$ \ifxref{relation}{def:eq_rel}}
+  \\&\iff \brb{a\oreld y \quad\implies\quad y\join(x\meet a) = (y\join x)\meet a \quad \forall a\in\setX}
+    && \text{by \prope{commutative} prop. of lat. \xref{thm:lattice}}
+  \\&\iff x \modulard y
+    && \text{by definition of $\modulard$ \xref{def:lat_Mrel}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\citetbl{
+  \citerp{maeda1970}{1}
+  }
+\label{prop:latm_xyxmx}
+%---------------------------------------
+Let $\latL\eqd\latticed$ be a lattice.
+\propbox{
+  \mcom{\brbr{\begin{array}{c@{\quad}D}
+    x\orel y & or \\
+    y\orel x
+  \end{array}}}{$x,y$ are \prope{comparable}}
+  \qquad\implies\qquad
+  \brbl{\begin{array}{clc@{\quad}D}
+    x &\modular &  y & and \\ 
+    y &\modular &  x & and \\
+    x &\modulard&  y & and \\
+    y &\modulard&  x.& 
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  x\orel y
+    &\implies \brb{a \orel  y \implies y \meet(x\join a) = x \join a = (y\meet x) \join a \quad \forall a\in\setX}
+  \\&\iff x\modular y
+    \qquad\text{by definition of $\modular$ \xref{def:lat_Mrel}}
+    %&& \text{by \prefp{def:lat_Mrel}}
+  \\
+  x\orel y
+    &\implies \brb{a \orel  x \implies x \meet(y\join a) = x = x\join a = (x\meet y) \join a \quad \forall a\in\setX}
+  \\&\iff y\modular x
+    \qquad\text{by definition of $\modular$ \xref{def:lat_Mrel}}
+  \\
+  x\orel y
+    &\implies x\modulard y
+    \qquad\text{because $x\orel y\implies x\modular y$ and by \prefp{prop:latm_xmy}}
+  \\
+  x\orel y
+    &\implies y\modulard x
+    \qquad\text{because $x\orel y\implies y\modular x$ and by \prefp{prop:latm_xmy}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:relM_reflexive}
+%---------------------------------------
+Let $\latL\eqd\latticed$ be a lattice.
+\propbox{
+  \begin{array}{clc@{\qquad}C@{\qquad}D}
+    x &\modular  & x & \forall x\in\setX & ($\modular$ is \prope{reflexive}) \\
+    x &\modulard & x & \forall x\in\setX & ($\modulard$ is \prope{reflexive}) 
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+Because $x\orel x$ and by \prefpp{prop:latm_xyxmx}.
+\end{proof}
+
+
+
+
+
+%=======================================
+\section{Semimodular lattices}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerpc{maeda1970}{3}{Definition (1.7)}
+  }
+\label{def:latsm}
+%---------------------------------------
+\defboxt{
+  A lattice $\latticed$ is \propd{semimodular} if
+  \\\indentx
+  $x\modular y \quad\implies\quad y\modular x$
+  \\
+  A semimodular lattice is also called \propd{M-symmetric}.
+  }
+\end{definition}
+
+
+%=======================================
+\section{Modular lattices}
+%=======================================
+Modular lattices are a generalization of the distributive lattice in the sense that
+all distributive lattices are modular,
+but not equivalent because not all modular lattices are distributive
+\xref{thm:lat_dis=>mod}.
+
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerpg{birkhoff1967}{82}{0821810251},
+  \citerpc{maeda1970}{3}{Definition (1.7)}
+  %\citerpg{maclane1999}{479}{0821816462}\\
+  %\citerpg{burris1981}{11}{0387905782}\\
+  %\cithrp{burris2000}{13}
+  }
+\label{def:lat_mod}
+\label{def:latm}
+%---------------------------------------
+\defboxt{
+  A lattice $\latticed$ is \propd{modular} if
+  \\\indentx
+  $x\modular y \qquad \forall x,y\in\setX.$
+  }
+\end{definition}
+
+
+%=======================================
+\subsection{Characterizations}
+%=======================================
+This section describes some characterizations of modular lattices---
+that is, sets of properties that are equivalent to the definition of modular lattices
+\xref{def:latm}:
+  \\\begin{tabular}{@{\qquad}Nllll}
+      \imark & Ore 1935      & (order     characterization) & \pref{thm:latm_id}         & \prefpo{thm:latm_id}
+    \\\imark & N5 lattice    & (order     characterization) & \pref{thm:latm_n5}  & \prefpo{thm:latm_n5}
+    \\\imark & Riecan 1957   & (algebraic characterization) & \pref{thm:lat_char_r1957}  & \prefpo{thm:lat_char_r1957}
+  \end{tabular}\\
+Alternatively, any of the sets of properties listed in this section could be
+used as the definition of modular lattices and the definition
+would in turn become a theorem/proposition.
+
+%=======================================
+\subsubsection{Order characterizations}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerpg{padmanabhan2008}{39}{9812834540},
+  \citorpc{ore1935}{413}{(2)}
+  }
+\label{thm:latm_id}
+%---------------------------------------
+Let $\latL\eqd\latticed$ be a lattice.
+\thmbox{
+  \begin{array}{M@{\qquad}c@{\qquad}lcl@{\qquad}C}
+    $\latL$ is \prope{modular} 
+      & \iff & \mc{3}{l}{\brb{x\orel y \quad\implies\quad x \join (z\meet y) = (x\join z)\meet y}} & \forall x,y,z\in\setX \\
+      & \iff & x \join \brs{\brp{x\join y}\meet z} &=& \brp{x\join y}\meet\brp{x\join z} & \forall x,y,z\in\setX \\
+      & \iff & x \meet \brs{\brp{x\meet y}\join z} &=& \brp{x\meet y}\join\brp{x\meet z} & \forall x,y,z\in\setX \\
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\latL$ is \prope{modular} $\iff$ $\brb{x\orel y \quad\implies\quad x \join (z\meet y) = (x\join z)\meet y}$:
+        \label{item:latm_id_def}
+    \begin{align*}
+      \brb{\text{$\latL$ is \prope{modular}}}
+        &\iff \brb{x\orel y \quad\implies\quad y\meet(z\join x) = (y\meet z)\join x \quad \forall x,y,z\in\setX}
+        && \text{by \prefp{def:latm}}
+      \\&\iff \brb{a\orel y \quad\implies\quad y\meet(x\join a) = (y\meet x)\join a \quad \forall x,y,a\in\setX}
+        && \text{by change of variables}
+      \\&\iff \brb{x\modular y \quad \sst \forall x,y\in\setX}
+        && \text{by \prefp{def:lat_Mrel}}
+    \end{align*}
+
+  \item Proof that $\latL$ is \prope{modular} $\iff$ $x \join \brs{\brp{x\join y}\meet z} = \brp{x\join y}\meet\brp{x\join z}$:
+    \begin{enumerate}
+      \item Proof that $\latL$ is \prope{modular} $\implies$ $x \join \brs{\brp{x\join y}\meet z} = \brp{x\join y}\meet\brp{x\join z}$:
+        \\First note that $x \orel x \join y$.
+        \begin{align*}
+          x \join \brs{\brp{x\join y}\meet z}
+            &= \left.x \join \brp{u\meet z} \right|_{u\eqd x\join y}
+            && \text{by substitution $u\eqd x\join y$}
+          \\&= \left.u\meet \brp{x \join z} \right|_{u\eqd x\join y}
+            && \text{by modularity hypothesis}
+          \\&= \brp{x \join y}\meet\brp{x\join z}
+            && \text{because $u\eqd x\join y$}
+        \end{align*}
+
+      \item Proof that $\latL$ is \prope{modular} $\impliedby$ $x \join \brs{\brp{x\join y}\meet z} = \brp{x\join y}\meet\brp{x\join z}$:
+        \begin{align*}
+          x\orel y \;\implies\; x \join (y\meet z)
+            &= x \join (y\meet z)
+            && \text{by right hypothesis and $x\orel y$}
+          \\&= x \join (z\meet y)
+            && \text{by \prope{commutative} property \prefp{thm:lattice}}
+          \\&= x \join \brs{z\meet \brp{x\join y}}
+            && \text{because $x\orel y$}
+          \\&= x \join \brs{\brp{x\join y}\meet z}
+            && \text{by \prope{commutative} property \prefp{thm:lattice}}
+          \\&= \brp{x\join y}\meet\brp{x\join z}
+            && \text{by right hypothesis}
+          \\&= y \meet \brp{x\join z}
+            && \text{because $x\orel y$}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof that $\latL$ is modular $\iff$
+           $\brb{y\orel x \implies x\meet(y\join z) = y \join (x\meet z) }$:
+        \begin{align*}
+          \text{$\latL$ is modular}
+            &\iff \mcom{\brb{x\orel y \implies x \join (y\meet z) = y\meet(x\join z)}}{modularity definition \xref{def:latm}}
+            &&    \text{by definition of modular \prefpo{def:latm}}
+          \\&\iff \brb{y\orel x \implies y \join (x\meet z) = x\meet(y\join z)}
+            &&    \text{by change of variables: $x\leftrightarrow y$}
+          \\&\iff \mcom{\brb{y\orel x \implies x\meet(y\join z) = y \join (x\meet z) }}{dual of \pref{def:latm}}
+            &&    \text{by \prope{reflexive} property of $=$ \ifxref{relation}{def:eq_rel}}
+        \end{align*}
+
+  \item Proof that
+          $\brb{y\orel x \implies x\meet(y\join z) = y \join (x\meet z) }
+          \iff
+          \brb{x \meet \brs{\brp{x\meet y}\join z} = \brp{x\meet y}\join\brp{x\meet z}}$:
+    \begin{enumerate}
+      \item Proof that
+              $\brb{y\orel x \implies x\meet(y\join z) = y \join (x\meet z) }
+              \implies
+              \brb{x \meet \brs{\brp{x\meet y}\join z} = \brp{x\meet y}\join\brp{x\meet z}}$:
+        \\First note that $x\meet y \orel x$.
+        \begin{align*}
+          x \meet \brs{\brp{x\meet y}\join z}
+            &= \left.x \meet \brp{u\join z} \right|_{u\eqd x\meet y}
+            && \text{by substitution $u\eqd x\meet y$}
+          \\&= \left.u\join \brp{x \meet z} \right|_{u\eqd x\meet y}
+            && \text{by left hypothesis}
+          \\&= \brp{x \meet y}\join\brp{x\meet z}
+            && \text{because $u\eqd x\meet y$}
+        \end{align*}
+
+      \item Proof that
+              $\brb{y\orel x \implies x\meet(y\join z) = y \join (x\meet z) }
+              \impliedby
+              \brb{x \meet \brs{\brp{x\meet y}\join z} = \brp{x\meet y}\join\brp{x\meet z}}$:
+        \begin{align*}
+          y\orel x \;\implies\; x \meet (y\join z)
+            &= x \meet (z\join y)
+            && \text{by \prope{commutative} property \prefp{thm:lattice}}
+          \\&= x \meet \brs{z\join \brp{x\meet y}}
+            && \text{because $y\orel x$}
+          \\&= x \meet \brs{\brp{x\meet y}\join z}
+            && \text{by \prope{commutative} property \prefp{thm:lattice}}
+          \\&= \brp{x\meet y}\join\brp{x\meet z}
+            && \text{by right hypothesis}
+          \\&= y \join \brp{x\meet z}
+            && \text{because $y\orel x$}
+        \end{align*}
+    \end{enumerate}
+
+\end{enumerate}
+\end{proof}
+
+
+
+\begin{minipage}{\tw-33mm}
+%---------------------------------------
+\begin{definition}[N5 lattice/pentagon]
+\footnotemark
+\label{def:lat_N5}
+\label{def:n5}
+\index{lattice!N5}
+%---------------------------------------
+\defboxt{
+  The \structd{N5 lattice} is the ordered set $\opair{\setn{0,a,b,p,1}}{\orel}$
+  with cover relation
+  \\\indentx$\coverrel = \setn{\opair{0}{a},\, \opair{a}{b},\, \opair{b}{1},\, \opair{p}{1},\, \opair{0}{p}}$.
+  %\\It is also as defined by the \structe{Hasse diagram} to the right.
+  \\The N5 lattice is also called the \structd{pentagon}.
+  }
+%The N5 lattice is illustrated by the Hasse diagram to the right.
+\end{definition}
+\end{minipage}%
+\citetblt{%
+  \citerppg{beran1985}{12}{13}{902771715X},
+  \citePppc{dedekind1900}{391}{392}{(44) and (45)}
+  }%
+\hspace{5mm}\tbox{\includegraphics{graphics/lat5_n5_0abp1.pdf}}
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:latm_N5}
+\citetbl{
+  \citerpg{burris1981}{11}{0387905782}
+  }
+\index{lattice!N5}
+\index{N5 lattice}
+%---------------------------------------
+\lemboxt{The $N5$ lattice (\hi{pentagon} lattice) is \prope{non-modular}.}
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    x\orel y \implies y \meet ( z\join x)
+      &= y \meet b
+      && \text{by \prefp{def:lub} (lub)}
+    \\&= y
+      && \text{by \prefp{def:glb} (glb)}
+    \\&\ne  x
+    \\&= x \join a
+      && \text{by \prefp{def:lub} (lub)}
+    \\&= (y \meet z) \join x
+      && \text{by \prefp{def:lub} (lub)}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:latm_n5}
+\label{thm:lat_mod_iff_N5}
+\footnote{
+    \citerpg{burris1981}{11}{0387905782},
+  \citerpg{gratzer1971}{70}{0716704420},
+  %\\\cithrp{burris2000}{14}
+  %\citerpg{maclane1999}{480}{0821816462}
+  \citePc{dedekind1900}{cf Stern 1999 page 10}
+  }
+\index{lattice!N5}
+\index{N5 lattice}
+%---------------------------------------
+Let $\latL$ be a \structe{lattice} \xref{def:lattice}.
+\thmbox{\begin{array}{McM}%
+  $\latL$ is \prope{modular}
+  &\iff&
+  $\latL$ does \emph{not} contain $N5$ as a sublattice.
+  %&{\psset{unit=3mm}\input{../common/math/graphics/lat5_n5.tex}}
+\end{array}
+\qquad
+\tbox{\includegraphics[height=12mm]{graphics/lat5_n5.pdf}}
+}
+%\thmbox{
+%  \text{$\latL$ is \prope{modular}}
+%  \qquad\iff\qquad
+%  \text{$\latL$ does \emph{not} contain $N5$ as a sublattice}
+%    \setlength{\unitlength}{0.02mm}
+%    \begin{picture}(300,340)(-150,0)
+%      %\graphpaper[10](0,0)(600,200)
+%      \thinlines
+%      \color{latline}
+%        \qbezier(-100,200)(-50,250)(0,300)%
+%        \qbezier(100,150)(50,75)(0,0)%
+%        \qbezier(100,150)(50,225)(0,300)%
+%        \qbezier(-100,100)(-100,150)(-100,200)%
+%        \qbezier(0,0)(-50,50)(-100,100)%
+%        \qbezier(0,0)(50,75)(100,150)%
+%      \color{latdot}%
+%        \put(   0, 300){\circle*{60}}%
+%        \put(-100, 200){\circle*{60}}%
+%        \put( 100, 150){\circle*{60}}%
+%        \put(-100, 100){\circle*{60}}%
+%        \put(   0,   0){\circle*{60}}%
+%    \end{picture}
+%}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\latL$ is modular $\implies$ $\latL$ does \emph{not} contain $N5$:\\
+    This is because $N5$ is a non-modular lattice. Proof: \prefp{lem:latm_N5}
+
+  \item Proof that $\latL$ does not contain $N5$ $\implies$ $\latL$ is modular:
+    \begin{enumerate}
+      \item In what follows, we will prove the equivalent contrapositive statement:\\
+            $ N5 \in L \qquad\impliedby\qquad L\text{ is not modular}$\\
+            (every non-modular lattice \emph{must} contain $N5$).
+
+      \item \label{item:lat_mod_iff_N5_def}
+            We will show that for any choice of $x,y\in L$ such that $x\orel y$ and
+            under the following definitions,
+            all non-modular lattices contain the $N5$ lattice illustrated below:\\
+        %\begin{minipage}{20mm}%
+        %  \centering%
+        %  \psset{unit=5mm}%
+        %  \input{../common/math/graphics/lat/lat5_n5_xyz.tex}%
+        %\end{minipage}\hfill%
+        \tbox{\includegraphics{graphics/lat5_n5_xyz.pdf}}\hfill%
+        \begin{minipage}{\tw-46mm-22mm}
+          \begin{align*}
+            a &\eqd x\join(y\meet z) \\
+            b &\eqd y\meet(x\join z)
+          \end{align*}
+        \end{minipage}%
+        \hfill\tbox{\includegraphics{graphics/lat5_n5_abz.pdf}}%
+        %\begin{minipage}{20mm}%
+        %  \centering%
+        %  \psset{unit=5mm}%
+        %  \input{../common/math/graphics/lat/lat5_n5_abz.tex}%
+        %\end{minipage}%
+        %\begin{minipage}{1\tw/16}\center%
+        %  \latmatls{5}{0.5}{0.5}{
+        %                  & [name=1]\null                 \\
+        %    [name=y]\null                                 \\
+        %                  &               & [name=z]\null \\
+        %    [name=x]\null                                 \\
+        %                  & [name=0]\null
+        %    }{
+        %    \ncline{1}{y}
+        %    \ncline{y}{x}
+        %    \ncline{x}{0}
+        %    \ncline{1}{z}
+        %    \ncline{z}{0}
+        %    }{
+        %    \nput{90}{1}{$x\join z$}
+        %    \nput{180}{y}{$b$}
+        %    \nput{  0}{z}{$z$}
+        %    \nput{180}{x}{$a$}
+        %    \nput{-90}{0}{$y\meet z$}
+        %    }
+        %\end{minipage}
+
+      \item Proofs for comparable elements:
+        \begin{align*}
+          b
+            &= y\meet(x\join z)
+            && \text{by definition of $b$ in \pref{item:lat_mod_iff_N5_def}}
+          \\&\orel x \join z
+            && \text{by definition of $\meet$ \prefpo{def:glb}}
+          \\
+          \\
+          a
+            &= x\join(y\meet z)
+            && \text{by definition of $a$ in \pref{item:lat_mod_iff_N5_def}}
+          \\&\orel y\meet(x\join z)
+            && \text{by modularity inequality \pref{thm:lat_mod}}
+          \\&= b
+            && \text{by definition of $b$ in \pref{item:lat_mod_iff_N5_def}}
+          \\
+          \\
+          y \meet z
+            &\orel x\join(y\meet z)
+            && \text{by definition of $\join$ \prefpo{def:lub}}
+          \\&= a
+            && \text{by definition of $a$ in \pref{item:lat_mod_iff_N5_def}}
+          \\
+          \\
+          z
+            &\orel x \join z
+            && \text{by definition of $\meet$ \prefpo{def:glb}}
+          \\
+          \\
+          y \meet z
+            &\orel z
+            && \text{by definition of $\meet$ \prefpo{def:glb}}
+        \end{align*}
+
+      \item Proofs for noncomparable elements:
+        \begin{align*}
+          a \join z
+            &= [x\join(y\meet z)] \join z
+            && \text{by definition of $a$}
+          \\&= z\join[x\join(y\meet z)]
+            && \text{by \prope{commutative property} of lattices (\prefpo{thm:lattice})}
+          \\&= [z\join x]\join(y\meet z)
+            && \text{by \prope{associative property} of lattices (\prefpo{thm:lattice})}
+          \\&= [x\join z]\join(y\meet z)
+            && \text{by \prope{commutative property} of lattices (\prefpo{thm:lattice})}
+          \\&= x\join [z \join(y\meet z)]
+            && \text{by \prope{associative property} of lattices (\prefpo{thm:lattice})}
+          \\&= x\join z
+            && \text{by \prope{absorptive property} of lattices (\prefpo{thm:lattice})}
+          \\
+          \\
+          b \join z
+            &= (b\join a)\join z
+            && \text{by previous result}
+          \\&= b\join (a\join z)
+            && \text{by \prope{associative property} of lattices (\prefpo{thm:lattice})}
+          \\&= b\join (x\join z)
+            && \text{by previous result}
+          \\&= x\join z
+            && \text{by previous result}
+          \\
+          \\
+          a \meet z
+            &= (a \meet b) \meet z
+            && \text{by previous result}
+          \\&= a \meet (b \meet z)
+            && \text{by \prope{associative property} of lattices (\prefpo{thm:lattice})}
+          \\&= a \meet (y \meet z)
+            && \text{by previous result}
+          \\&= y \meet z
+            && \text{by previous result}
+          \\
+          \\
+          b \meet z
+            &= [y\meet(x\join z)] \join z
+            && \text{by definition of $a$}
+          \\&= z\meet[y\meet(x\join z)]
+            && \text{by \prope{commutative property} of lattices (\prefpo{thm:lattice})}
+          \\&= [z\meet y]\meet(x\join z)
+            && \text{by \prope{associative property} of lattices (\prefpo{thm:lattice})}
+          \\&= [y\meet z]\meet(x\join z)
+            && \text{by \prope{commutative property} of lattices (\prefpo{thm:lattice})}
+          \\&= y\meet [z\meet(x\join z)]
+            && \text{by \prope{associative property} of lattices (\prefpo{thm:lattice})}
+          \\&= y\meet z
+            && \text{by \prope{absorptive property} of lattices (\prefpo{thm:lattice})}
+        \end{align*}
+
+      \item Thus, \emph{all} non-modular lattices \emph{must} contain an $N5$ sublattice.
+            That is,
+            \[ \text{$\latL$ is a non-modular lattice} \qquad\implies\qquad \text{$\latL$ contains an $N5$ sublattice}.\]
+            And this implies (by the contrapostive of the statement)
+            \[ \text{$\latL$ does \emph{not} contain an $N5$ sublattice} \qquad\implies\qquad \text{$\latL$ is modular lattice}.\]
+    \end{enumerate}
+
+\end{enumerate}
+\end{proof}
+
+
+%=======================================
+\subsubsection{Algebraic characterizations}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerppg{padmanabhan2008}{42}{43}{9812834540},
+  \citor{riecan1957}
+  }
+\label{thm:lat_char_r1957}
+%---------------------------------------
+Let $\latA\eqd\latticed$ be an algebraic structure.
+\thmbox{
+  \brb{\begin{array}{lclCD}
+    (x \meet y) \join (x \meet z)     &=& \brs{(z \meet x) \join y} \meet x  & \forall x,y,z\in\setX   & and \\
+    \brs{x \join (y \join z)} \meet z &=& z                                  & \forall x,y,z\in\setX
+  \end{array}}
+  \quad\iff\quad
+  \brb{\begin{array}{M}
+    $\latA$ is a\\ 
+    \structb{modular lattice}
+  \end{array}}
+  }
+\end{theorem}
+
+
+
+
+
+%%=======================================
+%\subsection{Duality}
+%%=======================================
+%Because the more general case of lattices support
+%the \thme{principle of duality} \xref{thm:lat_duality},
+%and because the characterizations of modular lattices given in \prefpp{thm:latm_id}
+%are \prope{self-dual},
+%so modular lattices also support the principle of duality (next theorem).
+%%---------------------------------------
+%\begin{theorem}[\thmd{Principle of duality}]
+%\label{thm:latm_duality}
+%\citetbl{
+%  \citerpg{padmanabhan2008}{39}{9812834540}
+%  }
+%%---------------------------------------
+%Let $\latM\eqd\latticed$ be a \prope{modular} lattice.
+%\thmboxt{
+%  $\brb{\parbox{6\tw/16}{\raggedright
+%    $\phi$ is an identity on $\latM$ in terms of the operations
+%    $\join$ and $\meet$}}$
+%  $\qquad\implies\qquad$
+%  $\opT\phi$ is also an identity on $\latM$
+%  \\[1ex]
+%  where the operator $\opT$ performs the following mapping on the operations of $\phi$:
+%  \\\indentx $\join\rightarrow\meet,\qquad \meet\rightarrow\join$
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item The 4 pairs of identities characterizing lattices in \prefpp{thm:lattice}
+%        are prope{self-dual}.
+%  \item The relationships characterizing modular lattices in \prefpp{thm:latm_id} are duals of each other.
+%  \item Since these 5 pairs of identities characterizing modular lattices
+%        are \prope{self-dual}, the \hie{principle of duality} applies to modular lattices.
+%\end{enumerate}
+%\end{proof}
+
+
+
+
+
+
+%=======================================
+\subsection{Special cases}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{salii1988}{27}{0821845225},
+  \citerppc{dilworth1982}{333}{353}{cf Stern 1999},
+  \citerpg{stern1999}{11}{0521461057},
+  \citor{mclaughlin1956}
+  }
+%---------------------------------------
+Let $\latL\eqd\latbd$ be a bounded lattice.
+\thmbox{
+  \brb{\begin{array}{FMD}
+    1. & $\latL$ is \prope{complemented} & and \\
+    2. & $\latL$ is \prope{atomic} & and \\
+    3. & $\latL$ does \emph{not} contain an N5 lattice \\
+       & with elements $\bzero$ and $\bid$
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FMD}
+    1. & $\latL$ does not contain \\
+       & any N5 sublattice & and \\
+    2. & $\latL$ is \hie{modular}
+  \end{array}}
+  }
+\end{theorem}
+
+%=======================================
+\section{Examples}
+%=======================================
+\begin{minipage}{\tw-20mm}
+%---------------------------------------
+\begin{example}
+\label{ex:lat_N5}
+\index{lattice!N5}
+%---------------------------------------
+The lattice illustrated to the right is the \hie{N5 lattice} \xref{def:lat_N5}.
+The N5 lattice has a total of $5\times 5=25$ pairs of elements of the form 
+$\opair{x}{y}$ where $x,y\in\setX$.
+Of these 25, \emph{all} are modular pairs \emph{except} for the pair $\opair{z}{y}$.
+That is, $z\notmodular y$.
+Therefore, the N5 lattice is \prope{non-semimodular} (and \prope{non-modular}).
+\end{example}
+\end{minipage}%
+\hfill\tbox{\includegraphics{graphics/lat5_n5_xyz.pdf}}\hfill\mbox{}%
+\\
+\begin{proof}
+\begin{enumerate}
+  \item Five are of the form $\opair{x}{x}$ and are therefore modular pairs 
+    by the \prope{reflexive} property and \prefp{prop:relM_reflexive}:
+    \\$\bid\modular\bid$, $y\modular y$, $x\modular x$, $z\modular z$, $\bzero\modular \bzero$.
+    
+  \item Of the remaining 20, 16 more are modular pairs simply because they are 
+   \prope{comparable} and by \prefpp{prop:latm_xyxmx}:
+   \\$\begin{array}{@{\qquad}*{8}c}
+     {1}\modular{y} & {1}\modular{x} & {1}\modular{0} & {y}\modular{x} & {y}\modular{0} & {x}\modular{0} & {1}\modular{z} & {z}\modular{0} \\
+     {y}\modular{1} & {x}\modular{1} & {0}\modular{1} & {x}\modular{y} & {0}\modular{y} & {0}\modular{x} & {z}\modular{1} & {0}\modular{z} 
+   \end{array}$
+
+  \item Of the remaining 4, 3 are modular pairs and 1 is a nonmodular pair:
+    \\$\begin{array}{@{\qquad}*{2}c}
+      y\modular z    & x\modular z \\ 
+      z\notmodular y & z\modular x 
+    \end{array}$
+    \begin{align*}
+      x\orel y \implies y\meet(z\join x)
+        &= y\meet \bid
+       &&= y
+       &&\ne  x
+       &&= \bzero\join x
+       &&= (y\meet z)\join x
+       &&\implies z\notmodular y
+      \\
+      \bzero\orel z \implies z\meet(y\join\bzero)
+        &= z\meet y
+       &&= \bzero
+       &&
+       &&= \bzero\join\bzero
+       &&= (z\meet y)\join\bzero
+       &&\implies y\modular z
+      \\
+      \bzero\orel z \implies z\meet(x\join\bzero)
+        &= z\meet x
+       &&= \bzero
+       &&
+       &&= \bzero\join\bzero
+       &&= (z\meet x)\join\bzero
+       &&\implies x\modular z
+      \\
+      \bzero\orel x \implies x\meet(z\join\bzero)
+        &= x\meet z
+       &&= \bzero
+       &&
+       &&= \bzero\join\bzero
+       &&= (x\meet z)\join\bzero
+       &&\implies z\modular x
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+\begin{minipage}{\tw-33mm}
+%---------------------------------------
+\begin{example}
+\label{ex:latm_6_smod1}
+%---------------------------------------
+Of the non-comparable pairs in the lattice illustrated to the right,
+the following are \prope{modular} pairs:
+\\\indentx$ x\modular y,\, y\modular x,\, x\modular a,\, a\modular x,\, y\modular a,\, a\modular y,\, b\modular x,\, b\modular y$
+\\and the remaining non-comparable pairs are \prope{non-modular}:
+\\\indentx$ x\notmodular b,\, y\notmodular b.$
+\\
+Therefore, although the Hasse diagram shown is horizontally and vertically symmetric,
+the lattice itself is \emph{not} \prope{M-symmetric} (not semimodular),
+and thus also not modular and not distributive.
+\end{example}
+\end{minipage}%
+\hfill\tbox{\includegraphics{graphics/lat6_l4inm2_xyab01.pdf}}\hfill\mbox{}\\%
+\begin{proof}
+\begin{align*}
+  y(x+0) &= yx &&= yx+0 &&        &&      &&       &&\implies x\modular y \\
+  x(y+0) &= xy &&= xy+0 &&        &&      &&       &&\implies y\modular x \\
+  a(x+0) &= ax &&= ax+0 &&        &&      &&       &&\implies x\modular a \\
+  x(a+0) &= xa &&= xa+0 &&        &&      &&       &&\implies a\modular x \\
+  a(y+0) &= ay &&= ay+0 &&        &&      &&       &&\implies y\modular a \\
+  y(a+0) &= ya &&= ya+0 &&        &&      &&       &&\implies a\modular y \\
+  b(x+a) &= b1 &&= b    &&\ne  a &&= 0+a &&= bx+a &&\implies x\notmodular b \\
+  x(b+0) &= xb &&= xb+0 &&        &&      &&       &&\implies b\modular x \\
+  b(y+a) &= b1 &&= b    &&\ne  a &&= 0+a &&= by+a &&\implies y\notmodular b \\
+  y(b+0) &= yb &&= yb+0 &&        &&      &&       &&\implies b\modular y    
+\end{align*}
+\end{proof}
+
+\tbox{\includegraphics{graphics/lat6_primo_xyza01.pdf}}\hfill%
+\begin{minipage}{\tw-67mm}%
+%---------------------------------------
+\begin{example}
+\label{ex:latm_6_diadic}
+%---------------------------------------
+The lattices illustrated to the right and left are duals of each other.
+Both are \prope{non-modular} and both are \prope{non-semimodular}.
+\end{example}
+\end{minipage}%
+\hfill\tbox{\includegraphics{graphics/lat6_primo_dual_xyza01.pdf}}\\
+\begin{proof}
+\begin{align*}
+  \intertext{Left  hand side lattice:}
+    a(z+x) &= a1 &&= a    &&\ne  x &&= 0+x &&= az + x &&\implies z \notmodular a \\
+    z(a+0) &= za &&= za+0 &&        &&      &&         &&\implies a \modular z \\    
+  \intertext{Right hand side lattice:}
+    z(x+0) &= zx &&= zx+0 &&        &&      &&         &&\implies x \modular z \\
+    x(z+a) &= x1 &&= x    &&\ne  a &&= 0+a &&= xz+a   &&\implies z \notmodular x
+\end{align*}
+\end{proof}
+
+\tbox{\includegraphics{graphics/lat6_o6bslash_xyab01.pdf}}\hfill%
+\begin{minipage}{\tw-66mm}%
+%---------------------------------------
+\begin{example}
+\label{ex:latm_6_hexagon}
+%---------------------------------------
+The lattice illustrated to the left is \prope{modular}.
+The lattice illustrated to the right is \prope{non-modular}
+and \prope{non-semimodular}.
+\end{example}
+\end{minipage}%
+\hfill\tbox{\includegraphics{graphics/lat6_o6_xyab01.pdf}}\\%
+\begin{proof}
+\begin{enumerate}
+  \item Proof that the left hand side is \prope{modular}: 
+        because it does not contain the N5 lattice and by \prefpp{thm:latm_n5}.
+
+  \item Proof that the right hand side is \prope{non-modular} and \prope{non-semimodular}:
+    \begin{align*}
+      x(b+y) &= xb &&= 0    &&        &&= 0+y &&= xb+y &&\implies b\modular    x \\
+      b(x+y) &= b1 &&= b    &&\ne  y &&= 0+y &&= bx+y &&\implies x\notmodular b \\
+      y(a+x) &= ya &&= 0    &&        &&= 0+x &&= ya+x &&\implies a\modular    y \\
+      a(y+x) &= a1 &&= a    &&\ne  x &&= 0+x &&= ay+x &&\implies y\notmodular a 
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  $l_n$:   \citeoeis{A006966}  | % lattices
+  $m_n$:   \citeoeis{A006981}  | % modular
+  %$d_n$:  \citeoeis{A006982}  | \\% distributive
+  $l_n$:   \citer{heitzig2002}    %"Counting Finite Lattices"
+  %$m_n$:  \citer{thakare2002}? %"A structure theorem for dismantlable lattices and enumeration"
+  %$d_n$:  \citerp{erne2002}{17} %"On the number of distributive lattices"
+  }
+\label{prop:lat_num_lm}
+\index{number of lattices}
+%---------------------------------------
+Let $\setX_n$ be a finite set with order $n=\seto{\setX_n}$.
+Let $l_n$ be the number of unlabeled lattices on $\setX_n$,
+    $d_n$ the number of unlabeled distributive lattices on $\setX_n$,
+and $m_n$ the number of unlabeled modular lattices on $\setX_n$.
+\propbox{\begin{array}{l|*{14}{|c}}
+  n   & 0 & 1 & 2 & 3 &  4 &  5 &   6 &   7 &    8 &      9  & 10 & 11 & 12 & 13\\
+  \hline
+  l_n  & 1 & 1 & 1 & 1 & 2 & 5 & 15 & 53 & 222 & 1078 & 5994 & 37622 & 262,776 & 2,018,305\\
+  m_n  & 1 & 1 & 1 & 1 & 2 & 4 & 8  & 16 & 34  & 72   & 157  & 343   \\
+\end{array}}
+\end{proposition}
+
+
+
+%---------------------------------------
+\begin{example}[modularity in 5 element sets]
+\label{ex:lat_set5_mod}
+%---------------------------------------
+There are a total of five unlabeled lattices on a five element set 
+\xref{prop:num_lattices};
+and of these five, four are modular, 
+and three of the five are \prope{distributive} \xref{ex:lat_set5_distrib}.
+%There are no six element non-modular lattices that are also \prope{semimodular}.
+\exbox{\begin{tabular}{cccc}%
+  \hline
+   \mc{4}{c}{\structb{modular lattice}s on 5 element sets}
+  \\\hline
+   \includegraphics{graphics/lat5_m3.pdf}
+ %&\includegraphics{graphics/lat5_n5.pdf}
+  &\includegraphics{graphics/lat5_l2onm2.pdf}
+  &\includegraphics{graphics/lat5_m2onl2.pdf}
+  &\includegraphics{graphics/lat5_l5.pdf}
+  \\\hline
+\end{tabular}}
+%\exbox{\begin{tabular}{cccc}%
+%   \mc{4}{c}{\structb{modular lattice}s on 5 element sets}
+%  \\\hline%
+%   \psset{unit=7.5mm}\footnotesize\input{../common/math/graphics/lat/lat5_m3.tex}%
+%  &\psset{unit=5mm}\footnotesize\input{../common/math/graphics/lat/lat5_l2onm2.tex}%
+%  &\psset{unit=5mm}\footnotesize\input{../common/math/graphics/lat/lat5_m2onl2.tex}%
+%  &\psset{unit=3.75mm}\footnotesize\input{../common/math/graphics/lat/lat5_l5.tex}%
+%\end{tabular}}
+%\\\input{../common/lat5mod.inp}
+\end{example}
+
+%---------------------------------------
+\begin{example}[modularity in 6 element sets]
+\label{ex:lat_set6_mod}
+%---------------------------------------
+There are a total of 15 unlabeled lattices on a six element set 
+(\prefp{prop:num_lattices} and \prefp{ex:lat_set6});
+and of these 15, eight are modular, 
+and five of the eight are distributive \xref{prop:lat_num_ldm}.
+There are no six element non-modular lattices that are also \prope{semimodular}.
+\exbox{\begin{tabular}{cccccccc}%
+\mc{5}{c|}{modular and distributive lattices}&
+\mc{3}{c}{modular but not distributive}
+  \\\hline
+   \includegraphics{graphics/lat6_o6slash.pdf}%
+  &\includegraphics{graphics/lat6_l3onm2.pdf}%
+  &\includegraphics{graphics/lat6_l2onm2onl2.pdf}%
+  &\includegraphics{graphics/lat6_m2onl3.pdf}%
+  &\includegraphics{graphics/lat6_l6.pdf}%
+  %
+  &\includegraphics{graphics/lat6_m4.pdf}%
+  &\includegraphics{graphics/lat6_l2onm3.pdf}%
+  &\includegraphics{graphics/lat6_m3onl2.pdf}%
+  \\\hline\hline
+  \mc{8}{c}{non-semimodular lattices (and non-modular and non-distributive)}
+  \\\hline
+    \includegraphics{graphics/lat6_l4inm2.pdf}%
+   &\includegraphics{graphics/lat6_p3.pdf}%
+   &\includegraphics{graphics/lat6_p3_dual.pdf}%
+   &\includegraphics{graphics/lat6_o6.pdf}%
+   &\includegraphics{graphics/lat6_n6.pdf}%
+   &\includegraphics{graphics/lat6_l2onn5.pdf}%
+   &\includegraphics{graphics/lat6_n5onl2.pdf}%
+   &
+  \\\hline
+\end{tabular}}
+%\input{../common/lat6mod.inp}
+\end{example}
+
+\tbox{\includegraphics{graphics/lat7_veeino6_xyzab01.pdf}}\hfill%
+\begin{minipage}{\tw-46mm}%
+%---------------------------------------
+\begin{example}
+\label{ex:latm_7}
+%---------------------------------------
+The lattices illustrated to the left and right are duals of each other.
+Both are \prope{non-modular}.
+The left hand side lattice is also \prope{non-semimodular},
+however the right hand side lattice is \prope{semimodular}.\footnotemark
+\end{example}
+\end{minipage}\hfill%
+\citetblt{%
+  \citerpc{maeda1970}{5}{Exercise 1.1}%
+  }%
+\hfill\tbox{\includegraphics{graphics/lat7_wedgeino6_xyabc01.pdf}}\\
+\begin{proof}
+\begin{align*}
+  \intertext{Proof for lattice on left hand side:}
+    y(a+0) &= ya &&       &&        &&= ya+0 &&            && \implies a\modular y\\
+    a(y+x) &= aa &&= a    &&= y+x   &&= ay+x &&            && \implies y\modular a \\
+    b(a+z) &= b1 &&= b    &&= y+z   &&= ba+z &&            && \implies a\modular b \\
+    a(b+x) &= a1 &&= a    &&= y+x   &&= ab+x &&            && \implies b\modular a \\
+    b(x+z) &= b1 &&= b    &&\ne  z &&= 0+z  && bx+z       && \implies x\notmodular b \\
+    x(b+0) &= xb &&       &&=       &&= xb+0 &&            && \implies b\modular x \\
+  \intertext{Proof for lattice on right hand side:}
+    c(x+y) &= cb &&= y    &&= 0+y   &&= cx+y &&            && \implies x\modular c \\
+    x(c+0) &= xc &&= xc+0 &&        &&       &&            && \implies c\modular x \\
+    b(a+x) &= ba &&= x    &&= x+x   &&= ba+x && \text{and} && \\
+    b(a+y) &= b1 &&= b    &&= x+y   &&= ba+y &&            && \implies a\modular b\\
+    a(b+x) &= ab &&= 1    &&= 1+x   &&= ab+x &&            && \implies b\modular a\\
+    c(a+y) &= c1 &&= c    &&\ne  y &&= 0+y  &&= ca + y    && \implies a\notmodular c \\
+    a(c+x) &= a1 &&= a    &&\ne  x &&= 0+x  &&= ac + x    && \implies c\notmodular a \\
+    c(x+y) &= cb &&= y    &&        &&= 0+y  &&= cx+y      && \implies x\modular c \\
+    x(c+0) &= xc &&= xc+0 &&        &&       &&            && \implies c\modular x
+    \\\vdots
+\end{align*}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{example}[modular lattices on 7 element sets]
+\label{ex:lat_set7_mod}
+%---------------------------------------
+There are a total of 53 unlabeled lattices on a seven element set \xref{ex:lat_set7}.
+Of these 53, 16 are modular, and 8 of these 16 are distributive \xref{prop:lat_num_ldm}.
+\exbox{\begin{tabular}{cccccccc}%
+\mc{8}{c}{modular (and distributive) lattices on 7 element sets}
+  \\\hline
+   \includegraphics{graphics/lat7_m2onm2.pdf}%
+  &\includegraphics{graphics/lat7_l2ono6slash.pdf}%
+  &\includegraphics{graphics/lat7_o6slashonl2.pdf}%
+  &\includegraphics{graphics/lat7_l4onm2.pdf}%
+  &\includegraphics{graphics/lat7_l3onm2onl2.pdf}%
+  &\includegraphics{graphics/lat7_l2onm2onl3.pdf}%
+  &\includegraphics{graphics/lat7_m2onl4.pdf}%
+  &\includegraphics{graphics/lat7_l7.pdf}%
+  \\\hline
+  %
+\mc{8}{c|}{modular but non-distributive lattices on 7 element sets}
+  \\\hline
+   \mc{2}{c}{\includegraphics{graphics/lat7_m5.pdf}}%
+  &\includegraphics{graphics/lat7_m2m3.pdf}%
+  &\includegraphics{graphics/lat7_l2onm4.pdf}%
+  &\includegraphics{graphics/lat7_l3onm3.pdf}%
+  &\includegraphics{graphics/lat7_l2onm3onl2.pdf}%
+  \\
+  &
+  &\includegraphics{graphics/lat7_m3m2.pdf}%
+  &\includegraphics{graphics/lat7_m4onl2.pdf}%
+  &\includegraphics{graphics/lat7_m3onl3.pdf}%
+  \\\hline
+\end{tabular}}
+\end{example}
+
+
+
+%2014jun14sat% %=======================================
+%2014jun14sat% \section{Literature}
+%2014jun14sat% %=======================================
+%2014jun14sat% \begin{survey}
+%2014jun14sat% \begin{enumerate}
+%2014jun14sat%   \item Modular lattices:
+%2014jun14sat%     \\\citorpc{ore1935}{412}{$\gamma_1$, \hie{Dedekind axiom}}
+%2014jun14sat%     \\\citorp{birkhoff1933}{445}
+%2014jun14sat%     \\\citePp{dedekind1900}{374}
+%2014jun14sat%     \\\citorc{dedekind1893}{Section 169, cf Gratzer 2007}
+%2014jun14sat% \end{enumerate}
+%2014jun14sat% \end{survey}
+
+
+
+

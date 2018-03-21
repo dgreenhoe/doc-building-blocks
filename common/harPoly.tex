@@ -1,0 +1,1699 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%=======================================
+\chapter{Trigonometric Polynomials}
+\label{chp:trigpoly}
+\label{app:trigpoly}
+\index{polynomial!trigonometric|textbf}
+%=======================================
+\qboxnps
+  {Charles Hermite (1822 -- 1901), French mathematician, 
+    \index{Hermite, Charles}
+    \index{quotes!Hermite, Charles}
+    {\footnotesize in an 1893 letter to Stieltjes, 
+    in response to the ``pathological" everywhere continuous 
+    but nowhere differentiable \hie{Weierstrass  functions} 
+    $\ff(x)=\sum_{n=0}^\infty a^n \cos(b^n\pi x)$.}\footnotemark
+  }
+  {../common/people/hermite.jpg}
+  {I turn aside with a shudder of horror from this lamentable 
+   plague of functions which have no derivatives.}
+  \citetblt{
+    quote:       & \citer{hermite1893} \\
+    translation: & \citerp{lakatos}{19} \\
+    image:       & \url{http://www-groups.dcs.sx-and.ac.uk/~history/PictDisplay/Hermite.html}
+    }
+
+%=======================================
+%\section{Harmonic and polynomial representations}
+\section{Trigonometric expansion}
+%=======================================
+
+%---------------------------------------
+\begin{theorem}[\thmd{DeMoivre's Theorem}]
+\index{DeMoivre's Theorem}
+\index{theorems!DeMoivre's Theorem}
+\label{thm:demoivre}
+%---------------------------------------
+\thmbox{ 
+   \brp{r e^{i\fvx}}^n = r^n(\cos n\fvx + i\sin n\fvx) 
+  \qquad\scy \forall r,\fvx\in\R
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+    \left( r e^{i\fvx} \right)^n
+    &= r^n e^{in\fvx}
+  \\&= r^n \left(\cos n\fvx + i\sin n\fvx \right)
+    && \text{by Euler's identity \ifxref{harTrig}{thm:eid}}
+\end{align*}
+\end{proof}
+
+The cosine with argument $nx$ can be expanded as a polynomial in $\cos(x)$ (next).
+%---------------------------------------
+\begin{theorem}[\thmd{trigonometric expansion}]
+%\index{Cosine harmonic to cosine polynomial}
+\footnote{
+  \citerpgc{rivlin1974}{3}{047172470X}{(1.8)}
+  }
+\label{thm:cosnx}
+%---------------------------------------
+\thmbox{\begin{array}{rc>{\ds}l@{\qquad}C}
+  \cos(n\fvx) &=&  
+     \sum_{k=0}^\floor{\frac{n}{2}}\sum_{m=0}^k      
+          (-1)^{k+m}{n\choose 2k  }{k\choose m} (\cos\fvx)^{n-2(k-m)}
+     & \forall n\in\Znn \text{ and } \fvx\in\R
+  \\
+  \sin(n\fvx) &=&  
+     \sum_{k=0}^\floor{\frac{n}{2}}\sum_{m=0}^k      
+          (-1)^{k+m}{n\choose 2k  }{k\choose m} (\sin\fvx)^{n-2(k-m)}
+     & \forall n\in\Znn \text{ and } \fvx\in\R
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \cos(n\fvx)
+    &= \Re\left(\cos n\fvx + i\sin n\fvx \right)
+  \\&= \Re\left( e^{in\fvx}\right)
+  \\&= \Re\left[\left( e^{i\fvx}\right)^n\right]
+  \\&= \Re\left[\left( \cos\fvx + i\sin\fvx \right)^n\right]
+  \\&= \Re\left[\sum_{k\in\Z}^n {n\choose k}(\cos\fvx)^{n-k} (i\sin\fvx)^k\right]
+  \\&= \Re\left[\sum_{k\in\Z}^n i^k {n\choose k}\cos^{n-k}\fvx \sin^k\fvx \right]
+  \\&= \Re\left[  \sum_{k\in\{0,4,\ldots,n\}} {n\choose k} \cos^{n-k}\fvx \sin^k\fvx +
+        i\sum_{k\in\{1,5,\ldots,n\}} {n\choose k} \cos^{n-k}\fvx \sin^k\fvx  \right.
+       \\& \left.
+        -\sum_{k\in\{2,6,\ldots,n\}} {n\choose k} \cos^{n-k}\fvx \sin^k\fvx +
+       -i\sum_{k\in\{3,7,\ldots,n\}} {n\choose k} \cos^{n-k}\fvx \sin^k\fvx \right]
+  \\&= \sum_{k\in\{0,4,\ldots,n\}} {n\choose k} \cos^{n-k}\fvx \sin^k\fvx 
+        -\sum_{k\in\{2,6,\ldots,n\}} {n\choose k} \cos^{n-k}\fvx \sin^k\fvx 
+  \\&=   \sum_{k\in\{0,2,\ldots,n\}} {n\choose k}(-1)^{\frac{k  }{2}} \cos^{n-k}\fvx \sin^k\fvx 
+  \\&=   \sum_{k=0}^\floor{\frac{n}{2}}     {n\choose 2k  }(-1)^k   \cos^{n-2k  }\fvx \sin^{2k  }\fvx 
+  \\&=   \sum_{k=0}^\floor{\frac{n}{2}}     {n\choose 2k  }(-1)^k   \cos^{n-2k  }\fvx (1-\cos^2\fvx)^k 
+  \\&=   \left[\sum_{k=0}^\floor{\frac{n}{2}}     {n\choose 2k  }(-1)^k   \cos^{n-2k  }\fvx \right]
+         \left[\sum_{m=0}^k {k\choose m}(-1)^m\cos^{2m}\fvx \right] 
+  \\&=   \sum_{k=0}^\floor{\frac{n}{2}}\sum_{m=0}^k      
+         (-1)^{k+m}{n\choose 2k  }{k\choose m}   \cos^{n-2(k-m)}\fvx 
+  \\
+  \\
+  \sin(n\fvx)
+    &= \cos\left(n\fvx-\frac{\pi}{2}\right)
+  \\&= \cos\left(n\left[\fvx-\frac{\pi}{2n}\right]\right)
+  \\&= \sum_{k=0}^\floor{\frac{n}{2}}\sum_{m=0}^k      
+       (-1)^{k+m}{n\choose 2k}{k\choose m} \cos^{n-2(k-m)}\left(n\left[\fvx-\frac{\pi}{2n}\right]\right)
+  \\&= \sum_{k=0}^\floor{\frac{n}{2}}\sum_{m=0}^k
+       (-1)^{k+m}{n\choose 2k}{k\choose m} \cos^{n-2(k-m)}\left(n\fvx-\frac{\pi}{2}\right)
+  \\&= \sum_{k=0}^\floor{\frac{n}{2}}\sum_{m=0}^k
+       (-1)^{k+m}{n\choose 2k}{k\choose m} \sin^{n-2(k-m)}\left(n\fvx\right)
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\label{ex:cos5}
+%---------------------------------------
+%The monomial $\cos5\fvx$ as a polynomial in $\cos\fvx$ and
+% $\sin5\fvx$ as a polynomial in $\sin\fvx$ are
+\exbox{\begin{array}{rcl}
+  \cos5\fvx &=  16\cos^5\fvx -20\cos^3\fvx + 5\cos\fvx \\
+  \sin5\fvx &=  16\sin^5\fvx -20\sin^3\fvx + 5\sin\fvx.
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{enumerate}
+\item Proof using \thme{DeMoivre's Theorem} \xref{thm:demoivre}:
+\begin{align*}
+  &\cos5\fvx + i\sin5\fvx
+  \\&=  e^{i5\fvx}
+  \\&=  \left(e^{i\fvx}\right)^5
+  \\&=  \left(\cos\fvx+i\sin\fvx\right)^5
+  \\&=  \sum_{k=0}^5 {5\choose k} [\cos\fvx]^{5-k} [i\sin\fvx]^k
+  \\&=  {5\choose 0} [\cos\fvx]^{5-0} [i\sin\fvx]^0 +
+        {5\choose 1} [\cos\fvx]^{5-1} [i\sin\fvx]^1 +
+        {5\choose 2} [\cos\fvx]^{5-2} [i\sin\fvx]^2 + 
+  \\& 
+        {5\choose 3} [\cos\fvx]^{5-3} [i\sin\fvx]^3 +
+        {5\choose 4} [\cos\fvx]^{5-4} [i\sin\fvx]^4 +
+        {5\choose 5} [\cos\fvx]^{5-5} [i\sin\fvx]^5
+  \\&=     1 \cos^5\fvx 
+       +i  5 \cos^4\fvx \sin\fvx 
+       -  10 \cos^3\fvx \sin^2\fvx 
+       -i 10 \cos^2\fvx \sin^3\fvx 
+       +   5 \cos\fvx \sin^4\fvx 
+       +i  1 \sin^5\fvx
+  \\&=  \left[
+             \cos^5\fvx 
+       -  10 \cos^3\fvx \sin^2\fvx 
+       +   5 \cos\fvx \sin^4\fvx 
+       \right]
+       + i\left[
+         5 \cos^4\fvx \sin\fvx 
+       - 10 \cos^2\fvx \sin^3\fvx 
+       +    \sin^5\fvx 
+       \right]
+  \\&=  \left[
+             \cos^5\fvx 
+       -  10 \cos^3\fvx (1-\cos^2\fvx)
+       +   5 \cos\fvx (1-\cos^2\fvx)(1-\cos^2\fvx)
+       \right] +
+       \\&
+         i\left[ 
+         5 (1-\sin^2\fvx)(1-\sin^2\fvx)\sin\fvx 
+       - 10 (1-\sin^2\fvx) \sin^3\fvx 
+       +    \sin^5\fvx 
+       \right]
+  \\&=  \left[
+             \cos^5\fvx 
+       -  10 (\cos^3\fvx -\cos^5\fvx)
+       +   5 \cos\fvx (1-2\cos^2\fvx+\cos^4\fvx)
+       \right] +
+       \\&
+         i\left[ 
+         5 (1-2\sin^2\fvx+\sin^4\fvx)\sin\fvx 
+       - 10 (\sin^3\fvx-\sin^5\fvx) 
+       +    \sin^5\fvx 
+       \right]
+  \\&=  \left[
+             \cos^5\fvx 
+       -  10 (\cos^3\fvx -\cos^5\fvx)
+       +   5 (\cos\fvx -2\cos^3\fvx+\cos^5\fvx)
+       \right] +
+       \\&
+         i\left[ 
+         5 (\sin\fvx-2\sin^3\fvx+\sin^5\fvx) 
+       - 10 (\sin^3\fvx-\sin^5\fvx) 
+       +    \sin^5\fvx 
+       \right]
+  \\&=  \mcom{\left[16\cos^5\fvx -20\cos^3\fvx + 5\cos\fvx \right]}
+             {$\cos5\fvx$}
+        + 
+        i\mcom{\left[16\sin^5\fvx -20\sin^3\fvx + 5 \sin\fvx \right]}
+              {$\sin5\fvx$}
+\end{align*}
+
+\item Proof using trigonometric expansion \xref{thm:cosnx}:
+\begin{align*}
+  \cos5\fvx
+    &=  \sum_{k=0}^\floor{\frac{5}{2}}\sum_{m=0}^k      
+          (-1)^{k+m}{n\choose 2k  }{k\choose m} (\cos\fvx)^{n-2(k-m)}
+  \\&=  \sum_{k=0}^2 \sum_{m=0}^k      
+          (-1)^{k+m}{n\choose 2k  }{k\choose m} (\cos\fvx)^{5-2(k-m)}
+  \\&=  (-1)^0{5\choose0}{0\choose0}\cos^5\fvx +
+        (-1)^1{5\choose2}{1\choose0}\cos^3\fvx +
+        (-1)^2{5\choose2}{1\choose1}\cos^5\fvx + 
+  \\& 
+        (-1)^2{5\choose4}{2\choose0}\cos^1\fvx +
+        (-1)^3{5\choose4}{2\choose1}\cos^3\fvx +
+        (-1)^4{5\choose4}{2\choose2}\cos^5\fvx
+  \\&=  + ( 1)(1)\cos^5\fvx 
+        - (10)(1)\cos^3\fvx 
+        + (10)(1)\cos^5\fvx 
+        + ( 5)(1)\cos\fvx 
+        - ( 5)(2)\cos^3\fvx 
+        + ( 5)(1)\cos^5\fvx
+  \\&=  + (1+10+5)\cos^5\fvx 
+        + (-10-10)\cos^3\fvx 
+        + 5\cos\fvx 
+  \\&=  16\cos^5\fvx -20\cos^3\fvx + 5\cos\fvx 
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+
+\begin{figure}
+  \centering%
+  \includegraphics{graphics/baslat_cosh.pdf}%
+  \caption{Lattice of harmonic cosines $\set{\cos(n\fvx)}{n=0,1,2,\ldots}$
+           \label{fig:lat_cos0-cos7}}
+\end{figure}
+%---------------------------------------
+\begin{example} %[Harmonic to polynomial conversion]
+\label{ex:cosn}
+\footnote{
+  \citerp{as}{795},
+  \citerpc{guillemin1957}{593}{(21)},   %{see \url{http://oeis.org/A039991}}\\
+  %\url{http://www.convertit.com/Go/ConvertIt/Reference/AMS55.ASP?Page=795} \\
+  %\citerpc{abramowitz1964}{795}{}
+  \citeoeis{A039991},
+  \citeoeis{A028297}
+  }
+%---------------------------------------
+\exbox{\begin{tabstr}{1.2}\begin{array}{l|rcl || l|rcl}
+  n & \cos n\fvx && \text{polynomial in $\cos\fvx$}&
+  n & \cos n\fvx && \text{polynomial in $\cos\fvx$}\\
+  \hline
+    0 & \cos0\fvx &=&  1                       & 4 & \cos4\fvx &=&  8\cos^4\fvx - 8\cos^2\fvx + 1
+  \\1 & \cos1\fvx &=&  \cos^1\fvx              & 5 & \cos5\fvx &=&  16\cos^5\fvx -20\cos^3\fvx + 5\cos\fvx
+  \\2 & \cos2\fvx &=&  2\cos^2\fvx - 1         & 6 & \cos6\fvx &=&  32\cos^6\fvx -48\cos^4\fvx +18\cos^2\fvx -1
+  \\3 & \cos3\fvx &=&  4\cos^3\fvx - 3\cos\fvx & 7 & \cos7\fvx &=&  64\cos^7\fvx - 112\cos^5\fvx + 56\cos^3\fvx - 7\cos\fvx 
+\end{array}\end{tabstr}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \cos2\fvx
+    &= \sum_{k=0}^\floor{\frac{2}{2}}\sum_{m=0}^k      
+         (-1)^{k+m} {3\choose 2k  }{k\choose m}(\cos\fvx)^{2-2(k-m)}
+  \\&= (-1)^0 {3\choose0}{0\choose0}\cos^2\fvx +
+       (-1)^1 {3\choose2}{1\choose0}\cos^0\fvx +
+       (-1)^2 {3\choose2}{1\choose1}\cos^2\fvx
+  \\&= + (1)(1)\cos^2\fvx 
+       - (1)(1) 
+       + (1)(1)\cos^2\fvx
+  \\&= 2\cos^2\fvx -1
+\\
+\\
+  \cos3\fvx
+    &= \sum_{k=0}^\floor{\frac{3}{2}}\sum_{m=0}^k      
+         (-1)^{k+m} {3\choose 2k  }{k\choose m}(\cos\fvx)^{3-2(k-m)}
+  \\&= (-1)^0 {3\choose 0}{0\choose0}\cos^3\fvx +
+       (-1)^1 {3\choose 2}{1\choose0}\cos^1\fvx +
+       (-1)^2 {3\choose 2}{1\choose1}\cos^3\fvx
+  \\&= + {3\choose 0}{0\choose0}\cos^3\fvx 
+       - {3\choose 2}{1\choose0}\cos^1\fvx 
+       + {3\choose 2}{1\choose1}\cos^3\fvx
+  \\&= + (1)(1)\cos^3\fvx 
+       - (3)(1)\cos^1\fvx 
+       + (3)(1)\cos^3\fvx
+  \\&= 4\cos^3\fvx - 3\cos\fvx 
+\\
+\\
+  \cos4\fvx
+    &= \sum_{k=0}^\floor{\frac{4}{2}}\sum_{m=0}^k      
+         (-1)^{k+m} {4\choose 2k  }{k\choose m}(\cos\fvx)^{4-2(k-m)}
+  \\&= \sum_{k=0}^2 \sum_{m=0}^k      
+         (-1)^{k+m} {4\choose 2k  }{k\choose m}(\cos\fvx)^{4-2(k-m)}
+  \\&=  (-1)^{0+0}{4\choose2\cdot0}{0\choose0}(\cos\fvx)^{4-2(0-0)}
+       +(-1)^{1+0}{4\choose2\cdot1}{1\choose0}(\cos\fvx)^{4-2(1-0)}
+  \\&\qquad
+       +(-1)^{1+1}{4\choose2\cdot1}{1\choose1}(\cos\fvx)^{4-2(1-1)}
+       +(-1)^{2+0}{4\choose2\cdot2}{2\choose0}(\cos\fvx)^{4-2(2-0)}
+  \\&\qquad
+       +(-1)^{2+1}{4\choose2\cdot2}{2\choose1}(\cos\fvx)^{4-2(2-1)}
+       +(-1)^{2+2}{4\choose2\cdot2}{2\choose2}(\cos\fvx)^{4-2(2-2)}
+  \\&=  (1)(1) \cos^4\fvx
+       -(6)(1) \cos^2\fvx
+       +(6)(1) \cos^4\fvx
+       +(1)(1) \cos^0\fvx
+       -(1)(2) \cos^2\fvx
+       +(1)(1) \cos^4\fvx
+  \\&=  8\cos^4\fvx -8\cos^2\fvx + 1
+\\
+\\
+  \cos5\fvx
+  %  &= \sum_{k=0}^\floor{\frac{5}{2}}\sum_{m=0}^k      
+  %       (-1)^{k+m}{n\choose 2k  }{k\choose m} (\cos\fvx)^{n-2(k-m)}
+  %\\&= \sum_{k=0}^2 \sum_{m=0}^k      
+  %       (-1)^{k+m}{n\choose 2k  }{k\choose m} (\cos\fvx)^{5-2(k-m)}
+  %\\&= (-1)^0{5\choose0}{0\choose0}\cos^5\fvx +
+  %     (-1)^1{5\choose2}{1\choose0}\cos^3\fvx +
+  %     (-1)^2{5\choose2}{1\choose1}\cos^5\fvx + 
+  %\\&\quad
+  %     (-1)^2{5\choose4}{2\choose0}\cos^1\fvx +
+  %     (-1)^3{5\choose4}{2\choose1}\cos^3\fvx +
+  %     (-1)^4{5\choose4}{2\choose2}\cos^5\fvx
+  %\\&= + ( 1)(1)\cos^5\fvx 
+  %     - (10)(1)\cos^3\fvx 
+  %     + (10)(1)\cos^5\fvx 
+  %     + ( 5)(1)\cos\fvx 
+  %     - ( 5)(2)\cos^3\fvx 
+  %     + ( 5)(1)\cos^5\fvx
+  %\\&= + (1+10+5)\cos^5\fvx 
+  %     + (-10-10)\cos^3\fvx 
+  %     + 5\cos\fvx 
+  &= 16\cos^5\fvx -20\cos^3\fvx + 5\cos\fvx \qquad\text{see \prefp{ex:cos5}} 
+\\
+\\
+  \cos6\fvx
+    &= \sum_{k=0}^\floor{\frac{6}{2}}\sum_{m=0}^k      
+         (-1)^{k+m} {6\choose 2k  }{k\choose m}(\cos\fvx)^{6-2(k-m)}
+  \\&= (-1)^0 {6\choose0}{0\choose0}\cos^6\fvx +    % 0,0
+       (-1)^1 {6\choose2}{1\choose0}\cos^4\fvx +    % 1,0
+       (-1)^2 {6\choose2}{1\choose1}\cos^6\fvx +    % 1,1
+       (-1)^2 {6\choose4}{2\choose0}\cos^2\fvx +    % 2,0
+   \\&
+       (-1)^3 {6\choose4}{2\choose1}\cos^4\fvx +    % 2,1
+       (-1)^4 {6\choose4}{2\choose2}\cos^6\fvx +    % 2,2
+       (-1)^3 {6\choose6}{3\choose0}\cos^0\fvx +    % 3,0
+       (-1)^4 {6\choose6}{3\choose1}\cos^2\fvx +    % 3,1
+   \\&
+       (-1)^5 {6\choose6}{3\choose2}\cos^4\fvx +    % 3,2
+       (-1)^6 {6\choose6}{3\choose3}\cos^6\fvx      % 3,3
+  \\&= +( 1)(1)\cos^6\fvx      % 0,0
+       -(15)(1)\cos^4\fvx      % 1,0
+       +(15)(1)\cos^6\fvx      % 1,1
+       +(15)(1)\cos^2\fvx      % 2,0
+       -(15)(2)\cos^4\fvx      % 2,1
+       +(15)(1)\cos^6\fvx      % 2,2
+  \\&\qquad
+       -(1)(1)\cos^0\fvx       % 3,0
+       +(1)(3)\cos^2\fvx       % 3,1
+       -(1)(3)\cos^4\fvx       % 3,2
+       +(1)(1)\cos^6\fvx       % 3,3
+  \\&= 32\cos^6\fvx -48\cos^4\fvx +18\cos^2\fvx -1
+\\
+\\
+  \cos7\fvx
+    &= \sum_{k=0}^\floor{\frac{7}{2}}\sum_{m=0}^k      
+         (-1)^{k+m}{n\choose 2k  }{k\choose m} (\cos\fvx)^{n-2(k-m)}
+  \\&= \sum_{k=0}^3 \sum_{m=0}^k      
+         (-1)^{k+m}{n\choose 2k  }{k\choose m} (\cos\fvx)^{7-2(k-m)}
+  \\&= (-1)^0{7\choose0}{0\choose0}\cos^7\fvx +
+       (-1)^1{7\choose2}{1\choose0}\cos^5\fvx +
+       (-1)^2{7\choose2}{1\choose1}\cos^7\fvx + 
+       (-1)^2{7\choose4}{2\choose0}\cos^3\fvx \\&\quad+ 
+       (-1)^3{7\choose4}{2\choose1}\cos^5\fvx + 
+       (-1)^4{7\choose4}{2\choose2}\cos^7\fvx + 
+       (-1)^3{7\choose6}{3\choose0}\cos^1\fvx +
+       (-1)^4{7\choose6}{3\choose1}\cos^3\fvx \\&\quad+
+       (-1)^5{7\choose6}{3\choose2}\cos^5\fvx +
+       (-1)^6{7\choose6}{3\choose3}\cos^7\fvx
+  \\&=   ( 1)(1)\cos^7\fvx 
+       - (21)(1)\cos^5\fvx 
+       + (21)(1)\cos^7\fvx  
+       + (35)(1)\cos^3\fvx \\&\quad 
+       - (35)(2)\cos^5\fvx 
+       + (35)(1)\cos^7\fvx  
+       - ( 7)(1)\cos^1\fvx 
+       + ( 7)(3)\cos^3\fvx \\&\quad
+       - ( 7)(3)\cos^5\fvx
+       + ( 7)(1)\cos^7\fvx
+  \\&=   (1+21+35+7)\cos^7\fvx 
+       - (21+70+21)\cos^5\fvx 
+       + (35+21)\cos^3\fvx  
+       - ( 7)\cos^1\fvx 
+  \\&= 64\cos^7\fvx - 112\cos^5\fvx + 56\cos^3\fvx - 7\cos\fvx 
+\end{align*}
+
+\begin{minipage}{\tw-67mm}%
+  Note: Trigonometric expansion of $\cos(nx)$ for particular values of $n$ 
+  can also be performed with the free software package 
+      \href{http://maxima.sourceforge.net/}{\hie{Maxima}\texttrademark} using the syntax illustrated to the right:\footnotemark
+\end{minipage}%
+%\footnotetext{Reference: \url{http://maxima.sourceforge.net/docs/manual/en/maxima_15.html}}
+\citetblt{
+  \citerppc{maxima5280}{157}{158}{10.5 Trigonometric Functions}
+  }
+\hspace{10mm}%
+%NOTE: lstlisting environment seems to cause the index to be generated with the wrong font
+%\begin{verbatim}
+%---seems to cause wrong font selection in index
+\begin{minipage}{48mm}
+\begin{lstlisting}  
+trigexpand(cos(2*x));
+trigexpand(cos(3*x));
+trigexpand(cos(4*x));
+trigexpand(cos(5*x));
+trigexpand(cos(6*x));
+trigexpand(cos(7*x));
+\end{lstlisting}
+\end{minipage}%
+\mbox{}\\
+%\end{verbatim}
+
+
+\end{proof}
+
+%=======================================
+%\subsection{Chebyshev polynomials}
+\index{Chebyshev polynomials}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:Tn}
+%---------------------------------------
+\defbox{\begin{array}{M}\indxs{T_n}
+  The $n$th \fnctd{Chebyshev polynomial of the first kind} is defined as
+  \\\indentx$\ds
+     \hxs{T_n(x)} \eqd \cos n\fvx \qquad\text{where}\qquad \cos\fvx \eqd x 
+     $
+\end{array}}
+\end{definition}
+
+
+\begin{figure}
+  \centering%
+  \includegraphics{graphics/baslat_cheby.pdf}%
+  \caption{Lattice of Chebyshev polynomials $\set{T_n(x)}{n=0,1,2,3}$
+           \label{fig:lat_T0-T7}}
+\end{figure}
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{rivlin1974}{5}{047172470X}{(1.13)},
+  \citerpgc{suli2003}{242}{0521007941}{Lemma 8.2},
+  \citerpgc{davidson2010}{222}{1441900055}{exercise 10.7.A(a)}
+  }
+\label{thm:chebyshev_evenodd}
+%---------------------------------------
+Let $T_n(x)$ be a \fncte{Chebyshev polynomial} with $n\in\Znn$.
+\thmbox{\begin{array}{MlM}
+  $n$ is \prope{even} &\implies& $T_n(x)$ is \prope{even}.\\
+  $n$ is \prope{odd}  &\implies& $T_n(x)$ is \prope{odd}.
+\end{array}}
+\end{theorem}
+
+%---------------------------------------
+\begin{example}
+\label{ex:Tn}
+%---------------------------------------
+Let $T_n(x)$ be a \fncte{Chebyshev polynomial} with $n\in\Znn$.
+\exbox{\begin{array}{rcl|rcl}
+    T_0(x) &=&  1         & T_4(x) &=&  8x^4 - 8x^2 + 1
+  \\T_1(x) &=&  x         & T_5(x) &=&  16x^5 -20x^3 + 5x
+  \\T_2(x) &=&  2x^2 - 1  & T_6(x) &=&  32x^6 -48x^4 +18x^2 -1 
+  \\T_3(x) &=&  4x^3 - 3x &        & &
+\end{array}}
+\end{example}
+\begin{proof}
+Proof of these equations follows directly from \prefpp{ex:cosn}.
+\end{proof}
+
+
+
+%=======================================
+%\section{Polynomial to harmonic conversions}
+\section{Trigonometric reduction}
+%=======================================
+\prefpp{thm:cosnx} showed that $\cos n\fvx$ can be expressed as 
+a polynomial in $\cos\fvx$.
+Conversely, \pref{thm:cos^nx} (next) shows that 
+a polynomial in $\cos\fvx$
+can be expressed as a linear combination of $\seq{\cos n\fvx}{n\in\Z}$.
+%--------------------------------------
+\begin{theorem}[\thmd{trigonometric reduction}]
+\label{thm:cos^nx}
+%--------------------------------------
+\thmbox{\begin{array}{rc>{\ds}l}
+  \cos^n\fvx
+    &=&  \frac{1}{2^n} \sum_{k=0}^n {n\choose k}\cos[(n-2k)\fvx] 
+  \\&=&  \left\{\begin{array}{l@{\qquad}M}\ds
+      \frac{1}{2^n}{n\choose\frac{n}{2}} + 
+      \frac{1}{2^{n-1}} \sum_{k=0}^{\frac{n}{2}-1} {n\choose k}\cos[(n-2k)\fvx] 
+      & for  $n$ even
+      \\ \ds
+      \frac{1}{2^{n-1}} \sum_{k=0}^{\floor{\frac{n}{2}}} {n\choose k}\cos[(n-2k)\fvx] 
+      & for $n$ odd
+    \end{array}\right.
+\end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \cos^n\fvx
+    &=  \left( \frac{e^{i\fvx}+e^{-i\fvx}}{2} \right)^n
+  \\&=  \Reb{\left( \frac{e^{i\fvx}+e^{-i\fvx}}{2} \right)^n}
+  \\&=  \Reb{\frac{1}{2^n} \sum_{k=0}^n {n\choose k} e^{i(n-k)\fvx}e^{-ik\fvx} }
+  \\&=  \Reb{\frac{1}{2^n} \sum_{k=0}^n {n\choose k} e^{i(n-2k)\fvx}}
+  \\&=  \Reb{\frac{1}{2^n} \sum_{k=0}^n {n\choose k} \left(\cos[(n-2k)\fvx]+i\sin[(n-2k)\fvx] \right) }
+  \\&=  \Reb{\frac{1}{2^n} \sum_{k=0}^n {n\choose k} \cos[(n-2k)\fvx]+
+             i\frac{1}{2^n} \sum_{k=0}^n {n\choose k} \sin[(n-2k)\fvx]  }
+  \\&=  \frac{1}{2^n} \sum_{k=0}^n {n\choose k}\cos[(n-2k)\fvx] 
+  \\&=  \left\{\begin{array}{lcl}\ds
+      \frac{1}{2^n}{n\choose\frac{n}{2}} + 
+      \frac{1}{2^{n-1}} \sum_{k=0}^{\frac{n}{2}-1} {n\choose k}\cos[(n-2k)\fvx] 
+      &:&\mbox{ $n$ even}
+      \\ \ds
+      \frac{1}{2^{n-1}} \sum_{k=0}^{\floor{\frac{n}{2}}} {n\choose k}\cos[(n-2k)\fvx] 
+      &:&\mbox{ $n$ odd}
+    \end{array}\right.
+\end{align*}
+\end{proof}
+
+\begin{figure}
+  \centering%
+  \includegraphics{graphics/baslat_cose.pdf}%
+  \caption{Lattice of exponential cosines $\set{\cos^n\fvx}{n=0,1,2,3}$
+    \label{fig:lat_cos^0-cos^7}}
+\end{figure}
+%--------------------------------------
+\begin{example}  %[Polynomial to harmonic conversion]
+\label{ex:cos^nx}
+\footnote{
+  \citerp{as}{795},
+  %\url{http://www.convertit.com/Go/ConvertIt/Reference/AMS55.ASP?Page=795},
+  \citeoeis{A100257},
+  \citeoeis{A008314}
+  }
+%--------------------------------------
+\exbox{\tabstr{2}{%
+  \begin{array}{l|rc>{\ds}l || l|rc>{\ds}l}
+      n & \cos^n\fvx & & \text{trigonometric reduction}   & n & \cos^n\fvx & &  \text{trigonometric reduction}\\
+      \hline
+      0 & \cos^0\fvx &=&  1                               & 4 & \cos^4\fvx &=&  \frac{\cos4\fvx + 4\cos2\fvx + 3}{2^3}
+    \\1 & \cos^1\fvx &=&  \cos\fvx                        & 5 & \cos^5\fvx &=&  \frac{\cos5\fvx + 5\cos3\fvx + 10\cos\fvx}{2^4}
+    \\2 & \cos^2\fvx &=&  \frac{\cos2\fvx + 1}{2}         & 6 & \cos^6\fvx &=&  \frac{\cos6\fvx + 6\cos4\fvx + 15\cos2\fvx + 10}{2^5}
+    \\3 & \cos^3\fvx &=&  \frac{\cos3\fvx+3\cos\fvx}{2^2} & 7 & \cos^7\fvx &=&  \frac{\cos7\fvx + 7\cos5\fvx + 21\cos3\fvx + 35\cos\fvx}{2^6}
+  \end{array}}}
+\end{example}
+\begin{proof}
+%\begin{enumerate}
+%\item By \prefp{thm:cos^nx}:
+\begin{align*}
+  \cos^0\fvx
+    &= \left.\frac{1}{2^n} \sum_{k=0}^n {n\choose k}\cos\left([n-2k]\fvx\right)\right|_{n=0}
+  \\&= \frac{1}{2^0} \sum_{k=0}^0 {0\choose k}\cos[(0-2k)\fvx] 
+  \\&= {0\choose 0}\cos[(0-2\cdot0)\fvx] 
+  \\&= 1
+  \\
+  \cos^1\fvx
+    &= \left.\frac{1}{2^n} \sum_{k=0}^n {n\choose k}\cos\left([n-2k]\fvx\right)\right|_{n=1}
+  \\&= \frac{1}{2^1} \sum_{k=0}^1 {1\choose k}\cos[(1-2k)\fvx] 
+  \\&= \frac{1}{2}\left[ {1\choose 0}\cos[(1-2\cdot0)\fvx] + {1\choose 1}\cos[(1-2\cdot1)\fvx] \right]
+  \\&= \frac{1}{2}\left[ 1\cos\fvx + 1\cos(-\fvx) \right]
+  \\&= \frac{1}{2}\left( \cos\fvx + \cos\fvx \right)
+  \\&= \cos\fvx
+  \\
+  \cos^2\fvx
+    &= \left.\frac{1}{2^n} \sum_{k=0}^n {n\choose k}\cos\left([n-2k]\fvx\right)\right|_{n=2}
+  \\&= \frac{1}{2^2} \sum_{k=0}^2 {2\choose k}\cos\left([2-2k]\fvx\right)
+  \\&= \frac{1}{2^2}\left[ 
+         {2\choose 0}\cos\left([2-2\cdot0]\fvx\right) +
+         {2\choose 1}\cos\left([2-2\cdot1]\fvx\right) +
+         {2\choose 2}\cos\left([2-2\cdot2]\fvx\right) +
+       \right]
+  \\&= \frac{1}{2^2}\left[ 
+         1\cos\left(2\fvx\right) +
+         2\cos\left(0\fvx\right) +
+         1\cos\left(-2\fvx\right) 
+       \right]
+  \\&= \frac{1}{2^2}\left[\cos\left(2\fvx\right) +  2 + \cos\left(2\fvx\right) \right]
+  \\&= \frac{1}{2}\left[\cos\left(2\fvx\right) +  1\right]
+  \\
+  \cos^3\fvx
+    &= \left.\frac{1}{2^n} \sum_{k=0}^n {n\choose k}\cos\left([n-2k]\fvx\right)\right|_{n=3}
+  \\&= \frac{1}{2^3} \sum_{k=0}^3 {3\choose k}\cos\left([3-2k]\fvx\right)
+ %\\&= \frac{1}{2^3} \left[
+ %       {3\choose 0}\cos\left([3-2\cdot0]\fvx\right) +
+ %       {3\choose 1}\cos\left([3-2\cdot1]\fvx\right) +
+ %       {3\choose 2}\cos\left([3-2\cdot2]\fvx\right) +
+ %       {3\choose 3}\cos\left([3-2\cdot3]\fvx\right) 
+ %     \right]
+  \\&= \frac{1}{2^3} \left[
+         1\cos\left( 3\fvx\right) +
+         3\cos\left( 1\fvx\right) +
+         3\cos\left(-1\fvx\right) +
+         1\cos\left(-3\fvx\right) 
+       \right]
+  \\&= \frac{1}{2^3} \left[
+          \cos\left( 3\fvx\right) +
+         3\cos\left(  \fvx\right) +
+         3\cos\left(  \fvx\right) +
+          \cos\left( 3\fvx\right) 
+       \right]
+  \\&= \frac{1}{2^2} \left[
+          \cos\left( 3\fvx\right) +
+         3\cos\left(  \fvx\right) 
+       \right]
+  \\
+  \cos^4\fvx
+    &= \left.\frac{1}{2^n} \sum_{k=0}^n {n\choose k}\cos\left([n-2k]\fvx\right)\right|_{n=4}
+  \\&= \frac{1}{2^4} \sum_{k=0}^4 {4\choose k}\cos\left([4-2k]\fvx\right)
+  \\&= \frac{1}{2^4} \left[
+         1\cos\left( 4\fvx\right) +
+         4\cos\left( 2\fvx\right) +
+         6\cos\left( 0\fvx\right) +
+         4\cos\left(-2\fvx\right) +
+         1\cos\left(-4\fvx\right) 
+       \right]
+  \\&= \frac{1}{2^3} \left[
+          \cos\left( 4\fvx\right) +
+         4\cos\left( 2\fvx\right) +
+         3 
+       \right]
+  \\
+  \cos^5\fvx
+    &= \frac{1}{2^{5-1}} \sum_{k=0}^{\floor{\frac{5}{2}}} {5\choose k}\cos[(5-2k)\fvx] 
+  \\&= \frac{1}{16} \sum_{k=0}^2 {5\choose k}\cos[(5-2k)\fvx] 
+  \\&= \frac{1}{16} 
+       \left[
+         {5\choose 0}\cos5\fvx + {5\choose1}\cos3\fvx + 
+         {5\choose2}\cos\fvx 
+       \right]
+  \\&= \frac{1}{16} \left[\cos5\fvx + 5\cos3\fvx + 10\cos\fvx \right]
+  \\
+  \cos^6\fvx
+    &= \frac{1}{2^6}{6\choose\frac{6}{2}} + 
+       \frac{1}{2^{6-1}} \sum_{k=0}^{\frac{6}{2}-1} {6\choose k}\cos[(6-2k)\fvx] 
+  \\&= \frac{1}{2^6}{6\choose3} + 
+       \frac{1}{2^5}\sum_{k=0}^{2} {6\choose k}\cos[(6-2k)\fvx] 
+  \\&= \frac{1}{64}20 + 
+       \frac{1}{32}\left[
+         {6\choose0}\cos6\fvx + {6\choose1}\cos4\fvx 
+         {6\choose2}\cos2\fvx 
+         \right]
+  \\&= \frac{1}{32}\left[\cos6\fvx + 6\cos4\fvx + 15\cos2\fvx + 10\right]
+  \\
+  \cos^7\fvx
+    &= \frac{1}{2^{7-1}} \sum_{k=0}^{\floor{\frac{7}{2}}} {7\choose k}\cos[(7-2k)\fvx] 
+  \\&= \frac{1}{64} \sum_{k=0}^2 {7\choose k}\cos[(7-2k)\fvx] 
+  \\&= \frac{1}{64} 
+       \left[
+         {7\choose 0}\cos7\fvx + {7\choose 1}\cos5\fvx + {7\choose2}\cos3\fvx + 
+         {7\choose3}\cos\fvx 
+       \right]
+  \\&= \frac{1}{64} \left[\cos7\fvx + 7\cos5\fvx + 21\cos3\fvx + 35\cos\fvx \right]
+\end{align*}
+
+\begin{minipage}{\tw-67mm}%
+  Note: Trigonometric reduction of $\cos^n(x)$ for particular values of $n$ 
+  can also be performed with the free software package 
+      \href{http://maxima.sourceforge.net/}{\hie{Maxima}\texttrademark} using the syntax illustrated to the right:\footnotemark
+\end{minipage}%
+\citetblt{
+  \url{http://maxima.sourceforge.net/docs/manual/en/maxima_15.html}\\
+  \citerpc{maxima5280}{158}{10.5 Trigonometric Functions}
+  }
+\hspace{10mm}%
+%NOTE: lstlisting environment seems to cause the index to be generated with the wrong font
+%\begin{verbatim}
+%---seems to cause wrong font selection in index
+\begin{minipage}{48mm}
+\begin{lstlisting}  
+trigreduce((cos(x))^2);
+trigreduce((cos(x))^3);
+trigreduce((cos(x))^4);
+trigreduce((cos(x))^5);
+trigreduce((cos(x))^6);
+trigreduce((cos(x))^7);
+\end{lstlisting}
+\end{minipage}%
+\mbox{}\\
+%\end{verbatim}
+%\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+%\section{Laurent trigonometric polynomials}
+\section{Spectral Factorization}
+%=======================================
+%\prefpp{thm:cosnx} shows that $\cos n\fvx$ can be expressed as 
+%a polynomial in $\cos\fvx$.
+%\prefpp{thm:cos^nx} shows that 
+%a polynomial in $\cos\fvx$
+%can be expressed as a linear combination of $\seq{\cos n\fvx}{n\in\Z}$.
+%Furthermore, 
+%\prefpp{thm:Fejer-Riesz} shows that any polynomial in $z$ can
+%be expressed as a Laurent polynomial in $z$.
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{Fej{/'e}r-Riesz spectral factorization}]
+\citetbl{\citerpp{pinsky2002}{330}{331}}
+\label{thm:Fejer-Riesz}
+\index{spectral factorization}
+\index{conjugate recipricol pairs}
+\index{Fej{/'e}r-Riesz spectral factorization}
+\index{theorems!Fej{/'e}r-Riesz spectral factorization}
+%--------------------------------------
+Let $[0,\infty)\subsetneq\R$ and 
+\begin{align*}
+  \fp\left(e^{i\fvx}\right) 
+    &\eqd \sum_{n=-\xN}^{\xN} a_n e^{in\fvx}
+    &&    \text{(Laurent trigonometric polynomial order $2\xN$)}
+  \\
+  \fq\left(e^{i\fvx}\right) 
+    &\eqd \sum_{n=1}^{\xN} b_n e^{in\fvx} 
+    &&    \text{(standard trigonometric polynomial order $\xN$)}
+\end{align*}
+\thmbox{
+  \fp\left(e^{i\fvx}\right) \in[0,\infty)\quad\forall\fvx\in[0,2\pi]
+  \qquad\implies\qquad
+  \left\{\begin{array}{l}
+      \exists\seq{b_n}{n\in\Z} \st \\
+      \fp\left(e^{i\fvx}\right)  
+      = \fq\left(e^{i\fvx}\right)\fq^\ast\left(e^{i\fvx}\right)
+      \qquad \forall \fvx\in\R 
+  \end{array}\right.}
+\end{theorem}
+\begin{proofns}
+\begin{enumerate}
+  \item Proof that $a_n=a_{-n}^\ast$ ($\seq{a_n}{n\in\Z}$ is \prope{Hermitian symmetric}): \\
+  Let $a_n \eqd r_ne^{i\phi_n}$, $r_n,\phi_n\in\R$. Then
+\begin{align*}
+  \fp\left(e^{in\fvx}\right) 
+    &\eqd  \sum_{n=-\xN}^{\xN} a_n e^{i n\fvx}
+  \\&=     \sum_{n=-\xN}^{\xN} r_n e^{i\phi_n} e^{i n\fvx}
+  \\&=     \sum_{n=-\xN}^{\xN} r_n e^{i n\fvx+\phi_n}
+  \\&=     \sum_{n=-\xN}^{\xN} r_n \cos(n\fvx+\phi_n)
+         +i\sum_{n=-\xN}^{\xN} r_n \sin(n\fvx+\phi_n)
+  \\&=     \sum_{n=-\xN}^{\xN} r_n \cos(n\fvx+\phi_n)
+         +i
+         \mcom{
+           \left[ r_0 \sin(0\fvx+\phi_0)
+           + \sum_{n=1}^{\xN} r_n \sin(n\fvx+\phi_n)
+           + \sum_{n=1}^{\xN} r_{-n} \sin(-n\fvx+\phi_{-n})
+             \right]
+           }
+           {imaginary part must equal $0$ because $p(\fvx)\in\R$}
+  \\&=     \sum_{n=-\xN}^{\xN} r_n \cos(n\fvx+\phi_n)
+         +i
+         \mcom{
+           \left[ r_0 \sin(\phi_0)
+           + \sum_{n=1}^{\xN} r_n \sin(n\fvx+\phi_n)
+           - \sum_{n=1}^{\xN} r_{-n} \sin(n\fvx-\phi_{-n})
+             \right]
+           }
+           {$\implies r_n=r_{-n},\;\; \phi_n = -\phi_{-n}\;\;\implies a_n=a_{-n}^\ast,\; a_0\in\R$}
+\end{align*}
+
+\item Because the coefficients $\seq{c_n}{n\in\Z}$ are 
+      \prope{Hermitian symmetric}\ifdochas{polynom}{ and by \prefpp{thm:hsym==>rconj}},
+      the zeros of $P(z)$ occur in
+      \structe{conjugate recipricol pairs}.
+This means that if $\sigma\in\C$ is a zero of $P(z)$ ($P(\sigma)=0$),
+then $\frac{1}{\sigma^\ast}$ is also a zero of $P(z)$ 
+($P\left(\frac{1}{\sigma^\ast}\right)=0$).
+In the complex $z$ plane, this relationship means 
+zeros are reflected across the unit circle such that
+\[ \frac{1}{\sigma^\ast} = \frac{1}{(re^{i\phi})^\ast} 
+ = \frac{1}{r} \frac{1}{e^{-i\phi}} 
+ = \frac{1}{r} e^{i\phi}
+\]
+\begin{center}
+\scriptsize
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(300,300)(-130,-130)
+  \thicklines
+  \color{axis}  
+    \put(-130,   0){\line(1,0){260} }
+    \put(   0,-130){\line(0,1){260} }
+    \put( 140,   0){\makebox(0,0)[l]{$\Reb{z}$}}
+    \put(   0, 140){\makebox(0,0)[b]{$\Imb{z}$}}
+    \qbezier[30](0,0)(62.5,-62.5)(125,-125)
+ %   \put(   0,   0){\line(1,-1){125} }
+  \color{circle}
+    \input{../common/circle.inp}
+    \put( 120, 120){\makebox(0,0)[lb]{$z=e^{i\fvx}$}}
+    \put( 115, 115){\vector(-1,-1){43}}
+  \color[rgb]{1,0,0}
+    \put(  56, -56){\circle{10}}
+    \put( 125,-125){\circle{10}}
+  \normalcolor
+    \put(  56, -56){\makebox(0,0)[br]{$re^{i\phi}$}}
+    \put( 130,-125){\makebox(0,0)[bl]{$\frac{1}{r}e^{i\phi}$}}
+    \put(  25, - 2){\makebox(0,0)[tl]{$\phi$}}
+\end{picture}       
+\end{center}
+
+
+\item Because the zeros of $\fp(z)$ occur in conjugate recipricol pairs,
+$\fp\left(e^{i\fvx}\right)$ can be factored:
+\begin{align*}
+  \fp\left(e^{i\fvx}\right)
+    &= \left. \fp(z) \right|_{z=e^{i\fvx}}
+  \\&= \left. z^{-N} C
+         \prod_{n=1}^{\xN} (z-\sigma_n) 
+         \prod_{n=1}^{\xN} \left( z - \frac{1}{\sigma_n^\ast} \right)
+       \right|_{z=e^{i\fvx}}
+  \\&= \left. C
+         \prod_{n=1}^{\xN} (z-\sigma_n) 
+         \prod_{n=1}^{\xN} z^{-1}\left( z - \frac{1}{\sigma_n^\ast} \right)
+       \right|_{z=e^{i\fvx}}
+  \\&= \left. C
+         \prod_{n=1}^{\xN} (z-\sigma_n) 
+         \prod_{n=1}^{\xN} \left( 1 - \frac{1}{\sigma_n^\ast} z^{-1}\right)
+       \right|_{z=e^{i\fvx}}
+  \\&= \left. C
+         \prod_{n=1}^{\xN} (z-\sigma_n) 
+         \prod_{n=1}^{\xN} \left( z^{-1}-\sigma_n^\ast \right)
+                       \left(-\frac{1}{\sigma_n^\ast}\right)
+       \right|_{z=e^{i\fvx}}
+  \\&= \left. 
+         \left[ C \prod_{n=1}^{\xN} \left(-\frac{1}{\sigma_n^\ast}\right)   \right]
+         \left[ \prod_{n=1}^{\xN} (z-\sigma_n)                              \right]
+         \left[ \prod_{n=1}^{\xN} \left( \frac{1}{z^\ast}-\sigma_n \right)       \right]^\ast
+       \right|_{z=e^{i\fvx}}
+  \\&= \left. 
+         \left[ C_2 \prod_{n=1}^{\xN} (z-\sigma_n)                              \right]
+         \left[ C_2 \prod_{n=1}^{\xN} \left( \frac{1}{z^\ast}-\sigma_n \right)       \right]^\ast
+       \right|_{z=e^{i\fvx}}
+  \\&= \left. \fq(z) \fq^\ast\left(\frac{1}{z^\ast}\right)
+       \right|_{z=e^{i\fvx}}
+  \\&= \fq\left(e^{i\fvx}\right)\fq^\ast\left(e^{i\fvx}\right)
+\end{align*}
+
+\end{enumerate}
+\end{proofns}
+
+
+
+
+
+%=======================================
+\section{Dirichlet Kernel}
+%=======================================
+\qboxnpq
+  {
+    \href{http://en.wikipedia.org/wiki/Carl_Gustav_Jakob_Jacobi}{Carl Gustav Jacob Jacobi}
+    (1804--1851), Jewish-German mathematician
+    \index{Jacobi, Carl Gustav Jacob}
+    \index{quotes!Jacobi, Carl Gustav Jacob}
+    \footnotemark
+  }
+  {../common/people/small/jacobic.jpg}
+  {Dirichlet alone, not I, nor Cauchy, nor Gauss knows what a completely rigorous proof is.
+   Rather we learn it first from him.
+   When Gauss says he has proved something it is clear;
+   when Cauchy says it, one can wager as much pro as con;
+   when Dirichlet says it, it is certain.}
+  %{Dirichlet alone, not I, nor Cauchy, nor Gauss knows what a completely rigorous proof is,
+  % and we are learning it from him.
+  % When Gauss says he has proved something, it is very probable to me;
+  % when Cauchy says it, it is more likely than not,
+  % when Dirichlet says it, it is \emph{proved}.}
+  \citetblt{
+    %quote: & \url{http://lagrange.math.trinity.edu/aholder/misc/quotes.shtml} \\
+    quote: & \citerp{schubring2005}{558} \\
+          %& \citerp{biermann1988}{46} \\
+    %image: & \scs\url{http://en.wikipedia.org/wiki/Carl_Gustav_Jakob_Jacobi}, public domain
+    image: & \scs\url{http://en.wikipedia.org/wiki/File:Carl_Jacobi.jpg}, public domain
+    }
+
+The \hie{Dirichlet Kernel} is critical in proving what is not immediately obvious 
+in examining the Fourier Series---that for a broad class of periodic functions,
+a function can be recovered from (with uniform convergence)
+its Fourier Series analysis.
+%In the limit, it becomes a pulse train.
+%A formal proof using PSF is given by \prefpp{thm:comb}.
+%What follows is an informal proof.
+%--------------------------------------
+\begin{definition}
+\label{def:dkernel}
+\label{def:Dn}
+\footnote{
+  \citerpg{katznelson2004}{14}{0521543592},
+  \citerppg{heil2011}{443}{444}{0817646868},
+  \citerpp{folland}{33}{34}
+  }
+%--------------------------------------
+\defbox{\begin{array}{M}
+  The \hib{Dirichlet Kernel} $\hxs{\Dn}\in\clF{\Znn}{\R}$ with period $\tau$ is defined as
+  \\\indentx$\ds
+    \Dn(x) \eqd \frac{1}{\tau} \sum_{k=-n}^n e^{i\frac{2\pi}{\tau}kx}$
+\end{array}}
+\end{definition}
+
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpg{katznelson2004}{14}{0521543592},
+  \citerpg{heil2011}{444}{0817646868},
+  \citerp{folland}{34}
+  }
+\label{prop:dkernel}
+%--------------------------------------
+Let $\Dn$ be the \fncte{Dirichlet Kernel} with period $\tau$ \xref{def:dkernel}.
+\propbox{
+  \Dn(x) = \frac{1}{\tau}
+           \frac{\sin\brp{\frac{\pi}{\tau}[2n+1]x}}
+                {\sin\brp{\frac{\pi}{\tau}x      }}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+\Dn(x) &\eqd
+       \frac{1}{\tau} \sum_{k=-n}^n e^{i\frac{2\pi}{\tau}nx}
+    && \text{by definition of $\Dn$}&&\text{\xref{def:dkernel}}
+  \\&\mathrlap{%
+     = \frac{1}{\tau} \sum_{k=0}^{2n} e^{i\frac{2\pi}{\tau}(k-n)x}
+     = \frac{1}{\tau} e^{-i\frac{2\pi n}{\tau}x}
+       \sum_{k=0}^{2n} e^{i\frac{2\pi}{\tau}kx}
+     = \frac{1}{\tau}
+       e^{-i\frac{2\pi}{\tau}n x}
+       \sum_{k=0}^{2n} \left( e^{i\frac{2\pi}{\tau}x} \right)^k
+       }
+  \\&= \frac{1}{\tau}
+       e^{-i\frac{2\pi n}{\tau}x}
+       \frac{1-  \left( e^{i\frac{2\pi}{\tau}x} \right)^{2n+1}}
+            {1 - e^{i\frac{2\pi}{\tau}x}                      }
+    && \text{by \hie{geometric series}}&&\text{\ifxref{sums}{thm:series_geometric}}
+  \\&\mathrlap{=
+       \frac{1}{\tau}
+       e^{-i\frac{2\pi}{\tau}n x}
+       \frac{1-  e^{i\frac{2\pi}{\tau}(2n+1)x}  }
+            {1 - e^{i\frac{2\pi}{\tau}x}        }
+     = \frac{1}{\tau}
+       e^{-i\frac{2\pi n}{\tau}x}
+       \left(
+       \frac{e^{i\frac{\pi}{\tau}(2n+1)x}}
+            {e^{i\frac{\pi}{\tau}x}}
+       \right)
+       \frac{e^{-i\frac{\pi}{\tau}(2n+1)x}  -  e^{i\frac{\pi}{\tau}(2n+1)x}  }
+            {e^{-i\frac{\pi}{\tau}x} - e^{i\frac{\pi}{\tau}x}                }
+       }
+  \\&\mathrlap{= \frac{1}{\tau}
+       e^{-i\frac{2\pi n}{\tau}x}
+       \left(
+          e^{i\frac{2\pi n}{\tau}x}
+       \right)
+       \frac{-2i \sin\left[ \frac{\pi}{\tau}(2n+1)x  \right] }
+            {-2i \sin\left[ \frac{\pi}{\tau}x        \right] }
+     = \frac{1}{\tau}
+       \frac{\sin\left[ \frac{\pi}{\tau}(2n+1)x  \right] }
+            {\sin\left[ \frac{\pi}{\tau}x        \right] }
+    }
+\end{align*}
+\end{proof}
+
+
+\begin{figure}
+  \centering
+  \begin{tabular}{cc}
+    \includegraphics{graphics/dirichlet1.pdf}&\includegraphics{graphics/dirichlet5.pdf}\\
+    $n=1$&$n=5$\\
+    \includegraphics{graphics/dirichlet10.pdf}&\includegraphics{graphics/dirichlet10.pdf}\\
+    $n=10$&$n=20$
+  \end{tabular}
+    \caption{
+       $\Dn$ function for $N=1,5,10,20$.
+       $\Dn\to$ comb.
+       (See \prefp{prop:dkernel}).
+       \label{fig:DN}
+       }
+\end{figure}
+%
+%\begin{figure}[h]
+%\begin{center}
+%   %\begin{tabular}{cc}
+%   %   \epsfig{file=../common/pulse_{\xN}1.eps, width=6cm, height=4cm, clip=}  &
+%   %   \epsfig{file=../common/pulse_{\xN}5.eps, width=6cm, height=4cm, clip=} \\
+%   %   $N=1$ & $N=5$  \\
+%   %   \epsfig{file=../common/pulse_{\xN}10.eps, width=6cm, height=4cm, clip=}  &
+%   %   \epsfig{file=../common/pulse_{\xN}20.eps, width=6cm, height=4cm, clip=} \\
+%   %   $N=10$ & $N=20$
+%   %\end{tabular}
+%  \psset{linecolor=blue,linewidth=1pt,xunit=10mm}%
+%  \begin{tabular}{*{2}{p{\tw/2-2mm}}}
+%    \psset{yunit=10mm}%
+%    \begin{pspicture}(-3.5,-2)(-3.5,3.5)% N=1
+%      \psaxes[linecolor=axis]{<->}(0,0)(-3.5,-1.5)(3.5,3.5)%
+%      \psline[linestyle=dotted,linecolor=red](-3.5,3)(3.5,3)%
+%      \psline[linestyle=dotted,linecolor=red](-0.333333,0)(-0.333333,-1.25)
+%      \psline[linestyle=dotted,linecolor=red]( 0.333333,0)( 0.333333,-1.25)
+%      \uput[-90](0,-1){$\pm\frac{\tau}{2\xN+1}=\frac{1}{3}$}
+%      \uput[45](0,3){$\frac{1}{\tau}(2\xN+1)=3$}%
+%      \psplot[plotpoints=1024,linewidth=0.5pt]{-3.5}{3.5}{x 180 mul 2 1 mul 1 add mul sin x 180 mul sin div}%
+%    \end{pspicture}%
+%    &
+%    \psset{yunit=3.5mm}%
+%    \begin{pspicture}(-3.5,-3.5)(-3.5,12)% N=5
+%      \psaxes[linecolor=axis]{<->}(0,0)(-3.5,-3)(3.5,12)%
+%      \psline[linestyle=dotted,linecolor=red](-3.5,11)(3.5,11)%
+%      %\psline[linestyle=dotted,linecolor=red](-0.090909,0)(-0.090909,-1.25)
+%      %\psline[linestyle=dotted,linecolor=red]( 0.090909,0)( 0.090909,-1.25)
+%      %\uput[-90](0,-2.5){$\pm\frac{\tau}{2\xN+1}=\frac{1}{11}$}
+%      \uput[45](0,11){$\frac{1}{\tau}(2\xN+1)=11$}%
+%      \psplot[plotpoints=1024,linewidth=0.5pt]{-3.5}{3.5}{x 180 mul 2 5 mul 1 add mul sin x 180 mul sin div}%
+%    \end{pspicture}%
+%    \\  $N=1$ & $N=5$  \\
+%    \psset{yunit=2mm}%
+%    \begin{pspicture}(-3.5,-5)(-3.5,24)% N=5
+%      \psaxes[linecolor=axis,labels=x]{<->}(0,0)(-3.5,-3)(3.5,22)%
+%      \psline[linestyle=dotted,linecolor=red](-3.5,21)(3.5,21)%
+%      %\psline[linestyle=dotted,linecolor=red](-0.090909,0)(-0.090909,-1.25)
+%      %\psline[linestyle=dotted,linecolor=red]( 0.090909,0)( 0.090909,-1.25)
+%      %\uput[-90](0,-2.5){$\pm\frac{\tau}{2\xN+1}=\frac{1}{11}$}
+%      \uput[45](0,21){$\frac{1}{\tau}(2\xN+1)=21$}%
+%      \psplot[plotpoints=1024,linewidth=0.5pt]{-3.5}{3.5}{x 180 mul 2 10 mul 1 add mul sin x 180 mul sin div}%
+%    \end{pspicture}%
+%    &
+%    \psset{yunit=1mm}%
+%    \begin{pspicture}(-3.5,-10)(-3.5,45)% N=5
+%      \psaxes[linecolor=axis,labels=x]{<->}(0,0)(-3.5,-3)(3.5,42)%
+%      \psline[linestyle=dotted,linecolor=red](-3.5,41)(3.5,41)%
+%      %\psline[linestyle=dotted,linecolor=red](-0.090909,0)(-0.090909,-1.25)
+%      %\psline[linestyle=dotted,linecolor=red]( 0.090909,0)( 0.090909,-1.25)
+%      %\uput[-90](0,-2.5){$\pm\frac{\tau}{2\xN+1}=\frac{1}{11}$}
+%      \uput[45](0,41){$\frac{1}{\tau}(2\xN+1)=41$}%
+%      \psplot[plotpoints=1024,linewidth=0.5pt]{-3.5}{3.5}{x 180 mul 2 20 mul 1 add mul sin x 180 mul sin div}%
+%    \end{pspicture}%
+%    \\$N=10$ & $N=20$  \\
+%  \end{tabular}
+%\caption{
+%   $\Dn$ function for $N=1,5,10,20$.
+%   $\Dn\to$ comb.
+%   (See \prefp{prop:dkernel}).
+%   \label{fig:DN}
+%   }
+%\end{center}
+%\end{figure}
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerppg{bruckner1997}{620}{621}{013458886X}
+  }
+%--------------------------------------
+Let $\Dn$ be the \fncte{Dirichlet Kernel} with period $\tau$ \xref{def:dkernel}.
+\propbox{
+  \int_0^\tau \Dn(x)\dx = 1 
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \int_0^\tau \Dn(x) \dx 
+         &\eqd \int_0^\tau \frac{1}{\tau} \sum_{k=-n}^n e^{i\frac{2\pi}{\tau}nx} \dx
+         &&    \text{by definition of $\Dn$ \xref{def:dkernel}}
+       \\&=    \frac{1}{\tau} \sum_{k=-n}^n \int_{-\frac{\tau}{2}}^\frac{\tau}{2} e^{i\frac{2\pi}{\tau}nx} \dx
+       \\&=    \frac{1}{\tau} \sum_{k=-n}^n \int_{-\frac{\tau}{2}}^\frac{\tau}{2} \cos\brp{\frac{2\pi}{\tau}nx} + i\sin\brp{\frac{2\pi}{\tau}nx} \dx
+       \\&=    \frac{1}{\tau} \sum_{k=-n}^n \int_{-\frac{\tau}{2}}^\frac{\tau}{2} \cos\brp{\frac{2\pi}{\tau}nx} \dx
+       \\&=    \frac{1}{\tau} \sum_{k=-n}^n \left. \frac{\sin\brp{\frac{2\pi}{\tau}nx}}{\frac{2\pi}{\tau}n} \right|_{-\frac{\tau}{2}}^\frac{\tau}{2}
+       \\&=    \frac{1}{\tau} \sum_{k=-n}^n \brs{
+                 \frac{\sin\brp{\frac{2\pi}{\tau}n\frac{\tau}{2}}}{\frac{2\pi}{\tau}n} 
+                -\frac{\sin\brp{-\frac{2\pi}{\tau}n\frac{\tau}{2}}}{\frac{2\pi}{\tau}n} 
+                }
+       \\&=    \frac{1}{\tau}\frac{\tau}{2} \sum_{k=-n}^n \brs{
+                 \frac{\sin\brp{\pi n}}{\pi n} 
+                +\frac{\sin\brp{\pi n}}{\pi n} 
+                }
+       \\&=    \frac{1}{2} \brs{
+                 2\frac{\sin\brp{\pi n}}{\pi n} 
+                }_{k=0}
+       \\&=    1
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:Dn_0}
+%--------------------------------------
+Let $\Dn$ be the \hie{Dirichlet Kernel} with period $\tau$ \xref{def:dkernel}.
+Let $\hxs{w_\xN}$ (the ``\hie{width}" of $\Dn(x)$) be the 
+distance between the two points where the center pulse of $\Dn(x)$ intersects the $x$ axis.
+\propbox{
+  \begin{array}{lcl}
+    %\lim_{\xN\to\infty} \Dn(0) = \sum_{n\in\Z} \delta(x-n\tau).
+    \Dn(0)  &=  \ds\frac{1}{\tau}(2n+1)\\
+    w_n &=  \ds\frac{2\tau}{2n+1}
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+%No formal proof is given here.
+%However, \prefpp{fig:DN} shows some plots of $\Dn$ for
+%several values of $N$.
+%I {\em claim} that these pulses approach ``\hie{Dirac delta functions}".
+%Note that as $N$ increases, the height of each pulse also
+%increases and the width decreases.
+%To examine this more closely, let $h_{\xN}$ be the height of
+%a pulse in $\Dn(x)$.  Then
+\begin{align*}
+   \Dn(0)
+       &= \left. \Dn(x) \right|_{t=0}
+     \\&= \left. \frac{1}{\tau}
+          \frac{\sin\left[ \frac{\pi}{\tau}(2n+1)x  \right] }
+          {\sin\left[ \frac{\pi}{\tau}t        \right] }
+          \right|_{t=0}
+       && \text{by \prefp{prop:dkernel}}
+     \\&= \left. \frac{1}{\tau}
+          \frac{\opddx\sin\left[ \frac{\pi}{\tau}(2n+1)x  \right] }
+               {\opddx\sin\left[ \frac{\pi}{\tau}t        \right] }
+          \right|_{t=0}
+       && \text{by \thme{l'H{/<o}pital's rule}}
+     \\&= \left. \frac{1}{\tau}
+          \frac{\frac{\pi}{\tau}(2n+1)}{\frac{\pi}{\tau}}
+          \frac{\cos\left[ \frac{\pi}{\tau}(2n+1)x  \right] }
+               {\cos\left[ \frac{\pi}{\tau}t        \right] }
+          \right|_{t=0}
+     \\&= \frac{1}{\tau}
+          \frac{\frac{\pi}{\tau}(2n+1)}{\frac{\pi}{\tau}}
+          \frac{1 }{1 }
+     \\&= \frac{1}{\tau}(2n+1)
+\end{align*}
+
+%So, as $N$ approaches infinity, so does the height of the pulses.
+The center pulse of kernel $\Dn(x)$ intersects the $x$ axis
+at
+\[ t = \pm \frac{\tau}{(2n+1)}\]
+which implies
+\[ w_n = \frac{\tau}{2n+1}+\frac{\tau}{2n+1} = \frac{2\tau}{(2n+1)}.\]
+%So as $N$ approaches infinity,
+%the width $w_{\xN}$ of each pulse approaches zero at the same rate that
+%height $h_{\xN}$ approaches infinity.
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerppg{bruckner1997}{620}{621}{013458886X}
+  }
+\label{prop:dkernel_even}
+%--------------------------------------
+Let $\Dn$ be the \fncte{Dirichlet Kernel} with period $\tau$ \xref{def:dkernel}.
+\propbox{
+  \Dn(x) = \Dn(-x) \qquad \text{($\Dn$ is an \prope{even} function)}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+\Dn(x) 
+    &= \frac{1}{\tau}
+       \frac{\sin\left[ \frac{\pi}{\tau}(2n+1)x  \right] }
+            {\sin\left[ \frac{\pi}{\tau}t        \right] }
+    && \text{by \prefp{prop:dkernel}}
+  \\&= \frac{1}{\tau}
+       \frac{-\sin\left[-\frac{\pi}{\tau}(2n+1)x  \right] }
+            {-\sin\left[-\frac{\pi}{\tau}t        \right] }
+    && \text{because $\sin\fvx$ is an \prope{odd} function}
+  \\&= \frac{1}{\tau}
+       \frac{\sin\left[\frac{\pi}{\tau}(2n+1)(-x)  \right] }
+            {\sin\left[\frac{\pi}{\tau}(-x)        \right] }
+  \\&= \Dn(-x)
+    && \text{by \prefp{prop:dkernel}}
+\end{align*}
+\end{proof}
+
+
+
+%%--------------------------------------
+%\begin{theorem}[Dirichlet Comb]
+%\label{thm:comb}
+%\index{comb function}
+%%--------------------------------------
+%Let $\Dn$ be the \hie{Direichlet kernel} (\prefpp{def:dkernel}).
+%\formbox{
+%   \lim_{N\to\infty}\Dn(x) = \frac{1}{\tau} \sum_{n\in\Z} e^{i\frac{2\pi}{\tau}nx} = \sum_{n\in\Z} \delta(x-n\tau).
+%  }
+%\end{theorem}
+%\begin{proof}
+%Let $\fg(x)=\delta(x)$. Then $\Fg(\omega)=1$.
+%\begin{align*}
+%   \lim_{N\to\infty}\Dn(x)
+%     &=  \frac{1}{\tau} \sum_{n\in\Z} e^{i\frac{2\pi}{\tau}nx}
+%   \\&=  \frac{1}{\tau} \sum_{n\in\Z} \Fg(\omega) e^{i\frac{2\pi}{\tau}nx}
+%   \\&=  \sum_{n\in\Z} \fg(t+n\tau)
+%         \hspace{1cm}\mbox{by PSF---\prefpp{thm:psf}}
+%   \\&=  \sum_{n\in\Z} \delta(t+n\tau)
+%   \\&=  \sum_{n\in\Z} \delta(x-n\tau).
+%\end{align*}
+%\end{proof}
+
+%=======================================
+\section{Trigonometric summations}
+%=======================================
+%--------------------------------------
+\begin{theorem}[\thmd{Lagrange trigonometric identities}]
+\footnote{
+  \citePpc{muniz1953}{140}{``Lagrange's Trigonometric Identities"},
+  \citerppgc{jeffrey2008}{128}{130}{0080556841}{2.4.1.6 Sines, Cosines, and Tagents of Multiple Angles; (14), (13)}
+  %\citerppgc{jeffrey2008}{128}{130}{0080556841}{2.4.1.6 Sines, Cosines, and Tagents of Multiple Angles; (16) $\sum\sin(x+ky)$ and (17) $\sum\cos(x+ky)$ with $x=0$}
+  }
+\label{thm:ltrigids}
+%--------------------------------------
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l c>{\ds}lC}
+  \sum_{n=0}^{\xN-1} \cos\brp{nx} 
+    &=& \frac{1}{2} + \frac{\sin\brp{\brs{\xN-\frac{1}{2}}x}}
+                           {2\sin\brp{\frac{1}{2}x}}
+    &=& \frac{\sin\brp{\brs{\xN-\frac{1}{2}}x}+\sin\brp{\frac{1}{2}x}}
+             {2\sin\brp{\frac{1}{2}x}}
+    & \forall x\in\R
+  \\
+  \sum_{n=0}^{\xN-1} \sin\brp{nx} 
+    &=& \frac{1}{2}\cot\brp{\frac{1}{2}x} + \frac{\cos\brp{\brs{\xN-\frac{1}{2}}x}}
+                                                 {2\sin\brp{\frac{1}{2}x}}
+    &=& \frac{\cos\brp{\brs{\xN-\frac{1}{2}}x}+\cos\brp{\frac{1}{2}x}}
+             {2\sin\brp{\frac{1}{2}x}}
+    & \forall x\in\R
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \sum_{n=0}^{\xN-1} \cos\brp{nx} 
+    &= \mathrlap{%
+       \sum_{n=0}^{\xN-1} \Re e^{inx} 
+     = \Re \sum_{n=0}^{\xN-1} e^{inx} 
+     = \Re \sum_{n=0}^{\xN-1} \brp{e^{ix}}^n
+       }
+  \\&= \Re\brs{\frac{1-e^{i\xN x}}{1-e^{ix}}}
+    && \text{by \hie{geometric series}}
+    && \text{\ifxref{sums}{thm:series_geometric}}
+  \\&= \Re\brs{\brp{\frac{e^{i\frac{1}{2}\xN x}}{e^{i\frac{1}{2}x}}}
+               \brp{\frac{e^{-i\frac{1}{2}\xN x}-e^{i\frac{1}{2}\xN x}}{e^{-i\frac{1}{2}x}-e^{i\frac{1}{2}x}}}
+              }
+  \\&= \Re\brs{\brp{e^{i\frac{1}{2}(\xN-1)x}}
+               \brp{\frac{-i\frac{1}{2}\sin\brp{\frac{1}{2}\xN x}} 
+                         {-i\frac{1}{2}\sin\brp{\frac{1}{2}   x}}}
+               }
+  \\&=    \cos\brp{\frac{1}{2}(\xN-1)x}
+              \brp{\frac{\sin\brp{\frac{1}{2}\xN x}} 
+                        {\sin\brp{\frac{1}{2}   x}}}
+  \\&=    \frac{-\frac{1}{2}\sin\brp{-\frac{1}{2}x}+\frac{1}{2}\sin\brp{\brs{\xN-\frac{1}{2}}x}} 
+               {\sin\brp{\frac{1}{2}x}}
+    && \text{by \thme{product identities}}
+    && \text{\xref{thm:trig_cs}}
+  \\&= \frac{1}{2} + \frac{\sin\brp{\brs{\xN-\frac{1}{2}}x}}{2\sin\brp{\frac{1}{2}x}}
+  \\
+  \\
+  \sum_{n=0}^{\xN-1} \sin\brp{nx} 
+    &= \mathrlap{%
+       \sum_{n=0}^{\xN-1} \Im e^{inx} 
+     = \Im \sum_{n=0}^{\xN-1} e^{inx} 
+     = \Im \sum_{n=0}^{\xN-1} \brp{e^{ix}}^n
+       }
+  \\&= \Im\brs{\frac{1-e^{i\xN x}}{1-e^{ix}}}
+    && \text{by \hie{geometric series}}
+    && \text{\ifxref{sums}{thm:series_geometric}}
+  \\&= \Im\brs{\brp{\frac{e^{i\frac{1}{2}\xN x}}{e^{i\frac{1}{2}x}}}
+               \brp{\frac{e^{-i\frac{1}{2}\xN x}-e^{i\frac{1}{2}\xN x}}{e^{-ix /2}-e^{i\frac{1}{2}x}}}
+              }
+  \\&= \Im\brs{\brp{e^{i(\xN-1)x /2}}
+               \brp{\frac{-\frac{1}{2}i\sin\brp{\frac{1}{2}\xN x}} 
+                         {-\frac{1}{2}i\sin\brp{\frac{1}{2}x}}}
+               }
+  \\&=    \sin\brp{\frac{(\xN-1)x}{2}}
+              \brp{\frac{\sin\brp{\frac{1}{2}\xN x}} 
+                        {\sin\brp{\frac{1}{2}x}}}
+  \\&=    \frac{\frac{1}{2}\cos\brp{-\frac{1}{2}x}-\frac{1}{2}\cos\brp{\brs{\xN-\frac{1}{2}}x}} 
+               {\sin\brp{\frac{1}{2}x}}
+    && \text{by \thme{product identities}}
+    && \text{\xref{thm:trig_cs}}
+  \\&= \frac{1}{2}\cot\brp{\frac{1}{2}x} 
+     + \frac{\cos\brp{\brs{\xN-\frac{1}{2}}x}}
+            {2\sin\brp{\frac{1}{2}x}}
+\end{align*}
+
+Note that these results (summed with indices from $n=0$ to $n=\xN-1$) 
+are compatible with \citePp{muniz1953}{140} (summed with indices from $n=1$ to $n=\xN$)
+as demonstrated next: % and \citerpg{jeffrey2008}{129}{0080556841} 
+%because
+\begin{align*}
+  \sum_{n=0}^{\xN-1} \cos\brp{nx} 
+    &= \sum_{n=1}^{\xN} \cos\brp{nx} + \brs{\cos\brp{0x} - \cos\brp{\xN x}}
+  \\&= \brs{-\frac{1}{2} + \frac{\sin\brp{\brs{\xN+\frac{1}{2}}x}}{2\sin\brp{\frac{1}{2}x}}}
+       + \brs{\cos\brp{0x} - \cos\brp{\xN x}}
+    && \text{by \citePp{muniz1953}{140}}
+  \\&= \brp{1-\frac{1}{2}} + \frac{\sin\brp{\brs{\xN+\frac{1}{2}}x} - 2\sin\brp{\frac{1}{2}x}\cos\brp{\xN x}}
+                                  {2\sin\brp{\frac{1}{2}x}}
+  \\&=        \frac{1}{2} + \frac{\sin\brp{\brs{\xN+\frac{1}{2}}x} - 2\brs{\sin\brp{\brs{\frac{1}{2}-\xN}x}+\sin\brs{\brp{\frac{1}{2}+\xN} x}}}
+                                  {2\sin\brp{\frac{1}{2}x}}
+    && \text{by \prefp{thm:trig_cs}}
+    %&& \text{by \thme{product identities}}
+    %&& \text{\xref{thm:trig_cs}}
+  \\&= \frac{1}{2} + \frac{\sin\brp{\frac{1}{2}\brs{2\xN-1}x}}{2\sin\brp{\frac{1}{2}x}}
+    && \text{$\implies$ above result}
+  \\
+  \sum_{n=0}^{\xN-1} \sin\brp{nx} 
+    &= \sum_{n=1}^{\xN} \sin\brp{nx} + \brs{\sin\brp{0x} - \sin\brp{\xN x}}
+  \\&= \frac{1}{2}\cot\brp{\frac{1}{2}x} - \frac{\cos\brp{\brs{\xN+\frac{1}{2}}x}}{2\sin\brp{\frac{1}{2}x}}
+       + \brs{0 - \sin\brp{\xN x}}
+    && \text{by \citePp{muniz1953}{140}}
+  \\&= \frac{1}{2}\cot\brp{\frac{1}{2}x} 
+     - \frac{\cos\brp{\brs{\xN+\frac{1}{2}}x} - 2\sin\brp{\frac{1}{2}x}\sin\brp{\xN x}}
+            {2\sin\brp{\frac{1}{2}x}}
+  \\&= \mathrlap{%
+       \frac{1}{2}\cot\brp{\frac{1}{2}x} 
+     - \frac{\cos\brp{\brs{\xN+\frac{1}{2}}x} - \brs{\cos\brp{\brs{\frac{1}{2}-\xN}x}-\cos\brp{\brs{\frac{1}{2}+\xN}x}}}
+            {2\sin\brp{\frac{1}{2}x}}
+       }
+  \\&= \frac{1}{2}\cot\brp{\frac{1}{2}x} 
+     + \frac{\cos\brp{\brs{\xN-\frac{1}{2}}x}}
+            {2\sin\brp{\frac{1}{2}x}}
+    && \text{$\implies$ above result}
+\end{align*}
+
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppgc{jeffrey2008}{128}{130}{0080556841}{2.4.1.6 Sines, Cosines, and Tagents of Multiple Angles; (16) and (17)}
+  }
+\label{thm:ltinxy}
+%--------------------------------------
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l C}
+  \sum_{n=0}^{\xN-1} \cos\brp{nx+y} 
+    &=& \cos\brp{y}\brs{
+        \frac{1}{2} + \frac{\sin\brp{\brs{\xN-\frac{1}{2}}x}}
+                           {2\sin\brp{\frac{1}{2}x}}
+        }
+        -
+        \sin\brp{y}\brs{
+        \frac{1}{2}\cot\brp{\frac{1}{2}x} + \frac{\cos\brp{\brs{\xN-\frac{1}{2}}x}}
+                                                 {2\sin\brp{\frac{1}{2}x}}
+        }
+  & \forall x\in\R
+  \\
+  \sum_{n=0}^{\xN-1} \sin\brp{nx+y} 
+    &=& \cos\brp{y}\brs{
+        \frac{1}{2} + \frac{\sin\brp{\brs{\xN-\frac{1}{2}}x}}
+                           {2\sin\brp{\frac{1}{2}x}}
+        }
+        +
+        \sin\brp{y}\brs{
+        \frac{1}{2}\cot\brp{\frac{1}{2}x} + \frac{\cos\brp{\brs{\xN-\frac{1}{2}}x}}
+                                                 {2\sin\brp{\frac{1}{2}x}}
+        }
+  & \forall x\in\R
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \sum_{n=0}^{\xN-1} \cos\brp{nx+y} 
+    &= \sum_{n=0}^{\xN-1} \brs{\cos\brp{nx}\cos\brp{y}-\sin\brp{nx}\sin\brp{y}}
+    && \text{by \thme{double angle formulas}}
+    && \text{\xref{thm:trig_a+b}}
+  \\&= \cos\brp{y}\sum_{n=0}^{\xN-1}\cos\brp{nx}- \sin\brp{y}\sum_{n=0}^{\xN-1}\sin\brp{nx}
+  \\
+  \sum_{n=0}^{\xN-1} \sin\brp{nx+y} 
+    &= \sum_{n=0}^{\xN-1} \brs{\cos\brp{nx}\cos\brp{y}+\sin\brp{nx}\sin\brp{y}}
+    && \text{by \thme{double angle formulas}}
+    && \text{\xref{thm:trig_a+b}}
+  \\&= \cos\brp{y}\sum_{n=0}^{\xN-1}\cos\brp{nx}+ \sin\brp{y}\sum_{n=0}^{\xN-1}\sin\brp{nx}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{corollary}[\thmd{Summation around unit circle}]
+\label{cor:trig_circle}
+%--------------------------------------
+\thmbox{\begin{array}{@{\hspace{2pt}}>{\ds}l@{\hspace{1pt}}c@{\hspace{1pt}}>{\ds}l@{\hspace{1pt}}c@{\hspace{1pt}}>{\ds}l@{\hspace{1pt}}c@{\hspace{1pt}}>{\ds}lC}
+  \sum_{n=0}^{\xN-1} \cos\brp{\theta +\frac{2n\xM\pi}{\xN}}                                       &=&
+  \sum_{n=0}^{\xN-1} \sin\brp{\theta +\frac{2n\xM\pi}{\xN}}                                       &=&
+  \sum_{n=0}^{\xN-1} \cos\brp{\theta +\frac{2n\xM\pi}{\xN}}\sin\brp{\theta +\frac{2n\xM\pi}{\xN}} &=& 0
+  &\begin{array}{@{}C}\forall\theta\in\R\\\forall\xM\in\Zp\end{array}
+  \\
+  \sum_{n=0}^{\xN-1} \cos^2\brp{\theta +\frac{2n\xM\pi}{\xN}} &=&  
+  \sum_{n=0}^{\xN-1} \sin^2\brp{\theta +\frac{2n\xM\pi}{\xN}} &=&
+  \frac{\xN}{2}                                               & &
+  &\begin{array}{@{}C}\forall\theta\in\R\\\forall\xM\in\Zp\end{array}
+\end{array}}
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  &\sum_{n=0}^{\xN-1} \cos\brp{\theta +\frac{2n\xM\pi}{\xN}} 
+  \\&= \cos(\theta)\sum_{n=0}^{\xN-1}\cos\brp{\frac{2n\xM\pi}{\xN}} 
+     - \sin(\theta)\sum_{n=0}^{\xN-1}\sin\brp{\frac{2n\xM\pi}{\xN}} 
+    && \text{by \prefp{thm:trig_a+b}}
+    %\quad\text{by \thme{double angle formulas} \xref{thm:trig_a+b}}
+  \\&= \cos\brp{\theta}\brs{
+        \frac{1}{2} + \frac{\sin\brp{\brs{\xN-\frac{1}{2}}\frac{2\xM\pi}{\xN}}}
+                           {2\sin\brp{\frac{1}{2}\frac{2\xM\pi}{\xN}}}
+        }
+        -
+        \sin\brp{\theta}\brs{
+        \frac{1}{2}\cot\brp{\frac{1}{2}\frac{2\xM\pi}{\xN}} + \frac{\cos\brp{\brs{\xN-\frac{1}{2}}\frac{2\xM\pi}{\xN}}}
+                                                 {2\sin\brp{\frac{1}{2}\frac{2\xM\pi}{\xN}}}}
+    && \text{by \prefp{thm:ltrigids}}
+  \\&= \cos\brp{\theta}\brs{
+        \frac{1}{2} - \frac{\sin\brp{\frac{\xM\pi}{\xN}-2\xM\pi}}
+                           {2\sin\brp{\frac{\xM\pi}{\xN}}}
+        }
+        -
+        \sin\brp{\theta}\brs{
+        \frac{1}{2}\cot\brp{\frac{\xM\pi}{\xN}} - \frac{\cos\brp{\frac{\xM\pi}{\xN}-2\xM\pi}}
+                                                 {2\sin\brp{\frac{\xM\pi}{\xN}}}
+        }
+  \\&= \mathrlap{\cos\brp{\theta}\brs{
+        \frac{1}{2} - \frac{1}{2}\frac{\sin\brp{\frac{\xM\pi}{\xN}}}
+                                      {\sin\brp{\frac{\xM\pi}{\xN}}}
+        }
+        -
+        \sin\brp{\theta}\brs{
+        \frac{1}{2}\cot\brp{\frac{\xM\pi}{\xN}} - \frac{1}{2}\cot\brp{\frac{\xM\pi}{\xN}}
+        }
+    \qquad\text{\begin{tabular}{l}by \thme{trigonometric periodicity}\\\xref{thm:trig_periodic}\end{tabular}}}
+  \\&= \cos\brp{\theta}\brs{0} - \sin\brp{\theta}\brs{0}
+  \\&= 0
+\end{align*}
+
+\begin{align*}
+  \sum_{n=0}^{\xN-1} \sin\brp{\theta +\frac{2n\xM\pi}{\xN}} 
+    &= \sum_{n=0}^{\xN-1} \cos\brp{\theta-\frac{\pi}{2} +\frac{2n\xM\pi}{\xN}}
+    && \text{by \thme{shift identities}}
+    && \text{\xref{thm:trig_shift}}
+  \\&= \sum_{n=0}^{\xN-1} \cos\brp{\phi +\frac{2n\xM\pi}{\xN}}
+    && \text{where $\phi\eqd\theta-\frac{\pi}{2}$}
+  \\&= 0
+    && \text{by previous result}
+\end{align*}
+
+\begin{align*}
+    &\sum_{n=0}^{\xN-1} \cos\brp{\theta +\frac{2n\xM\pi}{\xN}} \sin\brp{\theta +\frac{2n\xM\pi}{\xN}} 
+  \\&= -\frac{1}{2}\sum_{n=0}^{\xN-1}\sin\brp{\brs{\theta +\frac{2n\xM\pi}{\xN}}-\brs{\theta +\frac{2n\xM\pi}{\xN}}}
+       +\frac{1}{2}\sum_{n=0}^{\xN-1}\sin\brp{\brs{\theta +\frac{2n\xM\pi}{\xN}}+\brs{\theta +\frac{2n\xM\pi}{\xN}}}
+    %&& \text{by \thme{product identities}}
+    && \text{by \prefp{thm:trig_cs}}
+  \\&= -\frac{1}{2}\sum_{n=0}^{\xN-1}\cancelto{0}{\sin\brp{0}}
+       +\frac{1}{2}\sum_{n=0}^{\xN-1}\sin\brp{2\theta +\frac{4n\xM\pi}{\xN}}
+  \\&= \frac{1}{2}\sin\brp{2\theta}\sum_{n=0}^{\xN-1}\sin\brp{\frac{4n\xM\pi}{\xN}}
+     + \frac{1}{2}\cos\brp{2\theta}\sum_{n=0}^{\xN-1}\sin\brp{\frac{4n\xM\pi}{\xN}}
+    %&& \text{by \thme{double angle formulas}}
+    && \text{by \prefp{thm:trig_a+b}}
+  \\&= \cos\brp{2\theta}\brs{
+        \frac{1}{2} + \frac{\sin\brp{\brs{\xN-\frac{1}{2}}\frac{4\xM\pi}{\xN}}}
+                           {2\sin\brp{\frac{1}{2}\frac{2\xM\pi}{\xN}}}
+        }
+        -
+        \sin\brp{2\theta}\brs{
+        \frac{1}{2}\cot\brp{\frac{1}{2}\frac{4\xM\pi}{\xN}} + \frac{\cos\brp{\brs{\xN-\frac{1}{2}}\frac{4\xM\pi}{\xN}}}
+                                                 {2\sin\brp{\frac{1}{2}\frac{4\xM\pi}{\xN}}}
+        }
+    && \text{by \prefp{thm:ltrigids}}
+  \\&= \cos\brp{2\theta}\brs{
+        \frac{1}{2} - \frac{\sin\brp{\frac{2\xM\pi}{\xN}-4\xM\pi}}
+                           {2\sin\brp{\frac{2\xM\pi}{\xN}}}
+        }
+        -
+        \sin\brp{2\theta}\brs{
+        \frac{1}{2}\cot\brp{\frac{2\xM\pi}{\xN}} - \frac{\cos\brp{\frac{2\xM\pi}{\xN}-4\xM\pi}}
+                                                 {2\sin\brp{\frac{2\xM\pi}{\xN}}}
+        }
+  \\&= \mathrlap{\cos\brp{\theta}\brs{
+        \frac{1}{2} - \frac{1}{2}\frac{\sin\brp{\frac{2\xM\pi}{\xN}}}
+                           {\sin\brp{\frac{2\xM\pi}{\xN}}}
+        }
+        -
+        \sin\brp{\theta}\brs{
+        \frac{1}{2}\cot\brp{\frac{2\xM\pi}{\xN}} - \frac{1}{2}\cot\brp{\frac{2\xM\pi}{\xN}}
+        }
+    \qquad\text{\begin{tabular}{l}by \thme{trigonometric periodicity}\\\xref{thm:trig_periodic}\end{tabular}}}
+  \\&= \cos\brp{\theta}\brs{0} - \sin\brp{\theta}\brs{0}
+  \\&= 0
+\end{align*}
+
+\begin{align*}
+  \sum_{n=0}^{\xN-1} \cos^2\brp{\theta +\frac{2n\xM\pi}{\xN}} 
+    &= \frac{1}{2}\sum_{n=0}^{\xN-1}\brs{1+ \cos\brp{2\theta +\frac{4n\xM\pi}{\xN}}}
+    %&& \text{by \thme{half-angle formulas}}
+    %&& \text{\xref{thm:trig_half}}
+    && \text{by \prefp{thm:trig_half}}
+  \\&= \frac{1}{2}\sum_{n=0}^{\xN-1}\brs{1 + \cos\brp{2\theta}\cos\brp{\frac{4n\xM\pi}{\xN}} - \sin\brp{2\theta}\sin\brp{\frac{4n\xM\pi}{\xN}}}
+    %&& \text{by \thme{double angle formulas}}
+    %&& \text{\xref{thm:trig_a+b}}
+    && \text{by \prefp{thm:trig_a+b}}
+  \\&= \frac{1}{2}\sum_{n=0}^{\xN-1}1 
+     + \frac{1}{2}\cos\brp{2\theta}\sum_{n=0}^{\xN-1}\cos\brp{\frac{4n\xM\pi}{\xN}} 
+     - \frac{1}{2}\sin\brp{2\theta}\sum_{n=0}^{\xN-1}\sin\brp{\frac{4n\xM\pi}{\xN}}
+  \\&= \brs{\frac{1}{2}\sum_{n=0}^{\xN-1}1} 
+     + \frac{1}{2}\cos\brp{2\theta}0 
+     - \frac{1}{2}\sin\brp{2\theta}0
+    && \text{by previous results}
+  \\&= \frac{\xN}{2}
+\end{align*}
+\begin{align*}
+  \sum_{n=0}^{\xN-1} \sin^2\brp{\theta +\frac{2n\xM\pi}{\xN}} 
+    &= \sum_{n=0}^{\xN-1} \cos^2\brp{\theta-\frac{\pi}{2} +\frac{2n\xM\pi}{\xN}}
+    && \text{by \thme{shift identities} \xref{thm:trig_shift}}
+  \\&= \sum_{n=0}^{\xN-1} \cos^2\brp{\phi +\frac{2n\xM\pi}{\xN}}
+    && \text{where $\phi\eqd\theta-\frac{\pi}{2}$}
+  \\&= \frac{\xN}{2}
+    && \text{by previous result}
+\end{align*}
+\end{proof}
+
+
+
+
+\ifexclude{wsd}{
+%=======================================
+\section{Summability Kernels}
+%=======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{cerda2010}{56}{0821851152},
+  \citerpg{katznelson2004}{10}{0521543592},
+  \citerpg{reyna2002}{21}{3540432701},
+  \citerppg{walnut2002}{40}{41}{0817639624},
+  \citerpg{heil2011}{440}{0817646868},
+  \citerpg{istratescu1987}{309}{9027721823}
+  }
+\label{def:sumkernel}
+%--------------------------------------
+Let $\symxd{\seq{\fkappa_n}{n\in\Z}}$ be a sequence of \prope{continuous} $2\pi$ \prope{periodic} functions.
+\defboxt{%
+  The sequence $\symxd{\seq{\fkappa_n}{n\in\Z}}$ is a \fnctd{summability kernel} if 
+  \\\indentx$\begin{array}{F>{\ds}lclCD}
+      %\cnto & $\ds\fkappa_n$ is \prope{continuous}                           & $\forall n\in\Z$   & and 
+      %\cntn & $\ds\fkappa_n$ is $2\pi$ \prope{periodic}                      & $\forall n\in\Z$   & and 
+        1.& \frac{1}{2\pi} \int_0^{2\pi} \fkappa_n(x) \dx                     &=  &1   & \forall n\in\Z   & and 
+      \\2.& \frac{1}{2\pi} \int_0^{2\pi} \abs{\fkappa_n(x)} \dx               &\in&\R  & \forall n\in\Z   & and 
+      \\3.& \lim_{n\to\infty} \int_\delta^{2\pi-\delta} \abs{\fkappa_n(x)} \dx&=  &0   & \forall n\in\Z,\, 0<\delta<\pi &
+    \end{array}$
+ %\\A summability kernel $\seqn{\fkappa_n}$ is \propd{positive} if $\fkappa_n(x)\ge0$ for all $n$ and for all $x$.
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{katznelson2004}{11}{0521543592}
+  }
+\label{thm:sumkernel}
+%--------------------------------------
+Let $\seq{\fkappa_n}{n\in\Z}$ be a sequence. Let $\qT$ be the quotient $\R/2\pi\Z$.
+\thmbox{
+  \brbr{\begin{array}{>{\scs}rMD}
+    1. & $\ds\ff \in L^1(\qT)$ & and \\
+    2. & $\seqn{\fkappa_n}$ is a summability kernel
+  \end{array}}
+  \qquad\implies\qquad
+  \ff(x) = \lim_{n\to\infty} \frac{1}{2\pi} \int_\qT \fkappa_n(x)\ff(x-x)\dx
+  }
+\end{theorem}
+
+The \fncte{Dirichlet kernel} \xref{def:Dn} is \emph{not} a \prope{summability kernel}.
+Examples of kernels that \emph{are} summability kernels include
+\\\indentx\begin{tabular}{>{\scs}rl>{(}ll<{)}}
+  \cnto & \fncte{Fej{/'e}r's kernel}                  & \pref{def:Kn} & \prefpo{def:Kn} 
+  \cntn & \fncte{de la Vall{/'e}e Poussin kernel}     & \pref{def:Vn} & \prefpo{def:Vn} 
+  \cntn & \fncte{Jackson kernel}                      & \pref{def:Jn} & \prefpo{def:Jn} 
+  \cntn & \fncte{Poisson kernel}                      & \pref{def:Pn} & \prefpo{def:Pn} . 
+\end{tabular}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{katznelson2004}{12}{0521543592}
+  }
+\label{def:Kn}
+%--------------------------------------
+\defbox{\begin{array}{M}
+  \fnctd{Fej{/'e}r's kernel} $\symxd{\Kn}$ is defined as
+  \\\indentx$\ds \Kn(x) \eqd \sum_{k=-n}^{k=n} \brp{1-\frac{\abs{k}}{n+1}}e^{ikx}$
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpg{katznelson2004}{12}{0521543592},
+  \citerpg{heil2011}{448}{0817646868}
+  }
+\label{thm:Kn_sin}
+%2012 February 08 Wednesday
+%--------------------------------------
+Let $\Kn$ be Fej{/'e}r's kernel \xref{def:Kn}.
+\propbox{
+  \Kn(x) = \frac{1}{n+1}\brp{\frac{\ds\sin\frac{n+1}{2}x}{\ds\sin\frac{1}{2}x}}^2
+  }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Lemma: Proof that $\sin^2{\frac{x}{2}}\equiv\frac{-1}{4}\brp{e^{-ix}-2+e^{ix}}$:\label{item:Kn_sin_lem}
+    \begin{align*}
+      \sin^2\frac{x}{2}
+        &\equiv \brp{\frac{e^{-i\frac{x}{2}} - e^{+i\frac{x}{2}}}{2i}}^2
+        &&      \text{by \hi{Euler Formulas} (\prefp{cor:trig_ceesee})}
+      \\&\equiv \frac{-1}{4}\brp{e^{-2i\frac{x}{2}}-2e^{-i\frac{x}{2}}e^{i\frac{x}{2}}+e^{2i\frac{x}{2}}}
+      \\&\equiv \frac{-1}{4}\brp{e^{-ix}-2+e^{ix}}:
+    \end{align*}
+
+  \item Lemma: \label{item:Kn_abs_lem}
+    \[
+      2\abs{k} -\abs{k+1}-\abs{k-1}
+         = \brbl{\begin{array}{lD}
+             -2 & for $k=0$\\
+              0 & for $k\in\Z\setd0$
+           \end{array}}
+     \]
+
+  \item Proof that $\Kn(x) = \frac{1}{n+1}\brp{\frac{\sin\frac{n+1}{2}x}{\sin\frac{1}{2}x}}^2$:
+    \begin{align*}
+      &-4(n+1)\brp{\sin\frac{1}{2}x}^2\;\Kn(x)
+      \\&= -4(n+1)\brp{\frac{-1}{4}}\brp{e^{-ix}-2+e^{ix}}\Kn(x)
+        \qquad\text{by \pref{item:Kn_sin_lem}}
+      \\&= (n+1)\brp{e^{-ix}-2+e^{ix}} \sum_{k=-n}^{k=n} \brp{1-\frac{\abs{k}}{n+1}}e^{ikx}
+        \qquad\text{by \pref{def:Kn}}
+      \\&= (n+1)\frac{1}{n+1}\brp{e^{-ix}-2+e^{ix}} \sum_{k=-n}^{k=n} \brp{n+1-\abs{k}} e^{ikx}
+      \\&= {
+           e^{-ix} \sum_{k=-n}^{k=n} \brp{n+1-\abs{k}} e^{ikx}
+           -2      \sum_{k=-n}^{k=n} \brp{n+1-\abs{k}} e^{ikx}
+           e^{ix}  \sum_{k=-n}^{k=n} \brp{n+1-\abs{k}} e^{ikx}
+           }
+      \\&= {
+              \sum_{k=-n}^{k=n} \brp{n+1-\abs{k}} e^{i(k-1)x}
+           -2 \sum_{k=-n}^{k=n} \brp{n+1-\abs{k}} e^{ikx}
+              \sum_{k=-n}^{k=n} \brp{n+1-\abs{k}} e^{i(k+1)x}
+           }
+      \\&= {
+              \sum_{k=-n-1}^{k=n-1} \brp{n+1-\abs{k+1}} e^{ikx}
+           -2 \sum_{k=-n}^{k=n}     \brp{n+1-\abs{k}}   e^{ikx}
+              \sum_{k=-n+1}^{k=n+1} \brp{n+1-\abs{k-1}} e^{ikx}
+           }
+      \\&=      {\mcom{  e^{-i(n+1)x}}{$k=-n-1$} + \mcom{ 2e^{-inx}}{$k=-n$} +  \sum_{k=-n+1}^{k=n-1} \brp{n+1-\abs{k+1}} e^{ikx}} +
+      \\&\qquad {\mcom{-2e^{-inx}}    {$k=-n$}   + \mcom{-2e^{ inx}}{$k= n$} - 2\sum_{k=-n+1}^{k=n-1} \brp{n+1-\abs{k}}   e^{ikx}} +
+      \\&\qquad {\mcom{  e^{i(n+1)x}} {$k=n+1$}  + \mcom{ 2e^{ inx}}{$k= n$} +  \sum_{k=-n+1}^{k=n-1} \brp{n+1-\abs{k-1}} e^{ikx}}
+      %
+      \\&=      {  e^{-i(n+1)x}  +  \sum_{k=-n+1}^{k=n-1} \brp{n+1-\abs{k+1}} e^{ikx}} +
+      \\&\qquad {                - 2\sum_{k=-n+1}^{k=n-1} \brp{n+1-\abs{k}}   e^{ikx}} +
+      \\&\qquad {  e^{i(n+1)x}   +  \sum_{k=-n+1}^{k=n-1} \brp{n+1-\abs{k-1}} e^{ikx}}
+      %
+      \\&= {  e^{-i(n+1)x}  +  e^{i(n+1)x} +  
+           \sum_{k=-n+1}^{k=n-1} \brs{\brp{n+1-\abs{k+1}}-2\brp{n+1-\abs{k}}+\brp{n+1-\abs{k-1}}}\: e^{ikx}}
+      \\&= {  e^{-i(n+1)x}  +  e^{i(n+1)x} +  
+           \sum_{k=-n+1}^{k=n-1} \brp{2\abs{k}-\abs{k+1}-\abs{k-1}}\: e^{ikx}}
+      \\&= {  e^{-i(n+1)x}  +  e^{i(n+1)x} -2}
+        \qquad\text{by \pref{item:Kn_abs_lem}} 
+      \\&= -4\brp{ \sin\frac{n+1}{2}x}^2
+        \qquad\text{by \pref{item:Kn_sin_lem}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{katznelson2004}{16}{0521543592}
+  }
+\label{def:Vn}
+%--------------------------------------
+Let $\Kn$ be \fncte{Fej{/'e}r's kernel} \xref{def:Kn}.
+\defbox{\begin{array}{M}
+  The \fnctd{de la Vall{/'e}e Poussin kernel} $\symxd{\Vn}$ is defined as
+  \\\indentx$\ds \Vn(x) \eqd 2K_{2n+1}(x)-K_n(x)$
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{katznelson2004}{17}{0521543592}
+  }
+\label{def:Jn}
+%--------------------------------------
+Let $\Kn$ be \fncte{Fej{/'e}r's kernel} \xref{def:Kn}.
+\defbox{\begin{array}{M}
+  The \fnctd{Jackson kernel} $\symxd{\Jn}$ is defined as
+  \\\indentx$\ds \Jn(x) \eqd \norm{\Kn}^{-2}\Kn^2(x)$
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{katznelson2004}{16}{0521543592}
+  }
+\label{def:Pn}
+%--------------------------------------
+\defbox{\begin{array}{M}
+  The \fnctd{Poisson kernel} $\symxd{P}$ is defined as
+  \\\indentx$\ds P(r,x) \eqd \sum_{k\in\Z} r^\abs{k}e^{ikx}$
+\end{array}}
+\end{definition}
+} % wsd exclude
+

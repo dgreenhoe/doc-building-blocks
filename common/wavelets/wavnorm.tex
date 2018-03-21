@@ -1,0 +1,457 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX File
+%============================================================================
+
+%======================================
+\chapter{Wavelet Design in Normed Vector Space}
+%======================================
+A \hie{vector space multiresolution analysis} (\hie{\vsmratext}) is a transform whose 
+subspace structure possesses two distinguishing characteristics:
+  \\\begin{tabular}{ll}
+    \circOne & The \vsmratext subspace structure is a \hie{linearly ordered} lattice. \\
+    \circTwo & The \vsmratext subspace basis functions are defined \hie{recursively}.
+  \end{tabular}
+
+On such a subspace lattice structure, we define two \hie{transversal operators}
+that move vectors within the lattice.
+These transversal operators are\\
+  \begin{tabular}{ll<{:}ll}
+    \circOne & \hie{translation operator} & $\opT$ &---moves a vector within a subspace. \\
+    \circTwo & \hie{dilation operator}    & $\opD$ &---moves a vector ``up" one subspace.
+  \end{tabular}
+
+%=======================================
+\section{Axioms}
+%=======================================
+
+%--------------------------------------
+\begin{definition}[Vector space multiresolution analysis]
+\label{def:vsmra}
+\index{Vector space multiresolution analysis}
+\index{\vsmratext}
+%--------------------------------------
+\defboxp{
+  Let \vsmrasys be a tuple such that
+    \begin{enumerate}
+      \item $\spX$ is a vector space called the \hid{scaling space}.
+      \item $\opair{\spX}{\normn}$ is a \hie{normed linear space}.
+      \item $\seq{\spV_n\subseteq\spX}{n\in\Z}$ is a sequence 
+            called the \hid{scaling subspace sequence}.
+      \item $\opT:\spX\to\spX$ is an operator on the space $\spX$ 
+            called the \hid{translation operator}.
+      \item $\opD:\spX\to\spX$ is an operator on the space $\spX$ 
+            called the \hid{dilation operator}.
+      \item $\seq{\opP_n}{n\in\Z}$ is the sequence of projection operators on $\seqn{\spV_n}$ 
+            such that \\\qquad
+            $\spV_n = \opP_n\spX \quad \scriptstyle \forall\spV_n\in\seqn{\spV_n}$.\\
+            The sequence $\seqn{\opP_n}$ is called the \hid{scaling operator sequence}.
+      \item $\seq{h_n}{n\in\Z}$ is a sequence of scalars 
+            called the \hid{scaling coefficients sequence}.
+      \item $\phi$ is the vector defined in \prefpp{ax:vsmra}
+            called the \hid{scaling vector}.
+    \end{enumerate}
+  \vspace{1ex}
+  The tuple $\vsmrasys$ is a \hid{vector space multiresolution analysis}
+  (\hid{\vsmratext}) if it satisfies the following sets of axioms of \prefpp{ax:vsmra}.
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{axiom}
+\label{ax:vsmra}
+%\label{def:seqVn}
+\citetbl{
+  \citerp{mallat}{221} \\
+  \citerp{mallat89}{70}
+  %\citerpp{dau}{129}{140}
+  %\citerpp{vidakovic}{51}{52}
+  }
+%--------------------------------------
+Let $\spX$ be a vector space and $\seq{\spV_n\subseteq\spX}{n\in\Z}$ a sequence of 
+vector subspaces of $\spX$.
+\axbox{\begin{array}{@{\qquad}l>{\ds}l @{\qquad}C @{\qquad}D}
+     1. & \spV_n = \clsX[\spV]_n
+        & \forall \spV_n\in\seq{\spV_n}{n\in\Z} 
+        & closed 
+  \\ 2. & \spV_n \subsetneq \spV_{n+1}
+        & \forall n\in\Z,\, \spV_n\in\seq{\spV_n}{n\in\Z} 
+        & $\opair{\seqn{\spV_n}}{\subseteq}$ is a totally ordered set  
+  \\ 3. & \cls{\setopu_{n\in\Z} \spV_n} = \spX
+        & 
+        & dense in $\spX$
+  \\ 4. & \setopi_{n\in\Z} \spV_n = \setn{\vzero}
+        &
+        & greatest lower bound is $\vzero$ 
+  \\ 5. & \vx\in\spV_n \iff \opT\vx\in\spV_n     
+        & \forall n\in\Z 
+        & (\hi{translation invariant})
+  \\ 6. & \vx\in\spV_n \iff \opD\vx\in\spV_{n+1} 
+        & \forall n\in\Z 
+        & (\hi{self-similar})
+  \\ 7. & \opT^n \opD   = \opD\opT^{2n}        
+        & \forall n\in\Z 
+        & (\hi{non-commutative})
+  \\ 8. & \brp{\sum_n \opT^n}\brp{\sum_n \opT^n}^\ast = \brp{\sum_n \opT^n}^\ast\brp{\sum_n \opT^n} 
+        &      
+        & (operator $\brp{\sum_n \opT^n}$ is \hi{normal})
+  \\ 9. & \mc{3}{l}{\exists\vphi\in\spV_0 \st \seqn{\opT^n\vphi} \text{ is a \hie{Riesz basis} for $\spV_0$}}
+  \\10. & \normop{\opT}=\normop{\opD}=1
+        &
+        & (normalized length)
+  \\11. & \sum_n \opT^n \vphi = 1
+        &
+        & (\hi{partition of unity})
+\end{array}}
+\end{axiom}
+%\footnotetext{\begin{tabular}[t]{llll}
+%  (1)& {\em Closed sets}:
+%     & Theorem~\ref{thm:ts_close}
+%     & \prefpo{thm:ts_close}
+%  \\
+%  (3)& {\em Dense sets}:
+%     & Theorem~\ref{def:ts_dense}
+%     & \prefpo{def:ts_dense}
+%  \\
+%  (4)& {\em Cantor intersection theorem}:
+%     & Theorem~\ref{thm:cantor_int}
+%     & \prefpo{thm:cantor_int}
+%  \\
+%  (7)& {\em Riesz basis}:
+%     & \prefp{def:riesz_basis}
+%     & \prefpo{def:riesz_basis}
+%  \end{tabular}}
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+\pref{ax:vsmra} \#8 (normal operator axiom) may be useful in vector spaces in which
+it is not possible or not practical to use Fourier analysis.
+If a linear operator is normal, then it can be analyzed using its eigen-system
+with the assistance of the \hie{spectral theorem}.
+\end{remark}
+
+
+\begin{minipage}{5\tw/16}
+  \color{figcolor}
+  \begin{center}
+  \begin{fsL}
+  \setlength{\unitlength}{\textwidth/500}
+  \begin{picture}(400,800)(-50,-350)
+    %{\color{graphpaper}\graphpaper[50](-50,-350)(400,800)}
+    \thinlines
+    \put(0,-150){\line( 0, 1){360} }
+    \put(0, 350){\line( 0, 1){ 50} }
+    \put(0,-300){\line( 0, 1){ 50} }
+
+    \put(0, 400){\circle*{15}}
+    \put(0, 200){\circle*{15}}
+    \put(0, 100){\circle*{15}}
+    \put(0,   0){\circle*{15}}
+    \put(0,-100){\circle*{15}}
+    \put(0,-300){\circle*{15}}
+
+
+
+    \put(10, 400){\makebox(0,0)[l] {$\spX$}}
+    \put( 0, 310){\makebox(0,0)[c] {$\vdots$}}
+    \put(10, 200){\makebox(0,0)[l] {$\spV_2$}}
+    \put(10, 100){\makebox(0,0)[l] {$\spV_1$}}
+    \put(10,   0){\makebox(0,0)[l] {$\spV_0$}}
+    \put(10,-100){\makebox(0,0)[l] {$\spV_{-1}$}}
+    \put( 0,-200){\makebox(0,0)[c] {$\vdots$}}
+    \put(10,-300){\makebox(0,0)[l] {$\spZero$}}
+
+
+    {\color{red}
+      \put( 110, 400){\makebox(0,0)[l] {\parbox{8\tw/16}{\raggedright entire vector space (least upper bound)}}}
+      \put( 100, 400){\vector(-1,0){60}}
+      \put( 110,-300){\makebox(0,0)[l] {\parbox{8\tw/16}{\raggedright greatest lower bound}}}
+      \put( 100,-300){\vector(-1,0){60}}
+      \put( 150, 150){\vector(0,1){50}}
+      \put( 110,  50){\makebox(0,0)[bl] {\parbox{6\tw/16}{\raggedright larger subspaces}}}
+      \put( 110,   0){\makebox(0,0)[tl] {\parbox{6\tw/16}{\raggedright smaller subspaces}}}
+      \put( 150,-100){\vector(0,-1){50}}
+      %\put(- 50,-275){\dashbox{10}(100,650){}}
+      %\put( 110,  50){\makebox(0,0)[bl] {scaling}}
+      %\put( 110,  45){\makebox(0,0)[tl] {subspaces}}
+      %\put( 100,  50){\vector(-1,0){50}}
+    }
+  \end{picture}
+  \end{fsL}
+  \end{center}
+\end{minipage}
+\begin{minipage}{11\tw/16}
+The scaling subspace sequence together with the set inclusion relation $\subseteq$
+form the \hie{linearly ordered set} $(\seqn{\spV_n}, \subseteq)$, illustrated 
+to the left by its Hasse diagram.
+Subspaces $\spV_n$ increase in ``size" with increasing $n$.
+That is, they contain more and more functions for larger and larger $n$---
+with $\spX$ (largest $n$) containing all the vectors in the space
+and $\spZero$ (smallest $n$) containing only the $\vzero$ vector.
+
+The two fundamental operators \footnotemark
+$\opD$ and $\opT$ move a vector within the subspace architecture:
+  \begin{liste}
+    \item If a vector $\vx$ is in a subspace $\spV_n$, then the dilation operator $\opD$
+          moves $\vx$ ``up" one subspace in the sense that $\opD\vx$ is in $\spV_{n+1}$.
+    \item And if a vector $\vx$ is in a subspace $\spV_n$, then the translation operator $\opT$
+          moves $\vx$ ``within" the same subspace $\spV_n$ in the sense that
+          $\opT\vx$ is again in $\spV_n$.
+  \end{liste}
+\end{minipage}
+
+
+
+\begin{figure}[t]
+  \begin{center}
+  \begin{fsL}
+  \setlength{\unitlength}{2\textwidth/2000}
+  \begin{picture}(50,650)(-50,-150)
+    %{\color{graphpaper}\graphpaper[10](-50,-200)(700,700)}
+    \thinlines
+    \put(0,450){\makebox(0,0){\framebox(100,100){%
+      \includegraphics*[width=1\tw/64, height=4\tw/32, clip=true]{../common/wavelets/d2s_x1250.eps}}}}
+    \put(0,300){\makebox(0,0){\framebox(100,100){%
+      \includegraphics*[width=1\tw/32, height=4\tw/32, clip=true]{../common/wavelets/d2s_x1250.eps}}}}
+    \put(0,150){\makebox(0,0){\framebox(100,100){%
+      \includegraphics*[width=2\tw/32, height=4\tw/32, clip=true]{../common/wavelets/d2s_x1875.eps}}}}
+    \put(0,0){\makebox(0,0){\framebox(100,100){%
+      \includegraphics*[width=4\tw/32, height=4\tw/32, clip=true]{../common/wavelets/d2s_x2500.eps}}}}
+    \put(0,-110){\makebox(0,0)[t]{$0$}}
+    \put(0, 350){\line(0,1){50}}
+    \put(0, 200){\line(0,1){50}}
+    \put(0,  50){\line(0,1){50}}
+    \put(0,-100){\line(0,1){50}}
+  \end{picture}
+  \end{fsL}
+  \end{center}
+\caption{
+  \vsmratext using Daubechies-$p2$  
+  (see \prefp{ex:vsmra_basis_lattice_d2})
+  \label{fig:vsmra_basis_lattice_d2}
+  }
+\end{figure}
+
+%---------------------------------------
+\begin{example}
+\label{ex:vsmra_basis_lattice_d2}
+%---------------------------------------
+\prefpp{fig:vsmra_basis_lattice_d2} illustrates an mra lattice using 
+\hi{Daubechies-$p2$} scaling functions.
+\end{example}
+
+
+%--------------------------------------
+\begin{theorem}[dilation equation]
+\label{thm:h->phi}
+\label{thm:vsmra_dilation}
+\index{dilation equation|textbf}
+%--------------------------------------
+Let $\vsmrasys$ be a \vsmratext.
+\formbox{\begin{array}{l rc>{\ds}l @{\qquad}D}
+  \exists \seq{\fh_n}{n\in\Z} \st
+    & \vphi &=& \sum_n  \fh_n \opD \opT^n \vphi
+    & (\hie{dilation equation} \footnotemark)
+\end{array}}
+\footnotetext{
+  The \hie{dilation equation} is also called the \hie{refinement equation},
+  \hie{two-scale difference equation}, and the \hie{two-scale relation}.
+  Reference: \citerp{jawerth}{7}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+              &  \seq{\fphi(t-n)}{n\in\Z} \spans \spV_0
+              && \text{by \prefp{ax:vsmra_subspace} (\vsmratext)}
+  \\ \implies &  \fphi(t)\in \spV_0 \subset \spV_1
+              && \text{by definition of ``span"}
+  \\ \implies &  \set{\fphi(2t-n)}{n\in\Z} \text{ spans } \spV_1
+              && \text{by \vsmratext---\prefp{ax:vsmra}}
+  \\ \implies &  \text{$\fphi(t)$ can be represented as a linear combination of $\fphi(2t-n)$}.
+\end{align*}
+\end{proof}
+
+
+
+
+%=======================================
+\section{Necessary conditions}
+%=======================================
+This section presents conditions that are {\em necessary} for a tupple 
+  \[ X \eqd \vsmrasys \]
+to be a \vsmratext.
+Necessary conditions include \\
+  \begin{tabular}{@{\qquad}clp{\tw/4}<{ \dotfill}@{ }l}
+    \imark & \hie{admissibility condition}: & \pref{thm:vsmra_admiss}      & \prefpo{thm:vsmra_admiss} \\
+    \imark & \hie{quadrature condition}:    & \pref{thm:vsmra_quadcon}     & \prefpo{thm:vsmra_quadcon}
+  \end{tabular}\\
+In particular, if a tupple $X$
+fails to possess any one of the necessary conditions,
+then it is not a \vsmratext at all.
+Note that while these conditions are {\em necessary}, they are not {\em sufficient}.
+That is, just because a tupple $\setX$
+satisfies all of these conditions, doesn't necessarily mean that it is a \vsmratext.
+
+%--------------------------------------
+\begin{theorem}[admissibility condition]
+\label{thm:vsmra_admiss}
+\index{admissibility condition}
+\index{theorems!admissibility condition}
+%--------------------------------------
+Let $\vsmrasys$ be a \vsmratext.
+\thmbox{
+  \sum_n  h_n  = \sqrt{2}
+  }
+\end{theorem}
+\begin{proof}
+Select a vector $\vx$ such that $\inprod{\vphi}{\vx}\ne 0$. Then \ldots
+\begin{align*}
+  \inprod{\vphi}{\vx}
+    &= \inprod{\sum_n h_n \opD\opT^n \vphi}{\vx}
+    && \text{by dilation equation \prefpo{thm:vsmra_dilation}}
+  \\&= \sum_n h_n \inprod{\opD\opT^n \vphi}{\vx}
+    && \text{by property of $\inprodn$ \prefpo{def:inprod}}
+  \\&= \sum_n h_n \inprod{ \vphi}{(\opD\opT^n)^\ast\vx}
+    && \text{by definition of operator adjoint \prefpo{def:op_adj}}
+  \\&= \sum_n h_n \inprod{ \vphi}{(\opTa)^n \opDa \vx}
+    && \text{by property of operator adjoint \prefpo{thm:adjoint_prop}}
+  \\&= \sum_n h_n \inprod{ \vphi}{(\opTi)^n \opDi \vx}
+    && \text{by unitary property of $\opT$ and $\opD$ \prefpo{thm:TD_unitary}}
+  \\&= \sum_n h_n \inprod{ \vphi}{(\opTi)^n \cwt  \vx}
+    && \text{by property of $\opD$ \prefpo{prop:vsmra_real_Di}}
+  \\&= \sum_n h_n \inprod{ \vphi}{ \cwt \vx}
+    && \text{by property of unit vector $\vx$}
+  \\&= \sum_n h_n \cwt \inprod{ \vphi}{ \vx}
+    && \text{by property of $\inprodn$ \prefpo{def:inprod}}
+  \\&= \cwt \; \inprod{\vphi}{\vx}\; \sum_n h_n 
+  \\&\implies
+  \\\sum_n h_n &= \sqrt{2} 
+\end{align*}
+\end{proof}
+
+
+
+
+
+%--------------------------------------
+\begin{theorem}[quadrature condition]
+\label{thm:vsmra_quadcon}
+\index{quadrature condition}
+\index{theorems!quadrature condition}
+%--------------------------------------
+Let $\vsmrasys$ be a \vsmratext.
+\thmbox{
+  \inprod{\vphi}{\opT^n \vphi}
+    = \sum_m h_m \sum_k h_k^\ast \inprod{\vphi}{\opT^{2n-m+k} \vphi}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \inprod{\vphi}{\opT^n \vphi}
+    &= \inprod{\sum_m h_m \opD \opT^m \vphi }{\opT^n \sum_k h_k \opD \opT^k \vphi}
+    && \text{by dilation equation \prefpo{thm:vsmra_dilation}}
+  \\&= \sum_m h_m \sum_k h_k^\ast \inprod{\opD \opT^m \vphi }{\opT^n \opD \opT^k \vphi}
+    && \text{by properties of $\inprodn$ \prefp{def:inprod}}
+  \\&= \sum_m h_m \sum_k h_k^\ast \inprod{\vphi }{\left(\opD \opT^m \right)^\ast \opT^n \opD \opT^k \vphi}
+    && \text{by definition of operator adjoint \prefp{def:op_adjoint}}
+  \\&= \sum_m h_m \sum_k h_k^\ast \inprod{\vphi }{\left(\opD \opT^m \right)^\ast \opD \opT^{2n} \opT^k \vphi}
+  \\&= \sum_m h_m \sum_k h_k^\ast \inprod{\vphi }{\opTa^m \opDa \opD \opT^{2n} \opT^k \vphi}
+    && \text{by operator star-algebra properties \prefp{thm:op_star}}
+  \\&= \sum_m h_m \sum_k h_k^\ast \inprod{\vphi }{\opT^{-m} \opD^{-1} \opD \opT^{2n} \opT^k \vphi}
+  \\&= \sum_m h_m \sum_k h_k^\ast \inprod{\vphi }{\opT^{2n-m+k} \vphi}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{corollary}
+\label{cor:vsmra_quadcon}
+%--------------------------------------
+\corbox{
+    \mcom{\inprod{\phi}{\opT^n\phi} = \kdelta_n}{orthonormal}
+  \qquad\implies\qquad
+  \inprod{\fphi}{\opT^n \fphi}
+    = \sum_m h_m h_{m-2n}^\ast 
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \inprod{\fphi}{\opT^n \fphi}
+    &= \sum_m h_m \sum_k h_k^\ast \inprod{\fphi }{\opT^{2n-m+k} \fphi}
+    && \text{by \prefp{thm:vsmra_quadcon}}
+  \\&= \sum_m h_m \sum_k h_k^\ast \kdelta_{k-m+2n}
+    && \text{by left hypothesis}
+  \\&= \sum_m h_m h_{m-2n}^\ast 
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}[Neumann Expansion Theorem]
+\index{Neumann Expansion Theorem}
+\index{theorems!Neumann Expansion Theorem}
+\label{thm:op_net2}
+\citep{michel1993}{415}
+%---------------------------------------
+Let $\opA:\spX\to\spX$ be an operator on a vector space $\spX$.
+Let $\opA^0\eqd \opI$.
+\formbox{\begin{array}{ll}
+  \left.\begin{array}{lrclD}
+    1. & \opA          &\in& \oppB(\spX,\spX) & ($\opA$ is bounded) \\
+    2. & \normop{\opA} &<&   1         
+  \end{array}\right\}
+  \implies
+  \left\{\begin{array}{lrc>{\ds}l}
+    1. & (\opI-\opA)^{-1} &&\text{ exists} \\
+    2. & \normop{(\opI-\opA)^{-1}} &\le& \frac{1}{1-\normop{\opA}} \\
+    3. & (\opI-\opA)^{-1} &=& \sum_{n=0}^\infty \opA^n  \\
+       & \mc{3}{c}{\text{ with uniform convergence}}
+  \end{array}\right.
+\end{array}}
+\end{theorem}
+
+
+
+
+
+
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:wav_net}
+%--------------------------------------
+Let $\wavsys$ be a \hi{wavelet system}.
+\formbox{
+  \sum_n \abs{h_n} \ge 1
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  &&
+  \vphi &= \sum_n h_n \opT^n \opD \vphi
+  \\\implies&&
+  \left(\opI - \sum_n h_n \opT^n \opD \right)\vphi &= \vzero
+  \\\implies&&
+  \left(\opI - \sum_n h_n \opT^n \opD \right)^{-1} & \text{must not exist}
+  \\\implies&&
+  \normop{\sum_n h_n \opT^n \opD} & \ge 1 
+    && \text{by Neumann Expansion Theorem \prefpo{thm:op_net2}}
+  \\\implies&&
+  1
+      &\le \normop{\sum_n h_n \opT^n \opD}
+     &&    \text{by Neumann Expansion Theorem \prefpo{thm:op_net2}}
+  \\&&&\le \sum_n  \normop{h_n \opT^n \opD}
+     &&    \text{by generalized triangle inequality \prefpo{thm:norm_tri}}
+  \\&&&=   \sum_n  \abs{h_n}\; \cancelto{1}{\normop{ \opT^n \opD}}
+     &&    \text{by homogeneous property of norm \prefpo{def:norm}}
+  \\&&&=   \sum_n  \abs{h_n}
+     &&    \text{by \prefp{thm:unitary_prop}}
+\end{align*}
+\end{proof}
+
+
+
+
+
+
+

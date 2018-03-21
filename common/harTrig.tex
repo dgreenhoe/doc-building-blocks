@@ -1,0 +1,1782 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Trigonometric Functions}
+%\label{app:trig}
+%\index{trigonometry}
+%======================================
+
+%=======================================
+\section{Definition Candidates}
+%=======================================
+\ifdochasnot{normalg}{
+%---------------------------------------
+\begin{definition}[Hermitian components]
+\label{def:nalg_Re}
+\label{def:nalg_Im}
+\label{def:Re}
+\label{def:Im}
+\footnote{
+  \citerpg{michel1993}{430}{048667598X},
+  \citerpu{rickart1960}{179}{http://books.google.com/books?id=xYCPHgAACAAJ\&pg=PA179},
+  \citorpg{gelfand1964}{242}{0821820222}
+  }
+%---------------------------------------
+Let $\opair{\F}{\invo}$ be a $\invo$-algebra a (\structe{star algebra}).
+\defbox{
+  \begin{array}{MLcLC}
+    The \hid{real part}      of $x$ is defined as & \hxs{\Re} x &\eqd& \frac{1}{2  }\Big( x+ x^\invo \Big) & \forall x\in\F \\
+    The \hid{imaginary part} of $x$ is defined as & \hxs{\Im} x &\eqd& \frac{1}{2i }\Big( x- x^\invo \Big) & \forall x\in\F
+  \end{array}
+  }
+\end{definition}
+}
+
+There are several ways of defining the sine and cosine functions, including the following:\footnote{
+  %The terms \hie{sine} and \hie{cosine} are mistranslated versions of the 
+  %the words \hie{jya} and \hie{kojya} originally appearing in the 
+  %\href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/India.html}{Indian} 
+  %manuscript \citer{aryabhata}.
+  The term \hie{sine} originally came from the Hindu word \hie{jiva} and
+  later adapted to the Arabic word \hie{jiba}. 
+  Abrabic-Latin translator 
+  \href{http://en.wikipedia.org/wiki/Robert_of_Chester}{Robert of Chester} 
+  apparently confused this word  with the Arabic word \hie{jaib},
+  which means ``bay" or ``inlet"---
+  thus resulting in the Latin translation \hie{sinus}, which also means ``bay" or ``inlet".
+  %All six trigonometric functions first appeared in the European manuscript \citer{rheticus}. 
+  Reference: %\url{http://en.wikipedia.org/wiki/History_of_trigonometric_functions}
+  \citerpg{boyer1991}{252}{0471543977}
+  %\citep{boyer}{278}
+  }
+
+
+
+
+
+
+\begin{dingautolist}{"AC}
+  \item {\bf Planar geometry:}
+    Trigonometric functions are traditionally introduced as they have come to us 
+    historically---that is, as related to the parameters of triangles.\footnote{ 
+      \citerp{as}{78}
+      %\url{http://www.convertit.com/Go/ConvertIt/Reference/AMS55.ASP?Page=78} 
+      }\\
+    \begin{minipage}{3\tw/16}
+      \setlength{\unitlength}{\tw/300}
+      \footnotesize
+      \begin{picture}(200,200)(-100,-100)
+        %\color{graphpaper}\graphpaper[10](-100,-100)(200,200)%
+        \thicklines%
+        \color{axis}%
+          \put(-100 ,   0 ){\line(1,0){200} }%
+          \put(   0 ,-100 ){\line(0,1){200} }%
+          \qbezier[16](70.7, 0)(70.7,40)(70.7,70.7)%
+          \qbezier[16]( 0,70.7)(40,70.7)(70.7,70.7)%
+        \color{circle}%
+          \input{../common/circle.inp}%
+        \color{black}%
+          \put(   0 ,   0 ){\vector(1,1){70.7} }%
+          \put( 70.7,-10){\makebox(0,0)[t ]{$x$}}%
+          \put(-10, 70.7){\makebox(0,0)[r ]{$y$}}%
+          \put( 40, 40){\makebox(0,0)[br]{$r$}}%
+          \put( 25,  5){\makebox(0,0)[bl]{$\fvx$}}%
+          \qbezier(20,0)(20,10)(10,10)%
+      \end{picture}
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}{12\tw/16}
+      $\begin{array}{rcl}
+        \cos\fvx &\eqd& \frac{x}{r}  \\
+        \sin\fvx &\eqd& \frac{y}{r}  
+      \end{array}$
+    \end{minipage}
+
+  \item {\bf Complex exponential:} The cosine and sine functions are 
+    the real and imaginary parts of the complex exponential such that\footnote{\citer{euler1748v1}}
+    \\\indentx$\ds
+      \cos\fvx \eqd \Re{e^{i\fvx}}  \qquad\qquad  \sin\fvx \eqd \Im{e^{i\fvx}}
+      %\cos\fvx \eqd \frac{1}{2}\brp{e^{i\fvx}+e^{-i\fvx}}  
+      %\qquad\qquad  
+      %\sin\fvx \eqd \frac{1}{2i}\brp{e^{i\fvx}-e^{-i\fvx}}
+    $
+
+  \item {\bf Polynomial:}
+    Let $\ds\sum_{n=0}^\infty x_n \eqd \lim_{\xN\to\infty}\sum_{n=0}^\xN x_n$ in some topological space\ifsxref{series}{def:suminf}.
+    The sine and cosine functions can be defined in terms of \fncte{Taylor expansion}s such 
+    that\footnote{
+      \citerp{rosenlicht}{157},
+      \citerp{as}{74}
+      %\url{http://www.convertit.com/Go/ConvertIt/Reference/AMS55.ASP?Page=74} \\
+      }
+      \[\begin{array}{rc>{\ds}l c>{\ds}l}
+        \cos(x)
+          &\eqd& \sum_{n=0}^\infty \frac{(-1)^n }{(2n)!} \; x^{2n}
+          &=& 1 - \frac{x^2}{2} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots
+        \\
+        \sin(x)
+          &\eqd& \sum_{n=0}^\infty  \frac{(-1)^{n}}{(2n+1)!} \; x^{2n+1}
+          &=& x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots
+      \end{array}\]
+
+
+  \item {\bf Product of factors:}
+    Let $\ds\prod_{n=0}^\infty x_n \eqd \lim_{\xN\to\infty}\prod_{n=0}^\xN x_n$ in some topological space\ifsxref{series}{def:suminf}.
+    The sine and cosine functions can be defined in terms of a product of factors such
+    that\footnote{
+      \citerp{as}{75}
+      %\url{http://www.convertit.com/Go/ConvertIt/Reference/AMS55.ASP?Page=75} \\
+      }
+      \[
+        \cos(x) \eqd \prod_{n=1}^\infty \brs{1 - \brp{\frac{x}{(2n-1)\frac{\pi}{2}}}^2 }
+        \qquad\qquad
+        \sin(x) \eqd x\;\prod_{n=1}^\infty \brs{1 - \brp{\frac{x}{n\pi}}^2 } 
+      \]
+
+
+  \item {\bf Partial fraction expansion:}
+    The sine function can be defined in terms of a partial fraction expansion such
+    that\footnote{
+      \citerp{as}{75}
+      %\url{http://www.convertit.com/Go/ConvertIt/Reference/AMS55.ASP?Page=75} \\
+      }
+      \[
+        \sin(x) \eqd 
+          \frac{1}{\ds
+                   \frac{1}{x} +
+                   2x\; \sum_{n=1}^\infty \frac{(-1)^n}{x^2-(n\pi)^2}
+                  }
+        \qquad\qquad
+          \cos(x) \eqd
+            \mcom{\brp{\frac{1}{x} + 2x\; \sum_{n=1}^\infty \frac{1}{x^2-(n\pi)^2}}}
+                 {$\cot(x)$}
+            \sin(x)
+      \]
+
+
+  \item {\bf Differential operator:} The sine and cosine functions can be defined
+    as solutions to differential equations expressed in terms of the differential operator 
+    $\opDif$ such that
+      \[\begin{array}{rcl @{\qquad}c@{\qquad} lll}
+        \cos(x) &\eqd& \ff(x)
+          & \text{where} 
+          & \mcom{\brn{\opDiff\ff}+ \ff=0}{differential equation}  
+          & \mcom{\ff(0)=1           }{1st initial condition}
+          & \mcom{\brs{\opDif\ff}(0)=0 }{2nd initial condition}
+        \\
+        \sin(x) &\eqd& \fg(x)
+          & \text{where} 
+          & \mcom{\brn{\opDiff\fg}+ \fg=0}{differential equation}  
+          & \mcom{\fg(0)=0           }{1st initial condition}
+          & \mcom{\brs{\opDif\fg}(0)=1 }{2nd initial condition}
+      \end{array}\]
+
+  \item {\bf Integral operator:}
+    The sine and cosine functions can be defined
+    as inverses of integrals of square roots of rational functions such 
+    that\footnote{
+        \citerp{as}{79}
+        %\url{http://www.convertit.com/Go/ConvertIt/Reference/AMS55.ASP?Page=79} \\
+         %G. A. Edgar, \url{http://groups.google.com/group/sci.math/msg/d40e5e5c56ab85af}
+      }\\
+      \[\begin{array}{rclcrc>{\ds}l}
+        \cos(x) &\eqd& \ff^{-1}(x)
+          & \text{where} 
+          & \ff(x) &\eqd& 
+            \mcom{\int_x^1 \sqrt{\frac{1}{1-y^2}} \dy}{$\arccos(x)$}
+          \\
+        \sin(x) &\eqd& \fg^{-1}(x)
+          & \text{where} 
+          & \fg(x) &\eqd& 
+            \mcom{\int_0^x \sqrt{\frac{1}{1-y^2}} \dy}{$\arcsin(x)$}
+      \end{array}\]
+\end{dingautolist}
+
+
+%And in planar geometry, this is arguably the most natural approach.
+%But for purposes of analysis, there is arguably a more natural approach
+For purposes of analysis, it can be argued that the more natural approach
+for defining harmonic functions is in terms of the 
+differentiation operator $\opDif$ \xref{def:cos}.
+Support for such an approach includes the following:
+\begin{liste}
+  \item Both sine and cosine are very easily 
+        represented analytically as polynomials with coefficients involving
+        the operator $\opDif$ \xref{thm:cos_taylor}.
+  \item All solutions of homogeneous second order differential equations
+        are linear combinations of sine and cosine \xref{thm:D2f_cos_sin}.
+  \item Sine and cosine themselves are related to each other in terms of 
+        the differentiation operator \xref{thm:Dcos}.
+  \item The complex exponential function is a solution of a second order
+        homogeneous differential equation \xref{def:exp}.
+  \item Sine and cosine are orthogonal with respect to an innerproduct
+        generated by an integral operator---which is a kind of inverse 
+        differential operator \xref{sec:har_plane}.
+\end{liste}
+
+
+%======================================
+\section{Definitions}
+%======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{rosenlicht}{157}{0486650383},
+  \citerppg{flanigan1983}{228}{229}{0486613887}
+  }
+\label{def:cos}
+%--------------------------------------
+Let $\spC$ be the \structe{space of all continuously differentiable real functions}
+and $\opDif\in\clOcc$ the differentiation operator.
+\defboxt{%
+  The function $\ff\in\clFcc$ is the \fnctd{cosine} function $\hxs{\cos(x)}\eqd\ff(x)$ if
+  \\\indentx$\begin{array}{FrclDD}
+      1. & \brn{\opDiff\ff}+\ff &=&0  & (second order homogeneous differential equation) & and \\
+      2. & \ff(0)               &=&1  & (first initial condition)                        & and \\
+      3. & \brs{\opDif\ff}(0)   &=&0  & (second initial condition).                      & 
+  \end{array}$}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{rosenlicht}{157}{0486650383},
+  \citerppg{flanigan1983}{228}{229}{0486613887}
+  }
+\label{def:sin}
+%--------------------------------------
+Let $\spC$ and $\opDif\in\clOcc$ be defined as in definition of $\cos(x)$ \xref{def:cos}.
+\defboxt{%
+  The function $\ff\in\clFcc$ is the \fnctd{sine} function $\hxs{\sin(x)}\eqd\ff(x)$ if
+  \\\indentx$\begin{array}{FrclDD}
+      1. & \brn{\opDiff\ff}+\ff &=&0  & (second order homogeneous differential equation) & and \\
+      2. & \ff(0)               &=&0  & (first initial condition)                        & and \\
+      3. & \brs{\opDif\ff}(0)   &=&1  & (second initial condition).                      & 
+  \end{array}$}
+\end{definition}
+
+%\defbox{\indxs{\cos}\indxs{\sin}%
+%  \begin{array}{l@{\qquad}lll}
+%    \mc{4}{l}{\text{The \hid{cosine} function \text{$\cos(x)$ is the function $\ff\in\spC$ that satisfies the following conditions:}}}\\
+%      & \mcom{\brn{\opDiff\ff}+ \ff=0}{2nd order homogeneous differential equation}  
+%      & \mcom{\ff(0)=1           }{1st initial condition}
+%      & \mcom{\brs{\opDif\ff}(0)=0 }{2nd initial condition}
+%    \\
+%    \mc{4}{l}{\text{The \hid{sine} function \text{$\sin(x)$ is the function $\fg\in\spC$ that satisfies the following conditions:}}}\\
+%      & \mcom{\brn{\opDiff\fg}+ \fg=0}{2nd order homogeneous differential equation}  
+%      & \mcom{\fg(0)=0           }{1st initial condition}
+%      & \mcom{\brs{\opDif\fg}(0)=1 }{2nd initial condition}
+%  \end{array}}
+%\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{rosenlicht}{158}{0486650383}
+  }
+\label{def:pi}
+%--------------------------------------
+\defboxt{
+  Let $\pi$ (``pi") be defined as the element in $\R$ such that
+  \\\indentx$\begin{array}{DrclD}
+    (1). & \ds\cos\brp{\frac{\pi}{2}} &=& 0 & and \\
+    (2). & \pi &>& 0 & and \\
+    (3). & \mc{4}{M}{$\pi$ is the \textbf{smallest} of all elements in $\R$ that satisfies (1) and (2).}
+  \end{array}$
+  }
+\end{definition}
+
+%=======================================
+\section{Basic properties}
+%=======================================
+%--------------------------------------
+\begin{lemma}
+\footnote{
+  \citerp{rosenlicht}{156},
+  \citor{liouville1839}
+  }
+\label{lem:D2f-f}
+%--------------------------------------
+Let $\spC$ be the \structe{space of all continuously differentiable real functions}
+and $\opDif\in\clOcc$ the differentiation operator.
+\lemboxt{
+  $\ds\brb{\brn{\opDiff\ff} +  \ff = 0}$ 
+  $\ds\qquad\iff$
+  \\\indentx
+  $\ds\left\{\begin{array}{rc>{\ds}l}
+  \ff(x)
+    &=& \mcom{\brs{ \ff}(0)\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}     }{even terms}
+      + \mcom{\brs{\opDif\ff}(0)\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!} }{odd terms}
+    \\
+    &=& \Bigg(\ff(0) + \brs{\opDif\ff}(0)x\Bigg) 
+       -\brp{ \frac{\ff(0)}{2!}x^2 + \frac{\brs{\opDif\ff}(0)}{3!}x^3 }
+       + \brp{\frac{\ff(0)}{4!}x^4 + \frac{\brs{\opDif\ff}(0)}{5!}x^5 }
+       \cdots
+  \end{array}\right\}$
+  }
+\end{lemma}
+\begin{proof}
+Let $\ff^\prime(x)\eqd\opDif\ff(x)$.
+\begin{align*}
+  \ff^{\prime\prime\prime}(x) &= -\brs{\opDif\ff}(x)  \\
+  \ff^{(4)}(x) &= -\brs{\opDif\ff}(x) &= -\brs{\opDiff\ff}(x) &= \ff(x)
+\end{align*}
+\begin{align*}
+  \intertext{1. Proof that 
+    $\brs{\opDiff\ff}(x) + \ff(x) = 0 \implies
+     \ff(x)=\sum_{n=0}^\infty (-1)^n \brs{\frac{\ff(0)}{(2n)!}x^{2n} + \frac{\brs{\opDif\ff}(0)}{(2n+1)!}x^{2n+1}}$:
+    }
+  \ff(x)
+    &= \sum_{n=0}^\infty \frac{\ff^{(n)}(0)}{n!} x^n
+       \qquad\text{by Taylor expansion\ifsxref{polynom}{thm:taylor}}
+  \\&= \ff(0) + \brs{\opDif\ff}(0)x - \frac{\brs{\opDiff\ff}(0)}{2!}x^2 - \frac{\ff^3(0)}{3!}x^3 
+    + \frac{\ff^4(0)}{4!}x^4 + \frac{\ff^5(0)}{5!}x^5 - \cdots
+  \\&= \ff(0) + \brs{\opDif\ff}(0)x - \frac{\ff(0)}{2!}x^2 - \frac{\brs{\opDif\ff}(0)}{3!}x^3 
+    + \frac{\ff(0)}{4!}x^4 + \frac{\brs{\opDif\ff}(0)}{5!}x^5 - \cdots
+  \\&=\ff(x)=\sum_{n=0}^\infty (-1)^n \brs{\frac{\ff(0)}{(2n)!}x^{2n} + \frac{\brs{\opDif\ff}(0)}{(2n+1)!}x^{2n+1}}
+  %
+  \intertext{2. Proof that 
+    $\brs{\opDiff\ff}(x) + \ff(x) = 0 \impliedby
+     \ff(x)=\sum_{n=0}^\infty (-1)^n \brs{\frac{\ff(0)}{(2n)!}x^{2n} + \frac{\brs{\opDif\ff}(0)}{(2n+1)!}x^{2n+1}}$:
+    }
+  \brs{\opDiff\ff}(x)
+    &= \opDif\opDif \brs{\ff(x)}
+  \\&= \opDif\opDif {\sum_{n=0}^\infty (-1)^n \brs{\frac{\ff(0)}{(2n)!}x^{2n} + \frac{\brs{\opDif\ff}(0)}{(2n+1)!}x^{2n+1}} } 
+    && \text{by right hypothesis}
+  \\&= \sum_{n=1}^\infty (-1)^n \brs{\frac{(2n)(2n-1)\ff(0)}{(2n)!}x^{2n-2} + \frac{(2n+1)(2n)\brs{\opDif\ff}(0)}{(2n+1)!}x^{2n-1}}
+  \\&= \sum_{n=1}^\infty (-1)^n \brs{\frac{\ff(0)}{(2n-2)!}x^{2n-2} + \frac{\brs{\opDif\ff}(0)}{(2n-1)!}x^{2n-1}}
+  \\&= \sum_{n=0}^\infty (-1)^{n+1} \brs{\frac{\ff(0)}{(2n)!}x^{2n} + \frac{\brs{\opDif\ff}(0)}{(2n+1)!}x^{2n+1}}
+  \\&= - \ff(x)
+    && \text{by right hypothesis}
+\end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{Taylor series for cosine/sine}]
+\footnote{
+  \citerp{rosenlicht}{157}
+  }
+\label{thm:cos_taylor}
+\label{thm:sin_taylor}
+%--------------------------------------
+\thmbox{\begin{array}{rc>{\ds}l c>{\ds}l@{\qquad}C}
+  \cos(x)
+    &=& \sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!} 
+    &=& 1 - \frac{x^2}{2} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots
+    & \forall x\in\R
+  \\
+  \sin(x)
+    &=& \sum_{n=0}^\infty  (-1)^{n}\frac{x^{2n+1}}{(2n+1)!} 
+    &=& x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots
+    & \forall x\in\R
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \cos(x)
+    &= \mcom{\ff(0)\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}     }{even terms}
+     + \mcom{\brs{\opDif\ff}(0)\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!} }{odd terms}
+    && \text{by \prefp{lem:D2f-f}}
+  \\&= 1\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}
+     + 0\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!}
+    && \text{by $\cos$ initial conditions \xref{def:cos}}
+  \\&= \sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!} 
+  \\
+  \sin(x)
+    &= \mcom{\ff(0)\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}     }{even terms}
+     + \mcom{\brs{\opDif\ff}(0)\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!} }{odd terms}
+    && \text{by \prefp{lem:D2f-f}}
+  \\&= 0\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}
+     + 1\:\sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!}
+    && \text{by $\sin$ initial conditions \xref{def:sin}}
+  \\&= \sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!}
+\end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{rosenlicht}{157}
+  }
+\label{thm:cos0}
+\label{thm:sin0}
+\label{thm:sin-x}
+\label{thm:cos-x}
+%--------------------------------------
+\thmbox{\begin{array}{rcc|rcrC}
+  \cos(0) &=& 1  & \cos(-x) &=&  \cos(x) & \forall x\in\R\\
+  \sin(0) &=& 0  & \sin(-x) &=& -\sin(x) & \forall x\in\R
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \cos(0)
+    &= \brlr{1 - \frac{x^2}{2} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots}_{x=0}
+    && \text{by \thme{Taylor series for cosine}}
+    && \text{\xref{thm:cos_taylor}}
+  \\&= 1
+  \\
+  \sin(0)
+    &= \brlr{x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots}_{x=0}
+    && \text{by \thme{Taylor series for sine}}
+    && \text{\xref{thm:sin_taylor}}
+  \\&= 0
+  \\
+  \cos(-x)
+    &= 1 - \frac{(-x)^2}{2} + \frac{(-x)^4}{4!} - \frac{(-x)^6}{6!} + \cdots
+    && \text{by \thme{Taylor series for cosine}}
+    && \text{\xref{thm:cos_taylor}}
+  \\&= 1 - \frac{x^2}{2} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots
+  \\&= \cos(x)
+    && \text{by \thme{Taylor series for cosine}}
+    && \text{\xref{thm:cos_taylor}}
+  \\
+  \sin(-x)
+    &= (-x) - \frac{(-x)^3}{3!} + \frac{(-x)^5}{5!} - \frac{(-x)^7}{7!} + \cdots
+    && \text{by \thme{Taylor series for sine}}
+    && \text{\xref{thm:sin_taylor}}
+  \\&= -\brs{x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots}
+  \\&= \sin(x)
+    && \text{by \thme{Taylor series for sine}}
+    && \text{\xref{thm:sin_taylor}}
+\end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{lemma}
+\footnote{
+  \citerp{rosenlicht}{158}
+  }
+\label{lem:cos12}
+\label{lem:sin02}
+%--------------------------------------
+\lembox{\begin{array}{rcl | lcl}
+  \cos(1) &>& 0  & x\in\intoo{0}{2} &\implies& \sin(x) > 0\\
+  \cos(2) &<& 0  & 
+\end{array}}
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \cos(1)
+    &= \brlr{1 - \frac{x^2}{2} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots}_{x=1}
+    && \text{by \thme{Taylor series for cosine}}
+    && \text{\xref{thm:cos_taylor}}
+  \\&= 1 - \frac{1}{2} + \frac{1}{4!} - \frac{1}{6!} + \cdots
+  \\&> 0
+  \\
+  \cos(2)
+    &= \brlr{1 - \frac{x^2}{2} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots}_{x=2}
+    && \text{by \thme{Taylor series for cosine}}
+    && \text{\xref{thm:cos_taylor}}
+  \\&= 1 - \frac{4}{2} + \frac{16}{24} - \frac{64}{720} + \cdots
+  \\&< 0
+\end{align*}
+\begin{align*}
+  x\in\intoo{0}{2}
+    &\implies \text{each term in the sequence 
+    $\seqn{\brp{x - \frac{x^3}{3!}},\, 
+          \brp{\frac{x^5}{5!} - \frac{x^7}{7!}},\,
+          \brp{\frac{x^9}{9!} - \frac{x^{11}}{11!}},\,
+          \ldots
+         }$
+     is $>0$}
+  \\&\implies \quad\sin(x)>0
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+%--------------------------------------
+Let $\pi$ be defined as in \prefpp{def:pi}.
+\propbox{\begin{array}{DM}
+  (A). & The value $\pi$ \textbf{exists} in $\R$.\\
+  (B). & $2<\pi<4$.
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \cos(1)
+    &> 0
+    && \text{by \prefp{lem:cos12}}
+  \\
+  \cos(2)
+    &< 0
+    && \text{by \prefp{lem:cos12}}
+  \\
+    \implies& 1<\frac{\pi}{2}<2
+  \\\implies& 2<\pi<4
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{rosenlicht}{157}.
+  The general solution for the \prope{non-homogeneous} equation
+  $\opDiff\ff(x) + \ff(x) = \fg(x)$ 
+  with initial conditions $\ff(a)=1$ and $\ff^\prime(a)=\rho$ is
+  \indentx$\ff(x) = \cos(x) + \rho\sin(x) + \int_a^x \fg(y) \sin(x-y) \dy$.
+  This type of equation is called a \fncte{Volterra integral equation of the second type}.
+  References:  
+    \citerp{folland}{371},
+    \citer{liouville1839}.
+    %\citerp{carothers???}{3}
+  Volterra equation references:
+    \citerp{pedersen2000}{99},
+    %\citerp{michel1993}{97},
+    \citer{lalescu1908},
+    \citer{lalescu1911}
+  }
+\label{thm:D2f_cos_sin}
+%--------------------------------------
+Let $\spC$ be the space of all continuously differentiable real functions
+and $\opDif\in\clOcc$ the differentiation operator.
+Let $\ff^\prime(0) \eqd \brs{\opDif\ff}(0)$.
+\thmbox{
+  \brb{\opDiff\ff + \ff=0}
+  %     {\fncte{2nd order homogeneous differential equation}}
+  \quad\iff\quad
+  \brb{\ff(x) = \ff(0)\,\cos(x) + \ff^\prime(0)\,\sin(x)}
+  \qquad\msizes\forall\ff\in\spC,\,\forall x\in\R
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that 
+    $\brs{\opDiff\ff}(x)=-\ff(x) \implies \ff(x) = \ff(0)\cos(x) + \brs{\opDif\ff}(0)\sin(x)$
+    :}
+  \ff(x)
+    &= \ff(0) \mcom{\sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}}{$\cos(x)$}
+     + \brs{\opDif\ff}(0) \mcom{\sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!}}{$\sin(x)$}
+    && \text{by left hypothesis and \prefp{lem:D2f-f}}
+  \\&= \mathrlap{\ff(0)\cos x + \brs{\opDif\ff}(0)\sin x
+    \qquad \text{by definitions of $\cos$ and $\sin$ \xxref{def:cos}{def:sin}}}
+  %
+  \intertext{2. Proof that 
+    $\brn{\opDiff\ff}=-\ff \impliedby \ff(x) = \ff(0)\cos(x) + \brs{\opDif\ff}(0)\sin(x)$
+    :}
+  \ff(x)
+    &= \ff(0) \cos x + \brs{\opDif\ff}(0)\sin x 
+    && \text{by right hypothesis}
+  \\&= \ff(0) \mcom{\sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!}}{$\cos(x)$}
+     + \brs{\opDif\ff}(0) \mcom{\sum_{n=0}^\infty (-1)^n \frac{x^{2n+1}}{(2n+1)!}}{$\sin(x)$}
+  \\\implies
+    &\quad \brn{\opDiff\ff} +\ff = 0 
+    && \text{by \prefp{lem:D2f-f}}
+\end{align*}
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{rosenlicht}{157}
+  }
+\label{thm:Dcos}
+\label{thm:Dsin}
+\label{thm:ccss1}
+%--------------------------------------
+Let $\opDif\in\clOcc$ be the differentiation operator.
+\thmbox{\begin{array}{lcrC | lcrC | lcrC}
+  \opDif\cos(x) &=& -\sin(x) & \forall x\in\R &
+  \opDif\sin(x) &=&  \cos(x) & \forall x\in\R &
+  \cos^2(x)+\sin^2(x) &=& 1 & \forall x\in\R
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opDif\cos(x)
+    &= \opDif \sum_{n=0}^\infty (-1)^n \frac{x^{2n}}{(2n)!} 
+    && \text{by \thme{Taylor series}}
+    && \text{\xref{thm:cos_taylor}}
+  \\&= \sum_{n=1}^\infty (-1)^n \frac{2n x^{2n-1}}{(2n)!} 
+     = \sum_{n=1}^\infty (-1)^n \frac{x^{2n-1}}{(2n-1)!} 
+     = \sum_{n=0}^\infty (-1)^{n+1} \frac{x^{2n}}{(2n)!} 
+  \\&= -\sin(x)
+    && \text{by \thme{Taylor series}}
+    && \text{\xref{thm:cos_taylor}}
+  \\
+  \opDif\sin(x)
+    &= \opDif \sum_{n=0}^\infty  (-1)^{n}\frac{x^{2n+1}}{(2n+1)!}
+    && \text{by \thme{Taylor series}}
+    && \text{\xref{thm:sin_taylor}}
+  \\&= \sum_{n=0}^\infty  (-1)^{n}\frac{(2n+1)x^{2n}}{(2n+1)!}
+     = \sum_{n=0}^\infty  (-1)^{n}\frac{x^{2n}}{(2n)!}
+  \\&= \cos(x)
+    && \text{by \thme{Taylor series}}
+    && \text{\xref{thm:sin_taylor}}
+\end{align*}
+\begin{align*}
+  \opDif\brs{\cos^2(x)+\sin^2(x)} 
+    &= -2\cos(x)\sin(x) + 2\sin(x)\cos(x)
+  \\&= 0
+  \\&\implies \text{$\cos^2(x)+\sin^2(x)$ is \prope{constant}}
+  \\&\implies \cos^2(x)+\sin^2(x)
+  \\&= \cos^2(0)+\sin^2(0)
+  \\&= 1+0 = 1
+    && \text{by \prefp{thm:cos0}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:sinpi2}
+%--------------------------------------
+\propbox{
+  \sin\brp{\frac{\pi}{2}} = 1
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \sin\brp{\sfrac{\pi}{2}}
+    &= \pm\sqrt{\sin^2\brp{\sfrac{\pi}{2}} + 0}
+  \\&= \pm\sqrt{\sin^2\brp{\sfrac{\pi}{2}} + \cos^2\brp{\sfrac{\pi}{2}}}
+    && \text{by definition of $\pi$}&&\text{\xref{def:pi}}
+  \\&= \pm\sqrt{1}
+    && \text{by \prefp{thm:ccss1}}
+  \\&= \pm1
+  \\&= 1
+    && \text{by \prefp{lem:sin02}}
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{The complex exponential}
+%=======================================
+%%--------------------------------------
+%\begin{lemma}
+%\label{lem:exp_taylor}
+%%--------------------------------------
+%\lembox{
+%   e^x
+%     = \sum_{n=0}^\infty \frac{x^n}{n!}
+%     = 1 + x + \frac{x^2}{2} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} + \cdots
+%%\\
+%%   \tanx
+%%     &=& x + 2\frac{x^3}{3!} + 16\frac{x^5}{5!} + 272\frac{x^7}{7!} + \cdots \\
+%%\end{array}
+%}
+%\end{lemma}
+%\begin{proof}
+%\begin{eqnarray*}
+%  e^x
+%    &=& \left.\sum_{n=0}^\infty \frac{e^{(n)}(a)}{n!}(x-a)^n\right|_{a=0}
+%  \\&=& \frac{e^0}{0!}x^0
+%       +\frac{e^0}{1!}x^1
+%       +\frac{e^0}{2!}x^2
+%       +\frac{e^0}{3!}x^3
+%       +\frac{e^0}{4!}x^4
+%       +\frac{e^0}{5!}x^5
+%       +\frac{e^0}{6!}x^6
+%       +\frac{e^0}{7!}x^7
+%       + \cdots
+%  \\&=& 1
+%       +x
+%       +\frac{x^2}{2!}
+%       +\frac{x^3}{3!}
+%       +\frac{x^4}{4!}
+%       +\frac{x^5}{5!}
+%       +\frac{x^6}{6!}
+%       +\frac{x^7}{7!}
+%       + \cdots
+%  \\&=& \sum_{n=0}^\infty \frac{x^n}{n!}
+%\end{eqnarray*}
+%\end{proof}
+
+%--------------------------------------
+\begin{definition}
+\label{def:exp}
+%--------------------------------------
+\defboxt{%
+  The function $\ff\in\clFcc$ is the \hid{exponential function} $\hxs{\exp(ix)}\eqd\ff(x)$ if
+  \\\indentx$\begin{array}{FrclDD}
+      1. & \brn{\opDiff\ff}+\ff &=&0  & (second order homogeneous differential equation) & and \\
+      2. & \ff(0)               &=&1  & (first initial condition)                        & and \\
+      3. & \brs{\opDif\ff}(0)   &=&i  & (second initial condition).                      & 
+  \end{array}$}
+\end{definition}
+%\begin{proof}
+%\begin{align*}
+%  \opDiff \exp(ix)
+%    &= \opDif\brs{i\exp(ix)}
+%    &&= -\exp(ix)
+%  \\
+%  \left.\opI \exp(ix)\right|_{x=0}
+%    &= \left. \exp(ix) \right|_{x=0}
+%    &&= 1
+%  \\
+%  \left.\opDif \exp(ix)\right|_{x=0}
+%    &= \left. i\exp(ix) \right|_{x=0}
+%    &&= i
+%\end{align*}
+%\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{Euler's identity}]
+\footnote{
+  \citor{euler1748v1},
+  \citerp{bottazzini}{12}
+  }
+\label{thm:eid}
+%--------------------------------------
+\thmbox{
+  e^{ix} = \cos(x) + i\sin(x) \qquad\scy \forall x\in\R
+}
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    \exp(ix)
+      &= \ff(0)\;\cos(x) + \brs{\opDif\ff}(0)\;\sin(x)
+      && \text{by \prefp{thm:D2f_cos_sin}}
+    \\&= \cos(x) + i\sin(x)
+      && \text{by \prefp{def:exp}}
+  \end{align*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:eipi2}
+%--------------------------------------
+\propbox{\begin{array}{>{\ds}rcl | >{\ds}rcl}
+  %e^{-i0}               &=&  1  & e^{i0}               &=&  1\\
+  e^{-i\sfrac{\pi}{2}}  &=& -i  & e^{i\sfrac{\pi}{2}}  &=&  i\\
+  %e^{-i\pi}             &=& -1  & e^{i\pi}             &=& -1\\
+  %e^{-i\sfrac{3\pi}{2}} &=& -i  & e^{i\sfrac{3\pi}{2}} &=&  i\\
+  %e^{-i2\pi}            &=&  1  & e^{i2\pi}            &=&  1
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  e^{i\sfrac{\pi}{2}} 
+    &= \cos\brp{\sfrac{\pi}{2}} + i\sin\brp{\sfrac{\pi}{2}}
+    && \text{by \thme{Euler's identity} \xref{thm:eid}}
+  \\&= 0 + i
+    && \text{by \prefpp{thm:cos0} and \prefpp{prop:sinpi2}}
+  \\
+  e^{-i\sfrac{\pi}{2}} 
+    &= \cos\brp{-\sfrac{\pi}{2}} + i\sin\brp{-\sfrac{\pi}{2}}
+    && \text{by \thme{Euler's identity} \xref{thm:eid}}
+  \\&= \cos\brp{\sfrac{\pi}{2}} - i\sin\brp{\sfrac{\pi}{2}}
+    && \text{by \prefp{thm:cos-x}}
+  \\&= 0 - i
+    && \text{by \prefpp{thm:cos0} and \prefpp{prop:sinpi2}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{corollary}
+\label{cor:eid}
+%--------------------------------------
+\corbox{
+  e^{ix} = \sum_{n\in\Znn} \frac{(ix)^n}{n!} \qquad\scy\forall x\in\R
+}
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  e^{ix}
+    &=  \cos(x) +i\sin(x)
+    &&  \text{by \thme{Euler's identity}}&&\text{\xref{thm:eid}}
+  \\&=  \mcom{\sum_{n\in\Znn} \frac{(-1)^nx^{2n}}{(2n)!}}{$\cos(x)$}
+      +i\mcom{\sum_{n\in\Znn} \frac{(-1)^nx^{2n+1}}{(2n+1)!}}{$\sin(x)$}
+    &&  \text{by \thme{Taylor series}}&&  \text{\xref{thm:cos_taylor}}
+  \\&=  \sum_{n\in\Znn} \frac{(i^2)^nx^{2n}}{(2n)!}
+       +\sum_{n\in\Znn} \frac{i(i^2)^nx^{2n+1}}{(2n+1)!}
+     =  \sum_{n\in\Znn} \frac{(ix)^{2n}}{(2n)!}
+       +\sum_{n\in\Znn} \frac{(ix)^{2n+1}}{(2n+1)!}
+  \\&=  \sum_{n\in\Znn\seti\Ze} \frac{(ix)^n}{n!}
+       +\sum_{n\in\Znn\seti\Zo} \frac{(ix)^n}{n!}
+     =  \sum_{n\in\Znn} \frac{(ix)^n}{n!}
+\end{align*}
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{corollary}[\thmd{Euler formulas}]
+\footnote{
+  \citor{euler1748v1},
+  \citerp{bottazzini}{12}
+  }
+\label{cor:trig_ceesee}
+%--------------------------------------
+\corbox{\begin{array}{rc>{\ds}lC | rc>{\ds}lC}
+   \cos(x) &=& \Re\Big(e^{ix}\Big) = \frac{e^{ix} + e^{-ix}}{2 } & \forall x\in\R &
+   \sin(x) &=& \Im\Big(e^{ix}\Big) = \frac{e^{ix} - e^{-ix}}{2i} & \forall x\in\R
+  \end{array}}
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \Re\Big(e^{ix}\Big)
+    &\eqd \frac{e^{ix} + \brp{e^{ix}}^\invo}{2}
+     = \frac{e^{ix} + e^{-ix}}{2}
+    && \text{by definition of $\Re$}
+    && \text{\ifdochas{normalg}{\xref{def:nalg_Re}}}
+  \\&= \frac{\cos( x) + i\sin( x)}{2} + \frac{\cos(-x) + i\sin(-x)}{2}
+    && \text{by \thme{Euler's identity}}
+    && \text{\xref{thm:eid}}
+  \\&= \frac{\cos( x) + i\sin( x)}{2} + \frac{\cos( x) - i\sin( x)}{2}
+  \\&= \frac{\cos( x)}{2} + \frac{\cos( x)}{2}
+     = \cos(x)
+\\ \\
+  \Im\Big(e^{ix}\Big)
+    &\eqd \frac{e^{ix} - \brp{e^{ix}}^\invo}{2i}
+     = \frac{e^{ix} - e^{-ix}}{2i}
+    && \text{by definition of $\Im$}
+    && \text{\ifdochas{normalg}{\xref{def:nalg_Re}}}
+  \\&= \frac{\cos( x) + i\sin( x)}{2i} - \frac{\cos(-x) + i\sin(-x)}{2i}
+    && \text{by \thme{Euler's identity}}
+    && \text{\xref{thm:eid}}
+  \\&= \frac{\cos( x) + i\sin( x)}{2i}
+      -\frac{\cos( x) - i\sin( x)}{2i}
+  \\&= \frac{i\sin( x)}{2i}
+      +\frac{i\sin( x)}{2i}
+     = \sin(x)
+\end{align*}
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{rudinr}{1}{0070542341}
+  }
+\label{thm:trig_eab}
+%--------------------------------------
+\thmbox{ 
+  e^{(\alpha+\beta)} = e^{\alpha}\:e^{\beta} 
+  \qquad\scy \forall \alpha,\beta\in\C
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  e^{\alpha}\:e^{\beta}
+    &= \brp{\sum_{n\in\Znn} \frac{\alpha^n}{n!}} \: 
+       \brp{\sum_{m\in\Znn} \frac{\beta^m}{m!} }
+    && \text{by \prefp{cor:eid}}
+  \\&= \sum_{n\in\Znn} \sum_{k=0}^n
+       \frac{\alpha^k}{k!} \: 
+       \frac{\beta^{n-k}}{(n-k)!} 
+    && \ifdochas{series}{\text{by \prefp{cor:seq_mult}}}
+  \\&= \sum_{n\in\Znn}  \sum_{k=0}^n
+       \frac{n!}{n!} 
+       \frac{\alpha^k}{k!} \: 
+       \frac{\beta^{n-k}}{(n-k)!} 
+  \\&= \sum_{n\in\Znn} \frac{1}{n!} \sum_{k=0}^n
+       \frac{n!}{k!\,(n-k)!}\:
+       \alpha^k \: \beta^{n-k}
+  \\&= \sum_{n\in\Znn} \frac{1}{n!} \sum_{k=0}^n
+       {n \choose k}
+       \alpha^k \: \beta^{n-k}
+  \\&= \sum_{n\in\Znn} \frac{\brp{\alpha+\beta}^n}{n!} 
+    && \text{by the \thme{Binomial Theorem}\ifsxref{polynom}{thm:binomial}}
+  \\&= e^{\alpha+\beta}
+    && \text{by \prefp{cor:eid}}
+\end{align*}
+\end{proof}
+
+
+%=======================================
+\section{Trigonometric Identities}
+%=======================================
+%--------------------------------------
+\begin{theorem}[\thmd{shift identities}]
+\label{thm:trig_shift}
+%--------------------------------------
+\thmbox{\begin{array}{rcr@{\qquad}C@{\qquad}|@{\qquad}rcr@{\qquad}C}
+  \cos\brp{ x+\frac{\pi}{2}} &=& -\sin x & \forall  x\in\R & \sin\brp{ x+\frac{\pi}{2}} &=&  \cos x & \forall  x\in\R \\
+  \cos\brp{ x-\frac{\pi}{2}} &=&  \sin x & \forall  x\in\R & \sin\brp{ x-\frac{\pi}{2}} &=& -\cos x & \forall  x\in\R 
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \cos\brp{ x+\frac{\pi}{2}} 
+    &= \frac{e^{i\brp{ x+\frac{\pi}{2}}} + e^{ -i\brp{ x+\frac{\pi}{2}} } 
+            }{2}
+    && \text{by \thme{Euler formulas}}
+    && \text{\xref{cor:trig_ceesee}}
+  \\&= \frac{e^{i x} e^{i\frac{\pi}{2}} + 
+             e^{-i x} e^{-i\frac{\pi}{2}} 
+            }{2}
+    && \text{by $e^{\alpha\beta}=e^\alpha e^\beta$ result}&&\text{\xref{thm:trig_eab}}
+  \\&= \frac{e^{i x}(i) + e^{-i x}(-i)}{2}
+    && \text{by \prefp{prop:eipi2}}
+  \\&= \frac{e^{i x} - e^{-i x}}{-2i}
+  \\&= -\sin x 
+    && \text{by \thme{Euler formulas}}
+    && \text{\xref{cor:trig_ceesee}}
+  \\
+  \cos\brp{ x-\frac{\pi}{2}}
+    &= \frac{e^{i\brp{ x-\frac{\pi}{2}}} + e^{ -i\brp{ x-\frac{\pi}{2}} } 
+            }{2}
+    && \text{by \thme{Euler formulas}}
+    && \text{\xref{cor:trig_ceesee}}
+  \\&= \frac{e^{i x} e^{-i\frac{\pi}{2}} + 
+             e^{-i x} e^{+i\frac{\pi}{2}} 
+            }{2}
+    && \text{by $e^{\alpha\beta}=e^\alpha e^\beta$ result}&&\text{\xref{thm:trig_eab}}
+  \\&= \frac{e^{i x}(-i) + e^{-i x}(i)}{2}
+    && \text{by \prefp{prop:eipi2}}
+  \\&= \frac{e^{i x} - e^{-i x}}{2i}
+  \\&= \sin x 
+    && \text{by \thme{Euler formulas}}
+    && \text{\xref{cor:trig_ceesee}}
+  \\
+  \sin\brp{x+\frac{\pi}{2}}
+    &= \cos\brp{\brs{x+\frac{\pi}{2}}-\frac{\pi}{2}}
+    && \text{by previous result}
+  \\&= \cos\brp{x}
+  \\
+  \sin\brp{x-\frac{\pi}{2}}
+    &= -\cos\brp{\brs{x-\frac{\pi}{2}}+\frac{\pi}{2}}
+    && \text{by previous result}
+  \\&= -\cos\brp{x}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[\thmd{product identities}]
+\label{thm:trig_cs}
+%--------------------------------------
+\thmbox{\begin{array}{D lcc@{\;}lcl C}
+  (A).& \cos x \cos y &=& &\sfrac{1}{2}\cos(x-y) &+& \sfrac{1}{2}\cos(x+y) & \forall x,y\in\R \\
+  (B).& \cos x \sin y &=&-&\sfrac{1}{2}\sin(x-y) &+& \sfrac{1}{2}\sin(x+y) & \forall x,y\in\R \\
+  (C).& \sin x \cos y &=& &\sfrac{1}{2}\sin(x-y) &+& \sfrac{1}{2}\sin(x+y) & \forall x,y\in\R \\
+  (D).& \sin x \sin y &=& &\sfrac{1}{2}\cos(x-y) &-& \sfrac{1}{2}\cos(x+y) & \forall x,y\in\R
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for (A) using \thme{Euler formulas} \xref{cor:trig_ceesee}\\
+        (algebraic method requiring \structe{complex number system} $\C$):
+    \begin{align*}
+      \cos x \cos y
+           &= \left(\frac{e^{ix} + e^{-ix}}{2}\right)\left(\frac{e^{iy} + e^{-iy}}{2} \right)
+           && \text{by \thme{Euler formulas}}
+           && \text{\xref{cor:trig_ceesee}}
+         \\&= \frac{e^{i(x+y)} + e^{i(x-y)} + e^{i(-x+y)} + e^{i(-x-y)} }{4}
+         \\&= \frac{e^{i(x+y)} + e^{-i(x+y)}}{4} + \frac{e^{i(x-y)} + e^{-i(x-y)} }{4}
+         \\&= \frac{2\cos(x+y)}{4} + \frac{2\cos(x-y)}{4}
+           && \text{by \thme{Euler formulas}}
+           && \text{\xref{cor:trig_ceesee}}
+         \\&= \frac{1}{2}\cos(x+y) + \frac{1}{2}\cos(x-y)
+    \end{align*}
+
+  \item Proof for (A) using \fncte{Volterra integral equation} \xref{thm:D2f_cos_sin}\\
+        (differential equation method requiring only \structe{real number system} $\R$):
+    {\begin{align*}
+      &\ff(x)\eqd\sfrac{1}{2}\cos(x-y)+\sfrac{1}{2}\cos(x+y) 
+      \\&\quad\implies \opDif\ff(x)  = -\sfrac{1}{2}\sin(x-y)-\sfrac{1}{2}\sin(x+y)   && \text{by \prefp{thm:Dcos}}
+      \\&\quad\implies \opDiff\ff(x) = -\sfrac{1}{2}\cos(x-y)-\sfrac{1}{2}\cos(x+y)   && \text{by \prefp{thm:Dcos}}
+      \\&\quad\implies \opDiff\ff(x)+\ff(x) = 0                                       && \text{by \prope{additive inverse} property\hspace{23mm}\mbox{}}
+      \\&\quad\implies\mathrlap{%
+          \mcom{\sfrac{1}{2}\cos(x-y)+\sfrac{1}{2}\cos(x+y)}{$\ff(x)$}
+        = \mcom{\brs{\sfrac{1}{2}\cos(0-y)+\sfrac{1}{2}\cos(0+y)}}{$\ff''(0)$}\cos(x)
+        + \mcom{\brs{-\sfrac{1}{2}\sin(0-y)-\sfrac{1}{2}\sin(0+y)}}{$\ff'(0)$}\sin(x)
+        }
+      \\&\quad\implies \sfrac{1}{2}\cos(x-y)+\sfrac{1}{2}\cos(x+y) = \cos{y}\cos{x} + 0\sin(x)
+      \\&\quad\implies \cos{x}\cos{y} = \sfrac{1}{2}\cos(x-y)+\sfrac{1}{2}\cos(x+y)
+    \end{align*}}
+
+  \item Proof for (B) using \thme{Euler formulas} \xref{cor:trig_ceesee}:
+      %\begin{align*}
+      %  \sin x \sin y
+      %       &= \cos\brp{x-\frac{\pi}{2}}\cos\brp{y-\frac{\pi}{2}}
+      %       && \text{by \thme{shift identities}}
+      %       && \text{\xref{thm:trig_shift}}
+      %     \\&= \frac{1}{2}\cos\brp{x-\frac{\pi}{2}+y-\frac{\pi}{2}} + \frac{1}{2}\cos\brp{x-\frac{\pi}{2}-y+\frac{\pi}{2}}
+      %       && \text{by (A)}
+      %     \\&= \frac{1}{2}\cos\brp{x+y-\pi} + \frac{1}{2}\cos\brp{x-y}
+      %     \\&= \frac{1}{2}\cos(x-y) - \frac{1}{2}\cos(x+y)
+      %       && \text{by \prefp{thm:trig_sign}}
+      %\end{align*}}
+    \begin{align*}
+      \sin x \sin y
+        &= \left(\frac{e^{ix} - e^{-ix}}{2i} \right)\left(\frac{e^{iy} - e^{-iy}}{2i} \right)
+        && \text{by \prefp{cor:trig_ceesee}}
+      \\&= \frac{e^{i(x+y)} - e^{i(x-y)} - e^{i(-x+y)} + e^{i(-x-y)} }{-4}
+      \\&= \frac{e^{i(x+y)} + e^{-i(x+y)} - e^{i(x-y)} - e^{-i(x-y)} }{-4}
+      \\&= \frac{e^{i(x+y)} + e^{-i(x+y)}}{-4} - \frac{e^{i(x-y)} + e^{-i(x-y)} }{-4}
+      \\&= \frac{2\cos(x-y)}{4} - \frac{2\cos(x+y)}{4}
+        && \text{by \prefp{cor:trig_ceesee}}
+      \\&= \frac{1}{2}\cos(x-y) - \frac{1}{2}\cos(x+y)
+    \end{align*}
+
+  \item Proofs for (C) and (D) using (A) and (B):
+    \begin{align*}
+       \cos x \sin y
+            &= \cos\brp{x}\cos\brp{y-\frac{\pi}{2}}
+           && \text{by \thme{shift identities}}
+           && \text{\xref{thm:trig_shift}}
+          \\&= \frac{1}{2}\cos\brp{x+y-\frac{\pi}{2}} + \frac{1}{2}\cos\brp{x-y+\frac{\pi}{2}}
+           && \text{by (A)}
+          \\&= \frac{1}{2}\sin\brp{x+y} - \frac{1}{2}\sin\brp{x-y}
+           && \text{by \thme{shift identities}}
+           && \text{\xref{thm:trig_shift}}
+         \\
+%       \cos x \sin y
+%            &= \left(\frac{e^{ix} + e^{-ix}}{2}\right)\left(   \frac{e^{iy} - e^{-iy}}{2i} \right)
+%            && \text{by \prefp{cor:trig_ceesee}}
+%          \\&= \frac{e^{i(x+y)} - e^{ i(x-y)} + e^{i(-x+y)} - e^{i(-x-y)} }{4i}
+%          \\&= \frac{e^{i(x+y)} - e^{-i(x+y)} -\left[ e^{ i(x-y)} - e^{-i(x-y)} \right] }{4i}
+%          \\&= \frac{2i\sin(x+y) -2i\sin(x-y) }{4i}
+%            && \text{by \prefp{cor:trig_ceesee}}
+%          \\&= \frac{1}{2}\sin(x+y) - \frac{1}{2}\sin(x-y)
+%\    \ \\
+       \sin x \cos y
+            &= \cos y \sin x 
+          \\&= \frac{1}{2}\sin\brp{y+x} - \frac{1}{2}\sin\brp{y-x}
+            && \text{by (B)}
+          \\&= \frac{1}{2}\sin\brp{x+y} + \frac{1}{2}\sin\brp{x-y}
+            && \text{by \prefp{thm:sin-x}}
+%   \sin x \cos y
+%        &= \left(\frac{e^{ix} - e^{-ix}}{2} \right)\left(  \frac{e^{iy} + e^{-iy}}{2i} \right)
+%        && \text{by \prefp{cor:trig_ceesee}}
+%      \\&= \frac{e^{i(x+y)} + e^{ i(x-y)} - e^{i(-x+y)} - e^{i(-x-y)} }{4i}
+%      \\&= \frac{e^{i(x+y)} - e^{-i(x+y)} +\left[ e^{ i(x-y)} - e^{-i(x-y)} \right] }{4i}
+%      \\&= \frac{2i\sin(x+y) +2i\sin(x-y) }{4i}
+%        && \text{by \prefp{cor:trig_ceesee}}
+%      \\&= \frac{1}{2}\sin(x+y) + \frac{1}{2}\sin(x-y)
+  \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:cospi}
+\label{prop:sinpi}
+\label{prop:cos2pi}
+\label{prop:sin2pi}
+\label{prop:expipi}
+\label{prop:expi2pi}
+%--------------------------------------
+\propbox{\begin{array}{Drcr | Drcr | Drcr}
+  (A).& \cos(\pi) &=& -1 & (C). & \cos(2\pi) &=&  1 & (E). & e^{i \pi} &=& -1\\
+  (B).& \sin(\pi) &=&  0 & (D). & \sin(2\pi) &=&  0 & (F). & e^{i2\pi} &=&  0
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \cos\brp{\pi} 
+    &= -1 + 1 + \cos\brp{\pi} 
+  \\&= -1 + 2\brs{
+       \sfrac{1}{2}\cos\brp{\sfrac{\pi}{2}-\sfrac{\pi}{2}} 
+     + \sfrac{1}{2}\cos\brp{\sfrac{\pi}{2}+\sfrac{\pi}{2}} }
+    && \text{by $\cos(0)=1$ result}&&\text{\xref{thm:cos0}}
+  \\&= -1 + 2\cos\brp{\sfrac{\pi}{2}} \cos\brp{\sfrac{\pi}{2}}
+    && \text{by \thme{product identities}}&&\text{\xref{thm:trig_cs}}
+  \\&= -1 + 2(0)(0)
+    && \text{by definition of $\pi$}&&\text{\xref{def:pi}}
+  \\&= -1
+  \\
+  \sin\brp{\pi} 
+    &= 0 + \sin\brp{\pi} 
+  \\&= 2\brs{
+       -\sfrac{1}{2}\sin\brp{\sfrac{\pi}{2}-\sfrac{\pi}{2}} 
+     + \sfrac{1}{2}\sin\brp{\sfrac{\pi}{2}+\sfrac{\pi}{2}} }
+    && \text{by $\sin(0)=0$ result}&&\text{\xref{thm:sin0}}
+  \\&= 2\cos\brp{\sfrac{\pi}{2}} \sin\brp{\sfrac{\pi}{2}}
+    && \text{by \thme{product identities}}&&\text{\xref{thm:trig_cs}}
+  \\&= 2(0)\sin\brp{\sfrac{\pi}{2}}
+    && \text{by definition of $\pi$}&&\text{\xref{def:pi}}
+  \\&= 0
+  \\
+  \cos\brp{2\pi}
+    &= 1 + \cos(2\pi) -1
+  \\&= 2\brs{\sfrac{1}{2}\cos\brp{\pi-\pi} + \sfrac{1}{2}\cos\brp{\pi+\pi}} -1
+    && \text{by $\cos(0)=1$ result}&&\text{\xref{thm:cos0}}
+  \\&= 2\cos(\pi) \cos(\pi) -1
+    && \text{by \thme{product identities}}&&\text{\xref{thm:trig_cs}}
+  \\&= 2(-1)(-1) - 1
+    && \text{by (A)}
+  \\&= 1
+  \\
+  \sin(2\pi)
+    &= 0 + \sin(2\pi)
+  \\&= 2\brs{\sfrac{1}{2}\sin(\pi-\pi)+\sfrac{1}{2}\sin(\pi+\pi)}
+    && \text{by $\sin(0)=0$ result}&&\text{\xref{thm:sin0}}
+  \\&= 2\sin(\pi)\cos(\pi)
+    && \text{by \thme{product identities}}&&\text{\xref{thm:trig_cs}}
+  \\&= 2(0)(-1)
+    && \text{by (A) and (B)}
+  \\&= 0
+  \\
+  e^{i\pi}
+    &= \cos(\pi) + i\sin(\pi)
+    &&  \text{by \thme{Euler's identity}}&&\text{\xref{thm:eid}}
+  \\&= -1 + 0
+    && \text{by (A) and (B)}
+  \\&= -1
+  \\
+  e^{i2\pi}
+    &= \cos(2\pi) + i\sin(2\pi)
+    &&  \text{by \thme{Euler's identity}}&&\text{\xref{thm:eid}}
+  \\&= 1 + 0
+    && \text{by (C) and (D)}
+  \\&= 1
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[\thmd{double angle formulas}]
+\footnote{Expressions for $\cos(\alpha+\beta)$, $\sin(\alpha+\beta)$, and $\sin^2\fvx$
+  appear in works as early as \citer{almagest}.
+  Reference: \url{http://en.wikipedia.org/wiki/History_of_trigonometric_functions}
+  }
+\label{thm:trig_a+b}
+\label{thm:trig_double}
+%--------------------------------------
+\thmbox{
+\begin{array}{Drcl@{\qquad}C}
+   (A).& \hxs{\cos}(x+y)    &=& \ds \cos x \cos y - \sin x \sin y             & \forall x,y\in\R \\
+   (B).& \hxs{\sin}(x+y)    &=& \ds \sin x \cos y + \cos x \sin y             & \forall x,y\in\R \\
+   (C).& \hxs{\tan}(x+y)    &=& \ds \frac{\tan x + \tan y}{1 - \tan x \tan y} & \forall x,y\in\R 
+\end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for (A) using \thme{product identities} \xref{thm:trig_cs}.
+    \begin{align*}
+      \cos\brp{x+y}
+        &= \mcom{\frac{1}{2}\cos(x+y) + \frac{1}{2}\cos(x+y)}{$\cos(x+y)$}
+         + \mcom{\frac{1}{2}\cos(x-y) - \frac{1}{2}\cos(x-y)}{0}
+      \\&=  \brs{\frac{1}{2}\cos(x-y) + \frac{1}{2}\cos(x+y)}
+           -\brs{\frac{1}{2}\cos(x-y) - \frac{1}{2}\cos(x+y)}
+      \\&=  \cos x \cos y - \sin x \sin y
+        &&  \text{by \prefp{thm:trig_cs}}
+    \end{align*}
+
+  \item Proof for (A) using \fncte{Volterra integral equation} \xref{thm:D2f_cos_sin}:
+    \begin{align*}
+      \ff(x)\eqd\cos(x+y) &\implies \opDif\ff(x)  = -\sin(x+y)   && \text{by \prefp{thm:Dcos}}
+                        \\&\implies \opDiff\ff(x) = -\cos(x+y)   && \text{by \prefp{thm:Dcos}}
+                        \\&\implies \opDiff\ff(x)+\ff(x) = 0     && \text{by \prope{additive inverse} property}
+                        \\&\implies \cos(x+y) = \cos{y}\cos{x}-\sin{y}\sin{x} && \text{by \prefp{thm:D2f_cos_sin}}
+                        \\&\implies \cos(x+y) = \cos{x}\cos{y}-\sin{x}\sin{y} && \text{by \prope{commutative} property}
+    \end{align*}
+
+  \item Proof for (B) and (C) using (A):
+    \begin{align*}
+     \sin\brp{x+y}
+       &= \cos\brp{x-\frac{\pi}{2}+y}
+          && \text{by \thme{shift identities} \xref{thm:trig_shift}}
+     \\&=  \cos\brp{x-\frac{\pi}{2}}\cos\brp{y} - \sin\brp{x-\frac{\pi}{2}} \sin\brp{y}
+       && \text{by (A)}
+     \\&=  \sin\brp{x}\cos\brp{y} + \cos\brp{x}\sin\brp{y}
+          && \text{by \thme{shift identities} \xref{thm:trig_shift}}
+  \\ \\
+  %   \sin(x+y)
+  %     &= \brs{\frac{1}{2}\sin(x+y) + \frac{1}{2}\sin(x+y)} 
+  %      + \brs{\frac{1}{2}\sin(x-y) - \frac{1}{2}\sin(x-y)}
+  %   \\&=  \brs{\frac{1}{2}\sin(x-y) + \frac{1}{2}\sin(x+y) }
+  %        +\brs{-\frac{1}{2}\sin(x-y) + \frac{1}{2}\sin(x+y)}
+  %   \\&=  \sin x \cos y + \cos x \sin y
+  %     &&  \text{by \prefp{thm:trig_cs}}
+  %\\ \\
+     \tan(x+y)
+       &= \frac{\sin(x+y)}{\cos(x+y)}
+     \\&= \frac{\sin x \cos y + \cos x \sin y}{\cos x \cos y - \sin x \sin y}
+       && \text{by (A)}
+     \\&= \brp{\frac{\sin x \cos y + \cos x \sin y}{\cos x \cos y - \sin x \sin y}}
+          \brp{\frac{ \cos x \cos y } {\cos x \cos y}}
+     \\&=\mathrlap{
+          \frac{\frac{\sin x \cos y}{\cos x \cos y}   + \frac{\cos x \sin y}{\cos x \cos y}}
+               {\frac{\cos x \cos y}{ \cos x \cos y } - \frac{\sin x \sin y}{ \cos x \cos y }}
+        = \frac{\frac{\sin x}{\cos x} + \frac{\sin y}{\cos y}}
+               {1 - \frac{\sin x}{\cos x} \frac{\sin y}{\cos y}}
+        = \frac{ \tan x  +  \tan y}{1 - \tan x \tan y}
+        }
+  \end{align*}
+\end{enumerate}
+
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[\thmd{trigonometric periodicity}]
+\label{thm:cosxpi}
+\label{thm:sinxpi}
+\label{thm:trig_periodic}
+%--------------------------------------
+\thmbox{\begin{array}{DrclCC | DrclCC}
+   (A).& \ds \cos(x+\xM\pi)  &=& \ds (-1)^\xM\cos(x) & \forall x\in\R, & \xM\in\Z & (D).& \ds \cos(x+2\xM\pi)  &=& \ds \cos(x) & \forall x\in\R, & \xM\in\Z \\
+   (B).& \ds \sin(x+\xM\pi)  &=& \ds (-1)^\xM\sin(x) & \forall x\in\R, & \xM\in\Z & (E).& \ds \sin(x+2\xM\pi)  &=& \ds \sin(x) & \forall x\in\R, & \xM\in\Z \\
+   (C).& \ds e^{i(x+\xM\pi)} &=& \ds (-1)^\xM e^{ix} & \forall x\in\R, & \xM\in\Z & (F).& \ds e^{i(x+2\xM\pi)} &=& \ds  e^{ix} & \forall x\in\R, & \xM\in\Z   
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for (A):
+    \begin{enumerate}
+      \item $\xM=0$ case:
+        $\begin{array}[t]{rclcl}
+          \cos(x+0\pi) &=& \cos(x) &=& (-1)^0\cos(x)\\
+        \end{array}$
+        
+      \item Proof for $\xM>0$ cases (by induction): \label{item:cosxMpiA_gt0}
+        \begin{enumerate}
+          \item Base case $\xM=1$: \label{item:cosxMpiA_base}
+            \begin{align*}
+              \cos(x+\pi)
+                &= \cos x \cos \pi - \sin x \sin \pi
+                && \text{by \thme{double angle formulas}}&&\text{\xref{thm:trig_double}}
+              \\&= \cos x (-1) - \sin x (0)
+                && \text{by $\cos\pi=-1$ result}&&\text{\xref{prop:cospi}}
+              \\&= (-1)^1\cos x
+            \end{align*}
+        
+          \item Inductive step\ldots Proof that $\xM$ case $\implies$ $\xM+1$ case:
+            \begin{align*}
+              \cos\brp{x+[\xM+1]\pi}
+                &= \cos\brp{[x+\pi] + \xM\pi}
+              \\&= (-1)^\xM \cos\brp{x+\pi}
+                && \text{by induction hypothesis ($\xM$ case)}
+              \\&= (-1)^\xM(-1)\cos\brp{x}
+                && \text{by base case \xref{item:cosxMpiA_base}}
+              \\&= (-1)^{\xM+1}\cos\brp{x}
+              \\&\implies \text{$\xM+1$ case}
+            \end{align*}
+        \end{enumerate}
+
+      \item Proof for $\xM<0$ cases: Let $\xN\eqd-\xM$ \ldots $\implies \xN>0$.
+        \begin{align*}
+          \cos\brp{x+\xM\pi}
+            &\eqd \cos\brp{x-\xN\pi}
+            && \text{by definition of $\xN$}
+          \\&= \cos(x)\cos(-\xN\pi)-\sin(x)\sin(-\xN\pi)
+            && \text{by \thme{double angle formulas}}&&\text{\xref{thm:trig_double}}
+          \\&= \cos(x)\cos(\xN\pi)+\sin(x)\sin(\xN\pi)
+            && \text{by \prefp{thm:cos-x}}
+          \\&= \cos(x)\cos(0+\xN\pi)+\sin(x)\sin(0+\xN\pi)
+          \\&= \cos(x)(-1)^\xN\cos(0)+\sin(x)(-1)^\xN\sin(0)
+            && \text{by $\xM\ge0$ results}&&\text{\xref{item:cosxMpiA_gt0}}
+          \\&= (-1)^\xN\cos(x)
+            && \text{by $\scy\cos(0)=1$, $\scy\sin(0)=0$ results}&&\text{\xref{thm:sin0}}
+          \\&\eqd (-1)^{-\xM}\cos(x)
+            && \text{by definition of $\xN$}
+          \\&= (-1)^{\xM}\cos(x)
+        \end{align*}
+
+      \item Proof using complex exponential:
+        \begin{align*}
+          \cos\brp{ x+\xM\pi} 
+            &= \frac{e^{i\brp{ x+\xM\pi}} + e^{ -i\brp{ x+\xM\pi} }}{2}
+            && \text{by \thme{Euler formulas}}
+            && \text{\xref{cor:trig_ceesee}}
+          \\&= e^{i\xM\pi} \brs{\frac{e^{ix} + e^{ -ix}}{2}}
+            && \text{by $e^{\alpha\beta}=e^\alpha e^\beta$ result}&&\text{\xref{thm:trig_eab}}
+          \\&= \brp{e^{i\pi}}^\xM \cos x 
+            && \text{by \thme{Euler formulas}}
+            && \text{\xref{cor:trig_ceesee}}
+          \\&= (-1)^\xM \cos x 
+            && \text{by $e^{i\pi}=-1$ result}&&\text{\xref{prop:expipi}}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof for (B):
+    \begin{enumerate}
+      \item $\xM=0$ case:
+        $\begin{array}[t]{rclcl}
+          \sin(x+0\pi) &=& \sin(x) &=& (-1)^0\sin(x)
+        \end{array}$
+        
+      \item Proof for $\xM>0$ cases (by induction): \label{item:cosxMpiB_gt0}
+        \begin{enumerate}
+          \item Base case $\xM=1$: \label{item:cosxMpiB_base}
+            \begin{align*}
+              \sin(x+\pi) 
+                &= \sin x \cos \pi + \cos x \sin \pi
+                && \text{by \thme{double angle formulas}}&&\text{\xref{thm:trig_double}}
+              \\&= \sin x (-1) - \cos x (0)
+                && \text{by $\sin\pi=0$ results}&&\text{\xref{prop:cospi}}
+              \\&= (-1)^1\sin x
+            \end{align*}
+        
+          \item Inductive step\ldots Proof that $\xM$ case $\implies$ $\xM+1$ case:
+            \begin{align*}
+              \sin\brp{x+[\xM+1]\pi}
+                &= \sin\brp{[x+\pi] + \xM\pi}
+              \\&= (-1)^\xM \sin\brp{x+\pi}
+                && \text{by induction hypothesis ($\xM$ case)}
+              \\&= (-1)^\xM(-1)\sin\brp{x}
+                && \text{by base case \xref{item:cosxMpiB_base}}
+              \\&= (-1)^{\xM+1}\sin\brp{x}
+              \\&\implies \text{$\xM+1$ case}
+            \end{align*}
+        \end{enumerate}
+
+      \item Proof for $\xM<0$ cases: Let $\xN\eqd-\xM$ \ldots $\implies \xN>0$.
+        \begin{align*}
+          \sin\brp{x+\xM\pi}
+            &\eqd \sin\brp{x-\xN\pi}
+            && \text{by definition of $\xN$}
+          \\&= \sin(x)\sin(-\xN\pi)-\sin(x)\sin(-\xN\pi)
+            && \text{by \thme{double angle formulas}}&&\text{\xref{thm:trig_double}}
+          \\&= \sin(x)\sin(\xN\pi)+\sin(x)\sin(\xN\pi)
+            && \text{by \prefp{thm:cos-x}}
+          \\&= \sin(x)\sin(0+\xN\pi)+\sin(x)\sin(0+\xN\pi)
+          \\&= \sin(x)(-1)^\xN\sin(0)+\sin(x)(-1)^\xN\sin(0)
+            && \text{by $\xM\ge0$ results}&&\text{\xref{item:cosxMpiB_gt0}}
+          \\&= (-1)^\xN\sin(x)
+            && \text{by $\scy\sin(0)=1$, $\scy\sin(0)=0$ results}&&\text{\xref{thm:sin0}}
+          \\&\eqd (-1)^{-\xM}\sin(x)
+            && \text{by definition of $\xN$}
+          \\&= (-1)^{\xM}\sin(x)
+        \end{align*}
+
+      \item Proof using complex exponential:
+        \begin{align*}
+          \sin\brp{ x+\xM\pi} 
+            &= \frac{e^{i\brp{ x+\xM\pi}} - e^{ -i\brp{ x+\xM\pi} }}{2i}
+            && \text{by \thme{Euler formulas}}
+            && \text{\xref{cor:trig_ceesee}}
+          \\&= e^{i\xM\pi} \brs{\frac{e^{ix} - e^{ -ix}}{2i}}
+            && \text{by $e^{\alpha\beta}=e^\alpha e^\beta$ result}&&\text{\xref{thm:trig_eab}}
+          \\&= \brp{e^{i\pi}}^\xM \sin x 
+            && \text{by \thme{Euler formulas}}&&\text{\xref{cor:trig_ceesee}}
+          \\&= (-1)^\xM \sin x 
+            && \text{by $e^{i\pi}=-1$ result}&&\text{\xref{prop:expipi}}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof for (C):
+    \begin{align*}
+      e^{i\brp{ x+\xM\pi}}
+        &= e^{i\xM\pi}e^{ix}
+        && \text{by $e^{\alpha\beta}=e^\alpha e^\beta$ result}&&\text{\xref{thm:trig_eab}}
+      \\&= \brp{e^{i\pi}}^\xM \brp{e^{ix}}
+      \\&= (-1)^\xM e^{ix}
+        && \text{by $e^{i\pi}=-1$ result}&&\text{\xref{prop:expipi}}
+    \end{align*}
+
+  \item Proofs for (D), (E), and (F):
+    $\ds\begin{array}[t]{lclclM}
+      \cos\brp{i\brp{ x+2\xM\pi}} &=& (-1)^{2\xM}\cos\brp{ix} &=& \cos\brp{ix} & by (A)\\ 
+      \sin\brp{i\brp{ x+2\xM\pi}} &=& (-1)^{2\xM}\sin\brp{ix} &=& \sin\brp{ix} & by (B)\\ 
+      e^{i\brp{ x+2\xM\pi}}       &=& (-1)^{2\xM}e^{ix}       &=& e^{ix}       & by (C) 
+    \end{array}$
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[\thmd{half-angle formulas}/\thmd{squared identities}]
+\label{thm:trig_half}
+\label{thm:trig_sq}
+%--------------------------------------
+\thmbox{\begin{array}{DrclC | DrclC}
+   (A).& \cos^2x         &=& \sfrac{1}{2} \brp{1 + \cos2x} & \forall x\in\R &
+   (C).& \cos^2x+\sin^2x &=& 1                             & \forall x\in\R \\
+   (B).& \sin^2x         &=& \sfrac{1}{2} \brp{1 - \cos2x} & \forall x\in\R &
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \cos^2x
+     &\eqd (\cos x)(\cos x)
+      = \sfrac{1}{2}\cos(x-x) + \sfrac{1}{2}\cos(x+x)
+     && \text{by \thme{product identities}}
+     && \text{\xref{thm:trig_cs}}
+   \\&= \sfrac{1}{2}\brs{1 + \cos(2x)}
+     && \text{by $\cos(0)=1$ result}&&\text{\xref{thm:cos0}}
+   \\
+   \sin^2x
+     &= (\sin x)(\sin x)
+      = \sfrac{1}{2}\cos(x-x) - \sfrac{1}{2}\cos(x+x)
+     && \text{by \thme{product identities}}
+     && \text{\xref{thm:trig_cs}}
+   \\&= \sfrac{1}{2}\brs{1 - \cos(2x)}
+     && \text{by $\cos(0)=1$ result}&&\text{\xref{thm:cos0}}
+   \\
+   \cos^2x + \sin^2x
+     &= \sfrac{1}{2}\brs{1 + \cos(2x)} + \sfrac{1}{2}\brs{1 - \cos(2x)}
+      = 1
+     && \text{by (A) and (B)}
+   \\&&&\text{note: see also}&&\text{\prefp{thm:ccss1}}
+\end{align*}
+\end{proof}
+
+
+%=======================================
+\section{Planar Geometry}
+\label{sec:har_plane}
+%=======================================
+The harmonic functions $\cos(x)$ and $\sin(x)$ are \hie{orthogonal} to each other
+in the sense
+\begin{align*}
+  \inprod{\cos(x)}{\sin(x)}
+    &= \int_{-\pi}^{+\pi} \cos(x) \sin(x) \dx
+  \\&= \frac{1}{2}\int_{-\pi}^{+\pi} \sin(x-x) \dx
+     + \frac{1}{2}\int_{-\pi}^{+\pi} \sin(x+x) \dx
+    && \text{by \prefp{thm:trig_cs}}
+  \\&= \frac{1}{2}\cancelto{0}{\int_{-\pi}^{+\pi} \sin(0) \dx}
+      + \frac{1}{2}\int_{-\pi}^{+\pi} \sin(2x) \dx
+  \\&= \left.-\frac{1}{2}\cdot\frac{1}{2}\cos(2x)\right|_{-\pi}^{+\pi} \cos(2x)
+  \\&= -\frac{1}{4}\brs{ \cos(2\pi) - \cos(-2\pi)}
+  \\&= 0
+\end{align*}
+
+Because $\cos(x)$ are $\sin(x)$ are orthogonal, they can be conveniently 
+represented by the $x$ and $y$ axes in a plane---
+because perpendicular axes in a plane are also orthogonal.
+Vectors in the plane can be represented by linear combinations of 
+$\cos x$ and $\sin x$.
+Let $\tan x$ be defined as
+  \[ \tan x \eqd \frac{\sin x}{\cos x}.\]
+We can also define a value $\theta$ to represent the angle between such a vector 
+and the $x$-axis such that
+  \[ \theta = \tan^{-1}\brp{\frac{\sin\theta}{\cos\theta}} \] % = \tan^{-1}\brp{\frac{y}{x}}. \]
+
+%--------------------------------------
+%\begin{definition}[Basic trigonometric functions]
+%\label{def:trig}
+%--------------------------------------
+%Let $\cos:\R\to[-1,\,+1]$, 
+%    $\sin:\R\to[-1,\,+1]$, 
+%    $\tan:\R\to\R$, 
+%    $\sec:\R\to\R$, 
+%    $\csc:\R\to\R$, and 
+%    $\cot:\R\to\R$
+%be defined as follows and with respect to the figure below and to the left:\\
+\begin{minipage}{3\tw/16}
+  \setlength{\unitlength}{\tw/200}
+  \begin{picture}(200,200)(-100,-100)
+    %\color{graphpaper}\graphpaper[10](-100,-100)(200,200)%
+    \thicklines%
+    \color{axis}%
+      \put(-100 ,   0 ){\line(1,0){200} }%
+      \put(   0 ,-100 ){\line(0,1){200} }%
+      \qbezier[16](70.7, 0)(70.7,40)(70.7,70.7)%
+      \qbezier[16]( 0,70.7)(40,70.7)(70.7,70.7)%
+    \color{circle}%
+      \input{../common/circle.inp}%
+    \color{black}%
+      \put(   0 ,   0 ){\vector(1,1){70.7} }%
+      \put( 70.7,-10){\makebox(0,0)[t ]{$x$}}%
+      \put(-10, 70.7){\makebox(0,0)[r ]{$y$}}%
+      \put( 40, 40){\makebox(0,0)[br]{$r$}}%
+      \put( 25,  5){\makebox(0,0)[bl]{$\theta$}}%
+      \qbezier(20,0)(20,10)(10,10)%
+  \end{picture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{12\tw/16}
+  \[\begin{array}{rcl@{\qquad}rcl}
+    \cos\theta &\eqd& \frac{x}{r} & \sec\theta &\eqd& \frac{r}{x} \\
+    \sin\theta &\eqd& \frac{y}{r} & \csc\theta &\eqd& \frac{r}{y} \\
+    \tan\theta &\eqd& \frac{y}{x} & \cot\theta &\eqd& \frac{x}{y}
+  \end{array}\]
+\end{minipage}
+
+
+%%=======================================
+%\section{Small angle formulas}
+%\index{trigonometry!small angle formulas}
+%\label{sec:trig_small}
+%%=======================================
+%\begin{theorem}
+%For ``small" $\fvx$,
+%\thmbox{\begin{array}{rcl}
+%   \cos\fvx &\eqa& 1  \\
+%   \sin\fvx &\eqa& \fvx  \\
+%   \tan\fvx &\eqa& \fvx \\
+%   \tan(x+\fvx) &\eqa& \tan x + \fvx
+%\end{array}}
+%\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%   \cos\fvx &= 1 - \frac{\fvx^2}{2} + \frac{\fvx^4}{4!} - \frac{\fvx^6}{6!} + \cdots
+%              &\eqa& 1
+%   \\
+%   \sin\fvx &= \fvx - \frac{\fvx^3}{3!} + \frac{\fvx^5}{5!} - \frac{\fvx^7}{7!} + \cdots
+%              &\eqa& \fvx
+%   \\
+%   \tan\fvx &= \fvx + 2\frac{\fvx^3}{3!} + 16\frac{\fvx^5}{5!} + 272\frac{\fvx^7}{7!} + \cdots
+%              &\eqa& \fvx
+%   \\
+%   \tan(x+\fvx)
+%     &=    \frac{\tan x + \tan\fvx}{1 - \tan x \tan\fvx}
+%   \\&\eqa \frac{\tan x + \fvx}{1 - \fvx\tan x }
+%   \\&\eqa \frac{\tan x + \fvx}{1 - 0 }
+%   \\&=    \tan x + \fvx
+%\end{align*}
+%\end{proof}
+%
+
+
+%=======================================
+\section{The power of the exponential}
+%=======================================
+\qboxnps
+  { \href{http://www-history.mcs.st-andrews.ac.uk/Biographies/Peirce_Benjamin.html}{Benjamin Peirce} 
+    \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineF.html}{(1809--1880)}, 
+    \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/USA.html}{American Harvard University mathematician}
+    after proving $e^{i\pi}=-1$ in a lecture.
+    \index{Peirce, Benjamin}
+    \index{quotes!Peirce, Benjamin}
+    \footnotemark
+  }
+  {../common/people/peirce.jpg}
+  {Gentlemen, that is surely true, it is absolutely paradoxical; 
+   we cannot understand it, and we don't know what it means. 
+   But we have proved it, and therefore we know it must be the truth.}
+  \citetblt{
+    quote: & \citerp{kasner1940}{104} \\
+    %      & \url{http://www-gap.dcs.st-and.ac.uk/~history/Quotations/Peirce_Benjamin.html}\\
+    image: & \scs\url{ http://www-history.mcs.st-andrews.ac.uk/history/PictDisplay/Peirce_Benjamin.html} 
+    }
+  
+\qboxnps
+  { \href{http://en.wikipedia.org/wiki/John_von_Neumann}{John von Neumann} 
+    \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineG.html}{(1903--1957)}, 
+    \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Russia.html}{Hungarian-American mathematician},
+    as allegedly told to Gary Zukav by Felix T. Smith, Head of Molecular Physics at Stanford Research Institute,
+    about a ``physicist friend".
+    %in response to the statement ``I'm afraid I don't understand the method of characteristics."
+    \index{von Neumann, John}
+    \index{quotes!von Neumann, John}
+    \footnotemark
+  }
+  {../common/people/neumann.jpg}
+  {Young man, in mathematics you don't understand things. You just get used to them.}
+  \footnotetext{
+    \begin{tabular}{ll}
+      quote: & \citerp{zukav1980}{208} \\
+            %& \url{http://en.wikiquote.org/wiki/John_von_Neumann} \\
+      image: & \scs\url{http://en.wikipedia.org/wiki/John_von_Neumann} 
+    \end{tabular}\\
+    The quote appears in a footnote in Zukav (1980) that reads like this: \scs
+    Dr. Felix Smith, Head of Molecular Physics, Stanford Research Institute, 
+    once related to me the true story of a physicist friend who worked at Los Alamos after World War II. 
+    Seeking help on a difficult problem, 
+    he went to the great Hungarian mathematician, John von Neumann, who was at Los Alamos as a consultant.
+    ``Simple," said von Neumann. ``This can be solved by using the method of characteristics."
+    After the explanation the physicist said, ``I'm afraid I don't understand the method of characteristics."
+    ``Young man," said von Neumann, ``in mathematics you don't understand things, you just get used to them."
+    }
+  
+
+The following corollary presents one of the most amazing relations in all of mathematics.
+It shows a simple and compact relationship between the transcendental numbers
+$\pi$ and $e$, the imaginary number $i$, and the additive and multiplicative identity
+elements $0$ and $1$. 
+The fact that there is any relationship at all is somewhat amazing;
+but for there to be such an elegant one is truly one of the wonders of the 
+world of numbers.
+%--------------------------------------
+\begin{corollary}
+\footnote{
+  \citor{euler1748v1},
+  \citerc{euler1748e}{chapter 8?},
+  \url{http://www.daviddarling.info/encyclopedia/E/Eulers_formula.html}
+  }
+%--------------------------------------
+\corbox{ e^{i\pi} + 1 = 0 }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \left.e^{i\fvx}\right|_{\fvx=\pi}
+    &= \brs{\cos\fvx + i\sin\fvx}_{\fvx=\pi}
+    && \text{by Euler's identity \xref{thm:eid}}
+  \\&= -1 + i\cdot0
+    && \text{by \prefp{prop:sinpi}}
+  \\&= -1 
+\end{align*}
+\end{proof}
+
+There are many transforms available, several of them integral transforms
+$\brs{\opA\ff}(s)\eqd\int_t \ff(s) \kappa(t,s) \dds$
+using different kernels $\kappa(t,s)$. 
+But of all of them, two of the most often used themselves use an exponential kernel:
+  \\\qquad
+  \begin{tabular}{lll}
+    \circOne & The \hie{Laplace Transform} & with kernel $\lkern{t}{s}\eqd \lkerne{t}{s}$  \\
+    \circTwo & The \hie{Fourier Transform} & with kernel $\fkern{t}{\omega}\eqd \fkerne{t}{\omega}$.
+  \end{tabular}\\
+Of course, the Fourier kernel is just a special case of the Laplace kernel with $s=i\omega$
+($i\omega$ is a unit circle in $s$ if $s$ is depicted as a plane with real and imaginary axes).
+What is so special about exponential kernels?
+Is it just that they were discovered sooner than other kernels with other transforms? 
+The answer in general is ``no". 
+The exponential has two properties that makes it extremely special:
+  \begin{liste}
+    \item The exponential is an eigenvalue of any \prope{linear time invariant} (LTI) operator \xref{thm:Le=he}.
+    \item The exponential generates a \fncte{continuous point spectrum} for the \ope{differential operator}. 
+  \end{liste}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{mallat}{2},
+  \ldots page 2 online: \url{http://www.cmap.polytechnique.fr/~mallat/WTintro.pdf}
+  }
+\label{thm:Le=he}
+%--------------------------------------
+Let $\opL$ be an operator with kernel $\fh(t,\omega)$ and 
+%\[ \Fh(\omega)\eqd \inprod{\fh(t,\omega)}{\fkerne{t}{\omega}}
+%   \qquad\scriptstyle
+%   \text{(\hie{Fourier transform}).}
+%\]
+\\\indentx$\Lh(s)\eqd \inprod{\fh(t,\omega)}{\lkerne{t}{s}}
+   \qquad\scriptstyle
+   \text{(\ope{Laplace transform}).}
+$\\
+\thmbox{
+  \brb{\begin{array}{Fl}
+    1. & \text{$\opL$ is \prope{linear} and} \\
+    2. & \text{$\opL$ is \prope{time-invariant}}
+  \end{array}}
+  \qquad\implies\qquad\brb{
+    \opL \lkerne{t}{s} 
+    = 
+    \mcomr{\Lh^\ast(-s)}{eigenvalue} \mcoml{\lkerne{t}{s}}{eigenvector}
+    }}
+\end{theorem}
+\begin{proof}
+%\begin{align*}
+%  \opL \fkerne{t}{\omega}
+%    &= \inprod{\fkerne{u}{\omega}}{\fh((t;u),\omega)}
+%    && \text{by linear hypothesis}
+%  \\&= \inprod{\fkerne{u}{\omega}}{\fh((t-u),\omega)}
+%    && \text{by time-invariance hypothesis}
+%  \\&= \inprod{\fkerne{(t-v)}{\omega}}{\fh(v,\omega)}
+%    && \text{let $v=t-u \implies u-t-v$}
+%  \\&= \fkerne{t}{\omega}\; \inprod{\fkernea{v}{\omega}}{\fh(v,\omega)}
+%    && \text{by additivity of $\inprodn$ (\prefp{def:inprod})}
+%  \\&= \inprod{\fh(v,\omega)}{\fkernea{v}{\omega}}^\ast \; \fkerne{t}{\omega}
+%    && \text{by conjugate symmetry of $\inprodn$ (\prefp{def:inprod})}
+%  \\&= \inprod{\fh(v,\omega)}{\fkerne{v}{(-\omega)}}^\ast \, \fkerne{t}{\omega}
+%  \\&= \Fh^\ast(-\omega)\, \fkerne{t}{\omega}
+%    && \text{by definition of $\Fh(\omega)$}
+%\end{align*}
+
+\begin{align*}
+  \brs{\opL \lkerne{t}{ s}}(s)
+    &= \inprod{\lkerne{u}{ s}}{\fh((t;u), s)}
+    && \text{by linear hypothesis}
+  \\&= \inprod{\lkerne{u}{ s}}{\fh((t-u), s)}
+    && \text{by time-invariance hypothesis}
+  \\&= \inprod{\lkerne{(t-v)}{ s}}{\fh(v, s)}
+    && \text{let $v=t-u \implies u=t-v$}
+  \\&= \lkerne{t}{ s}\; \inprod{\lkerne{v}{-s}}{\fh(v, s)}
+    && \text{by additivity of $\inprodn$ \ifdochas{vsinprod}{(\prefp{def:inprod})}}
+  \\&= \inprod{\fh(v, s)}{\lkerne{v}{-s}}^\ast \; \lkerne{t}{ s}
+    && \text{by conjugate symmetry of $\inprodn$ \ifdochas{vsinprod}{(\prefp{def:inprod})}}
+  \\&= \inprod{\fh(v, s)}{\lkerne{v}{(- s)}}^\ast \, \lkerne{t}{ s}
+  \\&= \Lh^\ast(- s)\, \lkerne{t}{ s}
+    && \text{by definition of $\Lh( s)$}
+\end{align*}
+\end{proof}
+
+%%--------------------------------------
+%\begin{theorem}
+%\label{thm:spec_D}
+%\citep{pedersen2000}{79}
+%%--------------------------------------
+%Let $\opDif$ be the differential operator.
+%\thmbox{\begin{array}{rcl@{\qquad}D}
+%    \mc{4}{l}{\text{The set $\set{e^{\lambda x}}{\lambda\in\C}$ are the eigenvectors of $\opDif$. }} \\
+%    \oppSpecp(\opDif) &=& \oppSpec(\opDif)  & (the spectrum of $\opDif$ is all eigenvalues) \\
+%    \oppRes(\opDif)   &=& \emptyset       & ($\opDif$ has no non-spectral points whatsoever) \\
+%    \oppSpecc(\opDif) &=& \emptyset       & ($\opDif$ has no continuous spectrum) \\
+%    \oppSpecr(\opDif) &=& \emptyset       & ($\opDif$ has no resolvent spectrum)
+%\end{array}}
+%\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%  (\opDif-\lambda \opI) e^{\lambda x} 
+%    &= \opDif e^{\lambda x}  - \lambda \opI e^{\lambda x}
+%  \\&= \lambda e^{\lambda x}  - \lambda e^{\lambda x}
+%  \\&= 0 
+%  && \forall \lambda\in\C
+%\end{align*}
+%This theorem and proof needs more work and investigation 
+%to prove/disprove its claims.\problem
+%\end{proof}
+
+
+%========================================================
+%========================================================
+%========================================================
+%========================================================
+%========================================================
+\if 0
+
+  \cos\fvx
+    &=& \left.\sum_{n=0}^\infty \frac{\cos^{(n)}(a)}{n!}(x-a)^n\right|_{a=0}
+  \\&=& \frac{\cos(0)}{0!}\fvx^0
+       -\cancelto{0}{\frac{\sin(0)}{1!}\fvx^1}
+       -\frac{\cos(0)}{2!}\fvx^2
+       +\cancelto{0}{\frac{\sin(0)}{3!}\fvx^3}
+       +\frac{\cos(0)}{4!}\fvx^4
+       -\cancelto{0}{\frac{\sin(0)}{5!}\fvx^5}
+       -\frac{\cos(0)}{6!}\fvx^6
+       + \cdots
+  \\&=& 1
+       -\frac{\fvx^2}{2!}
+       +\frac{\fvx^4}{4!}
+       -\frac{\fvx^6}{6!}
+       + \cdots
+  \\&=& \sum_{n=0}^\infty \frac{(-1)^n}{(2n)!}\fvx^{2n}
+\\ \\
+  \sin\fvx
+    &=& \left.\sum_{n=0}^\infty \frac{\sin^{(n)}(a)}{n!}(x-a)^n\right|_{a=0}
+  \\&=& \cancelto{0}{\frac{\sin(0)}{0!}\fvx^0}
+       +\frac{\cos(0)}{1!}\fvx^1
+       -\cancelto{0}{\frac{\sin(0)}{2!}\fvx^2}
+       -\frac{\cos(0)}{3!}\fvx^3
+       +\cancelto{0}{\frac{\sin(0)}{4!}\fvx^4}
+       +\frac{\cos(0)}{5!}\fvx^5
+       -\cancelto{0}{\frac{\sin(0)}{6!}\fvx^6}
+       -\frac{\cos(0)}{7!}\fvx^7
+       + \cdots
+  \\&=&
+       \fvx
+       -\frac{\fvx^3}{3!}
+       +\frac{\fvx^5}{5!}
+       -\frac{\fvx^7}{7!}
+       + \cdots
+  \\&=& \sum_{n=0}^\infty \frac{(-1)^n}{(2n+1)!}\fvx^{2n+1}
+\\ \\
+
+\begin{minipage}{3\tw/16}
+  \setlength{\unitlength}{\tw/200}
+  \begin{picture}(260,260)(-120,-120)
+    %\color{graphpaper}\graphpaper[10](-120,-120)(260,260)%
+    \thicklines%
+    \color{axis}%
+      \put(-120 ,   0 ){\line(1,0){240} }%
+      \put(   0 ,-120 ){\line(0,1){240} }%
+      \qbezier[16](70.7, 0)(70.7,40)(70.7,70.7)%
+      \qbezier[16]( 0,70.7)(40,70.7)(70.7,70.7)%
+    \color{circle}%
+      \input{../common/circle.inp}%
+    \color{red}%
+      \put(   0 ,   0 ){\vector(1,1){70.7} }%
+    \color{black}%
+      \put(130,   0){\makebox(0,0)[l ]{$\Re$}}%
+      \put(  0, 130){\makebox(0,0)[b ]{$\Im$}}%
+      \put( 70.7,-10){\makebox(0,0)[t ]{$\cos\fvx$}}%
+      \put(-10, 70.7){\makebox(0,0)[r ]{$i\sin\fvx$}}%
+      \put( 80, 80){\makebox(0,0)[bl]{$e^{i\fvx}$}}%
+      \put( 40, 40){\makebox(0,0)[br]{$1$}}%
+      \put( 30,  5){\makebox(0,0)[bl]{$\fvx$}}%
+  \end{picture}
+\end{minipage}%
+\hfill%
+\begin{minipage}{12\tw/16}
+\end{minipage}
+
+
+
+\fi
+
+

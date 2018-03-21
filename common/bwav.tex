@@ -1,0 +1,1355 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+%============================================================================
+
+
+
+%=======================================
+\chapter{B-spline Wavelets}
+\label{chp:bwav}
+%=======================================
+%=======================================
+\section{Definition}
+%=======================================
+The \fncte{$n$th order B-spline} $\fN_n(x)$ is an \fncte{MRA scaling function} and
+induces an \structe{MRA system} $\mrasys$ \xref{thm:Nmra}.
+The \fncte{scaling coefficient sequence} $\seqkZ{h_k}$ of this system is fairly readily apparent \xref{thm:Bsplineh}.
+Once such a sequence is known, the corresponding \fncte{B-spline wavelet} $\fB_n(x)$ \xref{def:Bn} and
+\structe{B-spline wavelet system} $\wavsys$ \xref{def:wavsys} easily follow:
+\begin{liste}
+  \item Once $\seqkZ{h_k}$ is known, the \fncte{$n$th order wavelet coefficient sequence} $\seqkZ{g_k}$ \label{item:bwav_cqf}
+        can be calculated using the \prope{conjugate quadrature filter condition} (CQF condition---\xrefnp{def:cqf}).
+        In the case of the \fncte{$n$th order B-spline scaling coefficient sequence} (real $n+2$ non-zero element sequence),
+        this condition is satisfied simply by
+        \\\indentx$\ds g_k = (-1)^k h_{n-k}$.
+  \item Once $\seqn{g_k}$ is known, the \fncte{$n$th order B-spline wavelet} $\fB_n(x)$
+        can be calculated by \xref{thm:g->psi}
+        \\\indentx$\ds \fB_n(x) = \sqrt{2}\sum_{k=0}^{k=n+1} g_k \fN_n(2x-k)$.
+\end{liste}
+
+%=======================================
+%\section{Definition}
+%=======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citePpc{strang89}{619}{(6)},
+  \citerpgc{strang1996}{445}{0961408871}{(A.6)},
+  \citePpc{chui1992}{906}{Theorem 1}
+  }
+\label{def:Bn}
+%--------------------------------------
+Let $\fN_n(x)$ be the \fncte{$n$th order B-spline} \xref{def:Bspline}.
+\defboxt{
+  The \fnctd{$n$th order B-spline wavelet} $\fB_n(x)$ is defined as
+  \\\indentx$\ds
+  \fB_n(x) = \frac{1}{2^n}\sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{k} \fN_n(2x-k)   \qquad\forall n\in\Znn,\,\forall x\in\R
+  $
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:Bn}
+%--------------------------------------
+Let $\fB_n(x)$ be the \fncte{$n$th order B-spline wavelet} \xref{def:Bn}.
+\propbox{
+  \fB_n(x) = \frac{1}{n!2^n}\sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{k} \sum_{m=0}^{n+1} (-1)^m \bcoef{n+1}{m}(2x-k-m)^n \fstep(2x-k-m)   \qquad\forall n\in\Znn,\,\forall x\in\R
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \fB_n(x)
+    &\eqd \frac{1}{2^n}\sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{k} \fN_n(2x-k)
+    %&& \text{by definition of $\fB_n(x)$}
+    && \text{by \prefp{def:Bn}}
+  \\&= \frac{1}{n!2^n}\sum_{k=0}^{n+1} (-1)^k \bcoef{n+1}{k} \sum_{m=0}^{n+1} (-1)^m \bcoef{n+1}{m}(2x-k-m)^n \fstep(2x-k-m)
+    && \text{by \prefp{thm:Nnx}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{example}
+\footnote{
+  \citePpc{strang89}{619}{Haar wavelet from box function},
+  \citerpgc{strang1996}{445}{0961408871}{Haar wavelet from box function},
+  \citePp{chui1992}{906},
+  \citerpg{stoer2002}{133}{9780387954523}
+  }
+\label{ex:B0}
+%--------------------------------------
+Let $\fB_0(x)$ be the \fncte{0 order B-spline} \xref{def:Bn}.
+\exbox{
+   \fB_0(x) = \brb{\begin{array}{r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}rMr@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}l}
+    &&& &  1      & for & 0           &\le&x&<  &\sfrac{1}{2}\\
+    &&&-&  1      & for & \sfrac{1}{2}&\le&x&<  &1\\
+    &&& &  0      & \mc{6}{M}{otherwise}
+  \end{array}}
+  }
+\end{example}
+\begin{proof}
+\begin{align*}
+  \fB_0(x)
+    &\eqd \brp{\frac{1}{2^0}}\sum_{k=0}^{0+1} (-1)^k \bcoef{0+1}{k} \fN_0(2x-k)
+    && \text{by definition of $\fB_0(x)$}
+    && \text{\xref{def:Bn}}
+  \\&= \sum_{k=0}^{1} (-1)^k \bcoef{1}{k}
+         \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &&&1   & for $0 \le 2x-k < 1$\\
+                  &&&0   & otherwise
+               \end{array}}
+    && \text{by $\fN_0(x)$ example}
+    && \text{\xref{ex:bspline_N0}}
+  \\&= \sum_{k=0}^{2} (-1)^k \bcoef{2}{k}
+         \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &&&1   & for $\frac{k}{2}\le x < \frac{k+1}{2}$\\
+                  &&&0   & otherwise
+               \end{array}}
+  \\&=\mathrlap{%
+        +1\brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &&&1   & for $\frac{0}{2}\le x < \frac{0+1}{2}$\\
+                  &&&0   & otherwise
+               \end{array}}
+        -1\brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &&&1   & for $\frac{1}{2}\le x < \frac{1+1}{2}$\\
+                  &&&0   & otherwise
+               \end{array}}
+         }%
+  \\&=\mathrlap{%
+          \brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &&&1   & for $0\le x < \frac{1}{2}$\\
+                  &&&0   & otherwise
+               \end{array}}
+         +\brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &&&-1  & for $\frac{1}{2}\le x < 1$\\
+                  &&&0   & otherwise
+               \end{array}}
+         }%
+  \\&=\brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &&&1   & for $          0\le x < \frac{1}{2}$\\
+                  &&&-1  & for $\frac{1}{2}\le x < 1$\\
+                  &&&0   & otherwise
+               \end{array}}
+%
+\end{align*}
+
+Alternatively, this expression can be calculated
+using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bwav_max} (setting $n=0$).
+\end{proof}
+
+%--------------------------------------
+\begin{example}
+\footnote{
+  \citePpc{strang89}{619}{Wavelet from hat function},
+  \citerpgc{strang1996}{445}{0961408871}{``Wavelet" from hat function},
+  \citerppgc{christensen2008}{283}{284}{0817646779}{(11.63), Figure 11.4},
+  \citerppgc{zhao2013}{38}{39}{0821898418}{Example 2.1}
+  }
+\label{ex:B1}
+%--------------------------------------
+Let $\fB_1(x)$ be the \fncte{1st order B-spline} \xref{def:Bn}.
+This function is illustrated in \prefpp{fig:NnBn}.
+\exbox{
+  2\fB_1(x) = \brb{\begin{array}{r@{\hspace{1pt}}c@{\hspace{1pt}}rMr@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}l|
+                                 r@{\hspace{1pt}}c@{\hspace{1pt}}rMr@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}l
+                                }
+     2x& &         & for & 0           &\le&x&\le&\sfrac{1}{2} & 6x&-&  8      & for & 1           &\le&x&\le&\sfrac{3}{2}\\
+    -6x&+&  4      & for & \sfrac{1}{2}&\le&x&\le&1            &-2x&+&  4      & for & \sfrac{3}{2}&\le&x&\le&2\\
+       & &         &     &             &   & &   &             &   & &  0      & \mc{6}{M}{otherwise}
+  \end{array}}
+  }
+\end{example}
+\begin{proof}
+\begin{align*}
+  2\fB_1(x)
+    &\eqd 2\brp{\frac{1}{2^1}}\sum_{k=0}^{1+1} (-1)^k \bcoef{1+1}{k} \fN_1(2x-k)
+    && \text{by definition of $\fB_1(x)$}
+    && \text{\xref{def:Bn}}
+  \\&= \sum_{k=0}^{2} (-1)^k \bcoef{2}{k}
+         \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &2x&-&k   & for $0\le 2x-k \le 1$\\
+                 -&2x&+&k+2 & for $1\le 2x-k \le 2$\\
+                  &0& &   & otherwise
+               \end{array}}
+    && \text{by $\fN_1(x)$ example}
+    && \text{\xref{ex:bspline_N1}}
+  \\&= \sum_{k=0}^{2} (-1)^k \bcoef{2}{k}
+         \brb{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &2x&-&k   & for $\frac{k}{2}\le x \le \frac{k+1}{2}$\\
+                 -&2x&+&k+2 & for $\frac{k+1}{2}\le x \le \frac{k+2}{2}$\\
+                  &0& &   & otherwise
+               \end{array}}
+  \\&=\mathrlap{%
+         +1\brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &2x&-&0   & {\scs for} $\frac{0}{2}\le x \le \frac{1}{2}$\\
+                 -&2x&+&0+2 & {\scs for} $\frac{1}{2}\le x \le \frac{2}{2}$\\
+                  &0& &   & {\scs otherwise}
+               \end{array}}
+         -2\brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &2x&-&1   & {\scs for} $\frac{1}{2}\le x \le \frac{2}{2}$\\
+                 -&2x&+&1+2 & {\scs for} $\frac{2}{2}\le x \le \frac{3}{2}$\\
+                  &0& &   & {\scs otherwise}
+               \end{array}}
+         +1\brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &2x&-&2   & {\scs for} $\frac{2}{2}\le x \le \frac{3}{2}$\\
+                 -&2x&+&2+2 & {\scs for} $\frac{3}{2}\le x \le \frac{4}{2}$\\
+                  &0& &   & {\scs otherwise}
+               \end{array}}
+         }%
+  \\&=\mathrlap{%
+           \brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &2x&-&0   & for $0          \le x \le \frac{1}{2}$\\
+                 -&2x&+&2   & for $\frac{1}{2}\le x \le 1$\\
+                  &0& &   & otherwise
+               \end{array}}
+          +\brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                 -&4x&+&2   & for $\frac{1}{2}\le x \le 1$\\
+                  &4x&-&6   & for $1\le x \le \frac{3}{2}$\\
+                  &0& &   & otherwise
+               \end{array}}
+          +\brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &2x&-&2   & for $1\le x \le \frac{3}{2}$\\
+                 -&2x&+&4   & for $\frac{3}{2}\le x \le 2$\\
+                  &0& &   & otherwise
+               \end{array}}
+       }%
+  \\&=    \brp{\begin{array}{*{2}{@{\hspace{1pt}}c@{\hspace{1pt}}r}M}
+                  &2x& &    & for $0          \le x \le \frac{1}{2}$\\
+                 -&6x&+&4   & for $\frac{1}{2}\le x \le 1$\\
+                  &6x&-&8   & for $1\le x \le \frac{3}{2}$\\
+                 -&2x&+&4   & for $\frac{3}{2}\le x \le 2$\\
+                  &0& &   & otherwise
+               \end{array}}
+%
+%  \\&= \frac{1}{1!2}\sum_{k=0}^{2} (-1)^k \bcoef{1+1}{k} \sum_{m=0}^{2} (-1)^m \bcoef{2}{m}(2x-k-m)^1 \fstep(2x-k-m)
+%    && \text{by \prefp{prop:Bn}}
+\end{align*}
+
+Alternatively, this expression can be calculated
+using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bwav_max} (setting $n=1$).
+%2 B(x)=  0  for x<=0
+%2 B(x)=  2*x  for  0 <x< 0.5
+%2 B(x)=  4-6*x  for  0.5 <x< 1.0
+%2 B(x)=  6*x-8  for  1.0 <x< 1.5
+%2 B(x)=  4-2*x  for  1.5 <x< 2.0
+%2 B(x)=  0  for x> 2
+\end{proof}
+
+%--------------------------------------
+\begin{example}
+\label{ex:B2}
+%--------------------------------------
+Let $\fB_2(x)$ be the \fncte{2nd order B-spline wavelet} \xref{def:Bn}.
+This function is illustrated in \prefpp{fig:NnBn}.
+\exbox{
+  8\fB_2(x) = \brb{\begin{array}{r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}rMr@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}l|r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}rMr@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}l}
+      4x^2& &    & &         & for & 0  &\le&x&\le&0.5 & 20x^2&-& 96x&+&114      & for & 2.0&\le&x&\le&2.5\\
+    -20x^2&+& 24x&-&  6      & for & 0.5&\le&x&\le&1.0 & -4x^2&+& 24x&-& 36      & for & 2.5&\le&x&\le&3.0\\
+     40x^2&-& 96x&+& 54      & for & 1.0&\le&x&\le&1.5 &      & &    & &  0      & \mc{6}{M}{otherwise}\\
+    -40x^2&+&144x&-&126      & for & 1.5&\le&x&\le&2.0 &      & &    & &         &     &    &   & &   &
+  \end{array}}
+  }
+\end{example}
+\begin{proof}
+This expression can be calculated ``by hand" using \prefpp{prop:Bn}
+or by using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bwav_max} (setting $n=2$).
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-08-10 22:10:59.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bwaveout.txt>
+%Daniel J. Greenhoe
+%Output file for nth order B-spline wavelet Bn(x) calculation, n= 2  .
+%Output produced using Maxima running the script file bwaves.max
+%8 B(x)=  0  for x<=0
+%8 B(x)=  4*x^2  for  0 <x< 0.5
+%8 B(x)=  (-20*x^2)+24*x-6  for  0.5 <x< 1.0
+%8 B(x)=  40*x^2-96*x+54  for  1.0 <x< 1.5
+%8 B(x)=  (-40*x^2)+144*x-126  for  1.5 <x< 2.0
+%8 B(x)=  20*x^2-96*x+114  for  2.0 <x< 2.5
+%8 B(x)=  (-4*x^2)+24*x-36  for  2.5 <x< 3.0
+%8 B(x)=  0  for x> 3
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-08-10 22:11:00.
+\end{proof}
+
+%--------------------------------------
+\begin{example}
+\footnote{
+  \citerpgc{zhao2013}{39}{0821898418}{Example 2.2}
+  }
+\label{ex:B3}
+%--------------------------------------
+Let $\fB_3(x)$ be the \fncte{3rd order B-spline wavelet} \xref{def:Bn}.
+This function is illustrated in \prefpp{fig:NnBn}.
+\exbox{\begin{array}{l}
+  48\fB_3(x) =\\
+  \brb{\begin{array}{r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{5pt}}M@{\hspace{5pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}l|
+                                  r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}r@{\hspace{5pt}}M@{\hspace{5pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}c@{\hspace{1pt}}l}
+       8x^3 & &         & &       & &      &\scs{for}&\scy  0&\scy\le&\scy{x}&\scy\le&\scy0.5 & 280x^3 &-& 1920x^2 &+& 4320x &-& 3184 &\scs{for}&\scy2.0&\scy\le&\scy{x}&\scy\le&\scy2.5\\
+     -56x^3 &+&   96x^2 &-&   48x &+&    8 &\scs{for}&\scy0.5&\scy\le&\scy{x}&\scy\le&\scy1.0 &-168x^3 &+& 1440x^2 &-& 4080x &+& 3816 &\scs{for}&\scy2.5&\scy\le&\scy{x}&\scy\le&\scy3.0\\
+     168x^3 &-&  576x^2 &+&  624x &-&  216 &\scs{for}&\scy1.0&\scy\le&\scy{x}&\scy\le&\scy1.5 &  56x^3 &-&  576x^2 &+& 1968x &-& 2232 &\scs{for}&\scy3.0&\scy\le&\scy{x}&\scy\le&\scy3.5\\
+    -280x^3 &+& 1440x^2 &-& 2400x &+& 1296 &\scs{for}&\scy1.5&\scy\le&\scy{x}&\scy\le&\scy2.0 &  -8x^3 &+&   96x^2 &-&  384x &+&  512 &\scs{for}&\scy3.5&\scy\le&\scy{x}&\scy\le&\scy4.0\\
+            & &         & &       & &      &\scs     &\scy   &\scy   &\scy   &\scy   &\scy    &        & &         & &       & &    0 &\mc{6}{M}{otherwise}
+  \end{array}}
+  \end{array}}
+\end{example}
+\begin{proof}
+This expression can be calculated ``by hand" using \prefpp{prop:Bn}
+or by using the free and open source software package \hie{Maxima}
+along with the script file listed in \prefpp{sec:src_bwav_max} (setting $n=3$).
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-08-10 22:14:23.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bwaveout.txt>
+%Daniel J. Greenhoe
+%Output file for nth order B-spline wavelet Bn(x) calculation, n= 3  .
+%Output produced using Maxima running the script file bwaves.max
+%48 B(x)=  0  for x<=0
+%48 B(x)=  8*x^3  for  0 <x< 0.5
+%48 B(x)=  (-56*x^3)+96*x^2-48*x+8  for  0.5 <x< 1.0
+%48 B(x)=  168*x^3-576*x^2+624*x-216  for  1.0 <x< 1.5
+%48 B(x)=  (-280*x^3)+1440*x^2-2400*x+1296  for  1.5 <x< 2.0
+%48 B(x)=  280*x^3-1920*x^2+4320*x-3184  for  2.0 <x< 2.5
+%48 B(x)=  (-168*x^3)+1440*x^2-4080*x+3816  for  2.5 <x< 3.0
+%48 B(x)=  56*x^3-576*x^2+1968*x-2232  for  3.0 <x< 3.5
+%48 B(x)=  (-8*x^3)+96*x^2-384*x+512  for  3.5 <x< 4.0
+%48 B(x)=  0  for x> 4
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-08-10 22:14:23.
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\citetbl{
+  \citeP{oeisA290826}
+  }
+\label{ex:Bn}
+%---------------------------------------
+The $(n+1)^2$ coefficients of the order $n,n-1,\ldots,0$ monomials
+of each \fncte{B-spline wavelet} $\fB_n(x)$ multiplied by $n!$
+induce an \fncte{integer sequence}
+\\\quad$\seqX\eqd\seqn{
+              1,
+              1,     0,
+             -1,     2,
+              1,     0,        0,
+             -2,     6,       -3,
+              1,    -6,        9,
+              1,     0,        0,        0,
+             -3,    12,    -  12,        4,
+              3,  - 24,       60,    -  44,
+             -1,    12,    -  48,       64,
+             \ldots}$\\
+as more fully listed in \prefpp{tbl:Bn}.
+In this sequence $\seqX\eqd\seqn{x_0,x_1,x_2,\ldots}$,
+the coefficients for the \fncte{order $n$ B-spline wavelet} $\fB_n(x)$
+begin at the sequence index value
+  \\\indentx$\ds p\eqd\sum_{k=0}^{n}k^2 = \frac{1}{6}n(n+1)(2n+1)$
+    \indentx and end at index value $p+(n+1)^2-1$.\\
+For example, the coefficients for $\fN_3(x)$ begin at index value
+$p\eqd 0+1+4+9=14$ and end at index value $p+4^2-1=29$.
+Using these coefficients gives the following expression for $\fN_3(x)$:
+\\\indentx$\ds
+  \fB_3(x) = \brs{\begin{array}{rrrr|D}
+                1 &    0 &       0 &       0 & for $0 \le x < 1$\\
+               -3 &   12 &   -  12 &       4 & for $1 \le x < 2$\\
+                3 & - 24 &      60 &   -  44 & for $2 \le x < 3$\\
+               -1 &   12 &   -  48 &      64 & for $3 \le x < 4$
+             \end{array}}
+             \brs{\begin{array}{l}
+               x^3\\
+               x^2\\
+               x  \\
+               1
+             \end{array}}
+             =
+             \brbl{\begin{array}{rrrrD}
+                 x^3 &         &      &     & for $0 \le x < 1$\\
+               -3x^3 & + 12x^2 & -12x & + 4 & for $1 \le x < 2$\\
+                3x^3 & - 24x^2 & +60x & -44 & for $2 \le x < 3$\\
+               - x^3 & + 12x^2 & -48x & +64 & for $3 \le x < 4$\\
+                     &         &      &   0 & otherwise
+             \end{array}}
+  $\\
+\ldots which agrees with the result presented in \prefpp{ex:B3}.
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item The coefficients for the sequence $\seqX$ may be computed with assistance from \hie{Maxima}
+        together with the script file listed in \prefpp{sec:src_bwav_max}.
+
+  \item Proof that $\sum_{k=0}^{n}k^2 = \frac{1}{6}n(n+1)(2n+1)$: see \prefpp{item:Nn_powersum} of Proof for \pref{ex:Nn}.
+\end{enumerate}
+\end{proof}
+\begin{table}[h]
+\centering%
+\exbox{%
+  \begin{array}{@{}M|l|*{9}{@{\hspace{2pt}}r}@{\hspace{1pt}}}
+             n=0,& (\div1)    &      1;&          &          &          &           &          \\
+                 &            &     -1;&          &          &          &           &          \\
+      \hline n=1,& (\div2)    &      2,&        0;&          &          &           &          \\
+                 &            &     -6,&        4;&          &          &           &          \\
+                 &            &      6,&       -8;&          &          &           &          \\
+                 &            &     -2,&        4;&          &          &           &          \\
+      \hline n=2,& (\div8)    &      4,&        0,&        0;&          &           &          \\
+                 &            &    -20,&       24,&       -6;&          &           &          \\
+                 &            &     40,&      -96,&       54;&          &           &          \\
+                 &            &    -40,&      144,&     -126;&          &           &          \\
+                 &            &     20,&      -96,&      114;&          &           &          \\
+                 &            &     -4,&       24,&      -36;&          &           &          \\
+      \hline n=3,& (\div48)   &      8,&        0,&        0,&        0;&           &          \\
+                 &            &    -56,&       96,&      -48,&        8;&           &          \\
+                 &            &    168,&     -576,&      624,&     -216;&           &          \\
+                 &            &   -280,&     1440,&    -2400,&     1296;&           &          \\
+                 &            &    280,&    -1920,&     4320,&    -3184;&           &          \\
+                 &            &   -168,&     1440,&    -4080,&     3816;&           &          \\
+                 &            &     56,&     -576,&     1968,&    -2232;&           &          \\
+                 &            &     -8,&       96,&     -384,&      512;&           &          \\
+      \hline n=4,& (\div384)  &     16,&        0,&        0,&        0,&         0;&          \\
+                 &            &   -144,&      320,&     -240,&       80,&       -10;&          \\
+                 &            &    576,&    -2560,&     4080,&    -2800,&       710;&          \\
+                 &            &  -1344,&     8960,&   -21840,&    23120,&     -9010;&          \\
+                 &            &   2016,&   -17920,&    58800,&   -84400,&     44750;&          \\
+                 &            &  -2016,&    22400,&   -92400,&   167600,&   -112750;&          \\
+                 &            &   1344,&   -17920,&    89040,&  -195280,&    159410;&          \\
+                 &            &   -576,&     8960,&   -52080,&   134000,&   -128710;&          \\
+                 &            &    144,&    -2560,&    17040,&   -50320,&     55610;&          \\
+                 &            &    -16,&      320,&    -2400,&     8000,&    -10000;&          \\
+      \hline n=5,& (\div3840) &     32,&        0,&        0,&        0,&         0,&        0;\\
+                 &            &   -352,&      960,&     -960,&      480,&      -120,&       12;\\
+                 &            &   1760,&    -9600,&    20160,&   -20640,&     10440,&    -2100;\\
+                 &            &  -5280,&    43200,&  -138240,&   216960,&   -167760,&    51360;\\
+                 &            &  10560,&  -115200,&   495360,& -1050240,&   1099440,&  -455520;\\
+                 &            & -14784,&   201600,& -1088640,&  2909760,&  -3850560,&  2019480;\\
+                 &            &  14784,&  -241920,&  1572480,& -5073600,&   8124480,& -5165544;\\
+                 &            & -10560,&   201600,& -1532160,&  5792640,& -10891440,&  8145600;\\
+                 &            &   5280,&  -115200,&  1002240,& -4344960,&   9383760,& -8074560;\\
+                 &            &  -1760,&    43200,&  -423360,&  2070240,&  -5050440,&  4916220;\\
+                 &            &    352,&    -9600,&   104640,&  -569760,&   1549560,& -1683780;\\
+                 &            &    -32,&      960,&   -11520,&    69120,&   -207360,&   248832;\\
+  \end{array}
+  }
+\caption{Coefficients of the \fncte{B-spline wavelet}s $\fB_n(x)$ multiplied by $n!2^n$ \xref{ex:Bn} \label{tbl:Bn}}
+\end{table}
+% Maxima output
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-08-11 02:45:52.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bwaveout.txt>
+%Daniel J. Greenhoe
+%Output file for nth order B-spline wavelet Bn(x) calculation, n= 4  .
+%Output produced using Maxima running the script file bwaves.max
+%384 B(x)=  0  for x<=0
+%384 B(x)=  16*x^4  for  0 <x< 0.5
+%384 B(x)=  (-144*x^4)+320*x^3-240*x^2+80*x-10  for  0.5 <x< 1.0
+%384 B(x)=  576*x^4-2560*x^3+4080*x^2-2800*x+710  for  1.0 <x< 1.5
+%384 B(x)=  (-1344*x^4)+8960*x^3-21840*x^2+23120*x-9010  for  1.5 <x< 2.0
+%384 B(x)=  2016*x^4-17920*x^3+58800*x^2-84400*x+44750  for  2.0 <x< 2.5
+%384 B(x)=  (-2016*x^4)+22400*x^3-92400*x^2+167600*x-112750  for  2.5 <x< 3.0
+%384 B(x)=  1344*x^4-17920*x^3+89040*x^2-195280*x+159410  for  3.0 <x< 3.5
+%384 B(x)=  (-576*x^4)+8960*x^3-52080*x^2+134000*x-128710  for  3.5 <x< 4.0
+%384 B(x)=  144*x^4-2560*x^3+17040*x^2-50320*x+55610  for  4.0 <x< 4.5
+%384 B(x)=  (-16*x^4)+320*x^3-2400*x^2+8000*x-10000  for  4.5 <x< 5.0
+%384 B(x)=  0  for x> 5
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-08-11 02:45:53.
+%
+%;; Dribble of #<IO TERMINAL-STREAM> started on 2017-08-11 03:23:32.
+%#<OUTPUT BUFFERED FILE-STREAM CHARACTER bwaveout.txt>
+%Daniel J. Greenhoe
+%Output file for nth order B-spline wavelet Bn(x) calculation, n= 5  .
+%Output produced using Maxima running the script file bwaves.max
+%3840 B(x)=  0  for x<=0
+%3840 B(x)=  32*x^5  for  0 <x< 0.5
+%3840 B(x)=  (-352*x^5)+960*x^4-960*x^3+480*x^2-120*x+12  for  0.5 <x< 1.0
+%3840 B(x)=  1760*x^5-9600*x^4+20160*x^3-20640*x^2+10440*x-2100  for  1.0 <x<     1.5
+%3840 B(x)=  (-5280*x^5)+43200*x^4-138240*x^3+216960*x^2-167760*x+51360  for      1.5 <x< 2.0
+%3840 B(x)=  10560*x^5-115200*x^4+495360*x^3-1050240*x^2+1099440*x-455520  for      2.0 <x< 2.5
+%3840 B(x)=  (-14784*x^5)+201600*x^4-1088640*x^3+2909760*x^2-3850560*x+2019480      for  2.5 <x< 3.0
+%3840 B(x)=  14784*x^5-241920*x^4+1572480*x^3-5073600*x^2+8124480*x-5165544      for  3.0 <x< 3.5
+%3840 B(x)=  (-10560*x^5)+201600*x^4-1532160*x^3+5792640*x^2-10891440*x+8145600      for  3.5 <x< 4.0
+%3840 B(x)=  5280*x^5-115200*x^4+1002240*x^3-4344960*x^2+9383760*x-8074560      for  4.0 <x< 4.5
+%3840 B(x)=  (-1760*x^5)+43200*x^4-423360*x^3+2070240*x^2-5050440*x+4916220      for  4.5 <x< 5.0
+%3840 B(x)=  352*x^5-9600*x^4+104640*x^3-569760*x^2+1549560*x-1683780  for  5.0     <x< 5.5
+%3840 B(x)=  (-32*x^5)+960*x^4-11520*x^3+69120*x^2-207360*x+248832  for  5.5     <x< 6.0
+%;; Dribble of #<IO TERMINAL-STREAM> finished on 2017-08-11 03:23:33.
+%      1,
+%     -1,
+%      2,         0,
+%     -6,         4,
+%      6,        -8,
+%     -2,         4,
+%      4,         0,         0,
+%    -20,        24,        -6,
+%     40,       -96,        54,
+%    -40,       144,      -126,
+%     20,       -96,       114,
+%     -4,        24,       -36,
+%      8,         0,         0,         0,
+%    -56,        96,       -48,         8,
+%    168,      -576,       624,      -216,
+%   -280,      1440,     -2400,      1296,
+%    280,     -1920,      4320,     -3184,
+%   -168,      1440,     -4080,      3816,
+%     56,      -576,      1968,     -2232,
+%     -8,        96,      -384,       512,
+%     16,         0,         0,         0,          0,
+%   -144,       320,      -240,        80,        -10,
+%    576,     -2560,      4080,     -2800,        710,
+%  -1344,      8960,    -21840,     23120,      -9010,
+%   2016,    -17920,     58800,    -84400,      44750,
+%  -2016,     22400,    -92400,    167600,    -112750,
+%   1344,    -17920,     89040,   -195280,     159410,
+%   -576,      8960,    -52080,    134000,    -128710,
+%    144,     -2560,     17040,    -50320,      55610,
+%    -16,       320,     -2400,      8000,     -10000,
+%     32,         0,         0,         0,          0,         0,
+%   -352,       960,      -960,       480,       -120,        12,
+%   1760,     -9600,     20160,    -20640,      10440,     -2100,
+%  -5280,     43200,   -138240,    216960,    -167760,     51360,
+%  10560,   -115200,    495360,  -1050240,    1099440,   -455520,
+% -14784,    201600,  -1088640,   2909760,   -3850560,   2019480,
+%  14784,   -241920,   1572480,  -5073600,    8124480,  -5165544,
+% -10560,    201600,  -1532160,   5792640,  -10891440,   8145600,
+%   5280,   -115200,   1002240,  -4344960,    9383760,  -8074560,
+%  -1760,     43200,   -423360,   2070240,   -5050440,   4916220,
+%    352,     -9600,    104640,   -569760,    1549560,  -1683780,
+%    -32,       960,    -11520,     69120,    -207360,    248832,
+%
+%1,-1,2,0,-6,4,6,-8,-2,4,4,0,0,-20,24,-6,40,-96,54,-40,144,-126,20,-96,114,-4,24,-36,8,0,0,0,-56,96,-48,8,168,-576,624,-216,-280,1440,-2400,1296,280,-1920,4320,-3184,-168,1440,-4080,3816,56,-576,1968,-2232,-8,96,-384,512,
+%16,0,0,0,0,
+%-144,320,-240,80,-10,
+%576,-2560,4080,-2800,710,
+%-1344,8960,-21840,23120,-9010,
+%2016,-17920,58800,-84400,44750,
+%-2016,22400,-92400,167600,-112750,
+%1344,-17920,89040,-195280,159410,
+%-576,8960,-52080,134000,-128710,
+%144,-2560,17040,-50320,55610,
+%-16,320,-2400,8000,-10000,
+%32,0,0,0,0,0,
+%-352,960,-960,480,-120,12,
+%1760,-9600,20160,-20640,10440,-2100,
+%-5280,43200,-138240,216960,-167760,51360,
+%10560,-115200,495360,-1050240,1099440,-455520,
+%-14784,201600,-1088640,2909760,-3850560,2019480,
+%14784,-241920,1572480,-5073600,8124480,-5165544,
+%-10560,201600,-1532160,5792640,-10891440,8145600,
+%5280,-115200,1002240,-4344960,9383760,-8074560,
+%-1760,43200,-423360,2070240,-5050440,4916220,
+%352,-9600,104640,-569760,1549560,-1683780,
+%-32,960,-11520,69120,-207360,248832,
+
+%S 1,-1,2,0,-6,4,6,-8,-2,4,4,0,0,-20,24,-6,40,-96,54,-40,144,-126,20,-96,114,
+%T -4,24,-36,8,0,0,0,-56,96,-48,8,168,-576,624,-216,-280,1440,-2400,1296,280,
+%U -1920,4320,-3184,-168,1440,-4080,3816,56,-576,1968,-2232,-8,96,-384,512,...
+
+
+%=======================================
+\section{Exploiting constraints on B-spline wavelets for B-spline design}
+%=======================================
+%--------------------------------------
+\begin{figure}
+%--------------------------------------
+  \centering%
+  $\begin{array}{|*{3}{>{\ds}c|}}
+     \hline
+        \fN_0(x)&\fN_1(x)&\fN_2(x)
+     \\
+        \includegraphics{graphics/n0_h.pdf}
+       &\includegraphics{graphics/n1_h.pdf}
+       &\includegraphics{graphics/n2_h.pdf}
+     \\\hline
+        \includegraphics{graphics/b0_g.pdf}
+       &\includegraphics{graphics/b1_g.pdf}
+       &\includegraphics{graphics/b2_g.pdf}
+     \\\fB_0(x)&\fB_1(x)&\fB_2(x)
+     \\\hline
+  \end{array}$
+  \\
+  $\begin{array}{|*{2}{>{\ds}c|}}
+     \hline
+        \fN_3(x)&\fN_4(x)
+     \\
+        \includegraphics{graphics/n3_h.pdf}
+       &\includegraphics{graphics/n4_h.pdf}
+     \\\hline
+        \includegraphics{graphics/b3_g.pdf}
+       &\includegraphics{graphics/b4_g.pdf}
+     \\\fB_3(x)&\fB_4(x)
+     \\\hline
+  \end{array}$
+  \caption{Some \fncte{B-spline wavelets} $\fB_n(x)$ and \fncte{B-spline}s $\fN_n(x)$ for $n\in\setn{0,1,2,3,4}$\label{fig:NnBn}}
+\end{figure}
+
+        Introducing \fncte{B-spline wavelet}s $\fB_n(x)$ in conjunction with
+        \fncte{B-spline}s $\fN_n(x)$ is useful
+        for the selection of the order $n$ of $\fN_n(x)$.
+        In particular, $\fB_n(x)$ has $n+1$ \prope{vanishing moments} \xref{def:vanish} such that
+        \\\indentx$\ds\int_{\R} x^p \fB_n(x) \dx = 0$ for $p=0,1,\ldots,n$.\\
+        This criterion together with the CQF condition \xref{item:bwav_cqf} puts a restriction on
+        $\seqn{h_k}$ that is useful for designing $\seqn{h_k}$;
+        Furthermore, it demonstrates (under the above conditions), that for a \structe{wavelet system}
+        with $n+2$ non-zero coefficients $\seqn{h_k}$ and $n+1$ \prope{vanishing moments},
+        the \textbf{only} \fncte{MRA scaling function} available is $\fN_n(x)$ and the \textbf{only}
+        \fncte{wavelet function} is $\fB_n(x)$ (see \pref{ex:N0_hg}--\pref{ex:N2_hg}).
+
+%--------------------------------------
+\begin{example}[\exmd{2 non-zero coefficient case}]%/\exmd{Haar wavelet system}/\exmd{order 0 B-spline wavelet system}
+\footnote{
+  \citor{haar1910},
+  \citerppgc{wojtaszczyk1997}{14}{15}{0521578949}{``Sources and comments"}
+  }
+\label{ex:N0_hg}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $g_k=(-1)^k h_{1-k}$ (\fncte{CQF constraints}---\prefp{thm:cqf}).
+  %  4. & $\fg_n  = \pm (-1)^n  h_{\xN-n}^\ast$ $\scy\forall n\in\Z$  & \xref{thm:cqf}        &
+\exbox{\begin{array}{c@{\hspace{1pt}}cc@{\hspace{1pt}}c@{\hspace{1pt}}c}
+  \mcom{\brb{\begin{array}{FMD}
+    1. & $\support\fphi(x)=\intcc{0}{1}$     & and\\
+    2. & $\seqn{\fphi(x-k)}$ forms a&\\
+       & \prope{partition of unity}  &
+  \end{array}}}{\scs(A)}
+  &\iff&
+  \mcom{h_n=
+    \brb{\begin{array}{rM}%
+      \cwt &{\scs for} $n=0$ \\
+      \cwt &{\scs for} $n=1$ \\
+      0    &{\scs otherwise}
+    \end{array}}}{\scs(B)}
+  &\iff&
+  \mcom{g_n=
+    \brb{\begin{array}{rM}%
+       \cwt &{\scs for} $n=0$ \\
+      -\cwt &{\scs for} $n=1$ \\
+      0     &{\scs otherwise}
+    \end{array}}}{\scs(C)}
+  \\% second line in exbox
+  &\iff&
+  \mcom{\brb{\begin{array}{@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}l@{\hspace{1pt}}}
+    \fphi(x)&=&\fN_0(x)\\
+  \end{array}}}{\scs(D)}
+  &\iff&
+  \mcom{\brb{\begin{array}{@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}l@{\hspace{1pt}}}
+    \fpsi(x)&=&B_0(x)
+  \end{array}}}{\scs(E)}
+\end{array}}%
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (A)$\implies$(B):
+    \begin{enumerate}
+      \item lemma: Only $h_0$ and $h_1$ are \prope{non-zero}; All other coefficients $h_k$ are $0$. \label{ilem:N0_hg_nonzero} Proof:
+                   This follows from $\support\fphi(x)=\intcc{0}{1}$ \xref{def:support} and by \prefp{thm:support}.
+
+      \item lemma (equations for $\seqn{h_k}$):\label{ilem:N0_hg_equ}
+            Because $\seqn{h_k}$ is a \fncte{scaling coefficient sequence} \xref{def:mra},
+            it must satisfy the \prope{admissibility equation} \xref{thm:admiss}.
+            And because $\seqn{\fphi(x-k)}$ forms a \prope{partition of unity}, it must satisfy the equations
+            given by \prefpp{thm:pun_zero}. \pref{ilem:N0_hg_nonzero} and
+            these two constraints yield two simultaneous equations and two unknowns:
+            \\\indentx$\ds\begin{array}{rcc@{\qquad}MM}
+              h_0 + h_1 &=& \sqrt{2}    & (\prope{admissibility condition}) & \xref{thm:admiss}\\
+              h_0 - h_1 &=& 0           & (\prope{partition of unity}/\prope{vanishing 0th moment}) & \xref{thm:pun_zero}
+            \end{array}$
+
+      \item lemma: \label{ilem:N0_hg_Ah}
+            The equations provided by \pref{ilem:N0_hg_equ} can be expressed in matrix algebra form as follows\ldots
+            \begin{align*}
+              \mcom{\brs{\begin{array}{rr}1 &  1\\1 & -1\end{array}}}{$\opA$}\brs{\begin{array}{r}h_0\\h_1\end{array}}
+                &= \brs{\begin{array}{r}\sqrt{2}\\0\end{array}}
+            \end{align*}
+
+      \item lemma: \label{ilem:N0_hg_Ai}
+            The \ope{inverse} $\opAi$ of $\opA$ can be expressed as demonstrated below\ldots
+            \begin{align*}
+              \brs{\begin{array}{rr|rr}1 & 1 & 1 & 0\\1 & -1 & 0 & 1\end{array}}
+                &\rightarrow  \brs{\begin{array}{rr|rr}2 & 0 & 1 & 1\\1 & -1 & 0 & 1\end{array}}
+                 \rightarrow  \brs{\begin{array}{rr|rr}2 & 0 & 1 & 1\\0 & -1 & -\sfrac{1}{2} & \sfrac{1}{2}\end{array}}
+                 \rightarrow  \brs{\begin{array}{rr|rr}1 & 0 & \sfrac{1}{2} & \sfrac{1}{2}\\0 &  1 &  \sfrac{1}{2} & -\sfrac{1}{2}\end{array}}
+              \\\implies \opAi &= \frac{1}{2}\brs{\begin{array}{rr}1 & 1\\1 & -1\end{array}}
+            \end{align*}
+
+      \item Proof for the values of $\seqn{h_k}$ (B):\label{item:N0_hg_h}
+        \begin{align*}
+          \brs{\begin{array}{r}h_0\\h_1\end{array}}
+             = \opAi\opA\brs{\begin{array}{r}h_0\\h_1\end{array}}
+            &= \opAi\brs{\begin{array}{rr}1 & 1\\1 & -1\end{array}}\brs{\begin{array}{r}h_0\\h_1\end{array}}
+            && \text{by \pref{ilem:N0_hg_Ah}}
+          \\&= \opAi\brs{\begin{array}{r}\sqrt{2}\\0\end{array}}
+            && \text{by \pref{ilem:N0_hg_Ah}}
+          \\&= \frac{1}{2}\brs{\begin{array}{rr}1 & 1\\1 & -1\end{array}}
+                          \brs{\begin{array}{r}\sqrt{2}\\0\end{array}}
+            && \text{by \pref{ilem:N0_hg_Ai}}
+          \\&= \frac{\sqrt{2}}{2}\brs{\begin{array}{r}1\\1\end{array}}
+        \end{align*}
+
+    \end{enumerate}
+
+  \item Proof that (B)$\implies$(C) (proof that $\seqn{h_k}\implies\seqn{g_k}$): %\label{item:N0_hg_g}
+    \begin{align*}
+      \brs{\begin{array}{r}g_0\\g_1\end{array}}
+        &= \brs{\begin{array}{r}h_1\\-h_0\end{array}}
+        && \text{by \prope{CQF constraint} \xref{thm:cqf}}
+      \\&= \frac{\sqrt{2}}{2}\brs{\begin{array}{r}1\\-1\end{array}}
+        && \text{by (B)}
+    \end{align*}
+
+  \item Proof that (B)$\impliedby$(C) (proof that $\seqn{h_k}\impliedby\seqn{g_k}$): %\label{item:N0_hg_g}
+    \begin{align*}
+      \brs{\begin{array}{r}h_0\\h_1\end{array}}
+        &= \brs{\begin{array}{r}g_1\\-g_0\end{array}}
+        && \text{by \prope{CQF constraint} \xref{thm:cqf}}
+      \\&= \frac{\sqrt{2}}{2}\brs{\begin{array}{r}1\\1\end{array}}
+        && \text{by (C)}
+    \end{align*}
+
+  \item Proof that (B)$\implies$(D):
+    \begin{align*}
+      \text{(B)}\implies
+      \fphi(x)
+        &= \sum_{k\in\Z} h_k \sqrt{2}\fphi(2x-k)
+        && \text{\fncte{dilation equation}}
+        && \text{\xref{thm:dilation_eq}}
+      \\&= \sum_{k=0}^{k=1} \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fphi(2x-k)
+        && \text{by \prefp{item:N0_hg_h}}
+      \\&= \sum_{k=0}^{k=1} \fphi(2x-k)
+      \\&= \sum_{k=0}^{k=1} \bcoef{1}{k}\fphi(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(D)}
+        && \text{by \thme{B-spline dyadic decomposition}}
+        && \text{\xref{thm:bspline_2x}}
+    \end{align*}
+
+  \item Proof that (B)$\impliedby$(D):
+    \begin{align*}
+      \text{(D)}\implies
+      \fN_0(x)
+        &= \sum_{k=0}^{k=1} \bcoef{1}{k}\fN_0(2x-k)
+        && \text{by \thme{B-spline dyadic decomposition}}
+        && \text{\xref{thm:bspline_2x}}
+      \\&= \sum_{k=0}^{k=1} \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fN_0(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&= \sum_{k\in\Z} h_k \sqrt{2}\fN_0(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(B)}
+    \end{align*}
+
+  \item Proof that (A)$\impliedby$(D):\\
+    $\begin{array}{FMM}
+       1. & Proof that (D) $\implies$ $\support\fphi(x)=\intcc{0}{1}$:                        & by \prefpp{thm:bspline_Nprop}\\
+       2. & Proof that (D) $\implies$ $\seqn{\fphi(x-k)}$ forms a \prope{partition of unity}: & by \prefpp{thm:bspline_punity}
+    \end{array}$
+
+  \item Proof that \{(C),(D)\}$\implies$(E):
+    \begin{align*}
+      \fpsi(x)
+        &= \sum_{k\in\Z}  g_n \sqrt{2}\fphi(2x-k)
+        && \text{by \prefp{thm:g->psi}}
+      \\&= \sum_{k\in\Z}  g_n \sqrt{2}\fN_0(2x-k)
+        && \text{by (D)}
+      \\&= \sum_{k=0}^{k=1} (-1)^k \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fN_0(2x-k)
+        && \text{by (C)}
+      \\&= \sum_{k=0}^{k=1} (-1)^k\bcoef{1}{k} \fN_0(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(E)}
+        && \text{by definition of $\fB_0(x)$}
+        && \text{\xref{def:Bn}}
+    \end{align*}
+
+  \item Proof that (C)$\impliedby$(E):
+    \begin{align*}
+      \fpsi(x)
+        &= \fB_0(x)
+        && \text{by (E)}
+      \\&= \sum_{k=0}^{k=1} (-1)^k \bcoef{1}{k} \fN_0(2x-k)
+        && \text{by definition of $\fB_0(x)$}
+        && \text{\xref{def:Bn}}
+      \\&= \sum_{k=0}^{k=1} (-1)^k \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fN_0(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&= \sum_{k\in\Z}  g_n \sqrt{2}\fphi(2x-k)
+        && \text{by \prefp{thm:g->psi}}
+      \\&\implies\text{(C)}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+%--------------------------------------
+\begin{example}[\exmd{3 non-zero coefficient case}]%/\exmd{Haar wavelet system}/\exmd{order 0 B-spline wavelet system}
+\footnote{
+  \citerp{strang89}{616},
+  \citerppgc{dau}{146}{148}{0898712742}{\textsection 5.4}
+  }
+\label{ex:N1_hg}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $g_k=(-1)^k h_{1-k}$ (\fncte{CQF constraints}---\prefp{thm:cqf}).
+  %  4. & $\fg_n  = \pm (-1)^n  h_{\xN-n}^\ast$ $\scy\forall n\in\Z$  & \xref{thm:cqf}        &
+\exbox{\begin{array}{c@{\hspace{1pt}}cc@{\hspace{1pt}}c@{\hspace{1pt}}c}
+  \mcom{\brb{\begin{array}{FMD}
+    1. & $\support\fphi(x)=\intcc{0}{2}$     & and\\
+    2. & $\seqn{\fphi(x-k)}$ forms a&\\
+       & \prope{partition of unity}          & and\\
+    3. & $\psi(x)$ has 2\\
+       & \prope{vanishing moment}s
+  \end{array}}}{\scs(A)}
+  &\iff&
+  \mcom{h_n=
+    \brb{\begin{array}{rM}%
+      \frac{ \sqrt{2}}{4} &{\scs for} $n=0$ \\
+      \frac{2\sqrt{2}}{4} &{\scs for} $n=1$ \\
+      \frac{ \sqrt{2}}{4} &{\scs for} $n=2$ \\
+      0                   &{\scs otherwise}
+    \end{array}}}{\scs(B)}
+  &\iff&
+  \mcom{g_n=
+    \brb{\begin{array}{rM}%
+      \frac{  \sqrt{2}}{4} &{\scs for} $n=0$ \\
+      \frac{-2\sqrt{2}}{4} &{\scs for} $n=1$ \\
+      \frac{  \sqrt{2}}{4} &{\scs for} $n=2$ \\
+      0                    &{\scs otherwise}
+    \end{array}}}{\scs(B)}
+  \\% second line in exbox
+  &\iff&
+  \mcom{\brb{\begin{array}{@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}l@{\hspace{1pt}}}
+    \fphi(x)&=&\fN_1(x)\\
+  \end{array}}}{\scs(D)}
+  &\iff&
+  \mcom{\brb{\begin{array}{@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}l@{\hspace{1pt}}}
+    \fpsi(x)&=&\fB_1(x)
+  \end{array}}}{\scs(E)}
+\end{array}}%
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (A)$\implies$(B):
+    \begin{enumerate}
+      \item lemma: Only $h_0$, $h_1$, and $h_2$ are \prope{non-zero}; all other coefficients $h_k$ are $0$. \label{ilem:N1_hg_nonzero}
+            \\Proof: This follows from $\support\fphi(x)=\intcc{0}{2}$ \xref{def:support} and by \prefp{thm:support}.
+
+      \item lemma (equations for $\seqn{h_k}$):\label{ilem:N1_hg_equ}
+            %Because $\seqn{h_k}$ is a \fncte{scaling coefficient sequence} \xref{def:mra},
+            %it must satisfy the \prope{admissibility equation} \xref{thm:admiss}.
+            %Because $\seqn{\fphi(x-k)}$ forms a \prope{partition of unity}, it must satisfy the equations
+            %given by \prefpp{thm:pun_zero}.
+            %And because it has 2 vanishing moments (with the 0th moment being equivalent to
+            %the partition of unity), it must satisfy \prefpp{thm:gh_cqf}.
+            %\pref{ilem:N1_hg_nonzero} and
+            %these constraints yield three simultaneous equations and three unknowns:
+            \\\indentx$\ds\begin{array}{rccMM}
+              h_0 + h_1 + h_2&=& \sqrt{2} & (\prope{admissibility condition}) & \xref{thm:admiss}\\
+              h_0 - h_1 + h_2&=& 0        & (\prope{partition of unity}/\prope{vanishing 0th moment}) & \xref{thm:pun_zero}\\
+              0   - h_1 +2h_2&=& 0        & (1st vanishing moment) & \xref{thm:gh_cqf}
+            \end{array}$
+
+      \item lemma: \label{ilem:N1_hg_Ah}
+            The equations provided by \pref{ilem:N1_hg_equ} can be expressed in matrix algebra form as follows\ldots
+            \begin{align*}
+              \mcom{\brs{\begin{array}{rrr}1 &  1 & 1\\
+                                           1 & -1 & 1\\
+                                           0 & -1 & 2
+                         \end{array}}}{$\opA$}\brs{\begin{array}{r}h_0\\h_1\\h_2\end{array}}
+                &= \brs{\begin{array}{r}\sqrt{2}\\
+                                        0       \\
+                                        0
+                        \end{array}}
+            \end{align*}
+
+      \item lemma: \label{ilem:N1_hg_Ai}
+            The \ope{inverse} $\opAi$ of $\opA$ can be expressed as demonstrated below\ldots
+            \begin{align*}
+              \brs{\begin{array}{rrr|rrr}1 &  1 & 1 & 1 & 0 & 0\\
+                                        1 & -1 & 1 & 0 & 1 & 0\\
+                                        0 & -1 & 2 & 0 & 0 & 1\end{array}}
+              &\rightarrow
+              \brs{\begin{array}{rrr|rrr}1 &  0 & 3 & 1 & 0 & 1\\
+                                        1 &  0 &-1 & 0 & 1 &-1\\
+                                        0 &  1 &-2 & 0 & 0 &-1\end{array}}
+              &\rightarrow
+              \brs{\begin{array}{rrr|rrr}0 &  0 & 4 & 1 &-1 & 2\\
+                                        1 &  0 &-1 & 0 & 1 &-1\\
+                                        0 &  1 &-2 & 0 & 0 &-1\end{array}}
+              \\
+              &\rightarrow
+              \brs{\begin{array}{rrr|rrr}0 &  0 & 1 & \sfrac{1}{4} &-\sfrac{1}{4} & \sfrac{2}{4}\\
+                                        1 &  0 & 0 & \sfrac{1}{4} & \sfrac{3}{4} &-\sfrac{2}{4}\\
+                                        0 &  1 & 0 & \sfrac{2}{4} &-\sfrac{2}{4} & 0           \end{array}}
+              &\rightarrow
+              \brs{\begin{array}{rrr|rrr}1 &  0 & 0 & \sfrac{1}{4} & \sfrac{3}{4} &-\sfrac{2}{4}\\
+                                        0 &  1 & 0 & \sfrac{2}{4} &-\sfrac{2}{4} & 0           \\
+                                        0 &  0 & 1 & \sfrac{1}{4} &-\sfrac{1}{4} & \sfrac{2}{4}\end{array}}
+              &&\implies \opAi= \frac{1}{4}\brs{\begin{array}{rrr}1 & 3 & -2\\
+                                                                   2 &-2 &  0\\
+                                                                   1 &-1 &  2\end{array}}
+            \end{align*}
+
+      \item Proof for the values of $\seqn{h_k}$ (B):\label{item:N1_hg_h}
+            by \pref{ilem:N1_hg_Ah} and \pref{ilem:N1_hg_Ai} \ldots
+            \\\indentx$
+              \brs{\begin{array}{r}h_0\\h_1\\h_2\end{array}}
+                 = \opAi\opA\brs{\begin{array}{r}h_0\\h_1\\h_2\end{array}}
+                 = \opAi\brs{\begin{array}{r}\sqrt{2}\\0\\0\end{array}}
+                 = \frac{1}{4}\brs{\begin{array}{rrr}1 & 3 & -2\\
+                                                     2 &-2 &  0\\
+                                                     1 &-1 &  2\end{array}}
+                              \brs{\begin{array}{r}\sqrt{2}\\0\\0\end{array}}
+                 = \frac{\sqrt{2}}{4}\brs{\begin{array}{r}1\\2\\1\end{array}}
+            $
+    \end{enumerate}
+
+  \item Proof that (B)$\implies$(C) (proof that $\seqn{h_k}\implies\seqn{g_k}$): %\label{item:N1_hg_g}
+        by \prope{CQF constraint} \xref{thm:cqf} and (B) \ldots
+        \\\indentx$
+            \brs{\begin{array}{r}g_0\\g_1\\g_2\end{array}}
+              = \brs{\begin{array}{r}h_2\\-h_1\\h_0\end{array}}
+              = \frac{\sqrt{2}}{4}\brs{\begin{array}{r}1\\-2\\1\end{array}}
+        $
+
+  \item Proof that (B)$\impliedby$(C) (proof that $\seqn{h_k}\impliedby\seqn{g_k}$): %\label{item:N1_hg_g}
+        by \prope{CQF constraint} \xref{thm:cqf} and (C) \ldots
+        \\\indentx$
+            \brs{\begin{array}{r}h_0\\h_1\\h_2\end{array}}
+              = \brs{\begin{array}{r}g_2\\-g_1\\g_0\end{array}}
+              = \frac{\sqrt{2}}{4}\brs{\begin{array}{r}1\\2\\1\end{array}}
+        $
+
+  \item Proof that (B)$\implies$(D):
+    \begin{align*}
+      \text{(B)}\implies
+      \fphi(x)
+        &= \sum_{k\in\Z} h_k \sqrt{2}\fphi(2x-k)
+        && \text{\fncte{dilation equation}}
+        && \text{\xref{thm:dilation_eq}}
+      %\\&= \sum_{k=0}^{k=2} \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fphi(2x-k)
+      %  && \text{by \prefp{item:N1_hg_h}}
+      %\\&= \sum_{k=0}^{k=2} \fphi(2x-k)
+      \\&= \sum_{k=0}^{k=2} \bcoef{2}{k}\fphi(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(D)}
+        && \text{by \thme{B-spline dyadic decomposition}}
+        && \text{\xref{thm:bspline_2x}}
+    \end{align*}
+
+  \item Proof that (B)$\impliedby$(D):
+    \begin{align*}
+      \text{(D)}\implies
+      \fN_1(x)
+        &= \sum_{k=0}^{k=2} \bcoef{2}{k}\fN_1(2x-k)
+        && \text{by \thme{B-spline dyadic decomposition}}
+        && \text{\xref{thm:bspline_2x}}
+      \\&= \sum_{k=0}^{k=2} \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fN_1(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&= \sum_{k\in\Z} h_k \sqrt{2}\fN_1(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(B)}
+    \end{align*}
+
+  \item Proof that (A)$\impliedby$(D):\\
+    $\begin{array}{FMM}
+       1. & Proof that (D) $\implies$ $\support\fphi(x)=\intcc{0}{2}$:                        & by \prefpp{thm:bspline_Nprop}\\
+       2. & Proof that (D) $\implies$ $\seqn{\fphi(x-k)}$ forms a \prope{partition of unity}: & by \prefpp{thm:bspline_punity}
+    \end{array}$
+
+  \item Proof that \{(C),(D)\}$\implies$(E):
+    \begin{align*}
+      \fpsi(x)
+        &= \sum_{k\in\Z}  g_n \sqrt{2}\fphi(2x-k)
+        && \text{by \prefp{thm:g->psi}}
+      \\&= \sum_{k\in\Z}  g_n \sqrt{2}\fN_1(2x-k)
+        && \text{by (D)}
+      \\&= \sum_{k=0}^{k=2} (-1)^k \brp{\frac{\sqrt{2}}{2}} \sqrt{2}\fN_1(2x-k)
+        && \text{by (C)}
+      \\&= \sum_{k=0}^{k=2} (-1)^k\bcoef{1}{k} \fN_1(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(E)}
+        && \text{by definition of $\fB_1(x)$}
+        && \text{\xref{def:Bn}}
+    \end{align*}
+
+  \item Proof that (C)$\impliedby$(E):
+    \begin{align*}
+      \fpsi(x)
+        &= \fB_1(x)
+        && \text{by (E)}
+      \\&= \sum_{k=0}^{k=2} (-1)^k \bcoef{2}{k} \fN_1(2x-k)
+        && \text{by definition of $\fB_1(x)$}
+        && \text{\xref{def:Bn}}
+      \\&= \sum_{k=0}^{k=2} (-1)^k \brp{\frac{\sqrt{2}}{4}} \sqrt{2}\fN_1(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&= \sum_{k\in\Z}  g_n \sqrt{2}\fphi(2x-k)
+        && \text{by \prefp{thm:g->psi}}
+      \\&\implies\text{(C)}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{example}[\exmd{4 non-zero coefficient case}]%/\exmd{Haar wavelet system}/\exmd{order 0 B-spline wavelet system}
+\label{ex:N2_hg}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $g_k=(-1)^k h_{1-k}$ (\fncte{CQF constraints}---\prefp{thm:cqf}).
+  %  4. & $\fg_n  = \pm (-1)^n  h_{\xN-n}^\ast$ $\scy\forall n\in\Z$  & \xref{thm:cqf}        &
+\exbox{\begin{array}{c@{\hspace{1pt}}cc@{\hspace{1pt}}c@{\hspace{1pt}}c}
+  \mcom{\brb{\begin{array}{FMD}
+    1. & $\support\fphi(x)=\intcc{0}{3}$     & and\\
+    2. & $\seqn{\fphi(x-k)}$ forms a&\\
+       & \prope{partition of unity}          & and\\
+    3. & $\psi(x)$ has 3\\
+       & \prope{vanishing moment}s
+  \end{array}}}{\scs(A)}
+  &\iff&
+  \mcom{h_n=
+    \brb{\begin{array}{rM}%
+      \frac{ \sqrt{2}}{8} &{\scs for} $n=0$ \\
+      \frac{3\sqrt{2}}{8} &{\scs for} $n=1$ \\
+      \frac{3\sqrt{2}}{8} &{\scs for} $n=2$ \\
+      \frac{ \sqrt{2}}{8} &{\scs for} $n=3$ \\
+      0                   &{\scs otherwise}
+    \end{array}}}{\scs(B)}
+  &\iff&
+  \mcom{g_n=
+    \brb{\begin{array}{rM}%
+      \frac{  \sqrt{2}}{8} &{\scs for} $n=0$ \\
+      \frac{-3\sqrt{2}}{8} &{\scs for} $n=1$ \\
+      \frac{ 3\sqrt{2}}{8} &{\scs for} $n=2$ \\
+      \frac{ -\sqrt{2}}{8} &{\scs for} $n=3$ \\
+      0                    &{\scs otherwise}
+    \end{array}}}{\scs(B)}
+  \\% second line in exbox
+  &\iff&
+  \mcom{\brb{\begin{array}{@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}l@{\hspace{1pt}}}
+    \fphi(x)&=&\fN_2(x)\\
+  \end{array}}}{\scs(D)}
+  &\iff&
+  \mcom{\brb{\begin{array}{@{\hspace{1pt}}r@{\hspace{1pt}}c@{\hspace{1pt}}l@{\hspace{1pt}}}
+    \fpsi(x)&=&\fB_2(x)
+  \end{array}}}{\scs(E)}
+\end{array}}%
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (A)$\implies$(B):
+    \begin{enumerate}
+      \item lemma: Only $h_0$, $h_1$, $h_2$, and $h_3$ are \prope{non-zero}; All other coefficients $h_k$ are $0$. \label{ilem:N2_hg_nonzero}
+            \\Proof: This follows from $\support\fphi(x)=\intcc{0}{3}$ \xref{def:support} and by \prefp{thm:support}.
+
+      \item lemma (equations for $\seqn{h_k}$):\label{ilem:N2_hg_equ}
+            %Because $\seqn{h_k}$ is a \fncte{scaling coefficient sequence} \xref{def:mra},
+            %it must satisfy the \prope{admissibility equation} \xref{thm:admiss}.
+            %Because $\seqn{\fphi(x-k)}$ forms a \prope{partition of unity}, it must satisfy the equations
+            %given by \prefpp{thm:pun_zero}.
+            %And because it has 2 vanishing moments (with the 0th moment being equivalent to
+            %the partition of unity), it must satisfy \prefpp{thm:gh_cqf}.
+            %\pref{ilem:N2_hg_nonzero} and
+            %these constraints yield three simultaneous equations and three unknowns:
+            \\\indentx$\ds\begin{array}{rccMM}
+              h_0 + h_1 + h_2 + h3  &=& \sqrt{2}    & (\prope{admissibility condition}) & \xref{thm:admiss}\\
+              h_0 - h_1 + h_2 - h3  &=& 0           & (\prope{partition of unity}/\prope{vanishing 0th moment}) & \xref{thm:pun_zero}\\
+              0   - h_1 +2h_2 - 3h_3&=& 0           & (1st vanishing moment) & \xref{thm:gh_cqf}\\
+              0   - h_1 +4h_2 - 9h_3&=& 0           & (2nd vanishing moment) & \xref{thm:gh_cqf}
+            \end{array}$
+
+      \item lemma: \label{ilem:N2_hg_Ah}
+            The equations provided by \pref{ilem:N2_hg_equ} can be expressed in matrix algebra form as follows\ldots
+            \begin{align*}
+              \mcom{\brs{\begin{array}{rrrr}1 &  1 & 1 & 1\\
+                                            1 & -1 & 1 &-1\\
+                                            0 & -1 & 2 &-3\\
+                                            0 & -1 & 4 &-9\\
+                         \end{array}}}{$\opA$}\brs{\begin{array}{r}h_0\\h_1\\h_2\\h_3\end{array}}
+                &= \brs{\begin{array}{r}\sqrt{2}\\
+                                        0       \\
+                                        0       \\
+                                        0
+                        \end{array}}
+            \end{align*}
+
+      \item lemma: \label{ilem:N2_hg_Ai}
+            The \ope{inverse} $\opAi$ of $\opA$ can be expressed as demonstrated below\ldots
+            \begin{align*}
+              &\brs{\begin{array}{rrrr|rrrr}1 &  1 & 1& 1 & 1 & 0 & 0 & 0\\
+                                           1 & -1 & 1&-1 & 0 & 1 & 0 & 0\\
+                                           0 & -1 & 2&-3 & 0 & 0 & 1 & 0\\
+                                           0 & -1 & 4&-9 & 0 & 0 & 0 & 1\end{array}}
+              &&\rightarrow
+              \brs{\begin{array}{rrrr|rrrr}1 &  0 & 3&-2 & 1 & 0 & 1 & 0\\
+                                           1 &  0 &-1& 2 & 0 & 1 &-1 & 0\\
+                                           0 &  1 &-2& 3 & 0 & 0 &-1 & 0\\
+                                           0 &  0 & 2&-6 & 0 & 0 &-1 & 1\end{array}}
+            \\&\rightarrow
+              \brs{\begin{array}{rrrr|rrrr}0 &  0 & 4&-4 & 1 & 0 & 2           & 0\\
+                                           1 &  0 & 0&-1 & 0 & 1 &-\frac{3}{2} & \frac{1}{2}\\
+                                           0 &  1 & 0&-3 & 0 & 0 &-2           & 1\\
+                                           0 &  0 & 1&-3 & 0 & 0 &-\frac{1}{2} & \frac{1}{2}\end{array}}
+              &&\rightarrow
+              \brs{\begin{array}{rrrr|rrrr}0 &  0 & 0& 8 & 1 & 0 & 4           & -2\\
+                                           1 &  0 & 0&-1 & 0 & 1 &-\frac{3}{2} & \frac{1}{2}\\
+                                           0 &  1 & 0&-3 & 0 & 0 &-2           & 1\\
+                                           0 &  0 & 1&-3 & 0 & 0 &-\frac{1}{2} & \frac{1}{2}\end{array}}
+            \\&\rightarrow
+              \brs{\begin{array}{rrrr|rrrr}0 &  0 & 0& 1 & \frac{1}{8} & 0 & \frac{1}{2} &-\frac{1}{4}\\
+                                           1 &  0 & 0& 0 & \frac{1}{8} & 1 &-1           & \frac{1}{4}\\
+                                           0 &  1 & 0& 0 & \frac{3}{8} & 0 &-\frac{1}{2} & \frac{1}{4}\\
+                                           0 &  0 & 1& 0 & \frac{3}{8} & 0 & 1           &-\frac{1}{4}\end{array}}
+              &&\rightarrow
+              \brs{\begin{array}{rrrr|rrrr}1 &  0 & 0& 0 & \frac{1}{8} & 1 &-1           & \frac{1}{4}\\
+                                           0 &  1 & 0& 0 & \frac{3}{8} & 0 &-\frac{1}{2} & \frac{1}{4}\\
+                                           0 &  0 & 1& 0 & \frac{3}{8} & 0 & 1           &-\frac{1}{4}\\
+                                           0 &  0 & 0& 1 & \frac{1}{8} & 0 & \frac{1}{2} &-\frac{1}{4}\end{array}}
+              \\&\implies \opAi= \frac{1}{8}\brs{\begin{array}{rrrr}1 & 8 &-8 & 2\\
+                                                                    3 & 0 &-4 & 2\\
+                                                                    3 & 0 & 8 &-2\\
+                                                                    1 & 0 & 4 &-2\end{array}}
+            \end{align*}
+
+      \item Proof for the values of $\seqn{h_k}$ (B):\label{item:N2_hg_h}
+            by \pref{ilem:N2_hg_Ah} and \pref{ilem:N2_hg_Ai} \ldots
+            \\\indentx$
+              \brs{\begin{array}{r}h_0\\h_1\\h_2\\h_3\end{array}}
+                 = \opAi\opA\brs{\begin{array}{r}h_0\\h_1\\h_2\\h_3\end{array}}
+                 = \opAi\brs{\begin{array}{r}\sqrt{2}\\0\\0\\0\end{array}}
+                 = \frac{1}{8}\brs{\begin{array}{rrrr}1 & 8 &-8 & 2\\
+                                                      3 & 0 &-4 & 2\\
+                                                      3 & 0 & 8 &-2\\
+                                                      1 & 0 & 4 &-2\end{array}}
+                              \brs{\begin{array}{r}\sqrt{2}\\0\\0\\0\end{array}}
+                 = \frac{\sqrt{2}}{8}\brs{\begin{array}{r}1\\3\\3\\1\end{array}}
+            $
+    \end{enumerate}
+
+  \item Proof that (B)$\implies$(C) (proof that $\seqn{h_k}\implies\seqn{g_k}$): %\label{item:N2_hg_g}
+        by \prope{CQF constraint} \xref{thm:cqf} and (B) \ldots
+    \begin{align*}
+      \brs{\begin{array}{r}g_0\\g_1\\g_2\\g_3\end{array}}
+        &= \brs{\begin{array}{r}h_3\\-h_2\\h_1\\-h_0\end{array}}
+         = \frac{\sqrt{2}}{8}\brs{\begin{array}{r}1\\3\\3\\1\end{array}}
+    \end{align*}
+
+  \item Proof that (B)$\impliedby$(C) (proof that $\seqn{h_k}\impliedby\seqn{g_k}$): %\label{item:N2_hg_g}
+        by \prope{CQF constraint} \xref{thm:cqf} and (C) \ldots
+    \begin{align*}
+      \brs{\begin{array}{r}h_0\\h_1\\h_2\\h_3\end{array}}
+        &= \brs{\begin{array}{r}g_3\\-g_2\\g_1\\-g_0\end{array}}
+         = \frac{\sqrt{2}}{8}\brs{\begin{array}{r}1\\3\\3\\1\end{array}}
+    \end{align*}
+
+  \item Proof that (B)$\implies$(D):
+    \begin{align*}
+      \text{(B)}\implies
+      \fphi(x)
+        &= \sum_{k\in\Z} h_k \sqrt{2}\fphi(2x-k)
+        && \text{\fncte{dilation equation}}
+        && \text{\xref{thm:dilation_eq}}
+      \\&= \sum_{k=0}^{k=3} \bcoef{3}{k}\fphi(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(D)}
+        && \text{by \thme{B-spline dyadic decomposition}}
+        && \text{\xref{thm:bspline_2x}}
+    \end{align*}
+
+  \item Proof that (B)$\impliedby$(D):
+    \begin{align*}
+      \text{(D)}\implies
+      \fN_2(x)
+        &= \sum_{k=0}^{k=3} \bcoef{3}{k}\fN_2(2x-k)
+        && \text{by \thme{B-spline dyadic decomposition}}
+        && \text{\xref{thm:bspline_2x}}
+      \\&= \sum_{k=0}^{k=3} \brp{\frac{\sqrt{2}}{8}} \sqrt{2}\fN_2(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&= \sum_{k\in\Z} h_k \sqrt{2}\fN_2(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(B)}
+    \end{align*}
+
+  \item Proof that (A)$\impliedby$(D):\\
+    $\begin{array}{FMM}
+       1. & Proof that (D) $\implies$ $\support\fphi(x)=\intcc{0}{3}$:                        & by \prefpp{thm:bspline_Nprop}\\
+       2. & Proof that (D) $\implies$ $\seqn{\fphi(x-k)}$ forms a \prope{partition of unity}: & by \prefpp{thm:bspline_punity}
+    \end{array}$
+
+  \item Proof that \{(C),(D)\}$\implies$(E):
+    \begin{align*}
+      \fpsi(x)
+        &= \sum_{k\in\Z}  g_n \sqrt{2}\fphi(2x-k)
+        && \text{by \prefp{thm:g->psi}}
+      \\&= \sum_{k\in\Z}  g_n \sqrt{2}\fN_2(2x-k)
+        && \text{by (D)}
+      \\&= \sum_{k=0}^{k=3} (-1)^k \brp{\frac{\sqrt{2}}{8}} \sqrt{2}\fN_2(2x-k)
+        && \text{by (C)}
+      \\&= \sum_{k=0}^{k=3} (-1)^k\bcoef{1}{k} \fN_2(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&\implies\text{(E)}
+        && \text{by definition of $\fB_2(x)$}
+        && \text{\xref{def:Bn}}
+    \end{align*}
+
+  \item Proof that (C)$\impliedby$(E):
+    \begin{align*}
+      \fpsi(x)
+        &= \fB_2(x)
+        && \text{by (E)}
+      \\&= \sum_{k=0}^{k=3} (-1)^k \bcoef{3}{k} \fN_2(2x-k)
+        && \text{by definition of $\fB_2(x)$}
+        && \text{\xref{def:Bn}}
+      \\&= \sum_{k=0}^{k=3} (-1)^k \brp{\frac{\sqrt{2}}{8}} \sqrt{2}\fN_2(2x-k)
+        && \text{by definition of $\bcoef{n}{k}$}
+        && \text{\xref{def:bcoef}}
+      \\&= \sum_{k\in\Z}  g_n \sqrt{2}\fphi(2x-k)
+        && \text{by \prefp{thm:g->psi}}
+      \\&\implies\text{(C)}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+%%--------------------------------------
+%\begin{example}[\exmd{3 coefficient case}/\exmd{order 1 B-spline wavelet system}]
+%\footnote{
+%  \citerp{strang89}{616},
+%  \citerppgc{dau}{146}{148}{0898712742}{\textsection 5.4}
+%  }
+%\label{ex:sw_gh_tent}
+%\exmx{tent function}
+%%--------------------------------------
+%\exbox{
+%  \brb{\begin{array}{FMMD}
+%    1. & $\support\fphi(x)=\intcc{0}{2}$                             & \xref{thm:support}     & and\\
+%    2. & \prope{admissibility condition}                             & \xref{thm:admiss}      & and \\
+%    3. & \prope{partition of unity}                                  & \xref{thm:pun_zero}    & and\\
+%    4. & \prope{2 vanishing moments}                                 &                        & and\\
+%    5. & $\fg_n  = \pm (-1)^n  h_{\xN-n}^\ast$ $\scy\forall n\in\Z$  & \xref{thm:cqf}        &
+%  \end{array}}
+%  \implies
+%  \brb{\begin{array}{>{\scy}c|r|r}
+%    n & \mc{1}{c}{h_n} & \mc{1}{c}{g_n} \\
+%    \hline
+%      0   &  \brp{\frac{\sqrt{2}}{4}}  &   \brp{\frac{\sqrt{2}}{4}}  \\
+%      1   & 2\brp{\frac{\sqrt{2}}{4}}  & -2\brp{\frac{\sqrt{2}}{4}}            \\
+%      2   &  \brp{\frac{\sqrt{2}}{4}}  &   \brp{\frac{\sqrt{2}}{4}}
+%  \end{array}}
+%  }
+%%\\
+%%  \begin{tabular}{cc}%
+%%  \includegraphics{graphics/tent_phi_h.pdf}&\includegraphics{graphics/tent_psi_g.pdf}
+%%  \end{tabular}
+%\end{example}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that (1) $\implies$ that only $h_0$, $h_1$, and $h_2$ are non-zero: by \prefp{thm:support}.
+%
+%  \item Equations for $h_0$, $h_1$, and $h_2$:
+%        \\\indentx$\ds\begin{array}{rcc@{\qquad}MMM}
+%          h_0 + h_1 + h_2&=& \sqrt{2}    & (admissibility equation          & \pref{thm:admiss}   & \prefpo{thm:admiss}) \\
+%          h_0 - h_1 + h_2&=& 0           & (partition of unity/zero at $-1$ & \pref{thm:pun_zero} & \prefpo{thm:pun_zero})\\
+%          0   - h_1 +2h_2&=& 0           & (1st vanishing moment            &
+%        \end{array}$
+%
+%  \item Equations for $h_0$ and $h_1$ in matrix algebra form:
+%    \begin{align*}
+%      \mcom{\brs{\begin{array}{rrr}1 &  1 & 1\\
+%                                   1 & -1 & 1\\
+%                                   0 & -1 & 2
+%                 \end{array}}}{$\opA$}\brs{\begin{array}{r}h_0\\h_1\\h_2\end{array}}
+%        &= \brs{\begin{array}{r}\sqrt{2}\\
+%                                0       \\
+%                                0
+%                \end{array}}
+%    \end{align*}
+%
+%  \item Compute $\opAi$ (inverse of $\opA$):
+%
+%  \item Compute $h_0$, $h_1$, and $h_2$: \label{item:N1_hg_h}
+%
+%  \item compute for values of $g_0$, $g_1$, and $g_2$:
+%    \begin{align*}
+%      \brs{\begin{array}{r}g_0\\g_1\\g_2\end{array}}
+%        &= \brs{\begin{array}{r}h_2\\-h_1\\h_0\end{array}}
+%        && \text{by \pref{item:N1_hg_h}}
+%      \\&= \frac{\sqrt{2}}{4}\brs{\begin{array}{r}1\\-2\\1\end{array}}
+%        && \text{by \prefp{thm:cqf}}
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+
+
+%%--------------------------------------
+%\begin{example}[\exm{order 1 B-spline wavelet system}]
+%\footnote{
+%  \citerp{strang89}{616},
+%  \citerppgc{dau}{146}{148}{0898712742}{\textsection 5.4}
+%  }
+%\label{ex:sw_gh_tent}
+%\exmx{tent function}
+%%--------------------------------------
+%The following figures illustrate scaling and wavelet coefficients and functions
+%for the \hie{B-Spline $B_2$}, or \hie{tent function}. % \xref{ex:pounity_tent}.
+%The partition of unity formed by the scaling function $\fphi(x)$ is illustrated in \prefp{ex:pounity_tent}.
+%\\\exbox{\begin{array}{m{40mm}m{51mm}m{51mm}}
+%  $\begin{array}{>{\scy}c|r|r}
+%    n & \mc{1}{c}{h_n} & \mc{1}{c}{g_n} \\
+%    \hline
+%      0   &  \brp{\frac{\sqrt{2}}{4}}  &   \brp{\frac{\sqrt{2}}{4}}  \\
+%      1   & 2\brp{\frac{\sqrt{2}}{4}}  & -2\brp{\frac{\sqrt{2}}{4}}            \\
+%      2   &  \brp{\frac{\sqrt{2}}{4}}  &   \brp{\frac{\sqrt{2}}{4}}
+%  \end{array}$
+%  &\includegraphics{graphics/tent_phi_h.pdf}&\includegraphics{graphics/tent_psi_g.pdf}
+%\end{array}}
+%\end{example}
+%\begin{proof}
+%These results follow from \prefp{thm:Bsplineh}.
+%\\\indentx$\brp{\begin{array}{*{9}{c}}
+%    &   &   &   & 1 &   &   &   &  \\
+%    &   &   & 1 &   & 1 &   &   &  \\
+%    &   & 1 &   & 2 &   & 1 &   &
+%\end{array}}$
+%\end{proof}
+
+%%--------------------------------------
+%\begin{example}[\exm{order 3 B-spline wavelet system}]
+%\footnote{
+%  \citerp{strang89}{616}
+%  }
+%\label{ex:sw_gh_bspline}
+%\exmx{B-spline}
+%%--------------------------------------
+%The following figures illustrate scaling and wavelet coefficients and functions
+%for a \hie{B-spline}.
+%\\\exbox{\begin{array}{m{40mm}m{51mm}m{51mm}}
+%  $\begin{array}{>{\scy}c|c|r}
+%    n & \mc{1}{c}{h_n} & \mc{1}{c}{g_n} \\
+%    \hline
+%      0   & { }\brp{\frac{\sqrt{2}}{16}}  &  { }\brp{\frac{\sqrt{2}}{16}}  \\
+%      1   & {4}\brp{\frac{\sqrt{2}}{16}}  & -{4}\brp{\frac{\sqrt{2}}{16}}  \\
+%      2   & {6}\brp{\frac{\sqrt{2}}{16}}  &  {6}\brp{\frac{\sqrt{2}}{16}}  \\
+%      3   & {4}\brp{\frac{\sqrt{2}}{16}}  & -{4}\brp{\frac{\sqrt{2}}{16}}  \\
+%      4   & { }\brp{\frac{\sqrt{2}}{16}}  &  { }\brp{\frac{\sqrt{2}}{16}}
+%  \end{array}$
+%  &\includegraphics{graphics/bspline_phi_h.pdf}&\includegraphics{graphics/bspline_psi_g.pdf}
+%\end{array}}
+%\end{example}
+%\begin{proof}
+%These results follow from \prefp{thm:Bsplineh}.
+%\\\indentx$\brp{\begin{array}{*{9}{c}}
+%    &   &   &   & 1 &   &   &   &  \\
+%    &   &   & 1 &   & 1 &   &   &  \\
+%    &   & 1 &   & 2 &   & 1 &   &  \\
+%    & 1 &   & 3 &   & 3 &   & 1 &  \\
+%  1 &   & 4 &   & 6 &   & 4 &   & 1
+%\end{array}}$
+%\end{proof}
+
+

@@ -1,0 +1,547 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%======================================
+\chapter{Quasi-symmetry Constraint}
+\label{chp:symlets}
+%======================================
+%=======================================
+%\section{Symmetry constraint}
+\index{Symlets}
+%=======================================
+%=======================================
+\section{Design details}
+%=======================================
+The Daubechies-$p$ wavelets \xref{chp:compactp} are in general \prope{asymmetric} because they are constructed
+under a \prope{minimum phase} constraint---all zeros for polynomial $Q(z)$
+are selected to be inside the unit circle.
+Suppose we want to design filters such that the number of
+vanishing moments is the same, but we are willing
+to lift the minimum phase condition to gain more symmetry.
+That is, instead of choosing the zeros from $Q(z)Q(z^{-1})$ that are
+inside the unit circle only, we choose some that are inside and some that
+are outside to give better balance.
+However, for zeros that are complex, we still select them
+in conjugate pairs so that the coefficients of $Q(z)$ are real.
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:Sp}
+\index{Fej\'er-Riesz spectral factorization}
+%---------------------------------------
+Let $Q(z)$ be a polynomial with real coefficients and
+\begin{align*}
+  P(y)
+  &\eqd \sum\limits_{k=0}^{p-1} {{p-1+k}\choose{k}} y^k
+  &&    \text{}
+  \\
+  \dot{Q}
+  &\eqd \set{Q(z)}{ Q(z)Q(z^{-1})=P\left( \frac{2-z-z^{-1}}{4}} \right)
+  &&    \text{(Fej\'er-Riesz spectral factorizations of $P$)}
+  \\
+  \opR Q
+  &\eqd \seq{r_n}{\text{$r_n$ is a root of $Q(z)$}}
+  &&    \text{(roots of $Q(z)$)}
+  \\
+  [\opA Q](\omega)
+  &\eqd \atan\left(\frac{\Imb{Q(e^{i\omega})}}{\Reb{Q(e^{i\omega})}}\right)
+  &&    \text{(phase of $Q(e^{i\omega})$)}
+  \\
+  \opE Q
+  &\eqd \inf_{m,c\in\R}\norm{[\opA Q](\omega)-[m\omega+c]}^2
+  &&    \text{(linear phase estimation error of $Q(z)$)}
+  \\
+  \opM Q
+  &\eqd \sum_{r_n\in\opR Q} |r_n|^2
+  &&    \text{(magnitude of roots of $Q(z)$)}
+  \\
+  \dot{E}
+  &\eqd \set{\varepsilon=\opE Q}{Q\in\dot{Q}}
+  &&    \text{(set of all phase errors)}
+  \\
+  \dot{M}
+  &\eqd \set{m=\opM Q}{Q\in\dot{Q}}
+  &&    \text{(set of all root magnitudes)}
+\end{align*}
+
+Then the {\bf Symlet-$p$ scaling function} is the
+sequence $\seq{h_n}{n\in\Z}$ with $z$-transform
+$\Zh(z) = \sum_n h_n z^{-n}$ that satisfies
+\defbox{\begin{array}{lrcl}
+  1. & \Zh(z) &=& \ds \left(\frac{1+z^{-1}}{2}\right)^p Q(z)
+  \\
+  2. & Q(z)   &=& \ds\arg\min_{Q(z)\in\dot{Q}}
+                  \set{\opM Q\in\dot{M}}
+                      {\opE Q=\min\dot{E}}
+\end{array}}
+\end{definition}
+
+
+\setlength{\unitlength}{0.10mm}
+The Symlets of \prefp{def:Sp} can be implemented
+\footnote{
+  For an actual implementation using \hie{Octave},
+  see \prefpp{sec:src_Ry}.
+  }
+by the following steps: \cittrpp{dau}{254}{257}
+\begin{enumerate}
+  \item Compute the polynomial $P(y)$. This polynomial has $p-1$ roots in $y$.
+        \[
+          P(y) \eqd \sum\limits_{k=0}^{p-1} {{p-1+k}\choose{k}} y^k
+         \hspace{3em}\mbox{where }
+         {{n}\choose{k}}\eqd\frac{n!}{k!(n-k)!}
+        \]
+
+  \item Compute $P\left(\frac{2-z-z^{-1}}{4}\right)$.
+        This polynomial has $2p-2$ roots in $z$.
+        {\center \input{../common/wavelets/graphics/2p2roots.tex} }
+
+  \begin{enumerate}
+    \item Because the coefficients of
+          $P\left(\frac{2-z-z^{-1}}{4}\right)$
+          are real, all of its roots occur in \hie{complex conjugate pairs}:
+          \[ \text{root at } z_1=re^{i\theta}
+             \iff
+             \text{root at }
+             z_1^\ast = \left(re^{i\theta}\right)^\ast
+                      = re^{-i\theta}
+          \]
+          \begin{center}
+          \scriptsize
+          \setlength{\unitlength}{0.15mm}
+          \begin{picture}(300,300)(-130,-130)
+            \thicklines
+            \color{axis}%  
+              \put(-130,   0){\line(1,0){260} }%
+              \put(   0,-130){\line(0,1){260} }%
+              \put( 140,   0){\makebox(0,0)[l]{$\Reb{z}$}}%
+              \put(   0, 140){\makebox(0,0)[b]{$\Imb{z}$}}%
+              \qbezier[30](0,0)(62.5, 62.5)(125, 125)%
+              \qbezier[30](0,0)(62.5,-62.5)(125,-125)%
+            \color{circle}%
+              \input{../common/wavelets/graphics/circle.tex}%
+              \put( 120, 120){\makebox(0,0)[lb]{$z=e^{i\theta}$}}%
+              \put( 115, 115){\vector(-1,-1){43}}%
+            \color{zero}%
+              \put(  56, -56){\circle{10}}%
+              \put(  56,  56){\circle{10}}%
+            \normalcolor
+              \put(  60,  60){\makebox(0,0)[bl]{$re^{i\phi}$}}%
+              \put(  60, -60){\makebox(0,0)[tl]{$re^{-i\phi}$}}%
+              \put(  25, - 2){\makebox(0,0)[tl]{$\phi$}}%
+          \end{picture}%
+          \end{center}
+
+    \item All of the roots of $P\left(\frac{2-z-z^{-1}}{4}\right)$
+          occur in \hie{conjugate reciprocal pairs}:
+          \begin{multline*}
+             P\left(\frac{2-z-z^{-1}}{4}\right)
+             \text{ has a root at } z=re^{i\theta}
+             \qquad \iff \\
+             P\left(\frac{2-z-z^{-1}}{4}\right)
+             \text{ has a root at } z=\left(re^{i\theta}\right)^{-1}
+                      = \frac{1}{r}e^{-i\theta}
+          \end{multline*}
+      \begin{center}
+      \scriptsize
+      \setlength{\unitlength}{0.15mm}
+      \begin{picture}(350,350)(-175,-175)
+        \thicklines
+        \color{axis}%  
+          \put(-130,   0){\line(1,0){260} }%
+          \put(   0,-130){\line(0,1){260} }%
+          \put( 140,   0){\makebox(0,0)[l]{$\Reb{z}$}}%
+          \put(   0, 140){\makebox(0,0)[b]{$\Imb{z}$}}%
+          \qbezier[30](0,0)(62.5, 62.5)(125, 125)%
+          \qbezier[30](0,0)(62.5,-62.5)(125,-125)%
+        \color{circle}%
+          \input{../common/wavelets/graphics/circle.tex}%
+          \put( 120, 120){\makebox(0,0)[lb]{$z=e^{i\theta}$}}%
+          \put( 115, 115){\vector(-1,-1){43}}%
+        \color{zero}%
+          \put(  56,  56){\circle{10}}%
+          \put( 125,-125){\circle{10}}%
+        \normalcolor
+          \put(  60,  60){\makebox(0,0)[bl]{$re^{i\phi}$}}%
+          \put( 130,-125){\makebox(0,0)[tl]{$\frac{1}{r}e^{-i\phi}$}}%
+          \put(  25, - 2){\makebox(0,0)[tl]{$\phi$}}%
+      \end{picture}%
+      \end{center}
+
+  \end{enumerate}
+
+  \item By the \thme{Fej\'er-Riesz spectral factorization} theorem \xref{thm:Fejer-Riesz}
+        $P\brp{\frac{2-z-z^{-1}}{4}}$ can be factored in the form
+        \[ P\left(\frac{2-z-z^{-1}}{4}\right) = Q(z)Q(z^{-1}). \]
+        Find all such factors of $P\left(\frac{2-z-z^{-1}}{4}\right)$
+        under the following constraints:
+        \begin{enumerate}
+          \item The selected $p-1$ roots for $Q(z)$ occur in complex conjugate pairs
+              (so $Q(z)$ will have real coefficients).
+          \item $Q(z)$ contains exactly one root from each conjugate reciprocal pair
+                of $P\left(\frac{2-z-z^{-1}}{4}\right)$.
+        \end{enumerate}
+        The above two constraints imply that there are $\ds 2^\floor{p/2}$ choices of roots for $Q(z)$.
+
+  \item Find the two choices that result in a phase that is the
+        closest (in the least square sense) to a straight line.
+        There are two minimum error choices because for each choice,
+        selecting the complementary choice
+        (selecting the zeros that were discarded and discarding
+        the zeros that were selected)
+        will result in the exact same amount of phase error.\\
+        %Why this is, I cannot prove at this time.\cittrp{dau}{255} \problem
+
+  \item Of these two choices, select the one where the sum of the magnitude
+        of the $p-1$ roots is least.
+        \footnote{This step is arbitrary and not required by
+        Daubechies' definition of Symlets.}
+
+  \item The scaling coefficients $\seq{h_n}{}$ are the coefficients of
+        the polynomial
+        \[ \Zh(z) = \mcom{\mcom{\brp{\frac{1+z^{-1}}{2}}^p}{order $p$} \mcom{Q(z)}{order $p-1$}}
+                         {order $2p-1$ ($2p$ coefficients)} 
+        \]
+\end{enumerate}
+
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+\thmbox{\parbox{\textwidth-8ex}{
+  Symlet-$p$ wavelets have the following properties:
+  \begin{enumerate}
+     \item Symlet-$p$ wavelets have optimum linear phase
+           (in the least squares sense)
+           among all the Bezout polynomial factorization solutions.
+     \item $\seq{h_n}{}$ has support size $2p-1$
+           ($\seq{h_n}{}$) has $2p$ non-zero elements).
+     \item The support size of $\seq{h_n}{}$ is the smallest possible for wavelets with $p$ vanishing moments.
+  \end{enumerate}
+}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Proof that $\Fh(\omega)$ has optimum {\bf linear phase}:
+      The optimization is performed exhaustively
+      (all the phases are computed and linear error is measured).
+      This is not a rigorous proof.  \problem
+
+\item Proof that $\seq{h_n}{}$ has support size $2p-1$:
+      See \pref{thm:cs_bezout_prop} \prefpo{thm:cs_bezout_prop}.
+
+\item Proof that the support size of $\seq{h_n}{}$ is the smallest possible for wavelets with $p$ vanishing moments.
+      See \pref{thm:cs_bezout_prop} \prefpo{thm:cs_bezout_prop}.
+\end{enumerate}
+\end{proof}
+
+
+
+
+\begin{table}
+\scriptsize
+\exbox{\renewcommand{\arraystretch}{1}
+\begin{array}[t]{rrr}
+   p &    n &  \mc{1}{c}{h_n}                               \\
+   \hline
+   1 &    0 &  \frac{1}{\sqrt{2}}                           \\
+     &    1 &  \frac{1}{\sqrt{2}}                           \\
+                                                            \\
+   2 &    0 &  \frac{\sqrt{2}}{8}(1+\sqrt{3})               \\
+     &    1 &  \frac{\sqrt{2}}{8}(3+\sqrt{3})               \\
+     &    2 &  \frac{\sqrt{2}}{8}(3-\sqrt{3})               \\
+     &    3 &  \frac{\sqrt{2}}{8}(1-\sqrt{3})               \\
+                                                            \\
+   3 &    0 &  0.3326705530                                 \\
+     &    1 &  0.8068915093                                 \\
+     &    2 &  0.4598775021                                 \\
+     &    3 & -0.1350110200                                 \\
+     &    4 & -0.0854412739                                 \\
+     &    5 &  0.0352262919                                 \\
+                                                            \\
+   4 &    0 & -0.0757657148                                 \\
+     &    1 & -0.0296355276                                 \\
+     &    2 &  0.4976186676                                 \\
+     &    3 &  0.8037387518                                 \\
+     &    4 &  0.2978577956                                 \\
+     &    5 & -0.0992195436                                 \\
+     &    6 & -0.0126039673                                 \\
+     &    7 &  0.0322231006                                 \\
+                                                            \\
+   5 &    0 &  0.0273330683                                 \\
+     &    1 &  0.0295194909                                 \\
+     &    2 & -0.0391342493                                 \\
+     &    3 &  0.1993975340                                 \\
+     &    4 &  0.7234076904                                 \\
+     &    5 &  0.6339789635                                 \\
+     &    6 &  0.0166021058                                 \\
+     &    7 & -0.1753280899                                 \\
+     &    8 & -0.0211018340                                 \\
+     &    9 &  0.0195388827                                 \\
+                                                            \\
+   6 &    0 &  0.0154041093                                 \\
+     &    1 &  0.0034907121                                 \\
+     &    2 & -0.1179901111                                 \\
+     &    3 & -0.0483117426                                 \\
+     &    4 &  0.4910559419                                 \\
+     &    5 &  0.7876411410                                 \\
+     &    6 &  0.3379294217                                 \\
+     &    7 & -0.0726375228                                 \\
+     &    8 & -0.0210602925                                 \\
+     &    9 &  0.0447249018                                 \\
+     &   10 &  0.0017677119                                 \\
+     &   11 & -0.0078007083                                 \\
+\end{array}
+\hspace{2cm}
+\begin{array}[t]{rrr}
+   p &    n &  \mc{1}{c}{h_n}                               \\
+   \hline
+   7 &    0 &  0.0120154193                                 \\
+     &    1 &  0.0172133763                                 \\
+     &    2 & -0.0649080035                                 \\
+     &    3 & -0.0641312898                                 \\
+     &    4 &  0.3602184609                                 \\
+     &    5 &  0.7819215933                                 \\
+     &    6 &  0.4836109157                                 \\
+     &    7 & -0.0568044769                                 \\
+     &    8 & -0.1010109209                                 \\
+     &    9 &  0.0447423495                                 \\
+     &   10 &  0.0204642076                                 \\
+     &   11 & -0.0181266051                                 \\
+     &   12 & -0.0032832978                                 \\
+     &   13 &  0.0022918340                                 \\
+                                                            \\
+   8 &    0 & -0.0033824160                                 \\
+     &    1 & -0.0005421323                                 \\
+     &    2 &  0.0316950878                                 \\
+     &    3 &  0.0076074873                                 \\
+     &    4 & -0.1432942384                                 \\
+     &    5 & -0.0612733591                                 \\
+     &    6 &  0.4813596513                                 \\
+     &    7 &  0.7771857517                                 \\
+     &    8 &  0.3644418948                                 \\
+     &    9 & -0.0519458381                                 \\
+     &   10 & -0.0272190299                                 \\
+     &   11 &  0.0491371797                                 \\
+     &   12 &  0.0038087520                                 \\
+     &   13 & -0.0149522583                                 \\
+     &   14 & -0.0003029205                                 \\
+     &   15 &  0.0018899503                                 \\
+                                                            \\
+   9 &    0 &  0.0014009155                                 \\
+     &    1 &  0.0006197809                                 \\
+     &    2 & -0.0132719678                                 \\
+     &    3 & -0.0115282102                                 \\
+     &    4 &  0.0302248789                                 \\
+     &    5 &  0.0005834627                                 \\
+     &    6 & -0.0545689584                                 \\
+     &    7 &  0.2387609146                                 \\
+     &    8 &  0.7178970828                                 \\
+     &    9 &  0.6173384491                                 \\
+     &   10 &  0.0352724880                                 \\
+     &   11 & -0.1915508313                                 \\
+     &   12 & -0.0182337708                                 \\
+     &   13 &  0.0620777893                                 \\
+     &   14 &  0.0088592675                                 \\
+     &   15 & -0.0102640640                                 \\
+     &   16 & -0.0004731545                                 \\
+     &   17 &  0.0010694900                                 \\
+\end{array}
+\hspace{2cm}
+\begin{array}[t]{rrr}
+   p &    n &  \mc{1}{c}{h_n}                               \\
+   \hline
+  10 &    0 &  0.0008625782                                 \\
+     &    1 &  0.0007154205                                 \\
+     &    2 & -0.0070567641                                 \\
+     &    3 &  0.0005956828                                 \\
+     &    4 &  0.0496861266                                 \\
+     &    5 &  0.0262403651                                 \\
+     &    6 & -0.1215521056                                 \\
+     &    7 & -0.0150192388                                 \\
+     &    8 &  0.5137098734                                 \\
+     &    9 &  0.7669548366                                 \\
+     &   10 &  0.3402160130                                 \\
+     &   11 & -0.0878787115                                 \\
+     &   12 & -0.0670899078                                 \\
+     &   13 &  0.0338423547                                 \\
+     &   14 & -0.0008687521                                 \\
+     &   15 & -0.0230054614                                 \\
+     &   16 & -0.0011404298                                 \\
+     &   17 &  0.0050716492                                 \\
+     &   18 &  0.0003401493                                 \\
+     &   19 & -0.0004101159                                 \\
+                                                            \\
+  11 &    0 &  0.0006871194                                 \\
+     &    1 &  0.0013826742                                 \\
+     &    2 & -0.0039185532                                 \\
+     &    3 & -0.0027931771                                 \\
+     &    4 &  0.0372023572                                 \\
+     &    5 &  0.0509417072                                 \\
+     &    6 & -0.0540827111                                 \\
+     &    7 & -0.0286938383                                 \\
+     &    8 &  0.4078687490                                 \\
+     &    9 &  0.7685266798                                 \\
+     &   10 &  0.4520007834                                 \\
+     &   11 & -0.0815151575                                 \\
+     &   12 & -0.1499464788                                 \\
+     &   13 &  0.0182541524                                 \\
+     &   14 &  0.0237215478                                 \\
+     &   15 & -0.0273470351                                 \\
+     &   16 & -0.0085852863                                 \\
+     &   17 &  0.0098741222                                 \\
+     &   18 &  0.0024053043                                 \\
+     &   19 & -0.0016456213                                 \\
+     &   20 & -0.0002460505                                 \\
+     &   21 &  0.0001222747                                 \\
+ %                                                          \\
+ %12 &    0 & -0.0002052660                                 \\
+ %   &    1 & -0.0001769095                                 \\
+ %   &    2 &  0.0021044473                                 \\
+ %   &    3 &  0.0006915975                                 \\
+ %   &    4 & -0.0130538410                                 \\
+ %   &    5 & -0.0012870333                                 \\
+ %   &    6 &  0.0600585962                                 \\
+ %   &    7 &  0.0312568599                                 \\
+ %   &    8 & -0.1235912129                                 \\
+ %   &    9 & -0.0075179926                                 \\
+ %   &   10 &  0.5166743898                                 \\
+ %   &   11 &  0.7608721851                                 \\
+ %   &   12 &  0.3434515018                                 \\
+ %   &   13 & -0.0892710009                                 \\
+ %   &   14 & -0.0801757818                                 \\
+ %   &   15 &  0.0306867435                                 \\
+ %   &   16 &  0.0018619255                                 \\
+ %   &   17 & -0.0254930251                                 \\
+ %   &   18 & -0.0005948328                                 \\
+ %   &   19 &  0.0086342308                                 \\
+ %   &   20 &  0.0006610377                                 \\
+ %   &   21 & -0.0013865503                                 \\
+ %   &   22 & -0.0000841826                                 \\
+ %   &   23 &  0.0000976761                                 \\
+\end{array}
+}
+\caption{
+  Symlet-$p$ scaling coefficients $\seq{h_n}{}$
+  \label{tbl:Sp_h}
+  }
+\end{table}
+
+
+%=======================================
+\section{Examples}
+%=======================================
+\begin{figure}
+  \centering%
+  \exboxt{\begin{tabular}{c|c}
+    Daubechies-4 & Symlet-4
+    \\\hline
+    \includegraphics{graphics/D4_pz.pdf}&\includegraphics{graphics/S4_pz.pdf}\\
+    \includegraphics{graphics/d4_phi_h.pdf}&\includegraphics{graphics/s4_phi_h.pdf}\\
+    \includegraphics{graphics/d4_psi_g.pdf}&\includegraphics{graphics/s4_psi_g.pdf}
+  \end{tabular}}
+  \caption{Daubechies-4 and Symlet-4 wavelet systems \xref{ex:symlet_p4} \label{fig:symlet_p4}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\label{ex:symlet_p4}
+%---------------------------------------
+\prefpp{fig:symlet_p4} compares the Daubechies-4 and Symlet-4 wavelet structures:
+\end{example}
+
+\begin{figure}
+  \centering%
+  \exboxt{\begin{tabular}{c|c}
+    Daubechies-8 & Symlet-8
+    \\\hline
+    \includegraphics{graphics/D8_pz.pdf}&\includegraphics{graphics/S8_pz.pdf}\\
+    \includegraphics{graphics/d8_phi_h.pdf}&\includegraphics{graphics/s8_phi_h.pdf}\\
+    \includegraphics{graphics/d8_psi_g.pdf}&\includegraphics{graphics/s8_psi_g.pdf}
+  \end{tabular}}
+  \caption{Daubechies-8 and Symlet-8 wavelet systems \xref{ex:symlet_p8} \label{fig:symlet_p8}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\label{ex:symlet_p8}
+%---------------------------------------
+\prefpp{fig:symlet_p8} compares the Daubechies-8 and Symlet-8 wavelet structures.
+\end{example}
+
+\begin{figure}
+  \centering%
+  \exboxt{\begin{tabular}{c|c}
+    Daubechies-12 & Symlet-12
+    \\\hline
+    \includegraphics{graphics/D12_pz.pdf}&\includegraphics{graphics/S12_pz.pdf}\\
+    \includegraphics{graphics/d12_phi_h.pdf}&\includegraphics{graphics/s12_phi_h.pdf}\\
+    \includegraphics{graphics/d12_psi_g.pdf}&\includegraphics{graphics/s12_psi_g.pdf}
+  \end{tabular}}
+  \caption{Daubechies-12 and Symlet-12 wavelet systems \xref{ex:symlet_p12} \label{fig:symlet_p12}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\label{ex:symlet_p12}
+%---------------------------------------
+\prefpp{fig:symlet_p12} compares the Daubechies-12 and Symlet-12 wavelet structures.
+\end{example}
+
+\begin{figure}
+  \centering%
+  \exboxt{\begin{tabular}{c|c}
+    Daubechies-16 & Symlet-16
+    \\\hline
+    \includegraphics{graphics/D16_pz.pdf}&\includegraphics{graphics/S16_pz.pdf}\\
+    \includegraphics{graphics/d16_phi_h.pdf}&\includegraphics{graphics/s16_phi_h.pdf}\\
+    \includegraphics{graphics/d16_psi_g.pdf}&\includegraphics{graphics/s16_psi_g.pdf}
+  \end{tabular}}
+  \caption{Daubechies-16 and Symlet-16 wavelet systems \xref{ex:symlet_p16} \label{fig:symlet_p16}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\label{ex:symlet_p16}
+%---------------------------------------
+\prefpp{fig:symlet_p16} compares the Daubechies-16 and Symlet-16 wavelet structures.
+\end{example}
+
+%---------------------------------------
+\begin{example}
+\label{ex:symlet_p4-p17}
+%---------------------------------------
+\prefpp{fig:symlet_p4-p7} and \prefpp{fig:symlet_p8-p17}
+show the pole-zero plots for Symlet-4, Symlet-5,\ldots, Symlet-17 structures.
+\end{example}
+
+\begin{figure}
+  \centering%
+  \exbox{\begin{tabular}{c@{\qquad\qquad}c}
+    \includegraphics{graphics/S4_pz.pdf}&\includegraphics{graphics/S5_pz.pdf}\\%
+    \includegraphics{graphics/S6_pz.pdf}&\includegraphics{graphics/S7_pz.pdf}%
+  \end{tabular}}%
+  \caption{%
+    Pole-zero plots for Symlet-4, Symlet-5, Symlet-6, and Symlet-7 structures 
+    \xref{ex:symlet_p4-p17} 
+    \label{fig:symlet_p4-p7}
+    }
+\end{figure}
+
+\begin{figure}
+  \centering%
+  \exbox{\begin{tabular}{c@{\qquad\qquad}c}
+      \includegraphics{graphics/S8_pz.pdf}&\includegraphics{graphics/S9_pz.pdf}%
+    \\\includegraphics{graphics/S10_pz.pdf}&\includegraphics{graphics/S11_pz.pdf}%
+    \\\includegraphics{graphics/S12_pz.pdf}&\includegraphics{graphics/S13_pz.pdf}%
+    \\\includegraphics{graphics/S14_pz.pdf}&\includegraphics{graphics/S15_pz.pdf}%
+    \\\includegraphics{graphics/S16_pz.pdf}&\includegraphics{graphics/S17_pz.pdf}%
+  \end{tabular}}%
+  \caption{%
+    Pole-zero plots for Symlet-8, Symlet-9,\ldots, Symlet-17 structures 
+    \xref{ex:symlet_p4-p17} 
+    \label{fig:symlet_p8-p17}
+    }
+\end{figure}
+
+
+

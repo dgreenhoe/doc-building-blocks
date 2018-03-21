@@ -1,0 +1,131 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX File
+% cardinal B-spline Pole Zero plot
+% nominal font size = \gsize
+% nominal unit = 10mm
+%============================================================================
+\begin{pspicture}(-1.5,-2)(3.3,2)%
+  %-------------------------------------
+  % settings
+  %-------------------------------------
+  \psset{radius=1mm,linewidth=0.75pt}%
+  %-------------------------------------
+  % nodes
+  %-------------------------------------
+  \pnode(0,0){origin}%          z-plane origin
+  \pnode(-1,0){pzeroes}%        p zeroes location
+  \pnode(0,0){poles}%           2p-1 poles location
+  %-------------------------------------
+  % asymptotic regions
+  %   |z-1| = sqrt(2) (arc with radius sqrt(2) centered at z=1)
+  %   |z+1| = sqrt(2) (arc with radius sqrt(2) centered at z=-1)
+  % sqrt(2) ~= 1.4142135623730950488016887242097
+  %-------------------------------------
+  \pscustom[fillstyle=solid,fillcolor=pzasymshade,linestyle=solid,linecolor=pzasym]{%
+    \psarc(-1,0){1.414214}{-45}{45}%
+    \psarcn( 1,0){1.414214}{135}{-135}% 
+    }%
+  %\pnode(0.2,0.73){zm1P}%
+  \pnode(0.2,0.73){zm1P}%
+  \pnode(2,-1){zp1P}%
+  \rput[tr](3.2,+1.9){\rnode[l]{zm1L}{$\scy\abs{z-1}=\sqrt{2}$}}%
+  \rput[br](3.2,-1.9){\rnode[l]{zp1L}{$\scy\abs{z+1}=\sqrt{2}$}}%
+  \ncline[linecolor=pzasym,linestyle=dotted,nodesepA=0pt]{->}{zm1L}{zm1P}%
+  \ncline[linecolor=pzasym,linestyle=dotted,nodesepA=0pt]{->}{zp1L}{zp1P}%
+  \psline[linecolor=pzasym,linestyle=dashed](0,+1.414214)(1,+1.414214)%
+  \psline[linecolor=pzasym,linestyle=dashed](0,-1.414214)(1,-1.414214)%
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  \psaxes[linecolor=axis,labels=none,ticks=none]{<->}(0,0)(-1.5,-2)(2.7,2)%
+  \uput{1pt}[0](2.7,0){\color{axis}$\scy\Reb{z}$}%
+  \uput{2pt}[-30](0,1.9){\color{axis}$\scy\Imb{z}$}%
+  % x ticks
+  \rput(-1,0){\psline[linecolor=black,linewidth=0.5pt](0,1.4mm)(0,-1.4mm)}%
+  \rput( 1,0){\psline[linecolor=black,linewidth=0.5pt](0,1.4mm)(0,-1.4mm)}%
+  \rput( 2,0){\psline[linecolor=black,linewidth=0.5pt](0,1.4mm)(0,-1.4mm)}%
+  \rput(0.414214,0){\psline[linecolor=black,linewidth=0.5pt](0,1.4mm)(0,-1.4mm)}%
+  \rput(2.414214,0){\psline[linecolor=black,linewidth=0.5pt](0,1.4mm)(0,-1.4mm)}%
+  % y ticks
+  \rput(0,1.414214){\psline[,linecolor=black,linewidth=0.5pt](1.4mm,0)(-1.4mm,0)}%
+  \rput(0,1){\psline[,linecolor=black,linewidth=0.5pt](1.4mm,0)(-1.4mm,0)}%
+  \rput(0,-1){\psline[,linecolor=black,linewidth=0.5pt](1.4mm,0)(-1.4mm,0)}%
+  \rput(0,-1.414214){\psline[,linecolor=black,linewidth=0.5pt](1.4mm,0)(-1.4mm,0)}%
+  % x labels
+  \uput[90](2,0){\scs$2$}%
+  \uput[90](1,0){\scs$1$}%
+  \uput[120](-1,0){\scs$-1$}%
+  \uput[-90](2.414214,0){$\scy\sqrt{2}+1$}% sqrt(2)~=1.4142135623730950488016887242097
+  \uput[-90](0.414214,0){$\scy\sqrt{2}-1$}% sqrt(2)~=1.4142135623730950488016887242097
+  % y labels
+  \uput[180](0,1){\scs$1$}%
+  \uput[180](0,-1){\scs$-1$}%
+  \uput[180](0,1.414214){$\scy\sqrt{2}$}% sqrt(2)~=1.4142135623730950488016887242097
+  \uput[180](0,-1.414214){$\scy-\sqrt{2}$}% sqrt(2)~=1.4142135623730950488016887242097
+  %-------------------------------------
+  % unit circle
+  %-------------------------------------
+  \pscircle[linecolor=unitcircle](origin){1}%            unit circle
+  %\rput[tl](-1.5,1.9){\rnode[b]{circleL}{$\scy z=e^{i\omega}$}}% circle label
+  %\rput[bl](-1,-1.5){\rnode[t]{circleL}{$\scy\abs{z}=1$}}% circle label
+  \rput[tr](-1.5mm,-1.5mm){\rnode[b]{circleL}{$\scy\abs{z}=1$}}% circle label
+  \pnode(-0.707,-0.707){circleP}% circle point
+  \ncline[linecolor=unitcircle,linestyle=dotted,nodesepA=0pt]{->}{circleL}{circleP}% circle pointer
+  %-------------------------------------
+  % B-spline zeroes (at z=-1)
+  %-------------------------------------
+  \Cnode[linewidth=1pt](-1,0){zp}%
+  \rput[bl](-1.4,-1.9){\rnode[t]{zpL}{$p$} zeroes}%
+  \ncline[linestyle=dotted,linecolor=zero,nodesepA=0pt]{->}{zpL}{zp}%
+  \uput{1mm}[30](-1,0){\color{zero}$\scy{p}$}%
+  %-------------------------------------
+  % poles
+  %-------------------------------------
+  \rput(poles){%
+    \psline[linecolor=pole,linewidth=1pt](-0.1,+0.1)(+0.1,-0.1)%
+    \psline[linecolor=pole,linewidth=1pt](-0.1,-0.1)(+0.1,+0.1)%
+    }%
+  \rput[tl](-1.4,1.9){\rnode[t]{polesL}{$p$} poles}%
+  \ncline[linecolor=pole,linestyle=dotted,nodesepA=3pt,nodesepB=5pt]{->}{polesL}{poles}%
+  \uput{1mm}[30](0,0){\color{pole}$\scy{p}$}%
+\end{pspicture}%
+%
+%\begin{picture}(600,470)(-250,-200)
+%  %\graphpaper[10](0,0)(200,200)
+%  \thinlines%
+%  \color{axis}%
+%    \put(-130,   0){\line(1,0){500} }%
+%    \put(   0,-130){\line(0,1){260} }%
+%    \put( 380,   0){\makebox(0,0)[l]{$\Reb{z}$}}%
+%    \put(   0, 140){\makebox(0,0)[b]{$\Imb{z}$}}%
+%  \color{circle}%
+%    \qbezier( 100,   0)( 100, 41.421356)(+70.710678,+70.710678)% 0   -->1pi/4
+%    \qbezier(   0, 100)( 41.421356, 100)(+70.710678,+70.710678)% pi/4-->2pi/4
+%    \qbezier(   0, 100)(-41.421356, 100)(-70.710678,+70.710678)%2pi/4-->3pi/4
+%    \qbezier(-100,   0)(-100, 41.421356)(-70.710678,+70.710678)%3pi/4--> pi
+%    \qbezier(-100,   0)(-100,-41.421356)(-70.710678,-70.710678)% pi  -->5pi/4
+%    \qbezier(   0,-100)(-41.421356,-100)(-70.710678,-70.710678)%5pi/4-->6pi/4
+%    \qbezier(   0,-100)( 41.421356,-100)( 70.710678,-70.710678)%6pi/4-->7pi/4
+%    \qbezier( 100,   0)( 100,-41.421356)( 70.710678,-70.710678)%7pi/4-->2pi
+%    %\put( 110, 110){\makebox(0,0)[lb]{$z=e^{i\omega}$}}%
+%    %\put( 105, 105){\vector(-1,-1){33}}%
+%  \color{pzasym}%
+%    \qbezier(41.4214,0)(41.4214, 58.5786)(0, 100)%      % inner upper arc
+%    \qbezier(41.4214,0)(41.4214,-58.5786)(0,-100)%      % inner lower arc
+%    \qbezier(0, 100)(41.421, 141.421)(100, 141.421)%    %outer upper arc
+%    \qbezier(100, 141.421)(158.579,141.421)(200,100)%
+%    \qbezier(200,100)(241.421,58.5786)(241.421,0)%
+%    \qbezier(0,-100)(41.421,-141.421)(100,-141.421)%    %outer lower arc
+%    \qbezier(100,-141.421)(158.579,-141.421)(200,-100)%
+%    \qbezier(200,-100)(241.421,-58.5786)(241.421,0)%
+%  \color{pole}%
+%    \put(-100,-100){\makebox(0,0)[tr]{$p$ poles}}%
+%    \put(-100,-100){\vector(1,1){91}}%
+%    \put(   0,    0){\makebox(0,0)[c]{$\times$}}%
+%    \put(   0,    5){\makebox(0,0)[c]{\hspace{1em}$^{p}$}}%
+%  \color{zero}%
+%    \put(-150, -50){\makebox(0,0)[tr]{p zeros}}%
+%    \put(-150, -50){\vector( 1, 1){43}}%
+%    \put(-100,    0){\circle{15}$^p$}%
+%\end{picture}

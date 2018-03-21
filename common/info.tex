@@ -1,0 +1,772 @@
+%============================================================================
+% NCTU - Hsinchu, Taiwan
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Information Theory}
+\label{chp:capacity}
+\index{information theory}
+%======================================
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.17mm}                  
+\begin{picture}(900,150)(-100,-50)
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+  \put(-100, 125 ){\vector(0,-1){40}}
+  \put(-100, 130 ){\makebox(0,0)[bl]{$R_d$ (data rate)}}
+  \put(-100,  60 ){\makebox(30,0)[br]{$\{u_n\}$} }
+  \put(-100,  50 ){\vector(1,0){50} }
+
+  \put(-70, -50 ){\dashbox{4}( 280,160){} }
+  \put(-70, -40 ){\makebox( 280,160)[b]{transmitter} }
+  \put(   50, 130 ){\makebox(0,0)[bl]{$R_c$ (signal rate)}}
+  \put(   75, 125 ){\vector(0,-1){40}}
+  \put(   50,  60 ){\makebox(50,50)[b]{$\{y_n\}$} }
+  \put(   50,  50 ){\vector(1,0){50} }
+
+  \put(- 50,  00 ){\framebox( 100,100){} }
+  \put(- 50,  10 ){\makebox( 100,80)[t]{channel} }
+  \put(- 50,  10 ){\makebox( 100,80)[ ]{coder} }
+  \put(- 50,  10 ){\makebox( 100,80)[b]{$(L,N)$} }
+  \put( 100,  00 ){\framebox( 100,100){modulator} }
+  \put( 200,  50 ){\vector(1,0){100} }
+
+  \put( 350, 125 ){\vector(0,-1){25}}
+  \put( 300, 130 ){\makebox(0,0)[bl]{$\frac{L}{N}=\frac{R_d}{R_c}\eqd R<C$ (channel capacity)}}
+  \put( 300,  00 ){\framebox( 100,100){} }
+  \put( 300,  30 ){\makebox( 100, 40)[t]{channel} }
+  \put( 300,  10 ){\makebox( 100, 40)[b]{$\pp(Y|X)$} }
+  \put( 210,  60 ){\makebox( 90, 50)[b]{$s(t)$} }
+  \put( 400,  60 ){\makebox( 80, 50)[b]{$r(t)$} }
+
+  \put( 400,  50 ){\vector(1,0){100} }
+  \put( 500,  00 ){\framebox(100,100){demodulator} }
+  \put( 600,  60 ){\makebox(50,50)[b]{$\{\hat{y}_n\}$} }
+  \put( 600,  50 ){\vector(1,0){50}}
+  \put( 650,  00 ){\framebox(100,100){} }
+  \put( 650,  30 ){\makebox(100,40)[t]{channel} }
+  \put( 650,  30 ){\makebox(100,40)[b]{decoder} }
+  \put( 480, -50 ){\dashbox{4}( 280,160){} }
+  \put( 480, -40 ){\makebox( 280,160)[b]{receiver} }
+
+  \put( 760,  60 ){\makebox(40,50)[b]{$\{\ue_n\}$} }
+  \put( 750,  50 ){\vector(1,0){50}}
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Memoryless modulation system model
+   \label{fig:i_mod_model}
+   }
+\end{figure}
+
+
+
+
+%=======================================
+\section{Information Theory}
+%=======================================
+%=======================================
+\subsection{Definitions}
+%=======================================
+The \fncte{Kullback Leibler distance} $\iD{\pp_1}{\pp_2}$ \xref{def:kld} is a 
+measure between two probability density functions $\pp_1$ and $\pp_2$.
+It is not a true distance measure\footnote{
+  {\em Distance measure}: \prefpp{def:metric}
+  }
+but it behaves in a similar manner.
+If $\pp_1=\pp_2$, then the KL distance is 0.
+If $\pp_1$ is very different from $\pp_2$, then $|\iD{\pp_1}{\pp_2}|$ 
+will be much larger.
+
+%--------------------------------------
+\begin{definition}
+\citetbl{
+  \citerp{cover}{18}
+  }
+\label{def:kld}
+\index{Kullback Leibler distance}
+\index{relative entropy}
+%--------------------------------------
+Let $\pp_1$ and $\pp_2$ be probability density functions.
+Then the {\bf Kullback Leibler distance}
+(the KL distance, also called the {\bf relative entropy})
+of $\pp_1$ and $\pp_2$ is
+\defbox{
+  \iD{\pp_1}{\pp_2} \eqd \pE \log_2 \frac{ \pp_1(X) }{\pp_2(X)} 
+  \hspace{3ex}\mbox{bits}
+  }
+If the base of logarithm is $e$ (the ``natural logarithm") rather than $2$,
+then the units are {\em nats} rather than {\em bits}.
+\end{definition}
+
+The {\em mutual information} $\iI(X;Y)$ of random variable $X$ and $Y$ is
+the KL distance between their joint distribution $\pp(X,Y)$ and the 
+product of their marginal distributions $\pp(X)$ and $\pp(Y)$.
+If $X$ and $Y$ are independent, then the KL distance between 
+joint and marginal product is $\log1=0$ and they have no 
+mutual information ($\iI(X;Y)=0$).
+If $X$ and $Y$ are highly correlated, then the joint distribution is
+much different than the product of the marginals making the KL distance
+greater and along with it the mutual information greater as well.
+%--------------------------------------
+\begin{definition}[Mutual information]\citepp{cover}{18}{19}
+\label{def:I(X;Y)}
+\index{information}
+\index{information!mutual information}
+%--------------------------------------
+\defbox{
+  \iI(X;Y) \eqd \iD{\pp(X,Y)}{\pp(X)\pp(Y)} 
+           \eqd \pExy \log_2 \frac{ \pp(X,Y) }{\pp(X)\pp(Y)} 
+                \hspace{3ex}\mbox{bits}
+  }
+\end{definition}
+
+The {\em self information} $\iI(X;X)$ of random variable $X$ is the 
+mutual information between $X$ and itself.
+That is, it is a measure of the information contained in $X$.
+Self information $\iI(X;X)$ can also be viewed as the KL distance between
+the constant $1$ (no information because $1$ is completely known)
+and $\pp(X)$.
+%--------------------------------------
+\begin{definition}[Self information]\citepp{cover}{18}{19}
+\label{def:I(X;X)}
+\index{information!self information}
+%--------------------------------------
+\defbox{
+  \iI(X;X) \eqd \iD{1}{\pp(X)} 
+           \eqd \pEx \log_2 \frac{1}{\pp(X)} 
+                \hspace{3ex}\mbox{bits}
+  }
+\end{definition}
+
+The {\em entropy} $\iH(X)$ of a random variable $X$ is equivalent to
+the self information $\iI(X;X)$ of $X$.
+That is, the entropy of $X$ is a measure of the information contained
+in $X$.
+
+Likewise, the {\em conditional entropy} $\iH(X|Y)$ 
+of $X$ given $Y$ is the information
+contained in $X$ given $Y$ has occurred. 
+If $X$ and $Y$ are independent, then $X$ does not care about the occurrence of
+$Y$. Thus in this case, 
+the occurrence of $Y=y$ does not change the amount of information
+provided by $X$ and $\iH(X|Y)=\iH(X)$.
+If $X$ and $Y$ are highly correlated, 
+the occurrence of $Y=y$ tells us a lot about what the value of $X$ might
+turn out to be.
+Thus in this case, the information provided by $X$ given $Y$ is greatly reduced
+and $\iH(X|Y)<<\iH(X)$.
+
+The {\em joint entropy} $\iH(X,Y)$ of $X$ and $Y$ is the amount of information 
+contained in the ordered pair $(X,Y)$.
+
+%--------------------------------------
+\begin{definition}[Entropy]\citepp{cover}{15}{17}
+\label{def:H(X)}
+\label{def:H(X|Y)}
+\index{entropy}
+\index{entropy!joint entropy}
+\index{entropy!conditional entropy}
+%--------------------------------------
+\defbox{
+\begin{array}{l@{\hspace{1cm}}rcl@{\hspace{1cm}}l}
+  \mbox{entropy of $X$}                       : & \iH(X)        &\eqd& \pEx  \log_2 \frac{1}{\pp(X)  }  & \mbox{bits} \\
+  \mbox{joint entropy of $X,Y$}               : & \iH(X,Y)      &\eqd& \pExy \log_2 \frac{1}{\pp(X,Y)}  & \mbox{bits} \\
+  \mbox{conditional entropy of $X$ given $Y$} : & \iH(X|Y)      &\eqd& \pExy \log_2 \frac{1}{\pp(X|Y)}  & \mbox{bits}   
+\end{array}
+}
+\end{definition}
+
+
+%=======================================
+\subsection{Relations}
+%=======================================
+\begin{figure}[ht]
+\begin{center}\begin{footnotesize}
+\setlength{\unitlength}{0.4mm}
+\begin{picture}(150,180)(0,0)
+  {\color[rgb]{0,0,1}
+  \put(  50,  50){\oval(100,100)}
+  \put(  50, 105){\makebox(0,0)[b]{$\iH(X)$}}
+  \put(  25,  50){\makebox(0,0){$\iH(X|Y)$}}
+  }
+  {\color[rgb]{1,0,0}
+  \put( 100,  50){\oval(100,100)}
+  \put( 100, 105){\makebox(0,0)[b]{$\iH(Y)$}}
+  \put( 125,  50){\makebox(0,0){$\iH(Y|X)$}}
+  }
+  {\color[rgb]{0.5,0,0.5}
+  \put(  75, 120){\makebox(0,0)[b]{$\iH(X,Y)$}}
+  \put(  75,  50){\makebox(0,0)[b]{$\iI(X;Y)$}}
+  }
+\end{picture}
+\end{footnotesize}\end{center}
+\caption{
+  Relationship between information and entropy
+  \label{fig:HI}
+  }
+\end{figure}
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+\formbox{ \iH(X,Y) = \iH(Y,X)  }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \iH(X,Y)
+    &\eqd& \pExy \log \frac{1}{\pp_{xy}(X,Y)}
+  \\&=&    \pEyx \log \frac{1}{\pp_{yx}(Y,X)}
+  \\&\eqd& \iH(Y,X)
+\end{eqnarray*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[Entropy chain rule]
+\label{thm:chain}
+\index{chain rule!entropy}
+\index{Entropy chain rule}
+\index{theorems!Entropy chain rule}
+%--------------------------------------
+\formbox{
+  \begin{array}{rcl}
+    \iH(X,Y) &=& \ds \iH(X|Y) + \iH(Y)  \\
+             &=& \ds \iH(Y|X) + \iH(X). \\
+    \iH(X_1,X_2,\ldots,X_N) &=& \ds \sum_{n=1}^{N-1}\iH(X_n|X_{n+1},\ldots,X_N) + \iH(X_N)
+  \end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \iH(X,Y)
+    &\eqd& \pExy \log \frac{1}{\pp(X,Y)}
+  \\&=&    \pExy \log \frac{1}{\pp(X|Y)\pp(Y)}
+  \\&=&    \pExy \log \frac{1}{\pp(X|Y)} + \pExy \log \frac{1}{\pp(Y)}
+  \\&=&    \pExy \log \frac{1}{\pp(X|Y)} + \pEy \log \frac{1}{\pp(Y)}
+  \\&=&    \iH(X|Y) + \iH(Y)
+\\
+\\
+  \iH(X,Y)
+    &\eqd& \pExy \log \frac{1}{\pp(X,Y)}
+  \\&=&    \pExy \log \frac{1}{\pp(Y|X)\pp(X)}
+  \\&=&    \pExy \log \frac{1}{\pp(Y|X)} + \pExy \log \frac{1}{\pp(X)}
+  \\&=&    \pExy \log \frac{1}{\pp(Y|X)} + \pEy \log \frac{1}{\pp(X)}
+  \\&=&    \iH(Y|X) + \iH(X)
+\\
+\\
+  \iH(X_1,X_2,\ldots,X_N) 
+    &=& \iH(X_1|X_2,\ldots,X_N) + \iH(X_2,\ldots,X_N)
+  \\&=& \iH(X_1|X_2,\ldots,X_N) + \iH(X_2|X_3,\ldots,X_N) + \iH(X_3,\ldots,X_N)
+  \\&=& \iH(X_1|X_2,\ldots,X_N) + \iH(X_2|X_3,\ldots,X_N) + \iH(X_3|X_4,\ldots,X_N) + \iH(X_4,\ldots,X_N)
+  \\&=& \sum_{n=1}^{N-1}\iH(X_n|X_{n+1},\ldots,X_n) + \iH(X_N)
+\end{eqnarray*}
+\end{proof}
+
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+\formbox{
+  \begin{array}{rcl}
+    \iI(X;Y) &=& \iH(X) - \iH(X|Y)           \\
+    \iI(X;Y) &=& \iH(Y) - \iH(Y|X)           \\
+    \iI(X;Y) &=& \iH(X) + \iH(Y) - \iH(X,Y)  \\
+    \iI(X;Y) &=& \iI(Y;X)                    \\
+    \iI(X;X) &=& \iH(X)
+  \end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \iI(X;Y)
+    &\eqd& \pExy \log_2 \frac{ \pp(X,Y) }{\pp(X)\pp(Y)}
+  \\&=&    \pExy \log_2 \frac{ \pp(X|Y) }{\pp(X)}
+  \\&=&    \pExy \log_2 \frac{ 1 }{\pp(X)} + \pExy \log_2 \pp(X|Y) 
+  \\&=&    \pExy \log_2 \frac{ 1 }{\pp(X)} - \pExy \log_2 \frac{1}{\pp(X|Y)}
+  \\&\eqd& \iH(X) - \iH(X|Y)
+\\
+\\
+  \iI(X;Y)
+    &\eqd& \pExy \log_2 \frac{ \pp(X,Y) }{\pp(X)\pp(Y)}
+  \\&=&    \pExy \log_2 \frac{ \pp(Y|X) }{\pp(Y)}
+  \\&=&    \pExy \log_2 \frac{ 1 }{\pp(Y)} + \pExy \log_2 \pp(Y|X) 
+  \\&=&    \pExy \log_2 \frac{ 1 }{\pp(Y)} - \pExy \log_2 \frac{1}{\pp(Y|X)}
+  \\&\eqd& \iH(Y) - \iH(Y|X)
+\\
+\\
+  \iI(X;Y)
+    &=&    \iH(Y) - \iH(Y|X)
+  \\&=&    \iI(Y;X)
+\\
+\\
+  \iI(X;X)
+    &\eqd& \pExy \log_2 \frac{ \pp(X,X) }{\pp(X)\pp(X)}
+  \\&=&    \pExy \log_2 \frac{ \pp(X)   }{\pp(X)\pp(X)}
+  \\&=&    \pExy \log_2 \frac{ 1        }{\pp(X)      }
+  \\&\eqd& \iH(X)
+\\
+\\
+  \iI(X;Y)
+    &\eqd& \iH(X) - \iH(X|Y)
+  \\&=&    \iH(X) - [ \iH(X,Y) - \iH(Y) ]
+  \\&=&    \iH(X) + \iH(Y) - \iH(X,Y) 
+\end{eqnarray*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[Information chain rule]
+\index{chain rule!information}
+\index{information chain rule}
+\index{theorems!information chain rule}
+%--------------------------------------
+\formbox{
+  \iI(X_1,X_2,\ldots,X_N;Y)
+    = \sum_{n=1}^{N-1}\iI(X_n|X_{n+1},\ldots,X_N) 
+        + \iI(X_N) 
+  }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \iI(X_1,X_2,\ldots,X_N;Y)
+    &=& \iH(X_1,X_2,\ldots,X_N) - \iH(X_1,X_2,\ldots,X_N|Y)
+  \\&=& \sum_{n=1}^{N-1}\iH(X_n|X_{n+1},\ldots,X_N) + \iH(X_N) 
+        - \sum_{n=1}^{N-1}\iH(X_n|X_{n+1},\ldots,X_N,Y) - \iH(X_N|Y) 
+  \\&=& \sum_{n=1}^{N-1}\left[ 
+        \iH(X_n|X_{n+1},\ldots,X_N) - \iH(X_n|X_{n+1},\ldots,X_N,Y) 
+        \right]
+        + \left[ \iH(X_N) - \iH(X_N|Y) \right]
+  \\&=& \sum_{n=1}^{N-1}\iI(X_n|X_{n+1},\ldots,X_N) 
+        + \iI(X_N) 
+\end{eqnarray*}
+\end{proof}
+
+%=======================================
+\subsection{Properties}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerp{cover}{26}
+  }
+%---------------------------------------
+\formbox{
+\begin{array}{rcl}
+  \iD{\pp_1}{\pp_2} &\ge& 0  \\
+  \iI(X;Y)          &\ge& 0
+\end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \iD{\pp_1}{\pp_2}
+    &\eqd& \pEx\log\frac{\pp_1(X)}{\pp_2(X)}
+  \\&=&    \pEx\left[-\log\frac{\pp_2(X)}{\pp_1(X)} \right]
+  \\&\ge&  -\log\pEx\left[\frac{\pp_2(X)}{\pp_1(X)} \right]
+    \hspace{1cm}\mbox{by \thme{Jensen's Inequality} \xref{thm:jensen}}
+  \\&=&    -\log\int_x \pp_1(x)\frac{\pp_2(x)}{\pp_1(x)} \dx
+  \\&=&    -\log\int_x \pp_2(x) \dx
+  \\&=&    -\log(1)
+  \\&=&    0
+\end{eqnarray*}
+\end{proof}
+%=======================================
+\section{Channel Capacity}
+%=======================================
+%--------------------------------------
+\begin{definition}
+\label{def:iC}
+%--------------------------------------
+Let $(L,N)$ be a block coder with $N$ output bits for each $L$ input bits.
+\[
+\begin{array}{rcll}
+  R   &\eqd& \frac{L}{N}    & \mbox{coding rate}      \\
+  \iC &\eqd& \max \iI(X;Y)  & \mbox{channel capacity} \\
+  \iE(R) &\eqd& \max_\rho \max_Q [\iE_0(\rho,Q)-\rho R ]            & \mbox{random coding exponent}
+\end{array}
+\]
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}[noisy channel coding theorem]
+\citetbl{
+  \citerp{gallager}{143}
+  }
+\label{thm:ncct}
+\index{Noisy channel coding theorem}
+\index{theorems!Noisy channel coding theorem}
+%--------------------------------------
+If
+\formbox{ R < \iC}
+then it is possible to construct an encoder and decoder such that 
+the probability of error $P_e$ is arbitrarily small. Specifically
+\formbox{ P_e \le e^{-N\iE(R)}  }
+
+For $0\le R\ge\iC$, the function $\iE(R)$ is
+\begin{enume}
+  \item positive
+  \item decreasing
+  \item convex
+\end{enume}
+\end{theorem}
+
+
+
+
+
+\begin{figure}[ht]
+\color{figcolor}
+\setlength{\unitlength}{0.2mm}
+\begin{center}
+\begin{picture}(200,100)(-50,0)
+  \put(  0,  0){\line(1, 0){120}}
+  \put(  0,  0){\line(0, 1){120}}
+  %\put(125,  0){\makebox(0,0)[l]{$e$}}
+  \put(100, -5){\makebox(0,0)[t]{$\iC$}}
+  %\put( -5,100){\makebox(0,0)[r]{$\iC$}}
+  \qbezier(0,100)(20,20)(100,0)
+  \qbezier[32](0,100)(50,100)(100,100)
+  \qbezier[32](100,0)(100,50)(100,100)
+  \put( 50,90){\makebox(0,0)[t]{$\iE(R)$}}
+\end{picture}
+\end{center}
+\caption{
+  Typical $\iE(R)$
+  \label{fig:E(R)}
+  }
+\end{figure}
+
+
+\begin{figure}[ht]
+\color{figcolor}
+\setlength{\unitlength}{0.2mm}
+\begin{center}
+\begin{tabular}{cccc}
+\begin{picture}(200,100)(-50,0)
+  \put(  0,100){\vector(1, 0){100}}
+  \put(  0,  0){\vector(1, 0){100}}
+  \put(  0,100){\vector(1,-1){100}}
+  \put(  0,  0){\vector(1, 1){100}}
+  \put(-30, 50){\makebox(0,0)[r]{$X$}}
+  \put(130, 50){\makebox(0,0)[l]{$Y$}}
+  \put(-05,100){\makebox(0,0)[r]{$0$}}
+  \put(-05,  0){\makebox(0,0)[r]{$1$}}
+  \put(105,100){\makebox(0,0)[l]{$0$}}
+  \put(105,  0){\makebox(0,0)[l]{$1$}}
+  \put( 50,105){\makebox(0,0)[b]{$1-\epsilon$}}
+  \put( 50, -5){\makebox(0,0)[t]{$1-\epsilon$}}
+  \put( 27, 77){\makebox(0,0)[bl]{$\epsilon$}}
+  \put( 23, 27){\makebox(0,0)[br]{$\epsilon$}}
+\end{picture}
+&
+\begin{picture}(200,100)(-50,0)
+  \put(  0,  0){\line(1, 0){120}}
+  \put(  0,  0){\line(0, 1){120}}
+  \put(125,  0){\makebox(0,0)[l]{$p$}}
+  \put( -5,100){\makebox(0,0)[r]{$1$}}
+  \put(100, -5){\makebox(0,0)[t]{$1$}}
+  \put( 50, -5){\makebox(0,0)[t]{$\frac{1}{2}$}}
+  \qbezier[32](50,0)(50,50)(50,100)
+  \qbezier(0,0)(50,200)(100,0)
+  \qbezier[16](0,100)(25,100)(50,100)
+  \put( 80,80){\makebox(0,0)[l]{$\iH(X)$}}
+\end{picture}
+&
+\begin{picture}(200,100)(-50,0)
+  \put(  0,  0){\line(1, 0){120}}
+  \put(  0,  0){\line(0, 1){120}}
+  \put(125,  0){\makebox(0,0)[l]{$e$}}
+  \put(100, -5){\makebox(0,0)[t]{$1$}}
+  \put( 50, -5){\makebox(0,0)[t]{$\frac{1}{2}$}}
+  \put( -5,100){\makebox(0,0)[r]{$1$}}
+  \qbezier[32](50,0)(50,50)(50,100)
+  \qbezier(0,0)(50,200)(100,0)
+  \qbezier[16](0,100)(25,100)(50,100)
+  \put( 80,80){\makebox(0,0)[l]{$\iH(Y|X)$}}
+\end{picture}
+&
+\begin{picture}(200,100)(-50,0)
+  \put(  0,  0){\line(1, 0){120}}
+  \put(  0,  0){\line(0, 1){120}}
+  \put(125,  0){\makebox(0,0)[l]{$\epsilon$}}
+  \put(100, -5){\makebox(0,0)[t]{$1$}}
+  \put( 50, -5){\makebox(0,0)[t]{$\frac{1}{2}$}}
+  \put( -5,100){\makebox(0,0)[r]{$1$}}
+  \qbezier(0,100)(50,-100)(100,100)
+  \qbezier[32](0,100)(50,100)(100,100)
+  \qbezier[32](100,0)(100,50)(100,100)
+  \put( 50,90){\makebox(0,0)[t]{$\iI(X;Y)$}}
+\end{picture}
+\end{tabular}
+\end{center}
+\caption{
+  Binary symmetric channel (BSC)
+  \label{fig:bsc}
+  }
+\end{figure}
+
+%=======================================
+\section{Specific channels}
+%=======================================
+%=======================================
+\subsection{Binary Symmetric Channel (BSC)}
+%=======================================
+The properties of the {\em binary symmetric channel (BSC)} 
+are illustrated in \prefpp{fig:bsc} and stated in 
+\pref{thm:bsc} (next).
+%--------------------------------------
+\begin{theorem}[Binary symmetric channel]
+\label{thm:bsc}
+\index{Binary symmetric channel}
+\index{theorems!Binary symmetric channel}
+%--------------------------------------
+Let $\opC:X\to Y$ be a channel operation with $X,Y\in\{0,1\}$ and
+\begin{eqnarray*}
+  p &\eqd& \pP{X=1} \\
+  \pP{Y=1|X=0} &=& \pP{Y=0|X=1} \eqd \epsilon
+\end{eqnarray*}
+Then
+\formbox{\begin{array}{rcl}
+  \pP{Y=1} &=& \epsilon+p-2\epsilon p
+\\
+  \pP{Y=0} &=& 1-p-\epsilon +2\epsilon p
+\\
+  \iH(X)    &=&    p     \log_2 \frac{1}{p} +
+           (1-p) \log_2 \frac{1}{(1-p)}
+\\
+  \iH(Y)    &=&    (1-p-\epsilon +2\epsilon p) \log_2 \frac{1}{1-p-\epsilon +2\epsilon p} + 
+           (\epsilon +p-2\epsilon p)   \log_2 \frac{1}{\epsilon +p-2\epsilon p}
+\\
+  \iH(Y|X)  &=&    (1-\epsilon ) \log_2 \frac{1}{1-\epsilon } +
+           \epsilon      \log_2 \frac{1}{\epsilon   }
+\\
+  \iI(X;Y)  &=&    (1-p-\epsilon +2\epsilon p) \log_2 \frac{1}{1-p-\epsilon +2\epsilon p} + 
+           (\epsilon +p-2\epsilon p)   \log_2 \frac{1}{\epsilon +p-2\epsilon p} \\&&
+           - (1-\epsilon ) \log_2 \frac{1}{1-\epsilon } +
+           - \epsilon      \log_2 \frac{1}{\epsilon   }
+\\
+  \iC       &=&    1  + \epsilon \log_2 \epsilon  + (1-\epsilon ) \log_2 (1-\epsilon )
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \pP{X=1} &\eqd& p    \\
+  \pP{X=0} &=& 1-p     \\
+  \pP{Y=1}
+    &=& \pP{Y=1|X=0}\pP{X=0} + \pP{Y=1|X=1}\pP{X=1}
+  \\&=& \epsilon(1-p) + (1-\epsilon)p
+  \\&=& \epsilon-\epsilon p + p-\epsilon p
+  \\&=& \epsilon+p-2\epsilon p
+\\
+  \pP{Y=0} 
+    &=& \pP{Y=0|X=0}\pP{X=0} + \pP{Y=0|X=1}\pP{X=1}
+  \\&=& (1-\epsilon )(1-p) + \epsilon p
+  \\&=& 1-p-\epsilon +\epsilon p+\epsilon p
+  \\&=& 1-p-\epsilon +2\epsilon p
+\\
+\\
+  \iH(X)
+    &\eqd& \pEx \log_2 \frac{1}{\pp(X)}
+  \\&=&    \sum_{n=0}^1 \pP{X=n} \log_2 \frac{1}{\pP{X=n}}
+  \\&=&    \pP{X=0} \log_2 \frac{1}{\pP{X=0}} +
+           \pP{X=1} \log_2 \frac{1}{\pP{X=1}}
+  \\&=&    p     \log_2 \frac{1}{p} +
+           (1-p) \log_2 \frac{1}{(1-p)}
+\\
+\\
+  \iH(Y)
+    &\eqd& \pEy \log_2 \frac{1}{\pp(Y)}
+  \\&=&    \sum_{n=0}^1 \pP{Y=n} \log_2 \frac{1}{\pP{Y=n}}
+  \\&=&    \pP{Y=0} \log_2 \frac{1}{\pP{Y=0}} + 
+           \pP{Y=1} \log_2 \frac{1}{\pP{Y=1}}
+  \\&=&    (1-p-\epsilon +2\epsilon p) \log_2 \frac{1}{1-p-\epsilon +2\epsilon p} + 
+           (\epsilon +p-2\epsilon p)   \log_2 \frac{1}{\epsilon +p-2\epsilon p}
+\\
+\\
+  \iH(Y|X)
+    &\eqd& \pExy \log_2 \frac{1}{\pp(Y|X)}
+  \\&=&    \sum_{m=0}^1\sum_{n=0}^1 \pP{X=m,Y=n} \log_2 \frac{1}{\pP{Y=n|X=m}}
+  \\&=&    \sum_{m=0}^1\sum_{n=0}^1 \pP{Y=n|X=m}\pP{X=m} 
+           \log_2 \frac{1}{\pP{Y=n|X=m}}
+  \\&=&    \pP{Y=0|X=0}\pP{X=0} \log_2 \frac{1}{\pP{Y=0|X=0}} + \\&&
+           \pP{Y=0|X=1}\pP{X=1} \log_2 \frac{1}{\pP{Y=0|X=1}} + \\&&
+           \pP{Y=1|X=0}\pP{X=0} \log_2 \frac{1}{\pP{Y=1|X=0}} + \\&&
+           \pP{Y=1|X=1}\pP{X=1} \log_2 \frac{1}{\pP{Y=1|X=1}} 
+  \\&=&    (1-\epsilon ) (1-p) \log_2 \frac{1}{1-\epsilon } +
+           \epsilon      p     \log_2 \frac{1}{\epsilon   } +
+           \epsilon      (1-p) \log_2 \frac{1}{\epsilon   } +
+           (1-\epsilon ) p     \log_2 \frac{1}{1-\epsilon } 
+  \\&=&    (1-p-\epsilon +\epsilon p+p-\epsilon p) \log_2 \frac{1}{1-\epsilon } +
+           (\epsilon p+\epsilon -\epsilon p)   \log_2 \frac{1}{\epsilon   }
+  \\&=&    (1-\epsilon ) \log_2 \frac{1}{1-\epsilon } +
+           \epsilon      \log_2 \frac{1}{\epsilon   }
+\\
+\\
+  \iI(X;Y)
+    &=& \iH(Y) - \iH(Y|X)
+  \\&=&    (1-p-\epsilon +2\epsilon p) \log_2 \frac{1}{1-p-\epsilon +2\epsilon p} + 
+           (\epsilon +p-2\epsilon p)   \log_2 \frac{1}{\epsilon +p-2\epsilon p}
+           - (1-\epsilon ) \log_2 \frac{1}{1-\epsilon } +
+           - \epsilon      \log_2 \frac{1}{\epsilon   }
+\\
+\\
+  \iC
+    &\eqd& \max_p \iI(X;Y)
+  \\&=&    \left. \iI(X;Y) \right|_{p=\frac{1}{2}}
+  \\&=&    \frac{1}{2} \log_2 \frac{1}{\frac{1}{2}} + 
+           \frac{1}{2} \log_2 \frac{1}{\frac{1}{2}}
+           - (1-\epsilon ) \log_2 \frac{1}{1-\epsilon } +
+           - \epsilon      \log_2 \frac{1}{\epsilon   }
+  \\&=&    1  + \epsilon \log_2 \epsilon  + (1-\epsilon ) \log_2 (1-\epsilon )
+\end{eqnarray*}
+\end{proof}
+
+Note:
+\begin{liste}
+  \item When $\epsilon =0$ (noiseless channel), the channel capacity is $1$ bit (maximum capacity).
+  \item When $\epsilon=1$ (inverting channel), the channel capacity is still $1$ bit.
+  \item When $\epsilon=1/2$ (totally random channel), the channel capacity is $0$.
+  \item When $p=1$ ($1$ is always transmitted), the entropy of $X$ is $0$.
+  \item When $p=0$ ($0$ is always transmitted), the entropy of $X$ is $0$.
+  \item When $p=1/2$ (totally random transmission), the entropy of $X$ is 1 bit
+        (maximum entropy).
+\end{liste}
+
+
+
+%=======================================
+\subsection{Gaussian Noise Channel}
+%=======================================
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}                  
+\begin{picture}(700,150)(-100,-50) 
+  \thinlines                                      
+  %\graphpaper[10](0,0)(500,100)                  
+  \put(-100 ,  60 ){\makebox( 100,0)[b]{$\su$} }
+  \put(-100 ,  50 ){\vector(1,0){100} }
+
+  \put(  00 ,  10 ){\makebox( 100, 80)[t]{transmit} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put(  00 ,  00 ){\framebox( 100,100){} }
+
+  \put( 100 ,  60 ){\makebox( 100,0)[b]{$X$} }
+  \put( 100 ,  50 ){\vector(1,0){140} }
+
+
+  \put( 200 ,  00 ){\makebox(100, 95)[t]{$Z$} }
+  \put( 260,   50 ){\line  (1,0){ 45} }
+  \put( 250 ,  80 ){\vector(0,-1){20} }
+  \put( 250,   50) {\circle{20}                   }
+  \put( 200 ,  00 ){\dashbox(100,100){$+$} }
+  \put( 200 ,  10 ){\makebox(100, 90)[b]{channel $\opC$} }
+
+  %\put( 200 ,  10 ){\makebox( 100, 80)[t]{channel} }
+  %\put( 200 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  %\put( 200 ,  10 ){\makebox( 100, 80)[b]{\opC} }
+  %\put( 200 ,  00 ){\framebox(100,100){} }
+
+  \put( 300 ,  60 ){\makebox( 100,0)[b]{$Y$} }
+  \put( 300 ,  50 ){\vector(1,0){100} }
+
+  \put( 400 ,  00 ){\framebox(100,100){} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[t]{receive} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[b]{$\opR$} }
+
+  \put( 500 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 500 ,  50 ){\vector(1,0){100} }
+
+  %\put(- 90 , -10 ){\makebox( 0, 0)[tl]{$\vu\eqd\su$} }
+  %\put( 110 , -10 ){\makebox( 0, 0)[tl]{$s(t;\vu)=\opT\vu$} }
+  %\put( 310 , -10 ){\makebox( 0, 0)[tl]{$r(t;\vu)=\opC\opT\vu$} }
+  %\put( 510 , -10 ){\makebox( 0, 0)[tl]{$\sue=\opR\opC\opT\vu$} }
+
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Additive noise system model
+   \label{fig:i_addNoise_model}
+   }
+\end{figure}
+
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+Let $Z\sim\pN{0}{\sigma^2}$. Then
+\formbox{  \iH(Z) = \frac{1}{2}\log_2 2\pi e \sigma^2  }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \iH(Z)
+    &=& \pEz \log \frac{1}{\pp(Z)}
+  \\&=& -\pEz \log \pp(z) 
+  \\&=& -\pEz
+         \log \left[\frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-z^2}{2\sigma^2}} \right] 
+  \\&=& -\pEz \left[
+        -\frac{1}{2}\log(2\pi\sigma^2) 
+        + \frac{-z^2}{2\sigma^2} \log e 
+        \right] 
+  \\&=& \frac{1}{2} \pEz \left[
+        \log(2\pi\sigma^2) 
+        + \frac{\log e}{\sigma^2}z^2  
+        \right] 
+  \\&=& \frac{1}{2} \left[
+        \log(2\pi\sigma^2) + \frac{\log e}{\sigma^2}\pEz z^2  
+        \right] 
+  \\&=& \frac{1}{2} \left[
+        \log(2\pi\sigma^2) + \frac{\log e}{\sigma^2}(\sigma^2+0)
+        \right] 
+  \\&=& \frac{1}{2} \left[
+        \log(2\pi\sigma^2) + \log e
+        \right] 
+  \\&=& \frac{1}{2} \log(2\pi e\sigma^2) 
+\end{eqnarray*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+Let $Y=X+Z$ be a Gaussian channel with $\pE X^2=P$ and
+$Z\sim\pN{0}{\sigma^2}$. Then
+\formbox{ 
+  \iI(X;Y) \le \frac{1}{2}\log\left( 1 + \frac{P}{\sigma^2}\right) = \iC 
+  \hspace{1cm}\mbox{bits per usage}
+  }
+\end{theorem}
+\begin{proof}
+No proof at this time. \attention
+
+Reference: \cite[page 241]{cover}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+Let $Y=X+Z$ be a bandlimited Gaussian channel with $\pE X^2=P$ and
+$Z\sim\pN{0}{\sigma^2}$ and bandwidth $W$. Then
+\formbox{ 
+  \iC = W \log\left( 1 + \frac{P}{\sigma^2 W}\right) 
+  \hspace{1cm}\mbox{bits per second}
+  }
+\end{theorem}
+\begin{proof}
+By \prefpp{thm:nst}, $R_c \le 2W$.
+No complete proof at this time. \attention
+
+Reference: {\citerp{cover}{250}}
+\end{proof}
+
+
+
+

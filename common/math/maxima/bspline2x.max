@@ -1,0 +1,45 @@
+print("======================================================================");
+print("Daniel J. Greenhoe                                                    ");
+print("Maxima script file for nth order B-spline Nn(x) calculation           ");
+     /*To execute this script, start Maxima in a command window and          *
+      *then after the (%i...) prompt enter                                   *
+      *  batchload("bspline.max")$                                           *
+      *reference: http://maxima.sourceforge.net/documentation.html           */
+print("======================================================================");
+reset();
+kill(all);
+load(orthopoly);
+display2d:true; /* 2-dimensional display */
+/*--------------------------------------
+ * n = B-spline order parameter
+ * may be set to any value in {1,2,3,...}
+ *--------------------------------------*/
+n:1;
+print("-------------------------------------------------------");
+print("          1  n+1        (n+1)                          ");
+print(" Nn(x) = --- SUM (-1)^k (   ) (x-k)^n step(x-k) ,n=",n);
+print("          n! k=0        ( k )                          ");
+print("-------------------------------------------------------");
+f:(1/n!)*sum((-1)^k*binomial(n+1,k)*(x-k)^n*unit_step(x-k),k,0,n+1);
+/*assume(x<=0);    print("N_",n,"(x)= ",expand(Nnx)," for x<=0");  forget(x<=0);
+for i:0 thru n step 1 do(
+  assume(x>i,x<(i+1)), 
+  print("N_",n,"(x)= ",expand(Nnx)," for ",i,"<x<",i+1),
+  tex(expand(Nnx),"djg.tex"),/*write output in TeX format to file "djg.tex"*/
+  forget(x>i,x<(i+1))
+  );
+assume(x>(n+1)); print("N_",n,"(x)= ",expand(Nnx)," for x>",n+1); forget(x>(n+1));*/
+/*-------------------------------------
+ * values at specific points
+ *-------------------------------------*/
+display2d:false; /* 2-dimensional display */
+y:f,x=(n+1)/2;print("N_",n,"(",(n+1)/2,")= ",y," (center value)");
+y:f,x=(n+2)/2;print("N_",n,"(",(n+2)/2,")= ",y);
+y:f,x=(n+3)/2;print("N_",n,"(",(n+3)/2,")= ",y);
+
+f2x0:(1/n!)*sum((-1)^k*binomial(n+1,k)*(2*x-0-k)^n*unit_step(2*x-0-k),k,0,n+1);
+f2x1:(1/n!)*sum((-1)^k*binomial(n+1,k)*(2*x-1-k)^n*unit_step(2*x-1-k),k,0,n+1);
+f2x2:(1/n!)*sum((-1)^k*binomial(n+1,k)*(2*x-2-k)^n*unit_step(2*x-2-k),k,0,n+1);
+g:f2x0+f2x1+f2x2;
+expand(f);
+expand(g);

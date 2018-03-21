@@ -1,0 +1,378 @@
+﻿%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%=======================================
+\chapter{Network Detection}
+%=======================================
+
+%=======================================
+\section{Detection}
+%=======================================
+For detection, we need 
+\begin{dingautolist}{"AC}
+  \item Cost function: for hard decisions, its range must be linearly ordered.
+    For soft decisions, it can be a lattice.
+  \item system joint and marginal probabilities (for Bayesian detection)
+\end{dingautolist}
+
+
+%=======================================
+\section{Bayesian Estimation}
+%=======================================
+%---------------------------------------
+\begin{definition}
+%---------------------------------------
+\defbox{\begin{array}{rc>{\ds}lM}
+  \setH  &\eqd& \setn{h_1,h_2,h_3,\ldots}             & set of hypotheses \\
+  \ssetD &\eqd& \setn{\setD_1,\setD_2,\setD_3,\ldots} & partition---decision regions \\
+  \setX  &\eqd& \setn{X_1,X_2,X_3,\ldots}             & set of sensor inputs
+\end{array}}
+\end{definition}
+
+\begin{align*}
+  cost(h;P)
+    &= \min_\ssetD \sum_i \pPa{X \in \setD_i}{H\ne h_i}
+  \\&= \min_\ssetD \sum_i \pPc{X \in \setD_i}{H\ne h_i} \pP{H\ne h_i}
+  \\&= \min_\ssetD \sum_i 
+                   \sum_{j\ne i}\brs{1-\pPc{X \in \setD_i}{H=h_i}}
+                   \sum_{j\ne i}\brs{1-\pP{H=h_i}}
+  \\
+  \\
+  \hat{h}
+    &= \arg_h cost(h;P)
+\end{align*}
+
+
+
+
+
+%=======================================
+\section{Joint Gaussian Model}
+%=======================================
+
+
+
+Assume convexity \ldots
+\begin{align*}
+  \ssetD
+    &= \arg_\ssetD\min_\ssetD cost(h;P)
+  \\&= \arg_\ssetD\brb{\pderiv{}{\ssetD} \sum_i \int_{\setD_i} \pp(\vx|H\ne h_i)\mcom{\pp(H\ne h_i)}{$c$} d\vx=0}
+  \\&= \arg_\ssetD\brb{\pderiv{}{\ssetD}c\sum_i \int_{\setD_i} \pp(\vx|H\ne h_i) d\vx                         =0}
+  \\&= \arg_\ssetD\brb{\pderiv{}{\ssetD} \sum_i\brs{1- \sum_{j\ne i}\int_{\setD_i} \pp(\vx|H=h_i) d\vx}       =0}
+  \\&= \arg_\ssetD\brb{\pderiv{}{\ssetD}
+       \sum_i \brs{1-\sum_{j\ne i}\int_{\setD_i} 
+         \frac{1}{\sqrt{(2\pi)^n |\vM|}}\exp{-\frac{1}{2}(\vx-\pE\vx)^T\vM^{-1}(\vx-\pE\vx)}       
+       d\vz}=0}
+  \\&= \arg_\ssetD\brb{
+       \sum_i \brs{1-\sum_{j\ne i}\pderiv{}{\ssetD}\int_{\setD_i} 
+         \frac{1}{\sqrt{(2\pi)^n |\vM|}}\exp{-\frac{1}{2}(\vx-\pE\vx)^T\vM^{-1}(\vx-\pE\vx)}       
+       d\vz}=0}
+  \\&= \arg_\ssetD\brb{
+       \sum_i \brs{1-\sum_{j\ne i}
+                \left[
+            \begin{array}{c}
+               \pderiv{}{\setD_1} \\
+               \pderiv{}{\setD_2} \\
+               \vdots
+               \pderiv{}{\setD_n}
+            \end{array}
+         \right]
+       \int_{\setD_i} 
+         \frac{1}{\sqrt{(2\pi)^n |\vM|}}\exp{-\frac{1}{2}(\vx-\pE\vx)^T\vM^{-1}(\vx-\pE\vx)}       
+       d\vz}=0}
+  \\&= \arg_\ssetD\brb{
+       \sum_i \brs{1-\sum_{j\ne i}
+       \renewcommand{\arraystretch}{2}
+       \mcom{\left[\begin{array}{*{4}{>{\ds}c}}
+         \pderiv{y_1}{x_1} & \pderiv{y_2}{x_1} & \cdots & \pderiv{y_m}{x_1} \\
+         \pderiv{y_1}{x_2} & \pderiv{y_2}{x_2} & \cdots & \pderiv{y_m}{x_2} \\
+         \vdots            & \vdots            & \ddots & \vdots            \\
+         \pderiv{y_1}{x_n} & \pderiv{y_2}{x_n} & \cdots & \pderiv{y_m}{x_n}
+       \end{array}\right]
+       }{Jacobian matrix}
+       }}
+\end{align*}
+
+
+For two variable Gaussian \ldots
+
+\begin{align*}
+  cost
+    &= \min_\ssetD \sum_i \int_{\setD_i} \pp(\vx|H\ne h_i)\mcom{\pp(H\ne h_i)}{$c$} d\vx
+  \\&= \min_\ssetD c\sum_i \int_{\setD_i} \pp(\vx|H\ne h_i) d\vx 
+  \\&= \min_\ssetD c\sum_i\brs{1- \sum_{j\ne i}\int_{\setD_i} \pp(\vx|H=h_i) d\vx} 
+  \\&= \min_\ssetD c\sum_i \brs{1-\sum_{j\ne i}\int_{\setD_i} 
+         \frac{1}{2\pi \sqrt{\abs{M}}}
+         \exp\brp{\frac{z_1^2\pE[z_2z_2] - 2z_1z_2\pE[z_1z_2] + z_2^2\pE[z_1z_1]}
+                       {-2\abs{M}}} d\vz}
+\end{align*}
+
+
+%=======================================
+\section{2 hypothesis, 2 sensor detection}
+%=======================================
+
+%---------------------------------------
+\begin{theorem}[centralized case]
+%---------------------------------------
+Let $\ps$ be a probability space.
+Let $\setD\subsetneq\pse$ be the \hie{decision region} indicating hypothesis $H=h_1$. 
+Let $\pi_0\eqd\psp\setn{H=h_0}$ and $\pi_1\eqd\psp\setn{H=h_1}$.
+\thmbox{\begin{array}{rc>{\ds}l}
+  \setD 
+    &=& \arg\min_\setD\brs{
+        \mcom{\psp\set{\opair{x}{y}\in\setD}{H=h_0}\pi_0}{error for $H=h_0$} + 
+        \mcom{\psp\set{\opair{x}{y}\in\cmpD}{H=h_1}\pi_1}{error for $H=h_1$}
+        }
+  \\&=& \arg\min_\setD\brs{
+        \mcom{\pi_0\int_\setD \pdf_0\opair{x}{y} \dx\dy}{error for $H=h_0$} + 
+        \mcom{\pi_1\int_\setD \pdf_1\opair{x}{y} \dx\dy}{error for $H=h_1$} 
+        }
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \setD 
+    &= \arg\min_\setD\brs{\psp\setn{\text{error}}}
+    && \text{by definition of decision region $\setD$}
+  \\&= \arg\min_\setD\brs{
+         \psp\setn{\text{error}\land H=h_0} +
+         \psp\setn{\text{error}\land H=h_1}
+         }
+  \\&= \arg\min_\setD\brs{
+         \psp\set{\text{error}}{H=h_0}\pi_0 +
+         \psp\set{\text{error}}{H=h_1}\pi_1
+         }
+  \\&= \arg\min_\setD\brs{
+         \psp\set{\opair{x}{y}\in\setD}{H=h_0}\pi_0 + 
+         \psp\set{\opair{x}{y}\in\cmpD}{H=h_1}\pi_1
+         }
+  \\&= \arg\min_\setD\brs{
+         \pi_0\int_\setD \pdf_0\opair{x}{y} \dx\dy + 
+         \pi_1\int_\setD \pdf_1\opair{x}{y} \dx\dy 
+         }
+\end{align*}
+\end{proof}
+
+\begin{minipage}{11\tw/16}%
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+In the centralized case, the decision regions $\setD$ in the $xy$-plane 
+can be any arbitrary shape,
+as illustrated to the right.
+\end{example}
+\end{minipage}%
+\begin{minipage}{5\tw/16}%
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{\tw/1000}
+\begin{picture}(900,900)(-450,-450)%
+  %\graphpaper[10](0,0)(600,200)%
+  \thinlines%
+  \color{axis}%
+    \put(   0,-400){\line( 0, 1){800} }%
+    \put(-400,   0){\line( 1, 0){800} }%
+    \put(   0, 410){\makebox(0,0)[b]{$y$}}%
+    \put( 410,   0){\makebox(0,0)[l]{$x$}}%
+  \thicklines%
+  \color[rgb]{0,0,1}%
+    \put     ( 300, 100){\line(1, 1){100}}%
+    \put     ( 100, 100){\line(1, 1){100}}%
+    \multiput( 100, 100)(10,10){11}{\line(1, 0){200}}%
+  \color[rgb]{0,0,1}%
+    \cornersize{0.4}%
+    \put(-200, 200){\fancyoval(400,300)}%
+    \multiput( -350, 300)(25,0){13}{\circle{100}}%
+    \multiput( -350, 200)(25,0){13}{\circle{100}}%
+    \multiput( -350, 100)(25,0){13}{\circle{100}}%
+  \color[rgb]{0,0,1}%
+    \put( -200,-200){\circle*{300}}%
+  \color[rgb]{0,0,1}%
+    \put( 300,-300){\line(0, 1){200}}%
+    \put( 100,-300){\line(0, 1){200}}%
+    \multiput(100,-300)(0,10){21}{\line(1, 0){200}}%
+\end{picture}
+\end{fsL}
+\end{center}
+\end{minipage}%
+
+%---------------------------------------
+\begin{definition}
+%---------------------------------------
+\defboxt{
+  Let $\opP_x$ and $\opP_y$ be \hid{set projection operators} such that
+  $\begin{array}[t]{rc>{\ds}l}
+    \setD_x &\eqd& \opP_x \setD \\
+    \setD_y &\eqd& \opP_y \setD 
+  \end{array}$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+Let $+$ represent \hie{Minkowski addition}%
+  %\footnote{\hie{Minkowski addition}: \prefpp{def:minkowski_add}, \prefpp{def:sub_add}}
+\propbox{
+  \opD = \opD_x + \opD_y
+  }
+\end{proposition}
+
+%---------------------------------------
+\begin{theorem}[distributed \textsc{and} case]
+%---------------------------------------
+Let $\ps$ be a probability space.
+Let $\setD\subsetneq\pse$ be the \hie{decision region} indicating hypothesis $H=h_1$. 
+Let $\pi_0\eqd\psp\setn{H=h_0}$ and $\pi_1\eqd\psp\setn{H=h_1}$.
+Let $\setE\eqd\cmpD$.
+\thmbox{\begin{array}{rc>{\ds}l lll}
+  \setD 
+    &=& \arg\min_\setD\brp{\begin{array}{lllllll}
+          \psp\{ & x\in\setE, & y\in\setE &\}\{H=h_1\}\pi_1 &+ \\
+          \psp\{ & x\in\setE, & y\in\setD &\}\{H=h_1\}\pi_1 &+ \\
+          \psp\{ & x\in\setD, & y\in\setE &\}\{H=h_1\}\pi_1 &+ \\
+          \psp\{ & x\in\setD, & y\in\setD &\}\{H=h_0\}\pi_0 &
+        \end{array}} 
+\end{array}}
+\end{theorem}
+\begin{proof}
+
+\begin{tabular}{|ccc|c|l|}
+  \hline
+  $x$ & $y$ & $H$ & $x\land y$ & \\
+  \hline
+  0 & 0 & 0 & 0 &       \\
+  0 & 1 & 0 & 0 &       \\
+  1 & 0 & 0 & 0 &       \\
+  1 & 1 & 0 & 1 & error \\
+  0 & 0 & 1 & 0 & error \\
+  0 & 1 & 1 & 0 & error \\
+  1 & 0 & 1 & 0 & error \\
+  1 & 1 & 1 & 1 &       \\
+  \hline
+\end{tabular}
+
+\begin{align*}
+  \setD 
+    &= \arg\min_\setD\brs{\psp\setn{\text{error}}}
+    && \text{by definition of decision region $\setD$}
+  \\&= \arg\min_\setD\brs{
+         \psp\setn{\text{error}\land H=h_0} +
+         \psp\setn{\text{error}\land H=h_1}
+         }
+  \\&= \arg\min_\setD\brs{
+         \psp\set{\text{error}}{H=h_0}\pi_0 +
+         \psp\set{\text{error}}{H=h_1}\pi_1
+         }
+  \\&= \arg\min_\setD\brp{\begin{array}{lllllll}
+         \psp\{ & x\in\setE_x, & y\in\setE_y &\}\{H=h_1\}\pi_1 &+ \\
+         \psp\{ & x\in\setD_x, & y\in\setE_y &\}\{H=h_1\}\pi_1 &+ \\
+         \psp\{ & x\in\setE_x, & y\in\setD_y &\}\{H=h_1\}\pi_1 &+ \\
+         \psp\{ & x\in\setD_x, & y\in\setD_y &\}\{H=h_0\}\pi_0 &
+       \end{array}} 
+\end{align*}
+\end{proof}
+
+
+\begin{minipage}{11\tw/16}%
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+In the distributed \textsc{and} case, the decision regions $\setD$ in the $xy$-plane 
+are only simple rectangular shapes,
+as illustrated to the right.
+\end{example}
+\end{minipage}%
+\begin{minipage}{5\tw/16}%
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{\tw/1000}
+\begin{picture}(900,900)(-450,-450)%
+  %\graphpaper[10](0,0)(600,200)%
+  \thinlines%
+  \color{axis}%
+    \put(   0,-400){\line( 0, 1){800} }%
+    \put(-400,   0){\line( 1, 0){800} }%
+    \put(   0, 410){\makebox(0,0)[b]{$y$}}%
+    \put( 410,   0){\makebox(0,0)[l]{$x$}}%
+  \thicklines%
+  \color[rgb]{1,0,0}%
+    \put(   0,-300){\line(0, 1){200}}%
+    \put( -10,-100){\line(1, 0){ 20}}%
+    \put( -10,-300){\line(1, 0){ 20}}%
+    \put(   0, 100){\line(0, 1){200}}%
+    \put( -10, 300){\line(1, 0){ 20}}%
+    \put( -10, 100){\line(1, 0){ 20}}%
+    \qbezier[50](-400,300)(0,300)(400,300)%
+    \qbezier[50](-400,100)(0,100)(400,100)%
+    \qbezier[50](-400,-100)(0,-100)(400,-100)%
+    \qbezier[50](-400,-300)(0,-300)(400,-300)%
+  \color[rgb]{0,0,1}%
+    \put( 100,   0){\line(1, 0){200}}%
+    \put( 300, -10){\line(0, 1){ 20}}%
+    \put( 100, -10){\line(1, 1){ 20}}%
+    \qbezier[50](100,-400)(100,0)(100,400)%
+    \qbezier[50](300,-400)(300,0)(300,400)%
+  \color[rgb]{1,0,1}%
+    \put( 300,-300){\line(0, 1){200}}%
+    \put( 100,-300){\line(0, 1){200}}%
+    \multiput(100,-300)(0,10){21}{\line(1, 0){200}}%
+  \color[rgb]{1,0,1}%
+    \put( 300, 100){\line(0, 1){200}}%
+    \put( 100, 100){\line(0, 1){200}}%
+    \multiput(100, 100)(0,10){21}{\line(1, 0){200}}%
+\end{picture}
+\end{fsL}
+\end{center}
+\end{minipage}%
+
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\propboxp{
+  In general, distributed \textsc{and} detection is suboptimal.
+  }
+\end{proposition}
+\begin{proof}
+  Because only rectangular decision regions are possible, 
+  detection is suboptimal.
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerp{willett2000}{3268}
+  }
+%---------------------------------------
+\thmboxt{
+  For the distributed \textsc{and} detection
+  \\\indentx$
+    \setD_x 
+      = \set{x}
+            {\pi_0\int_{\setD_y} \pdf_0\opair{x}{y}\dx\dy
+             \le
+             \pi_1\int_{\setD_y} \pdf_1\opair{x}{y} \dx\dy
+            }
+  $
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \setD_x 
+    &= \set{x}
+         {y\in\setD_y 
+          \quad\implies\quad 
+          \psp\set{\opair{x}{y}}{H=h_0}\pi_0\le\psp\set{\opair{x}{y}}{H=h_1}\pi_1
+         }
+  \\&= \set{x}
+         {\pi_0\int_{\setD_y} \pdf_0\opair{x}{y}\dx\dy
+          \le
+          \pi_1\int_{\setD_y} \pdf_1\opair{x}{y} \dx\dy
+         }
+\end{align*}
+\end{proof}
+

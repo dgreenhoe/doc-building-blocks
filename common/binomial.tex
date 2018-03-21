@@ -1,0 +1,851 @@
+﻿%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+
+
+
+
+%======================================
+%\chapter{Combinatorial Relations}
+%======================================
+%=======================================
+\chapter{Binomial Relations}
+%=======================================
+%=======================================
+\section{Factorials}
+%=======================================
+%--------------------------------------
+\begin{definition}[factorial]
+%\footnote{
+%  \citerpgc{graham1994}{154}{0201558025}{equation (5.1)}
+%  }
+\label{def:factorial}
+%--------------------------------------
+\defbox{\begin{array}{M}
+  The \hid{factorial} ${n!}$ is defined as
+  \\\qquad$
+  n! \eqd \brbl{\begin{array}{ll}
+                    n(n-1)(n-2)\cdots1 & \text{ for } n\in\Z,\,n \ge1 \\
+                    1                  & \text{ for } n\in\Z,\,n=0 \\
+                    0                  & \text{ for } n\in\Z,\,n\le-1
+                  \end{array}
+                 }
+  $
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerppgc{graham1994}{47}{48}{0201558025}{equations (2.43), (2.44)},
+  \citerpc{knuth1992may}{414}{(2.11), (2.12)},
+  \citerpg{aigner2007}{10}{3540390324},
+  \citerpc{steffensen1950}{8}{descending, ascending, and central factorials},
+  \citerpc{steffensen1927}{8}{descending, ascending, and central factorials}
+  }
+\label{def:mfall}
+\label{def:mrise}
+\label{def:mmid}
+%--------------------------------------
+The quantities ``\hid{$x$ to the $m$ falling}", ``\hid{$x$ to the $m$ rising}", ``\hid{$x$ to the $m$ central}"  are defined as follows:
+\defbox{\begin{array}{rclD}
+  \symxd{\mfall{x}{m}} &\eqd& 
+    \brb{\begin{array}{lC}
+      \mcom{x(x-1)(x-2)\cdots(x-m+1)}{$m$ factors} & \forall x\in\C,\,m\in\Zp\\
+      1                                            & \forall x\in\C,\,m=0
+    \end{array}}
+    & (``\hid{$x$ to the $m$ falling}")
+  \\
+  \symxd{\mrise{x}{m}} &\eqd& 
+    \brb{\begin{array}{lC}
+      \mcom{x(x+1)(x+2)\cdots(x+m-1)}{$m$ factors} & \forall x\in\C,\,m\in\Zp\\
+      1                                            & \forall x\in\C,\,m=0
+    \end{array}}
+    & (``\hid{$x$ to the $m$ rising}")
+  \\
+  \symxd{\mmid{x}{m}} &\eqd& 
+    \brb{\begin{array}{lC}
+      \mcom{x\brp{x+\frac{m}{2}-1}\brp{x+\frac{m}{2}-2}\cdots\brp{x-\frac{m}{2}+1}}{$m$ factors} & \forall x\in\C,\,m\in\Zp\\
+      1                                            & \forall x\in\C,\,m=0
+    \end{array}}
+    & (``\hid{$x$ to the $m$ central}")
+\end{array}}
+\end{definition}
+
+The rising and central expressions may be expressed in terms of the falling expression (next).
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpc{steffensen1950}{8}{(3)}
+  }
+\label{prop:mfall}
+%--------------------------------------
+\propbox{\begin{array}{>{\ds}rc>{\ds}l @{\qquad}@{\qquad} >{\ds}rc>{\ds}l}
+  \mrise{x}{m} &=& (-1)^m\mfall{x}{m} 
+  &
+  \mmid{x}{m}  &=& x\mfall{\brp{x+\frac{m}{2}-1}}{(m-1)}
+\end{array}}
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    (-1)^m\mfall{(-x)}{m}
+      &= (-1)^m\brs{(-x)(-x-1)(-x-2)\cdots(-x-m+1)}
+      && \text{by \prefp{def:mfall}}
+    \\&= (-1)^m(-1)^m\brs{(x)(x+1)(x+2)\cdots(x+m-1)}
+    \\&= \mrise{x}{m}
+      && \text{by \prefp{def:mrise}}
+    \\\\
+    x\mfall{\brp{x+\frac{m}{2}-1}}{(m-1)}
+      &= x\brp{x+\frac{m}{2}-1}\brp{x+\frac{m}{2}-1-1}\cdots\brp{x+\frac{m}{2}-1-(m-1)+1}
+      && \text{by \prefp{def:mfall}}
+    \\&= x\brp{x+\frac{m}{2}-1}\brp{x+\frac{m}{2}-2}\cdots\brp{x-\frac{m}{2}+1)}
+    \\&= \mmid{x}{m}
+  \end{align*}
+\end{proof}
+
+%=======================================
+\section{Binomial identities}
+%=======================================
+%--------------------------------------
+\begin{definition}[Binomial coefficient]
+\footnote{
+  \citerpgc{graham1994}{154}{0201558025}{equation (5.1)},
+  \citerpgc{aigner2007}{10}{3540390324}{(1)},
+  \citorpp{coolidge1949}{149}{150},
+  \citor{stifel1544}
+  }
+\label{def:(n k)}
+\label{def:bcoef}
+\index{$n$ choose $k$}
+\index{binomial coefficient}
+%--------------------------------------
+Let $\C$ be the set of complex numbers and $\Z$ the set of integers.
+Let $\mfall{x}{m}$ represent ``$x$ to the $m$ falling" (\pref{def:mfall}).
+Let $n!$ represent ``$n$ factorial" (\pref{def:factorial}).
+\defbox{\begin{array}{M}
+  The \hid{binomial coefficient} ${x \choose k}$ is defined as
+  \\\qquad 
+  $\ds
+  {x \choose k} \eqd
+  \brbl{\begin{array}{>{\ds}l@{\qquad}lll}
+    %\frac{n!}{(n-k)!\;k!}
+    \frac{\mfall{x}{k}}{k!}  & \forall x\in\C & k\in\Znn & (k=0,1,2,3,\ldots) \\
+    %\frac{\mfall{x}{k}}{k!} = \frac{x(x-1)(x-2)\cdots(x-k+1)}{k(k-1)(k-2)\cdots1} & \text{for } x\in\C,k\in\Z,\,k\ge0\\
+    0                        & \forall x\in\C & k\in\Zn  & (k=-1,-2,-3,\ldots)
+  \end{array}}
+  %{r \choose k} \eqd
+  %\brbl{\begin{array}{>{\ds}ll}
+  %  %\frac{n!}{(n-k)!\;k!}
+  %  \frac{r(r-1)(r-2)\cdots(r-k+1)}{k!} & r\in\C,\,k\in\Z,\,k\ge0\\
+  %  0                                   & r\in\C,\,k\in\Z,\,k<0
+  %\end{array}}
+  $
+  \\
+  The value $x$ is called the \hid{upper index} and the value $k$ is called the \hid{lower index}.
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:bcoef}
+%--------------------------------------
+Let $\bcoef{n}{k}$ be the \hie{binomial coefficient} (\prefp{def:(n k)}).
+\propbox{\begin{tabstr}{2}
+  \begin{array}{F>{\ds}rc>{\ds}ll @{\qquad}|@{\qquad} F>{\ds}rc>{\ds}ll}
+      1.  & \bcoef{x}{0} &=& 1 & \forall x\in\C       
+    & 2.  & \bcoef{n}{n} &=& 1 & \forall n\in\Znn
+    \\3.  & \bcoef{x}{1} &=& x & \forall x\in\C       
+    & 4.  & \bcoef{x}{k} &=& 0 & \forall x\in\C,\,x<k       
+  \end{array}
+  \end{tabstr}}
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\bcoef{x}{0}=1$:
+    \begin{align*}
+      \bcoef{x}{0}
+        &= \frac{\mfall{x}{0}}{0!}
+        && \text{by \prefp{def:bcoef}}
+      \\&= \frac{\mfall{x}{0}}{1}
+        && \text{by \prefp{def:factorial}}
+      \\&= 1
+        && \text{by \prefp{def:mfall}}
+    \end{align*}
+
+  \item Proof that $\bcoef{n}{n}=1$:
+    \begin{align*}
+      \bcoef{n}{n}
+        &= \frac{\mfall{n}{n}}{n!}
+        && \text{by \prefp{def:bcoef}}
+      \\&= \frac{n(n-1)\cdots(n-n+1)}{n!}
+        && \text{by \prefp{def:mfall}}
+      \\&= \frac{n(n-1)\cdots(1)}{n(n-1)\cdots(1)}
+        && \text{by \prefp{def:factorial}}
+      \\&= 1
+    \end{align*}
+
+  \item Proof that $\bcoef{x}{1}=x$:
+    \begin{align*}
+      \bcoef{x}{1}
+        &= \frac{\mfall{x}{1}}{1!}
+        && \text{by \prefp{def:bcoef}}
+      \\&= \frac{\mfall{x}{1}}{1}
+        && \text{by \prefp{def:factorial}}
+      \\&= x
+        && \text{by \prefp{def:mfall}}
+    \end{align*}
+
+  \item Proof that $\bcoef{x}{k}=0,\,\forall x<k$:
+    \begin{align*}
+      \bcoef{x}{k}
+        &= \frac{\mfall{x}{k}}{k!}
+        && \text{by \prefp{def:bcoef}}
+      \\&= \frac{x(x-1)\cdots(0)\cdots(x-k+1)}{k!}
+        && \text{by \prefp{def:mfall}}
+      \\&= 0
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{graham1994}{174}{0201558025}{Table 174},
+  \citerpg{gallier2010}{221}{1441980466},
+  \citerpgc{gross2008}{227}{1584887435}{Table 4.1.2},
+  %\citerp{menini2004}{92} Pascal's recursion 
+  \citerpp{coolidge1949}{149}{150},
+  \citor{stifel1544},
+  \citerpgc{balakrishnan1996}{43}{0486691152}{Pascal's Rule},
+  \citerpgc{harris2008}{143}{0387797106}{\hie{hexagon identity}, (2.15)},
+  \citerpgc{ferland2009}{216}{0618415386}{\hie{second-order pascal identity}}
+  }
+\label{thm:Pascals_Rule}
+\label{thm:stifel}
+%
+\index{Pascal's Rule}
+\index{theorems!Pascal's Rule}
+\index{Stifel Formula}
+\index{theorems!Stifel Formula}
+\index{formulas!Stifel}
+% 2012feb26sun--2012feb27mon
+\label{thm:sum_symmetry}
+\label{thm:bcoef_symmetry}
+%
+% 2012feb26sun--2012feb27mon
+%--------------------------------------
+Let $\bcoef{n}{k}$ be the \hie{binomial coefficient} (\prefp{def:(n k)}).
+\thmbox{%\begin{tabstr}{2}
+  %\begin{array}{F>{\ds}rc>{\ds}lC>{\scs\ragr}p{\tw-136mm}cccccccccccccccccccccc}
+  \begin{array}{F>{\ds}rc>{\ds}l CD}
+      1. & \bcoef{n}{k}             &=& \frac{n!}{k!(n-k)!}                                                            & \forall n,k\in\Z,\,n\ge k\ge0 & (\thme{factorial expansion})
+    \\2. & \bcoef{n}{k}             &=& \bcoef{n}{n-k}                                                                 & \forall n,k\in\Z,\,n\ge0      & (\prope{symmetry})
+    \\3. & \bcoef{n+x+1}{n}         &=& \bcoef{n+x}{n} + \bcoef{n+x}{n-1}                                              & \forall n\in\Z,\,x\in\C       & (\thme{Pascal's rule})
+    \\4. & \bcoef{x+1}{k+1}         &=& \bcoef{x}{k+1} + \bcoef{x}{k}                                                  & \forall k\in\Z,\,x\in\C       & (\thme{Pascal's identity} / \thme{Stifel formula})
+    \\5. & \bcoef{x}{m}\bcoef{m}{k} &=& \bcoef{x}{k}\bcoef{x-k}{m-k}                                                   & \forall k,m\in\Z,\,x\in\C     & (\thme{trinomial revision})
+    \\6. & \bcoef{x}{k}             &=& \frac{x}{k}\bcoef{x-1}{k-1}                                                    & \forall k\in\Z,\,x\in\C       & (\thme{absorption identity})
+    \\7. & \bcoef{x}{k}             &=& (-1)^k\bcoef{k-x-1}{k}                                                         & \forall k\in\Z,\,x\in\C       & (\prope{upper negation})
+    \\8. & \bcoef{x}{k}             &=& \bcoef{x-2}{k-2}+2\bcoef{x-2}{k-1}+\bcoef{x-2}{k}                              & \forall k\in\Z,\,x\in\C       & (\thme{second-order Pascal's identity})
+    \\9. & \mc{3}{>{\ds}l}{\bcoef{x-1}{k-1}\bcoef{x}{k+1}\bcoef{x+1}{k}=\bcoef{x-1}{k}\bcoef{x}{k-1}\bcoef{x+1}{k+1}}  & \forall k\in\Z,\,x\in\C       & (\thme{hexagon identity})
+    %\\\bcoef{n}{k}                 &=& \bcoef{n-2}{k-2}+2\bcoef{n-2}{k-1}+\bcoef{n-2}{k} & (\thme{second-order Pascal's identity})
+    %\\\bcoef{n-1}{k-1}\bcoef{n}{k+1}\bcoef{n+1}{k}&=&\bcoef{n-1}{k}\bcoef{n}{k-1}\bcoef{n+1}{k+1}  & (\thme{hexagon identity})
+  \end{array}
+  %\end{tabstr}
+ }
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+  \item Proof for \hie{factorial expansion}: \label{item:bcoef_expand}
+    \begin{align*}
+      \bcoef{n}{k}
+        &\eqd \frac{\mfall{n}{k}}{k!}
+        && \forall n,k\in\Z,\,n\ge k\ge0
+        && \text{by \pref{def:bcoef}}
+      \\&= \frac{n(n-1)(n-2)\cdot(n-k+1)}{k!}
+        && \forall n,k\in\Z,\,n\ge k\ge0
+        && \text{by \pref{def:mfall}}
+      \\&= \frac{n(n-1)(n-2)\cdot(n-k+1)(n-k)(n-k-1)\cdots1}{k!(n-k)!}
+        && \forall n,k\in\Z,\,n\ge k\ge0
+        && \text{by \pref{def:mfall}}
+      \\&= \frac{n!}{k!(n-k)!}
+        && \forall n,k\in\Z,\,n\ge k\ge0
+        && \text{by \pref{def:factorial}}
+    \end{align*}
+
+  \item Proof for \hie{symmetry} property: \label{item:bcoef_symmetry}
+    \begin{enumerate}
+      \item Proof for $n,k\in\Z,\,n\ge k\ge 0$: (use \prefp{item:bcoef_expand})
+        \begin{align*}
+          \bcoef{n}{n-k} 
+            &= \frac{n!}{(n-k)!(n-(n-k)!}
+            && \forall n,k\in\Z,\,n\ge k\ge0
+            && \text{by \prefp{item:bcoef_expand}}
+          \\&= \frac{n!}{k!(n-k)!}
+            && \forall n,k\in\Z,\,n\ge k\ge0
+          \\&= \bcoef{n}{k}
+            && \forall n,k\in\Z,\,n\ge k\ge0
+            && \text{by \prefp{item:bcoef_expand}}
+        \end{align*}
+
+      \item Proof for $n,k\in\Z,\,n\ge 0 > k$: 
+        \begin{align*}
+          \bcoef{n}{n-k} 
+            &= \frac{\mfall{n}{n-k}}{(n-k)!}
+            && \forall n,k\in\Z,\,n\ge 0 > k
+            && \text{by \prefp{def:bcoef}}
+          \\&= \frac{n(n-1)(n-2)\cdots0\cdots(n-n+k+1)}{(n-k)!}
+            && \forall n,k\in\Z,\,n\ge 0 > k
+            && \text{by \prefp{def:mfall}}
+          \\&= 0
+          \\&= \bcoef{n}{k}
+            && \forall n,k\in\Z,\,n\ge 0 > k
+            && \text{by \prefp{def:bcoef}}
+        \end{align*}
+
+      \item Proof for $n,k\in\Z,\,n\ge 0 > k$: 
+        \begin{align*}
+          \bcoef{n}{k} 
+            &= \frac{\mfall{n}{k}}{k!}
+            && \forall n,k\in\Z,\,k > n \ge 0
+            && \text{by \prefp{def:bcoef}}
+          \\&= \frac{n(n-1)(n-2)\cdots0\cdots(n-k+1)}{(n-k)!}
+            && \forall n,k\in\Z,\,k > n \ge 0
+            && \text{by \prefp{def:mfall}}
+          \\&= 0
+          \\&= \bcoef{n}{n-k}
+            && \forall n,k\in\Z,\,k > n \ge 0
+            && \text{by \prefp{def:bcoef}}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof for \hie{Pascal's Rule}: \label{item:bcoef_pascalrule}
+    \begin{enumerate}
+      \item Proof for $n<0$, $x\in\C$:
+        \begin{align*}
+          \bcoef{n+x}{n} + \bcoef{n+x}{n-1}
+            &= 0 + 0
+            && \text{by \prefp{def:bcoef}}
+          \\&= \bcoef{n+x+1}{n}
+            && \text{by \prefp{def:bcoef}}
+        \end{align*}
+
+      \item Proof for $n=0$, $x\in\C$:
+        \begin{align*}
+          \bcoef{n+x}{n} + \bcoef{n+x}{n-1}
+            &= \bcoef{n+x}{0} + \bcoef{n+x}{-1}
+            && \text{by $n=0$ hypothesis}
+          \\&= 1 + 0
+            && \text{by \prefp{def:bcoef}}
+          \\&= \bcoef{n+x+1}{0}
+            && \text{by \prefp{def:bcoef}}
+          \\&= \bcoef{n+x+1}{n}
+            && \text{by $n=0$ hypothesis}
+        \end{align*}
+
+      \item Proof for $n>0$, $x\in\C$:
+        \begin{align*}
+          &{n+x \choose n} + {n+x \choose n-1}
+          \\&\eqd \frac{\mfall{n+x}{n}}{n!} + \frac{\mfall{n+x}{n-1}}{(n-1)!}
+            && \text{by \prefp{def:bcoef}}
+          \\&\eqd \frac{(n+x)(n+x-1)\cdots(n+x-n+1)}{n!} 
+          \\&\qquad+ \frac{(n+x)(n+x-1)\cdots(n+x-n+1+1)}{(n-1)!}
+            && \text{by \prefp{def:mfall}}
+          \\&= \frac{\brs{(n+x)(n+x-1)\cdots(x+1)} + \brs{(n+x)(n+x-1)\cdots(x+2)n}}{n!}
+          \\&= \frac{\brs{(x+1)+n}\brs{(n+x)(n+x-1)\cdots(x+2)}}{n!}
+          \\&= \frac{(n+x+1)(n+x)(n+x-1)\cdots(x+2)}{n!}
+          \\&\eqd \frac{\mfall{(n+x+1)}{n}}{n!}
+            && \text{by \prefp{def:mfall}}
+          \\&\eqd {n+x+1 \choose n}
+            &&    \text{by \prefp{def:bcoef}}
+        \end{align*}
+  \end{enumerate}
+
+  \item Proof for \hie{Pascal's Identity}: \label{item:bcoef_pascalrecursion}
+    \begin{align*}
+      {x+1 \choose k+1} 
+        &= {k+y+1 \choose k+1} 
+        && \text{where $y\eqd x-k\implies x=y+k$}
+      \\&= {y+k \choose k+1} + {y+k \choose k} 
+        && \text{by Pascal's Rule (\pref{item:bcoef_pascalrule})}
+      \\&= {x \choose k+1} + {x \choose k} 
+        && \text{by definition of $m$}
+    \end{align*}
+
+  \item Proof for \hie{Trinomial revision}: \label{item:bcoef_trinomial}
+    \begin{enumerate}
+      \item Proof for $k<0$ case:
+        \begin{align*}
+          \bcoef{x}{m}\bcoef{m}{k}
+            &= \bcoef{x}{m} 0 
+            && \text{by $k<0$ hypothesis and \prefp{def:bcoef}} 
+          \\&= \cancelto{0}{\bcoef{x}{k}} \bcoef{x-k}{m-k}
+            && \text{by $k<0$ hypothesis and \prefp{def:bcoef}} 
+        \end{align*}
+
+      \item Proof for $k\ge0,\,m<0$ case:
+        \begin{align*}
+          \bcoef{x}{m}\bcoef{m}{k}
+            &= 0\bcoef{m}{k}
+            && \text{by $m<0$ hypothesis and \prefp{def:bcoef}} 
+          \\&= \bcoef{x}{k} \cancelto{0}{\bcoef{x-k}{m-k}}
+            && \text{by $k\ge0,m<0$ hypothesis and \prefp{def:bcoef}} 
+        \end{align*}
+
+      \item Proof for $m<k$ case:
+        \begin{align*}
+          \bcoef{x}{m}\bcoef{m}{k}
+            &= \bcoef{x}{m}0
+            && \text{by \prefp{prop:bcoef}} 
+          \\&= \bcoef{x}{k} \cancelto{0}{\bcoef{x-k}{m-k}}
+            && \text{by $m<k$ hypothesis and \prefp{def:bcoef}} 
+        \end{align*}
+
+      \item Proof for remaining cases:
+        \begin{align*}
+          &\bcoef{x}{m}\bcoef{m}{k}
+          \\&= \frac{\mfall{x}{m}}{m!} \frac{\mfall{m}{k}}{k!}
+            && \text{by \prefp{def:bcoef}} 
+          \\&= \frac{x(x-1)\cdots(x-m+1)}{m!} \frac{m(m-1)\cdots(m-k+1)}{k!}
+            && \text{by \prefp{def:mfall}} 
+          \\&= \frac{x(x-1)\cdots(x-m+1)}{(m-k)!} \frac{1}{k!}
+          \\&= \frac{x(x-1)\cdots(x-k+1)}{k!} \frac{(x-k)(x-k-1)\cdots(x-m+1)}{(m-k)!} 
+          \\&= \frac{x(x-1)\cdots(x-k+1)}{k!} \frac{(x-k)(x-k-1)\cdots((x-k)-(m-k)+1)}{(m-k)!} 
+          \\&\eqd \frac{\mfall{x}{k}}{k!} \frac{\mfall{(x-k)}{m-k}}{(m-k)!}
+            && \text{by \prefp{def:mfall}}
+          \\&\eqd \bcoef{x}{k} \bcoef{x-k}{m-k}
+            && \text{by \prefp{def:bcoef}}
+        \end{align*}
+
+    \end{enumerate}
+
+  \item Proof for \hie{Absorption identity}: \label{item:bcoef_absorption}
+    \begin{align*}
+      \frac{x}{k}\bcoef{x-1}{k-1}                 
+        &= \frac{1}{k}\bcoef{x}{1}\bcoef{n-1}{k-1}     
+        && \text{by \prefp{prop:bcoef}}
+      \\&= \frac{1}{k}\bcoef{x}{k}\bcoef{k}{1}     
+        && \text{by Trinomial revision (\pref{item:bcoef_trinomial})}
+      \\&= \frac{1}{k}\bcoef{x}{k}k
+        && \text{by \prefp{prop:bcoef}}
+      \\&= \bcoef{x}{k}
+    \end{align*}
+
+  \item Proof for \hie{Upper Negation}:
+    \begin{align*}
+      (-1)^k\bcoef{k-x-1}{k}
+        &\eqd (-1)^k\frac{\mfall{(k-x-1)}{k}}{k!}
+        &&    \text{by \pref{def:bcoef}}
+      \\&\eqd (-1)^k\frac{(k-x-1)(k-x-2)(k-x-3)\cdots(k-x-1-k+1)}{k!}
+        &&    \text{by \pref{def:mfall}}
+      \\&=    (-1)^k\frac{(k-x-1)(k-x-2)(k-x-3)\cdots(-x)}{k!}
+      \\&=    (-1)^k(-1)^k\frac{(x)(x-1)\cdots(x(x-k+3)(x-k+2)(x-k+1)}{k!}
+      \\&\eqd \frac{\mfall{x}{k}}{k!}
+        &&    \text{by \pref{def:mfall}}
+      \\&\eqd \bcoef{x}{k}
+        &&    \text{by \pref{def:bcoef}}
+    \end{align*}
+
+  \item Proof for \hie{2nd Order Pascal's Identity}:
+    \begin{align*}
+      &\bcoef{n-2}{k-2}+2\bcoef{n-2}{k-1}+\bcoef{n-2}{k}
+      \\&\eqd \frac{\mfall{(x-2)}{(k-2)}}{(k-2)!} + \frac{\mfall{(x-2)}{(k-1)}}{(k-1)!} + \frac{\mfall{(x-2)}{k}}{k!}
+        %&&    \text{by \prefp{def:bcoef}}
+      \\&\eqd \frac{(x-2)(x-1)\cdots(x-k+2+1)}{(k-2)!} + 2\frac{(x-2)(x-1)\cdots(x-k+1+1)}{(k-1)!} + \frac{(x-2)\cdots(x-k+1)}{k!}
+        %&&    \text{by \prefp{def:mfall}}
+      \\&=    \frac{(x-2)\cdots(x-2-k+2+1)k(k-1) + 2(x-2)\cdots(x-2-k+1+1)k + (x-2)\cdots(x-k-1)}{k!}
+      \\&=    \frac{(x-2)(x-1)\cdots(x-k+1)k(k-1) + 2(x-2)(x-1)\cdots(x-k)k + (n-2)(n-1)\cdots(x-k-1)}{k!}
+      \\&=    \frac{\brs{(x-2)(x-1)\cdots(x-k+1)}\brs{k(k-1) + 2(x-k)k + (x-k)(x-k-1)}}{k!}
+      \\&=    \frac{\brs{(x-2)(x-1)\cdots(x-k+1)}\brs{k(k-1) + 2(x-k)k - (x-k)k + (x-k)(x-1)}}{k!}
+      \\&=    \frac{\brs{(x-2)(x-1)\cdots(x-k+1)}\brs{k(k-1) + (x-k)k + (x-k)(x-1)}}{k!}
+      \\&=    \frac{\brs{(x-2)(x-1)\cdots(x-k+1)}\brs{k^2-k + kx -k^2 + x^2-x-kx+k}}{k!}
+      \\&=    \frac{\brs{(x-2)(x-1)\cdots(x-k+1)}\brs{x^2-x}}{k!}
+      \\&=    \frac{x(x-1)(x-2)(x-1)\cdots(x-k+1)}{k!}
+      \\&\eqd \frac{\mfall{n}{k}}{k!}
+        %&&    \text{by \prefp{def:mfall}}
+      \\&\eqd \bcoef{n}{k}
+        %&&    \text{by \prefp{def:bcoef}}
+    \end{align*}
+
+  \item Proof for \hie{Hexagon Identity}:
+    \begin{align*}
+      &\bcoef{x-1}{k-1} \bcoef{x}{k+1} \bcoef{x+1}{k}
+      \\&\eqd \brs{\frac{\mfall{(x-1)}{(k-1)}}{(k-1)!}} \brs{\frac{\mfall{x}{(k+1)}}{(k+1)!}} \brs{\frac{\mfall{(x+1)}{k}}{k!}}
+      \\&\eqd \brs{\frac{(x-1)\cdots(x-1-k+1+1)}{(k-1)!}} \brs{\frac{x(x-1)\cdots(x-k-1+1)}{(k+1)!}} \brs{\frac{(x+1)(x)\cdots(x+1-k+1)}{k!}}
+      \\&=    \brs{\frac{(x-1)\cdots(x-k+2)(x-k+1)}{(k-1)!}} \brs{\frac{x(x-1)\cdots(x-k)}{(k+1)!}} \brs{\frac{(x+1)(x)(x-1)\cdots(x-k+2)}{k!}}
+      \\&=    \brs{\frac{(x)(x-1)\cdots(x-k+2)}{(k-1)!}} \brs{\frac{(x+1)x(x-1)\cdots(x-k)(x-k+1)}{(k+1)!}} \brs{\frac{(x-1)\cdots(x-k)}{k!}}
+      \\&\eqd \brs{\frac{\mfall{x}{(k-1)}}{(k-1)!}} \brs{\frac{\mfall{(x+1)}{(k+1)}}{(k+1)!}} \brs{\frac{\mfall{(x-1)}{k}}{k!}}
+      \\&\eqd \bcoef{x}{k-1} \bcoef{x+1}{k+1} \bcoef{x-1}{k}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+From Pascal's Recursion we can construct \hie{Pascal's Triangle}:%
+\footnote{
+  \citor{pascal1655},
+  \citer{granville1992},
+  \citer{granville1997},
+  \citer{edwards2002},
+  \citerppc{hall1894}{320}{321}{article 393}
+  }
+
+\[
+  \begin{array}{*{9}{c}}
+                 &              &              &              &  \bcoef{0}{0} &              &              &              &              \\
+                 &              &              & \bcoef{1}{0} &               & \bcoef{1}{1} &              &              &              \\
+                 &              & \bcoef{2}{0} &              &  \bcoef{2}{1} &              & \bcoef{2}{2} &              &              \\
+                 & \bcoef{3}{0} &              & \bcoef{3}{1} &               & \bcoef{3}{2} &              & \bcoef{3}{3} &              \\
+    \bcoef{4}{0} &              & \bcoef{4}{1} &              &  \bcoef{4}{2} &              & \bcoef{4}{3} &              &  \bcoef{4}{4}\\
+                 &              &              &              &  \vdots       &              &              &              &              
+  \end{array}
+  =
+  \begin{array}{*{9}{c}}
+      &     &     &     &  1  &     &     &     &     \\
+      &     &     &  1  &     &  1  &     &     &     \\
+      &     &  1  &     &  2  &     &  1  &     &     \\
+      &  1  &     &  3  &     &  3  &     &  1  &     \\
+    1 &     &  4  &     &  6  &     &  4  &     &  1  \\
+      &     &     &     &\vdots&    &     &     &       
+  \end{array}
+\]
+
+%=======================================
+\section{Binomial summations}
+%=======================================
+\ifdochasnot{series}{
+%--------------------------------------
+\begin{theorem}
+\label{thm:seq_mult}
+\footnote{
+  \citerp{apostol1975}{237}
+  }
+\index{Cauchy product}
+%--------------------------------------
+Let $\tuple{x_n}{1}{\xN}$ and $\tuple{y_n}{1}{\xN}$ be sequences over a ring $\ring$.
+\thmbox{
+  \left(\sum_{n=0}^p x_n  \right)
+  \left(\sum_{m=0}^q y_m  \right)
+  =
+  \sum_{n=0}^{p+q} 
+  \mcom{\ds\left(\sum_{k=\max(0,n-q)}^{\min(n,p)} x_k y_{n-k} \right)}
+       {Cauchy product} 
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item 
+\begin{align*}
+  \left(\sum_{n=0}^p x_n \right)\left(\sum_{m=0}^q y_m   \right)
+    &= \sum_{n=0}^p \sum_{m=0}^q x_n y_m z^{n+m}
+  \\&= \sum_{n=0}^p \sum_{k=n}^{q+n} x_n y_{k-n}  
+    && k=n+m \qquad m=k-n
+  \\&\vdots
+  \\&= \sum_{n=0}^{p+q} 
+       \left(\sum_{k=0}^n x_k y_{n-k} \right)  
+\end{align*}
+
+\item Perhaps the easiest way to see the relationship is by illustration with
+      a matrix of product terms:
+\[\begin{array}{>{\color{blue}}l | *{6}{l}}
+      & \color{blue}y_0       & \color{blue}y_1       & \color{blue}y_2       &\color{blue} y_3       & \color{blue}\cdots & \color{blue}y_q           \\
+  \hline
+  x_0 & x_0y_0 & x_0y_1 & x_0y_2 & x_0y_3 & \cdots & x_0y_q  \\
+  x_1 & x_1y_0 & x_1y_1 & x_1y_2 & x_1y_3 & \cdots & x_1y_q  \\
+  x_2 & x_2y_0 & x_2y_1 & x_2y_2 & x_2y_3 & \cdots & x_2y_q  \\
+  x_3 & x_3y_0 & x_3y_1 & x_3y_2 & x_3y_3 & \cdots & x_3y_q  \\
+  \vdots & \vdots & \vdots    & \vdots    & \vdots    & \ddots & \vdots        \\
+  x_p & x_py_0 & x_py_1 & x_py_2 & x_py_3 & \cdots & x_py_q
+\end{array}\]
+\begin{enumerate}
+\item The expression $\sum_{n=0}^p \sum_{m=0}^q x_n y_m z^{n+m}$
+      is equivalent to adding {\em horizontally} 
+      from left to right, from the first row to the last.
+
+\item If we switched the order of summation to 
+      $\sum_{m=0}^q \sum_{n=0}^p x_n y_m z^{n+m}$,
+      then it would be equivalent to adding {\em vertically} 
+      from top to bottom, 
+      from the first column to the last.
+
+\item However the final result expression
+      $\sum_{n=0}^{p+q} \left(\sum_{k=0}^n x_k y_{n-k} \right)  $
+      is equivalent to adding {\em diagonally} 
+      starting from the upper left corner and proceding 
+      to the lower right.
+
+\item Upper limit on inner summation:
+      Looking at the $x_k$ terms, we see that there are two constraints
+      on $k$:
+  \[\left.\begin{array}{lll}
+    k &\le& n  \\
+    k &\le& p
+  \end{array}\right\}
+  \implies
+  k\le\min(n,p)\]
+
+\item Lower limit on inner summation:
+      Looking at the $x_k$ terms, we see that there are two constraints
+      on $k$:
+  \[\left.\begin{array}{lll}
+    k &\ge& 0  \\
+    k &\ge& n-q
+  \end{array}\right\}
+  \implies
+  k\ge\max(0,n-q)\]
+\end{enumerate}
+\end{enumerate}
+\end{proof}
+}
+
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{graham1994}{169}{0201558025}{Table 169},
+  %\citerppg{graham1994}{208}{209}{0201558025}
+  \citerppg{gallier2010}{218}{223}{1441980466},
+  \citerpgc{gross2008}{227}{1584887435}{Table 4.1.2},
+  \citerppg{harris2008}{137}{142}{0387797106},
+  \citer{knuth1992},
+  %\citerpg{bogart2000}{42}{0121108309}\\
+  \citor{vandermonde1772},
+  \citor{zhu1303}
+  }
+%--------------------------------------
+Let $\bcoef{n}{k}$ be the \hie{binomial coefficient} (\prefp{def:(n k)}).
+\thmbox{
+  \begin{array}{>{\ds}lc>{\ds}lM}
+       \sum_{k=0}^n \bcoef{n}{k}               &=& 2^n              & (\thm{row sum})
+    \\ \sum_{k=m}^n \bcoef{k}{m}               &=& \bcoef{n+1}{m+1} & (\thm{upper sum} / \thm{column sum})
+    \\ \sum_{k=0}^n \bcoef{m+k}{k}             &=& \bcoef{n+m+1}{n} & (\thm{parallel summation formula} / \thm{southeast diagonal})
+    \\ \sum_{k=0}^m \bcoef{n-k}{m-k}           &=& \bcoef{n+1}{m}   & (\thm{northwest diagonal}) % gross2008 p. 227
+    \\ \sum_{j=0}^k \bcoef{m}{j}\bcoef{n}{k-j} &=& \bcoef{m+n}{k}   & (\thm{Vandermonde's convolution})
+    \\ \sum_{i=-j}^{n-j} \bcoef{m}{j+i}\bcoef{n}{k-i} &=& \bcoef{m+n}{j+k} & (\thm{alternate Vandermonde's convolution})
+    \\ \sum_{k=0}^n \bcoef{n}{k}^2             &=& \bcoef{2n}{n}    & 
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for \hie{row sum} relation:
+    \begin{align*}
+      \sum_{k=0}^{n} \bcoef{n}{k} x^k
+        &= \left. \sum_{k=0}^{n} \bcoef{n}{k} x^k \right|_{x=1}
+      \\&= \left.(1+x)^{n} \right|_{x=1}
+        && \text{by \thme{Binomial Theorem}} 
+        && \text{\ifxref{polynom}{thm:binomial}}
+      \\&= (1+1)^{n} 
+      \\&= 2^{n} 
+    \end{align*}
+ 
+  \item Proof for \hie{upper sum} relation (proof by induction):
+    \begin{enumerate}
+      \item Proof for $\opair{n}{m}=\opair{0}{0}$ case:
+        \\\indentx$\ds\sum_0^0\bcoef{k}{m} = \bcoef{0}{0} = 1 = \bcoef{0+1}{0+1}$
+      \item Proof for $\opair{n}{m}=\opair{1}{0}$ case:
+        \\\indentx$\ds\sum_0^1\bcoef{k}{m} = \bcoef{1}{0} + \bcoef{1}{1} = 2 = \bcoef{1+1}{0+1}$
+      \item Proof for $\opair{n}{m}=\opair{1}{1}$ case:
+        \\\indentx$\ds\sum_0^1\bcoef{k}{m} = \bcoef{1}{1} = 1 = \bcoef{1+1}{1+1}$
+      \item Proof that $n$ case $\implies$ $n+1$ case:
+        \begin{align*}
+          \sum_{k=m}^{n+1} \bcoef{k}{m} 
+            &= \bcoef{n+1}{m} + \sum_{k=m}^{n}
+          \\&= \bcoef{n+1}{m} + \bcoef{n+1}{m+1}
+            && \text{by left hypothesis}
+          \\&= \bcoef{n+2}{m+1}
+            && \text{by Pascal's recursion (\prefp{thm:stifel})}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof for \hie{Parallel summation formula} (Proof by induction):
+    \begin{align*}
+    \intertext{(a) Proof that 
+      $\sum_{k=0}^n {m+k \choose k} = {n+m+1 \choose n}$
+      is true for $n=0$:
+      }
+      \left.\sum_{k=0}^n {m+k \choose k}\right|_{n=0}
+        &= {m+0 \choose 0}
+      \\&= \frac{(m+0)!}{(m-0)!\; 0!}
+        && \text{by \prefp{def:(n k)}}
+      \\&= \frac{(m+1)!}{(m+1-0)!\; 0!}
+      \\&= {m+1 \choose 0}
+        && \text{by \prefp{def:(n k)}}
+      \\&= \left. {n+m+1 \choose n} \right|_{n=0}
+    \\
+    \intertext{(b) Proof that 
+      $\sum_{k=0}^n {m+k \choose k} = {n+m+1 \choose n}$
+      is true for $n=1$:
+      }
+      \left.\sum_{k=0}^n {m+k \choose k}\right|_{n=1}
+        &= {m+0 \choose 0} + {m+1 \choose 1}
+      \\&= {m+1 \choose 0} + {m+1 \choose 1}
+      \\&= {m+1+1 \choose 1} 
+        && \text{by Pascal's Rule page~\pageref{thm:Pascals_Rule}}
+      \\&= \left.{n+m+1 \choose n} \right|_{n=1}
+    \\
+    \intertext{(c) Proof that 
+      $\sum_{k=0}^n {m+k \choose k} = {n+m+1 \choose n}
+       \implies
+       \sum_{k=0}^{n+1} {m+k \choose k} = {(n+1)+m+1 \choose n+1}
+      $:}
+      \sum_{k=0}^{n+1} {m+k \choose k}
+        &= {m\choose 0} + \sum_{k=1}^{n+1} {m+k \choose k}
+      \\&= {m\choose 0} + \sum_{k=0}^n {m+k+1 \choose k+1}
+      \\&= {m\choose 0} + \sum_{k=0}^n {m+k \choose k}
+          -{m\choose 0} + {m+n+1 \choose n+1}
+      \\&= {n+m+1 \choose n} + {m+n+1 \choose n+1}
+        && \text{by left hypothesis}
+      \\&= {n+m+2 \choose n+1}
+        && \text{by Pascal's Rule page~\pageref{thm:Pascals_Rule}}
+      \\&= {(n+1)+m+1 \choose (n+1)}
+    \end{align*}
+ 
+  \item Proof for \hie{Vandermonde's convolution}: \label{item:bcoef_vc}
+    \begin{align*}
+      \sum_{k=0}^{m+n} \bcoef{m+n}{k} x^k
+        &= \sum_{k=0}^{m+n} \bcoef{m+n}{k} (1)^{m+n-k}x^k
+      \\&= (1+x)^{m+n}
+        && \text{by \thme{Binomial Theorem}} 
+        && \text{\ifxref{polynom}{thm:binomial}}
+      \\&= (1+x)^{m}(1+x)^{n}
+      \\&= \mcom{\brs{\sum_{k=0}^{m}\bcoef{m}{k} x^k}}{$(1+x)^m$} 
+           \mcom{\brs{\sum_{j=0}^{n}\bcoef{n}{j} x^j}}{$(1+x)^n$}
+        && \text{by \thme{Binomial Theorem}} 
+        && \text{\ifxref{polynom}{thm:binomial}}
+     %\\&= \sum_{k=0}^{m}\sum_{j=0}^{n} \bcoef{m}{k} \bcoef{n}{j} x^k x^j
+      \\&= \sum_{k=0}^{m+n}\brs{\sum_{j=0}^{k} \bcoef{m}{j} \bcoef{n}{k-j}} x^k
+        && \text{by \prefp{thm:seq_mult}}
+      \\\implies 
+      \bcoef{m+n}{k} &= \sum_{j=0}^{k} \bcoef{m}{j} \bcoef{n}{k-j}
+    \end{align*}
+
+  \item Proof for \hie{alternate Vandermonde's convolution}:
+    \begin{align*}
+      \bcoef{m+n}{j+k}
+        &= \bcoef{m+n}{u}
+        && \text{where $u\eqd j+k\implies k=u-j$}
+      \\&= \sum_{v=0}^n \bcoef{m}{v} \bcoef{n}{u-v}
+      \\&= \sum_{v=0}^n \bcoef{m}{v} \bcoef{n}{j+k-v}
+      \\&= \sum_{i+j=0}^{i+j=n} \bcoef{m}{j+i} \bcoef{n}{k-i}
+        && \text{where $i\eqd v-j\implies v=i+j$}
+      \\&= \sum_{i=-j}^{i=n-j} \bcoef{m}{j+i} \bcoef{n}{k-i}
+    \end{align*}
+
+  \item Proof that $\sum_{k=0}^n \bcoef{n}{k}^2 = \bcoef{2n}{n}$:
+    \begin{align*}
+      \bcoef{2n}{n}
+        &= \bcoef{n+n}{n}
+      \\&= \sum_{k=0}{n} \bcoef{n}{k} \bcoef{n}{n-k}
+        && \text{by Vandermonde's convolution (\prefp{item:bcoef_vc})}
+      \\&= \sum_{k=0}{n} \bcoef{n}{k} \bcoef{n}{k}
+        && \text{by \pref{item:bcoef_symmetry}}
+      \\&= \sum_{k=0}^{n} \bcoef{n}{k}^2
+    \end{align*}
+
+\end{enumerate}
+
+\end{proof}
+
+
+
+\begin{figure}[ht]%\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}
+\begin{picture}(600,230)(0,-30)
+  %\graphpaper[10](0,0)(600,300)                  
+  \thicklines                                      
+  \put(   0 ,   0 ){\line(1,0){650} }
+  \put(   0 ,   0 ){\line(0,1){200} }
+  \thinlines
+  
+  \put( 660 ,   0 ){\makebox(0,0)[l]{$x$}}
+  \put( -10 ,100 ){\makebox(0,0)[r]{$1$}}
+  \qbezier[16](0,100)(50,100)(100,100)
+
+  \put(   0 , -10 ){\makebox(0,0)[t]{$0$}}
+  \put( 100 , -10 ){\makebox(0,0)[t]{$1$}}
+  \put( 200 , -10 ){\makebox(0,0)[t]{$2$}}
+  \put( 300 , -10 ){\makebox(0,0)[t]{$3$}}
+  \put( 400 , -10 ){\makebox(0,0)[t]{$\cdots$}}
+  \put( 500 , -10 ){\makebox(0,0)[t]{$n$}}
+  \put( 600 , -10 ){\makebox(0,0)[t]{$n+1$}}
+  {\color{blue}%
+    \qbezier( 20,200)(50,20)(600,20)%
+    \put( 40 , 150 ){\makebox(0,0)[l]{\footnotesize$\leftarrow \frac{1}{x}$}}%
+    }%
+  {\color{red}%
+    \put(150 ,  30 ){\makebox(0,0)[c]{$\leftarrow\Delta x=1\rightarrow$}}%
+    \put(100 ,   0 ){\line(0,1){100}}%
+    \put(100 , 100 ){\line(1,0){100}}%
+    \put(100,100){\circle*{10}}%
+    \put(200 ,   0 ){\line(0,1){100}}
+    \put(200 , 58 ){\line(1,0){100}}
+    \put(200, 58){\circle*{10}}
+    \put(300 ,   0 ){\line(0,1){58}}
+    \put(300 , 39 ){\line(1,0){100}}
+    \put(300, 39){\circle*{10}}
+    \put(300 ,   0 ){\line(0,1){58}}
+    \put(300 , 39 ){\line(1,0){100}}
+    \put(300, 39){\circle*{10}}
+    \put(500 ,   0 ){\line(0,1){21}}
+    \put(500 , 21 ){\line(1,0){100}}
+    \put(500, 21){\circle*{10}}
+    \put(600 ,   0 ){\line(0,1){21}}
+    %
+    \put( 150 ,110 ){\makebox(0,0)[b]{$\frac{1}{1}$}}
+    \put( 250 , 68 ){\makebox(0,0)[b]{$\frac{1}{2}$}}
+    \put( 350 , 49 ){\makebox(0,0)[b]{$\frac{1}{3}$}}
+    \put( 550 , 31 ){\makebox(0,0)[b]{$\frac{1}{n}$}}
+    }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   $\ln(n+1)$
+   \label{fig:ln(n+1)}
+   }
+\end{figure}
+
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{rivlin}{60}
+  }
+%--------------------------------------
+\thmbox{
+  \sum_{k=1}^n \frac{1}{k+1} < \ln(n+1) < \sum_{k=1}^n \frac{1}{k}
+  }
+\end{theorem}
+\begin{proof}
+The summations are simply lower and upper bounds of the integral
+of $\frac{1}{x}$ in the range $[1,\;n+1]$. 
+This is illustrated in Figure~\ref{fig:ln(n+1)}.\\
+\parbox[t][][t]{\textwidth/2}{
+\begin{align*}
+\intertext{1. Proof that $\ln(n+1) < \sum_{k=1}^n \frac{1}{k}$:}
+  \sum_{k=1}^n \frac{1}{k}
+    &> \int_1^{n+1} \frac{1}{x} \dx
+  \\&= \ln x \Big|_1^{n+1}
+  \\&= \ln(n+1) - \cancelto{0}{\ln(1)} 
+  \\&= \ln(n+1)
+\end{align*}
+}
+\parbox[t][][t]{\textwidth/2}{
+\begin{align*}
+\intertext{2. Proof that $\sum_{k=1}^n \frac{1}{k+1} < \ln(n+1)$:}
+  \sum_{k=1}^n \frac{1}{k+1}
+    &< \int_1^{n+1} \frac{1}{x} \dx
+  %\\&= \ln x \Bigg|_1^{n+1}
+  \\&= \ln(n+1) - \cancelto{0}{\ln(1)} 
+  \\&= \ln(n+1)
+\end{align*}
+}
+\end{proof}
+
+
