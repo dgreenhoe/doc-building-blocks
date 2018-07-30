@@ -1,0 +1,99 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+% nominal unit = 10mm
+% see pst-node package: https://ctan.org/pkg/pst-node
+%============================================================================
+\begin{pspicture}(-5,-2.5)(5,0.5)
+  %-------------------------------------
+  % settings
+  %-------------------------------------
+  \psset{%
+    radius=2.25mm,
+    framesize=7.5mm,
+    }%
+  %-------------------------------------
+  % commands
+  %-------------------------------------
+  %-------------------------------------
+  % adders
+  %-------------------------------------
+  %\Cnode(-2.2,0){cosIn}%
+  %\pnode( 2.2,0){cosOut}%
+  %-------------------------------------
+  % delay boxes _____    
+  %            |  -1 |   
+  %            | z   |      
+  %            |_____|   
+  %-------------------------------------
+  \fnodeput{0}{ 0}{-1}{delayL1}{$z^{-1}$}%
+    %       |   |  |  |  |    |____ $+$ in circle
+    %       |   |  |  |  |_________ L=left / R=right
+    %       |   |  |  |____________ node label
+    %       |   |  |_______________ column location
+    %       |   |__________________ row    location
+    %       |______________________ angle of + in circle
+  %--------------------------------------------------------------------------
+  % Multipliers (triangles)
+  %          (left side)                   (right side)
+  %--------------------------------------------------------------------------
+  \triRnodeput[7.5mm]{0}{ 1}{ 0}{mpya}{$a$}%
+  \triRnodeput[7.5mm]{0}{ 1}{-2}{mpyb}{$b$}
+  \triLnodeput[7.5mm]{0}{-1}{-2}{mpyc}{$-c$}%
+    % |                   |   |  |  |  |    |____ $+$ in circle
+    % |                   |   |  |  |  |_________ L=left / R=right
+    % |                   |   |  |  |____________ node label
+    % |                   |   |  |_______________ column location
+    % |                   |   |__________________ row    location
+    % |                   |______________________ angle of + in circle
+    % |_____              _______________________ circle node put
+  %--------------------------------------------------------------------------
+  % Adders: circles with $+$ inside
+  %          (left side)                   (right side)
+  %--------------------------------------------------------------------------
+  \cnodeput{0}( 2.0,  0){addY0}{$+$}
+  \cnodeput{0}(-2.0,  0){addX0}{$+$}%%
+  \pnode      ( 2.0, -2){addY1}%
+  \pnode      (-2.0, -2){addX1}%  at end of delay chain, nothing to add
+    % |     |   |  |  |  |    |____ $+$ in circle
+    % |     |   |  |  |  |_________ L=left / R=right
+    % |     |   |  |  |____________ node label
+    % |     |   |  |_______________ column location
+    % |     |   |__________________ row    location
+    % |     |______________________ angle of + in circle
+    % |____________________________ circle node put
+  %-------------------------------------
+  % nodes: connection points in flow diagram
+  %-------------------------------------
+  \pnode(-4,0){input} \pnode( 4, 0){output}% input and output
+  \uput[180](input){$\fx[n]$}
+  \uput[0](output){$\fy[n]$}
+  %-------------------------------------
+  % connection points in flow diagram
+  %-------------------------------------
+  \pnode(-3.5,0){input} \pnode( 3.5, 0){output}% input and output
+  \nnode{-0}{ 0}{pL0}   \nnode{ 0}{ 0}{pR0}%
+  \nnode{-0}{-2}{pL1}   \nnode{ 0}{-2}{pR1}%
+  %\pnode(-0,-4){pL2}
+  %
+  %-------------------------------------
+  % connections
+  %-------------------------------------
+  \ncline{->}{input}{addX0}    \ncline{->}{addY0}{output}%    
+  \ncline{->}{addX0}{mpya}%
+  \ncline    {delayL1}{pL1}    \ncline    {delayR1}{pR1}%
+  %
+  %\ncline{->}{addY0}{addX0}
+  \ncline    {mpya}{addY0}\ncline    {mpyR0}{addX0}%
+  \ncline    {mpyb}{addY1}\ncline    {mpyc}{addX1}%
+  \ncline{->}{addY1}{addY0}\ncline{->}{addX1}{addX0}%    
+  %\ncline{->}{addY2}{addY1}\ncline{->}{addX2}{addX1}%    
+  \ncline{->}{pL0}{delayL1}\ncline{->}{pR0}{delayR1}%    
+  \ncline    {pL1}{mpyb}  \ncline    {pR1}{mpyc}
+ %\ncline{->}{qL2}{addY1}  \ncline{->}{qR2}{addX1}%
+  %-------------------------------------
+  % development support--comment out before final version
+  %-------------------------------------
+ %\psline[linecolor=red,linewidth=0.50pt](-0.25,0)(0.25,0)%
+ %\psline[linecolor=red,linewidth=0.50pt](0,-0.25)(0,0.25)%
+\end{pspicture}%

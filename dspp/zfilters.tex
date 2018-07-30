@@ -1,0 +1,467 @@
+%============================================================================
+% XeLaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%=======================================
+\chapter{z-domain Filters}
+%=======================================
+%---------------------------------------
+\section*{Linear Time-Invariant (LTI) Systems}
+%---------------------------------------
+\newpage
+\includegraphics[width=\tw-50mm]{graphics/cosLcos.pdf}
+
+2 things can change: 
+\\\indentx\begin{tabular}{clc}
+    \imark&magnitue& $A$
+  \\\imark&phase   & $\phi$
+\end{tabular}
+
+These can be written as an \hib{ordered pair} $\opair{A}{\phi}$.
+
+\newpage
+The ordered pair is one of the most fundamental concepts in mathematics.
+
+$\begin{array}{|c|c|}
+   \hline
+   \includegraphics[height=80mm]{graphics/123le12.pdf}
+  &\includegraphics[height=80mm]{graphics/fnctsq.pdf}
+  \\\le = \setn{\opair{1}{1},\,\opair{1}{2},\,\opair{2}{2}}
+  &\ff(x)\eqd x^2 = \setn{\opair{1}{1},\,\opair{-1}{1},\,\opair{2}{4},\,\opair{-2}{4}}
+  \\\hline
+\end{array}$
+
+\newpage
+
+
+
+  $\ds\begin{array}{rcl cl C}
+   \opair{a}{b} &\hxsd{+}&     \opair{c}{d} &\eqd& \opair{a+c}{b+d}                   & \\
+   \opair{a}{b} &\hxsd{\cdot}& \opair{c}{d} &\eqd& \opair{a c-b d}{a d + b c} &    \\
+   i            &            &              &\eqd& \opair{0}{1}
+  \end{array}$
+
+
+\propbox{\begin{array}{rcl@{\qquad}C@{\qquad}D}
+     i^2   &=& -1     &                     &
+\end{array}}
+\begin{proof}
+\begin{align*}
+  i^2
+    &= \opair{0}{1}\opair{0}{1}
+    %&& \text{by \prefp{def:i}}
+  \\&= (0\cdot0 -1\cdot1, 0\cdot1+1\cdot0)
+    %&& \text{by \prefp{thm:C+}}
+  \\&= (-1, 0)
+  \\&= -1
+\end{align*}
+\end{proof}
+
+\thmbox{\begin{array}{rcl@{\qquad}C@{\qquad}D}
+  \opair{a}{b} &=& a + ib & \forall \opair{a}{b}\in\C  & (\hie{rectangular coordinates})
+\end{array}}
+\begin{proof}
+\begin{align*}
+  \opair{a}{b}
+    &= a(1,0) + b\opair{0}{1}
+  \\&= a1 + bi
+    %&& \text{by \prefp{def:i}}
+  \\&= a + ib
+\end{align*}
+\end{proof}
+
+%\cite{landau1966}
+
+
+\qboxnpqt
+  {
+    Leonhard Euler (1707--1783), mathematician
+    \index{Euler, Leonhard}
+    \index{quotes!Euler, Leonhard}
+    \footnotemark
+  }
+  %{../common/people/euler.jpg}
+  {../common/people/euler1753bw_handmann_wkp_pdomain.jpg}
+  {Weil nun alle m\"oglichen Zahlen, die man sich nur immer vorstellen mag,
+    entweder gr\"o{\ss}er oder kleiner als 0, oder etwa 0 selbst sind, so ist klar, da{\ss}
+    die Quadratwurzeln von Negativzahlen nicht einmal zu den m\"oglichen Zahlen
+    gerechnet werden k\"onnen.
+    Folglich m\"ussen wir sagen, da{\ss} dies unm\"ogliche Zahlen sind.
+    Und dieser Umstand leitet uns auf den Begri{\ss} von solchen Zahlen,
+    welche ihrer Natur nach unm\"oglich sind, und gew\"ohnlich imagin\"are
+    oder eingebildete Zahlen genannt werden, weil sie blo\ss in der Einbildung
+    vorhanden sind.}
+  {And, since all numbers which it is possible to conceive,
+    are either greater or less than 0, or are 0 itself,
+    it is evident that we cannot rank the square root of a negative
+    number amongst possible numbers, and we must therefore say that
+    it is an \prop{impossible quantity}.
+    In this manner we are led to the idea of numbers,
+    which from their nature are impossible;
+    and therefore they are usually called \hie{imaginary quantities},
+    because they exist merely in the imagination.}
+  \footnotetext{\begin{tabular}[t]{ll}
+    quote: & \citorp{euler1770}{60} \\
+    %www.math.uni-konstanz.de/~hoffmann/Funktionentheorie/kap1.pdf
+    %www.springer.com/cda/content/document/cda_downloaddocument/9783540435549-c1.pdf?SGWID=0-0-45-130631-p2253211
+    translation: & \citorp{euler1770e}{43} \\
+    %image: & \url{http://en.wikipedia.org/wiki/Image:Leonhard_Euler.jpg}
+    image: & \url{http://en.wikipedia.org/wiki/File:Leonhard_Euler.jpg}, public domain
+  \end{tabular}}
+
+
+\includegraphics[height=60mm]{graphics/complex.pdf}
+
+$\begin{array}{rclM}
+  z 
+    &=& a + ib                       & \structe{rectangular coordinates}
+  \\&=& A\cos\phi + iA\sin\phi
+  \\&=& A\brp{\cos\phi + i\sin\phi}
+  \\&=& Ae^{i\phi}                   & \text{by \thme{Euler's Identity}}
+  \\&=& A \angle \phi                & \text{\structe{polar coordinates}}
+\end{array}$
+
+\newpage
+%=======================================
+\section*{Inner product spaces}
+%=======================================
+\defbox{\begin{array}{>{\qquad}F >{\ds}rc>{\ds}l C M D}
+  \mc{7}{M}{%A \structe{functional}\ifsxref{functionals}{def:functional} 
+  $\inprod{\vx}{\vy}$ is an \fnctd{inner product} if}
+  \\
+   1. & \inprod{\alpha\vx}{\vy}    &=& \alpha\inprod{\vx}{{\vy}}
+      & %\forall \vx,\vy\in X,\;\forall\alpha\in\C
+      & (\prope{homogeneous})
+      & and
+      \\
+   2. & \inprod{\vx+\vy}{\vu} &=& \inprod{\vx}{{\vu}} + \inprod{\vy}{{\vu}}
+      & %\forall \vx,\vy,\vu\in X
+      & (\prope{additive})
+      & and
+      \\
+   3. & \inprod{\vx    }{\vy} &=& \inprod{\vy}{\vx}^\ast
+      & %\forall \vx,\vy\in X
+      & (\prope{conjugate symmetric})
+      & and
+      \\
+   4. & \inprod{\vx    }{\vx} &\ge& 0
+      & %\forall \vx\in X
+      & (\prope{non-negative})
+      & and
+      \\
+   5. & \inprod{\vx    }{\vx} &=& 0 \iff \vx=\vzero
+      & %\forall \vx\in X
+      & (\prope{non-isotropic})
+  %\\
+  %\mc{7}{M}{An inner product is also called a \fnctd{scalar product}.}\\
+  %\mc{7}{M}{The tuple $\inprodspaceX$ is called an \structd{inner product space}.}
+  %A function $\inprodn:X\times X\to\C$ is a \hid{hermitian form} on $\spO$ if it satisfies conditions 1--3.
+  %A function $\inprodn:X\times X\to\C$ is a \hid{pre-inner product} on $\spO$ if it satisfies conditions 1--4.
+\end{array}}
+
+\newpage
+Examples of Inner-products
+
+$\begin{array}{M>{\ds}rc>{\ds}lc>{\ds}l}
+    \opd{Fourier Transform}: & \opFT   \fx(t) &\eqd& \int_{t\in\R} \fx(t) e^{-i\omega t} \dt &=& \inprod{\fx(t)}{e^{i\omega t}}_1
+  \\\\\opd{Laplace Transform}: & \opL    \fx(t) &\eqd& \int_{t\in\R} \fx(t) e^{-s t}       \dt &=& \inprod{\fx(t)}{\brp{e^{-s t}}^\ast}_2
+  \\\\\opd{DTFT}:              & \opDTFT \fx[n] &\eqd& \sum_{n\in\Z} \fx[n] e^{-i\omega n}     &=& \inprod{\fx[n]}{e^{i\omega n}}_3
+  \\\\\opd{Z-Transform}:       & \opZ    \fx[n] &\eqd& \sum_{n\in\Z} \fx[n] z^{-n}             &=& \inprod{\fx[n]}{\brp{z^{-n}}^\ast}_4
+  \\\\\opd{Expected value}:    & \pE     \rvx\rvy^\ast &\eqd& \sum\sum \rvx\rvy^\ast \psp(\rvx,\rvy) &=& \inprod{\vx}{\vy}_5
+\end{array}$
+\footnote{
+  Expected value inner product: \citerpp{moon2000}{105}{106}
+  }
+
+
+
+
+\newpage
+What can we do with the inner product?
+\footnote{
+  \citerpg{berberian1961}{27}{0821819127},
+  \citerpg{haaser1991}{277}{0486665097}
+  }
+
+\thmbox{\begin{array}{Frcl@{\quad}Cl}
+    1. & \inprod{\vx}{\vy+\vz}   &=& \inprod{\vx}{\vy} + \inprod{\vx}{\vz} & \forall \vx,\vy,\vz\in\setX   
+  \\2. & \inprod{\vx}{\alpha\vy} &=& \alpha^\ast \inprod{\vx}{\vy}         & \forall \vx,\vy\in\setX,\; \alpha\in\F  
+  \\3. & \inprod{\vx}{\vzero}    &=& \inprod{\vzero}{\vx} = 0              & \forall \vx\in\setX
+  \\4. & \inprod{\vx-\vy}{\vz}   &=& \inprod{\vx}{\vz}-\inprod{\vy}{\vz}   & \forall \vx,\vy,\vz\in\setX   
+  \\5. & \inprod{\vx}{\vy-\vz}   &=& \inprod{\vx}{\vy}-\inprod{\vx}{\vz}   & \forall \vx,\vy,\vz\in\setX   
+  \\6. & \inprod{\vx}{\vz}       &=& \inprod{\vy}{\vz}                     & \forall \vz\in\setX\neq\setn{\vzero}  & \iff \vx=\vy
+  \\7. & \inprod{\vx}{\vy}       &=& 0                                     & \forall \vx\in\setX                   &\iff \vy=\vzero
+\end{array}}
+
+\newpage
+$\norm{\vx} \eqd \sqrt{\inprod{\vx}{\vx}}$
+
+%--------------------------------------
+\thmd{Cauchy-Schwarz Inequality}
+\footnote{
+  \citerpg{haaser1991}{278}{0486665097},
+  \citerp{ab}{278},
+  %\citerpp{pedersen2000}{34}{35},
+  \citorp{cauchy1821}{455},
+  \citorp{bunyakovsky}{6},
+  \citor{schwarz}
+  }
+%--------------------------------------
+\thmbox{\begin{array}{rclcl@{\qquad}C}
+  \abs{\inprod{\vx}{\vy}}^2 &\le& \inprod{\vx}{\vx} \; \inprod{\vy}{\vy}
+    &&
+    %& \forall \vx,\vy\in\setX
+    \\
+  \abs{\inprod{\vx}{\vy}}^2 &=& \inprod{\vx}{\vx} \; \inprod{\vy}{\vy}
+    &\iff& \exists \alpha\in\F \st \vy=\alpha\vx
+    %& \forall \vx,\vy\in\setX
+    \\
+  \abs{\inprod{\vx}{\vy}}   &\le& \norm{\vx}\,\norm{\vy}
+    &&
+    %& \forall \vx,\vy\in\setX
+    \\
+  \abs{\inprod{\vx}{\vy}}   &=& \norm{\vx}\,\norm{\vy}
+    &\iff& \exists \alpha\in\F \st \vy=\alpha\vx
+    %& \forall \vx,\vy\in\setX
+\end{array}
+}
+
+%--------------------------------------
+\thmd{Minkowski's inequality}]
+\footnote{
+  \citerppgc{ab}{278}{279}{0120502577}{Theorem 32.3},
+  \citer{maligranda1995},
+  \citorp{minkowski1910}{115} 
+  }
+\label{thm:vsi_minkowski}
+\label{thm:minkowineq}
+\index{inequalities!Minkowski}
+%--------------------------------------
+%Let $\inprodspaceX$ be an \structe{inner product space}.
+%Let $\normn$ be a function in $\clFfr$ such that $\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$.\footnote{
+%The function $\normn$ is a \structe{norm} \xrefP{thm:norm=inprod} and is called the \structe{normed induced by the inner product $\inprodn$}
+%\xrefP{def:norm=inprod}.}
+%$\norm{\vx} \eqd \sqrt{\inprod{\vx}{\vx}}$.
+\thmbox{
+  \norm{\vx+\vy} \le \norm{\vx}+\norm{\vy}
+%  \quad\sst
+%  \forall \vx,\vy\in\setX
+  }
+
+%--------------------------------------
+\thmd{Polarization Identities}
+\label{thm:polar_id}
+\index{inner product!Polarization Identity}
+\index{norm!Polarization Identity}
+\footnote{
+  \citerppgc{berberian1961}{29}{30}{0821819127}{Theorem~II.3.3},
+  \citerpgc{istratescu1987}{110}{9027721823}{Proposition 4.1.5},
+  \citerp{bollobas1999}{132},
+  \citorp{jordan1935}{721} 
+  %\cithrp{ab}{280} 
+  }
+%--------------------------------------
+%Let $\spO\eqd\linearspaceX$ be a linear space,
+%$\inprodn\in\clFxxf$ a function, and $\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$.
+\thmbox{%\begin{array}{M}
+  %$\inprodspaceX$ is an inner product space  $\implies$
+  %\\\quad
+  4\inprod{\vx}{\vy} =
+    \brb{\begin{array}{llC}
+      \norm{\vx+ \vy}^2 -\norm{\vx- \vy}^2 +i\norm{\vx+i\vy}^2 -i\norm{\vx-i\vy}^2 & \text{for } \F=\C & \\%\forall \vx,\vy\in\setX \\
+      \norm{\vx+ \vy}^2 -\norm{\vx- \vy}^2                                         & \text{for } \F=\R & %\forall \vx,\vy\in\setX 
+    \end{array}}
+    }
+
+\newpage
+%--------------------------------------
+\thmd{Best Approximation Theorem}
+\label{thm:bat}
+\footnote{
+  \citerpp{walter}{3}{4},
+  \citerp{pedersen2000}{39},
+  \citerpp{edwards1995}{94}{100},
+  \citor{weyl1940}
+  }
+%--------------------------------------
+%Let $\setxn{\vx_n\in\setX}$ be a set of vectors in an \structe{inner product space} \xrefP{def:inprod} $\inprodspaceX$ and with
+%$\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$\ifsxref{vsinprod}{def:norm=inprod}.
+
+\thmbox{
+  \brb{\begin{array}{N}
+  $\setn{\vx_n}$ \large is\\
+  \Large\prope{orthonormal}\\
+  \xref{def:orthog}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{F>{\ds}l@{\quad}CD}
+    1. & \arg\min_{\seq{\alpha_n}{n=1}^\xN} \norm{ \vx - \sum_{n=1}^\xN \alpha_{n} \vx_{n} }
+         = \mcoml{\seq{\inprod{\vx}{\vx_n}}{n=1}^\xN}{best $\alpha_n=\inprod{\vx}{\vx_n}$}
+       & %\forall\vx\in\setX
+       & and
+    \\[1ex]
+    2. & \mcom{\ds\left(     \sum_{n=1}^\xN \inprod{\vx}{\vx_n}\vx_{n} \right)}{approximation}
+         \orthog
+         \mcom{\ds\left(\vx- \sum_{n=1}^\xN \inprod{\vx}{\vx_n}\vx_{n} \right)}{approximation error}
+       & %\forall\vx\in\setX
+       & 
+  \end{array}}
+  }
+
+
+
+\newpage
+%--------------------------------------
+\section{Processing in another domain}
+%--------------------------------------
+Choose a basis, and project your signal onto it
+
+\includegraphics[width=\tw-50mm]{graphics/baslat_cosh.pdf}
+
+This is done using a transform. 
+
+\newpage
+One transform is the DTFT:
+
+
+\[{\brb{\opDTFT \fx[n]}(\omega) \eqd \sum_{n\in\Z} \fx[n] e^{-i\omega n}}\]
+
+\newpage
+
+But the DTFT is a bit restrictive\ldots\\ like a horse forced to run around a track.
+
+\includegraphics[height=130mm]{graphics/unitcircle.pdf}
+
+\newpage
+
+Let the horses run free\ldots\\ use the \opb{Z-Transform}
+
+\[{\brb{\opZ    \fx[n]}(z) \eqd \sum_{n\in\Z} \fx[n] z^{-n}} \]
+
+Note that \[ z=e^{i\omega} \]
+
+
+\newpage
+
+
+\includegraphics[height=150mm]{graphics/vecres.pdf}
+
+\newpage
+%--------------------------------------
+\thmd{Geometric Series}
+\footnote{
+  \citerpc{hall1894}{39}{article 55}
+  }
+\label{thm:series_geometric}
+%--------------------------------------
+\thmbox{
+  \sum_{k=0}^{n-1} r^k = \frac{1-r^n}{1-r}
+  \qquad
+  \forall r\in\C\setd0
+  }
+\\
+\begin{proof}
+\begin{align*}
+  \sum_{k=0}^{n-1} r^k
+    &= \brp{\frac{1}{1-r}}\brs{\brp{1-r}\sum_{k=0}^{n-1} r^k}
+  \\&= \brp{\frac{1}{1-r}}\brs{\sum_{k=0}^{n-1} r^k - r\sum_{k=0}^{n-1} r^k}
+  \\&= \brp{\frac{1}{1-r}}\brs{\sum_{k=0}^{n-1} r^k - \brp{\sum_{k=0}^{n-1} r^k -1 + r^n}}
+  \\&= \brp{\frac{1}{1-r}}\brs{1 - r^n}
+  \\&= \frac{1-r^n}{1-r}
+\end{align*}
+\end{proof}
+
+
+\newpage
+%---------------------------------------
+\section{Daubechies Wavelets}
+%---------------------------------------
+\qboxnps
+  {\href{http://en.wikipedia.org/wiki/G._H._Hardy}{G.H. Hardy}
+   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineG.html}{(1877--1947)},
+   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/UK.html}{English mathematician}
+    \index{Hardy, G.H.}
+    \index{quotes!Hardy, G.H.}
+    \footnotemark
+  }
+  {../common/people/small/hardy.jpg}
+  {The ``seriousness" of a mathematical theorem lies,
+    not in its practical consequences,
+    which are usually negligible,
+    but in the {\em significance} of the mathematical ideas which it connects.
+    We may say, roughly, that a mathematical idea is ``significant" if it can be
+    connected, in a natural illuminating way,
+    with a large complex of other mathematical ideas.}
+  \citetblt{
+    quote: & \citerc{hardy1940}{section 11} \\
+    image: & \url{http://www-history.mcs.st-andrews.ac.uk/PictDisplay/Hardy.html}
+    }
+\newpage
+
+\includegraphics[height=70mm]{graphics/D8_pz.pdf}
+
+\begin{tabular}{cc}
+  \includegraphics[height=70mm]{graphics/d8_phi_h.pdf}&%\includegraphics[height=70mm]{graphics/d8_psi_g.pdf}
+\end{tabular}
+
+\newpage
+  \begin{tabular}{cc}%
+    \includegraphics[height=70mm]{graphics/bspline_pz.pdf}&\includegraphics[height=70mm]{graphics/Dp_pz.pdf}\\%
+    Cardinal B-spline&Daubechies-p%
+  \end{tabular}%
+
+\includegraphics[height=70mm]{graphics/n3_h.pdf}
+
+
+
+
+
+\newpage
+\section*{Minimum phase filters}
+o  \includegraphics[height=50mm]{graphics/pz_minphase.pdf}%
+
+The impulse response of a minimum phase filter has most of its energy concentrated
+near the beginning of its support
+
+%--------------------------------------
+\thmd{Robinson's Energy Delay Theorem}
+\footnote{
+  \citerpg{dumitrescu2007}{36}{1402051247},
+  \citor{robinson1962},  % referenced by claerbout1976
+  \citorc{robinson1966}{???},  % referenced by online thesis
+  \citerpp{claerbout1976}{52}{53}
+  %\citerp{os}{291}\\
+  %\citerp{mallat}{253}
+  }
+\label{thm:ztr_redp}
+\index{minimum phase!energy}
+\index{energy}
+%--------------------------------------
+\\
+%Let $\fp(z)\eqd\sum_{n=0}^\xN a_n z^{-n}$ 
+%and $\fq(z)\eqd\sum_{n=0}^\xN b_n z^{-n}$ 
+%be polynomials.
+\thmbox{
+  \brb{\begin{array}{lMD}
+    \fp & is \prope{minimum phase} & and\\
+    \fq & is \emph{not} minimum phase & 
+  \end{array}}
+  \implies
+  \mcom{\sum_{n=0}^{m-1} \abs{a_n}^2}{\parbox{20mm}{``energy" of the first $m$ coefficients of $\fp(z)$}} \ge 
+  \mcom{\sum_{n=0}^{m-1} \abs{b_n}^2}{\parbox{20mm}{``energy" of the first $m$ coefficients of $\fq(z)$}} 
+  %\qquad \forall 0\le m\le\xN
+  }
+
+
+
+
+\newpage
+
+  \exboxt{\begin{tabular}{c|c}
+    Daubechies-8 & Symlet-8
+    \\\hline
+    \includegraphics[height=50mm]{graphics/D8_pz.pdf}&\includegraphics[height=60mm]{graphics/S8_pz.pdf}\\
+    \includegraphics[height=50mm]{graphics/d8_phi_h.pdf}&\includegraphics[height=50mm]{graphics/s8_phi_h.pdf}
+    %\includegraphics{graphics/d8_psi_g.pdf}&\includegraphics{graphics/s8_psi_g.pdf}
+  \end{tabular}}

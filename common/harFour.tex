@@ -445,11 +445,8 @@ and $\conv$ the convolution operator.
 \end{align*}
 \end{proof}
 
-
-
-
-
-\ifexclude{wsd}{
+%\ifexclude{wsd}
+{
 %======================================
 \section{Real valued functions}
 %======================================
@@ -565,7 +562,181 @@ the \ope{Fourier Transform} of $\ff(x)$.
 
 } % end exclude
 
+%======================================
+\section{Moment properties}
+%======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpp{jawerth}{16}{17},
+  \citerp{sweldens93}{2},
+  \citerp{vidakovic}{83}  
+  %\citerp{goswami}{102}    \\
+  %\citerpp{mallat}{241}{243}
+  }
+\label{def:Mn_ft}
+%--------------------------------------
+\defboxt{
+  The quantity $M_n$ is the \hid{$n$th moment} of a function $\ff(x)\in\spLLR$ if
+  \\\indentx$\ds M_n \eqd \int_{\R} x^n \ff(x) \dx \qquad \text{for }n\in\Znn$.
+  }
+\end{definition}
 
+%--------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpp{goswami}{38}{39}
+  }
+\label{lem:har_moment}
+%--------------------------------------
+Let $M_n$ be the \fncte{$n$th moment} \xref{def:Mn_ft} and 
+$\Ff(\omega)\eqd\brs{\opFT\ff}(\omega)$ the \fncte{Fourier transform} \xref{def:opFT} of a function $\ff(x)$ in $\spLLR$ \xref{def:spLLR}.
+\lembox{\begin{array}{>{\ds}rc>{\ds}l@{\qquad}C}
+  M_n  &=&  \brlr{\sqrt{2\pi}(i)^{n}\opddwn  \Ff(\omega)}_{\omega=0} & \forall n\in\Znn,\,\ff\in\spLLR\\
+  \brlr{\opddwn  \Ff(\omega)}_{\omega=0}  &=& \cft(-i)^n M_n         & \forall n\in\Znn,\,\ff\in\spLLR
+\end{array}}
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    \sqrt{2\pi}(i)^n\brs{\opddwn \Ff(\omega)}_{\omega=0} 
+      &= \sqrt{2\pi}(i)^n\brs{\opddwn  \fscale\int_\R \ff(x) \fkernea{x}{\omega}\dx}_{\omega=0} 
+      && \text{by definition of $\opFT$ \xref{def:opFT}}
+    \\&= \left.(i)^n\int_\R \ff(x) \brs{\opddwn    \fkernea{x}{\omega}}\dx\right|_{\omega=0} 
+    \\&= \left.(i)^n\int_\R \ff(x) \brs{(-i)^n x^n \fkernea{x}{\omega}}\dx\right|_{\omega=0} 
+    \\&= (-i^2)^n \int_\R \ff(x) x^n \dx
+    \\&= \int_\R \ff(x) x^n \dx
+    \\&\eqd M_n
+      && \text{by definition of $M_n$ \xref{def:Mn_ft}}
+  \end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpp{vidakovic}{82}{83},
+  \citerpp{mallat}{241}{242}
+  }
+\label{lem:vanish_deriv}
+\index{vanishing moments}
+%--------------------------------------
+Let $M_n$ be the \fncte{$n$th moment} \xref{def:Mn_ft} and 
+$\Ff(\omega)\eqd\brs{\opFT\ff}(\omega)$ the \fncte{Fourier transform} \xref{def:opFT} of a function $\ff(x)$ in $\spLLR$ \xref{def:spLLR}.
+\lembox{
+  %\mcom{\inprod{\ff(x)}{x^n}=0}{$\ff(x)$ has a vanishing $n$th moment} 
+  M_n=0
+  \qquad\iff\qquad
+  \left.\opddwn \Ff(\omega)\right|_{\omega=0} =0
+  \qquad\scy\forall n\in\Znn
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for $(\implies)$ case: 
+    \begin{align*}
+      0 &= \inprod{\ff(x)}{x^n}
+        && \text{by left hypothesis}
+      \\&= \left.\sqrt{2\pi}(-i)^{-n}\opddwn  \Ff(\omega)\right|_{\omega=0}
+        && \text{by \prefp{lem:har_moment}}
+      \\&\implies \left.\opddwn \Ff(\omega)\right|_{\omega=0} =0
+    \end{align*}
+
+  \item Proof for $(\impliedby)$ case:
+    \begin{align*}
+      0
+        &= \left. \opddwn  \Ff(\omega)\right|_{\omega=0}
+        && \text{by right hypothesis}
+      \\&= \left.\opddwn  \fscale\int_\R \ff(x) \fkernea{x}{\omega}\dx \right|_{\omega=0}
+        && \text{by definition of $\Ff(\omega)$}
+      \\&= \left.\fscale\int_\R \ff(x) \opddwn  \fkernea{x}{\omega}\dx \right|_{\omega=0}
+      \\&= \left.\fscale\int_\R \ff(x) \left[(-i)^n x^n \fkernea{x}{\omega}\right]\dx \right|_{\omega=0}
+      \\&= (-i)^n \fscale\int_\R \ff(x) x^n \dx
+      \\&= (-i)^n \fscale\inprod{\ff(x)}{x^n}
+        && \text{by definition of $\inprod{\cdot}{\cdot}$ in $\spLLR$ \xref{def:spLLR}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{lemma}[\lemd{Strang-Fix condition}]
+\label{lem:sfixceq}
+\footnote{
+  \citerpp{jawerth}{16}{17},
+  \citerp{sweldens93}{2},
+  \citerp{vidakovic}{83},
+  %\citerp{goswami}{102},
+  \citerpp{mallat}{241}{243},
+  \citor{fix1969}
+  }
+%--------------------------------------
+Let $\ff(x)$ be a function in $\spLLR$ and $M_n$ the \hie{$n$th moment} \xref{def:Mn_ft} of $\ff(x)$.
+Let $\opTrn$ be the \fncte{translation operator} \xref{def:opT}.
+\lembox{
+  \mcom{{\sum_{k\in\Z} \opTrn^k x^n \ff(x) = M_n}}{\prope{Strang-Fix condition} in ``time"}
+  %\mcom{{\sum_{k\in\Z} (x-k)^n \ff(x-k) = M_n}}{\prope{Strang-Fix condition} in ``time"}
+  \qquad\iff\qquad
+  \mcom{{\left.\opddwn  \Ff(\omega) \right|_{\omega=2\pi k} = \cft (-i)^n \kdelta_k M_n}}{\prope{Strang-Fix condition} in ``frequency"}
+  %\qquad\scy\text{for $n=1,2,\ldots,p-1$}
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for ($\implies$) case:
+    \begin{align*}
+      \brs{\opddwn  \Ff(\omega)}_{\omega=2\pi k}
+        &= \sum_{k\in\Z} \brs{\opddwn  \Ff(\omega)}_{\omega=2\pi k}  e^{i2\pi kx} \kdelta_k
+      \\&= \cft \sum_{k\in\Z} \brs{\opddwn \int_\R  \ff(x) e^{-i\omega x} \dx}_{\omega=2\pi k} e^{i2\pi kx}  \kdelta_k
+        && \text{by \prefp{def:opFT}}
+       %&& \text{by definition of $\Ff(\omega)$ \xref{def:opFT}}
+      \\&= \cft \sum_{k\in\Z} \brs{\int_\R  \ff(x)(-ix)^n e^{-i\omega x} \dx}_{\omega=2\pi k} e^{i2\pi kx}  \kdelta_k
+      \\&= (-i)^n \cft \sum_{k\in\Z} \brs{\int_\R  x^n \ff(x)  e^{-i\omega x} \dx}_{\omega=2\pi k} e^{i2\pi kx}  \kdelta_k
+      \\&= (-i)^n \cft \sum_{k\in\Z} (x-k)^n \ff(x-k)  \kdelta_k
+        && \text{by \thme{PSF} \xref{thm:psf}}
+      \\&= \cft (-i)^n \kdelta_k M_n
+        && \text{by left hypothesis}
+    \end{align*}
+
+  %The quantity $(-i)^n M_n$ is not a function of $x$ which implies
+  %that 
+  %$\sum_{k\in\Z} \left.\opddwn  \Ff(\omega)\right|_{\omega=2\pi k}=0$
+  %for $k\ne 0$.
+  %This implies
+  %\[ \left.\opddwn  \Ff(\omega)\right|_{\omega=2\pi k}
+  %   = (-i)^n \kdelta_k M_n.
+  %\]
+ 
+  \item Proof for ($\impliedby$) case:
+    \begin{align*}
+      \cft (-i)^n M_n
+        &= \cft \sum_{k\in\Z} \left[(-i)^n \kdelta_k M_n \right] e^{-i2\pi kx}
+        && \text{by definition of $\kdelta$}
+        && \text{\xref{def:kdelta}}
+      \\&= \sum_{k\in\Z} \left. 
+           \left[\opddwn  \Ff(\omega)\right]\right|_{\omega=2\pi k} 
+           e^{-i2\pi kx}
+        && \text{by right hypothesis}
+      \\&= \sum_{k\in\Z} \left. 
+           \left[
+           \opddwn 
+           \int_\R  \ff(x) e^{-i\omega x} \dx
+           \right]
+           \right|_{\omega=2\pi k} e^{-i2\pi kx}
+      \\&= \sum_{k\in\Z} \left. 
+           \left[
+           \int_\R  \ff(x)(-ix)^n e^{-i\omega x} \dx
+           \right]
+           \right|_{\omega=2\pi k} e^{-i2\pi kx}
+      \\&= (-i)^n \sum_{k\in\Z} \left.
+           \left[
+           \int_\R  x^n \ff(x)  e^{-i\omega x} \dx
+           \right]
+           \right|_{\omega=2\pi k} e^{-i2\pi kx}
+      \\&= (-i)^n \sum_{k\in\Z} (x-k)^n \ff(x-k) 
+        && \text{by \thme{PSF}}
+        && \text{\xref{thm:psf}}
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
 
 %======================================
 \section{Examples}

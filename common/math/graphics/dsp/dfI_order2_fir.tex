@@ -1,0 +1,132 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+% nominal unit = 10mm
+% see pst-node package: https://ctan.org/pkg/pst-node
+%============================================================================
+\begin{pspicture}(-5,-5)(5,1)
+  %-------------------------------------
+  % settings
+  %-------------------------------------
+  \psset{%
+    radius=2.25mm,
+    framesize=7.5mm,
+    }%
+  %-------------------------------------
+  % commands
+  %-------------------------------------
+  %-------------------------------------
+  % adders
+  %-------------------------------------
+  %\Cnode(-2.2,0){cosIn}%
+  %\pnode( 2.2,0){cosOut}%
+  %-------------------------------------
+  % delay boxes _____    
+  %            |  -1 |   
+  %            | z   |      
+  %            |_____|   
+  %-------------------------------------
+  \fnodeput{0}{-3}{-1}{delayL1}{$z^{-1}$}%
+  \fnodeput{0}{-3}{-3}{delayL2}{$z^{-1}$}%
+    %       |   |  |  |  |    |____ $+$ in circle
+    %       |   |  |  |  |_________ L=left / R=right
+    %       |   |  |  |____________ node label
+    %       |   |  |_______________ column location
+    %       |   |__________________ row    location
+    %       |______________________ angle of + in circle
+  %--------------------------------------------------------------------------
+  % ADDERS: circles with $+$ inside
+  %          (left side)                   (right side)
+  %--------------------------------------------------------------------------
+  \triRnodeput[7.5mm]{0}{-1.75}{ 0}{mpyL0}{$b_0$}%
+  \triRnodeput[7.5mm]{0}{-1.75}{-2}{mpyL1}{$b_1$}%
+  \triRnodeput[7.5mm]{0}{-1.75}{-4}{mpyL2}{$b_2$}%
+    % |     |   |  |  |  |    |____ $+$ in circle
+    % |     |   |  |  |  |_________ L=left / R=right
+    % |     |   |  |  |____________ node label
+    % |     |   |  |_______________ column location
+    % |     |   |__________________ row    location
+    % |     |______________________ angle of + in circle
+    % |____________________________ circle node put
+  %--------------------------------------------------------------------------
+  % ADDERS: circles with $+$ inside
+  %          (left side)                   (right side)
+  %--------------------------------------------------------------------------
+  \cnodeput{0}(-0.5, 0){addL0}{$+$}%
+  \cnodeput{0}(-0.5,-2){addL1}{$+$}%
+    % |     |   |  |  |  |    |____ $+$ in circle
+    % |     |   |  |  |  |_________ L=left / R=right
+    % |     |   |  |  |____________ node label
+    % |     |   |  |_______________ column location
+    % |     |   |__________________ row    location
+    % |     |______________________ angle of + in circle
+    % |____________________________ circle node put
+  %-------------------------------------
+  % nodes: connection points in flow diagram
+  %-------------------------------------
+  \pnode(-4,0){input} \pnode( 4, 0){output}% input and output
+  \uput[180](input){$\fx[n]$}
+  \uput[0](output){$\fy[n]$}
+  \pnode(-1, -4){addL3} \pnode( 1,  -4){addR3}%  at end of delay chain, nothing to add
+  %-------------------------------------
+  % connection points in flow diagram
+  %-------------------------------------
+  \pnode(-3.5,0){input} \pnode( 3.5, 0){output}% input and output
+  \nnode{-3}{ 0}{pL0}   
+  \nnode{-3}{-2}{pL1}   
+  \pnode(-3,-4){pL2}
+  \pnode(-0.5,-4){qL2}%
+  \pnode(0.5,-4){qR2}%
+  \pnode( 3,-4){pR2}%
+  %
+  \pnode(-1, -4){addL3} \pnode( 1,  -4){addR3}%  at end of delay chain, nothing to add
+  %-------------------------------------
+  % grayed out
+  %-------------------------------------
+  {\psset{linestyle=dotted,linecolor=gray}%
+  \color{gray}%
+  \triLnodeput[7.5mm]{0}{1.75}{-2}{mpyR1}{$0$}%
+  \triLnodeput[7.5mm]{0}{1.75}{-4}{mpyR2}{$0$}%
+  \cnodeput{0}( 0.5, 0){addR0}{$+$}%
+  \cnodeput{0}( 0.5,-2){addR1}{$+$}%
+  \nnode{ 3}{ 0}{pR0}%
+  \nnode{ 3}{-2}{pR1}%
+  \fnodeput{0}{ 3}{-1}{delayR1}{$z^{-1}$}%
+  \fnodeput{0}{ 3}{-3}{delayR2}{$z^{-1}$}%
+  %
+  \ncline{->}{delayR1}{delayR2}%  
+  \ncline    {delayR2}{pR2}%    
+  \ncline    {mpyR0}{addR0}%  
+  \ncline    {mpyR1}{addR1}%  
+  \ncline    {mpyR2}{qR2}%    
+  \ncline{->}{addR1}{addR0}%  
+  \ncline{->}{addR2}{addR1}%  
+  \ncline{->}{pR0}{delayR1}%  
+  \ncline    {pR1}{mpyR1}     
+  \ncline    {pR2}{mpyR2}%    
+  \ncline{->}{qR2}{addR1}%    
+  }%
+  %-------------------------------------
+  % connections
+  %-------------------------------------
+  \ncline    {input}{mpyL0}    \ncline{->}{addR0}{output}%    
+  \ncline{->}{delayL1}{delayL2}
+  \ncline    {delayL2}{pL2}    
+  %
+  \ncline{->}{addL0}{addR0}
+  %
+  \ncline    {mpyL0}{addL0}
+  \ncline    {mpyL1}{addL1}
+  \ncline    {mpyL2}{qL2}    
+  \ncline{->}{addL1}{addL0}  
+  \ncline{->}{addL2}{addL1}  
+  \ncline{->}{pL0}{delayL1}  
+  \ncline    {pL1}{mpyL1}  
+  \ncline    {pL2}{mpyL2}  
+  \ncline{->}{qL2}{addL1}  
+  %-------------------------------------
+  % development support--comment out before final version
+  %-------------------------------------
+ %\psline[linecolor=red,linewidth=0.50pt](-0.25,0)(0.25,0)%
+ %\psline[linecolor=red,linewidth=0.50pt](0,-0.25)(0,0.25)%
+\end{pspicture}%

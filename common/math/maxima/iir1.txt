@@ -1,0 +1,242 @@
+;; Dribble of #<IO TERMINAL-STREAM> started on 2018-07-11 08:09:05.
+#<OUTPUT BUFFERED FILE-STREAM CHARACTER iir1.txt>
+(%o3) done
+(%i4) n:2
+(%o4) 2
+(%i5) print("======================================================================")
+====================================================================== 
+(%o5) "======================================================================"
+(%i6) print("Daniel J. Greenhoe")
+Daniel J. Greenhoe 
+(%o6) "Daniel J. Greenhoe"
+(%i7) print("Output file for nth order B-spline Nn(x) calculation, n=",n," .")
+Output file for nth order B-spline Nn(x) calculation, n= 2  . 
+(%o7) " ."
+(%i8) print("Output produced using Maxima running the script file bspline.max")
+Output produced using Maxima running the script file bspline.max 
+(%o8) "Output produced using Maxima running the script file bspline.max"
+(%i9) print("======================================================================")
+====================================================================== 
+(%o9) "======================================================================"
+(%i10) Nnx:(1/n!)*sum((-1)^k*binomial(n+1,k)*(x-k)^n*unit_step(x-k),k,0,n+1)
+(%o10) (x^2*unit_step(x)-3*unit_step(x-1)*(x-1)^2+3*unit_step(x-2)*(x-2)^2
+                        -unit_step(x-3)*(x-3)^2)
+ /2
+(%i11) print("-------------------------------------------------------")
+------------------------------------------------------- 
+(%o11) "-------------------------------------------------------"
+(%i12) print("            n+1     k (n+1)      n                   ")
+            n+1     k (n+1)      n                    
+(%o12) "            n+1     k (n+1)      n                   "
+(%i13) print(" n! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k) ,n=",n)
+ n! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k) ,n= 2 
+(%o13) 2
+(%i14) print("            k=0       ( k )                          ")
+            k=0       ( k )                           
+(%o14) "            k=0       ( k )                          "
+(%i15) print("            ",n+1,"     k (",n+1,")     ",n)
+             3      k ( 3 )      2 
+(%o15) 2
+(%i16) print(n,"! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k)")
+2 ! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k) 
+(%o16) "! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k)"
+(%i17) print("            k=0       ( k )")
+            k=0       ( k ) 
+(%o17) "            k=0       ( k )"
+(%i18) print("          = ",expand(n!*Nnx))
+          =  
+            x^2*unit_step(x)-3*unit_step(x-1)*x^2+3*unit_step(x-2)*x^2
+                            -unit_step(x-3)*x^2+6*unit_step(x-1)*x
+                            -12*unit_step(x-2)*x+6*unit_step(x-3)*x
+                            -3*unit_step(x-1)+12*unit_step(x-2)
+                            -9*unit_step(x-3) 
+(%o18) x^2*unit_step(x)-3*unit_step(x-1)*x^2+3*unit_step(x-2)*x^2
+                       -unit_step(x-3)*x^2+6*unit_step(x-1)*x
+                       -12*unit_step(x-2)*x+6*unit_step(x-3)*x
+                       -3*unit_step(x-1)+12*unit_step(x-2)-9*unit_step(x-3)
+(%i19) print("-------------------------------------------------------")
+------------------------------------------------------- 
+(%o19) "-------------------------------------------------------"
+(%i20) assume(x <= 0)
+(%o20) [x <= 0]
+(%i21) print(n!,"N(x)= ",expand(n!*Nnx)," for x<=0")
+2 N(x)=  0  for x<=0 
+(%o21) " for x<=0"
+(%i22) forget(x <= 0)
+(%o22) [x <= 0]
+(%i23) for i from 0 thru n do
+           (assume(x > i,x < i+1),
+            print(n!,"N(x)= ",expand(n!*Nnx)," for ",i,"<x<",i+1),
+            tex(expand(n!*Nnx),"djg.tex"),forget(x > i,x < i+1))
+2 N(x)=  x^2  for  0 <x< 1 
+2 N(x)=  (-2*x^2)+6*x-3  for  1 <x< 2 
+2 N(x)=  x^2-6*x+9  for  2 <x< 3 
+(%o23) done
+(%i24) assume(x > n+1)
+(%o24) [x > 3]
+(%i25) print(n!,"N(x)= ",expand(n!*Nnx)," for x>",n+1)
+2 N(x)=  0  for x> 3 
+(%o25) 3
+(%i26) forget(x > n+1)
+(%o26) [x > 3]
+(%i27) print("-------------------------------------------------------")
+------------------------------------------------------- 
+(%o27) "-------------------------------------------------------"
+(%i28) print(" values at some specific points x:                     ")
+ values at some specific points x:                      
+(%o28) " values at some specific points x:                     "
+(%i29) print("-------------------------------------------------------")
+------------------------------------------------------- 
+(%o29) "-------------------------------------------------------"
+(%i30) ev(y:Nnx,x = (n+1)/2)
+(%o30) 3/4
+(%i31) print("N(",(n+1)/2,")= ",y," (center value)")
+N( 3/2 )=  3/4  (center value) 
+(%o31) " (center value)"
+(%i32) ev(y:Nnx,x = (n+2)/2)
+(%o32) 1/2
+(%i33) print("N(",(n+2)/2,")= ",y)
+N( 2 )=  1/2 
+(%o33) 1/2
+(%i34) ev(y:Nnx,x = (n+3)/2)
+(%o34) 1/8
+(%i35) print("N(",(n+3)/2,")= ",y)
+N( 5/2 )=  1/8 
+(%o35) 1/8
+(%i36) closefile()
+;; Dribble of #<IO TERMINAL-STREAM> finished on 2018-07-11 08:09:06.
+;; Dribble of #<IO TERMINAL-STREAM> started on 2018-07-11 08:12:08.
+#<OUTPUT BUFFERED FILE-STREAM CHARACTER iir1.txt>
+(%o3) done
+(%i4) n:2
+(%o4) 2
+(%i5) print("======================================================================")
+====================================================================== 
+(%o5) "======================================================================"
+(%i6) print("Daniel J. Greenhoe")
+Daniel J. Greenhoe 
+(%o6) "Daniel J. Greenhoe"
+(%i7) print("Output file for nth order B-spline Nn(x) calculation, n=",n," .")
+Output file for nth order B-spline Nn(x) calculation, n= 2  . 
+(%o7) " ."
+(%i8) print("Output produced using Maxima running the script file bspline.max")
+Output produced using Maxima running the script file bspline.max 
+(%o8) "Output produced using Maxima running the script file bspline.max"
+(%i9) print("======================================================================")
+====================================================================== 
+(%o9) "======================================================================"
+(%i10) Nnx:(1/n!)*sum((-1)^k*binomial(n+1,k)*(x-k)^n*unit_step(x-k),k,0,n+1)
+(%o10) (x^2*unit_step(x)-3*unit_step(x-1)*(x-1)^2+3*unit_step(x-2)*(x-2)^2
+                        -unit_step(x-3)*(x-3)^2)
+ /2
+(%i11) print("-------------------------------------------------------")
+------------------------------------------------------- 
+(%o11) "-------------------------------------------------------"
+(%i12) print("            n+1     k (n+1)      n                   ")
+            n+1     k (n+1)      n                    
+(%o12) "            n+1     k (n+1)      n                   "
+(%i13) print(" n! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k) ,n=",n)
+ n! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k) ,n= 2 
+(%o13) 2
+(%i14) print("            k=0       ( k )                          ")
+            k=0       ( k )                           
+(%o14) "            k=0       ( k )                          "
+(%i15) print("            ",n+1,"     k (",n+1,")     ",n)
+             3      k ( 3 )      2 
+(%o15) 2
+(%i16) print(n,"! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k)")
+2 ! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k) 
+(%o16) "! Nn(x) = SUM (-1)  (   ) (x-k)  step(x-k)"
+(%i17) print("            k=0       ( k )")
+            k=0       ( k ) 
+(%o17) "            k=0       ( k )"
+(%i18) print("          = ",expand(n!*Nnx))
+          =  
+            x^2*unit_step(x)-3*unit_step(x-1)*x^2+3*unit_step(x-2)*x^2
+                            -unit_step(x-3)*x^2+6*unit_step(x-1)*x
+                            -12*unit_step(x-2)*x+6*unit_step(x-3)*x
+                            -3*unit_step(x-1)+12*unit_step(x-2)
+                            -9*unit_step(x-3) 
+(%o18) x^2*unit_step(x)-3*unit_step(x-1)*x^2+3*unit_step(x-2)*x^2
+                       -unit_step(x-3)*x^2+6*unit_step(x-1)*x
+                       -12*unit_step(x-2)*x+6*unit_step(x-3)*x
+                       -3*unit_step(x-1)+12*unit_step(x-2)-9*unit_step(x-3)
+(%i19) print("-------------------------------------------------------")
+------------------------------------------------------- 
+(%o19) "-------------------------------------------------------"
+(%i20) assume(x <= 0)
+(%o20) [x <= 0]
+(%i21) print(n!,"N(x)= ",expand(n!*Nnx)," for x<=0")
+2 N(x)=  0  for x<=0 
+(%o21) " for x<=0"
+(%i22) forget(x <= 0)
+(%o22) [x <= 0]
+(%i23) for i from 0 thru n do
+           (assume(x > i,x < i+1),
+            print(n!,"N(x)= ",expand(n!*Nnx)," for ",i,"<x<",i+1),
+            tex(expand(n!*Nnx),"djg.tex"),forget(x > i,x < i+1))
+2 N(x)=  x^2  for  0 <x< 1 
+2 N(x)=  (-2*x^2)+6*x-3  for  1 <x< 2 
+2 N(x)=  x^2-6*x+9  for  2 <x< 3 
+(%o23) done
+(%i24) assume(x > n+1)
+(%o24) [x > 3]
+(%i25) print(n!,"N(x)= ",expand(n!*Nnx)," for x>",n+1)
+2 N(x)=  0  for x> 3 
+(%o25) 3
+(%i26) forget(x > n+1)
+(%o26) [x > 3]
+(%i27) print("-------------------------------------------------------")
+------------------------------------------------------- 
+(%o27) "-------------------------------------------------------"
+(%i28) print(" values at some specific points x:                     ")
+ values at some specific points x:                      
+(%o28) " values at some specific points x:                     "
+(%i29) print("-------------------------------------------------------")
+------------------------------------------------------- 
+(%o29) "-------------------------------------------------------"
+(%i30) ev(y:Nnx,x = (n+1)/2)
+(%o30) 3/4
+(%i31) print("N(",(n+1)/2,")= ",y," (center value)")
+N( 3/2 )=  3/4  (center value) 
+(%o31) " (center value)"
+(%i32) ev(y:Nnx,x = (n+2)/2)
+(%o32) 1/2
+(%i33) print("N(",(n+2)/2,")= ",y)
+N( 2 )=  1/2 
+(%o33) 1/2
+(%i34) ev(y:Nnx,x = (n+3)/2)
+(%o34) 1/8
+(%i35) print("N(",(n+3)/2,")= ",y)
+N( 5/2 )=  1/8 
+(%o35) 1/8
+(%i36) solve([a+b = 3],[a,b])
+(%i37) closefile()
+;; Dribble of #<IO TERMINAL-STREAM> finished on 2018-07-11 08:12:09.
+
+NIL
+====================================================================== 
+Daniel J. Greenhoe 
+Output file for nth order B-spline Nn(x) calculation, n= 1  . 
+Output produced using Maxima running the script file bspline.max 
+====================================================================== 
+------------------------------------------------------- 
+ Low-pass filter with corner frequency wc          n 
+          a + b z^{-1}                             n 
+  H(z) = -------------                             n 
+          1 + c z^{-1}                             n 
+                                                   n 
+------------------------------------------------------- 
+------------------------------------------------------- 
+ High-pass filter with corner frequency wc         n 
+          a + b z^{-1}                             n 
+  H(z) = -------------                             n 
+          1 + c z^{-1}                             n 
+                                                   n 
+------------------------------------------------------- 
+------------------------------------------------------- 
+ values at some specific points x:                      
+------------------------------------------------------- 
+N( 1 )=  Nnx  (center value) 
+N( 3/2 )=  Nnx 
+N( 2 )=  Nnx 

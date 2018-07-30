@@ -1,0 +1,51 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% polar plot for 2nd derivative in 2nd order IIR filter
+%============================================================================
+\begin{pspicture}(-1.5,-3)(1.5,3)%
+  %-------------------------------------
+  % settings
+  %-------------------------------------
+  \psset{dotsize=3pt,plotpoints=512}%
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  \psaxes[linecolor=axis,labels=none,ticks=none]{<->}(0,0)(-1.5,-3)(1.5,3)%
+  \rput[tr](1.5,-1.5mm){\color{axis}$\scy\Reb{z}$}%
+  \uput{3pt}[ 220](0,1.25){\color{axis}$\scy\Imb{z}$}%
+  %-------------------------------------
+  % unit circle
+  %-------------------------------------
+  \pscircle[linecolor=unitcircle,linestyle=dotted](origin){1}%
+  %-------------------------------------
+  % r inner
+  %-------------------------------------
+  \psplot[polarplot=true]{0}{360}{
+    3 2 x cos 2 exp mul sub % 3 - 2cos^2(x)
+    4 x cos 4 exp mul       % 4cos^4(x)
+    12 x cos 2 exp mul sub  % -12cos^2(x)
+    8 add sqrt sub sqrt     % +8
+    }%
+  %-------------------------------------
+  % r outer
+  %-------------------------------------
+  \psplot[polarplot=true,linecolor=red]{0}{360}{
+    3 2 x cos 2 exp mul sub % 3 - 2cos^2(x)
+    4 x cos 4 exp mul       % 4cos^4(x)
+    12 x cos 2 exp mul sub  % -12cos^2(x)
+    8 add sqrt add sqrt     % +8
+    }%
+  %-------------------------------------
+  % labeling
+  %-------------------------------------
+  \uput{1}[235](0,0){$\scy\abs{z}=1$}% circle label
+  \uput[ 90](-1,0    ){$\scy-1$}% 
+  \uput[ 90](1, 0    ){$\scy 1$}% 
+  \uput[ 45](0, 1    ){$\scy 1$}% 
+  \uput[-45](0,-1    ){$\scy-1$}% 
+  \uput[ 45](0, 2.414){$\scy \sqrt{3+\sqrt{8}}\eqa 2.414$}% 
+  \uput[ 45](0, 0.414){$\scy \sqrt{3-\sqrt{8}}\eqa 0.414$}% 
+  \uput[-45](0,-0.414){$\scy-\sqrt{3-\sqrt{8}}\eqa-0.414$}% 
+  \uput[-45](0,-2.414){$\scy-\sqrt{3+\sqrt{8}}\eqa-2.414$}% 
+\end{pspicture}%

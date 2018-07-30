@@ -1,0 +1,237 @@
+%============================================================================
+% Daniel J. Greenhoe
+% GNU Ocatave file
+% 1st order low pass filter design
+%============================================================================
+%=======================================
+\chapter{Coefficient Calculation}
+%=======================================
+\newpage
+%--------------------------------------
+1st Order Low-Pass calculation
+%--------------------------------------
+\vfill
+\qquad$\ds\boxed{ H(z) = \frac{a + bz^{-1}}
+                        {1 + cz^{-1}}
+          }$
+
+\begin{align*}
+  0 &= \abs{H(z)}_{z=e^{i\pi}=-1}
+   &&= \frac{a + bz^{-1}}{1 + cz^{-1}}_{z=-1}
+   &&= \frac{a - b}{1 - c}
+   &&\implies \boxed{a=b}
+  \\
+  \\
+  1 &= \abs{H(z)}_{z=e^{i0}=1}
+   &&= \frac{a + bz^{-1}}{1 + cz^{-1}}_{z=1}
+   &&= \frac{a + b}{1 + c}
+   &&\implies \boxed{a=\frac{c+1}{2}}
+\end{align*}
+\mbox{}\vfill
+\newpage
+\begin{align*}
+  \frac{1}{2}
+    &= \abs{H(z)}^2_{z=e^{i\omega_c}}
+   &&= \brlr{H(z)H^\ast(z)}_{z=e^{i\omega_c}}
+  \\&= \brp{\frac{a + be^{-i\omega_c}}{1 + ce^{-i\omega_c}}}
+       \brp{\frac{a + be^{i\omega_c}}{1 + ce^{i\omega_c}}}
+   &&= \frac{a^2 + abe^{-i\omega_c} + abe^{i\omega_c} + b^2}
+            {1   +  ce^{i\omega_c} +  ce^{-i\omega_c} + c^2}
+  \\&= \frac{a^2 + 2ab\cos\brp{\omega_c} + b^2}
+            {1   + 2 c\cos\brp{\omega_c} + c^2}
+    && \begin{array}[t]{MM}because $e^{i\theta}+e^{-i\theta}=2\cos(\theta)$\\
+                       (\thme{Euler formulas})\footnotemark\end{array}
+  \\&= \frac{2a^2\brs{1 +  \cos\brp{\omega_c}}}
+            {c^2 + 2 c\cos\brp{\omega_c} + 1}
+    && \text{because $\ds a=b$}
+  \\&= \frac{2\brp{\frac{c+1}{2}}^2\brs{1 +  \cos\brp{\omega_c}}}
+            {c^2 + 2 c\cos\brp{\omega_c} + 1}
+    && \text{because $\ds a=\frac{c+1}{2}$}
+\end{align*}
+\footnotetext{
+  \citor{euler1748v1},
+  \citerp{bottazzini}{12}
+  }
+
+
+
+{\begin{align*}
+    \implies &c^2 + 2 c\cos\brp{\omega_c} + 1 
+             = \brp{c+1}^2\brs{1 +  \cos\brp{\omega_c}}
+  \\\\\implies & c^2\brs{1-1-\cos\brp{\omega_c}} 
+             + c  \brs{2\cos\brp{\omega_c}-2-2\cos\brp{\omega_c}}
+             +    \brs{1-1-\cos\brp{\omega_c}}
+             \\&= 0
+  \\\\\implies & c^2\brs{\cos\brp{\omega_c}} 
+             + c  \brs{2}
+             +    \brs{\cos\brp{\omega_c}}
+             = 0
+\end{align*}}
+
+
+
+{\begin{align*}
+  \\\implies c &= \frac{-2 \pm \sqrt{(2)^2 -4\cos^2\brp{\omega_c}}}
+                       {2\cos\brp{\omega_c}}
+               && \text{by \thme{Quadratic Equation}}
+             \\&= \frac{-1 \pm \sqrt{1 -\cos^2\brp{\omega_c}}}
+                       {\cos\brp{\omega_c}}
+             \\&= \frac{-1 \pm \sin\brp{\omega_c}}
+                       {\cos\brp{\omega_c}}
+               && \text{because $\sin^2x + \cos^2x = 1$ for all $x\in\R$}
+  \\
+  \\\implies &\ds\boxed{c = \frac{-1 + \sin\brp{\omega_c}}
+                    {\cos\brp{\omega_c}}}
+\end{align*}}
+
+%---------------------------------------
+Where is the zero? Where is the pole?
+%---------------------------------------
+The zero is at z=-1. \qquad The pole is at 
+$\ds\boxed{z=-c = \frac{1 - \sin\brp{\omega_c}}
+                    {\cos\brp{\omega_c}}}$
+
+%---------------------------------------
+\newpage
+Example: 1st order low-pass with corner frequency $\omega_c=\frac{2}{3}\pi$
+%---------------------------------------
+
+{\begin{align*}
+  c &= \frac{-1 + \sin\brp{\omega_c}}{\cos\brp{\omega_c}}
+     = \frac{-1 + \sin\brp{\sfrac{2}{3}\pi}}{\cos\brp{\sfrac{2}{3}\pi}}
+     = \frac{-1 + \frac{\sqrt{3}}{2}}{-\sfrac{1}{2}}
+     = 2 - \sqrt{3}
+  \\
+  \\
+  \abs{H(\omega)}^2
+    &= \abs{H(z)}^2_{z=e^{i\omega}}
+     = \brlr{H(z)H^\ast(z)}_{z=e^{i\omega}}
+     = \frac{2\brp{\frac{c+1}{2}}^2\brs{1 +  \cos\brp{\omega}}}
+            {c^2 + 2 c\cos\brp{\omega} + 1}
+\end{align*}}
+
+\includegraphics{graphics/lpfwc.pdf}
+
+
+
+
+%--------------------------------------
+1st Order High-Pass calculation
+%--------------------------------------
+$\ds\boxed{ H(z) = \frac{a + bz^{-1}}
+                        {1 + cz^{-1}}
+          }$
+
+\begin{align*}
+  0 &= {\abs{H(z)}}_{z=e^{i0}=1}    
+    &&=\brlr{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=1} 
+    &&=\frac{a + b}{1 + c}                   
+    && \implies \boxed{a=-b}
+  \\\\
+  1 &= \abs{H(z)}_{z=e^{i\pi}=-1} 
+   &&= \brlr{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=-1} 
+   &&= \frac{a - b}{1 - c} = \frac{2a}{1-c}                   
+   &&  \implies \boxed{a=\frac{1-c}{2}}
+\end{align*}
+
+
+%
+\begin{align*}
+  \frac{1}{2}
+    &= \abs{H(z)}^2_{z=e^{i\omega_c}}
+   &&= \brs{H(z)H^\ast(z)}_{z=e^{i\omega_c}}
+  \\&= \brp{\frac{a + be^{-i\omega_c}}{1 + ce^{-i\omega_c}}}
+       \brp{\frac{a + be^{i\omega_c}}{1 + ce^{i\omega_c}}}
+   &&= \frac{a^2 + abe^{-i\omega_c} + abe^{i\omega_c} + b^2}
+            {1   +  ce^{i\omega_c} +  ce^{-i\omega_c} + c^2}
+  \\&= \frac{a^2 + 2ab\cos\brp{\omega_c} + b^2}
+            {1   + 2 c\cos\brp{\omega_c} + c^2}
+  \\&= \frac{2a^2\brs{1 -  \cos\brp{\omega_c}}}
+            {c^2 + 2 c\cos\brp{\omega_c} + 1}
+    && \text{because $a=-b$}
+  \\&= \frac{2\brp{\frac{1-c}{2}}^2\brs{1 -  \cos\brp{\omega_c}}}
+            {c^2 + 2 c\cos\brp{\omega_c} + 1}
+    && \text{because $a=\frac{1-c}{2}$}
+\end{align*}
+
+
+{\begin{align*}
+    \implies &c^2 + 2 c\cos\brp{\omega_c} + 1 
+             = \brp{1-c}^2\brs{1 -  \cos\brp{\omega_c}}
+  \\\\\implies & c^2\brs{1-1+\cos\brp{\omega_c}} 
+             + c  \brs{2\cos\brp{\omega_c}+2-2\cos\brp{\omega_c}}
+             +    \brs{1-1+\cos\brp{\omega_c}}
+             \\&= 0
+  \\\\\implies & c^2{\cos\brp{\omega_c}} 
+             + 2c 
+             +    \cos\brp{\omega_c}
+             = 0
+\end{align*}}
+
+
+
+{\begin{align*}
+  \\\implies c &= \frac{-2 \pm \sqrt{(2)^2 -4\cos^2\brp{\omega_c}}}
+                       {2\cos\brp{\omega_c}}
+               && \text{by \thme{Quadratic Equation}}
+             \\&= \frac{-1 \pm \sqrt{1 -\cos^2\brp{\omega_c}}}
+                       {\cos\brp{\omega_c}}
+             \\&= \frac{-1 \pm \sin\brp{\omega_c}}
+                       {\cos\brp{\omega_c}}
+               && \text{because $\sin^2x + \cos^2x = 1$ for all $x\in\R$}
+  \\\implies c &=
+      \boxed{\frac{-1 + \sin\brp{\omega_c}}
+                    {\cos\brp{\omega_c}}}
+               && \text{because want pole inside unit circle}
+\end{align*}}
+
+
+
+
+%---------------------------------------
+Example: 1st order high-pass with corner frequency $\omega_c=\frac{1}{3}\pi$
+%---------------------------------------
+
+{\begin{align*}
+  c &= \frac{-1 + \sin\brp{\omega_c}}{\cos\brp{\omega_c}}
+     = \frac{-1 + \sin\brp{\sfrac{1}{3}\pi}}{\cos\brp{\sfrac{1}{3}\pi}}
+     = \frac{-1 + \frac{\sqrt{3}}{2}}{\frac{1}{2}}
+     = \sqrt{3} - 2
+  \\
+  \\
+  \abs{H(\omega)}^2
+    &= \abs{H(z)}^2_{z=e^{i\omega}}
+     = \brlr{H(z)H^\ast(z)}_{z=e^{i\omega}}
+     = \frac{2\brp{\frac{1-c}{2}}^2\brs{1 -  \cos\brp{\omega}}}
+            {c^2 + 2 c\cos\brp{\omega} + 1}
+\end{align*}}
+
+\includegraphics{graphics/hpfwc.pdf}
+
+
+
+%---------------------------------------
+%---------------------------------------
+
+So $c=\sqrt{3}-2$,\qquad $a=\frac{1-c}{2}=\frac{3-\sqrt{3}}{2}$, \qquad $b=-a=\frac{\sqrt{3}-3}{2}$
+\begin{align*}
+  H_{hp}(z)
+    &= \frac{a + bz^{-1}}{1+cz^{-1}}
+  \\&= \frac{\brp{\frac{3-\sqrt{3}}{2}} + \brp{\frac{\sqrt{3}-3}{2}}z^{-1}}
+            {1+\brp{\sqrt{3}-2}z^{-1}}
+  \\&= \frac{\brp{\frac{[2-\sqrt{3}]+1}{2}} + \brp{\frac{[2-\sqrt{3}]+1}{2}}(-z)^{-1}}
+            {1+\brp{2-\sqrt{3}}(-z)^{-1}}
+  \\&= H_{lp}(-z)
+\end{align*}
+
+
+
+
+
+%---------------------------------------
+
+%---------------------------------------
+
+
+
+

@@ -29,7 +29,7 @@
 
 %\newcommand{\ccby}{\includegraphics*[height=5mm]{../common/graphics/cc/ccby.jpg}}
 \newcommand{\ccby}{\includegraphics*{../common/graphics/cc/ccby40djg.pdf}}
-\newcommand{\ccbyncnd}{\includegraphics*{../../common/graphics/cc/ccbyncnd40djg.pdf}}
+\newcommand{\ccbyncnd}{\includegraphics*{../common/graphics/cc/ccbyncnd40djg.pdf}}
 
 %--------------------------------------
 % stamps
@@ -536,20 +536,42 @@
   %\end{center}%
   }%
 
+%20180610%%name quote translation quote-box
+%20180610%\newcommand{\qboxnqt}[3]{%
+%20180610%  \begin{center}%
+%20180610%    \shadowbox{\parbox[b]{15\textwidth/16}{\center%
+%20180610%      \parbox[t]{7\textwidth/16}{\fntquote%
+%20180610%        \quoteo #2\quotec%
+%20180610%        }%
+%20180610%      \hspace{5ex}%
+%20180610%      \parbox[t]{7\textwidth/16}{\fntquote%
+%20180610%        \quoteo #3\quotec%
+%20180610%       }%
+%20180610%      \\[1ex]\normalfont\footnotesize #1%
+%20180610%    }}%
+%20180610%  \end{center}%
+%20180610%  }%
+
 %name quote translation quote-box
 \newcommand{\qboxnqt}[3]{%
-  \begin{center}%
-    \shadowbox{\parbox[b]{15\textwidth/16}{\center%
-      \parbox[t]{7\textwidth/16}{\fntquote%
-        \quoteo #2\quotec%
-        }%
-      \hspace{5ex}%
-      \parbox[t]{7\textwidth/16}{\fntquote%
-        \quoteo #3\quotec%
-       }%
-      \\[1ex]\normalfont\footnotesize #1%
-    }}%
-  \end{center}%
+  \centering%
+  \shadowbox{\begin{minipage}{\tw-5mm}%
+    \begin{minipage}{\tw/2-8mm}%
+      \centering%
+      \fntquote%
+      \quoteo{#2}\quotec%
+    \end{minipage}%
+    \hspace{5mm}%
+    \begin{minipage}{\tw/2-8mm}%
+      \centering%
+      \fntquote%
+      \quoteo{#3}\quotec%
+    \end{minipage}%
+    \\[1ex]%
+    \normalfont%
+    \footnotesize%
+    #1%
+  \end{minipage}}% end shadow box
   }%
 
 %name quote quote-box
@@ -758,6 +780,42 @@
 \newcommand{\srotfile}[3]{%1:size 2: rotation in degrees 3:picture filename
   \rotatebox{#2}{\resizebox{#1}{!}{\input{#3}}}%
   }%
+
+%=======================================
+% More Graphics Support
+%=======================================
+           %\cnodeput {0}(-1, 0){add11}{$+$}\cnodeput{0}( 1, 0){add12}{$+$}%%
+%\newcommand{\fnodeput}[4]{\rput{#1}{#2}{\fnode(0,0){#3}{#4}}}%
+%\newcommand{\fnodeput}[4]{%similar parameter definition to \cnodeput but for frames
+%  \fnode{#2}{#3}%          put a frame node at #2=(x,y) with label #3
+%  \rput{#1}(0,0){#4}%      put object #4 inside the node with rotation #1
+%  }%
+% #1=rotation (#2,#3)=(x,y) #4=label #5=contents 
+\newcommand{\fnodeput}[5]{%similar parameter definition to \cnodeput but for frames
+  \fnode(#2,#3){#4}%          put a frame node at #2=(x,y) with label #3
+  \rput{#1}(#2,#3){#5}%      put object #4 inside the node with rotation #1
+  }%
+\newcommand{\nnode}[3]{%put a node connection
+  \Cnode*[radius=1pt](#1,#2){#3}%
+  }%
+\newcommand{\triLnodeput}[6][7.5mm]{%triangle pointing left
+  \rput{#2}(#3,#4){\trinode[trimode=L,framesize=#1]{#5}{#6}}%          put a frame node at #2=(x,y) with label #3
+  }%
+\newcommand{\triRnodeput}[6][7.5mm]{%triangle pointing right
+  \rput{#2}(#3,#4){\trinode[trimode=R,framesize=#1]{#5}{#6}}%          put a frame node at #2=(x,y) with label #3
+  }%
+\newcommand{\pzzero}[1]{\pscircle[linecolor=zero,linewidth=1pt](#1){1mm}}% a zero in a pole-zero plot
+\newcommand{\pzpole}[1]{\rput(#1){%a pole in a pole-zero plot at location () defined by \pnode commmand
+  \psline[linecolor=pole,linewidth=1pt]{cc-cc}(-0.75mm,-0.75mm)( 0.75mm,0.75mm)% rising-slope  line of "x"
+  \psline[linecolor=pole,linewidth=1pt]{cc-cc}( 0.75mm,-0.75mm)(-0.75mm,0.75mm)% falling-slope line of "x"
+  }}% 
+
+
+%--------------------------------------
+% cell color support
+%--------------------------------------
+\newcommand{\ccc}{\cellcolor{cyan}}
+\newcommand{\ccg}{\cellcolor{lgray}}
 
 
 %2015aug17%%--------------------------------------

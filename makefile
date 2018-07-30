@@ -14,14 +14,15 @@
 #--------------------------------------
 # Commands
 #--------------------------------------
-allxx:
+all:
   cd bsplines
     make
-  # problems
+  cd ..\dsp
+    make
   cd ..\xwsd
     make
-  cd ..\xpsd
-    make
+#  cd ..\xpsd
+#    make
   cd ..\xsams
     make
   cd ..\estimation
@@ -30,7 +31,6 @@ allxx:
     make
   cd ..\A290826
     make
-  # OK
   cd ..\lmc
     make
   cd ..\elife

@@ -1,0 +1,399 @@
+%============================================================================
+% Daniel J. Greenhoe
+% GNU Ocatave file
+% 1st order low pass filter design
+%============================================================================
+%=======================================
+%\chapter{Coefficient Calculation}
+%=======================================
+%----------------------------------------------------------------------------
+\section{2nd Order \propb{low-pass} calculation---polar form}
+%----------------------------------------------------------------------------
+%---------------------------------------
+% problem statement
+%---------------------------------------
+\mbox{}\vfill
+{\begin{align*}
+  \boxed{\Fh(\omega)}
+    &= \brlr{\Zh(z)}_{z=e^{i\omega}}
+  \\&= G\brs{\frac{\brp{z+1}^2}
+                  {\brp{z-p}\brp{z-p^\ast}}}_{z=e^{i\omega}}
+  \\&= G\brs{\frac{\brp{z+1}^2}
+                  {\brp{z-re^{i\phi}}\brp{z-(re^{i\phi})^\ast}}}_{z=e^{i\omega}}
+  \\&= G\brs{\frac{z^2 + 2z + 1}
+                  {z^2 - 2r\cos(\phi)z + r^2}
+            }_{z=e^{i\omega}}
+\end{align*}}
+\vfill
+We need 3 equations to solve for the 3 unkowns $G$, $r$, and $\phi$
+\vfill\mbox{}
+%---------------------------------------
+\newpage
+Equation 1: Gain=1 at DC
+%---------------------------------------
+\vfill
+\begin{align*}
+  1 &= \abs{\Fh(0)}
+  \\&= G\brs{\frac{z^2 + 2z            + 1}
+                  {z^2 - 2r\cos(\phi)z + r^2}}_{z=e^{i\omega},\,\omega=0}
+  \\&= G\brs{\frac{1   + 2             + 1}
+                  {1   - 2r\cos(\phi)  + r^2}}
+    && \text{(see \prefpo{equ:trickdc})}
+  \\
+  \\&\implies \boxed{G = \frac{r^2 - 2r\cos(\phi) + 1}{4}}
+\end{align*}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage
+Equation 2: Gain = $\sfrac{1}{2}$ at corner frequency
+%---------------------------------------
+{\Large\begin{align*}
+  \boxed{\abs{\Fh(\omega)}^2}
+    &= \abs{\Zh(z)}^2_{z=e^{i\omega}}
+     = G^2\brs{\frac{z^2 + 2z            + 1}
+                    {z^2 - 2r\cos(\phi)z + r^2}}^2_{z=e^{i\omega}}
+  \\&= G^2\brlr{
+         \brs{\frac{z^2 + 2z + 1} {z^2 - 2r\cos(\phi)z + r^2}}
+         \brs{\frac{z^2 + 2z + 1} {z^2 - 2r\cos(\phi)z + r^2}}^\ast
+         }_{z=e^{i\omega}}
+  \\&= G^2\brlr{
+         \brs{\frac{z^2       + 2z      + 1} {z^2       - 2r\cos(\phi)z      + r^2}}
+         \brs{\frac{z^{2\ast} + 2z^\ast + 1} {z^{2\ast} - 2r\cos(\phi)z^\ast + r^2}}
+         }_{z=e^{i\omega}}
+  \\&= G^2\brlr{
+         \frac{
+         \brs{ \abs{z}^4                    + 2 \abs{z}^2z               +  z^2} +
+         \brs{2\abs{z}^2z^\ast              + 4 \abs{z}^2                + 2z  } +
+         \brs{z^{2\ast}                     + 2      z^\ast              + 1   }
+         }{\begin{array}{cl} 
+            &\brs{\abs{z}^4 - 2r\cos(\phi)z\abs{z}^2 + r^2z^2}
+         \\+&\brs{-2r\cos(\phi)\abs{z}^2z^\ast +4r^2\cos^2(\phi)\abs{z}^2 -2r^3\cos(\phi)z}
+         \\+&\brs{r^2z^{2\ast} - 2r^3\cos(\phi)z^\ast + r^4}
+         \end{array}
+         }}_{z=e^{i\omega}}
+  \\&= G^2\brlr{
+         \frac{\abs{z}^4 + 2           \abs{z}^2(z+z^\ast) +    (z^2+z^{2\ast}) + 4               \abs{z}^2 + 2             (z+z^\ast) + 1  }  
+              {\abs{z}^4 - 2r\cos(\phi)\abs{z}^2(z+z^\ast) + r^2(z^2+z^{2\ast}) + 4r^2\cos^2(\phi)\abs{z}^2 - 2r^3\cos(\phi)(z+z^\ast) + r^4}
+         }_{z=e^{i\omega}}
+  \\&= G^2\brs {
+         \frac{1         + 4           \cos(\omega)        + 2   \cos(2\omega)  + 4                         +4             \cos(\omega) + 1  }  
+              {1         - 4r\cos(\phi)\cos(\omega)        + 2r^2\cos(2\omega)  + 4r^2\cos^2(\phi)          -4r^3\cos(\phi)\cos(\omega) + r^4}
+             }
+  \\&= G^2\brs {
+         \frac{2   \boxed{\cos(2\omega)}  + 8                  \boxed{\cos(\omega)} +  \boxed{6}}  
+              {2r^2\boxed{\cos(2\omega)}  - 4r\cos(\phi)[1+r^2]\boxed{\cos(\omega)} +  \boxed{r^4 +  4r^2\cos^2(\phi) + 1}}
+             }
+\end{align*}
+
+
+$\ds\boxed{
+  G^2\brs {
+         \frac{2   \boxed{\cos(2\omega_c)}  + 8                  \boxed{\cos(\omega_c)} +  \boxed{6}}  
+              {2r^2\boxed{\cos(2\omega_c)}  - 4r\cos(\phi)[1+r^2]\boxed{\cos(\omega_c)} +  \boxed{r^4 +  4r^2\cos^2(\phi) + 1}}
+             }
+  = \frac{1}{2}
+  }$}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage
+Equation 3: For more smoothness in passband, set 2nd derivative to 0.
+%---------------------------------------
+\newpage
+Aside: Who cares about the second derivative?
+\vfill
+In math, \propd{smoothness} of $\ff(x)$ is the number of derivatives $\dndxn\ff(x)$ that are continuous.
+\vfill
+Example: Hermite interpolation.
+
+  $\begin{array}{r|@{\qquad}*{13}{r}}
+     p & \mc{13}{l}{\ds(1-y)^p\fP_m(y)= (1-y)^p \sum_{k=0}^{p-1} {p-1+k\choose k} y^k}
+  \\ \hline
+     1 & 1 &-&   y
+  \\ 2 & 1 &-&  3y^2 &+&  2y^3
+  \\ 3 & 1 &-& 10y^3 &+&  15y^4 &-&   6y^5
+  \\ 4 & 1 &-&  35y^4 &+&  84y^5 &-&   70y^6  &+&    20y^7
+  \\ 5 & 1 &-& 126y^5 &+&  420y^6 &-&  540y^7 &+&   315y^8 &-&    70y^9
+  \\ 6 & 1 &-& 462y^6 &+& 1980y^7 &-& 3465y^8 &+&  3080y^9 &-&  1386y^{10} &+& 252y^{11}
+  \end{array}$
+
+{\Large
+%\begin{figure}[h]
+%\begin{scriptsize}
+%\color[rgb]{0.2,0.2,0.2}
+%\begin{fsL}
+\setlength{\unitlength}{0.8mm}
+\begin{picture}(335,150)(-10,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thicklines
+  \put(   0,   0 ){\line(1,0){240} }
+  \put(   0,   0 ){\line(0,1){120} }
+
+  \qbezier[10](100,50)(100, 25)( 100,0)
+  \qbezier[40](0,100)(100,100)( 200,100)
+
+  {\color{blue}
+    \qbezier(   0, 100)(  60, 100)( 100,  50)
+    \qbezier( 100,  50)( 140,   0)( 200,   0)
+    \put( 130,  25 ){\makebox(0,0)[l]{$\leftarrow (1-y)^p \fP(y)$} }
+    \put(   5, 105 ){\makebox(0,0)[lb]{$\downarrow$ first $p-1$ derivatives are zero at $y=0$} }
+    \put( 200,   5 ){\makebox(0,0)[lb]{$\downarrow$ first $p-1$ derivatives are zero at $y=1$} }
+    }
+
+  {\color{red}
+    \qbezier(   0,   0)(  60,   0)( 100,  50)
+    \qbezier( 100,  50)( 140, 100)( 200, 100)
+    \put( 130,  75 ){\makebox(0,0)[l]{$\leftarrow y^p \fP(1-y)$} }
+    \put(   5,  -3 ){\makebox(0,0)[lt]{$\uparrow$ first $p-1$ derivatives are zero at $y=0$} }
+    \put( 200,  95 ){\makebox(0,0)[lt]{$\uparrow$ first $p-1$ derivatives are zero at $y=1$} }
+    }
+
+  \put( 100,   3 ){\makebox(0,0)[b]{$\frac{\pi}{2}$} }
+  \put( 260,   0 ){\makebox(0,0)[l]{$\omega$} }
+  \put( -10, 100 ){\makebox(0,0)[r]{$1$} }
+\end{picture}
+%\end{fsL}
+%\end{center}
+%\end{scriptsize}
+%\caption{
+%  Polynomial quadrature condition low-pass and high-pass terms
+%  \label{fig:lphp}
+%  }
+%\end{figure}
+}
+
+%\prefpp{lem:quadcon_y} expresses the quadrature condition
+%as a 
+polynomial in $y=\sin^2\brp{\frac{\omega}{2}}$.
+%The first term in this polynomial quadrature condition is a
+%low-pass response and the second term is a high pass;
+%and they meet in the middle at $\omega=\frac{\pi}{2}$.
+    \[
+      \mcom{(1-y)^p \fP(y)}{low-pass} + \mcom{y^p \fP(1-y)}{high-pass} = 1
+    \]
+The low-pass and high-pass terms are especially smooth at
+$\omega=0$ ($y=0$) and $\omega=\pi$ ($y=1$)
+%in that the first $p-1$ derivatives at both points are zero
+%for both terms.
+
+%This is illustrated in \prefpp{fig:lphp}.
+\newpage
+%--------------------------------------
+\begin{theorem}[\thme{Hermite Interpolation}]
+\footnote{
+  \citerc{greenhoe2013wsd}{\url{https://www.researchgate.net/publication/322978679}}
+  }
+\label{thm:interpo_hermite}
+%--------------------------------------
+\thmbox{\begin{array}{*{3}{>{\ds}l}D}
+  \left.\deriv{^n}{y^n} \left[
+        (1-y)^p \sum_{k=0}^{p-1}{p+k-1\choose k} y^k
+        \right]\right|_{y=0}
+    &=& \kdelta_n
+    &   for $n=0,1,2,\ldots,p-1$
+  \\
+  \left.\deriv{^n}{y^n} \left[
+        (1-y)^p \sum_{k=0}^{p-1} {p+k-1\choose k} y^k
+        \right]\right|_{y=1}
+    &=& 0
+    &   for $n=0,1,2,\ldots,p-1$
+  \\
+  \left.\deriv{^n}{y^n} \left[
+        y^p \sum_{k=0}^{p-1}{p+k-1\choose k} (1-y)^k
+        \right]\right|_{y=0}
+    &=& 0
+    &   for $n=0,1,2,\ldots,p-1$
+  \\
+  \left.\deriv{^n}{y^n} \left[
+        y^p \sum_{k=0}^{p-1} {p+k-1\choose k} (1-y)^k
+        \right]\right|_{y=1}
+    &=& \kdelta_n
+    &   for $n=0,1,2,\ldots,p-1$
+  \end{array}}
+\end{theorem}
+
+
+
+
+
+\newpage
+Back to filtering\ldots
+\vfill
+{\begin{align*}
+  0 &= \ddwddw\abs{\Fh(\omega)}^2_{\omega=0}
+  \\&= \ddwddw G^2 \brs{\frac{\ff(\omega)}
+                             {\fg(\omega)}
+                       }_{\omega=0}
+  \\&= \ddw    G^2 \brs{\frac{\ff'\fg + \ff \fg'}
+                             {\fg^2}
+                       }_{\omega=0}
+    && \text{by \thme{product rule}}
+  \\&=         G^2 \brs{\frac{(\ff''\fg + \ff'\fg' - \ff'\fg' -\ff\fg'')\fg^2 - (\ff'\fg - \ff\fg')(2\fg\fg')}
+                             {\fg^4}
+                       }_{\omega=0}
+  \\&=         G^2 \brs{\frac{\ff''\fg -\ff\fg''}
+                             {\fg^2}
+                       }_{\omega=0}
+     \qquad \implies \boxed{\brlr{\ff''\fg = \ff\fg''}_{\omega=0}}
+\end{align*}
+\ldots because $\ff'(0) = \fg'(0) = 0$ (see \prefpo{equ:mrflat})
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage
+%---------------------------------------
+(Another) Aside: Feel the need to differentiate a product multiple times?
+\\\vfill
+Leibniz has you covered\ldots
+\\\vfill
+%This is simplified thanks to the \hie{Leibniz rule}, also called the 
+%\hie{generalized product rule} (\hie{GPR}, next lemma).
+%The Leibniz rule is remarkably similar in form to the \hie{binomial theorem}.
+%--------------------------------------
+\begin{lemma}[\thmd{Leibniz rule} / \thmd{generalized product rule} / \thmd{GPR}]
+%\footnote{\url{http://en.wikipedia.org/wiki/Leibniz_rule_(generalized_product_rule)}}
+\index{Leibniz rule}
+\index{generalized product rule}
+\index{binomial coefficient}
+\footnote{
+  \citerpg{benisrael2002}{154}{3211829245},
+  \citor{leibniz1710}
+  }
+\label{lem:LGPR}
+%--------------------------------------
+%Let $\ff(x),\fg(x)\in\spLLR$ with derivatives
+%$\ff^{(n)}(x)\eqd\deriv{^n}{x^n}\ff(x)$ and
+%$\fg^{(n)}(x)\eqd\deriv{^n}{x^n}\fg(x)$ for $n=0,1,2,\ldots$,
+%and ${n\choose k}\eqd\frac{n!}{(n-k)!k!}$ (binomial coefficient).
+%Then
+\lembox{
+  \deriv{^n}{x^n}[\ff(x)\fg(x)] =
+  \sum_{k=0}^n {n\choose k} \ff^{(k)}(x) \fg^{(n-k)}(x)
+  }
+\end{lemma}
+\vfill\mbox{}
+Example:
+\qquad
+$\ds\deriv{^3}{x^3}\brs{\ff(x)\fg(x)} = \ff'''(x)\fg(x) + 3\ff''(x)\fg'(x) + 3\ff'(x)\fg''(x) + \ff(x)\fg'''(x)$
+\vfill\mbox{}
+
+
+%--------------------------------------
+\newpage
+%--------------------------------------
+\vfill
+{\LARGE\begin{align*}
+  &\implies \mcom{\brs{-8\cos(2\omega)  - 8\cos(\omega)}}
+                 {\Large$\ff''$}
+            \mcom{\brs{2r^2\cos(2\omega)  - 4r\cos(\phi)[1+r^2]\cos(\omega) +  r^4 +  4r^2\cos^2(\phi) + 1}}
+                 {\Large$\fg$}
+ \\&\qquad= \brs{\mcom{\brs{2\cos(2\omega)  + 8 \cos(\omega) +  6}}
+                      {\Large$\ff$}
+                 \mcom{\brs{-8r^2\cos(2\omega)  + 4r\cos(\phi)[1+r^2]\cos(\omega) }}
+                      {\Large$\fg''$}
+                   }_{\omega=0} 
+  \\&\implies \brs{-8  - 8}      \brs{ 2r^2 - 4r\cos(\phi)[1+r^2] +  r^4 +  4r^2\cos^2(\phi) + 1}
+       \\&\qquad= \brs{2  + 8  +  6} \brs{-8r^2 + 4r\cos(\phi)[1+r^2]}
+  \\&\implies\boxed{r^4 + \brs{4\cos^2(\phi)-6} r^2 + 1 = 0 }
+  \\
+\end{align*}}
+
+\newpage
+\vfill
+{\LARGE$\begin{array}{rc>{\ds}l}
+  r^2 &=& \frac{-\brs{4\cos^2(\phi)-6} \pm \sqrt{\brs{4\cos^2\phi-6}^2 - 4}}{2}
+    \\&=& \frac{-\brs{4\cos^2(\phi)-6} \pm \sqrt{\brs{16\cos^4\phi-48\cos^2\phi+36} - 4}}{2}
+    \\&=& \frac{-2\brs{2\cos^2(\phi)-3} \pm 2\sqrt{4\cos^4\phi-12\cos^2\phi+8}}{2}
+    \\&=& \mcom{\brs{3-2\cos^2(\phi)}}            {\Large$1\rightarrow      3        \rightarrow1$} 
+     \pm \mcom{\sqrt{4\cos^4\phi-12\cos^2\phi+8}}{\Large$0\rightarrow\sqrt{8}\eqa2.8\rightarrow0$}
+    \\\\
+   r &=&\sqrt{\brs{3-2\cos^2(\phi)} \pm \sqrt{4\cos^4\phi-12\cos^2\phi+8}}
+\end{array}$}
+\hfill
+\tbox{\includegraphics[width=90mm]{graphics/iir2rphi.pdf}}
+\\
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage
+Example: 2nd order \propb{low-pass} with corner frequency $\omega_c=\frac{2}{3}\pi$
+%---------------------------------------
+\begin{align*}
+  1 &= \abs{\Fh(0)}
+  \\&= G\brs{\frac{z^2 + 2z            + 1}
+                  {z^2 - 2r\cos(\phi)z + r^2}}_{z=e^{i\omega},\,\omega=0}
+  \\&= G\brs{\frac{1   + 2             + 1}
+                  {1   - 2r\cos(\phi)  + r^2}}
+    && \text{(see \prefpo{equ:trickdc})}
+  \\
+  \\&\implies \boxed{G = \frac{r^2 - 2r\cos(\phi) + 1}{4}}
+\end{align*}
+
+
+
+\begin{align*}
+  \frac{1}{2}
+  &= G^2\brs {
+         \frac{2   \boxed{\cos(2\omega_c)}  + 8                  \boxed{\cos(\omega_c)} +  \boxed{6}}  
+              {2r^2\boxed{\cos(2\omega_c)}  - 4r\cos(\phi)[1+r^2]\boxed{\cos(\omega_c)} +  \boxed{r^4 +  4r^2\cos^2(\phi) + 1}}
+             }
+\\&= G^2\brs {
+         \frac{2-\sqrt{3}}  
+              {r^4 + 2\cos(\phi)r^3  + [1-\sqrt{3}]r^2  + 2r\cos(\phi) + 1}
+              }
+\end{align*}
+
+
+{\LARGE We can combine the previous two \fbox{boxed} equations to eliminate $G$
+
+
+\begin{align*}
+1/2 
+  &= \brs{\frac{r^2 - 2r\cos(\phi) + 1}{4}}^2
+     \brs{\frac{2-\sqrt{3}}  
+               {r^4 + 2\cos(\phi)r^3  + [1-\sqrt{3}]r^2  + 2r\cos(\phi) + 1}}
+\\&= \brs{\frac{2-\sqrt{3}}{16}}
+     \frac{\brs{r^2 - 2r\cos(\phi) + 1}^2}
+          {r^4 + 2\cos(\phi)r^3  + [1-\sqrt{3}]r^2  + 2\cos(\phi)r + 1}
+\end{align*}
+{\Large
+$\ds{
+8\brs{r^4 + 2\cos(\phi)r^3  + [1-\sqrt{3}]r^2  + 2\cos(\phi)r + 1}
+   = \brs{2-\sqrt{3}} \brs{r^2 - 2r\cos(\phi) + 1}^2
+}$          
+          
+$\ds{
+8\brs{r^4 + 2\cos(\phi)r^3  + [1-\sqrt{3}]r^2  + 2\cos(\phi)r + 1}
+   = \brs{2-\sqrt{3}} \brs{r^4 - 4\cos(\phi)r^3 + 6\cos^2(\phi)r^2 -4\cos(\phi)r  + 1}
+}$          
+}
+
+{\Large
+$\ds\boxed{
+    \brs{6+\sqrt{3}}r^4 
+ + 4\brs{6-\sqrt{3}}\cos(\phi)r^3 
+ + \brs{8-8\sqrt{3}- 6\brp{2-\sqrt{3}}\cos^2(\phi)}r^2  
+ + 4\brs{18-\sqrt{3}}\cos(\phi)r  
+ +\brs{6+\sqrt{3}}
+ =0
+}$     }     
+          
+          
+          
+\newpage\mbox{}\vfill
+{\normalsize
+\lstinputlisting[numbers=left, numberstyle=\tiny, language=C++]{../common/cpp/df2_order2.cpp}
+}
+\mbox{}\vfill
+
+\newpage
+%--------------------------------------
+Bonus!!! Using {\LaTeX} / {\XeLaTeX} / PostScript for plotting!!!
+%--------------------------------------
+\\
+{\normalsize
+\lstinputlisting[numbers=left, numberstyle=\tiny, language=Octave]{../common/math/graphics/dsp/iir2rphi.tex}
+}
+
+

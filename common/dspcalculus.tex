@@ -1,0 +1,335 @@
+%============================================================================
+% XeLaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%=======================================
+\chapter{DSP Calculus}
+%=======================================
+
+\fbox{displacement}\qquad\fbox{velocity}\qquad\fbox{acceleration}
+
+How are they related?
+
+
+%---------------------------------------
+% Definitions
+%---------------------------------------
+\defbox{\begin{array}{rc>{\ds}l}
+  \fv(t) &\eqd& \ddt \fx(t)
+  \\
+  \fa(t) &\eqd& \ddt \fv(t)
+\end{array}}
+\vfill
+\thmbox{\begin{array}{rc>{\ds}l}
+  \fx(t) &=& \int_{u=0}^t \fv(u) \du + \mcom{\fx(0)}{initial condition}
+  \\
+  \fv(t) &=& \int_{u=0}^t \fa(u) \du + \mcom{\fv(0)}{initial condition}
+\end{array}}
+\\
+\begin{proof}
+\thme{Fundamental Theorem of Calculus}
+\end{proof}
+
+
+
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+What is the Fourier Transform of the Differential Operator?
+\vfill
+{\begin{align*}
+  \boxed{\opFT \brs{\ddt \fx(t)}} 
+    &\eqd \int_{t=-\infty}^{t=+\infty} \mcom{\brs{\ddt \fx(t)}}{$\dv$} \mcom{e^{-i\omega t}}{$u$} \dt
+  \\&= \brlr{\mcom{e^{-i\omega t}}{$u$} \mcom{\fx(t)}{$v$}}_{t=-\infty}^{t=+\infty}
+      -\int_{t=-\infty}^{t=+\infty} \mcom{\fx(t)}{$v$} \mcom{(-i\omega)e^{-i\omega t}}{$\du$} \dt
+    && \text{by \thme{Integration by Parts}}
+  \\&= \cancelto{0}{e^{-i\omega \infty}}\fx(\infty) - e^{-i\omega \infty}\cancelto{0}{\fx(-\infty)} 
+      -(-i\omega)\mcom{\int_{t=-\infty}^{t=+\infty} \fx(t) e^{-i\omega t} \dt}{\ope{Fourier Transform} of $\fx(t)$}
+    && \text{assuming $\fx(t)$ started at $0$}
+  \\&= \boxed{i\omega X(\omega)}
+\end{align*}}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+What is the Fourier Transform of the Integral Operator?
+\vfill
+{\begin{align*}
+  \boxed{\opFT \int_{u=-\infty}^{u=t} \fx(u) \du}
+    &\eqd \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=t} \fx(u) \du} e^{-i\omega t} \dt
+  \\&= \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fx(u) \fh(t-u) \du} e^{-i\omega t} \dt
+    && \brp{\begin{array}{M}where $\fh(t)$ is the\\\fncte{Heaviside function}\end{array}}
+  \\&= \int_{v=-\infty}^{v=+\infty} \int_{u=-\infty}^{u=+\infty} \fx(u) \fh(v)  e^{-i\omega (u+v)} \du \dv
+    && \brp{\begin{array}{Mrcl}
+         where      & v&=&t-u\\ 
+         $\implies$ & t&=&u+v
+       \end{array}}
+  \\&= \brs{\int_{v=-\infty}^{v=+\infty} \fh(v) e^{-i\omega v} \dv} \mcom{\brs{\int_{u=-\infty}^{u=+\infty} \fx(u)   e^{-i\omega u} \du }}{\ope{Fourier Transform} $X(\omega)$ of $\fx(t)$}
+  \\&= \brs{\int_{v=0}^{v=+\infty} e^{-i\omega v} \dv} X(\omega)
+  \\&= \brlr{\frac{1}{-i\omega}e^{-i\omega v}}_{v=0}^{v=+\infty} X(\omega)
+     \quad=\quad \boxed{\frac{1}{i\omega} X(\omega)}
+\end{align*}}
+%
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+Digital Differentiation Method \#1: \ope{Difference}\footnote{\citerpgc{williams1986}{69}{9780132018562}{Difference}}
+\vfill
+\begin{align*}
+  \fy[n]
+    &\eqd \fx[n] - \fx[n-1]
+  \\\\
+  \opZ\brb{\fy[n]} &= \opZ\brb{\fx[n] - \fx[n-1]}
+  \\
+  Y(z) &= X(z) + z^{-1}X(z)
+  \\\\
+  \frac{Y(z)}{X(z)} &= 1-z^{-1} \quad=\quad \boxed{\frac{z-1}{z}}
+  \qquad\brb{\begin{array}{MM}
+    How many zeros? & Where?\\
+    How many poles? & Where?
+  \end{array}}
+\end{align*}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+\vfill
+Digital Differentiation = Continuous Differentiation?\footnote{\citerpgc{williams1986}{70}{9780132018562}{Figure 2.14(a)}}
+\vfill
+\begin{align*}
+  \abs{\frac{z-1}{z}}_{z=e^{i\omega}}
+    &= \abs{\frac{e^{i\omega}-1}
+                 {e^{i\omega}}
+           }
+  \\&= \abs{\frac{e^{i\omega/2}\brp{e^{i\omega/2}-e^{-i\omega/2}}}
+                 {e^{i\omega}}
+           }
+   &&= \abs{\mcom{e^{-i\omega/2}}{phase}\,\mcom{{2\sin\brp{\frac{\omega}{2}}}}{magnitude}}
+  \\&= \boxed{{2\sin\brp{\frac{\omega}{2}}}} 
+    && \text{for $0\le\omega\le\pi$}
+\end{align*}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+\includegraphics[height=80mm]{graphics/diff.pdf}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+Digital Differentiation Method \#2: \ope{Central Difference}\footnote{\citerpgc{williams1986}{69}{9780132018562}{Difference}}
+\vfill
+\begin{align*}
+  \fy[n]
+    &\eqd \frac{\fx[n] - \fx[n-2]}{2}
+  \\\\
+  Y(z) &= \frac{X(z) + z^{-1}X(z)}{2}
+  \\\\
+  \frac{Y(z)}{X(z)} &= \frac{1-z^{-1}}{2} \quad=\quad {\frac{z^2-1}{2z^2}}
+  \\\\
+                    &= \boxed{\frac{(z+1)(z-1)}{2z^2}} 
+  \qquad\brb{\begin{array}{MM}
+    How many zeros? & Where?\\
+    How many poles? & Where?
+  \end{array}}
+\end{align*}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+\vfill
+Central Difference = Continuous Differentiation?\footnote{\citerpgc{williams1986}{70}{9780132018562}{Figure 2.14(b)}}
+\vfill
+\begin{align*}
+  \abs{\frac{z^2-1}{2z^2}}_{z=e^{i\omega}}
+    &= \abs{\frac{e^{2i\omega}-1}
+                 {2e^{2i\omega}}
+           }
+     = \abs{\brp{\frac{e^{i\omega}}{e^{2i\omega}}}
+            \frac{\brp{e^{i\omega}-e^{-i\omega}}}{2}
+           }
+  \\&= \abs{\brp{e^{-i\omega}}
+            \frac{\brs{cos(\omega)+i\sin(\omega)}-\brs{\cos(\omega)+i\sin(-\omega)}}{2}
+           }
+  \\&= \abs{\brp{e^{-i\omega}}
+            \frac{\brs{cos(\omega)+i\sin(\omega)}-\brs{\cos(\omega)-i\sin(\omega)}}{2}
+           }
+  \\&= \abs{\brp{e^{-i\omega+\pi/2}}
+            \frac{2\sin(\omega)}{2}
+           }
+     = \boxed{\abs{\sin(\omega)}}
+\end{align*}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+\includegraphics[height=80mm]{graphics/cendiff.pdf}
+
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+Digital Integration Method \#1: \opd{Summation}
+\vfill
+{\begin{align*}
+  \fy[n]
+    &\eqd \fx[n] + \mcom{\fx[n-1] + \fx[n-2] + \fx[n-3] + \fx[n-4] + \fx[n-5] + \cdots}{{$\fy[n-1]$}}
+  \\
+  \fy[n] &=    \fx[n] + \fy[n-1]
+  \\\\
+  \opZ\brb{\fy[n]} &= \opZ\brb{\fx[n] + \fy[n-1]}
+  \\
+  Y(z) &= X(z) + z^{-1}Y(z)
+  \\
+  Y(z)\brs{1-z^{-1}} &= X(z)
+  \\\\
+  \frac{Y(z)}{X(z)} &= \frac{1}{1-z^{-1}} \quad=\quad \boxed{\frac{z}{z-1}}
+  \qquad\brb{\begin{array}{MM}
+    How many zeros? & Where?\\
+    How many poles? & Where?
+  \end{array}}
+\end{align*}}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+Digital Integration Method \#2: \opd{Trapezoid}
+\vfill
+{\begin{align*}
+  \fy[n]
+    &\eqd \frac{\fx[n]+\fx[n-1]}{2} + \frac{\fx[n-1]+\fx[n-2]}{2} + \frac{\fx[n-2]+\fx[n-3]}{2} + \cdots
+  \\&=    \sfrac{1}{2}\fx[n] + \mcom{\fx[n-1] + \fx[n-2] + \fx[n-3] + \fx[n-4] + \fx[n-5] + \cdots}{{$\fy[n-1]+\sfrac{1}{2}\fx[n-1]$}}
+  \\&=    \sfrac{1}{2}\fx[n] + \fy[n-1]+\sfrac{1}{2}\fx[n-1]
+  \\\\
+  \fy[n]-\fy[n-1]&=    \sfrac{1}{2}\brs{\fx[n] + +\fx[n-1]} 
+  \\\\
+  Y(z)\brs{1-z^{-1}} &= \sfrac{1}{2} X(z)\brs{1+z^{-1}}
+  \\\\
+  \frac{Y(z)}{X(z)} 
+    &= \brp{\frac{1}{2}} \frac{1+z^{-1}}{1-z^{-1}}
+     = \boxed{\brp{\frac{1}{2}} \frac{z+1}{z-1}} 
+  \qquad\brb{\begin{array}{MM}
+    How many zeros? & Where?\\
+    How many poles? & Where?
+  \end{array}}
+\end{align*}}
+
+
+%%---------------------------------------
+%\newpage\mbox{}\vfill
+%%---------------------------------------
+%Digital Integration Method \#2: \opd{Simpson's Rule}
+%\vfill
+%{\begin{align*}
+%  \fy[n]
+%    &\eqd \frac{\fx[n  ]+4\fx[n -1]+\fx[n -2]}{3}   
+%     +    \frac{\fx[n-1]+4\fx[n -2]+\fx[n -3]}{3}   
+%     +    \frac{\fx[n-2]+4\fx[n -3]+\fx[n -4]}{3} 
+%     +    \frac{\fx[n-3]+4\fx[n -4]+\fx[n -5]}{3} 
+%     +    \frac{\fx[n-4]+4\fx[n -5]+\fx[n -6]}{3} 
+%     +    \frac{\fx[n-5]+4\fx[n -6]+\fx[n -7]}{3} 
+%     +    \frac{\fx[n-6]+4\fx[n -7]+\fx[n -8]}{3} 
+%     +    \frac{\fx[n-7]+4\fx[n -8]+\fx[n -9]}{3} 
+%     +    \frac{\fx[n-8]+4\fx[n -9]+\fx[n-10]}{3} 
+%     +    \frac{\fx[n-9]+4\fx[n-10]+\fx[n-11]}{3} 
+%     +    \cdots  
+%  \\&=    \sfrac{1}{3}\fx[n]+\sfrac{5}{3}\fx[n-1] 
+%        + \mcom{2\fx[n-2] + 2\fx[n-3] + 2\fx[n-4] + \cdots}
+%               {$\fy[n-2]+\sfrac{5}{3}\fx[n-2]+\sfrac{1}{3}\fx[n-3]$}
+%
+%
+%  \\&=    \sfrac{1}{3}\fx[n]+\sfrac{5}{3}\fx[n-1] 
+%        + \mcom{2\fx[n-2] + 2\fx[n-3] + 2\fx[n-4] + \cdots}
+%               {$\fy[n-2]+\sfrac{5}{3}\fx[n-2]+\sfrac{1}{3}\fx[n-3]$}
+%
+%
+%  \\&=    \sfrac{1}{3}\fx[n]+\mcom{\sfrac{5}{3}\fx[n-1] + 2\fx[n-2] + 2\fx[n-3] + 2\fx[n-4] + \cdots}
+%                                  {$\fy[n-1]+\sfrac{2}{3}\fx[n-1]+\sfrac{1}{3}\fx[n-2]$}
+%  \\&=    \fy[n-1] - \sfrac{1}{3}\brp{\fx[n]+ 2\fx[n-1]+\fx[n-2]}
+%
+%
+%
+%
+%     +    \frac{\fx[n-1]+4\fx[n-2]+\fx[n-3]}{3}   
+%     +    \frac{\fx[n-2]+4\fx[n-3]+\fx[n-4]}{3} 
+%     +    \cdots  
+%  \\&=    \sfrac{1}{2}\fx[n] + \mcom{\fx[n-1] + \fx[n-2] + \fx[n-3] + \fx[n-4] + \fx[n-5] + \cdots}{{$\fy[n-1]+\sfrac{1}{2}\fx[n-1]$}}
+%  \\&=    \sfrac{1}{2}\fx[n] + \fy[n-1]+\sfrac{1}{2}\fx[n-1]
+%  \\\\
+%  \fy[n]-\fy[n-1]&=    \sfrac{1}{2}\brs{\fx[n] + +\fx[n-1]} 
+%  \\\\
+%  Y(z)\brs{1-z^{-1}} &= \sfrac{1}{2} X(z)\brs{1+z^{-1}}
+%  \\\\
+%  \frac{Y(z)}{X(z)} 
+%    &= \brp{\frac{1}{2}} \frac{1+z^{-1}}{1-z^{-1}}
+%     = \boxed{\brp{\frac{1}{2}} \frac{z+1}{z-1}} 
+%  \qquad\brb{\begin{array}{MM}
+%    How many zeros? & Where?\\
+%    How many poles? & Where?
+%  \end{array}}
+%\end{align*}}
+%
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+\vfill
+Digital Summation Integration = Continuous Integration?
+\vfill
+\begin{align*}
+  \abs{\frac{z}{z-1}}_{z=e^{i\omega}}
+    &= \abs{\frac{e^{i\omega}}{e^{i\omega}-1}}
+  \\&= \abs{\frac{e^{i\omega}}{e^{i\omega/2}\brp{e^{i\omega/2}-e^{-i\omega/2}}}}
+   &&= \abs{\mcom{e^{i\omega/2}}{phase}\,\mcom{\frac{1}{2\sin\brp{\frac{\omega}{2}}}}{magnitude}}
+  \\&= \boxed{\frac{1}{2\sin\brp{\frac{\omega}{2}}}} 
+    && \text{for $0\le\omega\le\pi$}
+\end{align*}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+\includegraphics[height=80mm]{graphics/IntSum.pdf}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+\vfill
+Digital Trapezoid Integration = Continuous Integration?
+\vfill
+\begin{align*}
+  \abs{\frac{1}{2}\brp{\frac{z+1}{z-1}}}_{z=e^{i\omega}}
+    &= \frac{1}{2}
+       \abs{\frac{e^{i\omega}+1}{e^{i\omega}-1}}
+  \\&= \frac{1}{2}
+       \abs{\frac{e^{i\omega/2}\brp{e^{i\omega/2}+e^{-i\omega/2}}}
+                 {e^{i\omega/2}\brp{e^{i\omega/2}-e^{-i\omega/2}}}
+           }
+   &&= \frac{1}{2}
+       \abs{\frac{2\cos\brp{\frac{\omega}{2}}}
+                 {2\sin\brp{\frac{\omega}{2}}}
+           }
+  \\&= \boxed{\frac{1}{2} \abs{\cot\brp{\frac{\omega}{2}}}}
+    && \text{for $0\le\omega\le\pi$}
+\end{align*}
+
+
+%---------------------------------------
+%\newpage\mbox{}\vfill
+%---------------------------------------
+\includegraphics[height=80mm]{graphics/IntTrap.pdf}
+
+
+

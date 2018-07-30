@@ -1,0 +1,671 @@
+%============================================================================
+% XeLaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%=======================================
+\chapter{DSP Calculus}
+%=======================================
+
+\fbox{displacement}\qquad\fbox{velocity}\qquad\fbox{acceleration}
+
+How are they related?
+
+
+%---------------------------------------
+% Definitions
+%---------------------------------------
+\newpage\vfill
+\defbox{\begin{array}{rc>{\ds}l}
+  \fv(t) &\eqd& \ddt \fx(t)
+  \\
+  \fa(t) &\eqd& \ddt \fv(t)
+\end{array}}
+\vfill
+\thmbox{\begin{array}{rc>{\ds}l}
+  \fx(t) &=& \int_{u=0}^t \fv(u) \du + \mcom{\fx(0)}{initial condition}
+  \\
+  \fv(t) &=& \int_{u=0}^t \fa(u) \du + \mcom{\fv(0)}{initial condition}
+\end{array}}
+\\
+\begin{proof}
+\thme{Fundamental Theorem of Calculus}
+\end{proof}
+
+\vfill\mbox{}
+
+
+%=======================================
+%\section{Definitions}
+%=======================================
+\newpage
+\vfill
+Some history about ``\hib{integral calculus}"\ldots
+\vfill
+\begin{tabular}{clll}
+  \imark &   Leibnitz:  & \hie{calculus summatorius} (summation calculus) 
+    \\   &              & with operational symbol $\ds\int$ (an enlongated ``S")\\\\
+  \imark &   Bernoulli: & \hie{calculus integralis} (integral calculus)  
+    \\   &              & with operational symbol $\ds I$
+\end{tabular}
+\vfill
+  In the end, a compromise.\footnote{\citerpp{cajori2}{181}{182}} 
+\vfill\mbox{}
+
+\newpage\mbox{}\vfill
+%\begin{figure}[ht]%\color{figcolor}
+%\begin{center}
+\begin{fsL}
+\thicklines
+\setlength{\unitlength}{\tw/1100}
+\begin{picture}(1000,430)(0,-30)
+  %{\color{graphpaper}\graphpaper[20](0,0)(1000,400)}
+  \thicklines
+  \put(   0 ,   0 ){\line(1,0){1000} }%
+  \put(   0 ,   0 ){\line(0,1){400} }%
+  \thicklines
+  \put(   0 , -10 ){\makebox(0,0)[t]{$0$}}%
+  \put( 100 , -10 ){\makebox(0,0)[t]{$1$}}%
+  \put( 200 , -10 ){\makebox(0,0)[t]{$2$}}%
+  \put( 300 , -10 ){\makebox(0,0)[t]{$3$}}%
+  \put( 400 , -10 ){\makebox(0,0)[t]{$4$}}%
+  \put( 500 , -10 ){\makebox(0,0)[t]{$5$}}%
+  \put( 600 , -10 ){\makebox(0,0)[t]{$6$}}%
+  \put( 700 , -10 ){\makebox(0,0)[t]{$7$}}%
+  \put( 800 , -10 ){\makebox(0,0)[t]{$8$}}%
+  \put( 900 , -10 ){\makebox(0,0)[t]{$9$}}%
+  \put(1000 , -10 ){\makebox(0,0)[t]{$10$}}%
+  {\color{blue}%
+    \qbezier(0,50)(300,600)(600,200)%
+    \qbezier(600,200)(800,-67)(1000,400)%
+    }%
+  {\color{red}%
+    \put( 150, 30){\makebox(0,0)[c]{$\leftarrow\Delta x\rightarrow$}}%
+    \put(   0,  0){\line(0,1){ 50}} \put(   0, 50){\line(1,0){100}} \put(   0, 50){\circle*{20}}%
+    \put( 100,  0){\line(0,1){200}} \put( 100,200){\line(1,0){100}} \put( 100,200){\circle*{20}}%
+    \put( 200,  0){\line(0,1){310}} \put( 200,310){\line(1,0){100}} \put( 200,310){\circle*{20}}%
+    \put( 300,  0){\line(0,1){360}} \put( 300,360){\line(1,0){100}} \put( 300,360){\circle*{20}}%
+    \put( 400,  0){\line(0,1){360}} \put( 400,360){\line(1,0){100}} \put( 400,360){\circle*{20}}%
+    \put( 500,  0){\line(0,1){360}} \put( 500,310){\line(1,0){100}} \put( 500,310){\circle*{20}}%
+    \put( 600,  0){\line(0,1){310}} \put( 600,200){\line(1,0){100}} \put( 600,200){\circle*{20}}%
+    \put( 700,  0){\line(0,1){200}} \put( 700,110){\line(1,0){100}} \put( 700,110){\circle*{20}}%
+    \put( 800,  0){\line(0,1){110}} \put( 800,110){\line(1,0){100}} \put( 800,110){\circle*{20}}%
+    \put( 900,  0){\line(0,1){210}} \put( 900,210){\line(1,0){100}} \put( 900,210){\circle*{20}}%
+    \put(1000,  0){\line(0,1){400}} \put(1000,400){\circle*{20}}%
+    %
+    \put(  50 , 60 ){\makebox(0,0)[b]{$\frac{1}{2}$}}
+    \put( 150 ,210 ){\makebox(0,0)[b]{$2$}}
+    \put( 250 ,320 ){\makebox(0,0)[b]{$3$}}
+    \put( 350 ,380 ){\makebox(0,0)[b]{$3\frac{1}{2}$}}
+    \put( 450 ,380 ){\makebox(0,0)[b]{$3\frac{1}{2}$}}
+    \put( 550 ,320 ){\makebox(0,0)[b]{$3$}}
+    \put( 650 ,210 ){\makebox(0,0)[b]{$2$}}
+    \put( 750 ,120 ){\makebox(0,0)[b]{$1$}}
+    \put( 850 ,120 ){\makebox(0,0)[b]{$1$}}
+    \put( 950 ,220 ){\makebox(0,0)[b]{$2$}}
+    }%
+\end{picture}
+\end{fsL}
+%\end{center}
+%\caption{
+%   Curve for example \prefpp{ex:int_curve}
+%   \label{fig:int_curve}
+%   }
+%\end{figure}
+\vfill\mbox{}
+
+\newpage\vfill
+%---------------------------------------
+%\begin{definition}
+%\label{def:intR}
+ The \hid{Cauchy integral operator} $\intC$ %of a function $\ff$ over a set $\setE\subseteq\setX$
+\citetbl{
+  \citerp{jahnke2003}{262},
+  \citor{cauchy1823}
+  }
+\index{integral operators!Cauchy}
+%---------------------------------------
+%Let $\ms$ be a measure space.
+%Let $\seq{\ssetP_n}{n\in\Z}$ be sequence of increasingly fine partitions 
+%of a set $\setE\subseteq\setX$.
+\defboxp{\indxs{\intC}
+  %The \hid{Cauchy integral operator} $\intC$ of a function $\ff$ over a set $\setE\subseteq\setX$
+  %on the measure space $\ms$ is
+  \[ \intC_\setE \ff(x) \dmu \eqd \sum_n \ff(x_n) \mu(\setE_n)  \]
+  %where 
+  %$x_n\in\setE_n$ and 
+  %$\ds\setE_n \in \lim_{m\to\infty}\ssetP_m \eqd \set{\setE_n}{n\in\Z}$
+  }
+%\end{definition}
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:intR}
+%\citetbl{
+%  \citerp{jahnke2003}{264},
+%  \citor{riemann1854}
+%  }
+%\index{integral operators!Riemann}
+%%---------------------------------------
+%Let $\ms$ be a measure space.
+%Let $\seq{\ssetP_n}{n\in\Z}$ be sequence of increasingly fine partitions 
+%of a set $\setE\subseteq\setX$.
+%\defboxp{\indxs{\intR}
+%  \[\begin{array}{>{\ds}rc>{\ds}l@{\qquad}D}
+%    \intR_E      \ff \dmu  &=& \inf_{x_i \in\setP_i} \setn{\sum_n \ff(x_n) \mu(\setE_n) } 
+%      & (lower integral)
+%      \\
+%    \intR_E^\ast \ff \dmu  &=& \sup_{x_i \in\setP_i} \setn{\sum_n \ff(x_n) \mu(\setE_n) }
+%      & (upper integral)
+%  \end{array}\]
+%  where 
+%  $x_n\in\setE_n$ and 
+%  $\ds\setE_n \in \lim_{m\to\infty}\ssetP_m \eqd \set{\setE_n}{n\in\Z}$.
+%  The sum $\intR_\setE\ff \dmu$ is \hid{Riemann integrable} if
+%  $\intR_\setE\ff\dmu = \intR_\setE^\ast \ff\dmu$ and in this case 
+%  the \hid{Riemann integral operator} $\intR$ of $\ff$ over $\setE\subseteq\setX$
+%  on $\ms$ is $\intR_E\ff\dmu$.
+%  }
+%\end{definition}
+
+%---------------------------------------
+The \hid{Lebesgue integral operator} $\intL$ %of $\ff$ over $\setE\subseteq\setX$
+%\begin{definition}
+%\label{def:intL}
+\citetbl{
+  \citer{lebesgue1902},
+  \citer{lebesgue1902b} 
+  }
+%---------------------------------------
+%Let $\ms$ be a measure space.
+%Let $\seq{\ssetP_n}{n\in\Z}$ be sequence of increasingly fine partitions 
+%of a set $\setE\subseteq\setX$.
+\defboxp{\indxs{\intL}
+  %The \hid{Lebesgue integral operator} $\intL$ of $\ff$ over $\setE\subseteq\setX$
+  %on $\ms$ is 
+  \[
+    \intL_\setE  \ff \dmu  \eqd \sum_{y\in\setY} y \mu\brp{\ff^{-1}(y)}
+  \]
+  }
+%\end{definition}
+
+
+
+%%---------------------------------------
+%\begin{example}
+%\label{ex:int_curve}
+%%---------------------------------------
+%Suppose we want to compute the area under the curve in \prefpp{fig:int_curve}
+%from $x=0$ to $x=10$.
+%This can be accomplished using either Riemann or Lebesgue integration. 
+%Riemann integration adds up the areas one by one, starting from $x=0$ and ending 
+%with $x=10$ such that
+%\begin{align*}
+%  \intr_0^{10} 
+%    &= \sum_{n=0}^{n=9} x_n \mcom{\mu\set{x\in\setE}{x_n\le x<x_{n+1}}}{$\Delta x=1$}
+%  \\&= \sum_{n=0}^{n=9} x_n \cdot 1
+%  \\&= \frac{1}{2} + 2 + 3 + 3\frac{1}{2} + 3\frac{1}{2} + 3 + 2 + 1 + 1 + 2
+%  \\&= 21\frac{1}{2}
+%\end{align*}
+%On the other hand, Lebesgue integration first groups together all equal values
+%into their own set and then sums the value of each set times the size of the set such that
+%\begin{align*}
+%  \int_0^{10} 
+%    &= \sum_{k=1}^{n=5} y_k \mu\set{x\in\setE}{\ff(x)=y_k}
+%  \\&= \mcom{\frac{1}{2}}{$y_1$}  \times 1 + 
+%       \mcom{1}{$y_2$}            \times 2 +   
+%       \mcom{2}{$y_3$}            \times 3 + 
+%       \mcom{3}{$y_4$}            \times 2 + 
+%       \mcom{3\frac{1}{2}}{$y_5$} \times 2
+%  \\&= 21\frac{1}{2}
+%\end{align*}
+%Of course in this case and in the case of all other ``well behaved" functions, 
+%the two approaches yield the same result.
+%\end{example}
+
+
+%\begin{figure}
+\newpage\mbox{}\vfill
+\centering
+\begin{tabular}{*{11}{c}}
+  $\scriptstyle \seto{ 2}=1$ &
+  $\scriptstyle \seto{ 3}=2$ &
+  $\scriptstyle \seto{ 4}=3$ &
+  $\scriptstyle \seto{ 5}=4$ &
+  $\scriptstyle \seto{ 6}=5$ &
+  $\scriptstyle \seto{ 7}=6$ &
+  $\scriptstyle \seto{ 8}=5$ &
+  $\scriptstyle \seto{ 8}=4$ &
+  $\scriptstyle \seto{10}=3$ &
+  $\scriptstyle \seto{11}=2$ &
+  $\scriptstyle \seto{12}=1$  
+  \\                  &                  &                  &                  &                  & \diceF\diceA &                  &                  &                  &                  &                  
+  \\                  &                  &                  &                  & \diceE\diceA & \diceE\diceB & \diceF\diceB &                  &                  &                  &                  
+  \\                  &                  &                  & \diceD\diceA & \diceD\diceB & \diceD\diceC & \diceE\diceC & \diceF\diceC &                  &                  &                  
+  \\                  &                  & \diceC\diceA & \diceC\diceB & \diceC\diceC & \diceC\diceD & \diceD\diceD & \diceE\diceD & \diceF\diceD &                  &                  
+  \\                  & \diceB\diceA & \diceB\diceB & \diceB\diceC & \diceB\diceD & \diceB\diceE & \diceC\diceE & \diceD\diceE & \diceE\diceE & \diceF\diceE &                  
+  \\ \diceA\diceA & \diceA\diceB & \diceA\diceC & \diceA\diceD & \diceA\diceE & \diceA\diceF & \diceB\diceF & \diceC\diceF & \diceD\diceF & \diceE\diceF & \diceF\diceF
+\end{tabular}
+%  \caption{
+%    Pair of dice distribution for \prefpp{ex:int_two_dice}
+%    \label{fig:int_two_dice}
+%    }
+%\end{figure}
+\vfill\mbox{}
+
+%%---------------------------------------
+%\begin{example}
+%\label{ex:int_two_dice}
+%\hspace{1pt}\\
+%%---------------------------------------
+%\begin{minipage}{6\tw/16}%
+%  \begin{tabular}{c|*{6}{c}|c}
+%             & \diceA & \diceB & \diceC & \diceD & \diceE & \diceF \\
+%    \hline     
+%    \diceA &    2     &     3    &    4     &     5    &     6    &     7    \\
+%    \diceB &    3     &     4    &    5     &     6    &     7    &     8    \\
+%    \diceC &    4     &     5    &    6     &     7    &     8    &     9    \\
+%    \diceD &    5     &     6    &    7     &     8    &     9    &    10    \\
+%    \diceE &    6     &     7    &    8     &     9    &    10    &    11    \\
+%    \diceF &    7     &     8    &    9     &    10    &    11    &    12    \\
+%  \end{tabular}%
+%\end{minipage}%
+%\hfill
+%\begin{minipage}{9\tw/16}%
+%Suppose we want to find the sum of all possible outcomes of the sum of a pair of dice.
+%All the possible outcomes are summarized in the table at the left.
+%Riemann integration would start in the upper left hand corner (\diceA\diceA)
+%and sum across each row such that:
+%\begin{align*}
+%  \intr_{\setE} \ff(x) \dx
+%    &= \sum_{n=1}^{36} \ff(x_n) \cdot 1
+%  \\&= \text{\diceA\diceA} + \text{\diceA\diceB} + 
+%       \text{\diceA\diceC} + \cdots +
+%       \text{\diceF\diceE} + \text{\diceF\diceF}
+%  \\&= \mcom{2 + 3 + 4 + \cdots + 11 + 12}{36 terms}
+%  \\&= 250
+%\end{align*}
+%\end{minipage}\\
+%Lebesgue integration, on the other hand, groups like values into sets and 
+%thus actually adds diagonally---because like values occur along diagonal lines.
+%This organization of like values is illustrated in \prefpp{fig:int_two_dice}
+%and calculated below:
+%\begin{align*}
+%  \int_{\setE} \ff \dd{\mu}
+%    &= \sum_{k=2}^{k=12} k \mu\set{\text{sum of dice pair}}{\text{sum }=k}
+%  \\&= \mcom{2\times1 + 3\times2 +  4\times3 +  5\times4 + 6\times5 + 7\times6 + 
+%       8\times5 + 9\times4 + 10\times3 + 11\times2 + 12\times1}{11 terms}
+%  \\&= 250 
+%\end{align*}
+%\end{example}
+%
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\qboxnps
+  {Charles Hermite (1822 -- 1901), French mathematician, 
+    \index{Hermite, Charles}
+    \index{quotes!Hermite, Charles}
+    {\footnotesize in an 1893 letter to Stieltjes, 
+    in response to the ``pathological" everywhere continuous 
+    but nowhere differentiable \hie{Weierstrass  functions} 
+    $\ff(x)=\sum_{n=0}^\infty a^n \cos(b^n\pi x)$.}\footnotemark
+  }
+  {../common/people/hermite.jpg}
+  {I turn aside with a shudder of horror from this lamentable 
+   plague of functions which have no derivatives.}
+  \citetblt{
+    quote:       & \citer{hermite1893} \\
+    translation: & \citerp{lakatos}{19} \\
+    image:       & \url{http://www-groups.dcs.sx-and.ac.uk/~history/PictDisplay/Hermite.html}
+    }
+\vfill
+%---------------------------------------
+%\begin{example}
+\fnctb{Salt and pepper function} / \fnctb{Dirichlet monster}
+\citetbl{
+  \citerp{jahnke2003}{263},
+  \citor{dirichlet1829},
+  \citor{dirichlet1829b} 
+  }
+\index{salt and pepper function}
+\index{Dirichlet monster}
+\index{functions!salt and pepper}
+\index{functions!Dirichlet monster}
+%---------------------------------------
+\exbox{
+  \ff(x) \eqd \brbl{\begin{array}{cM}
+    0 & for $x$ rational \\
+    1 & for $x$ irrational
+  \end{array}}
+  \quad\implies\quad
+  \text{$\ff(x)$ is not \prope{Riemann integrable}}
+  }
+%\end{example}
+\vfill\mbox{}
+
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:spLLR}
+%%---------------------------------------
+%Let $\int_\setA \ff \dmu$ be the \structe{Lebesgue integral} on a \structe{measure space} $\ms$.
+%\defbox{\begin{array}{M}
+%  The space $\spLLR$ is defined as
+%  \\\indentx$\ds\set{\ff\in\clFrr}{\int_\R \abs{\ff(x)}^2 \dmu < \infty}$
+%\end{array}}
+%\end{definition}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+What is the Fourier Transform of the Differential Operator?
+\vfill
+{\LARGE
+\begin{align*}
+  \boxed{\opFT \brs{\ddt \fx(t)}} 
+    &\eqd \int_{t=-\infty}^{t=+\infty} \mcom{\brs{\ddt \fx(t)}}{$\dv$} \mcom{e^{-i\omega t}}{$u$} \dt
+  \\&= \brlr{\mcom{e^{-i\omega t}}{$u$} \mcom{\fx(t)}{$v$}}_{t=-\infty}^{t=+\infty}
+      -\int_{t=-\infty}^{t=+\infty} \mcom{\fx(t)}{$v$} \mcom{(-i\omega)e^{-i\omega t}}{$\du$} \dt
+    && \text{by \thme{Integration by Parts}}
+  \\&= \cancelto{0}{e^{-i\omega \infty}}\fx(\infty) - e^{-i\omega \infty}\cancelto{0}{\fx(-\infty)} 
+      -(-i\omega)\mcom{\int_{t=-\infty}^{t=+\infty} \fx(t) e^{-i\omega t} \dt}{\ope{Fourier Transform} of $\fx(t)$}
+    && \text{assuming $\fx(t)$ started at $0$}
+  \\&= \boxed{i\omega X(\omega)}
+\end{align*}}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+What is the Fourier Transform of the Integral Operator?
+\vfill
+{\LARGE\begin{align*}
+  \boxed{\opFT \int_{u=-\infty}^{u=t} \fx(u) \du}
+    &\eqd \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=t} \fx(u) \du} e^{-i\omega t} \dt
+  \\&= \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fx(u) \fh(t-u) \du} e^{-i\omega t} \dt
+    && \brp{\begin{array}{M}where $\fh(t)$ is the\\\fncte{Heaviside function}\end{array}}
+  \\&= \int_{v=-\infty}^{v=+\infty} \int_{u=-\infty}^{u=+\infty} \fx(u) \fh(v)  e^{-i\omega (u+v)} \du \dv
+    && \brp{\begin{array}{Mrcl}
+         where      & v&=&t-u\\ 
+         $\implies$ & t&=&u+v
+       \end{array}}
+  \\&= \brs{\int_{v=-\infty}^{v=+\infty} \fh(v) e^{-i\omega v} \dv} \mcom{\brs{\int_{u=-\infty}^{u=+\infty} \fx(u)   e^{-i\omega u} \du }}{\ope{Fourier Transform} $X(\omega)$ of $\fx(t)$}
+  \\&= \brs{\int_{v=0}^{v=+\infty} e^{-i\omega v} \dv} X(\omega)
+  \\&= \brlr{\frac{1}{-i\omega}e^{-i\omega v}}_{v=0}^{v=+\infty} X(\omega)
+     \quad=\quad \boxed{\frac{1}{i\omega} X(\omega)}
+\end{align*}}
+%\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+Digital Differentiation Method \#1: \ope{Difference}\footnote{\citerpgc{williams1986}{69}{9780132018562}{Difference}}
+\vfill
+\begin{align*}
+  \fy[n]
+    &\eqd \fx[n] - \fx[n-1]
+  \\\\
+  \opZ\brb{\fy[n]} &= \opZ\brb{\fx[n] - \fx[n-1]}
+  \\
+  Y(z) &= X(z) + z^{-1}X(z)
+  \\\\
+  \frac{Y(z)}{X(z)} &= 1-z^{-1} \quad=\quad \boxed{\frac{z-1}{z}}
+  \qquad\brb{\begin{array}{>{\Large}M>{\Large}M}
+    How many zeros? & Where?\\
+    How many poles? & Where?
+  \end{array}}
+\end{align*}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\vfill
+Digital Differentiation = Continuous Differentiation?\footnote{\citerpgc{williams1986}{70}{9780132018562}{Figure 2.14(a)}}
+\vfill
+\begin{align*}
+  \abs{\frac{z-1}{z}}_{z=e^{i\omega}}
+    &= \abs{\frac{e^{i\omega}-1}
+                 {e^{i\omega}}
+           }
+  \\&= \abs{\frac{e^{i\omega/2}\brp{e^{i\omega/2}-e^{-i\omega/2}}}
+                 {e^{i\omega}}
+           }
+   &&= \abs{\mcom{e^{-i\omega/2}}{phase}\,\mcom{{2\sin\brp{\frac{\omega}{2}}}}{magnitude}}
+  \\&= \boxed{{2\sin\brp{\frac{\omega}{2}}}} 
+    && \text{for $0\le\omega\le\pi$}
+\end{align*}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\includegraphics[height=150mm]{graphics/diff.pdf}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+Digital Differentiation Method \#2: \ope{Central Difference}\footnote{\citerpgc{williams1986}{69}{9780132018562}{Difference}}
+\vfill
+\begin{align*}
+  \fy[n]
+    &\eqd \frac{\fx[n] - \fx[n-2]}{2}
+  \\\\
+  Y(z) &= \frac{X(z) + z^{-1}X(z)}{2}
+  \\\\
+  \frac{Y(z)}{X(z)} &= \frac{1-z^{-1}}{2} \quad=\quad {\frac{z^2-1}{2z^2}}
+  \\\\
+                    &= \boxed{\frac{(z+1)(z-1)}{2z^2}} 
+  \qquad\brb{\begin{array}{>{\Large}M>{\Large}M}
+    How many zeros? & Where?\\
+    How many poles? & Where?
+  \end{array}}
+\end{align*}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\vfill
+Central Difference = Continuous Differentiation?\footnote{\citerpgc{williams1986}{70}{9780132018562}{Figure 2.14(b)}}
+\vfill
+\begin{align*}
+  \abs{\frac{z^2-1}{2z^2}}_{z=e^{i\omega}}
+    &= \abs{\frac{e^{2i\omega}-1}
+                 {2e^{2i\omega}}
+           }
+     = \abs{\brp{\frac{e^{i\omega}}{e^{2i\omega}}}
+            \frac{\brp{e^{i\omega}-e^{-i\omega}}}{2}
+           }
+  \\&= \abs{\brp{e^{-i\omega}}
+            \frac{\brs{cos(\omega)+i\sin(\omega)}-\brs{\cos(\omega)+i\sin(-\omega)}}{2}
+           }
+  \\&= \abs{\brp{e^{-i\omega}}
+            \frac{\brs{cos(\omega)+i\sin(\omega)}-\brs{\cos(\omega)-i\sin(\omega)}}{2}
+           }
+  \\&= \abs{\brp{e^{-i\omega+\pi/2}}
+            \frac{2\sin(\omega)}{2}
+           }
+     = \boxed{\abs{\sin(\omega)}}
+\end{align*}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\includegraphics[height=150mm]{graphics/cendiff.pdf}
+\vfill\mbox{}
+
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+Digital Integration Method \#1: \opd{Summation}
+\vfill
+{\LARGE\begin{align*}
+  \fy[n]
+    &\eqd \fx[n] + \mcom{\fx[n-1] + \fx[n-2] + \fx[n-3] + \fx[n-4] + \fx[n-5] + \cdots}{{\Large$\fy[n-1]$}}
+  \\
+  \fy[n] &=    \fx[n] + \fy[n-1]
+  \\\\
+  \opZ\brb{\fy[n]} &= \opZ\brb{\fx[n] + \fy[n-1]}
+  \\
+  Y(z) &= X(z) + z^{-1}Y(z)
+  \\
+  Y(z)\brs{1-z^{-1}} &= X(z)
+  \\\\
+  \frac{Y(z)}{X(z)} &= \frac{1}{1-z^{-1}} \quad=\quad \boxed{\frac{z}{z-1}}
+  \qquad\brb{\begin{array}{>{\Large}M>{\Large}M}
+    How many zeros? & Where?\\
+    How many poles? & Where?
+  \end{array}}
+\end{align*}}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+Digital Integration Method \#2: \opd{Trapezoid}
+\vfill
+{\LARGE\begin{align*}
+  \fy[n]
+    &\eqd \frac{\fx[n]+\fx[n-1]}{2} + \frac{\fx[n-1]+\fx[n-2]}{2} + \frac{\fx[n-2]+\fx[n-3]}{2} + \cdots
+  \\&=    \sfrac{1}{2}\fx[n] + \mcom{\fx[n-1] + \fx[n-2] + \fx[n-3] + \fx[n-4] + \fx[n-5] + \cdots}{{\Large$\fy[n-1]+\sfrac{1}{2}\fx[n-1]$}}
+  \\&=    \sfrac{1}{2}\fx[n] + \fy[n-1]+\sfrac{1}{2}\fx[n-1]
+  \\\\
+  \fy[n]-\fy[n-1]&=    \sfrac{1}{2}\brs{\fx[n] + +\fx[n-1]} 
+  \\\\
+  Y(z)\brs{1-z^{-1}} &= \sfrac{1}{2} X(z)\brs{1+z^{-1}}
+  \\\\
+  \frac{Y(z)}{X(z)} 
+    &= \brp{\frac{1}{2}} \frac{1+z^{-1}}{1-z^{-1}}
+     = \boxed{\brp{\frac{1}{2}} \frac{z+1}{z-1}} 
+  \qquad\brb{\begin{array}{>{\Large}M>{\Large}M}
+    How many zeros? & Where?\\
+    How many poles? & Where?
+  \end{array}}
+\end{align*}}
+\vfill\mbox{}
+
+%%---------------------------------------
+%\newpage\mbox{}\vfill
+%%---------------------------------------
+%Digital Integration Method \#2: \opd{Simpson's Rule}
+%\vfill
+%{\LARGE\begin{align*}
+%  \fy[n]
+%    &\eqd \frac{\fx[n  ]+4\fx[n -1]+\fx[n -2]}{3}   
+%     +    \frac{\fx[n-1]+4\fx[n -2]+\fx[n -3]}{3}   
+%     +    \frac{\fx[n-2]+4\fx[n -3]+\fx[n -4]}{3} 
+%     +    \frac{\fx[n-3]+4\fx[n -4]+\fx[n -5]}{3} 
+%     +    \frac{\fx[n-4]+4\fx[n -5]+\fx[n -6]}{3} 
+%     +    \frac{\fx[n-5]+4\fx[n -6]+\fx[n -7]}{3} 
+%     +    \frac{\fx[n-6]+4\fx[n -7]+\fx[n -8]}{3} 
+%     +    \frac{\fx[n-7]+4\fx[n -8]+\fx[n -9]}{3} 
+%     +    \frac{\fx[n-8]+4\fx[n -9]+\fx[n-10]}{3} 
+%     +    \frac{\fx[n-9]+4\fx[n-10]+\fx[n-11]}{3} 
+%     +    \cdots  
+%  \\&=    \sfrac{1}{3}\fx[n]+\sfrac{5}{3}\fx[n-1] 
+%        + \mcom{2\fx[n-2] + 2\fx[n-3] + 2\fx[n-4] + \cdots}
+%               {\large$\fy[n-2]+\sfrac{5}{3}\fx[n-2]+\sfrac{1}{3}\fx[n-3]$}
+%
+%
+%  \\&=    \sfrac{1}{3}\fx[n]+\sfrac{5}{3}\fx[n-1] 
+%        + \mcom{2\fx[n-2] + 2\fx[n-3] + 2\fx[n-4] + \cdots}
+%               {\large$\fy[n-2]+\sfrac{5}{3}\fx[n-2]+\sfrac{1}{3}\fx[n-3]$}
+%
+%
+%  \\&=    \sfrac{1}{3}\fx[n]+\mcom{\sfrac{5}{3}\fx[n-1] + 2\fx[n-2] + 2\fx[n-3] + 2\fx[n-4] + \cdots}
+%                                  {\large$\fy[n-1]+\sfrac{2}{3}\fx[n-1]+\sfrac{1}{3}\fx[n-2]$}
+%  \\&=    \fy[n-1] - \sfrac{1}{3}\brp{\fx[n]+ 2\fx[n-1]+\fx[n-2]}
+%
+%
+%
+%
+%     +    \frac{\fx[n-1]+4\fx[n-2]+\fx[n-3]}{3}   
+%     +    \frac{\fx[n-2]+4\fx[n-3]+\fx[n-4]}{3} 
+%     +    \cdots  
+%  \\&=    \sfrac{1}{2}\fx[n] + \mcom{\fx[n-1] + \fx[n-2] + \fx[n-3] + \fx[n-4] + \fx[n-5] + \cdots}{{\Large$\fy[n-1]+\sfrac{1}{2}\fx[n-1]$}}
+%  \\&=    \sfrac{1}{2}\fx[n] + \fy[n-1]+\sfrac{1}{2}\fx[n-1]
+%  \\\\
+%  \fy[n]-\fy[n-1]&=    \sfrac{1}{2}\brs{\fx[n] + +\fx[n-1]} 
+%  \\\\
+%  Y(z)\brs{1-z^{-1}} &= \sfrac{1}{2} X(z)\brs{1+z^{-1}}
+%  \\\\
+%  \frac{Y(z)}{X(z)} 
+%    &= \brp{\frac{1}{2}} \frac{1+z^{-1}}{1-z^{-1}}
+%     = \boxed{\brp{\frac{1}{2}} \frac{z+1}{z-1}} 
+%  \qquad\brb{\begin{array}{>{\Large}M>{\Large}M}
+%    How many zeros? & Where?\\
+%    How many poles? & Where?
+%  \end{array}}
+%\end{align*}}
+%\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\vfill
+Digital Summation Integration = Continuous Integration?
+\vfill
+\begin{align*}
+  \abs{\frac{z}{z-1}}_{z=e^{i\omega}}
+    &= \abs{\frac{e^{i\omega}}{e^{i\omega}-1}}
+  \\&= \abs{\frac{e^{i\omega}}{e^{i\omega/2}\brp{e^{i\omega/2}-e^{-i\omega/2}}}}
+   &&= \abs{\mcom{e^{i\omega/2}}{phase}\,\mcom{\frac{1}{2\sin\brp{\frac{\omega}{2}}}}{magnitude}}
+  \\&= \boxed{\frac{1}{2\sin\brp{\frac{\omega}{2}}}} 
+    && \text{for $0\le\omega\le\pi$}
+\end{align*}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\includegraphics[height=150mm]{graphics/IntSum.pdf}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\vfill
+Digital Trapezoid Integration = Continuous Integration?
+\vfill
+\begin{align*}
+  \abs{\frac{1}{2}\brp{\frac{z+1}{z-1}}}_{z=e^{i\omega}}
+    &= \frac{1}{2}
+       \abs{\frac{e^{i\omega}+1}{e^{i\omega}-1}}
+  \\&= \frac{1}{2}
+       \abs{\frac{e^{i\omega/2}\brp{e^{i\omega/2}+e^{-i\omega/2}}}
+                 {e^{i\omega/2}\brp{e^{i\omega/2}-e^{-i\omega/2}}}
+           }
+   &&= \frac{1}{2}
+       \abs{\frac{2\cos\brp{\frac{\omega}{2}}}
+                 {2\sin\brp{\frac{\omega}{2}}}
+           }
+  \\&= \boxed{\frac{1}{2} \abs{\cot\brp{\frac{\omega}{2}}}}
+    && \text{for $0\le\omega\le\pi$}
+\end{align*}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+\includegraphics[height=150mm]{graphics/IntTrap.pdf}
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+
+\vfill\mbox{}
+
+%---------------------------------------
+\newpage\mbox{}\vfill
+%---------------------------------------
+
+\vfill\mbox{}
+
+
+
