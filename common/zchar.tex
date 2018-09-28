@@ -8,93 +8,131 @@
 %=======================================
 
 %---------------------------------------
-\# 1: The magnitude response (MR) repeats every $2\pi$ (every $F_s$)
+\# 1: The frequency response of $\Zh(z)$ \propb{repeats} every $2\pi$ (every $F_s$)
 %---------------------------------------
-
 \begin{align*}
-  \abs{\Fh(\omega-2\pi n)}^2
-    &\eqd \abs{\Zh(z)}^2_{z=e^{i(\omega-2\pi n)}}
+  \Fh(\omega-2\pi n)
+    &\eqd \brlr{\Zh(z)}_{z=e^{i(\omega-2\pi n)}}
     && \text{by definition of $\Fh(\omega)$}
-  \\&\eqd \abs{\sum_{m=0}^{\xN} \fx[m] z^{-m}}^2_{z=e^{i(\omega-2\pi n)}}
+  \\&\eqd \brlr{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{i(\omega-2\pi n)}}
     &&\text{by definition of $\opZ$}
-  \\&= \abs{\sum_{m=0}^{\xN} \fx[m] e^{-i\omega m}\cancelto{1}{e^{-i2\pi nm}}}^2
-  \\&\eqd \abs{\Fh(\omega)}^2
+  \\&= \sum_{m\in\Z} \fx[m] e^{-i\omega m}\cancelto{1}{e^{-i2\pi nm}}
+  \\&\eqd \brlr{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{i\omega}}
+  \\&\eqd \brlr{\Zh(z)}_{z=e^{i\omega}}
+    &&\text{by definition of $\opZ$}
+  \\&\eqd \Fh(\omega)
     && \text{by definition of $\Fh(\omega)$}
 \end{align*}
 
-
 %---------------------------------------
-
-\# 2: If the coefficients are \propb{real}, then the MR is \propb{symmetric}
+\# 2: If the coefficients are \propb{real}, then the magnitude response (MR) is \propb{symmetric}
 %---------------------------------------
-
-{\begin{align*}
-  \boxed{\abs{H(\omega)}^2}
-    &= \abs{H(z)}^2_{z=e^{i\omega}}
-     = \brlr{H(z)H^\ast(z)}_{z=e^{i\omega}}
-     = \brlr{
-         \brp{\frac{\ds\sum_{n=0}^{\xN}b_nz^{-n}}
-                   {\ds\sum_{n=0}^{\xN}a_nz^{-n}}}
-         \brp{\frac{\ds\sum_{n=0}^{\xN}b_nz^{-n}}
-                   {\ds\sum_{n=0}^{\xN}a_nz^{-n}}}^\ast
-         }_{z=e^{i\omega}}
-  \\&= \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i\omega n}}
-                 {\ds\sum_{n=0}^{\xN}a_ne^{-i\omega n}}}  
-       \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i\omega n}}
-                 {\ds\sum_{n=0}^{\xN}a_ne^{-i\omega n}}}^\ast
-     = \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i(-\omega) n}}
-                 {\ds\sum_{n=0}^{\xN}a_ne^{-i(-\omega) n}}}  
-       \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i(-\omega) n}}
-                 {\ds\sum_{n=0}^{\xN}a_ne^{-i(-\omega) n}}}^\ast
-  \\&= H(-\omega)H^\ast(-\omega)
-     = \boxed{\abs{H(-\omega)}^2}
-\end{align*}}
-
-
-
-%---------------------------------------
-
-\# 3: MR is flat at $0$ Hertz
-%---------------------------------------
-
 \begin{align*}
-  \abs{\Zh(z)}^2_{z=e^{i\omega}}  
+  \abs{\Fh(-\omega)}
+    &\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
+   &&\eqd \abs{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{-i\omega}}
+  \\&= \abs{\sum_{m\in\Z} \fx[m] e^{i\omega m}}
+   &&= \abs{\brp{\sum_{m\in\Z} \fx^\ast[m] e^{-i\omega m}}^\ast}
+  \\&= \mcom{\abs{\brp{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}^\ast}}
+            { if $x[m]$ is \prope{real}}
+   &&= \abs{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}
+  \\&\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
+   &&\eqd \abs{\Fh(\omega)}
+\end{align*}
+\mbox{}
+
+%%---------------------------------------
+%
+%\# 2: If the coefficients are \propb{real}, then the MR is \propb{symmetric}
+%%---------------------------------------
+%{\begin{align*}
+%  \boxed{\abs{H(\omega)}^2}
+%    &= \abs{H(z)}^2_{z=e^{i\omega}}
+%     = \brlr{H(z)H^\ast(z)}_{z=e^{i\omega}}
+%     = \brlr{
+%         \brp{\frac{\ds\sum_{n=0}^{\xN}b_nz^{-n}}
+%                   {\ds\sum_{n=0}^{\xN}a_nz^{-n}}}
+%         \brp{\frac{\ds\sum_{n=0}^{\xN}b_nz^{-n}}
+%                   {\ds\sum_{n=0}^{\xN}a_nz^{-n}}}^\ast
+%         }_{z=e^{i\omega}}
+%  \\&= \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i\omega n}}
+%                 {\ds\sum_{n=0}^{\xN}a_ne^{-i\omega n}}}  
+%       \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i\omega n}}
+%                 {\ds\sum_{n=0}^{\xN}a_ne^{-i\omega n}}}^\ast
+%     = \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i(-\omega) n}}
+%                 {\ds\sum_{n=0}^{\xN}a_ne^{-i(-\omega) n}}}  
+%       \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i(-\omega) n}}
+%                 {\ds\sum_{n=0}^{\xN}a_ne^{-i(-\omega) n}}}^\ast
+%  \\&= H(-\omega)H^\ast(-\omega)
+%     = \boxed{\abs{H(-\omega)}^2}
+%\end{align*}}
+
+%---------------------------------------
+\# 3: MR is flat at $\omega=0$ and $\omega=\pi$ \label{equ:mrflat}
+%---------------------------------------
+\begin{align*}
+  \boxed{\abs{\Zh(z)}^2_{z=e^{i\omega}}} 
     &= \brs{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
   \\&= \brp{\frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}{\ds\sum_{n=0}^{\xN}a_n z^{-n}}}_{z=e^{i\omega}}  
        \brp{\frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}{\ds\sum_{n=0}^{\xN}a_n z^{-n}}}_{z=e^{-i\omega}}  
-  \\&= \brp{\frac{\ds\sum_{n=0}^{\xN}b_n e^{-i\omega n}\ds\sum_{m=0}^{\xN}b_m e^{i\omega m}}
+   &&= \brp{\frac{\ds\sum_{n=0}^{\xN}b_n e^{-i\omega n}\ds\sum_{m=0}^{\xN}b_m e^{i\omega m}}
                  {\ds\sum_{n=0}^{\xN}a_n e^{-i\omega n}\ds\sum_{m=0}^{\xN}a_m e^{i\omega m}}}
   \\&=     {\frac{\ds\sum_{n=0}^{\xN}\ds\sum_{m=0}^{\xN} b_n b_m e^{-i\omega(n-m)}}
                  {\ds\sum_{n=0}^{\xN}\ds\sum_{m=0}^{\xN} a_n a_m e^{-i\omega(n-m)}}}
-  \\&=     {\frac{\ds\sum_{n=0}^{\xN}b_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n}^{\xN} b_n b_m \cos\brs{\omega(n-m)}}
-                 {\ds\sum_{n=0}^{\xN}a_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n}^{\xN} a_n a_m \cos\brs{\omega(n-m)}}}
+   &&=\boxed{\frac{\ds\sum_{n=0}^{\xN}b_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} b_n b_m \cos\brs{\omega(n-m)}}
+                  {\ds\sum_{n=0}^{\xN}a_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} a_n a_m \cos\brs{\omega(n-m)}}}
+\end{align*}\label{equ:mr}
+
+Where did that come from?
+An example may help (next).
+%---------------------------------------
+\begin{example}
+\mbox{}\\
+%---------------------------------------
+\begin{align*}
+  \sum_{n=0}^{4}\ds\sum_{m=0}^{4} a_n a_m e^{-i\omega(n-m)}
+    &= \brp{\begin{array}{|c||*{5}{>{\ds}c|}}
+    \hline          &{\ccg}$m=0$                 &{\ccg}$m=1$                 &{\ccg}$m=2$                 &{\ccg}$m=3$                 &{\ccg}$m=4$
+  \\\hline
+    \hline\ccg$n=0$ &{\ccc}a_0 a_0               &      a_0 a_1 e^{+i \omega} &      a_0 a_2 e^{+i2\omega} &      a_0 a_3 e^{+i3\omega} &      a_0 a_4 e^{+i4\omega} 
+  \\\hline\ccg$n=1$ &      a_1 a_0 e^{-i \omega} &{\ccc}a_1 a_1               &      a_1 a_2 e^{+i \omega} &      a_1 a_3 e^{+i2\omega} &      a_1 a_4 e^{+i3\omega} 
+  \\\hline\ccg$n=2$ &      a_2 a_0 e^{-i2\omega} &      a_2 a_1 e^{-i \omega} &{\ccc}a_2 a_2               &      a_2 a_3 e^{+i \omega} &      a_2 a_4 e^{+i2\omega} 
+  \\\hline\ccg$n=3$ &      a_3 a_0 e^{-i3\omega} &      a_3 a_1 e^{-i2\omega} &      a_3 a_2 e^{-i \omega} &{\ccc}a_3 a_3               &      a_3 a_4 e^{+i \omega} 
+  \\\hline\ccg$n=4$ &      a_4 a_0 e^{-i4\omega} &      a_4 a_1 e^{-i3\omega} &      a_4 a_2 e^{-i2\omega} &      a_4 a_3 e^{-i \omega} &{\ccc}a_4 a_4                  
+  \\\hline
+\end{array}}
+  \\&=\sum_{n=0}^{4}a_n^2 + 2\sum_{n=0}^{4}\ds\sum_{m=n+1}^{4} a_n a_m \cos\brs{\omega(n-m)}
 \end{align*}
+\end{example}
 
-
-
+Now \ldots What happens when we take the derivative of all this and evaluate at $\omega=0$?
 \begin{align*}
   \ddw\abs{\Zh(z)}^2_{z=e^{i\omega},\omega=0}  
     &= \ddw\brs{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega},\omega=0}
   \\&= \ddw\brs{\frac{\ds\sum_{n=0}^{\xN}b_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n}^{\xN} b_n b_m \cos\brs{\omega(n-m)}}
                  {\ds\sum_{n=0}^{\xN}a_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n}^{\xN} a_n a_m \cos\brs{\omega(n-m)}}}_{\omega=0}
-  \\&= \ddw\brs{\frac{\ff(\omega)}{\fg(\omega)}}_{\omega=0}
+  \\&\eqd \ddw\brs{\frac{\ff(\omega)}{\fg(\omega)}}_{\omega=0}
   \\&= \brs{\frac{\ff'(\omega)\fg(\omega) - \ff(\omega)\fg'(\omega)}{\fg^2(\omega)}}_{\omega=0}
+    \qquad\text{by the \thmb{Quotient Rule}}
   \\&= 0
+    \qquad\brp{\begin{array}[t]{MMM}
+      because & $\ddw$constant$=0$                   & and \\
+              & $\ddw\cos(k\omega)=-\sin(k\omega)=0$ & at $\omega=0,\,\pi$
+    \end{array}}
 \end{align*}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+Moments and derivatives are related:
+\begin{align*}
+  \ddw\brlr{\Fh(\omega)}_{\omega=0}
+    &\eqd \ddw\brlr{\Zh(z)}_{z=e^{i\omega},\,\omega=0}
+   &&\eqd \ddw\brlr{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{i\omega},\,\omega=0}
+  \\&= \ddw\brlr{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}_{\omega=0}
+  \\&= \brlr{\sum_{m\in\Z} \fx[m] \ddw e^{-i\omega m}}_{\omega=0}
+  \\&= \brlr{\sum_{m\in\Z} \fx[m] (-im) e^{-i\omega m}}_{\omega=0}
+  \\&= -i \mcom{\sum_{m\in\Z} m \fx[m]}
+               { 1st moment}
+\end{align*}
+\end{remark}

@@ -1,0 +1,166 @@
+%============================================================================
+% Daniel J. Greenhoe
+% GNU Ocatave file
+% 1st order low pass filter design
+%============================================================================
+%=======================================
+%\chapter{Coefficient Calculation}
+%=======================================
+%----------------------------------------------------------------------------
+\section{2nd Order \propb{low-pass} calculation---polynomial form}
+%----------------------------------------------------------------------------
+%---------------------------------------
+% problem statement
+%---------------------------------------
+ \vfill
+\begin{align*}
+  \boxed{\Fh(\omega)}
+    &= \brlr{\Zh(z)}_{z=e^{i\omega}}
+  \\&= \brlr{G\brs{\frac{\brp{1+z^{-1}}^2}
+                        {1 + az^{-1} + bz^{-2}}}}_{z=e^{i\omega}}
+  \\&= \boxed{\brlr{
+         G\brs{\frac{1 + 2z^{-1} +  z^{-2}}
+                    {1 + az^{-1} + bz^{-2}}
+              }
+                   }_{z=e^{i\omega}}
+             }
+\end{align*}
+\vfill
+We need 3 equations to solve for the 3 unkowns $G$, $a$, and $b$
+\vfill 
+%---------------------------------------
+Equation 1: Gain=1 at DC
+%---------------------------------------
+\vfill
+\begin{align*}
+  1 &= \abs{\Fh(0)}
+  \\&= \brlr{\Zh(z)}_{z=e^{i\omega},\,\omega=0}
+  \\&= \brlr{G\brs{\frac{\brp{1+z^{-1}}^2}
+                      {1 + az^{-1} + bz^{-2}}}}_{z=1}
+  \\&= \frac{4G}{1 + a + b}
+    && \text{(see \prefpo{equ:trickdc})}
+  \\&\implies \boxed{G = \frac{a + b + 1}{4}}
+\end{align*}
+\vfill 
+
+%---------------------------------------
+Equation 2: Gain = $\sfrac{1}{2}$ at corner frequency
+%---------------------------------------
+{ \begin{align*}
+  \boxed{\abs{\Fh(\omega)}^2}
+    &= \abs{\Zh(z)}^2_{z=e^{i\omega}}
+     = \abs{G\brs{\frac{\brp{1+z^{-1}}^2}
+                      {1 + az^{-1} + bz^{-2}}}}^2_{z=e^{i\omega}}
+  \\&=     {\frac{\ds\sum_{n=0}^{2}b_n^2 + 2\sum_{n=0}^{2}\ds\sum_{m=n+1}^{2} b_n b_m \cos\brs{\omega(n-m)}}
+                 {\ds\sum_{n=0}^{2}a_n^2 + 2\sum_{n=0}^{2}\ds\sum_{m=n+1}^{2} a_n a_m \cos\brs{\omega(n-m)}}}
+    \qquad\text{(see \prefpo{equ:mr})}
+  \\&=     G^2\brs{\frac{\ds\brp{1^2+2^2+1^2} + 2\brs{2\cos(\omega) + \cos(2\omega) + 2\cos(\omega)}}
+                    {\ds\brp{1^2+a^2+b^2} + 2b\cos(2\omega) + 2a(b+1)\cos(\omega) + (1+a^2+b^2)}}
+  \\&={G^2\brs{\frac{\ds2 \cos(2\omega) + 8\cos(\omega) + 6}
+                    {\ds2b\cos(2\omega) + 2a(b+1)\cos(\omega) + (a^2+b^2+1)}}}
+\end{align*}
+$\ds\boxed{
+  G^2\brs{\frac{\ds2 \cos(2\omega_c) + 8\cos(\omega_c) + 6}
+                    {\ds2b\cos(2\omega_c) + 2a(b+1)\cos(\omega_c) + (a^2+b^2+1)}}
+  = \frac{1}{2}
+  }$}
+\vfill 
+
+%---------------------------------------
+Equation 3: For more smoothness in passband, set 2nd derivative to 0:
+%---------------------------------------
+{\begin{align*}
+  0 &= \ddwddw\abs{\Fh(\omega)}^2_{\omega=0}
+  \\&= \ddwddw G^2 \brs{\frac{\ff(\omega)}
+                             {\fg(\omega)}
+                       }_{\omega=0}
+  \\&= \ddw    G^2 \brs{\frac{\ff'\fg + \ff \fg'}
+                             {\fg^2}
+                       }_{\omega=0}
+    && \text{by \thme{product rule}}
+  \\&=         G^2 \brs{\frac{(\ff''\fg + \ff'\fg' - \ff'\fg' -\ff\fg'')\fg^2 - (\ff'\fg - \ff\fg')(2\fg\fg')}
+                             {\fg^4}
+                       }_{\omega=0}
+  \\&=         G^2 \brs{\frac{\ff''\fg -\ff\fg''}
+                             {\fg^2}
+                       }_{\omega=0}
+     \qquad \implies \boxed{\brlr{\ff''\fg = \ff\fg''}_{\omega=0}}
+\end{align*}
+\ldots because $\ff'(0) = \fg'(0) = 0$ (see \prefpo{equ:mrflat})
+ 
+{ \begin{align*}
+  &\implies \mcom{\brs{-8\cos(2\omega)-8\cos(\omega)}}
+                   { $\ff''$}
+                    \mcom{\brs{2b\cos(2\omega)+2a(b+1)\cos(\omega)+(a^2+b^2+1)}}
+                         { $\fg$}
+              \\&\qquad= \brlr{\mcom{\brs{2\cos(2\omega) + 8\cos(\omega) + 6}}
+                                    { $\ff$}
+                  + \mcom{\brs{-8b\cos(2\omega)-2a(b+1)\cos(\omega)}}
+                         { $\fg''$}
+                   }_{\omega=0} 
+  \\&\implies \brs{-8-8}        \brs{2b+2a(b+1)+(a^2+b^2+1)}
+                = \brs{2 + 8 + 6} + \brs{-8b-2a(b+1)}
+  \\&\implies 16\brp{a^2+b^2 +2ab + 2a + 2b + 1} = 2ab + 2a + 8b + 16
+  \\&\implies 16a^2+ 16b^2 +30ab + 30a + 24b = 0
+  \\&\implies \boxed{8a^2+ 8b^2 +15ab + 15a + 12b = 0}
+\end{align*}}
+
+
+
+
+%---------------------------------------
+Example: 2nd order \propb{low-pass} with corner frequency $\omega_c=\frac{2}{3}\pi$
+%---------------------------------------
+{ \begin{align*}
+  1&= \Fh(0) = \brlr{\Zh(z)}_{z=e^{i0}} = \frac{G(1+1)^2}{1+a+b} &&\implies \boxed{4G = a + b + 1}
+  \\\\
+  \frac{1}{2} 
+    &= \abs{G\brs{\frac{\brp{1+z^{-1}}^2}
+                  {1 + az^{-1} + bz^{-2}}}}^2_{z=e^{i2\pi/3}}
+   &&=     G^2\brs{\frac{\ds2 \cos(4\pi/3) + 8\cos(2\pi/3) + 6}
+                    {\ds2b\cos(4\pi/3) + 2a(b+1)\cos(2\pi/3) + (a^2+b^2+1)}}
+  \\&= \mathrlap{G^2\brs{\frac{\ds-\sqrt{3} - 4 + 6}
+                    {\ds-b\sqrt{3} - a(b+1) + (a^2+b^2+1)}}}
+  \\&=       \frac{\ds G^2\brp{2 -\sqrt{3}}}
+                  {\ds a^2+b^2-ab-a-\sqrt{3}b}
+    &&\implies \boxed{2\brp{2 -\sqrt{3}}G^2 = a^2+b^2-ab-a-\sqrt{3}b}
+\end{align*}}
+
+ 
+{  We can combine the previous two \fbox{boxed} equations to eliminate $G$
+\\
+{ \begin{align*}
+  0 &= 8\times0
+  \\&= 8\brs{(1-c)a^2 + (1-c)b^2 - (2c+1)ab - (2c+1)a - (2c-\sqrt{3})b -3c }
+    \quad\text{where $\ds c=\frac{2-\sqrt{3}}{8}$}
+  \\&=8\brs{ 
+       \brp{\frac{6+\sqrt{3}}{8}}a^2 
+      +\brp{\frac{6+\sqrt{3}}{8}}b^2 
+      -\brp{\frac{6-\sqrt{3}}{4}}ab 
+      -\brp{\frac{6-\sqrt{3}}{4}}a
+      -\brp{\frac{2-3\sqrt{3}}{4}}b
+      -\brp{\frac{6-3\sqrt{3}}{8}}c
+      }
+  \\&= \brp{6+\sqrt{3}}a^2 
+      +\brp{6+\sqrt{3}}b^2 
+      -\brp{12-2\sqrt{3}}ab 
+      -\brp{12-2\sqrt{3}}a
+      -\brp{4-6\sqrt{3}}b
+      -\brp{6-3\sqrt{3}}c
+\end{align*}
+
+Combined equations:\\
+$\ds\boxed{
+   \brp{6+\sqrt{3}}a^2 
+      +\brp{6+\sqrt{3}}b^2 
+      -\brp{12-2\sqrt{3}}ab 
+      -\brp{12-2\sqrt{3}}a
+      -\brp{4-6\sqrt{3}}b
+      -\brp{6-3\sqrt{3}}c
+  = 0}$
+
+
+
+2nd derivative equation:\\
+\boxed{8a^2+ 8b^2 +15ab + 15a + 12b = 0}
+}

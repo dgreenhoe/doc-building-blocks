@@ -37,13 +37,26 @@
 %------------------------------------
 %Bibliography
 %------------------------------------
+%\usepackage{natbib}       % Bibliographic styles: must be loaded before {imakeidx}?
  \bibliographystyle{plainnat}% natbib package Harvard plain style
  \setcitestyle{authoryear}%\setcitestyle{numbers}%\setcitestyle{super}
+%\bibliographystyle{abbrvnat}% natbib package Harvard abbreviated style
+%\bibliographystyle{unsrtnat}% natbib package Harvard unsorted style
+%\bibliographystyle{agsm}% Harvard style, used with natbib package
+%\bibliographystyle{kluwer}
+%\bibliographystyle{amsplain}
+%\bibliographystyle{elsarticle-harv}
+%\bibliographystyle{elsarticle-num-names}
+%\bibliographystyle{elsarticle-num}
+%\bibliographystyle{../common/bst/jloganal}
 
+%--------------------------------------
+% page geometry
+%--------------------------------------
 \geometry{
   xetex,paper=a4paper,centering,twoside,includehead,includefoot,nomarginpar,
-  bindingoffset=0mm,
-  inner=5mm,outer=5mm,top=10mm,bottom=10mm,           % margins
+  bindingoffset=5mm,
+  inner=10mm,outer=10mm,top=10mm,bottom=10mm,           % margins
   headheight=5.2mm,headsep=5mm,footskip=7mm,
   showframe=true,showcrop=true,
   }
@@ -52,13 +65,32 @@
 % Headers and Footers
 %--------------------------------------
  \pagestyle{fancy}           % fancy headers from package <fancyhdr>
-
-%--------------------------------------
-% Commands
-%--------------------------------------
-%\ifthenelse{\isundefined{\C}}{\newcommand{\C}{\BbbC}}{\renewcommand{\C}{\BbbC}}%
-\newcommand{\fullcite}{\cite}
-
+\fancyhf[HOL,HOR,HEL,HER]{}%
+\fancyhf[HEC]{% header even pages
+    \setlength{\arrayrulewidth}{0.5pt}%
+    \arrayrulecolor{gray}%
+    \begin{tabular}{|p{24.74mm}|p{40mm}|p{\tw-78mm}|}%
+      \hline%
+        \sffamily\small{page~\thepage}
+       &\sffamily\footnotesize\centering Daniel J. Greenhoe %
+       &\sffamily\footnotesize\scshape\mbox{}\hfill\leftmark\mbox{}%
+      \\\hline\hline
+    \end{tabular}}%
+\fancyhf[HOC]{% header odd pages
+    \setlength{\arrayrulewidth}{0.5pt}%
+    \arrayrulecolor{gray}%
+    \begin{tabular}{|p{\tw-78mm}|p{40mm}|p{24.74mm}|}%
+      \hline%
+        \sffamily\footnotesize\scshape\rightmark%
+       &\sffamily\footnotesize\centering Daniel J. Greenhoe %
+       &\sffamily\small\mbox{}\hfill{page~\thepage}\mbox{}
+      \\\hline\hline
+    \end{tabular}}%
+\fancyhf[FOL,FOR,FEL,FER]{}%
+       % |||
+       % |||______ L=left       C=center     R=right
+       % ||_______ E=even page  O=odd page
+       % |________ H=header     F=footer
 
 %--------------------------------------
 % footer information
@@ -68,25 +100,30 @@
     \scriptsize%
     \setlength{\arrayrulewidth}{0.5pt}%
     \arrayrulecolor{gray}%
-    \begin{tabular*}{\tw}{|c@{\extracolsep\fill}|c|}%
+    \begin{tabular*}{\tw}{|c@{\extracolsep\fill}c|c|}%
       \hline\hline%
-       %\tbox{\href{https://creativecommons.org/licenses/by-nc-nd/4.0/}{\ccbyncnd}}
-      %&\fntAdventor\tbox{\imarkL\tbox{#2\\#3}\imarkL\fntDigital\tbox{version\hspace{1ex}{\version}}}%
-        \fntAdventor\tbox{\imarkL\tbox{#2\\#3}\imarkL}%
-       &\sffamily\scshape\tbox{\timestamp\\\copyrightshort}%
+        %\tbox{\href{https://creativecommons.org/licenses/by-nc-nd/4.0/}{\ccbyncnd}}
+       &\fntAdventor\tbox{\imarkL\tbox{#2\\#3}\imarkL\fntDigital\tbox{version\hspace{1ex}{\version}}}%
+       %&\sffamily\scshape\tbox{\timestamp\\\copyrightshort}%
+       &\sffamily\scshape\tbox{\timestamp\\Daniel J. Greenhoe}%
       \\\hline%
     \end{tabular*}}%
   \fancyhf[FOC]{% footer odd pages
       \scriptsize%
       \setlength{\arrayrulewidth}{0.5pt}%
       \arrayrulecolor{gray}%
-      \begin{tabular*}{\tw}{|c@{\extracolsep\fill}|c|}%
+      \begin{tabular*}{\tw}{|c@{\extracolsep\fill}|cc|}%
         \hline\hline%
-          \sffamily\scshape\tbox{\timestamp\\\copyrightshort}%
-        %&\fntAdventor\tbox{\imarkL\tbox{#2\\#3}\imarkL\fntDigital\tbox{version\hspace{1ex}{\version}}}%
-         &\fntAdventor\tbox{\imarkL\tbox{#2\\#3}\imarkL}%
-         %&%\tbox{\href{https://creativecommons.org/licenses/by-nc-nd/4.0/}{\ccbyncnd}}
+         %\sffamily\scshape\tbox{\timestamp\\\copyrightshort}%
+          \sffamily\scshape\tbox{\timestamp\\Daniel J. Greenhoe}%
+         &\fntAdventor\tbox{\imarkL\tbox{#2\\#3}\imarkL\fntDigital\tbox{version\hspace{1ex}{\version}}}%
+         &%\tbox{\href{https://creativecommons.org/licenses/by-nc-nd/4.0/}{\ccbyncnd}}
         \\\hline%
       \end{tabular*}}%
-  }% end \footerinfo
+  }%
 
+%--------------------------------------
+% Commands
+%--------------------------------------
+%\ifthenelse{\isundefined{\C}}{\newcommand{\C}{\BbbC}}{\renewcommand{\C}{\BbbC}}%
+\newcommand{\fullcite}{\cite}
