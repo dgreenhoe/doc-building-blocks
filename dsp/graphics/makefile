@@ -128,20 +128,6 @@ FILE_WAV = \
             fnct123ab.pdf         \
             fnct123ab123.pdf      \
             fnct123le123.pdf      \
-            iir2n.pdf             \
-            iir1pole.pdf          \
-            dfI_order2_156.pdf    \
-            dfI_order2_fir.pdf    \
-            pz_allpass.pdf        \
-            pz_minphase.pdf       \
-            pz_minphase_inv.pdf   \
-            pz_stable.pdf         \
-            pz_pole00.pdf         \
-            pz_realcoefs.pdf      \
-            pz_realcoefs_11.pdf   \
-            pz_unstable.pdf       \
-            pz_unstable2.pdf      \
-            pz_unall.pdf          \
             oplat.pdf             \
             ziir2.pdf             \
             Dp_pz.pdf             \
@@ -152,8 +138,6 @@ FILE_WAV = \
             haar2_sin_t.pdf       \
             haar2_sin_a.pdf       \
             latwav.pdf            \
-            lpfwc.pdf             \
-            hpfwc.pdf             \
             mexhatwavelet.pdf     \
             morletwavelet.pdf     \
             s4_phi_h.pdf          \
@@ -232,6 +216,29 @@ FILE_GRP  =             \
   vecres.pdf            \
   Fhw.pdf               
 
+FILE_GRP  =               \
+  dfI_order1_abc.pdf      \
+  dfI_order1_lpf2pi3.pdf  \
+  dfI_order2_156.pdf      \
+  dfI_order2_fir.pdf      \
+  dfI_order2_156.pdf      \
+  dfII_order1_abc.pdf     \
+  hpfwc.pdf               \
+  lpfwc.pdf               \
+  iir2n.pdf               \
+  iir2rphi.pdf            \
+  iir1pole.pdf            \
+  pz_allpass.pdf          \
+  pz_minphase.pdf         \
+  pz_minphase_inv.pdf     \
+  pz_stable.pdf           \
+  pz_pole00.pdf           \
+  pz_realcoefs.pdf        \
+  pz_realcoefs_11.pdf     \
+  pz_unstable.pdf         \
+  pz_unstable2.pdf        \
+  pz_unall.pdf            
+
 FILE_STY  = ../../common/sty/wavelets.sty \
             ../../common/sty/math.sty     \
             ../../common/sty/dan.sty      \
@@ -274,6 +281,11 @@ top: $(FILE_FRAMES) $(FILE_GRP) $(GRP_SETSTR) $(FILE_WAV) $(FILE_BSPLINES) $(FIL
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
 
+{$(PATHDSP)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
 {$(PATHLAT)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
@@ -289,20 +301,10 @@ top: $(FILE_FRAMES) $(FILE_GRP) $(GRP_SETSTR) $(FILE_WAV) $(FILE_BSPLINES) $(FIL
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
 
-{$(PATHDSP)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
 {$(PATHWAVE)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
-
-#{$(PATHSTO)}.tex.pdf:
-#	$(PRG_TYPESET) shell_$&.tex
-#	copy /V/Y shell_$&.pdf $&.pdf
-#	del shell_$&.pdf
 
 .pdf.eps:
 	pdftops -eps $&.pdf $&.eps

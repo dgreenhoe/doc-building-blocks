@@ -899,3 +899,86 @@
 \newcommand{\ononepage}[2][\textwidth]{{\setlength{\parindent}{0ex}\begin{minipage}{#1}#2\end{minipage}}}
 \newenvironment{boxedminipage}[3][]{\begin{minipage}[#1]{#2}#3}{\end{minipage}}
 %\newcommand{\fullcite}{\cite}
+
+
+
+
+%==========================================================
+% blanks
+%==========================================================
+\newboolean{showSolution}
+\newlength{\length}
+\newlength{\lengtha}
+\newlength{\lengthb}
+\newcommand{\bso}[2][]{\blanksol[#1]{#2}}% blank with solution
+\newcommand{\bsox}[2][]{\blank[#1]}% blank with extraneous (extra) unused paramter
+\newcommand{\blanksol}[2][]{% blank with solution
+  \ifthenelse{\isempty{#1}}{\settowidth{\length}{#2#2}}{\setlength{\length}{#1}}
+  %\ifthenelse{#1=0}{\settowidth{\length}{#2#2}}{\setlength{\length}{#1}}
+  \ifthenelse{\boolean{showSolution}}%
+    {\underline{\parbox[l][1em][c]{\length}{\centering\textcolor{blue}{#2}}}}%
+    {\underline{\parbox[l][1em][c]{\length}{\hspace{1ex}}}}%
+  %\ifthenelse{\isempty{#2}}{}{\index[xeng]{#2}}
+  }
+\newcommand{\bsoAo}[2][]{\cntreset\refstepcounter{cntr}\blankopt[#1]{\Alph{cntr}}{#2}}%blank with ABC counter set to A
+\newcommand{\bsoA} [2][]{\refstepcounter{cntr}\blankopt[#1]{\Alph{cntr}}{#2}}%blank with ABC counter
+
+\newcommand{\bss}[2][30mm]{\blanksso[#1]{#2}}% blank with shown solution
+\newcommand{\blanksso}[2][30mm]{% blank with shown solution
+  \underline{\parbox[l][1em][c]{#1}{\centering\color{blue}#2}}%
+  %\index[xeng]{#2}
+  \index{#2}
+  }
+
+\newcommand{\blank}   [1][10mm]{\underline{\hspace{#1}}}% blank line
+\newcommand{\bhint}   [2][]{\blankopt[#1]{#2}{}}%blank with hint
+\newcommand{\bzyhint} [2][]{\blankopt[#1]{{\fntzhr#2}}{}}%blank with hint in Chinese with bopomofo
+\newcommand{\bcopy}   [2][]{\blankopt[#1]{#2}{#2}}%blank with what to copy
+\newcommand{\bhintx}  [3][]{\blankopt[#1]{#2}{}}%blank with hint and extraneous (unused) parameter (used for making writing exercises from listening exercises
+\newcommand{\bop}     [3][]{\blankopt[#1]{#2}{#3}}%blank with options and hidden solution
+\newcommand{\bops}[3][]{\blankops[#1]{#2}{#3}}%blank with options and shown solution
+\newcommand{\blankopt}[3][]%blank with options and solution
+  {%
+    \ifthenelse{\not\isempty{#2}}{\settowidth{\lengtha}{#2#2}}{\settowidth{\lengtha}{1em}}%
+    \ifthenelse{\not\isempty{#3}}{\settowidth{\lengthb}{#3#3}}{\settowidth{\lengthb}{1em}}%
+    \ifthenelse{\not\isempty{#1}}%
+      {\setlength{\length}{#1}}%
+      {\ifthenelse{\isempty{#3}}%
+        {\settowidth{\length}{#2#2}}%
+        {\settowidth{\length}{#3#3}}%
+      }%
+      %{\ifthenelse{\lengthtest{\lengtha>\lengthb}}%      
+      %  {\settowidth{\length}{\lengtha}}%
+      %  {\settowidth{\length}{\lengthb}}%
+      %}%
+    \renewcommand{\arraystretch}{0.5}%
+    \begin{tabular}[t]{@{}c@{}}%
+      \blanksol[\length]{#3}%
+      \\%
+      \scriptsize\textcolor{blue}{#2}%
+    \end{tabular}%
+    \renewcommand{\arraystretch}{1}%
+  }%
+
+\newcommand{\blankp}[3][2em]{%phonics blank with options and solution
+  \renewcommand{\arraystretch}{0.5}
+  \begin{tabular}[t]{@{}c@{}}%
+    \blanksol[#1]{\fntipa#3}%
+    \\%
+    \scriptsize\textcolor{blue}{\fntipa#2}%
+  \end{tabular}%
+  \renewcommand{\arraystretch}{1}
+  }%
+
+\newcommand{\blankops}[3][30mm]{%blank with options and solution
+  \renewcommand{\arraystretch}{0.5}
+  \begin{tabular}[t]{@{}c@{}}%
+    \blanksso[#1]{#3}%
+    \\%
+    \scriptsize\textcolor{blue}{#2}%
+  \end{tabular}%
+  \renewcommand{\arraystretch}{1}
+  }%
+
+
+

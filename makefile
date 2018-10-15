@@ -17,29 +17,23 @@
 all:
   cd bsplines
     make
+  cd ..\estimation
+    make
+  cd ..\trigsys
+    make
   cd ..\dsp
+    make
+  cd ..\xsams
     make
   cd ..\xwsd
     make
+  cd ..\xsro
+    make
 #  cd ..\xpsd
 #    make
-  cd ..\xsams
-    make
-  cd ..\estimation
-    make
   cd ..\dcsd
     make
   cd ..\A290826
-    make
-  cd ..\lmc
-    make
-  cd ..\elife
-    make
-  cd ..\zsounds
-    make
-  cd ..\xsro
-    make
-  cd ..\trigsys
     make
   cd ..\hasse
     make
@@ -67,6 +61,12 @@ all:
     make
   cd ..\2014plat
    make
+  cd ..\lmc
+    make
+  cd ..\elife
+    make
+  cd ..\zsounds
+    make
   cd ..
 
 cleanall:

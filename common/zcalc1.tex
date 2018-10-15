@@ -1,67 +1,101 @@
 %============================================================================
 % Daniel J. Greenhoe
 % GNU Ocatave file
-% 1st order low pass filter design
+% order 1 low pass filter design
 %============================================================================
 %=======================================
 \chapter{Coefficient Calculation}
 %=======================================
-
 %--------------------------------------
 \section{1st Order Low-Pass calculation}
 %--------------------------------------
-$\ds\boxed{ H(z) = \frac{a + bz^{-1}}
-                        {1 + cz^{-1}}
-          }$
-
-\begin{align*}
-  0 &= \abs{H(z)}_{z=e^{i\pi}=-1}
-   &&= \frac{a + bz^{-1}}{1 + cz^{-1}}_{z=-1}
-   &&= \frac{a - b}{1 - c}
-   &&\implies \boxed{a=b}
-  \\
-  \\
-  1 &= \abs{H(z)}_{z=e^{i0}=1}
-   &&= \frac{a + bz^{-1}}{1 + cz^{-1}}_{z=1}
-   &&= \frac{a + b}{1 + c}
-   &&\implies \boxed{a=\frac{c+1}{2}}
-\end{align*}
-
-
-
-\begin{align*}
-  \boxed{\abs{H(z)}^2_{z=e^{i\omega}}}
-    &= \brlr{H(z)H^\ast(z)}_{z=e^{i\omega}}
-   &&= \brlr{H(z)H(z^{-1})}_{z=e^{i\omega}}\quad\text{(if coefs. \prope{real})}
-  \\&= \brp{\frac{a + be^{-i\omega}}{1 + ce^{-i\omega}}}
-       \brp{\frac{a + be^{i\omega}}{1 + ce^{i\omega}}}
-   &&= \frac{a^2 + abe^{-i\omega} + abe^{i\omega} + b^2}
-            {1   +  ce^{i\omega} +  ce^{-i\omega} + c^2}
-  \\&= \frac{a^2 + 2ab\cos\brp{\omega} + b^2}
-            {1   + 2 c\cos\brp{\omega} + c^2}
-    && \begin{array}[t]{MM}because $e^{i\theta}+e^{-i\theta}=2\cos(\theta)$\\
-                       (\thme{Euler formulas})\footnotemark\end{array}
-  \\&= \frac{2a^2\brs{1 +  \cos\brp{\omega}}}
-            {c^2 + 2 c\cos\brp{\omega} + 1}
-    && \text{because $\ds a=b$}
-  \\&= \frac{2\brp{\frac{c+1}{2}}^2\brs{1 +  \cos\brp{\omega}}}
-            {c^2 + 2 c\cos\brp{\omega} + 1}
-    && \text{because $\ds a=\frac{c+1}{2}$}
-  \\&= \boxed{\brp{\frac{1}{2}}
-              \frac{\brp{c+1}^2\brs{1 +  \cos\brp{\omega}}}
-                   {c^2 + 2 c\cos\brp{\omega} + 1}
-             }
-\end{align*}
-\footnotetext{
-  \citor{euler1748v1},
-  \citerp{bottazzini}{12}
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{|c|c|}
+     \hline
+     \includegraphics{graphics/lpfwc.pdf}
+    &\includegraphics{graphics/iir1pole.pdf}
+  \\$\abs{\Fh(\omega)}$ for $\omega_c\in\setn{\frac{\pi}{3}, \frac{\pi}{2},\frac{2\pi}{3}}$
+    &\structe{pole} locations of $\Zh(z)$ for $\omega_c\in\intcc{0}{\pi}$
+  \\\hline
+  \end{tabular}
+  \caption{order 1 low pass filter of \prefpp{thm:lpf1} characteristics \label{fig:lpf1}}
+\end{figure}
+%--------------------------------------
+\begin{theorem}[\thmd{order 1 low-pass filter}]
+\label{thm:lpf1}
+%--------------------------------------
+Let $\Zh(z)\eqd\frac{a + bz^{-1}}{1 + cz^{-1}}$
+be the \ope{Z-transform}             $\brs{\opZ\fh(n)}(z)$         \xref{def:opZ} 
+and $\Fh(\omega)$ be the \ope{DTFT}  $\brs{\opDTFT\fh(n)}(\omega)$ \xref{def:dtft} 
+of a sequence $\fh(n)$.
+\\
+\thmbox{
+  \brb{\begin{array}{FrclD}
+      1. & \abs{\Fh(0)}       &=&    1                               & and
+    \\2. & \abs{\Fh(\pi)}     &=&    0                               & and
+    \\3. & \abs{\Fh(\omega_c)}&=&    \sfrac{\sqrt{2}}{2}             &    
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{FrclD}
+      1. & c&=&\ds\frac{-1 + \sin\brp{\omega_c}}{\cos\brp{\omega_c}} & and
+    \\2. & b&=&(c+1)/2                                               & and
+    \\3. & a&=&b                                                     & and 
+    \\4. & \mc{3}{M}{$\Zh(z)$ has a \structe{zero} at $z=-1$}        & and
+    \\5. & \mc{3}{M}{$\Zh(z)$ has a \structe{pole} at $z=-c$}        & \prefp{fig:lpf1}
+  \end{array}}
   }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Proof that $a=b$:
+  \begin{align*}
+    0 &= \abs{\Zh(z)}_{z=e^{i\pi}=-1}
+     &&= \frac{a + bz^{-1}}{1 + cz^{-1}}_{z=-1}
+     &&= \frac{a - b}{1 - c}
+     &&\implies \boxed{a=b}
+    \\
+    \\
+    1 &= \abs{\Zh(z)}_{z=e^{i0}=1}
+     &&= \frac{a + bz^{-1}}{1 + cz^{-1}}_{z=1}
+     &&= \frac{a + b}{1 + c}
+     &&\implies \boxed{a=\frac{c+1}{2}}
+  \end{align*}
 
+\item 
+  \begin{align*}
+    \boxed{\abs{\Zh(z)}^2_{z=e^{i\omega}}}
+      &= \brlr{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
+     &&= \brlr{\Zh(z)\Zh(z^{-1})}_{z=e^{i\omega}}\quad\text{(if coefs. \prope{real})}
+    \\&= \brp{\frac{a + be^{-i\omega}}{1 + ce^{-i\omega}}}
+         \brp{\frac{a + be^{i\omega}}{1 + ce^{i\omega}}}
+     &&= \frac{a^2 + abe^{-i\omega} + abe^{i\omega} + b^2}
+              {1   +  ce^{i\omega} +  ce^{-i\omega} + c^2}
+    \\&= \frac{a^2 + 2ab\cos\brp{\omega} + b^2}
+              {1   + 2 c\cos\brp{\omega} + c^2}
+      && \begin{array}[t]{MM}because $e^{i\theta}+e^{-i\theta}=2\cos(\theta)$\\
+                         (\thme{Euler formulas})\footnotemark\end{array}
+    \\&= \frac{2a^2\brs{1 +  \cos\brp{\omega}}}
+              {c^2 + 2 c\cos\brp{\omega} + 1}
+      && \text{because $\ds a=b$}
+    \\&= \frac{2\brp{\frac{c+1}{2}}^2\brs{1 +  \cos\brp{\omega}}}
+              {c^2 + 2 c\cos\brp{\omega} + 1}
+      && \text{because $\ds a=\frac{c+1}{2}$}
+    \\&= \boxed{\brp{\frac{1}{2}}
+                \frac{\brp{c+1}^2\brs{1 +  \cos\brp{\omega}}}
+                     {c^2 + 2 c\cos\brp{\omega} + 1}
+               }
+  \end{align*}
+  \footnotetext{
+    \citor{euler1748v1},
+    \citerp{bottazzini}{12}
+    }
 
+\item 
 
-{\begin{align*}
+\begin{align*}
   \frac{1}{2}
-    &= \abs{H(z)}^2_{z=e^{i\omega_c}}
+    &= \abs{\Zh(z)}^2_{z=e^{i\omega_c}}
      = \brp{\frac{1}{2}}
        \frac{\brp{c+1}^2\brs{1 +  \cos\brp{\omega_c}}}
             {c^2 + 2 c\cos\brp{\omega_c} + 1} 
@@ -75,23 +109,24 @@ $\ds\boxed{ H(z) = \frac{a + bz^{-1}}
              + 2c
              +    {\cos\brp{\omega_c}}
              = 0
-\end{align*}}
+\end{align*}
 
+\item 
 
-
-{\begin{align*}
-  \\\implies c &= \frac{-2 \pm \sqrt{(2)^2 -4\cos^2\brp{\omega_c}}}
-                       {2\cos\brp{\omega_c}}
-               && \text{by \thme{Quadratic Equation}}
-             \\&= \frac{-1 \pm \sqrt{1 -\cos^2\brp{\omega_c}}}
-                       {\cos\brp{\omega_c}}
-             \\&= \frac{-1 \pm \sin\brp{\omega_c}}
-                       {\cos\brp{\omega_c}}
-               && \text{because $\sin^2x + \cos^2x = 1$ for all $x\in\R$}
-  \\
-  \\\implies &\ds\boxed{c = \frac{-1 + \sin\brp{\omega_c}}
-                    {\cos\brp{\omega_c}}}
-\end{align*}}
+  \begin{align*}
+    \\\implies c &= \frac{-2 \pm \sqrt{(2)^2 -4\cos^2\brp{\omega_c}}}
+                         {2\cos\brp{\omega_c}}
+                 && \text{by \thme{Quadratic Equation}}
+               \\&= \frac{-1 \pm \sqrt{1 -\cos^2\brp{\omega_c}}}
+                         {\cos\brp{\omega_c}}
+               \\&= \frac{-1 \pm \sin\brp{\omega_c}}
+                         {\cos\brp{\omega_c}}
+                 && \text{because $\sin^2x + \cos^2x = 1$ for all $x\in\R$}
+    \\
+    \\\implies &\ds\boxed{c = \frac{-1 + \sin\brp{\omega_c}}
+                      {\cos\brp{\omega_c}}}
+  \end{align*}
+\end{enumerate}
 
 %---------------------------------------
 Where is the zero? Where is the pole?
@@ -101,12 +136,16 @@ The zero is at z=-1. \qquad The pole is at
 $\ds\boxed{z=-c = \frac{1 - \sin\brp{\omega_c}}
                     {\cos\brp{\omega_c}}}$
 
-\includegraphics[height=125mm]{graphics/iir1pole.pdf}
+\end{proof}
 
+\begin{figure}
+  \centering%
+  \includegraphics{graphics/dfI_order1_abc.pdf}
+  \includegraphics{graphics/dfII_order1_abc.pdf}
+\end{figure}
 %---------------------------------------
-Example: 1st order \propb{low-pass} with corner frequency $\omega_c=\frac{2}{3}\pi$
+\begin{example}[order 1 low-pass filter with corner frequency $\omega_c=\frac{2}{3}\pi$]
 %---------------------------------------
-
 { \begin{align*}
   c &= \frac{-1 + \sin\brp{\omega_c}}{\cos\brp{\omega_c}}
      = \frac{-1 + \sin\brp{\sfrac{1}{3}\pi}}{\cos\brp{\sfrac{1}{3}\pi}}
@@ -122,36 +161,33 @@ Example: 1st order \propb{low-pass} with corner frequency $\omega_c=\frac{2}{3}\
   \\
   \\
   \abs{H(\omega)}^2
-    &= \abs{H(z)}^2_{z=e^{i\omega}}
-     = \brlr{H(z)H^\ast(z)}_{z=e^{i\omega}}
+    &= \abs{\Zh(z)}^2_{z=e^{i\omega}}
+     = \brlr{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
    &&= \brp{\frac{1}{2}}\frac{\brp{c+1}^2\brs{1 +  \cos\brp{\omega}}}
             {c^2 + 2 c\cos\brp{\omega} + 1}
 \end{align*}}
-
-\includegraphics[height=50mm]{graphics/lpfwc.pdf}\\
-\includegraphics[height=60mm]{graphics/dfI_order1_abc.pdf}\\
-\includegraphics[height=60mm]{graphics/dfII_order1_abc.pdf}
-
 %%%???where is this one???\includegraphics{graphics/lpfwc_sq.pdf}
 
 $\ds\abs{H(\omega)}^2$
+\end{example}
 
-\lstinputlisting[numbers=left, numberstyle=\tiny, language=C++]{../common/cpp/df2_order1_abc.cpp}
+
+For a C++ implementation, see \prefpp{sec:src_df2_order1_cpp}.
 
 %--------------------------------------
 \section{1st Order High-Pass calculation}
 %--------------------------------------
-$\ds\boxed{ H(z) = \frac{a + bz^{-1}}
+$\ds\boxed{ \Zh(z) = \frac{a + bz^{-1}}
                         {1 + cz^{-1}}
           }$
 
 \begin{align*}
-  0 &= {\abs{H(z)}}_{z=e^{i0}=1}    
+  0 &= {\abs{\Zh(z)}}_{z=e^{i0}=1}    
     &&=\brlr{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=1} 
     &&=\frac{a + b}{1 + c}                   
     && \implies \boxed{a=-b}
   \\\\
-  1 &= \abs{H(z)}_{z=e^{i\pi}=-1} 
+  1 &= \abs{\Zh(z)}_{z=e^{i\pi}=-1} 
    &&= \brlr{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=-1} 
    &&= \frac{a - b}{1 - c} = \frac{2a}{1-c}                   
    &&  \implies \boxed{a=\frac{1-c}{2}}
@@ -160,8 +196,8 @@ $\ds\boxed{ H(z) = \frac{a + bz^{-1}}
 
 %
 \begin{align*}
-  \boxed{\abs{H(z)}^2_{z=e^{i\omega}}}
-    &= \brs{H(z)H^\ast(z)}_{z=e^{i\omega}}
+  \boxed{\abs{\Zh(z)}^2_{z=e^{i\omega}}}
+    &= \brs{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
   \\&= \brp{\frac{a + be^{-i\omega}}{1 + ce^{-i\omega}}}
        \brp{\frac{a + be^{i\omega}}{1 + ce^{i\omega}}}
    &&= \frac{a^2 + abe^{-i\omega} + abe^{i\omega} + b^2}
@@ -182,7 +218,7 @@ $\ds\boxed{ H(z) = \frac{a + bz^{-1}}
 
 {\begin{align*}
   \frac{1}{2}
-    &= \abs{H(z)}^2_{z=e^{i\omega_c}}
+    &= \abs{\Zh(z)}^2_{z=e^{i\omega_c}}
      = \brp{\frac{1}{2}}
        \frac{\brp{1-c}^2\brs{1 -  \cos\brp{\omega}}}
             {c^2 + 2 c\cos\brp{\omega} + 1}
@@ -217,7 +253,6 @@ $\ds\boxed{ H(z) = \frac{a + bz^{-1}}
 
 
 %---------------------------------------
-
 Where is the zero? Where is the pole?
 %---------------------------------------
 
@@ -225,14 +260,13 @@ The zero is at z=+1. \qquad The pole is at
 $\ds\boxed{z=-c = \frac{1 - \sin\brp{\omega_c}}
                     {\cos\brp{\omega_c}}}$
 
-\includegraphics[height=115mm]{graphics/iir1pole.pdf}
+\includegraphics{graphics/iir1pole.pdf}
 
 
 %---------------------------------------
-Example: 1st order \propb{high-pass} with corner frequency $\omega_c=\frac{1}{3}\pi$
+\begin{example}order 1 \propb{high-pass} with corner frequency $\omega_c=\frac{1}{3}\pi$
 %---------------------------------------
-
-{ \begin{align*}
+\begin{align*}
   c &= \frac{-1 + \sin\brp{\omega_c}}{\cos\brp{\omega_c}}
      = \frac{-1 + \sin\brp{\sfrac{1}{3}\pi}}{\cos\brp{\sfrac{1}{3}\pi}}
      = \frac{-1 + \frac{\sqrt{3}}{2}}{\frac{1}{2}}
@@ -247,17 +281,18 @@ Example: 1st order \propb{high-pass} with corner frequency $\omega_c=\frac{1}{3}
   \\
   \\
   \abs{H(\omega)}^2
-    &= \abs{H(z)}^2_{z=e^{i\omega}}
-     = \brlr{H(z)H^\ast(z)}_{z=e^{i\omega}}
+    &= \abs{\Zh(z)}^2_{z=e^{i\omega}}
+     = \brlr{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
    &&= \brp{\frac{1}{2}}\frac{2\brp{\frac{1-c}{2}}^2\brs{1 -  \cos\brp{\omega}}}
             {c^2 + 2 c\cos\brp{\omega} + 1}
-\end{align*}}
+\end{align*}
 
 
-\includegraphics[height=50mm]{graphics/hpfwc.pdf}\\
-\includegraphics[height=55mm]{graphics/dfI_order1_abc.pdf}\\
-\includegraphics[height=55mm]{graphics/dfII_order1_abc.pdf}
+\includegraphics{graphics/hpfwc.pdf}
 
+\includegraphics{graphics/dfI_order1_abc.pdf}
+\includegraphics{graphics/dfII_order1_abc.pdf}
+\end{example}
 
 %---------------------------------------
 %---------------------------------------

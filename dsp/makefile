@@ -16,17 +16,16 @@ FILE_SRC  =                                 \
             ../common/symbols.tex           \
             ../common/backmat.tex           \
             ../common/calculus.tex          \
-            ../common/mra.tex               \
+            ../common/dsp.tex               \
+            ../common/dspcalculus.tex       \
             ../common/pwrspec.tex           \
-            ../common/partuni.tex           \
+            ../common/src.tex               \
             ../common/transop.tex           \
-            ../common/wavelets/compactp.tex \
-            ../common/wavelets/ortho.tex    \
-            ../common/wavelets/pollen.tex   \
-            ../common/wavelets/pounity.tex  \
-            ../common/wavelets/symlets.tex  \
-            ../common/wavelets/vanish.tex   \
-            ../common/wavelets/wavstrct.tex 
+            ../common/zcalc1.tex            \
+            ../common/zcalc2.tex            \
+            ../common/zcalc2p.tex           \
+            ../common/zchar.tex             \
+            ../common/ztricks.tex           
 
 FILE_GRP  =  \
   ../common/graphics/watercraft/ghind_djg_blue.eps \

@@ -8,177 +8,8 @@
 %=======================================
 
 %---------------------------------------
-\section*{The Magic Wand: The z-domain IIR filter}
-%---------------------------------------
-
-What we want:
-
-\indentx\begin{tabular}{|cll|}
-    \hline
-    \imark & linear         & (double the input means double the output)
-  \\\imark & time-invariant & (doesn't change with time)
-  \\\imark & tractable      & (we can build it)
-  \\\hline
-\end{tabular}
-
-
-\includegraphics{graphics/linear.pdf}
-
-Which one is \prope{linear}?
-
-
-
-\includegraphics{graphics/nonti.pdf}
-
-Is the filter \prope{time-invariant}?
-
-
-
-\includegraphics{graphics/cosLcos.pdf}
-
-\prope{linear} + \prope{time-invariant} = \prope{LTI}
-
-
-%---------------------------------------
 \section*{Linear operators}
 %---------------------------------------
-Note:
-
-\fbox{\begin{tabular}{llll}
-    A  & \opb{filter}    & in   \hie{engineering} & is an
-  \\   & \opb{operator}  & in   \hie{mathematics} & is a
-  \\   & \opb{black box} & in a \hie{system} diagram.
-\end{tabular}}
-
-
-
-\qboxnqt
-  {
-    Jules Henri Poincar\'e (1854-1912), physicist and mathematician
-    \index{Poincar\'e, Jules Henri}
-    \index{quotes!Poincar\'e, Jules Henri}
-    \footnotemark
-  }
-  %{../common/people/small/poincare.jpg}
-  {Je ne sais si je n'ai d\'ej\`a` dit quelque part que la Math\'ematique est 
-  l'art de donner le m\^eme nom \`a des choses diff\'erentes. 
-  Il convient que ces choses, diff\'erentes par la mati\`ere, 
-  soient semblables par la forme, 
-  \ldots
-  qu'elles puissent, 
-  pour ainsi dire, se couler dans le m\^eme moule. 
-  Quand le langage a \'et\'e bien choisi, 
-  on est tout \'etonn\'e 
-  de voir que toutes les d\'emonstrations, faites pour un objet connu, 
-  s'appliquent imm\'ediatement \`a beaucoup d'objets nouveaux ; 
-  \ldots
-  on n'a rien \`a y changer, pas m\^eme les mots, puisque les noms sont devenus les m\^emes.
-  }
-  %
-  {I think I have already said somewhere that mathematics is the art
-   of giving the same name to different things. 
-   It is enough that these things, though differing in matter, 
-   should be similar in form, 
-   \ldots
-   to permit of their being, so to speak,
-   run in the same mould.
-   When language has been well chosen, 
-   one is astonished to find that all
-   demonstrations made for a known object apply immediately to many new objects:
-   \ldots
-   nothing requires to be changed, 
-   not even the terms,
-   since the names have become the same.
-   }
-  \citetblt{
-    quote:   & \citerc{poincare_sam}{book 1, chapter 2, paragraph 20} \\
-             & \url{http://fr.wikisource.org/wiki/Science_et_m\%C3\%A9thode_-_Livre_premier\%2C_\%C2\%A7_II} \\
-    trans.:  & \citerp{poincare_sam_eng}{34} \\
-   %image:        & \url{http://en.wikipedia.org/wiki/Image:Poincare_jh.jpg}
-    }
-
-
-
-\fbox{\begin{tabular}{llll}
-    A  & \opb{relation} & is a \ope{map}      & from one set to another.
-  \\A  & \opb{function} & is a \ope{relation} & where 1 point cannot map to 2 points.
-  \\An & \opb{operator} & is a \ope{function} & that maps vectors to vectors.
-\end{tabular}}
-
-$\begin{array}{|c|c|}
-   \hline
-   \includegraphics{graphics/123le12.pdf}
-  &\includegraphics{graphics/fnctsq.pdf}
-  \\\ope{relation}&\ope{function}
-  \\\hline
-\end{array}$
-
-
-
-
-%---------------------------------------
-%\begin{definition}
-\label{def:linop}
-\label{def:clL}
-%---------------------------------------
-%Let $\spX\eqd\linearspaceX$ and $\spY\eqd\linearspaceY$ be linear spaces.\\
-  \defbox{%
-    \index{operator!linear}
-    \begin{array}{>{\scy\qquad}r rcl @{\qquad}C @{\qquad}D@{\qquad}D}
-      \mc{7}{M}{An operator $\opL$ is \hid{linear} if \footnotemark}
-        \\1. & \opL(\vx + \vy)  &=&  \opL \vx + \opL \vy & %\forall \vx,\vy\in\spX                      
-                                                         & (\prope{additive}) & and
-        \\2. & \opL(\alpha \vx) &=&  \alpha\opL \vx      & %\forall \vx\in\spX,\quad \forall\alpha\in\F 
-                                                         & (\prope{homogeneous}).
-    %\\\mc{7}{M}{The set of all linear operators from $\spX$ to $\spY$ is denoted $\clLxy$ such that}
-    %\\\mc{7}{l}{\qquad\clLxy \eqd \set{\opL\in\clOxy}{\text{$\opL$ is linear}}}.
-    \end{array}
-  }
-\footnotetext{
-  \citerpg{kubrusly2001}{55}{0817641742},
-  \citerpg{ab}{224}{0120502577},
-  %\citerpg{michel1993}{95,407}{048667598X} \\
-  \citorp{hilbert1927}{6},
-  \citorp{stone1932}{33}
-  }
-%\end{definition}
-
-
-%---------------------------------------
-%\begin{theorem}
-\label{thm:L_prop}
-%---------------------------------------
-%Let $\opL$ be an operator from a linear space $\spX$ to a linear space $\spY$, both over a field $\F$.
-\thmbox{
-  \text{$\opL$ is \prope{linear}}
-  \qquad\implies\qquad
-  \brbl{\begin{array}{>{\scy}r>{\ds}lc>{\ds}lC}
-      1. & \opL\vzero                            &=& \vzero                                & %
-    \\2. & \opL(-\vx)                            &=& -(\opL\vx)                            & %\forall \vx\in\spX
-    \\3. & \opL(\vx-\vy)                         &=& \opL\vx - \opL\vy                     & %\forall \vx,\vy\in\spX
-    \\4. & \opL\brp{\sum_{n=1}^N \alpha_n\vx_n}  &=& \sum_{n=1}^N \alpha_n\brp{\opL\vx_n}  & %\vx_n\in\spX,\,\alpha_n\in\F
-  \end{array}}\footnotemark
-}
-\footnotetext{
-  \citerpgc{berberian1961}{79}{0821819127}{Theorem~IV.1.1}
-  }
-
-
-%---------------------------------------
-%\begin{theorem}
-%---------------------------------------
-Let $\spW$, $\spX$, $\spY$, and $\spZ$ be linear spaces over a field $\F$.
-\thmbox{\begin{array}{>{\scy}rlcl@{\qquad}D}
-    1. & \opL\brp{\opM\opN}      &=& \brp{\opL\opM}\opN                          & (\prope{associative})
-  \\2. & \opL\brp{\opM\addo\opN} &=& \brp{\opL\opM}\addo\brp{\opL\opN}           & (\prope{left distributive})
-  \\3. & \brp{\opL\addo\opM}\opN &=& \brp{\opL\opN}\addo\brp{\opM\opN}           & (\prope{right distributive})
-  \\4. & \alpha\brp{\opL\opM}    &=& \brp{\alpha\opL}\opM = \opL\brp{\alpha\opM} & (\prope{homogeneous})
-\end{array}\footnotemark}
-\footnotetext{
-  \citerpgc{berberian1961}{88}{0821819127}{Theorem~IV.5.1}
-  }
-%\end{theorem}
-
 \tbox{$\ds X(z)\eqd\sum_{n\in\Z} \fx[n] z^{-n}$}
 \tbox{\includegraphics{graphics/ziir2.pdf}}
 \tbox{$\ds Y(z)\eqd\sum_{n\in\Z} \fy[n] z^{-n}$}
@@ -189,9 +20,6 @@ Let $\spW$, $\spX$, $\spY$, and $\spZ$ be linear spaces over a field $\F$.
   \\\imark&Is it \prope{tractable}?
 \end{tabular}
 
-\tbox{$\ds X(z)$}
-\tbox{\includegraphics{graphics/ziir2.pdf}}
-\tbox{$\ds Y(z)$}
 \begin{align*}
   H(z)\eqd \frac{Y(z)}{X(z)}
     &=\frac{b_0 z^2 + b_1 z + b_2}{a_0 z^2 + a_1 z + a_2}
@@ -208,43 +36,25 @@ If $a_0=1$ then
   Y(z) &=  b_0X(z) + b_1z^{-1}X(z)  + b_2z^{-2}X(z) - a_1 z^{-1}Y(z) + a_2z^{-2}Y(z)
 \end{align*}
 
-\begin{align*}
-  a X(z)
-    &\eqd a \opZ \seqn{\fx[n]}                && \text{by definition of $X(z)$}
-  \\&\eqd a \sum_{n\in\Z} \fx[n] z^{-n}       && \text{by definition of $\opZ$ operator}
-  \\&\eqd \sum_{n\in\Z} \brp{a \fx[n]} z^{-n} && \text{by \prope{distributive} property}
-  \\&\eqd \opZ\seqn{a\fx[n]}                  && \text{by definition of $\opZ$ operator}
-\end{align*}
-
-\begin{align*}
-  z^{-2}X(z) 
-    &= z^{-2} \opZ\seqn{\fx[n]}
-   &&\eqd z^{-2}\sum_{n=-\infty}^{n=+\infty} \fx[n] z^{-n}
-  \\&=          \sum_{n=-\infty}^{n=+\infty} \fx[n] z^{-n-2}
-  \\&=          \sum_{m-2=-\infty}^{m-2=+\infty} \fx[m-2] z^{-m}
-    && \text{where $m\eqd n+2$ $\implies$ $n=m-2$}
-  \\&=          \sum_{m=-\infty}^{m=+\infty} \fx[m-2] z^{-m}
-  \\&=          \sum_{n=-\infty}^{n=+\infty} \fx[n-2] z^{-n}
-    && \text{by change of free variable $m\rightarrow n$}
-  \\&\eqd \opZ\seqn{\fx[n-2]}
-    && \text{by definition of $\opZ$ operator}
-\end{align*}
-
 %---------------------------------------
 \section*{Trick \# 1: From z-domain back to time-domain}
 %---------------------------------------
-
+\begin{figure}
+  \centering
+  \includegraphics[width=\tw/2-2mm]{graphics/iir2n.pdf}
+  \includegraphics[width=\tw/2-2mm]{graphics/dfI_order2_156.pdf}
+  \caption{Direct form 1 order 2 IIR filters\label{fig:df1iir2}}
+\end{figure}
 \begin{align*}
   Y(z) &=  b_0X(z) + b_1z^{-1}X(z)  + b_2z^{-2}X(z) - a_1 z^{-1}Y(z) + a_2z^{-2}Y(z)
   \\\\
   \fy[n] &= b_0\fx[n] + b_1\fx[n-1] + b_2\fx[n-2] - a_1\fy[n-1] - a_2\fy[n-2]
 \end{align*}
 
-\includegraphics{graphics/iir2n.pdf}
-
-
-
-Example
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+See \prefpp{fig:df1iir2}
 
 $\ds{\frac{3z^2 + 5z + 7}{2z^2 + 10z + 12}}$
 =
@@ -255,34 +65,47 @@ $\ds{\frac{\brp{\sfrac{3}{2}z^2 + \sfrac{5}{2}z + \sfrac{7}{2}}}
 =
 $\ds{\frac{\brp{\sfrac{3}{2} + \sfrac{5}{2}z^{-1} + \sfrac{7}{2}z^{-2}}}
                {1 + 5z^{-1} + 6z^{-2}}}$
-
-\includegraphics{graphics/dfI_order2_156.pdf}
+\end{example}
 
 %---------------------------------------
 \section*{Trick \# 2: The mirror trick}
 %---------------------------------------
+\begin{figure}
+  \centering
   \includegraphics{graphics/pz_minphase.pdf}%
+  \includegraphics{graphics/pz_realcoefs_11.pdf}
+\caption{Conjugate pair structure yielding real coefficients\label{fig:realcoefs}}
+\end{figure}
 
-If you want real coefficients, choose poles and zeros in conjugate pairs.
-
-%\begin{align*}
-%  \brp{z-p_1}\brp{z-p_1^*}
-%    &= \brp{z-re^{i\theta}}\brp{z-re^{-i\theta}}
-%  \\&= z^2 -r\brs{e^{-i\theta}+e^{i\theta}}z + 1
-%  \\&= z^2 -r\brp{\brs{\cos\theta - i\sin\theta}+\brs{\cos\theta + i\sin\theta}}z + 1
-%  \\&= z^2 -2r\cos(\theta) z + 1
-%\end{align*}
+If you want real coefficients, choose poles and zeros in conjugate pairs (next).
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\propbox{
+  \brb{\begin{array}{FM}
+    \structe{zeros} and \structe{poles}\\
+    occur in \structe{conjugate pairs} 
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{M}
+    \structe{coefficients} \\
+    are \prope{real}.
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
 \begin{align*}
   \brp{z-p_1}\brp{z-p_1^*}
     &= \brs{z-\brp{a+ib}} \brs{z-\brp{a-ib}}
   \\&= z^2 +\brs{-a+ib-ib-a}z - \brs{ib}^2
   \\&= z^2 -2a z + b^2
 \end{align*}
+\end{proof}
 
-Example: 
-
-\includegraphics{graphics/pz_realcoefs_11.pdf}
-
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+See \prefpp{fig:realcoefs}.
 \begin{align*}
   H(z)   &= G\frac{\brs{z-z_1}\brs{z-z_2}}
                   {\brs{z-p_1}\brs{z-p_2}}
@@ -295,27 +118,40 @@ Example:
           = G\frac{z^2 - 2z + 2}
                   {z^2 - \sfrac{4}{3}z + \sfrac{19}{12}}
 \end{align*}
+\end{example}
 
 %---------------------------------------
 \section*{Trick \# 3: The 0Hz Gain}
 %---------------------------------------
-\tbox{$\ds X(z)$}
-\tbox{\includegraphics{graphics/ziir2.pdf}}
-\tbox{$\ds Y(z)$}
-
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\propbox{
+  \brp{\ZH(z) = \frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}
+                     {\ds\sum_{n=0}^{\xN}a_n z^{-n}}}
+  \quad\implies\quad
+  \brp{\FH(0) = \frac{\ds\sum_{n=0}^{\xN}b_n }
+                          {\ds\sum_{n=0}^{\xN}a_n}}
+  }
+\end{proposition}
+{\begin{proof}
 $\ds\begin{array}{rclM}
   \ds\brb{\opDTFT \fx[n]}(\omega) &\ds\eqd& \ds\sum_{n\in\Z} \fx[n] e^{-i\omega n}  & DTFT\\
   \ds\brb{\opZ    \fx[n]}(z)      &\ds\eqd& \ds\sum_{n\in\Z} \fx[n] z^{-n}          & z-Transform
 \end{array}$
 
-\[\implies\qquad z=e^{i\omega} \qquad z=1 \text{ at $\omega=0$}\]
-
-\begin{align*}
-  \brlr{H(z)}_{z=e^{i0}=1}
-    &= \brlr{\frac{b_0 z^2 + b_1 z + b_2}{a_0 z^2 + a_1 z + a_2}}_{z=e^{i0}=1}%
-     = \frac{b_0     + b_1   + b_2}{a_0     + a_1   + a_2}
+\begin{align*}\
+  \FH(0) 
+    &= \brlr{\FH(\omega)}_{\omega=0}
+  \\&= \brlr{\ZH\brp{e^{i\omega}}}_{\omega=0}
+  \\&= \brlr{\ZH(z)}_{z=1}
+  \\&= \brlr{\frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}
+            {\ds\sum_{n=0}^{\xN}a_n z^{-n}}}_{z=1}
+  \\&= \frac{\ds\sum_{n=0}^{\xN}b_n }
+            {\ds\sum_{n=0}^{\xN}a_n }
 \end{align*}
 
+\end{proof}}
 
 %---------------------------------------
 \section*{Trick \# 4: The Fs/2 Gain}
@@ -419,7 +255,6 @@ $\begin{array}{ccccc}
     \\\hline
     \includegraphics{graphics/D8_pz.pdf}&\includegraphics{graphics/S8_pz.pdf}\\
     \includegraphics{graphics/d8_phi_h.pdf}&\includegraphics{graphics/s8_phi_h.pdf}
-    %\includegraphics{graphics/d8_psi_g.pdf}&\includegraphics{graphics/s8_psi_g.pdf}
   \end{tabular}}
 
 
