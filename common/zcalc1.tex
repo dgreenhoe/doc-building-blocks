@@ -7,6 +7,64 @@
 \chapter{Coefficient Calculation}
 %=======================================
 %--------------------------------------
+\section{Order 1 IIR filter}
+%--------------------------------------
+%--------------------------------------
+\begin{lemma}[\thmd{order 1 filter}]
+\label{lem:iir1}
+%--------------------------------------
+Let $\Zh(z)\eqd\frac{a + bz^{-1}}{1 + cz^{-1}}$
+be the \ope{Z-transform}             $\brs{\opZ\fh(n)}(z)$         \xref{def:opZ} 
+and $\Fh(\omega)$ be the \ope{DTFT}  $\brs{\opDTFT\fh(n)}(\omega)$ \xref{def:dtft} 
+of a sequence $\fh(n)$.
+\\
+\lembox{
+  \brb{\begin{array}{FrclD}
+      (1). & \setn{a,b,c}       &\in&    \R                  & and
+    \\(2). & c                  &\notin& \setn{-1,+1}        & and
+    \\(3). & b &\neq& ac
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+      (A). & \abs{\Fh(\omega)}^2 &=& \ds
+             \frac{a^2 + 2ab\cos\brp{\omega} + b^2}
+                  {1   + 2 c\cos\brp{\omega} + c^2}                       & and
+    \\(B). & \mc{3}{M}{$\Zh(z)$ has a \structe{zero} at $z=-\frac{b}{a}$} & and
+    \\(C). & \mc{3}{M}{$\Zh(z)$ has a \structe{pole} at $z=-c$}           & 
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+\item Proof for (A):
+  \begin{align*}
+    \boxed{\abs{\Zh(z)}^2_{z=e^{i\omega}}}
+      &= \brlr{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
+    \\&= \brlr{\Zh(z)\Zh(z^{-1})}_{z=e^{i\omega}}
+     &&  \text{by left hypothesis (1)}
+    \\&= \brp{\frac{a + be^{-i\omega}}{1 + ce^{-i\omega}}}
+         \brp{\frac{a + be^{i\omega}}{1 + ce^{i\omega}}}
+     &&= \frac{a^2 + abe^{-i\omega} + abe^{i\omega} + b^2}
+              {1   +  ce^{i\omega} +  ce^{-i\omega} + c^2}
+    \\&= \frac{a^2 + 2ab\cos\brp{\omega} + b^2}
+              {1   + 2 c\cos\brp{\omega} + c^2}
+      && \text{by \thme{Euler formulas} \xref{cor:eform}}
+  \end{align*}
+
+  \item Proof for (B): 
+    \begin{align*}
+      \brlr{\Zh(z)}_{z=-\sfrac{b}{a}}
+        &\eqd \brlr{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=-\sfrac{b}{a}}=0
+      \\&=    \frac{a + b\brp{-\frac{b}{a}}^{-1}}
+                   {1 + c\brp{-\frac{b}{a}}^{-1}}
+      \\&=    \frac{a - a}
+                   {1 - \frac{ac}{b}}
+      \\&=    \frac{0}{b - ac}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
 \section{1st Order Low-Pass calculation}
 %--------------------------------------
 \begin{figure}[h]
@@ -32,19 +90,25 @@ of a sequence $\fh(n)$.
 \\
 \thmbox{
   \brb{\begin{array}{FrclD}
-      (1). & \Fh(0)             &=&   1                   & and
-    \\(2). & \Fh(\pi)           &=&   0                   & and
-    \\(3). & \abs{\Fh(\omega_c)}&=&   \sfrac{\sqrt{2}}{2} & and
-    \\(4). & \setn{a,b,c}       &\in& \R                  & and
-    \\(5). & c                  &\neq& \pm1               &
+      (1). & \Fh(0)               &=&      1            & and
+    \\(2). & \Fh(\pi)             &=&      0            & and
+    \\(3). & \abs{\Fh(\omega_c)}^2&=&      \frac{1}{2}  & and
+    \\(4). & \setn{a,b,c}         &\in&    \R           & and
+    \\(5). & c                    &\notin& \mc{2}{l}{\setn{-1,+1}}
   \end{array}}
-  \quad\implies\quad
+  \implies
   \brb{\begin{array}{FrclD}
       (A). & c&=&\ds\frac{-1 + \sin\brp{\omega_c}}{\cos\brp{\omega_c}} & and
     \\(B). & b&=&(c+1)/2                                               & and
     \\(C). & a&=&b                                                     & and 
     \\(D). & \mc{3}{M}{$\Zh(z)$ has a \structe{zero} at $z=-1$}        & and
-    \\(E). & \mc{3}{M}{$\Zh(z)$ has a \structe{pole} at $z=-c$}        & \xref{fig:lpf1}
+    \\(E). & \mc{3}{M}{$\Zh(z)$ has a \structe{pole} at $z=-c$}        & and
+    \\(F). & \abs{\Fh(\omega)}^2 &=& 
+             \mc{2}{l}{\ds
+             \frac{1}{2}\brp{
+             \frac{\brp{c+1}^2\brs{1 +  \cos\brp{\omega}}}
+                  {c^2 + 2 c\cos\brp{\omega} + 1}}                       
+             }
   \end{array}}
   }
 \end{theorem}
@@ -55,9 +119,9 @@ of a sequence $\fh(n)$.
     0 
       &= \Fh(\pi)                             && \text{by left hypothesis (2)}
     \\&= \brb{\Zh(z)}_{z=e^{i\pi}}
-    \\&= \brb{\Zh(z)}_{z=-1}
-    \\&= \brb{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=-1}
-    \\&= \frac{a - b}{1 - c}
+       = \brb{\Zh(z)}_{z=-1}
+       = \brb{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=-1}
+       = \frac{a - b}{1 - c}
     \\&\implies \boxed{a=b}                   && \text{by left hypothesis (5)}
   \end{align*}
 
@@ -65,88 +129,79 @@ of a sequence $\fh(n)$.
   \begin{align*}
     1 
       &= \Fh(0)                               && \text{by left hypothesis (1)}
-    \\&= \brb{\Zh(z)}_{z=e^{i0}}
-    \\&= \brb{\Zh(z)}_{z=1}
-    \\&= \brb{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=1}
-    \\&= \frac{a + b}{1 + c}
+       = \brb{\Zh(z)}_{z=e^{i0}}
+       = \brb{\Zh(z)}_{z=1}
+       = \brb{\frac{a + bz^{-1}}{1 + cz^{-1}}}_{z=1}
+       = \frac{a + b}{1 + c}
     \\&= \frac{2a}{1 + c}                     && \text{by \prefp{item:lpf1_ab}}
     \\&\implies \boxed{a=\frac{c+1}{2}}       && \text{by left hypothesis (5)}
   \end{align*}
 
-\item 
-  \begin{align*}
-    \boxed{\abs{\Zh(z)}^2_{z=e^{i\omega}}}
-      &= \brlr{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
-     &&= \brlr{\Zh(z)\Zh(z^{-1})}_{z=e^{i\omega}}\quad\text{(if coefs. \prope{real})}
-    \\&= \brp{\frac{a + be^{-i\omega}}{1 + ce^{-i\omega}}}
-         \brp{\frac{a + be^{i\omega}}{1 + ce^{i\omega}}}
-     &&= \frac{a^2 + abe^{-i\omega} + abe^{i\omega} + b^2}
-              {1   +  ce^{i\omega} +  ce^{-i\omega} + c^2}
-    \\&= \frac{a^2 + 2ab\cos\brp{\omega} + b^2}
-              {1   + 2 c\cos\brp{\omega} + c^2}
-      && \begin{array}[t]{MM}because $e^{i\theta}+e^{-i\theta}=2\cos(\theta)$\\
-                         (\thme{Euler formulas})\footnotemark\end{array}
-    \\&= \frac{2a^2\brs{1 +  \cos\brp{\omega}}}
-              {c^2 + 2 c\cos\brp{\omega} + 1}
-      && \text{because $\ds a=b$}
-    \\&= \frac{2\brp{\frac{c+1}{2}}^2\brs{1 +  \cos\brp{\omega}}}
-              {c^2 + 2 c\cos\brp{\omega} + 1}
-      && \text{because $\ds a=\frac{c+1}{2}$}
-    \\&= \boxed{\brp{\frac{1}{2}}
+  \item Proof for (F): \label{item:lpf1_hw}
+    \begin{align*}
+      \Fh(\omega)
+        &= \frac{a^2 + 2ab\cos\brp{\omega} + b^2}
+                {1   + 2 c\cos\brp{\omega} + c^2}
+        && \text{by \prefp{lem:iir1}}
+      \\&= \frac{2a^2\brs{1 +  \cos\brp{\omega}}}
+                {c^2 + 2 c\cos\brp{\omega} + 1}
+        && \text{by \prefp{item:lpf1_ab}}
+      \\&= \frac{2\brp{\frac{c+1}{2}}^2\brs{1 +  \cos\brp{\omega}}}
+                {c^2 + 2 c\cos\brp{\omega} + 1}
+        && \text{by \prefp{item:lpf1_ac2}}
+      \\&= \brp{\frac{1}{2}}
                 \frac{\brp{c+1}^2\brs{1 +  \cos\brp{\omega}}}
                      {c^2 + 2 c\cos\brp{\omega} + 1}
-               }
-  \end{align*}
-  \footnotetext{
-    \citor{euler1748v1},
-    \citerp{bottazzini}{12}
-    }
+    \end{align*}
 
-\item 
-
-\begin{align*}
-  \frac{1}{2}
-    &= \abs{\Zh(z)}^2_{z=e^{i\omega_c}}
-     = \brp{\frac{1}{2}}
-       \frac{\brp{c+1}^2\brs{1 +  \cos\brp{\omega_c}}}
-            {c^2 + 2 c\cos\brp{\omega_c} + 1} 
-  \\\\\implies &c^2 + 2 c\cos\brp{\omega_c} + 1 
-             = \brp{c+1}^2\brs{1 +  \cos\brp{\omega_c}}
-  \\\\\implies & c^2\brs{1-1-\cos\brp{\omega_c}} 
-             + c  \brs{2\cos\brp{\omega_c}-2-2\cos\brp{\omega_c}}
-             +    \brs{1-1-\cos\brp{\omega_c}}
-             \\&= 0
-  \\\\\implies & c^2{\cos\brp{\omega_c}} 
-             + 2c
-             +    {\cos\brp{\omega_c}}
-             = 0
-\end{align*}
-
-\item 
-
+\item lemma. $c^2{\cos\brp{\omega_c}} + 2c + \cos\brp{\omega_c} = 0$. Proof: \label{ilem:lpf1_c2}
   \begin{align*}
-    \\\implies c &= \frac{-2 \pm \sqrt{(2)^2 -4\cos^2\brp{\omega_c}}}
-                         {2\cos\brp{\omega_c}}
-                 && \text{by \thme{Quadratic Equation}}
-               \\&= \frac{-1 \pm \sqrt{1 -\cos^2\brp{\omega_c}}}
-                         {\cos\brp{\omega_c}}
-               \\&= \frac{-1 \pm \sin\brp{\omega_c}}
-                         {\cos\brp{\omega_c}}
-                 && \text{because $\sin^2x + \cos^2x = 1$ for all $x\in\R$}
+    \frac{1}{2}
+      &= \abs{\Fh(\omega_c)}^2
+      && \text{by left hypothesis (3)}
+    \\&= \frac{1}{2}\brp{
+         \frac{\brp{c+1}^2\brs{1 +  \cos\brp{\omega_c}}}
+              {c^2 + 2 c\cos\brp{\omega_c} + 1}}
+      && \text{by \prefp{item:lpf1_hw}}
+    \\\\\implies &c^2 + 2 c\cos\brp{\omega_c} + 1 
+               = \brp{c+1}^2\brs{1 +  \cos\brp{\omega_c}}
+    \\\\\implies & c^2\brs{1-1-\cos\brp{\omega_c}} 
+               + c  \brs{2\cos\brp{\omega_c}-2-2\cos\brp{\omega_c}}
+               +    \brs{1-1-\cos\brp{\omega_c}}
+               \\&= 0
+    \\\\\implies & c^2{\cos\brp{\omega_c}} 
+               + 2c
+               +    {\cos\brp{\omega_c}}
+               = 0
+  \end{align*}
+
+\item Proof for (A):
+  \begin{align*}
+    c &= \frac{-2 \pm \sqrt{(2)^2 -4\cos^2\brp{\omega_c}}}
+              {2\cos\brp{\omega_c}}
+      && \text{by \prefp{ilem:lpf1_c2} and \thme{Quadratic Equation}}
+    \\&= \frac{-1 \pm \sqrt{1 -\cos^2\brp{\omega_c}}}
+              {\cos\brp{\omega_c}}
+    \\&= \frac{-1 \pm \sin\brp{\omega_c}}
+              {\cos\brp{\omega_c}}
+      && \text{by \prefp{thm:ccss1}}
     \\
     \\\implies &\ds\boxed{c = \frac{-1 + \sin\brp{\omega_c}}
                       {\cos\brp{\omega_c}}}
   \end{align*}
+
+  \item Proof that the zero is at $z=-1$:
+    \begin{align*}
+      z &= -\frac{b}{a}
+        && \text{by \prefp{lem:iir1}}
+      \\&= -\frac{a}{a}
+        && \text{by \prefp{item:lpf1_ab}}
+      \\&= -1
+    \end{align*}
+
+  \item Proof that the pole is at $-c$: by \prefp{lem:iir1}
+
 \end{enumerate}
-
-%---------------------------------------
-Where is the zero? Where is the pole?
-%---------------------------------------
-
-The zero is at z=-1. \qquad The pole is at 
-$\ds\boxed{z=-c = \frac{1 - \sin\brp{\omega_c}}
-                    {\cos\brp{\omega_c}}}$
-
 \end{proof}
 
 \begin{figure}
