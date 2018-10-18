@@ -8,8 +8,11 @@
 %=======================================
 
 %---------------------------------------
-\# 1: The frequency response of $\Zh(z)$ \propb{repeats} every $2\pi$ (every $F_s$)
+\begin{remark}
 %---------------------------------------
+The frequency response of $\Zh(z)$ \propb{repeats} every $2\pi$ (every $F_s$).
+\end{remark}
+\begin{proof}
 \begin{align*}
   \Fh(\omega-2\pi n)
     &\eqd \brlr{\Zh(z)}_{z=e^{i(\omega-2\pi n)}}
@@ -23,10 +26,14 @@
   \\&\eqd \Fh(\omega)
     && \text{by definition of $\Fh(\omega)$}
 \end{align*}
+\end{proof}
 
 %---------------------------------------
-\# 2: If the coefficients are \propb{real}, then the magnitude response (MR) is \propb{symmetric}
+\begin{remark}
 %---------------------------------------
+If the coefficients are \propb{real}, then the magnitude response (MR) is \propb{symmetric}
+\end{remark}
+\begin{proof}
 \begin{align*}
   \abs{\Fh(-\omega)}
     &\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
@@ -39,7 +46,7 @@
   \\&\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
    &&\eqd \abs{\Fh(\omega)}
 \end{align*}
-\mbox{}
+\end{proof}
 
 %%---------------------------------------
 %
@@ -68,44 +75,102 @@
 %\end{align*}}
 
 %---------------------------------------
-\# 3: MR is flat at $\omega=0$ and $\omega=\pi$ \label{equ:mrflat}
+%\# 3: MR is flat at $\omega=0$ and $\omega=\pi$ 
 %---------------------------------------
-\begin{align*}
-  \boxed{\abs{\Zh(z)}^2_{z=e^{i\omega}}} 
-    &= \brs{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
-  \\&= \brp{\frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}{\ds\sum_{n=0}^{\xN}a_n z^{-n}}}_{z=e^{i\omega}}  
-       \brp{\frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}{\ds\sum_{n=0}^{\xN}a_n z^{-n}}}_{z=e^{-i\omega}}  
-   &&= \brp{\frac{\ds\sum_{n=0}^{\xN}b_n e^{-i\omega n}\ds\sum_{m=0}^{\xN}b_m e^{i\omega m}}
-                 {\ds\sum_{n=0}^{\xN}a_n e^{-i\omega n}\ds\sum_{m=0}^{\xN}a_m e^{i\omega m}}}
-  \\&=     {\frac{\ds\sum_{n=0}^{\xN}\ds\sum_{m=0}^{\xN} b_n b_m e^{-i\omega(n-m)}}
-                 {\ds\sum_{n=0}^{\xN}\ds\sum_{m=0}^{\xN} a_n a_m e^{-i\omega(n-m)}}}
-   &&=\boxed{\frac{\ds\sum_{n=0}^{\xN}b_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} b_n b_m \cos\brs{\omega(n-m)}}
-                  {\ds\sum_{n=0}^{\xN}a_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} a_n a_m \cos\brs{\omega(n-m)}}}
-\end{align*}\label{equ:mr}
 
-Where did that come from?
-An example may help (next).
+%---------------------------------------
+\begin{lemma}
+\label{lem:aacos}
+%---------------------------------------
+\lembox{
+  \sum_{n=0}^{\xN}\ds\sum_{m=0}^{\xN} a_n a_m e^{-i\omega(n-m)}
+    =\sum_{n=0}^{\xN}\abs{a_n}^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} \Re\brs{a_n a_m^\ast} \cos\brs{\omega(n-m)}
+  }
+\end{lemma}
+
 %---------------------------------------
 \begin{example}
-\mbox{}\\
+This example graphically illustrates \prefpp{lem:aacos} for the case $\xN=4$.
 %---------------------------------------
 \begin{align*}
   \sum_{n=0}^{4}\ds\sum_{m=0}^{4} a_n a_m e^{-i\omega(n-m)}
     &= \brp{\begin{array}{|c||*{5}{>{\ds}c|}}
-    \hline          &{\ccg}$m=0$                 &{\ccg}$m=1$                 &{\ccg}$m=2$                 &{\ccg}$m=3$                 &{\ccg}$m=4$
-  \\\hline
-    \hline\ccg$n=0$ &{\ccc}a_0 a_0               &      a_0 a_1 e^{+i \omega} &      a_0 a_2 e^{+i2\omega} &      a_0 a_3 e^{+i3\omega} &      a_0 a_4 e^{+i4\omega} 
-  \\\hline\ccg$n=1$ &      a_1 a_0 e^{-i \omega} &{\ccc}a_1 a_1               &      a_1 a_2 e^{+i \omega} &      a_1 a_3 e^{+i2\omega} &      a_1 a_4 e^{+i3\omega} 
-  \\\hline\ccg$n=2$ &      a_2 a_0 e^{-i2\omega} &      a_2 a_1 e^{-i \omega} &{\ccc}a_2 a_2               &      a_2 a_3 e^{+i \omega} &      a_2 a_4 e^{+i2\omega} 
-  \\\hline\ccg$n=3$ &      a_3 a_0 e^{-i3\omega} &      a_3 a_1 e^{-i2\omega} &      a_3 a_2 e^{-i \omega} &{\ccc}a_3 a_3               &      a_3 a_4 e^{+i \omega} 
-  \\\hline\ccg$n=4$ &      a_4 a_0 e^{-i4\omega} &      a_4 a_1 e^{-i3\omega} &      a_4 a_2 e^{-i2\omega} &      a_4 a_3 e^{-i \omega} &{\ccc}a_4 a_4                  
-  \\\hline
-\end{array}}
-  \\&=\sum_{n=0}^{4}a_n^2 + 2\sum_{n=0}^{4}\ds\sum_{m=n+1}^{4} a_n a_m \cos\brs{\omega(n-m)}
+           \hline          &{\ccg}$m=0$                 &{\ccg}$m=1$                 &{\ccg}$m=2$                 &{\ccg}$m=3$                 &{\ccg}$m=4$
+         \\\hline
+           \hline\ccg$n=0$ &{\ccc}a_0 a_0^\ast               &      a_0 a_1^\ast e^{+i \omega} &      a_0 a_2^\ast e^{+i2\omega} &      a_0 a_3^\ast e^{+i3\omega} &      a_0 a_4^\ast e^{+i4\omega} 
+         \\\hline\ccg$n=1$ &      a_1 a_0^\ast e^{-i \omega} &{\ccc}a_1 a_1^\ast               &      a_1 a_2^\ast e^{+i \omega} &      a_1 a_3^\ast e^{+i2\omega} &      a_1 a_4^\ast e^{+i3\omega} 
+         \\\hline\ccg$n=2$ &      a_2 a_0^\ast e^{-i2\omega} &      a_2 a_1^\ast e^{-i \omega} &{\ccc}a_2 a_2^\ast               &      a_2 a_3^\ast e^{+i \omega} &      a_2 a_4^\ast e^{+i2\omega} 
+         \\\hline\ccg$n=3$ &      a_3 a_0^\ast e^{-i3\omega} &      a_3 a_1^\ast e^{-i2\omega} &      a_3 a_2^\ast e^{-i \omega} &{\ccc}a_3 a_3^\ast               &      a_3 a_4^\ast e^{+i \omega} 
+         \\\hline\ccg$n=4$ &      a_4 a_0^\ast e^{-i4\omega} &      a_4 a_1^\ast e^{-i3\omega} &      a_4 a_2^\ast e^{-i2\omega} &      a_4 a_3^\ast e^{-i \omega} &{\ccc}a_4 a_4^\ast                  
+         \\\hline
+       \end{array}}
+  \\&=  \sum_{n=0}^{4}a_n a_n^\ast
+     + 2\sum_{n=0}^{4}\ds\sum_{m=n+1}^{4} \brs{\brp{a_n a_m^\ast e^{i\omega}} + \brp{a_n^\ast a_m e^{-i\omega}}}
+  \\&=  \sum_{n=0}^{4}a_n a_n^\ast
+     + 2\sum_{n=0}^{4}\ds\sum_{m=n+1}^{4} \brs{\brp{a_n a_m^\ast e^{i\omega}} + \brp{a_n a_m^\ast e^{i\omega}}^\ast}
+  \\&=  \sum_{n=0}^{4}a_n a_n^\ast
+     +  \sum_{n=0}^{4}\ds\sum_{m=n+1}^{4} 2\Re\brs{\brp{a_n a_m^\ast e^{i\omega}}}
+  \\&=  \sum_{n=0}^{4}\abs{a_n}^2 
+     + 2\sum_{n=0}^{4}\ds\sum_{m=n+1}^{4}  \Re\brs{a_n a_m^\ast} \Re\brs{e^{i\omega(n-m)}}
+  \\&=  \sum_{n=0}^{4}\abs{a_n}^2 
+     + 2\sum_{n=0}^{4}\ds\sum_{m=n+1}^{4}  \Re\brs{a_n a_m^\ast} \cos\brs{\omega(n-m)}
 \end{align*}
 \end{example}
 
-Now \ldots What happens when we take the derivative of all this and evaluate at $\omega=0$?
+%---------------------------------------
+\begin{lemma}
+\label{lem:qzcos}
+%---------------------------------------
+\lembox{
+  \brb{\Zq(z) \eqd \sum_{n=0}^{\xN} a_n z^{-n}}
+  \quad\implies\quad
+  \brb{\abs{\Fq(\omega)}^2
+    = \sum_{n=0}^{\xN}\abs{a_n}^2 + 2\sum_{n=0}^{\xN} \sum_{m=n+1}^{\xN} a_n a_m^\ast \cos\brs{\omega(n-m)}
+    }
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \boxed{\abs{\Fq(\omega)}^2}
+    &= \brs{\abs{\Zq(z)}^2}_{z=e^{i\omega}}
+  \\&= \brs{\Zq(z)\Zq^\ast(z)}_{z=e^{i\omega}}
+  \\&= \brs{\brp{\sum_{n=0}^{\xN} a_n      z^{-n}}
+            \brp{\sum_{n=0}^{\xN} a_n^\ast z^{ n}}}_{z=e^{i\omega}}
+  \\&= \brs{\sum_{m=0}^{\xN}\sum_{n=0}^{\xN} a_m a_n^\ast z^{n-m}}_{z=e^{i\omega}}
+  \\&= \sum_{m=0}^{\xN}\sum_{n=0}^{\xN} a_m a_n^\ast e^{i\omega(n-m)}
+  \\&= \sum_{n=0}^{\xN}a_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} a_n a_m \cos\brs{\omega(n-m)}
+    && \text{by \prefp{lem:aacos}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+\thmbox{
+  \abs{\Fh(\omega)}^2
+    =\frac{\ds\sum_{n=0}^{\xN}b_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} b_n b_m \cos\brs{\omega(n-m)}}
+          {\ds\sum_{n=0}^{\xN}a_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} a_n a_m \cos\brs{\omega(n-m)}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \boxed{\abs{\Fh(\omega)}^2}
+    &= \abs{\Zh(z)}^2_{z=e^{i\omega}}
+  \\&= \brs{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega}}
+  \\&= \abs{\frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}{\ds\sum_{n=0}^{\xN}a_n z^{-n}}}^2_{z=e^{i\omega}}  
+  \\&=\boxed{\frac{\ds\sum_{n=0}^{\xN}b_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} b_n b_m \cos\brs{\omega(n-m)}}
+                  {\ds\sum_{n=0}^{\xN}a_n^2 + 2\sum_{n=0}^{\xN}\ds\sum_{m=n+1}^{\xN} a_n a_m \cos\brs{\omega(n-m)}}}
+    && \text{by \prefp{lem:qzcos}}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+\thmbox{\ddw\abs{\Fh(\omega)}^2_{\omega=0} = 0}
+\end{theorem}
+\begin{proof}
 \begin{align*}
   \ddw\abs{\Zh(z)}^2_{z=e^{i\omega},\omega=0}  
     &= \ddw\brs{\Zh(z)\Zh^\ast(z)}_{z=e^{i\omega},\omega=0}
@@ -120,6 +185,7 @@ Now \ldots What happens when we take the derivative of all this and evaluate at 
               & $\ddw\cos(k\omega)=-\sin(k\omega)=0$ & at $\omega=0,\,\pi$
     \end{array}}
 \end{align*}
+\end{proof}
 
 %---------------------------------------
 \begin{remark}
