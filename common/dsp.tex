@@ -479,91 +479,6 @@ stable & unstable
      }
 \end{figure}
 
-
-%=======================================
-\section{Sample rate conversion}
-%=======================================
-%---------------------------------------
-\begin{theorem}[\thmd{upsampling}]
-%\footnote{
-%  \citerpgc{strang1996}{101}{0961408871}{Second Nobel Identity}
-%  }
-\label{thm:upsample}
-%---------------------------------------
-Let $\seqxZ{x_n}$ and $\seqxZ{y_n}$ be \structe{sequences} \xref{def:seq} 
-in $\spllF$ \xref{def:spllF} over a \structe{field} $\F$.
-\thmbox{
-  y_n = 
-  \brb{\begin{array}{lM}
-    x_{(n/\xN)} & for $n\mod \xN=0$  \\
-    0         & otherwise
-  \end{array}}
-  \qquad\implies\qquad
-  {\Zy(z) = \Zx\brp{z^\xN}}
-  }
-\end{theorem}
-\begin{proof}
-\begin{align*}
-  \Zy(z)
-    &\eqd \sum_{n\in\Z} y_n z^{-n}
-    &&    \text{by definition of \fncte{z-transform}}
-    &&    \text{\xref{def:opZ}}
-  \\&=    \sum_{n\mod\xN=0}   y_n z^{-n} +
-          \sum_{n\mod\xN\ne0} y_n z^{-n}
-  \\&=    \sum_{n\mod\xN=0} x_{n/\xN} z^{-n} +
-          \cancelto{0}{\sum_{n\mod \xN\ne 0} 0 z^{-n}}
-    &&    \text{by definition of $\seqn{y_n}$}
-  \\&=    \sum_{m\in\Z} x_m z^{-m\xN}
-    &&    \text{where $m\eqd n/\xN\,\implies\,n=m\xN$}
-  \\&=    \sum_{m\in\Z} x_m \brp{z^\xN}^{-m}
-  \\&\eqd \Zx\brp{z^\xN}
-    &&    \text{by definition of \fncte{z-transform}}
-    &&    \text{\xref{def:opZ}}
-\end{align*}
-\end{proof}
-
-
-
-%---------------------------------------
-\begin{theorem}[\thmd{downsampling}]
-\index{decimation}
-\label{thm:downsample}
-%---------------------------------------
-Let $\seqxZ{x_n}$ and $\seqxZ{y_n}$ be \structe{sequences} \xref{def:seq} 
-in $\spllF$ \xref{def:spllF} over a \structe{field} $\F$.
-\thmbox{
-  \brb{y_n = x_{(\xN n)}}
-  \qquad\implies\qquad
-  \brb{\Zy(z)=\frac{1}{\xN}\sum_{m=0}^{\xN-1}\Zx\left( e^{i\frac{2\pi m}{\xN}} z^{\frac{1}{\xN}} \right)}
-  }
-\end{theorem}
-\begin{proof}
-\begin{align*}
-  \Zy(z)
-    &\eqd \sum_{n\in\Z} y_n z^{-n}
-    &&    \text{by definition of \fncte{z-transform}}
-    &&    \text{\xref{def:opZ}}
-  \\&=    \sum_{n\in\Z} x_{(n\xN)} z^{-n}
-    &&    \text{by definition of $\seqn{y_n}$}
-  \\&=    \sum_{n\in\Z} x_n \Big[ \kdelta_{(n\mod \xN)} \Big] z^{-\frac{n}{\xN}}
-  \\&=    \sum_{n\in\Z} x_n \brs{\frac{1}{\xN}\sum_{m=0}^{\xN-1} e^{-i\frac{2\pi nm}{\xN}}} z^{-\frac{n}{\xN}}
-    &&    \text{by \thme{Summation around unit circle}}
-    &&    \text{\xref{cor:trig_circle}}
-  \\&=    \frac{1}{\xN}\sum_{m=0}^{\xN-1} \sum_{n\in\Z} x_n 
-                 \brp{e^{i\frac{2\pi m}{\xN}}}^{-n} 
-                 \brp{ z^\frac{1}{\xN}}^{-n}
-  \\&=    \frac{1}{\xN}\sum_{m=0}^{\xN-1} \sum_{n\in\Z} x_n 
-                 \brp{e^{i\frac{2\pi m}{\xN}} z^\frac{1}{\xN}}^{-n} 
-  \\&\eqd \frac{1}{\xN}\sum_{m=0}^{\xN-1}\Zx\brp{e^{i\frac{2\pi m}{\xN}} z^\frac{1}{\xN}}
-    &&    \text{by definition of \fncte{z-transform}}
-    &&    \text{\xref{def:opZ}}
-\end{align*}
-\end{proof}
-
-
-
-
-
 %======================================
 \section {Filter Banks}
 %======================================
@@ -627,11 +542,13 @@ Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the se
     \begin{align*}
       \Zy(z)
         &= \sum_{n\in\Z}  y_{n}  z^{-n}
-        && \text{by definition of \fncte{z-transform} \xref{def:opZ}}
+        && \text{by definition of \fncte{z-transform}}
+        && \text{\xref{def:opZ}}
       \\&= \sum_{n\in\Z} \mcom{(\pm) (-1)^n x^\ast_{\xN-n}}{\structe{CQF}} z^{-n}
         && \text{by (1)}
       \\&= \pm\sum_{m\in\Z} (-1)^{\xN-m} x_m^\ast z^{-(\xN-m)}
-        && \text{where } m\eqd\xN-n \implies n=\xN-m
+        && \text{where $m\eqd\xN-n \implies$}
+        && \text{$n=\xN-m$}
       \\&= \pm (-1)^\xN z^{-\xN}
            \sum_{m\in\Z}(-1)^{-m} x_m^\ast \brp{z^{-1}}^{-m}
       \\&= \pm (-1)^\xN z^{-\xN}
@@ -639,7 +556,8 @@ Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the se
       \\&= \pm (-1)^\xN z^{-\xN}
            \brs{\sum_{m\in\Z} x_m \brp{-\frac{1}{z^\ast}}^{-m}}^\ast
       \\&= \pm (-1)^\xN z^{-\xN}\Zx^\ast\brp{\frac{-1}{z^\ast}}
-        && \text{by definition of \fncte{z-transform} \xref{def:opZ}}
+        && \text{by definition of \fncte{z-transform}}
+        && \text{\xref{def:opZ}}
     \end{align*}
 
   \item Proof that $(1)\impliedby(2)$:
@@ -648,12 +566,15 @@ Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the se
         &= \pm (-1)^\xN z^{-\xN} \Zx^\ast\brp{\frac{-1}{z^\ast}}
         && \text{by (2)}
       \\&= \pm (-1)^\xN z^{-\xN} \brs{\sum_{m\in\Z} x_m \brp{\frac{-1}{z^\ast}}^{-m}}^\ast
-        && \text{by definition of \fncte{z-transform} \xref{def:opZ}}
+        && \text{by definition of \fncte{z-transform}}
+        && \text{\xref{def:opZ}}
       \\&= \pm (-1)^\xN z^{-\xN} \brs{\sum_{m\in\Z} x^\ast_m \brp{-z^{-1}}^{-m}}
-        && \text{by definition of \fncte{z-transform} \xref{def:opZ}}
+        && \text{by definition of \fncte{z-transform}}
+        && \text{\xref{def:opZ}}
       \\&= \sum_{m\in\Z}(\pm) (-1)^{\xN-m} x^\ast_m z^{-(\xN-m)}
       \\&= \sum_{m\in\Z}(\pm) (-1)^{n} x^\ast_{\xN-n} z^{-n}
-        && \text{where $n=\xN-m$ $\implies$ $m\eqd\xN-n$}
+        && \text{where $n=\xN-m$ $\implies$}
+        && \text{$m\eqd\xN-n$}
       \\&\implies x_n = \pm (-1)^n x^\ast_{\xN-n}
     \end{align*}
 
@@ -674,11 +595,13 @@ Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the se
     \begin{align*}
       \Dx(\omega) 
         &= \sum_{n\in\Z}  y_{n}  e^{-i\omega n}
-        && \text{by definition of \fncte{DTFT} \xref{def:dtft}}
+        && \text{by definition of \fncte{DTFT}}
+        && \text{\xref{def:dtft}}
       \\&= \sum_{n\in\Z} \mcom{\pm (-1)^n x_{\xN-n}^\ast}{\structe{CQF}} e^{-i\omega n}
         && \text{by (1)}
       \\&= \sum_{m\in\Z}\pm (-1)^{\xN-m} x_m^\ast e^{-i\omega (\xN-m)}
-        && \text{where } m\eqd\xN-n \implies n=\xN-m
+        && \text{where $m\eqd\xN-n \implies$}
+        && \text{$n=\xN-m$}
       \\&= \pm (-1)^\xN e^{-i\omega\xN}
            \sum_{m\in\Z}(-1)^m x_m^\ast e^{i\omega m}
       \\&= \pm (-1)^\xN e^{-i\omega\xN}
@@ -688,25 +611,29 @@ Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the se
       \\&= \pm (-1)^\xN e^{-i\omega\xN}
            \left[ \sum_{m\in\Z}x_m e^{-i(\omega+\pi )m} \right]^\ast
       \\&= \pm (-1)^\xN e^{-i\omega\xN}\Dx^\ast\left(\omega+\pi \right)
-        && \text{by definition of \fncte{DTFT} \xref{def:dtft}}
+        && \text{by definition of \fncte{DTFT}}
+        && \text{\xref{def:dtft}}
     \end{align*}
 
   \item Proof that $(1)\impliedby(3)$:
     \begin{align*}
       y_n
         &= \frac{1}{2\pi}\int_{-\pi}^{+\pi} \Dy(\omega) e^{i\omega n} \dw
-        && \text{by \prefp{thm:idtft}}
+        && \text{by \thme{inverse DTFT}}
+        && \text{\xref{thm:idtft}}
       \\&= \frac{1}{2\pi}\int_{-\pi}^{+\pi} \mcom{\pm (-1)^\xN e^{-i\xN\omega} \Dx^\ast(\omega+\pi)}{right hypothesis} e^{i\omega n} \dw
         && \text{by right hypothesis}
       \\&= \pm (-1)^\xN\frac{1}{2\pi}\int_{-\pi}^{+\pi}  \Dx^\ast(\omega+\pi) e^{i\omega(n-\xN)} \dw
         && \text{by right hypothesis}
       \\&= \pm (-1)^\xN\frac{1}{2\pi}\int_{0}^{2\pi}  \Dx^\ast(v) e^{i(v-\pi)(n-\xN)} \dv
-        && \text{where $v\eqd\omega+\pi$ $\implies$ $\omega=v-\pi$}
+        && \text{where $v\eqd\omega+\pi$ $\implies$}
+        && \text{$\omega=v-\pi$}
       \\&= \pm (-1)^\xN e^{-i\pi(n-\xN)} \frac{1}{2\pi}\int_{0}^{2\pi}  \Dx^\ast(v) e^{iv(n-\xN)} \dv
       \\&= \pm (-1)^\xN \mcom{(-1)^\xN}{$e^{i\pi N}$} \mcom{(-1)^n}{$e^{-i\pi n}$} 
            \brs{\frac{1}{2\pi}\int_{0}^{2\pi}  \Dx(v) e^{iv(\xN-n)} \dv}^\ast
       \\&= \pm (-1)^n x_{\xN-n}^\ast
-        && \text{by \prefp{thm:idtft}}
+        && \text{by \thme{inverse DTFT}}
+        && \text{\xref{thm:idtft}}
     \end{align*}
 
   \item Proof that (1)$\iff$(4): % 2013jun14fri
@@ -718,7 +645,8 @@ Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the se
       \\&\iff \pm(-1)^n y^\ast_{n} = x_{\xN-n}
       \\&\iff x_{\xN-n} = \pm(-1)^n y^\ast_{n}
       \\&\iff x_m = \pm(-1)^{\xN-m} y^\ast_{\xN-m}
-        &&    \text{where $m\eqd \xN-n\implies n=\xN-m$}
+        && \text{where $m\eqd \xN-n\implies$}
+        && \text{$n=\xN-m$}
       \\&\iff x_m = \pm(-1)^{\xN-m} y^\ast_{\xN-m}
       \\&\iff x_m = \pm(-1)^\xN (-1)^m y^\ast_{\xN-m}
       \\&\iff x_n = \pm(-1)^\xN (-1)^n y^\ast_{\xN-n}
@@ -758,10 +686,14 @@ Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the se
         &= \opddwn\Dy(\omega)\Big|_{\omega=0}
         && \text{by (A)}
       \\&= \opddwn(\pm)(-1)^\xN e^{-i\omega\xN}\Dx^\ast(\omega+\pi)\Big|_{\omega=0}
-        && \text{by \prefp{thm:cqf}}
+        && \text{by \thme{CQF theorem}}
+        && \text{\xref{thm:cqf}}
       \\&= \brlr{(\pm)(-1)^\xN \sum_{\ell=0}^n \bcoef{n}{\ell} \brs{\opddw}^\ell\brs{e^{-i\omega\xN}}\cdot\brs{\opddw}^{n-\ell}\brs{\Dx^\ast(\omega+\pi)}}_{\omega=0}
-        && \text{by \thme{Leibnitz GPR} \xref{lem:LGPR}}
-      \\&= \brlr{(\pm)(-1)^\xN \sum_{\ell=0}^n \bcoef{n}{\ell} {-i\xN}^\ell e^{-i\omega\xN}\brs{\opddw}^{n-\ell}\brs{\Dx^\ast(\omega+\pi)}}_{\omega=0}
+        && \text{by \thme{Leibnitz GPR}}
+        && \text{\xref{lem:LGPR}}
+      \\&= \brlr{(\pm)(-1)^\xN 
+                 \sum_{\ell=0}^n \bcoef{n}{\ell} {-i\xN}^\ell e^{-i\omega\xN}\brs{\opddw}^{n-\ell}\brs{\Dx^\ast(\omega+\pi)}
+                }_{\omega=0}
       \\&= \brlr{(\pm)(-1)^\xN  \cancelto{1}{e^{-i0\xN}} \sum_{\ell=0}^n \bcoef{n}{\ell} {-i\xN}^\ell \brs{\opddw}^{n-\ell}\brs{\Dx^\ast(\omega+\pi)}}_{\omega=0}
     \end{align*}
   \[\begin{array}{r rcl l}
@@ -780,7 +712,8 @@ Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the se
         &= \opddwn\Dx(\omega)\Big|_{\omega=\pi}
         && \text{by (B)}
       \\&= \opddwn(\pm) e^{-i\omega\xN} \Dy^\ast(\omega+\pi)\Big|_{\omega=\pi}
-        && \text{by \prefp{thm:cqf}}
+        && \text{by \thme{CQF theorem}}
+        && \text{\xref{thm:cqf}}
       \\&= \brlr{(\pm) \sum_{\ell=0}^n \bcoef{n}{\ell} \brs{\opddw}^\ell\brs{e^{-i\omega\xN}}\cdot\brs{\opddw}^{n-\ell}\brs{\Dy^\ast(\omega+\pi)}}_{\omega=\pi}
         && \text{by \thme{Leibnitz GPR} \xref{lem:LGPR}}
       \\&= \brlr{(\pm) \sum_{\ell=0}^n \bcoef{n}{\ell} (-i\xN)^\ell e^{-i\omega\xN}\brs{\opddw}^{n-\ell}\brs{\Dy^\ast(\omega+\pi)}}_{\omega=\pi}

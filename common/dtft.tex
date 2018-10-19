@@ -43,6 +43,7 @@ as illustrated to the right.
 %--------------------------------------
 \begin{proposition}[\thmd{DTFT periodicity}]
 \label{prop:dtft_2pi}
+\label{prop:dtft_periodic}
 %--------------------------------------
 Let $\Dx(\omega)\eqd\opDTFT\brs{\seqn{x_n}}(\omega)$ be the \fncte{discrete-time Fourier transform} \xref{def:dtft}
 of a sequence $\seqxZ{x_n}$ in $\spllR$.
@@ -134,6 +135,26 @@ $\Dx(\omega)$ the \fncte{discrete-time Fourier transform} \xref{def:dtft} of $\s
 \end{enumerate}
 \end{proof}
 
+%---------------------------------------
+\begin{proposition}
+\label{prop:dtft_real}
+%---------------------------------------
+If the coefficients are \propb{real}, then the magnitude response (MR) is \propb{symmetric}.
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \abs{\Fh(-\omega)}
+    &\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
+   &&\eqd \abs{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{-i\omega}}
+  \\&= \abs{\sum_{m\in\Z} \fx[m] e^{i\omega m}}
+   &&= \abs{\brp{\sum_{m\in\Z} \fx^\ast[m] e^{-i\omega m}}^\ast}
+  \\&= \mcom{\abs{\brp{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}^\ast}}
+            { if $x[m]$ is \prope{real}}
+   &&= \abs{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}
+  \\&\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
+   &&\eqd \abs{\Fh(\omega)}
+\end{align*}
+\end{proof}
 
 
 %=======================================
@@ -508,7 +529,7 @@ $\sum_{k\in\Z}x_k y^\ast_{k-2n}=\kdelta_n$.
 \index{vanishing moments}
 %--------------------------------------
 Let $\Dx(\omega)$ be the \fncte{DTFT} \xref{def:dtft} of a sequence $\seqxZ{x_n}$.
-\thmbox{\begin{array}{F@{\qquad}>{\ds}rcl@{\qquad}c@{\qquad}>{\ds}rcl@{\qquad}F@{\qquad}C}
+\thmbox{\begin{array}{F@{\qquad}>{\ds}rcl@{\qquad}c@{\qquad}>{\ds}lcl@{\qquad}F@{\qquad}C}
   (A) & \opddwn \Dx(\omega)\Big|_{\omega=0}   &=& 0  &\iff& \sum_{k\in\Z} k^n  x_k        &=& 0  & (B) & \forall n\in\Znn\\
   (C) & \opddwn \Dx(\omega)\Big|_{\omega=\pi} &=& 0  &\iff& \sum_{k\in\Z} (-1)^k k^n  x_k &=& 0  & (D) & \forall n\in\Znn
 \end{array}}
@@ -571,55 +592,4 @@ Let $\Dx(\omega)$ be the \fncte{DTFT} \xref{def:dtft} of a sequence $\seqxZ{x_n}
 
 
 
-
-%=======================================
-\section{Frequency Response}
-%=======================================
-The pole zero locations of a digital filter determine the magnitude and 
-phase frequency response of the digital filter.\citepp{cadzow}{90}{91}
-This can be seen by representing the poles and zeros vectors in the complex z-plane.
-Each of these vectors has a magnitude $M$ and a direction $\theta$.
-Also, each factor $(z-z_i)$ and $(z-p_i)$ can be represented as vectors as well
-(the difference of two vectors).
-Each of these factors can be represented by a magnitude/phase factor
-$M_ie^{i\theta_i}$.  The overall magnitude and phase of $H(z)$ can then 
-be analyzed.
-
-Take the following filter for example:
-
-\begin{eqnarray*}
-   H(z) &=& \frac{b_0 + b_1z^{-1} + b_2z^{-2} }
-                 {1   + a_1z^{-1} + a_2z^{-2} }
-   \\   &=& \frac{(z-z_1)(z-z_2)}
-                 {(z-p_1)(z-p_2)}
-   \\   &=& \frac{M_1e^{i\theta_1} \; M_2e^{i\theta_2} \; }
-                 {M_3e^{i\theta_3} \; M_4e^{i\theta_4} \; }
-   \\   &=& \left(\frac{M_1M_2}{M_3M_4} \right)
-            \left(\frac{e^{i\theta_1} e^{i\theta_2} }
-                       {e^{i\theta_3} e^{i\theta_4} }\right)
-\end{eqnarray*}
-
-This is illustrated in \prefpp{fig:vector}.
-The unit circle represents frequency in the Fourier domain.
-The frequency response of a filter is just a rotating vector on this circle.
-The magnitude response of the filter is just then a {\em vector sum}.
-For example, the magnitude of any $H(z)$ is as follows:
-
-\begin{eqnarray*}
-   |H(z)| &=& \frac{|(z-z_1)|\;|(z-z_2)|}
-                 {|(z-p_1)|\;|(z-p_2)|}
-\end{eqnarray*}
-
-
-
-
-\begin{figure}[ht]
-  \centering%
-  \includegraphics{graphics/vecres.pdf}
-  \caption{
-     Vector response of digital filter
-     \label{fig:vector}
-     }
-%\end{center}
-\end{figure}
 

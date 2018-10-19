@@ -6,78 +6,69 @@
 %=======================================
 \chapter{Magnitude characteristics of z-filters}
 %=======================================
+%=======================================
+\section{Pole and zero location analysis}
+%=======================================
+Note the following:
+\\\indentx\begin{tabular}{cll}
+    \imark & The frequency response of $\Zh(z)$ \propb{repeats} every $2\pi$.
+           & \prefp{prop:dtft_periodic}
+  \\\imark & If the coefficients are \propb{real}, &
+         \\& then the magnitude response is \propb{symmetric}
+           & \prefp{prop:dtft_real}
+  \\\imark & Moments and derivatives are related:
+           & \prefp{thm:dtft_ddw}
+\end{tabular}
 
+The pole zero locations of a digital filter determine the magnitude and 
+phase frequency response of the digital filter.\footnote{\citerpp{cadzow}{90}{91}}
+This can be seen by representing the pole and zero vectors in the complex z-plane.
+Each of these vectors has a magnitude $M$ and a direction $\theta$.
+Also, each factor $(z-z_i)$ and $(z-p_i)$ can be represented as vectors as well
+(the difference of two vectors).
+Each of these factors can be represented by a magnitude/phase factor
+$M_ie^{i\theta_i}$.  The overall magnitude and phase of $H(z)$ can then 
+be analyzed.
+
+\begin{figure}[ht]
+  \centering%
+  \includegraphics[height=80mm]{graphics/vecres.pdf}
+  \caption{
+     Vector response of digital filter \xref{ex:zchar_vector}
+     \label{fig:zchar_vector}
+     }
+\end{figure}
 %---------------------------------------
-\begin{remark}
+\begin{example}
 %---------------------------------------
-The frequency response of $\Zh(z)$ \propb{repeats} every $2\pi$ (every $F_s$).
-\end{remark}
-\begin{proof}
+Take the following filter for example.
 \begin{align*}
-  \Fh(\omega-2\pi n)
-    &\eqd \brlr{\Zh(z)}_{z=e^{i(\omega-2\pi n)}}
-    && \text{by definition of $\Fh(\omega)$}
-  \\&\eqd \brlr{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{i(\omega-2\pi n)}}
-    &&\text{by definition of $\opZ$}
-  \\&= \sum_{m\in\Z} \fx[m] e^{-i\omega m}\cancelto{1}{e^{-i2\pi nm}}
-  \\&\eqd \brlr{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{i\omega}}
-  \\&\eqd \brlr{\Zh(z)}_{z=e^{i\omega}}
-    &&\text{by definition of $\opZ$}
-  \\&\eqd \Fh(\omega)
-    && \text{by definition of $\Fh(\omega)$}
+   H(z) &= \frac{b_0 + b_1z^{-1} + b_2z^{-2} }
+                {1   + a_1z^{-1} + a_2z^{-2} }
+   \\   &= \frac{(z-z_1)(z-z_2)}
+                {(z-p_1)(z-p_2)}
+   \\   &= \frac{M_1e^{i\theta_1} \; M_2e^{i\theta_2} \; }
+                {M_3e^{i\theta_3} \; M_4e^{i\theta_4} \; }
+   \\   &= \left(\frac{M_1M_2}{M_3M_4} \right)
+           \left(\frac{e^{i\theta_1} e^{i\theta_2} }
+                      {e^{i\theta_3} e^{i\theta_4} }\right)
 \end{align*}
-\end{proof}
 
-%---------------------------------------
-\begin{remark}
-%---------------------------------------
-If the coefficients are \propb{real}, then the magnitude response (MR) is \propb{symmetric}
-\end{remark}
-\begin{proof}
+This is illustrated in \prefpp{fig:zchar_vector}.
+The unit circle represents frequency in the Fourier domain.
+The frequency response of a filter is just a rotating vector on this circle.
+The magnitude response of the filter is just then a {\em vector sum}.
+For example, the magnitude of any $H(z)$ is as follows:
+
 \begin{align*}
-  \abs{\Fh(-\omega)}
-    &\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
-   &&\eqd \abs{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{-i\omega}}
-  \\&= \abs{\sum_{m\in\Z} \fx[m] e^{i\omega m}}
-   &&= \abs{\brp{\sum_{m\in\Z} \fx^\ast[m] e^{-i\omega m}}^\ast}
-  \\&= \mcom{\abs{\brp{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}^\ast}}
-            { if $x[m]$ is \prope{real}}
-   &&= \abs{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}
-  \\&\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
-   &&\eqd \abs{\Fh(\omega)}
+   \abs{H(z)} &=& \frac{|(z-z_1)|\;|(z-z_2)|}
+                 {|(z-p_1)|\;|(z-p_2)|}
 \end{align*}
-\end{proof}
+\end{example}
 
-%%---------------------------------------
-%
-%\# 2: If the coefficients are \propb{real}, then the MR is \propb{symmetric}
-%%---------------------------------------
-%{\begin{align*}
-%  \boxed{\abs{H(\omega)}^2}
-%    &= \abs{H(z)}^2_{z=e^{i\omega}}
-%     = \brlr{H(z)H^\ast(z)}_{z=e^{i\omega}}
-%     = \brlr{
-%         \brp{\frac{\ds\sum_{n=0}^{\xN}b_nz^{-n}}
-%                   {\ds\sum_{n=0}^{\xN}a_nz^{-n}}}
-%         \brp{\frac{\ds\sum_{n=0}^{\xN}b_nz^{-n}}
-%                   {\ds\sum_{n=0}^{\xN}a_nz^{-n}}}^\ast
-%         }_{z=e^{i\omega}}
-%  \\&= \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i\omega n}}
-%                 {\ds\sum_{n=0}^{\xN}a_ne^{-i\omega n}}}  
-%       \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i\omega n}}
-%                 {\ds\sum_{n=0}^{\xN}a_ne^{-i\omega n}}}^\ast
-%     = \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i(-\omega) n}}
-%                 {\ds\sum_{n=0}^{\xN}a_ne^{-i(-\omega) n}}}  
-%       \brp{\frac{\ds\sum_{n=0}^{\xN}b_ne^{-i(-\omega) n}}
-%                 {\ds\sum_{n=0}^{\xN}a_ne^{-i(-\omega) n}}}^\ast
-%  \\&= H(-\omega)H^\ast(-\omega)
-%     = \boxed{\abs{H(-\omega)}^2}
-%\end{align*}}
-
-%---------------------------------------
-%\# 3: MR is flat at $\omega=0$ and $\omega=\pi$ 
-%---------------------------------------
-
+%=======================================
+\section{Coefficient analysis}
+%=======================================
 %---------------------------------------
 \begin{lemma}
 \label{lem:aacos}
@@ -187,18 +178,3 @@ This example graphically illustrates \prefpp{lem:aacos} for the case $\xN=4$.
 \end{align*}
 \end{proof}
 
-%---------------------------------------
-\begin{remark}
-%---------------------------------------
-Moments and derivatives are related:
-\begin{align*}
-  \ddw\brlr{\Fh(\omega)}_{\omega=0}
-    &\eqd \ddw\brlr{\Zh(z)}_{z=e^{i\omega},\,\omega=0}
-   &&\eqd \ddw\brlr{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{i\omega},\,\omega=0}
-  \\&= \ddw\brlr{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}_{\omega=0}
-  \\&= \brlr{\sum_{m\in\Z} \fx[m] \ddw e^{-i\omega m}}_{\omega=0}
-  \\&= \brlr{\sum_{m\in\Z} \fx[m] (-im) e^{-i\omega m}}_{\omega=0}
-  \\&= -i \mcom{\sum_{m\in\Z} m \fx[m]}
-               { 1st moment}
-\end{align*}
-\end{remark}
