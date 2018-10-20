@@ -1,0 +1,112 @@
+﻿%============================================================================
+% XeLaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%---------------------------------------
+\chapter{Sampling}
+%---------------------------------------
+
+%--------------------------------------
+\section{A basis for sampling}
+%--------------------------------------
+\begin{figure}[h]
+  \centering
+  \includegraphics{graphics/samplat.pdf}
+\caption{A basis for sampling \label{fig:samplat}}
+\end{figure}
+  To perform \opb{sampling}, we \ope{project} 
+  continuous functions onto a very special basis
+  to get a \fnctb{sequence}, as illustrated in \prefpp{fig:samplat}.
+\begin{align*}
+  \dot{\fx}(n)
+    &\eqd \inprod{\fx(t)}{\delta(t-n)}
+  \\&\eqd \int_{t=-\infty}^{t=\infty} \fx(t)\delta(t-n) \dt
+  \\&=    \fx(n)
+\end{align*}
+
+%--------------------------------------
+
+%--------------------------------------
+\includegraphics{graphics/sin_pi_t.pdf}\\
+\includegraphics{graphics/sin_pi_t_sampled.pdf}
+
+%--------------------------------------
+
+%--------------------------------------
+  \begin{tabular}{|c|c|}
+    \hline
+    %\mc{1}{|c|}{subspace}&\mc{1}{c|}{transform}&\mc{1}{c|}{approximation}
+    Sampling (analysis) & Approximation (synthesis)
+    \\\hline\hline
+    %$\spV_0$
+      \includegraphics[height=32mm]{graphics/haar0_sin_t.pdf}
+    & \includegraphics[height=32mm]{graphics/haar0_sin_a.pdf}
+    \\\hline
+    %$\spV_1$
+      \includegraphics[height=32mm]{graphics/haar1_sin_t.pdf}
+    & \includegraphics[height=32mm]{graphics/haar1_sin_a.pdf}
+    \\\hline
+    %$\spV_2$
+      \includegraphics[height=32mm]{graphics/haar2_sin_t.pdf}
+    & \includegraphics[height=32mm]{graphics/haar2_sin_a.pdf}
+    \\\hline
+  \end{tabular}
+
+Approximation getting closer with higher sample rate!
+But can we ever get back the original?
+If so, how fast do we need to sample?
+
+%--------------------------------------
+
+%--------------------------------------
+The \thmb{Sample Theorem} answers this question.
+\footnote{
+  \fncte{cardinal sequence}:
+  \citerpgc{higgins1996}{52}{0198596995}{Definition 6.15},
+  \citerc{hardy1941}{\prope{orthonormality}},
+  \citerpc{higgins1985}{56}{H1.; historical notes}.
+  \thme{sampling theorem}:
+  %\citerpc{higgins1985}{56}{H1.; historical notes}\\
+  %\citerp{higgins1985}{47}\\
+  \citor{etwhittaker1915},
+  \citor{kotelnikov1933e},
+  \citor{jmwhittaker1935},
+  \citePc{shannon1948}{Theorem 13},
+  \citePp{shannon1949}{11}
+  \citerpg{marks1991}{1}{0387973915},
+  \citer{nashed1991},
+  \citerpg{higgins1996}{5}{0198596995},
+  \citerppgc{young2001}{90}{91}{0127729550}{\scshape The Paley-Wiener Space}.
+  The {\em sampling theorem} was ``discovered" and published by multiple people: 
+  Nyquist in 1928 (DSP?), 
+  Whittaker in 1935 (interpolation theory),
+  and Shannon in 1949 (communication theory).
+  references: \citerp{mallat}{43} 
+  \citerp{os}{143}.
+  }
+\\
+\includegraphics[height=60mm]{graphics/sinclat.pdf}
+\\
+\emph{If} your signal is \propb{band-limited}, and
+\emph{if} you sample at a rate of \emph{at least} $2\times$ the highest frequency % (the \hie{Nyquist frequency}),\\
+%and filter with an \emph{ideal} low-pass filter,
+then you can get the original signal back (perfect synthesis!)
+But if you don't sample fast enough, you get \opb{aliasing}.
+
+%--------------------------------------
+\begin{example}[\exmd{Aliasing using \emph{Audacity}}]
+%--------------------------------------
+Here is an experiment with aliasing you can try using the free program \emph{Audacity}.
+\\\exboxt{
+  \tbox{\includegraphics[height=60mm]{../common/math/graphics/audacity_hzosc.jpg}}\qquad
+  \begin{tabular}{rl}
+    1. & Set Project Rate to 10000 (Hz)\\
+    2. & Tracks $\rightarrow$ New Track $\rightarrow$ Mono Track\\
+    3. & Select 1 second to 11 seconds\\
+    4. & Effect $\rightarrow$ Nyquist prompt $\rightarrow$ (hzosc 9900) 
+  \end{tabular}
+  }
+\end{example}
+
+\input{../common/pwspace.tex}
+
