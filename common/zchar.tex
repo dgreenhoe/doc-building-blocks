@@ -6,6 +6,71 @@
 %=======================================
 \chapter{Magnitude characteristics of z-filters}
 %=======================================
+%---------------------------------------
+\section{The 0Hz and $F_s/2$ Gain}
+%---------------------------------------
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\propbox{
+  \brp{\Zh(z) = \frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}
+                     {\ds\sum_{n=0}^{\xN}a_n z^{-n}}}
+  \quad\implies\quad
+  \brp{\Fh(0) = \frac{\ds\sum_{n=0}^{\xN}b_n }
+                          {\ds\sum_{n=0}^{\xN}a_n}}
+  }
+\tbox{$\ds\Zx(z)$}
+\tbox{\includegraphics{graphics/ziir2.pdf}}
+\tbox{$\ds\Zy(z)$}
+\end{proposition}
+\begin{proof}
+%$\ds\begin{array}{rclM}
+%  \ds\brb{\opDTFT \fx[n]}(\omega) &\ds\eqd& \ds\sum_{n\in\Z} \fx[n] e^{-i\omega n}  & DTFT\\
+%  \ds\brb{\opZ    \fx[n]}(z)      &\ds\eqd& \ds\sum_{n\in\Z} \fx[n] z^{-n}          & z-Transform
+%\end{array}$
+%
+\begin{align*}\
+  \Fh(0) 
+     = \brlr{\Fh(\omega)}_{\omega=0}
+     = \brlr{\ZH\brp{e^{i\omega}}}_{\omega=0}
+     = \brlr{\Zh(z)}_{z=1}
+     = \brlr{\frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}
+            {\ds\sum_{n=0}^{\xN}a_n z^{-n}}}_{z=1}
+     = \frac{\ds\sum_{n=0}^{\xN}b_n }
+            {\ds\sum_{n=0}^{\xN}a_n }
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\propbox{
+  \brp{\Zh(z) = \frac{\ds\sum_{n=0}^{\xN}b_n z^{-n}}
+                     {\ds\sum_{n=0}^{\xN}a_n z^{-n}}}
+  \quad\implies\quad
+  \brp{\brlr{\Fh(\omega)}_{\omega=\frac{F_s}{2}} = 
+         \frac{\ds\sum_{n=0}^{\xN}(-1)^n b_n }
+              {\ds\sum_{n=0}^{\xN}(-1)^n a_n}}
+      }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \brlr{\Fh(\omega)}_{\omega=\frac{F_s}{2}} 
+    &= \brlr{\Zh(z)}_{z=e^{i\pi}}
+     = \brlr{\Zh(z)}_{z=-1}
+     = \brlr{\frac{\ds\sum_{n=0}^{\xN}(-1)^n b_n}
+                  {\ds\sum_{n=0}^{\xN}(-1)^n a_n}}_{z=-1}
+     =       \frac{\ds\sum_{n=0}^{\xN}(-1)^n b_n }
+                  {\ds\sum_{n=0}^{\xN}(-1)^n a_n}
+\end{align*}
+\end{proof}
+
+
+
+
+
+
+
 %=======================================
 \section{Pole and zero location analysis}
 %=======================================
@@ -32,7 +97,7 @@ be analyzed.
 
 \begin{figure}[ht]
   \centering%
-  \includegraphics[height=80mm]{graphics/vecres.pdf}
+  \includegraphics{graphics/vecres.pdf}
   \caption{
      Vector response of digital filter \xref{ex:zchar_vector}
      \label{fig:zchar_vector}
@@ -177,5 +242,35 @@ This example graphically illustrates \prefpp{lem:aacos} for the case $\xN=4$.
               & $\ddw\cos(k\omega)=-\sin(k\omega)=0$ & at $\omega=0,\,\pi$
     \end{array}}
 \end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\section{Conversion from low-pass to high-pass}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+\thmbox{
+  \brb{\begin{array}{M}
+    $\Zh(z)$ is \propb{low-pass}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{M}
+    $\Zh(-z)$ is \propb{high-pass}
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    \abs{\Fg(\omega)}^2
+      &\eqd \abs{\Zh(-z)}_{z=e^{i\omega}}
+      && \text{by definition of $\Fg(\omega)$}
+    \\&= \abs{\Zh(e^{-i\pi}z)}_{z=e^{i\omega}}
+    \\&= \abs{\Zh(z)}_{z=e^{i\omega}e^{-i\pi}}
+    \\&= \abs{\Zh(z)}_{z=e^{i(\omega-\pi)}}
+    \\&\eqd \abs{\Fh(\omega-\pi)}^2
+      && \text{by definition of $\Fh(\omega)$}
+  \end{align*}
 \end{proof}
 

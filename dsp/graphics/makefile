@@ -16,14 +16,10 @@ PATHFRAMES   = ../../common/math/graphics/frames/
 PATHBSPLINES = ../../common/math/graphics/bsplines/
 PATHWAVE   = ../../common/wavelets/graphics/
 PATHSETSTR = ../../common/math/graphics/setstr
-#PATHSTO   = ../../../common/math/graphics/sto/
 
 #--------------------------------------
 # Files
 #--------------------------------------
-#FILE_GRP  = ../common/watercraft/ghind_djg_blue.eps  \
-#            ../../../common/wavelets/morletwavelet.tex
-
 FILE_BSPLINES = \
   b0_g.pdf              \
   b1_g.pdf              \
@@ -151,9 +147,6 @@ FILE_WAV = \
             tent_phi_h.pdf        \
             tent_psi_g.pdf
 
-GRP_SETSTR = \
-  lattopxy.pdf             
-
 FILE_GRP  =             \
   baslat_cheby.pdf      \
   baslat_cose.pdf       \
@@ -176,12 +169,9 @@ FILE_GRP  =             \
   latp_hg.pdf           \
   latp_pp.pdf           \
   lattopxy.pdf          \
+  lattopxy.pdf          \
   pulse.pdf             \
   pulse2.pdf            \
-  pz_minphase.pdf       \
-  pz_realcoefs.pdf      \
-  pz_stable.pdf         \
-  pz_unstable.pdf       \
   sin_pi_t.pdf          \
   hn1.pdf               \
   lat6_plat_xyzv10.pdf  \
@@ -213,10 +203,9 @@ FILE_GRP  =             \
   triangleabc.pdf       \
   triangleabcft.pdf     \
   unitcircle.pdf        \
-  vecres.pdf            \
   Fhw.pdf               
 
-FILE_GRP  =               \
+FILE_DSP  =               \
   dfI_order1_abc.pdf      \
   dfI_order1_lpf2pi3.pdf  \
   dfI_order2_156.pdf      \
@@ -237,7 +226,11 @@ FILE_GRP  =               \
   pz_realcoefs_11.pdf     \
   pz_unstable.pdf         \
   pz_unstable2.pdf        \
-  pz_unall.pdf            
+  pz_unall.pdf            \
+  samplat.pdf             \
+  sin_pi_t_sampled.pdf    \
+  sinclat.pdf             \
+  vecres.pdf            
 
 FILE_STY  = ../../common/sty/wavelets.sty \
             ../../common/sty/math.sty     \
@@ -257,7 +250,7 @@ PRG_TYPESET = xelatex.exe
 #--------------------------------------
 # master build control
 #--------------------------------------
-top: $(FILE_FRAMES) $(FILE_GRP) $(GRP_SETSTR) $(FILE_WAV) $(FILE_BSPLINES) $(FILE_STY)
+top: $(FILE_DSP) $(FILE_FRAMES) $(FILE_GRP) $(GRP_SETSTR) $(FILE_WAV) $(FILE_BSPLINES) $(FILE_STY)
 	@echo Done ... basis/graphics pdfs are ready!
 #  echo % >> mainx.idx # make sure general   index file exists
 
