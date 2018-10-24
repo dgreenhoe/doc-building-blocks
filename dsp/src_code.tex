@@ -22,51 +22,51 @@ Octave code can easily be adapted to MatLab code and vice-versa.
 
 
 
-%--------------------------------------
-\section{GNU Octave script file}
-\label{sec:src_Ry}
-%--------------------------------------
-\lstinputlisting[language=Octave]{../common/wavelets/m/Ry.m}
+%%--------------------------------------
+%\section{GNU Octave script file}
+%\label{sec:src_Ry}
+%%--------------------------------------
+%\lstinputlisting[language=Octave]{../common/wavelets/m/Ry.m}
 
-%--------------------------------------
-\section{B-spline polynomial calculation and plotting}
-\label{sec:src_bspline_max}
-%--------------------------------------
-The polynomials for \fncte{B-spline}s as demonstrated in \prefpp{ex:bspline_N2}--\prefpp{ex:Nn}
-can be calculated using the free and open source software package \hie{Maxima}
-along with the following script file:
-\\
-\lstinputlisting[language=MuPAD]{../common/math/maxima/bsplines.max}
-
-\begin{minipage}{\tw-65mm}
-Once the polynomial expressions for a \fncte{B-spline} have been calculated, 
-they can be plotted within a {\LaTeX} environment using the 
-\href{http://www.ctan.org/pkg/pst-plot}{pst-plot package}
-along with a {\LaTeX} source file such as the following:\footnotemark
-\end{minipage}\hfill\tbox{\includegraphics{graphics/n3.pdf}}%
-\footnotetext{
-  For help with PostScript\puttrademark math operators, see 
-  \citerppc{adobe1999}{508}{509}{Arithmetic and Math Operators}.
-  }
-\\
-\lstinputlisting[language=TeX]{../common/math/graphics/bsplines/n3.tex}
-
-\begin{minipage}{\tw-65mm}
-Alternatively, one can plot $\fN_3(x)$ more or less directly from 
-the equation given in \prefpp{thm:Nnx}
-without first calculating the polynomial expressions:
-\end{minipage}\hfill\tbox{\includegraphics{graphics/n3x.pdf}}%
-\\
-\lstinputlisting[language=TeX]{../common/math/graphics/bsplines/n3x.tex}
-
-The {\LaTeX} source listed above can be made to output a pdf file
-with tight borders using the \href{http://www.ctan.org/pkg/preview}{preview package} and\footnote{
-\url{http://tex.stackexchange.com/questions/25400/ps2pdf-depscrop-stops-short-with-pstricks-uput}}
-\begin{lstlisting}
-\usepackage[active,tightpage]{preview}%
-\PreviewBorder=0pt%
-\PreviewEnvironment{pspicture}%
-\end{lstlisting}
+%%--------------------------------------
+%\section{B-spline polynomial calculation and plotting}
+%\label{sec:src_bspline_max}
+%%--------------------------------------
+%The polynomials for \fncte{B-spline}s as demonstrated in \prefpp{ex:bspline_N2}--\prefpp{ex:Nn}
+%can be calculated using the free and open source software package \hie{Maxima}
+%along with the following script file:
+%\\
+%\lstinputlisting[language=MuPAD]{../common/math/maxima/bsplines.max}
+%
+%\begin{minipage}{\tw-65mm}
+%Once the polynomial expressions for a \fncte{B-spline} have been calculated, 
+%they can be plotted within a {\LaTeX} environment using the 
+%\href{http://www.ctan.org/pkg/pst-plot}{pst-plot package}
+%along with a {\LaTeX} source file such as the following:\footnotemark
+%\end{minipage}\hfill\tbox{\includegraphics{graphics/n3.pdf}}%
+%\footnotetext{
+%  For help with PostScript\puttrademark math operators, see 
+%  \citerppc{adobe1999}{508}{509}{Arithmetic and Math Operators}.
+%  }
+%\\
+%\lstinputlisting[language=TeX]{../common/math/graphics/bsplines/n3.tex}
+%
+%\begin{minipage}{\tw-65mm}
+%Alternatively, one can plot $\fN_3(x)$ more or less directly from 
+%the equation given in \prefpp{thm:Nnx}
+%without first calculating the polynomial expressions:
+%\end{minipage}\hfill\tbox{\includegraphics{graphics/n3x.pdf}}%
+%\\
+%\lstinputlisting[language=TeX]{../common/math/graphics/bsplines/n3x.tex}
+%
+%The {\LaTeX} source listed above can be made to output a pdf file
+%with tight borders using the \href{http://www.ctan.org/pkg/preview}{preview package} and\footnote{
+%\url{http://tex.stackexchange.com/questions/25400/ps2pdf-depscrop-stops-short-with-pstricks-uput}}
+%\begin{lstlisting}
+%\usepackage[active,tightpage]{preview}%
+%\PreviewBorder=0pt%
+%\PreviewEnvironment{pspicture}%
+%\end{lstlisting}
 
 %%--------------------------------------
 %\section{B-spline wavelet polynomial calculation and plotting}
@@ -79,68 +79,68 @@ with tight borders using the \href{http://www.ctan.org/pkg/preview}{preview pack
 %\lstinputlisting[language=MuPAD]{../common/math/maxima/bwaves.max}
 
 
-%--------------------------------------
-\section{Auto-power spectrum plot}
-\label{sec:src_Nriesz}
-%--------------------------------------
-The plot provided in \prefpp{fig:Nriesz} was generated using C and {\LaTeX} code 
-very similar to that displayed in this section:
-\begin{enumerate}
-  \item \label{item:src_Nriesz_C}
-        C code for generating data points. This outputs to \lstinline[language=C]{stdout} 
-        (standard output terminal), but can be redirected into a file such as \lstinline{Snn_bspline1.dat},
-        \lstinline{Snn_bspline2.dat}, \lstinline{Snn_bspline3.dat}, etc.
-        In a \hie{Windows} command environment (``DOS" window), this can be performed with 
-        something like this:
-        \\\indentx\lstinline{C:\ mycprogram.exe > Snn_bspline1.dat}
-\begin{lstlisting}[language=C]
-int bspline_Sdat(void){
-  const double n=3;      /* order of B-spline                             */
-  const long M=1024;     /* approximate number of data points             */
-  const long N=1000000;  /* number of iterations per data point           */
-  double w=0,s=0;
-  long k=0;
-  printf("[\n");                               /* LaTeX \fileplot support */
-  for(w=-8.0;w<=8.0;w+=16./(double)M){
-    s=0;
-    for(k=1; k<=N; k++){
-      s += pow(1.0/(2*k-w/PI),2.*n+2.);        /* 1st summation           */
-      s += pow(1.0/(2*k+w/PI),2.*n+2.);        /* 2nd summation           */
-      }                                                                   
-    s*=pow(sin(w/2.)/(PI/2.),2.*n+2.);         /* scaling factor          */
-    if(w==0) s+=1;                             /* 1st term: w=0 case      */    
-    else     s+=pow(sin(w/2.)/(w/2.),2.*n+2.); /* 1st term: w!=0 case     */
-    printf("(%lf, %lf)\n",w,s);                /* print one data point    */
-    }
-  printf("]\n");                               /* LaTeX \fileplot support */
-  return 0;
-  }
-\end{lstlisting}
-
-  \item \label{item:src_Nriesz_pstplot} 
-        The files produced by \pref{item:src_Nriesz_C} can be plotted within {\LaTeX} 
-        using the \href{http://www.ctan.org/pkg/pst-plot}{pst-plot package}.
-\lstinputlisting[language=TeX]{../common/math/graphics/bsplines/Snn_bspline.tex}
-
-  \item \label{item:src_Nriesz_tex} 
-        The {\LaTeX} source listed in \pref{item:src_Nriesz_pstplot} can be made to output a pdf file
-        with tight borders using the \href{http://www.ctan.org/pkg/preview}{preview package} and\footnote{
-\url{http://tex.stackexchange.com/questions/25400/ps2pdf-depscrop-stops-short-with-pstricks-uput}}
-\begin{lstlisting}
-\usepackage[active,tightpage]{preview}%
-\PreviewBorder=0pt%
-\PreviewEnvironment{pspicture}%
-\end{lstlisting}
-
-\lstinputlisting[language=TeX]{graphics/shell_Snn_bspline.tex}
-
-  \item \label{item:src_Nriesz_shelltop} 
-        The source listed in \pref{item:src_Nriesz_tex} uses a file called 
-        \lstinline{shelltop.tex}:
-
-\lstinputlisting[language=TeX]{graphics/shelltop.tex}
-
-\end{enumerate}
+%%--------------------------------------
+%\section{Auto-power spectrum plot}
+%\label{sec:src_Nriesz}
+%%--------------------------------------
+%The plot provided in \prefpp{fig:Nriesz} was generated using C and {\LaTeX} code 
+%very similar to that displayed in this section:
+%\begin{enumerate}
+%  \item \label{item:src_Nriesz_C}
+%        C code for generating data points. This outputs to \lstinline[language=C]{stdout} 
+%        (standard output terminal), but can be redirected into a file such as \lstinline{Snn_bspline1.dat},
+%        \lstinline{Snn_bspline2.dat}, \lstinline{Snn_bspline3.dat}, etc.
+%        In a \hie{Windows} command environment (``DOS" window), this can be performed with 
+%        something like this:
+%        \\\indentx\lstinline{C:\ mycprogram.exe > Snn_bspline1.dat}
+%\begin{lstlisting}[language=C]
+%int bspline_Sdat(void){
+%  const double n=3;      /* order of B-spline                             */
+%  const long M=1024;     /* approximate number of data points             */
+%  const long N=1000000;  /* number of iterations per data point           */
+%  double w=0,s=0;
+%  long k=0;
+%  printf("[\n");                               /* LaTeX \fileplot support */
+%  for(w=-8.0;w<=8.0;w+=16./(double)M){
+%    s=0;
+%    for(k=1; k<=N; k++){
+%      s += pow(1.0/(2*k-w/PI),2.*n+2.);        /* 1st summation           */
+%      s += pow(1.0/(2*k+w/PI),2.*n+2.);        /* 2nd summation           */
+%      }                                                                   
+%    s*=pow(sin(w/2.)/(PI/2.),2.*n+2.);         /* scaling factor          */
+%    if(w==0) s+=1;                             /* 1st term: w=0 case      */    
+%    else     s+=pow(sin(w/2.)/(w/2.),2.*n+2.); /* 1st term: w!=0 case     */
+%    printf("(%lf, %lf)\n",w,s);                /* print one data point    */
+%    }
+%  printf("]\n");                               /* LaTeX \fileplot support */
+%  return 0;
+%  }
+%\end{lstlisting}
+%
+%  \item \label{item:src_Nriesz_pstplot} 
+%        The files produced by \pref{item:src_Nriesz_C} can be plotted within {\LaTeX} 
+%        using the \href{http://www.ctan.org/pkg/pst-plot}{pst-plot package}.
+%\lstinputlisting[language=TeX]{../common/math/graphics/bsplines/Snn_bspline.tex}
+%
+%  \item \label{item:src_Nriesz_tex} 
+%        The {\LaTeX} source listed in \pref{item:src_Nriesz_pstplot} can be made to output a pdf file
+%        with tight borders using the \href{http://www.ctan.org/pkg/preview}{preview package} and\footnote{
+%\url{http://tex.stackexchange.com/questions/25400/ps2pdf-depscrop-stops-short-with-pstricks-uput}}
+%\begin{lstlisting}
+%\usepackage[active,tightpage]{preview}%
+%\PreviewBorder=0pt%
+%\PreviewEnvironment{pspicture}%
+%\end{lstlisting}
+%
+%\lstinputlisting[language=TeX]{graphics/shell_Snn_bspline.tex}
+%
+%  \item \label{item:src_Nriesz_shelltop} 
+%        The source listed in \pref{item:src_Nriesz_tex} uses a file called 
+%        \lstinline{shelltop.tex}:
+%
+%\lstinputlisting[language=TeX]{graphics/shelltop.tex}
+%
+%\end{enumerate}
 
 
 %--------------------------------------
