@@ -1,0 +1,1408 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%=======================================
+%\section{Lagrange arc distance}
+%=======================================
+%=======================================
+\section{Definition}
+%=======================================
+%---------------------------------------
+\begin{definition} %[\exmd{Lagrange arc distance in $\R^\xN$}]
+\label{def:larc}
+%---------------------------------------
+Let $p\eqd\oquad{x_1}{x_2}{\cdots}{x_\xN}$ 
+and $q\eqd\oquad{y_1}{y_2}{\cdots}{y_\xN}$ 
+be two points in the \structe{space} $\R^\xN$ with origin $(0,0,\cdots,0)$.
+Let
+%Let $\r_p$ be the \fncte{magnitude} of $p$,
+%and $\r_q$    the \fncte{magnitude} of $q$,such that
+%\\\indentx$\ds
+%  r_p \eqd \brp{\sum_{n=1}^\xN x_n^2}^{\frac{1}{2}}
+%  \qquad\text{and}\qquad
+%  r_q \eqd \brp{\sum_{n=1}^\xN y_n^2}^{\frac{1}{2}}
+%  \qquad\text{and}\qquad
+%  $\\ 
+\\\indentx$\begin{array}[t]{>{\ds}c@{\qquad}>{\ds}c@{\qquad}>{\ds}c}
+        \underbrace{r_p    \eqd \brp{\sum_{n=1}^\xN x_n^2}^\frac{1}{2}             }   
+       &\underbrace{r_q    \eqd \brp{\sum_{n=1}^\xN y_n^2}^\frac{1}{2}             }
+       &\underbrace{\phi   \eqd \arccos\brp{\frac{1}{r_pr_q}\sum_{n=1}^\xN x_n y_n}}
+      %\\\rho   &\eqd& r_q-r_p
+      % &\gamma &\eqd& r_p\phi
+      \\$\scs(magnitude of $p$)$
+       &$\scs(magnitude of $q$)$
+       &$\scs(angle between $p$ and $q$)$
+    \end{array}$
+\\
+\indentx$\ds\begin{array}{>{\ds}c@{\qquad}>{\ds}c} 
+  \underbrace{\fr(\theta) \eqd \brp{\frac{r_q-r_p}{\phi}}\theta + r_p} &
+  \underbrace{\fR(p,q) = \int_0^\phi \sqrt{r^2(\theta) + \brp{\frac{\dr}{\dth}}^2}\dth}
+  \\
+  $\scs(polar interpolation polynomial)$ &
+  $\scs(length of the arc $\opair{\fr(\theta)}{\theta}$ between $p$ and $q$)$
+\end{array}$
+\\
+\defboxp{
+  The \fnctd{Langrange arc distance} $\metric{p}{q}$ is defined as
+  \\\indentx$
+  \metric{p}{q} = \brb{\begin{array}{lM}
+    \sfrac{1}{\pi}\abs{r_p-r_q}    & if $p=(0,0,\cdots,0)$ \emph{or} $q=(0,0,\cdots,0)$ \emph{or} $\phi=0$\\
+    \sfrac{1}{\pi}\fR(p,q)         & otherwise
+  \end{array}}%
+  \indentx
+  \scy\forall p,q\in\R^\xN
+  $}%
+\end{definition}
+
+%=======================================
+\section{Calculation}
+%=======================================
+The integral in \pref{def:larc} may look intimidating.
+However, \prefpp{thm:Rpq} demonstrates that it has an ``easily" computable and straightforward solution 
+only involving \ope{arithmatic operator}s ($+$, $-$,\ldots), 
+        the \fncte{absolute value} function $\abs{x}$, 
+        the \fncte{square root} function $\sqrt{x}$, and
+        the \fncte{natural log} function $\ln(x)$.
+But first, a lemma (next) to help with the proof of \pref{thm:Rpq}.
+
+%---------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpgc{gradshteyn2007}{94}{0080471110}{2.25 Forms containing $\sqrt{a+bx+cx^2}$, 2.26 Forms containing $\sqrt{a+bx+cx^2}$ and integral powers of $x$},
+  \citerpgc{jeffrey1995}{160}{1483295141}{4.3.4 Integrands containing $(a+bx+cx^2)^{\sfrac{1}{2}}$},
+  \citerppgc{jeffrey2008}{172}{173}{0080556841}{4.3.4 Integrands containing $(a+bx+cx^2)^{\sfrac{1}{2}}$}
+  %\citePc{shapiro2015}{(37)}
+  }
+\label{lem:abc}
+%---------------------------------------
+Let $\sqrt{x}\in\clFrr$ be the \fncte{square root} function,
+and $\ln(x)\eqd\log_e(x)\in\clFrr$ be the \fncte{natural log} function.
+Let $\varepsilon$ be any given value in $\R$.
+\lembox{\begin{array}{>{\ds}l}
+  \brb{2ax+b+2\sqrt{a(ax^2+bx+c)}>0}\quad\implies
+  \\\brb{
+  \int \sqrt{ax^2 + bx + c } \dx
+      = \frac{2ax+b}{4a}\sqrt{ax^2+bx+c} 
+      + \frac{4ac-b^2}{8a^{3/2}}\ln\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}
+      + \varepsilon
+  }
+  \end{array}}
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: \label{item:abc_term1} 
+        (first equality by the \thme{product rule}, and the second equality by the \thme{chain rule})
+    \begin{align*}
+      \opddx\brs{\brp{\frac{2ax+b}{4a}}\sqrt{ax^2+bx+c}} 
+        &= \brp{      \frac{2ax+b}{4a}}\brp{\opddx\sqrt{ax^2+bx+c}} +
+           \brp{\opddx\frac{2ax+b}{4a}}\brp{      \sqrt{ax^2+bx+c}} 
+       %&& \text{by \thme{prod. rule}}
+      \\&= \brp{\frac{2ax+b}{4a}} \brp{\frac{2ax+b}{2\sqrt{ax^2+bx+c}}} 
+         + \brp{\frac{2a}   {4a}} \brp{\sqrt{ax^2+bx+c}}
+       %&& \text{by \thme{chain rule}}
+      \\&= \frac{(2ax+b)^2 + 4a(ax^2+bx+c)}
+                {8a\sqrt{ax^2+bx+c}}
+      \\&= \frac{4a^2x^2 +4axb + b^2 + 4a^2x^2 + 4abx + 4ac}
+                {8a\sqrt{ax^2+bx+c}}
+      \\&= \frac{8a^2x^2 +8abx + b^2 + 4ac}
+                {8a\sqrt{ax^2+bx+c}}
+    \end{align*}
+
+  \item lemma: \label{item:abc_lnpos} If $\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}>0$ then
+    \begin{align*}
+      &\opddx\brs{\frac{4ac-b^2}{8a^{3/2}}\ln\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+      \\&= \brp{\frac{4ac-b^2}{8a^{3/2}}}
+           \brs{\opddx\ln\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+        && \text{by \prope{linearity} of $\opddx$}
+      \\&= \brp{\frac{4ac-b^2}{8a^{3/2}}}
+           \brp{\frac{1}{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+           \brp{2a+\frac{2\sqrt{a}(2ax+b)}{2\sqrt{ax^2+bx+c}}}
+        && \text{by \thme{chain rule}}
+      \\&= \frac{(4ac-b^2)\brs{2a\sqrt{ax^2+bx+c} + \sqrt{a}(2ax+b)}}
+                {8a^{3/2} \brp{2ax+b+2\sqrt{a(ax^2+bx+c)}} \sqrt{ax^2+bx+c}}
+      \\&= \frac{(4ac-b^2)\brs{\sqrt{a}(2ax+b)+2a\sqrt{ax^2+bx+c}}}
+                {\brp{8a\sqrt{ax^2+bx+c}}\brs{\sqrt{a}(2ax+b)+2a\sqrt{ax^2+bx+c}} }
+      \\&= \frac{4ac-b^2}
+                {8a\sqrt{ax^2+bx+c}}  % Praise the Lord!!!
+    \end{align*}
+
+  \item lemma: \label{item:abc_lnneg} If $\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}<0$ then
+    \begin{align*}
+      &\opddx\brs{\frac{4ac-b^2}{8a^{3/2}}\ln\abs{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+      \\&= \brp{\frac{4ac-b^2}{8a^{3/2}}}
+           \brs{\opddx\ln\brp{-2ax-b-2\sqrt{a(ax^2+bx+c)}}}
+        && \text{by \prope{linearity} of $\opddx$}
+      \\&= \brp{\frac{4ac-b^2}{8a^{3/2}}}
+           \brp{\frac{1}{-2ax-b-2\sqrt{a(ax^2+bx+c)}}}
+           \brp{2a+\frac{2\sqrt{a}(2ax+b)}{2\sqrt{ax^2+bx+c}}}
+        && \text{by \thme{chain rule}}
+      \\&= \frac{(4ac-b^2)\brs{2a\sqrt{ax^2+bx+c} + \sqrt{a}(2ax+b)}}
+                {8a^{3/2} \brp{-2ax-b-2\sqrt{a(ax^2+bx+c)}} \sqrt{ax^2+bx+c}}
+      \\&= \frac{-(4ac-b^2)\brs{\sqrt{a}(2ax+b)+2a\sqrt{ax^2+bx+c}}}
+                {\brp{8a\sqrt{ax^2+bx+c}}\brs{\sqrt{a}(2ax+b)+2a\sqrt{ax^2+bx+c}} }
+      \\&= \frac{-(4ac-b^2)}
+                {8a\sqrt{ax^2+bx+c}} 
+    \end{align*}
+
+  \item Complete the proof: \label{item:abc_pos} If $\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}>0$ then
+    \begin{align*}
+        &\opddx\brs{\frac{2ax+b}{4a}\sqrt{ax^2+bx+c} 
+          + \frac{4ac-b^2}{8a^{3/2}}\ln\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+      \\&=\opddx\brs{\brp{\frac{2ax+b}{4a}}\sqrt{ax^2+bx+c}} 
+         +\opddx\brs{\brp{\frac{4ac-b^2}{8a^{3/2}}}\ln\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+      \\&= \frac{8a^2x^2 +8abx + b^2 + 4ac}{8a\sqrt{ax^2+bx+c}}
+         + \opddx\brs{\brp{\frac{4ac-b^2}{8a^{3/2}}}\ln\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+        && \text{by \pref{item:abc_term1}}
+      \\&= \frac{8a^2x^2 +8abx + b^2 + 4ac}{8a\sqrt{ax^2+bx+c}}
+         + \frac{4ac-b^2}{8a\sqrt{ax^2+bx+c}} 
+        && \text{by \pref{item:abc_lnpos}}
+      \\&= \frac{8a(ax^2 + bx + c)}{8a\sqrt{ax^2+bx+c}}
+         = \sqrt{ax^2+bx+c}
+    \end{align*}
+
+  \item Note that simply forcing the agruement of $\ln$ to be positive as in\footnote{
+          %\citerpgc{gradshteyn2007}{94}{0080471110}{2.25 Forms containing $\sqrt{a+bx+cx^2}$, 2.26 Forms containing $\sqrt{a+bx+cx^2}$ and integral powers of $x$}
+          The solution $\ln\abs{\cdots}$ is used in 
+          \citerpg{jeffrey1995}{160}{1483295141} and %{4.3.4 Integrands containing $(a+bx+cx^2)^{\sfrac{1}{2}}$},
+          \citerppg{jeffrey2008}{172}{173}{0080556841}. %{4.3.4 Integrands containing $(a+bx+cx^2)^{\sfrac{1}{2}}$},
+          } 
+      \\\indentx$\frac{2ax+b}{4a}\sqrt{ax^2+bx+c} + \frac{4ac-b^2}{8a^{3/2}}\ln\abs{2ax+b+2\sqrt{a(ax^2+bx+c)}} + \varepsilon$\\
+      is \emph{not} a solution to $\int\sqrt{ax^2+bx+c}\dx$ when
+      $\brp{2ax+b+2\sqrt{a(ax^2+bx+c)}}<0$:
+    \begin{align*}
+        &\opddx\brs{\frac{2ax+b}{4a}\sqrt{ax^2+bx+c} 
+          + \frac{4ac-b^2}{8a^{3/2}}\ln\abs{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+      \\&=\opddx\brs{\brp{\frac{2ax+b}{4a}}\sqrt{ax^2+bx+c}} 
+         +\opddx\brs{\brp{\frac{4ac-b^2}{8a^{3/2}}}\ln\abs{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+      \\&= \frac{8a^2x^2 +8abx + b^2 + 4ac}{8a\sqrt{ax^2+bx+c}}
+         + \opddx\brs{\brp{\frac{4ac-b^2}{8a^{3/2}}}\ln\abs{2ax+b+2\sqrt{a(ax^2+bx+c)}}}
+        && \text{by \pref{item:abc_term1}}
+      \\&= \frac{8a^2x^2 +8abx + b^2 + 4ac}{8a\sqrt{ax^2+bx+c}}
+         - \frac{4ac-b^2}{8a\sqrt{ax^2+bx+c}} 
+        && \text{by \pref{item:abc_lnneg}}
+      \\&= \frac{8a(ax^2 +bx) + 2b^2}{8a\sqrt{ax^2+bx+c}}
+         = \frac{8a(ax^2 +bx + c) + 2b^2 -8ac}{8a\sqrt{ax^2+bx+c}}
+      \\&= \sqrt{ax^2 +bx + c} + \frac{2b^2 -8ac}{8a\sqrt{ax^2+bx+c}}
+         \neq \sqrt{ax^2+bx+c}\quad\text{for $b^2\neq 4ac$}
+    \end{align*}
+
+  \item Note further that constraining $a>0$ is also not a solution\footnote{
+        The $a>0$ constraint is used in 
+        \citerpg{gradshteyn2007}{94}{0080471110} %{2.25 Forms containing $\sqrt{a+bx+cx^2}$, 2.26 Forms containing $\sqrt{a+bx+cx^2}$ and integral powers of $x$}
+        }
+        because it does not guarantee that the argument $u$ of $\ln(u)$ will be positive. 
+        %Take for example $a\to0^+$, $b=-1$, $c=1$ and $x=1$. Then
+        %\\\indentx$\lim2ax+b+2\sqrt{a(ax^2+bx+c)} = 2\cdot0\cdot1 -1 + 2\sqrt{0(0\cdot1-1\cdot1+1)} = -1 < 0$ .
+        Take for example $a=1$, $b=-3$, $c=3$ and $x=1$. Then
+        \\\indentx$2ax+b+2\sqrt{a(ax^2+bx+c)} = 2\cdot1\cdot1 -3 + 2\sqrt{1(1\cdot1-3\cdot1+3)} = -1 < 0$ .
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+%\label{prop:larc_R}
+\label{thm:Rpq}
+%---------------------------------------
+Let $\fR(p,q)$, $r_p$, $r_q$, and $\phi$ be as defined in \prefpp{def:larc}.
+Let $\rho\eqd r_q-r_p$.\\
+If $r_p\neq0$, $r_q\neq0$ and $\phi\neq0$ then 
+\\\thmboxt{$\begin{array}{>{\ds}l}
+    \fR(p,q)=\\\quad
+           \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+                {2\rho} 
+           +\frac{\abs{\rho}}{2\phi}\brs{ 
+             \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+           - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+           }
+  \end{array}$}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Let $\gamma \eqd r_p\phi$.
+  \item lemmas: \label{item:larcR_lem}
+    \begin{align*}
+      \rho\phi+\gamma &= (r_q-r_p)\phi + r_p\phi = r_q\phi
+      \\
+      \rho^2\phi^2+2\rho\gamma\phi+(\gamma^2+\rho^2)
+        &= (r_q-r_p)^2\phi^2 + 2(r_q-r_p)(r_p\phi)\phi+(r_p\phi)^2+\rho^2
+      \\&= (r_p^2+r_q^2-2r_pr_q)\phi^2 + 2(r_q-r_p)(r_p\phi)\phi+(r_p\phi)^2+\rho^2
+      \\&= (r_p^2+r_q^2)\phi^2 - 2(r_p\phi)^2 +(r_p\phi)^2+\rho^2
+      \\&= (r_q\phi)^2+\rho^2
+    \end{align*}
+
+  \item lemma: \label{item:larcR_lnarg}
+      $2\rho^2\theta+2\rho\gamma+2\sqrt{\rho^2(\rho^2\theta^2+2\rho\gamma\theta+(\gamma^2+\rho^2))} > 0$. Proof:
+    \begin{align*}
+      &2\rho^2\theta+2\rho\gamma+2\sqrt{\rho^2(\rho^2\theta^2+2\rho\gamma\theta+(\gamma^2+\rho^2))}
+      \\&\quad>   2\rho^2\theta+2\rho\gamma+2\sqrt{\rho^2\gamma^2}
+        &&        \text{because $\sqrt{x}$ is \prope{strictly monotonically increasing}}
+      \\&\quad=   2\rho^2\theta+2\rho\gamma+2\abs{\rho}\gamma
+        &&        \text{because $\gamma>0$}
+      \\&\quad=   2\rho^2\theta+2\gamma\brp{\rho+\abs{\rho}}
+      \\&\quad\ge 0
+    \end{align*}
+
+  \item Completing the proof\ldots
+    \begin{align*}
+      &\fR(p,q)
+      \\&\eqd \int_{\theta=0}^{\theta=\phi} \sqrt{r^2(\theta) + \brp{\frac{\dr}{\dth}}^2}\dth 
+        && \text{by def. of $\fR(p,q)$}
+      \\&= \int_{0}^{\phi} \sqrt{
+              \brs{\brp{\frac{r_q-r_p}{\phi}}\theta + r_p}^2
+             +\brs{\frac{r_q-r_p}{\phi}}^2
+             }\dtheta
+        && \text{by def. of $\fr(\theta)$}
+      \\&= \int_{0}^{\phi} \sqrt{
+              \brs{\frac{(r_q-r_p)\theta + r_p\phi}{\phi}}^2
+             +\brs{\frac{r_q-r_p}{\phi}}^2
+             }\dtheta
+      \\&= \frac{1}{\phi}\int_{0}^{\phi} \sqrt{
+             (r_q-r_p)^2\theta^2 + 2(r_q-r_p)(r_p\phi)\theta + (r_p\phi)^2+(r_q-r_p)^2
+             }\dtheta
+      \\&= \frac{1}{\phi}\int_{0}^{\phi} \sqrt{
+             \underbrace{\rho^2}_a\theta^2 + 
+             \underbrace{2\rho\gamma}_b\theta + 
+             \underbrace{(\gamma^2+\rho^2)}_c
+             }
+           \dtheta
+      \\&= \frac{1}{\phi}\Bigg[ 
+           \frac{2\rho^2\theta+2\rho\gamma}{4\rho^2}\sqrt{\rho^2\theta^2+2\rho\gamma\theta+(\gamma^2+\rho^2)} 
+        && \text{[by \pref{item:larcR_lnarg} and}
+           \\&\quad+ 
+           \frac{4\rho^2(\gamma^2+\rho^2)-(2\rho\gamma)^2}{8\abs{\rho}^3}\ln\brp{2\rho^2\theta+2\rho\gamma+2\sqrt{\rho^2(\rho^2\theta^2+2\rho\gamma\theta+(\gamma^2+\rho^2))}}
+           \Bigg]_{\theta=0}^{\theta=\phi}
+        && \text{by \pref{lem:abc}]}
+      \\&= \mathrlap{
+             \frac{1}{\phi}\brs{ 
+             \frac{\rho\theta+\gamma}{2\rho}\sqrt{\rho^2\theta^2+2\rho\gamma\theta+(\gamma^2+\rho^2)} 
+             + 
+             \frac{\abs{\rho}}{2}\ln\brp{2\rho^2\theta+2\rho\gamma+2\abs{\rho}\sqrt{\rho^2\theta^2+2\rho\gamma\theta+(\gamma^2+\rho^2)}}
+             }_{\theta=0}^{\theta=\phi}
+           }
+      \\&= \mathrlap{\brs{
+           \frac{(\rho\phi+\gamma)\sqrt{\rho^2\phi^2+2\rho\gamma\phi+(\gamma^2+\rho^2)}}
+                {2\rho\phi} 
+           + \frac{\abs{\rho}}{2\phi} 
+             \ln\brp{2\rho^2\phi+2\rho\gamma+2\abs{\rho}\sqrt{\rho^2\phi^2+2\rho\gamma\phi+(\gamma^2+\rho^2)}}
+           }}
+           \\&\quad- \brs{ 
+           \frac{\gamma\sqrt{\gamma^2+\rho^2}}
+                {2\rho\phi} 
+           + \frac{\abs{\rho}}{2\phi} 
+             \ln\brp{2\rho\gamma+2\abs{\rho}\sqrt{\gamma^2+\rho^2}}
+           }
+      \\&= \frac{r_q\phi\sqrt{(r_q\phi)^2+\rho^2}-r_p\phi\sqrt{(r_p\phi)^2+\rho^2}}
+                {2\rho\phi} 
+           \\&\quad+\frac{\abs{\rho}}{2\phi}\brs{ 
+             \ln(2)+\ln\brp{\rho^2\phi+\rho\gamma+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+           - \ln(2)-\ln\brp{\rho\gamma+\abs{\rho}\sqrt{\gamma^2+\rho^2}}
+           }
+        && \text{by \pref{item:larcR_lem}}
+      \\&= \mathrlap{\frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+                {2\rho} 
+           +\frac{\abs{\rho}}{2\phi}\brs{ 
+             \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+           - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+           }}
+    \end{align*}
+
+%  \item 
+%    \begin{align*}
+%      \fR(p,q)
+%        &= \int_{\theta_p}^{\theta_q} \sqrt{r^2(\theta) + \brp{\frac{\dr}{\dth}}^2}\dth 
+%        && \text{by \pref{item:larcR_arclen}}
+%      \\&= \int_{\theta_p}^{\theta_q} \sqrt{
+%             \brs{r_p\frac{\theta-\theta_q}{\theta_p-\theta_q} + r_q\frac{\theta-\theta_p}{\theta_q-\theta_p}}^2 
+%             +
+%             \brs{\opddth\brp{ r_p\frac{\theta-\theta_q}{\theta_p-\theta_q} +r_q\frac{\theta-\theta_p}{\theta_q-\theta_p}}}^2 
+%             }
+%             \dth
+%      \\&= \int_{\theta_p}^{\theta_q} \sqrt{
+%             \brs{\brp{\frac{r_p-r_q}{\theta_p-\theta_q}}\theta + \brs{\frac{r_q\theta_p-r_p\theta_q}{\theta_p-\theta_q}}}^2
+%            +\brp{\frac{r_p-r_q}{\theta_p-\theta_q}}^2
+%             }
+%             \dth
+%      \\&= \abs{\frac{1}{\theta_p-\theta_q}}\int_{\theta_p}^{\theta_q} \sqrt{
+%             \brs{\brp{r_p-r_q}\theta + \brs{r_q\theta_p-r_p\theta_q}}^2
+%            +\brp{{r_p-r_q}}^2
+%             }
+%             \dth
+%      \\&= \frac{1}{B}\int_{\theta_p}^{\theta_q} \sqrt{
+%             \underbrace{(r_p-r_q)^2}_a\theta^2 + 
+%             \underbrace{2(r_p-r_q)(r_q\theta_p-r_p\theta_q)}_b\theta + 
+%             \underbrace{(r_q\theta_p-r_p\theta_q)^2+(r_p-r_q)^2}_c
+%             }
+%           \dth
+%      \\&= \frac{1}{B}\brs{ 
+%           \frac{b+2a\theta}{4a}\sqrt{a\theta^2+b\theta+c} + 
+%           \frac{4ac-b^2}{8a^{3/2}}\ln\brp{2a\theta+b+2\sqrt{a(a\theta^2+b\theta+c)}}
+%           }_{\theta=\theta_p}^{\theta=\theta_q}
+%        && \text{by \prefpp{lem:abc}}
+%      \\&= \frac{1}{\phi}\brs{ 
+%           \frac{b+2a\theta}{4a}\sqrt{a\theta^2+b\theta+c} + 
+%           \frac{4ac-b^2}{8a^{3/2}}\ln\brp{2a\theta+b+2\sqrt{a(a\theta^2+b\theta+c)}}
+%           }_{\theta=0}^{\theta=\phi}
+%        && \text{by \pref{item:larcR_theta}}
+%    \end{align*}
+
+  \end{enumerate}
+\end{proof}
+
+%=======================================
+\section{Properties}
+%=======================================
+%=======================================
+\subsection{Arc function R(p,q) properties}
+%=======================================
+%The next proposition gives more details of how $\fR(p,q)$ changes as $\rho$ increases.
+%%---------------------------------------
+%\begin{proposition}
+%\label{prop:larcR_drho}
+%%---------------------------------------
+%Let $\fR(p,q)$ be as defined in \prefpp{def:larc}.
+%\propbox{
+%  \oppprho\fR(p,q) = 
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{enumerate}
+%  \item lemma: \begin{array}[t]{rclclcl}
+%                 \oppprho r_p &\eqd& \oppprho\brp{r_q-\rho} &=& 
+%               \end{array}
+%\end{enumerate}
+%\end{proof}
+
+
+If we really want the \fncte{Langrange arc distance} $\metric{p}{q}$ to be an \prope{extension}
+of the \fncte{spherical metric}, then $\fR(p,q)$ must equal $r_p\phi$ 
+(the arc length between $p$ and $q$ on a circle centered at the origin) when $r_p=r_q$.
+This is in fact the case, as demonstrated next.
+%---------------------------------------
+\begin{proposition}[$\fR(p,q)$ on spherical surface]
+\label{prop:larcR_rho}
+%---------------------------------------
+Let $\fR(p,q)$, $r_p$, $r_q$, and $\phi$ be defined as in \pref{def:larc}.
+%If $r_p\neq0$, $r_q\neq0$ and $\phi>0$ then 
+\propbox{
+  \brb{\begin{array}{rclD}
+    r_p=r_q&\neq& 0 & and\\
+    \phi   &\neq& 0
+  \end{array}}
+  \quad\implies\quad   
+  \brb{\fR(p,q) = r_p\phi}
+  }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: \label{item:larcR_rho_lem1}
+    \begin{align*}
+        \lim_{\rho\to0}
+             \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+                  {2\rho} 
+          &= \lim_{\rho\to0}
+             \frac{r_q\sqrt{(r_q\phi)^2+0}-r_p\sqrt{(r_p\phi)^2+0}}
+                  {2\rho} 
+         &&= \lim_{\rho\to0}\brp{\frac{\phi}{2}}
+             \frac{r_q^2-r_p^2}{r_q-r_p} 
+        \\&= \lim_{\rho\to0}\brp{\frac{\phi}{2}}
+             \frac{(r_q-r_p)(r_q+r_p)}{r_q-r_p} 
+         &&= \lim_{\rho\to0}\brp{\frac{\phi}{2}}(r_q+r_p)
+        \\&= r_p\phi
+    \end{align*}
+
+  \item lemma: \label{item:larcR_rho_lem2}
+    \begin{align*}
+        &\lim_{\rho\to0^+}\frac{\rho}{2\phi}\brs{ 
+               \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+             - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+             }
+        \\&= \lim_{\rho\to0^+}
+             \frac{\rho}{2\phi}\brs{ 
+               \ln\brp{r_q\rho\phi+\rho\sqrt{(r_q\phi)^2}}
+             - \ln\brp{r_p\rho\phi+\rho\sqrt{(r_p\phi)^2}}
+             }
+        \\&= \lim_{\rho\to0^+}
+             \frac{\rho}{2\phi}\brs{ 
+               \ln(\rho)+\ln\brp{r_q\phi+\sqrt{(r_q\phi)^2}}
+             - \ln(\rho) - \ln\brp{r_p\phi+\sqrt{(r_p\phi)^2}}
+             }
+        \\&= \lim_{\rho\to0^+}
+              \frac{\rho}{2\phi}\brs{ 
+             +\ln\brp{r_q\phi+\sqrt{(r_q\phi)^2}}
+             -\ln\brp{r_p\phi+\sqrt{(r_p\phi)^2}}
+             }
+        \\&= 0
+    \end{align*}
+
+  \item lemma: \label{item:larcR_rho_lem3}
+    \begin{align*}
+        &\lim_{\rho\to0^-} 
+        \frac{\rho}{2\phi}\brs{ 
+            \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+          - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+          }
+        \\&= \lim_{\rho\to0^-}
+             \frac{\rho}{2\phi}\brs{ 
+                 \ln\brp{-r_q\abs{\rho}\phi+\abs{\rho}\sqrt{(r_q\phi)^2}}
+               - \ln\brp{-r_p\abs{\rho}\phi+\abs{\rho}\sqrt{(r_p\phi)^2}}
+               }
+        \\&= \lim_{\rho\to0^-}
+             \frac{\rho}{2\phi}\brs{ 
+                 \ln\brp{\rho}+\ln\brp{-r_q\phi+\sqrt{(r_q\phi)^2}}
+               - \ln\brp{\rho}-\ln\brp{-r_p\phi+\sqrt{(r_p\phi)^2}}
+               }
+        \\&= \lim_{\rho\to0^-}
+             \frac{\rho}{2\phi}\brs{ 
+                \ln\brp{-r_q\phi+\sqrt{(r_q\phi)^2}}
+               -\ln\brp{-r_p\phi+\sqrt{(r_p\phi)^2}}
+               }
+        \\&= 0
+    \end{align*}
+
+  \item lemma: \label{item:larcR_rho_lem4}
+        By \pref{item:larcR_rho_lem2}, \pref{item:larcR_rho_lem3}, 
+        and by \prope{continuity} \ldots
+    \\\indentx$\ds
+        \lim_{\rho\to0} 
+        \frac{\rho}{2\phi}\brs{ 
+            \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+          - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+          }
+          = 0
+         $
+
+  \item Completing the proof \ldots
+    \begin{align*}
+        \lim_{\rho\to0}\fR(p,q) 
+          &= \lim_{\rho\to0}\Bigg[
+             \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+                  {2\rho}
+             \\&\qquad+
+             %\lim_{\rho\to0}
+             \frac{\rho}{2\phi}
+               \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+             - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+             \Bigg]
+          && \text{by \pref{thm:Rpq}}
+        \\&= 0 + 
+             \lim_{\rho\to0}
+             \frac{\rho}{2\phi}\brs{ 
+               \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+             - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+             }
+          && \text{by \pref{item:larcR_rho_lem1}}
+        \\&= 0 + 0
+          && \text{by \pref{item:larcR_rho_lem4}}
+        \\&= 0
+          %&& \text{by field prop. of $\fieldR$}
+          %&& \text{because $0$ is the \vale{additive identity element} in $\fieldR$.}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+Later in \prefpp{thm:larc_distance}, we want to prove that the \fncte{Langrange arc distance} \xref{def:larc} $\distance{p}{q}$
+is indeed, as its name suggests, a \fncte{distance function} \xref{def:distance}.
+%One property of distance functions is \prope{symmetry}.
+\pref{prop:larcR_sym} (\prope{symmetry}) and 
+\pref{prop:larcR_pos} (\prope{positivity}) will help. %that $\distance{p}{q}$ is also \prope{symmetric}.
+Meanwhile, \pref{prop:larcR_pos} will itself receive help from 
+\pref{prop:larcR_mono} (\prope{monotonicity}).
+%---------------------------------------
+\begin{proposition}[\prope{symmetry} of $\fR$]
+\label{prop:larcR_sym}
+%---------------------------------------
+Let $\fR(p,q)$ be defined as in \prefpp{def:larc}.
+\propbox{
+  \begin{array}{rcl CDD}
+      \fR(p,q) &=  & \fR(q,p)        & \forall p,q   \in\R^\xN & (\prope{symmetric})      & 
+  \end{array}
+  }
+\end{proposition}
+\begin{proof}
+    \begin{enumerate}
+      \item dummy variable: Let $\mu\eqd\phi-\theta$ which implies  \label{item:larcR_distance_mu}
+        $\theta=\phi-\mu$ and $\dtheta=-\dmu$.
+
+      \item lemma: \label{item:larcR_distance_sub}
+        \begin{align*}
+          \fr(\mu;q,p)
+            &\eqd \fr(\phi-\theta;q,p)
+            &&    \text{by \pref{item:larcR_distance_mu}}
+          \\&=    \brp{\frac{r_p-r_q}{\phi}}(\phi-\theta) + r_q
+             =    \brp{\frac{r_q-r_p}{\phi}}\theta + \brp{r_p-r_q} + r_q
+             =    \brp{\frac{r_q-r_p}{\phi}}\theta + r_p
+          \\&=    \fr(\theta;p,q)
+        \end{align*} 
+
+      \item Completing the proof\ldots
+        \begin{align*}
+          \fR(p,q)
+            &= \int_{\theta=0}^{\theta=\phi} \sqrt{\fr^2\brp{\theta;p,q} + \brs{\frac{\dr(\theta;p,q)}{\dtheta}}^2} \dtheta
+          \\&= \int_{\phi-\mu=0}^{\phi-\mu=\phi} \sqrt{\fr^2\brp{\mu;q,p} + \brs{\frac{\dr(\mu;q,p)}{-\dmu}}^2} (-\dmu)
+            &&    \text{by \pref{item:larcR_distance_mu} and \pref{item:larcR_distance_sub}}
+          \\&= -\int_{\mu=\phi}^{\mu=0} \sqrt{\fr^2\brp{\mu;q,p} + \brs{\frac{\dr(\mu;q,p)}{\dmu}}^2} \dmu
+          \\&= \int_{\mu=0}^{\mu=\phi} \sqrt{\fr^2\brp{\mu;q,p} + \brs{\frac{\dr(\mu;q,p)}{\dmu}}^2} \dmu
+            && \text{by the \thme{Second Fundamental Theorem of Calculus}\footnotemark}
+          \\&= \fR(q,p)
+        \end{align*}
+        \citetblt{
+          \citerpgc{hijab2016}{170}{3319284002}{Theorem 4.4.3 Second Fundamental Theorem of Calculus},\\
+          \citerpgc{amann2008}{31}{3764374721}{Theorem 4.13 The second fundamental theorem of calculus}
+          }
+    \end{enumerate}
+    %\begin{enumerate}
+    %  \item Proof when $\rho>0$:
+    %    \begin{align*}
+    %      \fR(p,q)
+    %        &= \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+    %                {2\rho} 
+    %           +\frac{\rho}{2\phi}\brs{ 
+    %             \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+    %           - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+    %           }
+    %      \\&= \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+    %                {2\rho} 
+    %           +\frac{\rho}{2\phi}\brs{ 
+    %             \ln\brp{r_q\rho\phi+\rho\sqrt{(r_q\phi)^2+\rho^2}}
+    %           - \ln\brp{r_p\rho\phi+\rho\sqrt{(r_p\phi)^2+\rho^2}}
+    %           }
+    %      \\&= \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+    %                {2\rho} 
+    %           +\frac{\rho}{2\phi}\brs{ 
+    %             \ln\brp{r_q\phi+\sqrt{(r_q\phi)^2+\rho^2}}
+    %           - \ln\brp{r_p\phi+\sqrt{(r_p\phi)^2+\rho^2}}
+    %           }
+    %      \\&= -\frac{r_q\sqrt{(r_q\phi)^2+(-\rho)^2}+r_p\sqrt{(r_p\phi)^2+(-\rho)^2}}
+    %                {2(-\rho)} 
+    %           +\frac{(-\rho)}{2\phi}\brs{ 
+    %           - \ln\brp{r_q\phi+\sqrt{(r_q\phi)^2+(-\rho)^2}}
+    %           + \ln\brp{r_p\phi+\sqrt{(r_p\phi)^2+(-\rho)^2}}
+    %           }
+    %      \\&= \frac{r_p\sqrt{(r_p\phi)^2+(-\rho)^2} -r_q\sqrt{(r_q\phi)^2+(-\rho)^2}}
+    %                {2(-\rho)} 
+    %           +\frac{(-\rho)}{2\phi}\brs{ 
+    %             \ln\brp{r_p\phi+\sqrt{(r_p\phi)^2+(-\rho)^2}}
+    %           - \ln\brp{r_q\phi+\sqrt{(r_q\phi)^2+(-\rho)^2}}
+    %           }
+    %      \\&=\fR(q,p)
+    %    \end{align*}
+    %
+    %  \item Proof when $\rho<0$:
+    %    \begin{align*}
+    %      \fR(p,q)
+    %        &= \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+    %                {2\rho} 
+    %           +\frac{\rho}{2\phi}\brs{ 
+    %             \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+    %           - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+    %           }
+    %      \\&= \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+    %                {2\rho} 
+    %           +\frac{\rho}{2\phi}\brs{ 
+    %             \ln\brp{r_q\rho\phi-\rho\sqrt{(r_q\phi)^2+\rho^2}}
+    %           - \ln\brp{r_p\rho\phi-\rho\sqrt{(r_p\phi)^2+\rho^2}}
+    %           }
+    %      \\&= \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+    %                {2\rho} 
+    %           +\frac{\rho}{2\phi}\brs{ 
+    %             \ln\brp{r_q\phi-\sqrt{(r_q\phi)^2+\rho^2}}
+    %           - \ln\brp{r_p\phi-\sqrt{(r_p\phi)^2+\rho^2}}
+    %           }
+    %      \\&= -\frac{r_q\sqrt{(r_q\phi)^2+(-\rho)^2}+r_p\sqrt{(r_p\phi)^2+(-\rho)^2}}
+    %                {2(-\rho)} 
+    %           +\frac{(-\rho)}{2\phi}\brs{ 
+    %           - \ln\brp{r_q\phi-\sqrt{(r_q\phi)^2+(-\rho)^2}}
+    %           + \ln\brp{r_p\phi-\sqrt{(r_p\phi)^2+(-\rho)^2}}
+    %           }
+    %      \\&= \frac{r_p\sqrt{(r_p\phi)^2+(-\rho)^2} -r_q\sqrt{(r_q\phi)^2+(-\rho)^2}}
+    %                {2(-\rho)} 
+    %           +\frac{(-\rho)}{2\phi}\brs{ 
+    %             \ln\brp{r_p\phi-\sqrt{(r_p\phi)^2+(-\rho)^2}}
+    %           - \ln\brp{r_q\phi-\sqrt{(r_q\phi)^2+(-\rho)^2}}
+    %           }
+    %      \\&=\fR(q,p)
+    %    \end{align*}
+    %\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{proposition}[\prope{monotonicity} of $\fR$]
+\label{prop:larcR_mono}
+%---------------------------------------
+Let $\fR(p,q)$ and $\phi$ be defined as in \prefpp{def:larc}.
+Let $\phi_1$ be the polar angle between the point pair $\opair{p_1}{q_1}$ in $\R^\xN$ and
+Let $\phi_2$    the polar angle between the point pair $\opair{p_2}{q_2}$ in $\R^\xN$.
+\propbox{\begin{array}{rclCD}
+  \brb{\phi_1<\phi_2} &\implies& \brb{\fR(p_1,q_1)<\fR(p_2,q_2)} & \forall \phi_1,\phi_2\in\intoc{0}{\pi}
+                                                                 & (\prope{strictly monotonically increasing} in $\phi$)
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \opddphi \fR(p,q)
+    &\eqd \opddphi \int_0^\phi \sqrt{\fr^2(\theta) + \brs{\deriv{\fr(\theta)}{\theta}}^2} \dtheta
+    && \text{by \prefpp{def:larc}}
+  \\&= \opddphi \int_0^\phi \sqrt{\brs{\brp{\frac{r_q-r_p}{\phi}}\theta + r_p}^2 + \brs{\frac{r_q-r_p}{\phi}}^2} \dtheta
+  \\&= \sqrt{\brs{\brp{\frac{r_q-r_p}{\phi}}\phi + r_p}^2 + \brs{\frac{r_q-r_p}{\phi}}^2}
+    && \text{by the \thme{First Fundamental Theorem of Calculus}\footnotemark}
+  \\&= \sqrt{r_q^2 + \brs{\frac{r_q-r_p}{\phi}}^2}
+  \\&> 0
+  \\&\mathrlap{\implies\text{$\fR(p,q)$ is \prope{strictly monotonically increasing} in $\phi$}}
+\end{align*}
+\citetblt{
+  \citerpgc{schechter1996}{674}{0080532993}{25.15},
+  \citerpg{haaser1991}{218}{0486665097}
+  }
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{proposition}[\prope{positivity} of $\fR$]
+\label{prop:larcR_pos}
+%---------------------------------------
+Let $\fR(p,q)$ and $\phi$ be defined as in \prefpp{def:larc}.
+\propbox{
+  \brb{\begin{array}{rcl}
+    \phi &\in& \intoc{0}{\pi}\\
+    (\phi&\neq& 0)
+  \end{array}}
+  \qquad\implies\qquad
+  \brb{\begin{array}{rcl CD}
+    \fR(p,q) &>& 0   & \forall p,q   \in\R^\xN & (\prope{positive})
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    \opddphi \fR(p,q)
+      &\eqd \int_0^\phi \sqrt{\fr^2(\theta) + \brs{\deriv{\fr(\theta)}{\theta}}^2} \dtheta
+      && \text{by \prefpp{def:larc}}
+    \\&= \brlr{\int \sqrt{\fr^2(\theta) + \brs{\deriv{\fr(\theta)}{\theta}}^2} \dtheta}_\phi
+       - \brlr{\int \sqrt{\fr^2(\theta) + \brs{\deriv{\fr(\theta)}{\theta}}^2} \dtheta}_0
+      && \begin{tabstr}{0.75}\begin{array}{M}by the Second Fundamental\\Theorem of Calculus\end{array}\end{tabstr}
+    \\&> 0
+      &&\text{by \prefpp{prop:larcR_mono}}
+  \end{align*}
+\end{proof}
+
+\begin{minipage}{\tw-60mm}
+  For the sake of \prope{continuity} at the origin of $\R^\xN$, one might hope that 
+  it doesn't matter which ``direction" the points $p$ or $q$ approach the origin
+  when computing the limit of $\fR(p,q)$.
+  This however is \emph{not} the case, as demonstrated next and illustrated to the right and in \prefpp{ex:limrp0}.
+  In fact, the limits very much depend on $\phi$\ldots resulting in a \prope{discontinuity} at the origin,
+  as demonstrated in \prefpp{thm:larc_cont}.
+\end{minipage}\hfill%
+\begin{tabular}{c}\includegraphics{larc/graphics/limrp0Rpq.pdf}\end{tabular}\\
+%---------------------------------------
+\begin{proposition}[limit cases of $\fR$]
+\label{prop:larcR_rp0}
+%---------------------------------------
+Let $\fR(p,q)$, $r_p$, $r_q$, and $\phi$ be defined as in \prefpp{def:larc}.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}lCD}
+    \lim_{r_p\to 0}\fR(p,q) 
+      &=& \frac{r_q}{2}\brs{\sqrt{\phi^2+1} + \frac{\ln\brp{\phi+\sqrt{\phi^2+1}}}{\phi}}
+      &   \forall p,q\in\R^\xN\setd\origin,\,\phi\neq0
+      &   ($p$ approaching origin)
+  \\\lim_{r_q\to 0}\fR(p,q) 
+      &=& \frac{r_p}{2}\brs{\sqrt{\phi^2+1} + \frac{\ln\brp{\phi+\sqrt{\phi^2+1}}}{\phi}}
+      &   \forall p,q\in\R^\xN\setd\origin,\,\phi\neq0
+      &   ($q$ approaching origin)
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  &\lim_{r_p\to 0}\fR(p,q) 
+  \\&=  \mathrlap{
+        \lim_{r_p\to 0}
+        \frac{r_q\sqrt{(r_q\phi)^2+\rho^2}-r_p\sqrt{(r_p\phi)^2+\rho^2}}
+             {2\rho} 
+        +\frac{\abs{\rho}}{2\phi}\brs{ 
+          \ln\brp{r_q\rho\phi+\abs{\rho}\sqrt{(r_q\phi)^2+\rho^2}}
+        - \ln\brp{r_p\rho\phi+\abs{\rho}\sqrt{(r_p\phi)^2+\rho^2}}
+        }}
+  \\&\qquad \text{by \prefpp{thm:Rpq}}
+  \\&=  \frac{r_q\sqrt{(r_q\phi)^2+r_q^2}-0}{2r_q} 
+        +\frac{\abs{r_q}}{2\phi}\brs{ 
+          \ln\brp{r_q^2\phi+\abs{r_q}\sqrt{(r_q\phi)^2+r_q^2}}
+        - \ln\brp{0+\abs{r_q}\sqrt{0+r_q^2}}
+        }
+    && \text{by $\ds\lim_{r_p\to0}$ operation}
+  \\&=  \frac{r_q\sqrt{\phi^2+1}}{2} 
+        +\frac{r_q}{2\phi}\brs{ 
+          \ln\brp{r_q^2\phi+r_q^2\sqrt{\phi^2+1}} - \ln\brp{r_q^2}
+        }
+  \\&=\mathrlap{  
+       \frac{r_q}{2}\brs{
+            \sqrt{\phi^2+1} 
+          + \frac{\ln(r_q^2) + \ln\brp{\phi+\sqrt{\phi^2+1}} - \ln\brp{r_q^2}}{\phi}
+          }
+     = \frac{r_q}{2}\brs{\sqrt{\phi^2+1} + \frac{\ln\brp{\phi+\sqrt{\phi^2+1}}}{\phi}}
+     }
+\end{align*}
+\begin{align*}
+  \lim_{r_q\to 0}\fR(p,q) 
+    &= \lim_{r_q\to 0}\fR(q,p) 
+    && \text{by \pref{prop:larcR_sym}}
+   %&& \text{by \prefp{prop:larcR_sym} (\prope{symmetry})}
+  \\&= \frac{r_p}{2}\brs{\sqrt{\phi^2+1} + \frac{\ln\brp{\phi+\sqrt{\phi^2+1}}}{\phi}}
+    && \text{by previous result}
+\end{align*}
+%\begin{align*}
+%  \lim_{r_p\to 0}\fR(p,q) 
+%    &\eqd \lim_{r_p\to 0}\int_0^\phi \sqrt{r^2(\theta) + \brp{\frac{\dr}{\dth}}^2}\dth
+%    && \text{by definition of $\fR(p,q)$ \xref{def:larc}}
+%  \\&= \lim_{r_p\to 0}\int_0^\phi \sqrt{\brs{\brp{\frac{r_q-r_p}{\phi}}\theta + r_p}^2 + \brs{\frac{r_q-r_p}{\phi}}^2} \dtheta
+%    && \text{by definition of $\fr(\theta)$ \xref{def:larc}}
+%  \\&= \int_0^\phi \sqrt{\brs{\brp{\frac{r_q-0}{\phi}}\theta + 0}^2 + \brs{\frac{r_q-0}{\phi}}^2} \dtheta
+%  \\&= \frac{r_q}{\phi}\int_0^\phi \sqrt{\theta^2 + 1} \dtheta
+%  \\&= \frac{r_q}{\phi}\mathrlap{\brs{
+%           \frac{2\cdot1\cdot\theta+0}{4\cdot1}\sqrt{1\theta^2+0\theta+1} 
+%         + \frac{4\cdot1\cdot1-0^2}{8\cdot1^{3/2}}\ln\brp{2\cdot1\cdot \theta+0+2\sqrt{1(1\theta^2+0\theta+1)}}+\varepsilon
+%       }_0^\phi
+%    \quad\text{by \pref{lem:abc}}}
+%   %&& \text{by \prefpp{lem:abc} for $\otriple{a}{b}{c}=\otriple{1}{0}{1}$}
+%  \\&= \frac{r_q}{\phi}\brs{
+%           \frac{\theta}{2}\sqrt{\theta^2+1} 
+%         + \frac{1}{2}\ln\brp{2\theta+2\sqrt{\theta^2+1}}+\varepsilon
+%         }_0^\phi
+%  \\&= \mathrlap{\frac{r_q}{2\phi}\brs{
+%           \phi\sqrt{\phi^2+1} 
+%         - 0   \sqrt{0^2+1} 
+%         + \ln\brp{2\phi+2\sqrt{\phi^2+1}}
+%         - \ln\brp{0+2\sqrt{0+1}}
+%         }}
+%  \\&= \frac{r_q}{2\phi}\brs{
+%         \phi\sqrt{\phi^2+1} 
+%         + \ln(2) + \ln\brp{\phi+\sqrt{\phi^2+1}} -\ln(2)
+%         }
+%  \\&= \frac{r_q}{2}\brs{\sqrt{\phi^2+1} + \frac{\ln\brp{\phi+\sqrt{\phi^2+1}}}{\phi}}
+%  \\\\
+%  \lim_{r_q\to 0}\fR(p,q) 
+%    &= \lim_{r_q\to 0}\fR(q,p) 
+%    && \text{by \prefp{prop:larcR_sym} (\prope{symmetry})}
+%  \\&= \frac{r_p}{2}\brs{\sqrt{\phi^2+1} + \frac{\ln\brp{\phi+\sqrt{\phi^2+1}}}{\phi}}
+%    && \text{by previous result}
+%\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\label{ex:limrp0}
+%---------------------------------------
+Let $\fR(p,q)$, $\phi$, and $r_q$ be defined as in \pref{def:larc}.
+\\\indentx$\begin{array}{MM>{\ds}lclcl}
+    If $\phi=0$     &then& \lim_{p\to0}\fR\brs{p,\opair{r_q}{0}} &=& r_q
+  \\If $\phi=\pi/2$ &then& \lim_{p\to0}\fR\brs{p,\opair{r_q}{0}} &=& r_q\times(1.323652\cdots) &\eqa& 1.3r_q
+  \\If $\phi=\pi$   &then& \lim_{p\to0}\fR\brs{p,\opair{r_q}{0}} &=& r_q\times(1.944847\cdots) &\eqa& 1.9r_q  %1.9448477277847245517307915691607
+\end{array}$\qquad
+\begin{tabular}{c}\includegraphics{larc/graphics/limrp0.pdf}\end{tabular}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \brlr{\fR(p,q)}_{\phi=\pi/2}
+      &= \frac{r_q}{2}\brs{\sqrt{\brp{\frac{\pi}{2}}^2+1} + \frac{\ln\brp{\frac{\pi}{2}+\sqrt{\brp{\frac{\pi}{2}}^2+1}}}{\frac{\pi}{2}}}
+     &&= r_q\times(1.323652\cdots) %1.3236523505130214048874285420062
+    \\
+  \brlr{\fR(p,q)}_{\phi=\pi}
+      &= \frac{r_q}{2}\brs{\sqrt{\pi^2+1} + \frac{\ln\brp{\pi+\sqrt{\pi^2+1}}}{\pi}}
+     &&= r_q\times(1.944847\cdots) %1.9448477277847245517307915691607
+\end{align*}
+\end{proof}
+
+
+%=======================================
+\subsection{Distance function d(p,q) properties}
+%=======================================
+The \fncte{Langrange arc distance} $\distance{p}{q}$ is defined in two parts: 
+one part being the Euclidean distance $\sfrac{1}{\pi}\abs{r_q-r_p}$ and the second part the length of the arc
+$\sfrac{1}{\pi}\fR(p,q)$. 
+There is risk in creating a multipart definition\ldots 
+with the possible consequences being \prope{discontinuity} at the boundary of the parts.
+\pref{prop:larc_lim} (next) demonstrates that when $r_p\neq0$ and $r_q\neq0$, 
+there is \prope{continuity} as $\phi\to0$.
+However, \prefpp{thm:larc_distance} demonstrates that in general for values of $\phi>0$,
+$\distance{p}{q}$ is \prope{discontinuous} at the \structe{origin}.
+%---------------------------------------
+\begin{proposition}
+\label{prop:larc_lim}
+%---------------------------------------
+Let $\fR(p,q)$, $r_p$, $r_q$, $\phi$, and $\origin$ be defined as in \prefpp{def:larc}.
+\propbox{\begin{array}{F>{\ds}rc>{\ds}lc>{\ds}lc>{\ds}l}
+    (A).&
+    \lim_{\phi\to 0}                \fR(p,q) 
+     &=& \abs{r_q-r_p} 
+     & &
+     &=& \pi\distance{p}{q}
+       \quad\text{when $\phi=0$}
+  \\(B).&
+     \lim_{\phi\to 0}\lim_{r_p\to 0} \fR(p,q) 
+     &=& \lim_{r_p\to 0} \lim_{\phi\to 0}\fR(p,q) 
+     &=& r_q           
+     &=& \pi\distance{\origin}{q}
+  \\(C).&
+     \lim_{\phi\to 0}\lim_{r_q\to 0} \fR(p,q) 
+     &=& \lim_{r_q\to 0} \lim_{\phi\to 0}\fR(p,q) 
+     &=& r_p           
+     &=& \pi\distance{p}{\origin}
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \lim_{\phi\to 0}\fR(p,q) 
+    &\eqd \lim_{\phi\to 0}\int_0^\phi \sqrt{r^2(\theta) + \brp{\frac{\dr}{\dth}}^2}\dth
+    && \text{by definition of $\fR(p,q)$ \xref{def:larc}}
+  \\&= \lim_{\phi\to 0}\int_0^\phi \sqrt{\brs{\brp{\frac{r_q-r_p}{\phi}}\theta + r_p}^2 + \brs{\frac{r_q-r_p}{\phi}}^2} \dtheta
+    && \text{by definition of $\fr(\theta)$ \xref{def:larc}}
+  \\&= \lim_{\phi\to 0}\brs{\frac{1}{\phi}\int_0^\phi \sqrt{\brs{\brp{r_q-r_p}\theta + r_p\phi}^2 + \brs{r_q-r_p}^2} \dtheta}
+  \\&= \frac{\lim_{\phi\to 0}\opddphi\int_0^\phi \sqrt{\brs{\brp{r_q-r_p}\theta + r_p\phi}^2 + \brs{r_q-r_p}^2} \dtheta}{\lim_{\phi\to 0}\opddphi\phi}
+    && \text{by \thme{L'H/<opital's rule}}
+  \\&= \frac{\lim_{\phi\to 0}\sqrt{\brs{\brp{r_q-r_p}\phi + r_p\phi}^2 + \brs{r_q-r_p}^2}}{1}
+    && \text{by \thme{First Fundamental Theorem of Calculus}}
+  \\&= \sqrt{\brs{r_q-r_p}^2}
+  \\&= \abs{r_q-r_p}
+  \\&= \pi\brlr{\distance{p}{q}}_{\phi=0}
+   %&& \text{by definition of \fncte{Lagrange arc distance} \xrefr{def:larc}}
+    && \text{by \prefpp{def:larc}}
+  \\
+  \\
+  \lim_{\phi\to 0}\lim_{r_p\to 0} \fR(p,q) 
+    &= \lim_{\phi\to 0}\frac{r_q}{2}\brs{\sqrt{\phi^2+1} + \frac{\ln\brp{\phi+\sqrt{\phi^2+1}}}{\phi}}
+    && \text{by \prefpp{prop:larcR_rp0}}
+  \\&= \frac{r_q}{2}\brs{\sqrt{0^2+1} + \frac{\ds\lim_{\phi\to 0}\opddphi\ln\brp{\phi+\sqrt{\phi^2+1}}}{\ds\lim_{\phi\to 0}\opddphi\phi}}
+    && \text{by \thme{L'H/<opital's rule}}
+  \\&= \mathrlap{
+       \frac{r_q}{2}\brs{1 + \lim_{\phi\to 0}\frac{\ds1+\frac{2\phi}{2\sqrt{\phi^2+1}}}{\phi+\sqrt{\phi^2+1}}}
+     = \frac{r_q}{2}\brs{1 + 1/1}
+     = r_q           
+     = \pi\distance{\origin}{q}
+     }
+  \\
+  \\
+  \lim_{\phi\to 0}\lim_{r_q\to 0} \fR(p,q) 
+    &= \lim_{\phi\to 0}\lim_{r_q\to 0} \fR(q,p)
+    && \text{by \prefpp{prop:larcR_sym}}
+  \\&= r_p           
+     = \pi\distance{p}{\origin}
+    && \text{by previous result}
+  \\
+  \lim_{r_p\to 0}\lim_{\phi\to 0} \fR(p,q) 
+    &= \lim_{r_p\to 0}\abs{r_q-r_p}
+    && \text{by (A)}
+  \\&= r_q
+     = \pi\distance{\origin}{q}
+  \\
+  \lim_{r_q\to 0}\lim_{\phi\to 0} \fR(p,q) 
+    &= \lim_{r_q\to 0}\abs{r_q-r_p}
+    && \text{by (A)}
+  \\&= r_p
+     = \pi\distance{p}{\origin}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:larc_cont}
+%---------------------------------------
+Let the \fncte{Lagrange arc distance} $\distance{p}{q}$ and \structe{origin} 
+be defined as in \pref{def:larc}.
+\\\thmboxp{
+  The function $\distance{p}{q}$ is \prope{discontinuous} at the \structe{origin} of $\R^\xN$,
+  but is \prope{continuous} everywhere else in $\R^\xN$.
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for when $p$ and $q$ are \emph{not} at the origin and $\phi\neq0$:
+    \begin{enumerate}
+      \item In this case, $\distance{p}{q}=\sfrac{1}{\pi}\fR(p,q)$.
+      \item $\fR(p,q)$ is continuous everywhere in its domain because its solution,
+            as given by \prefpp{thm:Rpq}, consists entirely of continuous functions
+            such as $\ln(x)$, $\abs{x}$, etc.
+      \item Therefore, in this case, $\distance{p}{q}$ is also \prope{continuous}.
+    \end{enumerate}
+
+  \item Proof for when $p$ and $q$ are \emph{not} at the origin and $\phi=0$:
+        \\This follows from (A) of \prefpp{prop:larc_lim}.
+
+  \item Proof for \prope{discontinuity} at origin:
+      This follows from \prefpp{prop:larcR_rp0}, where it is demonstrated that 
+      the limit of $\fR(p,q)$ is very much dependent on the ``direction" from which $p$ or $q$ 
+      approaches the origin.
+      For an illustration of this concept, see \prefpp{ex:limrp0}.
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:larc_distance}
+%---------------------------------------
+Let $\distance{p}{q}$ be \fncte{Lagrange arc distance} \xref{def:larc}.
+\\\thmboxp{
+  The function $\distance{p}{q}$ is a \fncte{distance function} \xref{def:distance}. In particular,
+  \\\indentx$\begin{array}{F rcl CDD}
+        (1). & \distance{p}{q} &\ge& 0               & \forall p,q\in\R^\xN & (\prope{non-negative})   & and 
+      \\(2). & \distance{p}{q} &=  & 0  \iff p=q     & \forall p,q\in\R^\xN & (\prope{nondegenerate})  & and 
+      \\(3). & \distance{p}{q} &=  & \distance{q}{p} & \forall p,q\in\R^\xN & (\prope{symmetric})      & 
+    \end{array}$
+  }
+\end{theorem}
+\begin{proof}
+The \fncte{Langrange arc distance} \xref{def:larc} is simply the \fncte{Euclidean metric} \xref{def:emetric}
+if $p$ or $q$ is at the origin, or if $\phi=0$.
+In this case, (1)--(3) are satisfied automatically because all \fncte{metric}s have these properties \xref{def:metric}.
+What is left to prove is that $\fR(p,q)$ has these properties when $p$ and $q$ are not at the origin and 
+$\phi\neq0$.
+\begin{enumerate}
+  \item Proof that $\fR(p,q)\ge0$: If $\phi=0$, then the Euclidean metric is used.\\
+        For any $\phi>0$, $\fR(p,q)>0$, as demonstrated by \prefpp{prop:larcR_pos}.
+  \item Proof that $p=q\implies\fR(p,q)=0$: If $p=q$, then $\phi=0$, and the Euclidean metric is used, not $\fR(p,q)$.
+  \item Proof that $\fR(p,q)=0\implies p=q$:
+        If $\distance{p}{q}=0$ and $\phi=0$, then the Euclidean metric is used.
+        If $\distance{p}{q}=0$ and $\phi>0$, then $\fR(p,q)$ never equals $0$ anyways, as demonstrated by \prefpp{prop:larcR_pos}.
+  \item Proof that $\fR(p,q)=\fR(q,p)$: This is demonstrated by \prefpp{prop:larcR_sym}.
+\end{enumerate}
+\end{proof}
+
+
+
+
+The \fncte{Lagrange arc distance} is \emph{not} a \fncte{metric} because in general the 
+\prope{triangle inequality} property does not hold (next theorem).
+Furthermore, the \fncte{Lagrange arc distance} does not induce a \fncte{norm}
+because it is \prope{not translation invariant}
+(the \prope{translation invariant} property is a necessary condition for a \fncte{metric} to induce a \fncte{norm}, 
+\xrefnp{thm:vsn_d2norm}),
+and balls in a \fncte{Lagrange arc distance space} are in general \prope{not convex}
+(balls are always \prope{convex} %\xrefnp{def:convex} 
+in a \structe{normed linear space}, %\xrefnp{def:norm}, 
+\xrefnp{thm:norm_convex}). 
+For more details about \fncte{distance space}s, see \prefpp{app:dspace}.
+
+%---------------------------------------
+\begin{theorem} %[\exmd{Lagrange arc and triangle inequality}]
+\label{thm:larc}
+%---------------------------------------
+In the \structe{Lagrange arc distance space} $\dspaceX$ over a field $\F$
+\thmbox{\begin{array}{FlclCD}
+    (1). & \metric{p}{r}               &\nle& \metric{p}{q} + \metric{q}{r}    & \forall p,q,r\in\setX & (\prope{triangle inequality fails})
+  \\(2). & \metric{p+r}{q+r}           &\neq& \metric{p}{q}                    & \forall p,q,r\in\setX & (\prope{not translation invariant})
+  \\(3). & \metric{\alpha p}{\alpha q} &=&  \abs{\alpha}\,\metric{p}{q}        & \forall p,q,r\in\setX,\,\alpha\in\R & (\prope{homogeneous})
+  \\(4). & \mc{5}{M}{$\distancen$ does not induce a norm}
+  \\(5). & \mc{5}{M}{balls in $\dspaceX$ are in general \prope{not convex}}
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that the \prope{triangle inequality} property fails to hold in $\dspaceX$:
+        Consider the following case\footnote{\seessp{lab_larc_distances_R2.xlg}}\ldots
+        \\\indentx
+        $\begin{array}{c}%
+          \includegraphics{larc/graphics/larc_trieq.pdf}%
+        \end{array}$%
+        \hspace{10mm}%
+        $\begin{array}{rclcl}%
+            \metric {p}{r} &\eqd& \metric{\opair{1}{0}}{\opair{-0.5}{0}} &=& 0.767324\cdots%   0.767324312
+                         \\&\nle& 0.756406\cdots &=& 0.692330\cdots + 0.064076\cdots  % 0.756406531  0.692330146      0.064076385
+                         \\&=&    \metric{\opair{1}{0}}{\opair{-0.5}{0.2}} &+& \metric{\opair{-0.5}{0.2}}{\opair{-0.5}{0}}
+                         \\&\eqd& \metric{p}{q} + \metric{q}{r}
+          \\\implies&\mc{4}{l}{\text{\prope{triangle inequality fails} in $\dspaceX$}}
+        \end{array}$%
+
+  \item Proof that $\dspaceX$ is \prope{not translation invariant}:\label{item:larc_ti}\footnote{\seessp{lab_larc_distances_R2.xlg}}
+        %Consider the following case\ldots
+        Let $r\eqd\opair{\sfrac{1}{2}}{\sfrac{1}{2}}$. Then\ldots
+        \\\indentx
+        $\begin{array}{c}%
+          \includegraphics{larc/graphics/larc_ti.pdf}%
+        \end{array}$%
+        \hspace{10mm}%
+        $\begin{array}{rcl}%
+            \metric{p+r}{q+r} &\eqd& \metric{\opair{1}{\frac{1}{2}}}{\opair{\frac{1}{2}}{1}} = 0.229009\cdots \neq \frac{1}{2}
+                            \\&=& \metric{\opair{\frac{1}{2}}{0}}{\opair{0}{\frac{1}{2}}}
+                            \\&\eqd& \metric{p}{q}
+          \\\implies&\mc{2}{l}{\text{\prope{$\dspaceX$ is not translation invariant}}}
+        \end{array}$%
+        %d(( 1.000, 0.500),( 0.500, 1.000))= 0.229009993  ok
+        %d(( 0.500, 0.000),( 0.000, 0.500))= 0.250000000  ok
+
+  \item Proof that $\dspaceX$ is \prope{homogeneous}: 
+        \\\indentx
+        $\begin{array}{c}%
+          \includegraphics{larc/graphics/larc_hmg.pdf}%
+        \end{array}$%
+        \hspace{10mm}%
+        $\begin{array}{M}%
+           Let $r_{\alpha p}$ be the magnitude of $\alpha p\eqd\seqn{\alpha x_1, \alpha x_2, \cdots, \alpha x_\xN}$.\\
+           Let $r_{\alpha q}$ be the magnitude of $\alpha q\eqd\seqn{\alpha y_1, \alpha y_2, \cdots, \alpha y_\xN}$.\\
+           Let $\phi_\alpha$ be the \fncte{polar angle} between $\alpha p$ and $\alpha q$.\\
+        \end{array}$%
+        \\
+    \begin{enumerate}
+      \item If $r_p=0$ or $r_q=0$ or $\phi=0$ then $\distance{p}{q}$ is the \fncte{Euclidean metric}, which is \prope{homogeneous}.
+            %Otherwise, $\distance{p}{q}$ is calculated using $\fR(p,q)$ \ldots
+
+      \item lemmas: \label{item:larc_hmg}
+        $\begin{array}[t]{rc>{\ds}l c>{\ds}l c>{\ds}l}
+           r_{\alpha p} &\eqd& \brp{\sum_1^\xN \brs{\alpha x_n}^2}^\frac{1}{2} &=& \abs{\alpha}\sum_1^\xN x_n^2 &\eqd& \abs{\alpha}r_p \\
+           r_{\alpha q} &\eqd& \brp{\sum_1^\xN \brs{\alpha y_n}^2}^\frac{1}{2} &=& \abs{\alpha}\sum_1^\xN y_n^2 &\eqd& \abs{\alpha}r_q \\
+           \phi_\alpha  &\eqd& \arccos\brp{\frac{1}{r_{\alpha p}r_{\alpha q}}\sum_{n=1}^\xN [\alpha x_n][\alpha y_n]}
+                        &=   & \arccos\brp{\frac{1}{r_pr_q}\sum_{n=1}^\xN x_n y_n}
+                        &\eqd& \phi\\
+           \fr(\theta;\alpha p,\alpha q) 
+                        &\eqd& \brp{\frac{r_{\alpha q}-r_{\alpha p}}{\phi_\alpha}}\theta + r_{\alpha p} 
+                        &=   & \brp{\frac{\alpha r_q-\alpha r_p}{\phi}}\theta + \alpha r_p 
+                        &=   & \alpha\fr(\theta;p,q)
+        \end{array}$
+
+      \item If $\distance{p}{q}$ is \emph{not} the \fncte{Euclidean metric} then \ldots
+        \begin{align*}
+          \pi\distance{\alpha p}{\alpha q} 
+            &\eqd \fR(\alpha p,\alpha q)
+            &&    \text{by definition of $\distancen$ \xref{def:larc}}
+          \\&\eqd \int_0^{\phi_\alpha} \sqrt{ \brs{\fr(\theta;\alpha p,\alpha q)}^2 + \brs{\deriv{\fr(\theta;\alpha p,\alpha q)}{\theta}}^2} \dth
+            &&    \text{by definition of $\fR$ \xref{def:larc}}
+          \\&=    \int_0^\phi \sqrt{\brs{\alpha\fr(\theta;p,q)}^2 + \brs{\opddth \alpha\fr(\theta;p,q)}^2} \dth
+            &&    \text{by \pref{item:larc_hmg}}
+          \\&=    \abs{\alpha}\int_0^\phi \sqrt{\brs{\fr(\theta;p,q)}^2 + \brs{\opddth\fr(\theta;p,q)}^2} \dth
+            &&    \text{by \prope{linearity} of $\int_0^\phi\dth$ operator}
+          \\&\eqd \abs{\alpha}\fR(p,q)
+            &&    \text{by definition of $\fR$ \xref{def:larc}}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof that $\distancen$ does \emph{not} induce a norm on $\setX$:
+        This follows directly from \pref{item:larc_ti} and \prefpp{thm:vsn_d2norm}.
+
+  \item Proof that \structe{ball}s \xref{def:ball} in $\distancen$ are in general \prope{not convex} \xref{def:convex}:
+        \\This is demonstrated graphically in \prefpp{fig:larc} and \prefpp{fig:larcR3}.
+        \\For an algebraic demonstration, consider the following:\footnote{\seessp{lab_larc_distances_R2.xlg}}
+    \begin{enumerate}
+      \item Let $\ball{\opair{0}{1}}{1}$ be the \structe{unit ball} in $\dspace{\R^2}{\distancen}$ 
+            centered at $\opair{0}{1}$.
+
+      \item Let $p\eqd\opair{-0.70}{-1.12}$, $q\eqd\opair{0.70}{-1.12}$, $r\eqd\opair{0}{-1.12}$,
+            and $\lambda=\sfrac{1}{2}$. \label{item:larc_defs}
+
+      \item Then \label{item:larc_pqr}
+        $\begin{array}[t]{rclclD}
+            \distance{\opair{0}{1}}{p} &=& 0.959536\cdots<1 &\implies& p\in   \ball{\opair{0}{1}}{1} & and
+          \\\distance{\opair{0}{1}}{q} &=& 0.959536\cdots<1 &\implies& q\in   \ball{\opair{0}{1}}{1} & \scshape but
+          \\\distance{\opair{0}{1}}{r} &=& 1.060688\cdots>1 &\implies& r\notin\ball{\opair{0}{1}}{1}
+        \end{array}$
+        %d(( 0.000, 1.000),(-0.700,-1.120))= 0.9595367064 ~=  0.9595364335  ok
+        %d((-0.700,-1.120),( 0.000, 1.000))= 0.9595367064 ~=  0.9595364335  ok
+        %d(( 0.000, 1.000),( 0.700,-1.120))= 0.9595367064 ~=  0.9595364335  ok
+        %d(( 0.700,-1.120),( 0.000, 1.000))= 0.9595367064 ~=  0.9595364335  ok
+        %d(( 0.000, 1.000),( 0.000,-1.120))= 1.0606887311 ~=  1.0606882938  ok
+        %d(( 0.000,-1.120),( 0.000, 1.000))= 1.0606887311 ~=  1.0606882938  ok
+        %
+        % d(( 0.000, 0.500),(-0.350,-0.560))= 0.4797683532 ~=  0.4797682168  ok
+        % d((-0.350,-0.560),( 0.000, 0.500))= 0.4797683532 ~=  0.4797682168  ok
+        % d(( 0.000, 0.500),( 0.350,-0.560))= 0.4797683532 ~=  0.4797682168  ok
+        % d(( 0.350,-0.560),( 0.000, 0.500))= 0.4797683532 ~=  0.4797682168  ok
+        % d(( 0.000, 0.500),( 0.000,-0.560))= 0.5303443655 ~=  0.5303441469  ok
+        % d(( 0.000,-0.560),( 0.000, 0.500))= 0.5303443655 ~=  0.5303441469  ok
+        %
+        %0.959536706
+        %0.959536706
+        %1.060688731
+         
+      \item This implies that the set $\ball{\opair{0}{1}}{1}$ is \prope{not convex} because
+        \begin{align*}
+          \lambda p + (1-\lambda)q
+            &\eqd \frac{1}{2}\opair{-0.70}{-1.12} + \brp{1-\frac{1}{2}}\opair{0.70}{-1.12}
+            && \text{by \pref{item:larc_defs}}
+          \\&= \opair{0}{-1.12}
+           %&& \text{by \prefp{def:seqalg}}
+          \\&\eqd r
+            && \text{by \pref{item:larc_defs}}
+          \\&\notin \ball{\opair{0}{1}}{1}
+            && \text{by \pref{item:larc_pqr}}
+          \\&\implies \text{the set $\ball{\opair{0}{1}}{1}$ is \prope{not convex}}
+            && \text{by \prefp{def:convex}}
+        \end{align*}
+  \end{enumerate}
+ 
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{remark}[\exmd{Lagrange arc distance versus Euclidean metric}]
+%---------------------------------------
+As is implied by the metric balls illustrated in \prefpp{fig:larc} and \prefpp{fig:larcR3},
+the \fncte{Lagrange arc distance} $\metricn$ and \fncte{Euclidean metric} $\metrican$ are similar in the sense that they 
+often lead to the same results\footnote{
+  For empirical evidence of this, see \citeP{greenhoe2015ssp}.
+  }
+in determining which of the two points $q_1$ or $q_2$ is ``closer" to a point $p$.
+But in some cases the two metrics lead to two different results.
+One such case is illustrated as follows:\footnote{\seessp{lab_larc_distances_R2.xlg}}
+  \\\indentx
+  $\begin{array}{c}%
+    \includegraphics{larc/graphics/larc_euclid_compare.pdf}%
+  \end{array}$%
+  \hspace{10mm}%
+  $\begin{array}{rclcl}%
+      \metric {p}{q_1} &\eqd& \metric{\opair{1}{0}}{\opair{-0.5}{0}}     &=& 0.767324\cdots%
+    \\\metric {p}{q_2} &\eqd& \metric{\opair{1}{0}}{\opair{-0.5}{0.75}}  &=& 0.654039\cdots%
+    \\\metrica{p}{q_1} &\eqd& \metrica{\opair{1}{0}}{\opair{-0.5}{0}}    &=&    1.5%
+    \\\metrica{p}{q_2} &\eqd& \metrica{\opair{1}{0}}{\opair{-0.5}{0.75}} &=& \sqrt{(1.5)^2+(0.75)^2} = 1.677050\cdots%  1.6770509831248422723068802515485
+  \end{array}$%
+\\\begin{tabular}{r@{\hspace{1ex}}l}
+  That is,&$q_2$ is closer than $q_1$ to $p$ with respect to the \fncte{Lagrange arc distance},\\
+  but     &$q_1$ is closer than $q_2$ to $p$ with respect to the \fncte{Euclidean metric}.
+\end{tabular}
+%Theorem 3.10: Lagrange arc distance versus Euclidean metric
+%d(( 1.000, 0.000),(-0.500, 0.000))= 0.7673243120 ~=  0.7673239676  ok
+%d((-0.500, 0.000),( 1.000, 0.000))= 0.7673243120 ~=  0.7673239676  ok
+%d(( 1.000, 0.000),(-0.500, 0.750))= 0.6540398605 ~=  0.6540397329  ok
+%d((-0.500, 0.750),( 1.000, 0.000))= 0.6540398605 ~=  0.6540397329  ok
+\end{remark}
+
+%%---------------------------------------
+%\begin{remark}[\exmd{Lagrange arc distance versus elliptic arc distance}]
+%%---------------------------------------
+%Let $\metricn$ be the \fncte{Lagrange arc distance} \xref{def:larc} 
+%and $\metrican$ be an \fncte{elliptic arc length} scaled by $\sfrac{1}{\pi}$.
+%In the figure below, \structe{Lagrange arc}s are illustrated with solid blue lines,
+%and \structe{elliptic arc}s are illustrated with dashed red lines.
+%And as illustrated below, the two co-incide when the arcs are circular arcs, but in general are different.
+%  \\\indentx
+%  $\begin{array}{c}%
+%    \includegraphics{larc/graphics/larc_earc_compare.pdf}%
+%  \end{array}$%
+%  \hspace{10mm}%
+%  $\begin{array}{rclcl|rcl}%
+%      \metric {p_1}{q} &\eqd& \metric{\opair{0}{1}  }{\opair{1}{0}} &=& 0.500000\cdots & \metrica{p_1}{q} &=& 0.500000\cdots \\
+%      \metric {p_2}{q} &\eqd& \metric{\opair{0}{0.8}}{\opair{1}{0}} &=& 0.454498\cdots & \metrica{p_2}{q} &=& 0.451389\cdots \\
+%      \metric {p_3}{q} &\eqd& \metric{\opair{0}{0.2}}{\opair{1}{0}} &=& 0.401115\cdots & \metrica{p_3}{q} &=& 0.334385\cdots 
+%      %\metric {p_1}{q} &=& 0.500000000   & \metrica{p_1}{q} &=& 0.500000000  \\
+%      %\metric {p_2}{q} &=& 0.454498972   & \metrica{p_2}{q} &=& 0.45138996389828049785132263054847              \\
+%      %\metric {p_3}{q} &=& 0.401115719   & \metrica{p_3}{q} &=& 0.33438524526711829030362231606724  \\
+%  \end{array}$%
+%\end{remark}
+
+%%---------------------------------------
+%\begin{remark}[\exmd{Lagrange interpolation versus Newton interpolation}]
+%\label{rem:lagnew}
+%%---------------------------------------
+%\fncte{Lagrange arc distance} \xref{def:larc} $\metric{p}{q}$ uses the \fncte{Lagrange polynomial} \xref{def:laginterp}
+%to interpolate between $p$ and $q$.
+%What if the \fncte{Newton polynomial} \xref{def:newinterp} was used instead of the \fncte{Lagrange polynomial}.
+%As it turns out, both yield the exact same solution.
+%\end{remark}
+%\begin{proof}
+%  \begin{enumerate}
+%    \item The \fncte{Newton polynomial} for this interpolation is $\fr(\theta) = a + b(\theta-\theta_p)$.
+%    \item We must solve for $a$ and $b$:
+%      \\\indentx$\begin{array}{rcl clclcl}
+%        \fr(\theta_p) &\eqd& r_p &=& a + b(\theta_p-\theta_p) &=& a                         &\implies& \boxed{a = r_p} \\
+%        \fr(\theta_q) &\eqd& r_q &=& a + b(\theta_q-\theta_p) &=& r_p + b(\theta_q-\theta_p)&\implies& \boxed{b = \frac{r_q - r_p}{\theta_q-\theta_p}}
+%      \end{array}$
+%    \item Lastly, write an expression for $\fr(\theta)$:
+%      \begin{align*}
+%        \fr(\theta) 
+%          &= a + b(\theta-\theta_p)
+%         &&= \mcom{r_p}{$a$} + \mcom{\frac{r_q - r_p}{\theta_q-\theta_p}}{$b$}(\theta-\theta_p)
+%         &&= r_p\frac{\theta_q-\theta_p}{\theta_q-\theta_p} + (r_q - r_p)\frac{\theta-\theta_p}{\theta_q-\theta_p}
+%        \\&= r_p\brs{\frac{\theta_q-\theta_p}{\theta_q-\theta_p}-\frac{\theta-\theta_p}{\theta_q-\theta_p}} + r_q \frac{\theta-\theta_p}{\theta_q-\theta_p}
+%         &&= r_p\frac{\theta_q-\theta}{\theta_q-\theta_p} + r_q \frac{\theta-\theta_p}{\theta_q-\theta_p}
+%         &&= r_p\frac{\theta-\theta_q}{\theta_p-\theta_q} + r_q \frac{\theta-\theta_p}{\theta_q-\theta_p}
+%      \end{align*}
+%    \item Note that this is the same as the \fncte{Lagrange polynomial} for $\fr(\theta)$.
+%  \end{enumerate}
+%\end{proof}
+
+
+%=======================================
+\section{Examples}
+%=======================================
+\begin{figure}
+  \centering%
+  \gsize%
+  \includegraphics{larc/graphics/larc_metex.pdf}
+  \hspace{10mm}
+  $\begin{array}[b]{l @{\hspace{2pt}}r@{\hspace{2pt}}r l @{\hspace{2pt}}r@{\hspace{2pt}}r cl}
+    \metricn((& 0,& 1),&(& 1,& 0)) &=& \sfrac{1}{2}    \\
+    \metricn((& 0,& 1),&(&-1,& 0)) &=& \sfrac{1}{2}    \\
+    \metricn((& 0,& 1),&(& 0,&-1)) &=& 1               \\
+    \metricn((& 1,& 0),&(& 0,&-1)) &=& \sfrac{1}{2}    \\
+    \metricn((& 1,& 0),&(&-1,& 0)) &=& 1               \\
+    \metricn((&-1,& 0),&(& 0,&-1)) &=& \sfrac{1}{2}    \\
+    \metricn((& 0,& 1),&(& 2,& 0)) &=& 0.8167968\cdots \\
+    \metricn((& 0,& 1),&(& 0,&-2)) &=& 1.5346486\cdots \\
+    \metricn((& 0,& 1),&(&-2,& 1)) &=& 0.6966032\cdots
+  \end{array}$
+  \caption{\fncte{Lagrange arc distance} examples in $\R^2$\label{fig:larcmet}}
+\end{figure}
+%Example 3.12: Lagrange arc distance in R^2
+%d(( 0.000, 1.000),( 1.000, 0.000))= 0.5000000000 ~=  0.4999999486  ok
+%d(( 0.000, 1.000),(-1.000, 0.000))= 0.5000000000 ~=  0.4999999486  ok
+%d(( 0.000, 1.000),( 0.000,-1.000))= 1.0000000000 ~=  0.9999995888  ok
+%d(( 1.000, 0.000),( 0.000,-1.000))= 0.5000000000 ~=  0.4999999486  ok
+%d(( 1.000, 0.000),(-1.000, 0.000))= 1.0000000000 ~=  0.9999995888  ok
+%d((-1.000, 0.000),( 0.000,-1.000))= 0.5000000000 ~=  0.4999999486  ok
+%d(( 0.000, 1.000),( 2.000, 0.000))= 0.8167968887 ~=  0.8167967763  ok
+%d(( 0.000, 1.000),( 0.000,-2.000))= 1.5346486241 ~=  1.5346479353  ok
+%d(( 0.000, 1.000),(-2.000, 1.000))= 0.6966032041 ~=  0.6966031412  ok
+
+
+%---------------------------------------
+\begin{example}[\exmd{Lagrange arc distance in $\R^2$}]
+\label{ex:larcR2}
+%---------------------------------------
+\prefpp{fig:larcmet} illustrates the \fncte{Lagrange arc distance} on some pairs of points in $\R^2$.\footnote{\seessp{lab_larc_distances_R2.xlg}}
+\end{example}
+
+
+%\begin{figure}
+%  \gsize%
+%  \centering%
+%  \psset{unit=10mm, plotstyle=dots, linecolor=blue, linewidth=1pt, dotsize=0.5pt}
+%  \begin{tabular}{ccc}
+%    \begin{pspicture}(-2.5,-2.5)(2.5,2.5)%
+%      \psaxes[linecolor=axis](0,0)(-2.5,-2.5)(2.5,2.5)%
+%      \pscircle[linecolor=red](0,0){1.5708}%
+%      \psdot[linecolor=red,dotsize=3pt](0,0)%
+%      %\psline[linecolor=red](-1,0.707)(2,0.707)%
+%      %\psline[linecolor=red](0.707,-1)(0.707,2)%
+%      \fileplot{../common/symseq/graphics/larc0.dat}%
+%    \end{pspicture} 
+%   &
+%    \begin{pspicture}(-2.5,-2.5)(2.5,2.5)%
+%      \psaxes[linecolor=axis](0,0)(-2.5,-2.5)(2.5,2.5)%
+%      \pscircle[linecolor=red](0.707,0.707){1.5708}%
+%      \psdot[linecolor=red,dotsize=3pt](0.707,0.707)%
+%      \fileplot{../common/symseq/graphics/relm45.dat}%
+%    \end{pspicture} 
+%   &
+%    \begin{pspicture}(-2.5,-2.5)(2.5,2.5)%
+%      \psaxes[linecolor=axis](0,0)(-2.5,-2.5)(2.5,2.5)%
+%      \pscircle[linecolor=red](0.707,0.707){1.5708}%
+%      \psdot[linecolor=red,dotsize=3pt](0.707,0.707)%
+%      \fileplot{../common/symseq/graphics/test.dat}%
+%    \end{pspicture} 
+%  \end{tabular}
+%  \caption{Rotating elliptic metric unit balls ($\frac{\pi}{2}$-scaled Euclidean metric balls superimposed) \label{fig:relm}}
+%\end{figure}
+%%---------------------------------------
+%\begin{example}[\exmd{rotating elliptic metric}]
+%%---------------------------------------
+%The following metric is compatible with the \structe{real die} structure.
+%%Let $r_p\eqd\sqrt{x^2+y^2}$ and 
+%Let $\opair{r_p}{\theta_p}$ be the polar co-ordinates of a point $p$ in $\R^2$.
+%Let $R(p,q)$ be the length of the arc from a point $p$ to a point $q$ in $\R^2$
+%defined by the function 
+%$r(\theta) \eqd r_p\frac{\theta-\theta_q}{\theta_p-\theta_q} + r_q\frac{\theta-\theta_p}{\theta_q-\theta_p}$.
+%\exbox{
+%  \metric{p}{q} = \brbl{\begin{array}{lM}
+%    ... & ...
+%  \end{array}}
+%  }
+%Some unit balls in terms of this metric are illustrated in \prefp{fig:relm}.
+%\end{example}
+
+
+%---------------------------------------
+\begin{example}[\exmd{Lagrange arc distance in $\R^3$}]
+\label{ex:larcR3}
+%---------------------------------------
+Some examples of Lagrange arc distances in $\R^3$
+are given in \prefpp{tbl:larcR3}.\footnote{\seessp{lab_larc_distances_R3.xlg}}
+%In addition, some unit balls in $\R^3$ induced by the 
+%Lagrange arc distance and scaled Euclidean metric are illustrated in \prefpp{fig:larcR3}.
+%The value $\theta$ is the same as defined in \prefpp{ex:larcR2}.
+\end{example}
+\begin{table}
+  \centering
+   \begin{tabular}[b]{|M@{\hspace{2pt}} O@{\hspace{2pt}}O@{\hspace{2pt}}O 
+                        M@{\hspace{2pt}} O@{\hspace{2pt}}O@{\hspace{2pt}}O 
+                        NM |MNM|O|}
+    \hline
+    \metricn((& 0,& 1,&  0),&(& 1,  &  0,    & 0))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 1,&  0),&(& 0,  &  0,    & 1))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 1,&  0),&(& 0,  &  0,    &-1))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 1,&  0),&(&-1,  &  0,    & 0))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 1,&  0),&(& 0,  & -1,    & 0))                &=&        1       & \phi &=& \pi             &  180^\circ\\
+    \metricn((& 1,& 0,&  0),&(& 0,  &  0,    & 1))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 1,& 0,&  0),&(& 0,  &  0,    &-1))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 1,& 0,&  0),&(&-1,  &  0,    & 0))                &=&        1       & \phi &=& \pi             &  180^\circ\\
+    \metricn((& 1,& 0,&  0),&(& 0,  & -1,    & 0))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 0,&  1),&(& 0,  &  0,    &-1))                &=&        1       & \phi &=& \pi             &  180^\circ\\
+    \metricn((& 0,& 0,&  1),&(&-1,  &  0,    & 0))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 0,&  1),&(& 0,  & -1,    & 0))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 0,& -1),&(&-1,  &  0,    & 0))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 0,& -1),&(& 0,  & -1,    & 0))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((&-1,& 0,&  0),&(& 0,  & -1,    & 0))                &=& \sfrac{1}{2}   & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 1,&  0),&(& 2,  &  0,    & 0))                &=& 0.816796\cdots & \phi &=& \sfrac{\pi}{2}  &   90^\circ\\
+    \metricn((& 0,& 1,&  0),&(& 0,  & -2,    & 0))                &=& 1.534648\cdots & \phi &=& \pi             &  180^\circ\\
+    \metricn((& 0,& 1,&  0),&(&-2,  &  1,    & 0))                &=& 0.696603\cdots & \phi &\eqa& 1.107        &   63^\circ\\%1.107149  63.43495^\circ
+    \metricn((& 0,& 1,&  0),&(&-1,  &  0,    &-1))                &=& 0.617920\cdots & \phi &=& \pi             &   90^\circ\\  %1.107149  63.43495^\circ
+    \metricn((& 1,& 1,&  1),&(&-\sfrac{1}{2},&\sfrac{1}{4}, &-2)) &=& 1.366268\cdots & \phi &\eqa&2.2466        &   128.72^\circ\\  %1.107149  63.43495^\circ
+    \hline
+  \end{tabular}
+  \caption{Some examples of Lagrange arc distances in $\R^3$ (see \prefp{ex:larcR3}) \label{tbl:larcR3}}
+\end{table}
+
+\begin{figure}
+  \gsize%
+  \centering%
+  \includegraphics{larc/graphics/larc_R2_balls.pdf}%
+  \caption{\fncte{Lagrange arc distance} unit balls, and dashed \fncte{$\frac{1}{\pi}$-scaled Euclidean metric} unit balls \label{fig:larc}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{Lagrange arc distance balls in $\R^2$}]
+\label{ex:larcR2balls}
+%---------------------------------------
+Some unit balls in $\R^2$ in with respect to the \fncte{Lagrange arc distance} are illustrated in \prefpp{fig:larc}.
+%There, the quantity $\theta$ represents the minimal angular measure between the vector extending 
+%from the origin to $p$ and the vector extending from the origin to $q$ in computing the 
+%metric $\metric{p}{q}$.
+\end{example}
+
+\begin{figure}
+  \centering%
+  \begin{tabstr}{0.75}\begin{tabular}{cc}
+    %\hline
+        \includegraphics{larc/graphics/larc_ball(0_0_0).pdf} 
+      & \includegraphics{larc/graphics/larc_ball(0_0_-1).pdf} 
+      \\centered at $\otriple{0}{0}{0}$
+      & centered at $\otriple{0}{0}{-1}$
+    \\
+        \includegraphics{larc/graphics/larc_ball(0_0_-2).pdf} 
+      & \includegraphics{larc/graphics/larc_ball(0_0_-3).pdf} 
+      \\centered at $\otriple{0}{0}{-2}$
+      & centered at $\otriple{0}{0}{-3}$
+    \\
+        \includegraphics{larc/graphics/larc_ball(0_0_-5).pdf} 
+      & \includegraphics{larc/graphics/larc_ball(0_0_-10).pdf} 
+      \\centered at $\otriple{0}{0}{-5}$
+      & centered at $\otriple{0}{0}{-10}$
+    %\\
+    %\includegraphics{larc/graphics/larc_ball(0_0_-2).pdf}%
+    %\\ unit Lagrange arc distance ball 
+    %\includegraphics{larc/graphics/larc_ball(00_00_05).pdf}%
+    %&
+    %\includegraphics{larc/graphics/ae_ball(00_00_05).pdf}%
+    %\\ unit Lagrange arc distance ball 
+    % & $\sfrac{2}{\pi}$-scaled Euclidean metric ball
+    %\\\hline
+  \end{tabular}\end{tabstr}
+  \caption{\structe{unit Lagrange arc distance ball}s in $\R^3$ \label{fig:larcR3}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{Lagrange arc distance balls in $\R^3$}]
+\label{ex:larcR3balls}
+%---------------------------------------
+Some unit balls in $\R^3$ with respect to the \fncte{Lagrange arc distance} are illustrated in \prefpp{fig:larcR3}.
+\end{example}
+
+
+
+
+

@@ -1,0 +1,290 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%=======================================
+\subsection{Wavelet Analysis}
+%=======================================
+In this section, we use what is in \emph{essense} wavelet analysis,
+but yet is not truly wavelet analysis in the strict sense:
+\begin{enumerate}
+  \item For starters, standard \fncte{wavelet}s and their associated \fncte{scaling function}s are not sequences \xref{def:sequence},
+        but rather are functions with domain $\R$ (not $\Z$ or some convex subset of $\Z$).
+  \item While it is true that the celebrated \ope{Fast Wavelet Transform} (FWT) does work \emph{internally} with sequences
+        (using \ope{filter bank}s),\footnote{\citerppgc{greenhoe2013wsd}{360}{364}{0983801134}{J.6 Filter Banks}} 
+        the FWT is actually defined to work on functions with domain $\R$;
+        and so the function to be analyzed by the FWT must first be \ope{sampled} by 
+        a \fncte{scaling function}, which yields a sequence that can be processed by the 
+        \ope{filter bank}s.\footnote{\citerppgc{greenhoe2013wsd}{369}{372}{0983801134}{Appendix L}}
+  \item Wavelet analysis is typically performed by translating the wavelet or scaling function 
+        by fixed amounts depending on the ``scale" of the given wavelet.
+        For example, a Haar wavelet of length 4000 would typically ``jump" in offsets of 4000:
+        0, 4000, 8000, 12000, \ldots.\footnote{\citerppgc{greenhoe2013wsd}{27}{62}{0983801134}{Chapter 2. The Structure of Wavelets}}
+        As one might imagine, this may be reason for concern if you are using this wavelet to 
+        perform edge detection (you might jump over and miss detecting the edge).
+        In this section, wavelet sequences are translated by offsets of 1, making an edge harder to miss.
+\end{enumerate}
+%=======================================
+%\subsubsection{Wavelet analysis of die sequences}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{statistical edge detection using Haar wavelet on non-stationary die sequence}]
+\label{ex:nonstat48}
+\addcontentsline{toc}{subsubsection}{* statistical edge detection using Haar wavelet on non-stationary die sequence}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:nonstat48_psp}
+     Suppose we have a length $\xN\eqd12000$ die sequence $\seqn{x_n}$ with the following distribution:
+     \\\indentx$\begin{array}{lD}
+       \psp(\dieA)=\psp(\dieB)=\psp(\dieC)=\psp(\dieD)=\psp(\dieE)=\psp(\dieF)=\frac{1}{6}                             & for $n\in\intcc{0}{3999}\setu\intcc{8000}{11999}$\\
+       \psp(\dieA)=\psp(\dieB)=\psp(\dieC)=\psp(\dieE)=\psp(\dieF)=\frac{1}{10} \;\text{and}\; \psp(\dieD)=\frac{1}{2} & for $n\in\intcc{4000}{7999}$
+     \end{array}$\\
+     That is, the distribution of the sequence is uniformly distributed in the first and last thirds, 
+     but biased towards $\dieC$ in the middle third.
+     In this example we use a simple statistical edge detector to try to find the statistical ``edges" at 4000 and 8000.
+     The edge detector here is a 
+     \ope{filter} operation $\opW$ \xref{def:filter} using a \fncte{length 200 Haar wavelet sequence} \xref{def:whaar}.\footnote{
+     Empirical evidence due to \citeP{singh1997} suggests that the Haar wavelet performs better
+     than several other common wavelets as an edge detector.}
+  
+  \item \label{item:nonstat48_R1pam}
+    Suppose we first use the \fncte{PAM die random variable} \xref{def:rv_diepam} to map
+    the sequence of \pref{item:nonstat48_psp} into $\R^1$.
+    The magnitude of $\opW:\R^1\to\C^1$ of the mapped sequence is as follows:\footnote{
+    Note that the plot in \pref{item:nonstat48_R1pam} 
+    has been down sampled by a factor of 10 for practical reasons of displaying the very large data set.}
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/diehaarR1_12000m4000_h200_1050_D10.pdf}%
+       \\\hline
+    \end{tabular}\\
+     We might expect to see strongest evidence of the edges at $4000+200/2=4100$ and $8100$.
+     But looking at the above result, this is not apparent. 
+     In fact, there are a total of 10646 values that are greater than or equal to the value at location 4100 
+     (that value being $0.015$).\footnote{\seessp{diehaar_12000m4000_h200_1050.xlg}} 
+
+  \item \label{item:nonstat48_C1qpsk}
+    Suppose we next use the \fncte{QPSK die random variable} \xref{def:rv_dieqpsk} to map
+    the die sequence into the complex plane.
+    The magnitude of $\opW:\C^1\to\C^1$ of the mapped sequence is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/diehaarC1_12000m4000_h200_1050_D10.pdf}%
+       \\\hline
+    \end{tabular}\\
+     Using this method, the edges are apparent.   
+     And the value of the peak at $n=4083$ (with value $0.223383$) is about
+     %$10\log_{10}(0.223383/0.072097)\approx4.9$ dB above the noise floor.\footnote{\seessp{diehaar_12000m4000_h200_1050.xlg}} 
+     $10\log_{10}(0.223383/0.072741)\approx4.9$ dB above the noise 
+     floor.\footnote{\seessp{diehaar_12000m4000_h200_1050.xlg}} 
+    Here, the noise value 0.072741 is the \fncte{RMS} (see \pref{item:dftebola_R1pam} of \prefp{ex:dftebola})
+    of the DFT magnitude sequence computed over the domain $n=200\ldots\xN-1$.
+     %4.9113292531261044618521061907862 dB
+     %above the next highest peak, which occurs at $n=521$ (with value $0.183576$).
+%max|W(C^1 sequence)| from n=4050..4150 is 0.223383:
+%rms|W(C^1 sequence)| from n=200..11999 is 0.072744:
+%4.8725294107136569466927663732011 dB
+
+     
+  \item \label{item:nonstat48_R4}
+    Suppose we next use the \fncte{$\R^6$ die random variable} \xref{def:rv_dieR6} to map
+    the sequence into $\R^6$.
+    The magnitude of $\opW:\R^6\to\R^6$ of the mapped sequence is as follows:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/diehaarR6_12000m4000_h200_1050_D10.pdf}%
+        \\\hline
+     \end{tabular}\\
+     Using this method, the edges are also apparent.
+     And the value of the peak at $n=4102$ (with value $0.209165$) is about 
+     %$10\log_{10}(0.209165/0.068596)\approx4.8$ dB above the noise floor.
+     $10\log_{10}(0.209165/0.065768)\approx5.0$ dB above the noise 
+     floor.\footnote{Here the RMS noise value is computed over the domain $n=200\ldots\xN-1$.\\ 
+       \seessp{diehaar_12000m4000_h200_1050.xlg}
+       } 
+     This is only a slight improvement over \pref{item:nonstat48_C1qpsk}.
+
+%max|W(R^6 sequence)| from n=4050..4150 is 0.209165:
+%rms|W(R^6 sequence)| from n=0..11999 is 0.068596:
+%4.8419022323079719296397098112867 dB
+%max|W(R^6 sequence)| from n=4050..4150 is 0.209165:
+%rms|W(R^6 sequence)| from n=200..11999 is 0.065771:
+%5.0245456986608778348245061173019 dB
+\end{enumerate}
+\end{example}
+
+
+%=======================================
+%\subsubsection{Wavelet analysis of DNA sequences}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{statistical edge detection using Haar wavelet on non-stationary artificial DNA sequence}]
+\addcontentsline{toc}{subsubsection}{* statistical edge detection using Haar wavelet on non-stationary artificial DNA sequence}
+\mbox{}\\
+\label{ex:}
+%---------------------------------------
+\begin{enumerate}
+  \item 
+     Suppose we have a length $\xN\eqd12000$ dna sequence $\seqn{x_n}$ with the following distribution:
+     \\\indentx$\begin{array}{lD}
+       \psp(\dnaA)=\psp(\dnaC)=\psp(\dnaG)=\psp(\dnaT)=\frac{1}{4}                             & for $n\in\intcc{0}{3999}\setu\intcc{8000}{11999}$\\
+       \psp(\dnaA)=\psp(\dnaG)=\psp(\dnaT)=\frac{17}{100} \;\text{and}\; \psp(\dnaC)=\frac{49}{100} & for $n\in\intcc{4000}{7999}$
+     \end{array}$\\
+     That is, the distribution of the sequence is uniformly distributed in the first and last thirds, 
+     but biased towards $\dnaC$ in the middle third.
+     Just as in \pref{ex:nonstat48}, we again use 
+     a filter operation $\opW$ with \fncte{length 200 Haar wavelet sequence} as 
+     a simple statistical edge detector to try to locate the statistical ``edges" at 4000 and 8000.
+  
+  \item \label{item:dna_haar_R1pam}
+    Suppose we first use the \fncte{PAM DNA random variable} \xref{def:rv_dnapam} to map
+    the DNA sequence into $\R^1$.
+    The magnitude of $\opW:\R^1\to\C^1$ of the mapped sequence is as follows:\footnote{
+    Note that the plot in \pref{item:dna_haar_R1pam} 
+    has been down sampled by a factor of 10 for practical reasons of displaying the very large data set.}
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dnahaarR1_12000m4000_h200_1749_D5.pdf}%
+        \\\hline
+     \end{tabular}\\
+     We might expect to see strongest evidence of the edges at or near $4000+200/2=4100$ and $8100$.
+     In fact, the sequence does have peaks at 4087 (with value 0.185) and at 8087 (with value 0.230).
+     The peak at 4087 is about $10\log_{10}(0.185000/0.071355)\approx 4.1$ dB above the noise floor.
+     %max|W(R^1 sequence)| from n=4050..4150 is 0.185000:
+     %max|W(R^1 sequence)| from n=8050..8150 is 0.230000:
+     %rms|W(R^1 sequence)| from n=200..11999 is 0.071355:
+     However, there are 103 other values not around the $n=4087$ and $n=8087$ peaks that are 
+  0.185 or greater.
+  These 102 values represent roughly 11 other peaks, each of which could trigger a 
+  ``false positive" decision.\footnote{\seessp{dnahaar_12000m4000_h200_1749.xlg}}
+     
+  \item \label{item:dna_haar_C1}
+    Suppose we next use the \fncte{QPSK DNA random variable} \xref{def:rv_dieqpsk} to map
+    the dna sequence into the complex plane.
+    The magnitude of $\opW:\C^1\to\C^1$ of the mapped sequence is as follows:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dnahaarC1_12000m4000_h200_1749_D5.pdf}%
+        \\\hline
+     \end{tabular}\\
+     Using this method, the edges are apparent.
+     And the value of the peak at $n=4086$ (with value $0.215870$) is 
+     $10\log_{10}(0.215870/0.070068)\approx 4.9$ dB above the noise floor.\footnote{\seessp{dnahaar_12000m4000_h200_1749.xlg}}
+     %max|W(C^1 sequence)| from n=4050..4150 is 0.215870:
+     %rms|W(C^1 sequence)| from n=200..11999 is 0.070068:
+     %only 
+     %$10\log_{10}(0.215870/0.190263)=0.548380$dB
+     %above the next highest peak, which occurs at $n=10405$ (with value $0.190263$).\footnote{\seessp{dnahaar_12000m4000_h200_1749.xlg}}
+     %However it does produce two false edges at 9815 and 10405---the value at 
+     %$n=4086$ is $0.215870$.
+     %$n=4100$ is $0.181108$,
+     %but it is greater than or equal to this value at 9815, 10405, 10407, and 10408.\footnote{
+     %The values are $\opair{9815}{0.181108}$, $\opair{10405}{0.190263}$, $\opair{10407}{0.185607}$,
+     %and $\opair{10408}{0.186682}$.}
+     % dnahaar_12000m4000_h200_1749_20160402_095901.log
+
+
+  \item \label{item:dna_haar_R4}
+    Suppose we next use the \fncte{$\R^4$ DNA random variable} \xref{def:rv_dnaR4} to map
+    the sequence into $\R^4$.
+    The magnitude of $\opW:\R^4\to\C^4$ of the mapped sequence is as follows:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dnahaarR4_12000m4000_h200_1749_D5.pdf}%
+        \\\hline
+     \end{tabular}\\
+     Using this method, the edges are also apparent.
+     And the value of the peak at $n=4096$ (with value $0.181246$) is 
+     $10\log_{10}(0.181246/0.059594)\approx4.8$ dB
+     above the noise floor.\footnote{\seessp{dnahaar_12000m4000_h200_1749.xlg}}
+     Note that this is a slight decrease in performance as compared to \pref{item:dna_haar_C1}.
+
+     %max|W(R^4 sequence)| from n=4050..4150 is 0.181246:
+     %rms|W(R^4 sequence)| from n=200..11999 is 0.059594:
+     %
+     %$10\log_{10}(0.181246/0.141421)=1.077545$dB
+     %above the next non-starting highest peak, which occurs at $n=9815$ (with value $0.141421$).
+     %Note that this is a small improvement over \pref{item:dna_haar_C1}.
+     %Unlike the complex mapping in \pref{item:dna_haar_C1},
+     %it shows an edge near the start of the sequence.
+     %But also unlike the method of \pref{item:dna_haar_C1}, it contains no false edges in that 
+     %there are no other values greater than that around the 4100 peak, 8100 peak, and starting peak.
+     %In fact, the 4100 peak is $10\log_{10}(0.181246/0.141421)=1.077545$dB above the next highest peak.\footnote{
+     %Compare $\opair{4096}{0.181246}$, $\opair{4100}{0.168819}$, and $\opair{9815}{0.141421}$.
+     %} 
+
+
+\end{enumerate}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{Wavelet analysis of Phage Lambda DNA sequence}]
+\label{ex:dnapl}
+\addcontentsline{toc}{subsubsection}{* Wavelet analysis of Phage Lambda DNA sequence}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:dnapl_psp}
+     Consider the Phage Lambda DNA sequence.
+     It has a strong $\dnaC\dnaG$ bias before $n=20000$ and 
+            a strong $\dnaA\dnaT$ bias after,\footnote{\citerpg{cristianini2007}{14}{1139460153}}
+     as demonstrated next by mapping 
+     \\\indentx$\dnaA\to+1$\qquad$\dnaT\to+1$\qquad$\dnaC\to-1$\qquad$\dnaG\to-1$\\
+     and filtering the resulting sequence in $\R^1$
+     with a \fncte{length 1600 Haar scaling sequence} \xref{def:shaar}---such
+     a filtering operation acts as a kind of ``sliding window" histogram of the DNA sequence.
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_NC001416_phagelambdaR1b_hs1600.pdf}%
+        \\\hline
+     \end{tabular}\\
+  
+  \item \label{item:dnapl_R1pam}
+    Suppose we first use the \fncte{PAM DNA random variable} \xref{def:rv_dnapam} to map
+    the DNA sequence into $\R^1$.
+    The magnitude of the length 1600 Haar wavelet operation on the mapped sequence is as follows:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_NC001416_phagelambdaR1_h1600.pdf}%
+        \\\hline
+     \end{tabular}\\
+    Note that it is very difficult to pick out the edge at 20000.
+
+  \item \label{item:dnapl_C1qpsk}
+    Suppose we next use the \fncte{QPSK DNA random variable} \xref{def:rv_dnaqpsk} to map
+    the DNA sequence into the complex plane.
+    The length 1600 Haar wavelet operation on the mapped sequence is as follows:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_NC001416_phagelambdaC1_h1600.pdf}%
+        \\\hline
+     \end{tabular}\\
+     If one did not know apriori that there was an edge at 20000, it would still be difficult to identify.
+     
+  \item \label{item:dnapl_R6}
+    Suppose we next use the \fncte{$\R^4$ DNA random variable} \xref{def:rv_dnaR4} to map
+    the DNA sequence into $\R^4$.
+    Filtering the mapped sequence with a length 1600 Haar wavelet sequence results in the following:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_NC001416_phagelambdaR4_h1600.pdf}%
+        \\\hline
+     \end{tabular}\\
+     Here there is a clear peak near $20000$.
+
+  \item And here is the same analysis as used in \pref{item:dnapl_R6}, but at scale 4000
+        (using a length 4000 Haar wavelet filter):
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_NC001416_phagelambdaR4_h4000.pdf}%
+        \\\hline
+     \end{tabular}\\
+     Again, the peak near 20000 is quite pronounced.
+     However, at the low resolution scale (of 4000), it would be difficult to determine precisely where the
+     statistical edge actually was.
+\end{enumerate}
+\end{example}
+
+
+

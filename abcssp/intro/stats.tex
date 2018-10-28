@@ -1,0 +1,1477 @@
+%============================================================================
+% LaTe\rvX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+%\subsection{Statistics}
+%\label{chp:stats}
+%======================================
+%\qboxnpq
+%  {Joseph Leonard Doob (1910--2004), pioneer of and key contributor to mathematical probability\footnotemark}
+%  {../common/people/doobjl_dartmouthedu.jpg}
+%  {While writing my book I had an argument with Feller. 
+%   He asserted that everyone said ``random variable" and I asserted that everyone said ``chance variable." 
+%   We obviously had to use the same name in our books, so we decided the issue by a stochastic procedure. 
+%   That is, we tossed for it and he won.}
+%\footnotetext{
+%  quote: \citePp{snell1997}{307}, 
+%         \citePp{snell2005}{251}.
+%  %reference:   \citerpg{suhov2008}{238}{0521847672}.
+%  image: \url{http://www.dartmouth.edu/~chance/Doob/conversation.html}
+%  }
+
+%%%%=======================================
+%%%%\subsection{Random Variables}
+%%%%=======================================
+%---------------------------------------
+\begin{definition}
+\citetbl{\citeP{greenhoe2015sto}}
+\label{def:prob_space}
+\label{def:ps}
+\index{probability space}
+\index{outcomes} \index{events} \index{probability measure}
+%---------------------------------------
+\defboxp{
+  The triple $\ps$ is a \structd{probability space} if
+  $\pso$ is a \structe{set},
+  $\pse$ is a \structe{\txsigma-algebra} on $\pso$, and
+  $\psp$ is a \structe{probability function} in $\clF{\pse}{\intcc{0}{1}}$.
+  In this case, $\pso$ is called the \structd{set of outcomes}.
+  }
+\end{definition}
+
+%The traditional random variable is a mapping from a probability space to the real line.
+Before defining a random variable formally, note two things that a random variable is \emph{not}:\citetbl{
+  \citerpg{miller2006}{130}{0471458929},
+  \citerpg{feldman2010}{4}{3642051588}, %{``The name ``random variable" is actually a misnomer, since it is not random and not a variable.\ldots the random variable simply maps each point (outcome) in the sample space to a number on the real line\ldots Technically, the space into which the random variable maps the sample space may be more general than the real line\ldots"},
+  \citerpg{curry2011}{4}{3642166180}
+  }
+\\\indentx\begin{tabular}{cl}
+    \imark & A random variable is {\bf not random}.\\
+    \imark & A random variable is {\bf not a variable}.
+\end{tabular}\\
+What is it then? It is a \structe{function} (next definition).
+In particular, it is a function that maps from an underlying stochastic process into $\R$.
+Any ``\prope{randomness}" (whatever that means) it may \emph{appear} to have comes from the stochastic process it 
+is mapping \emph{from}. But the function itself (the random variable itself) is very deterministic and well-defined.
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerpg{bryc2012}{73}{1461225604},
+  \citerp{papoulis}{63}
+  }
+\label{def:rvt}
+%---------------------------------------
+%Let $\ps$ be a \structe{probability space}. % \xref{def:ps}.
+\defboxp{
+A \fnctd{real-valued random variable}, or \fnctd{traditional random variable}, $\rvX$ on a \structe{probability space} $\ps$ is
+any \structe{measurable function} 
+that maps from $\ps$
+to $\omlsRDB$ where $\borel$ is the \structe{usual Borel \txsigma-algebra}
+on the ``real line" $\omlsRD$ \xref{def:rline}.
+}
+\end{definition}
+
+
+
+
+%%%%The concept of the \hie{random variable} is widely used in probability and
+%%%%random processes.
+%%%Before defining what a random variable is \xref{def:rv}, here are two things that it is not:\footnote{\citerpg{miller2006}{130}{0471458929}}
+%%%\begin{enume}
+%%%  \item A random variable is {\bf not random}.
+%%%  \item A random variable is {\bf not a variable}.
+%%%\end{enume}
+%%%%A random variable is actually a \hie{function} %$\rvX(\omega)$, where
+%%%%%$\omega\in\pso$ is an outcome of an experiment.
+%%%%%More specifically, in a probability space $\ps$,
+%%%%%a random variable is a 
+%%%%mapping from the set $\pso$ of outcomes in a \structe{probabilty space} $\ps$ into the set of real numbers $\R$.
+%%%%%What gives a random variable the appearance of being random is that the outcome $\omega$
+%%%%%of the experiment ``appears" to be ``random" to the observer.
+%%%%%So the random variable $\rvX(\omega)$ is simply a function of an underlying
+%%%%%mechanism that appears to be random.
+%%%%---------------------------------------
+%%%\begin{definition}
+%%%\index{random variable}
+%%%\footnote{
+%%%  \citerp{papoulis}{63}
+%%%  }
+%%%\label{def:rv}
+%%%%---------------------------------------
+%%%Let $\ps$ be a \structe{probability space} \xref{def:ps}.
+%%%%Let $\R$ be the set of real numbers.
+%%%\\\defboxp{
+%%%A \fnctd{traditional random variable} $\rvX$ on $\ps$ is any \structe{function} in the set $\clFor$ \xref{def:clFxy}.
+%%%}
+%%%\end{definition}
+%%%
+%%%%The probability information about $\sigma$-algebra $\pse$ is completely
+%%%%specified by measure $\psp$.
+%%%%However, sometimes it is more convenient to express this same measure
+%%%%information in terms of the \hie{probability density function} or the
+%%%%\hie{cummulative distribution function} of the probability space.
+%%%%---------------------------------------
+%%%\begin{definition}
+%%%\label{def:pdf}
+%%%\label{def:cdf}
+%%%\index{probability density function}
+%%%\index{pdf}
+%%%\index{cummulative distribution function }
+%%%\index{cdf}
+%%%%---------------------------------------
+%%%Let $\ps$ be a \structe{probability space} \xref{def:ps} and
+%%%$\rvX\in\clFor$ a \fncte{random variable} \xref{def:rv}. 
+%%%%Let $\intcc{a}{b}\eqd\set{x\in\R}{a\le x\le b}$ be the \structe{real closed interval} from $a$ to $b$.
+%%%%Then
+%%%%\begin{liste}
+%%%%  \item a {\bf probability density function} (pdf)      $\ppx:\pse\to[0,1]$ and
+%%%%   \item a {\bf cummulative distribution function} (cdf) $\pcx:\pse\to[0,1]$
+%%%%\end{liste}
+%%%%are defined as
+%%%%\defbox{\begin{array}{rc>{\ds}lD}
+%%%%  \ppx(x) &\eqd& \lim_{\epsilon\to 0} \frac{1}{\epsilon}\psp\{x \le \rvX < x+\epsilon\}
+%%%%          & (probability density function---pdf)
+%%%%          \\
+%%%%  \pcx(x) &\eqd& \psp\{\rvX < x \}
+%%%%          & (cummulative distribution function---cdf)
+%%%%\end{array}}
+%%%\defboxp{
+%%%  A \fnctd{probability density function} $\pp$ is a function in $\clF{\pse}{\intcc{0}{1}}$ such that
+%%%  %\\\indentx$\ds\pp(x) \eqd \lim_{\epsilon\to 0} \frac{1}{\epsilon}\psp\{x \le \rvX < x+\epsilon$
+%%%  \\\indentx$\ds\psp(\setA)=\int_\setA \pp(x)\dx\qquad\forall\setA\in\pse$
+%%%  }
+%%%\end{definition}
+%%%%
+%%%%\prefpp{def:pdf} defines the pdf and cdf of a probability space
+%%%%$\ps$ in terms of measure $\psp$.
+%%%%Conversely, the probability measure $\psp\{a\le \rvX<b\}$
+%%%%of an event $\{a\le \rvX<b\}$ can be
+%%%%expressed in terms of either the pdf or cdf.
+%%%%%---------------------------------------
+%%%%\begin{theorem}
+%%%%%---------------------------------------
+%%%%Let $\ps$ be a probability space,
+%%%%$\rvX\in\clFor$ be a random variable, and $(a,b)$ a real interval.
+%%%%Then
+%%%%\thmbox{\begin{array}{rc>{\ds}l}
+%%%%  \psp\{a\le \rvX<b\}
+%%%%    &=& \int_a^b \ppx(x) \dx
+%%%%  \\&=& \int_{-\infty}^b \pcx(x) \dx - \int_{-\infty}^a \pcx(x) \dx
+%%%%\end{array}}
+%%%%\end{theorem}
+%%%
+%%%%The properties of the pdf follow closely the properties of measure $\psp$.
+%%%%%---------------------------------------
+%%%%\begin{theorem}
+%%%%%---------------------------------------
+%%%%\thmbox{\begin{array}{rc>{\ds}l}
+%%%%  \pp(x|y) &=& \frac{\pp(x,y)}{\pp(y)}  \\
+%%%%  \ppx(x)  &=& \int_y\ppxy(x,y) \dy
+%%%%\end{array}}
+%%%%\end{theorem}
+%%%%\begin{proof}
+%%%%\begin{eqnarray*}
+%%%%  \ppx[x|y](x|y)
+%%%%    &\eqd& \lim_{h\to0} \frac{1}{h} \pP{x\le \rvX < x+h | Y=y}
+%%%%  \\&\eqd& \lim_{h\to0} \frac{1}{h} \frac{\pP{(x\le \rvX < x+h) \land (Y=y)}}{\pP{Y=y}}
+%%%%  \\&=&    \lim_{h\to0} \frac{1}{h} \frac{\pP{(x\le \rvX < x+h) \land (y\le Y<y+h)}}{\pP{y\le Y<y+h}}
+%%%%  \\&\eqd& \frac{\ppxy(x,y)}{\ppy(y)}
+%%%%\\
+%%%%\\
+%%%%  \int_y\ppxy(x,y)\dy
+%%%%    &\eqd& \lim_{h\to0} \frac{1}{h}
+%%%%           \int_y \pP{x\le \rvX<x+h, y\le Y<y+h} \dy
+%%%%  \\&=&    \lim_{h\to0} \frac{1}{h} \pP{x\le \rvX<x+h}
+%%%%  \\&\eqd& \ppx(x)
+%%%%\end{eqnarray*}
+%%%%\end{proof}
+%=======================================
+%\subsection{Expectation operator}
+%\index{expectation operator}
+%=======================================
+%In a \structe{probability space} $\ps$, all proability information
+%is contained in the measure $\psp$. % (or equivalently in the pdf or cdf defined in terms of $\psp$).
+%Often times this information is overwhelming and a simpler statistic, 
+%which does not offer so much information, is sufficient.
+%Some of the most common statistics can be conveniently expressed in terms
+%of the \hie{expectation operator} $\pE$.
+%---------------------------------------
+\begin{definition}
+\label{def:pE}
+\label{def:pVar}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space} \xref{def:ps} and
+$\rvX\in\clFor$ a \structe{random variable} \xref{def:rvt}.
+%with probability density function $\ppx:\pse\to\R$.
+\defbox{\begin{array}{Mrc>{\ds}l}
+    The \vald{traditional expected value} $\pE(\rvX)$ of $\rvX$ is & \pE  (\rvX) &\eqd& \int_{\R} x   \pp(x) \dx .\\
+    The \vald{traditional variance} $\pVar(\rvX)$ of $\rvX$ is       & \pVar(\rvX) &\eqd& \int_{\R} \brs{x-\pE(\rvX)}^2 \pp(x) \dx .
+  \end{array}}
+\end{definition}
+
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:pE}
+\label{prop:pVar}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space} \xref{def:ps},
+  $\rvX\in\clFor$ a \structe{traditional random variable} \xref{def:rvt},
+  $\pE(\rvX)$ the \vale{traditional expected value} of $\rvX$, and $\pVar(\rvX)$ the 
+  \vale{traditional variance} of $\rvX$ \xref{def:pE}.
+\propbox{
+  \brb{\begin{array}{rcll}
+    \psp(x)&=&0& \forall x\notin\Z
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{Frc>{\ds}lD}
+    1. & \pE  (\rvX) &=& \sum_{x\in\Z} x   \psp(x) & and\\
+    2. & \pVar(\rvX) &=& \sum_{x\in\Z} \brs{x-\pE(\rvX)}^2 \psp(x)
+  \end{array}}
+  }
+\end{proposition}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:pspsym}
+%2015 February 09 Monday ~7pm Taiwan
+%---------------------------------------
+Let $\ps$, $\rvX$, and $\pE$ be defined as in \prefpp{prop:pE}.
+\propbox{
+    \mcom{\psp(\gamma-x)=\psp(\gamma+x)\qquad{\scy\forall x\in\R}}
+         {($\psp$ is \prope{symmetric} about a point $\gamma$)}
+  \quad\implies\quad
+  \brb{\pE(\rvX)=\gamma}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \pE(\rvX)
+    &\eqd \int_{-\infty}^\infty x \pp(x) \dx
+    && \text{by definition of $\pE$ \xref{def:pE}}
+  \\&= \int_{x=-\infty}^{x=\gamma} x \pp(x) \dx + \int_{x=\gamma}^{x=\infty} x \pp(x) \dx
+    && \text{by \prope{additive property} of Lebesgue integration op.\footnotemark}
+  \\&= \int_{u+\gamma=-\infty}^{u+\gamma=\gamma} (u+\gamma) \pp(u+\gamma) \du + \int_{u+\gamma=\gamma}^{u+\gamma=\infty} (u+\gamma) \pp(u+\gamma) \du
+    && \text{where $u\eqd x-\gamma$ $\implies$ $x=u+\gamma$}
+  %\\&= \int_{-\infty}^{0} (u+\gamma) \pp(u+\gamma) \du + \int_{0}^{\infty} (u+\gamma) \pp(u+\gamma) \du
+  \\&= -\int^{-\infty}_{0} (u+\gamma) \pp(u+\gamma) \du + \int_{0}^{\infty} (u+\gamma) \pp(u+\gamma) \du
+  \\&= \int^{\infty}_{0} (-v+\gamma) \pp(-v+\gamma) \dv + \int_{0}^{\infty} (u+\gamma) \pp(u+\gamma) \du
+    && \text{where $v\eqd -u$ }
+  %\\&= \int^{\infty}_{0} (-v+\gamma) \pp(v+\gamma) \dv + \int_{0}^{\infty} (u+\gamma) \pp(u+\gamma) \du
+  %  && \text{by symmetry hypothesis}
+  \\&= \mathrlap{
+       - \int^{\infty}_{0} v\pp(-v+\gamma) \dv 
+       + \int_{0}^{\infty} u\pp( u+\gamma) \du
+       + \gamma\int^{\infty}_{0} \pp(-v+\gamma) \dv 
+       + \gamma\int_{0}^{\infty} \pp( u+\gamma) \du
+       }
+  \\&= \mathrlap{
+       \mcom{- \int^{\infty}_{0} v\pp( v+\gamma) \dv 
+       + \int_{0}^{\infty} u\pp( u+\gamma) \du}{by symmetry hypothesis; cancels to $0$}
+       + \gamma\brp{\int^{\infty}_{0} \pp(-v+\gamma) \dv 
+       + \int_{0}^{\infty} \pp( u+\gamma) \du}}
+       %\qquad\text{by symmetry hypothesis}}
+  \\&= \gamma\brp{-\int^{-\infty}_{0} \pp(w+\gamma) \dw + \int_{0}^{\infty} \pp( u+\gamma) \du}
+    && \text{where $w\eqd -v$ }
+  \\&= \mathrlap{
+       \gamma\brp{\int_{-\infty}^{0} \pp(w+\gamma) \dw + \int_{0}^{\infty} \pp( u+\gamma) \du}
+     = \gamma\int_{-\infty}^{\infty} \pp(u+\gamma) \du
+     = \gamma\int_{-\infty}^{\infty} \pp(u) \du
+     = \gamma}
+\end{align*}
+\footnotetext{\citerpg{burkill2004}{35}{052160480X}}
+\end{proof}
+
+%%%  
+%%%  %We already said that a random variable $\rvX$ is neither random nor a variable,
+%%%  %but is rather a function of an underlying process that does appear to be random.
+%%%  %However, because it is a function of a process that does appear random,
+%%%  %the random variable $\rvX$ also appears to be random.
+%%%  %That is, if we don't know the outcome of of the underlying experimental
+%%%  %process, then we also don't know for sure what $\rvX$ is, and so $\rvX$ does
+%%%  %indeed appear to be random.
+%%%  %However, eventhough $\rvX$ appears to be random,
+%%%  %the expected value $\pEx \rvX$  of $\rvX$ is {\bf not random}.
+%%%  %Rather it is a fixed value (like $0$ or $7.9$ or $-2.6$).
+%%%  %
+%%%  %On the other hand, eventhough $\pE \rvX$ is {\bf not random},
+%%%  %note that $\pE(\rvX|Y)$ {\bf is random}.
+%%%  %This is because $\pE(\rvX|Y)$ is a function of $Y$.
+%%%  %That is, once we know that $Y$ equals some fixed value $y$
+%%%  %(like $0$ or $2.7$ or $-5.1$) then $\pE(\rvX|Y=y)$ is also fixed.
+%%%  %However, if we don't know the value of $Y$,
+%%%  %then $Y$ is still a random variable and the expression $\pE(\rvX|Y)$
+%%%  %is also random (a function of random variable $Y$).
+%%%  %
+%%%  %Two common statistics that are conveniently expressed in terms of the
+%%%  %expectation operator are the \hie{mean} and \hie{variance}.
+%%%  %The mean is an indicator of the ``middle" of a probability distribution and the
+%%%  %variance is an indicator of the ``spread".
+%%%  %%---------------------------------------
+%%%  %\begin{definition}
+%%%  %\label{def:Mx}
+%%%  %\label{def:pVar}
+%%%  %\index{mean}
+%%%  %\index{variance}
+%%%  %%---------------------------------------
+%%%  %Let $\ps$ be a probability space and $\rvX\in\clFor$ a random variable.
+%%%  %The {\bf mean} $\pmeanx$ and {\bf variance} $\pVar(\rvX)$ of $\rvX$ are
+%%%  %\defbox{\begin{array}{rcl}
+%%%  %  \pmeanx  &\eqd& \pEx \rvX \\
+%%%  %  \pVar(\rvX) &\eqd& \pEx\left[(\rvX-\pEx \rvX)^2 \right]
+%%%  %\end{array}}
+%%%  %\end{definition}
+%%%  
+%%%  The next theorem gives some useful relations for simple statistics.
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  %---------------------------------------
+%%%  Let $\ps$ be a probability space with random variable $\rvX\in\clFor$
+%%%  and let $a\in\R$.
+%%%  \thmbox{\begin{array}{rcl}
+%%%    \pEx(a\rvX)  &=& a\pE(\rvX)     \\
+%%%    \pVar(a\rvX) &=& a^2\pVar(\rvX) \\
+%%%    \pVar(\rvX)  &=& \pEx \rvX^2 - (\pEx \rvX)^2
+%%%  \end{array}}
+%%%  \end{theorem}
+%%%  %\begin{proof}
+%%%  %\begin{eqnarray*}
+%%%  %  \pEx(a\rvX)
+%%%  %    &\eqd& \int_x ax \ppx(x)  \dx
+%%%  %  \\&=&    a \int_x x \ppx(x)  \dx
+%%%  %  \\&\eqd& a\pEx \rvX
+%%%  %\\
+%%%  %\\
+%%%  %  \pVar(\rvX)
+%%%  %    &\eqd& \pEx\left[(\rvX-\pEx \rvX)^2\right]
+%%%  %  \\&=&    \pEx\left[\rvX^2-2\rvX\pEx \rvX + (\pEx \rvX)^2 \right]
+%%%  %  \\&=&    \pEx[\rvX^2]  - \pEx 2\rvX\pEx \rvX  + \pEx (\pEx \rvX)^2
+%%%  %  \\&=&    \pEx[\rvX^2] - 2(\pEx \rvX)[\pEx \rvX] + (\pEx \rvX)^2
+%%%  %  \\&=&    \pEx \rvX^2  - (\pEx \rvX)^2
+%%%  %\\
+%%%  %\\
+%%%  %  \pVar(a\rvX)
+%%%  %    &=&    \pEx(a\rvX)^2  - [\pEx(a\rvX)]^2
+%%%  %  \\&=&    \pEx(a^2\rvX^2)  - [a\pEx \rvX]^2
+%%%  %  \\&=&    a^2 \pEx \rvX^2  - a^2[\pEx \rvX]^2
+%%%  %  \\&=&    a^2\left[ \pEx \rvX^2  - (\pEx \rvX)^2 \right]
+%%%  %  \\&\eqd& a^2 \pVar(\rvX)
+%%%  %\end{eqnarray*}
+%%%  %\end{proof}
+%%%  
+%%%  
+%%%  \begin{figure}[ht]
+%%%  \color{figcolor}
+%%%  \setlength{\unitlength}{0.3mm}
+%%%  \begin{center}
+%%%  \begin{picture}(200,130)(-50,-30)
+%%%    \put(  0,  0){\line(1, 0){120}}
+%%%    \put(  0,  0){\line(0, 1){120}}
+%%%    \put( 20, 80){\circle*{5}}
+%%%    \put(100, 40){\circle*{5}}
+%%%    \put( 20, 80){\line(2,-1){80}}
+%%%    \put(125,  0){\makebox(0,0)[l]{$x$}}
+%%%    \put( -5, 80){\makebox(0,0)[r]{$\ff(b)$}}
+%%%    \put( -5, 40){\makebox(0,0)[r]{$\ff(a)$}}
+%%%    \put( 20, -5){\makebox(0,0)[t]{$a$}}
+%%%    \put(100, -5){\makebox(0,0)[t]{$b$}}
+%%%    \qbezier(20,80)(70,120)(100,40)
+%%%    \qbezier(20,80)(30,0)(100,40)
+%%%    \qbezier[28](20,0)(20,40)(20,80)
+%%%    \qbezier[14](100,0)(100,20)(100,40)
+%%%    \qbezier[7](0,80)(10,80)(20,80)
+%%%    \qbezier[32](0,40)(50,40)(100,40)
+%%%    \put(120,90){\vector(-1,0){50}}
+%%%    \put(120,60){\vector(-1,0){50}}
+%%%    \put(120,30){\vector(-1,0){30}}
+%%%    \put(125,90){\makebox(0,0)[l]{concave}}
+%%%    \put(125,60){\makebox(0,0)[l]{chord $\fy(x)$}}
+%%%    \put(125,30){\makebox(0,0)[l]{convex}}
+%%%  \end{picture}
+%%%  \end{center}
+%%%  \caption{
+%%%    Convex and concave functions
+%%%    \label{fig:convex}
+%%%    }
+%%%  \end{figure}
+%%%  
+%%%  Often a function can be proven to be \hie{convex} or \hie{concave}.
+%%%  \hie{Convex} and \hie{concave} functions are
+%%%  defined in \prefpp{def:convex} (next) and
+%%%  illustrated in \prefpp{fig:convex}.
+%%%  %---------------------------------------
+%%%  \begin{definition}
+%%%  \label{def:convex}
+%%%  %---------------------------------------
+%%%  Let
+%%%    \[ \fy(x) = \frac{\ff(b)-\ff(a)}{b-a} (x-a) + \ff(a). \]
+%%%  A function $\ff:\R\to\R$ is
+%%%  
+%%%  \defbox{
+%%%    \begin{array}{llrcll}
+%%%      \mbox{\bf convex}           \mbox{ in } (a,b) & \mbox{if} & \ff(x) &\le& \fy(x) & \mbox{for } x\in(a,b) \\
+%%%      \mbox{\bf concave}          \mbox{ in } (a,b) & \mbox{if} & \ff(x) &\ge& \fy(x) & \mbox{for } x\in(a,b) \\
+%%%      \mbox{\bf strictly convex}  \mbox{ in } (a,b) & \mbox{if} & \ff(x) &<  & \fy(x) & \mbox{for } x\in(a,b) \\
+%%%      \mbox{\bf strictly concave} \mbox{ in } (a,b) & \mbox{if} & \ff(x) &>  & \fy(x) & \mbox{for } x\in(a,b)
+%%%    \end{array}
+%%%    }
+%%%  \end{definition}
+%%%  
+%%%  The next theorem gives another form of convex functions that is a little
+%%%  less intuitive but provides powerful analytic results.
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  \label{thm:convex_lambda}
+%%%  %---------------------------------------
+%%%  Let $\ff:\R\to\R$.
+%%%  For every $x_1,x_2\in(a,b)$ and $\lambda\in[0,1]$
+%%%  \formbox{
+%%%    \ff \mbox{ is convex in $(a,b)$ } \iff
+%%%          \ff(\lambda x_1+(1-\lambda)x_2) \le \lambda\ff(x_1) + (1-\lambda)\ff(x_2)
+%%%    }
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  \begin{enumerate}
+%%%    \item prove $\ff$ is convex $\implies$
+%%%          $\ff(\lambda x_1+(1-\lambda)x_2) \le \lambda\ff(x_1) + (1-\lambda)\ff(x_2)$:
+%%%    \begin{eqnarray*}
+%%%      \ff(\lambda x_1+(1-\lambda)x_2)
+%%%        &\le& \frac{\ff(b)-\ff(a)}{b-a}[\lambda x_1+(1-\lambda)x_2-a] + \ff(a)
+%%%      \\&=&   \frac{\ff(x_2)-\ff(x_1)}{x_2-x_1}[\lambda x_1+(1-\lambda)x_2-x_1] + \ff(x_1)
+%%%      \\&=&   \frac{\ff(x_2)-\ff(x_1)}{x_2-x_1}[(x_2-x_1)(1-\lambda)] + \ff(x_1)
+%%%      \\&=&   (1-\lambda)\ff(x_2)-(1-\lambda)\ff(x_1) + \ff(x_1)
+%%%      \\&=&   \lambda\ff(x_1) + (1-\lambda)\ff(x_2)
+%%%    \end{eqnarray*}
+%%%    \item prove $\ff$ is convex $\impliedby$
+%%%          $f(\lambda x_1+(1-\lambda)x_2) \le \lambda\ff(x_1) + (1-\lambda)\ff(x_2)$:
+%%%  
+%%%    Let $x=\lambda(b-a)+a$ Notice that as $\lambda$ varies from $0$ to $1$,
+%%%        $x$ varies from $b$ to $a$.
+%%%        So free variable $\lambda$ works as a change of variable for
+%%%        free variable $x$.
+%%%    \begin{eqnarray*}
+%%%      \lambda &=& \frac{x-a}{b-a} \\
+%%%  \\
+%%%      \ff(x)
+%%%        &=&   \ff(\lambda(b-a)+a)
+%%%      \\&\le& \lambda\ff(b) + (1-\lambda)\ff(a)
+%%%      \\&=&   \lambda[\ff(b)-\ff(a)] + \ff(a)
+%%%      \\&=&   \frac{\ff(b)-\ff(a)}{b-a}(x-a) + \ff(a)
+%%%    \end{eqnarray*}
+%%%  \end{enumerate}
+%%%  \end{proof}
+%%%  
+%%%  Taking the second derivative of a function provides a convenient test
+%%%  for whether that function is convex.
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  \label{thm:convex_d2}
+%%%  \footnote{
+%%%    \citerpp{cover}{24}{25}
+%%%    }
+%%%  %---------------------------------------
+%%%  \formbox{
+%%%    \ff''(x)>0 \implies \ff \mbox{ is convex}
+%%%    }
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  \begin{eqnarray*}
+%%%    \ff(x)
+%%%      &=&   \ff(x_0) + \ff'(x_0)(x-x_0) + \ff''(c)(x-x_0)^2
+%%%    \\&\ge& \ff(x_0) + \ff'(x_0)(x-x_0)
+%%%    \\&=&   \ff(x_0) + \ff'(x_0)(x-\lambda x_1 - (1-\lambda)x_2)
+%%%  \\
+%%%  \\
+%%%    \ff(x_1)
+%%%      &\ge& \ff(x_0) + \ff'(x_0)(x_1-\lambda x_1 - (1-\lambda)x_2)
+%%%    \\&=&   \ff(x_0) + \ff'(x_0)(1-\lambda)(x_1-x_2)
+%%%    \\&=&   \ff(x_0) - \ff'(x_0)(1-\lambda)(x_2-x_1)
+%%%  \\
+%%%  \\
+%%%    \ff(x_2)
+%%%      &\ge& \ff(x_0) + \ff'(x_0)(x_2-\lambda x_1 - (1-\lambda)x_2)
+%%%    \\&=&   \ff(x_0) + \ff'(x_0)\lambda (x_2-x_1)
+%%%  \\
+%%%  \\
+%%%    \lambda\ff(x_1) + (1-\lambda)\ff(x_2)
+%%%      &\ge& \lambda\left[\ff(x_0) - \ff'(x_0)(1-\lambda)(x_2-x_1)\right] +
+%%%            (1-\lambda)\left[\ff(x_0) + \ff'(x_0)\lambda (x_2-x_1)\right]
+%%%    \\&=&   \lambda\left[\ff(x_0) - \ff'(x_0)(1-\lambda)(x_2-x_1)\right]
+%%%            +\left[\ff(x_0) + \ff'(x_0)\lambda (x_2-x_1)\right]
+%%%            -\lambda\left[\ff(x_0) + \ff'(x_0)\lambda (x_2-x_1)\right]
+%%%    \\&=&  \ff(x_0)
+%%%    \\&=&  \ff(\lambda x_1 + (1-\lambda)x_2)
+%%%  \end{eqnarray*}
+%%%  
+%%%  By \prefpp{thm:convex_lambda}, $\ff(x)$ is convex.
+%%%  \end{proof}
+%%%  
+%%%  \begin{figure}[ht]
+%%%  \setlength{\unitlength}{0.3mm}%
+%%%  \begin{center}%
+%%%  \begin{picture}(200,110)(-50,-10)%
+%%%    \color{axis}%
+%%%      \put(  0,  0){\line(1, 0){120}}%
+%%%      \put(  0,  0){\line(0, 1){100}}%
+%%%      \qbezier[20](0,60)(30,60)(60,60)%
+%%%      \qbezier[20](60,0)(60,30)(60,60)%
+%%%    \color{blue}%
+%%%      \qbezier(33,100)(85,0)(110,100)%
+%%%      \put( 60, 60){\circle*{5}}%
+%%%    \color{red}%
+%%%      \put( 20,100){\line(1,-1){80}}%
+%%%    \color{label}%
+%%%    \put(125,  0){\makebox(0,0)[l]{$x$}}%
+%%%    \put( -5, 60){\makebox(0,0)[r]{$\ff(\pE \rvX)$}}%
+%%%    \put( 60, -5){\makebox(0,0)[t]{$\pE \rvX$}}%
+%%%    \put(130,60){\vector(-1,0){32}}%
+%%%    \put(130,40){\vector(-1,0){47}}%
+%%%    \put(135,60){\makebox(0,0)[l]{$\ff(x)$ (convex function)}}%
+%%%    \put(135,40){\makebox(0,0)[l]{$mx+c$ (support line)}}%
+%%%  \end{picture}
+%%%  \end{center}
+%%%  \caption{
+%%%    Jensen's inequality
+%%%    \label{fig:jensen}
+%%%    }
+%%%  \end{figure}
+%%%  
+%%%  And now for an extremely useful application of convexity to the
+%%%  expectation operator: \hie{Jensen's inequality}.
+%%%  Jensen's inequality is stated in \prefpp{thm:jensen}
+%%%  and illustrated in \prefpp{fig:jensen}.
+%%%  %--------------------------------------
+%%%  \begin{theorem}[Jensen's inequality]
+%%%  \footnote{
+%%%    \citerp{cover}{25},
+%%%    \citerpp{jensen1906}{179}{180}
+%%%    }
+%%%  \index{Jensen's inequality}
+%%%  \index{theorems!Jensen's inequality}
+%%%  \label{thm:jensen}
+%%%  %--------------------------------------
+%%%  Let $\ff$ be a convex function and $\rvX$ be a random variable. Then
+%%%  \formbox{
+%%%    \ff \mbox{ is convex} \implies \ff(\pE \rvX) \le \pE\ff(\rvX).
+%%%    }
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  Let $mx+c$ be a ``support line" under $\ff(x)$ such that
+%%%  \[
+%%%    \begin{array}{rcll}
+%%%      mx+c &<& \ff(x) & \mbox{for } x\ne \pE \rvX \\
+%%%      mx+c &=& \ff(x) & \mbox{for } x=\pE \rvX.
+%%%    \end{array}
+%%%  \]
+%%%  Then
+%%%  \begin{eqnarray*}
+%%%    \ff(\pE \rvX)
+%%%      &=&   m[\pE \rvX] + c
+%%%    \\&=&   \pE[m\rvX + c]
+%%%    \\&\le& \pE\ff(\rvX)
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  %=======================================
+%%%  \subsection{Upper bounds on probability}
+%%%  %=======================================
+%%%  %---------------------------------------
+%%%  \begin{theorem}[Markov's inequality]
+%%%  \index{Markov's inequality}
+%%%  \index{theorems!Markov's inequality}
+%%%  \footnote{
+%%%    \citerp{ross}{395}
+%%%    }
+%%%  %---------------------------------------
+%%%  Let $\rvX:\Omega\to[0,\infty)$ be a non-negative valued random variable and
+%%%  $a\in(0,\infty)$. Then
+%%%  \formbox{ \pP{\rvX\ge a} \le \frac{1}{a} \pE \rvX }
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  \begin{eqnarray*}
+%%%    I &\eqd& \left\{ \begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
+%%%      1 & \rvX\ge a \\
+%%%      0 & \rvX < a
+%%%      \end{array}\right.
+%%%  \\
+%%%    aI &\le& \rvX           \\
+%%%     I &\le& \frac{1}{a} \rvX \\
+%%%     \pE I &\le& \pE\left(\frac{1}{a} \rvX\right) \\
+%%%  \\
+%%%     \pP{\rvX\ge a}
+%%%       &=& 1\cdot\pP{\rvX\ge a} + 0\cdot\pP{\rvX<a}
+%%%     \\&=& \pE I
+%%%     \\&\le& \pE\left(\frac{1}{a} \rvX \right)
+%%%     \\&=&   \frac{1}{a}\pE \rvX
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{theorem}[Chebyshev's inequality]
+%%%  \index{Chebyshev's inequality}
+%%%  \index{theorems!Chebyshev's inequality}
+%%%  \footnote{
+%%%    \citerp{ross}{396}
+%%%    }
+%%%  %---------------------------------------
+%%%  Let $\rvX$ be a random variable with mean $\mu$ and variance $\sigma^2$.
+%%%  \thmbox{ \pP{|\rvX-\mu|\ge a} \le \frac{\sigma^2}{a^2}}
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  \begin{eqnarray*}
+%%%    \pP{ |\rvX-\mu| \ge a}
+%%%      &=&   \pP{ (\rvX-\mu)^2 \ge a^2}
+%%%    \\&\le& \frac{1}{a^2} \pE(\rvX-\mu)^2 \hspace{4ex}\mbox{by Markov's inequality}
+%%%    \\&=&   \frac{\sigma^2}{a^2}
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  
+%%%  %=======================================
+%%%  \subsection{Functions of one random variable}
+%%%  %=======================================
+%%%  \begin{figure}\color{figcolor}
+%%%  \setlength{\unitlength}{0.4mm}
+%%%  \begin{center}
+%%%  \begin{footnotesize}
+%%%  \begin{picture}(250,150)(-100,-20)
+%%%    \put(-100,   0){\line(1,0){200}}
+%%%    \put(   0, -20){\line(0,1){120}}
+%%%    {\color{red}
+%%%      \qbezier(-100,100)(0,-100)(100,100)
+%%%      \put( 100, 105){\makebox(0,0)[b]{$y=\ff(x)$}}
+%%%      }
+%%%    \qbezier[8](-40,0)(-40,8)(-40,16)
+%%%    \qbezier[8](40,0)(40,8)(40,16)
+%%%    \qbezier[28](-80,0)(-80,32)(-80,64)
+%%%    \qbezier[28](80,0)(80,32)(80,64)
+%%%    \qbezier[64](-80,64)(0,64)(80,64)
+%%%    \qbezier[40](-40,16)(0,16)(40,16)
+%%%    \put(   0, 110){\makebox(0,0)[r]{$y$}}
+%%%    \put( 110,   0){\makebox(0,0)[r]{$x$}}
+%%%    \put(  -5,  64){\makebox(0,0)[r]{$y+h$}}
+%%%    \put(  -5,  16){\makebox(0,0)[r]{$y$}}
+%%%    \put( -40,  -5){\makebox(0,0)[t]{$x_1=\ffi{y}$}}
+%%%    \put(  40,  -5){\makebox(0,0)[t]{$x_2=\ffi{y}$}}
+%%%    \put( -80,  -5){\makebox(0,0)[rt]{$\ffi{y+h}$}}
+%%%    \put(  80,  -5){\makebox(0,0)[lt]{$\ffi{y+h}$}}
+%%%    \put(-100,  40){\makebox(0,0)[r]{$\left.\frac{\dy}{\dx}\right|_{x=x_1}$}}
+%%%    \put( 100,  40){\makebox(0,0)[l]{$\left.\frac{\dy}{\dx}\right|_{x=x_2}$}}
+%%%    \put(  95,  40){\vector(-1,0){35}}
+%%%    \put(-100,  20){\makebox(0,0)[r]{$x_1 + \frac{1}{\ffp{x_1}}h$}}
+%%%    \put( 100,  20){\makebox(0,0)[l]{$x_2 + \Delta y\left.\frac{1}{\dy/\dx}\right|_{x=x_2} = x_1 + \frac{1}{\ffp{x_2}}h$}}
+%%%    \put( -95,  15){\vector( 1,-1){15}}
+%%%    \put(  95,  15){\vector(-1,-1){15}}
+%%%    \put(  40,  16){\line(5,6){40}}   %straight line
+%%%    \put( -40,  16){\line(-5,6){40}}   %straight line
+%%%    %{\color{green}\qbezier(40,16)(60,40)(80,64)}     %straight line
+%%%  \end{picture}
+%%%  \end{footnotesize}
+%%%  \end{center}
+%%%  \caption{
+%%%    $Y=\ff(\rvX)$
+%%%    \label{fig:Y=f(\rvX)}
+%%%    }
+%%%  \end{figure}
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  \label{thm:Y=f(\rvX)}
+%%%  \footnote{
+%%%    \citerp{papoulis}{93}, 
+%%%    \citerp{proakis}{30}
+%%%    }
+%%%  %---------------------------------------
+%%%  Let $Y=\ff(\rvX)$ and $\set{x_n}{n=1,2,\ldots,N}$ be the roots of the equation
+%%%  $y=\ff(x)$.
+%%%  \formbox{
+%%%    \ppy(y) = \sum_{n=1}^N \frac{\ppx(x_n)}{|\ff'(x_n)|}
+%%%  }
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  Let the range of $\rvX$ be partitioned into $N$ partitions
+%%%  $\set{A_n}{x_n\in A_n, n=1,2,\ldots,N}$ and $h\to0$.
+%%%  \begin{eqnarray*}
+%%%  %  \ffi{y}
+%%%  %    &=&    \sum_{n=0}^\infty \ffi^{(n)}{y_0}(y-y_0)
+%%%  %  \\&\eqa& \ffi{y_0} + \ffi^{(1)}{y_0}(y-y_0)
+%%%  %  \\&=&    \ffi{y_0} + \ffi^{(1)}{y_0}(y-y_0)
+%%%    \ppy(y)h
+%%%      &=& \pP{y \le Y < y+h}
+%%%    \\&=& \pP{y \le \ff(\rvX) < y+h}
+%%%    \\&=& \sum_{n=1}^N \pPa{y \le \ff(\rvX) < y+h}{\rvX\in A_n}
+%%%    \\&=& \sum_{n=1}^N \pPc{\ffi{y} \le \rvX < \ffi{y+h}}{\rvX\in A_n}\pP{\rvX\in A_n}
+%%%    \\&=& \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
+%%%            \sum_{n=1}^N \pPc{x_n     \le \rvX < x_n + \frac{1}{\ffp{x_n}}h}{\rvX\in A_n}\pP{\rvX\in A_n} & \ffp{x_n}<0 \\
+%%%            \sum_{n=1}^N \pPc{x_n + \frac{1}{\ffp{x_n}}h \le \rvX < x_n}{\rvX\in A_n}\pP{\rvX\in A_n}     & \ffp{x_n}\ge0
+%%%          \end{array}\right.
+%%%    \\&=& \sum_{n=1}^N \pPa{x_n     \le \rvX < x_n + \frac{1}{|\ffp{x_n}|}h}{\rvX\in A_n}
+%%%    \\&=& \sum_{n=1}^N \pP{x_n     \le \rvX < x_n + \frac{1}{|\ffp{x_n}|}h}
+%%%    \\&=& \sum_{n=1}^N h \frac{1}{|\ffp{x_n}|} \ppx(x_n)
+%%%    \\&=& h \sum_{n=1}^N \frac{\ppx(x_n)}{|\ffp{x_n}|}
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{proposition}
+%%%  \footnote{
+%%%    \citerp{papoulis}{95},
+%%%    \citerp{proakis}{29}
+%%%    }
+%%%  %---------------------------------------
+%%%  Let $a,b\in\R, a\ne 0$ and $Y=a\rvX+b$. Then
+%%%  \formbox{
+%%%    \ppy(y) =
+%%%      \frac{1}{|a|} \ppx\left(\frac{y-b}{a}\right)
+%%%    }
+%%%  \end{proposition}
+%%%  \begin{proof}
+%%%  \begin{eqnarray*}
+%%%    \ppy(y)h
+%%%      &=&  \pP{y\le Y < y+h}
+%%%    \\&=&  \pP{y\le a\rvX+b < y+h}
+%%%    \\&=&  \pP{y-b\le a\rvX < y-b+h}
+%%%    \\&=&  \left\{\begin{array}{ll}
+%%%             \pP{\frac{y-b}{a}\le \rvX < \frac{y-b}{a}+\frac{1}{a}h} &: a>0 \\
+%%%             \pP{\frac{y-b}{a}\ge \rvX > \frac{y-b}{a}+\frac{1}{a}h} &: a<0
+%%%           \end{array}\right.
+%%%    \\&=&  \left\{\begin{array}{ll}
+%%%             \pP{\frac{y-b}{a}\le \rvX < \frac{y-b}{a}+\frac{1}{|a|}h} &: a>0 \\
+%%%             \pP{\frac{y-b}{a}-\frac{1}{|a|}h < \rvX \le \frac{y-b}{a}} &: a<0
+%%%           \end{array}\right.
+%%%    \\&=&  \frac{1}{|a|}h \ppx\left(\frac{y-b}{a}\right)
+%%%  \\\implies
+%%%  \\
+%%%    \ppy(y)
+%%%      &=&  \frac{1}{|a|} \ppx\left(\frac{y-b}{a}\right)
+%%%  \end{eqnarray*}
+%%%  
+%%%  The theorem can also be proved using \prefpp{thm:Y=f(\rvX)}.
+%%%  The only root of $y=ax+b$ is $x_1=\frac{y-b}{a}$.
+%%%  \begin{eqnarray*}
+%%%    \ppy(y)
+%%%      &=& \sum_{n=1}^N \frac{\ppx(x_n)}{|\ff'(x_n)|}
+%%%    \\&=& \frac{\ppx(x_1)}{|\ff'(x_1)|}
+%%%    \\&=& \frac{\ppx(x_1)}{|a|}
+%%%    \\&=& \frac{1}{|a|}\ppx\left(\frac{y-b}{a}\right)
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  \begin{figure}\color{figcolor}
+%%%  \setlength{\unitlength}{0.3mm}
+%%%  \begin{center}
+%%%  \begin{footnotesize}
+%%%  \begin{picture}(350,200)(-100,-20)
+%%%    \put( -20,   0){\line(1,0){220}}
+%%%    \put(   0, -20){\line(0,1){120}}
+%%%    \put(   0, 110){\makebox(0,0)[r]{$y$}}
+%%%    \put( 210,   0){\makebox(0,0)[r]{$x$}}
+%%%    {\color{red}
+%%%  %    \qbezier(10,140)(60,10)(160,10)
+%%%      \qbezier(20,150)(30,30)(150,20)
+%%%      \put( 35, 105){\makebox(0,0)[l]{$y=\frac{1}{x}$}}
+%%%      }
+%%%    \put(40,80){\line(1,-1){40}} %straight line
+%%%    \qbezier[28](0,80)(20,80)(40,80)
+%%%    \qbezier[50](40,0)(40,40)(40,80)
+%%%    \qbezier[40](0,40)(40,40)(80,40)
+%%%    \qbezier[20](80,0)(80,20)(80,40)
+%%%    \put(  -5,  80){\makebox(0,0)[r]{$y+h$}}
+%%%    \put(  -5,  40){\makebox(0,0)[r]{$y$}}
+%%%    \put(  40,  -5){\makebox(0,0)[t]{$\frac{1}{y+h}$}}
+%%%    \put(  80,  -5){\makebox(0,0)[t]{$\frac{1}{y}$}}
+%%%    \put( 100,  60){\makebox(0,0)[l]{$\frac{\Delta y}{\Delta x}=\left.\frac{\dy}{\dx}\right|_{x=\frac{1}{y}}=-y^2$}}
+%%%    \put(  95,  60){\vector(-1,0){35}}
+%%%    \put( 100,  40){\makebox(0,0)[l]{$\frac{1}{y}+\frac{\Delta x}{\Delta y}\Delta y = \frac{1}{y} - \frac{1}{y^2}h$}}
+%%%    \put(  95,  40){\vector(-3,-2){55}}
+%%%  \end{picture}
+%%%  \end{footnotesize}
+%%%  \end{center}
+%%%  \caption{
+%%%    $Y=\frac{1}{\rvX}$
+%%%    \label{fig:Y=1/\rvX}
+%%%    }
+%%%  \end{figure}
+%%%  %---------------------------------------
+%%%  \begin{proposition}
+%%%  \footnote{
+%%%    \citerp{papoulis}{94}
+%%%    }
+%%%  %---------------------------------------
+%%%  Let $Y=\frac{1}{\rvX}$. Then
+%%%  \formbox{
+%%%    \ppy(y) = \left\{\begin{array}{ll}
+%%%       & : y<0 \\
+%%%       & : y=0 \\
+%%%       \frac{1}{y^2} \ppx\left( \frac{1}{y} \right) & : y>0
+%%%    \end{array}\right.
+%%%    }
+%%%  \end{proposition}
+%%%  \begin{proof}
+%%%  Let $h\to0$.
+%%%  First we show a useful relation for $\frac{1}{y+h}$.
+%%%  This relation is illustrated in \prefpp{fig:Y=1/\rvX}.
+%%%  \begin{eqnarray*}
+%%%    \frac{1}{y+h}
+%%%      &=&    y_1 + \frac{1}{m} \Delta y
+%%%    \\&=&    \frac{1}{y} + \left.\frac{1}{dy/dx}\right|_{x=1/y} h
+%%%    \\&=&    \frac{1}{y} - \left.x^2\right|_{x=1/y} h
+%%%    \\&=&    \frac{1}{y} - \frac{1}{y^2} h
+%%%  \end{eqnarray*}
+%%%  
+%%%  Now we prove the theorem using the above relation.
+%%%  \begin{eqnarray*}
+%%%    \ppy(y)h
+%%%      &=&    \pP{y\le Y < y+h}
+%%%    \\&=&    \pP{y\le \frac{1}{\rvX} < y+h}
+%%%    \\&=&    \pP{\frac{1}{y}\ge \rvX > \frac{1}{y+h}}
+%%%    \\&=&    \pP{\frac{1}{y}\ge \rvX > \frac{1}{y}-\frac{1}{y^2}h}
+%%%    \\&=&    \pP{\frac{1}{y}-\frac{1}{y^2}h <  \rvX \le \frac{1}{y} }
+%%%    \\&=&    \frac{1}{y^2}h \ppx\left( \frac{1}{y} \right)
+%%%  \\\implies
+%%%  \\
+%%%    \ppy(y)
+%%%      &=&    \frac{1}{y^2} \ppx\left( \frac{1}{y} \right)
+%%%  \end{eqnarray*}
+%%%  
+%%%  The theorem can also be proved using \prefpp{thm:Y=f(\rvX)}.
+%%%  \begin{eqnarray*}
+%%%    x_1 &=& \frac{1}{y} \\
+%%%    \ff'(x) &=& -\frac{1}{x^2}    \\
+%%%    \ppy(y)
+%%%      &=& \sum_{n=1}^N \frac{\ppx(x_n)}{|\ff'(x_n)|}
+%%%    \\&=& \frac{\ppx(x_1)}{|\ff'(x_1)|}
+%%%    \\&=& \frac{\ppx(1/y)}{|\ff'(1/y)|}
+%%%    \\&=& \frac{\ppx(1/y)}{y^2}
+%%%    \\&=& \frac{1}{y^2} \ppx\left( \frac{1}{y} \right)
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  \begin{figure}\color{figcolor}
+%%%  \setlength{\unitlength}{0.3mm}
+%%%  \begin{center}
+%%%  \begin{footnotesize}
+%%%  \begin{picture}(250,150)(-100,-20)
+%%%    \put(-100,   0){\line(1,0){200}}
+%%%    \put(   0, -20){\line(0,1){120}}
+%%%    {\color{red}
+%%%      \qbezier(-100,100)(0,-100)(100,100)
+%%%      \put( 100, 105){\makebox(0,0)[b]{$y=x^2$}}
+%%%      }
+%%%    \qbezier[8](-40,0)(-40,8)(-40,16)
+%%%    \qbezier[8](40,0)(40,8)(40,16)
+%%%    \qbezier[28](-80,0)(-80,32)(-80,64)
+%%%    \qbezier[28](80,0)(80,32)(80,64)
+%%%    \qbezier[64](-80,64)(0,64)(80,64)
+%%%    \qbezier[40](-40,16)(0,16)(40,16)
+%%%    \put(   0, 110){\makebox(0,0)[r]{$y$}}
+%%%    \put( 110,   0){\makebox(0,0)[r]{$x$}}
+%%%    \put(  -5,  64){\makebox(0,0)[r]{$y+h$}}
+%%%    \put(  -5,  16){\makebox(0,0)[r]{$y$}}
+%%%    \put( -40,  -5){\makebox(0,0)[t]{$-\sqrt{y}$}}
+%%%    \put(  40,  -5){\makebox(0,0)[t]{$\sqrt{y}$}}
+%%%    \put( -80,  -5){\makebox(0,0)[t]{$-\sqrt{y+h}$}}
+%%%    \put(  80,  -5){\makebox(0,0)[t]{$\sqrt{y+h}$}}
+%%%  % \put(  80,  -5){\makebox(0,0)[t]{$\sqrt{y+h}\approx \sqrt{y} + \frac{1}{2\sqrt{y}}h$}}
+%%%    \put( 100,  40){\makebox(0,0)[l]{$\frac{\Delta y}{\Delta x}=\left.\frac{\dy}{\dx}\right|_{x=\sqrt{y}}=2\sqrt{y}$}}
+%%%    \put(  95,  40){\vector(-1,0){35}}
+%%%    \put(-100,  20){\makebox(0,0)[r]{$\sqrt{y}+\frac{\Delta x}{\Delta y}\Delta y = \sqrt{y} - \frac{1}{2\sqrt{y}}h$}}
+%%%    \put( 100,  20){\makebox(0,0)[l]{$\sqrt{y}+\frac{\Delta x}{\Delta y}\Delta y = \sqrt{y} + \frac{1}{2\sqrt{y}}h$}}
+%%%    \put( -95,  15){\vector( 1,-1){15}}
+%%%    \put(  95,  15){\vector(-1,-1){15}}
+%%%    \put(  40,  16){\line(5,6){40}}   %straight line
+%%%    \put( -40,  16){\line(-5,6){40}}   %straight line
+%%%    %{\color{green}\qbezier(40,16)(60,40)(80,64)}     %straight line
+%%%  \end{picture}
+%%%  \end{footnotesize}
+%%%  \end{center}
+%%%  \caption{
+%%%    $Y=\rvX^2$
+%%%    \label{fig:Y=\rvX^2}
+%%%    }
+%%%  \end{figure}
+%%%  %---------------------------------------
+%%%  \begin{proposition}
+%%%  \footnote{
+%%%    \citerp{papoulis}{95},
+%%%    \citerp{proakis}{29}
+%%%    }
+%%%  \label{prop:Y=\rvX^2}
+%%%  %---------------------------------------
+%%%  Let $Y=\rvX^2$. Then
+%%%  \thmbox{
+%%%    \ppy(y) = \left\{\begin{array}{ll}
+%%%       0 & : a<0 \\
+%%%       \mbox{undefined} & : a=0 \\
+%%%       \left.\left.\frac{1}{2\sqrt{y}}\right[
+%%%       \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
+%%%         & : a>0 \\
+%%%    \end{array}\right.
+%%%    }
+%%%  \end{proposition}
+%%%  \begin{proof}
+%%%  Let $h\to0$.
+%%%  First we show a useful relation for $\sqrt{y+h}$.
+%%%  This relation is illustrated in \prefpp{fig:Y=\rvX^2}.
+%%%  \begin{eqnarray*}
+%%%    \sqrt{y+h}
+%%%      &=&    y_1 + \frac{1}{m} \Delta y
+%%%    \\&=&    \sqrt{y} + \left.\frac{1}{dy/dx}\right|_{x=\sqrt{y}} h
+%%%    \\&=&    \sqrt{y} + \left.\frac{1}{2x}\right|_{x=\sqrt{y}} h
+%%%    \\&=&    \sqrt{y} + \frac{1}{2\sqrt{y}} h
+%%%  \end{eqnarray*}
+%%%  
+%%%  Now we prove the theorem using the above relation.
+%%%  \begin{eqnarray*}
+%%%    \ppy(y)h
+%%%      &=&    \pP{y\le Y < y+h}
+%%%    \\&=&    \pP{y\le \rvX^2 < y+h}
+%%%    \\&=&    \pP{(y\le \rvX^2 < y+h) \land (\rvX<0)}+ \pP{(y\le \rvX^2 < y+h) \land (\rvX\ge0)}
+%%%    \\&=&    \pP{y\le \rvX^2 < y+h | \rvX<0}\pP{\rvX<0} + \pP{y\le \rvX^2 < y+h | \rvX\ge0}\pP{\rvX\ge0}
+%%%    \\&=&    \pP{-\sqrt{y}\le \rvX < -\sqrt{y+h} | \rvX<0  } \pP{\rvX<0} +
+%%%             \pP{+\sqrt{y}\le \rvX < +\sqrt{y+h} | \rvX\ge0} \pP{\rvX\ge0}
+%%%    \\&=&    \pP{-\sqrt{y}\le \rvX < -\left(\sqrt{y}+\frac{1}{2\sqrt{y}}h\right) \land \rvX<0   } +
+%%%             \pP{+\sqrt{y}\le \rvX <        \sqrt{y}+\frac{1}{2\sqrt{y}}h        \land \rvX\ge0 }
+%%%    \\&=&    \pP{-\sqrt{y}\le \rvX < -\left(\sqrt{y}+\frac{1}{2\sqrt{y}}h\right)  } +
+%%%             \pP{+\sqrt{y}\le \rvX <        \sqrt{y}+\frac{1}{2\sqrt{y}}h         }
+%%%    \\&=&    \frac{1}{2\sqrt{y}}h\ppx(-\sqrt{y})  +
+%%%             \frac{1}{2\sqrt{y}}h\ppx( \sqrt{y})
+%%%  \\\implies
+%%%    \ppy(y)
+%%%      &=&    \left.\left.\frac{1}{2\sqrt{y}}\right[
+%%%             \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
+%%%  \end{eqnarray*}
+%%%  
+%%%  The theorem can also be proved using \prefpp{thm:Y=f(\rvX)}.
+%%%  \begin{eqnarray*}
+%%%    x_1 &=& -\sqrt{y} \\
+%%%    x_2 &=& +\sqrt{y} \\
+%%%    \ff'(x) &=& 2x    \\
+%%%    \ppy(y)
+%%%      &=& \sum_{n=1}^N \frac{\ppx(x_n)}{|\ff'(x_n)|}
+%%%    \\&=& \frac{\ppx(x_1)}{|\ff'(x_1)|} + \frac{\ppx(x_2)}{|\ff'(x_2)|}
+%%%    \\&=& \frac{\ppx(-\sqrt{y})}{|\ff'(-\sqrt{y})|} + \frac{\ppx(\sqrt{y})}{|\ff'(\sqrt{y})|}
+%%%    \\&=& \frac{\ppx(-\sqrt{y})}{2\sqrt{y}} + \frac{\ppx(\sqrt{y})}{2\sqrt{y}}
+%%%    \\&=&    \left.\left.\frac{1}{2\sqrt{y}}\right[
+%%%             \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  \begin{figure}\color{figcolor}
+%%%  \setlength{\unitlength}{0.15mm}
+%%%  \begin{center}
+%%%  \begin{footnotesize}
+%%%  \begin{picture}(1000,220)(-500,-100)
+%%%    \put(-500,   0){\line(1,0){1000}}
+%%%    \put(   0, -100){\line(0,1){220}}
+%%%    \multiput(-400,0)(200,0){5}{
+%%%      {\color{red}
+%%%        \qbezier(0,0)(25,25)(50,37)
+%%%        \qbezier(50,37)(75,50)(95,100)
+%%%        \qbezier(0,0)(-25,-25)(-50,-37)
+%%%        \qbezier(-50,-37)(-75,-50)(-95,-100)
+%%%        }
+%%%      \qbezier[14](77,0)(77,32)(77,64)
+%%%      }
+%%%    \put( 100, 105){\makebox(0,0)[b]{$z=\atan\theta$}}
+%%%    \put(-400,-5){\makebox(0,0)[t]{$-2\pi$}}
+%%%    \put(-200,-5){\makebox(0,0)[t]{$- \pi$}}
+%%%    \put( 200,-5){\makebox(0,0)[t]{$  \pi$}}
+%%%    \put( 400,-5){\makebox(0,0)[t]{$ 2\pi$}}
+%%%  
+%%%    \put(-323,-5){\makebox(0,0)[t]{$\theta_{-2}$}}
+%%%    \put(-123,-5){\makebox(0,0)[t]{$\theta_{-1}$}}
+%%%    \put(  77,-5){\makebox(0,0)[t]{$\theta_{ 0}$}}
+%%%    \put( 277,-5){\makebox(0,0)[t]{$\theta_{ 1}$}}
+%%%    \put( 477,-5){\makebox(0,0)[t]{$\theta_{ 2}$}}
+%%%  
+%%%    \qbezier[130](-315,64)(77,64)(477,64)
+%%%    \put(   0, 110){\makebox(0,0)[r]{$z$}}
+%%%    \put( 520,   0){\makebox(0,0)[l]{$\theta$}}
+%%%  \end{picture}
+%%%  \end{footnotesize}
+%%%  \end{center}
+%%%  \caption{
+%%%    $Z=\tan\Theta$
+%%%    \label{fig:Z=tan0}
+%%%    }
+%%%  \end{figure}
+%%%  %---------------------------------------
+%%%  \begin{proposition}
+%%%  \footnote{
+%%%    \citerpp{papoulis}{99}{100}
+%%%    }
+%%%  %---------------------------------------
+%%%  Let $Z=\tan\Theta$. Then
+%%%  \formbox{
+%%%    \ppz(z) = \frac{1}{1+z^2}  \sum_n \ppth(\atan(z)+n\pi)
+%%%    }
+%%%  \end{proposition}
+%%%  \begin{proof}
+%%%  Let $z=\frac{y}{x}$ and $x^2 + y^2 = r^2$.
+%%%  \begin{eqnarray*}
+%%%    \cos^2\atan z
+%%%      &=& \cos^2\theta
+%%%       =  \frac{x^2}{r^2}
+%%%       =  \frac{x^2}{x^2+y^2}
+%%%       =  \frac{\frac{x^2}{x^2}}{\frac{x^2}{x^2}+\frac{y^2}{x^2}}
+%%%       =  \frac{1}{1+z^2}
+%%%  \end{eqnarray*}
+%%%  Let $h\to0$.
+%%%  \begin{eqnarray*}
+%%%    \atan{z+h}
+%%%      &=&    y_1 + \frac{1}{m} \Delta y
+%%%    \\&=&    \atan{z} + \left.\frac{1}{\dz/\dth}\right|_{\theta=\atan{z}} h
+%%%    \\&=&    \atan{z} + \left.\frac{1}{\sec^2\theta}\right|_{\theta=\atan{z}} h
+%%%    \\&=&    \atan{z} + \left.\cos^2\theta\right|_{\theta=\atan{z}} h
+%%%    \\&=&    \atan{z} + h\cos^2\atan{z}
+%%%    \\&=&    \atan{z} + h\frac{1}{1+z^2}
+%%%  \end{eqnarray*}
+%%%  
+%%%  Now we prove the theorem using the above relation.
+%%%  \begin{eqnarray*}
+%%%    \ppz(z)h
+%%%      &=&    \pP{z\le Z < z+h}
+%%%    \\&=&    \pP{z\le \tan\Theta < z+h}
+%%%    \\&=&    \sum_n \pP{z\le \tan\Theta < z+h \land
+%%%                    \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
+%%%                    }
+%%%    \\&=&    \sum_n \pP{z\le \tan\Theta < z+h \left|
+%%%                    \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
+%%%                    \right.}
+%%%                    \pP{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
+%%%    \\&=&    \sum_n \pP{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \left|
+%%%                    \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
+%%%                    \right.}
+%%%                    \pP{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
+%%%    \\&=&    \sum_n \pP{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \land
+%%%                    \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
+%%%                    }
+%%%    \\&=&    \sum_n \pP{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi }
+%%%    \\&=&    \sum_n \pP{\atan{z}+n\pi \le \Theta < +\atan(z)+n\pi + h\frac{1}{1+z^2} }
+%%%    \\&=&    h\frac{1}{1+z^2} \sum_n \ppth(\atan{z}+n\pi)
+%%%  \\\implies
+%%%    \ppz(z) &=&  \frac{1}{1+z^2} \sum_n \ppth(\atan{z}+n\pi)
+%%%  \end{eqnarray*}
+%%%  
+%%%  The theorem can also be proved using \prefpp{thm:Y=f(\rvX)}.
+%%%  \begin{eqnarray*}
+%%%    \theta_n &=& \atan{z}+n\pi \\
+%%%    \ff'(\theta) &=& \sec^2 \theta    \\
+%%%    \ppz(z)
+%%%      &=& \sum_{n=1}^N \frac{\ppth(\theta_n)}{|\ff'(\theta_n)|}
+%%%    \\&=& \sum_n \frac{\ppth(\atan{z}+n\pi)}{|\ff'(\atan{z}+n\pi)|}
+%%%    \\&=& \sum_n \frac{\ppth(\atan{z}+n\pi)}{|\sec^2(\atan{z}+n\pi)|}
+%%%    \\&=& \sum_n \cos^2(\atan{z}+n\pi)  \ppth(\atan{z}+n\pi)
+%%%    \\&=& \cos^2(\atan{z}) \sum_n  \ppth(\atan{z}+n\pi)
+%%%    \\&=& \frac{1}{1+z^2}  \sum_n \ppth(\atan{z}+n\pi)
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  %=======================================
+%%%  \subsection{Joint and conditional probability spaces}
+%%%  %=======================================
+%%%  As described in \prefpp{def:prob_space},
+%%%  every probability space $\ps$ contains a probability measure $\psp:\pse\to[0,1]$.
+%%%  This probability measure has some basic properties as described in
+%%%  \pref{thm:P} (next).
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  \label{thm:P}
+%%%  %---------------------------------------
+%%%  Let $\ps$ be a probability space,
+%%%  and $\set{B_n}{n=1,2,\ldots,N}$ be a partition of a set $B$.
+%%%  \thmbox{\begin{array}{rc>{\ds}l@{\qquad}l}
+%%%    \psp(B)  &=&  \sum_{n=1}^N \psp(B_n)    & \forall B\in\pse\\
+%%%    \psp(AB) &=&  \sum_{n=1}^N \psp(AB_n)   & \forall A,B\in\pse
+%%%  \end{array}}
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  This is because $\psp$ is a measure and by \prefpp{def:measure}.
+%%%  \end{proof}
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{definition}
+%%%  %---------------------------------------
+%%%  Let $\ps$ be a probability space.
+%%%  The {\bf conditional probability of $A$ given $B$} is defined as
+%%%  \defbox{
+%%%    \psp(A|B) \eqd \frac{\psp(AB)}{\psp(B)} \qquad \forall A,B\in\pse
+%%%    }
+%%%  \end{definition}
+%%%  
+%%%  
+%%%  
+%%%  Sometimes the problem of finding the expected value of a random variable $\rvX$
+%%%  can be simplified by ``conditioning $\rvX$ on $Y$".
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  %---------------------------------------
+%%%  Let $\rvX$ and $Y$ be random variables. Then
+%%%  \formbox{\pEx{\rvX} = \pEy\pEx[x|y](\rvX|Y) }
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  \begin{eqnarray*}
+%%%     \pEy\pEx[x|y](\rvX|Y)
+%%%       &\eqd& \pEy \left[ \int_x x \pp(\rvX=x|Y) \dx \right]
+%%%     \\&\eqd& \int_y \left[\int_x x \pp(x|Y=y) \dx \right] \pp(y) \dy
+%%%     \\&=&    \int_y \int_x x \pp(x|y)\pp(y) \dx   \dy
+%%%     \\&=&    \int_x x \int_y \pp(x,y) \dy   \dx
+%%%     \\&=&    \int_x x \pp(x) \dx
+%%%     \\&\eqd& \pEx \rvX
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  When possible, we like to generalize any given mathematical structure
+%%%  to a more general mathematical structure and then take advantage of
+%%%  the properties of that more general structure.
+%%%  Such a generalization can be done with random variables.
+%%%  Random variables can be viewed as vectors in a vector space.
+%%%  Furthermore, the expectation of the product of two random variables
+%%%  (e.g. $\pE(\rvXY)$)
+%%%  can be viewed as an innerproduct in an innerproduct space.
+%%%  Since we have an inner product space,
+%%%  we can then immediately use all the properties of
+%%%  innerproduct spaces, normed spaces, vector spaces, metric spaces,
+%%%  and topological spaces.\footnote{
+%%%    \hie{spaces:} Chapter/Appendix~\ref{chp:space} page~\pageref{chp:space}
+%%%    }
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  \footnote{
+%%%    \citerpp{moon2000}{105}{106}
+%%%    }
+%%%  \label{thm:prb_vspace}
+%%%  %---------------------------------------
+%%%  Let $R$ be a ring,
+%%%  $\ps$ be a probability space, $\pE$ the expectation operator, and
+%%%  $V=\set{\rvX}{\rvX:\pso\to R}$ be the set of all random vectors
+%%%  in probability space $\ps$.
+%%%  \thmbox{\begin{tabular}{ll}
+%%%    1. & $V$ is a vector space. \\
+%%%    2. & $\inprod{\rvX}{Y}\eqd\pE(\rvXY^\ast)$ is an inner product. \\
+%%%    3. & $\norm{\rvX}\eqd\sqrt{\pE(\rvX\rvX^\ast)}$ is a norm. \\
+%%%    4. & $(V,\inprod{\cdot}{\cdot})$ is an innerproduct space.
+%%%  \end{tabular}}
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  \begin{enumerate}
+%%%    \item Proof that $V$ is a vector space:
+%%%      \[\begin{array}{lll@{\hs{1cm}}D}
+%%%     1) & \forall  \rvX, Y, Z\in V
+%%%        & ( \rvX+ Y)+ Z =  \rvX+( Y+ Z)
+%%%        & \text{($+$ is associative)}
+%%%        \\
+%%%     2) & \forall  \rvX, Y\in V
+%%%        &  \rvX+ Y =  Y+ \rvX
+%%%        & \text{($+$ is commutative)}
+%%%        \\
+%%%     3) & \exists  0 \in V \st \forall  \rvX\in V
+%%%        &  \rvX+ 0 =  \rvX
+%%%        & \text{($+$ identity)}
+%%%        \\
+%%%     4) & \forall  \rvX \in V \exists  Y\in V \st
+%%%        &  \rvX+ Y =  0
+%%%        & \text{($+$ inverse)}
+%%%        \\
+%%%     5) & \forall \alpha\in S \text{ and }  \rvX, Y\in V
+%%%        & \alpha\cdot( \rvX+ Y) = (\alpha \cdot \rvX)+(\alpha\cdot Y)
+%%%        & \text{($\cdot$ distributes over $+$)}
+%%%        \\
+%%%     6) & \forall \alpha,\beta\in S \text{ and }  \rvX\in V
+%%%        & (\alpha+\beta)\cdot \rvX = (\alpha\cdot  \rvX)+(\beta\cdot  \rvX)
+%%%        & \text{($\cdot$ pseudo-distributes over $+$)}
+%%%        \\
+%%%     7) & \forall \alpha,\beta\in S \text{ and }  \rvX\in V
+%%%        & \alpha(\beta\cdot \rvX) = (\alpha\cdot\beta)\cdot \rvX
+%%%        & \text{($\cdot$ associates with $\cdot$)}
+%%%        \\
+%%%     8) & \forall  \rvX\in V
+%%%        & 1\cdot  \rvX =  \rvX
+%%%        & \text{($\cdot$ identity)}
+%%%  \end{array}\]
+%%%  
+%%%    \item Proof that $\inprod{\rvX}{Y}\eqd\pE(\rvXY^\ast)$ is an inner product.
+%%%    \[\begin{array}{llllD}
+%%%     1) &  \pE(\rvX\rvX^\ast) &\ge 0
+%%%        &  \forall  \rvX\in V
+%%%        &  \text{(non-negative)}
+%%%        \\
+%%%     2) &  \pE(\rvX\rvX^\ast) &= 0 \iff  \rvX=0
+%%%        &  \forall  \rvX\in V
+%%%        &  \text{(non-degenerate)}
+%%%        \\
+%%%     3) &  \pE(\alpha \rvXY^\ast)    &= \alpha\pE(\rvXY^\ast)
+%%%        &  \forall  \rvX, Y\in V,\;\forall\alpha\in\C
+%%%        &  \text{(homogeneous)}
+%%%        \\
+%%%     4) &  \pE[(\rvX+Y)Z^\ast] &= \pE(\rvXZ^\ast) + \pE(YZ^\ast)
+%%%        &  \forall  \rvX, Y, Z\in V
+%%%        &  \text{(additive)}
+%%%        \\
+%%%     5) &  \pE(\rvXY^\ast) &= \pE(Y\rvX^\ast)
+%%%        &  \forall  \rvX, Y\in V
+%%%        &  \text{(conjugate symmetric)}.
+%%%    \end{array}\]
+%%%  
+%%%    \item Proof that $\norm{\rvX}\eqd\sqrt{\pE(\rvX\rvX^\ast)}$ is a norm:
+%%%      This norm is simply induced by the above innerproduct.
+%%%    \item Proof that $(V,\inprod{\cdot}{\cdot})$ is an innerproduct space:
+%%%      Because $V$ is a vector space and $\inprod{\cdot}{\cdot}$ is
+%%%      an innerproduct, $(V,\inprod{\cdot}{\cdot})$ is an innerproduct space.
+%%%  \end{enumerate}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  
+%%%  
+%%%  The next theorem gives some results that follow directly from vector space
+%%%  properties:
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  \index{Generalized triangle inequality}
+%%%  \index{Cauchy-Schwartz inequality}
+%%%  \index{Parallelogram Law}
+%%%  %---------------------------------------
+%%%  Let $\ps$ be a probability space with expectation functional $\pE$.
+%%%  \thmbox{\begin{array}{l >{\ds}r c >{\ds}l D}
+%%%    1. & \sqrt{\pE\left(\sum_{n=1}^N \rvX_n\right)}
+%%%       &\le& \sum_{n=1}^N \pE(\rvX_n\rvX_n^\ast)
+%%%       & (Generalized triangle inequality)
+%%%       \\
+%%%    2. & \left| \pE(\rvXY^\ast)\right|^2
+%%%       &\le& \pE(\rvX\rvX^\ast)\:\pE(YY^\ast)
+%%%       & (Cauchy-Schwartz inequality)
+%%%       \\
+%%%    3. & 2\pE(\rvX\rvX^\ast) + 2\pE(YY^\ast)
+%%%       &=& \pE[(\rvX+Y)(\rvX+Y)^\ast] + \pE[(\rvX-Y)(\rvX-Y)^\ast]
+%%%       &   (Parallelogram Law)
+%%%    \end{array}}
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  These follow directly from vector space results in
+%%%  Chapter/Appendix~\ref{chp:space}:
+%%%  
+%%%  \begin{tabular}{llll}
+%%%    1. & Generalized triangle inequality:
+%%%       & \prefpp{thm:norm_tri}
+%%%       & page~\pageref{thm:norm_tri}
+%%%       \\
+%%%    2. & Cauchy-Schwartz inequality:
+%%%       & \prefpp{thm:cs}
+%%%       & page~\pageref{thm:cs}
+%%%       \\
+%%%    3. & Parallelogram Law:
+%%%       & \prefpp{thm:parallelogram}
+%%%       & page~\pageref{thm:parallelogram}
+%%%  \end{tabular}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  %=======================================
+%%%  %\section{Multiple random variables}
+%%%  %=======================================
+%%%  %---------------------------------------
+%%%  \begin{definition}
+%%%  \index{convolution}
+%%%  %---------------------------------------
+%%%  The {\bf convolution} operator $\conv$ is defined as
+%%%  \defbox{ \ff(x)\conv\fg(x) \eqd \int_u \ff(u)\fg(x-u) \du }
+%%%  \end{definition}
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  %---------------------------------------
+%%%  Let $\rvX$ and $Y$ be independent random varibles and $Z\eqd \rvX+Y$.
+%%%  Then
+%%%  \formbox{ \ppz(z) = \ppx(z)\conv\ppy(z)  }
+%%%  \end{theorem}
+%%%  \begin{proof}
+%%%  \begin{eqnarray*}
+%%%    \ppz(z)
+%%%      &\eqd& \lim_{h\to0}\frac{1}{h} \pP{z \le Z < z+h }
+%%%    \\&=&    \lim_{h\to0}\frac{1}{h} \pP{z \le \rvX+Y < z+h }
+%%%    \\&=&    \lim_{h\to0}\frac{1}{h} \int_y \pP{(z \le \rvX+y < z+h) \land (y\le Y<y+h) } \dy
+%%%    \\&=&    \lim_{h\to0}\frac{1}{h} \int_y \pP{(z-y \le \rvX < z-y+h) | (y\le Y<y+h) }\pP{y\le Y<y+h} \dy
+%%%    \\&=&    \lim_{h\to0}\frac{1}{h} \int_y \pP{(z-y \le \rvX < z-y+h) | Y=y }\pP{y\le Y<y+h} \dy
+%%%    \\&\eqd& \int_y \ppx(z-y) \ppy(y)  \dy
+%%%    \\&=&    \ppx(z) \conv \ppy(z)
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{theorem}
+%%%  \label{thm:x1x2->y1y2}
+%%%  %---------------------------------------
+%%%  Let
+%%%  \begin{liste}
+%%%    \item $\rvX_1$ and $\rvX_2$ be random variables with joint distribution
+%%%          $\ppx[\rvX_1,\rvX_2](x_1,x_2)$
+%%%    \item $Y_1=\ff_1(x_1,x_2)$ and $Y_2=\ff_2(x_1,x_2)$
+%%%  \end{liste}
+%%%  Then the joint distribution of $Y_1$ and $Y_2$ is
+%%%  \thmbox{
+%%%    \ppx[Y_1,Y_2](y_1,y_2)
+%%%      = \frac{\ppx[\rvX_1,\rvX_2](x_1,x_2)}{|J(x_1,x_2)|}
+%%%      = \frac{\ppx[\rvX_1,\rvX_2](x_1,x_2)}{
+%%%          \left|\begin{array}{cc}
+%%%            \pderiv{\ff_1}{x_1} & \pderiv{\ff_1}{x_2}   \\
+%%%            \pderiv{\ff_2}{x_1} & \pderiv{\ff_2}{x_2}
+%%%          \end{array}\right|
+%%%          }
+%%%      = \frac{\ppx[\rvX_1,\rvX_2](x_1,x_2)}{
+%%%          \pderiv{\ff_1}{x_1}\pderiv{\ff_2}{x_2} -
+%%%          \pderiv{\ff_1}{x_2}\pderiv{\ff_2}{x_1}
+%%%          }
+%%%    }
+%%%  \end{theorem}
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{proposition}
+%%%  \label{prop:\rvXY->RT}
+%%%  %---------------------------------------
+%%%  Let $\rvX$ and $Y$ be random variables with joint distribution
+%%%  $\ppxy(x,y)$ and
+%%%  \[ R^2 \eqd \rvX^2 + Y^2 \hspace{10ex} \Theta \eqd \atan\frac{Y}{\rvX}. \]
+%%%  Then
+%%%  \formbox{
+%%%    \ppx[R,\Theta](r,\theta)
+%%%      =  r\;\ppxy(r\cos\theta,r\sin\theta)
+%%%    }
+%%%  \end{proposition}
+%%%  \begin{proof}
+%%%  \begin{eqnarray*}
+%%%    \ppx[R,\Theta](r,\theta)
+%%%      &=& \frac{\ppxy(x,y)}{|J(x,y)|}
+%%%       =  \frac{\ppxy(x,y)}{
+%%%          \left|\begin{array}{cc}
+%%%            \pderiv{R}{x}      & \pderiv{R}{y}   \\
+%%%            \pderiv{\theta}{x} & \pderiv{\theta}{y}
+%%%          \end{array}\right|
+%%%          }
+%%%       =  \frac{\ppxy(x,y)}{
+%%%          \left|\begin{array}{cc}
+%%%            \frac{ x}{\sqrt{x^2+y^2}}  & \frac{y}{\sqrt{x^2+y^2}}   \\
+%%%            \frac{-y}{x^2+y^2}         & \frac{x}{x^2+y^2}
+%%%          \end{array}\right|
+%%%          }
+%%%    \\&=& \frac{\ppxy(x,y)}{
+%%%            \frac{x}{\sqrt{x^2+y^2}}\frac{x}{x^2+y^2}  -
+%%%            \frac{y}{\sqrt{x^2+y^2}}\frac{-y}{x^2+y^2}
+%%%          }
+%%%    \\&=& \frac{\ppxy(x,y)}{
+%%%            \frac{x^2+y^2}{(x^2+y^2)^{3/2}}
+%%%          }
+%%%    \\&=& \ppxy(x,y)\frac{(x^2+y^2)^{3/2}}{x^2+y^2}
+%%%    \\&=& \ppxy(r\cos\theta,r\sin\theta)\frac{r^3}{r^2}
+%%%    \\&=& r\;\ppxy(r\cos\theta,r\sin\theta)
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{proposition}
+%%%  \label{prop:\rvXY->RT_n}
+%%%  %---------------------------------------
+%%%  Let $\rvX\sim\pN{0}{\sigma^2}$ and $Y\sim\pN{0}{\sigma^2}$ be
+%%%  independent random variables and
+%%%  \[ R^2 \eqd \rvX^2 + Y^2 \hspace{10ex} \Theta \eqd \atan\frac{Y}{\rvX}. \]
+%%%  Then
+%%%  \formbox{\begin{array}{llrcl}
+%%%    1. & \mbox{$R$ and $\Theta$ are independent with joint distribution}
+%%%       & \ppx[R,\Theta](r,\theta) &=& \ppr(r)\ppth(\theta)
+%%%  \\
+%%%    2. & \mbox{$R$ has Rayleigh distribution}
+%%%       & \ppr(r)  &=& \frac{r}{\sigma^2}\exp{\frac{r^2}{-2\sigma^2}}
+%%%  \\
+%%%    3. & \mbox{$\Theta$ has uniform distribution}
+%%%       & \ppth(\theta) &=& \frac{1}{2\pi}
+%%%  \end{array}}
+%%%  \end{proposition}
+%%%  \begin{proof}
+%%%  \begin{eqnarray*}
+%%%    \ppx[R,\Theta](r,\theta)
+%%%      &=& r\;\ppxy(r\cos\theta,r\sin\theta)
+%%%          \hspace{8ex}\mbox{by Proposition~\ref{prop:\rvXY->RT}}
+%%%    \\&=& r\;\ppx(r\cos\theta) \; \ppy(r\sin\theta)
+%%%          \hspace{8ex}\mbox{by independence hypothesis}
+%%%    \\&=& r\;
+%%%          \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\frac{(r\cos\theta-0)^2}{-2\sigma^2}}
+%%%          \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\frac{(r\sin\theta-0)^2}{-2\sigma^2}}
+%%%    \\&=& \frac{1}{2\pi\sigma^2}\;r\;
+%%%          \exp{\frac{r^2(\cos^2\theta + \sin^2\theta)}{-2\sigma^2}}
+%%%    \\&=& \frac{1}{2\pi\sigma^2}\;r\;
+%%%          \exp{\frac{r^2}{-2\sigma^2}}
+%%%    \\&=& \left[\frac{1}{2\pi}\right]
+%%%          \left[\frac{r}{\sigma^2}\exp{\frac{r^2}{-2\sigma^2}}\right]
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+%%%  
+%%%  
+%%%  %---------------------------------------
+%%%  \begin{proposition}
+%%%  %---------------------------------------
+%%%  Let $\rvX\sim\pN{\pmeanx}{\pvarx}$ and $Y\sim\pN{\pmeany}{\pvary}$ be
+%%%  jointly Gaussian random variables and $\pvarxy=\cov{\rvX}{Y}$.
+%%%  Then
+%%%  \formbox{
+%%%    \pP{\rvX>Y} = \pQ\left( \frac{-\pmeanx + \pmeany}{\pvarx+\pvary-2\pvarxy}\right)
+%%%    }
+%%%  \end{proposition}
+%%%  \begin{proof}
+%%%  Because $\rvX$ and $Y$ are jointly Gaussian,
+%%%  their linear combination $Z=\rvX-Y$ is also Gaussian.
+%%%  A Gaussian distribution is completely defined by its mean and variance.
+%%%  So, to determine the distribution of $Z$,
+%%%  we just have to determine the mean and variance of $Z$.
+%%%  \begin{eqnarray*}
+%%%    \pE Z
+%%%      &=& \pE \rvX - \pE Y
+%%%    \\&=& \pmeanx - \pmeany
+%%%  \\
+%%%  \\
+%%%    \var Z
+%%%      &=& \pE Z^2 - (\pE Z)^2
+%%%    \\&=& \pE (\rvX-Y)^2 - (\pE \rvX - \pE Y)^2
+%%%    \\&=& \pE (\rvX^2-2\rvXY+Y^2) - [(\pE \rvX)^2 -2\pE \rvX \pE Y + (\pE Y)^2 ]
+%%%    \\&=& [\pE \rvX^2- (\pE \rvX)^2]  + [Y^2- (\pE Y)^2] - 2[\pE \rvXY - \pE \rvX \pE Y]
+%%%    \\&=& \var \rvX + \var Y - 2\cov{\rvX}{Y}
+%%%    \\&\eqd& \pvarx + \pvary -2\pvarxy
+%%%  \\
+%%%  \\
+%%%    \pP{\rvX>Y}
+%%%      &=& \pP{\rvX-Y>0}
+%%%    \\&=& \pP{Z>0}
+%%%    \\&=& \left.\pQ\left(\frac{z-\pE Z}{\var Z} \right)\right|_{z=0}
+%%%    \\&=& \pQ\left(\frac{0-\pmeanx+\pmeany}{\pvarx+\pvary-2\pvarxy} \right)
+%%%  \end{eqnarray*}
+%%%  \end{proof}
+
+

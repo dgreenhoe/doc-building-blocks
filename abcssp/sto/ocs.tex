@@ -1,0 +1,2678 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+% stochastic systems
+%============================================================================
+
+%=======================================
+\section{Outcome subspaces}
+\label{sec:ocs}
+%=======================================
+%=======================================
+\subsection{Definitions}
+%=======================================
+Traditional probability theory is performed in a \structe{probability space} $\ps$. % \xref{def:ps}.
+This section extends\footnote{
+  \citerpgc{feldman2010}{4}{3642051588}{``The name ``random variable" is actually a misnomer, since it is not random and not a variable.\ldots the random variable simply maps each point (outcome) in the sample space to a number on the real line\ldots Technically, the space into which the random variable maps the sample space may be more general than the real line\ldots"}
+  }
+ the probability space structure to include what herein is called an
+\structe{outcome subspace} (next definition).
+%---------------------------------------
+\begin{definition}
+\label{def:ocs}
+\label{def:ocsm}
+%---------------------------------------
+\defboxp{
+  An \structd{extended probability space} is the tuple $\epsX$ where 
+  $\ps$ is a \structe{probability space} \xref{def:ps}
+  and $\otriple{\epso}{\metricn}{\orel}$ is an \structe{ordered quasi-metric space} \xref{def:oms}.
+  The 4-tuple $\ocsD$ is an \structd{outcome subspace}
+  of the \structe{extended probability space} $\epsX$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:ocsmom}
+%---------------------------------------
+%Let $\Zp\eqd\setn{1,2,3,\ldots}$ be the set of \structe{natural numbers}.
+Let $\ocsG\eqd\ocsD$ be an \structe{outcome subspace} \xref{def:ocs}.
+\\\defboxt{$\begin{array}{MrclC}
+    The \structd{$n$th-moment} $\ocsmom_n(x,y)$ from $x$ to $y$ in $\ocsG$ is defined as & \ocsmom(x,y) &\eqd& \brs{\metric{x}{y}}^n\psp(y) & \forall x,y\in\ocso,\,n\in\Zp.\\
+    The \structd{moment}       $\ocsmom(x,y)$   from $x$ to $y$ in $\ocsG$ is defined as & \ocsmom(x,y) &\eqd& \ocsmom_1(x,y)               & \forall x,y\in\ocso.
+  \end{array}$}
+\end{definition}
+
+This paper introduces a quantity called the \structe{outcome center} of an \structe{outcome subspace} (next definition)
+which is in essence the same as the \structe{center} of a \structe{graph} \xref{def:gcen}.
+%---------------------------------------
+\begin{definition}
+\label{def:ocscen}
+%---------------------------------------
+Let $\ocsG\eqd\ocsD$ be an \structe{outcome subspace} \xref{def:ocsm}.
+\\\defbox{
+  \begin{array}{>{\ds}rc>{\ds}lMM}
+      \ocscen (\ocsG) &\eqd& \argmin_{x\in\ocso}\max_{y\in\ocso}\mcom{\metric{x}{y}\psp(y)}{$\ocsmom(x,y)$} & is the \structd{outcome center}    &of $\ocsG$. 
+  \end{array}
+  }
+\end{definition}
+
+The following additional definitions are of interest due in part to 
+\prefpp{cor:means} and the \ineqe{minimax inequality} \xref{thm:minimax}.
+They are illustrated in several examples in this section.
+However, %their usefulness is somewhat limited in the context of this paper and 
+most of them are not used outside this section.
+%---------------------------------------
+\begin{definition}
+\label{def:ocscena}
+\label{def:ocsceng}
+\label{def:ocscenh}
+\label{def:ocscenm}
+\label{def:ocscenM}
+\label{def:ocscenx}
+%---------------------------------------
+Let $\ocsG\eqd\ocsD$ be an \structe{outcome subspace} \xref{def:ocsm}.
+\\\defbox{
+  \begin{array}{>{\ds}rc>{\ds}lMM}
+      \ocscena(\ocsG) &\eqd& \argmin_{x\in\ocso}\sum_{y\in\ocso}\metric{x}{y}\psp(y)                                   & is the \structd{arithmetic center} &of $\ocsG$.
+    \\\ocsceng(\ocsG) &\eqd& \argmin_{x\in\ocso}\prod_{y\in\ocso\setd\setn{x}}\brs{\metric{x}{y}^{\psp(y)}}            & is the \structd{geometric center}  &of $\ocsG$.
+    \\\ocscenh(\ocsG) &\eqd& \argmin_{x\in\ocso}\brp{\sum_{y\in\ocso\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)}^{-1} & is the \structd{harmonic center}   &of $\ocsG$.
+    \\\ocscenm(\ocsG) &\eqd& \argmin_{x\in\ocso}\min_{y\in\ocso\setd\setn{x}}\metric{x}{y}\psp(y)                      & is the \structd{minimal center}    &of $\ocsG$.
+    \\\ocscenM(\ocsG) &\eqd& \argmax_{x\in\ocso}\min_{y\in\ocso\setd\setn{x}}\metric{x}{y}\psp(y)                      & is the \structd{maxmin center}    &of $\ocsG$.
+  \end{array}
+  }
+\end{definition}
+
+In a manner similar to the traditional \fncte{variance} function \xref{def:pVar},
+the \fncte{outcome variance} (next) is a kind of measure of the quality of the outcome center as a representative estimate 
+of all the values of the \structe{outcome subspace}.
+Said another way, it is in essence the expected error of the center measure.
+%---------------------------------------
+\begin{definition}
+\label{def:ocsVarG}
+%---------------------------------------
+Let $\ocsG\eqd\ocsD$ be an \structe{outcome subspace} \xref{def:ocsm}.
+\\\defboxp{
+  The \structd{outcome variance} $\ocsVaro(\ocsG;\ocscen_x)$ of $\ocsG$ with respect to $\ocscen_x$ is
+  \indentx$\ds\ocsVaro(\ocsG;\ocscen_x)\eqd\sum_{x\in\ocso} \mcom{\metricsq{\ocscen_x(\ocsG)}{x}\psp(x)}{$\ocsmom_2(\ocscen(\ocsG),x)$}$.\\
+  where $\ocscen_x$ is any of the operators defined in \pref{def:ocscen} or \prefpp{def:ocsceng}.\\
+  Moreover, $\ocsVaro(\ocsG)\eqd\ocsVaro(\ocsG;\ocscen)$, where $\ocscen$ is the \structe{outcome center} \xref{def:ocscen}.
+  }
+\end{definition}
+
+%=======================================
+%\subsection{Properties}
+%=======================================
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:ocs_isotone}
+%%---------------------------------------
+%Let $\ocsG\eqd\ocs{\ocso}{\metricn} {\orel}{\psp}$
+%and $\ocsH\eqd\ocs{\ocso}{\metrican}{\orel}{\psp}$ be \structe{outcome subspace}s \xref{def:ocs}.
+%Let $\ff\in\clFrr$ be a function from $\R$ onto $\R$.
+%\thmbox{
+%  \brb{\begin{array}{FMD}
+%    A. & $\ff$ is \prope{strictly isotone} \xref{def:smono}   & and\\
+%    B. & $\metric{x}{y} = \ff\brs{\metrica{x}{y}}$ & $\forall x,y\in\ocso$
+%  \end{array}}
+%  \quad\implies\quad
+%  \brb{\begin{array}{FlclD}
+%    1. & \ocscen (\ocsG) &=& \ocscen (\ocsH) & and \\
+%    2. & \ocscenm(\ocsG) &=& \ocscenm(\ocsH) & and \\
+%    3. & \ocscenM(\ocsG) &=& \ocscenM(\ocsH) & 
+%  \end{array}}
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%  \ocscen(\ocsG)
+%    &\eqd \argmin_{x\in\ocso}\max_{y\in\ocso} \metric{x}{y}\psp(y)
+%    && \text{by definition of $\ocscen$ \xref{def:ocscen} and $\ocsG$}
+%  \\&= \argmin_{x\in\ocso}\max_{y\in\ocso} \metrica{x}{y} \psp(y)
+%    && \text{by $\ff$ is \prope{strictly isotone} hypothesis and \prefpp{lem:argminmaxphi}}
+%  \\&\eqd \ocscen(\ocsK)
+%    && \text{by definition of $\ocscen$ \xref{def:ocscen} and $\ocsK$}
+%  \\
+%  \ocscenm(\ocsG)
+%    &\eqd \argmin_{x\in\ocso}\min_{y\in\ocso} \metric{x}{y}\psp(y)
+%    && \text{by definition of $\ocscen$ \xref{def:ocscen} and $\ocsG$}
+%  \\&= \argmin_{x\in\ocso}\min_{y\in\ocso} \metrica{x}{y} \psp(y)
+%    && \text{by $\ff$ is \prope{strictly isotone} hypothesis and \prefpp{lem:argminmaxphi}}
+%  \\&\eqd \ocscenm(\ocsK)
+%    && \text{by definition of $\ocscen$ \xref{def:ocscen} and $\ocsK$}
+%  \\
+%  \ocscenM(\ocsG)
+%    &\eqd \argmax_{x\in\ocso}\min_{y\in\ocso} \metric{x}{y}\psp(y)
+%    && \text{by definition of $\ocscen$ \xref{def:ocscen} and $\ocsG$}
+%  \\&= \argmax_{x\in\ocso}\min_{y\in\ocso} \metrica{x}{y} \psp(y)
+%    && \text{by $\ff$ is \prope{strictly isotone} hypothesis and \prefpp{lem:argminmaxphi}}
+%  \\&\eqd \ocscenM(\ocsK)
+%    && \text{by definition of $\ocscen$ \xref{def:ocscen} and $\ocsK$}
+%\end{align*}
+%\end{proof}
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+The quantity $\ds\metrican\brp{x,\ocso}\eqd \sum_{y\in\ocso}\metric{x}{y}\psp(y)$
+in the \structe{arithmetic center} $\ocscena(\ocsG)$ \xref{def:ocscena}
+is itself a \structe{metric} \xref{def:metric}.
+Thus, $\ocscena(\ocsG)$ is the $x$ that produces the minimum of all the metrics with center $x$.
+\end{remark}
+\begin{proof}
+This follows directly from \structe{power mean metrics} theorem with $r=1$ \xref{thm:met_power}.
+\end{proof}
+
+%%---------------------------------------
+%\begin{proposition}
+%%---------------------------------------
+%Let $\ocsmom_n(x,y)$ be the \structe{$n$th-moment} \xref{def:ocsmom} 
+%on the \structe{outcome subspace} $\ocsD$ \xref{def:ocs}.
+%\propbox{
+%  \ocsmom_n(x,x)=0 \qquad n=1,2,3,\ldots
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \ocsmom_n(x,x)
+%    &= \brs{\metric{x}{x}}^n\psp(x)
+%    && \text{by \prefp{def:ocsmom}}
+%  \\&= \brs{0}^n\psp(x)
+%    && \text{by \prope{nondegenerate} property of \fncte{metric}s \xref{def:metric}}
+%  \\&= 0 
+%    && \text{by field property of $0$}
+%\end{align*}
+%\end{proof}
+%
+%%---------------------------------------
+%\begin{proposition}
+%%---------------------------------------
+%Let $\ocsG\eqd\ocsD$ be an \structe{outcome subspace} \xref{def:ocs}.
+%Let $\ocsmom(x,y)$ be the \structe{moment} \xref{def:ocsmom} on $\ocsG$
+%and $\ocscen(\ocsG)$ be the \structe{center} \xref{def:ocscen} of $\ocsG$.
+%\propbox{
+%  \ocscen(\ocsG) = \argmin_{x\in\ocso}\max_{y\in\ocso}\ocsmom(x,y)
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \ocscen(\ocsG)
+%    &\eqd \argmin_{x\in\ocso}\max_{y\in\ocso}\metric{x}{y}\psp(y)
+%    && \text{by definition of $\ocscen$ \xref{def:ocscen}}
+%  \\&= \argmin_{x\in\ocso}\max_{y\in\ocso}\ocsmom(x,y)
+%    && \text{by definition of $\ocsmom$ \xref{def:ocsmom}}
+%\end{align*}
+%\end{proof}
+
+%\if 0
+%=======================================
+\subsection{Specific outcome subspaces}
+%=======================================
+\begin{figure}[h]
+  \centering%
+  \footnotesize%
+  \begin{tabular}{|*{4}{c|}}
+    \hline
+     \includegraphics{sto/graphics/ocs_fdie.pdf}%
+    &\includegraphics{sto/graphics/ocs_rdie.pdf}%
+    &\includegraphics{sto/graphics/ocs_wrdie.pdf}%
+    &\includegraphics{sto/graphics/ocs_wdie.pdf}%
+    \\
+      \structe{fair die} \xrefr{def:fdie}%
+     &\structe{real die} \xrefr{def:rdie}%
+     &\structe{weighted real die} \xrefr{def:wrdie}%
+     &\structe{weighted die} \xrefr{def:wdie}%
+    \\\hline
+     \includegraphics{sto/graphics/ocs_spinner.pdf}%
+    &\includegraphics{sto/graphics/ocs_dna.pdf}%
+    &\includegraphics{sto/graphics/ocs_dnan.pdf}%
+    &
+    \\
+     \structe{spinner} \xrefr{def:spinner}%
+    &\structe{DNA} \xrefr{def:dna}%
+    &\structe{scaffold DNA} \xrefr{def:dnan}%
+    &
+    \\\hline
+  \end{tabular}%
+  \caption{example \structe{outcome subspace}s \xref{def:ocs} 
+     illustrated by \structe{weighted graph}s\label{fig:ocs}
+     with shaded \ope{expected value}s.
+     %For more details, see \citeP{greenhoe2015sto}%
+     }
+\end{figure}
+
+%---------------------------------------
+\begin{definition}
+%\footnote{\citeP{greenhoe2015sto}}
+\label{def:wdie}
+%---------------------------------------
+\defboxp{
+  The structure
+  $\ocsG\eqd\ocs{\setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}{\ocsd}{\ocsr}{\ocsp}$
+  is the \structd{weighted die outcome subspace} if $\ocsG$ is an \structe{outcome subspace}, %\xref{def:ocsm},
+  $\ocsr=\emptyset$ (\prope{unordered} \xrefnp{def:unordered}),
+  and $\ocsd$ is the \fncte{discrete metric} \xref{def:discretemetric}.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+%\footnote{\citeP{greenhoe2015sto}}
+\label{def:fdie}
+%---------------------------------------
+\defboxp{
+  The structure
+  $\ocsG\eqd\ocs{\setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}{\ocsd}{\ocsr}{\ocsp}$
+  is the \structd{fair die outcome subspace} if $\ocsG$ is a \structe{weighted die outcome subspace} \xrefr{def:wdie},
+  and 
+  \\\indentx$\ocsp(\dieA)=\ocsp(\dieB)=\ocsp(\dieC)=\ocsp(\dieD)=\ocsp(\dieE)=\ocsp(\dieF)=\sfrac{1}{6}$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{minipage}{\tw-53mm}%
+\begin{definition}
+%\footnotemark
+\label{def:wrdie}
+%---------------------------------------
+The structure
+$\ocsG\eqd\ocs{\setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}{\ocsd}{\emptyset}{\ocsp}$
+is the \structd{weighted real die outcome subspace} if $\ocsG$ is an \structe{outcome subspace}, % \xref{def:ocsm},
+%$\ocsr=\emptyset$, % (\prope{unordered} \xrefnp{def:unordered}),
+%\\\indentx$\ocsp(\dieA)=\ocsp(\dieB)=\ocsp(\dieC)=\ocsp(\dieD)=\ocsp(\dieE)=\ocsp(\dieF)=\sfrac{1}{6}$,\\
+and \fncte{metric} $\ocsd$ is defined as in the table to the right.
+\end{definition}
+\end{minipage}%
+%\citetblt{\citeP{greenhoe2015sto}}%
+\hfill%
+  $\begin{tabstr}{0.75}\begin{array}{|c|*{6}{@{\hspace{2pt}}c}|}
+    \hline
+    \ocsd(x,y) & \dieA &\dieB &\dieC &\dieD &\dieE &\dieF
+    \\\hline
+      \dieA &    0   &   1   &   1   &   1   &   1   &   2
+    \\\dieB &    1   &   0   &   1   &   1   &   2   &   1
+    \\\dieC &    1   &   1   &   0   &   2   &   1   &   1
+    \\\dieD &    1   &   1   &   2   &   0   &   1   &   1
+    \\\dieE &    1   &   2   &   1   &   1   &   0   &   1
+    \\\dieF &    2   &   1   &   1   &   1   &   1   &   0
+    \\\hline
+  \end{array}\end{tabstr}$
+
+%---------------------------------------
+\begin{definition}
+%\footnote{\citeP{greenhoe2015sto}}
+\label{def:rdie}
+%---------------------------------------
+The structure
+$\ocsG\eqd\ocs{\setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}{\ocsd}{\emptyset}{\ocsp}$
+is the \structd{real die outcome subspace} if $\ocsG$ is a
+\structe{weighted real die outcome subspace} \xref{def:wrdie} with
+\\\indentx$\ocsp(\dieA)=\ocsp(\dieB)=\ocsp(\dieC)=\ocsp(\dieD)=\ocsp(\dieE)=\ocsp(\dieF)=\sfrac{1}{6}$.
+\end{definition}
+
+%---------------------------------------
+\begin{minipage}{\tw-53mm}%
+\begin{definition} %[\structd{real die outcome subspace}]
+%\footnote{\citeP{greenhoe2015sto}}
+\label{def:spinner}%\mbox{}\\
+%---------------------------------------
+The structure
+$\ocsG\eqd\ocs{\setn{\circOne,\circTwo,\circThree,\circFour,\circFive,\circSix}}{\ocsd}{\emptyset}{\ocsp}$
+is the 
+\\\structd{spinner outcome subspace} if $\ocsG$ is an \structe{outcome subspace}, % \xref{def:ocsm},
+%\\$\ocsr=\emptyset$, % (\prope{unordered} \xrefnp{def:unordered}),
+\\\indentx$\ocsp(\circOne)=\ocsp(\circTwo)=\ocsp(\circThree)=\ocsp(\circFour)=\ocsp(\circFive)=\ocsp(\circSix)=\sfrac{1}{6}$,
+\\and \fncte{metric} $\ocsd$ is defined as in the table to the right.
+\end{definition}
+\end{minipage}%
+\hfill%
+  $\begin{tabstr}{0.75}\begin{array}{|c|*{6}{@{\hspace{5pt}}c}|}
+    \hline
+    \ocsd(x,y)    & \circOne & \circTwo & \circThree & \circFour & \circFive & \circSix
+    \\\hline
+      \circOne    &    0     &   1      &   2        &   3       &   2       &   1
+    \\\circTwo    &    1     &   0      &   1        &   2       &   3       &   2
+    \\\circThree  &    2     &   1      &   0        &   1       &   2       &   3
+    \\\circFour   &    3     &   2      &   1        &   0       &   1       &   2
+    \\\circFive   &    2     &   3      &   2        &   1       &   0       &   1
+    \\\circSix    &    1     &   2      &   3        &   2       &   1       &   0
+    \\\hline
+  \end{array}\end{tabstr}$
+
+%---------------------------------------
+\begin{definition}
+%\footnote{\citeP{greenhoe2015sto}}
+\label{def:dna}
+%---------------------------------------
+The structure
+$\ocsH\eqd\ocs{\setn{\symA,\symT,\symC,\symG}}{\ocsd}{\emptyset}{\ocsp}$
+is the \structd{DNA outcome subspace}, or \structd{genome outcome subspace}, 
+if $\ocsH$ is an \structe{outcome subspace}, % \xref{def:ocsm},
+and $\ocsd$ is the \fncte{discrete metric} \xref{def:dmetric}.
+\end{definition}
+
+%---------------------------------------
+\begin{minipage}{\tw-58mm}%
+\begin{definition}
+%\footnotemark
+\label{def:dnan}
+%---------------------------------------
+The structure
+$\ocsH\eqd\ocs{\setn{\symA,\symT,\symC,\symG,\symN}}{\ocsd}{\ocsr}{\ocsp}$\\
+is the \structd{DNA scaffold outcome subspace}, or \structd{genome scaffold outcome subspace}, 
+if $\ocsH$ is an \structe{outcome subspace}, % \xref{def:ocsm},
+\\\indentx
+  $\ocsr=\setn{\opair{\symN}{\symA},\,\opair{\symN}{\symT},\,\opair{\symN}{\symC},\,\opair{\symN}{\symG},\,}$ 
+\\
+($\symN<\symA$, $\symN<\symT$, $\symN<\symC$, and $\symN<\symG$, but otherwise \prope{unordered}),\\
+$\ocsp$ is a \fncte{probability function},
+and \fncte{metric} $\ocsd$ is defined as in the table to the right.
+\end{definition}
+\end{minipage}%
+%\citetblt{\citeP{greenhoe2015sto}}%
+\hfill%
+  $\begin{tabstr}{0.75}\begin{array}{|c|*{5}{@{\hspace{5pt}}c}|}
+    \hline
+    \ocsd(x,y)    & \symN    & \symA    & \symT      & \symC     & \symG 
+    \\\hline
+      \symN       &    \ds  0                 & \ds\sfrac{\sqrt{2}}{2} & \ds\sfrac{\sqrt{2}}{2} & \ds\sfrac{\sqrt{2}}{2}  & \ds\sfrac{\sqrt{2}}{2} 
+    \\\symA       &    \ds\sfrac{\sqrt{2}}{2} &   0                 &   1                 &   1                  &   1   
+    \\\symT       &    \ds\sfrac{\sqrt{2}}{2} &   1                 &   0                 &   1                  &   1   
+    \\\symC       &    \ds\sfrac{\sqrt{2}}{2} &   1                 &   1                 &   0                  &   1   
+    \\\symG       &    \ds\sfrac{\sqrt{2}}{2} &   1                 &   1                 &   1                  &   0   
+    \\\hline
+  \end{array}\end{tabstr}$
+
+
+%=======================================
+\subsection{Example calculations}
+%=======================================
+\begin{tabstr}{0.75}
+%---------------------------------------
+\begin{example}%[\exmd{fair die outcome subspace} / \exmd{discrete outcome subspace}]%\mbox{}\\
+\label{ex:fairdie}
+%---------------------------------------
+%\begin{minipage}{\tw-35mm}%
+Let $\ocsG\eqd\ocs{\setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}{\ocsd}{\ocsr}{\ocsp}$ 
+be the \structe{fair die outcome subspace} \xref{def:fdie}.
+This structure is illustrated by the \structe{weighted graph} \xref{def:wgraph} in \prefpp{fig:ocs} (A), %to the right, 
+where each line segment represents a distance of $1$.
+%
+%be the \structe{outcome subspace} \xref{def:ocsm} generated by a \structe{fair die}
+%where $\metricn$ is the \fncte{discrete metric} \xref{def:dmetric},
+%$\orel\eqd\emptyset$ (completely unordered set), and 
+%$\psp(\diceA)=\psp(\diceB)=\cdots=\psp(\diceF)=\frac{1}{6}$.
+%This is illustrated by the \structe{weighted graph} \xref{def:wgraph} to the right, 
+%where each line segment represents a distance of $1$, and elements in the \structe{outcome center} $\ocscen(\ocsG)$
+%are \colorbox{snode}{shaded}.
+This structure has the following geometric values:
+  \\\indentx$\begin{array}{l}
+      \ocscen(\ocsG)=\ocscena(\ocsG)=\ocsceng(\ocsG)=\ocscenh(\ocsG)=\ocscenm(\ocsG)=\ocscenM(\ocsG)  
+         = \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} %& \xxref{def:ocscen}{def:ocscenx}  & (shaded in illustration)
+    \\\ocsVaro(\ocsG) = \ocsVaro(\ocsG;\ocscena) = \ocsVaro(\ocsG;\ocsceng) = \ocsVaro(\ocsG;\ocscenh) = \ocsVaro(\ocsG;\ocscenm) = \ocsVaro(\ocsG;\ocscenM)  =  0     
+  \end{array}$
+%\end{minipage}\hfill%
+%\begin{tabular}{c}
+%  \gsize%
+%  \centering%
+%  {\includegraphics{sto/graphics/ocs_fdie.pdf}}%
+%\end{tabular}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    && \text{by definition of $\ocscen$ \xref{def:ocscen}}
+  \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\frac{1}{6}
+    && \text{by definition of $\ocsG$}
+  %\\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}
+  %  && \text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+  \\&= \argmin_{x\in\ocsG}\frac{1}{6}\setn{1,\,1,\,1,\,1,\,1,\,1}
+    && \text{by definition of \structe{discrete metric} \xref{def:dmetric}}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocscena(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+    && \text{by definition of $\ocscena$ \xref{def:ocscenx}}
+  \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\frac{1}{6}
+    && \text{by definition of $\ocsG$}
+  %\\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}
+  %  && \text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+  \\&= \argmin_{x\in\ocsG}\frac{1}{6}\setn{5,\,5,\,5,\,5,\,5,\,5}
+    && \text{by definition of \structe{discrete metric} \xref{def:dmetric}}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocsceng(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\metric{x}{y}^{\psp(y)}
+    &&\text{by definition of $\ocsceng$ \xref{def:ocsceng}}
+  \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}1^{\frac{1}{6}}
+    && \text{by definition of $\ocsG$ and \structe{discrete metric} \xref{def:dmetric}}
+  \\&= \argmin_{x\in\ocsG}\setn{1,1,1,1,1,1}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocscenh(\rvX)
+    &\eqd \argmin_{x\in\ocsG}\brp{\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)}^{-1}
+    &&\text{by definition of $\ocscenh$ \xref{def:ocscenh}}
+  \\&= \argmin_{x\in\ocsG}\brp{\sum_{y\in\ocsG\setd\setn{x}}1\times\frac{1}{6}}^{-1}
+    &&\text{by definition of $\ocsG$}
+  %\\&= \argmin_{x\in\ocsG}\brp{\sum_{y\in\ocsG\setd\setn{x}}1\times\frac{1}{6}}^{-1}
+  \\&= \argmin_{x\in\ocsG}\setn{\frac{6}{5},\frac{6}{5},\frac{6}{5},\frac{6}{5},\frac{6}{5},\frac{6}{5}}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocscenm(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenm$ \xref{def:ocscenm}}
+  \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}1\times\frac{1}{6}
+    &&\text{by definition of $\ocsG$ and \structe{discrete metric} \xref{def:dmetric}}
+  \\&= \argmin_{x\in\ocsG}\frac{1}{6}\setn{1,1,1,1,1,1}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocscenM(\ocsG)
+    &\eqd \argmax_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenM$ \xref{def:ocscenM}}
+  \\&= \argmax_{x\in\ocsG}\frac{1}{6}\setn{1,1,1,1,1,1}
+    && \text{by $\ocscenm(\ocsG)$ result}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocsVaro(\ocsG;\ocscena)
+    &= \mathrlap{\ocsVaro(\ocsG;\ocsceng)= \ocsVaro(\ocsG;\ocscenh)= \ocsVaro(\ocsG;\ocscenm)= \ocsVaro(\ocsG;\ocscenM) = \ocsVaro(\ocsG)}
+  \\&\eqd \sum_{x\in\ocsG}\brs{\metric{\ocscen(\ocsG)}{x}}^2\psp(x)
+    && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}\brp{0^2}\frac{1}{6}
+    && \text{because $\ocscen(\ocsG)=\ocsG$}
+  \\&= 0
+    && \text{by field property of \vale{additive identity element} $0$}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{example} %[\exmd{real die outcome subspace}]
+\label{ex:realdie}%\mbox{}\\
+%---------------------------------------
+%\begin{minipage}{\tw-35mm}%
+Let $\ocsG\eqd\ocs{\setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}}{\emptyset}{\orel}{\psp}$ 
+be the \structe{real die outcome subspace} \xref{def:rdie}.
+%be the \structe{outcome subspace} \xref{def:ocsm} generated by a \structe{real die}.
+%On a real die (as opposed to a \structe{fair die} \xrefnp{ex:fairdie}),
+%some symbols (die faces) are physically closer (in real 3 dimensional space) than others.
+%Instead of using the discrete metric, we define the distance $\metric{x}{y}$ from face $x$ to face $y$
+%to be the number of physical die edges that must be crossed to go from $x$ to $y$.
+%In this case, it is still true that $\metric{\diceA}{\diceA}=0$, and
+%\\\indentx$\begin{array}{rclclclclM}
+%  \metric{\diceA}{\diceB}&=&\metric{\diceA}{\diceC}&=&\metric{\diceA}{\diceD}&=&\metric{\diceA}{\diceE}&=&1,&but\\
+%  \metric{\diceA}{\diceF}&=&\metric{\diceB}{\diceE}&=&\metric{\diceC}{\diceD}&=&2&\neq& 1.
+%\end{array}$
+%\end{minipage}\hfill%
+%\begin{tabular}{c}
+%  \gsize%
+%  %\psset{unit=5mm}%
+%  %{\input{../common/math/graphics/ocs/ocs_rdie.tex}}%
+%  {\includegraphics{sto/graphics/ocs_rdie.pdf}}%
+%\end{tabular}
+%\\
+This structure is illustrated by the \structe{weighted graph} \xref{def:wgraph} in \prefpp{fig:ocs} (B), %to the right, 
+where each line segment represents a distance of $1$.
+The structure has the following geometric values:
+\\\indentx$\begin{array}{rclDD}
+  \ocscen(\ocsG)=\ocscena(\ocsG)=\ocsceng(\ocsG)=\ocscenh(\ocsG)=\ocscenm(\ocsG)=\ocscenM(\ocsG)  
+    &=& \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF} &%\xxref{def:ocscen}{def:ocscenx}  & (shaded in illustration)
+    \\
+  \ocsVaro(\ocsG) = \ocsVaro(\ocsG;\ocscena) = \ocsVaro(\ocsG;\ocsceng) = \ocsVaro(\ocsG;\ocscenh) = \ocsVaro(\ocsG;\ocscenm) = \ocsVaro(\ocsG;\ocscenM) &=& 0
+\end{array}$
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    && \text{by definition of $\ocscen$ \xref{def:ocscen}}
+  \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\frac{1}{6}
+    && \text{by definition of $\ocsG$}
+  %\\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}
+  %  && \text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+  \\&= \argmin_{x\in\ocsG}\frac{1}{6}\setn{2,\,2,\,2,\,2,\,2,\,2}
+    && \text{because for each $x$, there is a $y$ such that $\metric{x}{y}=2$}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocscena(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscena$ \xref{def:ocscenx}}
+  \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\frac{1}{6}
+    &&\text{by definition of $\ocsG$}
+  %\\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}
+  %  &&\text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+  \\&= \mathrlap{\argmin_{x\in\ocsG}\frac{1}{6}
+         \setn{\begin{array}{*{11}{@{\hspace{2pt}}c}}
+           0 &+& 1 &+& 1 &+& 1 &+& 1 &+& 2\\
+           1 &+& 0 &+& 1 &+& 1 &+& 2 &+& 1\\
+           1 &+& 1 &+& 0 &+& 2 &+& 1 &+& 1\\
+           1 &+& 1 &+& 2 &+& 0 &+& 1 &+& 1\\
+           1 &+& 2 &+& 1 &+& 1 &+& 0 &+& 1\\
+           2 &+& 1 &+& 1 &+& 1 &+& 1 &+& 0
+         \end{array}}
+       = \argmin_{x\in\ocsG}\frac{1}{6}
+         \setn{\begin{array}{c}
+           6\\
+           6\\
+           6\\
+           6\\
+           6\\
+           6
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \diceA\\
+           \diceB\\
+           \diceC\\
+           \diceD\\
+           \diceE\\
+           \diceF
+         \end{array}}}
+    \\
+  \ocsceng(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\metric{x}{y}^{\psp(y)}
+    &&\text{by definition of $\ocsceng$ \xref{def:ocsceng}}
+  \\&\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\metric{x}{y}^{\frac{1}{6}}
+    &&\text{by definition of $\ocsG$}
+  \\&= \argmin_{x\in\ocsG}\brp{\prod_{y\in\ocsG\setd\setn{x}}\metric{x}{y}}^{\frac{1}{6}}
+  \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\metric{x}{y}
+    &&\text{because $\ff(x)=x^\frac{1}{6}$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+  \\&= \argmin_{x\in\ocsG}\setn{2,2,2,2,2,2}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+  \\
+  \ocscenh(\rvX)
+    &\eqd \argmin_{x\in\ocsG}\brp{\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)}^{-1}
+    &&\text{by definition of $\ocscenh$ \xref{def:ocscenh}}
+  \\&= \argmin_{x\in\ocsG}\brp{\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\frac{1}{6}}^{-1}
+    && \text{by definition of $\ocsG$}
+  \\&= \argmin_{x\in\ocsG}6\brp{\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}}^{-1}
+  \\&= \argmax_{x\in\ocsG}\frac{1}{2}6\sum_{y\in\ocsG\setd\setn{x}}\frac{2}{\metric{x}{y}}
+    && \text{because $\fphi(x)\eqd x^{-1}$ is \prope{strictly antitone} and by \prefp{lem:minphia}}
+  \\&= \mathrlap{\argmin_{x\in\ocsG}3
+         \setn{\begin{array}{*{11}{c}}
+           0 &+& 2 &+& 2 &+& 2 &+& 2 &+& 1\\
+           2 &+& 0 &+& 2 &+& 2 &+& 1 &+& 2\\
+           2 &+& 2 &+& 0 &+& 1 &+& 2 &+& 2\\
+           2 &+& 2 &+& 1 &+& 0 &+& 2 &+& 2\\
+           2 &+& 1 &+& 2 &+& 2 &+& 0 &+& 2\\
+           1 &+& 2 &+& 2 &+& 2 &+& 2 &+& 0
+         \end{array}}
+       = \argmin_{x\in\ocsG}\frac{1}{6}
+         \setn{\begin{array}{c}
+           9\\
+           9\\
+           9\\
+           9\\
+           9\\
+           9
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \diceA\\
+           \diceB\\
+           \diceC\\
+           \diceD\\
+           \diceE\\
+           \diceF
+         \end{array}}}
+  \\
+  \ocscenm(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenm$ \xref{def:ocscenm}}
+  \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}1\times\frac{1}{6}
+    &&\text{by definition of $\ocscenm$ \xref{def:ocscen}}
+  \\&= \frac{1}{6}\setn{2,2,2,2,2,2}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocscenM(\ocsG)
+    &\eqd \argmax_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenM$ \xref{def:ocscenM}}
+  \\&= \frac{1}{6}\setn{2,2,2,2,2,2}
+    && \text{by $\ocscenm(\ocsG)$ result}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocsVaro(\ocsG;\ocscena)
+    &= \mathrlap{\ocsVaro(\ocsG;\ocsceng)= \ocsVaro(\ocsG;\ocscenh)= \ocsVaro(\ocsG;\ocscenm)= \ocsVaro(\ocsG;\ocscenM) = \ocsVaro(\ocsG)}
+  \\&\eqd \sum_{x\in\ocsG}\brs{\metric{\ocscen(\ocsG)}{x}}^2\psp(x)
+    && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}(0)\frac{1}{6}
+    && \text{because $\ocscen(\ocsG)=\ocsG$}
+  \\&= 0
+    && \text{by field property of \vale{additive identity element} $0$}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{remark}
+\label{rem:dietop}
+\label{rem:mgeo}
+%---------------------------------------
+Let $\ocsG\eqd\ocs{\ocso}{\metricn} {\orel}{\psp}$ be the \structe{fair die outcome subspace} \xref{ex:fairdie}.
+Let $\ocsH\eqd\ocs{\ocso}{\metrican}{\orel}{\psp}$ be the \structe{real die outcome subspace} \xref{ex:realdie}.
+These two subspaces are identical except for their metrics $\metricn$ and $\metrican$.
+So we can say that $\ocsG$ and $\ocsH$ \emph{are} distinguished by their metrics.
+However, note that they are \emph{indistinguishable} by the topologies induced by their metrics,
+because they both induce the same topology---the \structe{discrete topology} $\pset{\ocso}$ \xref{def:pset}.
+That is, the geometric distinction provided in metric spaces is in general lost in topological spaces.
+Thus, topological spaces are arguably too general for the type of stochastic processing presented in this paper;
+rather, the stochastic processing discussed in this paper calls for metric space structure.
+And in this paper, this type of metric space structure is referred to as \structd{metric geometry}.
+\end{remark}
+\begin{proof}
+\begin{enumerate}
+  \item Every \structe{metric space} $\opair{\ocso}{\metricn}$ \xref{def:metric} 
+        induces a \structd{topological space} $\opair{\ocso}{\topT}$.
+  \item In particular, a \structe{metric} $\metricn$ induces an \structd{open ball} 
+        $\ball{x}{r}\in\clF{\brp{\ocso\times\Rp}}{\brp{\pset{\ocso}}}$ centered at $x$ with radius $r$ such that 
+        $\ball{x}{r}\eqd\set{y\in\ocso}{\metric{x}{y}<r}$.
+  \item At each outcome $x$ in $\ocsG$, only two \structe{open ball}s are possible:
+        $\ball{x}{r}=\brb{\begin{array}{lM}
+                            \setn{x}  & for $0<r\le1$\\
+                            \ocso     & for $r>1$
+                          \end{array}}$.
+  \item Let $x'$ represent the die face which, 
+        when its numeric value is summed ``in the usual way" with the numeric value of the die face $x$,
+        equals $7$.
+        Then at each point $x$ in $\ocsH$, three \structe{open ball}s are possible:\\
+        $\ball{x}{r}=\brb{\begin{array}{lM}
+                             \setn{x}     & for $0<r\le1$\\
+                             \setn{x,x'}  & for $1<r\le2$\\
+                             \ocso        & for $r>2$
+                           \end{array}}$.
+
+  \item The \structe{open ball}s of $\opair{\ocso}{\metricn}$ or $\opair{\ocso}{\metrican}$ 
+        in turn induce a \structd{base} for a \structd{topology} $\topT$, such that
+        \\$\topT=\set{\setU\in\pset{\ocso}}{\text{$\setU$ is a union of \structe{open ball}s}}$.
+        The topology induced by $\ocsG$ is the \structe{discrete topology} $\pset{\ocso}$ \xref{def:pset}.
+        The topology induced by $\ocsH$ is also the \structe{discrete topology} $\pset{\ocso}$.
+
+  \item So the metrics of $\ocsG$ and $\ocsH$ are different.
+        And the balls induced by $\ocsG$ and those induced by $\ocsH$ are different.
+        However, the topologies induced by $\ocsG$ and $\ocsH$ are the same.
+        %they both induce the \structe{discrete topology} $\pset{\ocso}$.
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{example} %[\exmd{weighted real die outcome subspace}]
+\label{ex:wdie}
+%---------------------------------------
+%A \structe{weighted die} generates an \structe{outcome subspace} $\ocsG$ \xref{def:ocs}.
+The \structe{weighted real die outcome subspace} \xref{def:wdie} illustrated in \prefp{fig:ocs} (C) 
+has the following geometric characteristics:
+\\ %\begin{minipage}{\tw-35mm}%
+\indentx$\begin{array}{rcl @{\qquad} lclcl}
+    \ocscen(\ocsG)=\ocscena(\ocsG) &=&\setn{\diceD}                      & \ocsVaro(\ocsG)          &=&\frac{101}{300} &\approx& 0.33\\
+    \ocsceng(\ocsG)                &=&\setn{\diceB}                      & \ocsVaro(\ocsG;\ocsceng) &=&\frac{127}{150} &\approx& 0.847 \\ 
+    \ocscenh(\ocsG)                &=&\setn{\diceE}                      & \ocsVaro(\ocsG;\ocscenh) &=&\frac{145}{150} &\approx& 0.967 \\
+    \ocscenm(\ocsG)                &=&\setn{\diceA,\diceC,\diceD,\diceF} & \ocsVaro(\ocsG;\ocscenm) &=&\frac{ 11}{ 50} &=&       0.22 \\
+    \ocscenM(\ocsG)                &=&\setn{\diceB,\diceE}               & \ocsVaro(\ocsG;\ocscenM) &=&\frac{ 11}{ 50} &\approx& 0.767
+  \end{array}$.
+%\end{minipage}\hfill%
+%\begin{minipage}{30mm}
+%  \gsize%
+%  %\psset{unit=8mm}%
+%  \centering%
+%  %{\input{../common/math/graphics/ocs/ocs_wdie.tex}}%
+%  {\includegraphics{sto/graphics/ocs_wdie.pdf}}%
+%\end{minipage}
+\\
+Note that the \fncte{outcome center} $\ocscen(\ocsG)$ and \fncte{arithmetic center} $\ocscena(\ocsG)$ 
+again yield identical results.
+Also note that of the four center measures of cardinality $1$
+($\seto{\ocscen(\ocsG)}=\seto{\ocscena(\ocsG)}=\seto{\ocsceng(\ocsG)}=\seto{\ocscenh(\ocsG)}=1$ \xrefnp{def:seto}),
+$\ocscen$ and $\ocscena$ yield by far the lowest variance measures.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscen$ \xref{def:ocscen}}
+  \\&\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{300}\metric{x}{y}\psp(y)300
+  \\&\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}300\psp(y)
+   %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone}  and by \prefpp{lem:argminmaxphi}}
+   %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone}}
+    &&\text{by \prefpp{lem:argminmaxphi}}
+  \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}300
+    \setn{\begin{array}{ccccc}
+      \metricn(\diceA,\diceA)\psp(\diceA) &\metricn(\diceA,\diceB)\psp(\diceB) &\metricn(\diceA,\diceC)\psp(\diceC) & \cdots & \metricn(\diceA,\diceF)\psp(\diceF) \\
+      \metricn(\diceB,\diceA)\psp(\diceA) &\metricn(\diceB,\diceB)\psp(\diceB) &\metricn(\diceB,\diceC)\psp(\diceC) & \cdots & \metricn(\diceB,\diceF)\psp(\diceF) \\
+      \vdots                              &\vdots                              &\vdots                              & \ddots & \vdots                              \\
+      \metricn(\diceF,\diceA)\psp(\diceA) &\metricn(\diceF,\diceB)\psp(\diceB) &\metricn(\diceF,\diceC)\psp(\diceC) & \cdots & \metricn(\diceF,\diceF)\psp(\diceF) 
+    \end{array}}}
+   \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+         \setn{\begin{array}{cccccc}
+           0\times30 & 1\times15 & 1\times10 & 1\times180 & 1\times6 & 2\times10 \\
+           1\times30 & 0\times15 & 1\times10 & 1\times180 & 2\times6 & 1\times10 \\
+           1\times30 & 1\times15 & 0\times10 & 2\times180 & 1\times6 & 1\times10 \\
+           1\times30 & 1\times15 & 2\times10 & 0\times180 & 1\times6 & 1\times10 \\
+           1\times30 & 2\times15 & 1\times10 & 1\times180 & 0\times6 & 1\times10 \\
+           2\times30 & 1\times15 & 1\times10 & 1\times180 & 1\times6 & 0\times10 \\
+         \end{array}}
+     %\\&=\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+     %    \setn{\begin{array}{cccccc}
+     %       0 & 15 & 10 & 180 &  6 & 20\\
+     %      30 &  0 & 10 & 180 & 12 & 10\\
+     %      30 & 15 &  0 & 360 &  6 & 10\\
+     %      30 & 15 & 20 &   0 &  6 & 10\\
+     %      30 & 30 & 10 & 180 &  0 & 10\\
+     %      60 & 15 & 10 & 180 &  6 & 0
+     %    \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{c}
+           180 \\
+           180 \\
+           360 \\
+            30 \\
+           180 \\
+           180 \\
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \mbox{ } \\
+           \mbox{ } \\
+           \mbox{ } \\
+           \diceD \\
+           \mbox{ } \\
+           \mbox{ } \\
+         \end{array}}}
+  \\
+  \ocscena(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+  \\&= \argmin_{x\in\ocsG}\frac{1}{300}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)300
+    &&\text{by definition of $\ocsG$}
+  \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)300
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone}}
+    &&\text{by \prefpp{lem:argminphi}}
+  \\&=\mathrlap{\argmin_{x\in\ocsG}
+         \setn{\begin{array}{*{11}{r}}
+            0 &+& 15 &+& 10 &+& 180 &+&  6 &+& 20\\
+           30 &+&  0 &+& 10 &+& 180 &+& 12 &+& 10\\
+           30 &+& 15 &+&  0 &+& 360 &+&  6 &+& 10\\
+           30 &+& 15 &+& 20 &+&   0 &+&  6 &+& 10\\
+           30 &+& 30 &+& 10 &+& 180 &+&  0 &+& 10\\
+           60 &+& 15 &+& 10 &+& 180 &+&  6 &+& 0     
+         \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{r}
+           231\\
+           242\\
+           421\\
+            81\\
+           260\\
+           271
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \mbox{ } \\
+           \mbox{ } \\
+           \mbox{ } \\
+           \diceD \\
+           \mbox{ } \\
+           \mbox{ } \\
+         \end{array}}}
+  \\
+  \ocsceng(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{\psp(y)}}
+    &&\text{by definition of $\ocsceng$ \xref{def:ocsceng}}
+  \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{300\psp(y)\frac{1}{300}}}
+  \\&= \argmin_{x\in\ocsG}\brp{\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{300\psp(y)}}}^\frac{1}{300}
+  \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{300\psp(y)}}
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+    %&&\text{because $\ff(x)=x^\frac{1}{300}$ is \prope{strictly isotone}}
+    &&\text{by \prefpp{lem:argminphi}}
+  \\&=\mathrlap{\argmin_{x\in\ocsG}
+         \setn{\begin{array}{*{11}{c}}
+                  &\times& 1^{15} &\times& 1^{10} &\times& 1^{180} &\times& 1^{6} &\times& 2^{10} \\
+           1^{30} &\times&        &\times& 1^{10} &\times& 1^{180} &\times& 2^{6} &\times& 1^{10} \\
+           1^{30} &\times& 1^{15} &\times&        &\times& 2^{180} &\times& 1^{6} &\times& 1^{10} \\
+           1^{30} &\times& 1^{15} &\times& 2^{10} &\times&         &\times& 1^{6} &\times& 1^{10} \\
+           1^{30} &\times& 2^{15} &\times& 1^{10} &\times& 1^{180} &\times&       &\times& 1^{10} \\
+           2^{30} &\times& 1^{15} &\times& 1^{10} &\times& 1^{180} &\times& 1^{6} &      &           
+         \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{l}
+           2^{10}\\
+           2^{6 }\\
+           2^{180}\\
+           2^{10}\\
+           2^{15}\\
+           2^{30}
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \mbox{ } \\
+           \diceB{ } \\
+           \mbox{ } \\
+           \mbox{ } \\
+           \mbox{ } \\
+           \mbox{ } \\
+         \end{array}}}
+  \\
+  \ocscenh(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\brp{\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)}^{-1}
+    &&\text{by definition of $\ocscenh$ \xref{def:ocscenh}}
+  \\&= \argmax_{x\in\ocsG}\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)
+    && \text{by \prefp{lem:minphi}}
+   %&& \text{because $\fphi(x)\eqd x^{-1}$ is \prope{strictly antitone} and by \prefp{lem:minphia}}
+  \\&= \argmax_{x\in\ocsG}\frac{1}{300}\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}300\psp(y)
+  \\&= \argmax_{x\in\ocsG}\sum_{y\in\ocsG\setd\setn{x}}\frac{300\psp(y)}{\metric{x}{y}}
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone}}
+    &&\text{by \prefpp{lem:argminphi}}
+  \\&=\mathrlap{\argmax_{x\in\ocsG}
+         %\setn\begin{array}{*{11}{@{\,}c}}
+         \setn{\begin{array}{*{11}{c}}
+                        &+& \frac{15}{1} &+& \frac{10}{1} &+& \frac{180}{1} &+& \frac{6}{1} &+& \frac{10}{2} \\
+           \frac{30}{1} &+&              &+& \frac{10}{1} &+& \frac{180}{1} &+& \frac{6}{2} &+& \frac{10}{1} \\
+           \frac{30}{1} &+& \frac{15}{1} &+&              &+& \frac{180}{2} &+& \frac{6}{1} &+& \frac{10}{1} \\
+           \frac{30}{1} &+& \frac{15}{1} &+& \frac{10}{2} &+&               &+& \frac{6}{1} &+& \frac{10}{1} \\
+           \frac{30}{1} &+& \frac{15}{2} &+& \frac{10}{1} &+& \frac{180}{1} &+&             &+& \frac{10}{1} \\
+           \frac{30}{2} &+& \frac{15}{1} &+& \frac{10}{1} &+& \frac{180}{1} &+& \frac{6}{1} &+&                     
+         \end{array}}
+       = \argmax_{x\in\ocsG}
+         \setn{\begin{array}{r}
+           216.0\\
+           233.0\\
+           151.0\\
+            66.0\\
+           237.5\\
+           226.0
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \mbox{ } \\
+           \mbox{ } \\
+           \mbox{ } \\
+           \mbox{ } \\
+           \diceE \\
+           \mbox{ }
+         \end{array}}}
+  \\
+  \ocscenm(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\min_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenm$ \xref{def:ocscenm}}
+     \\&=\mathrlap{\argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}
+         \setn{\begin{array}{rrrrrr}
+            0 & 15 & 10 & 180 &  6 & 20\\
+           30 &  0 & 10 & 180 & 12 & 10\\
+           30 & 15 &  0 & 360 &  6 & 10\\
+           30 & 15 & 20 &   0 &  6 & 10\\
+           30 & 30 & 10 & 180 &  0 & 10\\
+           60 & 15 & 10 & 180 &  6 & 0
+         \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{r}
+            6\\
+           10\\
+            6\\
+            6\\
+           10\\
+            6\\
+         \end{array}}
+       = \setn{\begin{array}{r}
+           \diceA\\
+                 \\
+           \diceC\\
+           \diceD\\
+                 \\
+           \diceF  
+         \end{array}}}
+  \\
+  \ocscenM(\ocsG)
+    &\eqd \argmax_{x\in\ocsG}\min_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenM$ \xref{def:ocscenM}}
+  \\&= \argmax_{x\in\ocsG}\setn{6,10,6,6,10,6}
+    && \text{by $\ocscenm(\ocsG)$ result}
+  \\&= \setn{\diceB,\diceE}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocsVaro(\ocsG)
+    &\eqd \sum_{x\in\ocsG}\metricsq{\ocscen(\ocsG)}{x} \psp(x)
+    &&\text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}\metricsq{\diceD}{x} \psp(x)
+    &&\text{by $\ocscen(\ocsG)$ result}
+  \\&= 1^2\times\frac{1}{10} + 1^2\times\frac{1}{20} + 2^2\times\frac{1}{30} + 
+       0^2\times\frac{3}{5}  + 1^2\times\frac{1}{50} + 1^2\times\frac{1}{30}  
+  \\&= \frac{1}{300}(30+15+40+0+6+10)
+     = \frac{101}{300}
+     \approx 0.337
+  \\
+  \ocsVaro(\ocsG;\ocsceng)
+    &\eqd \sum_{x\in\ocsG}\metricsq{\ocsceng(\ocsG)}{x} \psp(x)
+    &&\text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}\metricsq{\diceB}{x} \psp(x)
+    &&\text{by $\ocsceng(\ocsG)$ result}
+  \\&= 1^2\times\frac{1}{10} + 0^2\times\frac{1}{20} + 1^2\times\frac{1}{30} + 
+       1^2\times\frac{3}{5}  + 2^2\times\frac{1}{50} + 1^2\times\frac{1}{30}  
+  \\&= \frac{1}{300}(30+0+10 + 180+24+10)
+     = \frac{254}{300}
+     = \frac{127}{150}
+     \approx 0.847
+  \\
+  \ocsVaro(\ocsG;\ocscenh)
+    &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenh(\ocsG)}{x} \psp(x)
+    &&\text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}\metricsq{\diceE}{x} \psp(x)
+    &&\text{by $\ocscenh(\ocsG)$ result}
+  \\&= 1^2\times\frac{1}{10} + 2^2\times\frac{1}{20} + 1^2\times\frac{1}{30} + 
+       1^2\times\frac{3}{5}  + 0^2\times\frac{1}{50} + 1^2\times\frac{1}{30}  
+  \\&= \frac{1}{300}(30+60+10 + 180+0+10)
+     = \frac{290}{300}
+     = \frac{145}{150}
+     \approx 0.967
+  \\
+  \ocsVaro(\ocsG;\ocscenm)
+    &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenm(\ocsG)}{x} \psp(x)
+    &&\text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}\metricsq{\diceA,\diceC,\diceD,\diceF}{x} \psp(x)
+    &&\text{by $\ocscenm(\ocsG)$ result}
+  \\&= 0^2\times\frac{1}{10} + 1^2\times\frac{1}{20} + 0^2\times\frac{1}{30} + 
+       0^2\times\frac{3}{5}  + 1^2\times\frac{1}{50} + 0^2\times\frac{1}{30}  
+  \\&= \frac{1}{300}( 0+60+ 0 +   0+6+ 0)
+     = \frac{ 66}{300}
+     = \frac{ 11}{ 50}
+     =       0.22 
+  \\
+  \ocsVaro(\ocsG;\ocscenM)
+    &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenM(\ocsG)}{x} \psp(x)
+    &&\text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}\metricsq{\diceB,\diceE}{x} \psp(x)
+    &&\text{by $\ocscenM(\ocsG)$ result}
+  \\&= 1^2\times\frac{1}{10} + 0^2\times\frac{1}{20} + 1^2\times\frac{1}{30} + 
+       1^2\times\frac{3}{5}  + 0^2\times\frac{1}{50} + 1^2\times\frac{1}{30}  
+  \\&= \frac{1}{300}(30+ 0+10 + 180+0+10)
+     = \frac{230}{300}
+     = \frac{ 11}{ 50}
+     \approx 0.767
+\end{align*}
+\end{proof}
+
+
+%\if 0
+%---------------------------------------
+%\begin{minipage}{\tw-35mm}%
+\begin{example}[\exmd{board game spinner outcome subspace}]
+\label{ex:spinner} %\mbox{}\\
+%---------------------------------------
+The six value \structe{spinner outcome subspace} \xref{def:spinner} %illustrated to the right 
+has the following geometric values:
+\\$\begin{array}{rcl}
+  \ocscen(\ocsG)=\ocscena(\ocsG)=\ocsceng(\ocsG)=\ocscenh(\ocsG)=\ocscenm(\ocsG)=\ocscenM(\ocsG) &=& \setn{1,2,3,4,5,6} \\
+  \ocsVaro(\ocsG) = \ocsVaro(\ocsG;\ocscena) = \ocsVaro(\ocsG;\ocsceng) = \ocsVaro(\ocsG;\ocscenh) = \ocsVaro(\ocsG;\ocscenm) = \ocsVaro(\ocsG;\ocscenM)  &=&  0     
+\end{array}$
+\end{example}
+%\end{minipage}\hfill%
+%\begin{tabular}{c}
+%  \gsize%
+%  \psset{unit=8mm}%
+%  \centering%
+%  %{\input{../common/math/graphics/ocs/ocs_spinner.tex}}%
+%  {\includegraphics{sto/graphics/ocs_spinner.pdf}}%
+%\end{tabular}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    && \text{by definition of $\ocscen$ \xref{def:ocscen}}
+  \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\frac{1}{6}
+    && \text{by definition of $\ocsG$}
+  \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}
+    && \text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+   \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+        %\setn{\begin{array}{cccc}
+        %  \metricn(1,1)&\metricn(1,2)&\cdots & \metricn(1,6) \\
+        %  \metricn(2,1)&\metricn(2,2)&\ddots & \metricn(2,6) \\
+        %  \vdots       &\ddots       &\ddots & \vdots        \\
+        %  \metricn(6,1)&\metricn(6,2)&\cdots & \metricn(6,6)
+        %\end{array}}
+        \setn{\begin{array}{cccc}
+          \metricn(1,1)&\cdots & \metricn(1,6) \\
+          \metricn(2,1)&\cdots & \metricn(2,6) \\
+          \metricn(3,1)&\cdots & \metricn(3,6) \\
+          \metricn(4,1)&\cdots & \metricn(4,6) \\
+          \metricn(5,1)&\cdots & \metricn(5,6) \\
+          \metricn(6,1)&\cdots & \metricn(6,6)
+        \end{array}}
+   \quad=\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+        \setn{\begin{array}{cccccc}
+           0 & 1 & 2 & 3 & 2 & 1 \\
+           1 & 0 & 1 & 2 & 3 & 2 \\
+           2 & 1 & 0 & 1 & 2 & 3 \\
+           3 & 2 & 1 & 0 & 1 & 2 \\
+           2 & 3 & 2 & 1 & 0 & 1 \\
+           1 & 2 & 3 & 2 & 1 & 0 
+        \end{array}}
+     \quad= \argmin_{x\in\ocsG}
+        \setn{\begin{array}{c}
+          {3}\\
+          {3}\\
+          {3}\\
+          {3}\\
+          {3}\\
+          {3}
+        \end{array}}}
+  %\\&= \argmin_{x\in\ocsG}\setn{3,\,3,\,3,\,3,\,3,\,3}
+  %  && \text{by definition of $\metricn$ \xref{def:dmetric}}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocscena(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+    && \text{by definition of $\ocscena$ \xref{def:ocscenx}}
+  \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\frac{1}{6}
+    && \text{by definition of $\ocsG$}
+  \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}
+    && \text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+  \\&=\mathrlap{\argmin_{x\in\ocsG}
+         \setn{\begin{array}{*{11}{c}}
+           0 &+& 1 &+& 2 &+& 3 &+& 2 &+& 1 \\
+           1 &+& 0 &+& 1 &+& 2 &+& 3 &+& 2 \\
+           2 &+& 1 &+& 0 &+& 1 &+& 2 &+& 3 \\
+           3 &+& 2 &+& 1 &+& 0 &+& 1 &+& 2 \\
+           2 &+& 3 &+& 2 &+& 1 &+& 0 &+& 1 \\
+           1 &+& 2 &+& 3 &+& 2 &+& 1 &+& 0 
+         \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{c}
+           9\\
+           9\\
+           9\\
+           9\\
+           9\\
+           9
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \diceA\\
+           \diceB\\
+           \diceC\\
+           \diceD\\
+           \diceE\\
+           \diceF
+         \end{array}}}
+  \\
+  \ocsceng(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{\psp(y)}}
+    &&\text{by definition of $\ocsceng$ \xref{def:ocsceng}}
+  \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^\frac{1}{6}}
+    &&\text{by definition of $\ocsG$}
+  \\&= \argmin_{x\in\ocsG}\brp{\prod_{y\in\ocsG\setd\setn{x}}\metric{x}{y}}^\frac{1}{6}
+  \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\metric{x}{y}
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+    %&&\text{because $\ff(x)=x^\frac{1}{300}$ is \prope{strictly isotone}}
+    &&\text{by \prefpp{lem:argminphi}}
+  \\&=\mathrlap{\argmin_{x\in\ocsG}
+         \setn{\begin{array}{*{11}{c}}
+             &\times& 1 &\times& 2 &\times& 3 &\times& 2 &\times& 1 \\
+           1 &\times&   &\times& 1 &\times& 2 &\times& 3 &\times& 2 \\
+           2 &\times& 1 &\times&   &\times& 1 &\times& 2 &\times& 3 \\
+           3 &\times& 2 &\times& 1 &\times&   &\times& 1 &\times& 2 \\
+           2 &\times& 3 &\times& 2 &\times& 1 &\times&   &\times& 1 \\
+           1 &\times& 2 &\times& 3 &\times& 2 &\times& 1 &\times&   
+         \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{c}
+           12\\
+           12\\
+           12\\
+           12\\
+           12\\
+           12
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \diceA\\
+           \diceB\\
+           \diceC\\
+           \diceD\\
+           \diceE\\
+           \diceF
+         \end{array}}}
+  \\
+  \ocscenh(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\brp{\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)}^{-1}
+    &&\text{by definition of $\ocscenh$ \xref{def:ocscenh}}
+  \\&= \argmax_{x\in\ocsG}\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)
+    && \text{because $\fphi(x)\eqd x^{-1}$ is \prope{strictly antitone} and by \prefp{lem:minphia}}
+  \\&= \argmax_{x\in\ocsG}\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\frac{1}{6}
+  \\&= \argmax_{x\in\ocsG}\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+    %&&\text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone}}
+    &&\text{by \prefpp{lem:argminphi}}
+  \\&=\mathrlap{\argmax_{x\in\ocsG}
+         %\setn\begin{array}{*{11}{@{\,}c}}
+         \setn{\begin{array}{*{11}{c}}
+                       &+& \frac{1}{1} &+& \frac{1}{2} &+& \frac{1}{3} &+& \frac{1}{2} &+& \frac{1}{1} \\
+           \frac{1}{1} &+&             &+& \frac{1}{1} &+& \frac{1}{2} &+& \frac{1}{3} &+& \frac{1}{2} \\
+           \frac{1}{2} &+& \frac{1}{1} &+&             &+& \frac{1}{1} &+& \frac{1}{2} &+& \frac{1}{3} \\
+           \frac{1}{3} &+& \frac{1}{2} &+& \frac{1}{1} &+&             &+& \frac{1}{1} &+& \frac{1}{2} \\
+           \frac{1}{2} &+& \frac{1}{3} &+& \frac{1}{2} &+& \frac{1}{1} &+&             &+& \frac{1}{1} \\
+           \frac{1}{1} &+& \frac{1}{2} &+& \frac{1}{3} &+& \frac{1}{2} &+& \frac{1}{1} &+&            
+         \end{array}}
+       = \argmax_{x\in\ocsG}\frac{1}{6}
+         \setn{\begin{array}{r}
+           20\\
+           20\\
+           20\\
+           20\\
+           20\\
+           20
+         \end{array}}
+       = \setn{\begin{array}{c}
+           \diceA\\
+           \diceB\\
+           \diceC\\
+           \diceD\\
+           \diceE\\
+           \diceF
+         \end{array}}}
+  \\
+  \ocscenm(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenm$ \xref{def:ocscenm}}
+  \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\frac{1}{6}
+  \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}
+    %&& \text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone}}
+    && \text{by \prefpp{lem:argminmaxphi}}
+   %&& \text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+  \\&= \argmin_{x\in\ocsG}\setn{1,1,1,1,1,1}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \\
+  \ocscenM(\ocsG)
+    &\eqd \argmax_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenM$ \xref{def:ocscenM}}
+  \\&= \argmax_{x\in\ocsG}\setn{1,1,1,1,1,1}
+    && \text{by $\ocscenm(\ocsG)$ result}
+  \\&= \setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}
+    && \text{by definition of $\ocsG$}
+  \\
+  \\
+  \ocsVaro(\ocsG;\ocscena)
+    &= \mathrlap{\ocsVaro(\ocsG;\ocsceng)= \ocsVaro(\ocsG;\ocscenh)= \ocsVaro(\ocsG;\ocscenm)= \ocsVaro(\ocsG;\ocscenM) = \ocsVaro(\ocsG)}
+  \\&\eqd \sum_{x\in\ocsG}\brs{\metric{\ocscen(\ocsG)}{x}}^2\psp(x)
+    && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}\brp{0^2}\frac{1}{6}
+    && \text{because $\ocscen(\ocsG)=\ocsG$}
+  \\&= 0
+    && \text{by field property of \vale{additive identity element} $0$}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}[\exmd{weighted spinner outcome subspace}]
+\label{ex:wspinner}\mbox{}\\
+%---------------------------------------
+\begin{minipage}{\tw-35mm}%
+The six value \structe{weighted spinner outcome subspace} $\ocsG$ \xref{def:ocs} 
+illustrated to the right has the following geometric values:
+\\\indentx$\begin{array}{rcl@{\qquad}lclcl}
+  \ocscen(\ocsG)=\ocscena(\ocsG)=\ocsceng(\ocsG) &=& \setn{1,6}         &\ocsVaro(\ocsG) &=& \frac{5}{3} &\approx& 1.667\\
+  \ocscenh(\ocsG)                                &=& \setn{2,5}         &\ocsVaro(\ocsG;\ocscenh) &=& \frac{4}{3} &\approx& 1.333\\
+  \ocscenm(\ocsG)=\ocscenM(\ocsG)                &=& \setn{1,2,3,4,5,6} &\ocsVaro(\ocsG;\ocscenm) &=& 0           &=&       0
+\end{array}$
+\end{minipage}\hfill%
+\begin{tabular}{c}
+  \gsize%
+  \psset{unit=8mm}%
+  \centering%
+  %{\input{../common/math/graphics/oms/wspinner.tex}}%
+  {\includegraphics{sto/graphics/wspinner.pdf}}%
+\end{tabular}\\
+The \structe{outcome center} result is used later in \prefpp{ex:wspinner_xyz}.
+Note that, unlike the \structe{weighted real die outcome subspace} \xref{ex:wdie},
+of the center measures of cardinality 2 or less, the \structe{harmonic center} $\ocscenh(\ocsG)$
+yields the lowest \fncte{outcome variance} \xref{def:ocsVarG}.
+This is surprising since it suggests that $\ocscenh(\ocsG)$ is superior to 
+all the other \fncte{center measures} \xxref{def:ocscen}{def:ocscenx},
+but yet unlike the other center measures, it yields center values that are not maximally likely.
+\end{example}
+\begin{proof}
+  \begin{align*}
+    \ocscen(\ocsG)
+      &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+      &&\text{by definition of $\ocscen$ \xref{def:ocscen}}
+    %\\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+    %       \setn{\begin{array}{cccccc}
+    %         \metricn(1,1)\frac{3}{10}&\metricn(1,2)\frac{1}{10}&\metricn(1,3)\frac{1}{10}&\metricn(1,4)\frac{1}{10}&\metricn(1,5)\frac{1}{10}&\metricn(1,6)\frac{3}{10}\\
+    %         \metricn(2,1)\frac{3}{10}&\metricn(2,2)\frac{1}{10}&\metricn(2,3)\frac{1}{10}&\metricn(2,4)\frac{1}{10}&\metricn(2,5)\frac{1}{10}&\metricn(2,6)\frac{3}{10}\\
+    %         \metricn(3,1)\frac{3}{10}&\metricn(3,2)\frac{1}{10}&\metricn(3,3)\frac{1}{10}&\metricn(3,4)\frac{1}{10}&\metricn(3,5)\frac{1}{10}&\metricn(3,6)\frac{3}{10}\\
+    %         \metricn(4,1)\frac{3}{10}&\metricn(4,2)\frac{1}{10}&\metricn(4,3)\frac{1}{10}&\metricn(4,4)\frac{1}{10}&\metricn(4,5)\frac{1}{10}&\metricn(4,6)\frac{3}{10}\\
+    %         \metricn(5,1)\frac{3}{10}&\metricn(5,2)\frac{1}{10}&\metricn(5,3)\frac{1}{10}&\metricn(5,4)\frac{1}{10}&\metricn(5,5)\frac{1}{10}&\metricn(5,6)\frac{3}{10}\\
+    %         \metricn(6,1)\frac{3}{10}&\metricn(6,2)\frac{1}{10}&\metricn(6,3)\frac{1}{10}&\metricn(6,4)\frac{1}{10}&\metricn(6,5)\frac{1}{10}&\metricn(6,6)\frac{3}{10}\\
+    %       \end{array}}}
+    \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{10}
+           \setn{\begin{array}{cccccc}
+             {0}\times3&{1}\times1 & {2}\times1 &{3}\times1 &{2}\times1 &{1}\times3\\
+             {1}\times3&{0}\times1 & {1}\times1 &{2}\times1 &{3}\times1 &{2}\times3\\
+             {2}\times3&{1}\times1 & {0}\times1 &{1}\times1 &{2}\times1 &{3}\times3\\
+             {3}\times3&{2}\times1 & {1}\times1 &{0}\times1 &{1}\times1 &{2}\times3\\
+             {2}\times3&{3}\times1 & {2}\times1 &{1}\times1 &{0}\times1 &{1}\times3\\
+             {1}\times3&{2}\times1 & {3}\times1 &{2}\times1 &{1}\times1 &{0}\times3
+           \end{array}}
+    \quad= \argmin_{x\in\ocsG}\frac{1}{10}
+           \setn{\begin{array}{ccccccc}
+             {3}\\
+             {6}\\
+             {9}\\
+             {9}\\
+             {6}\\
+             {3}
+           \end{array}}
+    \quad= \setn{\begin{array}{c}
+             1\\
+             \mbox{ }\\
+             \mbox{ }\\
+             \mbox{ }\\
+             \mbox{ }\\
+             6
+           \end{array}}}
+    \\
+    \ocscena(\ocsG)
+      &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+      &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+    \\&=\mathrlap{\argmin_{x\in\ocsG}\frac{1}{10}
+           \setn{\begin{array}{*{11}{c@{\,}}}
+             {0}\times3 &+& {1}\times1  &+&  {2}\times1  &+& {3}\times1  &+& {2}\times1  &+& {1}\times3\\
+             {1}\times3 &+& {0}\times1  &+&  {1}\times1  &+& {2}\times1  &+& {3}\times1  &+& {2}\times3\\
+             {2}\times3 &+& {1}\times1  &+&  {0}\times1  &+& {1}\times1  &+& {2}\times1  &+& {3}\times3\\
+             {3}\times3 &+& {2}\times1  &+&  {1}\times1  &+& {0}\times1  &+& {1}\times1  &+& {2}\times3\\
+             {2}\times3 &+& {3}\times1  &+&  {2}\times1  &+& {1}\times1  &+& {0}\times1  &+& {1}\times3\\
+             {1}\times3 &+& {2}\times1  &+&  {3}\times1  &+& {2}\times1  &+& {1}\times1  &+& {0}\times3
+           \end{array}}
+       = \argmin_{x\in\ocsG}\frac{1}{10}
+           \setn{\begin{array}{c}
+             11\\
+             15\\
+             19\\
+             19\\
+             15\\
+             11
+           \end{array}}
+    = \setn{\begin{array}{c}
+             1\\
+             \mbox{ }\\
+             \mbox{ }\\
+             \mbox{ }\\
+             \mbox{ }\\
+             6
+           \end{array}}}
+  \\
+  \ocsceng(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{\psp(y)}}
+    &&\text{by definition of $\ocsceng$ \xref{def:ocsceng}}
+  \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{6\psp(y)\frac{1}{6}}}
+  \\&= \argmin_{x\in\ocsG}\brp{\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{6\psp(y)}}}^\frac{1}{6}
+  \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}\brs{\metric{x}{y}^{6\psp(y)}}
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+    %&&\text{because $\ff(x)=x^\frac{1}{6}$ is \prope{strictly isotone}}
+    &&\text{by \prefpp{lem:argminphi}}
+  \\&=\mathrlap{\argmin_{x\in\ocsG}
+         %\setn\begin{array}{*{11}{@{\,}c}}
+         \setn{\begin{array}{*{11}{c}}
+                 &\times& 1^{1} &\times& 2^{1} &\times& 3^{1} &\times& 2^{1} &\times& 1^{3} \\
+           1^{3} &\times&       &\times& 1^{1} &\times& 2^{1} &\times& 3^{1} &\times& 2^{3} \\
+           2^{3} &\times& 1^{1} &\times&       &\times& 1^{1} &\times& 2^{1} &\times& 3^{3} \\
+           3^{3} &\times& 2^{1} &\times& 1^{1} &\times&       &\times& 1^{1} &\times& 2^{3} \\
+           2^{3} &\times& 3^{1} &\times& 2^{1} &\times& 1^{1} &\times&       &\times& 1^{3} \\
+           1^{3} &\times& 2^{1} &\times& 3^{1} &\times& 2^{1} &\times& 1^{1} &      &           
+         \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{r}
+            2^2 \times 3^1\\
+            2^4 \times 3^1\\
+            2^4 \times 3^3\\
+            2^4 \times 3^3\\
+            2^4 \times 3^1\\
+            2^2 \times 3^1
+         \end{array}}
+       %= \argmin_{x\in\ocsG}
+       %  \setn{\begin{array}{r}
+       %     12\\
+       %     64\\
+       %    432\\
+       %    432\\
+       %     48\\
+       %     12
+       %  \end{array}}
+    = \setn{\begin{array}{c}
+             1\\
+             \mbox{ }\\
+             \mbox{ }\\
+             \mbox{ }\\
+             \mbox{ }\\
+             6
+           \end{array}}}
+  \\
+  \ocscenh(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\brp{\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)}^{-1}
+    &&\text{by definition of $\ocscenh$ \xref{def:ocscenh}}
+  \\&= \argmax_{x\in\ocsG}\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}\psp(y)
+    && \text{because $\fphi(x)\eqd x^{-1}$ is \prope{strictly antitone} and by \prefp{lem:minphia}}
+  \\&= \argmax_{x\in\ocsG}\sum_{y\in\ocsG\setd\setn{x}}\frac{1}{\metric{x}{y}}6\psp(y)\frac{1}{6}
+  \\&= \argmax_{x\in\ocsG}\sum_{y\in\ocsG\setd\setn{x}}\frac{6\psp(y)}{\metric{x}{y}}
+    %&&\text{because $\ff(x)=\frac{1}{300}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+    %&&\text{because $\ff(x)=\frac{1}{6}x$ is \prope{strictly isotone}}
+    &&\text{by \prefpp{lem:argminphi}}
+  \\&=\mathrlap{\argmax_{x\in\ocsG}
+         %\setn\begin{array}{*{11}{@{\,}c}}
+         \setn{\begin{array}{*{11}{c}}
+                       &+& \frac{1}{1} &+& \frac{1}{2} &+& \frac{1}{3} &+& \frac{1}{2} &+& \frac{3}{1} \\
+           \frac{3}{1} &+&             &+& \frac{1}{1} &+& \frac{1}{2} &+& \frac{1}{3} &+& \frac{3}{2} \\
+           \frac{3}{2} &+& \frac{1}{1} &+&             &+& \frac{1}{1} &+& \frac{1}{2} &+& \frac{3}{3} \\
+           \frac{3}{3} &+& \frac{1}{2} &+& \frac{1}{1} &+&             &+& \frac{1}{1} &+& \frac{3}{2} \\
+           \frac{3}{2} &+& \frac{1}{3} &+& \frac{1}{2} &+& \frac{1}{1} &+&             &+& \frac{3}{1} \\
+           \frac{3}{1} &+& \frac{1}{2} &+& \frac{1}{3} &+& \frac{1}{2} &+& \frac{1}{1} &+&               
+         \end{array}}
+       = \argmax_{x\in\ocsG}\frac{1}{6}
+         \setn{\begin{array}{r}
+           32\\
+           38\\
+           30\\
+           30\\
+           38\\
+           32
+         \end{array}}
+       = \setn{\begin{array}{r}
+             \\
+            2\\
+             \\
+             \\
+            5\\
+           \mbox{}
+         \end{array}}}
+  \\
+  \ocscenm(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\min_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenm$ \xref{def:ocscenm}}
+     \\&=\mathrlap{\argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}
+         \setn{\begin{array}{cccccc}
+             & 1 & 2 & 3 & 2 & 1\\
+           3 &   & 1 & 2 & 3 & 2\\
+           6 & 1 &   & 1 & 2 & 3\\
+           9 & 2 & 1 &   & 1 & 2\\
+           6 & 3 & 2 & 1 &   & 1\\
+           3 & 2 & 3 & 2 & 1 &  
+         \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{c}
+           1\\
+           1\\
+           1\\
+           1\\
+           1\\
+           1\\
+         \end{array}}
+       = \setn{\begin{array}{c}
+           1\\
+           2\\
+           3\\
+           4\\
+           5\\
+           6\\
+         \end{array}}}
+  \\
+  \ocscenM(\ocsG)
+    &\eqd \argmax_{x\in\ocsG}\min_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscenM$ \xref{def:ocscenM}}
+  \\&= \argmax_{x\in\ocsG}\setn{1,1,1,1,1,1}
+    && \text{by $\ocscenm(\ocsG)$ result}
+  \\&= \setn{1,2,3,4,5,6}
+  \\
+    \ocsVaro(\ocsG;\ocscena) 
+      &= \ocsVaro(\ocsG;\ocsceng) = \ocsVaro(\ocsG)
+    \\&\eqd \sum_{x\in\ocsG}\metricsq{\ocscen(\ocsG)}{x}\psp(x)
+      &&\text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+    \\&= \sum_{x\in\ocsG}\metricsq{\setn{1,6}}{x}\psp(x)
+      &&\text{by $\ocscen(\ocsG)$ result}
+    \\&= \mathrlap{(0)^2\frac{3}{6}+(1)^2\frac{1}{6}+(2)^2\frac{1}{6}+(2)^2\frac{1}{6}+(1)^2\frac{1}{6}+(0)^2\frac{3}{6}}
+    \\&= \frac{10}{6}= \frac{5}{3}= 1\frac{2}{3}\approx 1.667
+  \\
+    \ocsVaro(\ocsG;\ocscenh)
+      &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenh(\ocsG)}{x}\psp(x)
+      &&\text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+    \\&= \sum_{x\in\ocsG}\metricsq{\setn{2,5}}{x}\psp(x)
+      &&\text{by $\ocscenh(\ocsG)$ result}
+    \\&= \mathrlap{(1)^2\frac{3}{6}+(0)^2\frac{1}{6}+(1)^2\frac{1}{6}+(1)^2\frac{1}{6}+(0)^2\frac{1}{6}+(1)^2\frac{3}{6}}
+    \\&= \frac{8}{6}= \frac{4}{3} \approx 1.333
+  \\
+    \ocsVaro(\ocsG;\ocscenM)
+      &= \ocsVaro(\ocsG;\ocscenm)
+    \\&\eqd \sum_{x\in\ocsG}\metricsq{\ocscenm(\ocsG)}{x}\psp(x)
+      &&\text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+    \\&= \sum_{x\in\ocsG}\metricsq{\setn{1,2,3,4,5,6}}{x}\psp(x)
+      &&\text{by $\ocscenh(\ocsG)$ result}
+    \\&= \sum_{x\in\ocsG}0^2\psp(x)
+       = 0
+  \end{align*}
+\end{proof}
+
+
+
+%\begin{figure}
+%  \gsize%
+%  \centering%
+%  \input{../common/math/graphics/ocs/wring5.tex}%
+%  \caption{weighted ring \xref{ex:wring5}\label{fig:wring5}}
+%\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{weighted ring}]
+\label{ex:wring5}
+%---------------------------------------
+The weighted five element ring illustrated to the right has the geometric values below.
+The \structe{outcome center} result is used later in \prefpp{ex:lcg7x1m9_xyz}.
+\\\begin{minipage}{\tw-65mm}%
+\indentx$\begin{array}{rcl @{\qquad} lcccl}
+    \ocscen (\ocsG) &=&\setn{4}      & \ocsVaro(\ocsG)          &=& \frac{11}{9} &\approx& 1.222 \\
+    \ocscena(\ocsG) &=&\setn{3,4}    & \ocsVaro(\ocsG;\ocscena) &=& \frac{ 7}{9} &\approx& 0.778\\
+    \ocsceng(\ocsG) &=&\setn{3}      & \ocsVaro(\ocsG;\ocsceng) &=& \frac{16}{9} &\approx& 1.778\\
+    \ocscenh(\ocsG) &=&\setn{1,2,3}  & \ocsVaro(\ocsG;\ocscenh) &=& \frac{5}{9}  &\approx& 0.556\\
+    \ocscenm(\ocsG) &=&\setn{0,3,4}  & \ocsVaro(\ocsG;\ocscenm) &=& \frac{2}{9}  &\approx& 0.222\\
+    \ocscenM(\ocsG) &=&\setn{1,2}    & \ocsVaro(\ocsG;\ocscenM) &=& \frac{16}{9} &\approx& 1.778
+  \end{array}$.
+\end{minipage}\hfill%
+\begin{tabular}{c}
+  \gsize%
+  %\psset{unit=5mm}%
+  %{\input{../common/math/graphics/ocs/wring5.tex}}%
+  {\includegraphics{sto/graphics/wring5.pdf}}%
+\end{tabular}
+\end{example}
+\begin{proof}
+    \begin{align*}
+      \ocscen(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscen$ \xref{def:ocscen}}
+      \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{9}\metric{x}{y}\psp(y)9
+      \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)9
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+             %\setn{\begin{array}{*{5}{@{\,\,}c@{\,\,}}}
+             \setn{\begin{array}{*{5}{c}}
+               \metricn(0,0)\psp(0)9&\metricn(0,1)\psp(1)9&\metricn(0,2)\psp(2)9&\metricn(0,3)\psp(3)9&\metricn(0,4)\psp(4)9\\
+               \metricn(1,0)\psp(0)9&\metricn(1,1)\psp(1)9&\metricn(1,2)\psp(2)9&\metricn(1,3)\psp(3)9&\metricn(1,4)\psp(4)9\\
+               \vdots              &\vdots              &\vdots              &\vdots              &\vdots              \\
+              %\metricn(2,0)\psp(0)9&\metricn(2,1)\psp(1)9&\metricn(2,2)\psp(2)9&\metricn(2,3)\psp(3)9&\metricn(2,4)\psp(4)9\\
+              %\metricn(3,0)\psp(0)9&\metricn(3,1)\psp(1)9&\metricn(3,2)\psp(2)9&\metricn(3,3)\psp(3)9&\metricn(3,4)\psp(4)9\\
+               \metricn(4,0)\psp(0)9&\metricn(4,1)\psp(1)9&\metricn(4,2)\psp(2)9&\metricn(4,3)\psp(3)9&\metricn(4,4)\psp(4)9\\
+             \end{array}}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+             \setn{\begin{array}{*{5}{c}}
+               {0}\times2 & {1}\times1 & {2}\times1 & {2}\times2 & {1}\times3\\
+               {1}\times2 & {0}\times1 & {1}\times1 & {2}\times2 & {2}\times3\\
+               {2}\times2 & {1}\times1 & {0}\times1 & {1}\times2 & {2}\times3\\
+               {2}\times2 & {2}\times1 & {1}\times1 & {0}\times2 & {1}\times3\\
+               {1}\times2 & {2}\times1 & {2}\times1 & {1}\times2 & {0}\times3\\
+             \end{array}}
+      %\quad= \argmin_{x\in\ocsG}\max_{y\in\ocsG}
+      %       \setn{\begin{array}{*{5}{c}}
+      %         0 & 2 & 1 & 2 & 6\\
+      %         4 & 0 & 2 & 2 & 3\\
+      %         2 & 2 & 0 & 4 & 3\\
+      %         2 & 1 & 2 & 0 & 3\\
+      %         4 & 1 & 1 & 2 & 0\\
+      %       \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+                4\\
+                6\\
+                6\\
+                4\\
+                2
+             \end{array}}
+      \quad= \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                4
+             \end{array}}}
+      \\
+      \ocscena(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+      \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\frac{1}{9}\metric{x}{y}\psp(y)9
+      \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)9
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}%\sum_{y\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{ccccccccc}
+               {0}\times2&+&{2}\times1&+&{1}\times1&+&{1}\times2&+&{2}\times3\\
+               {2}\times2&+&{0}\times1&+&{2}\times1&+&{1}\times2&+&{1}\times3\\
+               {1}\times2&+&{2}\times1&+&{0}\times1&+&{2}\times2&+&{1}\times3\\
+               {1}\times2&+&{1}\times1&+&{2}\times1&+&{0}\times2&+&{1}\times3\\
+               {2}\times2&+&{1}\times1&+&{1}\times1&+&{1}\times2&+&{0}\times3\\
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{ccccc}
+                11\\
+                11\\
+                11\\
+                 8\\
+                 8
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                4
+             \end{array}}}
+      \\
+      \ocsceng(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{\psp(y)}}
+        &&\text{by definition of $\ocsceng$ \xref{def:ocsceng}}
+      \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)\frac{1}{9}}}
+      \\&= \argmin_{x\in\ocsG}\brs{\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)}}}^\frac{1}{9}
+      \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)}}
+        &&\text{because $\ff(x)\eqd x^\frac{1}{9}$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}
+             \setn{\begin{array}{ccccccccc}
+                     &      & {2}^1 &\times& {1}^1 &\times& {1}^2 &\times& {2}^3\\
+               {2}^2 &\times&       &      & {2}^1 &\times& {1}^2 &\times& {1}^3\\
+               {1}^2 &\times& {2}^1 &\times&       &      & {2}^2 &\times& {1}^3\\
+               {1}^2 &\times& {1}^1 &\times& {2}^1 &\times&       &      & {1}^3\\
+               {2}^2 &\times& {1}^1 &\times& {1}^1 &\times& {1}^2 &      &
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+                16\\
+                 8\\
+                 8\\
+                 2\\
+                 4
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                \mbox{}
+             \end{array}}}
+      \\
+      \ocscenh(\ocsG)
+        &\eqd \argmin_{x\in\ocso}\brp{\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)}^{-1} 
+        &&\text{by definition of $\ocscenh$ \xref{def:ocscenh}}
+      \\&=\argmax_{x\in\ocso}\brp{\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)}
+        && \text{because $\fphi(x)\eqd x^{-1}$ is \prope{strictly antitone} and by \prefp{lem:minphia}}
+      \\&= \argmax_{x\in\ocso}\brp{\frac{1}{9}\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)9}
+      \\&= \argmax_{x\in\ocso}\sum_{y\in\ocso}\frac{9\psp(y)}{\metric{x}{y}}
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+      \\&=\mathrlap{\argmax_{x\in\ocsG}
+             \setn{\begin{array}{*{4}{cc}c}
+               0           &+& \frac{1}{2} &+& \frac{1}{1} &+& \frac{2}{1} &+& \frac{3}{2}\\
+               \frac{2}{2} &+& 0           &+& \frac{1}{2} &+& \frac{2}{1} &+& \frac{3}{1}\\
+               \frac{2}{1} &+& \frac{1}{2} &+& 0           &+& \frac{2}{2} &+& \frac{3}{1}\\
+               \frac{2}{1} &+& \frac{1}{1} &+& \frac{1}{2} &+& 0           &+& \frac{3}{1}\\
+               \frac{2}{2} &+& \frac{1}{1} &+& \frac{1}{1} &+& \frac{2}{1} &+& 0          
+             \end{array}}
+      \quad= \argmax_{x\in\ocsG}\frac{1}{2}
+             \setn{\begin{array}{c}
+               {10}\\
+               {13}\\
+               {13}\\
+               {13}\\
+               {11}
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{c}
+                \mbox{ }\\
+                1\\
+                2\\
+                3\\
+                \mbox{ }
+             \end{array}}}
+      \\
+      \ocscenm(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscenm$ \xref{def:ocscenm}}
+      \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\frac{1}{9}\metric{x}{y}\psp(y)9
+      \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)9
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}%\frac{1}{9}
+             \setn{\begin{array}{ccccccccc}
+                         &{2}\times1&{1}\times1&{1}\times2&{2}\times3\\
+               {2}\times2&          &{2}\times1&{1}\times2&{1}\times3\\
+               {1}\times2&{2}\times1&          &{2}\times2&{1}\times3\\
+               {1}\times2&{1}\times1&{2}\times1&          &{1}\times3\\
+               {2}\times2&{1}\times1&{1}\times1&{1}\times2& 
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+                1\\
+                2\\
+                2\\
+                1\\
+                1
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{c}
+                0\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                4
+             \end{array}}}
+      \\
+      \ocscenM(\ocsG)
+        &\eqd \argmax_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscenM$ \xref{def:ocscenM}}
+      \\&= \argmax_{x\in\ocsG}\setn{1,2,2,1,1}
+        && \text{by $\ocscenm(\ocsG)$ result}
+      \\&= \setn{1,2}
+      \\
+      \ocsVaro(\ocsG)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscen(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{4}}{x}\psp(x)
+        && \text{by $\ocscen(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+  % x = 0
+           (2)^2\frac{1}{9}+  % x = 1
+           (2)^2\frac{1}{9}+  % x = 2
+           (1)^2\frac{2}{9}+  % x = 3
+           (0)^2\frac{3}{9}   % x = 4
+         = \frac{11}{9}  \approx 1.222}
+      \\
+      \ocsVaro(\ocsG;\ocscena)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscena(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{3,4}}{x}\psp(x)
+        && \text{by $\ocscena(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+  % x = 0
+           (2)^2\frac{1}{9}+  % x = 1
+           (1)^2\frac{1}{9}+  % x = 2
+           (0)^2\frac{2}{9}+  % x = 3
+           (0)^2\frac{3}{9}   % x = 4
+         = \frac{7}{9}  \approx 0.778}
+      \\
+      \ocsVaro(\ocsG;\ocsceng)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocsceng(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{3}}{x}\psp(x)
+        && \text{by $\ocsceng(\ocsG)$ result}
+      \\&= \mathrlap{
+           (2)^2\frac{2}{9}+  % x = 0
+           (2)^2\frac{1}{9}+  % x = 1
+           (1)^2\frac{1}{9}+  % x = 2
+           (0)^2\frac{2}{9}+  % x = 3
+           (1)^2\frac{3}{9}   % x = 4
+         = \frac{16}{9}  \approx 1.778}
+      \\
+      \ocsVaro(\ocsG;\ocscenh)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenh(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{1,2,3}}{x}\psp(x)
+        && \text{by $\ocscenh(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+  % x = 0
+           (0)^2\frac{1}{9}+  % x = 1
+           (0)^2\frac{1}{9}+  % x = 2
+           (0)^2\frac{2}{9}+  % x = 3
+           (1)^2\frac{3}{9}   % x = 4
+         = \frac{5}{9} \approx 0.556}
+      \\
+      \ocsVaro(\ocsG;\ocscenm)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenm(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{0,3,4}}{x}\psp(x)
+        && \text{by $\ocscenm(\ocsG)$ result}
+      \\&= \mathrlap{
+           (0)^2\frac{2}{9}+  % x = 0
+           (1)^2\frac{1}{9}+  % x = 1
+           (1)^2\frac{1}{9}+  % x = 2
+           (0)^2\frac{2}{9}+  % x = 3
+           (0)^2\frac{3}{9}   % x = 4
+         = \frac{2}{9} \approx 0.222}
+      \\
+      \ocsVaro(\ocsG;\ocscenM)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenM(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{1,2}}{x}\psp(x)
+        && \text{by $\ocscenm(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+  % x = 0
+           (0)^2\frac{1}{9}+  % x = 1
+           (0)^2\frac{1}{9}+  % x = 2
+           (1)^2\frac{2}{9}+  % x = 3
+           (2)^2\frac{3}{9}   % x = 4
+         = \frac{16}{9} \approx 1.778}
+    \end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{minipage}{\tw-65mm}%
+\begin{example}%[\exmd{weigted ring}]
+\label{ex:wring5short}
+%---------------------------------------
+The weighted five element structure illustrated to the right has the following geometric values:
+\\\indentx$\begin{array}{rcl@{\qquad} lcccl}
+    \ocscen(\ocsG)=\ocsceng(\ocsG) &=&\setn{3}      & \ocsVaro(\ocsG)          &=& \frac{10}{9} &\approx& 1.111 \\
+    \ocscena(\ocsG)                &=&\setn{3,4}    & \ocsVaro(\ocsG;\ocscena) &=& \frac{ 4}{9} &\approx& 0.444  \\
+    \ocscenh(\ocsG)                &=&\setn{1,2,3}  & \ocsVaro(\ocsG;\ocscenh) &=& \frac{ 5}{9} &\approx& 0.555  \\
+    \ocscenm(\ocsG)                &=&\setn{0,3,4}  & \ocsVaro(\ocsG;\ocscenm) &=& \frac{ 2}{9} &\approx& 0.222  \\
+    \ocscenM(\ocsG)                &=&\setn{1,2}    & \ocsVaro(\ocsG;\ocscenM) &=& \frac{7}{9}  &\approx& 0.778
+  \end{array}$.
+\end{example}
+\end{minipage}\hfill%
+\begin{tabular}{c}
+  \gsize%
+  %\psset{unit=5mm}%
+  %{\input{../common/math/graphics/ocs/wring5short.tex}}%
+  {\includegraphics{sto/graphics/wring5short.pdf}}%
+\end{tabular}
+\\
+The \structe{outcome center} result is used later in \prefpp{ex:lcg7x1m9_seqorder}.
+Note that only the operators $\ocscen$ and $\ocsceng$ were able to successfully isolate a single center point
+($\seto{\ocscen(\ocsG)}=\seto{\ocsceng(\ocsG)}=\seto{\setn{3}}=1$).
+\\
+\begin{proof}
+  \begin{align*}
+      \ocscen(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscen$ \xref{def:ocscen}}
+      \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{9}\metric{x}{y}\psp(y)9
+      \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)9
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+             \setn{\begin{array}{*{5}{c}}
+               \metricn(0,0)\psp(0)9&\metricn(0,1)\psp(1)9&\metricn(0,2)\psp(2)9&\metricn(0,3)\psp(3)9&\metricn(0,4)\psp(4)9\\
+               \metricn(1,0)\psp(0)9&\metricn(1,1)\psp(1)9&\metricn(1,2)\psp(2)9&\metricn(1,3)\psp(3)9&\metricn(1,4)\psp(4)9\\
+               \vdots              &\vdots              &\vdots              &\vdots              &\vdots              \\
+              %\metricn(2,0)\psp(0)9&\metricn(2,1)\psp(1)9&\metricn(2,2)\psp(2)9&\metricn(2,3)\psp(3)9&\metricn(2,4)\psp(4)9\\
+              %\metricn(3,0)\psp(0)9&\metricn(3,1)\psp(1)9&\metricn(3,2)\psp(2)9&\metricn(3,3)\psp(3)9&\metricn(3,4)\psp(4)9\\
+               \metricn(4,0)\psp(0)9&\metricn(4,1)\psp(1)9&\metricn(4,2)\psp(2)9&\metricn(4,3)\psp(3)9&\metricn(4,4)\psp(4)9\\
+             \end{array}}}
+      %\\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}
+      %       \setn{\begin{array}{*{5}{c}}
+      %         \metricn(0,0)\frac{2}{9}&\metricn(0,1)\frac{1}{9}&\cdots&\metricn(0,4)\frac{3}{9}\\
+      %         \metricn(1,0)\frac{2}{9}&\metricn(1,1)\frac{1}{9}&\cdots&\metricn(1,4)\frac{3}{9}\\
+      %         \vdots                  &\ddots                  &\ddots&\vdots                  \\
+      %         \metricn(4,0)\frac{2}{9}&\metricn(4,1)\frac{1}{9}&\cdots&\metricn(4,4)\frac{3}{9}\\
+      %       \end{array}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+             \setn{\begin{array}{*{5}{c}}
+               {0}\times2 & {2}\times1 & {1}\times1 & {1}\times2 & {2}\times3\\
+               {2}\times2 & {0}\times1 & {2}\times1 & {1}\times2 & {1}\times3\\
+               {1}\times2 & {2}\times1 & {0}\times1 & {2}\times2 & {1}\times3\\
+               {1}\times2 & {1}\times1 & {2}\times1 & {0}\times2 & {1}\times3\\
+               {2}\times2 & {1}\times1 & {1}\times1 & {1}\times2 & {0}\times3\\
+             \end{array}}
+      %\quad= \argmin_{x\in\ocsG}\max_{y\in\ocsG}
+      %       \setn{\begin{array}{*{5}{c}}
+      %         0 & 2 & 1 & 2 & 6\\
+      %         4 & 0 & 2 & 2 & 3\\
+      %         2 & 2 & 0 & 4 & 3\\
+      %         2 & 1 & 2 & 0 & 3\\
+      %         4 & 1 & 1 & 2 & 0\\
+      %       \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+                6\\
+                4\\
+                4\\
+                3\\
+                4
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                \mbox{}
+             \end{array}}}
+      \\
+      \ocscena(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}%\sum_{y\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{*{9}{c}}
+               {0}\times2 &+& {2}\times1 &+& {1}\times1 &+& {1}\times2 &+& {2}\times3\\
+               {2}\times2 &+& {0}\times1 &+& {2}\times1 &+& {1}\times2 &+& {1}\times3\\
+               {1}\times2 &+& {2}\times1 &+& {0}\times1 &+& {2}\times2 &+& {1}\times3\\
+               {1}\times2 &+& {1}\times1 &+& {2}\times1 &+& {0}\times2 &+& {1}\times3\\
+               {2}\times2 &+& {1}\times1 &+& {1}\times1 &+& {1}\times2 &+& {0}\times3
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{c}
+                11\\
+                11\\
+                11\\
+                 8\\
+                 8
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                4
+             \end{array}}}
+      \\
+      \ocsceng(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{\psp(y)}}
+        &&\text{by definition of $\ocsceng$ \xref{def:ocsceng}}
+      \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)\frac{1}{9}}}
+      \\&= \argmin_{x\in\ocsG}\brs{\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)}}}^\frac{1}{9}
+      \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)}}
+        &&\text{because $\ff(x)\eqd x^\frac{1}{9}$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+      %\\&= \argmin_{x\in\ocsG}
+      %       \setn{\begin{array}{ccccccccc}
+      %                                 &      & \metric{0}{1}^{\psp(1)} &\times& \metric{0}{2}^{\psp(2)} &\times& \metric{0}{3}^{\psp(3)} &\times& \metric{0}{4}^{\psp(4)}\\
+      %         \metric{1}{0}^{\psp(0)} &      &                         &\times& \metric{1}{2}^{\psp(2)} &\times& \metric{1}{3}^{\psp(3)} &\times& \metric{1}{4}^{\psp(4)}\\
+      %         \metric{2}{0}^{\psp(0)} &\times& \metric{2}{1}^{\psp(1)} &      &                         &\times& \metric{2}{3}^{\psp(3)} &\times& \metric{2}{4}^{\psp(4)}\\
+      %         \metric{3}{0}^{\psp(0)} &\times& \metric{3}{1}^{\psp(1)} &\times& \metric{3}{2}^{\psp(2)} &      &                         &\times& \metric{3}{4}^{\psp(4)}\\
+      %         \metric{4}{0}^{\psp(0)} &\times& \metric{4}{1}^{\psp(1)} &\times& \metric{4}{2}^{\psp(2)} &\times& \metric{4}{3}^{\psp(3)} &      &
+      %       \end{array}}
+      %\\&= \argmin_{x\in\ocsG}
+      %       \setn{\begin{array}{ccccccccc}
+      %                                   &      & \metricn(0,1)^\frac{1}{9} &\times& \metricn(0,2)^\frac{1}{9} &\times& \metricn(0,3)^\frac{2}{9} &\times& \metricn(0,4)^\frac{3}{9}\\
+      %         \metricn(1,0)^\frac{2}{9} &      &                           &\times& \metricn(1,2)^\frac{1}{9} &\times& \metricn(1,3)^\frac{2}{9} &\times& \metricn(1,4)^\frac{3}{9}\\
+      %         \metricn(2,0)^\frac{2}{9} &\times& \metricn(2,1)^\frac{1}{9} &      &                           &\times& \metricn(2,3)^\frac{2}{9} &\times& \metricn(2,4)^\frac{3}{9}\\
+      %         \metricn(3,0)^\frac{2}{9} &\times& \metricn(3,1)^\frac{1}{9} &\times& \metricn(3,2)^\frac{1}{9} &      &                           &\times& \metricn(3,4)^\frac{3}{9}\\
+      %         \metricn(4,0)^\frac{2}{9} &\times& \metricn(4,1)^\frac{1}{9} &\times& \metricn(4,2)^\frac{1}{9} &\times& \metricn(4,3)^\frac{2}{9} &      &                          
+      %       \end{array}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}
+             \setn{\begin{array}{ccccccccc}
+                     &      & {2}^1 &\times& {1}^1 &\times& {1}^2 &\times& {2}^3\\
+               {2}^2 &\times&       &      & {2}^1 &\times& {1}^2 &\times& {1}^3\\
+               {1}^2 &\times& {2}^1 &\times&       &      & {2}^2 &\times& {1}^3\\
+               {1}^2 &\times& {1}^1 &\times& {2}^1 &\times&       &      & {1}^3\\
+               {2}^2 &\times& {1}^1 &\times& {1}^1 &\times& {1}^2 &      &
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+                 2^4\\
+                 2^3\\
+                 2^3\\
+                 2^1\\
+                 2^2
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                \mbox{ }
+             \end{array}}}
+      \\
+      \ocscenh(\ocsG)
+        &\eqd \argmin_{x\in\ocso}\brp{\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)}^{-1} 
+        &&\text{by definition of $\ocscenh$ \xref{def:ocscenh}}
+      \\&= \argmax_{x\in\ocso}\brp{\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)}
+        && \text{because $\fphi(x)\eqd x^{-1}$ is \prope{strictly antitone} and by \prefp{lem:minphia}}
+      \\&= \argmax_{x\in\ocso}\brp{\frac{1}{9}\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)9}
+      \\&= \argmax_{x\in\ocso}\sum_{y\in\ocso}\frac{9\psp(y)}{\metric{x}{y}}
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+      %\\&= \argmin_{x\in\ocsG}
+      %       \setn{\begin{array}{ccccc}
+      %         0                                + \frac{1}{\metric{0}{1}}{\psp(1)} + \frac{1}{\metric{0}{2}}{\psp(2)} + \frac{1}{\metric{0}{3}}{\psp(3)} + \frac{1}{\metric{0}{4}}{\psp(4)}\\
+      %         \frac{1}{\metric{1}{0}}{\psp(0)} + 0                                + \frac{1}{\metric{1}{2}}{\psp(2)} + \frac{1}{\metric{1}{3}}{\psp(3)} + \frac{1}{\metric{1}{4}}{\psp(4)}\\
+      %         \frac{1}{\metric{2}{0}}{\psp(0)} + \frac{1}{\metric{2}{1}}{\psp(1)} + 0                                + \frac{1}{\metric{2}{3}}{\psp(3)} + \frac{1}{\metric{2}{4}}{\psp(4)}\\
+      %         \frac{1}{\metric{3}{0}}{\psp(0)} + \frac{1}{\metric{3}{1}}{\psp(1)} + \frac{1}{\metric{3}{2}}{\psp(2)} + 0                                + \frac{1}{\metric{3}{4}}{\psp(4)}\\
+      %         \frac{1}{\metric{4}{0}}{\psp(0)} + \frac{1}{\metric{4}{1}}{\psp(1)} + \frac{1}{\metric{4}{2}}{\psp(2)} + \frac{1}{\metric{4}{3}}{\psp(3)} + 0                         
+      %       \end{array}}
+      %\\&= \argmin_{x\in\ocsG}
+      %       \setn{\begin{array}{ccccc}
+      %         \brs{                            + \frac{1}{2}\cdot\frac{1}{9} + \frac{1}{1}\cdot\frac{1}{9} + \frac{1}{1}\cdot\frac{2}{9} + \frac{1}{2}\cdot\frac{3}{9}}^{-1}\\
+      %         \brs{\frac{1}{2}\cdot\frac{2}{9} + 0                           + \frac{1}{2}\cdot\frac{1}{9} + \frac{1}{1}\cdot\frac{2}{9} + \frac{1}{1}\cdot\frac{3}{9}}^{-1}\\
+      %         \brs{\frac{1}{1}\cdot\frac{2}{9} + \frac{1}{2}\cdot\frac{1}{9} + 0                           + \frac{1}{2}\cdot\frac{2}{9} + \frac{1}{1}\cdot\frac{3}{9}}^{-1}\\
+      %         \brs{\frac{1}{1}\cdot\frac{2}{9} + \frac{1}{1}\cdot\frac{1}{9} + \frac{1}{2}\cdot\frac{1}{9} + 0                           + \frac{1}{1}\cdot\frac{3}{9}}^{-1}\\
+      %         \brs{\frac{1}{2}\cdot\frac{2}{9} + \frac{1}{1}\cdot\frac{1}{9} + \frac{1}{1}\cdot\frac{1}{9} + \frac{1}{1}\cdot\frac{2}{9} + 0                          }^{-1}
+      %       \end{array}}
+      %\\&= \argmin_{x\in\ocsG}9
+      %       \setn{\begin{array}{ccccc}
+      %         \brs{0           + \frac{1}{2} + \frac{1}{1} + \frac{2}{1} + \frac{3}{2}}^{-1}\\
+      %         \brs{\frac{2}{2} + 0           + \frac{1}{2} + \frac{2}{1} + \frac{3}{1}}^{-1}\\
+      %         \brs{\frac{2}{1} + \frac{1}{2} + 0           + \frac{2}{2} + \frac{3}{1}}^{-1}\\
+      %         \brs{\frac{2}{1} + \frac{1}{1} + \frac{1}{2} + 0           + \frac{3}{1}}^{-1}\\
+      %         \brs{\frac{2}{2} + \frac{1}{1} + \frac{1}{1} + \frac{2}{1} + 0          }^{-1}
+      %       \end{array}}
+      %\\&= \argmin_{x\in\ocsG}9
+      %       \setn{\begin{array}{c}
+      %         \brs{\frac{10}{2}}^{-1}\\
+      %         \brs{\frac{13}{2}}^{-1}\\
+      %         \brs{\frac{13}{2}}^{-1}\\
+      %         \brs{\frac{13}{2}}^{-1}\\
+      %         \brs{\frac{11}{2}}^{-1}
+      %       \end{array}}
+      \\&=\mathrlap{\argmax_{x\in\ocsG}
+             \setn{\begin{array}{*{4}{cc}c}
+               0           &+& \frac{1}{2} &+& \frac{1}{1} &+& \frac{2}{1} &+& \frac{3}{2}\\
+               \frac{2}{2} &+& 0           &+& \frac{1}{2} &+& \frac{2}{1} &+& \frac{3}{1}\\
+               \frac{2}{1} &+& \frac{1}{2} &+& 0           &+& \frac{2}{2} &+& \frac{3}{1}\\
+               \frac{2}{1} &+& \frac{1}{1} &+& \frac{1}{2} &+& 0           &+& \frac{3}{1}\\
+               \frac{2}{2} &+& \frac{1}{1} &+& \frac{1}{1} &+& \frac{2}{1} &+& 0          
+             \end{array}}
+      \quad= \argmax_{x\in\ocsG}\frac{1}{2}
+             \setn{\begin{array}{c}
+               {10}\\
+               {13}\\
+               {13}\\
+               {13}\\
+               {10}
+             \end{array}}
+      \quad= \setn{\begin{array}{c}
+                \\
+               1\\
+               2\\
+               3\\
+               \mbox{}
+             \end{array}}}
+      \\
+      \ocscenm(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscenm$ \xref{def:ocscenm}}
+      \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\frac{1}{9}\metric{x}{y}\psp(y)9
+      \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)9
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}%\frac{1}{9}
+             \setn{\begin{array}{ccccccccc}
+                         &{2}\times1&{1}\times1&{1}\times2&{2}\times3\\
+               {2}\times2&          &{2}\times1&{1}\times2&{1}\times3\\
+               {1}\times2&{2}\times1&          &{2}\times2&{1}\times3\\
+               {1}\times2&{1}\times1&{2}\times1&          &{1}\times3\\
+               {2}\times2&{1}\times1&{1}\times1&{1}\times2& 
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+                1\\
+                2\\
+                2\\
+                1\\
+                1
+             \end{array}}
+      \quad= \setn{\begin{array}{c}
+                0\\
+                 \\
+                 \\
+                3\\
+                4
+             \end{array}}}
+      \\
+      \ocscenM(\ocsG)
+        &\eqd \argmax_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscenM$ \xref{def:ocscenM}}
+      \\&= \argmax_{x\in\ocsG}\setn{1,2,2,1,1}
+        &&\text{by $\ocscenm(\ocsG)$ result}
+      \\&= \setn{1,2}
+      \\
+      \ocsVaro(\ocsG)
+        &= \ocsVaro(\ocsG;\ocsceng)
+        && \text{by $\ocscen(\ocsG)$ and $\ocsceng(\ocsG)$ results}
+      \\&\eqd \sum_{x\in\ocsG}\metricsq{\ocsceng(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{3}}{x}\psp(x)
+        && \text{by $\ocsceng(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+ % x=0
+           (1)^2\frac{1}{9}+ % x=1
+           (2)^2\frac{1}{9}+ % x=2
+           (0)^2\frac{2}{9}+ % x=3
+           (1)^2\frac{3}{9}  % x=4
+         = \frac{10}{9} \approx 1.111}
+      \\
+      \ocsVaro(\ocsG;\ocscena)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscena(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{3,4}}{x}\psp(x)
+        && \text{by $\ocscena(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+ % x=0
+           (1)^2\frac{1}{9}+ % x=1
+           (1)^2\frac{1}{9}+ % x=2
+           (0)^2\frac{2}{9}+ % x=3
+           (0)^2\frac{3}{9}  % x=4
+         = \frac{4}{9} \approx 0.444}
+      \\
+      \ocsVaro(\ocsG;\ocscenh)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenh(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{1,2,3}}{x}\psp(x)
+        && \text{by $\ocscenh(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+ % x=0
+           (0)^2\frac{1}{9}+ % x=1
+           (0)^2\frac{1}{9}+ % x=2
+           (0)^2\frac{2}{9}+ % x=3
+           (1)^2\frac{3}{9}  % x=4
+         = \frac{5}{9} \approx 0.555}
+      \\
+      \ocsVaro(\ocsG;\ocscenm)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenm(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{0,3,4}}{x}\psp(x)
+        && \text{by $\ocscenm(\ocsG)$ result}
+      \\&= \mathrlap{
+           (0)^2\frac{2}{9}+ % x=0
+           (1)^2\frac{1}{9}+ % x=1
+           (1)^2\frac{1}{9}+ % x=2
+           (0)^2\frac{2}{9}+ % x=3
+           (0)^2\frac{3}{9}  % x=4
+         = \frac{2}{9} \approx 0.222}
+      \\
+      \ocsVaro(\ocsG;\ocscenM)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenM(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{1,2}}{x}\psp(x)
+        && \text{by $\ocscenM(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+ % x=0
+           (0)^2\frac{1}{9}+ % x=1
+           (0)^2\frac{1}{9}+ % x=2
+           (1)^2\frac{2}{9}+ % x=3
+           (1)^2\frac{3}{9}  % x=4
+         = \frac{7}{9} \approx 0.778}
+    \end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{minipage}{\tw-65mm}%
+\begin{example}%[\exmd{weigted ring}]
+\label{ex:wring5shortd}
+%---------------------------------------
+The \structe{outcome subspace} \xref{def:ocs} illustrated to the right, with a \fncte{quasi-metric} \xref{def:qmetric}
+has the following geometric values:
+\\\indentx$\begin{array}{rcl@{\qquad} lcccl}
+  \ocscen(\ocsG)=\ocscena(\ocsG)=\ocsceng(\ocsG)=\ocscenh(\ocsG) &=& \setn{3}    & \ocsVaro(\ocsG)          &=& \frac{12}{9} &\approx& 1.333\\
+  \ocscenm(\ocsG)                                                &=& \setn{0,4}  & \ocsVaro(\ocsG;\ocscenm) &=& \frac{10}{9} &\approx& 1.111\\
+  \ocscenM(\ocsG)                                                &=& \setn{1,2,3}& \ocsVaro(\ocsG;\ocscenM) &=& \frac{ 5}{9} &\approx& 0.555
+\end{array}$
+\end{example}
+\end{minipage}\hfill%
+\begin{tabular}{c}
+  \gsize%
+  %\psset{unit=5mm}%
+  %{\input{../common/math/graphics/ocs/wring5shortd.tex}}%
+  {\includegraphics{sto/graphics/wring5shortd.pdf}}%
+\end{tabular}
+\\
+This is the first example in this section to use a \structe{directed graph} 
+(rather than an \structe{undirected graph} \xrefnp{def:dgraph})
+and to require the use of a \fncte{quasi-metric} \xref{def:qmetric} that is not a \fncte{metric}.
+Unlike \prefpp{ex:wring5short}, which had neither of these restrictions,
+twice as many center operators (4 rather than 2) were able to successfully isolate a single center point.
+The \structe{outcome center} result is used later in \prefpp{ex:lcg7x1m9_dgraph}.
+\\
+\begin{proof}
+    \begin{align*}
+      \ocscen(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscen$ \xref{def:ocscen}}
+      \\&\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{9}\metric{x}{y}\psp(y)9
+      \\&\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)9
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+             \setn{\begin{array}{*{5}{c}}
+               \metricn(0,0)\psp(0)9&\metricn(0,1)\psp(1)9&\metricn(0,2)\psp(2)9&\metricn(0,3)\psp(3)9&\metricn(0,4)\psp(4)9\\
+               \metricn(1,0)\psp(0)9&\metricn(1,1)\psp(1)9&\metricn(1,2)\psp(2)9&\metricn(1,3)\psp(3)9&\metricn(1,4)\psp(4)9\\
+               \vdots              &\vdots              &\vdots              &\vdots              &\vdots              \\
+              %\metricn(2,0)\psp(0)9&\metricn(2,1)\psp(1)9&\metricn(2,2)\psp(2)9&\metricn(2,3)\psp(3)9&\metricn(2,4)\psp(4)9\\
+              %\metricn(3,0)\psp(0)9&\metricn(3,1)\psp(1)9&\metricn(3,2)\psp(2)9&\metricn(3,3)\psp(3)9&\metricn(3,4)\psp(4)9\\
+               \metricn(4,0)\psp(0)9&\metricn(4,1)\psp(1)9&\metricn(4,2)\psp(2)9&\metricn(4,3)\psp(3)9&\metricn(4,4)\psp(4)9\\
+             \end{array}}}
+      %\\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}
+      %       \setn{\begin{array}{*{5}{c}}
+      %         \metricn(0,0)\frac{2}{9}&\metricn(0,1)\frac{1}{9}&\cdots&\metricn(0,4)\frac{3}{9}\\
+      %         \metricn(1,0)\frac{2}{9}&\metricn(1,1)\frac{1}{9}&\cdots&\metricn(1,4)\frac{3}{9}\\
+      %         \vdots                  &\ddots                  &\ddots&\vdots                  \\
+      %         \metricn(4,0)\frac{2}{9}&\metricn(4,1)\frac{1}{9}&\cdots&\metricn(4,4)\frac{3}{9}\\
+      %       \end{array}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+             %\setn{\begin{array}{*{5}{@{\hspace{1pt}}c@{\hspace{1pt}}}}
+             \setn{\begin{array}{*{5}{c}}
+               {0}\times2 & {3}\times1 & {1}\times1 & {4}\times2 & {2}\times3\\
+               {2}\times2 & {0}\times1 & {3}\times1 & {1}\times2 & {2}\times3\\
+               {4}\times2 & {2}\times1 & {0}\times1 & {3}\times2 & {1}\times3\\
+               {1}\times2 & {2}\times1 & {2}\times1 & {0}\times2 & {1}\times3\\
+               {3}\times2 & {1}\times1 & {4}\times1 & {2}\times2 & {0}\times3\\
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+                8\\
+                6\\
+                8\\
+                3\\
+                6
+             \end{array}}
+      \quad= \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                \mbox{ }
+             \end{array}}}
+      \\\\
+      \ocscena(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+      \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\frac{1}{9}\metric{x}{y}\psp(y)9
+      \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)9
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+      %\\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}
+      %       \setn{\begin{array}{ccccccccc}
+      %         \metricn(0,0)\frac{2}{9}&+&\metricn(0,1)\frac{1}{9}&+&\metricn(0,2)\frac{1}{9}&+&\metricn(0,3)\frac{2}{9}&+&\metricn(0,4)\frac{3}{9}\\
+      %         \metricn(1,0)\frac{2}{9}&+&\metricn(1,1)\frac{1}{9}&+&\metricn(1,2)\frac{1}{9}&+&\metricn(1,3)\frac{2}{9}&+&\metricn(1,4)\frac{3}{9}\\
+      %         \metricn(2,0)\frac{2}{9}&+&\metricn(2,1)\frac{1}{9}&+&\metricn(2,2)\frac{1}{9}&+&\metricn(2,3)\frac{2}{9}&+&\metricn(2,4)\frac{3}{9}\\
+      %         \metricn(3,0)\frac{2}{9}&+&\metricn(3,1)\frac{1}{9}&+&\metricn(3,2)\frac{1}{9}&+&\metricn(3,3)\frac{2}{9}&+&\metricn(3,4)\frac{3}{9}\\
+      %         \metricn(4,0)\frac{2}{9}&+&\metricn(4,1)\frac{1}{9}&+&\metricn(4,2)\frac{1}{9}&+&\metricn(4,3)\frac{2}{9}&+&\metricn(4,4)\frac{3}{9}\\
+      %       \end{array}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{ccccccccc}
+               {0}\times2 &+& {3}\times1 &+& {1}\times1 &+& {4}\times2 &+& {2}\times3\\
+               {2}\times2 &+& {0}\times1 &+& {3}\times1 &+& {1}\times2 &+& {2}\times3\\
+               {4}\times2 &+& {2}\times1 &+& {0}\times1 &+& {3}\times2 &+& {1}\times3\\
+               {1}\times2 &+& {2}\times1 &+& {2}\times1 &+& {0}\times2 &+& {1}\times3\\
+               {3}\times2 &+& {1}\times1 &+& {4}\times1 &+& {2}\times2 &+& {0}\times3\\
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}%\frac{1}{9}
+             \setn{\begin{array}{ccccc}
+                18\\
+                15\\
+                19\\
+                 9\\
+                15
+             \end{array}}
+      \quad= \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                \mbox{ }
+             \end{array}}}
+      \\\\
+      \ocsceng(\ocsG)
+        &\eqd \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{\psp(y)}}
+        &&\text{by definition of $\ocsceng$ \xref{def:ocsceng}}
+      \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)\frac{1}{9}}}
+      \\&= \argmin_{x\in\ocsG}\brs{\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)}}}^\frac{1}{9}
+      \\&= \argmin_{x\in\ocsG}\prod_{y\in\ocsG\setd\setn{x}}{\metric{x}{y}^{9\psp(y)}}
+        &&\text{because $\ff(x)\eqd x^\frac{1}{9}$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}
+             \setn{\begin{array}{ccccccccc}
+                     &      & {3}^1 &\times& {1}^1 &\times& {4}^2 &\times& {2}^3\\
+               {2}^2 &\times&       &      & {3}^1 &\times& {1}^2 &\times& {2}^3\\
+               {4}^2 &\times& {2}^1 &\times&       &      & {3}^2 &\times& {1}^3\\
+               {1}^2 &\times& {2}^1 &\times& {2}^1 &\times&       &      & {1}^3\\
+               {3}^2 &\times& {1}^1 &\times& {4}^1 &\times& {2}^2 &      &
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+               384\\
+               192\\
+               432\\
+                24\\
+               144
+             \end{array}}
+      \quad= \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                \mbox{ }
+             \end{array}}}
+      \\\\
+      \ocscenh(\ocsG)
+        &\eqd \argmin_{x\in\ocso}\brp{\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)}^{-1} 
+        &&\text{by definition of $\ocscenh$ \xref{def:ocscenh}}
+      \\&= \argmax_{x\in\ocso}\brp{\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)}
+        && \text{because $\fphi(x)\eqd x^{-1}$ is \prope{strictly antitone} and by \prefp{lem:minphia}}
+      \\&= \argmax_{x\in\ocso}\brp{\frac{1}{9}\sum_{y\in\ocso}\frac{1}{\metric{x}{y}}\psp(y)9}
+      \\&= \argmax_{x\in\ocso}\sum_{y\in\ocso}\frac{9\psp(y)}{\metric{x}{y}}
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminphi}}
+      \\&=\mathrlap{\argmax_{x\in\ocsG}
+             \setn{\begin{array}{*{4}{cc}c}
+               0           &+& \frac{1}{3} &+& \frac{1}{1} &+& \frac{2}{4} &+& \frac{3}{2}\\
+               \frac{2}{2} &+& 0           &+& \frac{1}{3} &+& \frac{2}{1} &+& \frac{3}{2}\\
+               \frac{2}{4} &+& \frac{1}{2} &+& 0           &+& \frac{2}{3} &+& \frac{3}{1}\\
+               \frac{2}{1} &+& \frac{1}{2} &+& \frac{1}{2} &+& 0           &+& \frac{3}{1}\\
+               \frac{2}{3} &+& \frac{1}{1} &+& \frac{1}{4} &+& \frac{2}{2} &+& 0          
+             \end{array}}
+      \quad= \argmax_{x\in\ocsG}\frac{1}{2}
+             \setn{\begin{array}{c}
+               {20}\\
+               {27}\\
+               {28}\\
+               {36}\\
+               {35}
+             \end{array}}
+      \quad= \setn{\begin{array}{c}
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                3\\
+                \mbox{ }
+             \end{array}}}
+      \\
+      \ocscenm(\ocsG)
+      \\&\eqd \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscenm$ \xref{def:ocscenm}}
+      \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\frac{1}{9}\metric{x}{y}\psp(y)9
+      \\&= \argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)9
+        &&\text{because $\ff(x)=\frac{1}{9}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}%\frac{1}{9}
+             \setn{\begin{array}{ccccccccc}
+                          & {3}\times1 & {1}\times1 & {4}\times2 & {2}\times3\\
+               {2}\times2 &            & {3}\times1 & {1}\times2 & {2}\times3\\
+               {4}\times2 & {2}\times1 &            & {3}\times2 & {1}\times3\\
+               {1}\times2 & {2}\times1 & {2}\times1 &            & {1}\times3\\
+               {3}\times2 & {1}\times1 & {4}\times1 & {2}\times2 &             
+             \end{array}}
+      \quad= \argmin_{x\in\ocsG}
+             \setn{\begin{array}{c}
+                1\\
+                2\\
+                2\\
+                2\\
+                1
+             \end{array}}
+      \quad= \setn{\begin{array}{c}
+                0\\
+                \mbox{ }\\
+                \mbox{ }\\
+                \mbox{ }\\
+                4
+             \end{array}}}
+    \\
+      \ocscenM(\ocsG)
+        &\eqd \argmax_{x\in\ocsG}\min_{y\in\ocsG\setd\setn{x}}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscenM$ \xref{def:ocscenM}}
+      \\&\eqd \argmax_{x\in\ocsG}\setn{1,2,2,2,1}
+        &&\text{by $\ocscenm(\ocsG)$ result}
+      \\&= \setn{1,2,3}
+      \\
+      \ocsVaro(\ocsG)
+        &= \mathrlap{\ocsVaro(\ocsG;\ocscena)= \ocsVaro(\ocsG;\ocsceng)= \ocsVaro(\ocsG;\ocscenh)}
+        && \text{by $\ocscen(\ocsG)$, $\ocscena(\ocsG)$, $\ocsceng(\ocsG)$, and  $\ocscenh(\ocsG)$ results}
+      \\&\eqd \sum_{x\in\ocsG}\metricsq{\ocscenh(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{3}}{x}\psp(x)
+        && \text{by $\ocscenh(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+  % x=0
+           (2)^2\frac{1}{9}+  % x=1
+           (2)^2\frac{1}{9}+  % x=2
+           (0)^2\frac{2}{9}+  % x=3
+           (1)^2\frac{3}{9}   % x=4
+         = \frac{12}{9} = \frac{4}{3} \approx 1.333}
+      \\
+      \ocsVaro(\ocsG;\ocscenm)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenm(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{0,4}}{x}\psp(x)
+        && \text{by $\ocscenm(\ocsG)$ result}
+      \\&= \mathrlap{
+           (0)^2\frac{2}{9}+  % x=0
+           (1)^2\frac{1}{9}+  % x=1
+           (1)^2\frac{1}{9}+  % x=2
+           (2)^2\frac{2}{9}+  % x=3
+           (0)^2\frac{3}{9}   % x=4
+         = \frac{10}{9} \approx 1.111}
+      \\
+      \ocsVaro(\ocsG;\ocscenM)
+        &\eqd \sum_{x\in\ocsG}\metricsq{\ocscenM(\ocsG)}{x}\psp(x)
+        && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+      \\&= \sum_{x\in\ocsG}\metricsq{\setn{1,2,3}}{x}\psp(x)
+        && \text{by $\ocscenm(\ocsG)$ result}
+      \\&= \mathrlap{
+           (1)^2\frac{2}{9}+  % x=0
+           (0)^2\frac{1}{9}+  % x=1
+           (0)^2\frac{1}{9}+  % x=2
+           (0)^2\frac{2}{9}+  % x=3
+           (1)^2\frac{3}{9}   % x=4
+         = \frac{5}{9} \approx 0.555}
+    \end{align*}
+\end{proof}
+
+
+
+%\begin{table}%
+%  \gsize%
+%  \centering%
+%  \begin{tabular}{|r|*{11}{c}|c||c|}%
+%     \hline
+%         & \mc{11}{c|}{moments $\ocsmom(x,y)/36$ {\scs($\max$ values shaded)}}         &  sum   &             \\
+%     x/y & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 &\scs ($\min$ value shaded) & $\ocsmom_2\brs{\ocsE(\rvX),x}/36$\\
+%     \hline
+%     2 & 0 & 2 & 3 & 3 & 5 &\scell{12} &10 & 6 & 6  & 6  & 4 & 57 & 4  \\
+%     3 & 1 & 0 & 3 & 3 & 5 & 6 &\scell{10} & 6 & 6  & 4  & 3 & 47 & 2  \\
+%     4 & 1 & 2 & 0 & 3 & 5 & \scell{6} & 5 & \scell{6} & \scell{6}  & 4  & 2 & 40 & 3  \\
+%     5 & 1 & 2 & 3 & 0 & 5 & \scell{6} & 5 & 3 & \scell{6}  & 4  & 2 & 37 & 3  \\
+%     6 & 1 & 2 & 3 & 3 & 0 & \scell{6} & 5 & 3 & 3  & 4  & 2 & 32 & 5  \\
+%    {7} & 2 & 2 & 3 & 3 & \scell{5} & 0 & \scell{5} & 3 & 3  & 2  & 2 & \scell{30} & 0  \\
+%     8 & 2 & 4 & 3 & 3 & 5 & \scell{6} & 0 & 3 & 3  & 2  & 1 & 32 & 5 \\
+%     9 & 2 & 4 & \scell{6} & 3 & 5 & \scell{6} & 5 & 0 & 3  & 2  & 1 & 37 & 3 \\
+%    10 & 2 & 4 & \scell{6} & \scell{6} & 5 & \scell{6} & 5 & 3 & 0  & 2  & 1 & 40 & 3 \\
+%    11 & 3 & 4 & 6 & 6 & \scell{10}& 6 & 5 & 3 & 3  & 0  & 1 & 47 & 2 \\
+%    12 & 4 & 6 & 6 & 6 & 10&\scell{12} & 5 & 3 & 3  & 2  & 0 & 57 & 4 \\
+%    \hline
+%       &   &   &   &   &   &   &   &   &    &    &   &    &$\pVar(\rvX)=\sfrac{34}{36}$\\
+%    \hline
+%  \end{tabular}%
+%  \caption{moments of a pair of fair dice \xref{ex:dicepair_moments}\label{tbl:pairdice_moments}}
+%\end{table}
+
+
+%The physical geometry inducing a stochastic process and the \structe{metric geometry} \xref{rem:mgeo} 
+%of the stochastic process itself 
+%may be very different, as illustrated in the next two examples.\\
+%{\begin{tabular}{c}%
+%  \gsize%
+%  \centering%
+%  %\psset{unit=3mm}%
+%  %{\input{../common/math/graphics/sto/archerytarget.tex}}%
+%  {\includegraphics{sto/graphics/archerytarget.pdf}}%
+%\end{tabular}}\hfill%
+%%---------------------------------------
+%\begin{minipage}{\tw-62mm}
+%\begin{example}[\exmd{archery}]
+%\label{ex:archery}
+%%---------------------------------------
+%Consider the archery target illustrated to the left.
+%It consists of several concentric circles, each with a different point value.
+%However, its' \structe{outcome subspace} structure, has a very different geometry, as illustrated to the right.
+%Assuming uniform distribution, the graph center is shaded in the illustration to right.
+%\end{example}
+%\end{minipage}\hfill%
+%{\begin{tabular}{c}%
+%  \gsize%
+%  \centering%
+%  %\psset{unit=5mm}%
+%  %{\input{../common/math/graphics/sto/ocsarchery.tex}}%
+%  {\includegraphics{sto/graphics/ocsarchery.pdf}}%
+%\end{tabular}}
+%
+%{\begin{tabular}{c}%
+%  \gsize%
+%  \centering%
+%  %\psset{unit=3mm}%
+%  %{\input{../common/math/graphics/sto/dartstarget.tex}}%
+%  {\includegraphics{sto/graphics/dartstarget.pdf}}%
+%\end{tabular}}\hfill%
+%%---------------------------------------
+%\begin{minipage}{\tw-70mm}
+%\begin{example}[\exmd{darts}]
+%\label{ex:darts}
+%%---------------------------------------
+%Consider the simplified dart board illustrated to the left
+%and \structe{outcome subspace} illustrated to the right.
+%%It consists of several concentric circles, each with a different point value.
+%Unlike the archery \structe{outcome subspace} \xref{ex:archery}, the outcome subspace is \prope{non-linear}.
+%%Its' \structe{outcome subspace} strurture, is has a very different geometry, as illustrated to the right.
+%Assuming uniform distribution, the graph center is shaded in the illustration.
+%\end{example}
+%\end{minipage}\hfill%
+%{\begin{tabular}{c}%
+%  \gsize%
+%  \psset{unit=7mm}%
+%  \centering%
+%  %{\input{../common/math/graphics/sto/ocsdarts.tex}}%
+%  {\includegraphics{sto/graphics/ocsdarts.pdf}}%
+%\end{tabular}}
+%
+%
+%---------------------------------------
+\begin{example}[\exmd{DNA}]
+\label{ex:dna}
+%---------------------------------------
+\structe{Genomic Signal Processing} (\structe{GSP}) analyzes biological sequences called \structe{genome}s.
+These sequences are constructed over a set of 4 symbols that are commonly referred to as 
+$\symA$, $\symT$, $\symC$, and $\symG$,
+each of which corresponds to a nucleobase (adenine,  thymine, cytosine, and guanine, 
+respectively).\footnote{
+  \citePc{mendel1853e}{Mendel (1853): gene coding uses discrete symbols},
+  \citePpc{watson1953}{737}{Watson and Crick (1953): gene coding symbols are adenine,  thymine, cytosine, and guanine},
+  \citePp{watson1953may}{965},
+  \citerpg{pommerville2013}{52}{1449647960}
+  }
+A typical genome sequence contains a large number of symbols 
+(about 3 billion for humans, 29751 for the SARS virus).%
+\footnote{%
+  \citeWuc{genbank}{http://www.ncbi.nlm.nih.gov/genome/guide/human/}{Homo sapiens, NC\_000001--NC\_000022 (22 chromosome pairs), NC\_000023 (X chromosome), NC\_000024 (Y chromosome), NC\_012920 (mitochondria)},
+  \citeWuc{genbank}{http://www.ncbi.nlm.nih.gov/nuccore/30271926}{SARS coronavirus, NC\_004718.3}
+  \citePc{gregory2006}{homo sapien chromosome 1},
+  \citePc{he2004}{SARS coronavirus}
+  }
+\\[0.3ex]\begin{minipage}{\tw-37mm}%
+Let $\ocsG\eqd\ocs{\setn{\symA,\symT,\symC,\symG}}{\metricn}{\orel}{\psp}$ 
+be the \structe{outcome subspace} \xref{def:ocsm} generated by a \structe{genome}
+where $\metricn$ is the \fncte{discrete metric} \xref{def:dmetric},
+$\orel\eqd\emptyset$ (completely unordered set), and 
+$\psp(\symA)=\psp(\symT)=\psp(\symC)=\psp(\symG)=\frac{1}{4}$.
+This space is illustrated by the \structe{graph} \xref{def:graph} to the right
+with shaded \structe{center} \xref{def:ocscen}.
+\end{minipage}%
+\hfill%
+{\begin{tabular}{c}%
+  \gsize%
+  \psset{unit=8mm}%
+  \centering%
+  %{\input{../common/math/graphics/sto/dna.tex}}%
+  {\includegraphics{sto/graphics/dna.pdf}}%
+\end{tabular}}
+\\
+The graph has the following geometric values:
+  \\\indentx$\begin{array}{rclDD}
+    \ocscen(\ocsG)  &=& \setn{\symA,\symT,\symC,\symG} & \xref{def:ocscen}  & (shaded in illustration)\\
+    \ocscena(\ocsG) &=& \setn{\symA,\symT,\symC,\symG} & \xref{def:ocscenx} & (shaded in illustration)\\
+    \ocsVaro(\ocsG)  &=& 0                              & \xref{def:ocsVarG}     
+  \end{array}$
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    && \text{by definition of $\ocscen$ \xref{def:ocscen}}
+  \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\frac{1}{4}
+    && \text{by definition of $\ocsG$}
+  \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}
+    && \text{because $\ff(x)=\frac{1}{4}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+  \\&= \argmin_{x\in\ocsG}\setn{1,\,1,\,1,\,1}
+    && \text{because for the \fncte{discrete metric} \xref{def:dmetric}, $\max\metricn=1$}
+  \\&= \setn{\symA,\symT,\symC,\symG}
+    && \text{by definition of $\ocsG$}
+  \\
+  \ocscena(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscena$ \xref{def:ocscenx}}
+  \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\frac{1}{6}
+    &&\text{by definition of $\ocsG$}
+  \\&= \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}
+    &&\text{because $\ff(x)=\frac{1}{4}x$ is \prope{strictly isotone} and by \prefpp{lem:argminmaxphi}}
+  \\&= \mathrlap{\argmin_{x\in\ocsG}
+         \setn{\begin{array}{*{11}{@{\hspace{2pt}}c}}
+           0 &+& 1 &+& 1 &+& 1\\
+           1 &+& 0 &+& 1 &+& 1\\
+           1 &+& 1 &+& 0 &+& 1\\
+           1 &+& 1 &+& 1 &+& 0
+         \end{array}}
+       = \argmin_{x\in\ocsG}
+         \setn{\begin{array}{c}
+           3\\
+           3\\
+           3\\
+           3  
+         \end{array}}
+     = \setn{\symA,\symT,\symC,\symG}}
+    \\
+  \ocsVaro(\ocsG)
+    &\eqd \sum_{x\in\ocsG}\brs{\metric{\ocscen(\ocsG)}{x}}^2\psp(x)
+    && \text{by definition of $\ocsVaro$ \xref{def:ocsVarG}}
+  \\&= \sum_{x\in\ocsG}(0)\frac{1}{6}
+    && \text{because $\ocscen(\ocsG)=\ocsG$}
+  \\&= 0
+    && \text{by field property of \vale{additive identity element} $0$}
+\end{align*}
+\end{proof}
+
+
+%
+%%---------------------------------------
+%\begin{example}[\exmd{DQPSK}]
+%\footnote{
+%  \citer{wesolowski2009}
+%  }
+%\label{ex:dqpsk}
+%%---------------------------------------
+%In digital communications, there are several modulation techniques available.
+%Most of these manipulate (``modulate") the parameters a sinusoidal signal (called the \structe{carrier})
+%at the transmitter to ``carry" information (such as a person's voice) to a receiver
+%where under certain reasonable conditions the information can be recovered 
+%with an acceptably low error rate (e.g. $\le0.0001$\%).
+%Parameters of the sinusoid that may be manipulated include the sinusoid's amplitude
+%(\hie{Amplitude Shift Keying} or \hie{ASK}), frequency (\hie{Frequency Shift Keying} or \hie{FSK}),
+%or phase (\hie{Phase Shift Keying} or \hie{PSK}).
+%The information to be carried is first encoded into a sequence of ``symbols", 
+%with each symbol carrying $\xN$ bits (typically $\xN=$ 1, 2, or 3).
+%All of modulation techniques generate a code space with $2^\xN$ code points.
+%In each modulation techique, the receiver must somehow have a reference by which it can recover the 
+%information from the carrier.
+%A receiver may easily generate an amplitude reference for ASK modulation by using a 
+%simple low pass filter to find the 0 Hertz component of the received signal.
+%A receiver may generate a frequency reference for FSK modulation by using an oscillator circuit
+%that oscillates at the same frequency as the unmodulated carrier.
+%For PSK, generating a reference cannot be done without assistance from the transmitter. 
+%The transmitter may provide this assistance by also transmitting a reference sinusoid (one that does not 
+%change it's phase), or by encoding the reference signal into the information sequence itself.
+%\\[0.3ex]\begin{minipage}{\tw-37mm}%
+%One way to do the latter using $\xN=2$ bit encoding is a modulation technique called 
+%\hie{Differential Quadrature Phase Shift Keying} or \hie{DQPSK}.
+%In DQPSK, consecutive code points at the transmitter cannot change by more than 1 bit.
+%In the illustration, this means that they cannot ``jump" across the square to the opposite corner. 
+%That is, each symbol is partly a function of the previous symbol.
+%By doing so, the phase information can be encoded into the sequence.
+%\end{minipage}%
+%\hfill%
+%{\begin{tabular}{c}%
+%  \gsize%
+%  \psset{unit=10mm}%
+%  \centering%
+%  %{\input{../common/math/graphics/sto/dqpsk.tex}}%
+%  {\includegraphics{sto/graphics/dqpsk.pdf}}%
+%\end{tabular}}
+%\end{example}
+%
+
+
+
+
+
+
+%\begin{figure}
+%  \gsize%
+%  \centering%
+%  \psset{unit=10mm}%
+%  {\input{../common/math/graphics/sto/vending.tex}}%
+%  \caption{state machine for vending machine \xref{ex:vending}\label{fig:vending}}
+%\end{figure}
+%%---------------------------------------
+%\begin{example}[\exmd{state machine}]
+%\label{ex:vending}
+%%---------------------------------------
+%A simple state machine for a vending machine is illustrated with a directed graph in \prefpp{fig:vending}.
+%At any given time, the state machine is in exactly one of the 6 states. 
+%The sequence of states it is in at sampled time intervals is a random process.
+%Again, the order and topology of this structure is very dissimilar to that of the real line mapped to by 
+%the traditional random variable.
+%\end{example}
+%
+%%\begin{figure}
+%%  \gsize%
+%%  \centering%
+%%  \psset{unit=5mm}%
+%%  {\input{../common/math/graphics/sto/network.tex}}%
+%%  \caption{state machine for vending machine \xref{ex:network}\label{fig:network}}
+%%\end{figure}
+%\begin{minipage}{\tw-25mm}%
+%%---------------------------------------
+%\begin{example}[\exmd{network}]
+%\label{ex:vending}
+%%---------------------------------------
+%A simple network is illustrated with an undirected graph to the right. %in \prefpp{fig:network}.
+%Suppose a packet is sent from $A$ to $B$. 
+%%At any given time, the packet is in exactly one of the 8 servers. 
+%The sequence of servers the packet transverses through is a random process.
+%Again, the order and topology of this structure is very dissimilar to that of the real line mapped to by 
+%the traditional random variable.
+%\end{example}
+%\end{minipage}\hfill%
+%\begin{tabular}{c}
+%  \gsize%
+%  \centering%
+%  \psset{unit=5mm}%
+%  {\input{../common/math/graphics/sto/network.tex}}%
+%\end{tabular}
+%
+%%---------------------------------------
+%\begin{example}[\exmd{Fishing in Sierpi/'nski's Sea}]
+%\label{ex:ssea}
+%%---------------------------------------
+%Suppose there is a sea, called ``Sierpi/'nski's Sea", with only two fish---one blue fish and one red fish.
+%This is a very special sea with very special fish.
+%You throw a net into Sierpi/'nski's Sea.
+%In this sea, there are only three possibilities of what you may find when you pull the net back in:
+%\\\indentx$\begin{array}{clM}
+%  \circOne   & \emptyset:  & the net is empty\\
+%  \circTwo   & \setn{b}:   & the blue fish is in the net\\
+%  \circThree & \setn{b,r}: & both the blue and red fish are in the net
+%\end{array}$\\
+%However, in this very special sea of very special fish, the blue fish is a very loyal friend to the 
+%red fish and so he will always rescue the red fish from your net, or be caught together with the red fish attempting 
+%to do so. Thus, it is not possible that only the red fish is in the net.
+%The set of three possible sets $\topT\eqd\setn{\emptyset,\,\setn{b},\,\setn{b,r}}$ form a topology on $\setX\eqd\setn{b,r}$
+%that is \prope{non-metrizable}. 
+%The \structe{topological space} $\opair{\setX}{\topT}$ is called \structe{Sierpi/'nski's space}.
+%\\\begin{minipage}{\tw-25mm}%
+%Suppose the probabilities of the three outcomes are 
+%$\psp(\emptyset)=\frac{5}{8}$, $\psp(\setn{b})=\frac{1}{8}$, and $\psp(\setn{b,r})=\frac{1}{4}$.
+%The structure $\ocs{\setX}{\topT}{\subseteq}{\psp}$ is an \structe{outcome subspace} \xref{def:ocs}.
+%The set $\setX$ is ordered using the subset relation $\subseteq$, producing a 
+%\structe{directed graph} \xref{def:graph} that is also a \structe{linearly ordered lattice} \xref{def:chain},
+%as illustrated to the right.
+%\end{minipage}\hfill%
+%\begin{tabular}{c}
+%  \gsize%
+%  \centering%
+%  \psset{unit=5mm}%
+%  {\input{../common/math/graphics/sto/ssea.tex}}%
+%\end{tabular}
+%\end{example}
+%
+%
+%%---------------------------------------
+%\begin{example}[\exmd{program termination}]
+%\label{ex:csob}
+%%---------------------------------------
+%For a certain computer program, define the following:\footnote{
+%  \citeI{smyth1992},
+%  \citePp{schroder2006}{605}
+%  }
+%\\\indentx$\begin{array}{cM}
+%  \setn{\downtack}:         & the program terminates after a finite time\\
+%  \setn{\uptack}:           & the program does \emph{not} terminate in a finite time\\
+%  \setn{\downtack,\uptack}: & the program has been executed\\
+%  \emptyset:                & the program has not been executed
+%\end{array}$\\
+%That is, $\setn{\uptack}$ indicates a program is ``stuck" in an ``infinite loop".
+%The topology $\topT\eqd\setn{\emptyset,\setn{\downtack},\setn{\downtack,\uptack}}$ 
+%on the set $\setX\eqd\setn{\downtack,\uptack}$ is a \structe{Sierpi/'nsk Space} \xref{ex:ssea}.
+%The \structe{open sets} \xref{def:openset} of $\topT$ are all \prope{observable}.
+%However, $\setn{\uptack}$ is \emph{not} observable.
+%\end{example}
+
+%\fi
+
+\end{tabstr}

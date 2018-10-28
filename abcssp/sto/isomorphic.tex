@@ -1,0 +1,611 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX / XeLaTeX file
+%============================================================================
+%=======================================
+\subsection{Isomorphic spaces}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerp{burris2000}{10}
+  }
+\label{def:poset_orderpre}
+\label{def:opreserve}
+\index{poset!order preserving}
+%---------------------------------------
+Let $\spX\eqd\opair{\setX}{\orel}$ and $\spY\eqd\opair{\setY}{\orela}$ be ordered sets.
+\\\defboxp{
+  A function $\ds\ftheta\in\clFxy$ is \propd{order preserving} in $\opair{\spX}{\spY}$ if
+  \indentx
+    $\ds \brp{x \orel y} \implies \brp{\ftheta(x)\orela\ftheta(y)} \quad\scy\forall x,y\in\setX$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:lat_iso}
+\label{def:isomorphic}
+\index{lattice!isomorphic}
+%---------------------------------------
+%Let $\spX\eqd\opair{\setX}{\orel}$ be an \structe{ordered set} that induces the pair $\opair{\join}{\meet}$
+%and $\spY\eqd\opair{\setY}{\orela}$ an \structe{ordered set} that induces the pair $\opair{\joina}{\meeta}$.
+Let $\latL_1\eqd\latticed$ and
+    $\latL_2\eqd\lattice{\setY}{\orela}{\joina}{\meeta}$ be \structe{lattice}s.%
+\\\defboxp{ %\indxs{\iso}
+  $\latL_1$ and $\latL_2$ are %\propd{algebraically isomorphic}, or simply \propd{isomorphic}, if
+  \propd{isomorphic} on $\opair{\spX}{\spY}$ if
+  there exists a function $\ftheta\in\clFxy$ such that
+  \\\indentx
+  $\begin{array}{Frcl @{\qquad}D@{\qquad}D@{\qquad}D}%
+     1. & \ftheta(x \join y) &=& \ftheta(x) \joina \ftheta(y)
+        & \forall x,y\in\setX
+        & (\prope{preserves joins})
+        & and \\
+     2. & \ftheta(x \meet y) &=& \ftheta(x) \meeta \ftheta(y)
+        & \forall x,y\in\setX
+        & (\prope{preserves meets}).
+   \end{array}$
+  \\
+  In this case, the function $\ftheta$ is said to be an \fnctd{isomorphism}
+  from $\latL_1$ to $\latL_2$,
+  and the isomorphic relationship between $\latL_1$ and $\latL_2$ is denoted as
+  %\\\indentx
+    $\latL_1\iso\latL_2$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerp{burris2000}{10}
+  }
+\label{thm:latiso}
+%---------------------------------------
+Let $\latticed$ and
+    $\lattice{\setY}{\orela}{\joina}{\meeta}$ be lattices
+and $\ftheta\in\clFxy$ be a \prope{bijective} function with inverse $\ftheti\in\clFyx$.
+%\footnote{\hie{order isomorphic}: \prefp{def:poset_iso}}.
+%Let $\latticed \iso \lattice{\setY}{\orela}{\joina}{\meeta}$ represent the condition that the two lattices are \hie{isomorphic}.
+\thmbox{
+  \mcom{\brbr{\begin{array}{lcl c lcl CD}
+    x_1 &\orel & x_2 &\implies& \ftheta(x_1)      &\orela& \ftheta(x_2)      & \forall x_1,x_2\in\setX & and\\
+    y_1 &\orela& y_2 &\implies& \ftheta^{-1}(y_1) &\orela& \ftheta^{-1}(y_2) & \forall y_1,y_2\in\setY
+  \end{array}}
+  }{$\ftheta$ and $\ftheta^{-1}$ are \prope{order preserving}}
+  \iff
+  \mcom{\latticed \iso \lattice{\setY}{\orela}{\joina}{\meeta}}
+       {\prope{isomorphic}}
+  }
+\end{theorem}
+%\footnotetext{\prope{order preserving}: \prefp{def:poset_orderpre}}
+\begin{proof}
+Let $\ftheta\in\clFxy$ be the isomorphism between lattices
+$\latticed$ and $\lattice{\setY}{\orela}{\joina}{\meeta}$.
+
+\begin{enumerate}
+\item Proof that \prope{order preserving} $\implies$ \prope{preserves joins}:
+  \begin{enumerate}
+    \item Proof that $\ftheta(x_1\join x_2) \orelad \ftheta(x_1)\joina\ftheta(x_2)$:
+          \label{item:lat_iso_join_ge}
+      \begin{enumerate}
+        \item Note that
+          \begin{align*}
+            x_1 &\orel x_1\join x_2 \\
+            x_2 &\orel x_1\join x_2.
+          \end{align*}
+
+        \item Because $\ftheta$ is \prope{order preserving}
+          \begin{align*}
+            \ftheta(x_1) &\orela \ftheta(x_1\join x_2) \\
+            \ftheta(x_2) &\orela \ftheta(x_1\join x_2).
+          \end{align*}
+
+        \item We can then finish the proof of \pref{item:lat_iso_join_ge}:
+          \begin{align*}
+            \ftheta(x_1)\joina\ftheta(x_2)
+              &\orela \mcom{\ftheta(x_1\join x_2)}{$x_1\orel x_1\join x_2$}
+                   \joina
+                   \mcom{\ftheta(x_1\join x_2)}{$x_2\orel x_1\join x_2$}
+              &&   \text{by \prope{order preserving} hypothesis}
+            \\&=   \ftheta(x_1\join x_2)
+              &&   \text{by \prope{idempotent} property \prefpo{thm:lattice}}
+          \end{align*}
+      \end{enumerate}
+
+    \item Proof that $\ftheta(x_1\join x_2)\orela\ftheta(x_1)\joina\ftheta(x_2)$: \label{item:lat_iso_join_le}
+      \begin{enumerate}
+        \item Just as in \pref{item:lat_iso_join_ge}, note that
+              $\ftheti(y_1)\join\ftheti(y_2) \orel \ftheti(y_1\joina y_2)$:
+              \label{item:lat_iso_join_ge_1}
+          \begin{align*}
+            \ftheti(y_1)\join\ftheti(y_2)
+              &\orel \mcom{\ftheti(y_1\joina y_2)}{$y_1\orela y_1\joina y_2$}
+                   \join
+                   \mcom{\ftheti(y_1\joina y_2)}{$y_2\orela y_1\joina y_2$}
+              &&   \text{by \prope{order preserving} hypothesis}
+            \\&=   \ftheti(y_1\joina y_2)
+              &&   \text{by \prope{idempotent} property \prefpo{thm:lattice}}
+          \end{align*}
+
+        \item Because $\ftheta$ is \prope{order preserving} \label{item:lat_iso_join_y1y2}
+          \begin{align*}
+            \ftheta\brs{\ftheti(y_1)\join\ftheti(y_2)}
+              &\orela\ftheta\ftheti(y_1\joina y_2)
+              &&   \text{by \prefp{item:lat_iso_join_ge_1}}
+            \\&= y_1\joina y_2
+              && \text{by definition of inverse function $\ftheti$}
+          \end{align*}
+
+        \item Let $u_1\eqd\ftheta(x_1)$ and $u_2\eqd\ftheta(x_2)$. \label{item:lat_iso_u1u2}
+        \item We can then finish the proof of \pref{item:lat_iso_join_le}:
+          \begin{align*}
+            \ftheta(x_1\join x_2)
+              &= \ftheta\brs{\ftheti\ftheta(x_1) \join \ftheti\ftheta(x_2)}
+              && \text{by definition of inverse function $\ftheti$}
+            \\&= \ftheta\brs{\ftheti(u_1) \join \ftheti(u_2)}
+              && \text{by definition of $u_1,u_2$, \pref{item:lat_iso_u1u2}}
+            \\&\orela u_1 \joina u_2
+              && \text{by \pref{item:lat_iso_join_y1y2}}
+            \\&= \ftheta(x_1) \joina \ftheta(x_2)
+              && \text{by definition of $u_1,u_2$, \pref{item:lat_iso_u1u2}}
+          \end{align*}
+      \end{enumerate}
+
+    \item And so, combining \pref{item:lat_iso_join_ge} and \pref{item:lat_iso_join_le}, we have
+      \[ \brbr{\begin{array}{rclDD}
+           \ftheta(x_1\join x_2) &\orelad& \ftheta(x_1)\joina\ftheta(x_2) & \xref{item:lat_iso_join_ge} & and \\
+           \ftheta(x_1\join x_2) &\orela & \ftheta(x_1)\joina\ftheta(x_2) & \xref{item:lat_iso_join_le} &
+         \end{array}}
+         \qquad\implies\qquad
+         \ftheta(x_1\join x_2) =\ftheta(x_1)\joina\ftheta(x_2)
+      \]
+  \end{enumerate}
+
+\item Proof that \prope{order preserving} $\implies$ \prope{preserves meets}:
+  \begin{enumerate}
+    \item Proof that $\ftheta(x_1\meet x_2) \orela \ftheta(x_1)\meeta\ftheta(x_2)$:
+          \label{item:lat_iso_meet_le}
+      \begin{align*}
+        \ftheta(x_1)\meeta\ftheta(x_2)
+          &\orelad \mcom{\ftheta(x_1\meet x_2)}{$x_1\oreld x_1\meet x_2$}
+               \meeta
+               \mcom{\ftheta(x_1\meet x_2)}{$x_2\oreld x_1\meet x_2$}
+          &&   \text{by \prope{order preserving} hypothesis}
+        \\&=   \ftheta(x_1\meet x_2)
+          &&   \text{by \prope{idempotent} property \prefpo{thm:lattice}}
+      \end{align*}
+
+    \item Proof that $\ftheta(x_1\meet x_2)\orelad\ftheta(x_1)\meeta\ftheta(x_2)$:
+      \label{item:lat_iso_meet_ge}
+      \begin{enumerate}
+        \item Just as in \pref{item:lat_iso_meet_le}, note that
+              $\ftheti(y_1)\meet\ftheti(y_2) \oreld \ftheti(y_1\meeta y_2)$:
+              \label{item:lat_iso_meet_ge_1}
+          \begin{align*}
+            \ftheti(y_1)\meet\ftheti(y_2)
+              &\oreld \mcom{\ftheti(y_1\meeta y_2)}{$y_1\orelad y_1\meeta y_2$}
+                   \meeta
+                   \mcom{\ftheti(y_1\meeta y_2)}{$y_2\orelad y_1\meeta y_2$}
+              &&   \text{by \prope{order preserving} hypothesis}
+            \\&=   \ftheti(y_1\meeta y_2)
+              &&   \text{by \prope{idempotent} property \prefpo{thm:lattice}}
+          \end{align*}
+
+        \item Because $\ftheta$ is \prope{order preserving}
+              \label{item:lat_iso_meet_y1y2}
+          \begin{align*}
+            \ftheta\brs{\ftheti(y_1)\meet\ftheti(y_2)}
+              &\orelad\ftheta\ftheti(y_1\meeta y_2)
+              &&   \text{by \pref{item:lat_iso_meet_ge_1}}
+            \\&= y_1\meeta y_2
+          \end{align*}
+
+        \item Let $v_1\eqd\ftheta(x_1)$ and $v_2\eqd\ftheta(x_2)$. \label{item:lat_iso_meet_v1v2}
+        \item We can then finish the proof of \pref{item:lat_iso_meet_le}:
+          \begin{align*}
+            \ftheta(x_1\meet x_2)
+              &= \ftheta\brs{\ftheti\ftheta(x_1) \meet \ftheti\ftheta(x_2)}
+            \\&= \ftheta\brs{\ftheti(v_1) \meet \ftheti(v_2)}
+              && \text{by \pref{item:lat_iso_meet_v1v2}}
+            \\&\orelad v_1 \meeta v_2
+              && \text{by \pref{item:lat_iso_meet_y1y2}}
+            \\&= \ftheta(x_1) \meeta \ftheta(x_2)
+              && \text{by \pref{item:lat_iso_meet_v1v2}}
+          \end{align*}
+      \end{enumerate}
+
+    \item And so, combining \pref{item:lat_iso_meet_le} and \pref{item:lat_iso_meet_ge}, we have
+      \[ \brbr{\begin{array}{rclDD}
+           \ftheta(x_1\meet x_2) &\orela  & \ftheta(x_1)\meeta\ftheta(x_2) & \xref{item:lat_iso_meet_le} & and \\
+           \ftheta(x_1\meet x_2) &\orelad & \ftheta(x_1)\meeta\ftheta(x_2) & \xref{item:lat_iso_meet_ge} &
+         \end{array}}
+         \qquad\implies\qquad
+         \ftheta(x_1\meet x_2) =\ftheta(x_1)\meeta\ftheta(x_2)
+      \]
+
+  \end{enumerate}
+
+
+\item Proof that \prope{order preserving} $\impliedby$ \prope{isomorphic}:
+  \begin{align*}
+    x \orel y
+      &\implies \ftheta(y) = \ftheta(x \join y) = \ftheta(x) \joina \ftheta(y)
+      && \text{by right hypothesis}
+    \\&\implies \ftheta(x) \orela \ftheta(y)
+    \\
+    x \orel y
+      &\implies \ftheta(x) = \ftheta(x \meet y) = \ftheta(x) \meeta \ftheta(y)
+      && \text{by right hypothesis}
+    \\&\implies \ftheta(x) \orela \ftheta(y)
+  \end{align*}
+
+\end{enumerate}
+
+\end{proof}
+
+
+\begin{minipage}{\tw-40mm}%
+%---------------------------------------
+\begin{example}
+\footnotemark
+\label{ex:order_M2_L4}
+%---------------------------------------
+In the diagram to the right, the function $\ftheta\in\clFxy$ 
+is \prope{order preserving} with respect to $\orel$ and $\orela$.
+Note that $\ftheta^{-1}$ is \prope{not order preserving} and that
+the ordered sets $\opair{\setX}{\orel}$ and $\opair{\setY}{\orela}$ are \prope{not isomorphic}---as already demonstrated 
+by \pref{thm:latiso} that they cannot be.
+%This example also illustrates the fact that 
+%\prope{order preserving} does not imply \prope{isomorphic}.
+\end{example}
+\end{minipage}%
+\citetblt{%
+  \citerp{burris2000}{10}%
+  }%
+\hfill%
+\begin{tabular}{c}
+  \includegraphics{ssp/graphics/m2tol4.pdf}%
+\end{tabular}
+
+\begin{minipage}{\tw-40mm}%
+%---------------------------------------
+\begin{example}
+\label{ex:order_M3_N5}
+%---------------------------------------
+In the diagram to the right, the function $\ftheta\in\clFxy$ 
+is \prope{order preserving} with respect to $\orel$ and $\orela$.
+Note that $\ftheta^{-1}$ is \emph{not} order preserving.
+Like \prefpp{ex:order_M2_L4},
+this example also illustrates the fact that 
+that \prope{order preserving} does not imply \prope{isomorphic}.
+\end{example}
+\end{minipage}%
+\hfill%
+\begin{tabular}{c}
+  \includegraphics{ssp/graphics/m3ton5.pdf}%
+\end{tabular}
+
+\begin{minipage}{\tw-40mm}%
+%---------------------------------------
+\begin{example}
+\label{ex:order_N5_N5}
+%---------------------------------------
+In the diagram to the right, the function $\ftheta\in\clFxy$ 
+is \prope{order preserving} with respect to $\orel$ and $\orela$.
+Note that $\ftheta^{-1}$ is also \prope{order preserving} and that
+the ordered sets $\opair{\setX}{\orel}$ and $\opair{\setY}{\orela}$
+are \prope{isomorphic}---as already demonstrated 
+by \pref{thm:latiso} that they must be.
+\end{example}
+\end{minipage}%
+\hfill%
+\begin{tabular}{c}
+  \includegraphics{ssp/graphics/n5ton5.pdf}%
+\end{tabular}
+
+%%---------------------------------------
+%\begin{example}
+%\citetbl{
+%  \citerpgc{munkres2000}{25}{0131816292}{Example 1\textsection3.9}
+%  }
+%%---------------------------------------
+%\exbox{\text{
+%  The function $\ff(x)\eqd\frac{x}{1-x^2}$ in $\clF{\intoo{-1}{1}}{\R}$ is \prope{bijective} and \prope{order preserving}.
+%  }}
+%\end{example}
+%
+%Lattices and \structe{ordered set} \xref{def:order}
+%are examples of mathematical \structe{order structures}.
+%Often we are interested in similarities between two lattices $\latL_1$ and $\latL_2$ 
+%with respect to order.
+%Similarities between lattices can be described by defining a function $\ftheta$ that maps 
+%from the first lattice to the second.
+%The degree of similarity can be roughly described in terms of the mapping $\ftheta$ as follows:
+%\begin{dingautolist}{"AC}
+%  \item If there exists a mapping that is \prope{bijective}\ifsxref{found}{def:f_types}
+%        then the number of elements in $\latL_1$ and $\latL_2$ is the same. 
+%        However, their order structure may still be very different.
+%  \item Lattices $\latL_1$ and $\latL_2$ are more similar 
+%        if there exists a mapping that is \prope{bijective} and 
+%        \prope{order preserving} \xref{def:poset_orderpre}.
+%        Despite having this property however, 
+%        their order structure may still be remarkably different,
+%        as illustrated by \prefpp{ex:order_M2_L4} and \prefpp{ex:order_M3_N5}.
+%  \item Lattices $\latL_1$ and $\latL_2$ are essentially identical 
+%        (except possibly for their labeling) 
+%        if there exists a mapping $\ftheta$ that is not only 
+%        \prope{bijective} and \prope{order preserving},
+%        but whose \hie{inverse}\ifsxref{relation}{def:rel_inverse} 
+%        is \emph{also} \prope{bijective} \xref{thm:lat_iso}.
+%        In this case, the lattices $\latL_1$ and $\latL_2$ are \prope{isomorphic}
+%        and the mapping $\ftheta$ is an \hie{isomorphism}.
+%        An isomorphism between $\latL_1$ and $\latL_2$ implies that the two lattices
+%        have an identical order structure. In particular,
+%        the isomorphism $\ftheta$ preserves joins and meets (next definition).
+%\end{dingautolist}
+%
+
+
+
+%\footnotetext{
+%  \prope{order preserving}: \prefp{def:poset_orderpre}
+%  }
+%\begin{proof}
+%Let $\ftheta\in\clFxy$ be the isomorphism between lattices
+%$\latticed$ and $\lattice{\setY}{\orela}{\joina}{\meeta}$.
+%
+%\begin{enumerate}
+%\item Proof that \prope{order preserving} $\implies$ \prope{preserves joins}:
+%  \begin{enumerate}
+%    \item Proof that $\ftheta(x_1\join x_2) \orelad \ftheta(x_1)\joina\ftheta(x_2)$:
+%          \label{item:lat_iso_join_ge}
+%      \begin{enumerate}
+%        \item Note that
+%          \begin{align*}
+%            x_1 &\orel x_1\join x_2 \\
+%            x_2 &\orel x_1\join x_2.
+%          \end{align*}
+%
+%        \item Because $\ftheta$ is \prope{order preserving}
+%          \begin{align*}
+%            \ftheta(x_1) &\orela \ftheta(x_1\join x_2) \\
+%            \ftheta(x_2) &\orela \ftheta(x_1\join x_2).
+%          \end{align*}
+%
+%        \item We can then finish the proof of \pref{item:lat_iso_join_ge}:
+%          \begin{align*}
+%            \ftheta(x_1)\joina\ftheta(x_2)
+%              &\orela \mcom{\ftheta(x_1\join x_2)}{$x_1\orel x_1\join x_2$}
+%                   \joina
+%                   \mcom{\ftheta(x_1\join x_2)}{$x_2\orel x_1\join x_2$}
+%              &&   \text{by \prope{order preserving} hypothesis}
+%            \\&=   \ftheta(x_1\join x_2)
+%              &&   \text{by \prope{idempotent} property \prefpo{thm:lattice}}
+%          \end{align*}
+%      \end{enumerate}
+%
+%    \item Proof that $\ftheta(x_1\join x_2)\orela\ftheta(x_1)\joina\ftheta(x_2)$: \label{item:lat_iso_join_le}
+%      \begin{enumerate}
+%        \item Just as in \pref{item:lat_iso_join_ge}, note that
+%              $\ftheti(y_1)\join\ftheti(y_2) \orel \ftheti(y_1\joina y_2)$:
+%              \label{item:lat_iso_join_ge_1}
+%          \begin{align*}
+%            \ftheti(y_1)\join\ftheti(y_2)
+%              &\orel \mcom{\ftheti(y_1\joina y_2)}{$y_1\orela y_1\joina y_2$}
+%                   \join
+%                   \mcom{\ftheti(y_1\joina y_2)}{$y_2\orela y_1\joina y_2$}
+%              &&   \text{by \prope{order preserving} hypothesis}
+%            \\&=   \ftheti(y_1\joina y_2)
+%              &&   \text{by \prope{idempotent} property \prefpo{thm:lattice}}
+%          \end{align*}
+%
+%        \item Because $\ftheta$ is \prope{order preserving} \label{item:lat_iso_join_y1y2}
+%          \begin{align*}
+%            \ftheta\brs{\ftheti(y_1)\join\ftheti(y_2)}
+%              &\orela\ftheta\ftheti(y_1\joina y_2)
+%              &&   \text{by \prefp{item:lat_iso_join_ge_1}}
+%            \\&= y_1\joina y_2
+%              && \text{by definition of inverse function $\ftheti$}
+%          \end{align*}
+%
+%        \item Let $u_1\eqd\ftheta(x_1)$ and $u_2\eqd\ftheta(x_2)$. \label{item:lat_iso_u1u2}
+%        \item We can then finish the proof of \pref{item:lat_iso_join_le}:
+%          \begin{align*}
+%            \ftheta(x_1\join x_2)
+%              &= \ftheta\brs{\ftheti\ftheta(x_1) \join \ftheti\ftheta(x_2)}
+%              && \text{by definition of inverse function $\ftheti$}
+%            \\&= \ftheta\brs{\ftheti(u_1) \join \ftheti(u_2)}
+%              && \text{by definition of $u_1,u_2$, \pref{item:lat_iso_u1u2}}
+%            \\&\orela u_1 \joina u_2
+%              && \text{by \pref{item:lat_iso_join_y1y2}}
+%            \\&= \ftheta(x_1) \joina \ftheta(x_2)
+%              && \text{by definition of $u_1,u_2$, \pref{item:lat_iso_u1u2}}
+%          \end{align*}
+%      \end{enumerate}
+%
+%    \item And so, combining \pref{item:lat_iso_join_ge} and \pref{item:lat_iso_join_le}, we have
+%      \[ \brbr{\begin{array}{rclDD}
+%           \ftheta(x_1\join x_2) &\orelad& \ftheta(x_1)\joina\ftheta(x_2) & \xref{item:lat_iso_join_ge} & and \\
+%           \ftheta(x_1\join x_2) &\orela & \ftheta(x_1)\joina\ftheta(x_2) & \xref{item:lat_iso_join_le} &
+%         \end{array}}
+%         \qquad\implies\qquad
+%         \ftheta(x_1\join x_2) =\ftheta(x_1)\joina\ftheta(x_2)
+%      \]
+%  \end{enumerate}
+%
+%\item Proof that \prope{order preserving} $\implies$ \prope{preserves meets}:
+%  \begin{enumerate}
+%    \item Proof that $\ftheta(x_1\meet x_2) \orela \ftheta(x_1)\meeta\ftheta(x_2)$:
+%          \label{item:lat_iso_meet_le}
+%      \begin{align*}
+%        \ftheta(x_1)\meeta\ftheta(x_2)
+%          &\orelad \mcom{\ftheta(x_1\meet x_2)}{$x_1\oreld x_1\meet x_2$}
+%               \meeta
+%               \mcom{\ftheta(x_1\meet x_2)}{$x_2\oreld x_1\meet x_2$}
+%          &&   \text{by \prope{order preserving} hypothesis}
+%        \\&=   \ftheta(x_1\meet x_2)
+%          &&   \text{by \prope{idempotent} property \prefpo{thm:lattice}}
+%      \end{align*}
+%
+%    \item Proof that $\ftheta(x_1\meet x_2)\orelad\ftheta(x_1)\meeta\ftheta(x_2)$:
+%      \label{item:lat_iso_meet_ge}
+%      \begin{enumerate}
+%        \item Just as in \pref{item:lat_iso_meet_le}, note that
+%              $\ftheti(y_1)\meet\ftheti(y_2) \oreld \ftheti(y_1\meeta y_2)$:
+%              \label{item:lat_iso_meet_ge_1}
+%          \begin{align*}
+%            \ftheti(y_1)\meet\ftheti(y_2)
+%              &\oreld \mcom{\ftheti(y_1\meeta y_2)}{$y_1\orelad y_1\meeta y_2$}
+%                   \meeta
+%                   \mcom{\ftheti(y_1\meeta y_2)}{$y_2\orelad y_1\meeta y_2$}
+%              &&   \text{by \prope{order preserving} hypothesis}
+%            \\&=   \ftheti(y_1\meeta y_2)
+%              &&   \text{by \prope{idempotent} property \prefpo{thm:lattice}}
+%          \end{align*}
+%
+%        \item Because $\ftheta$ is \prope{order preserving}
+%              \label{item:lat_iso_meet_y1y2}
+%          \begin{align*}
+%            \ftheta\brs{\ftheti(y_1)\meet\ftheti(y_2)}
+%              &\orelad\ftheta\ftheti(y_1\meeta y_2)
+%              &&   \text{by \pref{item:lat_iso_meet_ge_1}}
+%            \\&= y_1\meeta y_2
+%          \end{align*}
+%
+%        \item Let $v_1\eqd\ftheta(x_1)$ and $v_2\eqd\ftheta(x_2)$. \label{item:lat_iso_meet_v1v2}
+%        \item We can then finish the proof of \pref{item:lat_iso_meet_le}:
+%          \begin{align*}
+%            \ftheta(x_1\meet x_2)
+%              &= \ftheta\brs{\ftheti\ftheta(x_1) \meet \ftheti\ftheta(x_2)}
+%            \\&= \ftheta\brs{\ftheti(v_1) \meet \ftheti(v_2)}
+%              && \text{by \pref{item:lat_iso_meet_v1v2}}
+%            \\&\orelad v_1 \meeta v_2
+%              && \text{by \pref{item:lat_iso_meet_y1y2}}
+%            \\&= \ftheta(x_1) \meeta \ftheta(x_2)
+%              && \text{by \pref{item:lat_iso_meet_v1v2}}
+%          \end{align*}
+%      \end{enumerate}
+%
+%    \item And so, combining \pref{item:lat_iso_meet_le} and \pref{item:lat_iso_meet_ge}, we have
+%      \[ \brbr{\begin{array}{rclDD}
+%           \ftheta(x_1\meet x_2) &\orela  & \ftheta(x_1)\meeta\ftheta(x_2) & \xref{item:lat_iso_meet_le} & and \\
+%           \ftheta(x_1\meet x_2) &\orelad & \ftheta(x_1)\meeta\ftheta(x_2) & \xref{item:lat_iso_meet_ge} &
+%         \end{array}}
+%         \qquad\implies\qquad
+%         \ftheta(x_1\meet x_2) =\ftheta(x_1)\meeta\ftheta(x_2)
+%      \]
+%
+%  \end{enumerate}
+%
+%
+%\item Proof that \prope{order preserving} $\impliedby$ \prope{isomorphic}:
+%  \begin{align*}
+%    x \orel y
+%      &\implies \ftheta(y) = \ftheta(x \join y) = \ftheta(x) \joina \ftheta(y)
+%      && \text{by right hypothesis}
+%    \\&\implies \ftheta(x) \orela \ftheta(y)
+%    \\
+%    x \orel y
+%      &\implies \ftheta(x) = \ftheta(x \meet y) = \ftheta(x) \meeta \ftheta(y)
+%      && \text{by right hypothesis}
+%    \\&\implies \ftheta(x) \orela \ftheta(y)
+%  \end{align*}
+%
+%\end{enumerate}
+%
+%\end{proof}
+%
+%
+%%---------------------------------------
+%\begin{example}
+%\label{ex:lat_xyz_235}
+%%---------------------------------------
+%Let $\latL\isomorphic\latM$ represent the condition that a lattice $\latL$ and
+%a lattice $\latM$ are \hie{isomorphic}.
+%\exbox{\begin{array}{M}
+%  $\ds\lattice{\pset{\setn{x,y,z}}}{\subseteq}{\setu}{\seti}
+%   \isomorphic
+%   \lattice{\setn{1,2,3,5,6,10,15,30}}{|}{\lcm}{\gcd}$
+%  \\\qquad
+%  with isomorphism
+%  \\
+%  $\ds\ftheta(\setA)=5^{\setind_\setA(z)} \cdot 3^{\setind_\setA(y)} \cdot 2^{\setind_\setA(x)}
+%     \qquad\scriptstyle\forall\setA\in \pset{\setn{a,b,c}}$
+%\end{array}}
+%\\
+%Explicit cases are listed below and illustrated in
+%\prefpp{ex:poset_xyz} and \prefpp{ex:poset_532}.\\
+%\hfill
+%\begin{minipage}{3\tw/8}
+%\begin{align*}
+%  \ftheta\left(\emptyset   \right) &= 5^0 \cdot 3^0 \cdot 2^0  &=  1 \\
+%  \ftheta\left(\setn{x    }\right) &= 5^0 \cdot 3^0 \cdot 2^1  &=  2 \\
+%  \ftheta\left(\setn{  y  }\right) &= 5^0 \cdot 3^1 \cdot 2^0  &=  3 \\
+%  \ftheta\left(\setn{x,y  }\right) &= 5^0 \cdot 3^1 \cdot 2^1  &=  6 \\
+%\end{align*}
+%\end{minipage}
+%\hfill
+%\begin{minipage}{3\tw/8}
+%\begin{align*}
+%  \ftheta\left(\setn{    z}\right) &= 5^1 \cdot 3^0 \cdot 2^0  &=  5 \\
+%  \ftheta\left(\setn{x,  z}\right) &= 5^1 \cdot 3^0 \cdot 2^1  &= 10 \\
+%  \ftheta\left(\setn{  y,z}\right) &= 5^1 \cdot 3^1 \cdot 2^0  &= 15 \\
+%  \ftheta\left(\setn{x,y,z}\right) &= 5^1 \cdot 3^1 \cdot 2^1  &= 30 \\
+%\end{align*}
+%\end{minipage}
+%\hfill
+%\end{example}
+%\begin{proof}
+%\begin{align*}
+%  \ftheta(\setA\setu\setB)
+%    &= 5^{\setind_{\setA\setu\setB}(a)} \cdot
+%       3^{\setind_{\setA\setu\setB}(b)} \cdot
+%       2^{\setind_{\setA\setu\setB}(c)}
+%  \\&= 5^{\setind_A(a)\join\setind_B(a)} \cdot
+%       3^{\setind_A(b)\join\setind_B(b)} \cdot
+%       2^{\setind_A(c)\join\setind_B(c)}
+%    && \ifdochas{relation}{\text{by \pref{thm:setind} \prefpo{thm:setind}}}
+%  \\&= \lcm\left(5^{\setind_A(a)},\; 5^{\setind_B(a)} \right) \;\cdot\;
+%       \lcm\left(3^{\setind_A(b)},\; 3^{\setind_B(b)} \right) \;\cdot\;
+%       \lcm\left(2^{\setind_A(c)},\; 2^{\setind_B(c)} \right)
+%    &&
+%  \\&= \lcm\left(
+%         5^{\setind_A(a)} \cdot 3^{\setind_A(b)} \cdot 2^{\setind_A(c)},\;
+%         5^{\setind_B(a)} \cdot 3^{\setind_B(b)} \cdot 2^{\setind_B(c)}
+%       \right)
+%  \\&= \lcm\left( \ftheta(A),\;\ftheta(B) \right)
+%  \\
+%  \\
+%  \ftheta(\setA\seti\setB)
+%    &= 5^{\setind_{\setA\seti\setB}(a)} \cdot
+%       3^{\setind_{\setA\seti\setB}(b)} \cdot
+%       2^{\setind_{\setA\seti\setB}(c)}
+%  \\&= 5^{\setind_A(a)\meet\setind_B(a)} \cdot
+%       3^{\setind_A(b)\meet\setind_B(b)} \cdot
+%       2^{\setind_A(c)\meet\setind_B(c)}
+%    && \ifdochas{relation}{\text{by \pref{thm:setind} \prefpo{thm:setind}}}
+%  \\&= \gcd\left(5^{\setind_A(a)},\; 5^{\setind_B(a)} \right) \;\cdot\;
+%       \gcd\left(3^{\setind_A(b)},\; 3^{\setind_B(b)} \right) \;\cdot\;
+%       \gcd\left(2^{\setind_A(c)},\; 2^{\setind_B(c)} \right)
+%    &&
+%  \\&= \gcd\left(
+%         5^{\setind_A(a)} \cdot 3^{\setind_A(b)} \cdot 2^{\setind_A(c)},\;
+%         5^{\setind_B(a)} \cdot 3^{\setind_B(b)} \cdot 2^{\setind_B(c)}
+%       \right)
+%  \\&= \gcd\left( \ftheta(A),\;\ftheta(B) \right)
+%\end{align*}
+%\end{proof}
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:ceil}
+%\label{def:floor}
+%%---------------------------------------
+%Let $\opair{\R}{\orel}$ be the \structe{standard ordered set of real numbers}.
+%The \fncte{floor   function} $\floor{x}\in\clFrz$ and
+%the \fncte{ceiling function} $\ceil{x}\in\clFrz$ are defined as
+%$\ceil{x} \eqd\meetop\set{n\in\Z}{n\oreld x}$ and 
+%$\floor{x}\eqd\joinop\set{n\in\Z}{n\orel  x}$.
+%\end{definition}
+

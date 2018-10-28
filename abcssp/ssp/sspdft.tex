@@ -1,0 +1,392 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%=======================================
+\subsection{Fourier Analysis}
+%=======================================
+%=======================================
+%\subsubsection{Fourier analysis of die sequences}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{length 1200 non-stationary die sequence with 10Hz oscillating mean}]
+\label{ex:nonstat34}
+\addcontentsline{toc}{subsubsection}{* length 1200 non-stationary die sequence with 10Hz oscillating mean}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:nonstat34_psp}
+     Suppose we have a length $\xN\eqd1200$ die sequence $\seqn{x_n}$ with the following distribution:
+     \\\indentx$\begin{array}{lDlD}
+       \psp(\dieA)=\psp(\dieB)=\psp(\dieD)=\psp(\dieE)=\psp(\dieF)=0.15 &and& \psp(\dieC)=0.25            &     \\
+       \mc{3}{M}{\qquad for $n\in\set{p+ (2m)\frac{\xM}{2}}{p=0,1,\ldots,\frac{\xM}{2}-1,\,m=0,1,2,\ldots,9}$} & and  \\
+       \psp(\dieA)=\psp(\dieB)=\psp(\dieC)=\psp(\dieE)=\psp(\dieF)=0.15 &and& \psp(\dieD)=0.25 &                \\
+       \mc{3}{M}{\qquad for $n\in\set{p+(2m+1)\frac{\xM}{2}}{p=0,1,\ldots,\frac{\xM}{2}-1,\,m=0,1,2,\ldots,9}$} & 
+     \end{array}$\\
+     where $\xM\eqd120$.
+     That is, the distribution of the sequence oscillates every $\sfrac{\xM}{2}=60$ samples between one that favors $\dieC$ 
+     and one that favors $\dieD$.
+     Moreover, if we were to evaluate the sequence using a \ope{Discrete Fourier Transform} operator $\dft$ \xref{def:dft}, 
+     we might expect to see a strong component at $\frac{\xN}{\xM}=10$ 
+     (or 10 Hz---the distribution goes through 10 cycles during the course of the sequence).
+  
+  \item \label{item:nonstat34_R1pam}
+        Suppose we first use the \fncte{PAM die random variable} \xref{def:rv_diepam} to map
+        the sequence of \pref{item:nonstat34_psp} into $\R^1$.
+        The magnitude of the $\dft:\R^1\to\C^1$ of the mapped sequence is as follows:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/diedftR1_1525_1200m120.pdf}%
+        \\\hline
+     \end{tabular}\\
+     Looking at the above result, it would be next to impossible to discern that the distribution had a significantly strong
+     oscillation of 10 cycles.
+     In fact, the magnitude of the DFT at 10Hz is only $0.895699$, or $10\log_{10}(0.895699)=-0.478377$ dB.
+     There are exactly 456 out of a total $\sfrac{\xN}{2}=600$ values that are greater than 
+     the DFT magnitude at 10Hz.\footnote{\seessp{diedft_1525_1200m120.xlg}}
+     % 
+     That is, to either a human observer or a machine algorithm, the 10Hz component is effectively lost in the noise.
+     
+  \item \label{item:nonstat34_C1qpsk}
+    Suppose we next use the \fncte{QPSK die random variable} \xref{def:rv_dieqpsk} to map
+    the sequence into the complex plane.
+    The magnitude of the $\dft:\C^1\to\C^1$ operation on the mapped sequence is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/diedftC1_1525_1200m120.pdf}%
+       \\\hline
+    \end{tabular}\\
+    %Again, the 10Hz component is effectively lost in the noise.
+    The magnitude of the DFT at 10Hz is $0.589990$, or $10\log_{10}(0.589990)=-2.291552$ dB.
+    There are exactly 831 out of a total $\xN=1200$ values that are greater than 
+    the DFT magnitude at 10Hz.\footnote{\seessp{diedft_1525_1200m120.xlg}}
+    Again, the 10Hz component is effectively lost in the noise.
+     
+  \item \label{item:nonstat34_R6}
+    Suppose we next use the \fncte{$\R^6$ die random variable} \xref{def:rv_dieR6} to map
+    the sequence into $\R^6$.
+    The magnitude of $\dft:\R^6\to\C^6$ of the mapped sequence is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/diedftR6_1525_1200m120.pdf}%
+       \\\hline
+    \end{tabular}\\
+    The magnitude at 10Hz is $1.556295$, or $10\log_{10}(1.556295)=1.920920$ dB.
+    Besides the DC component (0Hz component), this is the uniquely greatest value of the 600 samples.
+    And in fact, there are only 5 out of a total $\sfrac{\xN}{2}=600$ samples
+    that are $0.90\times1.556295$ or greater.\footnote{\seessp{diedft_1525_1200m120.xlg} 
+      The 5 largest values are the points
+      $\opair{0}{14.251433}$, $\opair{10}{1.556295}$, $\opair{344}{1.513501}$, $\opair{456}{1.405843}$ and $\opair{557}{1.468970}$.
+      } 
+    %And, besides the DC component, the 10Hz component is the uniquely greatest value of the 600 samples.
+    % dieC1dft_1200m120_20160312_044601.log
+    Thus, using the $\R^6$ mapping technique of this example, 
+    it is much simpler to detect the 10Hz oscillating distribution.
+\end{enumerate}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{length 12000 non-stationary die sequence with 10Hz oscillating mean}]
+\label{ex:nonstat34_12000m1200}
+\addcontentsline{toc}{subsubsection}{* length 12000 non-stationary die sequence with 10Hz oscillating mean}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:nonstat34_12000m1200_psp}
+    Suppose we have a length $\xN\eqd12000$ die sequence $\seqn{x_n}$ with the following distribution:
+    \\\indentx$\begin{array}{lDlD}
+      \psp(\dieA)=\psp(\dieB)=\psp(\dieD)=\psp(\dieE)=\psp(\dieF)=0.16 &and& \psp(\dieC)=0.20            &     \\
+      \mc{3}{M}{\qquad for $n\in\set{p+ (2m)\frac{\xM}{2}}{p=0,1,\ldots,\frac{\xM}{2}-1,\,m=0,1,2,\ldots,9}$} & and  \\
+      \psp(\dieA)=\psp(\dieB)=\psp(\dieC)=\psp(\dieE)=\psp(\dieF)=0.16 &and& \psp(\dieD)=0.20 &                \\
+      \mc{3}{M}{\qquad for $n\in\set{p+(2m+1)\frac{\xM}{2}}{p=0,1,\ldots,\frac{\xM}{2}-1,\,m=0,1,2,\ldots,9}$} & 
+    \end{array}$\\
+    where $\xM\eqd1200$.
+    That is, the distribution of the sequence oscillates every $\sfrac{\xM}{2}=600$ samples between one that favors $\dieC$ 
+    and one that favors $\dieD$.
+    If we were to evaluate the sequence using the \ope{Discrete Fourier Transform} operator, 
+    we again might expect to see a strong component at $\frac{\xN}{\xM}=10$ 
+    (or 10 Hz---the distribution goes through 10 cycles during the course of the sequence).
+  
+  \item \label{item:nonstat34_12000m1200_R1pam}
+    Suppose we first use the \fncte{PAM die random variable} \xref{def:rv_diepam} to map
+    the sequence of \pref{item:nonstat34_12000m1200_psp} into $\R^1$.
+    In the magnitude of $\dft:\R^1\to\C^1$ there are 1130 values out of a possible $\sfrac{\xN}{2}=6000$ 
+    values greater than the value at 10Hz (that value being $2.174512$).\footnote{\seessp{diedft_1620_12000m1200.xlg}}
+    As in \prefpp{ex:nonstat34}, the subtle 10Hz component is effectively lost in the noise.
+     
+  \item \label{item:nonstat34_12000m1200_C1qpsk}
+    Suppose we next use the \fncte{QPSK die random variable} \xref{def:rv_dieqpsk} to map
+    the sequence into the complex plane.
+    There are exactly 1932 out of a total $\xN=12000$ values that are greater than the DFT value at 10Hz
+    (that value being $1.348693$).\footnote{\seessp{diedft_1620_12000m1200.xlg}}
+    As in \prefpp{ex:nonstat34}, the subtle 10Hz component is effectively lost in the noise.
+     
+  \item \label{item:nonstat34_12000m1200_R6}
+    Suppose we next use the \fncte{$\R^6$ die random variable} \xref{def:rv_dieR6} to map
+    the sequence into $\R^6$.
+    The magnitude of $\dft:\R^6\to\C^6$ of the mapped sequence is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/diedftR6_1620_12000m1200.pdf}%
+       \\\hline
+    \end{tabular}\\
+    Besides the DC component, the value at 100Hz (that value being ($1.965018$) 
+    is the uniquely greatest value of the $\sfrac{\xN}{2}=6000$ samples;
+    and it is $10\log_{10}(1.965018/1.660189)=0.699\cdots$dB larger than the next largest value.\footnote{
+    \seessp{diedft_1620_12000m1200.xlg}
+    The 10 largest values are
+    $\opair{    0}{44.763194}$, $\opair{   10}{ 1.965018}$, $\opair{   90}{ 1.602474}$, $\opair{ 1223}{ 1.660189}$,
+    $\opair{ 1313}{ 1.555349}$, $\opair{ 2385}{ 1.551028}$, $\opair{ 3039}{ 1.550918}$, $\opair{ 4154}{ 1.563756}$,
+    $\opair{ 4187}{ 1.586362}$, and $\opair{ 5147}{ 1.623052}$.}
+    Thus, even though the oscillating distribution is very subtle
+    (even more subtle than that of \prefpp{ex:nonstat34}), the $\R^6$ mapping technique and subsequent analysis
+    are able to detect it.
+\end{enumerate}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{length 12000 non-stationary die sequence with 100Hz oscillating mean}]
+\label{ex:nonstat34_12000m120}
+\addcontentsline{toc}{subsubsection}{* length 12000 non-stationary die sequence with 100Hz oscillating mean}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:nonstat34_12000m120_psp}
+     Suppose we have a length $\xN\eqd12000$ die sequence $\seqn{x_n}$ with the following distribution:
+     \\\indentx$\begin{array}{lDlD}
+       \psp(\dieA)=\psp(\dieB)=\psp(\dieD)=\psp(\dieE)=\psp(\dieF)=0.16 &and& \psp(\dieC)=0.20            &     \\
+       \mc{3}{M}{\qquad for $n\in\set{p+ (2m)\frac{\xM}{2}}{p=0,1,\ldots,\frac{\xM}{2}-1,\,m=0,1,2,\ldots,9}$} & and  \\
+       \psp(\dieA)=\psp(\dieB)=\psp(\dieC)=\psp(\dieE)=\psp(\dieF)=0.16 &and& \psp(\dieD)=0.20 &                \\
+       \mc{3}{M}{\qquad for $n\in\set{p+(2m+1)\frac{\xM}{2}}{p=0,1,\ldots,\frac{\xM}{2}-1,\,m=0,1,2,\ldots,9}$} & 
+     \end{array}$\\
+     where $\xM\eqd120$.
+     That is, the distribution of the sequence oscillates every $\sfrac{\xM}{2}=60$ samples between one that favors $\dieC$ 
+     and one that favors $\dieD$.
+     If we were to evaluate the sequence using the \ope{Discrete Fourier Transform} operator, 
+     we might expect to see a strong component at $\frac{\xN}{\xM}=100$
+     (or 100 Hz---the distribution goes through 100 cycles during the course of the sequence).
+  
+
+  \item \label{item:nonstat34_12000m120_R1pam}
+    Suppose we first use the \fncte{PAM die random variable} \xref{def:rv_diepam} to map
+    the sequence of \pref{item:nonstat34_12000m120_psp} into $\R^1$.
+    In the magnitude $\dft:\R^1\to\C^1$ there are 1320 values out of a possible $\sfrac{\xN}{2}=6000$ 
+    values greater than the value at 100Hz
+    that value being $2.081469$).\footnote{\seessp{diedft_1620_12000m120.xlg}}
+    The subtle 100Hz component is effectively lost in the noise.
+     
+  \item \label{item:nonstat34_12000m120_C1qpsk}
+    Suppose we next use the \fncte{QPSK die random variable} \xref{def:rv_dieqpsk} to map
+    the sequence into the complex plane.
+    There are exactly 1555 out of a total $\xN12000$ values that are greater than the DFT value at 100Hz
+    that value being $1.425427$).\footnote{\seessp{diedft_1620_12000m120.xlg}}
+    The subtle 100Hz component is effectively lost in the noise.
+     
+  \item \label{item:nonstat34_12000m120_R6}
+    Suppose we next use the \fncte{$\R^6$ die random variable} \xref{def:rv_dieR6} to map
+    the sequence into $\R^6$.
+    The magnitude of $\dft:\R^6\to\C^6$ of the mapped sequence is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/diedftR6_1620_12000m120.pdf}%
+       \\\hline
+    \end{tabular}\\
+     Besides the DC component, the value at 100Hz (that value being $2.256927$) 
+     is the uniquely greatest value of the $\sfrac{\xN}{2}=6000$.
+     and it is $10\log_{10}(2.256927/1.599335)=1.495\cdots$dB larger than the next largest value.\footnote{
+     \seessp{diedft_1620_12000m120.xlg}
+     The 10 largest values are
+       $\opair{   0}{44.763060}$, 
+       $\opair{  90}{ 1.577597}$, 
+       $\opair{ 100}{ 2.256927}$, 
+       $\opair{ 486}{ 1.599335}$, 
+       $\opair{1223}{ 1.585154}$, 
+       $\opair{1313}{ 1.547956}$,
+       $\opair{3039}{ 1.553522}$, 
+       $\opair{3162}{ 1.561863}$,
+       $\opair{5147}{ 1.558487}$, and
+       $\opair{5567}{ 1.533659}$.
+     }
+     Thus, even though the oscillating distribution is very subtle, the $\R^6$ mapping technique
+     and subsequent analysis are able to detect it.
+\end{enumerate}
+\end{example}
+
+%=======================================
+%\subsubsection{Fourier analysis of DNA sequences}
+%=======================================
+\begin{figure}%
+  \centering%
+  \gsize%
+  $\begin{array}{|r|rMl|c|c|c|c|}
+   \hline
+   \mc{1}{|M|}{cycle}   & \mc{3}{|M|}{domain} & \psp(\dnaA) & \psp(\dnaC)  & \psp(\dnaG) & \psp(\dnaT)  \\\hline\hline
+     0 &     0 &--&   599 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       &   600 &--&  1199 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+     1 &  1200 &--&  1799 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       &  1800 &--&  2399 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+     2 &  2400 &--&  2999 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       &  3000 &--&  3599 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+     3 &  3600 &--&  4199 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       &  4200 &--&  4799 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+     4 &  4800 &--&  5399 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       &  5400 &--&  5999 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+  \end{array}$%
+  \hfill%
+  $\begin{array}{|r|rMl|c|c|c|c|}%
+   \hline%
+   \mc{1}{|M|}{cycle}   & \mc{3}{|M|}{domain} & \psp(\dnaA) & \psp(\dnaC)  & \psp(\dnaG) & \psp(\dnaT)  \\\hline\hline
+     5 &  6000 &--&  6599 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       &  6600 &--&  7199 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+     6 &  7200 &--&  7799 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       &  7800 &--&  8399 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+     7 &  8400 &--&  8999 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       &  9000 &--&  9599 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+     8 &  9600 &--& 10199 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       & 10200 &--& 10799 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+     9 & 10800 &--& 11399 & 0.24  & \cellcolor{bgp}  0.28  & 0.24  & 0.24                  \\
+       & 11400 &--& 11999 & 0.24  &                  0.24  & 0.24  & \cellcolor{bgp}  0.28 \\\hline
+  \end{array}$
+  \caption{Distribution used in \prefpp{ex:nonstatdna}\label{fig:nonstatdna}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{length 12000 non-stationary artificial DNA sequence with 10Hz oscillating mean}]
+\label{ex:nonstatdna}
+\addcontentsline{toc}{subsubsection}{* length 12000 non-stationary artificial dna sequence with 10Hz oscillating mean}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:nonstatdna_psp}
+     Suppose we have a length $\xN\eqd12000$ die sequence $\seqn{x_n}$ with the following distribution (see also \prefp{fig:nonstatdna}):
+     \\\indentx$\begin{array}{lDlD}
+       \psp(\dnaA)=\psp(\dnaT)=\psp(\dnaG)=0.24 &and& \psp(\dnaC)=0.28            &     \\
+       \mc{3}{M}{\qquad for $n\in\set{p+ 2m   \frac{\xM}{2}}{p=0,1,\ldots,\frac{\xM}{2}-1,\,m=0,1,2,\ldots,9}$} & and  \\
+       \psp(\dnaA)=\psp(\dnaC)=\psp(\dnaG)=0.24 &and& \psp(\dnaT)=0.28            &     \\
+       \mc{3}{M}{\qquad for $n\in\set{p+(2m+1)\frac{\xM}{2}}{p=0,1,\ldots,\frac{\xM}{2}-1,\,m=0,1,2,\ldots,9}$} & 
+     \end{array}$\\
+     where $\xM\eqd1200$.
+     That is, the distribution of the sequence oscillates every $\sfrac{\xM}{2}=600$ samples between one that favors $\dnaC$ 
+     and one that favors $\dnaT$.
+     Moreover, if we were to evaluate the sequence using a \ope{Discrete Fourier Transform} (DFT) operator, 
+     we might expect to see a strong component at $\frac{\xN}{\xM}=10$ 
+     (or 10 Hz---the distribution goes through 10 cycles during the course of the sequence).
+  
+  \item \label{item:nonstatdna_R1pam}
+    Suppose we first use the \fncte{PAM DNA random variable} \xref{def:rv_dnapam} to map
+    the DNA sequence into $\R^1$.
+    The magnitude of $\dft:\R^1\to\C^1$ of the sequence after applying this mapping is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/dnadftR1.pdf}%
+       \\\hline
+    \end{tabular}\\
+    %Looking at the above result, it would be next to impossible to discern that the distribution had a significantly strong
+    %oscillation of 10 cycles.
+    The magnitude of the DFT at 10Hz is only $1.163575$ ($10\log_{10}(1.163575)=0.657944$ dB).
+    There are exactly 2023 out of a total $\sfrac{\xN}{2}=6000$ values that are greater than the DFT value at 10Hz
+    (that value being $1.163575$).\footnote{\seessp{dnadft_12000m1200.xlg}}
+    Here again, the 10Hz component is effectively lost in the noise.
+    
+  \item \label{item:nonstatdna_C1qpsk}
+    Suppose we next use the \fncte{QPSK DNA random variable} \xref{def:rv_dieqpsk} to map
+    the DNA sequence into the complex plane.
+    The magnitude of $\dft:\C^1\to\C^1$ of the sequence after applying this mapping is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/dnadftC1.pdf}%
+       \\\hline
+    \end{tabular}\\
+    The DFT at 10Hz is $1.888671$, or $10\log_{10}(1.888671)=2.761563$ dB.
+    There are exactly 343 out of a total $\xN=6000$ values that are greater than the DFT value at 10Hz.
+    (that value being $1.888671$).\footnote{\seessp{dnadft_12000m1200.xlg}}
+    Using this mapping it would be difficult to detect the subtle but significant 10Hz component.
+     
+  \item \label{item:nonstatdna_R4}
+    Suppose we next use the \fncte{$\R^4$ DNA random variable} \xref{def:rv_dnaR4} to map
+    the sequence into $\R^4$.
+    The magnitude of $\dft:\R^4\to\C^4$ of the mapped sequence is as follows:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dnadftR4.pdf}%
+        \\\hline
+     \end{tabular}\\
+     The magnitude of the DFT at 10Hz is $1.932042$ ($10\log_{10}(1.932042)=2.860166$ dB).
+     Besides itself and the DC component, there are only two out of a total $\sfrac{\xN}{2}=6000$ samples
+     that are greater or equal to this value.\footnote{
+      \seessp{dnadft_12000m1200.xlg}\\
+       The 4 largest values are at
+         $\opair{   0}{54.791926}$, 
+         $\opair{  10}{ 1.932042}$, 
+         $\opair{4187}{ 1.962836}$, and 
+         $\opair{5147}{ 2.057553}$.
+       } 
+     Thus, using the $\R^4$ mapping technique and subsequent analysis of this example, 
+     it is much simpler to detect the 10Hz oscillation.
+\end{enumerate}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{Fourier analysis of Ebola DNA sequence}]
+\label{ex:dftebola}
+\addcontentsline{toc}{subsubsection}{* Fourier analysis of Ebola DNA sequence}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:dftebola_psp}
+     Consider the Ebola DNA sequence described in \prefpp{ex:dna_ebola}.
+     DNA sequences commonly exhibit a strong DFT harmonic component at $\sfrac{2\pi}{3}$ 
+     radians.\footnote{\citePp{galleani2010}{771}}
+  
+  \item \label{item:dftebola_R1pam}
+    Suppose we first use the \fncte{PAM DNA random variable} \xref{def:rv_dnapam} to map
+    the DNA sequence into $\R^1$.
+    The magnitude of $\dft:\R^1\to\C^1$ of the sequence after applying this mapping is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/dna_AF086833_ebola_dftR1.pdf}%
+       \\\hline
+    \end{tabular}\\
+    The component at $\sfrac{2\pi}{3}$ is easy to pick out with a signal to noise ratio (SNR) of\\ 
+    $10\log_{10}(4.290296/1.123163)\approx5.8$ dB.\footnote{\seessp{dna_AF086833_ebola_dft.xlg}}
+    Here, the noise value 1.123163 is the \fncte{RMS} (\fncte{root mean square}) of the DFT magnitude 
+    sequence from $n=1$ to $n=\xN/2-1$ computed as follows:
+    \\\indentx$\ds\sqrt{\frac{1}{\xN/2-1}\sum_{n=1}^{n=\xN/2-1} x_n^2}$.
+     
+  \item \label{item:dftebola_C1qpsk}
+    Suppose we next use the \fncte{QPSK DNA random variable} \xref{def:rv_dieqpsk} to map
+    the dna sequence into the complex plane.
+    The magnitude of $\dft:\C^1\to\C^1$ of the sequence after applying this mapping is as follows:
+     \\\begin{tabular}{|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_AF086833_ebola_dftC1.pdf}%
+        \\\hline
+     \end{tabular}\\
+    The component at $\sfrac{2\pi}{3}$ is again easy to pick out with a signal to noise ratio (SNR) of\\
+    $10\log_{10}(6.412578/0.998659)\approx8.1$ dB.\footnote{\seessp{dna_AF086833_ebola_dft.xlg}}
+    Here, the noise value 0.998659 is the \fncte{RMS} of the DFT magnitude 
+    sequence from $n=1$ to $n=\xN-1$.
+    %C^1 rms = 0.998685, max=6.412578   8.0760413380372487836054657324457 dB
+
+  \item \label{item:dftebola_R4}
+    Suppose we next use the \fncte{$\R^4$ DNA random variable} \xref{def:rv_dnaR4} to map
+    the sequence into $\R^4$.
+    The magnitude of $\dft:\R^4\to\C^4$ of the mapped sequence is as follows:
+    \\\begin{tabular}{|>{\scs}c|}
+         \hline
+         \includegraphics{ssp/plots/dna_AF086833_ebola_dftR4.pdf}%
+       \\\hline
+    \end{tabular}\\
+    The component at $\sfrac{2\pi}{3}$ is again easy to pick out with a signal to noise ratio (SNR) of\\ 
+    $10\log_{10}(3.944811/0.860665)\approx 6.6$ dB.\footnote{\seessp{dna_AF086833_ebola_dft.xlg}}
+    Here, the noise value 0.860665 is the \fncte{RMS} of the DFT magnitude 
+    sequence from $n=1$ to $n=\xN/2-1$.
+    %R^4 rms = 0.860710, max=3.944811    6.6116935177820583786215400221832 dB
+
+  \item In conclusion, for this application, there is only a small advantage to using 
+        the $\R^4$ mapping \xrefr{item:dftebola_R4}
+        versus the $\R^1$ mapping \xrefr{item:dftebola_R1pam}, 
+        and even a demonstrable disadvantage when compared to the $\C^1$ mapping \xrefr{item:dftebola_C1qpsk}.
+\end{enumerate}
+\end{example}
+
+

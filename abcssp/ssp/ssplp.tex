@@ -1,0 +1,414 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%=======================================
+\subsection{Low pass filtering/Smoothing}
+%=======================================
+%=======================================
+%\section{Real die sequence processing}
+%\label{sec:rdie}
+%=======================================
+
+%=======================================
+%\subsubsection{Low pass filtering of real die sequences}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{low pass filtering of real die sequence}]
+\label{ex:rdie_lp}
+\mbox{}\\
+\addcontentsline{toc}{subsubsection}{* low pass filtering of real die sequence}
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:rdie_lp_seq}
+     Consider the pseudo-uniformly distributed die sequence presented in \prefpp{ex:rdie_sha}.
+     Suppose we want to \ope{filter} this sequence with a
+     \fncte{low pass sequence} in order to ``smooth out" the sequence. 
+     But to perform the actual filtering, note that the die sequence
+     must first be mapped into a \structe{linear space} $\R^\xN$.
+  
+  \item \label{item:rdie_lp_R1_rect16_euclid}
+        Suppose we first use the \ope{traditional die random variable} \xref{def:rv_dietrad} 
+        to map the die sequence into $\R^1$.
+        \ope{Filter}ing \xref{def:filter} this $\R$-valued sequence using the 
+        \fncte{length 16 rectangular low pass sequence} \xref{ex:lp_rect} 
+        in the \structe{$\R^1$ die distance linear space} \xref{def:dieR1oml} 
+        and then mapping the result back to a \fncte{die sequence} %\xref{def:rdie}
+        using the \fncte{Euclidean metric} \xref{def:emetric}, 
+        produces the result partially dispayed here:
+        \\\includegraphics{ssp/plots/rdie_lp_12000_R1_rect16_euclid_seq.pdf}\\
+        Note that the die sequence has indeed been smoothed out, but it's uniform distribution has been destroyed---almost all 
+        of its values are around the ``expected value" 3.5, 
+        as illustrated below on the left.
+        Of course such filtering also introduces correlation, giving the \ope{autocorrelation} sequence 
+        a slightly wider center lobe as illustrated below on the right.
+        Both diagrams are calculated over a length $12000$ sequence.
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/rdie_lp_12000_R1_rect16_euclid_histo.pdf}%
+         &\includegraphics{ssp/plots/rdie_lp_12000_R1_rect16_euclid_auto.pdf}
+         \\histogram & \ope{$2\xN$-offset autocorrelation} \xref{def:ocsRxx}
+        \\\hline
+     \end{tabular}
+
+  \item \label{item:rdie_lp_R3_rect16_larc}
+        Alternatively, suppose we next try
+        using the \ope{$\R^3$ die random variable} \xref{def:rv_dieR3}
+        to map the die sequence into $\R^3$.
+        \ope{Filter}ing %\xref{def:filtern} 
+        this new sequence using the \ope{length 16 rectangular low pass sequence}
+        in the \structe{$\R^3$ distance linear space} \xref{def:dieR3oml} 
+        and then mapping back to a \fncte{die sequence} %over the \structe{real die outcome subspace} 
+        using the \fncte{Lagrange arc distance} yields the result partially displayed here:
+        \\\includegraphics{ssp/plots/rdie_lp_12000_R3_rect16_larc_seq.pdf}\\
+        Note that the \fncte{die sequence} does appear to be ``smoothed out", 
+        but this time the distribution is much more uniform, as illustrated below on the left;
+        and is slightly less correlated (12795 compared to 17658), as illustrated below on the right.
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/rdie_lp_12000_R3_rect16_larc_histo.pdf}%
+         &\includegraphics{ssp/plots/rdie_lp_12000_R3_rect16_larc_auto.pdf}
+        \\\hline
+     \end{tabular}
+        
+
+  \item \label{item:rdie_lp_R3_hann16_larc}
+        Using a \ope{length 16 Hanning low pass sequence} \xref{def:lp_hann}
+        rather than the \fncte{length 16 rectangular low pass sequence} as in \pref{item:rdie_lp_R3_rect16_larc}
+        results in a distribution that is more uniform and in a sequence that is very slightly less correlated:
+        \\\includegraphics{ssp/plots/rdie_lp_12000_R3_hann16_larc_seq.pdf}
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/rdie_lp_12000_R3_hann16_larc_histo.pdf}%
+         &\includegraphics{ssp/plots/rdie_lp_12000_R3_hann16_larc_auto.pdf}
+        \\\hline
+     \end{tabular}
+
+  \item \label{item:rdie_lp_R3_hann50_larc}
+        Using a \ope{length 50 Hanning low pass sequence} \xref{ex:lp_hann} rather than the 
+        \fncte{length 16 Hanning low pass sequence} as in \pref{item:rdie_lp_R3_hann16_larc}
+        results in about the same uniformity of distribution, about 1.8\% lower side lobes in the autocorrelation sequence
+        ($\frac{12733-12505}{12733}\times100\approx1.8$),
+        but a wider main lobe (presumably due to the longer filter width):
+        %\\\includegraphics{ssp/plots/rdie_lp_12000_R3_hann50_larc_seq.pdf}
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/rdie_lp_12000_R3_hann50_larc_histo.pdf}%
+         &\includegraphics{ssp/plots/rdie_lp_12000_R3_hann50_larc_auto.pdf}
+        \\\hline
+     \end{tabular}
+
+  \item \label{item:rdie_lp_R3_rect50_larc}
+        Using a \ope{length 50 rectangular low pass sequence} rather than the 
+        \fncte{length 50 Hanning low pass sequence} as in \pref{item:rdie_lp_R3_hann50_larc}
+        results in a distribution that is a little less uniform and about 3.3\% more correlated
+        ($\abs{\frac{12505-12916}{12505}\times100}\approx3.3$):
+        %\\\includegraphics{ssp/plots/rdie_lp_12000_R3_rect50_larc_seq.pdf}
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/rdie_lp_12000_R3_rect50_larc_histo.pdf}%
+         &\includegraphics{ssp/plots/rdie_lp_12000_R3_rect50_larc_auto.pdf}
+        \\\hline
+     \end{tabular}
+
+  \item \label{item:rdie_lp_R3_euclid}
+        Replacing the \fncte{Lagrange arc distance} by the \fncte{Euclidean metric} in this example
+        has very little effect.
+        More details follow:
+    \begin{enumerate}
+      \item Using the \fncte{Euclidean metric} in $\R^3$ rather than the \fncte{Lagrange arc distance} in \pref{item:rdie_lp_R3_rect16_larc}
+            yields sequences that are \textbf{identical}.\citetbl{\seessp{rdie_lp_12000m16.xlg}}
+
+      \item Using the \fncte{Euclidean metric} in \pref{item:rdie_lp_R3_hann16_larc} rather than the \fncte{Lagrange arc distance} 
+            yields sequences that \textbf{differ} at 6 locations out of $N+M+M-1=12000+16+16-1=12031$ locations
+            (differ at approximately 0.05\% of the locations):\citetbl{\seessp{rdie_lp_12000m16.xlg}}
+            \\\indentx\begin{tabstr}{0.75}\begin{tabular}{|c|c|c|}
+                         \hline% 2016 June 08 Wednesday 11:03:38 PM UTC
+                           n   & Euclidean & Lagrange
+                         \\\hline
+                             281 & $\dieF$ & $\dieD$ 
+                         \\ 1630 & $\dieA$ & $\dieC$ 
+                         \\11888 & $\dieF$ & $\dieB$ 
+                         \\\hline
+                       \end{tabular}\end{tabstr}
+
+      \item Using the \fncte{Euclidean metric} in $\R^3$ rather than the \fncte{Lagrange arc distance} as in 
+            \pref{item:rdie_lp_R3_hann50_larc} (length 50 Hanning filter)
+            yields sequences that are \emph{identical}.\citetbl{\seessp{rdie_lp_12000m50.xlg}} % 2016 June 08 Wednesday 11:07:28 PM UTC
+
+      \item Using the \fncte{Euclidean metric} in $\R^3$ rather than the \fncte{Lagrange arc distance} as 
+            in \pref{item:rdie_lp_R3_rect50_larc} (length 50 rectangular filter)
+            \textbf{differ} at 85 locations out of $N+M+M-1=12000+50+50-1=12099$ locations
+            (differ at approximately 0.7\% of the locations).\citetbl{\seessp{rdie_lp_12000m50.xlg}} % 2016 June 08 Wednesday 11:07:28 PM UTC
+    \end{enumerate}
+
+\end{enumerate}
+\end{example}
+
+
+%=======================================
+%\subsubsection{Low pass filtering of spinner sequences}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{low pass filtering of spinner sequence}]
+\label{ex:spin_lp}
+\addcontentsline{toc}{subsubsection}{* low pass filtering of spinner sequence}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:spin_lp_seq}
+     Consider the pseudo-uniformly distributed spinner sequence presented in \prefpp{ex:spinner_sha}.
+     As in \prefpp{ex:rdie_lp}, suppose we want to \ope{filter} this sequence with a
+     \fncte{low pass rectangular sequence} in order to ``smooth out" the sequence.
+     %But to perform the actual filtering, note that the die sequence
+     %must first be mapped into a \structe{linear space} $\R^\xN$.
+
+  \item \label{item:spin_lp_R1_rect16_euclid}
+        Suppose we first use the \ope{$\R^1$ spinner random variable} \xref{def:rv_spinR1} 
+        to map the spinner sequence into $\R^1$.
+        \ope{Filter}ing this mapped sequence using the \fncte{length 16 rectangular low pass sequence} 
+        and then mapping the result back to a \fncte{spinner sequence} %over the \structe{spinner outcome subspace} \xref{def:rdie}
+        using the \fncte{Euclidean metric}, produces the result partially dispayed here 
+        (in essense the same as in \prefp{ex:rdie_lp}):
+        \\\includegraphics{ssp/plots/spin_lp_12000_R1_rect16_euclid_seq.pdf}\\
+        Again, it's uniform distribution has been essentially destroyed.
+        %---almost all  of its values are around the ``expected value" 3.5.
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/spin_lp_12000_R1_rect16_euclid_histo.pdf}%
+            &\includegraphics{ssp/plots/spin_lp_12000_R1_rect16_euclid_auto.pdf}
+           \\\hline
+        \end{tabular}
+
+
+  \item \label{item:spin_lp_R2_rect16_larc}
+        Alternatively, suppose we next try
+        using the \ope{QPSK spinner random variable} \xref{def:rv_spinqpsk}
+        to map the spinner sequence into $\Cnum\eqd\R^2$.
+        \ope{Filter}ing this new sequence using the \ope{length 16 rectangular low pass sequence}
+        in the \structe{$\R^2$ spinner distance linear space} \xref{def:spinR2oml}
+        and then mapping back to a \fncte{sequence} over the \structe{spinner outcome subspace} 
+        using the \fncte{Lagrange arc distance} yields the result partially displayed here:
+        \\\includegraphics{ssp/plots/spin_lp_12000_R2_rect16_larc_seq.pdf}\\
+        Note that the sequence does appear to be ``smoothed out", 
+        but this time the distribution is much more uniform and about 
+        69\% less correlated than the $\R^1$ method of \pref{item:spin_lp_R1_rect16_euclid}:
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/spin_lp_12000_R2_rect16_larc_histo.pdf}%
+            &\includegraphics{ssp/plots/spin_lp_12000_R2_rect16_larc_auto.pdf}
+           \\\hline
+        \end{tabular}\\
+        Furthermore, it is about 58\% less correlated than the $\R^3$ filtering for the die sequence
+        used in \pref{item:rdie_lp_R3_rect16_larc} of \prefpp{ex:rdie_lp}.
+
+  \item Using the \fncte{Euclidean metric} rather than the \fncte{Lagrange arc distance} as in \pref{item:spin_lp_R2_rect16_larc}
+        results in a sequence that differs at 99 different locations out of $N+M+M-1=12000+16+15=12031$ locations
+        (approximately 0.8\% of the locations differ).\citetbl{\seessp{spin_lp_12000m16.xlg}} % 2016 June 08 Wednesday 11:11:16 PM UTC
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/spin_lp_12000_R2_rect16_euclid_histo.pdf}%
+            &\includegraphics{ssp/plots/spin_lp_12000_R2_rect16_euclid_auto.pdf}
+           \\\hline
+        \end{tabular}
+
+  \item \label{item:spin_lp_R2_hann16_larc}
+        Using a \ope{length 16 Hanning low pass sequence} rather than the 
+        \fncte{length 16 Rectangular low pass sequence} as in \pref{item:spin_lp_R2_rect16_larc}
+        results in a distribution that is more uniform and about 5.3\% less correlated:
+        \\\includegraphics{ssp/plots/spin_lp_12000_R2_hann16_larc_seq.pdf}
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/spin_lp_12000_R2_hann16_larc_histo.pdf}%
+         &\includegraphics{ssp/plots/spin_lp_12000_R2_hann16_larc_auto.pdf}
+        \\\hline
+     \end{tabular}
+
+  \item \begin{minipage}[t]{\tw-70mm}%
+          Using the \fncte{Euclidean metric} rather than the \fncte{Lagrange arc distance} as in \pref{item:spin_lp_R2_hann16_larc}
+          results in a sequence that differs at exactly 2 locations (approximately 0.017\%) 
+          out of $12031$ locations:\footnotemark
+        \end{minipage}%
+        \hfill\citetblt{\seessp{spin_lp_12000m16.xlg}} % 2016 June 08 Wednesday 11:11:16 PM UTC
+        %\begin{minipage}{60mm}%
+          \begin{tabstr}{0.75}\begin{tabular}[t]{|c|c|c|}
+            \hline
+              n   & Euclidean & Lagrange
+            \\\hline
+               4149 & $\dieD$   & $\dieE$
+            \\ 5594 & $\dieB$   & $\dieA$
+            \\\hline
+          \end{tabular}\end{tabstr}%
+
+  \item \label{item:spin_lp_R2_hann50_larc}
+        Using a \ope{length 50 Hanning low pass sequence} rather than the 
+        \fncte{length 16 Hanning low pass sequence} as in \pref{item:spin_lp_R2_hann16_larc}
+        results in the following:%about the same uniformity of distribution, slightly lower side lobes in the autocorrelation function,
+        %but a wider main lobe (due to the longer filter width):
+        %\\\includegraphics{ssp/plots/spin_lp_12000_R2_hann50_larc_seq.pdf}
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/spin_lp_12000_R2_hann50_larc_histo.pdf}%
+         &\includegraphics{ssp/plots/spin_lp_12000_R2_hann50_larc_auto.pdf}
+        \\\hline
+     \end{tabular}
+
+  \item \label{item:spin_lp_R2_rect50_larc}
+        Using a \ope{length 50 Rectangular low pass sequence} rather than the 
+        \fncte{length 50 Hanning low pass sequence} as in \pref{item:spin_lp_R2_hann50_larc}
+        results in the following: %a little less uniform:
+        %\\\includegraphics{ssp/plots/spin_lp_12000_R2_rect50_larc_seq.pdf}
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/spin_lp_12000_R2_rect50_larc_histo.pdf}%
+         &\includegraphics{ssp/plots/spin_lp_12000_R2_rect50_larc_auto.pdf}
+        \\\hline
+     \end{tabular}
+\end{enumerate}
+\end{example}
+
+
+
+%=======================================
+%\subsubsection{Low pass filtering of fair die sequences}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{low pass filtering of fair die sequence}]
+\label{ex:fdie_lp}\mbox{}\\
+\addcontentsline{toc}{subsubsection}{* low pass filtering of fair die sequence}
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:fdie_lp_seq}
+     Consider the pseudo-uniformly distributed die sequence presented in \prefpp{ex:fdie_sha}.
+     Suppose we want to \ope{filter} %\xref{def:filter} 
+     this sequence with a
+     \fncte{low pass sequence} %\xref{ex:lp_rect} 
+     in order to ``smooth out" the sequence, just as in \prefpp{ex:rdie_lp}.
+     %But to perform the actual filtering, note that the die sequence
+     %must first be mapped into a \structe{linear space} $\R^\xN$.
+
+  \item \label{item:fdie_lp_R1_rect16_euclid}
+        Suppose we first use the \ope{traditional die random variable} \xref{def:rv_dietrad} 
+        to map the die sequence into $\R^1$.
+        \ope{Filter}ing this mapped sequence using the \fncte{length 16 rectangular low pass sequence} 
+        and then mapping the result back to a \fncte{die sequence} % over the \structe{real die outcome subspace} %\xref{def:rdie}
+        using the \fncte{Euclidean metric}, produces a result identical to that of 
+        \prefpp{item:rdie_lp_R1_rect16_euclid} of \pref{ex:rdie_lp}.
+  
+
+  \item \label{item:fdie_lp_R6_rect16_euclid}
+        Alternatively, suppose we next 
+        use the \ope{$\R^6$ die random variable} \xref{def:rv_dieR6}
+        to map the die sequence into $\R^6$.
+        \ope{Filter}ing this new sequence using the \ope{length 16 rectangular low pass sequence}
+        in the \structe{$\R^6$ die distance linear space} \xref{def:fdieR6oml} 
+        and then mapping back to a \fncte{die sequence} %over the \structe{fair die outcome subspace} 
+        using the \fncte{Euclidean metric} yields a much more uniform distribution and 
+        a sequence that is about 28\% less correlated.
+        \\\includegraphics{ssp/plots/fdie_lp_12000_R6_rect16_euclid_seq.pdf}%
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/fdie_lp_12000_R6_rect16_euclid_histo.pdf}%
+         &\includegraphics{ssp/plots/fdie_lp_12000_R6_rect16_euclid_auto.pdf}
+        \\\hline
+     \end{tabular}\\
+     Note further that this $\R^6$ technique yeilds a sequence that is about 9.9\% more correlated than 
+     yielded by the $\R^3$ technique
+     used in \pref{item:rdie_lp_R3_rect16_larc} of \prefpp{ex:rdie_lp}.
+
+  \item \label{item:fdie_lp_R6_hann16_euclid}
+        Using a \ope{length 16 Hanning low pass sequence} rather than the 
+        \fncte{length 16 Rectangular low pass sequence} as in \pref{item:fdie_lp_R6_rect16_euclid}
+        results in a distribution that is more uniform and a sequence that is about 0.12\% less correlated:
+        \\\includegraphics{ssp/plots/fdie_lp_12000_R6_hann16_euclid_seq.pdf}
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/fdie_lp_12000_R6_hann16_euclid_histo.pdf}%
+         &\includegraphics{ssp/plots/fdie_lp_12000_R6_hann16_euclid_auto.pdf}
+        \\\hline
+     \end{tabular}\\
+     Note further that this $\R^6$ technique yields a sequence that is about 10\% more correlated than 
+     yielded by the $\R^3$ technique
+     used in \pref{item:rdie_lp_R3_hann16_larc} of \prefpp{ex:rdie_lp}.
+
+  \item \label{item:fdie_lp_R6_hann50_euclid}
+        Using a \ope{length 50 Hanning low pass sequence} rather than the 
+        \fncte{length 16 Hanning low pass sequence} as in \pref{item:fdie_lp_R6_hann16_euclid}
+        results in the following: %about the same uniformity of distribution, slightly lower side lobes in the autocorrelation function,
+        %but a wider main lobe (due to the longer filter width):
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/fdie_lp_12000_R6_hann50_euclid_histo.pdf}%
+         &\includegraphics{ssp/plots/fdie_lp_12000_R6_hann50_euclid_auto.pdf}
+        \\\hline
+     \end{tabular}\\
+     Note further that this $\R^6$ technique yields a sequence that is about 11\% more correlated than 
+     yielded by the $\R^3$ technique
+     used in \pref{item:rdie_lp_R3_hann50_larc} of \prefpp{ex:rdie_lp}.
+
+  \item \label{item:fdie_lp_R6_rect50_euclid}
+        Using a \ope{length 50 Rectangular low pass sequence} rather than the 
+        \fncte{length 50 Hanning low pass sequence} as in \pref{item:fdie_lp_R6_hann50_euclid}
+        results in the following: %a distribution that is a little less uniform:
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/fdie_lp_12000_R6_rect50_euclid_histo.pdf}%
+         &\includegraphics{ssp/plots/fdie_lp_12000_R6_rect50_euclid_auto.pdf}
+        \\\hline
+     \end{tabular}\\
+     Note further that this $\R^6$ technique yeilds a sequence that is about 8.8\% more correlated than yeilded by the $\R^3$ technique
+     used in \pref{item:rdie_lp_R3_rect50_larc} of \prefpp{ex:rdie_lp}.
+
+  \item In the \structe{fair die outcome space}, the \fncte{Lagrange arc distance} does not seem so appropriate.
+        That being said however, \ldots 
+    \begin{enumerate}
+      \item using the \fncte{Lagrange arc distance} rather than the \fncte{Euclidean metric} in 
+            \prefp{item:fdie_lp_R6_rect16_euclid} yields results that are 
+            \textbf{identical}\citetbl{\seessp{fdie_lp_12000m16.xlg}} %2016 June 08 Wednesday 11:18:43 PM UTC
+
+      \item using the \fncte{Lagrange arc distance} rather than the \fncte{Euclidean metric} in 
+            \prefp{item:fdie_lp_R6_hann16_euclid} yields results that \textbf{differ} at 5 locations
+            (differ at approximately 0.04\% of the total possible 
+            $N+M+M-1=12000+16+16-1=12031$ locations):\citetbl{\seessp{fdie_lp_12000m16.xlg}} %2016 June 08 Wednesday 11:18:43 PM UTC
+            \\\indentx\begin{tabstr}{0.75}\begin{tabular}[t]{|c|c|c|}
+                         \hline
+                           n   & Euclidean & Lagrange
+                         \\\hline
+                              430 & $\dieA$ & $\dieE$
+                         \\  2181 & $\dieE$ & $\dieC$
+                         \\  5055 & $\dieB$ & $\dieA$
+                         \\\hline
+                       \end{tabular}\end{tabstr}
+              \indentx\begin{tabstr}{0.75}\begin{tabular}[t]{|c|c|c|}
+                         \hline
+                           n   & Euclidean & Lagrange
+                         \\\hline
+                             8688 & $\dieD$ & $\dieC$
+                         \\ 10866 & $\dieD$ & $\dieE$
+                         \\\hline
+                       \end{tabular}\end{tabstr}
+
+      \item using the \fncte{Lagrange arc distance} rather than the \fncte{Euclidean metric} in 
+            \prefp{item:fdie_lp_R6_hann50_euclid} yields results that are 
+            \textbf{identical}\citetbl{\seessp{fdie_lp_12000m50.xlg}} %2016 June 08 Wednesday 11:23:15 PM UTC
+
+      \item using the \fncte{Lagrange arc distance} rather than the \fncte{Euclidean metric} in 
+            \prefp{item:fdie_lp_R6_rect50_euclid} yields results that \textbf{differ} at 289 locations
+            (differ at approximately 2.4\% of the total possible 
+            $12031$ locations):\citetbl{\seessp{fdie_lp_12000m50.xlg}} %2016 June 08 Wednesday 11:23:15 PM UTC
+    \end{enumerate}
+
+  \item Empirical evidence observed in items
+                    \ref{item:fdie_lp_R6_rect16_euclid},
+                    \ref{item:fdie_lp_R6_hann16_euclid},  
+                    \ref{item:fdie_lp_R6_hann50_euclid}, and
+                    \ref{item:fdie_lp_R6_rect50_euclid},
+        suggests that the $\R^6$ technique of this example leads to about 10\% more correlation 
+        than the $\R^3$ technique of \prefpp{ex:rdie_lp}.
+\end{enumerate}
+\end{example}
+
+
+
+
+

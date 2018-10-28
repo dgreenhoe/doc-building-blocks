@@ -1,0 +1,3143 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\section{Topological Spaces}
+\label{app:topology}
+%======================================
+
+
+%\qboxnps
+%  {
+%    Jules Henri Poincar\'e (1854-1912), physicist and mathematician
+%    \index{Poincar\'e, Jules Henri}
+%    \footnotemark
+%  }
+%  {../common/people/poincare.jpg}
+%  {Point set topology is a disease from which the human race will soon recover.}
+%  \citetblt{
+%    quote: & http://www.resonancepub.com/mathematics.htm \\
+%           & \citei{machale} \\
+%    image: & \url{http://en.wikipedia.org/wiki/Image:Poincare_jh.jpg}
+%    }
+%
+%\qboxnps
+%  {\href{http://en.wikipedia.org/wiki/Lefschetz}{Solomon Lefschetz}
+%   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineG.html}{(1884--1972)},
+%   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Russia.html}{Russian-American-Jewish mathematician}
+%   \index{Lefschetz, Solomon}
+%   \index{quotes!Lefschetz, Solomon}
+%   \footnotemark
+%  }
+%  {../common/people/lefschetz.jpg}
+%  {Well, if it's just turning the crank, it's algebra, but if it's got an idea, it's topology.}
+%  \citetblt{
+%    quote: & \citerpg{james2002}{405}{0521520940}\\
+%    image: & \url{http://www-history.mcs.st-andrews.ac.uk/PictDisplay/Lefschetz.html}
+%    }
+\qboxnpq
+  {
+    Hermann Weyl (1885--1955); mathematician, theoretical physicist, and philosopher
+    \index{Weyl, Hermann}
+    \index{quotes!Weyl, Hermann}
+    \footnotemark
+  }
+  {../common/people/weylhermann_wkp_free.jpg}
+  {Nevertheless I should not pass over in silence the fact that today the feeling among mathematicians is beginning to spread that the fertility of these abstracting methods is approaching exhaustion. The case is this: that all these nice general concepts do not fall into our laps by themselves. But definite concrete problems were first conquered in their undivided complexity, singlehanded by brute force, so to speak. Only afterwards the axiomaticians came along and stated: Instead of breaking the door with all your might and bruising your hands, you should have constructed such and such a key of skill, and by it you would have been able to open the door quite smoothly. But they can construct the key only because they are able, after the breaking in was successful, to study the lock from within and without. Before you can generalize, formalize, and axiomatize, there must be a mathematical substance.}
+  \footnotetext{
+    quote: \citePpc{weyl1935}{14}{H. Weyl, quoting himself from ``a conference on topology and abstract algebra as two ways of mathematical understanding, in 1931"}. 
+    image: \url{https://en.wikipedia.org/wiki/File:Hermann_Weyl_ETH-Bib_Portr_00890.jpg}: ``This work is free and may be used by anyone for any purpose."
+    }
+
+%\qboxnpq
+%  {Hermann Weyl (1885--1955), German mathematician, theoretical physicist, and philosopher \footnotemark}
+%  {../common/people/weyl_unihamde.jpg}
+%  {Nevertheless I should not pass over in silence the fact that today the feeling among mathematicians is beginning to spread 
+%   that the fertility of these abstracting methods is approaching exhaustion. 
+%   The case is this: that all these nice general concepts do not fall into our laps by themselves. 
+%   But definite concrete problems were first conquered in their undivided complexity, singlehanded by brute force, so to speak. 
+%   Only afterwards the axiomaticians came along and stated: 
+%   Instead of breaking the door with all your might and bruising your hands, 
+%   you should have constructed such and such a key of skill, and by it you would have been able to open the door quite smoothly. 
+%   But they can construct the key only because they are able, after the breaking in was successful, 
+%   to study the lock from within and without. 
+%   Before you can generalize, formalize, and axiomatize, there must be a mathematical substance.}
+%\citetblt{
+%  quote: \citePc{weyl1935}{memorial address for Emmy Noether (1882--1935)},\\
+%         \citeIgc{weyl1935p}{0486266931}{in a book of collected works of Hermann Weyl},\\
+%         \citeIppgc{weyl1935d}{140}{141}{0486266931}{in a book by Auguste Dick about Emmy Noether}.\\
+%  image: \url{http://www.hs.uni-hamburg.de/DE/GNT/hh/biogr/weyl.htm}.
+%  %Pioneers of Representation Theory: Frobenius, Burnside, Schur, and Brauer, by Charles W. Curtis, pg 210.
+%  %http://www.plambeck.org/archives/001272.html
+%  }
+
+%%=======================================
+%\subsection{Definitions}
+%%=======================================
+%%=======================================
+%\section{Set structure}
+%%=======================================
+%%=======================================
+%\subsection{Open sets}
+%%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  %\citerpp{davis2005}{41}{42},
+  \citerpg{munkres2000}{76}{0131816292},
+  %\citerpu{ab}{57}{0120502577},
+  %\citerp{vel1993}{3},
+  \citor{riesz1909},
+  \citer{hausdorff1914},
+  \citeP{tietze1923}, % cited by Thron page 18
+  \citerpg{hausdorff1937e}{258}{0828401195}
+  %By modifying 3 to closure under finite intersections, 1 and 2 are implied by 
+  }
+\label{def:topology}
+\label{def:topspace}
+\label{def:ts_open}
+\label{def:tspace}
+\label{def:open}
+\label{def:openset}
+\label{def:closed}
+\label{def:closedset}
+\index{space!topological}
+%---------------------------------------
+Let $\Gamma$ be a set with an arbitrary (possibly uncountable) number of elements.
+Let $\psetX$ be the \structe{power set} of a set $\setX$ \xref{def:pset}.
+\defboxp{\indxs{\topT}\indxs{\sssTx}
+  A family of sets $\topT\subseteq\psetX$ is a \structd{topology} on $\sid$ if
+  \\\indentx$\begin{array}{F>{\ds}l>{\ds}lD}
+      1. & \szero \in \topT
+         &
+        %& ($\szero$ is in $\topT$)
+         & and
+    \\2. & \sid \in \topT
+         &
+        %& ($\sid$ is in $\topT$)
+         & and
+    \\3. & \setU,\setV\in\topT
+         & \implies \setU\seti\setV\in\topT
+        %& (the intersection of a finite number of open sets is open)
+         & and
+    \\4. & \set{\setU_\gamma}{\gamma\in\Gamma} \subseteq \topT
+         & \implies \setopu_{\gamma\in\Gamma}\setU_\gamma \in \topT
+        %& (the union of an arbitrary number of open sets is open).
+         & .
+  \end{array}$
+  \\
+  %A \structd{topological space} is the pair $\topspace{\sid}{\topT}$.
+  The ordered pair $\topspaceX$ is a \structe{topological space} if $\topT$ is a \structe{topology} on $\setX$.
+  A set $\setU$ is \propd{open} in $\topspaceX$ if $\setU$ is any element of $\topT$.
+  A set $\setD$ is \propd{closed} in $\topspaceX$ if $\cmpD$ is \prope{open} in $\topspaceX$.
+  %The set of topologies on a set $\sid$ is denoted $\sssT{\sid}$. That is,
+  %\\\indentx$\ds\sssT{\sid} \eqd \set{\topT\sorel\pset{\sid}}{\text{$\topT$ is a topology}}$
+  }
+\end{definition}
+
+
+Just as the power set $\psetx$ and the set $\setn{\szero,\sid}$ are algebras of sets
+on a set $\sid$, % (\pref{prop:ss_algebra_smallest}), 
+so also are these sets topologies on $\sid$ (next example):
+%---------------------------------------
+\begin{example}
+\index{topologies!trivial}
+\index{topologies!indiscrete}
+\index{topologies!discrete}
+\footnote{
+  \citerp{munkres2000}{77},
+  \citerpgc{kubrusly2011}{107}{0817649972}{Example 3.J},
+  \citerppgc{steen1978}{42}{43}{0387903127}{II.4},
+  \citerpg{dibenedetto}{18}{0817642315}
+  }
+\label{ex:dts}
+\label{ex:idts}
+%\label{ex:discretetop}
+%\label{ex:indiscretetop}
+%---------------------------------------
+Let $\sssT{\sid}$ be the set of topologies on a set $\sid$ and
+$\pset{\sid}$ the \structe{power set} \xref{def:pset} on $\sid$.
+\exbox{\begin{array}{lMl@{\qquad}D}
+  \setn{\szero,\,\sid} &is a \structe{topology} in& \sssTx & (\structe{indiscrete topology} or \structe{trivial topology}) \\
+  \psetx               &is a \structe{topology} in& \sssTx & (\structe{discrete topology})
+\end{array}}
+\end{example}
+
+%%---------------------------------------
+%\begin{example}[\exmd{finite complement topology}]
+%\label{ex:ts_finite_complement}
+%\index{finite complement topology}
+%\index{topology!finite complement}
+%\footnote{
+%  \citerp{munkres2000}{77}
+%  }
+%%---------------------------------------
+%Let $\sssTx$ be the set of topologies on a set $\sid$ and $\psetx$ the \structe{power set} \xref{def:pset} on $\sid$.
+%\exbox{
+%  \mcom{\set{\setA\in\psetx}{\text{$\cmpA$ is finite or $\cmpA=\sid$}} \in \sssTx}
+%       {is a topology on $\sid$}
+%  }
+%\end{example}
+%
+%For examples of topologies on the real line, see the following:
+%  \\\indentx\begin{tabular}{m{\tw-12mm}}
+%    \citerpgc{adams2008}{31}{0131848690}{"six topologies on the real line"}\\
+%    \citerppgc{salzmann2007}{64}{70}{0521865166}{Weird topologies on the real line}\\
+%    \citerpgc{murdeshwar1990}{53}{8122402461}{``often used topologies on the real line"}\\
+%    \citerppgc{joshi1983}{85}{91}{0852264445}{\textsection4.2 Examples of Topological Spaces}
+%  \end{tabular}
+%
+%%=======================================
+%\subsection{Order structure of a topology}
+%%=======================================
+%%---------------------------------------
+%\begin{theorem}
+%%\footnote{
+%%  \citerpg{gratzer2003}{85}{3764369965}\\
+%%  \citerpg{gratzer1971}{75}{0716704420}\\
+%%  \citor{stone1936} \\
+%%  \citor{birkhoff1933}?
+%%  }
+%\label{thm:latd_top}
+%%---------------------------------------
+%Let $\latL\eqd\latticed$ be a \hie{lattice}.
+%\thmbox{
+%  \text{$\topT$ is a \structe{topology}}
+%  \quad\implies\quad
+%  \text{$\lattice{\topT}{\sorel}{\sor}{\sand}$ is a \structe{distributive lattice}}
+%  }
+%\end{theorem}
+%\begin{proof}
+%%\begin{enumerate}
+%%  \item Proof that \hie{topology} $\implies$ \prope{distributive} \hie{lattice}:
+%    \begin{enumerate}
+%      \item \ifdochas{setstrct}{By \prefpp{prop:ss_order}, }$\topspace{\topS}{\sorel}$ is an \hie{ordered set}.
+%      \item \ifdochas{setstrct}{By \prefpp{prop:ss_bounds}, }$\sor$ is \ope{least upper bound} operation on $\topspace{\topS}{\sorel}$.
+%            and $\sand$ is \ope{greatest lower bound} operation on $\topspace{\topS}{\sorel}$.
+%      \item Therefore, \ifdochas{lattice}{by \prefpp{def:lattice}, }$\lattice{\topS}{\sorel}{\sor}{\sand}$ is a lattice. \label{item:ss_ui_lat}
+%      \item \ifdochas{lattice}{By \prefpp{thm:lattice}, }$\lattice{\topS}{\sorel}{\sor}{\sand}$ is 
+%            \prope{idempotent}, \prope{commutative}, \prope{associative}, and \prope{absorptive}.
+%      \item Proof that $\lattice{\topS}{\sorel}{\sor}{\sand}$ is \prope{distributive}: \label{item:ss_ui_dis}
+%        \begin{enumerate}
+%          \item Proof that $\setA\seti(\setB\setu\setC) = (\setA\seti\setB) \setu (\setA\seti\setC)$:
+%            \begin{align*}
+%              &\setA\seti(\setB\setu\setC) 
+%              \\&= \set{x\in\setX}{x\in\setA \land x\in(\setB\setu\setC)}
+%                && \text{by definition of $\seti$ \ifxref{setstrct}{def:ss_setops}}
+%              \\&= \set{x\in\setX}{x\in\setA \land x\in\set{x\in\setX}{x\in\setB \lor x\in\setC}}
+%                && \text{by definition of $\setu$ \ifxref{setstrct}{def:ss_setops}}
+%              \\&= \set{x\in\setX}{x\in\setA \land (x\in\setB \lor x\in\setC)}
+%              \\&= \set{x\in\setX}{(x\in\setA \land x\in\setB) \lor (x\in\setA \land x\in\setC)}
+%                && \text{\ifdochas{logic}{by \prefp{thm:logic}}}
+%              \\&= \set{x\in\setX}{x\in\setA \land x\in\setB} \sor \set{x\in\setX}{x\in\setA \land x\in\setC}
+%                && \text{by definition of $\setu$ \ifxref{setstrct}{def:ss_setops}}
+%              \\&= (\setA\seti\setB) \sor (\setA\seti\setC)
+%                && \text{by definition of $\seti$ \ifxref{setstrct}{def:ss_setops}}
+%            \end{align*}
+%    
+%          \item Proof that $\setA\setu(\setB\seti\setC) = (\setA\setu\setB) \seti (\setA\setu\setC)$:\\
+%            This follows from the fact that $\lattice{\topS}{\sorel}{\sor}{\sand}$ is a lattice\ifsxref{lattice}{item:ss_ui_lat},
+%            that $\sand$ distributes over $\sor$\ifsxref{setstrct}{item:ss_ui_dis}\ifdochas{latd}{, and by \prefpp{thm:lat_dis}}.
+%        \end{enumerate}
+%    \end{enumerate}
+%
+%
+%%  \item Proof that \prope{distributive} \hie{lattice} $\implies$ \hie{topology}:
+%
+%
+%%\end{enumerate}
+%\end{proof}
+%
+%%---------------------------------------
+%\begin{remark}
+%%---------------------------------------
+%Note that in set structures that are \emph{not} closed under 
+%the \ope{set union} operation $\setu$ \xref{def:setops}, 
+%the set union operation $\setu$ is in general \emph{not}
+%equivalent to the \ope{order join} operation $\join$
+%with respect to the \rele{set inclusion} relation $\sorel$ \xref{def:subset}.
+%%And similarly, the set intersection operation $\seti$ is not always equivalent
+%%to the order meet operation $\meet$.
+%This is illustrated in the next example.
+%\end{remark}
+%
+%
+%%---------------------------------------
+%\begin{example}
+%\label{ex:ss_set5}
+%%---------------------------------------
+%There are five unlabeled lattices on a five element 
+%set\ifsxref{lattice}{prop:num_lattices}.
+%Of these five, three are 
+%\prope{distributive}\ifsxref{latd}{prop:lat_num_ldm}. % and illustrated in \prefpp{ex:lat_set5_distrib}}.
+%The following illustrates that the distributive lattices are isomorphic
+%to topologies, while the non-distributive lattices are not.
+%\\
+%%\exbox{\input{../common/math/graphics/latd5.tex}}
+%\exbox{\begin{tabular}{cc|ccc}%
+%   \mc{2}{c|}{\prope{non-distributive}/\emph{not} topologies}%
+%  &\mc{3}{c}{\prope{distributive}/\emph{are} topologies}%
+%  \\\hline%
+%   \footnotesize\input{../common/math/graphics/lat/lat5_m3_nontop.tex}%
+%  &\footnotesize\input{../common/math/graphics/lat/lat5_n5_nontop.tex}%
+%  &\footnotesize\input{../common/math/graphics/lat/lat5_l2onm2_top.tex}%
+%  &\footnotesize\input{../common/math/graphics/lat/lat5_m2onl2_top.tex}%
+%  &\footnotesize\input{../common/math/graphics/lat/lat5_l5_top.tex}%
+%\end{tabular}}
+%\end{example}
+%\begin{proof}
+%\begin{enumerate}
+%  \item The first two lattices are non-distributive by
+%        \thme{Birkhoff distributivity criterion}\ifsxref{latd}{thm:latd_char_n5m3}.
+%    \begin{dingautolist}{"AC}
+%      \item This lattice is not a topology because, for example, 
+%            \\\indentx
+%            $\setn{x} \join \setn{y} = \setn{x,y,z} \ne  \setn{x,y} = \setn{x} \setu \setn{y}.$
+%            \\
+%            That is, the set union operation $\setu$ is \emph{not} equivalent to the 
+%            order join operation $\join$.
+%    
+%      \item This lattice is not a topology because, for example, 
+%            \\\indentx$\setn{x}\join\setn{y}=\setn{y}\ne \setn{x,y}=\setn{x}\setu\setn{y}$
+%    \end{dingautolist}
+%    
+%  \item The last three lattices are distributive by
+%        \thme{Birkhoff distributivity criterion}\ifsxref{latd}{thm:latd_char_n5m3}.
+%    \begin{dingautolist}{"AE}
+%      \item This lattice is the topology $\topT_{13}$ of \prefpp{ex:top_xyz}. 
+%            On the set $\setn{x,y,z}$, there are a total of three topologies 
+%            that have this order structure \xref{ex:top_xyz}:
+%            \\\indentx$\begin{array}{lcr *{5}{l} l}
+%                \topT_{13} &=& \{ & \emptyset, & \setn{x}, & \setn{y}, & \setn{x,y}, & \setn{x,y,z} & \}
+%              \\\topT_{25} &=& \{ & \emptyset, & \setn{x}, & \setn{z}, & \setn{x,z}, & \setn{x,y,z} & \}
+%              \\\topT_{46} &=& \{ & \emptyset, & \setn{y}, & \setn{z}, & \setn{y,z}, & \setn{x,y,z} & \}
+%            \end{array}$
+%    
+%      \item This lattice is the topology $\topT_{31}$ of \prefpp{ex:top_xyz}. 
+%            On the set $\setn{x,y,z}$, there are a total of three topologies 
+%            that have this order structure \xref{ex:top_xyz}:
+%            \\\indentx$\begin{array}{lcr *{5}{l} l}
+%                \topT_{31} &=& \{ & \emptyset, & \setn{x}, & \setn{x,y}, & \setn{x,z}, & \setn{x,y,z} & \}
+%              \\\topT_{52} &=& \{ & \emptyset, & \setn{y}, & \setn{x,y}, & \setn{y,z}, & \setn{x,y,z} & \}
+%              \\\topT_{64} &=& \{ & \emptyset, & \setn{z}, & \setn{x,z}, & \setn{y,z}, & \setn{x,y,z} & \}
+%            \end{array}$
+%    
+%      \item This lattice is a topology by \prefpp{def:topology}.
+%    
+%    \end{dingautolist}
+%
+%\end{enumerate}
+%\end{proof}
+%
+%\begin{minipage}{\tw-50mm}%
+%%---------------------------------------
+%\begin{example}
+%%---------------------------------------
+%  The set structure 
+%  \\\indentx
+%  $\topS\eqd\setn{\szero,\, \setn{x},\, \setn{y},\, \setn{z},\, \setn{x,y},\, \setn{x,y,z}}$
+%  \\
+%  ordered by the set inclusion relation $\sorel$
+%  is illustrated by the Hasse diagram to the right.
+%  Note that 
+%  \\\indentx
+%  $\setn{x} \join \setn{z} = \setn{x,y,z} \ne  \setn{x,z} = \setn{x} \setu \setn{z}.$
+%  \\
+%  That is, the set union operation $\setu$ is \emph{not} equivalent to the 
+%  order join operation $\join$.
+%\end{example}
+%\end{minipage}%
+%\hfill%
+%\begin{minipage}{45mm}%
+%  \begin{center}
+%  \begin{fsL}
+%  \input{../common/math/graphics/latwavxyz.tex}%
+% % \setlength{\unitlength}{\tw/(400)}%
+% % \begin{picture}(300,325)(-150,-25)%
+% % %{\color{graphpaper}\graphpaper[10](-150,-50)(300,400)}%
+% %   \thicklines%
+% %   {\color{latline}%
+% %     \put( 100, 100){\line(-1, 2){100}}%
+% %     \put(   0, 100){\line(-1, 2){ 50}}%
+% %     \put(-100, 100){\line( 1, 2){100}}%
+% %     \put(   0,   0){\line(-1, 1){100}}%
+% %     \put(   0,   0){\line( 0, 1){100}}%
+% %     \put(   0,   0){\line( 1, 1){100}}%
+% %     }%
+% %   {\color{latdot}%
+% %     \put(   0, 300){\latdot}%
+% %     \put(- 50, 200){\latdot}%
+% %     \put( 100, 100){\latdot}%
+% %     \put(   0, 100){\latdot}%
+% %     \put(-100, 100){\latdot}%
+% %     \put(   0,   0){\latdot}%
+% %     }%
+% %   {\color{latdot}%
+% %     \put(   0, 320){\makebox(0,0)[b] {$\setn{x,y,z}$}}%
+% %     \put(- 65, 200){\makebox(0,0)[cr]{$\setn{x,y}$}}%
+% %     \put( 120, 100){\makebox(0,0)[cl]{$\setn{z}$}}%
+% %     \put(  20, 100){\makebox(0,0)[cl]{$\setn{y}$}}%
+% %     \put(-120, 100){\makebox(0,0)[cr]{$\setn{x}$}}%
+% %     \put(   0, -20){\makebox(0,0)[t] {$\szero$}}%
+% %     }%
+% % \end{picture}%
+%  \end{fsL}
+%  \end{center}
+%\end{minipage}%
+%
+%
+%%=======================================
+%\subsection{Number of topologies}
+%%=======================================
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:top_num}
+%\footnote{
+%  \citeoeis{A000798} \\
+%  \citerp{brown1996}{31} \\
+%  \citerpg{comtet1974}{229}{9027704414}\\
+%  \citer{comtet1966} \\
+%  \citerp{chatterji1967}{7} \\
+%  \citer{evans1967} \\
+%  \citerp{krishnamurthy1966}{157} \\
+%  }
+%\index{topologies!number of}
+%%---------------------------------------
+%\thmbox{\begin{array}{M}
+%  The \hid{number of topologies} $t_n$ on a finite set $\sid_n$ with $n$ elements is
+%  \\
+%  $\begin{array}{|l||*{9}{r|}}
+%    \hline
+%    n   & 0 & 1 & 2 &  3 &   4 &    5 &       6 &         7 &           8   \\
+%    t_n & 1 & 1 & 4 & 29 & 355 & 6942 & 209,527 & 9,535,241 & 642,779,354   \\
+%    \hline
+%  \end{array}$
+%  \\
+%  $\begin{array}{|l||*{2}{r|}}
+%    \hline
+%    n   &              9 &                10  \\
+%    t_n & 63,260,289,423 & 8,977,053,873,043  \\
+%    \hline
+%  \end{array}$
+%\end{array}}
+%\end{theorem}
+%
+%
+%%---------------------------------------
+%\begin{proposition}
+%\footnote{
+%  \citerpp{chatterji1967}{6}{7} \\
+%  \citer{kleitman1970}
+%  }
+%%---------------------------------------
+%Let $t_n$ be the number of topologies on a finite set with $n$ elements.
+%\propbox{\begin{array}{>{\ds}rcl@{\qquad}C@{\qquad}D}
+%  %c\cdot 2^{\frac{n^2}{4}} {n \choose [n2]} &<& T(n) < n! 2^{\frac{n(n-1)}{2} B_n} & \forall n>1,\, 0<c<1 \\
+%  \lim_{n\to\infty} \frac{t_n}{2^{\frac{n^2}{4}}}               &=& \infty
+%    &
+%    & (lower bound)
+%    \\\\
+%  \lim_{n\to\infty} \frac{t_n}{2^{\brp{\frac{1}{2} + \epsilon}n^2}}\, &=& 0
+%    & \forall \epsilon>0
+%    & (upper bound)
+%    \\\\
+%  t_n &>& n t_{n-1} 
+%    &
+%    & (rate of growth)
+%\end{array}}
+%\end{proposition}
+%
+%
+%%======================================
+%\subsection{Closed sets}
+%%======================================
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpg{ab}{35}{0120502577} \\
+%  \citorpg{hausdorff1937e}{258}{0828401195}
+%  }
+%\label{thm:ts_closed}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%Let $\topT^\ast$ be the set of all \prope{closed} sets in $\topspaceX$.
+%Let $\Gamma$ be a set with an arbitrary (possibly uncountable) number of elements.
+%\thmbox{
+%  \begin{array}{F >{\ds}l>{\ds}>{\ds}lD}
+%    1. & \emptyset \in\topT^\ast                          
+%       &
+%       & ($\emptyset$ is \prope{closed} in $\topspaceX$)
+%       \\
+%    2. & \setX\in\topT^\ast
+%       & 
+%       & ($\setX$ is \prope{closed} in $\topspaceX$)
+%       \\
+%    3. & \setA,\setB\in\topT^\ast
+%       & \implies \setA\setu\setB\in\topT^\ast
+%       & (the union of a finite number of closed sets is \prope{closed})
+%       \\
+%    4. & \set{\setD_\gamma}{\gamma\in\Gamma}\subseteq\topT^\ast
+%       & \implies \setopi_{\gamma\in\Gamma} \setD_\gamma \in\topT^\ast
+%       & (the intersection of an arbitrary number of closed sets is \prope{closed})
+%  \end{array}
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%  \emptyset \text{ is open}
+%    &
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \cmp{\emptyset} \text{ is closed}
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \setX \text{ is closed}
+%    && \text{because $\cmp{\emptyset}=\setX$}
+%  \\
+%  \setX \text{ is open}
+%    &
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \cmpX \text{ is closed}
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\iff     \emptyset \text{ is closed}
+%  \\
+%  \setA,\setB \text{ are closed}
+%    &\implies \cmpA,\cmpB \text{ are open}
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \cmpA \seti \cmpB \text{ is open}
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \cmpp{\cmpA \seti \cmpB} \text{ is closed}
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \setA\setu\setB \text{ is closed}
+%    &&        \text{by \thme{Demorgan's law} \ifxref{setstrct}{thm:demorgan}}
+%  \\
+%  \seq{\setA_\gamma}{\gamma\in\Gamma} \text{ are closed}
+%    &\implies \seq{\cmpA_\gamma}{\gamma\in\Gamma} \text{ are open}
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \setopu_{\gamma\in\Gamma}\cmpA_\gamma \text{ is open}
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \cmpp{\setopu_{\gamma\in\Gamma}\cmpA_\gamma} \text{ is closed}
+%    &&        \text{by \prefp{def:openset}}
+%  \\&\implies \setopi_{\gamma\in\Gamma}\setA_\gamma \text{ is closed}
+%    &&        \text{by \thme{Demorgan's law} \ifxref{setstrct}{thm:demorgan}}
+%\end{align*}
+%\end{proof}
+%
+%
+%%---------------------------------------
+%\begin{example}
+%\label{ex:top_xy}
+%\label{ex:top_closed_xy}
+%%---------------------------------------
+%There are four topologies on the set $\setX\eqd\setn{x,y}$:
+%\\
+%\exbox{
+%  %\begin{tabular}{|>{$}l<{$} @{$\;=\;\{$} *{4}{>{$}l<{$}@{\,}} @{$\}$\quad}|@{\quad$\{$} *{4}{>{$}l<{$}@{\,}} @{$\}\quad$} c|}
+%  \begin{array}{l@{\;=\;\{} *{4}{l@{\,}} @{\}\quad}|@{\quad\{} *{4}{l@{\,}} @{\}\quad} c|}
+%    \hline
+%    \mc{5}{N|}{topologies on $\setn{x,y}$}&\mc{5}{N}{corresponding closed sets}%
+%    \\\hline
+%        \topT_{0} & \emptyset, &           &           &  \setX
+%                  & \emptyset, &           &           &  \setX  &
+%      \\\topT_{1} & \emptyset, & \setn{x}, &           &  \setX
+%                  & \emptyset, &           & \setn{y}, &  \setX  &
+%      \\\topT_{2} & \emptyset, &           & \setn{y}, &  \setX
+%                  & \emptyset, & \setn{x}, &           &  \setX  &
+%      \\\topT_{3} & \emptyset, & \setn{x}, & \setn{y}, &  \setX
+%                  & \emptyset, & \setn{x}, & \setn{y}, &  \setX  &
+%  \end{array}}
+%  \\
+%  The topologies $\topspace{\setX}{\topT_1}$ and $\topspace{\setX}{\topT_2}$, as well as their corresponding closed set topological spaces,
+%  are all \structe{Serpi/'nski spaces}.
+%\end{example}
+%
+%
+%%---------------------------------------
+%\begin{example}
+%\label{ex:top_xyz}
+%\label{ex:top_closed_xyz}
+%%---------------------------------------
+%There are a total of 29 \structe{topologies} \xref{def:topology} on the set $\setX\eqd\setn{x,y,z}$:
+%{\footnotesize\arrayrulecolor{ex}
+%\begin{longtable}{|>{$}l<{$} @{$\;=\;\{$} *{8}{>{$}l<{$}@{\,}} @{$\}$\quad}  | @{\quad$\{$} *{8}{>{$}l<{$}@{\,}} @{$\}\quad$} |}
+%  \hline
+%  \mc{9}{G}{topologies on $\setn{x,y,z}$}&\mc{8}{G}{corresponding closed sets}
+%  \\\hline
+%    \topT_{00} & \emptyset, &           &           &           &             &             &             & \setX
+%               & \emptyset, &           &           &           &             &             &             & \setX
+%  \\\topT_{01} & \emptyset, & \setn{x}, &           &           &             &             &             & \setX
+%               & \emptyset, &           &           &           &             &             & \setn{y,z}, & \setX
+%  \\\topT_{02} & \emptyset, &           & \setn{y}, &           &             &             &             & \setX
+%               & \emptyset, &           &           &           &             & \setn{x,z}  &             & \setX
+%  \\\topT_{04} & \emptyset, &           &           & \setn{z}, &             &             &             & \setX
+%               & \emptyset, &           &           &           & \setn{x,y}, &             &             & \setX
+%  \\\topT_{10} & \emptyset, &           &           &           & \setn{x,y}, &             &             & \setX
+%               & \emptyset, &           &           & \setn{z}, &             &             &             & \setX
+%  \\\topT_{20} & \emptyset, &           &           &           &             & \setn{x,z}, &             & \setX
+%               & \emptyset, &           & \setn{y}, &           &             &             &             & \setX
+%  \\\topT_{40} & \emptyset, &           &           &           &             &             & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, &           &           &             &             &             & \setX
+%  \\\topT_{11} & \emptyset, & \setn{x}, &           &           & \setn{x,y}, &             &             & \setX
+%               & \emptyset, &           &           & \setn{z}, &             &             & \setn{y,z}, & \setX
+%  \\\topT_{21} & \emptyset, & \setn{x}, &           &           &             & \setn{x,z}, &             & \setX
+%               & \emptyset, &           & \setn{y}  &           &             &             & \setn{y,z}, & \setX
+%  \\\topT_{41} & \emptyset, & \setn{x}, &           &           &             &             & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, &           &           &             &             & \setn{y,z}, & \setX
+%  \\\topT_{12} & \emptyset, &           & \setn{y}, &           & \setn{x,y}, &             &             & \setX
+%               & \emptyset, &           &           & \setn{z}, &             & \setn{x,z}  &             & \setX
+%  \\\topT_{22} & \emptyset, &           & \setn{y}, &           &             & \setn{x,z}, &             & \setX
+%               & \emptyset, &           & \setn{y}, &           &             & \setn{x,z}, &             & \setX
+%  \\\topT_{42} & \emptyset, &           & \setn{y}, &           &             &             & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, &           &           &             & \setn{x,z}, &             & \setX
+%  \\\topT_{14} & \emptyset, &           &           & \setn{z}, & \setn{x,y}, &             &             & \setX
+%               & \emptyset, &           &           & \setn{z}, & \setn{x,y}, &             &             & \setX
+%  \\\topT_{24} & \emptyset, &           &           & \setn{z}, &             & \setn{x,z}, &             & \setX
+%               & \emptyset, &           & \setn{y}, &           & \setn{x,y}, &             &             & \setX
+%  \\\topT_{44} & \emptyset, &           &           & \setn{z}, &             &             & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, &           &           & \setn{x,y}, &             &             & \setX
+%  \\\topT_{31} & \emptyset, & \setn{x}, &           &           & \setn{x,y}, & \setn{x,z}, &             & \setX
+%               & \emptyset, &           & \setn{y}, & \setn{z}, &             &             & \setn{y,z}, & \setX
+%  \\\topT_{52} & \emptyset, &           & \setn{y}, &           & \setn{x,y}, &             & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, &           & \setn{z}, &             & \setn{x,z}, &             & \setX
+%  \\\topT_{64} & \emptyset, &           &           & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, &             &             & \setX
+%  \\\topT_{13} & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, &             &             & \setX
+%               & \emptyset, &           &           & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%  \\\topT_{25} & \emptyset, & \setn{x}, &           & \setn{z}, &             & \setn{x,z}, &             & \setX
+%               & \emptyset, &           & \setn{y}, &           & \setn{x,y}, &             & \setn{y,z}, & \setX
+%  \\\topT_{46} & \emptyset, &           & \setn{y}, & \setn{z}, &             &             & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, &           &           & \setn{x,y}, & \setn{x,z}, &             & \setX
+%  \\\topT_{33} & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, & \setn{x,z}, &             & \setX
+%               & \emptyset, &           & \setn{y}, & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%  \\\topT_{53} & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, &             & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, &           & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%  \\\topT_{35} & \emptyset, & \setn{x}, &           & \setn{z}, & \setn{x,y}, & \setn{x,z}, &             & \setX
+%               & \emptyset, &           & \setn{y}, & \setn{z}, & \setn{x,y}, &             & \setn{y,z}, & \setX
+%  \\\topT_{65} & \emptyset, & \setn{x}, &           & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, &             & \setn{y,z}, & \setX
+%  \\\topT_{56} & \emptyset, &           & \setn{y}, & \setn{z}, & \setn{x,y}, &             & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, &           & \setn{z}, & \setn{x,y}, & \setn{x,z}, &             & \setX
+%  \\\topT_{66} & \emptyset, &           & \setn{y}, & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, & \setn{x,z}, &             & \setX
+%  \\\topT_{77} & \emptyset, & \setn{x}, & \setn{y}, & \setn{z}, & \setn{x,y}, & \setn{x,z}, & \setn{y,z}, & \setX
+%               & \emptyset, & \setn{x}, & \setn{y}, & \setn{z}, & \setn{x,y}, & \setn{x,z}, & \setn{y,z}, & \setX
+%  \\\hline
+%\end{longtable}
+%}
+%\end{example}
+%
+%
+
+%======================================
+%\subsection{Bases for topologies}
+%======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{joshi1983}{92}{0852264445}{(3.1) Definition},
+  \citerpgc{davis2005}{46}{0071243399}{Definition 4.15} 
+  %\citerpg{bollobas1999}{19}{0521655773}
+  }
+\label{def:ss_base}
+\label{def:baseB}
+\label{def:base}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space}.
+\defboxt{\indxs{\baseB}
+  A set $\baseB\subseteq\psetx$ is a \structd{base} for $\topT$ if
+  \\\indentx$\begin{array}{FlD}
+    1.& \baseB \subseteq \topT
+      & and
+      \\
+    2.& \forall\setU\in\topT,\quad \exists \setn{\setB_\gamma\in\baseB} \st \ds\setU = \setopu_{\gamma} \setB_\gamma
+  \end{array}$
+%  \\
+%  An element in $\baseB$ is called a \hid{basic open set}.
+}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppgc{joshi1983}{92}{93}{0852264445}{(3.2) Proposition},
+  \citerpg{davis2005}{46}{0071243399}
+  %\citerpg{bollobas1999}{19}{0521655773}
+  }
+\label{thm:basex}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space}.
+Let $\baseB$ be a subset of $\psetX$ such that $\baseB\subseteq\psetX$.
+\thmbox{
+  \brb{\text{$\baseB$ is a \structe{base} for $\topT$}}
+  \quad\iff\quad
+  %\brb{\begin{array}{FlclDD}
+  %  \mc{5}{M}{There exists $\setA\in\baseB$ such that}\\
+  %    \qquad1. & x\in\setX         &\implies& x\in\setA           & ($\baseB$ covers $\setX$) & and\\
+  %    \qquad2. & x\in\setU\in\topT &\implies& \setA\subseteq\setU & %($\setU$ is an \structe{open set})
+  %\end{array}}
+  \brb{\begin{array}{M}
+    For every $x\in\setX$ and for every \structe{open set} $\setU$ containing $x$,\\
+    there exists $\setB_x\in\baseB$ such that\qquad $x\in\setB_x\subseteq\setU$.
+  \end{array}}
+  }
+\end{theorem}
+%\begin{proof}
+%    \begin{align*}
+%      &\text{\fbox{$\baseB$ is a \structe{base} for $\topT$}}
+%      \\&\implies \text{if $\setU$ is an \structe{open set} then $\exists \set{\setB_\gamma\in\baseB}{\gamma\in\Gamma} \st \setU = \setopu_{\gamma\in\Gamma} \setB_\gamma$}
+%        && \text{by definition of \structe{base} \xref{def:baseB}}
+%      \\&\implies \text{if $x\in\setU$ then $\exists\set{\setB_\gamma\in\baseB}{\gamma\in\Gamma} \st x\in\setU = \setopu_{\gamma\in\Gamma} \setB_\gamma$}
+%      \\&\implies \text{there exists $\setB_x\in\baseB \st x\in\setB_x\subseteq\setU$}
+%        && \text{because $\setB_x\subseteq\setopu\setB_\gamma$}
+%      \\&\implies \text{\fbox{right side hypothesis}}
+%      \\&\implies \text{for every \structe{open set} $\setU\quad\exists\baseB\eqd\set{\setB_\gamma}{\gamma\in\Gamma}\st \setU=\setopu_{\gamma\in\Gamma}\setB_\gamma$}
+%        && \text{because $\forall x\in\setU,\,x\in\setB_x\subseteq\setU$}
+%      \\&\implies \text{\fbox{$\baseB$ is a \structe{base} for $\topT$}}
+%        && \text{by definition of \structe{base} \xref{def:baseB}}
+%    \end{align*}
+%\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{bollobas1999}{19}{0521655773}
+  }
+\label{thm:top_base}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace} and $\baseB\subseteq\psetx$.
+\thmbox{
+  \text{$\baseB$ is a base for $\topspaceX$}
+  \quad\iff\quad
+  \brbl{\begin{array}{FlclD}
+    1.& x \in \setX                &\implies&  \exists \setB_x\in\baseB \st x\in\setB_x  & and \\
+    2.& \setB_1,\setB_2\in\baseB   &\implies&  \setB_1\seti\setB_2\in\baseB
+  \end{array}}
+  }
+\end{theorem}
+
+%%---------------------------------------
+%\begin{example}
+%\label{ex:top_base_xyz}
+%%---------------------------------------
+%Consider the 29 topologies on the set $\setn{x,y,z}$ \xref{ex:top_closed_xyz}.
+%\exbox{
+%\begin{array}{l|M}
+%  \text{This family of sets} & is a \structe{base} for these topologies on $\setn{x,y,z}$:
+%  \\\hline
+%  \setn{\setn{x},\,\setn{y,z}}              & $\topT_{00}$, $\topT_{01}$, $\topT_{40}$, and $\topT_{41}$.\\
+%  \setn{\setn{y},\,\setn{x,z}}              & $\topT_{00}$, $\topT_{02}$, $\topT_{20}$, and $\topT_{22}$.\\
+%  \setn{\setn{z},\,\setn{x,y}}              & $\topT_{00}$, $\topT_{04}$, $\topT_{10}$, and $\topT_{14}$.\\
+%  \setn{\setn{x},\,\setn{x,y},\,\setn{x,z}} & $\topT_{00}$, $\topT_{11}$, $\topT_{21}$, and $\topT_{31}$.\\
+%  \setn{\setn{y},\,\setn{x,y},\,\setn{y,z}} & $\topT_{00}$, $\topT_{12}$, $\topT_{42}$, and $\topT_{52}$.\\
+%  \setn{\setn{z},\,\setn{x,z},\,\setn{y,z}} & $\topT_{00}$, $\topT_{24}$, $\topT_{44}$, and $\topT_{64}$.\\
+%  %
+%  \setn{\setn{x},\,\setn{y},\,\setn{x,y,z}} & $\topT_{00}$, $\topT_{01}$, $\topT_{02}$, $\topT_{10}$, $\topT_{11}$, $\topT_{12}$, and $\topT_{13}$.\\
+%  \setn{\setn{x},\,\setn{z},\,\setn{x,y,z}} & $\topT_{00}$, $\topT_{01}$, $\topT_{04}$, $\topT_{20}$, $\topT_{21}$, $\topT_{24}$, and $\topT_{25}$.\\
+%  \setn{\setn{y},\,\setn{z},\,\setn{x,y,z}} & $\topT_{00}$, $\topT_{02}$, $\topT_{04}$, $\topT_{40}$, $\topT_{42}$, $\topT_{44}$, and $\topT_{46}$.\\
+%  %
+%  \setn{\setn{x},\,\setn{y},\,\setn{x,z}}   & $\topT_{00}$, $\topT_{01}$, $\topT_{02}$, $\topT_{10}$, $\topT_{11}$, $\topT_{12}$, $\topT_{13}$, $\topT_{20}$, $\topT_{21}$, $\topT_{22}$, $\topT_{31}$, and $\topT_{33}$.\\
+%  \setn{\setn{x},\,\setn{y},\,\setn{y,z}}   & $\topT_{00}$, $\topT_{01}$, $\topT_{02}$, $\topT_{10}$, $\topT_{11}$, $\topT_{12}$, $\topT_{13}$, $\topT_{40}$, $\topT_{41}$, $\topT_{42}$, $\topT_{52}$, and $\topT_{53}$.\\
+%  \setn{\setn{x},\,\setn{z},\,\setn{x,y}}   & $\topT_{00}$, $\topT_{01}$, $\topT_{04}$, $\topT_{10}$, $\topT_{11}$, $\topT_{14}$, $\topT_{20}$, $\topT_{21}$, $\topT_{24}$, $\topT_{25}$, $\topT_{31}$, and $\topT_{35}$.\\
+%  \setn{\setn{x},\,\setn{z},\,\setn{y,z}}   & $\topT_{00}$, $\topT_{01}$, $\topT_{04}$, $\topT_{20}$, $\topT_{21}$, $\topT_{24}$, $\topT_{25}$, $\topT_{40}$, $\topT_{41}$, $\topT_{44}$, $\topT_{64}$, and $\topT_{65}$.\\
+%  \setn{\setn{y},\,\setn{z},\,\setn{x,z}}   & $\topT_{00}$, $\topT_{02}$, $\topT_{04}$, $\topT_{20}$, $\topT_{22}$, $\topT_{24}$, $\topT_{40}$, $\topT_{42}$, $\topT_{44}$, $\topT_{46}$, $\topT_{64}$, and $\topT_{66}$.\\ 
+%  \setn{\setn{y},\,\setn{z},\,\setn{x,z}}   & $\topT_{00}$, $\topT_{02}$, $\topT_{04}$, $\topT_{10}$, $\topT_{12}$, $\topT_{14}$, $\topT_{40}$, $\topT_{42}$, $\topT_{44}$, $\topT_{46}$, $\topT_{52}$, and $\topT_{56}$.\\
+%  \setn{\setn{x},\,\setn{y},\setn{z}}       & all 29 of the topologies.
+%\end{array}
+%
+%  }
+%The following table demonstrates a base for each of the 29 topologies on the set $\setX\eqd\setn{x,y,z}$.
+%{\footnotesize\arrayrulecolor{ex}
+%\begin{longtable}{|>{$}l<{$} @{$\;=\;\{$} *{8}{>{$}l<{$}@{\,}} @{$\}\quad$}  | @{\quad$\{$} *{8}{>{$}l<{$}@{\,}} @{$\}\quad$} |}
+%  \hline
+%  \mc{9}{G}{topologies on $\setn{x,y,z}$}
+%  & \mc{8}{G}{base}
+%  \\\hline
+%    \topT_{00} & \emptyset, &           &           &           &             &             &             & \setX
+%               &            &           &           &           &             &             &             & \setX
+%  \\\topT_{01} & \emptyset, & \setn{x}, &           &           &             &             &             & \setX
+%               &            & \setn{x}, &           &           &             &             &             & \setX
+%  \\\topT_{02} & \emptyset, &           & \setn{y}, &           &             &             &             & \setX
+%               &            &           & \setn{y}, &           &             &             &             & \setX
+%  \\\topT_{04} & \emptyset, &           &           & \setn{z}, &             &             &             & \setX
+%               &            &           &           & \setn{z}, &             &             &             & \setX
+%  \\\topT_{10} & \emptyset, &           &           &           & \setn{x,y}, &             &             & \setX
+%               &            &           &           &           & \setn{x,y}, &             &             & \setX
+%  \\\topT_{20} & \emptyset, &           &           &           &             & \setn{x,z}, &             & \setX
+%               &            &           &           &           &             & \setn{x,z}, &             & \setX
+%  \\\topT_{40} & \emptyset, &           &           &           &             &             & \setn{y,z}, & \setX
+%               &            &           &           &           &             &             & \setn{y,z}, & \setX
+%  \\\topT_{11} & \emptyset, & \setn{x}, &           &           & \setn{x,y}, &             &             & \setX
+%               &            & \setn{x}, &           &           & \setn{x,y}, &             &             & \setX
+%  \\\topT_{21} & \emptyset, & \setn{x}, &           &           &             & \setn{x,z}, &             & \setX
+%               &            & \setn{x}, &           &           &             & \setn{x,z}, &             & \setX
+%  \\\topT_{41} & \emptyset, & \setn{x}, &           &           &             &             & \setn{y,z}, & \setX
+%               &            & \setn{x}, &           &           &             &             & \setn{y,z}  &
+%  \\\topT_{12} & \emptyset, &           & \setn{y}, &           & \setn{x,y}, &             &             & \setX
+%               &            &           & \setn{y}, &           & \setn{x,y}, &             &             & \setX
+%  \\\topT_{22} & \emptyset, &           & \setn{y}, &           &             & \setn{x,z}, &             & \setX
+%               &            &           & \setn{y}, &           &             & \setn{x,z}  &             &
+%  \\\topT_{42} & \emptyset, &           & \setn{y}, &           &             &             & \setn{y,z}, & \setX
+%               &            &           & \setn{y}, &           &             &             & \setn{y,z}, & \setX
+%  \\\topT_{14} & \emptyset, &           &           & \setn{z}, & \setn{x,y}, &             &             & \setX
+%               &            &           &           & \setn{z}, & \setn{x,y}  &             &             &
+%  \\\topT_{24} & \emptyset, &           &           & \setn{z}, &             & \setn{x,z}, &             & \setX
+%               &            &           &           & \setn{z}, &             & \setn{x,z}, &             & \setX
+%  \\\topT_{44} & \emptyset, &           &           & \setn{z}, &             &             & \setn{y,z}, & \setX
+%               &            &           &           & \setn{z}, &             &             & \setn{y,z}, & \setX
+%  \\\topT_{31} & \emptyset, & \setn{x}, &           &           & \setn{x,y}, & \setn{x,z}, &             & \setX
+%               &            & \setn{x}, &           &           & \setn{x,y}, & \setn{x,z}  &             &
+%  \\\topT_{52} & \emptyset, &           & \setn{y}, &           & \setn{x,y}, &             & \setn{y,z}, & \setX
+%               &            &           & \setn{y}, &           & \setn{x,y}, &             & \setn{y,z}, &
+%  \\\topT_{64} & \emptyset, &           &           & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%               &            &           &           & \setn{z}, &             & \setn{x,z}, & \setn{y,z}  &
+%  \\\topT_{13} & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, &             &             & \setX
+%               &            & \setn{x}, & \setn{y}, &           &             &             &             & \setX
+%  \\\topT_{25} & \emptyset, & \setn{x}, &           & \setn{z}, &             & \setn{x,z}, &             & \setX
+%               &            & \setn{x}, &           & \setn{z}, &             & \setn{x,z}, &             &
+%  \\\topT_{46} & \emptyset, &           & \setn{y}, & \setn{z}, &             &             & \setn{y,z}, & \setX
+%               &            &           & \setn{y}, & \setn{z}, &             &             &             & \setX
+%  \\\topT_{33} & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, & \setn{x,z}, &             & \setX
+%               &            & \setn{x}, & \setn{y}, &           &             & \setn{x,z}, &             &
+%  \\\topT_{53} & \emptyset, & \setn{x}, & \setn{y}, &           & \setn{x,y}, &             & \setn{y,z}, & \setX
+%               &            & \setn{x}, & \setn{y}, &           &             &             & \setn{y,z}  &
+%  \\\topT_{35} & \emptyset, & \setn{x}, &           & \setn{z}, & \setn{x,y}, & \setn{x,z}, &             & \setX
+%               &            & \setn{x}, &           & \setn{z}, & \setn{x,y}  &             &             &
+%  \\\topT_{65} & \emptyset, & \setn{x}, &           & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%               &            & \setn{x}, &           & \setn{z}, &             &             & \setn{y,z}  &
+%  \\\topT_{56} & \emptyset, &           & \setn{y}, & \setn{z}, & \setn{x,y}, &             & \setn{y,z}, & \setX
+%               &            &           & \setn{y}, & \setn{z}, & \setn{x,y}  &             &             &
+%  \\\topT_{66} & \emptyset, &           & \setn{y}, & \setn{z}, &             & \setn{x,z}, & \setn{y,z}, & \setX
+%               &            &           & \setn{y}, & \setn{z}, &             & \setn{x,z}  &             &
+%  \\\topT_{77} & \emptyset, & \setn{x}, & \setn{y}, & \setn{z}, & \setn{x,y}, & \setn{x,z}, & \setn{y,z}, & \setX
+%               &            & \setn{x}, & \setn{y}, & \setn{z}  &             &             &             &
+%  \\\hline
+%\end{longtable}
+%}
+%\end{example}
+
+%---------------------------------------
+\begin{example}
+\label{ex:top_balls}
+\footnote{
+  \citerpgc{davis2005}{46}{0071243399}{Example 4.16}
+  }
+%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+Let $\metspaceX$ be a \structe{metric space}.
+\exboxp{
+  The set $\baseB\eqd\set{\ball{x}{r}}{x\in\setX,\,r\in\Zp}$ (the set of all open balls in $\metspaceX$)
+  is a \structe{base} for a topology on $\metspaceX$.
+  }
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{the standard topology on the real line}]
+\label{ex:top_usual}
+\footnote{
+  \citerpg{munkres2000}{81}{0131816292},
+  \citerpgc{davis2005}{46}{0071243399}{Example 4.16}
+  }
+%---------------------------------------
+%Let $\spO\eqd\metspaceX$ be a \structe{metric space}.
+\exboxp{
+  The set $\baseB\eqd\set{\intoo{a}{b}}{a,b\in\R,\,a<b}$ 
+  is a \structe{base} for the metric space $\metspace{\R}{\abs{b-a}}$ (the \structe{usual metric space} on $\R$).
+  }
+\end{example}
+
+
+
+
+
+%%---------------------------------------
+%\begin{example}
+%\label{ex:top_usualQ}
+%\footnote{
+%  \citerpgc{davis2005}{46}{0071243399}{Example 4.16}
+%  }
+%%---------------------------------------
+%%Let $\spO\eqd\metspaceX$ be a \structe{metric space}.
+%\exboxp{
+%  The set $\baseB\eqd\set{\intoo{a}{b}}{a,b\in\Q,\,a<b}$ 
+%  is a \structe{base} for the metric space $\metspace{\R}{\abs{b-a}}$ (the \structe{usual metric space} on $\R$).
+%  }
+%%\\
+%%The possible advantage of this base over the base of \pref{ex:top_usual} is that this base is \prope{countable}.
+%\end{example}
+%
+%%---------------------------------------
+%\begin{example}[\exm{lower limit topology}/\exm{the Sorgenfrey line topology}]
+%\label{ex:top_sorgengrey}
+%\footnote{
+%  \citerppg{munkres2000}{81}{82}{0131816292},
+%  \citerpgc{davis2005}{48}{0071243399}{Example 4.21}
+%  }
+%%---------------------------------------
+%%Let $\spO\eqd\metspaceX$ be a \structe{metric space}.
+%\exboxp{
+%  The set $\baseB\eqd\set{\intco{a}{b}}{a,b\in\R,\,a<b}$ 
+%  is a \structe{base} for the metric space $\metspace{\R}{\abs{b-a}}$ (the \structe{usual metric space} on $\R$).
+%  }
+%\\
+%Under this topology, the \structe{cumulative distribution functions} of probability theory are \prope{continuous}.
+%\end{example}
+
+
+%===================================================
+%===================================================
+%===================================================
+\if 0
+%===================================================
+%===================================================
+%===================================================
+%---------------------------------------
+\begin{counterex}
+\footnote{
+  \citerp{rosenlicht}{40}
+  }
+%---------------------------------------
+\prefpp{def:topology} states that the intersection of a \emph{finite} number of 
+open sets is also open.
+But under this definition, in general it is \emph{not} true that the intersection of an infinite number of open sets is open.
+Take for example the \structe{standard topology on the real line} \xref{ex:top_usual}:
+\begin{enumerate}
+  \item Let  $\seq{\setA_n=\brp{-\frac{1}{n},\frac{1}{n}}}{n\in\Zp}$ be a sequence
+        of real intervals. That is
+        \[\seqn{
+          \brp{-1,1},\, \brp{-\frac{1}{2},\frac{1}{2}},\,
+                        \brp{-\frac{1}{3},\frac{1}{3}},\,
+                        \brp{-\frac{1}{4},\frac{1}{4}},\,
+                        \brp{-\frac{1}{5},\frac{1}{5}},\,\ldots
+        }\]
+
+  \item Then $\ds\setopi_{n\in\Zp} \setA_n = \setn{0}$; 
+        that is, $\ds\setopi_{n\in\Zp} \setA_n$ is a set with just one value ($0$).
+
+  \item By \prefpp{lem:ms_open}, 
+        a single value is \emph{not} an open set because any ball with radius greater than $0$
+        is not in the set.
+
+  \item Therefore, $\ds\setopi_{n\in\Zp} \setA_n$ is not open.
+\end{enumerate}
+\end{counterex}
+
+
+
+%=======================================
+\subsection{Order structure of the topologies on a set}
+\label{sec:lattop}
+%=======================================
+In general for a given set $\sid$, there is not just one possible topology.
+%---but as demonstrated by \prefpp{thm:top_num}, 
+Rather, for any sizeable set $\sid$, there are myriads of topologies.
+Some of these topologies are subsets of other topologies;
+in such a case, \prefpp{def:ts_finer} states that we say
+that the subset topology is \prope{coarser} than the other
+and that the other superset topology is \prope{finer}.
+And not only does any individual topology generate a lattice,
+but as demonstrated by \prefpp{thm:ts_lattice_of_topologies},
+all the topologies taken together also form a lattice.
+Examples of lattices of topologies are provided by the following:
+  \\\begin{tabular}{>{$\imark$ }ll<{:}l}
+    \pref{ex:set_lat_top_xy}  & (\prefpo{ex:set_lat_top_xy})  & lattice of the 4 topologies of a 2 element set $\sid$.\\
+    \pref{ex:set_lat_top_xyz} & (\prefpo{ex:set_lat_top_xyz}) & lattice of the 29 topologies of a 3 element set $\sid$.
+  \end{tabular}
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:ts_finer}
+\footnote{
+  \citerpg{munkres2000}{77}{0131816292}
+  %\citerp{isham1999}{42}
+  }
+\index{topology!coarser}
+\index{topology!finer}
+%---------------------------------------
+Let $\topspace{\sid}{\topS}$ and $\topspace{\sid}{\topT}$ be two \structe{topological space}s \xref{def:topspace} on a set $\sid$.
+\defbox{\begin{array}{M}
+  $\topS$ is \propd{coarser} than $\topT$ and $\topT$ is \propd{finer} than $\topS$ if
+  \\\indentx$\ds \topS\subseteq\topT$.
+  \\
+  $\topS$ is \propd{strictly coarser} than $\topT$ and $\topT$ is \propd{strictly finer} than $\topS$ if
+  \\\indentx$\ds \topS\subset\topT$.
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}[Lattice of topologies]
+\footnote{
+  %\citerp{isham1999}{42} \\
+  \citer{larson1975}     \\
+  \citorpg{vaidyanathaswamy1960}{131}{0486404560}\\  % referenced by Thron page 18
+  \citor{birkhoff1936}\\ % referenced by Thron page 18
+  \citor{stone1936ms}\\ % referenced by Thron page 18
+  %\citor{stone1937}\\
+  \citor{wallman1938}
+  }
+\label{thm:ts_lattice_of_topologies}
+\index{lattice of topologies}
+\index{theorems!lattice of topologies}
+\index{topology!lattice}
+%---------------------------------------
+\thmbox{
+  \mcom{\sssT{\sid} \eqd \set{\topT_1,\, \topT_2,\, \ldots }{\text{$\topT_n$ is a topology on $\sid$}}}
+       {the set of topologies on $\sid$}
+  \quad\implies\quad
+  \text{$\lattice{\sssT{\sid}}{\sorel}{\setu}{\seti}$ is a lattice.}
+  }
+\end{theorem}
+
+
+
+
+\begin{minipage}{\tw-80mm}%
+%---------------------------------------
+\begin{example}
+\label{ex:set_lat_top_xy}
+\footnotemark
+\index{topology!trivial}
+\index{topology!indiscrete}
+\index{topology!discrete}
+%---------------------------------------
+\prefpp{ex:top_xy} lists the four topologies on the set $\sid\eqd\setn{x,y}$.
+The lattice of these topologies
+$\lattice{\setn{\topT_1,\, \topT_2,\, \topT_3,\, \topT_4}}{\sorel}{\setu}{\seti}$
+is illustrated by the figure to the right.
+Note that there are only four valid topologies out of a total sixteen
+possible families of sets:
+($2^{\seto{\psetx}} = 2^{2^{\seto{X}}} = 2^{2^2} = 2^4 = 16$).
+Half of the sixteen families are not valid topologies because they do not contain
+$\szero$ and half of the remaining are not valid because they do not contain $\sid$.
+This leaves $16 \cprod \frac{1}{2} \cprod \frac{1}{2} = 4$.
+\end{example}
+\end{minipage}%
+\hfill%
+\citetblt{
+  \citerp{isham1999}{44} \\
+  \citerp{isham1989}{1515}
+  }%
+\begin{minipage}{75mm}%
+\begin{center}%
+\begin{fsL}%
+\input{../common/math/graphics/lattopxy.tex}%
+\end{fsL}%
+\end{center}%
+\end{minipage}
+
+\begin{figure}[th]
+\begin{center}
+\input{../common/math/graphics/latlattopxyz.tex}%
+\end{center}
+\caption{
+  Lattice of topologies on $\setX\eqd\setn{x,y,z}$ (see \prefp{ex:set_lat_top_xyz})
+  \label{fig:set_latlat_top_xyz}
+  }
+\end{figure}
+
+
+\begin{minipage}{\tw-45mm}
+%---------------------------------------
+\begin{example}
+\label{ex:set_lat_top_xyz}
+\footnotemark
+%---------------------------------------
+Let a given topology in $\sssT{\setn{x,y,z}}$ be represented by a Hasse diagram 
+as illustrated to the right, where a circle present means the indicated set is in the topology,
+and a circle absent means the indicated set is not in the topology.
+\prefpp{ex:top_xyz} lists the 29 topologies $\sssT{\setn{x,y,z}}$.
+The lattice of these 29 topologies $\lattice{\sssT{\setn{x,y,z}}}{\sorel}{\setu}{\seti}$
+is illustrated in \prefpp{fig:set_latlat_top_xyz} and \prefpp{fig:set_lat_top_xyz}.
+%(rendered by Ralph Freese's \hie{LatDraw} software\footnotemark).
+The five topologies
+$\topT_{1}$, $\topT_{41}$, $\topT_{22}$, $\topT_{14}$, and $\topT_{77}$
+are also \hie{algebras of sets}\ifsxref{setstrct}{def:algsets}; 
+these five sets are shaded in \pref{fig:set_latlat_top_xyz} and represented as solid dots in
+\pref{fig:set_lat_top_xyz}.
+%Furthermore, \prefpp{fig:set_lat_top_xyz_d} redraws each of the 29 topological lattices 
+%in a simpler unlabeled form demonstrating the distributive property of the topologies.
+\end{example}%
+\end{minipage}%
+\hfill%
+%\addtocounter{footnote}{-1}%
+\citetblt{%
+  \citerp{isham1999}{44} \\
+  \citerp{isham1989}{1516} \\
+  \citerp{steiner1966}{386}
+  }%
+%\stepcounter{footnote}%
+%\citetblt{%
+%  \citer{freese_latdraw}
+%  }%
+\begin{minipage}{42mm}%
+%\setlength{\unitlength}{\tw/400}
+\input{../common/math/graphics/lat2xyzdotted.tex}
+\end{minipage}%
+
+
+\begin{figure}[th]
+\begin{center}
+  \input{../common/math/graphics/lattopxyz.tex}%
+\end{center}
+\caption{
+  Lattice of topologies of $\sid\eqd\setn{x,y,z}$ (see \prefp{ex:set_lat_top_xyz})
+  \label{fig:set_lat_top_xyz}
+  }
+\end{figure}
+
+%\begin{figure}[th]
+%\begin{center}
+%\includegraphics[width=\tw/2, height=\tw/2, clip=true]{../common/top3.eps}
+%\end{center}
+%\caption{
+%  Lattice of topologies of $\sid\eqd\setn{x,y,z}$ (see \prefp{ex:set_lat_top_xyz})
+%  generated by Ralph Freese's \hie{LatDraw} software.
+%  \label{fig:set_lat_top_xyz_latdraw}
+%  }
+%\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{steiner1966}{384}
+  }
+%---------------------------------------
+Let $\sssT{\sid}$ be the lattice of topologies on a set $\sid$ with $\seto{\sid}$ elements.
+\thmbox{\begin{array}{rclcl}
+  \seto{\sid} &\le& 2 & \implies & \text{$\sssT{\sid}$ is \emph{distributive}} \\
+  \seto{\sid} &\ge& 3 & \implies & \text{$\sssT{\sid}$ is \emph{not modular} (and not distributive)}
+\end{array}}
+\end{theorem}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{steiner1966}{385}
+  }
+%---------------------------------------
+Let $\sssT{\sid}$ be the lattice of topologies on a set $\sid$.
+\thmbox{
+  \sssT{\sid} \text{ is \emph{self-dual}} \qquad\iff\qquad \seto{\sid}\le 3
+  }
+\end{theorem}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citer{vanrooij1968} \\
+  \citerp{steiner1966}{397} \\
+  \citer{gaifman1961}\\
+  \citer{hartmanis1958}
+  }
+%---------------------------------------
+\thmbox{
+  \text{Every lattice of topologies is complemented.}
+  }
+\end{theorem}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citer{hartmanis1958} \\
+  \citerp{schnare1968}{56} \\
+  \citer{watson1994} \\
+  \citerp{brown1996}{32}
+  }
+\label{thm:top_comp_num}
+%---------------------------------------
+\thmboxp{
+  Every topology except the discrete and indiscrete topology in the
+        lattice of topologies on a set $\sid$ has at least $\seto{\sid}-1$ complements.
+  }
+\end{theorem}
+Let $\hat{\Sigma}(\sid)$ be the set of all topologies on $\sid$ except for the
+discrete and indiscrete topologies on $\sid$.
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+\prefpp{ex:top_xyz} lists the 29 topologies on a set $\sid\eqd\setn{x,y,z}$.
+By \prefpp{thm:top_comp_num}, with the exception of
+$\topT_{00}$ (the indiscrete topology) and $\topT_{77}$ (the discrete topology),
+each of those topologies has exactly $\seto{\sid}-1=3-1=2$ complements.
+Listed below are the 29 topologies on $\setn{x,y,z}$ along with their respective complements.
+
+\arrayrulecolor{ex}
+\begin{longtable}{|>{$}l<{=$}
+                  @{$\{$}*{8}{>{$}l<{$}@{\;}}
+                  @{$\}$\quad} |>{$}l<{$\quad}| >{\quad$}l<{$}|}
+  \hline
+  \rowcolor{ex}
+  \mc{9}{|G|}{topologies on $\setn{x,y,z}$}
+   & \mc{1}{G|}{1st complement}
+   & \mc{1}{G|}{2nd compl.}
+  \\\hline
+  \topT_{00} & \szero, &&&&&&& \sid
+              & \topT_{77}
+              &
+              \\
+  \topT_{01} & \szero,&\setn{x},&&&&&&\sid
+              & \topT_{56}
+              & \topT_{66}
+              \\
+  \topT_{02} & \szero,&&\setn{y},&&&&&\sid
+              & \topT_{65}
+              & \topT_{35}
+              \\
+  \topT_{04} & \szero,&&&\setn{z},&&&&\sid
+              & \topT_{53}
+              & \topT_{33}
+              \\
+  \topT_{10} & \szero,&&&&\setn{x,y},&&&\sid
+              & \topT_{65}
+              & \topT_{66}
+              \\
+  \topT_{20} & \szero,&&&&&\setn{x,z},&&\sid
+              & \topT_{53}
+              & \topT_{56}
+              \\
+  \topT_{40} & \szero,&&&&&&\setn{y,z},&\sid
+              & \topT_{33}
+              & \topT_{35}
+              \\
+  \topT_{11} & \szero,&\setn{x},&&&\setn{x,y},&&&\sid
+              & \topT_{64}
+              & \topT_{46}
+              \\
+  \topT_{21} & \szero,&\setn{x},&&&&\setn{x,z},&&\sid
+              & \topT_{52}
+              & \topT_{46}
+              \\
+  \topT_{41} & \szero,&\setn{x},&&&&&\,\setn{y,z},&\sid
+              & \topT_{22}
+              & \topT_{14}
+              \\
+  \topT_{12} & \szero,&&\setn{y},&&\setn{x,y},&&&\sid
+              & \topT_{64}
+              & \topT_{25}
+              \\
+  \topT_{22} & \szero,&&\setn{y},&&&\setn{x,z},&&\sid
+              & \topT_{41}
+              & \topT_{14}
+              \\
+  \topT_{42} & \szero,&&\setn{y},&&&&\setn{y,z},&\sid
+              & \topT_{31}
+              & \topT_{25}
+              \\
+  \topT_{14} & \szero,&&&\setn{z},&\setn{x,y},&&&\sid
+              & \topT_{41}
+              & \topT_{22}
+              \\
+  \topT_{24} & \szero,&&&\setn{z},&&\setn{x,z},&&\sid
+              & \topT_{52}
+              & \topT_{13}
+              \\
+  \topT_{44} & \szero,&&&\setn{z},&&&\setn{y,z},&\sid
+              & \topT_{31}
+              & \topT_{13}
+              \\
+  \topT_{31} & \szero,&\setn{x},&&&\setn{x,y},&\setn{x,z},&&\sid
+              & \topT_{42}
+              & \topT_{44}
+              \\
+  \topT_{52} & \szero,&&\setn{y},&&\setn{x,y},&\setn{x,z},&&\sid
+              & \topT_{21}
+              & \topT_{24}
+              \\
+  \topT_{64} & \szero,&&&\setn{z},&&\setn{x,z},&\setn{y,z},&\sid
+              & \topT_{11}
+              & \topT_{12}
+              \\
+  \topT_{13} & \szero,&\setn{x},&\setn{y},&&\setn{x,y},&&&\sid
+              & \topT_{24}
+              & \topT_{44}
+              \\
+  \topT_{25} & \szero,&\setn{x},&&\setn{z},&&\setn{x,z},&&\sid
+              & \topT_{12}
+              & \topT_{42}
+              \\
+  \topT_{46} & \szero,&&\setn{y},&\setn{z},&&&\setn{y,z},&\sid
+              & \topT_{11}
+              & \topT_{21}
+              \\
+  \topT_{33} & \szero,&\setn{x},&\setn{y},&&\setn{x,y},&\setn{x,z},&&\sid
+              & \topT_{04}
+              & \topT_{40}
+              \\
+  \topT_{53} & \szero,&\setn{x},&\setn{y},&&\setn{x,y},&&\setn{y,z},&\sid
+              & \topT_{04}
+              & \topT_{20}
+              \\
+  \topT_{35} & \szero,&\setn{x},&&\setn{z},&\setn{x,y},&\setn{x,z},&&\sid
+              & \topT_{02}
+              & \topT_{40}
+              \\
+  \topT_{65} & \szero,&\setn{x},&&\setn{z},&&\setn{x,z},&\setn{y,z},&\sid
+              & \topT_{02}
+              & \topT_{10}
+              \\
+  \topT_{56} & \szero,&&\setn{y},&\setn{z},&\setn{x,y},&&\setn{y,z},&\sid
+              & \topT_{01}
+              & \topT_{20}
+              \\
+  \topT_{66} & \szero,&&\setn{y},&\setn{z},&&\setn{x,z},&\setn{y,z},&\sid
+              & \topT_{01}
+              & \topT_{10}
+              \\
+  \topT_{77} & \szero,&\setn{x},&\setn{y},&\setn{z},&\setn{x,y},&\setn{x,z},&\setn{y,z},&\sid
+              & \topT_{00}
+              &
+              \\
+  \hline
+\end{longtable}
+\end{example}
+
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{larson1975}{179}\\
+  \citor{frohlich1964} \\
+  \citor{vaidyanathaswamy1960} \\
+  \citor{vaidyanathaswamy1947}
+  }
+%---------------------------------------
+\thmbox{
+  \text{$\sssT{\sid}$ is a topology of sets}
+  \qquad\implies\qquad
+  \left\{\begin{tabular}{l}
+    $\sssT{\sid}$ is atomic. \\
+    $\sssT{\sid}$ is anti-atomic.
+  \end{tabular}\right.
+  }
+\end{theorem}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{larson1975}{179} \\
+  \citor{frohlich1964}
+  }
+%---------------------------------------
+Let $\sssT{\sid}$ be the lattice of topologies on a set $\sid$ and let $n\eqd \seto{\sid}$.
+\thmbox{\begin{tabular}{ll}
+  $\sssT{\sid}$ contains $\ds 2^n-2$              atoms      & for finite $\sid$. \\
+  $\sssT{\sid}$ contains $\ds 2^\seto{\sid}$     atoms      & for infinite $\sid$. \\
+  $\sssT{\sid}$ contains $\ds n(n-1)$             anti-atoms & for finite $\sid$. \\
+  $\sssT{\sid}$ contains $\ds 2^{2^\seto{\sid}}$ anti-atoms & for infinite $\sid$.
+\end{tabular}}
+\end{theorem}
+
+\fi
+
+%======================================
+%\subsection{Derived Sets}
+%======================================
+
+%Most every ``useful" space in mathematical analysis
+%is equipped with a \hie{topology} which allows one to evaluate such useful 
+%characteristics as\\
+%  \begin{tabular}{>{$\imark\quad$}l<{:}l}
+%    \hie{proximity}    & how ``close" two objects in the space are to each other \\
+%    \hie{convergence}  & the asymptotic behavior of sequences of objects \\
+%    \hie{connectivity} & whether or not two objects have any gap between them.
+%  \end{tabular}\\
+%A space with a topology is called a
+%\hie{topological space} (\prefp{def:top_space}).
+
+
+%  \begin{tabular}{>{$\imark$}l p{4\tw/16}<{:} >{\footnotesize}p{10\tw/16}}
+%      & \hie{topological space}    & topology generated by a set of axioms (rules)
+%    \\& \hie{metric space}         & topology generated by a \hie{metric} $\fd(\cdot,\cdot)$
+%    \\& \hie{norm spaces}          & topology generated by a \hie{norm}   $\norm{\cdot}$
+%    \\& \hie{inner-product spaces} & topology generated by an \hie{inner-product} $\inprod{\cdot}{\cdot}$
+%    \\& \hie{function space $\spLL$}  & topology generated by Lebesgue integral operator $\int_x\dx$
+%    \\& \hie{discrete function space $\spII$}  & topology generated by Lebesgue integral operator with counting measure giving the operator $\sum_n$
+%  \end{tabular}
+%
+%The concept of the topological space is a generalization of the metric space. 
+%In particular, the characteristics of a topology and open sets
+%that are true by \emph{definition} in a topological space (see \prefp{def:topology}), 
+%are true by \emph{theorem} in a metric space 
+%(see \prefp{thm:ms_open}).
+
+%======================================
+%\subsubsection{Definitions}
+%======================================
+%Several useful set structures can be derived from the simple concept of the open set
+%(next definition).
+
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerppgc{gemignani1972}{55}{56}{0486665224}{Definition 3.5.7},
+  \citerpg{mccarty1967}{90}{0486656330}, %{\scshape closure, interior, and boundary},
+  \citerpgc{munkres2000}{95}{0131816292}{\textsection Closure and Interior of a Set},
+  %\citerpu{thron1966}{21}{http://books.google.com/books?id=JRM_AAAAIAAJ\&pg=PA19},
+  \citerppc{thron1966}{21}{22}{definition 4.8, defintion 4.9},
+  \citerpg{kelley1955}{42}{0387901256},
+  \citerppg{kubrusly2001}{115}{116}{0817641742}
+ %\citerppg{ab}{59}{60}{0120502577}
+  }
+\label{def:clsA}
+\label{def:intA}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+Let $\psetX$ be the \structe{power set} of $\setX$.
+\defbox{\begin{array}{Mrc>{\ds}l}\indxs{\clsA}
+    The set $\clsA$ is the \opd{closure}       of $\setA\in\psetX$ if & \hxs{\clsA} &\eqd& \Seti\set{\setD\in\psetX}{\text{$\setA\subseteq\setD$ and $\setD$ is \prope{closed}}}.
+  \\[1ex]The set $\intA$ is the \structd{interior} of $\setA\in\psetX$ if & \hxs{\intA} &\eqd& \Setu\set{\setU\in\psetX}{\text{$\setU\subseteq\setA$ and $\setU$ is \prope{open}}}.
+  \\\mc{4}{M}{A point $x$ is a  \structd{closure  point} of $\setA$ if $x\in \clsA$.}
+  \\\mc{4}{M}{A point $x$ is an \structd{interior point} of $\setA$ if $x\in\intA$.}
+  \\\mc{4}{M}{A point $x$ is an \structd{accumulation point} of $\setA$ if $x\in\clsp{\setA\setd\setn{x}}$}
+  \\\mc{4}{M}{A point $x$ in $\clsA$ is a   \structd{point of adherence} in $\setA$ or is \propd{adherent} to $\setA$ if $x\in\clsA$.}
+\end{array}}
+\end{definition}
+
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerppgc{gemignani1972}{55}{56}{0486665224}{Definition 3.5.7},
+%  \citerpg{mccarty1967}{90}{0486656330}, %{\scshape closure, interior, and boundary},
+%  \citerpgc{munkres2000}{95}{0131816292}{\textsection Closure and Interior of a Set},
+%  %\citerpu{thron1966}{21}{http://books.google.com/books?id=JRM_AAAAIAAJ\&pg=PA19},
+%  \citerppc{thron1966}{21}{22}{definition 4.8, defintion 4.9},
+%  \citerpg{kelley1955}{42}{0387901256},
+%  \citerppg{kubrusly2001}{115}{116}{0817641742},
+%  \citerpgc{murdeshwar1990}{48}{8122402461}{exterior $\extA$},
+%  \citerpgc{joshi1983}{110}{0852264445}{exterior $\extA$}
+% %\citerppg{ab}{59}{60}{0120502577}
+%  }
+%\label{def:bndA}
+%\label{def:drvA}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%Let $\psetX$ be the \structe{power set} of $\setX$.
+%%\defbox{\begin{tabstr}{1.5}\begin{array}{Mrc>{\ds}l}\indxs{\clsA}
+%\defbox{\begin{array}{M}
+%    The set $\bndA$ is the \hid{boundary}      of $\setA\in\psetX$ if $\hxs{\bndA} \eqd \clsA \seti \cls{\brp{\cmpA}}$.
+%  \\The set $\extA$ is the \hid{exterior}      of $\setA\in\psetX$ if $\hxs{\extA} \eqd \intp{\cmpA}$.
+%  %\\The set $\drvA$ is the \hid{derived set}   of $\setA\in\psetX$ if & \hxs{\drvA} &\eqd& \set{x\in\setX}{x\in\setU\in\topT\;\implies\;\setA\seti(\setU\setd\setn{x})\neq\emptyset}$.
+%  %\\\mc{4}{M}{
+%  %  \indentx$\ds\hxs{\drvA} \eqd \set{x\in\setX}{x\in\setU\in\topT\;\implies\;\setA\seti(\setU\setd\setn{x})\neq\emptyset}$.
+%  %  }
+%  \\{A point $x$ in $\setX$ is a  \hid{boundary point} of $\setA$ if $x\in\bndA$.}
+%  \\{A point $x$ in $\setX$ is an \hid{exterior point} of $\setA$ if $x\in\extA$.}
+% %\\{A point $x$ in $\setX$ is an  \hid{accumulation point} of $\setA$ if $x\in\drvA$.}
+% %\\{A point $x$ in $\setX$ is an  \hid{accumulation point} of $\setA$ if $\ds\mcom{x\in\setU\in\topT\;\implies\;\setA\seti(\setU\setd\setn{x})\neq\emptyset}{every open set containing $x$ also contains another point $y\in\setA$, $y\neq x$.}$.}
+%  \\{A point $x$ in $\clsA$ is a   \hid{point of adherence} in $\setA$ or is \hid{adherent} to $\setA$ if $x\in\clsA$.}
+% %\\{\indentx\scs(every open set containing $x$ also contains another point $y\in\setA$, $y\neq x$).}
+%  \\The set $\drvA$ is the \hid{derived set}   of $\setA\in\psetX$ if 
+%  \\\indentx$\hxs{\drvA} \eqd \set{x\in\setX}{\text{$x$ is an accumlation point of $\setA$}}$.
+%  %\\\mc{4}{M}{The closure $\clsA$ is also denoted as $\clsa{\setA}$.}
+%\end{array}}
+%%\end{array}\end{tabstr}}
+%\end{definition}
+%
+%\begin{figure}[h]
+%  \centering%
+%  \gsize%
+%  \begin{tabular}{c||c|c|c|c}
+%    %\hline
+%    set $\setA$ & \mc{4}{|c}{derived sets}
+%    \\\hline
+%      \input{../common/math/graphics/butterfly_setA.tex}
+%    & \input{../common/math/graphics/butterfly_clsA.tex}
+%    & \input{../common/math/graphics/butterfly_intA.tex}
+%    & \input{../common/math/graphics/butterfly_bndA.tex}
+%    & \input{../common/math/graphics/butterfly_drvA.tex}
+%    \\
+%    $\setA$ & $\clsA$ & $\intA$ & $\bndA$ & $\drvA$
+%  \end{tabular}
+%  \caption{examples of \structe{derived set}s (see \prefp{ex:derivedsets}) \label{fig:derivedsets}}
+%\end{figure}
+%%---------------------------------------
+%\begin{example}
+%\footnote{
+%  \citerpg{mccarty1967}{90}{0486656330} %{\scshape closure, interior, and boundary}\\
+%  }
+%\label{ex:derivedsets}
+%%---------------------------------------
+%\prefpp{fig:derivedsets} illustrates some \structe{derived sets} of a set $\setA$ in a 
+%\structe{topological space} $\topspaceX$.
+%\end{example}
+%
+
+%======================================
+%\subsubsection{Properties}
+%======================================
+%%---------------------------------------
+%\begin{proposition}
+%\footnote{
+%  \citerppgc{kubrusly2001}{115}{116}{0817641742}{Proposition 3.26},
+%  \citerpgc{murdeshwar1990}{48}{8122402461}{1.24 Exercises (19)}
+%  }
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%\propbox{
+%  \brb{\begin{array}{M}
+%    $x$ is an \structe{accumulation point}\\
+%    of a set $\setA$ in $\topspaceX$
+%  \end{array}}
+%  \iff
+%  \brb{\begin{array}{M}
+%    Every open set containing $x$ also contains\\
+%    another point $y\in\setA$, $y\neq x$).
+%  \end{array}}
+%  }
+%\end{proposition}
+%
+%
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{mccarty1967}{90}{0486656330}{IV.1 \scshape theorem} %{\scshape closure, interior, and boundary}\\
+  }
+\label{prop:clsA_closed}
+\label{prop:intA_open}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+Let $\clsA$ be the \structe{closure}, $\intA$ the \structe{interior}, and $\bndA$ the \structe{boundary} of a set $\setA$.
+Let $\psetX$ be the \structe{power set} of $\setX$.
+\propbox{\begin{array}{FlMC}
+    1. & \clsA & is \prope{closed} & \forall \setA\in\psetX.
+  \\2. & \intA & is \prope{open}   & \forall \setA\in\psetX.
+%  \\3. & \bndA & is \prope{closed} & \forall \setA\in\psetX.
+\end{array}}
+%\end{array}\end{tabstr}}
+\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \clsA
+%    &\eqd \Seti\set{\setD\in\psetX}{\text{$\setA\subseteq\setD$ and $\setD$ is closed}}
+%    &&    \text{by \prefp{def:clsA}}
+%  \\&\implies \text{ $\clsA$ is \prope{closed}}
+%    &&    \text{by \prefp{thm:ts_closed}}
+%  \\
+%  \intA
+%    &\eqd \Seti\set{\setU\in\psetX}{\text{$\setU\subseteq\setA$ and $\setU$ is open}}
+%    &&    \text{by \prefp{def:clsA}}
+%  \\&\implies \text{ $\intA$ is \prope{open}}
+%    &&    \text{by \prefp{def:topology}}
+%  \\
+%  \bndA
+%    &\eqd \clsA \seti \cls{\brp{\cmpA}}
+%    &&    \text{by \prefp{def:clsA}}
+%  \\&\implies \text{ $\bndA$ is \prope{closed}}
+%    &&    \text{by (1) and \prefp{thm:ts_closed}}
+%\end{align*}
+%\end{proof}
+
+%---------------------------------------
+\begin{lemma}
+\footnote{
+  \citerppgc{mccarty1967}{90}{91}{0486656330}{IV.1 \scshape theorem}, %{\scshape closure, interior, and boundary}\\
+  \citerpg{ab}{59}{0120502577}
+  }
+\label{lem:intAAclsA}
+%---------------------------------------
+Let $\clsA$ be the \structe{closure}, $\intA$ the \structe{interior}, and $\bndA$ the \structe{boundary} of a set $\setA$
+in a topological space $\topspaceX$.
+Let $\psetX$ be the \structe{power set} of $\setX$.
+\lembox{\begin{array}{F rcl cM CC}
+    1. & \mc{5}{>{\ds}l}{\intA\subseteq\setA\subseteq\clsA}                                                           &                                                                 &\forall \setA\in\psetX.\\
+   %2. & \mc{5}{>{\ds}l}{\drvA\subseteq\clsA}                                                                         &                                                                 &\forall \setA\in\psetX.\\
+    2. & \setA&=&\intA                                                           &\iff&     $\setA$ is \prope{open}   &                                                                 &\forall \setA\in\psetX.\\
+    3. & \setA&=&\clsA                                                           &\iff&     $\setA$ is \prope{closed} &                                                                 &\forall \setA\in\psetX.\\
+   % 5. & \mc{3}{l}{
+   %        \brb{\begin{array}{MD}
+   %          $\setD\in\psetX$ is \prope{closed} & and\\ 
+   %          $\setA\subseteq\setD$
+   %        \end{array}}} 
+   %        &\implies& 
+   %        ${\clsA\subseteq\setD}$     
+   %    &\brp{\begin{array}{D}
+   %       $\clsA$ is the smallest \prope{closed} set\\ 
+   %       containing   $\setA$ 
+   %     \end{array}}
+   %    &\forall \setA\in\psetX.
+   %    \\
+   % 6. & \mc{3}{l}{
+   %        \brb{\begin{array}{MD}
+   %          $\setU\in\psetX$ is \prope{open} & and\\ 
+   %          $\setU\subseteq\setA$
+   %        \end{array}}} 
+   %        &\implies&
+   %        ${\setU\subseteq\intA}$
+   %    &\brp{\begin{array}{D}
+   %       $\intA$ is the largest \prope{open} set\\ 
+   %       contained in   $\setA$ 
+   %     \end{array}}
+   %    &\forall \setA\in\psetX.
+\end{array}}
+%\end{array}\end{tabstr}}
+\end{lemma}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $\intA\subseteq\setA\subseteq\clsA$:
+%    \begin{align*}
+%      \intA
+%        &\eqd      \Setu\set{\setU\in\psetX}{\text{$\setU\subseteq\setA$ and $\setU$ is open}}
+%        &&    \text{by \prefp{def:intA}}
+%      \\&\subseteq \setA
+%      \\
+%      \setA
+%        &\subseteq \Seti\set{\setD\in\psetX}{\text{$\setA\subseteq\setD$ and $\setD$ is closed}}
+%      \\&\eqd      \clsA
+%        &&    \text{by \prefp{def:clsA}}
+%    \end{align*}
+%
+%  \item Proof that $\drvA\subseteq\clsA$:
+%        \begin{align*}
+%          \drvA
+%            &\eqd \set{x\in\setX}{x\in\clsp{\setA\setd\setn{x}}}
+%            &&    \text{by definition of $\drvA$: \prefp{def:drvA}}
+%          \\&\subseteq \set{x\in\setX}{x\in\clsA}
+%            &&    \text{by \prefp{thm:clsA_isotone}}
+%          \\&=    \clsA
+%        \end{align*}
+%
+%  \item Proof that $\setA=\intA$ $\implies$ $\setA$ is \prope{open}: by \prefp{prop:clsA_closed}.
+%
+%  \item Proof that $\setA=\intA$ $\impliedby$ $\setA$ is \prope{open}: 
+%    \begin{align*}
+%      \intA
+%        &\eqd \Setu\set{\setU\in\psetX}{\text{$\setU\subseteq\setA$ and $\setU$ is open}}
+%        &&    \text{by \prefp{def:intA}}
+%      \\&=    \setA
+%        &&    \text{by ``$\setA$ is \prope{open}" hypothesis}
+%    \end{align*}
+%
+%  \item Proof that $\setA=\clsA$ $\implies$ $\setA$ is \prope{closed}: by \prefp{prop:clsA_closed}.
+%
+%  \item Proof that $\setA=\clsA$ $\impliedby$ $\setA$ is \prope{closed}: 
+%    \begin{align*}
+%      \clsA
+%        &\eqd \Seti\set{\setD\in\psetX}{\text{$\setA\subseteq\setD$ and $\setD$ is closed}}
+%        &&    \text{by \prefp{def:clsA}}
+%      \\&=    \setA
+%        &&    \text{by ``$\setA$ is \prope{closed}" hypothesis}
+%    \end{align*}
+%
+%  \item Proof that $clsA$ is the smallest \prope{closed} set containing   $\setA$:
+%    \begin{align*}
+%      \clsA
+%        &\eqd \Seti\set{\setB\in\psetX}{\text{$\setB$ is \prope{closed} and $\setA\subseteq\setB$}}
+%        &&    \text{by definition of $\clsA$: \prefp{def:clsA}}
+%      \\&\subseteq \setD
+%        &&    \text{because $\setD$ is \prope{closed} by hypothesis}
+%    \end{align*}
+%
+%  \item Proof that $intA$ is the largest  \prope{open}   set contained in $\setA$:
+%    \begin{align*}
+%      \setU
+%        &\subseteq \Setu\set{\setV\in\psetX}{\text{$\setV$ is \prope{closed} and $\setV\subseteq\setA$}}
+%        &&         \text{by definition of $\Seti$}
+%      \\&\eqd      \intA
+%        &&    \text{by definition of $\intA$: \prefp{def:clsA}}
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+
+
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpgc{nagata1985}{41}{0444876553}{Definition II.8}
+%  %\citeppg{ab}{59}{60}{0120502577}
+%  }
+%\label{def:clsA}
+%\label{def:ts_sets}
+%\label{def:ts_points}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%Let $\opN(x)$ be the set of all neighborhoods of a point $x$ in $\topspaceX$.
+%\defbox{\begin{array}{M}\indxs{\clsA}
+%  The set $\clsA$ is the \hid{closure} of $\setA\subseteq\setX$ if 
+%  \\\indentx
+%  $\ds \clsA \eqd \set{x\in\setX}{\forall N\in\opN(x),\; N\seti\setA\ne \emptyset} $
+%  \\
+%  A  \hid{closure  point} of $\setA$ is any point $x\in \clsA$.
+%\end{array}}
+%\end{definition}
+
+%%---------------------------------------
+%\begin{theorem}[\thmd{Kuratowski closure properties}]
+%\label{thm:kuratowski}
+%\footnote{
+%  \citerpgc{kelley1955}{43}{0387901256}{\scshape 1.8 Theorem},
+%  \citerpg{davis2005}{45}{0071243399},
+%  \citerpp{thron1966}{21}{22}, %{http://books.google.com/books?id=JRM_AAAAIAAJ\&pg=PA19}
+%  %\citerpg{vel1993}{4}{0444815058} \\
+%  \citorpg{hausdorff1937e}{258}{0828401195},
+%  \citorp{kuratowski1922}{182},
+%  \citor{riesz1906}
+%  }
+%\index{Kuratowski closure axioms}
+%\index{theorems!Kuratowski closure axioms}
+%\index{axioms!Kuratowski closure}
+%\index{closure!Kuratowski}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space}. % \xref{def:topspace}.
+%\thmbox{
+%  \begin{array}{F rcl CDD}
+%    1. & \cls{\emptyset}             &=&         \emptyset          &                               & (\prope{normalized}) & and \\
+%    2. & \setA                       &\subseteq& \clsA              & \forall \setA       \in\psetX & (\prope{extensive})  & and \\
+%    3. & \clsp{\clsA}                &=&         \clsA              & \forall \setA       \in\psetX & (\prope{idempotent}) & and \\
+%    4. & \clsp{\setA\setu\setB}      &=&         \clsA \setu \clsB  & \forall \setA,\setB \in\psetX & (\prope{additive}).  &
+%  \end{array}%}
+%}
+%\end{theorem}
+%\begin{proof}
+%    \begin{enumerate}
+%      \item Proof that $\cls{\emptyset}=\emptyset$:
+%        \begin{align*}
+%          \text{$\emptyset$ is \prope{closed}}    & && \text{by \prefp{thm:ts_closed}}
+%          \\&\implies \cls{\emptyset}=\emptyset     && \text{by \prefp{lem:intAAclsA}}
+%        \end{align*}
+%
+%      \item Proof that $\setA\subseteq\clsA$: by \prefp{lem:intAAclsA}
+%
+%      \item Proof that $\clsp{\clsA}=\clsA$:  \label{item:kuratowski_idempotent}
+%        \begin{align*}
+%          \cls{\left(\clsA\right)}
+%            &\eqd \brp{\Seti\set{\setD\in\psetX}{\text{$(\clsA)\subseteq\setD$ and $\setD$ is closed}}}
+%            &&    \text{by \pref{def:clsA}}
+%          \\&=    \clsA
+%            &&    \text{because ($\clsA$) is closed by \pref{prop:clsA_closed}}
+%        \end{align*}
+%
+%      \item Proof that $\clsA\setu\clsB=\clsp{\setA\setu\setB}$:
+%            %\\Note that $\setA\subseteq\clsp{\setA\setu\setB}$ and $\setB\subseteq\clsp{\setA\setu\setB}$.
+%          \begin{align*}
+%            \clsA\setu\clsB
+%              &=    \clsp{\clsA\setu\clsB}
+%              &&    \text{by \prefpp{thm:ts_closed} $\clsA\setu\clsB$ is \prope{closed}}
+%              \\&&& \text{and by \prefpp{lem:intAAclsA}}
+%            \\&\supseteq \clsp{\setA\setu\setB}
+%              &&     \text{by \prefp{lem:intAAclsA}}
+%          \end{align*}
+%
+%          \begin{align*}
+%            \clsA \setu \clsB
+%              &\subseteq \clss{\mcom{\clsp{\setA\setu\setB}}{$\setA\subseteq\clsp{\setA\setu\setB}$}} \setu 
+%                         \clss{\mcom{\clsp{\setA\setu\setB}}{$\setB\subseteq\clsp{\setA\setu\setB}$}}
+%              &&    \text{because $\setA\subseteq\clsp{\setA\setu\setB}$ and $\setB\subseteq\clsp{\setA\setu\setB}$}
+%            \\&=    \clsp{\setA\setu\setB} \setu \clsp{\setA\setu\setB}
+%              &&    \text{by \pref{item:kuratowski_idempotent}}
+%            \\&\eqd \clsp{\setA\setu\setB}
+%              &&    \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%          \end{align*}
+%    \end{enumerate}
+%
+%\end{proof}
+
+
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:kuratowski_open}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%\thmbox{
+%  %\brb{\begin{array}{M}
+%  %  $\intA$ is the \prope{interior}\\
+%  %  in $\topspaceX$ of a set $\setA$ .
+%  %\end{array}}
+%  %\implies
+%  %\brb{
+%  \begin{array}{F rcl CDD}
+%    1. & \intt{\emptyset}             &=&         \emptyset          &                               & (\prope{normalized}) & and \\
+%    2. & \intA                        &\subseteq& \setA              & \forall \setA       \in\psetX & (\prope{extensive})  & and \\
+%    3. & \intt{\brp{\intA}}           &=&         \intA              & \forall \setA       \in\psetX & (\prope{idempotent}) & and \\
+%    4. & \intt{\brp{\setA\setu\setB}} &=&         \intA \seti \intB  & \forall \setA,\setB \in\psetX & (\prope{additive}).  &
+%  \end{array}%}
+%}
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $\intt{\emptyset}=\emptyset$:
+%        \begin{align*}
+%          \text{$\emptyset$ is \prope{open}}         & && \text{by \prefp{def:topology}}
+%          \\&\implies \intt{\emptyset}=\emptyset     && \text{by \prefp{lem:intAAclsA}}
+%        \end{align*}
+%  
+%  \item Proof that $\setA\supseteq\intA$: by \prefp{lem:intAAclsA}.
+%
+%  \item Proof that $\intt{\brp{\intA}}=\intA$:
+%    \begin{align*}
+%      \intt{\brp{\intA}}
+%        &\eqd \Setu\set{\setU\in\psetX}{\text{$\setU\subseteq\intA$ and $\setU$ is open}}
+%        &&    \text{by \prefp{def:intA}}
+%      \\&=    \intA
+%        &&    \text{by \prefp{prop:intA_open}}
+%    \end{align*}
+%
+%  \item Proof that $\intA\seti\intB=\intp{\setA\seti\setB}$:
+%        %\\Note that $\setA\supseteq\intp{\setA\seti\setB}$ and $\setB\supseteq\intp{\setA\seti\setB}$.
+%      \begin{align*}
+%        \intA\seti\intB
+%          &=    \intp{\intA\seti\intB}
+%          &&    \text{by \prefpp{def:topology} and \prefpp{lem:intAAclsA}}
+%        \\&\subseteq \intp{\setA\seti\setB}
+%          &&     \text{by \prefp{lem:intAAclsA}}
+%      \end{align*}
+%  
+%      \begin{align*}
+%        \intA \seti \intB
+%          &\supseteq \ints{\mcom{\intp{\setA\seti\setB}}{$\setA\supseteq\intp{\setA\seti\setB}$}} \seti 
+%                     \ints{\mcom{\intp{\setA\seti\setB}}{$\setB\supseteq\intp{\setA\seti\setB}$}}
+%          &&    \text{because $\setA\supseteq\intp{\setA\seti\setB}$ and $\setB\supseteq\intp{\setA\seti\setB}$}
+%        \\&=    \intp{\setA\seti\setB} \seti \intp{\setA\seti\setB}
+%          &&    \text{by \pref{item:kuratowski_idempotent}}
+%        \\&\eqd \intp{\setA\seti\setB}
+%          &&    \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%      \end{align*}
+%
+%
+%\end{enumerate}
+%\end{proof}
+%
+%
+%%---------------------------------------
+%\begin{theorem}
+%\label{thm:kuratowski_drv}
+%\footnote{
+%  \citerpgc{mukherjee2005}{32}{8187504846}{2.2.14 Theorem},
+%  \citerpgc{murdeshwar1990}{48}{8122402461}{1.24 Exercises (19)}
+%  }
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%\thmbox{\begin{array}{F rcl CDD}
+%    1. & \drv{\emptyset}             &=&         \emptyset          &                               & (\prope{normalized}) & and \\
+%    2. & \drvA                       &\subseteq& \clsA              & \forall \setA       \in\psetX & (\prope{extensive})  & and \\
+%    %3. & \drv{\brp{\drvA}}           &=&         \drvA              & \forall \setA       \in\psetX & (\prope{idempotent}) & and \\
+%    3. & \drv{\brp{\setA\setu\setB}} &=&         \drvA \setu \drvB  & \forall \setA,\setB \in\psetX & (\prope{additive}).  &
+%  \end{array}}
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $\drv{\emptyset}=\emptyset$:
+%        \begin{align*}
+%          \drv{\emptyset}
+%            &= \set{x\in\setX}{x\in\clsp{x\in\emptyset\setd\setn{x}}}
+%            && \text{by definition of $\drvA$: \prefp{def:drvA}}
+%          \\&= \set{x\in\setX}{x\in\clsp{x\in\emptyset}}
+%            && \text{by definition of $\emptyset$}
+%        \end{align*}
+%  
+%  \item Proof that $\drvA\subseteq\clsA$: by \prefp{lem:intAAclsA}.
+%
+%  %\item Proof that $\drvp{\drvA}=\drvA$:
+%  %  \begin{align*}
+%  %    \drvp{\drvA}
+%  %      &\eqd \Setu\set{\setU\in\psetX}{\text{$\setU\subseteq\drvA$ and $\setU$ is open}}
+%  %      &&    \text{by \prefp{def:drvA}}
+%  %    \\&=    \drvA
+%  %      &&    \text{by \prefp{prop:drvA_open}}
+%  %  \end{align*}
+%
+%  \item Proof that $\drvA\setu\drvB=\drvp{\setA\setu\setB}$:\label{item:kuratowski_drv_setu}
+%    \begin{align*}
+%      \drvA\setu\drvB
+%        &\eqd \set{x\in\setX}{x\in\clsp{x\in\setA\setd\setn{x}}} \setu
+%              \set{x\in\setX}{x\in\clsp{x\in\setB\setd\setn{x}}}
+%        &&    \text{by \prefp{def:drvA}}
+%      \\&=    \set{x\in\setX}{x\in\clsp{x\in\setA\setd\setn{x}} \text{ or } x\in\clsp{x\in\setB\setd\setn{x}}}
+%        &&    \text{by definition of $\setu$}
+%      \\&=    \set{x\in\setX}{x\in\clsp{x\in\setA\setd\setn{x}}\setu\clsp{x\in\setB\setd\setn{x}}}
+%        &&    \text{by definition of $\setu$}
+%      \\&=    \set{x\in\setX}{x\in\clss{x\in(\setA\setu\setB)\setd\setn{x}}}
+%        &&    \text{by \prefp{thm:kuratowski}} % (\prope{additivity})}
+%      \\&\eqd \drvp{\setA\setu\setB}
+%        &&    \text{by \prefp{def:drvA}}
+%    \end{align*}
+%
+%  %\item Proof that $\drvA\setu\drvB\subseteq\drvp{\setA\setu\setB}$:
+%  %  \begin{align*}
+%  %    \brb{\begin{array}{rclD}
+%  %      \setA &\subseteq& \setA\setu\setB & and\\
+%  %      \setB &\subseteq& \setA\setu\setB & 
+%  %    \end{array}}
+%  %      &\implies \brb{\begin{array}{rclD}
+%  %                  \drvA &\subseteq& \drvp{\setA\setu\setB} & and\\
+%  %                  \drvB &\subseteq& \drvp{\setA\setu\setB} & 
+%  %                \end{array}}
+%  %      && \text{by \prefp{thm:clsA_isotone}}
+%  %    \\&\implies \drvA\setu\drvB \subseteq \drvp{\setA\setu\setB}\setu\drvp{\setA\setu\setB}=\drvp{\setA\setu\setB}
+%  %  \end{align*}
+%  %
+%  %\item Proof that $\drvA\setu\drvB\supseteq\drvp{\setA\setu\setB}$:
+%
+%\end{enumerate}
+%\end{proof}
+%
+%
+%
+%
+%
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpgc{mccarty1967}{90}{0486656330}{IV.1 \scshape theorem}, %{\scshape closure, interior, and boundary}\\
+%  \citerpg{davis2005}{45}{0071243399},
+%  \citerpc{thron1966}{42}{theorem 8.1}, %{http://books.google.com/books?id=JRM_AAAAIAAJ\&pg=PA19}
+%  \citerpg{kubrusly2001}{116}{0817641742},
+%  %\citerpg{vel1993}{4}{0444815058},
+%  \citorp{kuratowski1922}{183}
+%  }
+%\label{thm:clsA_isotone}
+%%---------------------------------------
+%Let $\clsA$ be the \structe{closure} and $\intA$ the \structe{interior} \xref{def:clsA} of a set $\setA$ on the topological space $\topspaceX$.
+%\thmbox{
+%  \setA \subseteq \setB 
+%  \qquad\implies\qquad 
+%  \brb{\begin{array}{FrclDD}
+%    1. & \clsA &\subseteq& \clsB  &(\prope{isotone}) & and\\
+%    2. & \intA &\subseteq& \intB  &(\prope{isotone}) & and\\
+%    3. & \drvA &\subseteq& \drvB  &(\prope{isotone}) & 
+%  \end{array}}
+%  \qquad\scy\forall\setA,\setB\in\psetX
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%  \clsA
+%    &\subseteq \clsA\setu\clsB
+%  \\&= \clsp{\setA\setu\setB}
+%    && \text{by \prefp{thm:kuratowski} (\prope{additivity})}
+%  \\&= \clsB
+%    && \text{by $\setA\subseteq\setB$ hypothesis} 
+%  \\
+%  \\
+%  \intA
+%    &\eqd \Setu\set{\setU\in\psetX}{\text{$\setU\subseteq\setA$ and $\setU$ is open}}
+%    &&    \text{by \prefp{def:intA}}
+%  \\&\subseteq \Setu\set{\setU\in\psetX}{\text{$\setU\subseteq\setB$ and $\setU$ is open}}
+%    && \text{by $\setA\subseteq\setB$ hypothesis} 
+%  \\&\eqd \intB
+%    &&    \text{by \prefp{def:intA}}
+%  \\
+%  \\
+%  \drvA
+%    &\eqd      \set{x\in\setX}{x\in\clsp{\setA\setd\setn{x}}}
+%    &&         \text{by \prefp{def:drvA}}
+%  \\&\subseteq \set{x\in\setX}{x\in\clsp{\setB\setd\setn{x}}}
+%    &&         \text{by $\setA\subseteq\setB$ hypothesis}
+%  \\&\eqd      \drvB
+%    &&         \text{by \prefp{def:drvA}}
+%\end{align*}
+%\end{proof}
+%
+%
+%%%---------------------------------------
+%%\begin{theorem}
+%%\footnote{
+%%  \citerpg{ab}{59}{0120502577}
+%%  }
+%%\label{thm:top_close}
+%%%---------------------------------------
+%%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%%\thmbox{\begin{array}{l lcl @{\qquad}C @{\qquad}D}
+%%  3.& \setA\subseteq\mcom{\setD\notin\topT}{$\setD$ is closed}
+%%    & \implies 
+%%    & \setA\subseteq\clsA\subseteq\setD
+%%    & \forall \setA,\setD\subseteq\setX
+%%    & ($\clsA$ is the smallest closed set containing $\setA$)
+%%\end{array}}
+%%\end{theorem}
+%%\begin{proof}
+%%\begin{enumerate}
+%%\item Proof that $\setA\subseteq\setD \implies \setA\subseteq\clsA\subseteq\setD$:\\
+%%First note that $\setA\subseteq\clsA$ by \prefp{thm:ts_AsubsetB}.
+%%\begin{align*}
+%%  \setD \text{ is closed}
+%%    &\iff     \cmpD \text{ is open}
+%%  \\&\implies \forall x\in\cmpD,\; \exists N\in\opN x \st N\seti\cmpD\ne \emptyset
+%%    &&        \text{by \prefp{def:top_open}}
+%%  \\&\iff     \forall x\in\cmpD,\; \exists N\in\opN x \st N\seti\set\setD=\emptyset
+%%  \\&\implies \forall x\in\cmpD,\; \exists N\in\opN x \st N\seti\setA=\emptyset
+%%    &&        \text{by left hypothesis}
+%%  \\&\implies \forall x\in\cmpD,\; x\notin\clsA
+%%    &&        \text{by \prefp{def:ts_sets}}
+%%  \\&\implies \clsA \seti \cmpD = \emptyset
+%%  \\&\iff     \clsA \subseteq \setD
+%%\end{align*}
+%%
+%%\end{enumerate}
+%%\end{proof}
+%
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpgc{murdeshwar1990}{43}{8122402461}{Theorem 1.16},
+%  \citerpgc{mccarty1967}{90}{0486656330}{1 \scshape theorem}, %{\scshape closure, interior, and boundary}\\
+%  \citerppg{ab}{59}{60}{0120502577}
+%  }
+%\label{thm:topcmp}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%\thmbox{\begin{array}{F>{\ds}rc>{\ds}l@{\qquad}CD}
+%  1. & \cmp{\clsA}                  &=& \intt{\cmpA}                  & \forall \setA\in\psetX  & (the complement of the closure is the interior of the complement)
+%\\2. & \cmp{\intA}                  &=& \cls{\cmpA}                  & \forall \setA\in\psetX  & (the complement of the interior is the closure of the complement)
+%\\3. & \clsA                        &=& \cmp{\intt{\cmpA}}            & \forall \setA\in\psetX  & (the complement of the interior of the complement is the closure)
+%\\4. & \intA                        &=& \cmp{\cls{\cmpA}}            & \forall \setA\in\psetX  & (the complement of the closure of the complement is the interior)
+%\\5. & \bndA                        &=& \bnd{\brp{\cmpA}}            & \forall \setA\in\psetX  & (the boundary of the complement is the boundary)
+% %\cntn & \bndA                         &=& \clsA \seti \cls{\cmpA}      & \forall \setA\in\psetX
+% %\cntn & \intA                         &=& \cmpX[(\overline{\cmpA})]    & \forall \setA\in\psetX
+%  \end{array}}
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $\intA=\cmpp{\clsp{\cmpA}}$: \label{item:topcmp_cmpclscmp}
+%    \begin{align*}
+%      \cmpp{\clsp{\cmpA}}
+%        &= \cmpp{\Seti\set{\setD\in\psetX}{\text{$\cmpA\subseteq\setD$ and $\setD$ is \prope{closed}}}}
+%        && \text{by \pref{def:clsA}}
+%      \\&= \Setu\set{\cmpD\in\psetX}{\text{$\cmpA\subseteq\setD$ and $\setD$ is \prope{closed}}}
+%        && \text{by \thme{de Morgan's law}: \prefp{thm:algprop}}
+%      \\&= \Setu\set{\cmpD\in\psetX}{\text{$\cmpD\subseteq\setA$ and $\cmpD$ is \prope{open}}}
+%        && \text{by \prefp{def:closedset}}
+%      \\&\eqd \intA
+%        && \text{by \prefp{def:intA}}
+%    \end{align*}
+%
+%  \item Proof that $\clsA=\cmpp{\intp{\cmpA}}$:\label{item:topcmp_cmpintcmp}
+%    \begin{align*}
+%      \cmpp{\intp{\cmpA}}
+%        &= \cmpp{\Setu\set{\setU\in\psetX}{\text{$\setU\subseteq\cmpA$ and $\setU$ is \prope{open}}}}
+%        && \text{by \pref{def:intA}}
+%      \\&= \Seti\set{\cmpU\in\psetX}{\text{$\setU\subseteq\cmpA$ and $\setU$ is \prope{open}}}
+%        && \text{by \thme{de Morgan's law}: \prefp{thm:algprop}}
+%      \\&= \Setu\set{\cmpU\in\psetX}{\text{$\setA\subseteq\cmpU$ and $\cmpU$ is \prope{closed}}}
+%        && \text{by \prefp{def:closedset}}
+%      \\&\eqd \clsA
+%        && \text{by \prefp{def:clsA}}
+%    \end{align*}
+%
+%  \item Proof that $\cmpp{\intA}=\clsp{\cmpA}$:
+%    \begin{align*}
+%      \cmpp{\intA}
+%        &= \cmpp{\cmpp{\clsp{\cmpA}}}
+%        && \text{by \pref{item:topcmp_cmpclscmp}}
+%      \\&= \clsp{\cmpA}
+%        && \text{by \prefp{thm:algprop}}
+%    \end{align*}
+%
+%  \item Proof that $\cmpp{\clsA}=\intp{\cmpA}$:
+%    \begin{align*}
+%      \cmpp{\clsA}
+%        &= \cmpp{\cmpp{\intp{\cmpA}}}
+%        && \text{by \pref{item:topcmp_cmpintcmp}}
+%      \\&= \intp{\cmpA}
+%        && \text{by \prefp{thm:algprop}}
+%    \end{align*}
+%
+%  \item Proof that $\bndA=\bnd{\brp{\cmpA}}$:
+%    \begin{align*}
+%      \bndA
+%        &= \clsA \seti \clsp{\cmpA}
+%        && \text{by \prefp{def:bndA}}
+%      \\&= \clsp{\cmpA} \seti \clsA
+%        &&    \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%      \\&= \clsp{\cmpA} \seti \clsp{\cmpp{\cmpA}}
+%        && \text{by \prefp{thm:algprop}}
+%      \\&= \bndp{\cmpA}
+%        && \text{by \prefp{def:bndA}}
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+%
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerppg{ab}{59}{60}{0120502577},
+%  \citerpgc{mccarty1967}{90}{0486656330}{1 \scshape theorem}, %{\scshape closure, interior, and boundary}\\
+%  \citerpg{kubrusly2001}{116}{0817641742}
+%  }
+%\label{thm:intAclsAbndA}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%\thmbox{\begin{array}{F>{\ds}r*{3}{c>{\ds}l}@{\qquad}C}
+%  1. & \clsA                         &=& \intA \setu \bndA   &=& \setA \setu \bndA  &=& \setA \setu \drvA  & \forall \setA\in\psetX
+%\\2. & \bndA                         &=& \clsA \setd \intA   & &                    & &                    & \forall \setA\in\psetX
+%\\3. & \intp{\setA \setd \intA}      &=& \emptyset           & &                    & &                    & \forall \setA\in\psetX
+% %\\4. & \bndA                         &=& \clsA \seti \cls{\cmpA}      & \forall \setA\in\psetX
+% %\\5. & \intA                         &=& \cmpX[(\overline{\cmpA})]    & \forall \setA\in\psetX
+%  \end{array}}
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $\clsA=\setA \setu \bndA$:
+%    \begin{enumerate}
+%      \item lemma: $\setA\setu\clsp{\cmpA}=\setX$\label{item:intAclsAbndA_lemma}
+%        \begin{align*}
+%          \setA\setu\clsp{\cmpA}
+%            &\supseteq \setA\setu\cmpA
+%            && \text{by \prefp{lem:intAAclsA}}
+%          \\&= \setX
+%            && \text{by \prefp{thm:algprop}}
+%          \\
+%          \setA\setu\clsp{\cmpA}
+%            &\subseteq \setX
+%        \end{align*}
+%
+%      \item Proof that $\clsA=\setA \setu \bndA$:
+%        \begin{align*}
+%          \setA \setu \bndA
+%            &= \setA\setu\brs{\clsA\seti\clsp{\cmpA}}
+%            && \text{by \prefp{def:bndA}}
+%          \\&= \brs{\setA\setu\clsA}  \seti \brs{\setA\setu\clsp{\cmpA}}
+%            &&    \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%          \\&= \brs{\setA\setu\clsA}  \seti \setX
+%            && \text{by \pref{item:intAclsAbndA_lemma}}
+%          \\&= \clsA  \seti \setX
+%            && \text{by \prefp{lem:intAAclsA}}
+%          \\&= \clsA
+%            && \text{by \prefp{thm:algprop}}
+%        \end{align*}
+%    \end{enumerate}
+%
+%  \item Proof that $\clsA=\intA \setu \bndA$:
+%    \begin{align*}
+%      \intA \setu \bndA
+%        &= \intA \setu \brs{\clsA\seti\clsp{\cmpA}}
+%        && \text{by definition of $\bndA$ (\prefp{def:bndA})}
+%      \\&= \brs{\intA \setu \clsA} \seti \brs{\intA\setu\clsp{\cmpA}}
+%        && \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%      \\&= \brs{\intA \setu \clsA} \seti \brs{\intA\setu\cmpp{\intA}}
+%        && \text{by \prefp{thm:topcmp}}
+%      \\&= \brs{\intA \setu \clsA} \seti \setX
+%        && \text{by \prefp{thm:topcmp}}
+%      \\&= \brs{\intA \setu \clsA}
+%        && \text{by \prefp{thm:algprop}}
+%      \\&= \clsA
+%        && \text{by \prefp{lem:intAAclsA}}
+%    \end{align*}
+%
+%  \item Proof that $\clsA=\setA\setu\drvA$:
+%    \begin{enumerate}
+%      \item Proof that $\setA\setu\drvA\subseteq\clsA$:
+%        \begin{align*}
+%          \setA\setu\drvA
+%            &\eqd \setA\setu\set{x\in\setX}{x\in\clsp{\setA\setd\setn{x}}}
+%            &&    \text{by definition of $\drvA$: \prefp{def:drvA}}
+%          \\&\subseteq \setA\setu\set{x\in\setX}{x\in\clsA}
+%            &&    \text{by \prefp{thm:clsA_isotone}}
+%          \\&=    \setA\setu\clsA
+%          \\&\subseteq \clsA\setu\clsA
+%            &&    \text{by \prefp{lem:intAAclsA}}
+%          \\&=    \clsA
+%            && \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%        \end{align*}
+%      \item Proof that $\clsA\supseteq\setA\setu\drvA$:
+%        \begin{align*}
+%          x\notin\setA\setu\drvA
+%            &\implies x\notin\setA\setu\set{x\in\setX}{x\in\clsp{\setA\setd\setn{x}}}
+%            &&        \text{by definition of $\drvA$: \prefp{def:drvA}}
+%          \\&\implies x\notin\set{x\in\setX}{x\in\clsp{\setA\setd\setn{x}}}
+%          \\&\implies x\notin\set{x\in\setX}{x\in\clsp{\setA}}
+%          \\&\iff     x\notin\clsA
+%          \\&\implies \clsA\subseteq\setA\setu\drvA
+%        \end{align*}
+%    \end{enumerate}
+%
+%  \item Proof that $\bndA=\clsA \setd \intA$:
+%    \begin{align*}
+%      \clsA \setd \intA
+%        &= \clsA \seti \cmp{(\intA)}
+%        && \text{by \prefp{thm:ss_rel_gg}}
+%      \\&= \clsA \seti \cmp{\brs{\cmp{(\cls{(\cmpA)})}}}
+%        && \text{by \pref{thm:topcmp}}
+%      \\&= \clsA \seti \cls{(\cmpA)}
+%        && \text{by \prope{idempotent} property: \prefp{thm:algprop}}
+%      \\&= \bndA
+%        && \text{by \prefp{def:bndA}}
+%    \end{align*}
+%
+%  \item Proof that $\intp{\setA \setd \intA}=\emptyset$:
+%    \begin{align*}
+%      \intp{\setA \setd \intA}
+%          &= \ints{\setA \seti \cmpp{\intA}}
+%          && \text{by \prefp{thm:ss_rel_gg}}
+%        \\&= \cmps{\clss{\cmpp{\setA \seti \cmpp{\intA} }}}
+%          && \text{by \pref{thm:topcmp}}
+%        \\&= \cmps{\clsp{\cmpA \setu \intA }}
+%          && \text{by \prope{idempotent} property: \prefp{thm:algprop}}
+%        \\&= \cmps{\clsp{\cmpA} \setu \clsp{\intA}}
+%          && \text{by \prefp{thm:kuratowski}}
+%        \\&= \cmpp{\clsp{\cmpA}} \seti \cmpp{\clsp{\intA}}
+%          && \text{by \thme{de Morgan's law}: \prefp{thm:algprop}}
+%        \\&= \intA \seti \cmpp{\clsp{\intA}}
+%          && \text{by \pref{thm:topcmp}}
+%          %&& \text{by \prope{idempotent} property: \prefp{thm:algprop}}
+%        \\&= \emptyset
+%          && \text{because $\intA\subseteq\clsp{\intA}$ by \prefp{lem:intAAclsA}}
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+%
+%%---------------------------------------
+%\begin{proposition}
+%\footnote{
+%  \citerpg{haaser1991}{43}{0486665097}
+%  }
+%\label{prop:intAbndAextA}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%Let $\intA$ be the \structe{interior}, $\bndA$ be the \structe{boundary}, and $\extA$ be the \structe{exterior} of a set $\setA$.
+%\propbox{
+%  \setX = \mcom{\intA \setu \bndA \setu \extA}{partition of $\setX$}
+%  \qquad\scy\forall\setA\in\psetX
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \intA \setu \bndA \setu \extA
+%    &= \intA \setu \brp{\clsA\seti\clscmpA} \setu \intcmpA
+%    && \text{by \prefp{def:bndA}}
+%  \\&= \brs{\brp{\intA \setu \clsA}\seti\brp{\intA\setu\clscmpA}} \setu \intcmpA
+%    && \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%  \\&= \brs{\brp{\clsA}\seti\brp{\intA\setu\clscmpA}} \setu \intcmpA
+%    && \text{because $\intA\subseteq\clsA$: \prefp{thm:intAAclsA}}
+%  \\&= \brs{\clsA\seti\brp{\intA\setu\cmpintA}} \setu \intcmpA
+%    && \text{by \prefp{thm:topcmp}}
+%  \\&= \brs{\clsA\seti\setX} \setu \intcmpA
+%    && \text{by \prefp{thm:algprop}}
+%  \\&= \clsA \setu \intcmpA
+%    && \text{by \prefp{thm:algprop}}
+%  \\&= \clsA \setu \cmpclsA
+%    && \text{by \prefp{thm:topcmp}}
+%  \\&= \setX
+%    && \text{by \prefp{thm:algprop}}
+%\end{align*}
+%\end{proof}
+%
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpg{ab}{59}{0120502577},
+%  \citerpgc{mccarty1967}{90}{0486656330}{IV.1 \scshape theorem}, %{\scshape closure, interior, and boundary}\\
+%  \citerpg{kubrusly2001}{116}{0817641742}
+%  }
+%\label{thm:intAAclsA}
+%%---------------------------------------
+%Let $\clsA$ be the \structe{closure}, $\intA$ the \structe{interior}, $\bndA$ the \structe{boundary},
+%and $\drvA$ the \structe{drived set} of a set $\setA$
+%in a topological space $\topspaceX$.
+%Let $\psetX$ be the \structe{power set} of $\setX$.
+%\thmbox{\begin{array}{F rcl cM c rcl C}
+%    1. & \mc{9}{>{\ds}l}{\intA\subseteq\setA\subseteq\clsA}        & \forall \setA\in\psetX.\\
+%    2. & \mc{9}{>{\ds}l}{\drvA\subseteq\clsA}                      & \forall \setA\in\psetX.\\
+%    3. & \setA&=&\intA  &\iff& $\setA$ is \prope{open}   &\iff& \setA\seti\bndA&=&\emptyset & \forall \setA\in\psetX.\\
+%    4. & \setA&=&\clsA  &\iff& $\setA$ is \prope{closed} &\iff& \setA\seti\bndA&=&\emptyset & \forall \setA\in\psetX.\\
+%    5. & \setA&=&\clsA  &\iff& $\setA$ is \prope{closed} &\iff& \drvA&\subseteq&\setA & \forall \setA\in\psetX.
+%\end{array}}
+%%\end{array}\end{tabstr}}
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $\intA\subseteq\setA\subseteq\clsA$: by \prefp{lem:intAAclsA}
+%  \item Proof that $\drvA\subseteq\clsA$:  by \prefp{lem:intAAclsA}
+%  \item Proof that $\setA=\intA$ $\iff$ $\setA$ is \prope{open}: by \prefp{lem:intAAclsA}
+%  \item Proof that $\setA=\clsA$ $\iff$ $\setA$ is \prope{closed}: by \prefp{lem:intAAclsA}
+%  \item Proof that $\setA$ is \prope{open}   $\implies$ $\setA\seti\bndA=\emptyset$:
+%    \begin{align*}
+%      \setA\seti\bndA
+%        &\eqd \setA\seti\brp{\clsA\seti\clscmpA}
+%        &&    \text{by \prefp{def:bndA}}
+%      \\&=    \intA\seti\brp{\clsA\seti\clscmpA}
+%        &&    \text{by ``$\setA$ is \prope{open}" hypothesis}
+%      \\&=    \brp{\intA\seti\clsA} \seti \brp{\intA\seti\clscmpA}
+%        && \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%      \\&=    \intA \seti \brp{\intA\seti\clscmpA}
+%        &&    \text{by \pref{lem:intAAclsA}}
+%      \\&=    \intA \seti\clscmpA
+%        &&    \text{by \pref{thm:algprop}}
+%      \\&=    \intA \seti\cmpintA
+%        &&    \text{by \pref{thm:topcmp}}
+%      \\&=    \emptyset
+%        &&    \text{by \pref{thm:algprop}}
+%    \end{align*}
+%
+%  \item Proof that $\setA$ is \prope{open}   $\impliedby$ $\setA\seti\bndA=\emptyset$:
+%    \begin{align*}
+%      \emptyset
+%        &=    \setA\seti\bndA
+%      \\&\eqd \setA\seti\brp{\clsA\seti\clscmpA}
+%        &&    \text{by \prefp{def:bndA}}
+%      \\&=    \setA\seti\clscmpA
+%        &&    \text{by \prefp{lem:intAAclsA}}
+%      \\&=    \setA\seti\cmpintA
+%        &&    \text{by \prefp{thm:topcmp}}
+%      \\
+%      \implies\quad \setA
+%        &=    \intA
+%        &&    \text{by \pref{thm:algprop}}
+%    \end{align*}
+%
+%  \item Proof that $\setA$ is \prope{closed} $\implies$ $\bndA\subseteq\setA$:
+%    \begin{align*}
+%      \bndA
+%        &\eqd \clsA\seti\clscmpA
+%        &&    \text{by \prefp{def:bndA}}
+%      \\&=    \setA\seti\clscmpA
+%        &&    \text{by ``$\setA$ is \prope{closed}" hypothesis and \prefp{lem:intAAclsA}}
+%      \\&\subseteq \setA
+%        %&&    \text{by \pref{thm:algprop}}
+%    \end{align*}
+%
+%  \item Proof that $\setA$ is \prope{closed} $\impliedby$ $\bndA\subseteq\setA$:
+%    \begin{align*}
+%      \clsA
+%        &=    \setA\setu\bndA
+%        &&    \text{by \prefp{thm:intAclsAbndA}}
+%      \\&=    \setA
+%        &&    \text{by ``$\bndA\subseteq\setA$ hypothesis}
+%      \\\implies & \text{$\setA$ is \prope{closed}}
+%        && \text{by \prefp{thm:intAAclsA}}
+%    \end{align*}
+%
+%  \item Proof that $\setA=\clsA\implies\drvA\subseteq\setA$:
+%    \begin{align*}
+%      \drvA
+%        &\subseteq \clsA
+%        && \text{by \prefp{lem:intAAclsA}}
+%      \\&= \setA
+%        && \text{by $\setA=\clsA$ hypothesis}
+%    \end{align*}
+%
+%  \item Proof that $\setA=\clsA\impliedby\drvA\subseteq\setA$:
+%    \begin{align*}
+%      \clsA
+%        &= \setA\setu\drvA
+%        && \text{by \prefp{thm:intAclsAbndA}}
+%      \\&\subseteq \setA\setu\setA
+%        && \text{by $\drvA\subseteq\setA$ hypothesis}
+%      \\&\subseteq \setA
+%        && \text{\ifdochas{setstrct}{by \prefp{thm:topprop}}}
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+%
+%
+%
+%
+%
+%A weakened form of the closure properties of \prefpp{thm:kuratowski} can be used to define a topology (next theorem).
+%%---------------------------------------
+%\begin{theorem}[\thm{Kuratowski closure axioms}]
+%\label{thm:kuratowski_clsop}
+%\footnote{
+%  \citerpp{thron1966}{42}{43}, %{http://books.google.com/books?id=JRM_AAAAIAAJ\&pg=PA19}
+%  \citerppg{murdeshwar1990}{45}{46}{8122402461}
+%  %\citor{kuratowski1920}
+%  }
+%\index{Kuratowski closure axioms}
+%\index{axioms!Kuratowski closure}
+%\index{closure!Kuratowski}
+%%---------------------------------------
+%Let $\ff$ be a set function on $\psetX$.
+%\thmbox{\begin{array}{M}
+%  $\brb{\begin{array}{F rcl CDD}
+%    1. & \ff(\emptyset)              &=&         \emptyset          &                               & (\prope{normalized}) & and \\
+%    2. & \setA                       &\subseteq& \ff(\setA)         & \forall \setA       \in\psetX & (\prope{extensive})  & and \\
+%    3. & \ff(\ff(\setA))             &\subseteq& \ff(\setA)         & \forall \setA       \in\psetX &  & and \\
+%    4. & \ff(\setA\setu\setB)        &=&         \ff(\setA) \setu \ff(\setB)  & \forall \setA,\setB \in\psetX & (\prope{additive}).  &
+%  \end{array}}$
+%  \\\indentx
+%  $\qquad\implies\qquad$
+%  $\brb{\begin{array}{M}
+%    $\topspace{\setX}{\topT(\ff)}$ is a topological space where
+%    \\$\topT(\ff)\eqd\set{\setA\in\psetX}{\ff(\cmpA)=\cmpA}$
+%  \end{array}}$
+%\end{array}}
+%\end{theorem}
+%
+%%---------------------------------------
+%\begin{lemma}
+%\label{lem:xinclsA}
+%\footnote{
+%  \citerpgc{kubrusly2001}{115}{0817641742}{Proposition 3.25}
+%  }
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+%\lembox{
+%  \mcom{\brb{x\in\clsA}}
+%       {$x$ is \structe{adherent} to $\setA$}
+%  \qquad\iff\qquad
+%  \mcom{\brb{\setA\seti\setU\neq\emptyset \quad\forall x\in\setU\in\topT}}
+%       {every open set containing $x$ meets $\setA$}
+%  }
+%\end{lemma}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $x\in\clsA$ $\implies$   $\setA\seti\setU\neq\emptyset$:
+%    \begin{align*}
+%      \brb{\text{$x\in\setU$ and $\setA\seti\setU=\emptyset$}}
+%        &\implies \brb{\text{$x\notin\cmpU$ and $\setA\subseteq\cmpU$}}
+%      \\&\implies \clsA\subseteq\cmpU
+%        && \text{by \prefp{lem:intAAclsA}}
+%      \\&\implies x\notin\clsA
+%        && \text{because $x\in\setU\iff x\notin\cmpU$}
+%      \\&\implies \setA\seti\setU \neq \emptyset
+%        && \text{because ``$x\notin\clsA$" contradicts ``$x\in\clsA$" hypothesis}
+%    \end{align*}
+%
+%  \item Proof that $x\in\clsA$ $\impliedby$ $\setA\seti\setU\neq\emptyset$:
+%    \begin{align*}
+%      x\notin\clsA
+%        &\implies &x\in\mcom{\cmpclsA}{\prope{open}}
+%                             &                                                                 && \text{by definition of $\clsA$: \prefp{def:clsA}}
+%      \\&\implies &\emptyset &\neq \clsA\seti\mcoml{\cmpclsA}{\prope{open} set containing $x$} && \text{by right hypothesis}
+%      \\&         &          &=    \cmpp{\cmpclsA} \seti \cmpclsA 
+%      \\&         &          &=    \emptyset                                                   && \text{(contradiction)}
+%      \\&\implies &x\in\clsA
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+%
+%
+%
+
+%======================================
+%\subsection{Functions on topological spaces}
+%======================================
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  %\citerpg{ab}{59}{0120502577}\\
+%  \citerpgc{murdeshwar1990}{248}{8122402461}{2.21 Theorem and Definition},
+%  \citerpgc{joshi1983}{133}{0852264445}{(5.1.6) Definition}
+%  }
+%\label{def:dense}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}. % and $\setA\subseteq \setX$.
+%\defbox{\begin{array}{M}
+%  A set $\setY$ is \hid{dense} in $\setX$ if $\clsY=\setX$.\\
+%  %2. & A \hid{nowhere dense} set is any set $N$ such that $\brp{\cls{N}}^\circ =\emptyset$.\\
+%  %3. & A \hid{meager} set is any set $M$ such that $\exists \seq{N_n}{n=1,2,\ldots}$ of nowhere dense sets such that\\
+%  %   & \qquad $M = \setopu_{n=1}^\infty N_n$\\
+%  %2. & The set $\setX$ is \hid{separable} if it contains a \prope{countable} \prope{dense} subset.
+%\end{array}}
+%\end{definition}
+%
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpgc{murdeshwar1990}{248}{8122402461}{16.1 Definition},
+%  \citerpgc{joshi1983}{133}{0852264445}{(6.1.3) Definition}
+%  }
+%\label{def:separable}
+%%---------------------------------------
+%Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}. % and $\setA\subseteq \setX$.
+%\defbox{\begin{array}{M}
+%  The set $\setX$ is \hid{separable} if it contains a \prope{countable} \prope{dense} subset.
+%\end{array}}
+%\end{definition}
+%
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{davis2005}{34}{0071243399} 
+  }
+\label{def:continuous}
+\label{def:clCxy}
+%---------------------------------------
+Let $\topspace{\setX}{\topT_x}$ and $\topspace{\setY}{\topT_y}$ be \structe{topological space}s \xref{def:tspace}.
+Let $\ff$ be a function in $\clFxy$.
+%\defboxp{
+  A function $\ff\in\clFxy$ is \propd{continuous} if 
+  \qquad$ %\\\indentx$
+    \mcom{\setU\in\topT_y}{\prope{open} in $\topspace{\setY}{\topT_y}$} 
+    \quad\implies\quad 
+    \mcom{\ff^{-1}(\setU)\in\topT_x}{\prope{open} in $\topspace{\setX}{\topT_x}$}$ .
+  \\
+  A function is \propd{discontinuous} in $\clF{\topspace{\setX}{\topT_x}}{\topspace{\setX}{\topT_y}}$ 
+  if it is not \prope{continuous} in $\clF{\topspace{\setX}{\topT_x}}{\topspace{\setX}{\topT_y}}$. 
+  %\\The \hid{set of all continuous functions} $\hxs{\clCxy}$ in the function space $\clFxy$ is
+  %\\\qquad$\ds\clCxy \eqd \set{\ff\in\clFxy}{\text{$\ff$ is \prope{continuous} in $\setX$}}$.
+%  }
+\end{definition}
+
+\begin{figure}[h]
+  \centering%
+  \gsize%
+  \psset{unit=0.08mm}%
+  \begin{tabular}{ccc}
+    \input{../common/math/graphics/cont_yx.tex}%
+   &\input{../common/math/graphics/cont_yfy.tex}%
+   &\input{../common/math/graphics/cont_ydy.tex}%
+   \\%
+   \scs\prope{continuous} & \scs\prope{continuous} & \scs\prope{discontinuous}%
+  \end{tabular}%
+  \caption{\prope{continuous}/\prope{discontinuous} functions \xref{ex:contxy}\label{fig:contxy}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\label{ex:contxy}
+%---------------------------------------
+Some \prope{continuous}/\prope{discontinuous} functions are illustrated in \prefpp{fig:contxy}.
+\end{example}
+
+
+
+
+\pref{def:continuous} (previous definition) defines continuity using open sets.
+Continuity can alternatively be defined using closed sets or closure (next theorem).
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppgc{mccarty1967}{91}{92}{0486656330}{IV.2 \scshape theorem},
+  \citerpgc{searcoid2006}{130}{1846286271}{``Theorem 8.3.1 (Criteria for Continuity)", set in \structe{metric space}s}
+  }
+\label{thm:continuous}
+%---------------------------------------
+Let $\topspace{\setX}{\topT}$ and $\topspace{\setY}{\topS}$ be topological spaces.
+Let $\ff$ be a function in $\clFxy$.
+\thmbox{\begin{array}{M}
+  The following are equivalent:
+  \\\indentx$\begin{array}{FrclCc}
+    1. & \mc{3}{M}{$\ff$ is \prope{continuous}}                                                                                    &                         & \iff \\
+    2. & \mc{3}{M}{$\setB$ is closed in $\topspace{\setY}{\topS}$ $\implies$ $\ffi(\setB)$ is closed in $\topspace{\setX}{\topT}$} & \forall \setB\in\psetY  & \iff \\
+    3. & \ff(\clsA)        &\subseteq& \cls{\ff(\setA)}                                                                            & \forall \setA\in\psetX  & \iff \\
+    4. & \cls{\ffi(\setB)} &\subseteq& \ffi(\clsB)                                                                                 & \forall \setB\in\psetY  & 
+   %5. & \seqn{x_n}\to x   &\implies& \ff(\seqn{x_n})\to\ff(x)
+  \end{array}$
+\end{array}}
+\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that (1) $\implies$ (2):\label{item:continuous_12}
+%    \begin{align*}
+%      \text{$\setB$ is \prope{closed}}
+%        &\iff     \text{$\cmpB$ is \prope{open}}
+%        &&        \text{by definition of a \structe{closed set} \xref{def:closedset}}
+%      \\&\implies \text{$\ffi(\cmpB)$ is \prope{open}}
+%        &&        \text{by (1) and \prefp{def:continuous}}
+%      \\&\iff     \text{$\cmps{\ffi(\setB)}$ is \prope{open}}
+%        &&        \text{because $\ffi(\cmpB)=\cmps{\ffi(\setB)}$}
+%      \\&\iff     \text{$\ffi(\setB)$ is \prope{closed}}
+%        &&        \text{by definition of a \structe{closed set} \xref{def:closedset}}
+%    \end{align*}
+%
+%  \item Proof that (2) $\implies$ (3):
+%    \begin{enumerate}
+%      \item lemma: Proof that $\ffi\brs{\cls{\ff(\setA)}}$ is \prope{closed}:\label{item:continuous_23a}
+%        \begin{align*}
+%          \text{$\cls{\ff(\setA)}$ is \prope{closed}}
+%            &&& \text{by \prefp{prop:clsA_closed}}
+%            \\&\implies \text{$\ffi\brs{\cls{\ff(\setA)}}$ is \prope{closed}}
+%            &&  \text{by (2)}
+%        \end{align*}
+%
+%      \item lemma: Proof that $\setA\subseteq\ffi\brs{\cls{\ff(\setA)}}$:\label{item:continuous_23b}
+%        \begin{align*}
+%          \setA
+%            &\subseteq \ffi\brs{\ff(\setA)}
+%            &&         \text{by result from function theory}
+%          \\&\subseteq \ffi\brs{\cls{\ff(\setA)}}
+%            &&         \text{by \prefp{lem:intAAclsA}}
+%        \end{align*}
+%
+%      \item Proof that (2) $\implies$ (3):
+%        \begin{align*}
+%          \ff(\clsA)
+%            &\subseteq \ff\brp{\ffi\clss{\cls{\ff(\setA)}}}
+%            &&         \text{by \pref{item:continuous_23b}}
+%          \\&=         \ff\brp{\ffi\brs{\cls{\ff(\setA)}}}
+%            &&         \text{by \pref{item:continuous_23b}}
+%          \\&\subseteq \cls{\ff(\setA)}
+%            &&         \text{by result from function theory}
+%        \end{align*}
+%    \end{enumerate}
+%
+%  \item Proof that (3) $\implies$ (4):
+%    \begin{align*}
+%      \cls{\ffi(\setB)}
+%        &\subseteq \ffi\ff\brs{\cls{\ffi(\setB)}}
+%        &&         \text{by result from function theory}
+%      \\&\subseteq \ffi\brp{\clss{\ff\ffi(\setB)}}
+%        &&         \text{by result from function theory}
+%      \\&\subseteq \ffi\brp{\clsB}
+%        &&         \text{by result from function theory}
+%    \end{align*}
+%
+%  \item Proof that (4) $\implies$ (1):
+%    \begin{align*}
+%      \text{$\setU$ is \prope{open}}
+%        &\implies  \text{$\cmpU$ is \prope{closed}}
+%        %&&        \text{by definition of a \prope{closed} set (\prefp{def:closedset})}
+%        &&        \text{by \prefp{def:closedset}}
+%      \\&\implies 
+%          \begin{array}[t]{rclM}
+%            \ffi(\cmpU) &=&         \ffi(\cls{\cmpU}) & by \prefp{lem:intAAclsA}
+%                      \\&\supseteq& \cls{\ffi(\cmpU)} & by (4)
+%                      \\&\supseteq& \ffi(\cmpU)       & by \prefp{lem:intAAclsA}
+%          \end{array}
+%      \\&\implies \ffi(\cmpU) = \cls{\ffi(\cmpU)}
+%      \\&\iff     \text{$\ffi(\cmpU)$ is \prope{closed}}
+%        &&        \text{by \prefp{lem:intAAclsA}}
+%      \\&\iff     \text{$\cmps{\ffi(\cmpU)}$ is \prope{open}}
+%        %&&        \text{by definition of a \prope{closed} set (\prefp{def:closedset})}
+%        &&        \text{by \prefp{def:closedset}}
+%      \\&\iff     \text{$\ffi(\setU)$ is \prope{open}}
+%        &&        \text{because $\ffi(\setU)=\cmps{\ffi(\cmpU)}$}
+%      \\&\implies \text{$\ff$ is \prope{continuous}}
+%        %&&        \text{by definition of \prope{continuous} (\pref{def:continuous})}
+%        &&        \text{by \prefp{def:continuous}}
+%    \end{align*}
+%
+%  %\item Proof that (5) $\implies$ (2): Let $\setD$ be a 
+%  %  \begin{align*}
+%  %    
+%  %  \end{align*}
+%\end{enumerate}
+%\end{proof}
+
+%---------------------------------------
+\begin{remark}
+\label{rem:conttop}
+%---------------------------------------
+A word of warning about defining \prope{continuity} in terms of topological spaces---\prope{continuity} 
+is defined in terms of a pair of \structe{topological space}s, and whether function is \prope{continuous}
+or \prope{discontinuous} in general depends very heavily on the selection of these spaces. 
+This is illustrated in \pref{prop:conttop} (next).
+The ramification of this is that when declaring a function to be \prope{continuous} or \prope{discontinuous}, 
+one must make clear the assumed \structe{topological space}s.
+\end{remark}
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{crossley2006}{18}{1846281946}{Proposition 3.9},
+  \citerpgc{ponnusamy2002}{98}{0849317177}{2.64. Theorem.}
+  }
+\label{prop:conttop}
+%---------------------------------------
+Let $\topspaceXT$ and $\topspaceYS$ be \structe{topological space}s.
+Let $\ff$ be a \structe{function} in $\clF{\topspaceXT}{\topspaceYS}$.
+\propbox{\begin{array}{FMcMC}
+  1. & $\topT$ is the \structe{discrete topology}   &\implies& $\ff$ is \prope{continuous}  & \forall \ff\in\clF{\topspaceXT}{\topspaceYS}\\
+  2. & $\topS$ is the \structe{indiscrete topology} &\implies& $\ff$ is \prope{continuous}  & \forall \ff\in\clF{\topspaceXT}{\topspaceYS}
+\end{array}}
+\end{proposition}
+
+\if 0
+%======================================
+\section{Neighborhoods}
+%======================================
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{murdeshwar1990}{88}{8122402461}{3.1 Definition},
+  \citerpgc{davis2005}{43}{0071243399}{Definition 4.7}
+  %\citerpu{thron1966}{19}{http://books.google.com/books?id=JRM_AAAAIAAJ\&pg=PA19}
+  %\citerppg{ab}{59}{60}{0120502577}
+  }
+\label{def:ts_neighborhood}
+\label{def:neighborhood}
+\index{open}
+\index{closed}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+Let $\intA$ be the \structe{interior} of a set $\setA$ (\prefp{def:intA}).
+\defbox{\begin{array}{M}\indxs{\setN_x}
+  A set $\setN_x\in\psetX$ is a \structd{neighborhood} of an element $x\in\setX$ if 
+  \\\indentx
+    $\ds x \in \intt{\setN_x}$.
+  \\
+  A set $\setN_x$ is an \structd{open neighborhood} of an element $x\in\setX$ if 
+  \\\indentx
+    $\setN_x$ is a neighborhood of $x$ and $\setN_x\in\topT$.
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{murdeshwar1990}{88}{8122402461}{3.1 Definition}\\
+  }
+\label{prop:ts_neighborhood}
+\index{open}
+\index{closed}
+\index{neighborhood}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+\propbox{
+  \brb{\begin{array}{M}
+    A set $\hxs{\setN_x}$ is a \structd{neighborhood}\\ 
+    of an element $x\in\setX$
+  \end{array}}
+  \qquad\iff\qquad
+  \brb{\exists \setU\in\topT  \st x \in \setU \subseteq \setN_x}
+  }
+\end{proposition}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+\prefpp{ex:top_xyz} lists the 29 topologies on a set $\setX\eqd\setn{x,y,z}$.
+These topologies are listed next
+along with their open and closed neighborhoods of the element $x\in\setX$:
+
+{\footnotesize
+\arrayrulecolor{ex}
+\begin{longtable}{|>{$}l<{=$} @{$\{$}  *{8}{>{$}l<{$}@{\;}}  @{$\}$} @{\;} |>{$}l<{$}| >{$}l<{$}|}
+  \arrayrulecolor{ex}
+  \hline
+  \rowcolor{ex}
+  \mc{9}{|c|}{\cellcolor{ex}\text{\color{white}\bfseries topologies on $\setn{x,y,z}$}} 
+   & \text{\color{white}\bfseries open nbhds. of $x$} 
+   & \text{\color{white}\bfseries not open nbhds.}
+  \\\hline
+  \topT_{00} & \emptyset, &&&&&&& \setX
+              & \setX 
+              &   
+              \\
+  \topT_{01} & \emptyset,&\setn{x},&&&&&&\setX
+              & \setn{x},\,\setX 
+              & \setn{x,y},\,\setn{x,z}
+              \\
+  \topT_{02} & \emptyset,&&\setn{y},&&&&&\setX
+              & \setX 
+              & \setn{x,y}
+              \\
+  \topT_{04} & \emptyset,&&&\setn{z},&&&&\setX
+              & \setX 
+              & \setn{x,z}
+              \\
+  \topT_{10} & \emptyset,&&&&\setn{x,y},&&&\setX
+              & \setn{x,y},\,\setX 
+              &   
+              \\
+  \topT_{20} & \emptyset,&&&&&\setn{x,z},&&\setX 
+              & \setn{x,z},\,\setX 
+              &   
+              \\
+  \topT_{40} & \emptyset,&&&&&&\setn{y,z},&\setX
+              & \setX 
+              &   
+              \\
+  \topT_{11} & \emptyset,&\setn{x},&&&\setn{x,y},&&&\setX
+              & \setn{x},\, \setn{x,y},\, \setX
+              & \setn{x,z}  
+              \\
+  \topT_{21} & \emptyset,&\setn{x},&&&&\setn{x,z},&&\setX
+              & \setn{x},\,\setn{x,z},\,\setX
+              & \setn{x,y}  
+              \\
+  \topT_{41} & \emptyset,&\setn{x},&&&&&\,\setn{y,z},&\setX
+              & \setn{x},\, \setX
+              & \setn{x,y},\,\setn{x,z}
+              \\
+  \topT_{12} & \emptyset,&&\setn{y},&&\setn{x,y},&&&\setX
+              & \setn{x,y},\, \setX
+              & 
+              \\
+  \topT_{22} & \emptyset,&&\setn{y},&&&\setn{x,z},&&\setX
+              & \setn{x,z},\, \setX
+              & \setn{x,y}
+              \\
+  \topT_{42} & \emptyset,&&\setn{y},&&&&\setn{y,z},&\setX
+              & \setX
+              & \setn{x,y}
+              \\
+  \topT_{14} & \emptyset,&&&\setn{z},&\setn{x,y},&&&\setX
+              & \setn{x,y},\, \setX
+              & \setn{x,z} 
+              \\
+  \topT_{24} & \emptyset,&&&\setn{z},&&\setn{x,z},&&\setX
+              & \setn{x,z},\, \setX
+              & 
+              \\
+  \topT_{44} & \emptyset,&&&\setn{z},&&&\setn{y,z},&\setX
+              & \setX
+              & \setn{x,z}
+              \\
+  \topT_{31} & \emptyset,&\setn{x},&&&\setn{x,y},&\setn{x,z},&&\setX
+              & \setn{x},\,\setn{x,y},\,\setn{x,z},\,\setX
+              &   
+              \\
+  \topT_{52} & \emptyset,&&\setn{y},&&\setn{x,y},&\setn{x,z},&&\setX
+              & \setn{x,y},\,\setn{x,z},\,\setX
+              &   
+              \\
+  \topT_{64} & \emptyset,&&&\setn{z},&&\setn{x,z},&\setn{y,z},&\setX
+              & \setn{x,z},\,\setX
+              &   
+              \\
+  \topT_{13} & \emptyset,&\setn{x},&\setn{y},&&\setn{x,y},&&&\setX
+              & \setn{x},\,\setn{x,y},\,\setX
+              & \setn{x,z}
+              \\
+  \topT_{25} & \emptyset,&\setn{x},&&\setn{z},&&\setn{x,z},&&\setX
+              & \setn{x},\,\setn{x,z},\,\setX
+              & \setn{x,y}
+              \\
+  \topT_{46} & \emptyset,&&\setn{y},&\setn{z},&&&\setn{y,z},&\setX
+              & \setX
+              & \setn{x,y},\,\setn{x,z}
+              \\
+  \topT_{33} & \emptyset,&\setn{x},&\setn{y},&&\setn{x,y},&\setn{x,z},&&\setX
+              & \setn{x},\,\setn{x,y},\,\setn{x,z},\,\setX
+              & 
+              \\
+  \topT_{53} & \emptyset,&\setn{x},&\setn{y},&&\setn{x,y},&&\setn{y,z},&\setX
+              & \setn{x},\,\setn{x,y},\,\setX
+              & \setn{x,z}
+              \\
+  \topT_{35} & \emptyset,&\setn{x},&&\setn{z},&\setn{x,y},&\setn{x,z},&&\setX
+              & \setn{x},\,\setn{x,y},\,\setX
+              & \setn{x,z}
+              \\
+  \topT_{65} & \emptyset,&\setn{x},&&\setn{z},&&\setn{x,z},&\setn{y,z},&\setX
+              & \setn{x},\,\setn{x,z},\,\setX
+              & \setn{x,y}
+              \\
+  \topT_{56} & \emptyset,&&\setn{y},&\setn{z},&\setn{x,y},&&\setn{y,z},&\setX
+              & \setn{x,y},\,\setX
+              & \setn{x,z}
+              \\
+  \topT_{66} & \emptyset,&&\setn{y},&\setn{z},&&\setn{x,z},&\setn{y,z},&\setX
+              & \setn{x,z},\,\setX
+              & \setn{x,y}
+              \\
+  \topT_{77} & \emptyset,&\setn{x},&\setn{y},&\setn{z},&\setn{x,y},&\setn{x,z},&\setn{y,z},&\setX
+              & \setn{x},\,\setn{x,y},\,\setn{x,z},\,\setX
+              &   
+  \\\hline
+\end{longtable}
+}
+\end{example}
+
+
+%======================================
+%\section{Special properties}
+%======================================
+
+%======================================
+%\section{Separation}
+%======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{munkres2000}{148}{0131816292}{\textsection Connected Spaces} \\
+  \citerpg{dieudonne1969}{67}{1406727911} \\
+  \citerpg{carothers2000}{78}{0521497566}
+  }
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space} \xref{def:topspace}.
+\defbox{\begin{array}{M}
+  A set $\setY\subseteq\setX$ is \propd{disconnected} if there exists $\quad\setA,\setB\subseteq\setX$ such that
+  \\\qquad
+  $\begin{array}{>{\scy}rcclD}
+    1. & \setA \setu \setB &=& \setY      &  and  \\
+    2. & \setA \seti \setB &=& \emptyset. 
+  \end{array}$
+  \\
+  In this case, $\setY$ is said to be \propd{disconnected} by the sets $\setA$ and $\setB$,
+  \\
+  and the pair $\setA,\setB$ is a \structd{separation} of $\setY$.
+  \\
+  If a set is not disconnected, then it is \propd{connected}.
+\end{array}}
+\end{definition}
+
+
+
+
+%---------------------------------------
+\begin{definition}%[Hausdorff space, seperable space, $T_2$ space.]
+\label{def:hausdorff}
+\footnote{
+  \citerpg{ab}{60}{0120502577} \\
+  \citer{hausdorff1914}
+  }
+\index{separable space}
+\index{$T_2$ space}
+%---------------------------------------
+\defbox{\begin{tabular}{l}
+  A \structe{topological space} is a \structd{Hausdorff space} if 
+  \\\indentx
+  $\forall x,y\in\setX,\; \exists N\in\opN x \text{ and } M\in\opN y \st N\seti M=\emptyset$.
+  \end{tabular}}
+\end{definition}
+
+
+
+
+
+%======================================
+%\section{Compact sets}
+%======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{ab}{48}{0120502577}
+  %\url{http://mathworld.wolfram.com/Cover.html}
+  }
+\index{cover}
+%---------------------------------------
+Let $\topspaceX$ be a topological space and $\setA,\setB,\setn{\setA_i},\setn{\setB_i},\{M_i\}\subseteq \setX$.
+\defboxp{ %\begin{array}{M}
+  A sequence $\seq{\setA_i}{i\in\setI}$ is a \structd{cover} of a set $\setA$ 
+  in the topological space $\topspaceX$ if
+    \[ \setA\subseteq \setopu_{i\in\setI} \setA_i.\]
+  A sequence $\seq{\setB_i}{i\in\setJ}$ is a \structd{subcover} of 
+  set $\setA$ with respect to a cover $\seq{\setA_i}{i\in\setI}$ if
+    \[ \setn{\setB_i}_{i\in\setJ} \subset \setn{\setA_i}_{i\in\setI}. \]
+  A sequence $\seq{\setM_i}{i\in\setK}$ is a \structd{minimal cover} of $\setA$ if
+    $\seq{\setM_i}{i\in\setK}$ is a cover and
+    $\seq{\setM_i}{i\in\setK\setd\setn{n}}$ is not a cover.
+  \\
+  A cover $\seq{\setA_i}{i\in\setI}$ is a \structd{proper cover} of $\setA$ if
+    $\setA$ is not a member.
+  \\
+  A cover $\seq{\setA_i}{i\in\setI}$ is a \structd{open cover} of $\setA$ if
+    it consists entirely of open sets.
+  }
+%\end{array}}
+\end{definition}
+
+
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{\url{http://icl.pku.edu.cn/yujs/MathWorld/math/c/c744.htm}}
+%%---------------------------------------
+%Let $\setA$ be a set with $n=|A|$ elements.
+%The number of possible covers of $\setA$ is
+%\formbox{
+%  \frac{1}{2} \sum_{k=0}^N (-1)^k {n \choose k} 2^{2^{n-k}}.
+%  }
+%\end{theorem}
+%\begin{proof}
+%No proof at this time. \attention
+%\end{proof}
+
+%---------------------------------------
+\begin{definition}
+\citepg{ab}{62}{0120502577}
+\index{compact}
+%---------------------------------------
+\defboxp{ %\begin{array}{M}
+  A set $\setA\subseteq\setX$ is \propd{compact} 
+  in the topological space $\topspaceX$ 
+  if any open cover of $\setA$ has a finite subcover.
+  }
+%\end{array}}
+\end{definition}
+
+
+
+\fi 
+
+
+%======================================
+%\subsection{Sequences in topological spaces}
+%======================================
+%A \structe{topological space} \xref{def:topology} provides sufficient structure to support the property 
+%of \prope{convergence} (next definition) of a sequence.
+%In a \structe{metric space} \xref{def:metric}, a convergent sequence converges to an \prope{unique} limit \xref{prop:xn_to_xy}.
+%However in a topological space, a convergent sequence may converge to more than one limit \xref{ex:seq_xt31}.
+%
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{joshi1983}{83}{0852264445}{(3.1) Definition},
+  %\citerpgc{munkres2000}{98}{0131816292}{Hausdorff Spaces}\\
+  \citerpc{leathem1905}{13}{``$\to$" symbol, section III.11}  % referenced by bromwich1955 page 3
+  }
+\label{def:converge}
+\label{def:limit}
+\label{def:limitpnt}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space} \xref{def:topology}.
+%Let $\intA$ be the \structe{interior} of a set $\setA$ \xrefP{def:intA}.
+\defboxp{
+  A sequence $\seqxZ{x_n}$ \propd{converges} in $\topspaceX$ to a point $x$ if 
+  for each \structe{open set} \xref{def:openset}
+  $\setU\in\topT$ that contains $x$ there exists $\xN\in\Zp$ such that 
+  \\\indentx
+      $x_n\in\setU$ for all $n>\xN$.
+  \\This condition can be expressed in any of the following forms:
+  \\$\indentx\begin{array}{>{\scy}rM@{\qquad}>{\scy}rM}
+      1. & The \opd{limit} of the sequence $\seqn{x_n}$ is $x$.             & 3. & $\ds\lim_{n\to\infty} \seqn{x_n} = x$.
+    \\2. & The sequence $\seqn{x_n}$ is \propd{convergent} with limit $x$.    & 4. & $\ds\seqn{x_n} \to x$.                
+  \end{array}$
+  %\\& 5. & \metric{x_n}{x}\to 0
+  \\A sequence that converges is \propd{convergent}.
+    A sequence that does not converge is said to \propd{diverge}, or is \propd{divergent}.
+    An element $x\in\setA$ is a \vald{limit point} of $\setA$ if it is the limit of some $\setA$-valued sequence $\seqn{x_n\in\setA}$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerpgc{munkres2000}{98}{0131816292}{Hausdorff Spaces}
+  }
+\label{ex:seq_xt31}
+%---------------------------------------
+\exboxp{
+  Let $\topspace{\setX}{\topT_{31}}$ be a \structe{topological space} where $\setX\eqd\setn{x,y,z}$ and
+  \\\indentx$\topT_{31}\eqd\setn{\emptyset,\, \setn{x}, \, \setn{x,y},\, \setn{x,z},\, \setn{x,y,z}}$. 
+  \\In this space, the sequence $\seqn{x,x,x,\ldots}$ converges to $x$.
+    But this sequence also converges to both $y$ and $z$ because $x$ is in every \structe{open set} \xref{def:ts_open} 
+    that contains $y$
+    and $x$ is in every \structe{open set} that contains $z$.
+    So, the \structe{limit} \xref{def:limit} of the sequence is \prope{not unique}.
+  }
+\end{example}
+
+%---------------------------------------
+\begin{example}
+\label{ex:seq_xt56}
+%---------------------------------------
+In contrast to the low resolution topological space of \pref{ex:seq_xt31}, 
+the limit of the sequence $\seqn{x,x,x,\ldots}$ 
+\emph{is} \prop{unique} in a \structe{topological space} with sufficiently high resolution with respect to $y$ and $z$ 
+such as the following:
+\exboxp{ %\begin{array}{M}
+    Define a \structe{topological space} $\topspace{\setX}{\topT_{56}}$ where $\setX\eqd\setn{x,y,z}$ and
+  \\\indentx$\ds \topT_{56}\eqd\setn{\emptyset,\, \setn{y},\, \setn{z},\, \setn{x,y},\, \setn{y,z},\, \setn{x,y,z}}$. 
+  \\In this space, the sequence $\seqn{x,x,x,\ldots}$ converges to $x$ only. 
+    The sequence does \emph{not} converge to $y$ or $z$ because there are \structe{open set}s \xref{def:openset} 
+    containing $y$ or $z$
+    that do not contain $x$ (the open sets $\setn{y}$, $\setn{z}$, and $\setn{y,z}$). 
+  }
+%\end{array}}
+\end{example}
+
+
+%---------------------------------------
+\begin{theorem}[\thmd{The Closed Set Theorem}]
+\footnote{
+  \citerpgc{kubrusly2001}{118}{0817641742}{Theorem 3.30},
+  \citerpgc{haaser1991}{75}{0486665097}{6$\cdot$9 Proposition},
+  \citerppg{rosenlicht}{47}{48}{0486650383}
+  }
+\label{thm:insubset_closed}
+\label{thm:cst}
+%---------------------------------------
+Let $\topspaceX$ be a \structe{topological space}.
+Let $\setA$ be a subset of $\setX$ ($\setA\subseteq\setX$).
+Let $\clsA$ be the \structe{closure} \xref{def:clsA} of $\setA$ in $\topspaceX$.
+%Let $\seq{a_n\in\setA}{n\in\Z}$ be a sequence in $\setA$ 
+%that converges to a limit $x$ in $\setX$ such that 
+%\\\indentx$\seq{a_n\in\setA}{n\in\Z}\to x\in\setX$.
+\thmbox{
+  \mcom{\text{$\setA$ is \prope{closed} in $\topspaceX$}}{($\setA=\clsA$)}
+  \qquad\iff\qquad
+  \brb{\begin{array}{M}
+    Every $\setA$-valued sequence $\seq{x_n\in\setA}{n\in\Z}$\\ 
+    that \prope{converges} in $\topspaceX$ 
+    has its \structe{limit} in $\setA$ %($\lim\seqn{x_n}\in\setA$)
+  \end{array}}
+  }
+\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $\lim\seqn{x_n}\in\setA$ $\implies$   $\setA=\clsA$:
+%    \begin{enumerate}
+%      \item Proof that $\setA\subseteq\clsA$: by \prefp{lem:intAAclsA}.
+%      \item Proof that $\clsA\subseteq\setA$: % ($x\in\clsA\implies x\in\setA$):
+%        \begin{align*}
+%          x\in\clsA
+%            &\implies \text{each open set $\setU$ containing $x$ intersects $\setA$}
+%            && \text{by \prefp{lem:xinclsA}}
+%          \\&\implies \text{$\exists \seqn{x_n\in\setA}$ that converges to $x$}
+%            && \text{by \prefp{def:converge}}
+%          \\&\implies x\in\setA
+%            && \text{by left hypothesis}
+%        \end{align*}
+%    \end{enumerate}
+%
+%  \item Proof that $\setA=\clsA$ $\implies$ $\lim\seqn{x_n}\in\setA$:
+%    \begin{align*}
+%      \lim\seqn{x_n}=x
+%        &\iff     \brb{\begin{array}{M}
+%                    for each \structe{open set} $\setU$ containing $x$, there exists $\xN$\\
+%                    such that $x_n\in\setU$, $\forall n>\xN$.
+%                  \end{array}}
+%        &&        \text{by \prefp{def:converge}}
+%        %&&        \text{by definition of \hid{convergence}: \prefp{def:converge}}
+%      \\&\implies \text{each open set $\setU$ containing $x$ intersects $\setA$}
+%        &&        \text{because $x_n$ in $\setA$}
+%      \\&\iff     x\in\clsA
+%        && \text{by \prefp{lem:xinclsA}}
+%      \\&\iff     x\in\setA
+%        && \text{by $\setA=\clsA$ hypothesis}
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppgc{ponnusamy2002}{94}{96}{0849317177}{``2.59. Proposition."; in the context of \structe{metric space}s;
+  includes the ``{\scs\thme{inverse image characterization of continuity}}"
+  and ``{\scs\thme{sequential characterization of continuity}}" terminology; this terminology does not seem to be widely 
+  used in the literature in general, but has been adopted for use in this text}
+  }
+\label{thm:limcont}
+%---------------------------------------
+Let $\topspaceX$ and $\topspaceYS$ be a \structe{topological space}s.
+Let $\ff$ be a function in $\clF{\topspaceX}{\topspaceYS}$.
+\thmbox{
+  \mcom{\brb{\begin{tabstr}{0.75}\begin{array}{N}
+    $\ff$ is \prope{continuous}  in $\clF{\topspaceX}{\topspaceYS}$\\
+    \xref{def:continuous}
+  \end{array}\end{tabstr}}}{\thme{inverse image characterization of continuity}}
+  \quad\iff\quad
+  \mcom{\brb{\begin{tabstr}{0.75}\begin{array}{N}
+    $\seqn{x_n}\to x \implies \ff(\seqn{x_n})\to \ff(x)$\\
+    \xref{def:converge}
+  \end{array}\end{tabstr}}}{\thme{sequential characterization of continuity}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for the $\implies$ case (proof by contradiction):
+    \begin{enumerate}
+      \item Let $\setU$ be an \structe{open set} in $\topspaceY$ that contains $\ff(x)$ but for which 
+            there exists no $\xN$ such that $\ff(x_n)\in\setU$ for all $n>\xN$.
+      \item Note that the set $\ffi(\setU)$ is also \structe{open} by the \prope{continuity} hypothesis.
+      \item If $\seqn{x_n}\to x$, then
+      \begin{align*}
+        \ff(\seqn{x_n})\notto \ff(x)
+          &\implies \text{there exists no $\xN$ such that $\ff(x_n)\in\setU$ for all $n>\xN$}
+          &&\text{by \pref{def:converge}}
+         %&&\text{by definition of \prope{convergence} \xref{def:converge}}
+        \\&\implies \text{there exists no $\xM$ such that $x_n\in\ffi(\setU)$ for all $n>\xM$}
+          &&\text{by definition of $\ffi$}
+        \\&\mathrlap{\implies \seqn{x_n}\notto x 
+          \qquad\text{by \prope{continuity} hyp. and def. of \prope{convergence} \xref{def:converge}}}
+        \\&\implies \text{contradiction of $\seqn{x_n}\to x$ hypothesis}
+        \\&\implies \ff(\seqn{x_n})\to \ff(x)
+      \end{align*}
+    \end{enumerate}
+
+  \item Proof for the $\impliedby$ case (proof by contradiction):
+    \begin{enumerate}
+      \item Let $\setD$ be a \prope{closed} set in $\topspaceYS$.
+      \item Suppose $\ffi(\setD)$ is \prope{not closed}\ldots \label{item:limcont_suppose}
+      \item then by the \thme{closed set theorem} \xref{thm:cst}, there must exist 
+            a \prope{convergent} sequence $\seqn{x_n}$ in $\topspaceX$, 
+            but with limit $x$ \emph{not} in $\ffi(\setD)$. \label{item:limcont_x}
+          %\\&\implies \text{there exists convergent $\seqn{x_n}$ in $\topspaceX$ with limit $x$, \emph{but} $x\notin\ffi(\setD)$}
+      \item Note that $\ff(x)$ must be in $\setD$. Proof:
+        \begin{enumerate}
+          \item by definition of $\setD$ and $\ff$, $\ff(\seqn{x_n})$ is in $\setD$
+          \item by left hypothesis, the sequence $\ff(\seqn{x_n})$ is \prope{convergent} with limit $\ff(x)$
+          \item by \thme{closed set theorem} \xref{thm:cst}, $\ff(x)$ must be in $\setD$.
+        \end{enumerate}
+      \item Because $\ff(x)\in\setD$, it must be true that $x\in\ffi(\setD)$.
+      \item But this is a contradiction to \prefpp{item:limcont_x}, 
+            and so \prefpp{item:limcont_suppose} must be wrong, and $\ffi(\setD)$ must be \prope{closed}.
+      \item And so by \prefpp{thm:continuous}, $\ff$ is \prope{continuous}.
+    \end{enumerate}
+  \end{enumerate}
+\end{proof}
+

@@ -1,0 +1,1088 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+% stochastic systems
+%============================================================================
+
+%=======================================
+\section{Operations on outcome subspaces}
+%=======================================
+\begin{tabstr}{0.75}
+%=======================================
+\subsection{Summation}
+%=======================================
+\begin{figure}[h]%
+  \gsize%
+  \centering%
+  %$\mcom{\begin{array}{N}{\input{../common/math/graphics/ocs/ocs_rdie.tex}}\end{array}}{\structe{real die} \xref{ex:realdie}}$
+  $\mcom{\begin{array}{N}{\includegraphics{sto/graphics/ocs_rdie.pdf}}\end{array}}{\structe{real die} \xref{ex:realdie}}$
+  \begin{tabular}{c} \Huge$+$                                         \end{tabular}
+  %$\mcom{\begin{array}{N}{\input{../common/math/graphics/ocs/ocs_rdie.tex}}\end{array}}{\structe{real die} \xref{ex:realdie}}$
+  $\mcom{\begin{array}{N}{\includegraphics{sto/graphics/ocs_rdie.pdf}}\end{array}}{\structe{real die} \xref{ex:realdie}}$
+  %\begin{tabular}{c}{\input{../common/math/graphics/ocs/ocs_rdie.tex}} \end{tabular}
+  \begin{tabular}{c} \Huge$=$                                         \end{tabular}
+  %\begin{tabular}{c}{\input{../common/math/graphics/sto/pairdice.tex}}\end{tabular}
+  \begin{tabular}{c}{\includegraphics{sto/graphics/pairdice.pdf}}\end{tabular}
+    \begin{tabstr}{0.75}%
+    $\begin{array}{|r|*{11}{c}|}%
+       \hline
+         & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12\\
+       \hline
+       2 & 0 & 1 & 1 & 1 & 1 & 2 & 2 & 2 & 2  & 3  & 4 \\
+       3 & 1 & 0 & 1 & 1 & 1 & 1 & 2 & 2 & 2  & 2  & 3 \\
+       4 & 1 & 1 & 0 & 1 & 1 & 1 & 1 & 2 & 2  & 2  & 2 \\
+       5 & 1 & 1 & 1 & 0 & 1 & 1 & 1 & 1 & 2  & 2  & 2 \\
+       6 & 1 & 1 & 1 & 1 & 0 & 1 & 1 & 1 & 1  & 2  & 2 \\
+       7 & 2 & 1 & 1 & 1 & 1 & 0 & 1 & 1 & 1  & 1  & 2 \\
+       8 & 2 & 2 & 1 & 1 & 1 & 1 & 0 & 1 & 1  & 1  & 1 \\
+       9 & 2 & 2 & 2 & 1 & 1 & 1 & 1 & 0 & 1  & 1  & 1 \\
+      10 & 2 & 2 & 2 & 2 & 1 & 1 & 1 & 1 & 0  & 1  & 1 \\
+      11 & 3 & 2 & 2 & 2 & 2 & 1 & 1 & 1 & 1  & 0  & 1 \\
+      12 & 4 & 3 & 2 & 2 & 2 & 2 & 1 & 1 & 1  & 1  & 0 \\
+      \hline
+    \end{array}$%
+    \end{tabstr}%
+  \caption{metrics based on number of die edges for a \structe{pair of real dice} \xref{ex:pairdice}\label{fig:pairdice}}
+\end{figure}
+\footnotetext{Many many thanks to Katie L. Greenhoe and Jonathan J. Greenhoe for help computing these values.}
+%---------------------------------------
+\begin{example}[\exmd{pair of dice outcome subspace}]
+\label{ex:pairdice}
+%---------------------------------------
+A \structe{pair of real dice} has a structure as illustrated in \prefpp{fig:pairdice}.
+The values represent the standard sum of die faces and thus range from $2$ to $12$.
+The table in the figure provides the metric distances between summed values based on the number of edges
+that must be transversed to move from the first value to the second value.
+Alternatively, the distance is the number of times the dice must be rotated 90 degrees to move from the first 
+value being face up to the second value being face up.
+This structure is also illustrated in the undirected graph on the right in \pref{fig:pairdice},
+along with each value's standard probability.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscen$ \xref{def:ocscen}}
+   \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+         \setn{\begin{array}{cccccc}
+           \metricn(2,2)\psp(2) &\metricn(2,3)\psp(3)  &\metricn(2,4)\psp(4)  &\cdots & \metricn(2,12)\psp(12)\\
+           \metricn(3,2)\psp(2) &\metricn(3,3)\psp(3)  &\metricn(3,4)\psp(4)  &\cdots & \metricn(3,12)\psp(12)\\
+           \vdots               &\vdots                &\vdots                &\ddots & \vdots                \\
+           \metricn(12,2)\psp(2)&\metricn(12,3)\psp(3) &\metricn(12,4)\psp(4) &\cdots & \metricn(12,12)\psp(12)
+         \end{array}}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{*{12}{c}}
+            %  2          3           4           5           6           7           8           9           10         11          12
+           0\times1 & 1\times2 & 1\times3 & 1\times4 & 1\times5 & 2\times6 & 2\times5 & 2\times4 & 2\times3 & 3\times2 & 4\times1 \\
+           1\times1 & 0\times2 & 1\times3 & 1\times4 & 1\times5 & 1\times6 & 2\times5 & 2\times4 & 2\times3 & 2\times2 & 3\times1 \\
+           1\times1 & 1\times2 & 0\times3 & 1\times4 & 1\times5 & 1\times6 & 1\times5 & 2\times4 & 2\times3 & 2\times2 & 2\times1 \\
+           1\times1 & 1\times2 & 1\times3 & 0\times4 & 1\times5 & 1\times6 & 1\times5 & 1\times4 & 2\times3 & 2\times2 & 2\times1 \\
+           1\times1 & 1\times2 & 1\times3 & 1\times4 & 0\times5 & 1\times6 & 1\times5 & 1\times4 & 1\times3 & 2\times2 & 2\times1 \\
+           2\times1 & 1\times2 & 1\times3 & 1\times4 & 1\times5 & 0\times6 & 1\times5 & 1\times4 & 1\times3 & 1\times2 & 2\times1 \\
+           2\times1 & 2\times2 & 1\times3 & 1\times4 & 1\times5 & 1\times6 & 0\times5 & 1\times4 & 1\times3 & 1\times2 & 1\times1 \\
+           2\times1 & 2\times2 & 2\times3 & 1\times4 & 1\times5 & 1\times6 & 1\times5 & 0\times4 & 1\times3 & 1\times2 & 1\times1 \\
+           2\times1 & 2\times2 & 2\times3 & 2\times4 & 1\times5 & 1\times6 & 1\times5 & 1\times4 & 0\times3 & 1\times2 & 1\times1 \\
+           3\times1 & 2\times2 & 2\times3 & 2\times4 & 2\times5 & 1\times6 & 1\times5 & 1\times4 & 1\times3 & 0\times2 & 1\times1 \\
+           4\times1 & 3\times2 & 2\times3 & 2\times4 & 2\times5 & 2\times6 & 1\times5 & 1\times4 & 1\times3 & 1\times2 & 0\times1 \\
+         \end{array}}}
+     \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{*{12}{c}}
+           0 & 2 & 3 & 4 & 5 &12 &10 & 8 & 6 & 6 & 4 \\
+           1 & 0 & 3 & 4 & 5 & 6 &10 & 8 & 6 & 4 & 3 \\
+           1 & 2 & 0 & 4 & 5 & 6 & 5 & 8 & 6 & 4 & 2 \\
+           1 & 2 & 3 & 0 & 5 & 6 & 5 & 4 & 6 & 4 & 2 \\
+           1 & 2 & 3 & 4 & 0 & 6 & 5 & 4 & 3 & 4 & 2 \\
+           2 & 2 & 3 & 4 & 5 & 0 & 5 & 4 & 3 & 2 & 2 \\
+           2 & 4 & 3 & 4 & 5 & 6 & 0 & 4 & 3 & 2 & 1 \\
+           2 & 4 & 6 & 4 & 5 & 6 & 5 & 0 & 3 & 2 & 1 \\
+           2 & 4 & 6 & 8 & 5 & 6 & 5 & 4 & 0 & 2 & 1 \\
+           3 & 4 & 6 & 8 &10 & 6 & 5 & 4 & 3 & 0 & 1 \\
+           4 & 6 & 6 & 8 &10 &12 & 5 & 4 & 3 & 2 & 0 \\
+         \end{array}}
+       = \argmin_{x\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{c}
+           12\\% 2
+           10\\% 3
+            8\\% 4
+            6\\% 5
+            6\\% 6
+            5\\% 7
+            6\\% 8
+            6\\% 9
+            8\\%10
+           10\\%11
+           12\\%12
+         \end{array}}
+  \quad= \setn{7}}
+  \\
+  \ocscena(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscena$ \xref{def:ocscenx}}
+     \\&=\mathrlap{\argmin_{x\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{*{23}{@{\,}c}}
+           0 &+& 2 &+& 3 &+& 4 &+& 5 &+&12 &+&10 &+& 8 &+& 6 &+& 6 &+& 4 \\%  2
+           1 &+& 0 &+& 3 &+& 4 &+& 5 &+& 6 &+&10 &+& 8 &+& 6 &+& 4 &+& 3 \\%  3
+           1 &+& 2 &+& 0 &+& 4 &+& 5 &+& 6 &+& 5 &+& 8 &+& 6 &+& 4 &+& 2 \\%  4
+           1 &+& 2 &+& 3 &+& 0 &+& 5 &+& 6 &+& 5 &+& 4 &+& 6 &+& 4 &+& 2 \\%  5
+           1 &+& 2 &+& 3 &+& 4 &+& 0 &+& 6 &+& 5 &+& 4 &+& 3 &+& 4 &+& 2 \\%  6
+           2 &+& 2 &+& 3 &+& 4 &+& 5 &+& 0 &+& 5 &+& 4 &+& 3 &+& 2 &+& 2 \\%  7
+           2 &+& 4 &+& 3 &+& 4 &+& 5 &+& 6 &+& 0 &+& 4 &+& 3 &+& 2 &+& 1 \\%  8
+           2 &+& 4 &+& 6 &+& 4 &+& 5 &+& 6 &+& 5 &+& 0 &+& 3 &+& 2 &+& 1 \\%  9
+           2 &+& 4 &+& 6 &+& 8 &+& 5 &+& 6 &+& 5 &+& 4 &+& 0 &+& 2 &+& 1 \\% 10
+           3 &+& 4 &+& 6 &+& 8 &+&10 &+& 6 &+& 5 &+& 4 &+& 3 &+& 0 &+& 1 \\% 11
+           4 &+& 6 &+& 6 &+& 8 &+&10 &+&12 &+& 5 &+& 4 &+& 3 &+& 2 &+& 0 \\% 12
+         \end{array}}
+       = \argmin_{x\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{c}
+            60\\%  2
+            50\\%  3
+            43\\%  4
+            38\\%  5
+            34\\%  6
+            32\\%  7
+            34\\%  8
+            38\\%  9
+            43\\% 10
+            50\\% 11
+            60\\% 12
+         \end{array}}
+       \quad= \setn{7}}
+  \\
+  \ocsVar(\ocsG)
+    &\eqd \sum_{x\in\ocsG}\brs{\metric{\ocsE(\ocsG)}{x}}^2\psp(x)
+    &&\text{by definition of $\ocsVar$ \xref{def:ocsVar}}
+  \\&= \sum_{x\in\ocsG}\brs{\metric{7}{x}}^2\psp(x)
+    &&\text{by definition of $\ocsVar$ \xref{def:ocsVar}}
+  \\&=\mathrlap{\frac{1}{36}\brp{2^2\times1 + 1^2\times2 + 1^2\times3 + 1^2\times4 + 1^2\times5 + 0^2\times6 +
+                        1^2\times5 + 1^2\times4 + 1^2\times3 + 1^2\times2 + 2^2\times1}}
+  \\&= \frac{1}{36}\brp{4+2+3+4+5+0+5+4+3+2+4}
+  \\&= \frac{36}{36}
+  \\&= 1
+\end{align*}
+\end{proof}
+
+
+
+
+The next two examples are examples of sums of \structe{outcome subspace}s \xref{def:ocs}:
+\prefp{ex:dicepair_moments} (sum of dice pair) and \prefp{ex:pspinner_xy} (sum of spinner pair).
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %{\input{../common/math/graphics/sto/pdice_xy.tex}}%
+  {\includegraphics{sto/graphics/pdice_xy.pdf}}%
+  \caption{\structe{pair of dice} mappings \xref{ex:wdie_xy}\label{fig:pdice_xy}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{pair of dice and hypothesis testing}]
+\label{ex:dicepair_moments}
+%---------------------------------------
+Let $\ocsG$ be the \structe{pair of dice outcome subspace} \xref{ex:pairdice},
+    $\rvX\in\clOCSgr$ an \fncte{outcome random variable} mapping from $\ocsG$ to the \structe{real line} \xref{def:Rline},
+and $\rvX\in\clOCSgh$ a mapping to a structure $\omsH$ that is \prope{isomorphic} to $\ocsG$,
+as illustrated in \prefpp{fig:pdice_xy}.
+This yields the following statistics:
+\\$\begin{array}{>{\footnotesize}Mlcc lcccl}
+  geometry of $\ocsG$:                                          & \ocscen(\ocsG)=\ocscena(\ocsG) &=& \setn{7}     & \ocsVaro(\ocsG) &=& 1\\
+  traditional statistics on real line $\omsR$:                  & \pE  (\rvX)     &=& 7            & \ocsVar(\rvW;\pE)   &=& \frac{35}{6}&\approx& 5.833\\
+  outcome subspace statistics on real line $\omsR$:             & \ocsE(\rvX)     &=& \setn{7}     & \ocsVar(\rvW;\ocsE) &=& \frac{35}{6}&\approx& 5.833\\
+  outcome subspace statistics on  isomorphic structure $\ocsH$: & \ocsE(\rvY)     &=& \setn{7}     & \ocsVar(\rvY;\ocsE) &=& 1           &       &
+\end{array}$  
+\\
+Although the expected values of both \structe{outcome subspace}s are the essentially the same ($7$ and $\setn{7}$), 
+the isomorphic structure $\omsH$ yields a much smaller variance (a much smaller expected error).
+This is significant in statistical applications such as hypothesis testing. 
+Suppose for example we have two pair of \structe{real dice} \xref{ex:realdie}, 
+one pair being made of two uniformly distributed die and one pair of weighted die. 
+We want to know which pair is the uniform die.
+So we roll each pair one time. Suppose the outcome of the first pair is $11$ and the 
+the outcome of the second pair is $6$. Which pair is more likely to be the uniform pair?
+Using traditional statistical analysis, the answer is the second pair, because it is closer to the 
+expected value ($0.414$ standard deviations as opposed to $1.656$ standard deviations).
+However, this result is deceptive, because as can be seen in \prefpp{fig:pairdice},
+the distance from the expected value to the values $11$ and $6$ are the same ($\metric{7}{11}=\metric{7}{6}=1 = 1$ standard deviation).
+So arguably the outcome of the single roll test would contribute nothing to a good decision algorithm.
+\end{example}
+\begin{proof}
+    \begin{align*}
+      \ocscen (\ocsG) &= \setn{7}  && \text{by \prefpp{ex:pairdice}}
+      \\
+      \ocsVar (\ocsG) &= 1         && \text{by \prefpp{ex:pairdice}}
+      \\
+      \pE(\rvX)
+        &\eqd\int_{x\in\R} x\psp(x)\dx
+        && \text{by definition of $\pE$ \xref{def:pE}}
+      \\&\eqd\frac{1}{36}\sum_{x\in\Z} x36\psp(x)
+        && \text{by definition of $\psp$}
+      %\\&= \frac{1}{36}\sum_{x\in\R} x 36\psp(x)
+      \\&= \mathrlap{\frac{1}{36}\brp{2\times1 + 3\times2 + 4\times3 +5\times4 + 6\times5 + 7\times6 + 
+                            8\times5 + 9\times4 + 10\times3 + 11\times2 + 12\times1}}
+      \\&= \frac{252}{36}
+         = 7
+      \\
+      \ocsVar(\rvX;\pE)
+        &= \pVar(\rvX)
+        && \text{by \prefp{thm:ocsVar}}
+      \\&= \int_{x\in\R} \brs{x-\pE(\rvX)}^2 \psp(x)\dx
+        &&\text{by definition of $\pVar$ \xref{def:pVar}}
+      \\&= \sum_{x\in\Z} \brs{x-\pE(\rvX)}^2 \psp(x)
+        &&\text{by definition of $\psp$}
+      \\&= \sum_{x\in\Z} \brp{x-7}^2 \frac{1}{36}
+        &&\text{by $\pE(\rvX)$ result}
+      \\&= \mathrlap{2\frac{25\times1 + 16\times2 + 9\times3 + 4\times4 + 1\times 5}{36}
+         = \frac{35}{6} \approx 5.833}
+      \\
+      \ocsE(\rvX)
+        &= \pE(\rvX)
+        && \text{by \prefpp{thm:pEocsE}}
+      \\&= \setn{7}
+        && \text{by $\pE(\rvX)$ result}
+      \\
+      \ocsVar(\rvX;\ocsE)
+        &= \ocsVar(\rvX;\pE)
+        && \text{because $\ocsE(\rvX)\equiv\pE(\rvX)$}
+      \\&= \frac{35}{6} \approx 5.833
+        && \text{by $\ocsVar(\rvX;\pE)$ result}
+      \\
+      \ocsE(\rvY)
+        &= \rvY\brs{\ocscen(\ocsG)}
+        && \text{because $\ocsG$ and $\omsH$ are \prope{isometric} under $\rvY$}
+      \\&= \rvY\brs{\setn{7}}
+        && \text{by $\ocscen(\ocsG)$ result}
+      \\&= \setn{7}
+        && \text{by definition of $\rvY$}
+      \\
+      \ocsVar(\rvY;\ocsE)
+        &= \ocsVaro(\ocsG)
+        && \text{because $\ocsG$ and $\omsH$ are \prope{isometric} under $\rvY$}
+      \\&= 1
+        && \text{by $\ocsVaro(\ocsG)$ result}
+  \end{align*}
+\end{proof}
+
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %$\mcom{\begin{array}{N}{\input{../common/math/graphics/ocs/ocs_spinner.tex}}\end{array}}{\structe{spinner} \xref{ex:spinner}}$
+  $\mcom{\begin{array}{N}{\includegraphics{sto/graphics/ocs_spinner.pdf}}\end{array}}{\structe{spinner} \xref{ex:spinner}}$
+  \begin{tabular}{c} \Huge$+$                                         \end{tabular}
+  %$\mcom{\begin{array}{N}{\input{../common/math/graphics/ocs/ocs_spinner.tex}}\end{array}}{\structe{spinner} \xref{ex:spinner}}$
+  $\mcom{\begin{array}{N}{\includegraphics{sto/graphics/ocs_spinner.pdf}}\end{array}}{\structe{spinner} \xref{ex:spinner}}$
+  %\begin{tabular}{c}{\input{../common/math/graphics/ocs/ocs_rdie.tex}} \end{tabular}
+  \begin{tabular}{c} \Huge$=$                                         \end{tabular}
+  %\begin{tabular}{c}{\input{../common/math/graphics/oms/pspinner.tex}}\end{tabular}
+  \begin{tabular}{c}{\includegraphics{sto/graphics/pspinner.pdf}}\end{tabular}
+%  \\
+  %\begin{tabular}{cc}
+    \begin{tabstr}{0.75}%
+    $\begin{array}{|r|*{11}{c}|}%
+       \hline
+         & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12\\
+       \hline
+       2 & 0 & 1 & 2 & 3 & 2 & 1 & 2 & 3 & 4  & 3  & 2 \\
+       3 & 1 & 0 & 1 & 2 & 3 & 2 & 1 & 2 & 3  & 4  & 3 \\
+       4 & 2 & 1 & 0 & 1 & 2 & 3 & 2 & 1 & 2  & 3  & 4 \\
+       5 & 3 & 2 & 1 & 0 & 1 & 2 & 3 & 2 & 1  & 2  & 3 \\
+       6 & 2 & 3 & 2 & 1 & 0 & 1 & 2 & 3 & 2  & 1  & 2 \\
+       7 & 1 & 2 & 3 & 2 & 1 & 0 & 1 & 2 & 3  & 2  & 1 \\
+       8 & 2 & 1 & 2 & 3 & 2 & 1 & 0 & 1 & 2  & 3  & 2 \\
+       9 & 3 & 2 & 1 & 2 & 3 & 2 & 1 & 0 & 1  & 2  & 3 \\
+      10 & 4 & 3 & 2 & 1 & 2 & 3 & 2 & 1 & 0  & 1  & 2 \\
+      11 & 3 & 4 & 3 & 2 & 1 & 2 & 3 & 2 & 1  & 0  & 1 \\
+      12 & 2 & 3 & 4 & 3 & 2 & 1 & 2 & 3 & 2  & 1  & 0 \\
+      \hline
+    \end{array}$%
+    \end{tabstr}%
+  %  &%
+  %\\
+  %  \begin{tabular}{c}%
+  %    \gsize%
+  %    %\psset{unit=10mm}%
+  %  \end{tabular}
+  %  \\%
+  %  table form & graph form with standard probabilities and shaded center
+  %\end{tabular}
+  \caption{metrics based on a pair of spinners \xref{ex:pspinner}\label{fig:pspinner}}
+\end{figure}
+
+%---------------------------------------
+\begin{example}[\exmd{pair of spinners}]
+\label{ex:pspinner}
+%---------------------------------------
+A pair of \structe{spinner}s \xref{ex:spinner} has a structure as illustrated in \prefpp{fig:pspinner}.
+The values represent the standard sum of spinner positions ($1, 2, \ldots, 6$) and thus range from $2$ to $12$.
+The table in the figure provides the metric distances between summed values based on how many positions
+one must traverse to get from one value to the next (in which ever direction is shortest).
+This structure is also illustrated in the undirected graph in the upper right of \pref{fig:pspinner},
+along with each value's standard probability.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscen$ \xref{def:ocscen}}
+   \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}
+         \setn{\begin{array}{cccccc}
+           \metricn(2,2)\psp(2) &\metricn(2,3)\psp(3)  &\metricn(2,4)\psp(4)  &\cdots & \metricn(2,12)\psp(12)\\
+           \metricn(3,2)\psp(2) &\metricn(3,3)\psp(3)  &\metricn(3,4)\psp(4)  &\cdots & \metricn(3,12)\psp(12)\\
+           \vdots               &\vdots                &\vdots                &\ddots & \vdots                \\
+           \metricn(12,2)\psp(2)&\metricn(12,3)\psp(3) &\metricn(12,4)\psp(4) &\cdots & \metricn(12,12)\psp(12)
+         \end{array}}}
+      \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{*{12}{c}}
+            %  2          3           4           5           6           7           8           9           10         11          12
+           0\times1 & 1\times2 & 2\times3 & 3\times4 & 2\times5 & 1\times6 & 2\times5 & 3\times4 & 4\times3  & 3\times2  & 2\times1 \\
+           1\times1 & 0\times2 & 1\times3 & 2\times4 & 3\times5 & 2\times6 & 1\times5 & 2\times4 & 3\times3  & 4\times2  & 3\times1 \\
+           2\times1 & 1\times2 & 0\times3 & 1\times4 & 2\times5 & 3\times6 & 2\times5 & 1\times4 & 2\times3  & 3\times2  & 4\times1 \\
+           3\times1 & 2\times2 & 1\times3 & 0\times4 & 1\times5 & 2\times6 & 3\times5 & 2\times4 & 1\times3  & 2\times2  & 3\times1 \\
+           2\times1 & 3\times2 & 2\times3 & 1\times4 & 0\times5 & 1\times6 & 2\times5 & 3\times4 & 2\times3  & 1\times2  & 2\times1 \\
+           1\times1 & 2\times2 & 3\times3 & 2\times4 & 1\times5 & 0\times6 & 1\times5 & 2\times4 & 3\times3  & 2\times2  & 1\times1 \\
+           2\times1 & 1\times2 & 2\times3 & 3\times4 & 2\times5 & 1\times6 & 0\times5 & 1\times4 & 2\times3  & 3\times2  & 2\times1 \\
+           3\times1 & 2\times2 & 1\times3 & 2\times4 & 3\times5 & 2\times6 & 1\times5 & 0\times4 & 1\times3  & 2\times2  & 3\times1 \\
+           4\times1 & 3\times2 & 2\times3 & 1\times4 & 2\times5 & 3\times6 & 2\times5 & 1\times4 & 0\times3  & 1\times2  & 2\times1 \\
+           3\times1 & 4\times2 & 3\times3 & 2\times4 & 1\times5 & 2\times6 & 3\times5 & 2\times4 & 1\times3  & 0\times2  & 1\times1 \\
+           2\times1 & 3\times2 & 4\times3 & 3\times4 & 2\times5 & 1\times6 & 2\times5 & 3\times4 & 2\times3  & 1\times2  & 0\times1   
+         \end{array}}}
+     \\&=\mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{*{12}{c}}
+           0 & 2 & 6 &12 &10 & 6 &10 &12 &12  & 6  & 2 \\
+           1 & 0 & 3 & 8 &15 &12 & 5 & 8 & 9  & 8  & 3 \\
+           2 & 2 & 0 & 4 &10 &18 &10 & 4 & 6  & 6  & 4 \\
+           3 & 4 & 3 & 0 & 5 &12 &15 & 8 & 3  & 4  & 3 \\
+           2 & 6 & 6 & 4 & 0 & 6 &10 &12 & 6  & 2  & 2 \\
+           1 & 4 & 9 & 8 & 5 & 0 & 5 & 8 & 9  & 4  & 1 \\
+           2 & 2 & 6 &12 &10 & 6 & 0 & 4 & 6  & 6  & 2 \\
+           3 & 4 & 3 & 8 &15 &12 & 5 & 0 & 3  & 4  & 3 \\
+           4 & 6 & 6 & 4 &10 &18 &10 & 4 & 0  & 2  & 2 \\
+           3 & 8 & 9 & 8 & 5 &12 &15 & 8 & 3  & 0  & 1 \\
+           2 & 6 &12 &12 &10 & 6 &10 &12 & 6  & 2  & 0 \\
+         \end{array}}
+       = \argmin_{x\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{c}
+           12\\% 2
+           15\\% 3
+           18\\% 4
+           15\\% 5
+           12\\% 6
+            9\\% 7
+           12\\% 8
+           15\\% 9
+           18\\%10
+           15\\%11
+           12%12
+         \end{array}}
+  \quad= \setn{7}}
+  \\
+  \ocscena(\ocsG)
+    &\eqd \argmin_{x\in\ocsG}\sum_{y\in\ocsG}\metric{x}{y}\psp(y)
+    &&\text{by definition of $\ocscena$ \xref{def:ocscenx}}
+     \\&=\mathrlap{\argmin_{x\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{*{23}{@{\,}c}}
+           0 &+&  2 &+&  6 &+& 12 &+& 10 &+&  6 &+& 10 &+& 12 &+& 12  &+&  6  &+&  2 \\
+           1 &+&  0 &+&  3 &+&  8 &+& 15 &+& 12 &+&  5 &+&  8 &+&  9  &+&  8  &+&  3 \\
+           2 &+&  2 &+&  0 &+&  4 &+& 10 &+& 18 &+& 10 &+&  4 &+&  6  &+&  6  &+&  4 \\
+           3 &+&  4 &+&  3 &+&  0 &+&  5 &+& 12 &+& 15 &+&  8 &+&  3  &+&  4  &+&  3 \\
+           2 &+&  6 &+&  6 &+&  4 &+&  0 &+&  6 &+& 10 &+& 12 &+&  6  &+&  2  &+&  2 \\
+           1 &+&  4 &+&  9 &+&  8 &+&  5 &+&  0 &+&  5 &+&  8 &+&  9  &+&  4  &+&  1 \\
+           2 &+&  2 &+&  6 &+& 12 &+& 10 &+&  6 &+&  0 &+&  4 &+&  6  &+&  6  &+&  2 \\
+           3 &+&  4 &+&  3 &+&  8 &+& 15 &+& 12 &+&  5 &+&  0 &+&  3  &+&  4  &+&  3 \\
+           4 &+&  6 &+&  6 &+&  4 &+& 10 &+& 18 &+& 10 &+&  4 &+&  0  &+&  2  &+&  2 \\
+           3 &+&  8 &+&  9 &+&  8 &+&  5 &+& 12 &+& 15 &+&  8 &+&  3  &+&  0  &+&  1 \\
+           2 &+&  6 &+& 12 &+& 12 &+& 10 &+&  6 &+& 10 &+& 12 &+&  6  &+&  2  &+&  0 \\
+         \end{array}}
+       =\argmin_{x\in\ocsG}\frac{1}{36}
+         \setn{\begin{array}{c}
+           78\\%  2
+           72\\%  3
+           66\\%  4
+           60\\%  5
+           56\\%  6
+           54\\%  7
+           56\\%  8
+           60\\%  9
+           66\\% 10
+           72\\% 11
+           78%   12
+         \end{array}}
+       \quad= \setn{7}}
+  \\
+  \ocsVar(\ocsG)
+    &\eqd \sum_{x\in\ocsG}\brs{\metric{\ocsE(\ocsG)}{x}}^2\psp(x)
+    &&\text{by definition of $\ocsVar$ \xref{def:ocsVar}}
+  \\&= \sum_{x\in\ocsG}\brs{\metric{7}{x}}^2\psp(x)
+    &&\text{by definition of $\ocsVar$ \xref{def:ocsVar}}
+  \\&=\mathrlap{\frac{1}{36}\brp{1^2\times1 + 2^2\times2 + 3^2\times3 + 2^2\times4 + 1^2\times5 + 0^2\times6 +
+                        1^2\times5 + 2^2\times4 + 2^2\times3 + 2^2\times2 + 1^2\times1}}
+  \\&= \frac{1}{36}\brp{2+8+27+16+5+0+5+16+12+8+1}
+  \\&= \frac{100}{36} = \frac{25}{9} = 2\frac{7}{9} \approx 2.778
+\end{align*}
+\end{proof}
+
+
+
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %{\input{../common/math/graphics/sto/pspinner_xy.tex}}%
+  {\includegraphics{sto/graphics/pspinner_xy.pdf}}%
+  \caption{\structe{pair of spinner} mappings \xref{ex:pspinner_xy}\label{fig:pspinner_xy}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{pair of spinner and hypothesis testing}]
+\label{ex:pspinner_xy}
+%---------------------------------------
+Let $\ocsG$ be a \structe{pair of spinners} \xref{ex:pspinner},
+    $\rvX$ a \fncte{random variable} mapping to the \structe{real line} \xref{def:Rline},
+and $\rvY$ a \fncte{random variable} mapping to an \structe{ordered metric space} \xref{def:oms}
+that is \prope{isomorphic} to $\ocsG$ under $\rvY$,
+as illustrated in \prefpp{fig:pspinner_xy}.
+This yields the following statistics:
+\\$\begin{array}{>{\footnotesize}Mlcc lcccl}
+  geometry of $\ocsG$:                                          & \ocscen (\ocsG)=\ocscena(\ocsG) &=& \setn{7}     & \ocsVaro(\ocsG) &=& \frac{25}{9} &\approx& 2.778\\
+  traditional statistics on real line $\omsR$:                  & \pE  (\rvX)     &=& 7            & \ocsVar(\rvW;\pE)   &=& \frac{35}{6}&\approx& 5.833\\
+  outcome subspace statistics on real line $\omsR$:             & \ocsE(\rvX)     &=& \setn{7}     & \ocsVar(\rvW;\ocsE) &=& \frac{35}{6}&\approx& 5.833\\
+  outcome subspace statistics on  isomorphic structure $\ocsH$: & \ocsE(\rvY)     &=& \setn{7}     & \ocsVar(\rvY;\ocsE) &=& 1           &       &
+\end{array}$  
+\\
+Although the expected value of both \structe{outcome subspace}s are the same ($\pE(\rvX)=\ocsE(\rvY)=7$), 
+the isomorphic outcome subspace $\ocsH$ yields a much smaller variance (a much smaller expected error).
+This is significant in statistical applications such as hypothesis testing. 
+Suppose for example we have two pair of \structe{spinners} \xref{ex:spinner}, 
+one pair being made of two uniformly distributed spinners, 
+and one pair of weighted spinners. We want to estimate which is which.
+So we spin each pair one time. Suppose the outcome of the first pair is $12$ and the 
+the outcome of the second pair is $10$. Which pair is more likely to be the uniform pair?
+Using traditional statistical analysis, the answer is the second pair, because it is closer to the 
+expected value ($\metric{7}{10}=\abs{7-10}=3=1.8$ standard deviations as opposed to 
+$\metric{7}{12}=\abs{7-12}=5=3$ standard deviations).
+However, this result is deceptive, because as can be seen in the table in \prefpp{fig:pspinner},
+$12$ is acually closer to the expected value in $\ocsG$ than is $10$
+($\metric{7}{12}=1 < 3=\metric{7}{10}$).
+So arguably the better choice, based on this one trial, is the first pair.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen (\ocsG) &= \setn{7}                  && \text{by \prefpp{ex:pspinner}}\\
+  \ocscena(\ocsG) &= \setn{7}                  && \text{by \prefpp{ex:pspinner}}\\
+  \ocsVaro(\ocsG) &= \frac{25}{9}\approx 2.778 && \text{by \prefpp{ex:pspinner}}
+  \\
+  \pE  (\rvX) &= \frac{252}{36} = 7            && \text{by \prefpp{ex:dicepair_moments}}  \\
+  \pVar(\rvX) &= \frac{35}{6}   \approx 5.833  && \text{by \prefpp{ex:dicepair_moments}}
+  \\
+  \ocsE(\rvX)
+    &= \pE(\rvX)
+    && \text{because on \structe{real line}, $\psp$ is \prope{symmetric}, and by \prefp{thm:pEocsE}}
+  \\&= \setn{7}
+    && \text{by $\pE(\rvX)$ result}
+  %  &\eqd \argmin_{x\in\R}\max_{y\in\R} \ocsmom(x,y)
+  %  &&\text{by definition of $\ocsE$ \xref{def:ocsE}}
+  %\\&\eqd \argmin_{x\in\R}\max_{y\in\R} \metric{x}{y}\psp(y)
+  %  &&\text{by definition of $\ocsmom$ \xref{def:ocsmom}}
+  %\\&= \argmin_{x\in\R}\setn{30,25,20,16,12,9,12,16,20,25,30}
+  %  &&\text{by definition of \structe{real line} $\omsR$ \xref{def:Rline}}
+  %\\&= \setn{7}
+  \\
+  \ocsVar(\rvX;\ocsE)
+    &= \ocsVar(\rvX;\pE)
+    && \text{because $\ocsE(\rvX)=\pE(\rvX)$}
+  \\&= \pVar(\rvX)
+    && \text{by \prefp{thm:ocsVar}}
+  \\&= \frac{35}{6} \approx 5.833
+  \\
+  \ocsE(\rvY)
+    &= \rvY\brs{\ocscen(\ocsG)}
+    &&\text{because $\ocsG$ and $\omsH$ are \prope{isomorphic} under $\rvY$}
+  \\&= \rvY\brs{\setn{7}}
+    &&\text{by \prefpp{ex:pspinner}}
+  \\&= \setn{7}
+    &&\text{by definition of $\rvX$}
+  %\\
+  %\ocsEa(\rvX)
+  %  &\eqd \argmin_{x\in\ocsH}\sum_{y\in\ocsH}\ocsmom(x,y)
+  %  &&\text{by definition of $\ocsEa$ \xref{def:ocsEa}}
+  %\\&= \rvX\brs{\argmin_{x\in\ocsG}\sum_{y\in\ocsG}\ocsmom(x,y)}
+  %  &&\text{because $\ocsG$ and $\ocsH$ are \prope{isomorphic}}
+  %\\&= \rvX\brs{\ocscena(\ocsG)}
+  %  &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+  %\\&= \rvX\brs{\setn{7}}
+  %  &&\text{by \prefpp{ex:pspinner}}
+  %\\&= \setn{7}
+  %  &&\text{by definition of $\rvX$}
+  \\
+  \ocsVar(\rvY;\ocsE)
+  %  &\eqd \sum_{x,y\in\ocsH}\brs{\metric{x}{y}}^2\psp(y)
+  %  &&\text{by definition of $\ocsVar$ \xref{def:ocsVar}}
+  %\\&=    \sum_{y\in\ocsH}\brs{\metric{7}{y}}^2\psp(y)
+  %\\&= \frac{1}{36}\brp{2^2\times1 + 1^2\times2 + 1^2\times3 + 1^2\times4 + 1^2\times5 + 0^2\times6 +
+  %                      1^2\times5 + 1^2\times4 + 1^2\times3 + 1^2\times2 + 2^2\times1}
+  %\\&= \frac{1}{36}\brp{4+2+3+4+5+0+5+4+3+2+4}
+  %\\&= \frac{36}{36}
+    &= \ocsVar(\ocsG)
+    &&\text{because $\ocsG$ and $\omsH$ are \prope{isomorphic} under $\rvY$}
+  \\&= 1
+    && \text{by \prefpp{ex:pspinner}}
+\end{align*}
+\end{proof}
+
+
+
+
+%\fi
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %{\input{../common/math/graphics/sto/rline_argminmax_11312.tex}}%
+  {\includegraphics{sto/graphics/rline_argminmax_11312.pdf}}%
+  \caption{real line addition $\argmin_x\max_y$ calculation graph \xref{ex:rline_11312}\label{fig:rline_11312}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{linear addition}]
+\label{ex:rline_11312}
+%---------------------------------------
+Let $\rvX$ be a \structe{random variable} \xref{def:ocsrv} mapping to 
+a \structe{real line} \structe{ordered metric space} \xref{def:Rline} resulting in probability values of 
+\\\indentx$\psp(0)=\psp(2)=\frac{1}{2}$, and $\psp(x)=0$ otherwise.\\
+Let $\rvY$ be a \structe{random variable} mapping to 
+a \structe{real line} \structe{ordered metric space} resulting in probability values of 
+\\\indentx$\psp(0)=\psp(1)=\frac{1}{4}$, $\psp(2)=\frac{1}{2}$, and $\psp(x)=0$ otherwise.\\
+Let $\rvZ\eqd\rvX+\rvY$ be the random variable mapping to the \structe{outcome subspace} \xref{def:ocs} induced by 
+adding $\rvX$ and $\rvY$ resulting in probabilities 
+\\\indentx$\begin{array}{r|ccccc}
+  z      & 0 & 1 & 2 & 3 & 4 
+  \\\hline
+ \psp(z) & \frac{1}{8} & \frac{1}{8} & \frac{3}{8} & \frac{1}{8} & \frac{2}{8}  
+\end{array}$, and $\psp(z)=0$ otherwise.
+\\
+Note that although the traditional expectation $\pE$ \xref{def:pE} \prope{distributes} over addition such that
+\\\indentx$\pE(\rvX+\rvY) = \frac{18}{8} = 1 + \frac{5}{4} = \pE(\rvX) + \pE(\rvY)$,\\
+the alternative expecation $\ocsE$ \xref{def:ocsE} does \emph{not}:
+\\\indentx$\ocsE(\rvX+\rvY) = \frac{8}{3} \neq \frac{7}{3} =  1 + \frac{4}{3} = \ocsE(\rvX) + \ocsE(\rvY)$.
+\end{example}
+\begin{proof}
+    \begin{align*}
+      \pE(\rvX)
+        &= \cramped{\int_{x\in\R} x\psp(x) \dx}
+        && \text{by definition of $\pE$ \xref{def:pE}}
+      \\&= \sum_{x\in\Z} x\psp(x) \dx
+        && \text{by definition of $\psp$ and \prefp{prop:pE}}
+      \\&= 0\times\frac{1}{2} + 2\times\frac{1}{2}
+        && \text{by definition of $\psp$}
+      \\&= 1
+      \\
+      \pE(\rvY)
+        &= \cramped{\int_{y\in\R} y\psp(y) \dy}
+        && \text{by definition of $\pE$ \xref{def:pE}}
+      \\&= \sum_{y\in\Z} y\psp(y) \dy
+        && \text{by definition of $\psp$ and \prefp{prop:pE}}
+      \\&= 0\times\frac{1}{4} + 1\times\frac{1}{4} + 2\times\frac{1}{2}
+        && \text{by definition of $\psp$}
+      \\&= \frac{5}{4}
+      \\
+      \pE(\rvZ)
+        &= \cramped{\int_{z\in\R} z\psp(z) \dz}
+        && \text{by definition of $\pE$ \xref{def:pE}}
+      \\&= \sum_{z\in\Z} z\psp(z) \dz
+        && \text{by definition of $\psp$ and \prefp{prop:pE}}
+      \\&= 0\times\frac{1}{8} + 1\times\frac{1}{8} + 2\times\frac{3}{8} + 3\times\frac{1}{8} + 4\times\frac{2}{8}
+        && \text{by definition of $\psp$}
+      \\&= \frac{9}{4}
+      \\
+      \ocsE(\rvX)
+        &= \argmin_{x\in\R}\max_{y\in\R} \metric{x}{y}\psp(y)
+        && \text{by definition of $\ocsE$ \xref{def:ocsE}}
+      \\&= \argmin_{x\in\Z}\max_{y\in\Z} \metric{x}{y}\psp(y)
+        && \text{by definition of $\psp(x)$}
+      \\&= \argmin_{x\in\Z}\brb{\begin{array}{lM}
+             \abs{2-x}\frac{1}{2} & for $x\orel 1$\\
+             \abs{x}\frac{1}{2}   & otherwise
+           \end{array}}
+      \\&= \setn{1}
+        && \text{because $\max(x)$ is minimized at $x=1$}
+      \\
+      \ocsE(\rvY)
+        &= \argmin_{x\in\R}\max_{y\in\R} \metric{x}{y}\psp(y)
+        && \text{by definition of $\ocsE$ \xref{def:ocsE}}
+      \\&= \argmin_{x\in\Z}\max_{y\in\Z} \metric{x}{y}\psp(y)
+        && \text{by definition of $\psp(x)$}
+      \\&= \argmin_{x\in\Z}\brb{\begin{array}{lM}
+             \abs{2-x}\frac{1}{2} & for $\frac{4}{3}\ge x \ge 4$\\
+             \abs{x}\frac{1}{4} & otherwise
+           \end{array}}
+      \\&= \setn{\frac{4}{3}}
+        && \text{because $\max(y)$ is minimized at $y=\frac{4}{3}$}
+      \\
+      \ocsE(\rvZ)
+        &= \argmin_{x\in\R}\max_{y\in\R} \metric{x}{y}\psp(y)
+        && \text{by definition of $\ocsE$ \xref{def:ocsE}}
+      \\&= \argmin_{x\in\Z}\max_{y\in\Z} \metric{x}{y}\psp(y)
+        && \text{by definition of $\psp(x)$}
+      \\&= \argmin_{x\in\Z}\brb{\begin{array}{lM}
+             \abs{x-2}\frac{3}{8} & for $-2 \ge x \ge 3$\\
+             \abs{x-4}\frac{2}{8} & for $-2 \le x \le \frac{8}{3}$\\
+             \abs{x}\frac{1}{8} &   for $\frac{8}{3} \le x \le 3$
+            %\abs{x}\frac{1}{8} &   for $\frac{8}{3} \le x \le 3$ (otherwise)
+           \end{array}}
+      \\&= \setn{\frac{8}{3}}
+        && \text{because $\max(z)$ is minimized at $z=\frac{8}{3}$ (see \prefp{fig:rline_11312})}
+    \end{align*}
+\end{proof}
+
+
+
+%=======================================
+\subsection{Multiplication}
+%=======================================
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %{\input{../common/math/graphics/sto/spinner_x2x.tex}}%
+  {\includegraphics{sto/graphics/spinner_x2x.pdf}}%
+  \caption{\structe{pair of spinner} mappings \xref{ex:spinner_x2x}\label{fig:spinner_x2x}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{ring multiplication}]
+\label{ex:spinner_x2x}
+%---------------------------------------
+Let $\rvX\in\clOCSgh$ be a random variable where $\ocsG$ is the \structe{weighted spinner}s 
+illustrated in \prefpp{fig:spinner_x2x}.
+Note that, in agreement with \prefpp{cor:ocsrv_Eax_R}, %{thm:EfX},
+\\\indentx$\ocsE(2\rvX) = \setn{4} = \setn{2\times5\mod6} = 2\setn{5}\mod6 = 2\ocsE(\rvX)\mod6$ .
+\end{example}
+\begin{proof}
+    \begin{align*}
+      \ocscen(\ocsG)
+        &\eqd \argmin_{x\in\ocsH}\max_{y\in\ocsH}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscen$ \xref{def:ocscen}}
+      \\&=\mathrlap{\argmin_{x\in\ocsH}\max_{y\in\ocsH}\frac{1}{10}
+             \setn{\begin{array}{cccccc}
+               {0}\times1 & {1}\times1 & {2}\times1 &{3}\times1 &{2}\times1 &{1}\times5\\
+               {1}\times1 & {0}\times1 & {1}\times1 &{2}\times1 &{3}\times1 &{2}\times5\\
+               {2}\times1 & {1}\times1 & {0}\times1 &{1}\times1 &{2}\times1 &{3}\times5\\
+               {3}\times1 & {2}\times1 & {1}\times1 &{0}\times1 &{1}\times1 &{2}\times5\\
+               {2}\times1 & {3}\times1 & {2}\times1 &{1}\times1 &{0}\times1 &{1}\times5\\
+               {1}\times1 & {2}\times1 & {3}\times1 &{2}\times1 &{1}\times1 &{0}\times5
+             \end{array}}
+      \quad= \argmin_{x\in\ocsH}\frac{1}{10}
+             \setn{\begin{array}{ccccccc}
+                5\\
+               10\\
+               15\\
+               10\\
+                5\\
+                3
+             \end{array}}}
+      \\&= \setn{5}
+      \\
+      \ocscena(\ocsG)
+        &\eqd \argmin_{x\in\ocsH}\sum_{y\in\ocsH}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+      \\&=\mathrlap{\argmin_{x\in\ocsH}\frac{1}{10}
+             \setn{\begin{array}{*{11}{@{\,}c}}
+               {0}\times1 &+& {1}\times1  &+&  {2}\times1  &+& {3}\times1  &+& {2}\times1  &+& {1}\times5\\
+               {1}\times1 &+& {0}\times1  &+&  {1}\times1  &+& {2}\times1  &+& {3}\times1  &+& {2}\times5\\
+               {2}\times1 &+& {1}\times1  &+&  {0}\times1  &+& {1}\times1  &+& {2}\times1  &+& {3}\times5\\
+               {3}\times1 &+& {2}\times1  &+&  {1}\times1  &+& {0}\times1  &+& {1}\times1  &+& {2}\times5\\
+               {2}\times1 &+& {3}\times1  &+&  {2}\times1  &+& {1}\times1  &+& {0}\times1  &+& {1}\times5\\
+               {1}\times1 &+& {2}\times1  &+&  {3}\times1  &+& {2}\times1  &+& {1}\times1  &+& {0}\times5
+             \end{array}}
+         = \argmin_{x\in\ocsH}\frac{1}{10}
+             \setn{\begin{array}{c}
+               13\\
+               17\\
+               21\\
+               17\\
+               13\\
+                9
+             \end{array}}}
+      \\&= \setn{5}
+      \\
+      %\\
+      %\ocsVar(\rvY)
+      %  &\eqd \sum_{x\in\ocsH}\ocsmom_2(\ocscen(\ocsG),x)
+      %  &&\text{by definition of $\ocsVar$ \xref{def:ocsVar}}
+      %\\&= \mathrlap{\ocsmom_2(0,0)+\ocsmom_2(0,1)+\ocsmom_2(0,2)+\ocsmom_2(0,3)+\ocsmom_2(6,4)+\ocsmom_2(6,5)+\ocsmom_2(6,6)}
+      %\\&= \brs{\metric{0}{0}}^2\psp(0)+\brs{\metric{0}{1}}^2\psp(1)+\brs{\metric{0}{2}}^2\psp(2)+\brs{\metric{0}{3}}^2\psp(3)
+      %  \\&\qquad+\brs{\metric{6}{4}}^2\psp(4)+\brs{\metric{6}{5}}^2\psp(5)+\brs{\metric{6}{6}}^2\psp(6)
+      %\\&= \mathrlap{\brs{0}^2\frac{3}{10}+\brs{1}^2\frac{1}{10}+\brs{2}^2\frac{1}{10}+\brs{3}^2\frac{1}{10}+\brs{2}^2\frac{1}{10}+\brs{1}^2\frac{1}{10}+\brs{0}^2\frac{3}{10}}
+      %\\&= \frac{1}{10}\brs{19}
+      %\\&= 1.9
+  %  \begin{align*}
+  %    \pE  (\rvX) &= \frac{252}{36} &= 7            && \text{by \prefpp{ex:dicepair_moments}}  \\
+  %    \pVar(\rvX) &= \frac{35}{6}   &\approx 5.833  && \text{by \prefpp{ex:dicepair_moments}}
+  %  \end{align*}
+  %
+  %\item alternative statistics of random variable mapping $\rvX$:
+  %  \begin{align*}
+  %    \ocsE(\rvX)
+  %      &\eqd \argmin_{x\in\R}\max_{y\in\R} \ocsmom(x,y)
+  %      &&\text{by definition of $\ocsE$ \xref{def:ocsE}}
+  %    \\&\eqd \argmin_{x\in\R}\max_{y\in\R} \metric{x}{y}\psp(y)
+  %      &&\text{by definition of $\ocsmom$ \xref{def:ocsmom}}
+  %    \\&= \argmin_{x\in\R}\setn{30,25,20,16,12,9,12,16,20,25,30}
+  %      &&\text{by definition of \structe{real line} $\omsR$ \xref{def:Rline}}
+  %    \\&= \setn{7}
+  %  \end{align*}
+      \ocsE(\rvX)
+        &= \rvX\brs{\ocscen(\ocsG)}
+        &&\text{because $\ocsG$ and $\ocsH_1$ are \prope{isomorphic}}
+      \\&= \rvX\brs{\setn{5}}
+        &&\text{by $\ocscen(\ocsG)$ result}
+      \\&= \setn{5}
+        &&\text{by definition of $\rvX$}
+      %\\
+      %\ocsEa(\rvX)
+      %  &\eqd \argmin_{x\in\ocsH_1}\sum_{y\in\ocsH_1}\ocsmom(x,y)
+      %  &&\text{by definition of $\ocsEa$ \xref{def:ocsEa}}
+      %\\&= \rvX\brs{\argmin_{x\in\ocsG}\sum_{y\in\ocsG}\ocsmom(x,y)}
+      %  &&\text{because $\ocsG$ and $\ocsH_1$ are \prope{isomorphic}}
+      %\\&= \rvX\brs{\ocscena(\ocsG)}
+      %  &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+      %\\&= \rvX\brs{\setn{5}}
+      %  &&\text{by \prefpp{item:pspinner_x2x_geo}}
+      %\\&= \setn{5}
+      %  &&\text{by definition of $\rvX$}
+    %  \\
+    %\ocsVar(\rvX)
+    %  &\eqd \sum_{x\in\ocsH}\ocsmom_2(\ocsE(\ocsG),x)
+    %  &&\text{by definition of $\ocsVar$ \xref{def:ocsVar}}
+    %\\&\eqd \sum_{x,y\in\ocsH}\brs{\metric{x}{y}}^2\psp(y)
+    %  &&\text{by definition of $\pVar$ \xref{def:ocsmom}}
+    %\\&= \ocsVar(\ocsG)
+    %\\&= 1
+    %  && \text{by \prefpp{ex:pspinner}}
+    \\
+      \ocsE(2\rvX)
+        &\eqd \argmin_{x\in\ocsH_2}\max_{y\in\ocsH_2}\metric{x}{y}\psp(y)
+        &&\text{by definition of $\ocsE$ \xref{def:ocsE}}
+      \\&=\mathrlap{\argmin_{x\in\ocsH_2}\max_{y\in\ocsH_2}\frac{1}{10}
+             \setn{\begin{array}{ccc}
+               {0}\times2 & {1}\times2 & {1}\times6\\
+               {1}\times2 & {0}\times2 & {1}\times6\\
+               {1}\times2 & {1}\times2 & {0}\times6
+             \end{array}}
+      \quad= \argmin_{x\in\ocsH_2}\frac{1}{10}
+             \setn{\begin{array}{c}
+                6\\
+                6\\
+                2\\
+             \end{array}}}
+      \\&= \setn{4}
+      %\\
+      %\ocsEa(2\rvX)
+      %  &\eqd \argmin_{x\in\ocsH_2}\sum_{y\in\ocsH_2}\ocsmom(x,y)
+      %  &&\text{by definition of $\ocscena$ \xref{def:ocscena}}
+      %\\&\eqd \argmin_{x\in\ocsH_2}\sum_{y\in\ocsH_2}\metric{x}{y}\psp(y)
+      %  &&\text{by definition of $\ocsmom$ \xref{def:ocsmom}}
+      %\\&=\mathrlap{\argmin_{x\in\ocsH_2}\frac{1}{10}
+      %       \setn{\begin{array}{*{5}{@{\,}c}}
+      %         {0}\times2 &+& {1}\times2  &+&  {1}\times6\\
+      %         {1}\times2 &+& {0}\times2  &+&  {1}\times6\\
+      %         {1}\times2 &+& {1}\times2  &+&  {0}\times6\\
+      %       \end{array}}
+      %   = \argmin_{x\in\ocsH_2}\frac{1}{10}
+      %       \setn{\begin{array}{c}
+      %          8\\
+      %          8\\
+      %          4
+      %       \end{array}}}
+      %\\&= \setn{4}
+      %\\
+      %\ocsVar(\rvY)
+      %  &\eqd \sum_{x\in\ocsH}\ocsmom_2(\ocscen(\ocsG),x)
+      %  &&\text{by definition of $\ocsVar$ \xref{def:ocsVar}}
+      %\\&= \mathrlap{\ocsmom_2(0,0)+\ocsmom_2(0,1)+\ocsmom_2(0,2)+\ocsmom_2(0,3)+\ocsmom_2(6,4)+\ocsmom_2(6,5)+\ocsmom_2(6,6)}
+      %\\&= \brs{\metric{0}{0}}^2\psp(0)+\brs{\metric{0}{1}}^2\psp(1)+\brs{\metric{0}{2}}^2\psp(2)+\brs{\metric{0}{3}}^2\psp(3)
+      %  \\&\qquad+\brs{\metric{6}{4}}^2\psp(4)+\brs{\metric{6}{5}}^2\psp(5)+\brs{\metric{6}{6}}^2\psp(6)
+      %\\&= \mathrlap{\brs{0}^2\frac{3}{10}+\brs{1}^2\frac{1}{10}+\brs{2}^2\frac{1}{10}+\brs{3}^2\frac{1}{10}+\brs{2}^2\frac{1}{10}+\brs{1}^2\frac{1}{10}+\brs{0}^2\frac{3}{10}}
+      %\\&= \frac{1}{10}\brs{19}
+      %\\&= 1.9
+    \end{align*}
+\end{proof}
+
+
+%=======================================
+\subsection{Metric transformation}
+%=======================================
+It is possible to use a \fncte{metric transform} \xref{def:mpf} to transform the structure of an 
+\structe{outcome subspace} \xref{def:ocs} into a completely different \structe{outcome subspace}. 
+This is demonstrated in \prefpp{ex:ocsop_discrete}--\prefpp{ex:ocsop_x1x2}.
+Naturally, by doing so one can sometimes even change the geometric \structe{center}s \xxref{def:ocscen}{def:ocscenx}
+of the outcome subspaces, and hence also the statistics of random variables that map to/from them.
+This is demonstrated in \prefpp{ex:ocsop_x1x2}--\prefpp{ex:rline_11312a}.
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:ocsop_mpf}
+%---------------------------------------
+Let $\fphi$ be a \fncte{metric preserving function} \xref{def:mpf}.
+Let $\ocsG\eqd\ocsD$ and $\ocsH$ be \structe{outcome subspace}s \xref{def:ocs}.
+\thmbox{
+  \brb{\begin{array}{FMD}
+    (1). & $\fphi(\ocsH)=\ocsG$ & and\\
+    (2). & $\fphi$ is \prope{strictly isotone} & and \\
+    (3). & $\psp$ is uniform
+  \end{array}}
+  \quad\implies\quad
+  \ocscen(\ocsH)=\ocscen(\ocsG)
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsH)
+    &= \fphi\brs{\ocscen(\ocsH)}
+    && \text{by hypothesis (1)}
+  \\&\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\fphi\brs{\metric{x}{y}}\psp(y)
+    && \text{by definition of $\ocscen$ \xref{def:ocscen}}
+  \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\fphi\brs{\metric{x}{y}}
+    && \text{by hypothesis (3) and \prefp{lem:argminmaxphi}}
+  \\&= \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}
+    && \text{by hypothesis (2) and \prefp{lem:argminmaxphi}}
+  \\&= \ocscen(\ocsG)
+    && \text{by definition of $\ocscen$ \xref{def:ocscen}}
+\end{align*}
+\end{proof}
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  \psset{unit=7.5mm}%
+  $\ds
+  \text{\Large$\fphi$}
+  %\brp{\mcom{\begin{array}{c}{\input{../common/math/graphics/ocs/ocs_rdie.tex}}\end{array}}{\structe{real die} \xref{ex:realdie}}}
+  \brp{\mcom{\begin{array}{c}{\includegraphics{sto/graphics/ocs_rdie.pdf}}\end{array}}{\structe{real die} \xref{ex:realdie}}}
+  \qquad\text{\Large$=$}\qquad
+  \text{\Large$\fphi\circ\fg$}
+  %\brp{\mcom{\begin{array}{c}{\input{../common/math/graphics/ocs/ocs_spinner.tex}}\end{array}}{\structe{spinner} \xref{ex:spinner}}}
+  \brp{\mcom{\begin{array}{c}{\includegraphics{sto/graphics/ocs_spinner.pdf}}\end{array}}{\structe{spinner} \xref{ex:spinner}}}
+  \qquad\text{\Large$=$}\qquad
+  %\brp{\mcom{\begin{array}{c}{\input{../common/math/graphics/ocs/ocs_fdie.tex}}\end{array}}{\structe{fair die} \xref{ex:fairdie}}}
+  \brp{\mcom{\begin{array}{c}{\includegraphics{sto/graphics/ocs_fdie.pdf}}\end{array}}{\structe{fair die} \xref{ex:fairdie}}}
+  $
+  \caption{\fncte{discrete metric preserving function} $\fphi$ on outcome subspaces \xref{ex:ocsop_discrete}\label{fig:ocsop_mpf_discrete}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{discrete metric transform on outcome subspaces}]
+\label{ex:ocsop_discrete}
+%---------------------------------------
+Let $\fg$ be a function (a \fncte{pullback function} \xrefnp{thm:pullback}) such that
+$\fg(\circOne)=\diceA$,
+$\fg(\circTwo)=\diceB$,
+$\fg(\circThree)=\diceC$,
+$\fg(\circFour)=\diceF$,
+$\fg(\circFive)=\diceE$, and
+$\fg(\circSix)=\diceD$.
+Then under the \fncte{dicrete metric preserving function} $\fphi$ \xref{ex:mpf_discrete}
+the \structe{real die outcome subspace} \xref{ex:realdie} becomes 
+the \structe{fair die outcome subspace} \xref{ex:fairdie},
+and under $\fphi\circ\fg$ 
+the \structe{spinner outcome subspace} \xref{ex:spinner} also becomes 
+the \structe{fair die outcome subspace},
+as illustrated in \prefpp{fig:ocsop_mpf_discrete}.
+This yields the following geometric statistics:
+\\\indentx$\ocscen(\ocsG)=\ocscen(\ocsH)=\setn{\diceA,\diceB,\diceC,\diceD,\diceE,\diceF}$ .\\
+%with the equalities being just as predicted by \prefpp{thm:ocsop_mpf}.
+\end{example}
+
+
+
+
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  \psset{unit=6mm}%
+  $\ds
+  \text{\Large$\fphi_{1}$}
+  %\brp{\mcom{\begin{array}{c}{\input{../common/math/graphics/ocs/ocs_spinner_121141.tex}}\end{array}}{\structe{spinner} \xref{ex:spinner}}}
+  \brp{\mcom{\begin{array}{c}{\includegraphics{sto/graphics/ocs_spinner_121141.pdf}}\end{array}}{\structe{spinner}}}
+  \text{\Large$=$}
+  %\brp{\mcom{\begin{array}{c}{\input{../common/math/graphics/ocs/ocs_wagon_121141.tex}}\end{array}}{\structe{wagon wheel}}}
+  \brp{\mcom{\begin{array}{c}{\includegraphics{sto/graphics/ocs_wagon_121141.pdf}}\end{array}}{\structe{wagon wheel}}}
+  \text{\Large$.$}
+  \quad%
+  \text{\Large$\fphi_{2}\circ\fg$}
+  %\brp{\mcom{\begin{array}{c}{\input{../common/math/graphics/ocs/ocs_spinner_121141.tex}}\end{array}}{\structe{spinner} \xref{ex:spinner}}}
+  \brp{\mcom{\begin{array}{c}{\includegraphics{sto/graphics/ocs_spinner_121141.pdf}}\end{array}}{\structe{spinner}}}
+  \text{\Large$=$}
+  %\brp{\mcom{\begin{array}{c}{\input{../common/math/graphics/ocs/ocs_wdie_121141.tex}}\end{array}}{\structe{weighted die} \xref{ex:wdie}}}
+  \brp{\mcom{\begin{array}{c}{\includegraphics{sto/graphics/ocs_wdie_121141.pdf}}\end{array}}{\structe{weighted die}}}
+  \text{\Large$.$}
+  $
+  \caption{\prefpp{ex:mpf_0121} \fncte{metric preserving function} $\fphi_{1}$  and 
+           \prefpp{ex:mpf_x1x2} \fncte{metric preserving function} $\fphi_{2}$
+           on \structe{spinner outcome subspace} 
+           \xxref{ex:ocsop_0121}{ex:ocsop_x1x2}\label{fig:ocsop_x1x2_0121}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+\label{ex:ocsop_0121}
+%---------------------------------------
+Let $\fphi_{1}$ be the \fncte{metric preserving function} defined in \prefpp{ex:mpf_0121}.
+Then under $\fphi_{1}$, the \structe{spinner outcome subspace} \xref{ex:spinner} becomes what is here called the 
+\structe{wagon wheel output subspace},
+as illustrated on the left in \prefpp{fig:ocsop_x1x2_0121}.
+Let $\ocsG$ be the \structe{spinner outcome subspace} and $\ocsH$    the \structe{wagon wheel outcome subspace}.
+This yields the following geometric statistics:
+\\\indentx
+ $\ocscen(\ocsG)=\setn{\circFour,\circSix} \qquad \ocscen(\ocsH)=\setn{\circFive}$ .
+\\
+Note that the metric transform $\fphi_{1}$ also moves the \structe{outcome center} from one that is 
+\emph{not} maximally likely, to one that \emph{is}.
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &\eqd \mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    \qquad\text{by definition of $\ocscen$ \xref{def:ocscen}}}
+  \\&=\argmin_{x\in\ocsG}\max_{y\in\ocsG}\frac{1}{10}
+         \setn{\begin{array}{cccccc}
+           {0}\times1&{1}\times2 & {2}\times1 &{3}\times1 &{2}\times4 &{1}\times1\\
+           {1}\times1&{0}\times2 & {1}\times1 &{2}\times1 &{3}\times4 &{2}\times1\\
+           {2}\times1&{1}\times2 & {0}\times1 &{1}\times1 &{2}\times4 &{3}\times1\\
+           {3}\times1&{2}\times2 & {1}\times1 &{0}\times1 &{1}\times4 &{2}\times1\\
+           {2}\times1&{3}\times2 & {2}\times1 &{1}\times1 &{0}\times4 &{1}\times1\\
+           {1}\times1&{2}\times2 & {3}\times1 &{2}\times1 &{1}\times4 &{0}\times1
+         \end{array}}
+     &&= \argmin_{x\in\ocsG}\frac{1}{10}
+         \setn{\begin{array}{c}
+            8\\
+           12\\
+            8\\
+            4\\
+            6\\
+            4
+         \end{array}}
+     &&= \setn{\begin{array}{c}
+           \mbox{ }\\
+           \mbox{ }\\
+           \mbox{ }\\
+           \circFour\\
+           \mbox{ }\\
+           \circSix
+         \end{array}}
+  \\
+  \ocscen(\ocsH)
+    &\eqd \mathrlap{\argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    \qquad\text{by definition of $\ocscen$ \xref{def:ocscen}}}
+  \\&=\argmin_{x\in\ocsH}\max_{y\in\ocsH}\frac{1}{10}
+         \setn{\begin{array}{cccccc}
+           {0}\times1&{1}\times2 & {2}\times1 &{1}\times1 &{2}\times4 &{1}\times1\\
+           {1}\times1&{0}\times2 & {1}\times1 &{2}\times1 &{1}\times4 &{2}\times1\\
+           {2}\times1&{1}\times2 & {0}\times1 &{1}\times1 &{2}\times4 &{1}\times1\\
+           {1}\times1&{2}\times2 & {1}\times1 &{0}\times1 &{1}\times4 &{2}\times1\\
+           {2}\times1&{1}\times2 & {2}\times1 &{1}\times1 &{0}\times4 &{1}\times1\\
+           {1}\times1&{2}\times2 & {1}\times1 &{2}\times1 &{1}\times4 &{0}\times1
+         \end{array}}
+    &&= \argmin_{x\in\ocsH}\frac{1}{10}
+         \setn{\begin{array}{c}
+            8\\
+            4\\
+            8\\
+            4\\
+            2\\
+            4
+         \end{array}}
+    &&= \setn{\begin{array}{c}
+           \mbox{ }\\
+           \mbox{ }\\
+           \mbox{ }\\
+           \mbox{ }\\
+           \circFive\\
+           \mbox{ }
+         \end{array}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{example}
+\label{ex:ocsop_x1x2}
+%---------------------------------------
+Let $\fphi_{2}$ be the \fncte{metric preserving function} defined in \prefpp{ex:mpf_x1x2}.
+Let $\fg$ be the function defined in \prefpp{ex:ocsop_discrete}.
+Then under under $\fphi_{2}\circ\fg$, 
+the \structe{spinner outcome subspace} \xref{ex:spinner} becomes 
+the \structe{weighted die outcome subspace} \xref{ex:wdie},
+as illustrated on the right in \prefpp{fig:ocsop_x1x2_0121}.
+Let $\ocsG$ be the \structe{spinner outcome subspace} and $\ocsH$ the \structe{weighted die outcome subspace}.
+These structures have the following geometric statistics:
+\\\indentx
+ $\ocscen(\ocsG)=\setn{\circFour,\circSix} \qquad \ocscen(\ocsH)=\setn{\circOne,\circThree,\circFour,\circFive,\circSix}$ .
+\\
+Note that in \prefpp{ex:ocsop_0121}, the metric transform $\fphi_{1}$ results in a smaller 
+(smaller \fncte{cardinality} \xrefnp{def:seto}) \structe{center} 
+($\seto{\ocscen(\ocsG)}=2>1=\seto{\ocscen(\ocsH)}$).
+But here, the metric transform $\fphi_{2}\circ\fg$ results in a larger \structe{center}.
+($\seto{\ocscen(\ocsG)}=2<5=\seto{\ocscen(\ocsH)}$).
+\end{example}
+\begin{proof}
+\begin{align*}
+  \ocscen(\ocsG)
+    &= \setn{\circFour,\circSix}
+    && \text{by \prefpp{ex:ocsop_0121}}
+    \\
+  \ocscen(\ocsH)
+    &\eqd \argmin_{x\in\ocsG}\max_{y\in\ocsG}\metric{x}{y}\psp(y)
+    && \text{by definition of $\ocscen$ \xref{def:ocscen}}
+  \\&= \mathrlap{\argmin_{x\in\ocsH}\max_{y\in\ocsH}\frac{1}{10}
+         \setn{\begin{array}{cccccc}
+           {0}\times1&{1}\times2 & {1}\times1 &{1}\times1 &{1}\times4 &{2}\times1\\
+           {1}\times1&{0}\times2 & {1}\times1 &{1}\times1 &{2}\times4 &{1}\times1\\
+           {1}\times1&{1}\times2 & {0}\times1 &{2}\times1 &{1}\times4 &{1}\times1\\
+           {1}\times1&{1}\times2 & {2}\times1 &{0}\times1 &{1}\times4 &{1}\times1\\
+           {1}\times1&{2}\times2 & {1}\times1 &{1}\times1 &{0}\times4 &{1}\times1\\
+           {2}\times1&{1}\times2 & {1}\times1 &{1}\times1 &{1}\times4 &{0}\times1
+         \end{array}}
+      = \argmin_{x\in\ocsH}\frac{1}{10}
+         \setn{\begin{array}{c}
+            4\\
+            8\\
+            4\\
+            4\\
+            4\\
+            4
+         \end{array}}
+      = \setn{\begin{array}{c}
+           \circOne\\
+           \mbox{ }\\
+           \circThree\\
+           \circFour\\
+           \circFive\\
+           \circSix\\
+         \end{array}}}
+\end{align*}
+\end{proof}
+
+
+
+
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  {\includegraphics{sto/graphics/rline_argminmax_11312a.pdf}}%
+  %{\input{../common/math/graphics/sto/rline_argminmax_11312a.tex}}%
+  \caption{real line addition $\argmin_x\max_y$ calculation graph \xref{ex:rline_11312a}\label{fig:rline_11312a}}
+\end{figure}
+%---------------------------------------
+\begin{example}[\exmd{linear addition with metric transform}]
+\label{ex:rline_11312a}
+%---------------------------------------
+\prefpp{ex:rline_11312} gave the result $\ocsE(\rvX+\rvY) = \frac{8}{3}$ rather than the perhaps more desirable result of 
+$\frac{7}{3}$ (which equals $1 + \frac{4}{3} = \ocsE(\rvX) + \ocsE(\rvY)$).
+Again, we adjust the geometric statistics of an outcome subspace by use of a \structe{metric preserving function} \xref{def:mpf}.
+In particular, we use the \exme{power transform}/\exme{snowflake transform} \xref{ex:mpf_snowflake}
+$\ff(x)= x^a$. If we let $a=\frac{\ln2}{\ln7-\ln5}\approx2.0600427$, then
+$\ocsE(\rvX+\rvY) = \frac{7}{3}$, as illustrated in \prefpp{fig:rline_11312a}.
+\end{example}
+
+
+
+\end{tabstr}
+
+
+
+

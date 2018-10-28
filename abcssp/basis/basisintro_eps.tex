@@ -1,0 +1,3254 @@
+﻿%============================================================================
+% Daniel J. Greenhoe
+% LaTeX File
+%============================================================================
+
+
+%======================================
+\section{Introduction}
+%======================================
+
+%\qboxnpqt
+%  { Jules Henri Poincar\'e (1854-1912), physicist and mathematician
+%    \index{Poincar\'e, Jules Henri}
+%    \index{quotes!Poincar\'e, Jules Henri}
+%    \footnotemark
+%  }
+%  {../common/people/small/poincare.jpg}
+%  {\ldots on fait la science avec des faits comme une maison avec des pierres ; 
+%   mais une accumulation de faits n'est pas plus une science qu'un tas de 
+%   pierres n'est une maison.}
+%  {Science is built up of facts, as a house is built of stones;
+%   but an accumulation of facts is no more a science than a heap of stones is a house.}
+%  \footnotetext{
+%    quote:       & \citerc{poincare_sah}{Chapter IX, paragraph 7} \\
+%    translation: & \citerp{poincare_sah_eng}{141} \\
+%    image:       & \url{http://www-groups.dcs.st-and.ac.uk/~history/PictDisplay/Poincare.html}
+%    }
+%
+%\qboxnps
+%  {
+%    Freeman Dyson (1923--), physicist and mathematician  %(January 1994)
+%    \index{Dyson, Freeman}
+%    \index{quotes!Dyson, Freeman}
+%    \footnotemark
+%  }
+%  %{../common/people/dyson_.flickr8168451.jpg}
+%  {../common/people/dyson_isepp-org_95-96.jpg}  %http://www.isepp.org/Media/Speaker%20Images/95-96%20Images/dyson.jpg
+%  %{../common/people/small/dyson.jpg}
+%  {The bottom line for mathematicians is that the architecture has to be right.
+%    In all the mathematics that I did, the essential point was to find
+%    the right architecture.
+%    It's like building a bridge.
+%    Once the main lines of the structure are right,
+%    then the details miraculously fit.
+%    The problem is the overall design.}
+%  \footnotetext{
+%    quote: & \citerp{dyson1994}{20}  \\
+%    %image: & \url{http://www.flickr.com/photos/russnelson/8168451/}
+%    image: & \scs\url{http://www.isepp.org/Media/Speaker\%20Images/95-96\%20Images/dyson.jpg}
+%    }
+
+%======================================
+\subsection{Foundation for bases and transforms}
+%======================================
+\paragraph{Hilbert spaces.}
+A \structe{basis} in a \structe{linear space} $\linearspaceX$ is a 
+sequence of \structe{vectors} $\tuplexN{\vpsi_n\in\setX}$ 
+such that for any vector $\vx\in\setX$, there exists 
+a sequence $\tuplexN{\alpha_n\in\addf}$ such that 
+$\vx = \sum_{n=1}^\xN \alpha_n\vpsi_n$.
+If the linear space is finite, then any basis in the space is called a \structe{Hamel basis}.
+However, finite linear spaces are often insufficient in theory and impractical in practice,
+and we therefore would like to find bases in infinite linear spaces. 
+In an infinite linear space, a basis will likely be countably or uncountably infinite, so we need a way to 
+be able to take sums of infinite numbers of basis vectors.
+However an infinite sum such as $\ff(x)=\sum_{n=1}^\infty\alpha_n\psi_n(x)$ has absolutely no meaning 
+without the concept of a \ope{limit} because, by definition, 
+\quad$\sum_{n=1}^\infty\vx_n \eqd \lim_{\xN\to\infty}\sum_{n=1}^\xN\vx_n$.\quad
+And \ope{limit} has no meaning without a topology. %in general has no meaning in an arbitrary linear space. 
+%For limit (and convergence) to have meaning, the linear space must also have a topology.
+One of the most common methods of inducing a topology on a linear space is to define a norm on that space, 
+yielding a \structe{normed linear space}.
+A normed linear space in which all \structe{Cauchy sequences} converge is called a \structe{Banach space}.
+If the norm in a Banach space induces an inner product, then that space is called a \structe{Hilbert space}.
+One very commonly used \structe{Hilber space} is the set $\spLLR$, 
+the space of all square integrable functions. 
+
+
+\begin{figure}[h]
+  \centering%
+  \gsize%
+  \includegraphics{basis/graphics/opTrn.eps}\qquad\qquad
+  \includegraphics{basis/graphics/opDil.eps}
+  %\input{../common/math/graphics/opTrn.tex}\qquad\qquad
+  %\input{../common/math/graphics/opDil.tex}
+  \caption{\ope{translation operator} $\opTrn$ and \ope{dilation operator} $\opDil$ \label{fig:opTD}}
+\end{figure}
+\paragraph{Translation and dilation.}
+A basis can often be conveniently expressed in terms of a \ope{translation operator} $\opTrn$ and a 
+\ope{dilation operator} $\opDil$ as illustrated in \pref{fig:opTD} and defined as follows:\footnote{
+  \citerppgc{greenhoe2013wsd}{1}{26}{0983801134}{Chapter 1. Transversal Operators},
+  \citerppgc{walnut2002}{79}{80}{0817639624}{Definition 3.39},
+  \citerppg{christensen2003}{41}{42}{0817642951},
+  \citerpgc{wojtaszczyk1997}{18}{0521578949}{Definitions 2.3,2.4},
+  \citerpg{kammler2008}{A-21}{0521883407},
+  \citerpg{bachman2000}{473}{0387988998},
+  \citerpg{packer2004}{260}{0821834029}, %{section 3.1},
+  \citerpg{zayed1996}{2}{0849378516},
+  %\citerpg{zayed2004}{}{0817643044},
+  \citerpgc{heil2011}{250}{0817646868}{Notation 9.4},
+  \citerpg{casazza1998}{74}{0817639594},
+  \citerp{goodman1993}{639},
+  \citerp{dai1996}{81},
+  \citerpg{dai1998}{2}{0821808001}
+  %\citerpg{dai1998}{21}{0821808001}
+  }
+%\label{def:wav_opT}
+%\label{def:wav_opD}
+%\label{def:wavstrct_TD}
+%\label{def:opT}
+%\label{def:opD}
+%---------------------------------------
+\indentx$\begin{array}{Frc>{\ds}lMlC}
+    1. & \mc{6}{M}{$\hxs{\opTrn}$ is the \hid{translation operator} on $\spCC$ defined as}\\
+       & \indentx\hxs{\opTrn_\tau}  \ff(x) &\eqd&         \ff(x-\tau) &and& \hxs{\opTrn}\eqd\opTrn_1 & \forall \ff\in\spCC
+       \\
+    2. & \mc{6}{M}{$\hxs{\opDil}$ is the \hid{dilation operator} on $\spCC$ defined as}\\
+       & \indentx\hxs{\opDil_\alpha} \ff(x) &\eqd& \ff(\alpha x) &and& \opDil\eqd\sqrt{2}\opDil_2 & \forall \ff\in\spCC
+\end{array}$
+
+
+
+\paragraph{Analyses and transforms.}
+An \ope{analysis}\footnotemark of a vector $\vx$ in a linear space with respect to a basis is the coefficients
+of the linear combination of the basis vectors.
+The coefficients can reveal much information regarding the characteristics of a vector (e.g. function).
+What characteristics are revealed depends on the selected basis.
+Therefore, basis design can be both a science and an art.
+An \fncte{operator} that computes the analysis of a vector $\vx$ with respect to a basis is called a \ope{transform}.
+In a \structe{Hilbert space} in which the basis is \prope{orthogonal}, such a transform is simply the \fncte{inner product} $\inprodn$ of the Hilbert space.
+%Therefore in basis theory, ``analysis" and ``transform" mean essentially the same thing.
+The partial or complete reconstruction of $\vx$ from the analysis is a \ope{synthesis}.%
+        \footnotetext{%
+          The word \hie{analysis} comes from the Greek word
+          {\fntagreek{>av'alusis}},
+          meaning ``dissolution" (\citerpc{perschbacher1990}{23}{entry 359}),
+          which in turn means
+          ``the resolution or separation into component parts"
+          (\citer{collins2009}, \scs\url{http://dictionary.reference.com/browse/dissolution})
+          }
+
+\paragraph{Subspace structures.}
+All the linear combinations $\Span\setY$ of any set $\setY$ of vectors in a linear space forms another linear space 
+called a \structe{subspace}.
+And that subspace is said to be the \ope{span} of $\setY$. 
+\\
+\begin{minipage}{\tw-65mm}%
+  Subspaces are ordered with respect to the set relation $\subseteq$ to form a \structe{lattice of subspaces}.
+  Therefore, a transform induces such a subspace lattice, 
+  and this lattice characterizes the transform.
+  Most transforms induce a very simple M-$n$ order structure,
+  as illustrated to the right.
+  The M-$n$ lattices for $n\ge3$ are \prope{modular} but not \prope{distributive}.
+  Analyses typically have one subspace that is a \hie{scaling} subspace;
+  and this subspace is often simply a family of constants
+  (as is the case with \hi{Fourier Analysis}).\footnotemark
+\end{minipage}%
+\hfill%
+{\begin{minipage}{60mm}%
+  %\input{../common/wavelets/graphics/latmn.tex}%
+  \includegraphics{basis/graphics/latmn.eps}%
+\end{minipage}}%
+\footnotetext{
+  \citerpgc{greenhoe2013wsd}{29}{0983801134}{2.2 Analyses}
+  }
+
+
+%======================================
+\subsection{Bases for functions on the real line}
+%======================================
+%---------------------------------------
+% Fourier Transform basis
+%---------------------------------------
+\paragraph{The Fourier Transform.}
+In \citeyear{fourier1822}, \citeauthor{fourier1822} introduced the first basis for the Hilbert space $\spLLR$:
+%This basis is the \prope{uncountable} set $\set{e^{i\omega}}{\omega\in\R}$.
+%The basis is attractive because it's vectors are the \fncte{eigenvectors} for any linear operator on the Hilbert space:
+%The \structe{analysis}, or \ope{Fourier Transform}, of a function $\ff(x)\in\spLLR$ is 
+%the \ope{projections} of $\ff(x)$ onto this basis as follows:
+%  \\\indentx$\ds%
+%      \brs{\opFT\ff}(\omega) 
+%        \eqd \inprod{\ff(x)}{\opDil_\omega e^{ix}}
+%        \eqd\mcom{\frac{1}{\sqrt{2\pi}} \int_\R \ff(x) e^{-i\omega x} \dx}
+%                 {\ope{Fourier transform} of $\ff(x)$}
+%  $ .\\
+\formbox{\begin{array}{Frc>{\ds}lc>{\ds}lCD}
+  1. & \mc{6}{M}{$\ds\set{\opDil_\omega e^{ix}}{\scy\omega\in\R}$ is an \prope{orthogonal} and \prope{uncountable} \structe{basis} for $\spLLR$} & (Fourier transform basis)\\
+  2. & \ff(x)     &=&    \cft \int_\R \Ff(\omega) \opDil_x e^{i\omega} \dw  & &                                          & \forall\ff\in\spLLR   & (synthesis) where \\
+  3. & \Ff(\omega)&\eqd& \cft\inprod{\ff(x)}{\opDil_\omega e^{ix}} &\eqd& \cft \int_\R \ff(x) \opDil_\omega e^{-ix} \dx  & \forall\ff\in\spLLR   & (\ope{Fourier transform}/analysis)
+\end{array}}\\
+This basis has some properties that makes it extremely special:
+  \begin{liste}
+    %\item The basis is \prope{orthogonal}.
+    \item The exponential is an eigenvalue of any \ope{linear time invariant operator}. % (\prefp{thm:Le=he}).
+    \item The exponential generates a continuous point spectrum for the differential operator.    %(\prefp{thm:spec_D})
+  \end{liste}
+There are also some other properties that make it arguably unattractive:
+  \begin{liste}
+    \item It's analysis coefficients and basis are \prope{uncountable} rather than \prope{countable} so we can't perfom \ope{reconstruction} of
+          a function $\ff(x)$ over a basis sequence $\seqxZp{\psi_n(x)}$ using
+          a summation as in $\ff(x)=\sum_{n=1}^\infty \alpha_n\psi_n(x)$.
+    \item The basis functions do not have \prope{compact support}, so it is not very efficient to use them to represent
+          signals that do have compact support. Compact support basically means that a function ``sits" on a finite
+          interval (e.g. $\intcc{0}{2}$), and is $0$ everywhere else.
+  \end{liste}
+The Fourier transform induces the $M-n$ lattice subspace structure.
+Examples of subspaces in a Fourier analysis include $\spV_1=\Span\setn{e^{ix}}$, 
+  $\spV_{2.3}=\Span\setn{e^{i2.3x}}$, $\spV_{\sqrt{2}}=\Span\setn{e^{i\sqrt{2}x}}$, etc.
+
+\paragraph{The Cardinal Series.}
+\citefullauthor{whittaker1915} in \citeyear{whittaker1915} introduced the \fncte{cardinal function}
+$\frac{\sin\pi x}{\pi x}$.
+\citeauthor{hardy1941} in \citeyear{hardy1941} showed that the \prope{countable} set
+$\quad\setbigleft{\frac{\sin\left[(\pi/T)(x-nT)\right]}{(\pi/T)(x-nT)}}{n\in\Z,\,\frac{1}{T}\le2\sigma}\quad$
+is an \prope{orthonormal} \structe{basis} for the \structe{Paley-Wiener class of functions} $\spPW_\sigma^2$,
+where $\spPW_\sigma^2$ is an extremely large class of functions on $\spLLR$ and includes
+all the functions $\ff(x)\in\spLLR$ such that for some $C\in\Rp$, $\abs{\ff(x)}\le Ce^{\sigma\abs{x}}$
+(note however that this does not include periodic functions).\footnotemark
+Thus, the \structe{Cardinal Series} provides a \prope{countable} alternative to the \prope{uncountable} basis of the 
+\ope{Fourier Transform}.
+%
+%Let $\opTrn$ be the \structe{translation operator} \xrefP{def:opT}.
+%The \prope{Paley-Wiener} class of functions $\hxs{\spPW_\sigma^2}$ \ifxref{frames}{def:PW}
+%are those functions which are ``\hie{bandlimited}"
+%with respect to their Fourier transform\ifsxref{harFour}{def:ft}.
+%The cardinal series forms an orthogonal basis for such a space\ifsxref{frames}{thm:cardinalSeries}.
+The \fncte{Fourier coefficients} \xref{def:fcoef} for a projection of a function $\ff$ onto the Cardinal series basis elements is particularly
+simple---these coefficients are samples of $\ff(x)$ taken at regular intervals\ifsxref{frames}{thm:t_sampling}.
+In fact, one could represent the coefficients using inner product notation with the
+\structe{Dirac delta distribution} $\delta$ \ifxref{relation}{def:dirac} as
+follows: %\footnote{see \prefp{sec:cardinal} for more details}
+\formbox{\begin{array}{FMCD}
+  1. & $\ds\setxZp{\opTrn^n\frac{\sin\brp{\pi x}}{\pi x}}$ is a \structe{basis} for $\spPW_\sigma^2$                  &               & (\structe{Cardinal series basis})\\
+  2. & $\ds\ff(x) = \sum_{n=1}^\infty \Ff(n) \opTrn^n\frac{\sin\brp{\pi x}}{\pi x}$ & \forall \ff\in\spPW_\sigma^2,\,\sigma\le \half  & (synthesis) where\\
+  3. & $\Ff(n)\eqd\inprod{\ff(x)}{\opTrn^n\delta(x)} \eqd \int_{\R} \ff(x)\delta(x-n) \dx \eqd \ff(n)$                &               & (\ope{Cardinal series transform}/analysis)
+\end{array}}
+%\citeauthor{hardy1941} gave two proofs.
+%The \seqe{coefficients} $\seqxZ{\alpha_n}$ for the expansion of a function $\ff(x)\in\spPW_\sigma^2$ 
+%in terms of a \structe{Cardinal series basis}
+%was given by \citeauthor{shannon1949} in \citeyear{shannon1948} and \citeyear{shannon1949} and is now
+%known as the \thme{Sampling Theorem}. The \thme{Sampling Theorem} says that 
+%\\\indentx$\ff(x)=\sum_{n\in\Z} \alpha_n \frac{\sin\left[(\pi/T)(x-nT)\right]}{(\pi/T)(x-nT)}$\\
+%where $\seqn{\alpha_n}$ (the samples of $\ff(x)$) are given by projections of $\ff(x)$ onto the sequence
+%$\seqxZ{\delta(x-n/T)}$ 
+%\\\indentx$\alpha_n \eqd \inprod{\ff(x)}{\delta(x-n/T)} \eqd \int_\R\ff(x)\delta(x-n/T)\dx \eqd \ff(n/T)$.%
+\footnotetext{
+  \citer{whittaker1915},
+  \citerc{hardy1941}{\prope{orthonormality}},
+  \citorc{shannon1948}{Theorem 13},
+  \citorp{shannon1949}{11},
+  \citerpc{higgins1985}{56}{H1.; historical notes},
+  \citerpgc{higgins1996}{52}{0198596995}{Definition 6.15}
+  }
+
+\paragraph{Short-time Fourier transform.}
+\citeauthor{gabor1946} in \citeyear{gabor1946} introduced the \ope{Short-time Fourier transform}.
+The \ope{Short-time Fourier transform} of a function $\ff(x)$ is simply the \ope{Fourier transform} 
+of $\ff(x)\fw(x)$, where $\fw(x)$ is a \fncte{window function}.
+%\paragraph{Gabor Transform}
+\footnote{
+  \citeP{gabor1946},
+  \citergc{qian1996}{0132543842}{Chapter 3},
+  \citerpgc{forster2009}{32}{0817648909}{Definition 1.69}
+  }
+%\begin{array}{Frc>{\ds}lCD}
+%  1. & \mc{4}{M}{$\ds\setbigleft{\brp{\opTrn_\tau e^{-\pi x^2}}\brp{\opDil_\omega e^{ix}}}{\scy\tau,\omega\in\R}$ is a \structe{basis} for $\spLLR$}         & and\\
+%  2. & \ff(x)                  &=&    \int_\R \fG\opair{\tau}{\omega} \opDil_x e^{i\omega} \dw & \forall x\in\R,\,\ff\in\spLLR   & where\\
+%  3. & \fG\opair{\tau}{\omega} &\eqd& \int_\R \ff(x) \brp{\opTrn_\tau e^{-\pi x^2}}\brp{\opDil_\omega e^{-ix}} \dx & \forall x\in\R,\,\ff\in\spLLR
+%\end{array}
+
+%---------------------------------------
+% Haar basis
+%---------------------------------------
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %\input{../common/math/graphics/baslat_haar.tex}%
+  \includegraphics{basis/graphics/baslat_haar.eps}%
+  \caption{Fourier subspace structure \label{fig:baslat_haar}}
+\end{figure}
+\paragraph{The Haar basis (1909).}
+Perhaps the first \prope{countable} basis for $\spLLR$ was introduced by \citeauthor{haar1910} in 
+his Ph.D. dissertation (under Hilbert) in July \citeyear{haar1909} and later in a journal article in 1910.
+Although not exactly the way Haar expressed it, Haar in essence constructed a basis for $\spLLR$ as follows:
+Let\\\indentx$\begin{array}{lMl} 
+  \chi_0(x) \eqd \brb{\begin{array}{rM}
+                    1  & for $x\in\intco{0}{1}$ \\
+                    0  & otherwise.\end{array}}
+  &and&
+  \chi_1(x) \eqd \brb{\begin{array}{rM}
+                    1  & for $x\in\intco{0}{\sfrac{1}{2}}$ \\
+                   -1  & for $x\in\intco{\sfrac{1}{2}}{1}$ \\
+                    0  & otherwise.\end{array}}
+\end{array}$.\\
+Then the set 
+\quad$\set{\chi_0(x-m)}{m\in\Z}\setu\set{{2}^{(n/2)}\chi_1(2^n x-m)}{m\in\Z,\,n=1,2,3,\ldots}$\\
+is a \prope{countable} basis for 
+$\spLLR$.\footnote{
+  \citer{haar1909},
+  \citePpc{haar1910}{361}{Kapitel III. \textsection1. Das orthogonale Funktionensystem $\chi.$},
+  \citeIpc{haar1910e}{179}{Chapter III. \textsection1. The Orthogonal Function System $\chi$}
+  }
+
+
+
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %\input{../common/wavelets/graphics/morletwavelet.tex}
+  \includegraphics{basis/graphics/mexhatwavelet.eps}
+  \caption{Ricker wavelet / Marr's wavelet / Mexican Hat wavelet : $\fpsi(x)\eqd (1-x^2)e^{-x^2/2}$ \label{fig:morletwavelet}}
+\end{figure}
+\paragraph{Ricker wavelet (1953).}
+Norman H. \citeauthor{ricker1953} in \citeyear{ricker1953} introduced what today is sometimes referred to as the \fncte{Ricker wavelet} for seismic prospecting.
+The \fncte{Ricker wavelet} is also called \fncte{Marr's wavelet} and the \fncte{Mexican Hat wavelet}.\footnotemark
+\footnotetext{
+  \citeP{ricker1953}
+  %\citeP{ricker1952}
+  }
+
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %\input{../common/wavelets/graphics/morletwavelet.tex}
+  \includegraphics{basis/graphics/morletwavelet.eps}
+  \caption{Morlet real-valued wavelet: $\fpsi(x)\eqd \cos(5x) e^{-x^2/2}$ \label{fig:morletwavelet}}
+\end{figure}
+\paragraph{Morlet real-valued wavelet (1981).}
+\citeauthor{morlet1981} in \citeyear{morlet1981} and \citeyear{morlet1983} introduced 
+what is now called the \fncte{Morlet wavelet}.
+\citefullauthor{grossmann1984} in \citeyear{grossman1984}
+demonstrated that the \prope{uncountable} set of dilations and translations of this wavelet form a  basis for $\spLLR$.\footnotemark
+\formbox{\begin{array}{Frc>{\ds}lc>{\ds}lCD}
+  1. & \mc{6}{M}{$\ds\set{\opDil_\omega\opTrn_t \fpsi(x)}{\scy\omega,t\in\R}$ is an \prope{uncountable} \structe{basis} for $\spLLR$} & (Morlet wavelet basis) where\\
+  2. & \fpsi(x) &\eqd& \cos(5x)e^{-x^2/2} & & & \forall x\in\R & (\fncte{Morlet real-valued wavelet})
+  %2. & \ff(x)     &=&    c \int_\R \int_\R \Fpsi(t,\omega)\Ff(\omega) \opDil_x e^{i\omega} \dw  & &                                          & \forall\ff\in\spLLR   & (synthesis) where \\
+  %3. & \Ff(\omega)&\eqd& \cft\inprod{\ff(x)}{\opDil_\omega e^{ix}} &\eqd& \cft \int_\R \ff(x) \opDil_\omega e^{-ix} \dx  & \forall\ff\in\spLLR   & (\ope{Fourier transform}/analysis)
+\end{array}}\\
+However there are some properties that make the \structe{Morlet wavelet basis} unattractive:
+\begin{liste}
+  \item The basis is \prope{uncountable}.
+  \item The basis is \prope{non-orthogonal}.
+\end{liste}
+\footnotetext{
+  \citeP{morlet1981},
+  \citeP{morlet1983},
+  \citerpgc{gao2011h}{27}{1441915451}{``\ldots A Historical Perspective"}
+  }
+
+\paragraph{Str/:omberg wavelets (1982).}
+\citeauthor{stromberg1982} in \citeyear{stromberg1982} introduced what are now known as \fncte{Str/:omberg wavelets}.\footnotemark
+\footnotetext{
+  \citeP{stromberg1982},
+  \citeI{stromberg1982r}
+  }
+
+\paragraph{Continuous Wavelet Transform (1984).}
+\citefullauthor{grossmann1984} in \citeyear{grossman1984}
+demonstrated that the \prope{uncountable} set of dilations and translations of this wavelet form a  basis for $\spLLR$.
+Furthermore, \citefullauthor{grossmann1984} introduced what is now known as the 
+\ope{Continuous Wavelet Transform} (\ope{CWT}) which provides an \ope{analysis} of a function $\ff(x)$
+in terms of the \fncte{Morlet wavelet} or any other continuous wavelet.
+Despite the earlier contributions of \citeauthor{haar1910} \citeyearpar{haar1910}
+and \citeauthor{ricker1953} \citeyearpar{ricker1953} of what are now also known as wavelets,
+\citefullauthor{grossman1984} introduced the term ``wavelet" to mathematics, and 
+their work essentially marks the beginning of \hie{wavelet analysis}.\footnotemark
+
+
+
+%======================================
+\subsection{Basis for functions on the unit interval}
+%======================================
+There are several bases available for functions on the unit interval $\intcc{0}{1}$.
+Any such basis can be extended to any subset of the real line by translations and/or dilations.
+
+%---------------------------------------
+% Fourier Series basis
+%---------------------------------------
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %\input{../common/math/graphics/baslat_cosh.tex}%
+  \includegraphics{basis/graphics/baslat_cosh.eps}%
+  \caption{Fourier subspace structure \label{fig:baslat_cosh}}
+\end{figure}
+\paragraph{The Fourier Series.}
+In \citeyear{fourier1807}, more than 10 years before the \ope{Fourier transform},
+\citeauthor{fourier1807} introduced what is now called the \ope{Fourier Series}.
+The \ope{Fourier Series} is often used as an orthogonal basis for periodic functions,
+but it can just as easily be used as a \prope{countable} \prope{orthogonal} basis for the interval $\intcc{0}{1}$,
+The Fourier Series basis is the set
+\quad$\set{\funit(x)\cos 2\pi nx,\, \funit(x)\sin 2\pi nx}{n=0,1,2,\ldots}$\quad
+where 
+\quad$\funit(x)\eqd\brb{\begin{array}{lM}
+  1 & for $x\in\intcc{0}{1}$\\
+  0 & otherwise
+\end{array}}$.\quad
+The Fourier Series basis is illustrated in \pref{fig:baslat_cosh}.
+
+%---------------------------------------
+% Chebyshev polynomial basis
+%---------------------------------------
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %\input{../common/math/graphics/baslat_cheby.tex}%
+  \includegraphics{basis/graphics/baslat_cheby.eps}%
+  \caption{Chebyshev polynomial subspace structure \label{fig:baslat_cheby}}
+\end{figure}
+\paragraph{The Chebyshev polynomial basis.}
+\citeauthor{chebyshev1854} in \citeyear{chebyshev1854} introduced a polynomial basis for the interval $\intcc{0}{1}$.\footnotemark
+By translation and/or dilation, this basis can be extended to the entire real line.
+The Chebyshev polynomials induce an $M-n$ subspace lattice structure, as illustrated in \pref{fig:baslat_cheby}.
+\footnotetext{
+  \citeI{chebyshev1854}, 
+  \cittrp{rivlin1974}{4}
+  }
+
+%---------------------------------------
+% Sinusoidal polynomial basis
+%---------------------------------------
+\begin{figure}[h]
+  \gsize%
+  \centering%
+  %\input{../common/math/graphics/baslat_cose.tex}%
+  \includegraphics{basis/graphics/baslat_cose.eps}%
+  \caption{Fourier subspace structure \label{fig:baslat_cose}}
+\end{figure}
+\paragraph{The Cosine polynomials.} ...
+
+
+%\paragraph{Discrete-Time Fourier Analysis on $\spllR$.}
+%\citeauthor{shannon
+
+%%=======================================
+%\subsection{Linear Spaces}
+%%=======================================
+%
+%%=======================================
+%\subsection{What are wavelets?}
+%%=======================================
+%In Fourier analysis, \prope{continuous} {dilations} \xref{def:opD} of the \fncte{complex exponential} \xref{def:exp}
+%form a  \structe{basis} \xref{def:basis_schauder} for the \structe{space of square integrable functions} $\spLLR$ \xref{def:spLLR} 
+%such that
+%  \\\indentx$\ds\spLLR=\linspan\set{\opDil_\omega e^{ix}}{\scy\omega\in\R}$.
+%
+%In Fourier series analysis \xref{thm:opFSi}, \prope{discrete} dilations of the complex exponential 
+%form a  basis for $\spLL{\intoo{0}{2\pi}}$ such that
+%  \\\indentx$\ds\spLL{\intoo{0}{2\pi}}=\linspan\setjZ{\opDil_j e^{ix}}$.
+
+\paragraph{Dyadic wavelet bases.}
+In Wavelet analysis, for some \fncte{mother wavelet} \xref{def:wavelet} $\fpsi(x)$,
+  \\\indentx$\ds\spLLR=\linspan\set{\opDil_\omega\opTrn_\tau \fpsi(x)}{\omega,\tau\in\R}$.
+However, the ranges of parameters $\omega$ and $\tau$ can be much reduced to the countable set $\Z$ resulting in
+a \prope{dyadic} wavelet basis such that for some mother wavelet $\fpsi(x)$,
+  \\\indentx$\ds\spLLR=\linspan\set{\opDil^j\opTrn^n \fpsi(x)}{j,n\in\Z}$.
+%This text deals almost exclusively with dyadic wavelets. 
+%Wavelets that are both \prope{dyadic} and \prope{compactly supported} have the attractive feature 
+%that they can be easily implemented in hardware or software by use of the 
+%\structe{Fast Wavelet Transform} \xref{fig:fwt}.
+
+\begin{minipage}{\tw-65mm}
+  \paragraph{MRA-wavelet bases.}
+  In 1989, St{/'e}phane G. Mallat introduced the \structe{Multiresolution Analysis} (MRA, \prefp{def:mra})
+  method for wavelet construction. The MRA has become the dominate wavelet construction method.
+  This text uses the MRA method extensively, 
+  and combines the MRA ``scaling subspaces" \xref{def:mra} with ``wavelet subspaces" \xref{def:seqWn} 
+  to form a subspace structure as represented by the 
+  \structe{Hasse diagram} to the right.
+  The \structe{Fast Wavelet Transform} combines both sets of subspaces as well, 
+  providing the results of projections onto both wavelet and MRA subspaces.
+  %The MRA is not the only method of wavelet construction,
+  Moreover, P.G. Lemari{/'e} has proved that all wavelets with \prope{compact support} are generated by an MRA.\footnotemark
+\end{minipage}\hfill%
+\begin{minipage}{60mm}
+  %\input{../common/wavelets/graphics/latwav.tex}%
+  \includegraphics{basis/graphics/latwav.eps}%
+\end{minipage}
+\footnotetext{
+  \citor{lemarie1990},
+  \citerpg{mallat}{240}{012466606X}
+  }
+
+
+\if 0
+%=======================================
+\subsection{Analyses}
+%=======================================
+The MRA is an \hib{analysis} of the linear space $\spLLR$.
+An analysis of a linear space $\spX$ is any sequence $\seq{\spV_j}{j\in\Z}$ of linear subspaces of $\spX$.
+%A sequence $\seq{\spV_j}{j\in\Z}$ of linear subspaces of a linear space $\spX$
+%        is an \hib{analysis} of $\spX$.
+        %if  $\seq{\spV_j}{j\in\Z}$ is a partition of $\spX$.
+        The partial or complete reconstruction of $\spX$ from $\seq{\spV_j}{j\in\Z}$ is a \hib{synthesis}.%
+        \footnote{%
+          The word \hie{analysis} comes from the Greek word
+          {\fntagreek{>av'alusis}},
+          meaning ``dissolution" (\citerpc{perschbacher1990}{23}{entry 359}),
+          which in turn means
+          ``the resolution or separation into component parts"
+          (\citer{collins2009}, \scs\url{http://dictionary.reference.com/browse/dissolution})
+          }
+  An analysis is sometimes completely \hie{characterized} by a \hie{transform}.
+  For example, a Fourier analysis is a sequence of subspaces with sinusoidal bases.
+  Examples of subspaces in a Fourier analysis include $\spV_1=\Span\setn{e^{ix}}$, 
+  $\spV_{2.3}=\Span\setn{e^{i2.3x}}$, $\spV_{\sqrt{2}}=\Span\setn{e^{i\sqrt{2}x}}$, etc.
+  A \hib{transform} is loosely defined as a function that maps a family of functions
+  into an analysis.
+  A very useful transform (a ``\hie{Fourier transform}") for Fourier Analysis is \xref{def:opFT}
+  \\\indentx$\ds\brs{\opFT\ff}(\omega) \eqd \frac{1}{\sqrt{2\pi}} \int_\R \ff(x) e^{-i\omega x} \dx$
+
+
+%  \item A sequence $\opT$ in $\clFxy$ is a \hib{transform} \label{item:wavstrct_T}
+%        if each element in the sequence is a projection operator in $\clFxy$.
+%        An example of a transform is the \hib{cosine transform} $\opT$ in $\clFrr$ such that
+%        \begin{align*}
+%          \opT\fx(t) &\eqd \seq{\opP_j}{j\in\Z}
+%             \\&\eqd \seq{\int_{t\in\R} \fx(t)\,\mcom{\cos(nt)}{kernel} \dt}{n\in\Z}
+%             \\&\eqd \seqn{\cdots,\,
+%                           %\int_{t\in\R} \cos\brs{(-2)t}\,\fx(t) \dt,\,
+%                           \int_{t\in\R} \fx(t)\,\cos\brs{(-1)t} \dt,\,
+%                           \int_{t\in\R} \fx(t)\,                \dt,\,
+%                           \int_{t\in\R} \fx(t)\,\cos\brs{( 1)t} \dt,\,
+%                           %\int_{t\in\R} \cos\brs{(-2)t}\,\fx(t) \dt,\,
+%                           \cdots
+%                          }
+%        \end{align*}
+%        Further examples of transforms include the \hie{Fourier Transform} and various \hie{Wavelet Transforms}.
+% it is a \hib{sequence} of projection operators on $\A function $\opT$ in $\clFxy$ is a \hib{transform} if with domain $\clFxy$ and range $\clF{\setA}{\setB}$ if
+
+    \begin{minipage}{\tw-65mm}%
+      An analysis can be partially characterized by its order structure with respect
+      to an order relation such as the set inclusion relation $\subseteq$.
+      Most transforms have a very simple M-$n$ order structure,
+      as illustrated to the right.
+      The M-$n$ lattices for $n\ge3$ are \prope{modular} but not \prope{distributive}.
+      Analyses typically have one subspace that is a \hie{scaling} subspace;
+      and this subspace is often simply a family of constants
+      (as is the case with \hi{Fourier Analysis}).
+    \end{minipage}%
+    \hfill%
+    {\begin{minipage}{60mm}%
+    %  \mbox{}\\% force (just above?) top of graphic to be the top of the minipage
+      \input{../common/wavelets/graphics/latmn.tex}%
+    \end{minipage}}%
+
+    \begin{minipage}{\tw-55mm}%
+      A special characteristic of wavelet analysis is that there is not just one
+      scaling subspace,
+      %(as is with the case of Fourier and other analyses),
+      but an entire sequence of scaling subspaces.
+      These scaling subspaces are \prope{linearly ordered} with respect to the
+      ordering relation $\subseteq$. In wavelet theory, this structure is called a \structe{multiresolution analysis},
+      or \structe{MRA} \xref{def:mra}.
+
+     The MRA was introduced by St{/'e}phane G. Mallat in 1989.
+     The concept of a scaling space was perhaps first introduced by Taizo Iijima in 1959 in Japan,
+    and later as the \structe{Gaussian Pyramid} by Burt and Adelson in the 1980s in the West.\footnotemark
+    \end{minipage}%
+    \footnotetext{%
+      \citorp{mallat89}{70}\\
+      \citor{iijima1959}\\
+      \citor{burt1983}\\
+      \citor{adelson1981}\\
+      \citer{lindeberg1993}\\
+      \citer{alvertez1993}\\
+      \citer{guichard2012}\\
+      \citerc{weickert1999}{historical survey}
+      }
+    \hfill%
+    {\begin{minipage}{50mm}%
+      %\mbox{}\\% force (just above?) top of graphic to be the top of the minipage
+      \fns%
+      \psset{yunit=0.5\psunit}%
+      \input{../common/wavelets/graphics/latmra.tex}%
+    \end{minipage}}%
+
+    \begin{minipage}{\tw-65mm}%
+      A second special characteristic of wavelet analysis is that it's order structure
+      with respect to the $\subseteq$ relation is not a simple M-$n$ lattice 
+     (as is with the case of Fourier and other analyses).
+      Rather, it is a lattice of the form illustrated to the right.
+      This lattice is \prope{non-complemented}, \prope{non-distributive},
+      \prope{non-modular}, and \prope{non-Boolean} \xref{prop:order_wavstrct}.
+    \end{minipage}%
+    \hfill%
+    {\begin{minipage}{60mm}%
+      %\mbox{}\\% force (just above?) top of graphic to be the top of the minipage
+      \input{../common/wavelets/graphics/latwav.tex}%
+    \end{minipage}}%
+
+    \begin{minipage}{\tw-65mm}%
+      The wavelet subspace structure is similar in form to that of the \structe{Primorial numbers},\footnotemark
+      illustrated to the right by a \hie{Hasse diagram}.
+      %In the world of mathematical structures,
+      %there is circumstantial evidence that the order structure of wavelet analyses is quite rare,
+      %if not outright unique.
+      %For example, suppose we replace the wavelet subspaces with prime numbers
+      %and the scaling subspaces with their products as illustrated to the right.
+      %The resulting sequence $\seqn{1,\,2,\,6,\,30,\,210}$ as of 2011 July 30
+      %has no matches in Neil J.A. Sloane's  \emph{Online Encyclopedia of Integer Sequences}
+      %(hosted by \emph{AT\&T Research}).\footnotemark
+    \end{minipage}%
+    \footnotetext{%
+      \citeoeis{A002110}%
+      }%
+    \hfill%
+    {\begin{minipage}{60mm}%
+      %\mbox{}\\% force (just above?) top of graphic to be the top of the minipage
+      \input{../common/math/graphics/latp_1235711.tex}%
+    \end{minipage}}%
+
+  An analysis can be represented using three different structures:
+    %\paragraph{Equivalence of lattice representations.}
+    %So far we have discussed representing a wavelet analysis using three different structures:
+\\\begin{tabular}{@{\qquad}ll}
+  \circOne    & sequence of subspaces             \\
+  \circTwo    & sequence of basis vectors         \\
+  \circThree  & sequence of basis coefficients
+\end{tabular}\\
+These structures are isomorphic to each other, and can therefore be used interchangeably.
+%(see \prefp{thm:VPb_isomorphic}).
+%(see \prefp{fig:wav_VPb_isomorphic}).
+%That is, a ``\hie{wavelet analysis}" can be described using any of these structures.
+%However, sometimes when introducing theorems about wavelets,
+%it is convenient to use elements from not just one, but from multiple lattices;
+%and so it is convenient to have a ``collection" of wavelet analysis elements
+%all assembled together into one formally defined tuple.
+%\pref{def:wavsys} (next) does just that---it defines a \hie{wavelet analysis} in terms of a tuple with elements
+%extracted from the four wavelet structures.
+
+
+%---------------------------------------
+% isomorphic lattices
+%---------------------------------------
+%\begin{figure}[th]
+  \begin{center}%
+  \begin{fsL}%
+  \begin{minipage}[c]{12\tw/16}
+  \begin{minipage}[c]{4\tw/16}%
+  \center
+  \latmatlw{4}{0.5}
+    {
+           &       & \null                 \\
+           & \null                         \\
+     \null &       & \null &       & \null \\
+           &       & \null
+    }
+    {\ncline{1,3}{2,2}\ncline{2,2}{3,1}
+     \ncline{1,3}{3,5}
+     \ncline{2,2}{3,3}
+     \ncline{4,3}{3,1}\ncline{4,3}{3,3}\ncline{4,3}{3,5}
+    }
+    {\nput{ 90}{1,3}{$\spV_3$}
+     \nput{135}{2,2}{$\spV_2$}
+     \nput{180}{3,1}{$\spV_1$}
+     \nput{ 67}{3,3}{$\spW_1$}
+     \nput{  0}{3,5}{$\spW_2$}
+     \nput{-90}{4,3}{$\spZero$}
+    }
+  \end{minipage}
+  \hfill{\Large$\thickapprox$}\hfill
+  \begin{minipage}[c]{4\tw/16}%
+  \center
+  \latmatlw{4}{0.5}
+    {
+           &       & \null                 \\
+           & \null                         \\
+     \null &       & \null &       & \null \\
+           &       & \null
+    }
+    {\ncline{1,3}{2,2}\ncline{2,2}{3,1}
+     \ncline{1,3}{3,5}
+     \ncline{2,2}{3,3}
+     \ncline{4,3}{3,1}\ncline{4,3}{3,3}\ncline{4,3}{3,5}
+    }
+    {\nput{ 90}{1,3}{$\seqn{h_n}_3$}
+     \nput{135}{2,2}{$\seqn{h_n}_2$}
+     \nput{180}{3,1}{$\seqn{h_n}_1$}
+     \nput{ 67}{3,3}{$\seqn{g_n}_1$}
+     \nput{  0}{3,5}{$\seqn{g_n}_2$}
+     \nput{-90}{4,3}{$\opZero$}
+    }
+  \end{minipage}
+  \hfill{\Large$\thickapprox$}\hfill
+  \begin{minipage}[c]{4\tw/16}%
+  \center
+  \latmatlw{4}{0.5}
+    {
+           &       & \null                 \\
+           & \null                         \\
+     \null &       & \null &       & \null \\
+           &       & \null
+    }
+    {\ncline{1,3}{2,2}\ncline{2,2}{3,1}
+     \ncline{1,3}{3,5}
+     \ncline{2,2}{3,3}
+     \ncline{4,3}{3,1}\ncline{4,3}{3,3}\ncline{4,3}{3,5}
+    }
+    {\nput{ 90}{1,3}{$\seqn{\phi_{3,m}}$}
+     \nput{135}{2,2}{$\seqn{\phi_{2,m}}$}
+     \nput{180}{3,1}{$\seqn{\phi_{1,m}}$}
+     \nput{ 67}{3,3}{$\seqn{\psi_{1,m}}$}
+     \nput{  0}{3,5}{$\seqn{\psi_{2,m}}$}
+     \nput{-90}{4,3}{$\opZero$}
+    }
+  \end{minipage}
+\end{minipage}
+\end{fsL}
+\end{center}
+%\caption{
+%  Subspace, coefficient, and basis lattice isomorphisms
+%  \label{fig:wav_VPb_isomorphic}
+%  }
+%\end{figure}
+
+  Here are some examples of the order structures of some analyses,
+        including two wavelet analyses:
+
+
+
+{\begin{center}%
+  \begin{fsL}%
+\psset{unit=8mm}%
+\begin{longtable}{|c|c|}%
+\hline%
+\mc{1}{B}{Cosine analysis  (even Fourier series)} & \mc{1}{B}{Cosine polynomial analysis}%
+\\%
+  \input{../common/math/graphics/baslat_cosh.tex}%
+&%
+  \input{../common/math/graphics/baslat_cose.tex}%
+\\\hline%
+\mc{1}{|B|}{Chebyshev polynomial analysis\cittrp{rivlin1974}{4}}&\mc{1}{|B|}{Hadamard-3 analysis}%
+\\%
+  \input{../common/math/graphics/baslat_cheby.tex}%
+&%
+  \input{../common/math/graphics/baslat_h3.tex}%
+\\\hline%
+\mc{1}{|B|}{Haar/Daubechies-$p1$ wavelet analysis} & \mc{1}{B|}{Daubechies-$p2$ wavelet analysis}%
+\\%
+  \input{../common/math/graphics/baslat_d1.tex}%
+&%
+  \input{../common/math/graphics/baslat_d2.tex}%
+\\\hline%
+\end{longtable}%
+  \end{fsL}%
+\end{center}}%
+
+
+%=======================================
+\subsection{Multiresolution analysis}
+%=======================================
+%=======================================
+\subsubsection{Definition}
+%=======================================
+A multiresolution analysis provides ``coarse" approximations of a function in a linear space $\spLLR$ at multiple
+``scales" or ``resolutions".
+%\paragraph{Scaling function.}
+Key to this process is a sequence of \hie{scaling functions}.
+Most traditional transforms feature a single \hie{scaling function} $\fphi(x)$
+set equal to one ($\fphi(x)=1$).
+This allows for convenient representation of the most basic functions, such as constants.\citep{jawerth}{8}
+A multiresolution system, on the other hand, uses a generalized form of the scaling concept:
+\begin{dingautolist}{"AC}
+  \item Instead of the scaling function simply being set \emph{equal to unity} ($\fphi(x)=1$),
+        a multiresolution system \xref{def:mrasys} is often constructed in such a way that the scaling function 
+        $\fphi(x)$ forms a \hie{partition of unity} \xref{def:pun} such that
+        $\sum_{n\in\Z} \opTrn^n\fphi(x) = 1$.
+  \item Instead of there being \emph{just one} scaling function, there
+        is an entire sequence of scaling functions $\seqjZ{\opDil^j\fphi(x)}$, 
+        each corresponding to a different ``\hie{resolution}".
+\end{dingautolist}
+
+%--------------------------------------
+\begin{definition}% [multiresolution system]
+\label{def:seqVn}
+\label{def:mra}
+\label{def:wavstrct_phi}
+\footnote{
+  \citerpg{hernandez1996}{44}{0849382742}\\
+  \citerpgc{mallat}{221}{012466606X}{Definition 7.1} \\
+  \citorp{mallat89}{70}\\
+  \citorpgc{meyer1992}{21}{0521458692}{Definition 2.2.1}\\
+  \citerpgc{christensen2003}{284}{0817642951}{Definition 13.1.1}\\
+  \citerppgc{bachman2000}{451}{452}{0387988998}{Definition 7.7.6}\\
+  \citerppgc{walnut2002}{300}{301}{0817639624}{Definition 10.16}\\
+ %\citerppgc{vidakovic}{51}{52}{0471293652}{Riesz basis: footnote on page 52}\\
+  \citerppgc{dau}{129}{140}{0898712742}{Riesz basis: page 139}\\
+  %\citerppgc{christensen2003}{73}{74}{0817642951}{Definition 3.8.2}\\
+  %\citerpgc{heil2011}{371}{0817646868}{Definition 12.8}\\
+  %\citerpgc{walter}{38}{1584882271}{3.1 Multiresolution Analysis}
+  }
+%--------------------------------------
+%Let $\spLLR$ be the space of all \structe{square Lebesgue integrable functions} \xref{def:spLLR}.
+Let $\seqjZ{\spV_j}$ be a sequence of subspaces on $\spLLR$ \xref{def:spLLR}.  %be a \prope{separable} \structe{Hilbert space}.
+Let $\clsA$ be the \structe{closure} of a set $\setA$.
+\\\defboxt{
+  The sequence $\seqjZ{\spV_j}$ is a \hid{multiresolution analysis} on $\spLLR$ if
+  \\
+  $\begin{array}{@{\qquad}F>{\ds}lCDD}
+   %1. & \spV_j \text{ is a linear subspace of $\spX$}\qquad \forall \spV_j\in\seqjZ{\spV_j}
+    %\cnto & \mc{2}{M}{$\spLLR$ is \prope{complete}}                       & ($\spLLR$ is a \structe{Hilbert Space})         & and
+    %\cntn & \mc{2}{M}{$\spLLR$ is \prope{separable}}                      &                                               & and
+    \cnto & \spV_j          = \cls{\spV_j}              & \forall j\in\Z                 & (\prope{closed})                              & and 
+    \cntn & \spV_j          \subset \spV_{j+1}          & \forall j\in\Z                 & (\prope{linearly ordered})                    & and 
+    \cntn & \clsp{\Setu_{j\in\Z} \spV_j} = \spLLR         &                                & (\prope{dense} in $\spLLR$)    & and 
+   %\cntn & \Seti_{j\in\Z} \spV_j = \setn{\vzero}       &                                & (\structe{greatest lower bound} is $\spZero$) & and 
+    \cntn & \ff\in\spV_j \iff    \opDil\ff\in\spV_{j+1} & \forall j\in\Z,\,\ff\in\spLLR  & (\prope{self-similar})                        & and
+   %\cntn & \ff\in\spV_j \iff    \opTrn\ff\in\spV_j     & \forall n\in\Z,\,\ff\in\spLLR  & (\prope{translation invariant})               & and 
+    \cntn & \mc{3}{l}{\ds\exists \fphi \st \setxZ{\opTrn^n\fphi} \text{ is a \structe{Riesz basis} for $\spV_0$.}}                       & 
+  \end{array}$
+  \\
+  A \structe{multiresolution analysis} is also called an \hid{MRA}.\\
+  An element $\spV_j$ of $\seqjZ{\spV_j}$ is a \hid{scaling subspace} of the space $\spLLR$.\\
+  The pair $\hxs{\MRAspaceLLRV}$ is a \hid{multiresolution analysis space}, or \hid{MRA space}.\\
+  The function $\hxs{\fphi}$ is the \hid{scaling function} of the \structe{MRA space}.
+  }
+\end{definition}
+
+The traditional definition of the \structe{MRA} also includes the following:
+  \\\indentx$\begin{array}{F>{\ds}lCD}
+      \cntn & \ff\in\spV_j \iff    \opTrn^n\ff\in\spV_j     & \forall n,j\in\Z,\,\ff\in\spLLR  & (\prope{translation invariant})
+      \cntn & \Seti_{j\in\Z} \spV_j = \setn{\vzero}         &                                  & (\structe{greatest lower bound} is $\spZero$)
+  \end{array}$\\
+However, \pref{prop:mra_transinvar} (next) and \prefpp{prop:mra_glb} demonstrate that
+these follow from the \structe{MRA} as defined in \pref{def:mra}.
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{hernandez1996}{45}{0849382742}{Theorem 1.6}
+  }
+\label{prop:mra_transinvar}
+%--------------------------------------
+Let \structe{MRA} be defined as in \prefp{def:mra}.
+\propbox{
+  \brb{\text{$\seqjZ{\spV_j}$ is an \structe{MRA}}}
+  \qquad\implies\qquad
+  \mcom{\brb{\begin{array}{>{\ds}lC}
+    \ff\in\spV_j \iff    \opTrn^n\ff\in\spV_j     & \forall n,j\in\Z,\,\ff\in\spLLR  %& (\prope{translation invariant})
+  \end{array}}}{\prope{translation invariant}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \opTrn^n\ff\in\spV_j
+    &\iff \opTrn^n\ff\in\linspan\set{\opDil^j\opTrn^m\fphi}{\scy m\in\Z}
+          &&
+          && \text{by definition of $\setn{\fphi}$ \xref{def:mra}}
+  \\&\iff \exists \seqxZ{\alpha_n} \st \opTrn^n\ff(x)
+          &&= \sum_{k\in\Z}\alpha_k\opDil^j\opTrn^k\fphi(x)
+          && \text{by definition of $\setn{\fphi}$ \xref{def:mra}}
+  \\&\iff \exists \seqxZ{\alpha_n} \st \ff(x)
+          &&= \opTrn^{-n}\sum_{k\in\Z}\alpha_k\opDil^j\opTrn^k\fphi(x)
+          && \text{by definition of $\opTrn$ \xref{def:opT}}
+  \\&     &&= \sum_{k\in\Z}\alpha_k\opTrn^{-n}\opDil^j\opTrn^k\fphi(x)
+          %&& \text{by \prefp{prop:opTD_sum}}
+  \\&     &&= \sum_{k\in\Z}\alpha_k\opDil^j\opTrn^{k-2n}\fphi(x)
+          && \text{by \thme{commutator relation} \xref{prop:DTTD}}
+  \\&     &&= \sum_{\ell\in\Z}\alpha_{\ell+2n}\opDil^j\opTrn^{\ell}\fphi(x)
+          && \text{where $\ell\eqd k-2n\implies k=\ell+2n$}
+  \\&     &&= \sum_{\ell\in\Z}\beta_{\ell}\opDil^j\opTrn^{\ell}\fphi(x)
+          && \text{where $\beta_{\ell}\eqd\alpha_{\ell+2n}$}
+  \\&     &&\iff \quad\ff\in\spV_j
+          && \text{by definition of $\setn{\opTrn^n\fphi}$ \xref{def:mra}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\footnote{
+  \citerppgc{wojtaszczyk1997}{19}{28}{0521578949}{Proposition 2.14}\\
+  \citerpgc{hernandez1996}{45}{0849382742}{Theorem 1.6}\\
+  \citerppgc{pinsky2002}{313}{314}{0534376606}{Lemma 6.4.28}
+  }
+\label{prop:mra_glb}
+%--------------------------------------
+Let \structe{MRA} be defined as in \prefp{def:mra}.
+\propbox{
+  \brb{\text{$\seqjZ{\spV_j}$ is an \structe{MRA}}}
+  \qquad\implies\qquad
+  \brb{\begin{array}{>{\ds}lCDD}
+     \Seti_{j\in\Z} \spV_j = \setn{\vzero}       &                                & (\structe{greatest lower bound} is $\spZero$) &  \\
+    %2. & \ff\in\spV_j \iff    \opTrn\ff\in\spV_j     & \forall j\in\Z,\,\ff\in\spLLR  & (\prope{translation invariant})               &
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{enumerate}
+  \item Let $\opP_j$ be the \ope{projection operator} that generates the scaling subspace $\spV_j$ such that \label{idef:mra_glb_Pj}
+    \\\indentx$\ds\opV_j=\set{\opP_j\ff}{\ff\in\spLLR}$
+
+  \item lemma: Functions with \prope{compact support} are \prope{dense} in $\spLLR$.
+        \label{ilem:mra_glb_dense}
+        Therefore, we only need to prove that the proposition is true for functions with support in $\intcc{-R}{R}$, for all $R>0$.
+
+  \item For some function $\ff\in\spLLR$, let $\seqxZ{\ff_n}$ be a sequence of functions in $\spLLR$ 
+        with \prope{compact support} such that
+        \\\indentx
+        $\support\ff_n\subseteq\intcc{-R}{R}$ for some $R>0$
+        \quad and\quad
+        $\ds\ff(x)=\lim_{n\to\infty}\seqn{\ff_n(x)}$.
+        \label{idef:mra_glb_ffn}
+
+  \item lemma: $\ds\Seti\spV_j=\setn{\vzero}\quad\iff\quad\lim_{j\to-\infty}\norm{\opP_j\ff}=0\quad{\scy\forall\ff\in\spLLR}$. Proof:  \label{ilem:mra_glb_VjPj}
+    \begin{align*}
+      \Seti_{j\in\Z}\spV_j 
+        &= \Seti_{j\in\Z}\set{\opP_j\ff}{\ff\in\spLLR}
+        && \text{by definition of $\spV_j$ \xref{idef:mra_glb_Pj}}
+      \\&= \lim_{j\to-\infty}\set{\opP_j\ff}{\ff\in\spLLR}
+        && \text{by definition of $\seti$}
+      \\&= \vzero
+      \iff \lim_{j\to-\infty}\norm{\opP_j\ff}=0
+        && \text{by \prope{nondegenerate} property of $\normn$ \xref{def:norm}}
+    \end{align*}
+  
+  \item lemma: $\ds\lim_{j\to-\infty}\norm{\opP_j\ff}=0\quad{\scy\forall\ff\in\spLLR}$. Proof:\\
+        Let $\setindAx$ be the \fncte{set indicator function} \xref{def:setind} \label{ilem:mra_glb_norm}
+    \begin{align*}
+      &\lim_{j\to-\infty}\norm{\opP_j\ff}^2
+      \\&=   \lim_{j\to-\infty}\norm{\opP_j\lim_{n\to\infty}\seqn{\ff_n}}^2
+        &&   \text{by \prefp{idef:mra_glb_ffn}}
+      \\&\le \lim_{j\to-\infty}B\sum_{n\in\Z}\abs{\inprod{\opP_j\lim_{n\to\infty}\seqn{\ff_n}}{\opDil^j\opTrn^n\fphi}}^2
+        &&   \text{by \prope{frame property} \xref{prop:rbasis_frame}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\abs{\inprod{\lim_{n\to\infty}\seqn{\ff_n}}{\opDil^j\opTrn^n\fphi}}^2
+        &&   \text{by definition of $\opP_j$ \xref{idef:mra_glb_Pj}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\abs{\inprod{\setind_\intcc{-R}{R}(x)\lim_{n\to\infty}\seqn{\ff_n}}{\opDil^j\opTrn^n\fphi(x)}}^2
+        &&   \text{by definition of $\seqn{\ff_n}$ \xref{idef:mra_glb_ffn}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\abs{\inprod{\lim_{n\to\infty}\seqn{\ff_n}}{\setind_\intcc{-R}{R}(x)\opDil^j\opTrn^n\fphi(x)}}^2
+        &&   \text{prop. of $\inprodn$ in $\spLLR$ \xref{def:spLLR}}
+      \\&\le \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\lim_{n\to\infty}\seqn{\ff_n}}^2\norm{\setind_\intcc{-R}{R}(x)\opDil^j\opTrn^n\fphi(x)}^2
+        &&   \text{by \thme{Cauchy-Schwarz Inequality}\ifsxref{vsinprod}{thm:cs}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\ff}^2\norm{\setind_\intcc{-R}{R}(x)\opDil^j\opTrn^n\fphi(x)}^2
+        &&   \text{by definition of $\seqn{\ff_n}$ \xref{idef:mra_glb_ffn}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\ff}^2\norm{\brs{\mcom{\opDil^j\opDil^{-j}}{$\opI$}\setind_\intcc{-R}{R}(x)}\brs{\opDil^j\opTrn^n\fphi(x)}}^2
+        &&   \text{by \prefp{prop:opDi}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\ff}^2\norm{2^{j/2}\opDil^j\brb{\brs{\opDil^{-j}\setind_\intcc{-R}{R}(x)}\brs{\opTrn^n\fphi(x)}}}^2
+        &&   \text{by \prefp{prop:DjTnfg}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\ff}^2\norm{\opDil^j\brb{2^{j/2}2^{-j/2}\setind_\intcc{-R}{R}(2^{-j}x)\brs{\opTrn^n\fphi(x)}}}^2
+        &&   \text{by \prefp{prop:opDi}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\ff}^2\norm{\opDil^j\brb{\brs{\mcom{\opTrn^n\opTrn^{-n}}{$\opI$}\setind_\intcc{-R}{R}(2^{-j}x)}\brs{\opTrn^n\fphi(x)}}}^2
+        &&   \text{by \prefp{prop:opTi}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\ff}^2\norm{\opDil^j\brb{\brs{\opTrn^n\setind_\intcc{-R}{R}(2^{-j}x+n)}\brs{\opTrn^n\fphi(x)}}}^2
+        &&   \text{by \prefp{prop:opTi}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\ff}^2\norm{\opDil^j\opTrn^n\brb{\setind_\intcc{-R}{R}(2^{-j}x+n)\fphi(x)}}^2
+        &&   \text{by \prefp{prop:opDi}}
+      \\&=   \lim_{j\to-\infty}B\sum_{n\in\Z}\norm{\ff}^2\norm{\setind_\intcc{-R}{R}(2^{-j}x+n)\fphi(x)}^2
+        &&   \text{by \prefp{thm:TD_unitary}}
+      \\&=   B\norm{\ff}^2\sum_{n\in\Z}\lim_{j\to-\infty}\norm{\setind_\intcc{-2^jR+n}{2^jR+n}(u)\fphi(2^{-j}(u-n))}^2
+        &&   \text{$u\eqd 2^jx+n\implies x=2^{-j}(u-n)$}
+      \\&=   B\norm{\ff}^2\sum_{n\in\Z}\lim_{j\to-\infty}\int_{-2^jR+n}^{2^jR+n}\abs{\fphi(2^{-j}(u-n))}^2\du
+      \\&=   B\norm{\ff}^2\sum_{n\in\Z}\int_{n}^{n}\abs{\fphi(0)}^2\du
+      \\&=   0
+    \end{align*}
+
+  \item Final step in proof that $\ds\Seti\spV_j=\setn{\vzero}$: by \prefp{ilem:mra_glb_VjPj} and \prefp{ilem:mra_glb_norm}
+\end{enumerate}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerppgc{wojtaszczyk1997}{28}{31}{0521578949}{Proposition 2.15}
+  }
+\label{prop:mra_UVj}
+%--------------------------------------
+%Let $\spO\eqd\mrasys$.
+Let a \structe{Riesz sequence} be defined as in \prefp{def:rieszseq}.
+\propbox{
+  \brb{\begin{array}{FMD}
+    (1). & $\seqn{\opTrn^n\fphi}$ is a \structe{Riesz sequence} & and \\
+    (2). & $\Fphi(\omega)$ is \prope{continuous} at $0$ & and \\
+    (3). & $\Fphi(0)\neq0$
+  \end{array}}
+  \implies
+  \brb{\begin{array}{>{\ds}lD}
+     \cls{\brp{\Setu_{j\in\Z} \spV_j}} = \spLLR  & (\prope{dense} in $\spLLR$) 
+  \end{array}}
+  }
+\end{proposition}
+\begin{proofns}
+\begin{enumerate}
+  \item Let $\opP_j$ be the \ope{projection operator} that generates the scaling subspace $\spV_j$ such that \label{item:mra_UVj_Pj}
+    \\\indentx$\ds\opV_j=\set{\opP_j\ff}{\ff\in\spH}$
+
+  \item definition: Choose $\ff\in\spLLR$ such that $\ff\orthog\Setu_{j\in\Z}\spV_j$.
+        Let $\Ff(\omega)$ be the \ope{Fourier Transform} \xref{def:opFT} of $\ff(x)$.
+        \label{idef:mra_UVj_f}
+
+  \item lemma: The function $\ff$ \xref{idef:mra_UVj_f} \emph{exists} because the set of functions that 
+        can be chosen to be $\ff$ at least contains $0$ (it is not the emptyset). Proof:
+        \label{ilem:mra_UVj_fexists}
+        \begin{align*}
+          \ff(x)=0
+            &\implies \inprodr{\ff}{\set{\fh\in\spLLR}{\fh\in\Setu_{j\in\Z}\spV_j}}
+          \\&= \inprodr{0}{\set{\fh\in\spLLR}{\fh\in\Setu_{j\in\Z}\spV_j}}
+          \\&= 0
+          \\&\implies\quad \ff\orthog\Setu_{j\in\Z}\spV_j
+          \\&\implies\quad \text{$\ff$ exists}
+        \end{align*}
+
+  \item lemma: $\norm{\opP_j\ff}=0\quad{\scy\forall j\in\Z}$. Proof:
+        \label{ilem:mra_UVj_Pf}
+    \begin{align*}
+      \norm{\opP_j\ff}
+        &= \norm{0}
+        && \text{by definition of $\ff$ \xref{idef:mra_UVj_f}}
+      \\&= 0
+        && \text{by \prope{nondegenerate} property of $\normn$}
+    \end{align*}
+
+  \item definition: Choose some function $\fg\in\spLLR$ such that $\Fg(\omega)=\Ff(\omega)\setind_\intcc{-R}{R}$ \xref{def:setind} 
+        for some $R>0$ 
+        and such that $\norm{\ff-\fg}<\varepsilon$.
+        Let $\Fg(\omega)$ be the \ope{Fourier Transform} \xref{def:opFT} of $\fg(x)$.
+        \label{idef:mra_UVj_g}
+
+  \item lemma: The function $\fg$ \xref{idef:mra_UVj_g} \emph{exists}. Proof: For some (possibly very large) $R$,
+        \label{idef:mra_UVj_gexists}
+    \begin{align*}
+      \varepsilon
+        &> \norm{\Ff(\omega)-\Fg(\omega)}
+        && \text{by definition of $\fg$ \xref{idef:mra_UVj_g}}
+      \\&= \norm{\opFT\ff(x)-\opFT\fg(x)}
+        && \text{by definition of $\Ff$ and $\Fg$ \xref{idef:mra_UVj_f}, \xref{idef:mra_UVj_g}}
+      \\&= \norm{\opFT\brs{\ff(x)-\fg(x)}}
+        && \text{by \prope{linearity} of $\opFT$}
+      \\&= \norm{\ff(x)-\fg(x)}
+        && \text{by \prope{unitary} property of $\opFT$ \xref{thm:ft_unitary}}
+      \\&\implies\quad\text{$\fg$ exists}
+        && \text{because it's possible to satisfy \prefp{idef:mra_UVj_g}}
+    \end{align*}
+
+  \item lemma: $\norm{\opP_j\fg}<\varepsilon\quad{\scy\forall j\in\Z}$ for sufficiently large $R$. Proof:
+        \label{ilem:mra_UVj_ge}
+    \begin{align*}
+      \varepsilon
+        &>   \norm{\ff-\fg}
+        &&   \text{by definition of $\fg$ \xref{idef:mra_UVj_g}}
+      \\&\ge \norm{\opP_j\brs{\ff-\fg}}
+        &&   \text{by property of \ope{projection operator}s}
+      \\&=   \norm{\opP_j\ff-\opP_j\fg}
+        &&   \text{by \prope{additive} property of $\opP_j$ \xref{def:linop}}
+      \\&\ge \abs{\norm{\opP_j\ff}-\norm{\opP_j\fg}}
+        &&   \text{by \thme{Reverse Triangle Inequality}\ifsxref{vsnorm}{thm:rti}}
+      \\&=   \abs{0-\norm{\opP_j\fg}}
+        &&   \text{by \xref{ilem:mra_UVj_Pf}}
+      \\&=   \norm{\opP_j\fg}
+        &&   \text{by \prope{strictly positive} property of $\normn$ \xref{def:norm}}
+    \end{align*}
+
+  \item  lemma: $\fg=0$. Proof: \label{ilem:mra_UVj_g0}
+    \begin{align*}
+       0
+        &=   \lim_{j\to\infty}\norm{\opP_j\fg}^2
+        &&   \text{by \prefp{ilem:mra_UVj_ge}}
+      \\&\ge \lim_{j\to\infty}A\sum_{n\in\Z}\abs{\inprod{\opP_j\fg}{\opDil^j\opTrn^n\fphi}}^2
+        &&   \text{by \prope{frame property} \xref{prop:rbasis_frame}}
+      \\&=   \lim_{j\to\infty}A\sum_{n\in\Z}\abs{\inprod{\fg}{\opDil^j\opTrn^n\fphi}}^2
+        &&   \text{by definition of $\opP_j$ \xref{item:mra_UVj_Pj}}
+      \\&=   \lim_{j\to\infty}A\sum_{n\in\Z}\abs{\inprod{\opFT\fg}{\opFT\opDil^j\opTrn^n\fphi}}^2
+        &&   \text{by \prope{unitary} property of $\opFT$ \xref{thm:ft_unitary}}
+      \\&=   \lim_{j\to\infty}A\sum_{n\in\Z}\abs{\inprod{\Fg(\omega)}{2^{-j/2}e^{-i2^{-j}\omega n}\Fphi(2^{-j}\omega)}}^2
+        &&   \text{by \prefp{prop:FTDf}}
+      \\&=   \lim_{j\to\infty}A\sum_{n\in\Z}\abs{\inprod{\Fg(\omega)\Fphi^\ast(2^{-j}\omega)}{2^{-j/2}e^{-i2^{-j}\omega n}}}^2
+        &&   \text{by property of $\inprodn$ in $\spLLR$}
+      \\&=   \lim_{j\to\infty}A\norm{\Fg(\omega)\Fphi^\ast(2^{-j}\omega)}^2
+        &&   \text{by \thme{Parseval's Identity} \xref{thm:fst}}
+      \\&=   A\norm{\Fg(\omega)\Fphi^\ast(0)}^2
+        &&   \text{by left hypothesis (2)}
+      \\&=   A\abs{\Fphi^\ast(0)}^2\,\norm{\Fg(\omega)}^2
+        &&   \text{by \prope{homogeneous} property of $\normn$\ifsxref{vsnorm}{def:norm}}
+      \\&=   A\abs{\Fphi(0)}^2\,\norm{\fg}^2
+        &&   \text{by \prope{unitary} property of $\opFT$ \xref{thm:ft_unitary}}
+      \\&\implies \norm{\fg}=0
+        &&   \text{by left hypothesis (3)}
+      \\&\iff     \fg=0
+        &&   \text{by \prope{nondegenerate} property of $\normn$\ifsxref{vsnorm}{def:norm}}
+      %\\&\implies  \cls{\brp{\Setu_{j\in\Z}\spV_j}}=\spLLR
+    \end{align*}
+
+  \item Final step in proof that $\ds\cls{\brp{\Setu_{j\in\Z} \spV_j}} = \spLLR$:
+    \begin{align*}
+      \fg
+        &=0
+        && \text{by \prefp{ilem:mra_UVj_g0}}
+      \\&\implies\ff=0
+        && \text{by definition of $\fg$ \xref{idef:mra_UVj_g}}
+      \\&\implies \cls{\brp{\Setu_{j\in\Z} \spV_j}} = \spLLR
+    \end{align*}
+\end{enumerate}
+\end{proofns}
+
+%=======================================
+%\subsubsection{Separable Hilbert Space}
+%=======================================
+\pref{def:mra} defines an MRA on the space $\spLLR$, which is a special case of a \structe{separable Hilbert space}.
+A Hilbert space\ifsxrefs{seq}{def:hilbert}is a \structe{linear space}\ifsxrefs{vector}{def:vspace}that is 
+equipped with an \structe{inner product}\ifsxref{vsinprod}{def:inprod},
+is \prope{complete}\ifsxrefs{seq}{def:complete}with respect to the 
+\structe{metric}\ifsxrefs{metric}{def:metric}induced by the inner product,
+and contains a subset that is \prope{dense}\ifsxrefs{topology}{def:dense}in $\spLLR$.
+
+An \structe{inner product} on a linear space endows the linear space with a \structe{topology}\ifsxref{topology}{def:topology}.
+The sum such as $\sum_{n=1}^\xN \alpha_n \ff_n$ is finite and thus suitable for a finite linear space only.
+An infinite space requires an infinite sum $\sum_{n=1}^\infty \alpha_n \fphi_n$, and an infinite sum is defined
+in terms of a limit \xref{def:suminf}.
+%  \\\indentx$\ds\sum_{n=1}^\infty \alpha_n \fphi_n \eqd \lim_{\xN\to\infty}\mcom{\ds\sum_{n=1}^\xN \alpha_n \fphi_n}{partial sum}$.\\
+The limit, in turn, is defined in terms of a \structe{topology}\ifsxref{topology}{def:topology}.
+The \structe{inner product}\ifsxrefs{vsinprod}{def:inprod} induces a \structe{norm} \xref{def:norm} which induces a 
+\structe{metric}\ifsxrefs{metric}{def:metric} which induces a topology\ifsxref{metric}{thm:(X,d)->(X,t)}.
+
+%A common example of a separable Hilbert space is the space of square integrable functions, $\spLLR$.
+%And in fact, for the design examples in this book, the reader may simply set $\spLLR=\spLLR$.
+
+%%---------------------------------------
+%\begin{proposition}
+%\label{prop:Vn_separable}
+%%---------------------------------------
+%Let $\MRAspaceLLRV$ be an \structe{MRA space}.
+%\propbox{
+%  \text{$\spV_j$ is \prope{separable}}\qquad\scy\forall j\in\Z
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{enume}
+%  \item By \pref{def:mra}, $\spLLR$ is \prope{separable}.
+%  \item So by \prefp{thm:XdYd_separable}, each $\spV_j$ is \prope{separable} as well.
+%\end{enume}
+%\end{proof}
+%
+
+
+%=======================================
+%\subsubsection{Closure properties}
+%=======================================
+\pref{def:mra} defines each subspace $\spV_j$ to be \prope{closed} ($\spV_j=\cls{\spV_j}$) in $\spLLR$.
+As one might imagine, the properties of \prope{completeness}\ifsxrefs{seq}{def:complete}and 
+\prope{closure}\ifsxrefs{topology}{def:clsA}%, \prefp{def:subspace_closed}
+are closely related. % (see next proposition).
+Moreover, Every \prope{complete} sequence is also \prope{bounded}\ifsxref{metric}{def:bounded},
+and so each subspace $\spV_j$ is \prope{bounded} as well. % (see \prefp{prop:Vn_bounded}).
+%Both are topological properties. Completeness is defined on sequences \xrefP{def:sequence}; %closure is defined on sets.
+
+
+
+%%---------------------------------------
+%\begin{proposition}
+%%---------------------------------------
+%Let $\MRAspaceLLRV$ be an \structe{MRA space}.
+%\propbox{
+%  \mcom{\spLLR=\cls\spLLR}{$\spLLR$ is \prope{closed}.}
+%  }
+%\begin{proof}
+%        The limit of an expansion (if the limit exists) may be inside the linear space or outside. \label{item:mra_Hcomplete}
+%        We would like it to be inside. That is, we would like the space $\spLLR$ to contain all its 
+%        \structe{limit points} \xrefP{def:limitpnt}.
+%        The space $\spLLR$ does contain all its limit points because by definition, it is \propb{complete} \xrefP{def:complete}.
+%        Any metric space (which includes all inner product spaces) that is \prope{complete} is also \prope{closed}
+%        \xrefP{thm:comcls}.
+%        And a metric space is \prope{closed} if and only if it contains all its limit points \xrefP{thm:cst}.
+%        An inner product space that is \prope{complete} is called a \structe{Hilbert space} \xrefP{def:hilbert}.
+%\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:Vn_complete}
+%---------------------------------------
+Let $\MRAspaceLLRV$ be an \structe{MRA space}.
+\propbox{
+  \text{Each subspace $\spV_j$ is \prope{complete}.}
+  }
+\end{proposition}
+\begin{proof}
+\begin{enume}
+  \item By definition \pref{def:mra}, $\spLLR$ is \prope{complete}. 
+  \item In any metric space, (which includes all inner product spaces such as $\spLLR$),
+        a \prope{closed} subspace of a \prope{complete} metric space is itself also \prope{complete}\ifsxref{seq}{thm:comcls}.
+  \item In any \prope{complete} metric space $\spX$ (which includes all Hilbert spaces such as $\spLLR$), 
+        the two properties coincide---that is, a subspace is complete \emph{if and only if} 
+        it is closed in the space $\spX$\ifsxref{seq}{cor:comcomcls}.
+  \item So because $\spLLR$ is \prope{complete} and each $\spV_j$ is \prope{closed}, then each $\spV_j$ is also \prope{complete}.
+\end{enume}
+\end{proof}
+
+%%---------------------------------------
+%\begin{proposition}
+%\label{prop:Vn_bounded}
+%%---------------------------------------
+%Let $\MRAspaceLLRV$ be an \structe{MRA space}.
+%\propbox{\begin{array}{MMC}
+%  $\spLLR$   & is \prope{bounded}.\\
+%  $\spV_j$ & is \prope{bounded} & \forall n\in\Z .
+%\end{array}}
+%\end{proposition}
+%\begin{proof}
+%\begin{enume}
+%  \item Every \prope{complete} metric space is \prope{bounded}\ifsxref{seq}{thm:convergent==>cauchy}.
+%  \item $\spLLR$ is \prope{complete}, so it is also \prope{bounded} \xref{def:mra}.
+%  \item Each $\spV_j$ is \prope{complete}, so each $\spV_j$ is also \prope{bounded} \xref{prop:Vn_complete}.
+%\end{enume}
+%\end{proof}
+
+%=======================================
+\subsubsection{Order structure}
+%=======================================
+
+\begin{minipage}[t]{\tw-58mm}%
+  A \structe{multiresolution analysis} \xref{def:mra} together with the set inclusion relation $\subseteq$
+  forms the \hie{linearly ordered set} \ifdochas{order}{\xrefP{def:toset}}
+  $\hxs{\opair{\seqn{\spV_j}}{\subseteq}}$, illustrated to the right by a \structe{Hasse diagram}\ifsxref{order}{def:hasse}.
+  Subspaces $\spV_j$ increase in ``size" with increasing $j$.
+  That is, they contain more and more vectors (functions) for larger and larger $j$---%
+  with the upper limit of this sequence being $\spLLR$.
+  %and the subspace $\spZero$ (smallest $n$) containing only the $\vzero$ vector.
+  Alternatively, we can say that approximation within a subspace $\spV_j$ 
+  yields greater ``\hie{resolution}" for increasing $j$.
+  %In general, the number of subspaces in such a sequence can be countably infinite (e.g. $n\in\Z$).
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{55mm}%
+  \mbox{}\\% force (just above?) top of graphic to be the top of the minipage
+  \psset{yunit=0.5\psunit}%
+  \input{../common/wavelets/graphics/latmra.tex}%
+\end{minipage}%
+
+The \structe{least upper bound} (\structe{l.u.b.}) of the linearly ordered set $\opair{\seqn{\spV_j}}{\subseteq}$ is $\spLLR$ \xref{def:mra}:
+  \\\indentx
+   $\ds\clsp{\Setu_{j\in\Z} \spV_j} = \spLLR$.
+   %$\ds\lim_{\xN\to\infty}\spV_j \eqd \clsp{\Setu_{j\in\Z} \spV_j} = \spLLR$.
+  \\
+
+%      \propb{upper bounded}:
+%  Furthermore, the property $\clsp{\Setu_{j\in\Z} \spV_j} = \spLLR$
+%  demonstrates that the sequence of scaling subspaces $\seqn{\spV_j}$ is \prope{upper bounded} by $\spLLR$. % \xrefP{def:complete_set}.
+%  Because the subspaces are nested (or linearly ordered with respect to $\subset$) such that $\spV_j\subset\spV_{j+1}$,
+%  we could define the least upper bound (or the limit) of such a sequence 
+%  as\footnote{Many thanks to William Elliot, David C. Ullrich, and Seymour J. Shmuel Metz for help with this topic.
+%             %\url{https://groups.google.com/forum/\#!topic/sci.math/YD4N58JH5to}
+%            }
+
+The \structe{greatest lower bound} (\structe{g.l.b.}) of the linearly ordered set $\opair{\seqn{\spV_j}}{\subseteq}$ is $\spZero$ \xref{prop:mra_glb}:
+  \\\indentx
+    $\ds\Seti_{j\in\Z}\spV_j = \spZero$.
+  \\
+
+All linear subspaces contain the zero vector\ifsxref{subspace}{prop:subspace_prop}.
+So the intersection of any two subspaces must at least contain $\vzero$.
+If the intersection of any two linear subspaces $\spX$ and $\spY$ is exactly $\setn{\vzero}$, 
+then for any vector in
+the sum of those subspaces ($\vu\in\spX\adds\spY$) there are \propb{unique} vectors $\ff\in\spX$ and 
+$\fg\in\spY$ such that $\vu=\ff+\fg$.
+This is \emph{not} necessarily true if the intersection contains more than just $\setn{\vzero}$
+\ifsxref{subspace}{thm:XY0_unique}.
+
+
+%%=======================================
+%\subsubsection{Bases for wavelet system}
+%%=======================================
+%%%A linear space is a separable Hilbert space if and only if it has a complete basis.
+%%Note that \pref{def:mra} does not require $\lim_{\xN\to\infty}\spV_j$ to be equal to $\spLLR$, 
+%%it is only requires it to be \prope{dense} in $\spLLR$
+%%(just as the rationals are dense in the real numbers).
+%%In the set of real numbers, a countable union of closed sets is called a $\symx{\setFsigma}$ set
+%%($\setF$ stands for the French word \hie{ferm/'e} or \prope{closed}, and $\sigma$ stands for the French word \hie{somme} or sum).\footnote{
+%%  \citerpg{carothers2000}{130}{0521497566}\\
+%%  \citerpg{givant2009}{270}{0387402934}
+%%  }                                                                             
+%
+%\prefp{def:mra} defines an MRA on the space $\spLLR$.
+%The space $\spLLR$ is an example of a Hilbert space. % $\spLLR$. 
+%A Hilbert space is a linear space equipped with an inner product 
+%and that is complete with respect to the topology induced by the inner product.
+%
+%\begin{enumerate}
+%  \item A \structb{linear space} \ifsxrefs{vector}{def:vspace} supports the expansion of a vector $\ff$
+%        (e.g. a function) in terms of a set of \structe{coordinates} $\setxn{\alpha_n}$ and a 
+%        \structe{Hamel basis} $\setxn{\fphi_n}$\ifsxrefs{frames}{def:hamel}such that \label{item:mra_hamel}
+%          \\\indentx$\ds \ff(x)=\sum_{n=1}^\xN \alpha_n \fphi_n(x)$.\\
+%        If such coordinates exist for a vector $\ff$ and basis $\setxn{\fphi_n}$, 
+%        then those coordinates are \prope{unique}\ifsxref{frames}{thm:hamel_unique}.
+%
+%  \item The Hamel basis described in \pref{item:mra_hamel} provides sufficient support for expansion in finite linear spaces, 
+%        but is problematic in infinite spaces.                           
+%        In an infinite linear space with a topology (such as a Banach space or a Hilbert space),
+%        a \structe{Schauder basis}\ifsxrefs{frames}{def:schauder}is often used.
+%        The Schauder basis is defined in terms of a special type of convergence called \prope{strong convergence}\ifsxref{seq}{def:strong_converge}.
+%        Strong convergence is defined in terms of the norm induced by the inner product: \label{item:mra_strong}
+%        \\\indentx$\ds  
+%          \ff \eqs \sum_{n=1}^\infty\alpha_n\fphi_n
+%              \eqd \lim_{\xN\to\infty}\sum_{n=1}^\xN\alpha_n\fphi_n
+%              \implies
+%              \mcom{\ds\lim_{\xN\to\infty}\norm{\ff-\sum_{n=1}^\xN\alpha_n\fphi_n}=0}{\prope{strong convergence}}
+%        $.\\
+%        %\\\indentx$\ds  
+%        %  \ff \eqs \sum_{n=1}^\infty\inprod{\ff}{\fphi_n}\fphi_n
+%        %      \eqd \lim_{\xN\to\infty}\sum_{n=1}^\xN\inprod{\ff}{\fphi_n}\fphi_n
+%        %      \implies
+%        %      \mcom{\ds\lim_{\xN\to\infty}\norm{\ff-\sum_{n=1}^\xN\inprod{\ff}{\fphi_n}\fphi_n}=0}{\prope{strong convergence}}
+%        %$.\\
+%        That is, the sum $\sum_{n=1}^\infty\alpha_n\fphi_n$ is by definition  
+%        the limit of the partial sums
+%        $\sum_{n=1}^\xN\alpha_n\fphi_n$\ifsxref{series}{def:suminf},
+%        and that these sums \prope{converge strongly} (``$\eqs$",\ifsxref{seq}{def:strong_converge}) to a limit $\ff$
+%        with respect to the topology induced by the norm $\normn$, which in turn is 
+%        induced by the inner product $\inprodn$. % \xrefP{def:norm=inprod}.
+%        The completeness property ensures that all of these limits $\ff$ are also in the space $\spLLR$.
+% 
+%  \item In an MRA space $\MRAspaceLLRV$, the space $\spLLR$ is separable \xrefP{def:mra}, and the subspaces $\spV_j$ are
+%        separable as well. % \xrefP{prop:Vn_separable}.
+%        The property of a space being separable is very important in analysis:
+%    \begin{enumerate}
+%      \item Every Banach space (which includes all Hilbert spaces such as $\spLLR$ and each $\spV_j$) with 
+%            a Schauder basis is \prope{separable}\ifsxref{frames}{thm:Bschauder==>separable}.\label{item:mra_Bschauder_separable}
+%      \item The converse is \emph{not} true---not every separable Banach space has a basis\ifsxrefpo{frames}{BasisProblem}.
+%    \end{enumerate}
+%
+%  \item Besides providing a topology, the \structe{inner product} also supports 
+%        the notion of a subspace geometry, 
+%        including the property of \prope{orthogonality}\ifsxref{vsinprod}{def:orthog}.
+%    \begin{enumerate}
+%      \item Orthogonality supports the \structe{Fourier expansion}\ifsxrefs{frames}{def:hspace_fex}of a vector $\ff$ over an 
+%        \structe{orthornormal basis} $\setxZp{\fphi_n}$ in the form \label{item:mra_inprod}
+%        \\\indentx$\ds  
+%          \ff \eqs \sum_{n=1}^\infty \mcom{\inprod{\ff}{\fphi_n}}{\structe{Fourier coefficient}}\fphi_n
+%          $
+%      \item In contrast to \pref{item:mra_Bschauder_separable}, life in Hilbert spaces is much simpler. 
+%            A Hilbert space has a Schauder basis \emph{if and only if} it is 
+%            separable \ifsxrefs{frames}{thm:schauder<==>separable}. 
+%            And so $\spLLR$ and each $\spV_j$ \emph{have} Schauder bases\ifsxref{frames}{thm:schauder<==>separable}.
+%      \item A special case of a Schauder basis is an orthonormal basis\ifsxref{frames}{def:basis_ortho}.
+%            A Hilbert space has an orthonormal basis if and only if it is separable\ifsxref{frames}{thm:ortho<==>separable}.
+%            And so $\spLLR$ and each $\spV_j$ \emph{have} orthonormal bases as well% 
+%            \ifdochas{frames}{ (\xref{thm:schauder<==>separable}, \xrefp{thm:HV_orthobasis})}.
+%      \item It is always possible to construct an orthonormal basis for a separable Hilbert space using the 
+%            \thme{Graham Schmidt orthogonalization} procedure.
+%    \end{enumerate} 
+%
+%
+%
+%\item 
+%  %Note that the intersection of any two orthogonal subspaces contains the zero vector only \xrefP{thm:YoZ==>YZ0}.
+%  A basis\ifsxrefs{frames}{sec:hspace_bases} $\setxn{\fphi_n}$ that is \prope{orthonormal}  possesses a number of useful properties
+%  including the following:
+%    \begin{enumerate}
+%      \item The \thmb{Pathogorean Theorem} holds such that  $\norm{\sum_{n=1}^\xN \fphi_{n}}^2 = \sum_{n=1}^\xN \norm{\fphi_n}^2$\ifsxref{frames}{thm:pythag}.
+%      \item The sequence $\setn{\fphi_n}$ is \prope{linearly independent}\ifsxref{frames}{thm:orthog==>linin}.
+%      %\item \thmb{Bessel's equality} holds such that 
+%      %      $\ds\norm{\ff-\sum_{i=n}^\xN \inprod{\ff}{\fphi_n} \fphi_n }^2 = \norm{\ff}^2 - \sum_{i=1}^\xN |\inprod{\ff}{\fphi_n}|^2$
+%      \item \thmb{Bessel's inequality} holds such that 
+%            $\ds\sum_{n=1}^\infty \abs{\inprod{\ff}{\fphi_n}}^2 \le \norm{\ff}^2$\ifsxref{frames}{thm:bessel_ineq}.
+%      \item Every vector $\ff$ in $\spLLR$ has a \structe{Fourier expansion}\ifsxrefs{frames}{def:hspace_fex}such that \\
+%            $\ds\ff\eqs\sum_{n=1}^\infty \inprod{\ff}{\fphi_n} \fphi_n$\ifsxref{frames}{thm:hspace_fex}.
+%      \item \thmb{Parseval's identity} holds \textbf{if and only if} $\setn{\fphi_n}$ is an orthonormal basis:\\
+%            $\ds\norm{\ff}^2 \eqs\sum_{n=1}^\infty \abs{\inprod{\ff}{\fphi_n}}^2  \quad\scy\forall\ff\in\setX$%
+%            \ifsxref{frames}{thm:parsevalid}.
+%      \item The \structe{Fourier expansion} of a vector $\ff$ in a Hilbert space $\spLLR$
+%            on an orthonormal basis $\setn{\fphi_n}$ 
+%            that spans a subspace $\spY\subseteq\spLLR$ is the best approximation of $\ff$ in $\spY$ with respect to
+%            the metric induced by the inner product (\thme{Best Approximation Theorem}\ifsxref{frames}{thm:bat}).
+%    \end{enumerate}
+%
+%
+%  \item \structb{Riesz basis}: \pref{def:mra} does not explicitly require an orthonormal basis.
+%         Instead, it only specifies the weaker (more general) constraint of a Riesz basis.
+%         This constraint implies simply that there is a linear mapping between the Riesz basis and an orthonormal basis.
+%         In particular, an orthonormal basis can be constructed from the Riesz basis.
+%\end{enumerate}
+
+%%--------------------------------------
+%\begin{proposition}
+%\label{thm:HV_orthobasis}
+%%--------------------------------------
+%Let $\MRAspaceLLRV$ be an MRA space.
+%\propbox{\begin{array}{MMC}
+%  $\spLLR$   & has an \structe{orthonormal basis}\\
+%  $\spV_j$ & has an \structe{orthonormal basis} & \forall j\in\Z
+%\end{array}}
+%\end{proposition}
+%\begin{proofns}
+%\begin{enume}
+%  %\item By \prefp{def:mra}, $\spLLR$ is \prope{separable}.
+%  \item $\spLLR$ is \prope{separable}.
+%  \item Therefore $\spLLR$ has an orthonormal basis\ifsxref{frames}{thm:ortho<==>separable}.
+%  \item Therefore each $\spV_j$ is \prope{separable}\ifsxref{subspace}{prop:Vn_separable}.
+%  \item So each $\spV_j$ has an orthonormal basis\ifsxref{frames}{thm:ortho<==>separable}.
+%\end{enume}
+%\end{proofns}
+
+%=======================================
+\subsubsection{Dilation equation}
+%=======================================
+Several functions in mathematics exhibit a kind of \prope{self-similar} or \prope{recursive} property:
+\begin{listi}
+  \item If a function $\ff(x)$ is \prope{linear}, then \xref{ex:TD_flinear}
+        \\\indentx$\ds\ff(x) = \ff(1)x - \ff(0)\opTrn x$.   %{$\setn{x,\,\opTrn x}$ is a \structe{basis} for $\clLcc$}$.
+  \item If a function $\ff(x)$ is sufficiently \prope{bandlimited}, then the \structe{Cardinal series} \xref{ex:TD_cardinalseries} demonstrates
+        \\\indentx$\ds\ff(x) = \sum_{n=1}^\infty \ff(n) \opTrn^n\frac{\sin\brs{\pi(x)}}{\pi(x)}$.
+  \item \fncte{B-splines} \xref{thm:bspline_recursion} are another example:
+        \\\indentx$\ds\fN_n(x)   = \frac{1}{n}x\fN_{n-1}(x) - \frac{1}{n}x\opTrn\fN_{n-1}(x) + \frac{n+1}{n}\opTrn\fN_{n-1}(x)  \qquad\scy\forall n\in\Znn\setd\setn{1},\,  \forall x\in\R$.
+\end{listi}
+
+The scaling function $\fphi(x)$ \xref{def:mra} also exhibits a kind of \prope{self-similar} property.
+By \prefp{def:mra}, the dilation $\opDil\ff$ of each vector $\ff$ in $\spV_0$ is in $\spV_1$.
+If $\setxZ{\opTrn^n\fphi}$ is a basis for $\spV_0$,
+then $\setxZ{\opDil\opTrn^n\fphi}$ is a basis for $\spV_1$,
+$\setxZ{\opDil^2\opTrn^n\fphi}$ is a basis for $\spV_2$, \ldots;
+and in general $\set{\opDil^j\opTrn^m\fphi}{j\in\Z}$ is a basis for $\spV_j$.
+Also, if $\fphi$ is in $\spV_0$, then it is also in $\spV_1$ (because $\spV_0\subset\spV_1$).
+And because $\fphi$ is in $\spV_1$ and because $\setxZ{\opDil\opTrn^n\fphi}$ is a basis for $\spV_1$,
+$\fphi$ is a linear combination of the elements in $\setxZ{\opDil\opTrn^n\fphi}$.
+That is, $\fphi$ can be represented as a linear combination of translated and dilated versions of itself.
+The resulting equation is called the \hie{dilation equation} (\pref{def:dilation_eq}, next).\footnote{%
+The property of \prope{translation invariance} is of particular significance in the theory of 
+\structe{normed linear spaces} (a Hilbert space is a complete normed linear space equipped with an inner product)%
+\ifdochas{vsnorm}{---see \prefp{lem:vsn_ti} and \prefp{thm:vsn_d2norm}}.
+}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerp{jawerth}{7}
+  }
+\label{def:dilation_eq}
+%--------------------------------------
+Let $\MRAspaceLLRV$ be a \structe{multiresolution analysis space} with scaling function $\fphi$ \xref{def:mra}.
+Let $\seqxZ{h_n}$ be a \structe{sequence} \xref{def:seq} in $\spllR$ \xref{def:spllR}.
+\defboxp{
+  The equation 
+    \\\indentx$\ds\fphi(x)=\sum_{n\in\Z}  h_n \opDil \opTrn^n \fphi(x)\qquad\scy\forall x\in\R$\\
+  is called the \equd{dilation equation}.
+  It is also called the \equd{refinement equation},
+  \equd{two-scale difference equation}, and \equd{two-scale relation}.
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}[\thmd{dilation equation}]
+\label{thm:h->phi}
+\label{thm:dilation_eq}
+%--------------------------------------
+%Let $\MRAspaceLLRV$ be a \structe{multiresolution analysis space} with scaling function $\fphi$ \xref{def:mra}.
+%Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+Let an \structe{MRA space} and \fncte{scaling function} be as defined in \prefp{def:mra}.
+%Let $\Fphi(\omega)$ be the \fncte{Fourier transform}\ifsxrefs{harFour}{def:ft}of $\fphi(x)$.
+%Let $\Dh(\omega)$ be the \fncte{Discrete time Fourier transform}\ifsxref{dsp}{def:dtft} of $\seqn{h_n}$.
+%\\Let $\ds\prod_{n=1}^\infty x_n \eqd \lim_{\xN\to\infty}\prod_{n=1}^\xN x_n$.
+\thmbox{
+  \brb{\begin{array}{M}
+    $\MRAspaceLLRV$ is an \structe{MRA space}\\ 
+    with \structe{scaling function} $\fphi$
+  \end{array}}
+  \quad\implies\quad
+  \mcom{\brb{\begin{array}{>{\ds}l}
+    \scy\exists \seqxZ{h_n} \st\\
+    \fphi(x)=\sum_{n\in\Z}  h_n \opDil \opTrn^n \fphi(x)\qquad
+    \scy\forall x\in\R
+  \end{array}}}{\prope{dilation equation in ``time"}}
+  }
+\end{theorem}
+\begin{proof}
+    \begin{align*}
+      \fphi &\in \spV_0
+            && \text{by \prefp{def:mra}}
+          \\&\subseteq \spV_1
+            && \text{by \prefp{def:mra}}
+          \\&= \Span\setxZ{\opDil\opTrn^n\fphi(x)}
+          \\&\implies 
+             \exists \seqxZ{h_n} \st
+                \fphi = \sum_{n\in\Z} h_n \opDil \opTrn^n \fphi
+    \end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{lemma}
+\footnote{
+  \citerpg{mallat}{228}{012466606X}
+  }
+\label{lem:Fphi}
+%--------------------------------------
+Let $\fphi(x)$ be a function in $\spLLR$ \xref{def:spLLR}.
+Let $\Fphi(\omega)$ be the \fncte{Fourier transform}\ifsxrefs{harFour}{def:ft}of $\fphi(x)$.
+Let $\Dh(\omega)$ be the \fncte{Discrete time Fourier transform}\ifsxref{dsp}{def:dtft} of a sequence $\seqnZ{h_n}$.
+\lembox{
+  \begin{array}{>{\ds}lc rc>{\ds}lCD}
+  {\scy(A)}\quad\fphi(x)=\sum_{n\in\Z}  h_n \opDil \opTrn^n \fphi(x)\quad{\scy \forall x\in\R} %{\prope{dilation equation in ``time" (A)}}
+    &\iff&
+    \Fphi\brp{\omega} &=& \cwt \: \Dh\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}
+                        & \forall \omega\in\R
+                        & (1)
+  \\&\iff&
+    \Fphi\brp{\omega} &=& \Fphi\brp{\frac{\omega}{2^\xN}} \prod_{n=1}^\xN \cwt\:\Dh\brp{\frac{\omega}{2^n}}
+                        & \forall n\in\Zp,\,\omega\in\R
+                        & (2)
+  \end{array} 
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (A)$\implies$(1): \label{item:Fphi_A1}
+    \begin{align*}
+      \Fphi\brp{\omega}
+        &\eqd \opFT\fphi
+      \\&= \opFT\sum_{n\in\Z} h_n \opDil \opTrn^n \fphi(x)
+        && \text{by (A)}
+      \\&= \sum_{n\in\Z} h_n \opFT\opDil\opTrn^n \fphi(x)
+      \\&= \sum_{n\in\Z} h_n \mcom{\cwt e^{-i\frac{\omega}{2} n}\fphi\brp{\frac{\omega}{2}}}{$\opFT\opDil\opTrn^n \fphi(x)$}
+        && \text{by \prefp{prop:FTDf}}
+      \\&= \cwt \mcom{\brs{\sum_{n\in\Z} h_n e^{-i\frac{\omega}{2} n}}}{$\Dh(\omega/2)$} \Fphi\brp{\frac{\omega}{2}}
+      \\&= \cwt\:\Dh\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}
+        && \text{by definition of \ope{DTFT} \xref{def:dtft}}
+    \end{align*}
+
+  \item Proof that (A)$\impliedby$(1):
+    \begin{align*}
+      \fphi(x) 
+        &= \opFTi\Fphi(\omega)
+        && \text{by definition of $\Fphi(\omega)$}
+      \\&= \opFTi\cwt\:\Dh\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}
+        && \text{by (1)}
+      \\&= \opFTi\cwt\:\sum_{n\in\Z}h_n e^{-i\frac{\omega}{2} n}\: \Fphi\brp{\frac{\omega}{2}}
+        && \text{by definition of \ope{DTFT} \xref{def:dtft}}
+      \\&= \cwt\:\sum_{n\in\Z}h_n \opFTi e^{-i\frac{\omega}{2} n}\: \Fphi\brp{\frac{\omega}{2}}
+        && \text{by property of linear operators}
+      \\&= \cwt\:\sum_{n\in\Z}h_n \opFTi \opFT\opDil\opTrn^n\fphi
+        && \text{by \prefp{prop:FTDf}}
+      \\&= \sum_{n\in\Z} h_n \opDil\opTrn^n \fphi(x)
+    \end{align*}
+
+  \item Proof that (1)$\implies$(2):
+    \begin{enumerate}
+      \item Proof for $\xN=1$ case:
+        \begin{align*}
+          \brlr{\Fphi\brp{\frac{\omega}{2^\xN}}\:\prod_{n=1}^\xN \cwt \Dh\brp{\frac{\omega}{2^n}}}_{\xN=1}
+            &= \cwt\:\Dh\brp{\frac{\omega}{2}}\Fphi\brp{\frac{\omega}{2}}
+          \\&= \Fphi(\omega)
+            && \text{by (1)}
+        \end{align*}
+
+      \item Proof that [$\xN$ case]$\implies$[$\xN+1$ case]:
+        \begin{align*}
+          \Fphi\brp{\frac{\omega}{2^{\xN+1}}}\:\prod_{n=1}^{\xN+1} \cwt \Dh\brp{\frac{\omega}{2^n}}
+            &= \brs{\prod_{n=1}^{\xN} \cwt \Dh\brp{\frac{\omega}{2^n}}}
+               \mcom{\cwt \Dh\brp{\frac{\omega}{2^{N+1}}}\Fphi\brp{\frac{\omega}{2^{\xN+1}}}}{$\Fphi(\omega/2^\xN)$}
+          \\&= \Fphi(\omega/2^\xN) \prod_{n=1}^{\xN} \cwt \Dh\brp{\frac{\omega}{2^n}}
+          \\&= \Fphi(\omega)
+            && \text{by [$\xN$ case] hypothesis}
+        \end{align*}
+    \end{enumerate}
+
+  \item Proof that (1)$\impliedby$(2):
+    \begin{align*}
+      \Fphi(\omega)
+        &= \brlr{\Fphi\brp{\frac{\omega}{2^{\xN}}}\:\prod_{n=1}^{\xN} \cwt \Dh\brp{\frac{\omega}{2^n}}}_{\xN=1}
+        && \text{by (2)}
+      \\&= \Fphi\brp{\frac{\omega}{2}}\cwt \Dh\brp{\frac{\omega}{2}}
+      \\&= \cwt\Dh\brp{\frac{\omega}{2}}\Fphi\brp{\frac{\omega}{2}} 
+    \end{align*}
+
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{lemma}
+\label{lem:Fphi_infty}
+% 2013 August 09 Friday
+% 2013 August 20 Monday: modified \implies relation
+%--------------------------------------
+Let $\fphi(x)$ be a function in $\spLLR$ \xref{def:spLLR}.
+Let $\Fphi(\omega)$ be the \fncte{Fourier transform}\ifsxrefs{harFour}{def:ft}of $\fphi(x)$.
+Let $\Dh(\omega)$ be the \fncte{Discrete time Fourier transform}\ifsxref{dsp}{def:dtft} of $\seqn{h_n}$.
+Let $\ds\prod_{n=1}^\infty x_n \eqd \lim_{\xN\to\infty}\prod_{n=1}^\xN x_n$, with respect to the standard norm in $\spLLR$.
+
+\lembox{
+  \begin{array}{>{\ds}l c rc>{\ds}lCD}
+    \brb{\begin{array}{M}
+      $\Fphi\brp{\omega} = C\prod_{n=1}^\infty \cwt\:\Dh\brp{\frac{\omega}{2^n}}$\\
+      $\scy\forall C>0,\,\omega\in\R$\qquad\qquad\scs(A)
+    \end{array}}
+      &\implies& \fphi(x)          &=& \sum_{n\in\Z}  h_n \opDil \opTrn^n \fphi(x)
+                                     & \forall x\in\R 
+                                     & (1) %{\prope{dilation equation in ``time" (A)}}
+    \\&\iff&     \Fphi\brp{\omega} &=& \cwt \: \Dh\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}
+                                     & \forall \omega\in\R
+                                     & (2)
+  \\
+      &\iff&     \Fphi\brp{\omega} &=& \Fphi\brp{\frac{\omega}{2^\xN}} \prod_{n=1}^\xN \cwt\:\Dh\brp{\frac{\omega}{2^n}}
+                                     & \forall n\in\Zp,\,\omega\in\R
+                                     & (3)
+  \end{array}
+  }
+\end{lemma}
+\begin{proof}
+  \begin{enumerate}
+    \item Proof that (1)$\iff$(2)$\iff$(3): by \prefp{lem:Fphi}
+    \item Proof that (A)$\implies$(2):
+      \begin{align*}
+        \Fphi(\omega)
+          &= C\:\prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega}{2^n}}
+          && \text{by left hypothesis}
+        \\&= C\:\cwt \Dh\brp{\frac{\omega}{2}} \prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega}{2^{n+1}}}
+        \\&= C\:\cwt \Dh\brp{\frac{\omega}{2}} \prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega/2}{2^{n}}}
+        \\&= \cwt \Dh\brp{\frac{\omega}{2}}\brs{C\prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega/2}{2^{n}}}}
+        \\&= \cwt \Dh\brp{\frac{\omega}{2}} \Fphi\brp{\frac{\omega}{2}}
+          && \text{by left hypothesis}
+      \end{align*}
+  \end{enumerate}
+\end{proof}
+
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:Fphi}
+%--------------------------------------
+Let $\fphi(x)$ be a function in $\spLLR$ \xref{def:spLLR}.
+Let $\Fphi(\omega)$ be the \fncte{Fourier transform}\ifsxrefs{harFour}{def:ft}of $\fphi(x)$.
+Let $\Dh(\omega)$ be the \fncte{Discrete time Fourier transform}\ifsxref{dsp}{def:dtft} of $\seqn{h_n}$.
+Let $\ds\prod_{n=1}^\infty x_n \eqd \lim_{\xN\to\infty}\prod_{n=1}^\xN x_n$, with respect to the standard norm in $\spLLR$.
+\propbox{
+  \brb{\begin{array}{M}
+    $\Fphi(\omega)$ is\\
+    \prope{continuous}\\ 
+    at $\,\omega=0$
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{c rc>{\ds}lCD}
+        &
+    \fphi(x)          &=& \sum_{n\in\Z}  h_n \opDil \opTrn^n \fphi(x)
+                        & \forall x\in\R 
+                        & (1) %{\prope{dilation equation in ``time" (A)}}
+  \\\iff&
+    \Fphi\brp{\omega} &=& \cwt \: \Dh\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}
+                        & \forall \omega\in\R
+                        & (2)
+  \\\iff&
+    \Fphi\brp{\omega} &=& \Fphi\brp{\frac{\omega}{2^\xN}} \prod_{n=1}^\xN \cwt\:\Dh\brp{\frac{\omega}{2^n}}
+                        & \forall n\in\Zp,\,\omega\in\R
+                        & (3)
+  \\\iff&
+    \Fphi\brp{\omega} &=& \Fphi\brp{0} \prod_{n=1}^\infty \cwt\:\Dh\brp{\frac{\omega}{2^n}} 
+                        & \omega\in\R
+                        & (4)
+  \end{array}}
+  }
+\end{proposition}
+%\lembox{
+%  \brb{\begin{array}{FMCD}
+%    (A) & $\ds\fphi(x)=\sum_{n\in\Z}  h_n \opDil \opTrn^n \fphi(x)$ & \forall x\in\R & and\\ % & {\prope{dilation equation}}\\
+%    (B) & \mc{3}{M}{$\Fphi(\omega)$ is \prope{continuous} at $\omega=0$}
+%  \end{array}}
+%  \implies
+%  \brb{\begin{array}{>{\ds}lCD}
+%    \Fphi\brp{\omega} = \Fphi\brp{0} \prod_{n=1}^\infty \cwt\:\Dh\brp{\frac{\omega}{2^n}} & \forall \omega\in\R
+%  \end{array}} 
+%  }
+%\end{lemma}
+\begin{proof}
+  \begin{enumerate}
+    \item Proof that (1)$\iff$(2)$\iff$(3): by \prefp{lem:Fphi}
+    \item Proof that (3)$\implies$(4):
+      \begin{align*}
+        \Fphi\brp{0}\:\prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega}{2^n}}
+          &= \lim_{\xN\to\infty}\Fphi\brp{\frac{\omega}{2^{\xN}}}\:\prod_{n=1}^{\xN} \cwt \Dh\brp{\frac{\omega}{2^n}}
+          && \text{by \prope{continuity} and definition of $\prod_{n=1}^\infty x_n$}
+        \\&= \Fphi(\omega)
+          && \text{by (3) and \prefp{lem:Fphi}}
+      \end{align*}
+    \item Proof that (2)$\impliedby$(4): by \prefp{lem:Fphi_infty}
+      %\begin{align*}
+      %  \Fphi(\omega)
+      %    &= \Fphi\brp{0}\:\prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega}{2^n}}
+      %    && \text{by (4)}
+      %  \\&= \Fphi\brp{0}\:\cwt \Dh\brp{\frac{\omega}{2}} \prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega}{2^{n+1}}}
+      %  \\&= \Fphi\brp{0}\:\cwt \Dh\brp{\frac{\omega}{2}} \prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega/2}{2^{n}}}
+      %  \\&= \cwt \Dh\brp{\frac{\omega}{2}}\brs{ \Fphi\brp{0}\prod_{n=1}^{\infty} \cwt \Dh\brp{\frac{\omega/2}{2^{n}}}}
+      %  \\&= \cwt \Dh\brp{\frac{\omega}{2}} \Fphi\brp{\frac{\omega}{2}}
+      %    && \text{by (4)}
+      %\end{align*}
+  \end{enumerate}
+\end{proof}
+
+
+
+%\if 0
+
+
+\pref{def:hn} (next) formally defines the coefficients that appear in \prefpp{thm:dilation_eq}.
+%--------------------------------------
+\begin{definition}%[subspace coefficients]
+\label{def:hn}
+%\label{def:gn}
+\label{def:mrasys}
+%\raggedright
+%--------------------------------------
+Let $\MRAspaceLLRV$ be a multiresolution analysis space with scaling function $\fphi$.
+Let $\seqxZ{h_n}$ be a sequence of coefficients such that $\fphi = \sum_{n\in\Z}  h_n \opDil\opTrn^n \fphi$.
+\defboxp{
+  A \hid{multiresolution system} is the tuple $\mrasys$.
+  The sequence $\seqxZ{h_n}$ is the \hid{scaling coefficient sequence}.
+  A multiresolution system is also called an \hid{MRA system}.
+  An \structe{MRA system} is an \hid{orthonormal MRA system} if $\setnZ{\opTrn^n\fphi}$ is \prope{orthonormal}.
+  }
+\end{definition}
+
+%Examples of \hi{multiresolution analyses} are provided in
+%\pref{ex:wavstrct_haar_sin} (next)
+%-- \prefp{ex:sw_gh_bspline}.
+
+%%--------------------------------------
+%\begin{definition}
+%\label{def:wavstrct_normcoef}
+%%--------------------------------------
+%Let $\mrasys$ be a {multiresolution system}, and $\opDil$ the dilation operator.
+%\defboxp{
+%  The \hid{normalization coefficient at resolution $n$} is the quantity 
+%  \\\indentx$\norm{\opDil^j\fphi}$.
+%  }
+%\end{definition}
+
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:V0Vn}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+Let $\linspan\setA$ be the \structe{linear span} \xref{def:span} of a set $\setA$.
+\thmbox{
+  \mcom{\linspan\setxZ{\opTrn^n\fphi}=\spV_0}{$\setxZ{\opTrn^n\fphi}$ is a \structe{basis} for $\spV_0$}
+  \qquad\implies\qquad
+  \mcom{\linspan\setxZ{\opDil^j\opTrn^n\fphi}=\spV_j\quad{\scy\forall j\in\Znn}}{$\setxZ{\opDil^j\opTrn^n\fphi}$ is a \structe{basis} for $\spV_j$}
+  }
+\end{theorem}
+\begin{proof} Proof is by induction:\footnote{\citerpg{smith2011}{4}{1420063723}}
+\begin{enumerate}
+\item induction basis (proof for $j=0$ case):
+      %$\setxZ{\opDil^0\opTrn^n\fphi}$ is a basis for $\spV_0$
+      %\\\indentx$\ds \spV_0 = \set{\ff(x)}{\ff(x) = \sum_{n\in\Z} \fc_{n} \fphi(x-n)}.$
+  \begin{align*}
+    \brlr{\linspan\setxZ{\opDil^j\opTrn^n\fphi}}_{j=0}
+      &= \linspan\setxZ{\opTrn^n\fphi}
+    \\&= \spV_0
+      && \text{by left hypothesis}
+  \end{align*}
+
+\item induction step (proof that $j$ case $\implies$ $j+1$ case):
+      %$\setxZ{\opDil^j\opTrn^n\fphi}$ is a basis for $\spV_j$
+      %$\implies$ $\setxZ{\opDil^{j+1}\opTrn^n\fphi}$ is a basis for $\spV_{j+1}$:
+  \begin{align*}
+    &\linspan\setxZ{\opDil^{j+1}\opTrn^n\fphi}
+    \\&= \set{\ff\in\spLLR}{\exists \seqn{\alpha_n} \st \ff(x)=\sum_{n\in\Z}\alpha_n \opDil^{j+1}\opTrn^n\fphi}
+      && \text{by definition of $\linspan$ \xref{def:span}}
+    \\&= \set{\ff\in\spLLR}{\exists \seqn{\alpha_n} \st \ff(x)=\opDil\sum_{n\in\Z}\alpha_n \opDil^{j}\opTrn^n\fphi}
+    \\&= \set{\ff\in\spLLR}{\exists \seqn{\alpha_n} \st \opDili\ff(x)=\sum_{n\in\Z}\alpha_n \opDil^{j}\opTrn^n\fphi}
+    \\&= \set{\brs{\opDil\ff}\in\spLLR}{\exists \seqn{\alpha_n} \st \opDili\brs{\opDil\ff(x)}=\sum_{n\in\Z}\alpha_n \opDil^{j}\opTrn^n\fphi}
+    \\&= \opDil\set{\ff\in\spLLR}{\exists \seqn{\alpha_n} \st \ff(x)=\sum_{n\in\Z}\alpha_n \opDil^{j}\opTrn^n\fphi}
+    \\&= \opDil\linspan\setxZ{\opDil^j\opTrn^n\fphi}
+      && \text{by definition of $\linspan$ \xref{def:span}}
+    \\&= \opDil\spV_j
+      && \text{by induction hypothesis}
+    \\&= \spV_{j+1}
+      && \text{by \prope{self-similar} prop. \xref{def:mra}}
+  \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{example}
+\label{ex:wavstrct_haar_sin}
+\exmx{Haar scaling function}
+%--------------------------------------
+\exbox{\begin{array}{rclm{54mm}} 
+  \mc{4}{M}{In the \hie{Haar} MRA, the scaling function $\fphi(x)$ is the \hie{pulse function}}
+  \\
+  \fphi(x) &=& \brbl{\begin{array}{lM}
+                       1  & for $x\in\intco{0}{1}$ \\
+                       0  & otherwise.
+                     \end{array}}
+  &
+  \input{../common/math/graphics/pulse.tex}
+  \\
+  \mc{4}{M}{In the subspace $\spV_j$ ($j\in\Z$) the scaling functions are}
+  \\
+  \opDil^j\fphi(x) &=& \brbl{\begin{array}{lM}
+                               \brp{2}^{j/2}   & for $x\in\intco{0}{\brp{2^{-j}}}$ \\
+                               0                  & otherwise.
+                              \end{array}}
+  &
+  \input{../common/math/graphics/pulse2.tex}%
+\end{array}}
+
+The scaling subspace $\spV_0$ is the span $\spV_0\eqd\Span\setxZ{\opTrn^n\fphi}$.
+The scaling subspace $\spV_j$ is the span $\spV_j\eqd\Span\set{\opDil^j\opTrn^n\fphi}{n\in\Z}$.
+  %$\opDil^j\fphi$ such that
+Note that $\norm{\opDil^j\opTrn^n\fphi}$ for each resolution $j$ and shift $n$ is unity:
+  \begin{align*}
+    \norm{\opDil^j\opTrn^n\fphi}^2
+      &= \norm{\fphi}^2  
+      && \text{by \prefp{thm:TD_unitary}}
+   %\\&= \int_{\intco{0}{\brp{2^{-j}}} \abs{\brp{\sqrt{2}}^j}^2 \dx
+    \\&= \int_0^1 \abs{1}^2 \dx
+      && \text{by definition of $\normn$ on $\spLLR$ \xref{def:spLLR}}
+    %\\&= \brp{2^{-j}\brp{2^j}
+    \\&= 1
+  \end{align*}
+
+\begin{minipage}{\tw-68mm}
+Let $\ff(x)=\sin(\pi x)$.
+Suppose we want to project $\ff(x)$ onto the subspaces $\spV_0$, $\spV_1$, $\spV_2$, \ldots.
+\end{minipage}%
+\hfill%
+\begin{minipage}{64mm}%
+  \mbox{}\\%
+  \psset{unit=0.8mm}%
+  \input{../common/math/graphics/sin_pi_t.tex}%
+\end{minipage}%
+\\
+\begin{minipage}{\tw-68mm}
+\ragr
+The values of the transform coefficients for the subspace $\spV_j$ are %illustrated in \prefp{fig:wavstrct_Haar_sin}
+given by
+\end{minipage}%
+\hfill%
+\begin{minipage}{64mm}
+%\begin{figure}[t]
+  %\mbox{}\\%
+  \psset{unit=8mm}%
+  %\input{../common/math/graphics/comb_123_pi.tex}%
+  \input{../common/wavelets/graphics/haar0_sin_t.tex}
+%  \caption{Approximation of a sinusoid using the Haar MRA\label{fig:wavstrct_Haar_sin}}
+%\end{figure}
+\end{minipage}
+\\
+  \begin{align*}
+    \brs{\opR_j\ff(x)}(n) 
+      &=    \frac{1}{\norm{\opDil^j\opTrn^n\fphi}^2}\inprod{\ff(x)}{\opDil^j\opTrn^n\fphi} 
+    %\\&=    \frac{1}{\cancelto{1}{\norm{\fphi}^2}}
+    %        \inprod{\ff(x)}{\opDil^j\fphi\brp{x-n}}
+    %  &&    \text{by definition of $\opTrn$ \xrefP{def:wav_opT}} 
+    \\&=    \frac{1}{\cancelto{1}{\norm{\fphi}^2}}\inprod{\ff(x)}{2^{j/2}\fphi\brp{2^j x-n}} 
+      &&    \text{by \prefp{prop:DjTn}}
+    \\&=    2^{j/2} \inprod{\ff(x)}{\fphi\brp{2^j x-n}} 
+    \\&=    2^{j/2} 
+            \int_{2^{-j}n}^{2^{-j}(n+1)} \ff(x) \dx
+    \\&=    2^{j/2} 
+            \int_{2^{-j}n}^{2^{-j}(n+1)} \sin(\pi x) \dx
+    \\&=    2^{j/2}
+            \left. \brp{-\frac{1}{\pi}}\cos\brp{\pi x} \right|_{2^{-j} n}^{2^{-j}(n+1)}
+    \\&=    \frac{2^{j/2}}{\pi}
+            \brs{
+              \cos\brp{{2^{-j}n\pi}} -
+              \cos\brp{{2^{-j}(n+1)\pi}}  
+              }
+  \end{align*}
+
+
+
+And the projection $\opA_n\ff(x)$ of the function $\ff(x)$ onto the subspace $\spV_j$ is
+%(alternatively, the \hie{projection} of $\ff(x)$ \emph{onto} the space $\spV_j$ is) %\\
+%\begin{minipage}{\tw-95mm}
+  \begin{align*}
+    \opA_j\ff(x) 
+      &= \sum_{n\in\Z} \inprod{\ff(x)}{\opDil^j\opTrn^n\fphi} \opDil^j\opTrn^n\fphi 
+    \\&= \frac{2^{j/2}}{\pi}
+         \sum_{n\in\Z}
+         \brs{
+           \cos\brp{2^{-j}n\pi} -
+           \cos\brp{2^{-j}(n+1)\pi}  
+           } 2^{j/2}\fphi\brp{2^j x-n}
+    \\&= \frac{2^j}{\pi}
+         \sum_{n\in\Z}
+         \brs{
+           \cos\brp{2^{-j} n\pi} -
+           \cos\brp{2^{-j}(n+1)\pi}  
+           } \fphi\brp{2^j x-n}
+  \end{align*}
+%\end{minipage}%
+%\hfill%
+%\begin{minipage}{90mm}%
+%  \mbox{}\\%
+%  \psset{unit=8mm}%
+%  %\input{../common/math/graphics/square_123_pi.tex}
+%  \input{../common/wavelets/graphics/haar0_sin_a.tex}
+%\end{minipage}
+
+The transforms into the subspaces $\spV_0$, $\spV_1$, and $\spV_2$,
+as well as the approximations in those subspaces are as illustrated next: %in \prefp{fig:wavstrct_psin}.
+
+{\psset{unit=8mm}
+\begin{longtable}{|l|l|l|}
+  \hline
+  \mc{1}{|c|}{subspace}&\mc{1}{c|}{transform}&\mc{1}{c|}{approximation}
+  \\\hline\hline
+  $\spV_0$
+  & \input{../common/wavelets/graphics/haar0_sin_t.tex}
+  & \input{../common/wavelets/graphics/haar0_sin_a.tex}
+  \\\hline
+  $\spV_1$
+  & \psset{xunit=4mm}\input{../common/wavelets/graphics/haar1_sin_t.tex}
+  & \psset{xunit=4mm}\input{../common/wavelets/graphics/haar1_sin_a.tex}
+  \\\hline
+  $\spV_2$
+  & \psset{xunit=2mm}\input{../common/wavelets/graphics/haar2_sin_t.tex}
+  & \psset{xunit=2mm}\input{../common/wavelets/graphics/haar2_sin_a.tex}
+  \\\hline
+\end{longtable}}
+
+\end{example}
+
+
+
+
+%=======================================
+\subsubsection{Necessary Conditions}
+%=======================================
+%Next we look at  two necessary conditions in the ``time domain" for scaling coefficient design.
+%%They can be used in generating simultaneous equations for wavelet system design.
+%\\\indentx
+%  \begin{tabular}{@{\qquad}clll}
+%    \imark & \hie{admissibility condition}: & \pref{thm:admiss}        & \xrefP{thm:admiss} \\
+%    \imark & \hie{quadrature condition}:    & \pref{thm:wav_quadcon}   & \xrefP{thm:wav_quadcon}
+%  \end{tabular}
+
+%--------------------------------------
+\begin{theorem}[\thmd{admissibility condition}]
+\label{thm:admiss}
+%--------------------------------------
+%Let $\mrasys$ be a multiresolution system.
+Let $\Zh(z)$ be the \fncte{Z-transform} \xref{def:opZ} and 
+$\Dh(\omega)$ the \fncte{discrete-time Fourier transform} \xref{def:dtft} of a sequence $\seqxZ{h_n}$.
+\thmbox{\begin{array}{M}
+  %\brb{\begin{array}{M}$\mrasys$\\is an \structe{MRA system}\end{array}} &\impnotimpby&
+  $\brb{\text{$\mrasys$ is an \structe{MRA system} \xref{def:mrasys}}}$
+  \\$\ds\quad
+  \impnotimpby \mcom{\brb{\sum_{n\in\Z}  h_n  = \sqrt{2}}}{(1) \prope{admissibility} in ``time"}               
+  \iff         \mcom{\brb{\Zh(z)\Big|_{z=1}   = \sqrt{2}}}{(2) \prope{admissibility} in ``z domain"}                  
+  \iff         \mcom{\brb{\Dh(\omega)\Big|_{\omega=0} = \sqrt{2}}}{(3) \prope{admissibility} in ``frequency"}
+  $
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that MRA system $\implies$ (1):
+    \begin{align*}
+      \sum_{n\in\Z} h_n
+        &= \frac{\int_\R \fphi(x) \dx}{\int_\R \fphi(x) \dx} \sum_{n\in\Z} h_n
+      \\&= \frac{1}{\int_\R \fphi(x) \dx} \int_\R \sum_{n\in\Z} h_n \fphi(x) \dx
+      \\&= \frac{1}{\int_\R \fphi(x) \dx} \int_\R \sum_{n\in\Z} h_n \frac{\sqrt{2}}{\sqrt{2}}\fphi(2y-n) 2\dy
+        && \text{let $y\eqd \frac{x+n}{2}\implies x=2y-n \implies \dx=2\dy$}
+      \\&= \frac{2}{\sqrt{2}}\frac{1}{\int_\R \fphi(x) \dx} \int_\R \sum_{n\in\Z} h_n \opDil\opTrn^n\fphi(y)\dy
+        && \text{by definitions of $\opTrn$ and $\opDil$ \xref{def:opT}}
+      \\&= \sqrt{2} \frac{1}{\int_\R \fphi(x) \dx} \int_\R \fphi(y) \dy
+        && \text{by \thme{dilation equation} \xref{thm:dilation_eq}}
+      \\&= \sqrt{2}
+    \end{align*}
+
+  \item Alternate proof that MRA system $\implies$ (1):\\
+    %Select a vector $\ff$ such that $\inprod{\fphi}{\ff}\ne 0$.
+    Let $\ff(x)\eqd 1\quad\forall x\in\R$. % be a constant vector (e.g. $\ff(x)=1$). Then \ldots
+    \begin{align*}
+      \inprod{\fphi}{\ff}
+        &= \inprod{\sum_{n\in\Z} h_n \opDil\opTrn^n \fphi}{\ff}
+        && \text{by dilation equation \xrefP{thm:dilation_eq}}
+      \\&= \sum_{n\in\Z} h_n \inprod{\opDil\opTrn^n \fphi}{\ff}
+        && \text{by \prop{linearity} of $\inprodn$ \ifxref{vsinprod}{def:inprod}}
+      \\&= \sum_{n\in\Z} h_n \inprod{ \fphi}{(\opDil\opTrn^n)^\ast\ff}
+        && \text{by definition of operator adjoint \ifxref{operator}{thm:op_star}}
+      \\&= \sum_{n\in\Z} h_n \inprod{ \fphi}{(\opTrna)^n \opDila \ff}
+        && \text{by property of operator adjoint \ifxref{operator}{thm:op_star}}
+      \\&= \sum_{n\in\Z} h_n \inprod{ \fphi}{(\opTrni)^n \opDili \ff}
+        && \text{by unitary property of $\opTrn$ and $\opDil$ \xrefP{prop:TD_unitary}}
+      \\&= \sum_{n\in\Z} h_n \inprod{ \fphi}{(\opTrni)^n \cwt  \ff}
+        && \text{because $\ff$ is a constant hypothesis and by \prefp{prop:opDi}}
+      \\&= \sum_{n\in\Z} h_n \inprod{ \fphi}{ \cwt \ff}
+        && \text{by $\ff(x)=1$ definition}
+      \\&= \sum_{n\in\Z} h_n \cwt \inprod{ \fphi}{ \ff}
+        && \text{by property of $\inprodn$ \ifxref{vsinprod}{def:inprod}}
+      \\&= \cwt \; \inprod{\fphi}{\ff}\; \sum_{n\in\Z} h_n
+      \\&\implies \sum_{n\in\Z} h_n = \sqrt{2}
+    \end{align*}
+
+  \item Proof that (1) $\iff$ (2) $\iff$ (3): by \prefp{prop:tzf}.
+
+  \item Proof for $\notimpliedby$ part: by \prefp{cnt:admiss}.
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{counterex}
+\label{cnt:admiss}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+\cntbox{\begin{array}{M}
+  $\brb{\begin{array}{lm{28mm}}
+     \seqn{h_n} \eqd \sqrt{2}\kdelta_{n-1} \eqd
+       \brbl{\begin{array}{lD}
+         \sqrt{2}     & for $n=1$  \\
+         0            & otherwise.
+       \end{array}}
+    &\input{../common/wavelets/graphics/hn1.tex} 
+  \end{array}}
+  \quad\implies\quad
+  \brb{\fphi(x)=0}$
+  \\
+  which means
+  \\
+  $\ds\brb{\sum_{n\in\Z} h_n = \sqrt{2}} \quad\notimplies\quad \brb{\text{$\mrasys$ is an MRA system for $\spLLR$.}}$
+\end{array}}
+\end{counterex}
+\begin{proof}
+\begin{align*}
+  \fphi(x)
+    &= \sum_{n\in\Z} h_n \opDil\opTrn^n\fphi(x)
+    && \text{by \thme{dilation equation} \xref{thm:dilation_eq}}
+  \\&= \sum_{n\in\Z} h_n \fphi(2x-n)
+    && \text{by definitions of $\opDil$ and $\opTrn$ \xref{def:opT}}
+  \\&= \sum_{n\in\Z} \mcom{\sqrt{2}\kdelta_{n-1}}{$\seqn{h_n}$} \fphi(2x-n)
+    && \text{by definitions of $\seqn{h_n}$}
+  \\&= \sqrt{2}\fphi(2x-1)
+    && \text{by definition of $\fphi(x)$}
+  \\\implies
+  \fphi(x) &= 0
+\end{align*}
+This implies $\fphi(x)=0$, which implies that $\mrasys$ is \emph{not} an \structe{MRA system} for $\spLLR$ because
+  \\\indentx$\ds \clsp{\Setu_{j\in\Z} \spV_j} = \clsp{\Setu_{j\in\Z} \linspan\set{\opDil^j\opTrn^n\fphi}{\scy n\in\Z}} \neq \spLLR$\\
+(the \structe{least upper bound} is \emph{not} $\spLLR$).
+\end{proof}
+
+
+
+
+%--------------------------------------
+\begin{theorem}[\thmd{Quadrature condition} in ``time"]
+\label{thm:wav_quadcon}
+\label{thm:wav_hh}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+\thmbox{
+  \sum_{m\in\Z} h_m \sum_{k\in\Z} h_k^\ast \inprod{\fphi}{\opTrn^{2n-m+k} \fphi}
+  =\inprod{\fphi}{\opTrn^n \fphi}
+  \qquad\scy\forall n\in\Z
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \inprod{\fphi}{\opTrn^n \fphi}
+    &= \inprod{\sum_{m\in\Z} h_m \opDil \opTrn^m \fphi }{\opTrn^n \sum_{k\in\Z} h_k \opDil \opTrn^k \fphi}
+    && \text{by dilation equation \xrefP{thm:dilation_eq}}
+  \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} h_k^\ast \inprod{\opDil \opTrn^m \fphi }{\opTrn^n \opDil \opTrn^k \fphi}
+    && \text{by properties of $\inprodn$ \ifxref{vsinprod}{def:inprod}}
+  \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} h_k^\ast \inprod{\fphi }{\left(\opDil \opTrn^m \right)^\ast \opTrn^n \opDil \opTrn^k \fphi}
+    && \text{by definition of operator adjoint \ifxref{operator}{prop:op_adjoint}}
+  \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} h_k^\ast \inprod{\fphi }{\left(\opDil \opTrn^m \right)^\ast \opDil \opTrn^{2n} \opTrn^k \fphi}
+    && \text{by \prefp{prop:DTTD}}
+  \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} h_k^\ast \inprod{\fphi }{\opTrna^m \opDila \opDil \opTrn^{2n} \opTrn^k \fphi}
+    && \text{by operator star-algebra properties \ifxref{operator}{thm:op_star}}
+  \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} h_k^\ast \inprod{\fphi }{\opTrn^{-m} \opDil^{-1} \opDil \opTrn^{2n} \opTrn^k \fphi}
+    && \text{by \prefp{prop:TD_unitary}}
+  \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} h_k^\ast \inprod{\fphi }{\opTrn^{2n-m+k} \fphi}
+\end{align*}
+\end{proof}
+
+%%---------------------------------------
+%\begin{theorem}[Neumann Expansion Theorem]
+%\index{Neumann Expansion Theorem}
+%\thmx{Neumann Expansion Theorem}
+%\label{thm:op_net2}
+%\citep{michel1993}{415}
+%%---------------------------------------
+%Let $\opA\in\clFxx$ be an operator on a linear space $\spX$.
+%Let $\opA^0\eqd \opI$.
+%\thmbox{\begin{array}{ll}
+%  \left.\begin{array}{lrclD}
+%    1. & \opA          &\in& \oppB(\spX,\spX) & ($\opA$ is bounded) \\
+%    2. & \normop{\opA} &<&   1
+%  \end{array}\right\}
+%  \implies
+%  \left\{\begin{array}{lrc>{\ds}l}
+%    1. & (\opI-\opA)^{-1} &&\text{ exists} \\
+%    2. & \normop{(\opI-\opA)^{-1}} &\le& \frac{1}{1-\normop{\opA}} \\
+%    3. & (\opI-\opA)^{-1} &=& \sum_{n=0}^\infty \opA^\xN  \\
+%       & \mc{3}{c}{\text{ with uniform convergence}}
+%  \end{array}\right.
+%\end{array}}
+%\end{theorem}
+%
+%
+%
+%
+%
+%
+%
+%%--------------------------------------
+%\begin{theorem}
+%\label{thm:wav_net}
+%\thmx{$\sum_{n\in\Z} \abs{h_n} \ge 1$}
+%%--------------------------------------
+%Let $\wavsys$ be a \hi{wavelet system}.
+%\thmbox{
+%  \sum_{n\in\Z} \abs{h_n} \ge 1
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%  &&
+%  \fphi &= \sum_{n\in\Z} h_n \opTrn^n \opDil \fphi
+%  \\\implies&&
+%  \left(\opI - \sum_{n\in\Z} h_n \opTrn^n \opDil \right)\fphi &= \vzero
+%  \\\implies&&
+%  \left(\opI - \sum_{n\in\Z} h_n \opTrn^n \opDil \right)^{-1} & \text{must not exist}
+%  \\\implies&&
+%  \normop{\sum_{n\in\Z} h_n \opTrn^n \opDil} & \ge 1
+%    && \text{by Neumann Expansion Theorem \xrefP{thm:op_net2}}
+%  \\\implies&&
+%  1
+%      &\le \normop{\sum_{n\in\Z} h_n \opTrn^n \opDil}
+%     &&    %\text{by Neumann Expansion Theorem \xrefP{thm:op_net2}}
+%  \\&&&\le \sum_{n\in\Z}  \normop{h_n \opTrn^n \opDil}
+%     &&    \text{by generalized triangle inequality \ifdochas{vsnorm}{\xrefP{thm:norm_tri}}}
+%  \\&&&=   \sum_{n\in\Z}  \abs{h_n}\; \cancelto{1}{\normop{ \opTrn^n \opDil}}
+%     &&    \text{by homogeneous property of norm \ifdochas{vsnorm}{\xrefP{def:norm}}}
+%  \\&&&=   \sum_{n\in\Z}  \abs{h_n}
+%     &&    \ifdochas{operator}{\text{by \prefp{prop:op_unitary_UV} and \prefp{thm:unitary_prop}}}
+%\end{align*}
+%\end{proof}
+
+
+
+
+\pref{thm:gen_quadcon} (next) presents the \structe{quadrature} necessary conditions of a \hi{wavelet system}.
+These relations simplify dramatically in the special case of an
+\structe{orthonormal wavelet system} \xrefP{thm:oquadcon}.
+%--------------------------------------
+\begin{theorem}[\thmd{Quadrature condition} in ``frequency"]
+\footnote{
+  \citerp{chui}{135}       \\
+  \citerp{goswami}{110}
+  }
+\label{thm:Sphi}
+%--------------------------------------
+Let $\mrasys$ be an \structe{MRA system} \xref{def:mrasys}.
+Let $\Fx(\omega)$ be the \fncte{discrete time Fourier transform}\ifsxrefs{dsp}{def:dtft}for a sequence $\seqxZ{x_n}$ in $\spllR$.
+Let $\Swphi(\omega)$ be the \fncte{auto-power spectrum} \xref{def:Swfg} of $\fphi$.
+\thmbox{\begin{array}{>{\ds}lc>{\ds}l}
+   \abs{\Dh\left(\omega     \right)}^2 \rnode[b]{noteSphi1}{\Sphi}(\omega) + \abs{\Dh\brp{\omega+\pi }}^2 \rnode[b]{noteSphi2}{\Sphi}(\omega+\pi) &=& 2\rnode[b]{noteSphi3}{\Sphi}(2\omega)
+\end{array}}
+\hfill
+\rnode[bl]{noteSphi}{\footnotesize$\brp{\begin{array}{M}
+  Note: $\Sphi(\omega)=1$\\% $\iff$ $\setxZ{\opTrn^n\fphi}$\\
+  for \prope{orthonormal} MRA
+\end{array}}$}
+\ncarc[arcangle=30,linewidth=0.5pt]{->}{noteSphi}{noteSphi1}
+\ncarc[arcangle=30,linewidth=0.5pt]{->}{noteSphi}{noteSphi2}
+\ncarc[arcangle=30,linewidth=0.5pt]{->}{noteSphi}{noteSphi3}
+\end{theorem}
+\begin{proof}
+%\begin{enumerate}
+%  \item First note that $\Dh(\omega)$ and $\Dg(\omega)$ are periodic with period $2\pi$ such that\ifsxrefs{dsp}{prop:dtft_2pi} 
+%  \label{item:qc1}
+%    \\\indentx$\begin{array}{rclC}
+%         \Dh(\omega+2\pi n) &=& \Dh(\omega) & \forall n\in\Z   \\
+%         \Dg(\omega+2\pi n) &=& \Dg(\omega) & \forall n\in\Z   
+%       \end{array}$
+%
+%\item Proof for theorem statement:
+\begin{align*}
+   &2\Sphi(2\omega)
+   \\&= 2\brp{2\pi}\sum_{n\in\Z} \left|\Fphi(2\omega+2\pi n)\right|^2
+         \indentx\text{by \prefp{thm:Swfg}}
+   \\&= 2\brp{2\pi}\sum_{n\in\Z} \left|\cwt \Dh\left(\frac{2\omega+2\pi n}{2}\right)\Fphi\left(\frac{2\omega+2\pi n}{2}\right)\right|^2
+        \indentx\text{by \prefp{lem:Fphi}}
+   \\&= {2\pi}\sum_{n\in\Ze} \left|\Dh\left(\frac{2\omega+2\pi n}{2}\right)\right|^2\left|\Fphi\left(\frac{2\omega+2\pi n}{2}\right)\right|^2 +
+        {2\pi}\sum_{n\in\Zo} \left|\Dh\left(\frac{2\omega+2\pi n}{2}\right)\right|^2\left|\Fphi\left(\frac{2\omega+2\pi n}{2}\right)\right|^2
+   \\&= 2\pi\sum_{n\in\Z} \left|\Dh\left(\omega+2\pi n\right)\right|^2\left|\Fphi\left(\omega+2\pi n\right)\right|^2 +
+        2\pi\sum_{n\in\Z} \left|\Dh\left(\omega+2\pi n+\pi \right)\right|^2\left|\Fphi\left(\omega+2\pi n+ \pi \right)\right|^2
+   \\&= 2\pi\sum_{n\in\Z} \left|\Dh\left(\omega\right)\right|^2\left|\Fphi\left(\omega+2\pi n\right)\right|^2 +
+        2\pi\sum_{n\in\Z} \left|\Dh\left(\omega+\pi \right)\right|^2\left|\Fphi\left(\omega+2\pi n+ \pi \right)\right|^2
+        \indentx\text{by \prefp{prop:dtft_2pi}}
+        %\indentx\text{by (\prefp{item:qc1})}
+   \\&= \left|\Dh\left(\omega     \right)\right|^2 \brp{2\pi\sum_{n\in\Z} \left|\Fphi\left(\omega    +2\pi n\right)\right|^2} +
+        \left|\Dh\left(\omega+\pi \right)\right|^2 \brp{2\pi\sum_{n\in\Z} \left|\Fphi\left(\omega+\pi+2\pi n\right)\right|^2}
+   \\&= \left|\Dh\left(\omega     \right)\right|^2 \Sphi(\omega) +
+        \left|\Dh\left(\omega+\pi \right)\right|^2 \Sphi(\omega+\pi)
+        \indentx\text{by \prefp{thm:Swfg}}
+\end{align*}
+
+%\end{enumerate}
+\end{proof}
+
+
+%=======================================
+\subsubsection{Sufficient conditions}
+%=======================================
+\pref{thm:mra_rdc} (next) gives a set of \emph{sufficient} conditions on the \fncte{scaling function} \xref{def:mra} 
+$\fphi$ to generate an \structe{MRA}.
+\prefpp{thm:h_ns} provides a set of sufficient conditions on the \fncte{scaling coefficients} \xref{def:hn} $\seqnZ{h_n}$ 
+to generate an \structe{MRA}; howbeit, this set results in the more restrictive \prope{orthonormal} MRA.
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{wojtaszczyk1997}{28}{0521578949}{Theorem 2.13}\\
+  \citerpgc{pinsky2002}{313}{0534376606}{Theorem 6.4.27}
+  }
+\label{thm:mra_rdc}
+\label{thm:mra_sufficient_phi}
+%--------------------------------------
+Let an \structe{MRA} be defined as in \prefp{def:mra}.
+Let a \structe{Riesz sequence} be defined as in \prefp{def:rieszseq}.
+Let $\spV_j\eqd\linspan\setxZ{\opTrn\fphi(x)}$.
+\thmbox{
+  \brb{\begin{array}{FMD}
+    (1). & $\seqn{\opTrn^n\fphi}$ is a \structe{Riesz sequence}                        & and \\
+    (2). & $\ds\exists \seqn{h_n} \st \fphi(x)=\sum_{n\in\Z}h_n\opDil\opTrn^n\fphi(x)$ & and \\
+    (3). & $\Fphi(\omega)$ is \prope{continuous} at $0$                                & and \\
+    (4). & $\Fphi(0)\neq0$
+  \end{array}}
+  \qquad\implies\qquad
+  \brb{\text{$\seqjZ{\spV_j}$ is an \structe{MRA}}}
+  }
+\end{theorem}
+\begin{proof}
+For this to be true, each of the conditions in the definition of an \structe{MRA} \xref{def:mra} must be satisfied:
+\begin{enumerate}
+  \item Proof that each $\spV_j$ is \prope{closed}: by definition of $\linspan$
+
+  \item Proof that $\seqn{\spV_j}$ is \prope{linearly ordered}: 
+    \begin{align*}
+      \spV_j\subseteq\spV_{j+1}
+        &\iff \linspan\setn{\opDil^j\opTrn^n\fphi}\subseteq\linspan\setn{\opDil^{j+1}\opTrn^n\fphi}
+        &\iff (2)
+    \end{align*}
+
+  \item Proof that $\ds\Setu_{j\in\Z}\spV_j$ is \prope{dense} in $\spLLR$: by \prefp{prop:mra_UVj}
+  
+  \item Proof of \prope{self-similar} property:
+    \begin{align*}
+      \brb{\ff\in\spV_j\iff\opDil\ff\in\spV_{j+1}}
+        &\iff \ff\in\linspan\setn{\opTrn^n\fphi}\iff\opDil\ff\in\linspan\setn{\opDil\opTrn^n\fphi}
+        &\iff (2)
+    \end{align*}
+
+  \item Proof for \structe{Riesz basis}: by (1) and \prefp{prop:mra_UVj}.
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+\subsection{Wavelet analysis}
+%=======================================
+%=======================================
+\subsubsection{Definition}
+%=======================================
+The term ``wavelet" comes from the French word ``\hie{ondelette}", meaning ``small wave". 
+And in essence, wavelets are ``small waves" (as opposed to the ``long waves" of Fourier analysis) 
+that form a basis for the Hilbert space $\spLLR$.\footnote{
+  \citerpg{strang1996}{ix}{0961408871}\\
+  \citerpg{atkinson2009}{191}{1441904581}
+  }
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{wojtaszczyk1997}{17}{0521578949}{Definition 2.1}
+  }
+\label{def:wavelet}
+\label{def:seqWn}
+\label{def:wavstrct_psi}
+%---------------------------------------
+%Let $\MRAspaceLLRV$ be an \structe{multiresolution space} \xref{def:mra}.
+Let $\opTrn$ and $\opDil$ be as defined in \prefp{def:opT}.
+\defboxp{
+  A function $\fpsi(x)$ in $\spLLR$ is a \hid{wavelet function} for $\spLLR$ if
+  \\\indentx$\set{\opDil^j\opTrn^n\fpsi}{\scy j,n\in\Z}$ is a \structe{Riesz basis} for $\spLLR$.\\
+  In this case, $\fpsi$ is also called the \hid{mother wavelet} of the basis $\set{\opDil^j\opTrn^n\fpsi}{\scy j,n\in\Z}$.
+  The sequence of subspaces $\seqjZ{\spW_j}$ is the \hid{wavelet analysis} induced by $\fpsi$, 
+  where each subspace $\spW_j$ is defined as
+  \\\indentx$\spW_j\eqd\linspan\setnZ{\opDil^j\opTrn^n\fpsi}$ .
+  }
+\end{definition}
+
+%---------------------------------------
+%\begin{definition}
+%---------------------------------------
+%Let $\MRAspaceLLRV$ be an \structe{multiresolution space} \xref{def:mra}.
+%Let the operation $\adds$ represent \hie{Minkowski addition} on $\spLLR$\ifsxref{subspace}{def:sub_add}.%
+%\defboxt{
+%  %The \hid{wavelet subspace} $\spW_j$ is the orthogonal complement of $\spV_j$ in $\spV_{j+1}$ such that
+%  %  \\\indentx$\spV_j \adds \spW_j = \spV_{j+1}$
+%  %  \\
+%  The sequence $\seqjZ{\spW_j}$ is a \hid{wavelet analysis} on $\MRAspaceLLRV$ if
+%  \\\indentx$\begin{array}{FMCD}
+%    1. & $\spV_{j+1} = \mcom{\spV_j \adds \spW_j}{\hi{Minkowski addition}}$
+%       & \forall \spW_j \in \seqxZ{\spW_j}\text{ and }\spV_j\in\seqjZ{\spV_j}
+%       & and
+%     %\qquad\text{\scriptsize ($\spW_j$ is the complement of $\spV_j$ in $\spV_{j+1}$)}
+%    \\
+%    2. & \mc{2}{M}{There exists $\fpsi\in\spLLR$ such that $\seqxZ{\opTrn^n\fpsi}$ is a \structe{Riesz basis} for $\spW_0$.}
+%  \end{array}$
+%  }
+%\end{definition}
+
+%%---------------------------------------
+%\begin{proposition}[complemented subspaces]
+%%---------------------------------------
+%Let $\MRAspaceLLRV$ be an \structe{MRA space}.
+%Let $\spV_j^\orthog$ be the \structe{orthogonal complement} \xrefP{def:sub_ocomp} of $\spV_j$.
+%\propbox{
+%  \spV_j^{\orthog\orthog}=\spV_j \qquad\scy\forall n\in\Z \qquad\scs\text{\prope{involutory}}
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{enume}
+%  \item By \pref{def:mra}, $\spV_j$ is \prope{closed} in $\spLLR$ ($\spV_j=\cls\spV_j$).
+%  \item By \prefpp{thm:inprod_orthog}, $\spV_j^{\orthog\orthog}=\spV_j$.
+%\end{enume}
+%\end{proof}
+
+A \structe{wavelet analysis} $\seqn{\spW_j}$ is often constructed from a \structe{multiresolution anaysis} \xref{def:mra}
+$\seqn{\spV_j}$ under the relationship
+\\\indentx$\ds\spV_{j+1} = \spV_j \adds \spW_j$,\qquad where $\adds$ is subspace addition (\ope{Minkowski addition}).\\
+By this relationship alone, $\seqn{\spW_j}$ is in no way uniquely defined 
+in terms of a multiresolution analysis $\seqn{\spV_j}$.
+In general there are many possible complements of a subspace $\spV_j$.
+To uniquely define such a wavelet subspace, one or more additional constraints are required.
+One of the most common additional constraints is \hie{orthogonality}, such that
+$\spV_j$ and $\spW_j$ are orthogonal to each other (see \prefp{chp:ortho}).
+
+
+
+
+%=======================================
+\subsubsection{Dilation equation}
+%=======================================
+Suppose $\seqxZ{\opTrn^n\fpsi}$ is a basis for $\spW_0$.
+By \prefp{def:seqWn}, the wavelet subspace $\spW_0$ is contained in the 
+scaling subspace $\spV_1$.
+By \prefp{def:mra}, the sequence $\seqxZ{\opDil\opTrn^n\fphi}$ is a basis for $\spV_1$.
+Because $\spW_0$ is contained in $\spV_1$,
+the sequence $\seqxZ{\opDil\opTrn^n\fphi}$ is also a basis for $\spW_0$.
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:g->psi}
+%--------------------------------------
+Let $\mrasys$ be a multiresolution system
+and $\seqjZ{\spW_j}$ a wavelet analysis with respect to $\mrasys$ and with wavelet function $\fpsi$.
+\thmbox{
+  \begin{array}{l rc>{\ds}l @{\qquad}D}
+    \exists \seqxZ{g_n} \st
+      & \fpsi &=& \sum_{n\in\Z}  g_n \opDil \opTrn^n \fphi
+      & 
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \fpsi &\in \spW_0
+        && \text{by \prefp{def:seqWn}}
+      \\&\subseteq \spV_1
+        && \text{by \prefp{def:seqWn}}
+      \\&= \Span\seqxZ{\opDil\opTrn^n\fphi(x)}
+        && \text{by \prefp{def:mra} (MRA)}
+      \\&\implies 
+         \exists \seqxZ{g_n} \st
+            \fpsi = \sum_{n\in\Z}  g_n \opDil \opTrn^n \fphi
+\end{align*}
+
+%\item Proof that $\fpsi(x) = \sqrt{2} \sum_{n\in\Z}  g_n  \fphi(2x-n)$:
+%\begin{align*}
+%              &  \set{\fphi(2x-n)}{n\in\Z} \text{ spans } \spV_1
+%              && \text{by (1)}
+%  \\
+%              &  \set{\fpsi(x-n)}{n\in\Z} \text{ spans } \spW_0
+%  \\ \implies & \fpsi(x)\in \spW_0 \subset \spV_1
+%  \\ \implies & \text{$\fpsi(x)$ can be represented as a linear combination of $\fphi(2x-n)$}.
+%\end{align*}
+%\end{enumerate}
+\end{proof}
+
+A \structe{wavelet system} (next definition) consists of two subspace sequences: 
+\begin{liste}
+  \item A \hib{multiresolution analysis} $\seqn{\spV_j}$ \xrefP{def:mra}
+     provides ``coarse" approximations of a function in $\spLLR$ at different ``scales" or resolutions.
+  \item A \hib{wavelet analysis} $\seqn{\spW_j}$
+     provides the ``detail" of the function missing from the approximation provided by a given scaling subspace
+     \xrefP{def:seqWn}.
+\end{liste}
+
+%--------------------------------------
+\begin{definition}
+\label{def:wavsys}
+\label{def:gn}
+%--------------------------------------
+Let $\mrasys$ be a multiresolution system \xrefP{def:mra}
+and $\seqjZ{\spW_j}$ a wavelet analysis \xrefP{def:seqWn}
+with respect to $\seqjZ{\spV_j}$.
+Let $\seqxZ{g_n}$ be a sequence of coefficients such that 
+$\fpsi = \sum_{n\in\Z}  g_n \opDil \opTrn^n \fphi$.
+\defbox{\begin{array}{M}
+  A \hid{wavelet system} is the tuple
+    \\\qquad$\ds\wavsys$\\
+  and the sequence $\seqxZ{g_n}$ is the \hid{wavelet coefficient sequence}.
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{remark}
+%--------------------------------------
+The pair of coefficient sequences $\opair{\seqn{h_n}}{\seqn{g_n}}$ generates 
+the scaling function $\fphi(x)$ \xrefP{def:wavstrct_phi} 
+and the wavelet function $\fpsi(x)$ \xrefP{def:wavstrct_psi}.
+These functions in turn generate 
+the multiresolution analysis $\seqn{\spV_j}$ \xrefP{def:seqVn}
+and the wavelet analysis $\seqn{\spW_j}$ \xrefP{def:seqWn}.
+Therefore, the coefficient sequence pair $\opair{\seqn{h_n}}{\seqn{g_n}}$ 
+totally defines a wavelet system $\wavsys$ \xref{def:wavsys}.
+
+Furthermore, especially in the case of orthonormal wavelets, the wavelet coefficient
+sequence $\seqxZ{g_n}$ is often defined in terms of the 
+scaling coefficient sequence $\seqxZ{h_n}$
+in a very simple and straightforward manner.
+Therefore, in the case of an orthonormal wavelet system, the coefficient
+scaling sequence $\seqxZ{h_n}$ often totally defines the entire wavelet system.
+And in this case, designing a wavelet system is only a matter of finding a handful of
+scaling coefficients $\seqn{h_1,\,h_2,\,\ldots,\,h_n}$\ldots because once you have these,
+you can generate everything else.
+\end{remark}
+
+
+%%---------------------------------------
+%\begin{definition}
+%\label{def:wav_lat_coef}
+%%---------------------------------------
+%Let $\seqxZ{h_n}$ be a sequence of scaling coefficients and
+%    $\seqxZ{g_n}$ be the associated sequence of wavelet coefficients.
+%%    $\subseteq$ the set inclusion relation,
+%%    $\setu$ the set union operation, and
+%%    $\seti$ the set intersection operation.
+%\defbox{\begin{array}{l}
+%  \text{The tupple }
+%  \qquad \wavlatcoef \\
+%  \text{is called the \hid{lattice of wavelet bases coefficients}.}
+%\end{array}}
+%\end{definition}
+
+
+
+%\begin{figure}[t]
+%\setlength{\unitlength}{8mm}
+%\begin{center}
+%\begin{tabular}{cc}
+%   \includegraphics*[width=6\tw/16, height=6\tw/16, clip=true]{../common/wavelets/haar_sj.eps} &
+%   \includegraphics*[width=6\tw/16, height=6\tw/16, clip=true]{../common/wavelets/haar_sk.eps} \\
+%   \footnotesize varying dilation, constant translation   &
+%   \footnotesize varying translation, constant dilation
+%\end{tabular}
+%\caption{
+%   \label{fig:haar-jn}
+%   Haar scaling function at varying dilations and translations.
+%   }
+%\end{center}
+%\end{figure}
+
+
+
+%=======================================
+\subsubsection{Order structure}
+%=======================================
+%The axioms of \prefp{def:mra} generate a subspace architecture.
+%These transform representation sequences may be \hie{ordered} with \hie{ordering relations}
+%as follows:%
+%\footnote{\hie{projection operator ordering}: \prefp{def:operator_lattice}}
+
+\begin{minipage}{\tw-70mm}\raggedright
+The \structe{wavelet system} $\wavsys$ \xref{def:wavsys} together with the 
+set inclusion relation $\subseteq$ 
+forms an \structe{ordered set}\ifsxref{order}{def:poset}, 
+illustrated to the right by a \hie{Hasse diagram}\ifsxref{order}{def:hasse}.%\ifdochas{order}{\footnotemark}
+%Under these three order relations, wavelet system generate three isomorphic lattices such 
+%as are illustrated in \prefp{fig:wav_VPb_isomorphic} 
+%and in the figure to the right.
+\end{minipage}%
+\hfill%
+\begin{minipage}{60mm}%
+  %\mbox{}\\% force (just above?) top of graphic to be the top of the minipage
+  \input{../common/wavelets/graphics/latwav.tex}%
+\end{minipage}%
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:order_wavstrct}
+%---------------------------------------
+Let $\wavsys$ be a wavelet system with order relation $\subseteq$.
+The lattice $\latL\eqd\lattice{\seqn{\spV_j},\seqn{\spW_j}}{\subseteq}{\join}{\meet}$ has 
+the following properties:
+\propbox{\begin{array}{FM}
+    \cnto & $\latL$ is \prope{nondistributive}.
+    \cntn & $\latL$ is \prope{nonmodular}.
+    %\cntn & $\latL$ is \prope{complemented}.
+    %\cntn & $\latL$ is \prope{not uniquely complemented}.
+    %\cntn & $\latL$ is \prope{nonorthocomplemented}.
+    \cntn & $\latL$ is \prope{noncomplemented}.
+    \cntn & $\latL$ is \prope{nonBoolean}.
+\end{array}}
+\end{proposition}
+\begin{proof}
+\mbox{}\hspace{20mm}
+  \latmatlw{4}{0.5}
+    {
+           &       & \null                 \\  
+           & \null                         \\  
+     \null &       & \null &       & \null \\  
+           &       & \null                   
+    }
+    {\ncline{1,3}{2,2}\ncline{2,2}{3,1}
+     \ncline{1,3}{3,5}
+     \ncline{2,2}{3,3}
+     \ncline{4,3}{3,1}\ncline{4,3}{3,3}\ncline{4,3}{3,5}
+    }
+    {\nput{ 90}{1,3}{$1$}
+     \nput{135}{2,2}{$v$}
+     \nput{0}{3,1}{$x$}
+     \nput{ 67}{3,3}{$y$}
+     \nput{  0}{3,5}{$z$}
+     \nput{-90}{4,3}{$0$}
+    }
+
+\begin{enumerate}
+  \item Proof that $\latL$ is \prope{nondistributive}: \label{item:wavprop_nondistrib}
+    \begin{enumerate}
+      \item $\latL$ contains the $N5$ lattice\ifsxref{latm}{def:lat_N5}.
+      \item Because $\latL$ contains the $N5$ lattice, $\latL$ is \prope{nondistributive}\ifdochas{latm}{ by \prefp{thm:latd_char_n5m3}}.
+    \end{enumerate}
+
+  \item Proof that $\latL$ is \prope{nonmodular} and \prope{nondistributive}: 
+    \begin{enumerate}
+      \item $\latL$ contains the $N5$ lattice\ifsxref{latm}{def:lat_N5}.
+      \item Because $\latL$ contains the $N5$ lattice, $\latL$ is \prope{nonmodular}\ifdochas{latm}{ by \prefp{thm:lat_mod_iff_N5}}.
+    \end{enumerate}
+
+  \item Proof that $\latL$ is \prope{noncomplemented}:
+    \begin{align*}
+        x' &= y' = v' = z
+      \\z' &= \setn{x,y,v}
+      \\x''&= \brp{x'}'
+         \\&= z'
+         \\&= \setn{x,y,v}
+         \\&\ne  x
+    \end{align*}
+
+  %\item Proof that $\latL$ is \prope{not uniquely complemented}:\\
+  %   For example, subspace $\spW_2$ in \prefp{fig:wav_VPb_isomorphic} is complemented
+  %   by $\spV_1$, $\spV_2$, and $\spW_1$.
+  %\item Proof that $\latL$ is \prope{orthomodular}:
+  %  \begin{enumerate}
+  %    \item $\latL$ does \emph{not} contain the $O_6$ lattice\ifdochas{ortholat}{ \xrefP{def:latoc_omod}}.
+  %    \item Because $\latL$ does not contain the $O_6$ lattice, $\latL$ is \prope{orthomodular}\ifdochas{ortholat}{ by \prefp{thm:latoc_omod}}.
+  %  \end{enumerate}
+
+  \item Proof that $\latL$ is \prope{nonBoolean}:
+    \begin{enumerate}
+      \item $\latL$ is \prope{nondistributive} (\pref{item:wavprop_nondistrib}).
+      \item Because $\latL$ is \prope{nondistributive}, it is \prope{nonBoolean}\ifdochas{boolean}{ by \prefp{def:booalg}}.
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+
+
+
+%=======================================
+\subsubsection{Subspace algebraic structure}
+%=======================================
+%--------------------------------------
+\begin{theorem}
+\label{thm:mra_subalg}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $\spV_1 \adds \spV_2$ represent \fncte{Minkowski addition} of two subspaces $\spV_1$ and $\spV_2$ of a Hilbert space $\spH$.
+\thmbox{\begin{array}{rc>{\ds}l D}
+    \spLLR &=& \lim_{j\to\infty}\spV_j                 
+             & ($\spLLR$ is equivalent to one very large scaling subspace)\\
+           &=& \spV_j \adds \spW_j \adds \spW_{j+1} \adds \spW_{j+2} \adds\, \cdots 
+             & $\brp{\begin{array}{D}$\spLLR$ is equivalent to one scaling space\\
+                                       and a sequence of wavelet subspaces\end{array}}　$\\
+           &=& \cdots\,\adds \spW_{-2} \adds \spW_{-1} \adds \spW_0 \adds \spW_1 \adds \spW_2 \adds\,\cdots        
+             & ($\spLLR$ is equivalent to a sequence of wavelet subspaces)
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for (1):
+    \begin{align*}
+      \spLLR 
+        &= \lim_{j\to\infty}\spV_j                 
+        && \text{by \prefp{def:mra}}
+    \end{align*}
+
+  \item Proof for (2):
+    \begin{align*}
+      \mcom{\spV_j \adds \spW_j}{$\spV_{j+1}$} \adds \spW_{j+1} \adds \spW_{j+2} \adds \cdots
+        &= \mcom{\spV_{j+1} \adds \spW_{j+1}}{$\spV_{j+2}$} \adds \spW_{j+2} \adds \spW_{j+3} \adds \cdots
+      \\&= \mcom{\spV_{j+2} \adds \spW_{j+2}}{$\spV_{j+3}$} \adds \spW_{j+3} \adds \spW_{j+4} \adds \cdots
+      \\&= \mcom{\spV_{j+3} \adds \spW_{j+3}}{$\spV_{j+4}$} \adds \spW_{j+4} \adds \spW_{j+5} \adds \cdots
+      \\&= \mcom{\spV_{j+5} \adds \spW_{j+5}}{$\spV_{j+5}$} \adds \spW_{j+6} \adds \spW_{j+6} \adds \cdots
+      \\&= \lim_{j\to\infty}\spV_{j+5} \adds \spW_{j+5} \adds \spW_{j+6} \adds \spW_{j+6} \adds \cdots
+      \\&= \spLLR
+    \end{align*}
+
+  \item Proof for (3):
+    \begin{align*}
+      \spLLR &= \mcom{\spV_0}{$\spV_{-1}\adds\spW_{-1}$} \adds \spW_0 \adds \spW_1 \adds \spW_2 \adds \spW_3 \adds \cdots
+             && \text{by (2)}
+           \\&= \mcom{\spV_{-1}}{$\spV_{-2}\adds\spW_{-2}$} \spW_{-1} \adds \spW_0 \adds \spW_1 \adds \spW_2 \adds \spW_3 \adds \cdots
+           \\&= \mcom{\spV_{-2}}{$\spV_{-3}\adds\spW_{-3}$} \spW_{-2} \adds \spW_{-1} \adds \spW_0 \adds \spW_1 \adds \spW_2 \adds \spW_3 \adds \cdots
+           \\&= \mcom{\spV_{-3}}{$\spV_{-4}\adds\spW_{-4}$} \spW_{-3} \adds \spW_{-2} \adds \spW_{-1} \adds \spW_0 \adds \spW_1 \adds \spW_2 \adds \spW_3 \adds \cdots
+           \\&\vdots
+           \\&= \cdots \adds \spW_{-3} \adds \spW_{-2} \adds \spW_{-1} \adds \spW_0 \adds \spW_1 \adds \spW_2 \adds \spW_3 \adds \cdots
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{remark}
+%--------------------------------------
+In the special case that two subspaces $\spW_1$ and $\spW_2$ are \prope{orthogonal} to each other, then 
+the \fncte{subspace addition} operation $\spW_1\adds\spW_2$ is frequently expressed as
+$\spW_1\oplus\spW_2$.
+In the case of an \structe{orthonormal wavelet system} \xref{def:ows}, 
+the expressions in \prefpp{thm:mra_subalg} could be expressed as
+\\\indentx$\begin{array}{rc>{\ds}l}
+    \spLLR &=& \lim_{j\to\infty}\spV_j                 \\
+           &=& \spV_j \oplus \spW_j \oplus \spW_{j+1} \oplus \spW_{j+2} \oplus\, \cdots \\
+           &=& \cdots\,\oplus \spW_{-2} \oplus \spW_{-1} \oplus \spW_0 \oplus \spW_1 \oplus \spW_2 \oplus\,\cdots .       
+  \end{array}$
+\end{remark}.
+
+
+%=======================================
+\subsubsection{Necessary conditions}
+%=======================================
+
+%--------------------------------------
+\begin{theorem}[\thmd{quadrature condition}s in ``time"]
+\label{thm:wavsys_quadcon}
+%--------------------------------------
+Let $\wavsys$ be a wavelet system \xref{def:wavsys}.
+\thmbox{\begin{array}{F>{\ds}rc>{\ds}lC}
+  1. & \sum_{m\in\Z} h_m \sum_{k\in\Z} h_k^\ast \inprod{\fphi}{\opTrn^{2n-m+k} \fphi} &=& \inprod{\fphi}{\opTrn^n \fphi} & \forall n\in\Z\\
+  2. & \sum_{m\in\Z} g_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi}{\opTrn^{2n-m+k} \fphi} &=& \inprod{\fpsi}{\opTrn^n \fpsi} & \forall n\in\Z\\
+  3. & \sum_{m\in\Z} h_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi}{\opTrn^{2n-m+k} \fphi} &=& \inprod{\fphi}{\opTrn^n \fpsi} & \forall n\in\Z
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for (1): by \prefp{thm:wav_quadcon}.
+  \item Proof for (2): 
+    \begin{align*}
+      &\inprod{\fpsi}{\opTrn^n \fpsi}
+      \\&= \inprod{\sum_{m\in\Z} g_m \opDil \opTrn^m \fphi }{\opTrn^n \sum_{k\in\Z} g_k \opDil \opTrn^k \fphi}
+        && \text{by \prefp{thm:g->psi}}
+      \\&= \sum_{m\in\Z} g_m \sum_{k\in\Z} g_k^\ast \inprod{\opDil \opTrn^m \fphi }{\opTrn^n \opDil \opTrn^k \fphi}
+        && \text{by properties of $\inprodn$ \ifxref{vsinprod}{def:inprod}}
+      \\&= \sum_{m\in\Z} g_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\left(\opDil \opTrn^m \right)^\ast \opTrn^n \opDil \opTrn^k \fphi}
+        && \text{by definition of operator adjoint \ifxref{operator}{prop:op_adjoint}}
+      \\&= \sum_{m\in\Z} g_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\left(\opDil \opTrn^m \right)^\ast \opDil \opTrn^{2n} \opTrn^k \fphi}
+        && \text{by \prefp{prop:DTTD}}
+      \\&= \sum_{m\in\Z} g_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\opTrna^m \opDila \opDil \opTrn^{2n} \opTrn^k \fphi}
+        && \text{by operator star-algebra properties \ifxref{operator}{thm:op_star}}
+      \\&= \sum_{m\in\Z} g_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\opTrn^{-m} \opDil^{-1} \opDil \opTrn^{2n} \opTrn^k \fphi}
+        && \text{by \prefp{prop:TD_unitary}}
+      \\&= \sum_{m\in\Z} g_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\opTrn^{2n-m+k} \fphi}
+    \end{align*}
+
+  \item Proof for (3): 
+    \begin{align*}
+      &\inprod{\fphi}{\opTrn^n \fpsi}
+      \\&= \inprod{\sum_{m\in\Z} h_m \opDil \opTrn^m \fphi }{\opTrn^n \sum_{k\in\Z} g_k \opDil \opTrn^k \fphi}
+        && \text{by \prefp{thm:dilation_eq} and \prefp{thm:g->psi}}
+      \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} g_k^\ast \inprod{\opDil \opTrn^m \fphi }{\opTrn^n \opDil \opTrn^k \fphi}
+        && \text{by properties of $\inprodn$ \ifxref{vsinprod}{def:inprod}}
+      \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\left(\opDil \opTrn^m \right)^\ast \opTrn^n \opDil \opTrn^k \fphi}
+        && \text{by definition of operator adjoint \ifxref{operator}{prop:op_adjoint}}
+      \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\left(\opDil \opTrn^m \right)^\ast \opDil \opTrn^{2n} \opTrn^k \fphi}
+        && \text{by \prefp{prop:DTTD}}
+      \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\opTrna^m \opDila \opDil \opTrn^{2n} \opTrn^k \fphi}
+        && \text{by operator star-algebra properties \ifxref{operator}{thm:op_star}}
+      \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\opTrn^{-m} \opDil^{-1} \opDil \opTrn^{2n} \opTrn^k \fphi}
+        && \text{by \prefp{prop:TD_unitary}}
+      \\&= \sum_{m\in\Z} h_m \sum_{k\in\Z} g_k^\ast \inprod{\fphi }{\opTrn^{2n-m+k} \fphi}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+%=======================================
+%\subsubsection{Fourier properties}
+%=======================================
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:vsmra_real_Fpsi}
+\label{prop:psi_g_phi}
+%--------------------------------------
+Let $\wavsys$ be a wavelet system.
+Let $\Fphi(\omega)$ and $\Fpsi(\omega)$ be the \fncte{Fourier transform}s\ifsxrefs{harFour}{def:ft}of $\fphi(x)$ and $\fpsi(x)$, respectively.
+Let $\Dg(\omega)$ be the \fncte{Discrete time Fourier transform}\ifsxrefs{dsp}{def:dtft}of $\seqn{g_n}$.
+%  $\begin{array}[t]{rc>{\ds}l c>{\ds}l D}
+%    \Fpsi\brp{\omega}
+%      &\eqd& \opFT\fpsi
+%      &\eqd& \frac{1}{\sqrt{2\pi}}\int_t \fpsi(x) e^{-i\omega t} \dx
+%      &      (\structe{Fourier transform}, \prefp{def:ft})
+%      \\
+%    \Dg(\omega)
+%      &\eqd& \opDTFT\seqn{g_n}
+%      &\eqd& \sum_{n\in\Z} g_n e^{-i\omega n}
+%      &      (\structe{Discrete-time Fourier Transform}).
+%  \end{array}$
+\propbox{
+  \Fpsi\brp{\omega}
+    %\eqd
+    %\mcom{\opFT\fpsi = \brp{\opDili \opDTFT\seqn{g_n}} \; \brp{\opDili \opFT\fphi}}
+    %     {operator notation}
+    =
+    {\cwt \: \Dg\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}}
+    %     {traditional notation}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \Fpsi\brp{\omega}
+    &\eqd \opFT\fpsi
+  \\&= \opFT\sum_{n\in\Z} g_n \opDil \opTrn^n \fphi
+    && \text{by \prefp{thm:g->psi}}
+  \\&= \sum_{n\in\Z} g_n \opFT\opDil \opTrn^n \fphi
+  \\&= \sum_{n\in\Z} g_n \opDili \opFT\opTrn^n \fphi
+    && \text{by \prefp{cor:wavstrct_FTD}}
+  \\&= \sum_{n\in\Z} g_n \opDili e^{-i\omega n} \opFT\fphi
+    && \text{by \prefp{cor:wavstrct_FTD}}
+  \\&= \sum_{n\in\Z} g_n \sqrt{2}\brp{\opDili e^{-i\omega n}} \brp{\opDili\opFT\fphi}
+    && \text{by \prefp{prop:DjTnfg}}
+  \\&= \sqrt{2}\brp{\opDili \sum_{n\in\Z} g_n e^{-i\omega n}} \; \brp{\opDili \opFT\fphi}
+  \\&= \sqrt{2}\brp{\opDili \opDTFT\seqn{g_n}} \; \brp{\opDili \opFT\fphi}
+    && \text{by definition of $\opDTFT$}
+  \\&= \sqrt{2}\cwt \: \Dg\brp{\frac{\omega}{2}}\: \cwt \Fphi\brp{\frac{\omega}{2}}
+    && \text{by \prefp{prop:opDi}}
+  \\&= \cwt \: \Dg\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}
+\end{align*}
+%
+%\begin{align*}
+%  \Fpsi\brp{\omega}
+%    &= \opF\fpsi
+%  \\&= \opFT\sum_{n\in\Z} g_n \opDil \opTrn^n \fphi
+%    && %\text{by dilation equation \xrefP{thm:dilation_eq}}
+%  \\&= \sum_{n\in\Z} g_n \opFT\opDil \opTrn^n \fphi
+%  \\&= \sum_{n\in\Z} g_n \opDili \opFT\opTrn^n \fphi
+%    && \text{by \prefp{prop:vsmra_real_FD}}
+%  \\&= \sum_{n\in\Z} g_n \opDili e^{-i\omega n} \opFT\fphi
+%    && \text{by \prefp{prop:vsmra_real_FT}}
+%  \\&= \brp{\opDili \sum_{n\in\Z} g_n e^{-i\omega n}} \; \brp{\opDili \opFT\fphi}
+%  \\&= \brp{\opDili \opDTFT\seqn{g_n}} \; \brp{\opDili \opFT\fphi}
+%  \\&= \fscale \: \Dg\brp{\frac{\omega}{2}}\: \fscale \Fphi\brp{\frac{\omega}{2}}
+%    && \text{by \prefp{prop:opDi}}
+%  \\&= \frac{1}{2}\: \Dh\brp{\frac{\omega}{2}}\: \Fphi\brp{\frac{\omega}{2}}
+%\end{align*}
+\end{proof}
+
+%=======================================
+%\subsection{Immediate results}
+%=======================================
+
+
+
+%=======================================
+%\subsubsection{Power Spectrum}
+%=======================================
+%%--------------------------------------
+%\begin{definition}
+%\citep{chui}{134}
+%\label{def:wav_S}
+%\index{scaling power spectrum function         }
+%\index{wavelet power spectrum function         }
+%\index{scaling wavelet power spectrum function }
+%\index{Laurent polynomial}
+%%--------------------------------------
+%Let $\wavsys$ be a \hi{wavelet system}.
+%Let $\Szfg(z)$ be the \fncte{complex cross-power spectrum} of $\ff$ and $\fg$ \xref{def:Szfg} in $\spLLR$
+%and $\Swfg(\omega)$ be the \fncte{cross-power spectrum} of $\ff$ and $\fg$ \xref{def:Swfg} in $\spLLR$.
+%\defbox{\begin{array}{>{\ds}rc>{\ds}lM}
+%    \Szphi(z)  &\eqd&  \left.\Szfg(z)\right|_{\ff=\fg=\fphi} &is the \hid{scaling power spectrum function}.
+%    \Szpsi(z)  &\eqd&  \left.\Szfg(z)\right|_{\ff=\fg=\fpsi} &is the \hid{wavelet power spectrum function}.
+%    \Szpsi(z)  &\eqd&  \Szfg(z) &is the \hid{scaling power spectrum function}.
+%    \\
+%    \Spsi(\omega) &\eqd&  \sum_{n\in\Z} \Rpsi(n) \fkernea{n}{\omega}
+%    &is the \hid{wavelet power spectrum function}.
+%    \\
+%    \Shs (\omega) &\eqd&  \sum_{n\in\Z} \Rhs (n) \fkernea{n}{\omega}
+%    &is the \hid{scaling wavelet power spectrum function}.
+%\end{array}}
+%%\\The Laurent polynomial $\Sphi(\omega)$ is also called the \hid{Euler-Frobenius polynomial}.
+%\end{definition}
+
+
+%In this chapter, we don't assume the special case of orthonormality.
+%But good things happen if we do happen to have orthonormality.
+%One of them is that the power spectrum equations in \prefp{lem:SSS}
+%simplify to constants \xrefP{lem:SSSo}.
+
+\pref{thm:gen_quadcon} (next) presents the \structe{quadrature} necessary conditions of a \hi{wavelet system}.
+These relations simplify dramatically in the special case of an
+\structe{orthonormal wavelet system} \xrefP{thm:oquadcon}.
+%--------------------------------------
+\begin{theorem}[\thmd{Quadrature conditions} in ``frequency"]
+\footnote{
+  \citerp{chui}{135}       \\
+  \citerp{goswami}{110}
+  }
+\label{thm:gen_quadcon}
+%--------------------------------------
+Let $\wavsys$ be a \hi{wavelet system}.
+Let $\Fx(\omega)$ be the \fncte{discrete time Fourier transform}\ifsxrefs{dsp}{def:dtft}for a sequence $\seqxZ{x_n}$ in $\spllR$.
+Let $\Swphi(\omega)$ be the \fncte{auto-power spectrum} \xref{def:Swfg} of $\fphi$,
+    $\Swpsi(\omega)$ be the \fncte{auto-power spectrum} of $\fpsi$,
+and $\Shs(\omega)$ be the \fncte{cross-power spectrum} of $\fphi$ and $\fpsi$.
+\thmbox{\begin{array}{F>{\ds}lc>{\ds}l}
+   1. & \abs{\Dh\left(\omega     \right)}^2 \Sphi(\omega) + \abs{\Dh\brp{\omega+\pi }}^2 \Sphi(\omega+\pi) &=& 2\Sphi(2\omega)
+\\ 2. & \abs{\Dg\left(\omega     \right)}^2 \Sphi(\omega) + \abs{\Dg\brp{\omega+\pi }}^2 \Sphi(\omega+\pi) &=& 2\Spsi(2\omega)
+\\ 3. & \Dh(\omega)\Dg^\ast(\omega)         \Sphi(\omega) + \Dh(\omega +\pi)\Dg^\ast(\omega +\pi)\Sphi(\omega+\pi) &=& 2\Shs(2\omega)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  %\item First note that $\Dh(\omega)$ and $\Dg(\omega)$ are periodic with period $2\pi$ such that\ifsxrefs{dsp}{prop:dtft_2pi}
+  %  \\$\begin{array}{rclC}
+  %       \Dh(\omega+2\pi n) &=& \Dh(\omega) & \forall n\in\Z   \\
+  %       \Dg(\omega+2\pi n) &=& \Dg(\omega) & \forall n\in\Z   
+  %     \end{array}$
+
+\item Proof for (1): by \prefp{thm:Sphi}.
+
+\item Proof for (2):
+\begin{align*}
+   2\Spsi(2\omega)
+     &\eqd 2\brp{2\pi}\sum_{n\in\Z} \left|\Fpsi(2\omega+2\pi n)\right|^2
+   \\&= 2\brp{2\pi}\sum_{n\in\Z} \left|\cwt \Dg\left(\frac{2\omega+2\pi n}{2}\right)\Fphi\left(\frac{2\omega+2\pi n}{2}\right)\right|^2
+        \indentx\text{by \prefp{lem:Fphi}}
+   \\&= 2\pi
+        \sum_{n\in\Ze} \left|\Dg\left(\frac{2\omega+2\pi n}{2}\right)\right|^2\left|\Fphi\left(\frac{2\omega+2\pi n}{2}\right)\right|^2 +
+     \\&\qquad 2\pi
+        \sum_{n\in\Zo} \left|\Dg\left(\frac{2\omega+2\pi n}{2}\right)\right|^2\left|\Fphi\left(\frac{2\omega+2\pi n}{2}\right)\right|^2
+   \\&= 2\pi\sum_{n\in\Z} \abs{\Dg\brp{\omega+2\pi n     }}^2 \abs{\Fphi\brp{\omega+2\pi n       }}^2 +
+        2\pi\sum_{n\in\Z} \abs{\Dg\brp{\omega+2\pi n+\pi }}^2 \abs{\Fphi\brp{\omega+2\pi n + \pi }}^2  
+   \\&= 2\pi\sum_{n\in\Z} \abs{\Dg\brp{\omega            }}^2 \abs{\Fphi\brp{\omega+2\pi n       }}^2 +
+        2\pi\sum_{n\in\Z} \abs{\Dg\brp{\omega+\pi        }}^2 \abs{\Fphi\brp{\omega+2\pi n + \pi }}^2  
+   \\&= \abs{\Dg\brp{\omega     }}^2 \brp{2\pi\sum_{n\in\Z} \abs{\Fphi\brp{\omega+2\pi n       }}^2 +}
+        \abs{\Dg\brp{\omega+\pi }}^2 \brp{2\pi\sum_{n\in\Z} \abs{\Fphi\brp{\omega+\pi+2\pi n   }}^2  }
+   \\&= \abs{\Dg\brp{\omega     }}^2\Sphi(\omega) +
+        \abs{\Dg\brp{\omega+\pi }}^2 \Sphi(\omega+\pi)
+        \indentx\text{by \prefp{thm:Swfg}}
+\end{align*}
+
+
+\item Proof for (3):
+\begin{align*}
+  2\Shs(2\omega)
+    &=  2\brp{2\pi}\sum_{n\in\Z} \Fphi(2\omega+2\pi n) \Fpsi^\ast(2\omega+2\pi n)
+  \\&=  2\brp{2\pi}\sum_{n\in\Z}
+        \cwt 
+        \Dh  \left(\omega +\pi n \right)
+        \Fphi\left(\omega +\pi n \right)
+        \cwt 
+        \Dg^\ast  \left(\omega +\pi n \right)
+        \Fphi^\ast\left(\omega +\pi n \right)
+        \quad\text{by \prefp{lem:Fphi}}
+  \\&=  2\pi
+        \sum_{n\in\Z}
+        \Dh  \left(\omega +\pi n \right)
+        \Dg^\ast  \left(\omega +\pi n \right)
+        \left| \Fphi\left(\omega +\pi n \right) \right|^2
+  \\&=  2\pi
+        \sum_{n\in\Zo}
+        \Dh  \left(\omega +\pi n \right)
+        \Dg^\ast  \left(\omega +\pi n \right)
+        \left| \Fphi\left(\omega +\pi n \right) \right|^2
+      \\&\qquad+ 2\pi\sum_{n\in\Ze}
+        \Dh  \left(\omega +\pi n \right)
+        \Dg^\ast  \left(\omega +\pi n \right)
+        \left| \Fphi\left(\omega +\pi n \right) \right|^2
+  \\&=  2\pi\sum_{n\in\Z}
+        \Dh  \left(\omega +2\pi n+\pi \right)
+        \Dg^\ast  \left(\omega +2\pi n+\pi \right)
+        \left| \Fphi\left(\omega +2\pi n+\pi \right) \right|^2
+      \\&\qquad+ 2\pi\sum_{n\in\Z}
+        \Dh  \left(\omega +2\pi n\right)
+        \Dg^\ast  \left(\omega +2\pi n\right)
+        \left| \Fphi\left(\omega +2\pi n\right) \right|^2
+  \\&=  2\pi
+        \sum_{n\in\Z}
+        \Dh  \left(\omega +\pi \right)
+        \Dg^\ast  \left(\omega +\pi \right)
+        \left| \Fphi\left(\omega +2\pi n+\pi \right) \right|^2
+      + 2\pi\sum_{n\in\Z}
+        \Dh  \left(\omega \right)
+        \Dg^\ast  \left(\omega \right)
+        \left| \Fphi\left(\omega +2\pi n\right) \right|^2
+  \\&=  \Dh  \left(\omega \right)
+        \Dg^\ast  \left(\omega \right)
+        \brp{2\pi\sum_{n\in\Z} \left| \Fphi\left(\omega +2\pi n\right) \right|^2}
+      \\&\qquad+ \Dh  \left(\omega +\pi \right)
+        \Dg^\ast  \left(\omega +\pi \right)
+        \brp{2\pi\sum_{n\in\Z}\left| \Fphi\left(\omega +\pi+2\pi n\right) \right|^2}
+  \\&=  \Dh(\omega)
+        \Dg^\ast(\omega)
+        \brp{2\pi\sum_{n\in\Z} \left| \Fphi(\omega +2\pi n) \right|^2}
+      + \Dh  (\omega +\pi)
+        \Dg^\ast (\omega +\pi)
+        \brp{2\pi\sum_{n\in\Z}\left| \Fphi(\omega +\pi+2\pi n) \right|^2}
+  \\&=  \Dh(\omega     ) \Dg^\ast(\omega     )\Sphi(\omega)
+      + \Dh(\omega +\pi) \Dg^\ast(\omega +\pi)\Sphi(\omega+\pi)
+        \indentx\text{by \prefp{thm:Swfg}}
+\end{align*}
+
+\end{enumerate}
+\end{proof}
+
+%%=======================================
+%\begin{definition}
+%%=======================================
+%Let $\wavsys$ be a wavelet system.
+%Let $\oppS\seqn{\fphi}_m$ be the \hid{span} of the basis vectors $\seqn{\fphi}_m$.
+%We define the following order relations. 
+%\defbox{\begin{array}{rcll}
+%%  \opP_m         &\orel&  \opP_n         & \quad\text{if}\quad \opP_m\opP_n=\opP_n\opP_m=\opP_m \\
+%  \spV_m         &\orela& \spV_j         & \quad\text{if}\quad \spV_m \subseteq \spV_j \\
+%  \seqn{\fphi}_m &\orelb& \seqn{\fphi}_n & \quad\text{if}\quad \oppS\seqn{\fphi}_m \subseteq \oppS\seqn{\fphi}_n %\qquad\text{where $\oppS$ is the span}
+%\end{array}}
+%\end{definition}
+%
+
+
+
+%The sequences of subspaces discussed in this section together with
+%set relations $\subseteq$, $\setu$, and $\seti$,
+%for a lattice.
+%This ``\hie{lattice of wavelet subspaces}" is defined next.
+%%---------------------------------------
+%\begin{definition}
+%\label{def:wav_lat_subspace}
+%%---------------------------------------
+%Let $\seqjZ{\spV_j}$ be a sequence of scaling subspaces and
+%    $\seqjZ{\spW_j}$ be a sequence of wavelet subspaces.
+%%    $\subseteq$ the set inclusion relation,
+%%    $\odot$ the set union operation, and
+%%    $\seti$ the set intersection operation.
+%\defbox{\begin{array}{l}
+%  \text{The tupple }
+%  \qquad \wavlatsubs \\
+%  \text{is called the \hid{lattice of wavelet subspaces}.}
+%\end{array}}
+%\end{definition}
+
+
+%=======================================
+\subsubsection{Sufficient condition}
+%=======================================
+In this text, an often used sufficient condition for designing the \structe{wavelet coefficient sequence} 
+$\seqn{g_n}$ \xref{def:gn} is the \prope{conjugate quadrature filter condition} \xref{def:cqf}. 
+It expresses the sequence $\seqn{g_n}$ in terms of the \structe{scaling coefficient sequence} \xref{def:hn}
+and a ``shift" integer $\xN$ as $g_n = \pm(-1)^n h^\ast_{\xN-n}$.
+The \structe{CQF condition} has the following ``nice" properties:
+\\\indentx\begin{tabular}{>{\scs}rp{\tw-30mm}}
+    1. & Given a \structe{scaling coefficient sequence} $\seqn{h_n}$ \xref{def:hn}, 
+         it is extremely simple to compute the \structe{wavelet coefficient sequence} $\seqn{g_n}$ \xref{def:gn}.
+  \\2. & If $\setn{\opTrn\fphi}$ of a \structe{wavelet system} $\wavsys$ \xref{def:wavsys} is \prope{orthonormal} and 
+         $\otriple{\seqn{g_n}}{\seqn{h_n}}{\xN}$ satisfies the \prope{CQF condition}, 
+         then $\setn{\opTrn^n\fpsi}$ is also \prope{orthnormal} \xref{thm:ortho_qmr}.
+  \\3. & If $\setn{\opTrn\fphi}$ of a \structe{wavelet system} $\wavsys$ \xref{def:wavsys} is \prope{orthonormal} and 
+         $\otriple{\seqn{g_n}}{\seqn{h_n}}{\xN}$ satisfies the \prope{CQF condition}, 
+         then the \structe{wavelet subspace} $\spW_0$ is 
+         \prope{orthnormal} to the \structe{scaling subspace} $\spV_0$ ($\spW_0\orthog\spV_0$) \xref{thm:ortho_qmr}.
+\end{tabular}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:cqf}
+%---------------------------------------
+Let $\wavsys$ be a \structe{wavelet system} \xref{def:wavsys}.
+Let $\Dg(\omega)$ be the \ope{DTFT} \xref{def:dtft} and $\Zg(z)$ the \ope{Z-transform} \xref{def:opZ} of $\seqn{g_n}$.
+\thmbox{
+  \begin{array}{>{\ds}rc >{\ds}rcl @{\qquad}D}
+  \mcom{g_n = \pm(-1)^n h^\ast_{\xN-n},\,{\scy\xN\in\Z}}{\structe{conjugate quadrature filter}}
+      &\iff&     \Dg(\omega)                   &=& \pm (-1)^\xN e^{-i\omega\xN} \Dh^\ast(\omega+\pi)\Big|_{\omega=\pi}   & (1)
+    \\&\implies& \sum_{n\in\Z} (-1)^n g_n      &=& \sqrt{2}                                                              & (2)
+    \\&\iff&     \Zg(z)\Big|_{z=-1}            &=& \sqrt{2}                                                              & (3)
+    \\&\iff&     \Dg(\omega)\Big|_{\omega=\pi} &=& \sqrt{2}                                                              & (4)
+  \end{array}}
+\end{theorem}
+\begin{proof}
+  \begin{enumerate}
+    \item Proof that CQF$\iff$(1): by \prefp{thm:cqf}
+
+    \item Proof that CQF$\implies$(4):
+      \begin{align*}
+        \Dg(\pi)
+          &= \Dg(\omega)\Big|_{\omega=\pi}
+        \\&= \pm (-1)^\xN e^{-i\omega\xN} \Dh^\ast(\omega+\pi)\Big|_{\omega=\pi}
+          && \text{by \prefp{thm:cqf}}
+        \\&= \pm (-1)^\xN e^{-i\pi\xN} \Dh^\ast(2\pi)
+        \\&= \pm (-1)^\xN (-1)^\xN \Dh^\ast(0)
+          && \text{by \prefp{prop:dtft_2pi}}
+        \\&= \sqrt{2}
+          && \text{by \thme{admissibility condition} \xref{thm:admiss}}
+      \end{align*}
+
+    \item Proof that (2)$\iff$(3)$\iff$(4): by \prefp{prop:dsp_zminone}
+  \end{enumerate}
+\end{proof}
+
+%=======================================
+\subsection{Support size}
+%=======================================
+The \hie{support} of a function is what it's non-zero part ``sits" on.
+If the support of the scaling coefficients $\seqn{h_n}$ goes from say
+$[0,3]$ in $\Z$, what is the support of the scaling function $\fphi(x)$?
+The answer is $[0,3]$ in $\R$---essentially the same
+as the support of $\seqn{h_n}$ except that the two functions have different
+domains ($\Z$ versus $\R$).
+This concept is defined in \pref{def:support} (next definition),
+proven in \pref{thm:support} (next theorem),
+and illustrated in and \prefpp{sec:examples_pounity} and \prefpp{sec:examples_Dp}.
+%\pref{ex:sw_gh_d2} -- \pref{ex:sw_gh_bspline} (\prefpo{ex:sw_gh_d2} -- \prefpo{ex:sw_gh_bspline}).
+
+%--------------------------------------
+\begin{definition}
+\index{support}
+\label{def:support}
+%--------------------------------------
+Let $\wavsys$ be a wavelet system.
+Let $\cls{\setX}$ represent the closure of a set $\setX$ in $\spLLR$, 
+$\hxs{\join}\setX$ the \hie{least upper bound} of an ordered set $\opair{\setX}{\orel}$,
+$\hxs{\meet}\setX$ the \hie{greatest lower bound} of an ordered set $\opair{\setX}{\orel}$,
+and
+\\\indentx$\begin{array}{lclCD}
+  \hxs{\floor{x}} &\eqd& \joinop\set{n\in\Z}{n\le x} & \forall x\in\R & (\hie{floor} of $x$)\\
+  \hxs{\ceil{x}}  &\eqd& \meetop\set{n\in\Z}{n\ge x} & \forall x\in\R & (\hie{ceiling} of $x$).
+\end{array}$
+%$\delta(x)
+%   =\brbl{\begin{array}{ll}
+%      1 & \text{for } x\ne 0 \\
+%      0 & \text{otherwise}.
+%     \end{array}}$
+\defboxt{
+  The \hid{support} $\opS\ff$ of a function $\ff\in\clFxy$ is defined as
+  \\\indentx$\ds
+    \opS\ff \eqd
+    \brbl{\begin{array}{>{\ds}llD}
+      \cls{\set{x\in\R}{\ff(x)\ne 0}}
+        & \text{for } \setX=\R 
+        & (domain of $\ff$ is $\R$)
+      \\
+      \cls{\set{x\in\R}{\ff\brp{\floor{x}}\ne0 \text{ and } \ff\brp{\ceil{x}}\ne0}}
+        & \text{for } \setX=\Z
+        & (domain of $\ff$ is $\Z$)
+    \end{array}}
+  $
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}[\thmd{support size}]
+\footnote{
+  \citerppg{mallat}{243}{244}{012466606X}
+  }
+\label{thm:support}
+\thmx{support size}
+%--------------------------------------
+Let $\wavsys$ be a wavelet system.
+Let $\support\ff$ be the support of a function $\ff$ \xref{def:support}.
+\thmbox{
+  %\begin{array}{>{\ds}rc>{\ds}l}
+  \support\fphi = \support\fh
+  %\\
+  %N\in\Zo \text{ and }  g_n  = \pm(-1)^\xN\fh(N-n) \quad\implies\quad
+  %\support\fpsi &=& \left[ \frac{N-(n_2-n_1)}{2}, \frac{N+(n_2-n_1)}{2} \right]
+  %\end{array}$
+  }
+\end{theorem}
+\begin{proof}
+%\begin{enumerate}
+%\item Proof that $\support\fphi = \support\fh$:
+\begin{enumerate}
+
+  \item Definitions: \label{item:wavstrct_support_def}
+    \\$\begin{array}{rcl}
+      \support\fphi &\eqd& [a,b] \\
+      \support\fh   &\eqd& [k,m].
+     \end{array}$
+
+  \item Lemma: \label{item:wavstrct_support_lemma}
+    \\$\support\fphi(x)=\brs{a,b} \quad\iff\quad \support\fphi(2x)=\brs{\frac{a}{2},\frac{b}{2}}$
+
+  \item Proof that $k=a$:
+    \begin{align*}
+      a
+        &= \meetop\support\fphi(x)
+        && \text{by definition of $a$ (\pref{item:wavstrct_support_def})}
+      \\&\eqd \meetop\support \brs{ \sum_{n\in\Z} h_n \opDil\opTrn^n\fphi(x) }
+        && \text{by dilation equation \xref{thm:dilation_eq}}
+      \\&= \meetop\support \brs{\sqrt{2}\sum_{n\in\Z}  h_n \fphi(2x-n)}
+        && \text{by definition of $\opTrn$ and $\opDil$ \xrefP{def:wavstrct_TD}}
+      \\&= \meetop\support \brs{\sum_{n\in\Z}  h_n \fphi(2x-n)}
+        && \text{because $\sqrt{2}$ has no effect on $\support$}
+      \\&= \meetop\support \brs{h_{k} \fphi\brp{2x-k}}
+        && \text{because $n={k}$ is the least value of $n$ for which $h_n\neq0$}
+      \\&= \meetop\support \brs{\fphi\brp{2x-k}}
+        && \text{because the non-zero constant $h_{k}$ has no effect on $\support$}
+      \\&= \meetop\support \brs{\fphi\brp{2\brs{x-\frac{k}{2}}}}
+      \\&= \meetop\set{t}{\fphi\brp{2\brs{x-\frac{k}{2}}}\neq0}
+        && \text{by definition of $\support$ \xrefP{def:support}}
+      \\&= t \st  x-\frac{k}{2} = \frac{a}{2}
+        && \text{by Lemma in \pref{item:wavstrct_support_lemma}}
+      \\&= \frac{k}{2} + \frac{a}{2}
+      \\\implies &\qquad\frac{k}{2} = a - \frac{a}{2}
+      \\\iff &\qquad k = a
+    \end{align*}
+
+  \item Proof that $m=b$:
+    \begin{align*}
+      b
+        &= \joinop\support\fphi(x)
+        && \text{by definition of $a$ (\pref{item:wavstrct_support_def})}
+      \\&\eqd \joinop\support \brs{ \sum_{n\in\Z} h_n \opDil\opTrn^n\fphi(x) }
+        && \text{by dilation equation \xrefP{thm:dilation_eq}}
+      \\&= \joinop\support \brs{\sqrt{2}\sum_{n\in\Z}  h_n \fphi(2x-n)}
+        && \text{by definition of $\opTrn$ and $\opDil$ \xrefP{def:wavstrct_TD}}
+      \\&= \joinop\support \brs{\sum_{n\in\Z}  h_n \fphi(2x-n)}
+        && \text{because $\sqrt{2}$ has no effect on $\support$}
+      \\&= \joinop\support \brs{h_{m} \fphi\brp{2x-m}}
+        && \text{because $n={m}$ is the greatest value of $n$ for which $h_n\neq0$}
+      \\&= \joinop\support \brs{\fphi\brp{2x-m}}
+        && \text{because the non-zero constant $h_{m}$ has no effect on $\support$}
+      \\&= \joinop\support \brs{\fphi\brp{2\brs{x-\frac{m}{2}}}}
+      \\&= \joinop\set{t}{\fphi\brp{2\brs{x-\frac{m}{2}}}\neq0}
+        && \text{by definition of $\support$ \xrefP{def:support}}
+      \\&= t \st  x-\frac{m}{2} = \frac{b}{2}
+        && \text{by Lemma in \pref{item:wavstrct_support_lemma}}
+      \\&= \frac{m}{2} + \frac{b}{2}
+      \\\implies &\qquad\frac{m}{2} = b - \frac{b}{2}
+      \\\iff &\qquad m = b
+    \end{align*}
+
+\end{enumerate}
+%\item $\support \psi$:
+%\begin{align*}
+%  \support\fpsi(x)
+%    &= \support \brs{ \sum_{n\in\Z} g_n \opDil\opTrn^n\fphi(x) }
+%  \\&= \support \left[ \sqrt{2}\sum_{n\in\Z}  g_n \fphi(2x-n)\right]
+%  \\&= \support \left[ \sqrt{2}\sum_{n\in\Z} \pm (-1)^\xN \fh(N-n)\fphi(2x-n)\right]
+%  \\&= \support \left[ \sum_{n\in\Z} \fh(N-n)\fphi(2x-n)\right]
+%  \\&= \cls{\set{x\in\R}{\sum_{n\in\Z} \fh(N-n)\fphi(2x-n)\ne 0}}
+%  \\&= \left[ \frac{n_1}{2}+\frac{N-n_2}{2}, \frac{n_2}{2}+\frac{N-n_1}{2}\right]
+%  \\&= \left[ \frac{N-(n_2-n_1)}{2}, \frac{N+(n_2-n_1)}{2}\right]
+%\end{align*}
+%\end{enumerate}
+\end{proof}
+
+
+
+
+%=======================================
+\subsection{Examples}
+%=======================================
+%Under the very general constraints of this chapter, I know of no wavelet examples.
+No examples of wavelets are presented in this section. 
+Examples begin in the next chapter which is about a property called the \prope{partition of unity}.
+%The very minimal of requirements, it seems is a \prope{partition of unity} \xref{chp:pounity}.
+Other design constraints leading to wavelets with more ``powerful" properties include 
+\prope{vanishing moments} \xref{chp:vanish}, \prope{orthonormality} \xref{chp:ortho},
+\prope{compact support} \xref{chp:compactp}, and \prope{minimum phase} \xref{def:ztr_minphase}.
+
+Here are some examples of \structe{wavelet systems} \xref{def:wavsys} found later in this text:
+\begin{longtable}{|l||ll||c|c|c|c|c|}
+  \hline
+  Name   & \mc{2}{||c|}{Reference} & \rotatebox{75}{\prope{partition of unity}} 
+                                   & \rotatebox{75}{\prope{vanishing moments}} 
+                                   & \rotatebox{75}{\prope{orthonormality}} 
+                                   & \rotatebox{75}{\prope{compact support}}
+                                   & \rotatebox{75}{\prope{minimum phase}}
+%         &          &       & \xref{chp:pounity}         & \xref{chp:vanish}         & \xref{chp:ortho}       & \xref{chp:compactp}
+  \\\hline
+  Haar             & \scs\pref{ex:pun_n=2}       & \scs\prefpo{ex:pun_n=2}       & $\checkmark$ & 1 & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+  order 1 B-spline & \scs\pref{ex:sw_gh_tent}    & \scs\prefpo{ex:sw_gh_tent}    & $\checkmark$ & 2 & $          $ & $          $ & $          $ \\
+  order 3 B-spline & \scs\pref{ex:sw_gh_bspline} & \scs\prefpo{ex:sw_gh_bspline} & $\checkmark$ & 4 & $          $ & $          $ & $          $ \\
+  Daubechies-p2    & \scs\pref{ex:dau-p2}        & \scs\prefpo{ex:dau-p2}        & $\checkmark$ & 2 & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+  Daubechies-p3    & \scs\pref{ex:dau-p3}        & \scs\prefpo{ex:dau-p3}        & $\checkmark$ & 3 & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+  Symmlet-p4       & \scs\pref{ex:symmlet_p4}    & \scs\prefpo{ex:symmlet_p4}    & $\checkmark$ & 4 & $\checkmark$ & $\checkmark$ & $          $ \\
+  \hline
+\end{longtable}
+
+
+
+
+%================================================================================
+%================================================================================
+%================================================================================
+%================================================================================
+%================================================================================
+
+%\paragraph{Fourier Transform.}
+%One of the most widely used transforms is the Fourier transform.
+%The Fourier Transform is an integral operator with an exponential kernel.
+%And what is so special about exponential kernels?
+%Is it just that they were discovered sooner than other kernels with other transforms?
+%The answer in general is ``no".
+%The exponential has two properties that makes it extremely special:
+%  \begin{liste}
+%    \item The exponential is an eigenvalue of any LTI operator \xrefP{thm:Le=he}
+%    \item The exponential generates a continuous point spectrum for the differential operator
+%          \xrefP{thm:spec_D}
+%  \end{liste}
+%
+%\thmbox{
+%  \left.\begin{array}{ll}
+%    1. & \text{$\opL$ is linear and} \\
+%    2. & \text{$\opL$ is time-invariant}
+%  \end{array}\right\}
+%  \qquad\implies\qquad
+%    \opL \lkerne{t}{s}
+%    =
+%    \mcomr{\Lh^\ast(-s)}{eigenvalue} \mcoml{\lkerne{t}{s}}{eigenvector}
+%  }
+%
+%
+%What makes wavelet system unique from other analysis systems
+%(such as Fourier analysis) is its \hie{subspace architecture}.
+%In this section, we present this architecture using four representations:
+%
+%\begin{tabular}{lp{\tw/2}ll}
+%  \circOne   & lattice of subspaces             \dotfill&\pref{sec:wav_lat_subspace} & \xrefP{sec:wav_lat_subspace} \\
+%  \circTwo   & lattice of projection operators  \dotfill&\pref{sec:wav_lat_op}       & \xrefP{sec:wav_lat_op} \\
+%  \circThree & lattice of bases vectors         \dotfill&\pref{sec:wav_lat_bases}    & \xrefP{sec:wav_lat_bases} \\
+%  \circFour  & lattice of bases coefficients    \dotfill&\pref{sec:wav_lat_coef}     & \xrefP{sec:wav_lat_coef} \\
+%\end{tabular}
+%
+%\prefp{thm:wav_lat_iso} will show that all four of these representations are
+%essentially equivalent (are isomorphisms).
+%The wavelet system itself is simply a collection of the projection operators
+%\xrefP{def:wav_transform} found in the wavelet operator lattice.
+
+
+\fi

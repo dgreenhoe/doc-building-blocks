@@ -1,0 +1,813 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+%============================================================================
+%=======================================
+\section{Outcome subspace sequences}
+%=======================================
+%=======================================
+%\subsection{Correlation operation on outcome subspace sequences}
+%=======================================
+%=======================================
+\subsection{Definitions}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:ocsseqmetric}
+%---------------------------------------
+Let $\Dom_1$ and $\Dom_2$ be \structe{convex subset}s \xref{def:convex} of $\Z$.\\
+Let $\Dom\eqd\intoo{\meetop\Dom_1-\joinop\Dom_2-1}{\joinop\Dom_1-\meetop\Dom_2+1}.$
+Let $\seq{x_n}{\Dom_1}$ and $\seq{y_n}{\Dom_2}$ be \structe{sequence}s over an \structe{outcome subspace} $\ocsD$.
+\defboxp{
+  The \fnctd{outcome subspace sequence metric} $\metrica{\seqn{x_n}}{\seqn{y_n}}$ is defined as
+  \\\indentx
+  $\ds\metrica{\seqn{x_n}}{\seqn{y_n}} \eqd \sum_{n\in\Dom} \ff(n)$
+  \quad where \quad
+  $
+  \ff(n) \eqd \brb{\begin{array}{lM}
+    \ocsd(x_n,y_n) & if $n\in   \Dom_1$ and $n\in   \Dom_2$\\
+    1              & if $n\in   \Dom_1$ but $n\notin\Dom_2$\\
+    1              & if $n\notin\Dom_1$ but $n\in   \Dom_2$\\
+    0              & otherwise
+  \end{array}}\qquad{\scy\forall n\in\Dom}
+  $
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+Let $\seq{x_n}{\Dom_1}$ and $\seq{y_n}{\Dom_2}$ be \structe{sequence}s over an \structe{outcome subspace} $\ocsD$.\\
+Let $\metrican$ be the \fncte{outcome subspace sequence metric}.
+\propbox{
+  \Dom_1\seti\Dom_2\neq\emptyset \quad\implies\quad \text{$\metrican$ is a \fncte{metric}}
+  }
+\end{proposition}
+\begin{proof}
+This follows from the \thme{Fr{\'e}chet product metric} \xref{prop:fpm}.
+In particular, $\metrican$ is a sum of metrics that include
+the metrics $\ocsd(x_n,y_n)$ and the \fncte{discrete metric} \xref{def:dmetric}.
+%This follows directly from either of the following two \fncte{product metric}s:
+%\begin{liste}
+%  \item Proof using \thme{Fr{\'e}chet product metric}:
+%    \begin{align*}
+%      \metrica{\seqn{x_n}}{\seqn{y_n}} 
+%        &\eqd \sum_{n\in\Dom} \ocsd(x_n,y_n)
+%        && \text{by \prefp{def:ocsseqmetric}}
+%      \\&= \sum_{n\in\Dom} \alpha_n\ocsd(x_n,y_n)
+%        && \text{for $\alpha_1=\alpha_2=\cdots=\alpha_\xN=1$}
+%      \\&= \sum_{n\in\Dom} \alpha_n\ocsd_n(x_n,y_n)
+%        && \text{for $\ocsd_1=\ocsd_2=\cdots=\ocsd_\xN=\ocsd$}
+%      \\&\implies\text{$\metrican$ is a \fncte{metric}}
+%        && \text{by \prope{Fr{\'e}chet product metric} \xref{prop:fpm}}
+%    \end{align*}
+%
+%  \item Proof using \thme{Power mean metric}:
+%    \begin{align*}
+%      \metrica{\seqn{x_n}}{\seqn{y_n}} 
+%        &\eqd \sum_{n\in\Dom} \ocsd(x_n,y_n)
+%        && \text{by \prefp{def:ocsseqmetric}}
+%      \\&= \xN\sum_{n\in\Dom} \lambda_n\ocsd(x_n,y_n)
+%        && \text{for $\lambda_1=\lambda_2=\cdots=\lambda_\xN=\frac{1}{\xN}$}
+%      \\&\implies\text{$\metrican$ is a \fncte{metric}}
+%        && \text{by \prope{Power mean metric} \xref{prop:pmm}}
+%      \\&&&\text{\qquad and \prope{$\alpha$-scaled metric} \xref{prop:asm}}
+%    \end{align*}
+%
+%\end{liste}
+\end{proof}
+
+In standard signal processing, the \ope{autocorrelation} of a \structe{sequence} $\seqnD{x_n}$ 
+is another \structe{sequence} $\seqnD{y_n}$ defined as 
+$y_n\eqd\sum_{m\in\Z}x_m x_{m-n}$.
+However, this definition requires that the sequence $\seqnD{x_n}$ be constructed over a \structe{field}.
+In an \structe{outcome subspace sequence}, we in general do not have a \structe{field};
+for example, in a \structe{die outcome subspace}, the expressions $\dieA+\dieB$ and $\dieA\times\dieB$ are undefined.
+This paper offers an alternative definition (next) for \ope{autocorrelation} that uses the \fncte{distance} $\ocsd$ 
+and that does not require a \structe{field}. 
+%The autocorrelation function is used in \prefpp{ex:rdie_lp} and illustrated in \prefpp{fig:rdie_auto}.
+%---------------------------------------
+\begin{definition}
+\label{def:ocsRxx}
+%---------------------------------------
+Let $\seqnD{x_n}$ and $\seqnD{y_n}$ be \fncte{sequence}s 
+%\structe{outcome subspace sequence}s with \prope{finite support} \xref{def:support}
+over the \structe{outcome subspace} $\ocsD$.
+%Let $\xN$ be any whole number such that $\xN\ge\max(\seto{\support\seqn{x_n}},\seto{\support\seqn{y_n}})$, 
+%where $\support\seqn{x_n}$ is the \ope{support} of $\seqn{x_n}$
+%and   $\seto{\setX}$ is the \fncte{order} of a finite set $\setX$ \xref{def:seto}.
+%Let $\metricbn$ be the \fncte{discrete metric} \xref{def:dmetric}.
+%Let $\xN\eqd\sum_{n\in\Dom}\metricb{x_n}{\ocsz}$.
+\\Let $\metrica{\seqn{x_n}}{\seqn{y_n}}$ be the \fnctd{outcome subspace sequence metric} \xref{def:ocsseqmetric}.
+\\The \fnctd{cross-correlation} $\Rxy(n)$ of $\seqn{x_n}$ and $\seqn{y_n}$ and 
+the \fnctd{autocorrelation}  $\Rxx(n)$ of $\seqn{x_n}$ 
+are defined as
+\defbox{\begin{array}{rclD}
+  \Rxy(n) &\eqd& \ds - \sum_{m\in\Z}\metrica{\seqn{x_{m-n}}}{\seqn{y_m}} &\qquad (\fnctd{cross-correlation} $\Rxy(n)$ of $\seqn{x_n}$ and $\seqn{y_n}$)\\
+  \Rxx(n) &\eqd& \ds - \sum_{m\in\Z}\metrica{\seqn{x_{m-n}}}{\seqn{x_m}} &\qquad (\fnctd{autocorrelation}  $\Rxx(n)$ of $\seqn{x_n}$)
+\end{array}}\\
+Moreover, the \opd{$\xM$-offset autocorrelation} of $\seqn{x_n}$ and $\seqn{y_n}$ is here defined 
+as $\Rxx(n)+\xM$ \xref{def:axn}.
+\end{definition}
+
+%=======================================
+\subsection{Examples of symbolic sequence statistics}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{fair die sequence}]
+\label{ex:fdie_sha}
+%---------------------------------------
+Consider the pseudo-uniformly distributed \structe{fair die} \xref{def:fdie} 
+sequence generated by the C code\footnotemark 
+%\begin{lstlisting}
+%\\\indentx\lstinline{#include<stdlib.h>} \ldots \lstinline!srand(0x5EED); for(n=0; n<N; n++){x[n] = 'A' + rand()%6;}!\\
+%
+\\\begin{minipage}{85mm}%
+\begin{lstlisting}
+#include<stdlib.h>
+...
+srand(0x5EED);
+for(n=0; n<N; n++){x[n] = 'A' + rand()%6;}
+\end{lstlisting}
+\end{minipage}%
+\hspace{10mm}%
+\begin{tabular}{lclcl}
+  where & \lstinline!'A'! &represents& $\dieA$ &,
+     \\ & \lstinline!'B'! &represents& $\dieB$ &,
+     %\\ & \lstinline!'C'! &represents& $\dieC$ &,
+     %\\ & \lstinline!'D'! &represents& $\dieD$ &,
+     %\\ & \lstinline!'E'! &represents& $\dieE$ &, and
+     \\ & $\vdots$
+     \\ & \lstinline!'F'! &represents& $\dieF$ &.
+\end{tabular}
+\\
+%where \lstinline{'A'} represents $\dieA$, \lstinline{'B'} represents $\dieB$, etc.
+The resulting sequence is partially displayed here:
+   \\\includegraphics{ssp/plots/fdie_5eed_51_seq.pdf}\\
+\footnotetext{For a more complete source code listing, see \prefpp{sec:src_die}}
+This sequence constrained to a length of $\xN=2667\times6=16002$ elements is approximately \prope{uniformly distributed} 
+and \prope{uncorrelated}, as illustrated next:
+%calculated over %$(16000-16)-(16-1)+1=15970$ elements:
+\\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+     \hline
+     \includegraphics{ssp/plots/fdie_5eed_16002_histo.pdf}%
+    &\includegraphics{ssp/plots/fdie_5eed_16002_auto.pdf}
+    \\histogram & \ope{$2\xN$-offset autocorrelation}
+   \\\hline
+\end{tabular}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{real die sequence}]
+\label{ex:rdie_sha}
+%---------------------------------------
+Consider the pseudo-uniformly distributed \structe{real die} \xref{def:rdie}
+sequence generated as in \prefpp{ex:fdie_sha},
+but with the real die metric rather than the fair die metric.
+This change will not affect the distribution of the sequence, but it does affect 
+the autocorrelation, as illustrated next:
+\\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+     \hline
+     \includegraphics{ssp/plots/rdie_5eed_16002_histo.pdf}%
+     &\includegraphics{ssp/plots/rdie_5eed_16002_auto.pdf}
+   \\\hline
+\end{tabular}
+\end{example}
+
+
+%---------------------------------------
+\begin{example}[\exmd{spinner sequence}]
+\label{ex:spinner_sha}
+%---------------------------------------
+Consider the pseudo-uniformly distributed \structe{spinner} \xref{def:spinner} 
+sequence generated by the C code\footnotemark 
+%\begin{lstlisting}
+%\\\indentx\lstinline{#include<stdlib.h>} \ldots \lstinline!srand(0x5EED); for(n=0; n<N; n++){x[n] = 'A' + rand()%6;}!\\
+%
+\\\begin{minipage}{85mm}%
+\begin{lstlisting}
+#include<stdlib.h>
+...
+srand(0x5EED);
+for(n=0; n<N; n++){x[n] = 'A' + rand()%6;}
+\end{lstlisting}
+\end{minipage}%
+\hspace{10mm}%
+\begin{tabular}{lclcl}
+  where & \lstinline!'A'! &represents& $\spinA$ &,
+     \\ & \lstinline!'B'! &represents& $\spinB$ &,
+     %\\ & \lstinline!'C'! &represents& $\spinC$ &,
+     %\\ & \lstinline!'D'! &represents& $\spinD$ &,
+     %\\ & \lstinline!'E'! &represents& $\spinE$ &, and
+     \\ & $\vdots$
+     \\ & \lstinline!'F'! &represents& $\spinF$ &.
+\end{tabular}
+\\
+%where \lstinline{'A'} represents $\dieA$, \lstinline{'B'} represents $\dieB$, etc.
+The resulting sequence is partially displayed here:
+   \\\includegraphics{ssp/plots/spin_5eed_51_seq.pdf}\\
+\footnotetext{For a more complete source code listing, see \prefpp{sec:src_spinner}}
+This sequence is in essence identical to the fair die sequence \xref{ex:fdie_sha} and real die sequence \xref{ex:rdie_sha}
+and thus yields what is essentially an identical histogram.
+But because the metric is different, the autocorrelation  is also different.
+In particular, because the nodes of the spinner metric are on average farther apart with respect to the spinner metric,
+the sequence is less correlated (with respect to the metric), as illustrated next:
+\\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+     \hline
+     \includegraphics{ssp/plots/spin_5eed_16002_histo.pdf}%
+    &\includegraphics{ssp/plots/spin_5eed_16002_auto.pdf}
+   \\\hline
+\end{tabular}
+\end{example}
+
+
+%---------------------------------------
+\begin{example}[\exmd{weighted real die sequence}]
+\label{ex:wrdie_sha}
+%---------------------------------------
+Consider the non-uniformly distributed \structe{weighted real die} \xref{def:wrdie} sequence with 
+    \\\indentx$\psp(\dieE)=0.75$ and $\psp(\dieA)=\psp(\dieB)=\psp(\dieC)=\psp(\dieD)=\psp(\dieF)=0.05$,\\
+    generated by the C code\footnote{For a more complete source code listing, see \prefpp{sec:src_rdie}}
+\\\begin{minipage}{85mm}%
+\begin{lstlisting}
+srand(0x5EED);
+for(n=0; n<N; n++){ u=rand()%100;
+  if     (u< 5) x[n]='A'; /* 00-04 */ 
+  else if(u<10) x[n]='B'; /* 05-09 */ 
+  else if(u<15) x[n]='C'; /* 10-14 */ 
+  else if(u<20) x[n]='D'; /* 15-19 */ 
+  else if(u<95) x[n]='E'; /* 20-94 */ 
+  else          x[n]='F'; /* 95-99 */ }
+\end{lstlisting}
+\end{minipage}%
+\hspace{10mm}%
+\begin{tabular}{lclcl}
+  where & \lstinline!'A'! &represents& $\dieA$ &,
+     \\ & \lstinline!'B'! &represents& $\dieB$ &,
+     \\ & \lstinline!'C'! &represents& $\dieC$ &,
+     \\ & \lstinline!'D'! &represents& $\dieD$ &,
+     \\ & \lstinline!'E'! &represents& $\dieE$ &, and
+     \\ & \lstinline!'F'! &represents& $\dieF$ &.
+\end{tabular}
+\\
+     The resulting sequence is partially displayed here:
+  \\\includegraphics{ssp/plots/wrdie_5eed_51_seq.pdf}\\
+  Of course the resulting histogram, as illustrated below on the left, reflects the non-uniform distribution.
+  Also note, as illustrated below on the right, that the weighted sequence is much more correlated 
+  (as defined by \prefp{def:ocsRxx})
+  as compared to the uniformly distributed 
+  \structe{real die} sequence of \prefpp{ex:rdie_sha}.
+  %The following two illustrations, calculated over $(160000/50)-1=3199$ elements, 
+  %are based on the above sequence downsampled by a factor of 50
+  %(making them better comparable to the results obtained in \pref{item:rdie_rhp_R1map} and \pref{item:rdie_hp_R3map} below.
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/wrdie_5eed_16002_histo.pdf}%
+         &\includegraphics{ssp/plots/wrdie_5eed_16002_auto.pdf}
+         % \includegraphics{ssp/graphics/wdie_5eed_160000_down50_histo.pdf}%
+         %&\includegraphics{ssp/graphics/wdie_5eed_160000_down50_auto.pdf}
+         %\\histogram & autocorrelation
+         %\\\mc{2}{|>{\scs}c|}{calculated over $(160000/50)-1=3199$ elements}
+        \\\hline
+     \end{tabular}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{weighted die sequence}]
+\label{ex:wdie_sha}
+%---------------------------------------
+Consider the non-uniformly distributed \structe{weighted die} \xref{def:wdie} sequence 
+generated as in \pref{ex:wrdie_sha}.
+Of course the resulting histogram is identical to that of \pref{ex:wrdie_sha},
+but because the distance function is different, the autocorrelation sequence is also different.
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/wdie_5eed_16002_histo.pdf}%
+         &\includegraphics{ssp/plots/wdie_5eed_16002_auto.pdf}
+        \\\hline
+     \end{tabular}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{weighted spinner sequence}]
+\label{ex:wspin_sha}
+%---------------------------------------
+Consider the non-uniformly distributed die sequence with 
+    \\\indentx$\psp(\spinE)=0.75$ and $\psp(\spinA)=\psp(\spinB)=\psp(\spinC)=\psp(\spinD)=\psp(\spinF)=0.05$,\\
+    generated by the C code\footnote{For a more complete source code listing, see \prefpp{sec:src_spinner}}
+\\\begin{minipage}{85mm}%
+\begin{lstlisting}
+srand(0x5EED);
+for(n=0; n<N; n++){ u=rand()%100;
+  if     (u< 5) x[n]='A'; /* 00-04 */ 
+  else if(u<10) x[n]='B'; /* 05-09 */ 
+  else if(u<15) x[n]='C'; /* 10-14 */ 
+  else if(u<20) x[n]='D'; /* 15-19 */ 
+  else if(u<95) x[n]='E'; /* 20-94 */ 
+  else          x[n]='F'; /* 95-99 */ }
+\end{lstlisting}
+\end{minipage}%
+\hspace{10mm}%
+\begin{tabular}{lclcl}
+  where & \lstinline!'A'! &represents& $\spinA$ &,
+     \\ & \lstinline!'B'! &represents& $\spinB$ &,
+     \\ & \lstinline!'C'! &represents& $\spinC$ &,
+     \\ & \lstinline!'D'! &represents& $\spinD$ &,
+     \\ & \lstinline!'E'! &represents& $\spinE$ &, and
+     \\ & \lstinline!'F'! &represents& $\spinF$ &.
+\end{tabular}
+\\
+  The resulting sequence and histogram is in essence the same as in %\prefpp{ex:wrdie_sha}.
+  the \exme{weighted die sequence} example \xref{ex:wrdie_sha}.
+  %\\\includegraphics{ssp/plots/wspin_5eed_51_seq.pdf}\\
+  %Of course the resulting histogram, as illustrated below on the left, is in essence identical to that of the 
+  %\exme{weighted die sequence} example \xref{ex:wrdie_sha}.
+  But note, as illustrated below on the right, that the \exme{weighted spinner sequence} of this example is 
+  significantly less correlated than the \exme{weighted die sequence} of \prefpp{ex:wrdie_sha},
+  presumably due to the larger \structe{range} \xref{def:range} of the spinner metric ($\setn{0,1,2,3}$)
+  as compared to the \structe{range} of the \structe{weighted real die} metric ($\setn{0,1,2}$) and 
+  the \structe{weighted die} metric ($\setn{0,1}$).
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/wspin_5eed_16002_histo.pdf}%
+         &\includegraphics{ssp/plots/wspin_5eed_16002_auto.pdf}
+        \\\hline
+     \end{tabular}
+\end{example}
+
+
+%---------------------------------------
+\begin{example}[\exmd{Random DNA sequence}]
+\label{ex:dna_5eed}
+%---------------------------------------
+Consider the pseudo-uniformly distributed DNA sequence generated by the C code\footnotemark 
+\\\begin{minipage}{85mm}%
+\begin{lstlisting}
+srand(0x5EED);
+for(n=0; n<N; n++){  r=rand()%4;
+  switch(r){ case 0: x[n]='A'; break;
+             case 1: x[n]='T'; break;
+             case 2: x[n]='C'; break;
+             case 3: x[n]='G'; break; }}
+\end{lstlisting}
+\end{minipage}%
+\hspace{10mm}%
+\begin{tabular}{lclcl}
+  where & \lstinline!'A'! &represents& $\symA$ &,
+     \\ & \lstinline!'T'! &represents& $\symT$ &,
+     \\ & \lstinline!'C'! &represents& $\symC$ &, and
+     \\ & \lstinline!'G'! &represents& $\symG$ &.
+\end{tabular}
+\footnotetext{For a more complete source code listing, see \prefpp{sec:src_dna}}
+  \\\includegraphics{ssp/plots/dna_5eed_51_seq.pdf}\\
+This sequence constrained to a length of $4000\times4=16000$ elements is approximately \prope{uniformly distributed} and \prope{uncorrelated}, 
+as illustrated next:
+  \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+       \hline
+       \includegraphics{ssp/plots/dna_5eed_16000_histo.pdf}%
+      &\includegraphics{ssp/plots/dna_5eed_16000_auto.pdf}%
+      %\\histogram & autocorrelation
+     \\\hline
+  \end{tabular}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{SARS coronavirus DNA sequence}]
+\label{ex:dna_sars}
+%---------------------------------------
+Consider the genome sequence (DNA sequence) for the SARS coronavirus with \hie{GenBank} accession number NC\_004718.3.\citetbl{\citer{ncbiSars}} %identifier gi30271926.
+This sequence is of length $\xN=29751$ and is partially displayed here, followed by its histogram and 
+\ope{$2\xN$-offset autocorrelation} plots.
+  \\\includegraphics{ssp/plots/dna_sars_51_seq.pdf}\\
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_sars_histo.pdf}%
+         &\includegraphics{ssp/plots/dna_sars_auto.pdf}
+         %\\histogram & autocorrelation
+        \\\hline
+     \end{tabular}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{Ebola virus DNA sequence}]
+\label{ex:dna_ebola}
+%---------------------------------------
+Consider the genome sequence (DNA sequence) for the Ebola virus with GenBank accession \lstinline{AF086833.2}.\citetbl{\citer{ncbiEbola}}
+This sequence is of length 18959 and is partially displayed here:
+  \\\includegraphics{ssp/plots/dna_ebola_51_seq.pdf}\\
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_ebola_histo.pdf}%
+         &\includegraphics{ssp/plots/dna_ebola_auto.pdf}
+         %\\histogram & autocorrelation
+        \\\hline
+     \end{tabular}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{Bacterium DNA sequence}]
+\label{ex:dna_mpbacterium}
+%---------------------------------------
+Consider the genome sequence (DNA sequence) for the bacterium 
+\hie{Melissococcus plutonius strain 49.3 plasmid pMP19}
+with GenBank accession \lstinline{NZ_CM003360.1}.\citetbl{\citer{ncbiMP}}
+This sequence is of length 19430 and is partially displayed here:
+  \\\includegraphics{ssp/plots/dna_mpbacterium_51_seq.pdf}\\
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_mpbacterium_histo.pdf}%
+         &\includegraphics{ssp/plots/dna_mpbacterium_auto.pdf}
+         %\\histogram & autocorrelation
+        \\\hline
+     \end{tabular}
+\end{example}
+
+%---------------------------------------
+\begin{example}[\exmd{Papaya DNA sequence}]
+\citetbl{
+  \citer{ncbiPapaya}
+  }
+\label{ex:dna_papaya}
+%---------------------------------------
+Consider the genome sequence segment for the fruit
+\hie{carica papaya} with GenBank accession \lstinline{DS982815.1}.
+This sequence is not a complete genome, rather it is a ``genomic scaffold" \xref{def:dnan}. 
+As such, there are some elements for which the content is not known.
+For these locations, the symbol $\symN$ is used.
+In this particular sequence, there are 144 $\symN$ symbols.
+This sequence is of length 15495 and is partially displayed here:
+  \\\includegraphics{ssp/plots/dna_papaya1446_51_seq.pdf}\\
+     \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+          \hline
+          \includegraphics{ssp/plots/dna_papaya1446_histo.pdf}%
+         &\includegraphics{ssp/plots/dna_papaya1446_auto.pdf}
+         %\\histogram & autocorrelation
+        \\\hline
+     \end{tabular}
+\end{example}
+
+%=======================================
+\section{Extending to distance linear spaces}
+%=======================================
+%=======================================
+\subsection{Motivation}
+%=======================================
+\prefpp{sec:ocs} demonstrated how a stochastic process could be defined as an \structe{outcome subspace}
+with \prope{order} and \prope{metric} structures.
+\prefpp{ex:realdieXRYZ} reviewed an example of a \structe{real die outcome subspace} 
+that was mapped through 4 different \fncte{random variable}s to 4 different \structe{weighted graph}s.
+Two of these random variables ($\rvY$ and $\rvZ$) mapped to structures (\structe{weighted graphs}) that are very similar 
+to the \structe{real die} with respect to order and metric geometry.
+Two other random variables ($\rvW$ and $\rvX$) mapped to structures 
+(the \structe{real line} and the \structe{integer line}) that are very dissimilar.
+The implication of this example is that if we want statistics that closely model the underlying stochastic process,
+then we should map to a structure that that an order structure and distance geometry similar to 
+that of the underlying stochastic process, and not simply the one that is the most convenient.
+Ideally, we would like to map to a structure that is \prope{isomorphic} \xref{def:isomorphic}
+and \prope{isometric} \xref{def:isometric} to the structure of the stochastic process.
+
+However, for sequence processing using very basic methods such as FIR filtering, Fourier analysis,
+or wavelet analysis,
+we would very much like to map into the \structe{real line} $\R^1$ or possibly some higher dimensional space
+$\R^n$.
+Because the real line is often very dissimilar to the stochastic process,
+we are motivated to find structures in $\R^n$ that \emph{are} similar.
+And that is what this section presents---mapping from a stochastic process $\ocsD$ 
+into an \structe{ordered distance linear space} $\omlsRnD$ in which $\omlo$ is an extension of $\ocso$ and
+$\omld$ is an extension of $\ocsd$.
+
+Thus, for sequence processing on an \structe{outcome subspace} $\ocsD$, we would like to 
+define a \fncte{random variable} $\rvX$ and an \structe{ordered distance linear space} $\omlsRnD$ 
+that satisfy the following constraints: 
+\begin{enumerate}
+  \item The random variable maps the elements of $\ocso$ into $\R^n$ and
+  \item the order relation $\omlr$ is an \prope{extension} to $\omlo$ of the order relation $\ocsr$ on $\ocso$ and
+  \item the \fncte{distance} function $\omld$ is an \prope{extension} to $\omlo$ of the distance function $\ocsd$ on $\ocso$.
+\end{enumerate}
+
+%=======================================
+\subsection{Some random variables}
+%=======================================
+In this section, we first define some \fncte{random variable}s \xref{def:ocsrv} 
+that are used later in this paper.
+%---------------------------------------
+\begin{definition}
+\label{def:rv_dietrad}
+%---------------------------------------
+The \opd{traditional die random variable} $\rvX$ maps from the set %\xref{def:rvt} 
+\\$\setn{\dieA,\dieB,\dieC,\dieD,\dieE,\dieF}$ into the set $\R^1$
+and is defined as\footnotemark
+\\\indentx
+  $\rvX(\dieA)\eqd 1$, 
+  $\rvX(\dieB)\eqd 2$, 
+  $\rvX(\dieC)\eqd 3$, 
+  $\rvX(\dieD)\eqd 4$, 
+  $\rvX(\dieE)\eqd 5$, and 
+  $\rvX(\dieF)\eqd 6$.
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:rv_diepam}
+%---------------------------------------
+The \opd{PAM die random variable} $\rvX$ maps from the set $\setn{\dieA,\dieB,\dieC,\dieD,\dieE,\dieF}$ into the set $\R^1$
+and is defined as\footnotemark
+\\\indentx
+  $\rvX(\dieA)\eqd-2.5$, 
+  $\rvX(\dieB)\eqd-1.5$, 
+  $\rvX(\dieC)\eqd-0.5$, 
+  $\rvX(\dieD)\eqd+0.5$, 
+  $\rvX(\dieE)\eqd+1.5$, and 
+  $\rvX(\dieF)\eqd+2.5$.
+\end{definition}
+\footnotetext{PAM is an acronym for \ope{pulse amplitude modulation} and is a standard technique in 
+the field of digital communications.}
+
+%---------------------------------------
+\begin{definition}
+\label{def:rv_dieqpsk}
+%---------------------------------------
+The \opd{QPSK die random variable} $\rvX$ maps from the set $\setn{\dieA,\dieB,\dieC,\dieD,\dieE,\dieF}$ into the set $\C^1$
+and is defined as\footnotemark 
+\\\indentx$\begin{array}{rclrclrcl}
+    \rvX(\dieA) &\eqd& \exp\brp{ 30\times\frac{\pi}{180}i}, 
+   &\rvX(\dieB) &\eqd& \exp\brp{ 90\times\frac{\pi}{180}i}, 
+   &\rvX(\dieC) &\eqd& \exp\brp{150\times\frac{\pi}{180}i}, 
+  \\\rvX(\dieD) &\eqd& \exp\brp{210\times\frac{\pi}{180}i}, 
+   &\rvX(\dieE) &\eqd& \exp\brp{270\times\frac{\pi}{180}i},
+   &\rvX(\dieF) &\eqd& \exp\brp{330\times\frac{\pi}{180}i}.
+\end{array}$
+\end{definition}
+\footnotetext{QPSK is an acronym for \ope{quadrature phase shift keying} and is a standard technique in 
+the field of digital communications.}
+
+%---------------------------------------
+\begin{definition}
+\label{def:rv_dieR3}
+%---------------------------------------
+The \opd{$\R^3$ die random variable} $\rvX$ maps from the set $\setn{\dieA,\dieB,\dieC,\dieD,\dieE,\dieF}$ into the set $\R^3$
+and is defined as 
+\\\indentx$\begin{array}{rclrclrcl}
+    \rvX(\dieA) &\eqd& \otriple{+1}{ 0}{ 0}, 
+   &\rvX(\dieB) &\eqd& \otriple{ 0}{+1}{ 0}, 
+   &\rvX(\dieC) &\eqd& \otriple{ 0}{ 0}{+1}, 
+  \\\rvX(\dieD) &\eqd& \otriple{ 0}{ 0}{-1}, 
+   &\rvX(\dieE) &\eqd& \otriple{ 0}{-1}{ 0},
+   &\rvX(\dieF) &\eqd& \otriple{-1}{ 0}{ 0}.
+\end{array}$
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:rv_dieR6}
+%---------------------------------------
+The \opd{$\R^6$ die random variable} $\rvX$ maps from the set $\setn{\dieA,\dieB,\dieC,\dieD,\dieE,\dieF}$ into the set $\R^6$
+and is defined as 
+\\\indentx$\begin{array}{rclrclrcl}
+    \rvX(\dieA) &\eqd& \osix{1}{0}{0}{0}{0}{0}, 
+   &\rvX(\dieB) &\eqd& \osix{0}{1}{0}{0}{0}{0}, 
+   &\rvX(\dieC) &\eqd& \osix{0}{0}{1}{0}{0}{0}, 
+  \\\rvX(\dieD) &\eqd& \osix{0}{0}{0}{1}{0}{0}, 
+   &\rvX(\dieE) &\eqd& \osix{0}{0}{0}{0}{1}{0},
+   &\rvX(\dieF) &\eqd& \osix{0}{0}{0}{0}{0}{1}.
+\end{array}$
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:rv_spinR1}
+%---------------------------------------
+The \opd{$\R^1$ spinner random variable} $\rvX$ maps from the set $\setn{\spinA,\spinB,\spinC,\spinD,\spinE,\spinF}$ into the set $\R^1$
+and is defined as\footnotemark
+\\\indentx
+  $\rvX(\spinA)\eqd 1$, 
+  $\rvX(\spinB)\eqd 2$, 
+  $\rvX(\spinC)\eqd 3$, 
+  $\rvX(\spinD)\eqd 4$, 
+  $\rvX(\spinE)\eqd 5$, and 
+  $\rvX(\spinF)\eqd 6$.
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:rv_spinqpsk}
+%---------------------------------------
+The \opd{QPSK spinner random variable} $\rvX$ maps from the set $\setn{\spinA,\spinB,\spinC,\spinD,\spinE,\spinF}$ into the set $\C^1$
+and is defined as 
+\\\indentx$\begin{array}{rclrclrcl}
+    \rvX(\spinA) &\eqd& \exp\brp{-90\times\frac{\pi}{180}i}, 
+   &\rvX(\spinB) &\eqd& \exp\brp{-30\times\frac{\pi}{180}i}, 
+   &\rvX(\spinC) &\eqd& \exp\brp{ 30\times\frac{\pi}{180}i}, 
+  \\\rvX(\spinD) &\eqd& \exp\brp{ 90\times\frac{\pi}{180}i}, 
+   &\rvX(\spinE) &\eqd& \exp\brp{150\times\frac{\pi}{180}i},
+   &\rvX(\spinF) &\eqd& \exp\brp{210\times\frac{\pi}{180}i}.
+\end{array}$
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citePp{galleani2010}{772}
+  }
+\label{def:rv_dnapam}
+%---------------------------------------
+The \opd{PAM DNA random variable} $\rvX$ maps from the set $\setn{\dnaA,\dnaC,\dnaG,\dnaT}$ into the set $\R^1$
+and is defined as\footnotemark
+\\\indentx
+  $\rvX(\dnaA)\eqd-1.5$, 
+  $\rvX(\dnaC)\eqd-0.5$, 
+  $\rvX(\dnaT)\eqd+0.5$, 
+  $\rvX(\dnaG)\eqd+1.5$. 
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citePp{galleani2010}{772}
+  }
+\label{def:rv_dnaqpsk}
+%---------------------------------------
+The \opd{QPSK DNA random variable} $\rvX$ maps from the set $\setn{\dnaA,\dnaC,\dnaG,\dnaT}$ into the set $\C^1$
+and is defined as 
+\\\indentx$\begin{array}{rclrcl}
+     \rvX(\dnaA) &\eqd& \exp\brp{ 45\times\frac{\pi}{180}i}, 
+    &\rvX(\dnaC) &\eqd& \exp\brp{135\times\frac{\pi}{180}i}, 
+   \\\rvX(\dnaG) &\eqd& \exp\brp{225\times\frac{\pi}{180}i}, 
+    &\rvX(\dnaT) &\eqd& \exp\brp{315\times\frac{\pi}{180}i}.
+\end{array}$
+\end{definition}
+\footnotetext{QPSK is an acronym for \ope{quadrature phase shift keying} and is a standard technique in 
+the field of digital communications.}
+
+%---------------------------------------
+\begin{definition}
+\label{def:rv_dnaR4}
+%---------------------------------------
+The \opd{$\R^4$ DNA random variable} $\rvX$ maps from the set $\setn{\dnaA,\dnaC,\dnaG,\dnaT}$ into the set $\R^4$
+and is defined as\footnotemark
+\\\indentx$\begin{array}{rclrclrclrcl}
+     \rvX(\dnaA) &\eqd& \oquad{1}{0}{0}{0}, 
+    &\rvX(\dnaC) &\eqd& \oquad{0}{1}{0}{0}, 
+    &\rvX(\dnaT) &\eqd& \oquad{0}{0}{1}{0}, 
+    &\rvX(\dnaG) &\eqd& \oquad{0}{0}{0}{1}
+\end{array}$
+\end{definition}
+\footnotetext{This type of mapping has previously been used by \citeP{voss1992} in calculating the \ope{Voss Spectrum}, 
+  (a kind of Fourier analysis) of DNA sequences.
+  See also \citePp{galleani2010}{772}.
+  }
+
+
+%=======================================
+\subsection{Some ordered distance linear spaces}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:dieR1oml}
+%---------------------------------------
+The structure $\oml{\R^1}{\omlr}{\omld}$ is the \structd{$\R^1$ die distance linear space}
+if $\omlr$ is the \rele{standard ordering relation} on $\R$, 
+and $\omld(x,y)\eqd\abs{x-y}$ (the \fncte{Euclidean metric} on $\R$, \xrefnp{def:emetric}).
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:dieR3oml}
+%---------------------------------------
+%Let $\rvX$ be the \opd{$\R^3$ die random variable} \xref{def:dieR3rv}.
+The structure $\oml{\R^3}{\omlr}{\omld}$ is the \structd{$\R^3$ die distance linear space}
+if $\omlr=\emptyset$, and $\omld$ is the 
+$2$-scaled \fncte{Lagrange arc distance} $\omld$ defined as follows:
+\quad$\omld(p,q) \eqd 2\metrican(p,q)$\\
+where $\metrican$ is the \fncte{Lagrange arc distance} \xref{def:larc}.
+\end{definition}
+%\begin{figure}[h]
+%  \centering%
+%  \gsize%
+\mbox{}\hfill%
+  \begin{tabular}{c}\includegraphics{ssp/graphics/rdie_r3met.pdf}\end{tabular}%
+  \hspace{15mm}%
+  $\begin{tabstr}{0.75}\begin{array}{|c|*{6}{@{\hspace{2pt}}c}|}
+    \hline
+    \ocsd(x,y) & \dieA &\dieB &\dieC &\dieD &\dieE &\dieF
+    \\\hline
+      \dieA &    0   &   1   &   1   &   1   &   1   &   2
+    \\\dieB &    1   &   0   &   1   &   1   &   2   &   1
+    \\\dieC &    1   &   1   &   0   &   2   &   1   &   1
+    \\\dieD &    1   &   1   &   2   &   0   &   1   &   1
+    \\\dieE &    1   &   2   &   1   &   1   &   0   &   1
+    \\\dieF &    2   &   1   &   1   &   1   &   1   &   0
+    \\\hline
+  \end{array}\end{tabstr}$
+\hfill\mbox{}\\
+%  \caption{\structe{distance linear space} $\opair{\R^3}{\ocsd'}$ for \structe{real die}\label{fig:rdie3dmet}}
+%\end{figure}
+Used together with the \fncte{$\R^3$ die random variable} $\rvX$ \xref{def:rv_dieR3},
+the distance $\omld$ in the \structe{$\R^3$ die distance linear space} \xrefr{def:dieR3oml}
+is an extension of $\ocsd$ in the \structe{real die outcome subspace} 
+\\$\ocsG\eqd\ocsrdie$ \xref{def:rdie}.
+We can also say that $\rvX$ is an \fncte{isometry} \xref{def:isometry} 
+and that the two structures are \prope{isometric}.
+For example, %in $\ocsG$, $\ocsd(\dieA,\dieB)=1$ and $\ocsd(\dieA,\dieF)=2$; likewise in $\omlD$, 
+\\\indentx$\begin{array}{lclclclD}
+  \omld\brs{\rvX(\dieA),\rvX(\dieB)} &=& \omld\brs{\otriple{1}{0}{0},\otriple{ 0}{1}{0}} &=& 1 &=& \ocsd(\dieA,\dieB) & and\\
+  \omld\brs{\rvX(\dieA),\rvX(\dieF)} &=& \omld\brs{\otriple{1}{0}{0},\otriple{-1}{0}{0}} &=& 2 &=& \ocsd(\dieA,\dieF) & .
+\end{array}$
+\\
+As for order, the mapping $\rvX$ is also \prope{order preserving} \xref{def:opreserve},
+but trivially, because the \structe{real die outcome subspace} is \prope{unordered} \xref{def:unordered}.
+But if we still honor the standard ordering on each dimension $\R$ in $\R^3$,
+then the two structures are \prope{not isomorphic} \xref{def:isomorphic} because\footnote{%
+  Note that while $\rvX^{-1}$ \xref{def:inverse} does not exist as a \structe{function}, it does exist as a \structe{relation}.
+  }
+the inverse $\rvX^{-1}$ 
+is \prope{not order preserving} \xref{thm:latiso}---%
+for example, $\rvX(\dieD)=\otriple{0}{0}{-1}\orel\otriple{0}{0}{1}=\rvX(\dieC)$, but $\dieD$ and $\dieC$
+are \prope{incomparable} \xref{def:incomparable} in $\ocsG$.
+
+%---------------------------------------
+\begin{definition}
+\label{def:spinR2oml}
+%---------------------------------------
+The structure $\oml{\R^2}{\omlr}{\omld}$ is the \structd{$\R^2$ spinner distance linear space}
+if $\omlr=\emptyset$, and $\omld$ is the 
+$3$-scaled \fncte{Lagrange arc distance} $\omld$ defined as follows:
+\quad$\omld(p,q) \eqd 3\metrican(p,q)$\\
+where $\metrican$ is the \fncte{Lagrange arc distance} \xref{def:larc}.
+\end{definition}
+%\begin{figure}[h]
+%  \centering%
+%  \gsize%
+\mbox{}\hfill%
+  \begin{tabular}{c}\includegraphics{ssp/graphics/spinner_r2.pdf}\end{tabular}%
+  \hspace{15mm}%
+  $\begin{tabstr}{0.75}\begin{array}{|c|*{6}{@{\hspace{5pt}}c}|}
+    \hline
+    \ocsd(x,y)    & \spinA & \spinB & \spinC & \spinD & \spinE & \spinF
+    \\\hline
+      \spinA      &    0   &   1    &    2   &    3   &    2   &    1
+    \\\spinB      &    1   &   0    &    1   &    2   &    3   &    2
+    \\\spinC      &    2   &   1    &    0   &    1   &    2   &    3
+    \\\spinD      &    3   &   2    &    1   &    0   &    1   &    2
+    \\\spinE      &    2   &   3    &    2   &    1   &    0   &    1
+    \\\spinF      &    1   &   2    &    3   &    2   &    1   &    0
+    \\\hline
+  \end{array}\end{tabstr}$
+\hfill\mbox{}\\
+%  \caption{\structe{distance linear space} $\opair{\R^2}{\ocsd'}$ for \structe{spinner}\label{fig:rdie3dmet}}
+%\end{figure}
+Used together with the \fncte{QPSK spinner random variable} $\rvX$ \xref{def:rv_spinqpsk},
+the distance $\omld$ in the \structe{$\R^2$ spinner distance linear space} \xref{def:spinR2oml}
+is an extension of $\ocsd$ in the \structe{spinner outcome subspace} 
+$\ocsG\eqd\ocsspin$ \xref{def:spinner}.
+We can again say that $\rvX$ is an \fncte{isometry} %\xref{def:isometry} 
+and that the two structures are \prope{isometric}.
+For example, %in $\ocsG$, $\ocsd(\spinA,\spinB)=1$, $\ocsd(\spinA,\spinC)=2$, and $\ocsd(\spinA,\spinD)=3$; likewise in $\omlD$, 
+\\\indentx$\begin{array}{lclclclD}
+  \omld\brs{\rvX(\spinA),\rvX(\spinB)} &=& \omld\brs{\opair{0}{-1},\opair{\sfrac{\sqrt{3}}{2}}{-\sfrac{1}{2}}} &=& 1 &=& \ocsd(\spinA,\spinB) & and\\
+  \omld\brs{\rvX(\spinA),\rvX(\spinC)} &=& \omld\brs{\opair{0}{-1},\opair{\sfrac{\sqrt{3}}{2}}{+\sfrac{1}{2}}} &=& 2 &=& \ocsd(\spinA,\spinC) & and\\
+  \omld\brs{\rvX(\spinA),\rvX(\spinD)} &=& \omld\brs{\opair{0}{-1},\opair{0}{1}}                               &=& 3 &=& \ocsd(\spinA,\spinD) & .
+\end{array}$
+\\
+The mapping $\rvX$ is again trivally \prope{order preserving}.
+And if we again honor the standard ordering on each dimension $\R$ in $\R^2$,
+then the two structures are \prope{not isomorphic} \xref{def:isomorphic} because
+the inverse $\rvX^{-1}$ 
+is \prope{not order preserving}---%
+for example, $\rvX(\spinA)=\opair{0}{-1}\orel\opair{0}{1}=\rvX(\spinD)$, but $\spinA$ and $\spinD$
+are \prope{incomparable} in $\ocsG$.
+
+%The next definition introduces a \structe{metric linear space} for \ope{fair die sequence processing}
+%that unlike in the \structe{real die} structure, the random variable mapping 
+%is fully \prope{order preserving} (trivally).
+%---------------------------------------
+\begin{definition}
+\label{def:fdieR6oml}
+%---------------------------------------
+The structure $\oml{\R^6}{\omlr}{\omld}$ is the \structd{$\R^6$ die distance linear space}
+if $\omlr=\emptyset$, and $\omld$ is defined as 
+$\ds\omld(p,q) \eqd \sfrac{\sqrt{2}}{2}\metrica{p}{q}$,
+where $\metrican$ is the \fncte{Euclidean metric} on $\R^6$ \xref{def:emetric}.
+\end{definition}
+
+Used together with the \fncte{$\R^6$ die random variable} $\rvX$ \xref{def:rv_dieR6},
+the distance $\omld$ in the \structe{$\R^6$ fair die distance linear space} \xref{def:fdieR6oml}
+is an extension of $\ocsd$ in the \structe{fair die outcome subspace} 
+$\ocsG\eqd\ocsrdie$ \xref{def:rdie}.
+We can again say that $\rvX$ is an \fncte{isometry} %\xref{def:isometry} 
+and that the two structures are \prope{isometric}.
+For example, %in $\ocsG$, $\ocsd(\dieA,\dieB)=1$, $\ocsd(\dieA,\dieC)=1$, and $\ocsd(\dieA,\dieF)=1$; likewise in $\omlD$, 
+\\\indentx$\begin{array}{lclclclD}
+  \omld\brs{\rvX(\dieA),\rvX(\dieB)} &=& \omld\brs{\osix{1}{0}{0}{0}{0}{0},\osix{0}{1}{0}{0}{0}{0}} &=& 1 &=& \ocsd(\dieA,\dieB) & and\\
+  \omld\brs{\rvX(\dieA),\rvX(\dieC)} &=& \omld\brs{\osix{1}{0}{0}{0}{0}{0},\osix{0}{0}{1}{0}{0}{0}} &=& 1 &=& \ocsd(\dieA,\dieC) & and\\
+  \omld\brs{\rvX(\dieA),\rvX(\dieF)} &=& \omld\brs{\osix{1}{0}{0}{0}{0}{0},\osix{0}{0}{0}{0}{0}{1}} &=& 1 &=& \ocsd(\dieA,\dieF) & .
+\end{array}$
+\\
+The mapping $\rvX$ is again trivally \prope{order preserving},
+and the inverse $\rvX^{-1}$ is trivally \prope{order preserving} as well.
+And so unlike the \structe{$\R^3$ die distance linear space} \xrefr{def:dieR3oml}
+and the \structe{$\R^2$ spinner distance linear space} \xrefr{def:spinR2oml},
+this pair of structures is \prope{isomorphic}.
+
+
+

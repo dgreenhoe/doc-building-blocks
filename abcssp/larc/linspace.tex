@@ -1,0 +1,1541 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+
+
+
+
+%======================================
+\section{Linear spaces}
+%======================================
+
+%======================================
+\subsection{Structure}
+%======================================
+%A \structe{metric space} \xref{def:metric} is a \structe{set} together with nothing else save a \structe{metric} 
+%that gives the space a \structe{topology} \xref{def:topology}.
+%A \structe{linear space} (next definition) in general has no topology but does have some additional 
+%\structe{algebraic} structure \xref{app:algebra} that 
+%is useful in generalizing a number of mathematical concepts.
+%If one wishes to have both algebraic structure and a topology, then this can be accomplished by appending 
+%a \structe{topology} to a \structe{linear space} giving a \structe{topological linear space} \xref{def:toplinspace}, 
+%a \structe{metric} giving a \structe{metric linear space} \xref{def:metric},
+%an \structe{inner product} giving an \structe{inner product space} \xref{def:inprod}, % or a \hie{Hilbert space} \xref{def:hilbert},
+%or a \structe{norm} giving a \structe{normed linear space} \xref{def:norm}. % or a \structe{Banach space} \xref{def:banach}.
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerppgc{kubrusly2001}{40}{41}{0817641742}{Definition 2.1 and following remarks},
+  \citerp{haaser1991}{41},
+  \citerpp{halmos1948}{1}{2},
+  \citerc{peano1888}{Chapter IX},
+  \citerpp{peano1888e}{119}{120},
+  \citePpp{banach1922}{134}{135}
+  }
+\label{def:vspace}
+\label{def:linspace}
+\index{space!vector}
+\index{space!linear}
+%---------------------------------------
+%Let $\F\eqd\otriple{\setS}{+}{\cdot}$ be a field.
+Let $\fieldF$ be a \structe{field}. % \xref{def:field}.
+Let $\setX$ be a set, 
+let $+$ be an \structe{operator}  in $\clF{\setX^2}{\setX}$, %\xref{def:operator}
+and let $\otimes$ be an operator in $\clF{\F\times\setX}{\setX}$.
+\defboxp{
+  The structure $\spO\eqd\linearspaceX$ is a \hid{linear space} over $\fieldF$ if
+  %\\\indentx$\ds\begin{array}{l rcl @{\quad}C @{\quad}D@{}r@{}}
+  \\\indentx$\ds\begin{array}{>{\scriptstyle}r rcl @{\quad}C @{\quad}D@{}r@{}}
+    \cline{7-7}
+    1.& \exists \vzero\in\setX \st \vx + \vzero &=& \vx
+      & \forall \vx\in\setX
+      & ($+$ \structe{identity})
+      & \ast\vline
+      \\
+    2.& \exists \vy\in\setX \st \vx+\vy &=& \vzero
+      & \forall \vx \in\setX
+      & ($+$ \structe{inverse})
+      & \vline
+      \\
+    3.& (\vx+\vy)+\vz &=& \vx+(\vy+\vz)
+      & \forall \vx,\vy,\vz\in\setX
+      & ($+$ is \prope{associative})
+      & \text{ }\vline
+      \\
+    4.& \vx+\vy &=& \vy+\vx
+      & \forall \vx,\vy\in\setX
+      & ($+$ is \prope{commutative})
+      & \vline
+      \\\cline{7-7}
+    5.& 1\cdot \vx &=& \vx
+      & \forall \vx\in\setX
+      & ($\cdot$ \prope{identity})
+      \\
+    6.& \alpha\cdot(\beta\cdot\vx) &=& (\alpha\cdot\beta)\cdot\vx
+      & \forall \alpha,\beta\in\setS \text{ and } \vx\in\setX
+      & ($\cdot$ \prope{associates} with $\cdot$)
+      \\
+    7.& \alpha\cdot(\vx+\vy) &=& (\alpha \cdot\vx)+(\alpha\cdot\vy)
+      & \forall \alpha\in\setS \text{ and } \vx,\vy\in\setX
+      & ($\cdot$ \prope{distributes} over $+$)
+      \\
+    8.& (\alpha+\beta)\cdot\vx &=& (\alpha\cdot \vx)+(\beta\cdot \vx)
+      & \forall \alpha,\beta\in\setS \text{ and } \vx\in\setX
+      & ($\cdot$ \prope{pseudo-distributes} over $+$)
+  \end{array}$
+  %\\
+  %The set $\setX$ is called the \hid{underlying set}.
+  %The elements of $\setX$ are called \hid{vectors}.
+  %The elements of $\F$ are called \hid{scalars}.
+  %A linear space is also called a \hid{vector space}.
+  %If $\F\eqd\R$, then $\spO$ is a \hid{real linear space}.
+  %If $\F\eqd\C$, then $\spO$ is a \hid{complex linear space}.
+  }
+\end{definition}
+
+%%---------------------------------------
+%\begin{remark}
+%\footnote{
+%  \citerp{akhiezer1e}{1},
+%  \citerp{haaser1991}{41}
+%  }
+%%---------------------------------------
+%By the first four conditions ($\ast]$) listed in \pref{def:vspace},
+%$\opair{\setX}{+}$ is a \hib{commutative group} (or \hib{abelian group}).
+%\end{remark}
+%
+%Often when discussing a linear space, %the operator $+$ is expressed simply as $+$ and
+%the operator $\cdot$ is simply expressed with juxtaposition
+%(e.g. $\alpha\vx$ is equivalent to $\alpha\cdot\vx$). %is equivalent to $\alpha\otimes\vx$).
+%In doing this, there is no risk of ambiguity between %vector-vector addition
+%scalar-vector multiplication and scalar-scalar multiplication
+%because the operands uniquely identify the precise operator.\footnote{
+%  {\em Operator overload} is a technique in which
+%  two fundamentally different operators or functions
+%  share the same symbol or label. It is
+%  inherent in the programming language {\em C++} and is therein called
+%  {\em operator overload}.
+%  In C++, you can define two (or more) operators or functions that
+%  share the same symbol or name, but yet are completely different.
+%  Two such operators (or functions) are distinguished from each other
+%  by the type of their operands.
+%  So for example, in C++, you can define an
+%  $m\times n$ matrix {\em type} and use operator overload to
+%  define a $+$ operator that operates on this new matrix type.
+%  So if variables $x$ and $y$ are of floating point type and
+%  $A$ and $B$ are of the matrix type,
+%  you can then add either type using the same syntax style:\\
+%    \begin{tabular}{l@{\hs{6ex}}l}
+%      x+y  & (add two floating point numbers) \\
+%      A+B  & (add two matrices)
+%    \end{tabular}\\
+%  Even though both of these operations ``look" the same, they
+%  are of course fundamentally different.
+%  }
+%
+%
+%%---------------------------------------
+%\begin{example}[\exmd{tuples in $\F^\xN$}]
+%\footnote{
+%  \citerpgc{kubrusly2001}{41}{0817641742}{Example 2D}
+%  }
+%\label{ex:lsp_FN}
+%%---------------------------------------
+%%Let  $\fieldF$ be a \structe{field} \xref{def:field}.
+%Let $\tuplexn{x_n}$ be an \structe{$\xN$-tuple} \xref{def:tuple} over a \structe{field} \xref{def:field} $\fieldF$.
+%\exbox{\begin{array}{N>{\ds}rc>{\ds}l@{\qquad}C@{\qquad}D}
+%  Let    & \setX                     &\eqd& \set{\tuplexn{x_n}}{x_n\in\F}         &                              & and
+%  \\     & \tuplexn{x_n}+\tuplexn{y_n} &\eqd& \tuplexn{x_n\dotplus y_n}             & \forall \tuplen{x_n}\in\setX & and
+%  \\     & \alpha\cdot\tuplexn{x_n}   &\eqd& \tuplexn{\alpha\dottimes x_n}         & \forall \tuplen{x_n}\in\setX, \alpha\in\F. & 
+%  \\\mc{6}{M}{Then the structure $\linearspaceX$ is a \prope{linear space}.}
+%\end{array}}
+%\end{example}
+%
+%%%---------------------------------------
+%%\begin{remark}
+%%\footnote{
+%%  \citerpgc{kubrusly2001}{41}{0817641742}{Example 2D}
+%%  }
+%%%---------------------------------------
+%%Note that the tuples $\tuplexn{x_n}$ in example \pref{ex:lsp_FN} can not be extended a sequence $\seqxn{x_n}$
+%%without first equipping the linear space with a \hie{topology}.
+%%This is because 
+%%\end{remark}
+%
+%%---------------------------------------
+%\begin{example}[real numbers]
+%\footnote{
+%  \citerpgc{kubrusly2001}{41}{0817641742}{Example 2D},
+%  \citor{hamel1905}
+%  }
+%%---------------------------------------
+%Let  $\field{\R}{+}{\cdot}$ be the field of real numbers.
+%\exbox{\begin{array}{M}%\begin{array}{N>{\ds}rc>{\ds}l@{\qquad}C@{\qquad}D}
+%  %Let    & x+y      &\eqd& x\dotplus y     & \forall x,y\in\R  & and
+%  %\\     & x\cdot y &\eqd& x\dottimes y    & \forall x,y\in\R. &
+%  %\\\mc{6}{M}{Then the structure $\linearspaceXR[\R]$ is a \prope{linear space}}.
+%  %\\\mc{6}{M}{That is, the field $\fieldR$ with $+$ and $\cdot$ is a linear space over itself.}
+%    {The structure $\linearspace{\R}{+}{\cdot}{\R}{+}{\cdot}$ is a \prope{linear space}}.
+%  \\{That is, the field of real numbers forms a linear space over itself.}
+%\end{array}}
+%\end{example}
+%
+%%---------------------------------------
+%\begin{example}[functions]
+%\footnote{
+%  \citerpgc{kubrusly2001}{42}{0817641742}{Example 2F}
+%  }
+%%---------------------------------------
+%Let $\fieldF$ be a field.
+%Let $\clFxy$ be the set of all functions with domain $\setX$ and range $\setY$.
+%\exbox{\begin{array}{N>{\ds}rc>{\ds}l@{\qquad}C@{\qquad}D@{\qquad}D}
+%  Let    & \brs{\ff+\fg}(x)          &\eqd& \ff(x) + \fg(x)                  & \forall \ff,\fg\in\clFxy & (\prope{pointwise addition}) & and
+%  \\     & \brs{\alpha\cdot\ff}(x)   &\eqd& \alpha\cdot\brs{\ff(x)}          & \forall \ff\in\clFxy, \alpha\in\F. & 
+%  \\\mc{7}{M}{Then the structure $\linearspace{\clFxy}{+}{\cdot}{\F}{\dotplus}{\dottimes}$ is a \prope{linear space}.}
+%\end{array}}
+%\end{example}
+%
+%%---------------------------------------
+%\begin{example}[functions onto $\F$]
+%\footnote{
+%  \citerpgc{kubrusly2001}{41}{0817641742}{Example 2E}
+%  }
+%%---------------------------------------
+%Let $\field{\F}{+}{\cdot}$ be a field.
+%Let $\clFxf$ be the set of all functions with domain $\setX$ and range $\F$.
+%\exbox{\begin{array}{N>{\ds}rc>{\ds}l@{\qquad}C@{\qquad}D@{\qquad}D}
+%  Let    & \brs{\ff+\fg}(x)          &\eqd& \ff(x) + \fg(x)                  & \forall \ff,\fg\in\clFxf & (\prope{pointwise addition}) & and
+%  \\     & \brs{\alpha\cdot\ff}(x)   &\eqd& \alpha\cdot\brs{\ff(x)}          & \forall \ff\in\clFxf,\, \alpha\in\F. & 
+%  \\\mc{7}{M}{Then the structure $\linearspace{\clFxf}{+}{\cdot}{\F}{+}{\cdot}$ is a \prope{linear space}.}
+%\end{array}}
+%\end{example}
+
+%%---------------------------------------
+%\begin{theorem}[Additive identity properties]
+%\footnote{
+%  \citerpgc{berberian1961}{6}{0821819127}{Theorem 1},
+%  \citerpg{michel1993}{77}{048667598X}
+%  }
+%\label{thm:vs_addid}
+%\index{additive identity}
+%%--------------------------------------
+%Let $\linearspaceX$ be a linear space,
+%$0$ the \structe{additive identity element} %\xref{def:group} 
+%with respect to $\dotplus$,
+%and $\vzero$ the \structe{additive identity element} with respect to $+$.
+%\thmbox{\begin{array}{F lcl cMC}
+%    1. & 0\vx             &=& \vzero                 &        &                             & \forall \vx\in\setX
+%  \\2. & \alpha\vzero     &=& \vzero                 &        &                             & \forall \alpha\in\F
+%  \\3. & \alpha\vx        &=& \vzero                 &\implies& $\alpha=0$ or $\vx=\vzero$  & 
+%  \\4. & \vx+\vx          &=& \vx                    &\implies& $\vx=\vzero$                & 
+%  \\5. & \mc{3}{M}{$\alpha\neq0$ and $\vx\neq\vzero$}&\implies& $\alpha\vx\neq\vzero$       & 
+%\end{array}}
+%\end{theorem}
+%
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpgc{berberian1961}{7}{0821819127}{Definition~1}
+%  }
+%\label{def:vs_addinv}
+%\index{additive inverse}
+%%--------------------------------------
+%Let $\spO\eqd\linearspaceX$ be a linear space with vectors $\vx,\vy\in\setX$.
+%Let $-\vy$ be the additive inverse of $\vy$ such that $\vy+(-\vy)=\vzero$.
+%\defbox{\begin{array}{M}
+%  The \hid{difference} of $\vx$ and $\vy$ is $\vx+(-\vy)$ and is denoted
+%  \\\qquad$\vx-\vy$.
+%\end{array}}
+%\end{definition}
+%
+%%---------------------------------------
+%\begin{theorem}[Additive inverse properties]
+%\footnote{
+%  \citerpgc{berberian1961}{7}{0821819127}{Corollary 1},
+%  \citerpg{michel1993}{77}{048667598X},
+%  %\citerp{prasad}{13},
+%  \citerc{peano1888}{Chapter IX},
+%  \citerpp{peano1888e}{119}{120},
+%  \citePpp{banach1922}{134}{135}
+%  }
+%\index{additive inverse}
+%\label{thm:vs_addinv}
+%%--------------------------------------
+%Let $\spO\eqd\linearspaceX$ be a linear space,
+%   $\vzero$ the \structe{additive identity element} with respect to $+$,
+%and $-\vx$ the \structe{additive inverse} %\xref{def:group} 
+%of $\vx$ with respect to $+$.
+%\thmbox{\begin{array}{Flcl@{\qquad}C@{\qquad}D}
+%  %\cnto& (-1)\vx           &=& -\vx                          & \forall \vx\in\setX
+%    1. & \vx+\vy           &=& \vzero \qquad \implies \vx = -\vy & \forall \vx,\vy\in\setX                 & (additive inverse is \prope{unique})
+%  \\2. & (-\alpha)\vx      &=& -(\alpha\vx) = \alpha(-\vx)       & \forall \vx\in\setX,\,\alpha\in\F       & 
+%  \\3. & \alpha(\vx-\vy)   &=& \alpha\vx - \alpha\vy             & \forall \vx,\vy\in\setX,\,\alpha\in\F   & (\prope{distributive})
+%  \\4. & (\alpha-\beta)\vx &=& \alpha\vx - \beta\vx              & \forall \vx\in\setX,\,\alpha,\beta\in\F & (\prope{distributive})
+%\end{array}}
+%\end{theorem}
+%
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpg{michel1993}{77}{048667598X},
+%  %\citerp{prasad}{13},
+%  \citorc{peano1888}{Chapter IX},
+%  \citorpp{peano1888e}{119}{120},
+%  \citePpp{banach1922}{134}{135}
+%  }
+%\index{additive identity}
+%\index{additive inverse}
+%%--------------------------------------
+%Let $\linearspaceX$ be a linear space,
+%$\vzero$ the additive identity element with respect to $+$,
+%and $-\vx$ additive inverse of $\vx$ with respect to $+$.
+%\thmbox{
+%  \begin{array}{Fllrcl@{\qquad}C}
+%      1. & \alpha\vx = \alpha\vy \text{ and } \alpha\ne 0     &\implies&    \vx    &=& \vy   & \forall \vx,\vy\in\setX
+%    \\2. & \alpha\vx = \beta\vx \text{ and } \vx\ne \vzero    &\implies&    \alpha &=& \beta & \forall \vx,\vy\in\setX,\; \alpha,\beta\in\F
+%    \\3. & \vz+\vx=\vz+\vy                                    &\implies&    \vx    &=& \vy   & \forall \vx,\vy,\vz\in\setX
+%    %\cntn & \vx_1+\vy=\vz \text{\quad and\quad} \vx_2+\vy=\vz  &\implies&    \vx_1  &=&\vx_2  & \forall \vx_1,\vx_2,\vy,\vz\in\setX
+%  \end{array}
+%  }
+%\end{theorem}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{mitrinovic2010}{1}{9048142253},
+  \citerppg{vel1993}{5}{6}{0444815058},
+  \citerp{bollobas1999}{2}
+  }
+\label{def:ls_convex}
+%--------------------------------------
+Let $\spO\eqd\linearspaceX$ be a \structe{linear space} \xref{def:vspace}.
+\\\defboxt{
+  A set $\setD\subseteq\setX$ is \propd{convex} in $\spO$ if
+  \\\indentx$\begin{array}{lCDC}
+    \lambda \vx + (1-\lambda)\vy \in\setD  & \forall\vx,\vy\in\setD &and& \forall\lambda\in\opair{0}{1}
+  \end{array}$\\
+  A set is \propd{concave} in $\spO$ if it is \emph{not convex} in $\spO$.
+  }
+\end{definition}
+
+%%======================================
+%\subsection{Order on Linear Spaces}
+%%======================================
+%%--------------------------------------
+%\begin{definition}
+%\label{def:lsp_order}
+%\footnote{
+%  \citerppg{ab2006}{1}{2}{1402050070}
+% }
+%%--------------------------------------
+%Let $\spO\eqd\RlinearspaceX$ be a real linear space.
+%\defbox{\begin{array}{>{\qquad\scriptstyle}rlcl@{\qquad}CF}
+%  \mc{5}{M}{The pair $\opair{\spO}{\orel}$ is an \hid{ordered linear space} if}
+%  \\
+%    1. & \vx\orel\vy &\implies& \vx+\vz\orel\vy+\vz     & \forall \vz\in\setX  & and\\
+%    2. & \vx\orel\vy &\implies& \alpha\vx\orel\alpha\vy & \forall \alpha\in\F
+%  \\
+%  \mc{5}{M}{A vector $\vx$ is \hid{positive} if $\vzero\orel\vx$.}
+%  \\
+%  \mc{5}{M}{The \hid{positive cone} $\spX^+$ of $\opair{\spX}{\orel}$ is the set $\spXp\eqd\set{\vx\in\spX}{\vzero\orel\vx}$.}
+%  \end{array}}
+%\end{definition}
+%
+%%--------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpg{ab2006}{2}{1402050070}
+% }
+%\label{def:lsp_lattice}
+%\label{def:rieszspace}
+%%--------------------------------------
+%Let $\opair{\spX}{\orel}$ be an ordered linear space.
+%\defbox{\begin{array}{M}
+%  The tuple $\latL\eqd\lattice{\spX}{\orel}{\join}{\meet}$ is a \hid{Riesz space} if 
+%  $\latL$ is a \hib{lattice}.\\
+%  A \structe{Riesz space} is also called a \hid{vector lattice}.
+%  \end{array}}
+%\end{definition}
+%
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpgc{ab2006}{3}{1402050070}{Theorem 1.2}
+% }
+%\label{thm:lsp_lat_prop}
+%%--------------------------------------
+%Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a Riesz space \xref{def:rieszspace}.
+%\thmbox{
+%  \begin{array}{lcl|lcl|C}
+%       \vx \join \vy &=& -\brs{\brp{-\vx}\meet\brp{-\vy}}              
+%    &  \vx \meet \vy &=& -\brs{\brp{-\vx}\join\brp{-\vy}}              
+%    &  \forall \vx,\vy    \in\spX 
+%    \\ 
+%       \vx + \brp{\vy\join\vz} &=& \brp{\vx+\vy} \join \brp{\vx+\vz}   
+%    &  \vx + \brp{\vy\meet\vz} &=& \brp{\vx+\vy} \meet \brp{\vx+\vz}   
+%    &  \forall \vx,\vy,\vz\in\spX 
+%    \\ 
+%       \alpha\brp{\vx\join\vy} &=& \brp{\alpha\vx}\join\brp{\alpha\vy}
+%    &  \alpha\brp{\vx\meet\vy} &=& \brp{\alpha\vx}\meet\brp{\alpha\vy} 
+%    & \forall \vx,\vy    \in\spX, \alpha\oreld0 
+%    \\ 
+%      \vx + \vy     &=& \brp{\vx \meet \vy} + \brp{\vx\join\vy}
+%    &&&
+%    & \forall \vx,\vy    \in\spX, \alpha\in\F 
+%  \end{array}
+%  }
+%\end{theorem}
+%
+%%--------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpg{ab2006}{4}{1402050070},
+%  \citerpg{istratescu1987}{129}{9027721823}
+%  %\citerpgc{istratescu1987}{129}{9027721823}{differs from Deza}
+%  }
+%\label{def:vs_vxp}
+%\label{def:vs_vxn}
+%\label{def:vs_vxa}
+%\index[xsym]{$\vxp$}
+%\index[xsym]{$\vxn$}
+%\index[xsym]{$\vxa$}
+%%--------------------------------------
+%Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+%\defbox{\begin{array}{l@{\quad}M@{\quad}M}
+%    \vxp & is defined as $\vxp\eqd\vx\join\vzero$         & and is called the \hid{positive part}  of $\vx$.\\
+%    \vxn & is defined as $\vxn\eqd\brp{-\vx}\join\vzero$  & and is called the \hid{negative part}  of $\vx$. \\
+%    \vxa & is defined as $\vxa\eqd\vx\join\brp{-\vx}$     & and is called the \hid{absolute value} of $\vx$.
+%  \end{array}}
+%\end{definition}
+%
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpgc{ab2006}{4}{1402050070}{Theorem 1.3}
+%  }
+%\label{thm:vs_xpxn}
+%%--------------------------------------
+%Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+%\thmbox{
+%  \brbr{\begin{array}{rclD}
+%    \vy-\vz &=& \vx & and \\
+%    \vy \meet \vz &=& \vzero
+%  \end{array}}
+%  \qquad\iff\qquad
+%  \brbl{\begin{array}{rclD}
+%    \vy &=& \vxp & and \\
+%    \vz &=& \vxn
+%  \end{array}}
+%  }
+%\end{theorem}
+%
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpg{ab2006}{4}{1402050070}
+%  }
+%%--------------------------------------
+%Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+%Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+%$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \fncte{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+%\thmbox{
+%  \begin{array}{rclCD}
+%    \vxa   &=& \vxp + \vxn       & \forall \vx\in\spX \\
+%    \vx    &=& \brp{\vx-\vy}^+ + \brp{\vx\meet\vy}  & \forall \vx\in\spX
+%  \end{array}
+%  }
+%\end{theorem}
+%
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpgc{ab2006}{5}{1402050070}{Theorem 1.4}
+%  }
+%%--------------------------------------
+%Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+%Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+%$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \structe{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+%\thmbox{
+%  \begin{array}{>{\scriptstyle}rrcl@{\qquad}C}
+%    1. & \vx\join\vy &=& \frac{1}{2}\brp{\vx+\vy+\abs{\vx-\vy}}       & \forall \vx,\vy\in\spX \\
+%    2. & \vx\meet\vy &=& \frac{1}{2}\brp{\vx+\vy-\abs{\vx-\vy}}       & \forall \vx,\vy\in\spX \\
+%    3. & \abs{\vx-\vy} &=& \brp{\vx\join\vy} - \brp{\vx\meet\vy}      & \forall \vx,\vy\in\spX \\
+%    4. & \abs{\vx}\join\abs{\vy} &=& \frac{1}{2}\brp{\abs{\vx+\vy}+\abs{\vx-\vy}} & \forall \vx,\vy\in\spX \\
+%    5. & \vxa\join\vya &=& \frac{1}{2}\abs{\abs{\vx+\vy}-\abs{\vx-\vy}} & \forall \vx,\vy\in\spX 
+%  \end{array}
+%  }
+%\end{theorem}
+%
+%%--------------------------------------
+%\begin{definition}
+%\label{def:vs_disjoint}
+%\footnote{
+%  \citerpg{ab2006}{5}{1402050070}
+%  }
+%\index[xsym]{$\perp$}
+%%--------------------------------------
+%Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+%Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+%$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \structe{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+%\defbox{\begin{array}{M}
+%  {$\vx$ and $\vy$ are \hid{disjoint}, denoted by $\vx\perp\vy$, if }
+%  \\\qquad$\abs{\vx}\meet\abs{\vy}=\vzero$.
+%  \\
+%  {Two subsets $\spU$ and $\spV$ of $\spX$ are \hid{disjoint}, denoted by $\spU\perp\spV$ if}
+%  \\\qquad$\vx\perp\vy \qquad \forall \vx\in\spU\text{ and }\vy\in\spV$
+%  \end{array}}
+%\end{definition}
+%
+%%--------------------------------------
+%\begin{definition}
+%\label{def:vs_disjointc}
+%\footnote{
+%  \citerpg{ab2006}{5}{1402050070}
+%  }
+%\index[xsym]{$d$}
+%%--------------------------------------
+%Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+%Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+%$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \structe{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+%Let $\spY$ be a subset of $\spX$.
+%\defbox{\begin{array}{M}
+%  $\spY^d$ is the \hid{disjoint complement} of $\spY$ if \qquad$\spY^d \eqd \set{\vx\in\spX}{\vx\perp\vy \quad\forall \vy\in\spY}$.
+%  \\The quantity $\spY^{dd}$ is defined as $\brp{\spY^d}^d$.
+%  \end{array}}
+%\end{definition}
+%
+%%--------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpg{ab2006}{7}{1402050070}
+%  }
+%%--------------------------------------
+%Let $\lattice{\spX}{\orel}{\join}{\meet}$ be a \structe{Riesz space} \xref{def:rieszspace}.
+%Let $\vxp$ the \structe{positive part} of $\vx\in\spX$,
+%$\vxn$ the \structe{negative part} of $\vx\in\spX$, and $\vxa$ the \structe{absolute value} \xref{def:vs_vxa} of $\vx\in\spX$.
+%\defbox{
+%  \begin{array}{rcl}
+%    \abs{\setA}     &\eqd& \set{\abs{\va}}{\va\in\setA}  \\
+%    \setA^+         &\eqd& \set{\va^+}{\va\in\setA}  \\
+%    \setA^-         &\eqd& \set{\va^-}{\va\in\setA}  \\
+%    \setA\join\setB &\eqd& \set{\va\join\vb}{\va\in\setA\text{ and }\vb\in\setB}  \\
+%    \setA\meet\setB &\eqd& \set{\va\meet\vb}{\va\in\setA\text{ and }\vb\in\setB}  \\
+%    \vx\join\setA   &\eqd& \set{\vx\join\va}{\va\in\setA}  \\
+%    \vx\meet\setA   &\eqd& \set{\vx\meet\va}{\va\in\setA}  
+%  \end{array}
+%  }
+%\end{definition}
+%
+%
+
+%=======================================
+\subsection{Metric Linear Spaces}
+%=======================================
+Metric space stucture can be added to a linear space resulting in a \structe{metric linear space} (next definition).
+One key difference between metric linear spaces and normed linear spaces is that the balls in a 
+\structe{normed linear space} \xref{def:norm}
+are always \prope{convex} \xref{def:ls_convex}; this is not true for all metric linear spaces \xref{thm:norm_convex}.\footnote{
+  \citerpg{bruckner1997}{478}{013458886X}
+  }
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{maddox1988}{90}{052135868X},
+  \citerpgc{bruckner1997}{477}{013458886X}{Definition 12.3},
+  \citerpg{rolewicz1985}{1}{9027714800},
+  \citerpg{loeve1977}{79}{1475762887}
+  %\citeP{kakutani1940}
+  }
+\label{def:vs_metric}
+\index{space!metric vector|textbf}
+\index{metric linear space|textbf}
+%--------------------------------------
+Let $\spO\eqd\metlinspaceX$.
+\defboxp{The tuple $\spO$ is a \structd{metric linear space} if
+  \\\indentx$\begin{array}{>{\qquad}FMD}
+      1. & if $\linearspaceX$ is a \structe{linear space} & and 
+    \\2. & $\metricn$ is a \structe{metric} in $\clFxr$   & and
+    \\3. & $\metric{\vx+\vz}{\vy+\vz} = \metric{\vx}{\vy} \quad\sst\forall \vx,\vy,\vz\in\setX$  (\prope{translation invariant})\footnotemark & and 
+    \\4. & $\alpha_n\to\alpha$ and $\vx_n\to\vx$ $\implies$ $\alpha_n\vx_n\to\alpha\vx$          
+\end{array}$}
+\end{definition}
+\footnotetext{
+  Some authors do not require the \prope{translation invariant} property for the definition of the \structe{metric linear space},
+  as indicated by the following references:
+  \citerpgc{maddox1988}{90}{052135868X}{``{\scs Some authors\ldots do not include translation invariance in the definition of metric linear space, since they use a theorem of Kakutani to show that a non-translation invariant metric may be replaced by a translation invariant metric which yields the same topolgy.}"},
+  \citerpgc{friedman1970}{125}{0486640620}{Definition 4.1.4},
+  \citePp{dobrowolski1995}{86}
+  }
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:vsm_convex}
+\footnote{
+  \citerp{norfolk}{5}
+  }
+%---------------------------------------
+Let $\spO\eqd\metlinspaceX$ be a metric linear space.
+\thmbox{
+  \mcom{
+    \metric{\vtheta}{\lambda\vx+(1-\lambda)\vy}
+    \le \lambda\metric{\vtheta}{\vx} + (1-\lambda)\metric{\vtheta}{\vy}
+    }{$\metricn$ is a \hie{convex} function}
+  \qquad\implies\qquad
+  \brb{\begin{array}{M}
+    $\ball{\theta}{r} \in\spO$ is \prope{convex} \\
+    $\scriptstyle \forall\vtheta\in\setX,\,r\in\Rp$
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \metric{\vtheta}{\lambda\vx+(1-\lambda)\vy}
+    &\le \lambda\metric{\vtheta}{\vx} + (1-\lambda)\metric{\vtheta}{\vy}
+    &&   \text{by convexity hypothesis}
+  \\&\le   \lambda r  + (1-\lambda) r
+    &&   \forall \vx,\vy\in\ball{\theta}{r}
+  \\&=   r
+  \\\implies & \lambda\vx+(1-\lambda)\vy \in \ball{\theta}{r}
+    &&   \forall \vx,\vy\in\ball{\theta}{r}
+  \\\implies & \ball{\theta}{r} \in(\spX,\metricn) \text{ is convex}
+    &&   \forall \theta\in\spX
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citePpp{norfolk}{5}{6},
+  \url{http://groups.google.com/group/sci.math/msg/a6f0a7924027957d}
+  }
+\label{thm:vsm_convex_invariant}
+%---------------------------------------
+Let $\metlinspaceXR$ be a real metric linear space.
+\thmbox{\begin{array}{l}
+  \brb{\begin{array}{F lcl CDD}
+    1. & \metric{\vx+\vz}{\vy+\vz} &=& \metric{\vx}{\vy}
+       & \forall \vx,\vy,\vz\in\spX
+       & (\prope{translation invariant}) & and 
+       \\
+    2. & \metric{\lambda\vx}{\lambda\vy} &=& \lambda\,\metric{\vx}{\vy}
+       & \forall \vx,\vy\in\spX,\; \lambda\in [0,1]
+       & (\prope{homogeneous})
+  \end{array}}
+  \\\qquad\implies\qquad
+  \brb{\text{$\ball{\theta}{r} \in \opair{\spX}{\metricn}$ \quad is \prope{convex} \quad $\scriptstyle \forall\vtheta\in\spX,\,r\in\Rp$}}
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  &\metric{\vtheta}{\lambda\vx+(1-\lambda)\vy}
+  \\&=   \metric{\vzero}{\lambda\vx+(1-\lambda)\vy-\vtheta}
+    &&   \text{by translation invariance hypothesis}
+  \\&=   \metric{\vzero}{\lambda(\vx-\vtheta)+(1-\lambda)(\vy-\vtheta)}
+  \\&\le \metric{\vzero}{\lambda(\vx-\vtheta)}
+     +   \metric{\lambda(\vx-\vtheta)}{\lambda(\vx-\vtheta)+(1-\lambda)(\vy-\vtheta)}
+    &&   \text{by \prope{subadditive} property\ifsxref{metric}{def:metric}}
+  \\&=   \metric{\vzero}{\lambda(\vx-\vtheta)}
+     +   \metric{\vzero}{\vzero+(1-\lambda)(\vy-\vtheta)}
+    &&   \text{by translation invariance hypothesis}
+  \\&=   \lambda \metric{\vzero}{\vx-\vtheta}
+     +   (1-\lambda) \metric{\vzero}{\vy-\vtheta}
+    &&   \text{by homogeneous hypothesis}
+  \\&=   \lambda \metric{\vtheta}{\vx}
+     +   (1-\lambda) \metric{\vtheta}{\vy}
+    &&   \text{by translation invariance hypothesis}
+  \\&\le   \lambda r  + (1-\lambda) r
+    &&   \forall \vx,\vy\in\ball{\theta}{r}
+  \\&=   r
+  \\\implies & \lambda\vx+(1-\lambda)\vy \in \ball{\theta}{r}
+    &&   \forall \vx,\vy\in\ball{\theta}{r}
+  \\\implies & \ball{\theta}{r} \in(\spX,\metricn) \text{ is convex}
+    &&   \forall \theta\in\spX
+\end{align*}
+\end{proof}
+
+%%---------------------------------------
+%\begin{example}
+%\label{ex:vs_discrete}
+%%---------------------------------------
+%Let $X$ be a set and $\fd:X^2\to\Rnn$.
+%\exbox{
+%  \fd(x,y) \eqd \left\{\renewcommand{\arraystretch}{1}\begin{array}{ll}1 &\text{for } x\ne y \\0&\text{for }x=y \end{array} \right.
+%  \qquad\implies\qquad
+%  B(x,1) \text{ is convex in } (\spX,\fd)
+%  }
+%\end{example}
+%\begin{proof}
+%\begin{align*}
+%  \metric{\vtheta}{\lambda\vx+(1-\lambda)\vy}
+%    &=   \left\{\begin{array}{ll}
+%           0 &\text{for } \vtheta=\lambda\vx+(1-\lambda)\vy \end{array} \\
+%           1 &\text{otherwise}
+%         \right.
+%  \\&\le 1
+%  \\\implies & \lambda\vx+(1-\lambda)\vy \in \ball{\theta}{1}
+%    &&   \forall \vx,\vy\in\ball{\theta}{r}
+%  \\\implies & \ball{\theta}{1} \in(\spX,\metricn) \text{ is convex}
+%    &&   \forall \theta\in\spX
+%\end{align*}
+%\end{proof}
+
+
+
+%======================================
+\subsection{Normed Linear Spaces}
+%======================================
+%======================================
+%\subsubsection{Definition and basic results}
+%======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpp{ab}{217}{218},
+  \citerp{banach1932}{53},
+  \citerp{banach1932e}{33},
+  \citePp{banach1922}{135}
+ %\citerp{michel1993}{344},
+ %\citerp{horn}{259}
+  }
+\label{def:norm}
+\index{space!normed vector}
+\index{triangle inequality}
+\index{inequality!triangle}
+\index[xsym]{$\normn$}
+%--------------------------------------
+Let $\linearspaceX$ be a \structe{linear space} \xref{def:vspace} and
+$\abs{\cdot}\in\clF{\F}{\R}$ the \fncte{absolute value} function\ifsxref{algebra}{def:abs}.
+\defboxp{
+  A functional $\normn$ in $\clFxr$ is a \fnctd{norm} if
+  \\\indentx$\begin{array}{>{\qquad\scy}r rcl @{\qquad}C @{\qquad}D @{\qquad}D}
+    \\1. & \norm{ \vx}      &\ge& 0                     & \forall \vx \in\setX                & (\prope{strictly positive})  \nocite{michel1993}           & and  %page 115 
+    \\2. & \norm{ \vx}      &=  & 0 \iff \vx=\vzero     & \forall \vx \in\setX                & (\prope{nondegenerate})                                    & and
+    \\3. & \norm{\alpha\vx} &=  & \abs{\alpha}\norm{\vx}& \forall \vx \in\setX,\; \alpha\in\C & (\prope{homogeneous})                                      & and
+    \\4. & \norm{\vx+\vy}   &\le& \norm{\vx}+\norm{\vy} & \forall \vx,\vy \in\setX            & (\prope{subadditive}/\prope{triangle inquality}).
+\end{array}$\\
+A \structd{normed linear space} is the tuple $\normspaceX$.
+}
+\end{definition}
+
+%%--------------------------------------
+%\begin{theorem}[\thmd{triangle inequality}]
+%\label{thm:norm_tri}
+%\footnote{
+%  \citerp{michel1993}{344}
+%  %\citorc{euclid}{Book I Proposition 20}
+%  }
+%%--------------------------------------
+%Let $\tuplexn{\vx_n\in\setX}$ be an \structe{$\xN$-tuple} \xref{def:tuple} of vectors in a 
+%\structe{normed linear space} $\normspaceX$.
+%\thmbox{
+%  \norm{ \sum_{n=1}^\xN \vx_n }
+%  \le
+%  \sum_{n=1}^\xN \norm{\vx_n}
+%  \qquad\scriptstyle
+%  \forall \xN\in\Zp,\; \vx_n\in\spV
+%  }
+%\end{theorem}
+%
+%%--------------------------------------
+%\begin{theorem}[\thmd{Reverse Triangle Inequality}]
+%\label{thm:shortest_dist}
+%\label{thm:rti}
+%\footnote{
+%  \citerp{ab}{218},
+%  \citerpg{giles2000}{2}{0521653754},
+%  \citePp{banach1922}{136}
+%  }
+%%--------------------------------------
+%Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+%\thmbox{
+%  \begin{array}{rcl@{\qquad}C}
+%  \mcom{\abs{\norm{\vx} - \norm{\vy}} \le \norm{{\vx}-{\vy}}}{\prope{reverse triangle inequality}} &\le& \norm{\vx}+\norm{\vy}
+%  & \forall \vx,\vy\in \setX
+%  \end{array}
+%  }
+%\end{theorem}
+
+
+
+%\parbox[c][][c]{\textwidth/3-2ex}{
+%%\begin{figure}[ht]
+%\color{figcolor}
+%\begin{center}
+%\begin{fsL}
+%\setlength{\unitlength}{0.1mm}
+%\begin{picture}(200,200)(-100,-100)
+%  %\graphpaper[10](0,0)(600,200)
+%  \thicklines
+%  \put(-100,   0){\vector( 1, 1){100} }
+%  \put( 100,   0){\vector(-1, 1){100} }
+%  \put(   0,-100){\vector( 0, 1){200} }
+%  \put( -50,  50 ){\makebox(0,0)[br]{$\vx$}}
+%  \put(  50,  50 ){\makebox(0,0)[bl]{$\vu$}}
+%  \put(   5,  35 ){\makebox(0,0)[l ]{$\vy$}}
+%  {\color{red}
+%    \thicklines
+%    \put(-100,   0){\vector( 1,-1){100} }
+%    \put( 100,   0){\vector(-1,-1){100} }
+%    \put(-100,   0){\vector( 1, 0){200} }
+%    \put( -55, -55 ){\makebox(0,0)[tr]{$\vx-\vy$}}
+%    \put(  55, -55 ){\makebox(0,0)[tl]{$\vu-\vy$}}
+%    \put( -55,   5 ){\makebox(0,0)[b ]{$\vx-\vu$}}
+%  }
+%\end{picture}
+%\end{fsL}
+%\end{center}
+%}
+%%\caption{
+%%   Shortest distance between two points (see \pref{prop:shortest_dist})
+%%   \label{fig:shortest_dist}
+%%   }
+%%\end{figure}
+%\parbox[c][][c]{2\textwidth/3-2ex}{
+%  The shortest distance between two vectors is always the difference of the vectors.
+%  This is proven in next and illustrated to the left in
+%  the Euclidean space $\R^2$ (the plane)
+%  %\prefp{prop:shortest_dist} (next)
+%  %and illustrated in Figure~\ref{fig:shortest_dist}.
+%  }
+%
+%%--------------------------------------
+%\begin{proposition}
+%\label{prop:shortest_dist}
+%\footnote{
+%  \citerp{ab}{218} 
+%  }
+%%--------------------------------------
+%Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+%\propbox{
+%  \begin{array}{rcl@{\qquad}C}
+%  \norm{{\vx}-{\vy}} &\le& \norm{{\vx}-{\vu}} + \norm{{\vu}-{\vy}} & \forall \vx,\vy,\vu\in \setX
+%  \end{array}
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \norm{{\vx}-{\vy}}
+%    &=   \norm{(\vx-{\vu})+({\vu}-{\vy})}
+%  \\&\le \norm{{\vx}-{\vu}} + \norm{{\vu}-{\vy}}
+%    &&   \text{by \prefp{def:norm}}
+%\end{align*}
+%\end{proof}
+
+
+
+%--------------------------------------
+\begin{example}[\exmd{The usual norm}]
+\footnote{
+  \citerpg{giles1987}{3}{0521359287}
+  }
+\label{ex:ln_norm}
+\index{usual norm}
+\index{norm!usual}
+%--------------------------------------
+Let $\clFrr$ be the set of all functions with domain and range the set of \sete{real numbers} $\R$.
+\exbox{
+  \text{The \hib{absolute value} $\abs{\cdot}\in\clFrr$ is a \structe{norm}.}  %\xref{def:abs}
+  }
+\end{example}
+
+%--------------------------------------
+\begin{example}[$l_p$ norms]
+\label{ex:norms}
+%\citep{giles2000}{3}
+%  \citerpg{giles2000}{3}{0521653754}
+%\index{norm!$l_1$}  \index{norm!taxi cab}
+%\index{norm!$l_2$}  \index{norm!Euclidean}
+%\index{norm!$l_\infty$} \index{norm:sup}
+%--------------------------------------
+Let $\seqxZ{x_n}$ be a \structe{sequence} %\xref{def:seq} 
+of real numbers.
+%An uncountably infinite number of norms is provided by the $\splpF$ norms $\norm{\seqn{x_n}}_p$:
+%which are defined as follows:
+\exbox{
+  \norm{\seqn{x_n}}_p \eqd  \brp{\sum_{n\in\Z} \abs{x_n}^p}^\frac{1}{p}   
+  \qquad\text{is a norm for $p\in\intcc{1}{\infty}$}
+  }
+\end{example}
+
+
+%======================================
+\subsection{Relationship between metrics and norms}
+%======================================
+%======================================
+\subsubsection{Metrics generated by norms}
+%======================================
+%The concept of \hie{length} is very closely related to the concept of \hie{distance}.
+%Thus it is not surprising that a \structe{norm} (a ``length" function)
+%can be used to define a \hie{metric} (a ``distance" function)
+%on any \structe{metric linear space} \xref{def:vs_metric}.
+%Another way to say this is that the norm of a normed linear space
+%\hie{induces} a metric on this space.
+%And %because every normed linear space has a norm (obviously),
+%so every normed linear space also has a metric.
+%And because every normed linear space has a metric,
+%{\bf every normed linear space is also a metric space}.
+%Actually this can be generalized one step further in that
+%every metric space is also a \hie{topological space}.
+%And so {\bf every normed linear space is also a topological space.}
+%In symbols,
+%\[ \color{figcolor}
+%   \text{normed linear space}
+%   \qquad\implies\qquad
+%   \text{metric space}
+%   \qquad\implies\qquad
+%   \text{topological space}.
+%\]
+%The next theorem states basically the same results as above but in a more technical manner.
+%---------------------------------------
+\begin{theorem}
+\label{thm:d=norm}
+\footnote{
+  \citerp{michel1993}{344},
+  \citorp{banach1932}{53} 
+  }
+\index{space!metric}
+\index{metric!induced by norm}
+%---------------------------------------
+Let $\metricn\in\clF{\spX\times\spX}{\R}$ be a function on a \prope{real} normed linear space $\normspaceXR$.
+Let $\ball{\vx}{r}\eqd\set{\vy\in\spX}{\norm{\vy-\vx}<r}$ be the \sete{open ball} \xref{def:ball} of radius $r$ centered at a point $\vx$.
+\thmbox{
+  %\begin{array}{l}
+    \metric{\vx}{\vy} \eqd \norm{\vx-\vy} \text{ is a metric on $\spX$}
+    %2. & \tau \eqd \set{\ball{\vx}{r}}{\vx\in V,\;r>0} \text{ is a topology on $\spX$. }
+  %\end{array}
+  }
+%\footnotetext{\hie{open ball}: \prefp{def:ball}}
+\end{theorem}
+%\begin{proof}
+%The proof follows directly from the definition of a metric (\ifdochasni{metric}{\prefp{def:metric}})
+%the definition of \structe{norm} \xref{def:norm}.
+%\end{proof}
+
+%The previous theorem defined a metric $\metric{\vx}{\vy}$ induced by the norm $\norm{\vx}$.
+The next definition defines this metric formally.
+%--------------------------------------
+\begin{definition}
+\label{def:d=norm}
+\footnote{
+  \citerpgc{giles2000}{1}{0521653754}{1.1 Definition}
+  }
+\index{metric!generated by norm}
+%--------------------------------------
+Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\\\defboxp{
+    The \fnctd{metric induced by the norm} $\normn$ is the function $\fd\in\clFxr$ such that
+    $\metric{\vx}{\vy} \eqd \norm{\vx-\vy}$ {$\scy\forall \vx,\vy\in\setX$} .
+  }
+\end{definition}
+
+
+%Due to its algebraic structure, every norm is \prope{continuous} \xref{cor:norm_continuous}.
+%This makes norm spaces very useful in analysis.
+%For a function $\ff$ be to \prope{continuous}, for every $\epsilon>0$ there must exist a $\delta>0$ such that 
+%$\abs{\ff(x+\delta)-\ff(x)}<\epsilon$.
+%The \hie{Reverse Triangle Inequality} \xref{thm:rti} shows this to be true when $\ffn\eqd\normn$.
+
+
+%--------------------------------------
+\begin{corollary}
+\label{cor:norm_continuous}
+\footnote{
+  \citerpg{giles2000}{2}{0521653754}
+  }
+%--------------------------------------
+Let $\spO\eqd\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
+\corbox{
+  \text{The norm $\normn$ is \prope{continuous} in $\spO$.}
+  }
+\end{corollary}
+%\begin{proof}
+%This follows from these concepts:
+%\begin{enumerate}
+%  \item The fact that $\fd(\vx,\vy)\eqd\norm{\vx-\vy}$ is a \structe{metric} \xref{thm:d=norm}.
+%  \item \prope{Continuity} in a \struct{metric space}. % \xref{thm:ms_continuous}.
+%  \item The \thme{Reverse Triangle Inequality} \xref{thm:rti}.
+%\end{enumerate}
+%\end{proof}
+
+\pref{thm:norm_convex} (next) demonstrates that {\bf all open or closed} balls in
+{\bf any normed linear space} are \prope{convex}.
+However, the converse is not true---that is, 
+a metric not generated by a norm may still produce a ball that is \prope{convex}. % \xxref{ex:larcR2}{ex:larcR3}.
+%\ifdochas{metricex}{
+%Here are some examples:\\
+%\begin{tabular}{|l|ll|c|c|}
+%     \hline
+%     metric name       & example                 &                            & generated by norm & convex ball
+%  \\ \hline
+%     Taxi-cab metric    & \pref{ex:ms_taxi}      & \prefpo{ex:ms_taxi}       & $\checkmark$ & $\checkmark$  
+%  \\ Euclidean metric   & \pref{ex:ms_euclidean} & \prefpo{ex:ms_euclidean}  & $\checkmark$ & $\checkmark$  
+%  \\ Sup metric         & \pref{ex:ms_sup}       & \prefpo{ex:ms_sup}        & $\checkmark$ & $\checkmark$  
+%  \\ Parabolic metric   & \pref{ex:ms_parabolic} & \prefpo{ex:ms_parabolic}  &              &          
+%  \\ exponential metric & \pref{ex:ms_32x}       & \prefpo{ex:ms_32x}        &              &          
+%  \\ Tangential metric  & \pref{ex:ms_tan}       & \prefpo{ex:ms_tan}        &              & $\checkmark$  
+%  \\\hline
+%\end{tabular}}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{giles2000}{2}{0521653754}{1.2 Remarks},
+  \citerppgc{giles1987}{22}{26}{0521359287}{2.4 Theorem, 2.11 Theorem}
+  %\citerp{rudinp}{31} \\
+  %David C. Ullrich (2007), \url{http://groups.google.com/group/sci.math/msg/4a217391a5607f83}
+  }
+\label{thm:norm_convex}
+%--------------------------------------
+Let $\metlinspaceX$ be a \structe{metric linear space} \xref{def:vs_metric}.
+Let $\balln$ be an \structe{open ball} \xref{def:ball}. 
+%$\ball{\vp}{r}\eqd\set{\vx\in\spX}{\metric{\vp}{\vx}<r}$
+%(open ball with respect to metric $\metricn$ centered at point $\vp$ and with radius $r$).
+\thmbox{
+  \brbr{\begin{array}{>{\ds}l}
+    \exists \normn\in\clFxr \st \\
+    \mcom{\metric{\vx}{\vy}=\norm{\vy-\vx}}
+         {$\metricn$ is generated by a norm}
+  \end{array}}
+  \implies
+  \brbl{\begin{array}{>{\scy}r>{\ds}lD}
+  %1. & \metric{\vx+\vz}{\vy+vz} = \metric{\vx}{\vy} & (\prope{translation invariant}) \\ % included in <norms generated by metrics> section
+  1. & \ball{\vx}{r} = \vx + B(0,r)                          & and\\
+  2. & \ball{\vzero}{r} = r\,\ball{\vzero}{1}                & and\\
+  3. & \ball{\vx}{r} \text{ is \prope{convex}}               & and\\
+  4. & \vx\in \ball{\vzero}{r} \iff -\vx\in \ball{\vzero}{r} & (\prope{symmetric}) 
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\fd(\vx+\vz,\vy+vz) = \metric{\vx}{\vy}$ (invariant):
+        \begin{align*}
+          \fd(\vx+\vz,\vy+vz)
+            &= \norm{(\vy+vz)-(\vx+\vz)}
+            && \text{by left hypothesis}
+          \\&= \norm{\vy-\vx}
+          \\&= \metric{\vx}{\vy}
+            && \text{by left hypothesis}
+        \end{align*}
+
+  \item Proof that $\ball{\vx}{r} = \vx + B(0,r)$:
+        \begin{align*}
+          \ball{\vx}{r} 
+            &= \set{\vy\in\spX}{\metric{\vx}{\vy}<r}
+            && \text{by definition of open ball $B$}
+          \\&= \set{\vy\in\spX}{\fd(\vy-\vy,\vy-\vx)<r}
+            && \text{by right result 1.}
+          \\&= \set{\vy\in\spX}{\fd(\vzero,\vy-\vx)<r}
+          \\&= \set{\vu+\vx\in\spX}{\fd(\vzero,\vu)<r}
+            && \text{let $\vu\eqd\vy-\vx$}
+          \\&= \vx + \set{\vu\in\spX}{\fd(\vzero,\vu)<r}
+          \\&= \vx + B(0,r)
+            && \text{by definition of open ball $B$}
+        \end{align*}
+
+  \item Proof that $\ball{\vzero}{r} = r\,\ball{\vzero}{1}$:
+        \begin{align*}
+          \ball{\vzero}{r} 
+            &= \set{\vy\in\spX}{\fd(\vzero,\vy)<r}
+            && \text{by definition of open ball $B$}
+          \\&= \set{\vy\in\spX}{\frac{1}{r}\fd(\vzero,\vy)<1}
+          \\&= \set{\vy\in\spX}{\frac{1}{r}\norm{\vy-\vzero}<1}
+            && \text{by left hypothesis}
+          \\&= \set{\vy\in\spX}{\norm{\frac{1}{r}\vy-\frac{1}{r}\vzero}<1}
+            && \text{by homogeneous property of $\normn$ \prefpo{def:norm}}
+          \\&= \set{\vy\in\spX}{\fd\brp{\frac{1}{r}\vzero,\, \frac{1}{r}\vy}<1}
+            && \text{by left hypothesis}
+          \\&= \set{r\vu\in\spX}{\fd\brp{\vzero,\,\vu}<1}
+            && \text{let $\vu\eqd\frac{1}{r}{\vy}$}
+          \\&= r\, \set{\vu\in\spX}{\fd(\vzero,\vu)<1}
+          \\&= r\, B\brp{\vzero,\, 1}
+            && \text{by definition of open ball $B$}
+        \end{align*}
+
+  \item Proof that $\ball{\vp}{r}$ is convex:\\
+        We must prove that for any pair of points $\vx$ and $\vy$ in the open ball $\ball{\vp}{r}$,
+        any point $\lambda\vx + (1-\lambda)\vy$ is also in the open ball.
+        That is, the distance from any point $\lambda\vx + (1-\lambda)\vy$ to 
+        the ball's center $\vp$ must be less than $r$.
+        \begin{align*}
+          \fd(\vp,\lambda\vx + (1-\lambda)\vy)
+            &= \norm{\vp-\lambda\vx - (1-\lambda)\vy}
+            && \text{by left hypothesis}
+          \\&= \norm{\mcom{\lambda\vp+(1-\lambda)\vp}{$\vp$} -\lambda\vx - (1-\lambda)\vy}
+          \\&= \norm{\lambda\vp-\lambda\vx+(1-\lambda)\vp - (1-\lambda)\vy}
+          \\&\le \norm{\lambda\vp-\lambda\vx} + \norm{(1-\lambda)\vp - (1-\lambda)\vy}
+            && \text{by subadditivity property of $\normn$ \prefpo{def:norm}} 
+          \\&= \abs{\lambda}\norm{\vp-\vx} + \abs{1-\lambda}\norm{\vp - \vy}
+            && \text{by homogeneous property of $\normn$ \prefpo{def:norm}} 
+          \\&= \lambda\norm{\vp-\vx} + (1-\lambda)\norm{\vp - \vy}
+            && \text{because $0\le\lambda\le1$}
+          \\&\le \lambda r + (1-\lambda) r
+            && \text{because $\vx,\vy$ are in the ball $\ball{\vp}{r}$}
+          \\&= r
+        \end{align*}
+
+  \item Proof that $\vx\in \ball{\vzero}{r} \iff -\vx\in \ball{\vzero}{r}$ (symmetric):
+        \begin{align*}
+          \vx\in \ball{\vzero}{r} 
+            &\iff \vx\in\set{\vy\in\spX}{\fd(\vzero,\vy)<r}
+            &&    \text{by definition of open ball $B$}
+          \\&\iff \vx\in\set{\vy\in\spX}{\norm{\vy-\vzero}<r}
+            &&    \text{by left hypothesis}
+          \\&\iff \vx\in\set{\vy\in\spX}{\norm{\vy}<r}
+          \\&\iff \vx\in\set{\vy\in\spX}{\norm{(-1)(-\vy)}<r}
+          \\&\iff \vx\in\set{\vy\in\spX}{\abs{-1}\norm{-\vy}<r}
+            &&    \text{by homogeneous property of $\normn$ \prefpo{def:norm}}
+          \\&\iff \vx\in\set{\vy\in\spX}{\norm{-\vy-\vzero}<r}
+          \\&\iff \vx\in\set{\vy\in\spX}{\fd(\vzero,-\vy)<r}
+            &&    \text{by left hypothesis}
+          \\&\iff \vx\in\set{-\vu\in\spX}{\fd(\vzero,\vu)<r}
+            &&    \text{let $\vu\eqd -\vy$}
+          \\&\iff \vx\in \brp{-\set{\vu\in\spX}{\fd(\vzero,\vu)<r}}
+          \\&\iff \vx\in \brp{-\ball{\vzero}{r}}
+          \\&\iff -\vx\in \ball{\vzero}{r}
+        \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%--------------------------------------
+%\begin{remark}
+%--------------------------------------
+\prefpp{thm:norm_convex} demonstrates that if a metric $\metricn$ in a metric space $\metlinspaceX$
+is generated by a norm,
+then the ball $\ball{x}{r}$ in that metric linear space is \prope{convex}.
+However, the converse is not true.
+That is, it is possible for the balls in a metric space $(\spY,\fp)$ to be \prope{convex},
+but yet the metric $\fp$ not be generated by a norm.
+\ifdochas{metricex}{\prefpp{ex:d_balls_nonorm_convex} gives one such example.}
+%\end{remark}
+
+
+
+
+%\begin{figure}[th]
+%%\color{figcolor}
+%\begin{center}
+%\begin{fsL}
+%\setlength{\unitlength}{0.07mm}
+%\begin{tabular*}{\textwidth}{|l||@{\extracolsep\fill}c|c|c|c|}
+%  \hline
+%  & taxi-cab metric  & Euclidean Metric & sup metric & parabolic metric
+%    \index{taxi-cab metric}  \index{metric!taxi-cab}
+%    \index{Euclidean metric} \index{metric!Euclidean}
+%    \index{sup metric}       \index{metric!sup}
+%    \index{parabolic metric} \index{metric!parabolic}
+%  \\\hline\hline
+%  $\R^0$
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(0,   0){\circle*{32}}%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(0,   0){\circle*{32}}%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(0,   0){\circle*{32}}%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)%
+%    %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%    \thicklines%
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(0,   0){\circle*{32}}%
+%  \end{picture}
+%  \\\hline
+%  $\R^1$
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(-100,   0){\line( 1, 0){200} }%
+%      \put(-100,   0){\makebox(0,0){$($} }%
+%      \put( 100,   0){\makebox(0,0){$)$} }%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(-100,   0){\line( 1, 0){200} }%
+%      \put(-100,   0){\makebox(0,0){$($} }%
+%      \put( 100,   0){\makebox(0,0){$)$} }%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(-100,   0){\line( 1, 0){200} }%
+%      \put(-100,   0){\makebox(0,0){$($} }%
+%      \put( 100,   0){\makebox(0,0){$)$} }%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)%
+%    %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%    \thicklines%
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(-100,   0){\line( 1, 0){200} }%
+%      \put(-100,   0){\makebox(0,0){$($} }%
+%      \put( 100,   0){\makebox(0,0){$)$} }%
+%  \end{picture}
+%  \\\hline
+%  $\R^2$
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(-100,   0){\line( 1, 1){100} }%
+%      \put(-100,   0){\line( 1,-1){100} }%
+%      \put( 100,   0){\line(-1, 1){100} }%
+%      \put( 100,   0){\line(-1,-1){100} }%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \input{../common/circle.inp}%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)
+%    \thicklines
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \put(-100,-100){\line( 1, 0){200} }%
+%      \put(-100,-100){\line( 0, 1){200} }%
+%      \put( 100, 100){\line(-1, 0){200} }%
+%      \put( 100, 100){\line( 0,-1){200} }%
+%  \end{picture}
+%  &
+%  \begin{picture}(300,300)(-130,-130)%
+%    %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+%    \thicklines%
+%    \color{axis}%
+%      \put(-130,   0){\line(1,0){260} }%
+%      \put(   0,-130){\line(0,1){260} }%
+%      %\put( 140,   0){\makebox(0,0)[l]{$x$}}%
+%      %\put(   0, 140){\makebox(0,0)[b]{$y$}}%
+%      \put(-100, -10){\line(0,1){20} }%
+%      \put( 100, -10){\line(0,1){20} }%
+%      \put( -10,-100){\line(1,0){20} }%
+%      \put( -10, 100){\line(1,0){20} }%
+%      \put(  10, 110){\makebox(0,0)[bl]{$1$} }%
+%      \put(  10,-110){\makebox(0,0)[tl]{$-1$} }%
+%      \put(-110,  10){\makebox(0,0)[br]{$-1$} }%
+%      \put( 110,  10){\makebox(0,0)[bl]{$1$} }%
+%    \color{blue}%
+%      \qbezier( 100,0)(0,0)(0, 100)%
+%      \qbezier( 100,0)(0,0)(0,-100)%
+%      \qbezier(-100,0)(0,0)(0,-100)%
+%      \qbezier(-100,0)(0,0)(0, 100)%
+%  \end{picture}
+%  %\\\hline
+%  %$\R^3$ &
+%  %\includegraphics*[width=3\textwidth/32, keepaspectratio=true, clip=true]{../common/cube_cab.eps}     &
+%  %\includegraphics*[width=2\textwidth/16, keepaspectratio=true, clip=true]{../common/sphere.eps}       &
+%  %\includegraphics*[width=2\textwidth/16, keepaspectratio=true, clip=true]{../common/cube.eps}         &
+%  %\includegraphics*[width=2\textwidth/16, keepaspectratio=true, clip=true]{../common/sph_k3.eps}
+%  \\\hline
+%\end{tabular*}
+%\end{fsL}
+%\end{center}
+%\caption{
+%  Open balls in $(\R^0,\,\fd_n)$, $(\R,\,\fd_n)$, $(\R^2,\,\fd_n)$, and $(\R^3,\,\fd_n)$.
+%  \label{fig:balls_R2_R3}
+%  }
+%\end{figure}
+
+
+
+
+
+
+
+%=======================================
+\subsubsection{Norms generated by metrics}
+%=======================================
+Every normed linear space is also a metric linear space \xref{thm:d=norm}. 
+%That is, a metric linear space generates a \structe{normed linear space}.
+However, the converse is not true---not every metric linear space is a \structe{normed linear space}.
+A characterization of metric linear spaces that \emph{are} normed linear spaces is provided by \prefpp{thm:vsn_d2norm}.
+%---------------------------------------
+\begin{lemma}
+\footnote{
+  \citePp{oikhberg2007}{599}
+  }
+\label{lem:vsn_ti}
+%---------------------------------------
+Let $\metlinspaceX$ be a \structe{metric linear space}.
+Let $\norm{\vx}\eqd \metric{\vx}{\vzero}$ $\forall\vx\in\setX$.
+\lembox{
+  \mcom{\metric{\vx+\vz}{\vy+\vz} = \metric{\vx}{\vy} \quad\sst\forall \vx,\vy,\vz\in\setX}
+       {\prope{translation invariant}}
+  \implies
+  \brbl{\begin{array}{F rcl CD}
+    1.& \norm{\vx}     &=&   \norm{-\vx}             & \forall \vx\in\setX      & and  \\
+    2.& \norm{\vx}     &=&   0 \iff \vx=0            & \forall \vx\in\setX      & and  \\
+    3.& \norm{\vx+\vy} &\le& \norm{\vx} + \norm{\vy} & \forall \vx,\vy\in\setX  & 
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Proof that $\norm{\vx} = \norm{-\vx}$:}
+    \norm{\vx}
+      &= \metric{\vx}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&= \metric{\vx-\vx}{\vzero-\vx}
+      && \text{by translation invariance hypothesis}
+    \\&= \metric{\vzero}{-\vx}
+    \\&= \norm{-\vx}
+      && \text{by definition of $\normn$}
+    \\
+  \intertext{2a. Proof that $\norm{\vx} = 0 \implies \vx=0$:}
+    0
+      &= \norm{\vx}
+      && \text{by left hypothesis}
+    \\&= \metric{\vx}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&= \metric{\vx}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&\implies \vx=\vzero
+      && \text{by property of metrics \ifdochas{metric}{\prefpo{def:metric}}}
+    \\
+  \intertext{2b. Proof that $\norm{\vx} = 0 \impliedby \vx=0$:}
+    \norm{\vx}
+      &= \metric{\vx}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&= \metric{\vzero}{\vzero}
+      && \text{by right hypothesis}
+    \\&= 0
+      && \text{by property of metrics \ifdochas{metric}{\prefpo{def:metric}}}
+    \\
+  \intertext{3. Proof that $\norm{\vx+\vy} \le \norm{\vx} + \norm{\vy}$:}
+    \norm{\vx+\vy}
+      &= \metric{\vx+\vy}{\vzero}
+      && \text{by definition of $\normn$}
+    \\&= \metric{\vx+\vy-\vy}{\vzero-\vy}
+      && \text{by translation invariance hypothesis}
+    \\&= \metric{\vx}{-\vy}
+    \\&\le \metric{\vx}{\vzero} + \metric{\vzero}{\vy}
+      && \text{by property of metrics \ifdochas{metric}{\prefpo{def:metric}}}
+    \\&= \metric{\vx}{\vzero} + \metric{\vy}{\vzero}
+      && \text{by property of metrics \ifdochas{metric}{\prefpo{def:metric}}}
+    \\&= \norm{\vx} + \norm{\vy}
+      && \text{by definition of $\normn$}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerp{bollobas1999}{21} 
+  %\url{http://groups.google.com/group/sci.math/msg/35220b0e757aac90}
+  }
+\label{thm:vsn_d2norm}
+%---------------------------------------
+Let $\linearspaceX$ be a \structe{linear space}.
+Let $\metric{\vx}{\vy}\eqd\norm{\vx-\vy}$ $\forall\vx,\vy\in\setX$.
+\thmbox{
+  \left.\begin{array}{FlCDD}
+    1. & \metric{\vx+\vz}{\vy+\vz} = \metric{\vx}{\vy} 
+       & \forall \vx,\vy,\vz\in\setX 
+       & (\prope{translation invariant})
+       & and
+    \\
+    2. & \metric{\alpha\vx}{\alpha\vy} = \abs{\alpha}\metric{\vx}{\vy} 
+       & \forall \vx,\vy\in\setX,\,\alpha\in\F
+       & (\prope{homogeneous})
+  \end{array}\right\}
+  \iff
+  \text{$\normn$ is a \structe{norm}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof of $\implies$ assertion:
+    \begin{enumerate}
+      \item Proof that $\normn$ is \hie{strictly positive}: This follows directly from the definition of $\metricn$.
+      \item Proof that $\normn$ is \hie{nondegenerate}: This follows directly from \prefpp{lem:vsn_ti}.
+      \item Proof that $\normn$ is \hie{homogeneous}: This follows from the second left hypothesis.
+      \item Proof that $\normn$ satisfies the \hie{triangle-inequality}: This follows directly from \prefpp{lem:vsn_ti}.
+    \end{enumerate}
+
+  \item Proof of $\impliedby$ assertion:
+    \begin{align*}
+      \metric{\vx+\vz}{\vy+\vz}
+        &= \norm{(\vx+\vz)-(\vy+\vz)}
+        && \text{by definition of $\metricn$}
+      \\&= \norm{\vx-\vy}
+      \\&= \metric{\vx}{\vy}
+        && \text{by definition of $\metricn$}
+      \\
+      \metric{\alpha\vx}{\alpha\vy} 
+        &= \norm{(\alpha\vx)-(\alpha\vy)}
+        && \text{by definition of $\metricn$}
+      \\&= \norm{\alpha(\vx-\vy)}
+      \\&= \abs{\alpha}\norm{\vx-\vy}
+        && \text{by definition of $\normn$ \prefpo{def:norm}}
+      \\&= \abs{\alpha}\metric{\vx}{\vy} 
+        && \text{by definition of $\metricn$}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+

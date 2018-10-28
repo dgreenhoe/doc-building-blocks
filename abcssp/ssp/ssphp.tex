@@ -1,0 +1,327 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%=======================================
+\subsection{High pass filtering}
+\label{sec:hp}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{high pass filtering of weighted real die sequence}]
+\label{ex:wrdie_hp}
+\addcontentsline{toc}{subsubsection}{* high pass filtering of weighted real die sequence}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:wrdie_hp_R1_rect50}
+        Consider a length $50(1200+2)-(50-1)=60051$ non-uniformly distributed die sequence generated as
+        described in \prefpp{ex:wrdie_sha}.
+        To remove the strong $\dieE$ bais, we could map and \ope{filter} \xref{def:filter} the sequence with the 
+        \ope{length 50 high pass rectangular sequence} \xref{def:hp_rect}.
+        Such filtering will obviously introduce correlation into the die sequence. 
+        The low pass filtering of \prefp{ex:rdie_lp} (``smoothing") also introduced correlation,
+        but wanting a ``smooth" sequence informally implies a willingness to accept a highly correlated sequence.
+        However in this current example, we would prefer to have an \prope{uncorrelated} sequence.
+        To negate the correlation introduced by filtering, 
+        we \ope{down sample} \xref{def:downsample} the filtered sequence by a factor of 50 and
+        remove the first and last element, leaving a sequence of length $1200$.
+
+  \item \label{item:wrdie_hp_R1_rect50_euclid}
+        If the filtering and downsampling described in \pref{item:wrdie_hp_R1_rect50} 
+        is performed in the traditional $\R^1$ space,
+        then after mapping back to a \structe{die sequence} using the \fncte{Euclidean metric},
+        we obtain the result partially dispayed here\ldots
+          \\\includegraphics{ssp/plots/wrdie_hp_1200_R1_rect50_euclid_seq.pdf}\\
+        where the bias at $\dieE$ has been replaced by a new bias at $\dieA$, 
+        as illustrated quantitatively below on the left, 
+        calculated over $\xN=1200$ elements. 
+          \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+               \hline
+               \includegraphics{ssp/plots/wrdie_hp_1200_R1_rect50_euclid_histo.pdf}
+              &\includegraphics{ssp/plots/wrdie_hp_1200_R1_rect50_euclid_auto.pdf}
+             \\\hline
+          \end{tabular}
+
+  \item \label{item:wrdie_hp_R3_rect50_larc}
+        Alternatively, suppose we next use the \ope{$\R^3$ die random variable} \xref{def:rv_dieR3}
+        to map the die sequence into $\R^3$.
+        \ope{Filter}ing this new sequence using the \ope{length 50 rectangular high pass sequence}
+        in the \structe{$\R^3$ distance linear space} \xref{def:dieR3oml} 
+        and then mapping back to a \fncte{die sequence} %over the \structe{real die outcome subspace} 
+        using the \fncte{Lagrange arc distance} yields the following results:
+        \\\includegraphics{ssp/plots/wrdie_hp_1200_R3_rect50_larc_seq.pdf}
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/wrdie_hp_1200_R3_rect50_larc_histo.pdf}
+            &\includegraphics{ssp/plots/wrdie_hp_1200_R3_rect50_larc_auto.pdf}
+           \\\hline
+        \end{tabular}\\
+        Note that neither the $\R^1$ method of \pref{item:wrdie_hp_R1_rect50_euclid}
+        nor the $\R^3$ method of \pref{item:wrdie_hp_R3_rect50_larc}
+        yields a uniformly distributed sequence; 
+        but the $\R^3$ method at least comes significantly closer to this end.
+        Moreover, the $\R^3$ method also yields a sequence that is less correlated.
+
+  \item \label{item:wrdie_hp_R3_hann50_larc}
+        Replacing the \ope{length 50 rectangular high pass filter} in \pref{item:wrdie_hp_R3_rect50_larc}
+        with the \ope{length 50 Hanning high pass filter} \xref{def:hp_hann} yields a different sequence
+        with similar distribution but is slightly more correlated:
+        \\\includegraphics{ssp/plots/wrdie_hp_1200_R3_hann50_larc_seq.pdf}
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/wrdie_hp_1200_R3_hann50_larc_histo.pdf}
+            &\includegraphics{ssp/plots/wrdie_hp_1200_R3_hann50_larc_auto.pdf}
+           \\\hline
+        \end{tabular}
+
+  \item \label{item:wrdie_hp_R3_euclid}
+        Replacing the \fncte{Lagrange arc distance} by the \fncte{Euclidean metric} in this example
+        has very little effect, even before downsampling.
+        Before downsampling, the length of each sequence is $M(N+2)=50(1202)=60100$ elements.
+        More details follow:
+        \begin{enumerate}
+          \item Using the \fncte{Euclidean metric} rather than the \fncte{Lagrange arc distance} 
+                in \pref{item:wrdie_hp_R3_rect50_larc} yields results that are 
+                \textbf{identical}.\citetbl{\seessp{wrdie_hp_1200m50.xlg}} %2016 June 08 Wednesday 11:27:40 PM UTC
+
+          \item \label{item:wrdie_hp_R3_hann50_euclid}
+                Using the \fncte{Euclidean metric} rather than the \fncte{Lagrange arc distance} 
+                in \pref{item:wrdie_hp_R3_hann50_larc}
+                yields results that \textbf{differ} at 4 locations 
+                (approximately 0.007\% of all the locations).\citetbl{\seessp{wrdie_hp_1200m50.xlg}} %2016 June 08 Wednesday 11:27:40 PM UTC
+
+        \end{enumerate}
+
+  \item For the type of sequence processing described in this example, 
+         \pref{item:wrdie_hp_R3_euclid} very informally \emph{suggests} the following:
+          \begin{enumerate}
+            \item The processing is not highly sensitive to the choice of distance function.
+            \item The processing is not heavily dependent on the \prope{triangle inequality}.
+            %\item The sensitivity to the choice of distance function, at least in the Hanning case, 
+            %      decreases with filter length.
+          \end{enumerate}
+\end{enumerate}
+\end{example}
+
+%=======================================
+%\subsubsection{High pass filtering of spinner sequences}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{high pass filtering of weighted spinner sequence}]
+\label{ex:spin_rhp}
+\addcontentsline{toc}{subsubsection}{* high pass filtering of weighted spinner sequence}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:wspin_hp_seq} \label{item:wspin_hp_rect50}
+    Consider a length $50(1200+2)-(50-1)=60051$  non-uniformly distributed \fncte{spinner sequence} 
+    generated as described in \prefpp{ex:wspin_sha}.
+    To remove the strong $\spinE$ bais, we could \ope{filter} the \fncte{sequence} with 
+    the \fncte{length 50 high pass rectangular sequence} %\xref{def:hp_rect}. 
+    and down sample the filtered sequence by a factor of 50, as described in \prefpp{ex:wrdie_hp}.
+
+  \item \label{item:wspin_hp_rect50_R1}
+        If the filtering described in \pref{item:wspin_hp_rect50} is performed in the traditional $\R^1$ space,
+        then after mapping back to a \structe{spinner sequence}
+        using the \fncte{Euclidean metric},
+        we obtain the result partially dispayed here\ldots
+          \\\includegraphics{ssp/plots/wspin_hp_1200_R1_rect50_euclid_seq.pdf}\\
+        where the bias at $\spinE$ has been replaced by a new bias at $\spinA$, 
+        as illustrated quantitatively below on the left, 
+        calculated over 1200 elements. %$\floor{(160000+50-1)/50}-1=3199$ elements.
+          \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+               \hline
+               \includegraphics{ssp/plots/wspin_hp_1200_R1_rect50_euclid_histo.pdf}
+              &\includegraphics{ssp/plots/wspin_hp_1200_R1_rect50_euclid_auto.pdf}
+             %\\\mc{2}{|>{\scs}c|}{calculated over $\floor{(160000+50-1)/50}-1=3199$ elements}
+             \\\hline
+          \end{tabular}
+
+
+  \item \label{item:wspin_hp_hann50}\label{item:wspin_hp_hann50_R1}
+        If we replace the \ope{length 50 rectangular high pass filter} of \pref{item:wspin_hp_rect50_R1}
+        with a \ope{length 50 Hanning high pass filter}
+        then we obtain the result partially dispayed here\ldots
+          \\\includegraphics{ssp/plots/wspin_hp_1200_R1_hann50_euclid_seq.pdf}\\
+        \ldots where the bias at $\spinE$ again has been replaced by a new bias at $\spinA$:
+          \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+               \hline
+               \includegraphics{ssp/plots/wspin_hp_1200_R1_hann50_euclid_histo.pdf}
+              &\includegraphics{ssp/plots/wspin_hp_1200_R1_hann50_euclid_auto.pdf}
+             \\\hline
+          \end{tabular}
+
+
+  \item \label{item:wspin_hp_rect50_R2_larc}
+        If the rectangular filtering in $\R^1$ of \pref{item:wspin_hp_rect50_R1}
+        is instead performed in $\R^2$ 
+        and mapped back to a \structe{spinner sequence} using the \fncte{Lagrange arc distance},
+        then we obtain the result partially dispayed here:
+        \\\includegraphics{ssp/plots/wspin_hp_1200_R2_rect50_larc_seq.pdf}
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/wspin_hp_1200_R2_rect50_larc_histo.pdf}
+            &\includegraphics{ssp/plots/wspin_hp_1200_R2_rect50_larc_auto.pdf}
+           \\\hline
+        \end{tabular}\\
+        %\\\includegraphics{ssp/plots/wspin_hp_1200_R2_rect50_euclid_seq.pdf}
+        %\\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+        %     \hline
+        %     \includegraphics{ssp/plots/wspin_hp_1200_R2_rect50_euclid_histo.pdf}
+        %    &\includegraphics{ssp/plots/wspin_hp_1200_R2_rect50_euclid_auto.pdf}
+        %   \\\hline
+        %\end{tabular}\\
+        Note that neither the $\R^1$ methods 
+        (described in \pref{item:wspin_hp_rect50_R1} and \pref{item:wspin_hp_hann50_R1})
+        nor the $\R^2$ method (described in \pref{item:wspin_hp_rect50_R2_larc})
+        yields a uniformly distributed sequence; 
+        but the $\R^2$ method at least comes significantly closer to this end.
+
+  \item \label{item:wspin_hp_rect50_R2_euclid}
+        Replacing the \fncte{Lagrange arc distance} by the \fncte{Euclidean metric} as in \pref{item:wspin_hp_rect50_R2_larc}
+        yields a sequence that differs at a total of 272 locations 
+        (approximately 0.5\% of the locations).\citetbl{\seessp{wspin_hp_1200m50.xlg}} %2016 June 08 Wednesday 11:31:09 PM UTC
+
+  \item \label{item:wspin_hp_hann50_R2_larc}
+        If instead of using the rectangular filtering (as in \pref{item:wspin_hp_rect50_R2_larc}),
+        we use the Hanning filtering of \pref{item:wspin_hp_hann50}
+        in $\R^2$ and map back to a \structe{spinner sequence} using the \fncte{Lagrange arc distance},
+        then we obtain the result partially dispayed here:
+        \\\includegraphics{ssp/plots/wspin_hp_1200_R2_hann50_larc_seq.pdf}
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/wspin_hp_1200_R2_hann50_larc_histo.pdf}
+            &\includegraphics{ssp/plots/wspin_hp_1200_R2_hann50_larc_auto.pdf}
+           \\\hline
+        \end{tabular}
+        %\\\includegraphics{ssp/plots/wspin_hp_1200_R2_hann50_euclid_seq.pdf}
+        %\\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+        %     \hline
+        %     \includegraphics{ssp/plots/wspin_hp_1200_R2_hann50_euclid_histo.pdf}
+        %    &\includegraphics{ssp/plots/wspin_hp_1200_R2_hann50_euclid_auto.pdf}
+        %   \\\hline
+        %\end{tabular}
+
+  \item \label{item:wspin_hp_hann50_R2_euclid}
+        Replacing the \fncte{Lagrange arc distance} by the \fncte{Euclidean metric} in \pref{item:wspin_hp_hann50_R2_larc}
+        %yields a very similar result: % but different result, as illustrated next:
+        yields a sequence that differs at a total of 3 locations 
+        (approximately 0.005\% of the locations).\citetbl{\seessp{wspin_hp_1200m50.xlg}} %2016 June 08 Wednesday 11:31:09 PM UTC
+        %\\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+        %     \hline
+        %     \includegraphics{ssp/plots/wspin_hp_1200_R2_hann50_euclid_histo.pdf}
+        %    &\includegraphics{ssp/plots/wspin_hp_1200_R2_hann50_euclid_auto.pdf}
+        %   \\\hline
+        %\end{tabular}  
+\end{enumerate}
+\end{example}
+
+
+
+%=======================================
+%\subsubsection{High pass filtering of fair die sequences}
+%=======================================
+%---------------------------------------
+\begin{example}[\exmd{high pass filtering of weighted die sequence}]
+\label{ex:wdie_hp}
+\addcontentsline{toc}{subsubsection}{* high pass filtering of weighted die sequence}
+\mbox{}\\
+%---------------------------------------
+\begin{enumerate}
+  \item \label{item:wdie_hp_seq}
+        Consider a length $50(1200+2)-(50-1)=60051$  \fncte{weighted die sequence} generated as 
+        described in \prefpp{ex:wdie_sha}.
+        To remove the strong $\dieE$ bais, we could map and \ope{filter} the sequence with the 
+        \ope{length 16 high pass rectangular sequence} \xref{ex:hp_rect}.
+        To negate the correlation introduced by filtering, 
+        we \ope{down sample} the filtered sequence by a factor of 16.
+
+  \item \label{item:wdie_hp_R1_rect16_euclid}
+        If the die sequence of \pref{item:wdie_hp_seq} is mapped into $\R^1$ using the
+        \fncte{traditional die random variable} \xref{def:rv_dietrad}, \ope{filter}ed,
+        \ope{down sample}d, and mapped back to a die sequence using the \fncte{Euclidean metric},
+        we obtain the result partially dispayed here\ldots
+          \\\includegraphics{ssp/plots/wrdie_hp_1200_R1_rect50_euclid_seq.pdf}\\
+        where the bias at $\dieE$ has been replaced by a new bias at $\dieA$, 
+        as illustrated quantitatively below on the left, 
+        calculated over 1200 elements. 
+          \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+               \hline
+               \includegraphics{ssp/plots/wdie_hp_1200_R1_rect16_euclid_histo.pdf}
+              &\includegraphics{ssp/plots/wdie_hp_1200_R1_rect16_euclid_auto.pdf}
+             \\\hline
+          \end{tabular}
+
+  \item \label{item:wdie_hp_R6_rect16_euclid}
+        But if instead of processing the die sequence in $\R^1$ as in \pref{item:wdie_hp_R1_rect16_euclid},
+        processing is performed in $\R^6$ 
+        and mapped back to a die sequence using the \fncte{Euclidean metric},
+        then we obtain the result partially dispayed here:
+        \\\includegraphics{ssp/plots/wdie_hp_1200_R6_rect16_euclid_seq.pdf}
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/wdie_hp_1200_R6_rect16_euclid_histo.pdf}
+            &\includegraphics{ssp/plots/wdie_hp_1200_R6_rect16_euclid_auto.pdf}
+           \\\hline
+        \end{tabular}
+
+  \item \label{item:wdie_hp_R6_hann16_euclid}
+        Replacing the \ope{length 16 rectangular sequence} in \pref{item:wdie_hp_R6_rect16_euclid}
+        with a \ope{length 16 Hanning sequence} in $\R^6$ yields the following results:
+        \\\includegraphics{ssp/plots/wdie_hp_1200_R6_hann16_euclid_seq.pdf}
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/wdie_hp_1200_R6_hann16_euclid_histo.pdf}
+            &\includegraphics{ssp/plots/wdie_hp_1200_R6_hann16_euclid_auto.pdf}
+           \\\hline
+        \end{tabular}
+
+  \item \label{item:wdie_hp_R6_hann50_euclid}
+        Replacing the \ope{length 16 Hanning sequence} in \pref{item:wdie_hp_R6_hann16_euclid}
+        with a \ope{length 50 Hanning sequence} in $\R^6$ yields the following results:
+        \\\includegraphics{ssp/plots/wdie_hp_1200_R6_hann50_euclid_seq.pdf}
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/wdie_hp_1200_R6_hann50_euclid_histo.pdf}
+            &\includegraphics{ssp/plots/wdie_hp_1200_R6_hann50_euclid_auto.pdf}
+           \\\hline
+        \end{tabular}\\
+     Note that this $\R^6$ technique yields a sequence that is about 8.7\% more correlated than yielded by the $\R^3$ technique
+     used in \pref{item:wrdie_hp_R3_hann50_larc} of \prefpp{ex:wrdie_hp}.
+
+  \item \label{item:wdie_hp_R6_rect50_euclid}
+        Replacing the \ope{length 50 Hanning sequence} in \pref{item:wdie_hp_R6_hann50_euclid}
+        with a \ope{length 50 rectangular sequence} in $\R^6$ yields the following results:
+        \\\includegraphics{ssp/plots/wdie_hp_1200_R6_rect50_euclid_seq.pdf}
+        \\\begin{tabular}{|>{\scs}c|>{\scs}c|}
+             \hline
+             \includegraphics{ssp/plots/wdie_hp_1200_R6_rect50_euclid_histo.pdf}
+            &\includegraphics{ssp/plots/wdie_hp_1200_R6_rect50_euclid_auto.pdf}
+           \\\hline
+        \end{tabular}\\
+     Note that this $\R^6$ technique yields a sequence that is about 7.3\% more correlated than yielded by the $\R^3$ technique
+     used in \pref{item:wrdie_hp_R3_rect50_larc} of \prefpp{ex:wrdie_hp}.
+
+  \item As in \prefpp{ex:fdie_lp}, here again the \fncte{Lagrange arc distance} does not seem so appropriate.
+        That again being said however, \ldots 
+    \begin{enumerate}
+      \item using the \fncte{Lagrange arc distance} rather than the \fncte{Euclidean metric} in 
+            \prefp{item:wdie_hp_R6_rect16_euclid} yields results that are 
+            \textbf{identical}.\citetbl{\seessp{wdie_hp_1200m16.xlg}} %2016 June 08 Wednesday 11:34:23 PM UTC
+      \item using the \fncte{Lagrange arc distance} rather than the \fncte{Euclidean metric} in 
+            \prefp{item:wdie_hp_R6_hann16_euclid} yields results that \textbf{differ} at 17 locations
+            (differ at approximately 0.09\% of the total possible $M(N+2)=16(1200+2)=19232$ 
+            locations).\citetbl{\seessp{wdie_hp_1200m16.xlg}} %2016 June 08 Wednesday 11:34:23 PM UTC
+    \end{enumerate}
+
+  \item Empirical evidence observed in items
+                    \pref{item:wdie_hp_R6_hann50_euclid} and
+                    \pref{item:wdie_hp_R6_rect50_euclid}
+        suggests that the $\R^6$ technique of this example leads to about 8\% more correlation 
+        than the $\R^3$ technique of \prefpp{ex:wrdie_hp}.
+
+\end{enumerate}
+\end{example}
+
+
+

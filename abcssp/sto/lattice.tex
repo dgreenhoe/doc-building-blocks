@@ -1,0 +1,538 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+
+
+%=======================================
+\subsection{Lattices}
+%=======================================
+%=======================================
+%\subsubsection{Definition}
+%=======================================
+The structure available in an \structe{ordered set} \xref{def:orel} 
+%is a set\ifsxref{found}{def:set} together with the additional 
+%structure of an ordering relation\ifsxref{order}{def:poset}.
+%However, this amount of structure 
+tends to be insufficient to ensure ``well-behaved" mathematical systems.
+This situation is greatly remedied if every pair of elements in the ordered set %(partially or linearly ordered)
+has both a \prope{least upper bound} and a \prope{greatest lower bound} \xref{def:glb} in the set;
+in this case, that ordered set is a \structe{lattice} (next definition).\footnote{
+Gian-Carlo Rota (1932--1999) has illustrated the advantage of lattices over simple ordered sets
+by pointing out that the \structe{ordered set of partitions of an integer} 
+``is fraught with pathological properties", while 
+the \emph{lattice} of partitions of a set 
+``remains to this day rich in pleasant surprises".
+{
+  \citePpc{rota1997}{1440}{(illustration)}, %{http://www.ams.org/notices/199711/comm-rota.pdf},
+  \citePpc{rota1964}{498}{partitions of a set} %{http://www.jstor.org/pss/2312585}
+  }}
+%Further examples of lattices follow in \prefpp{sec:lat_examples}.
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{maclane1999}{473}{0821816462},
+  \citerpg{birkhoff1948}{16}{3540120440},
+  \citeP{ore1935}, %{???}, % cf rudeanu2001
+  \citePp{birkhoff1933}{442},
+  \citerp{maeda1970}{1}
+  }
+\label{def:lattice}
+\label{def:latlin}
+%---------------------------------------
+\defboxt{%
+  An algebraic structure $\latL\eqd\latticed$ is a \structd{lattice} if
+  \\\indentx$\begin{array}{FlDD}
+      1. & \opair{\setX}{\orel} \text{ is an \structe{ordered set}}   & \xref{def:poset} & and \\
+      2. & x,y\in\setX \quad\implies\quad x\join y \in\setX           & \xref{def:lub}   & and \\
+      3. & x,y\in\setX \quad\implies\quad x\meet y \in\setX           & \xref{def:glb}.  &
+  \end{array}$
+  \\
+  %The algebraic structure $\latL^\ast\eqd\lattice{\setX}{\oreld}{\joina}{\meeta}$ 
+  %is the \hid{dual} lattice of $\latL$, where $\joina$ and $\meeta$ are determined by $\oreld$.
+  The \structe{lattice} $\latL$ is \propd{linear} if $\opair{\setX}{\orel}$ is a \structe{linearly ordered set} \xref{def:chain}.
+  }
+\end{definition}
+
+
+%---------------------------------------
+\begin{theorem}
+\citetblp{
+  \citerppgc{maclane1999}{473}{475}{0821816462}{{\scshape Lemma 1, Theorem 4}},
+  \citerppg{burris1981}{4}{7}{0387905782},
+  \citerpp{birkhoff1938}{795}{796},
+  \citePpc{ore1935}{409}{($\alpha$)},
+  \citePp{birkhoff1933}{442},
+  \citePppc{dedekind1900}{371}{372}{(1)--(4)}
+  %\citorpg{birkhoff1948}{18}{3540120440}
+  %\cithrpp{burris2000}{5}{6}
+  %\citerp{maclane1967}{485}  \\
+  %\citerp{johnstone1982}{1}
+  }
+\label{thm:lattice}
+%---------------------------------------
+\thmboxt{%
+  $\latticed$ is a \structe{lattice} \xref{def:lattice} \qquad$\iff$ %\textbf{if and only if}% $\forall x,y,z\in\setX$
+  \\\indentx
+  $\brb{\begin{array}{rcl | rcl | C  DD}
+        x \join x &=& x
+      & x \meet x &=& x
+      & \forall x\in\setX
+      & (\prope{idempotent})
+      & and
+      \\
+        x \join y &=& y \join x
+      & x \meet y &=& y \meet x
+      & \forall x,y\in\setX
+      & (\prope{commutative})
+      & and
+      \\
+        (x \join y) \join z &=& x \join (y \join z)
+      & (x \meet y) \meet z &=& x \meet (y \meet z)
+      & \forall x,y,z\in\setX
+      & (\prope{associative})
+      & and
+      \\
+        x \join (x \meet y) &=& x
+      & x \meet (x \join y) &=& x
+      & \forall x,y\in\setX
+      & (\prope{absorptive}).
+      & 
+      %& (\prope{absorptive}/\prope{contractive})
+      %\\
+      %  \mc{3}{l}{x \orel y \iff x \join y = y}
+      %& \mc{3}{l}{x \orel y \iff x \meet y = x}
+      %& \forall x,y\in\setX
+      %& (\prope{consistent})
+  \end{array}}$
+  }
+\end{theorem}
+%%---------------------------------------
+%\begin{lemma}
+%\footnote{
+%  \citer{holland1970} %{???}
+%  }
+%\label{lem:le_meet}
+%%---------------------------------------
+%Let $\latL\eqd\latticed$ be \structe{lattice} \xref{def:lattice}.
+%\lembox{
+%  x\le y \qquad\iff\qquad x = x\meet y \qquad\scy\forall x,y\in\latL
+%  }
+%\end{lemma}
+%\begin{proofns}
+%\begin{enumerate}
+%  \item Proof for $\implies$ case: by left hypothesis and definition of $\meet$ \xref{def:meet}.
+%    %\begin{align*}
+%    %  x\meet y
+%    %    &= x
+%    %    && \text{by left hypothesis and definition of $\meet$ \xref{def:meet}}
+%    %\end{align*}
+%
+%  \item Proof for $\impliedby$ case: by right hypothesis and definition of $\meet$ \xref{def:meet}.
+%\end{enumerate}
+%\end{proofns}
+%
+%
+%
+%
+%
+%
+%%\paragraph{Monotony laws.}
+%%---------------------------------------
+%\begin{proposition}[\thmd{Monotony laws}]
+%\footnote{
+%  \citerpg{givant2009}{39}{0387402934},
+%  \citePpp{doner1969}{97}{99},
+%  \citergc{greenhoe2014sro}{0983801118}{\textsection4.2}
+%  }
+%\label{prop:latmono}
+%%---------------------------------------
+%Let $\latticed$ be a lattice.
+%\propbox{
+%  \brb{\begin{array}{rclD}
+%    a &\orel& b & and \\
+%    x &\orel& y
+%  \end{array}}
+%  \qquad\implies\qquad
+%  \brb{\begin{array}{rclD}
+%    a \meet x &\orel& b \meet y & and \\
+%    a \join x &\orel& b \join y
+%  \end{array}}
+%  }
+%\end{proposition}
+\paragraph{Minimax inequality.}
+Suppose we arrange a finite sequence of values into $m$ groups of $n$ elements per group.
+This could be represented as an $m\cprod n$ matrix.
+Suppose now we find the minimum value in each row,
+and the maximum value in each column.
+We can call the maximum of all the minimum row values the \hie{maximin},
+and the minimum of all the maximum column values the \hie{minimax}.
+Now, which is greater, the maximin or the minimax?
+The \hie{minimax inequality} demonstrates that
+the maximin is always less than or equal to the minimax.
+The minimax inequality is illustrated below and stated formerly in
+\prefpp{thm:minimax_ineq}.
+  \[\mcom{
+    \joinop_1^m\left\{\begin{array}{>{\ds}l llll >{\ds}l}
+      \meetop_1^n \Big\{ & x_{11} & x_{12} & \cdots & x_{1n} & \Big\}\\\hline
+      \meetop_1^n \Big\{ & x_{21} & x_{22} & \cdots & x_{2n} & \Big\}\\\hline
+      \meetop_1^n \Big\{ & \vdots & \ddots & \ddots & \vdots & \Big\}\\\hline
+      \meetop_1^n \Big\{ & x_{m1} & x_{m2} & \cdots & x_{mn} & \Big\}
+    \end{array}\right\}
+    }{maximin}
+    \qquad\orel\qquad
+    \mcom{
+    \meetop_1^n\left\{\renewcommand{\arraystretch}{1.8}\begin{array}{>{\ds}c | >{\ds}c | >{\ds}c | >{\ds}c}
+      \joinop_1^m & \joinop_1^m & \joinop_1^m & \joinop_1^m \\
+      x_{11} & x_{12} & \cdots & x_{1n} \\
+      x_{21} & x_{22} & \cdots & x_{2n} \\
+      \vdots & \ddots & \ddots & \vdots \\
+      x_{m1} & x_{m2} & \cdots & x_{mn}
+    \end{array}\right\}
+    }{minimax}
+  \]
+%---------------------------------------
+\begin{theorem}[\thmd{minimax inequality}]
+\footnote{
+  \citerppg{birkhoff1948}{19}{20}{3540120440}
+  }
+\label{thm:minimax}
+\label{thm:minimax_ineq}
+\index{minimax inequality}
+\index{theorems!minimax inequality}
+\index{inequalities!minimax}
+%---------------------------------------
+Let $\latticed$ be a \structe{lattice} \xref{def:lattice}.
+%with $X\eqd\seq{x_{ij}}{i=1,2,\ldots,n;\;j=1,2,\ldots,m}$.
+\thmbox{
+  \mcomr{\joinop_{i=1}^m   \meetop_{j=1}^n x_{ij}}{maxmini: largest of the smallest}
+  \orel
+  \mcoml{\meetop_{j=1}^n \joinop_{i=1}^m   x_{ij}}{minimax: smallest of the largest}
+  \qquad
+  \forall x_{ij}\in\setX
+  }
+\end{theorem}
+\begin{proof}
+\[\begin{array}{l >{\ds}rc>{\ds}l @{\qquad}l}
+  &     \mcomr{\left( \meetop_{k=1}^n x_{ik} \right)}{smallest for any given $i$}
+  &\orel& x_{ij}
+   \orel  \mcoml{\left( \joinop_{k=1}^n x_{kj} \right)}{largest for any given $j$}
+  &     \forall i,j
+  \\
+  \implies
+  &     \mcomr{\joinop_{i=1}^m  \left( \meetop_{k=1}^n x_{ik} \right)}{largest amoung all $i$s of the smallest values}
+  &\orel& \mcoml{\meetop_{j=1}^n\left( \joinop_{k=1}^m   x_{kj} \right)}{smallest amoung all $j$s of the largest values}
+  &
+  \\
+  \implies
+  &     \mcom{\joinop_{i=1}^m  \left( \meetop_{j=1}^n x_{ij} \right)}{maxmini}
+  &\orel& \mcom{\meetop_{j=1}^n\left( \joinop_{i=1}^m x_{ij} \right)  }{minimax}
+  & \text{(change of variables)}
+\end{array}\]
+\end{proof}
+
+
+%\paragraph{Distributive inequalities.}
+Special cases of the minimax inequality include three distributive \emph{inequalities}
+(next theorem).
+If for some lattice any \emph{one} of these inequalities is an \emph{equality}, 
+then \emph{all three} are \emph{equalities}; %\ifsxref{latd}{thm:lat_dis};
+and in this case, the lattice is a called a 
+\propd{distributive} lattice. %\ifsxref{latd}{def:lat_distributive}.
+%---------------------------------------
+\begin{theorem}[\thmd{distributive inequalities}]
+\footnote{
+  \citerpg{davey2002}{85}{0521784514},
+  \citerpg{gratzer2003}{38}{3764369965},
+  %\citerpg{maclane1999}{474}{0821816462}\\
+  %\citerppg{burris1981}{10}{11}{0387905782}\\
+  \citePp{birkhoff1933}{444},
+  \citePp{korselt1894}{157},
+  %\citerp{maclane1967}{486} \\
+  %\cithepp{burris2000}{12}{13}
+  \citerpgc{mullerolm1997}{13}{3540634061}{terminology}
+  }
+\label{thm:lat_dis_<}
+\index{inequalities!distributive}
+%---------------------------------------
+\thmboxt{
+  $\latticed$ is a \structe{lattice} \xref{def:lattice} $\implies$
+  \\$\ds\brb{\begin{array}{rclCDD}
+  x \meet (y \join z) &\ge& (x \meet y) \join (x \meet z)
+    & \forall x,y,z \in\setX
+    & (\prope{join super-distributive})
+    & and
+  \\
+  x \join (y \meet z) &\orel& (x \join y) \meet (x \join z)
+    & \forall x,y,z \in\setX
+    & (\prope{meet sub-distributive})
+    & and
+  \\
+  (x\meet y)\join(x\meet z)\join(y\meet z) &\orel& (x\join y)\meet(x\join z)\meet(y\join z)
+    & \forall x,y,z \in\setX
+    & (\prope{median inequality}).
+  \end{array}}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\meet$ sub-distributes over $\join$:
+    \begin{align*}
+      (x \meet y) \join (x \meet z)
+        &\orel (x\join x) \meet (y\join z)
+        && \text{by \thme{minimax inequality} \xref{thm:minimax_ineq}}
+      \\&= x \meet (y\join z)
+        && \text{by \prope{idempotent} property of lattices \xref{thm:lattice}}
+    \end{align*}
+
+  \[
+    \joinop\left\{\begin{array}{l ll l}
+      \meetop \Big\{ & x & y & \Big\}\\\hline
+      \meetop \Big\{ & x & z & \Big\}
+    \end{array}\right\}
+    \qquad\orel\qquad
+    \meetop\left\{\begin{array}{c|c}
+      \joinop & \joinop  \\
+      x & y  \\
+      x & z
+    \end{array}\right\}
+  \]
+
+  \item Proof that $\join$ super-distributes over $\meet$:
+    \begin{align*}
+      x \join (y \meet z)
+        &=   (x \meet x) \join (y \meet z)
+        && \text{by \prope{idempotent} property of lattices \xref{thm:lattice}}
+      \\&\orel (x \join y) \meet (x \join z)
+        && \text{by \thme{minimax inequality} \xref{thm:minimax_ineq}}
+    \end{align*}
+
+  \[
+    \joinop\left\{\begin{array}{l ll l}
+      \meetop \Big\{ & x & x & \Big\}\\\hline
+      \meetop \Big\{ & y & z & \Big\}
+    \end{array}\right\}
+    \qquad\orel\qquad
+    \meetop\left\{\begin{array}{c|c}
+      \joinop & \joinop  \\
+      x & x  \\
+      y & z
+    \end{array}\right\}
+  \]
+
+  \item Proof that of \ineq{median} inequality: 
+        by \thme{minimax inequality} \xref{thm:minimax_ineq}
+
+\end{enumerate}
+
+\end{proof}
+
+
+
+%\paragraph{Modular inequalities.}
+Besides the distributive property, another consequence of the minimax inequality
+is the \ineqe{modularity inequality} (next theorem).
+A lattice in which this inequality becomes equality is said to be 
+\propd{modular}. %\ifsxref{latm}{def:lat_mod}.
+%---------------------------------------
+\begin{theorem}[\thmd{Modular inequality}]
+\footnote{
+  \citerpg{birkhoff1948}{19}{3540120440},
+  \citerpg{burris1981}{11}{0387905782},
+  \citePp{dedekind1900}{374}
+  %\citerpg{maclane1999}{474}{0821816462}
+  %\cithrp{burris2000}{13}
+  }
+\label{thm:lat_mod}
+\index{inequalities!modular}
+\index{modular inequality}
+%---------------------------------------
+Let $\latticed$ be a \structe{lattice} \xref{def:lattice}.
+\thmbox{
+  x\orel y
+  \qquad\implies\qquad
+  x\join(y\meet z) \orel y\meet(x\join z)
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  x\join(y\meet z)
+    &=   (x\meet x) \join (y\meet z)
+    &&   \text{by \prope{absorptive} property \xref{thm:lattice}}
+  \\&\orel (x\join y) \meet (x \join z)
+    &&   \text{by the \thme{minimax inequality} \xref{thm:minimax_ineq}}
+  \\&=   y \meet (x \join z)
+    &&   \text{by left hypothesis}
+\end{align*}
+
+  \[
+    \joinop\left\{\begin{array}{l ll l}
+      \meetop \Big\{ & x & x & \Big\}\\\hline
+      \meetop \Big\{ & y & z & \Big\}
+    \end{array}\right\}
+    \qquad\orel\qquad
+    \meetop\left\{\begin{array}{c|c}
+      \joinop & \joinop  \\
+      x & x  \\
+      y & z
+    \end{array}\right\}
+  \]
+\end{proof}
+
+
+
+
+%\prefpp{thm:lattice} gives 4 necessary and sufficient pairs of properties for a structure 
+%$\latticeX$ to be a \structe{lattice}. 
+%However, these 4 pairs are actually \emph{overly} sufficient
+%(they are not \prope{independent}), as demonstrated next.
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerppg{padmanabhan2008}{7}{8}{9812834540},
+%  \citerpg{beran1985}{5}{902771715X},
+%  \citePp{mckenzie1970}{24},
+%  \citePc{greenhoe2014flat}{Theorem 1.22},
+%  \citergc{greenhoe2014sro}{0983801118}{\textsection4.4}
+%  }
+%\label{thm:lat_char_6e3v}
+%%---------------------------------------
+%\thmbox{\begin{array}{M}
+%  $\latticed$ is a lattice \qquad$\iff$ %\textbf{if and only if}% $\forall x,y,z\in\setX$
+%  \\
+%  $\brb{\begin{array}{rcl | rcl | C  DD}
+%        x \join y &=& y \join x
+%      & x \meet y &=& y \meet x
+%      & \forall x,y\in\setX
+%      & (\prope{commutative})
+%      & and
+%      \\
+%        (x \join y) \join z &=& x \join (y \join z)
+%      & (x \meet y) \meet z &=& x \meet (y \meet z)
+%      & \forall x,y,z\in\setX
+%      & (\prope{associative})
+%      & and
+%      \\
+%        x \join (x \meet y) &=& x
+%      & x \meet (x \join y) &=& x
+%      & \forall x,y\in\setX
+%      & (\prope{absorptive})
+%      & 
+%  \end{array}}$
+%\end{array}}
+%\end{theorem}
+%
+%
+%%=======================================
+%\subsubsection{Bounded lattices}
+%%=======================================
+%Let $\latL\eqd\latticed$ be a lattice.
+%By the definition of a \structe{lattice} \xref{def:lattice},
+%the \structe{upper bound} ($x \join y$) and \structe{lower bound} ($x\meet y$) of any two elements in $\setX$
+%is also in $\setX$.
+%But what about the upper and lower bounds
+%of the entire set $\setX$ ($\joinop\setX$ and $\meetop\setX$) \xxref{def:join}{def:meet}?
+%If both of these are in $\setX$, then the lattice $\latL$ is said to be
+%\prope{bounded} (next definition).
+%All \prope{finite} lattices are bounded (next proposition).
+%However, not all lattices are bounded---%
+%for example, the lattice $\opair{\Z}{\le}$ (the lattice of integers 
+%with the standard integer ordering relation) is \prope{unbounded}.
+%%\prefpp{thm:latb_prop} gives two properties of bounded lattices.
+%%Boundedness is one of the ``\hie{classic 10}" properties\ifsxref{boolean}{thm:boo_prop}
+%%of \hie{Boolean algebras}\ifsxref{boolean}{def:booalg}.
+%%Conversely, a bounded and complemented lattice that satisfies the conditions
+%%$1'=0$ and \thme{Elkan's law} \emph{is} a \structe{Boolean algebra}\ifsxref{boolean}{prop:boo_char_elkan}.
+%%---------------------------------------
+%\begin{definition}
+%\label{def:latb}
+%%---------------------------------------
+%Let $\latL\eqd\latticed$ be a lattice.
+%Let $\joinop\setX$ be the least upper bound of $\opair{\setX}{\orel}$ and
+%let $\meetop\setX$ be the greatest lower bound of $\opair{\setX}{\orel}$.\\
+%\defboxt{
+%  %\begin{tabular}{>{$\imark$\quad}ll}
+%  \indentx\begin{tabular}{ll}
+%    $\latL$ is \hid{upper bounded} & if $\brp{\joinop\setX}\in\setX.$ \\
+%    $\latL$ is \hid{lower bounded} & if $\brp{\meetop\setX}\in\setX.$ \\
+%    $\latL$ is \hid{bounded}       & if $\latL$ is both upper and lower bounded.
+%  \end{tabular}
+%  \\
+%  A \prope{bounded} lattice is optionally denoted $\latbd$,
+%  where $\bzero\eqd\meetop\setX$ and $\bid\eqd\joinop\setX$.
+%  }
+%\end{definition}
+%
+%%---------------------------------------
+%\begin{proposition}
+%\label{prop:latb_finite}
+%%---------------------------------------
+%Let $\latL\eqd\latticed$ be a lattice.
+%\propbox{
+%  \brb{\text{$\latL$ is \prope{finite}}}
+%  \qquad\implies\qquad
+%  \brb{\text{$\latL$ is \prope{bounded}}}
+%  }
+%\end{proposition}
+%
+%
+%%---------------------------------------
+%\begin{proposition}
+%\footnote{
+%  \citePc{greenhoe2014flat}{\textsection1.2.2},
+%  \citergc{greenhoe2014sro}{0983801118}{\textsection4.5}
+%  }
+%\label{prop:latb_prop}
+%%---------------------------------------
+%Let $\latL\eqd\latticed$ be a lattice with $\joinop\setX\eqd\bid$ and
+%$\meetop\setX\eqd\bzero$.
+%\propbox{%
+%  \brb{\text{$\latL$ is \prope{bounded}}}
+%  \qquad\implies\qquad
+%  \brb{\begin{array}{lclCDD}
+%    x \join \bid   &=& \bid   & \forall x\in\setX & (\prop{upper bounded}) & and \\
+%    x \meet \bzero &=& \bzero & \forall x\in\setX & (\prop{lower bounded}) & and \\
+%    x \join \bzero &=& x      & \forall x\in\setX & (\prop{join-identity}) & and \\
+%    x \meet \bid   &=& x      & \forall x\in\setX & (\prop{meet-identity}) & 
+%  \end{array}}%
+%  }
+%\end{proposition}
+%
+%
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpg{birkhoff1967}{5}{0821810251}
+%  }
+%\label{def:height}
+%%---------------------------------------
+%Let $\latL\eqd\latbX$ be a \structe{bounded lattice} \xref{def:latb}.
+%\defboxp{
+%  The \fnctd{height} $\height(x)$ of a point $x\in\latL$ is the 
+%  \vale{least upper bound} of the \fncte{length}s \xref{def:length} of all the \structe{chain}s 
+%  that have $\lzero$ and in which $x$ is the \vale{least upper bound}.
+%  The \fnctd{height} $\height(\latL)$ of the lattice $\latL$ is defined as
+%  \\\indentx$\height(\latL)\eqd\height(\lid)$ .
+%  }
+%\end{definition}
+%
+%%---------------------------------------
+%\begin{example}
+%%---------------------------------------
+%The \vale{height} of the lattice illustrated in \prefpp{fig:m3m3_antichain} is 3 because
+%\begin{align*}
+%  \height(\latL)
+%    &\eqd \height(\lid)
+%  \\&\eqd \joinop\set{\latlen(\latC)}{\text{$\latC$ is a \structe{chain} in $\latL$ containing both $\lzero$ and $\lid$}}
+%  \\&= \joinop\big\{
+%         \latlen\opair{\setn{0,a,p,1}}{\orel},\,
+%         \latlen\opair{\setn{0,b,p,1}}{\orel},\,
+%         \latlen\opair{\setn{0,c,p,1}}{\orel},\,
+%         \latlen\opair{\setn{0,c,q,1}}{\orel},\\&\qquad\qquad
+%         \latlen\opair{\setn{0,c,r,1}}{\orel},
+%         \big\}
+%  \\&=\joinop\setn{4-1,4-1,4-1,4-1,4-1}
+%  \\&=\joinop\setn{3,3,3,3,3}
+%  \\&= 3
+%\end{align*}
+%\end{example}
