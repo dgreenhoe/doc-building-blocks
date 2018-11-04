@@ -6,74 +6,148 @@
 \chapter{Probability Space}
 \label{chp:prbspace}
 %======================================
-%20181104 used in prbspace%\qboxnps
-%20181104 used in prbspace%  {
-%20181104 used in prbspace%    Blaise Pascal (1623--1662), mathematician
-%20181104 used in prbspace%    \index{Pascal, Blaise}
-%20181104 used in prbspace%    \index{quotes!Pascal, Blaise}
-%20181104 used in prbspace%    \footnotemark
-%20181104 used in prbspace%  }
-%20181104 used in prbspace%  {../common/people/pascal.jpg}
-%20181104 used in prbspace%  {It is not certain that everything is certain.}
-%20181104 used in prbspace%  \footnotetext{\begin{tabular}[t]{ll}
-%20181104 used in prbspace%    quote: & \url{http://en.wikiquote.org/wiki/Blaise_Pascal} \\
-%20181104 used in prbspace%    image: & \url{http://en.wikipedia.org/wiki/Image:Blaise_pascal.jpg}
-%20181104 used in prbspace%  \end{tabular}}
+\begin{figure}[th]
+  \centering
+  \input{../common/math/graphics/spaces.tex}
+  \caption{Lattice of mathematical spaces\label{fig:vector_spaces}}
+\end{figure}%
+
+\qboxnps
+  {
+    Blaise Pascal (1623--1662), mathematician
+    \index{Pascal, Blaise}
+    \index{quotes!Pascal, Blaise}
+    \footnotemark
+  }
+  {../common/people/pascal.jpg}
+  {It is not certain that everything is certain.}
+  \footnotetext{\begin{tabular}[t]{ll}
+    quote: & \url{http://en.wikiquote.org/wiki/Blaise_Pascal} \\
+    image: & \url{http://en.wikipedia.org/wiki/Image:Blaise_pascal.jpg}
+  \end{tabular}}
 
 %=======================================
 %\section{A generalized probability function}
 %=======================================
-The traditional probability function $\psp$ is defined on a \structe{Boolean lattice}\ifsxref{boolean}{def:boolean}.
-This text introduces a new definition of $\psp$ which can be defined not only on 
-\structe{Boolean lattice}s, but on some \prope{non-Boolean} lattices as well.
-%This new freedom is exploited in \prefpp{sec:apps_prob}.
+%The traditional probability function $\psp$ is defined on a \structe{Boolean lattice}\ifsxref{boolean}{def:boolean}.
+
+%======================================
+\section{Probability Space}
+%======================================
+In mathematics, a \hie{space} is simply a set and in the most general definition,
+nothing else.
+However, normally for a space to actually be useful, some additional structure is added.
+One of the most general additional structures is a \hie{topology};
+and a space together with a topology is called a
+\hie{topological space}.\footnote{\hie{topological space}: \prefp{def:top_space}}
+A topological space imposes additional structure on a space  in the form of subsets
+and guarantees that these subsets are closed under such fundamental operations as
+set \hie{union} and set \hie{intersection}.
+With the additional structure available in a topological space, we are able to
+analyze such basic concepts as
+  \begin{liste}
+    \item continuity
+    \item convergence
+    \item connectivity
+  \end{liste}
+
+However for a great number of mathematical applications,
+we need to \fncte{measure} mathematical objects---
+the most general measurement being measures on subsets of some set.
+Examples of measurement in mathematics include
+  \begin{liste}
+    \item integration
+    \item probability
+  \end{liste}
+Before measurement can be effectively performed on a set,
+the set must be provided with a subset structure.
+However, a simple topology does not provide sufficient structure
+for effective measurement.
+For example, often we would not only like to measure some subset $\setA$,
+but also its complement $\cmpA$.
+A topology is not closed under the complement operation.
+Rather instead we equip the space with a more powerful (and thus less general) structure
+called a \hie{sigma-algebra}.
+A sigma-algebra is a subset structure that is closed under set complement.
+A set together with a sigma-algebra is called a \hie{measurable space}.
+And a set together with a sigma-algebra and a \hie{measure} on that sigma-algebra
+is called a \hie{measure space}.
+\footnote{\begin{tabular}[t]{l<{:}ll}
+  \fncte{measure}             & \pref{def:measure} & \prefpo{def:measure}\\
+  \structe{\txsigma-algebra}  & \pref{def:sigalg}  & \prefpo{def:sigalg} \\
+  \structe{measure space}     & \pref{def:mspace}  & \prefpo{def:mspace}
+  \end{tabular}}
+
+%The next definition presents a very important measure space---the \hie{probability space}.
+%%---------------------------------------
+%\begin{definition}
+%\label{def:prob_space}
+%\index{probability space}
+%\index{outcomes} \index{events} \index{probability measure}
+%%---------------------------------------
+%\defbox{\begin{tabular}{l@{\qquad}l}
+%  \mc{2}{l}{The triple $\ps$ is a \hid{probability space} over $\pso$ where}
+%  \\
+%  $\imark$ $\pso$ is the set of all possible {\bf outcomes} of an experiment \\
+%  $\imark$ $\pse$ is a \txsigma-algebra on $\pso$  \\
+%  $\imark$ $\psp:\pse\to[0,1]$ is a measure on $\pse$.
+%\end{tabular}}
+%\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+\thmbox{
+  \mcom{
+    \text{$\ps$ is a probability space}
+    \quad\implies\quad
+    \text{$\ps$ is a measure space}
+  }{(every probability space is a measure space)}
+  }
+\end{theorem}
 
 %=======================================
 \section{Definitions}
 %=======================================
-%---------------------------------------
-\begin{definition}
+%%---------------------------------------
+%\begin{definition}
 %\footnote{
 %  \citerppgc{pap1995}{8}{9}{0792336585}{Definition 2.3(13)}
 %  }
-\label{def:prob}
-\label{def:ps}
-\label{def:psp}
-%---------------------------------------
-%Let $\intcc{0}{1}$ be a \structe{real interval}.
-%Let $\psL\eqd\logicX$ be a \structe{logic} \xref{def:logic}.
-Let $\psL\eqd\latocX$ be a \structe{orthocomplemented lattice}\ifsxref{latoc}{def:latoc}.
-Let $\distrib$ be the \rele{distributivity relation}\ifsxref{latd}{def:Drel}.
-Let $\oset{\R}{\orela}$ be the \structe{ordered set} \xref{def:oset} of \structe{real numbers}.
-\defboxt{
-  A function $\psp$ in $\clFxr$ is a \fnctd{probability} function on $\psL$ if
-  \\$\begin{array}{>{\qquad}Flc lcl CDD}
-    1. &                   &        & \psp(\lzero)   &=&      0               &                     & (\prope{nondegenerate}) & and \\
-    2. &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})    & and \\
-    3. & x\orel y          &\implies& \psp(x)        &\orela& \psp(y)         & \forall x,y\in\setX & (\prope{monotone})      & and \\
-   %3. & x\meet y = \lzero &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive})      & .      
-    4. & \brb{\begin{array}{lD}
-           x\meet y = \lzero            & and\\
-           \otriple{z}{x}{y}\in\distrib & $\forall z\in\setX$
-         \end{array}} 
-       &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive}).   &       
-  \end{array}$
-  \\
-  If $\psp$ is a \fncte{probability} on an \structe{orthocomplemented lattice} $\psL$, 
-  then $\opair{\psL}{\psp}$ is a \structd{probability space},\\
-  and any element $x$ in $\setX$ is an \structd{event} in $\ps$.
-  % over $\pso$,
-  %$\pso$ is the \structd{outcome space}, and $\pse$ is the \structd{event space}.
-  }
-\end{definition}
+%\label{def:prob}
+%\label{def:ps}
+%\label{def:psp}
+%%---------------------------------------
+%%Let $\intcc{0}{1}$ be a \structe{real interval}.
+%%Let $\psL\eqd\logicX$ be a \structe{logic} \xref{def:logic}.
+%Let $\psL\eqd\latocX$ be a \structe{orthocomplemented lattice}\ifsxref{latoc}{def:latoc}.
+%Let $\distrib$ be the \rele{distributivity relation}\ifsxref{latd}{def:Drel}.
+%Let $\oset{\R}{\orela}$ be the \structe{ordered set} \xref{def:oset} of \structe{real numbers}.
+%\defboxt{
+%  A function $\psp$ in $\clFxr$ is a \fnctd{probability} function on $\psL$ if
+%  \\$\begin{array}{>{\qquad}Flc lcl CDD}
+%    1. &                   &        & \psp(\lzero)   &=&      0               &                     & (\prope{nondegenerate}) & and \\
+%    2. &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})    & and \\
+%    3. & x\orel y          &\implies& \psp(x)        &\orela& \psp(y)         & \forall x,y\in\setX & (\prope{monotone})      & and \\
+%   %3. & x\meet y = \lzero &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive})      & .      
+%    4. & \brb{\begin{array}{lD}
+%           x\meet y = \lzero            & and\\
+%           \otriple{z}{x}{y}\in\distrib & $\forall z\in\setX$
+%         \end{array}} 
+%       &\implies& \psp(x\join y) &=&      \psp(x)+\psp(y) & \forall x,y\in\setX & (\prope{additive}).   &       
+%  \end{array}$
+%  \\
+%  If $\psp$ is a \fncte{probability} on an \structe{orthocomplemented lattice} $\psL$, 
+%  then $\opair{\psL}{\psp}$ is a \structd{probability space},\\
+%  and any element $x$ in $\setX$ is an \structd{event} in $\ps$.
+%  % over $\pso$,
+%  %$\pso$ is the \structd{outcome space}, and $\pse$ is the \structd{event space}.
+%  }
+%\end{definition}
 
+On a \structe{Boolean lattice}, the \fnctd{measure-theoretic probability} function, due to A. N. Kolmogorov, is defined as follows:
 %---------------------------------------
-\hrule
-\begin{remark}
-\label{rem:prob}
-%---------------------------------------
-\pref{def:prob} (previous) is not any standard definition of the \fncte{probability function}.
-On a \structe{Boolean lattice}, the \fnctd{measure-theoretic probability} function, due to A. N. Kolmogorov, is defined as%
+\begin{definition}
   \footnote{
     \citerppgc{billingsley1995}{22}{23}{0471007102}{Probability Measures},
     \citer{kolmogorov1933},
@@ -81,11 +155,19 @@ On a \structe{Boolean lattice}, the \fnctd{measure-theoretic probability} functi
     \citerppgc{pap1995}{8}{9}{0792336585}{Definition 2.3(13)}, %{,\prope{\txsigma-additive}},
     \citerpg{kalmbach1986}{27}{9971500094}%{\prope{\txsigma-additive},\prope{\txsigma-complete}}
     }
-  \\\indentx$\begin{array}{Flc lcl CDD}
+\label{def:prob}
+%---------------------------------------
+\mbox{}\\
+\defbox{\begin{array}{Flc lcl CDD}
     (1). &                   &        & \psp(\lid)     &=&      1               &                     & (\prope{normalized})     & and \\
     (2). &                   &        & \psp(x)        &\oreld& 0               & \forall x\in\setX   & (\prope{nonnegative})& and \\
     (3). & \ds\meetop_{n=1}^\infty x_n=\lzero &\implies& \ds\psp\brp{\joinop_{n=1}^\infty x_n} &=&  \ds\sum_{n=1}^\infty\psp(x_n) & \forall x_n\in\setX & (\prope{\txsigma-additive})   & .      
-  \end{array}$\\
+  \end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
 The advantage of this definition is that $\psp$ is a \fncte{measure}, and hence all the power of measure theory 
 is subsequently at one's disposal in using $\psp$.
 However, it has often been argued that the requirement of \prope{\txsigma-additivity} is unnecessary for a probability function.
@@ -166,8 +248,8 @@ The solution of \prefpp{def:prob} is simply to ``switch off" \prope{additivity} 
 This method is a little ``crude", but at least it allows us to define probability on a very wide class of lattices,
 while retaining compatibility with the \prope{Boolean} case. % \xxxref{prop:ps_01}{prop:ps_ortho_xy}{prop:ps_boa_xy}.
 \end{remark}
-(end \pref{rem:prob})
-\hrule
+%(end \pref{rem:prob})
+
 
 %---------------------------------------
 \begin{definition}
@@ -399,50 +481,50 @@ and $\setn{y,x_1,x_2,x_3,\ldots}$ a subset of $\setX$.
 %=======================================
 \section{Examples}
 %=======================================
-%---------------------------------------
-\exboxt{
-  \begin{tabular}{m{\tw-52.5mm}}
-%\begin{example}[\exmd{/-Lukasiewicz 3-valued probability space}/\exm{Kleene 3-valued probability space}/\exm{RM$_3$ probability space}]
-\begin{example}[\exmd{Kleene 3-valued probability space}]
-\label{ex:prob_L3_kl}
-%---------------------------------------
-    The function $\negat$ on the lattice $\psL$
-    as illustrated to the right is a \fncte{Kleene negation}\ifsxref{negation}{def:negkl}. %{ex:negat_L3_kl}. %{def:negkl}.
-    Together with the probability function $\psp$, also illustrated to the right, the structure $\ps$
-    is a \structe{probability space} \xref{def:ps}.
-\end{example}
-  \end{tabular}%
-  \tbox{\includegraphics{graphics/lat3_L3_1x0_-0-x-1_prob.pdf}}
-}
-
-%---------------------------------------
-\exboxt{
-  \begin{tabular}{m{\tw-73.5mm}}
-\begin{example}
-\label{ex:limpx_m2}
-%---------------------------------------
-    The \structe{orthocomplemented lattice} $\psL$ \xref{def:latn} illustrated to the right is 
-    \prope{Boolean} (and thus also \prope{distributive}---\xrefnp{thm:boolean}).
-    The structure $\ps$ is a \structe{probability space} \xref{def:ps}.
-\end{example}
-  \end{tabular}%
-  \tbox{\includegraphics{graphics/lat4_m2_boa_prob.pdf}}
-  }
-
-%---------------------------------------
-\exboxt{
-  \begin{tabular}{m{\tw-82.343mm}}
-\begin{example}
-\label{ex:ps_o6}
-%---------------------------------------
-    The \structe{orthocomplemented lattice} $\psL$ illustrated to the right is an
-    \structe{orthocomplemented O$_6$ lattice} \xref{def:o6}.
-    %Together with the probability function $\psp$, also illustrated to the right, 
-    The structure $\ps$ is a \structe{probability space} \xref{def:ps}.
-\end{example}
-  \end{tabular}%
-  \tbox{\includegraphics{graphics/lat6_o6_prob_10adbc.pdf}}
-  }
+%20181104 in problatocn%%---------------------------------------
+%20181104 in problatocn%\exboxt{
+%20181104 in problatocn%  \begin{tabular}{m{\tw-52.5mm}}
+%20181104 in problatocn%%\begin{example}[\exmd{/-Lukasiewicz 3-valued probability space}/\exm{Kleene 3-valued probability space}/\exm{RM$_3$ probability space}]
+%20181104 in problatocn%\begin{example}[\exmd{Kleene 3-valued probability space}]
+%20181104 in problatocn%\label{ex:prob_L3_kl}
+%20181104 in problatocn%%---------------------------------------
+%20181104 in problatocn%    The function $\negat$ on the lattice $\psL$
+%20181104 in problatocn%    as illustrated to the right is a \fncte{Kleene negation}\ifsxref{negation}{def:negkl}. %{ex:negat_L3_kl}. %{def:negkl}.
+%20181104 in problatocn%    Together with the probability function $\psp$, also illustrated to the right, the structure $\ps$
+%20181104 in problatocn%    is a \structe{probability space} \xref{def:ps}.
+%20181104 in problatocn%\end{example}
+%20181104 in problatocn%  \end{tabular}%
+%20181104 in problatocn%  \tbox{\includegraphics{graphics/lat3_L3_1x0_-0-x-1_prob.pdf}}
+%20181104 in problatocn%}
+%20181104 in problatocn%
+%20181104 in problatocn%%---------------------------------------
+%20181104 in problatocn%\exboxt{
+%20181104 in problatocn%  \begin{tabular}{m{\tw-73.5mm}}
+%20181104 in problatocn%\begin{example}
+%20181104 in problatocn%\label{ex:limpx_m2}
+%20181104 in problatocn%%---------------------------------------
+%20181104 in problatocn%    The \structe{orthocomplemented lattice} $\psL$ \xref{def:latn} illustrated to the right is 
+%20181104 in problatocn%    \prope{Boolean} (and thus also \prope{distributive}---\xrefnp{thm:boolean}).
+%20181104 in problatocn%    The structure $\ps$ is a \structe{probability space} \xref{def:ps}.
+%20181104 in problatocn%\end{example}
+%20181104 in problatocn%  \end{tabular}%
+%20181104 in problatocn%  \tbox{\includegraphics{graphics/lat4_m2_boa_prob.pdf}}
+%20181104 in problatocn%  }
+%20181104 in problatocn%
+%20181104 in problatocn%%---------------------------------------
+%20181104 in problatocn%\exboxt{
+%20181104 in problatocn%  \begin{tabular}{m{\tw-82.343mm}}
+%20181104 in problatocn%\begin{example}
+%20181104 in problatocn%\label{ex:ps_o6}
+%20181104 in problatocn%%---------------------------------------
+%20181104 in problatocn%    The \structe{orthocomplemented lattice} $\psL$ illustrated to the right is an
+%20181104 in problatocn%    \structe{orthocomplemented O$_6$ lattice} \xref{def:o6}.
+%20181104 in problatocn%    %Together with the probability function $\psp$, also illustrated to the right, 
+%20181104 in problatocn%    The structure $\ps$ is a \structe{probability space} \xref{def:ps}.
+%20181104 in problatocn%\end{example}
+%20181104 in problatocn%  \end{tabular}%
+%20181104 in problatocn%  \tbox{\includegraphics{graphics/lat6_o6_prob_10adbc.pdf}}
+%20181104 in problatocn%  }
 
 %---------------------------------------
 \exboxt{
@@ -827,27 +909,455 @@ Then $\opair{\psL}{\psp}$ is a \structd{probability space}.
 %\end{array}}
 %\end{example}
 
-%%---------------------------------------
-%\begin{example}
-%\label{ex:prob_1011}
-%%---------------------------------------
-%The set of outcomes $\pso$ can also be a set of waveforms:
-%\exbox{\begin{array}{ll}
-%  \pso    &= \setn{\begin{tabular}{llll}
-%               \textifsym{|H|LL|HHH|L} &
-%               \textifsym{L|H|LL|HHH}  &
-%               \textifsym{H|L|H|LL|HH} &
-%               \textifsym{HH|L|H|LL|H} \\
-%               \textifsym{HHH|L|H|LL}  &
-%               \textifsym{L|HHH|L|H|L} &
-%               \textifsym{LL|HHH|L|H}  &
-%             \end{tabular}}
-%          \\
-%  \pse    &= \mathcal{P}(\pso)
-%          \\
-%  \psp(e) &= \frac{1}{7} |e|
-%\end{array}}
-%\end{example}
+%---------------------------------------
+\begin{example}
+\label{ex:prob_1011}
+%---------------------------------------
+The set of outcomes $\pso$ can also be a set of waveforms:
+\exbox{\begin{array}{ll}
+  \pso    &= \setn{\begin{tabular}{llll}
+               \textifsym{|H|LL|HHH|L} &
+               \textifsym{L|H|LL|HHH}  &
+               \textifsym{H|L|H|LL|HH} &
+               \textifsym{HH|L|H|LL|H} \\
+               \textifsym{HHH|L|H|LL}  &
+               \textifsym{L|HHH|L|H|L} &
+               \textifsym{LL|HHH|L|H}  &
+             \end{tabular}}
+          \\
+  \pse    &= \mathcal{P}(\pso)
+          \\
+  \psp(e) &= \frac{1}{7} |e|
+\end{array}}
+\end{example}
+
+
+%=======================================
+\section{Probability subspaces}
+%=======================================
+
+%---------------------------------------
+% Euclidean 3-space partitioned by power lattice
+%---------------------------------------
+\begin{figure}[th]
+\begin{minipage}[c]{8\tw/16}
+\begin{center}
+\footnotesize
+\setlength{\unitlength}{\tw/440}%
+\begin{picture}(440,520)(-220,0)%
+  \thicklines
+  %{\color{graphpaper}\graphpaper[10](-200,0)(400,520)}%
+  \put(-150,300){\makebox(0,0){%
+    \includegraphics*[width=4\tw/16, height=4\tw/16, clip=true]{../common/normxy_00.eps}}}%
+  \put(   0,300){\makebox(0,0){%
+    \includegraphics*[width=4\tw/16, height=4\tw/16, clip=true]{../common/normxy_80.eps}}}%
+  \put( 150,300){\makebox(0,0){%
+    \includegraphics*[width=4\tw/16, height=4\tw/16, clip=true]{../common/normxy_95.eps}}}%
+  \put(-150,180){\makebox(0,0){%
+    \begin{picture}(200,120)(-100,0)
+      \setlength{\unitlength}{2\tw/(8*200)}%
+      %{\color{graphpaper}\graphpaper[10](-100,0)(200,120)}%
+      \thicklines%
+      \color{axis}%
+        \put(-100,   0 ){\line(1,0){200} }%
+        \qbezier[30](  0,0)(  0, 60)(  0,120)%
+      \color{red}%
+        \qbezier( -40,  60)(   0, 180)(  40,  60)%
+        \qbezier(-100,   0)( -60,   0)( -40,  60)%
+        \qbezier(  40,  60)(  60,   0)( 100,   0)%
+    \end{picture}
+  }}%
+  \put(0,180){\makebox(0,0){%
+    \begin{picture}(200,120)(-100,0)
+      \setlength{\unitlength}{2\tw/(8*200)}%
+      %{\color{graphpaper}\graphpaper[10](-100,0)(200,120)}%
+      \thicklines%
+      \color{axis}%
+        \put(-100,   0 ){\line(1,0){200} }%
+        \qbezier[30](  0,0)(  0, 60)(  0,120)%
+      \color{green}%
+        \qbezier( -40,  60)(   0, 180)(  40,  60)%
+        \qbezier(-100,   0)( -60,   0)( -40,  60)%
+        \qbezier(  40,  60)(  60,   0)( 100,   0)%
+    \end{picture}
+  }}%
+  \put(150,180){\makebox(0,0){%
+    \begin{picture}(200,120)(-100,0)
+      \setlength{\unitlength}{2\tw/(8*200)}%
+      %{\color{graphpaper}\graphpaper[10](-100,0)(200,120)}%
+      \thicklines%
+      \color{axis}%
+        \put(-100,   0 ){\line(1,0){200} }%
+        \qbezier[30](  0,0)(  0, 60)(  0,120)%
+      \color{blue}%
+        \qbezier( -40,  60)(   0, 180)(  40,  60)%
+        \qbezier(-100,   0)( -60,   0)( -40,  60)%
+        \qbezier(  40,  60)(  60,   0)( 100,   0)%
+    \end{picture}
+  }}%
+  {\color{picbox}%
+    %\put( -50,400){\framebox(100,100){}}%
+    \put( 100,250){\framebox(100,100){}}%
+    \put( -50,250){\framebox(100,100){}}%
+    \put(-200,250){\framebox(100,100){}}%
+    \put( 100,100){\framebox(100,100){}}%
+    \put( -50,100){\framebox(100,100){}}%
+    \put(-200,100){\framebox(100,100){}}%
+    \put( -25,  0){\framebox( 50, 50){}}%
+    }%
+  {\color{black}%
+    \put(   0,400){\line( 0,-1){ 50}}%
+    \put(   0,400){\line(-3,-1){150}}%
+    \put(   0,400){\line( 3,-1){150}}%
+    \put(   0,200){\line(-3, 1){150}}%
+    \put( 150,200){\line(-3, 1){150}}%
+    \put(-150,200){\line( 3, 1){150}}%
+    \put( 150,200){\line( 0, 1){ 50}}%
+    \put(-150,200){\line( 0, 1){ 50}}%
+    \put(   0,200){\line( 3, 1){150}}%
+    \put(   0, 50){\line(-3, 1){150}}%
+    \put(   0, 50){\line( 0, 1){ 50}}%
+    \put(   0, 50){\line( 3, 1){150}}%
+    }%
+  \put(0,450){%
+    \setlength{\unitlength}{1\tw/(450*2)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{red}%
+        \put( -50,  50){\line( 1, 1){100} }%
+        \put(   0,   0){\line(-1,-1){ 50} }%
+        \put(   0,-100){\line(-1,-1){ 50} }%
+        \put( -50, -50){\line( 1, 1){ 50} }%
+        \put(-150, -50){\line( 1, 1){ 50} }%
+        \put(  50, -50){\line( 1, 1){100} }%
+        }%
+      {\color{green}%
+        \put(-150, -50){\line( 1, 0){200} }%
+       %\put( -75,  25){\line( 1, 0){ 50} }%
+       %\put(  25,  25){\line( 1, 0){100} }%
+        \put(   0,   0){\line( 1, 0){100} }%
+        \put(-100,   0){\line( 1, 0){ 50} }%
+        \put(-100, 100){\line( 1, 0){200} }%
+        \put(-100,-100){\line( 1, 0){ 50} }%
+        \put(   0,-100){\line( 1, 0){100} }%
+        \put( 150,  50){\line(-1, 0){ 50} }%
+        }%
+      {\color{blue}%
+        \put( -50,-150){\line( 0, 1){200} }%
+       %\put(  25,  25){\line( 0, 1){100} }%
+        \put(  50, 150){\line( 0,-1){ 50} }%
+       %\put(  25, -75){\line( 0, 1){ 50} }%
+        \put(-100,-100){\line( 0, 1){ 50} }%
+        \put(-100,   0){\line( 0, 1){100} }%
+        \put( 100,-100){\line( 0, 1){200} }%
+        \put(   0,-100){\line( 0, 1){ 50} }%
+        \put(   0,   0){\line( 0, 1){100} }%
+        }%
+    \end{picture}%
+  }
+  \put(-150,300){%
+    \setlength{\unitlength}{1\tw/(400*3)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{red}%
+        \put(-150, -50){\line( 1, 1){100} }%
+        \put(  50, -50){\line( 1, 1){100} }%
+        }%
+      {\color{green}%
+        \put(-150, -50){\line( 1, 0){200} }%
+        \put( 150,  50){\line(-1, 0){200} }%
+        }%
+    \end{picture}%
+  }
+  \put(0,300){%
+    \setlength{\unitlength}{1\tw/(400*3)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{red}%
+        \put( -50,  50){\line( 1, 1){100} }%
+        \put(  50, -50){\line(-1,-1){100} }%
+        }%
+      {\color{blue}%
+        \put( -50,-150){\line( 0, 1){200} }%
+        \put(  50, 150){\line( 0,-1){200} }%
+        }%
+    \end{picture}%
+  }
+  \put(150,300){%
+    \setlength{\unitlength}{1\tw/(400*3)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{green}%
+        \put(-100, 100){\line( 1, 0){200} }%
+        \put(-100,-100){\line( 1, 0){200} }%
+        }%
+      {\color{blue}%
+        \put(-100,-100){\line( 0, 1){200} }%
+        \put( 100,-100){\line( 0, 1){200} }%
+        }%
+    \end{picture}%
+  }
+  \put(-150,150){%
+    \setlength{\unitlength}{1\tw/(400*3)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{red}%
+        \put(0,0){\vector( 1, 1){100} }%
+        \put(0,0){\vector(-1,-1){100} }%
+        }%
+    \end{picture}%
+  }
+  \put(0,150){%
+    \setlength{\unitlength}{1\tw/(400*3)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{green}%
+        \put(0,0){\vector( 1, 0){100} }%
+        \put(0,0){\vector(-1, 0){100} }%
+        }%
+    \end{picture}%
+  }
+  \put(150,150){%
+    \setlength{\unitlength}{1\tw/(400*3)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{blue}%
+        \put(0,0){\vector( 0, 1){100} }%
+        \put(0,0){\vector( 0,-1){100} }%
+        }%
+    \end{picture}%
+  }
+  \put(0,25){%
+    \setlength{\unitlength}{1\tw/(400*3)}%
+    \begin{picture}(0,0)(0,0)%
+      %{\color{graphpaper}\graphpaper[10](-150,-150)(300,300)}%
+      {\color{black}%
+        \put(0,0){\circle*{15}}%
+        }%
+    \end{picture}%
+  }
+\end{picture}
+\end{center}
+\end{minipage}
+\caption{
+  Euclidean 3-dimensional space partitioned as a power lattice
+  \label{fig:psub_E3d_power_P}
+  }
+\end{figure}
+
+%---------------------------------------
+\begin{example}
+\label{ex:psub_lat_alg_xyz}
+%---------------------------------------
+Suppose a random process is capable of producing three values
+$\pso\eqd\setn{x,y,z}$.
+There are five \hie{algebras of sets} on $\pso$
+and therefore five probability spaces $(\pso,\,\pse_n,\, \psp)$ on $\pso$
+with the five values of $\pse_n$ listed below:
+\footnote{\hie{algebra of sets}: \prefp{def:set_algebra}} \\
+\begin{minipage}[c]{\tw/3}
+  %\begin{figure}[th]
+  \begin{center}
+  \footnotesize
+  \setlength{\unitlength}{3\tw/900}%
+  \begin{picture}(300,400)(-150,-50)%
+    \thicklines
+    %{\color{graphpaper}\graphpaper[50](-150,-50)(300,400)}%
+    \color{red}%
+      \put( 0,250){\line(-2,-1){100}}%
+      \put( 0,250){\line( 0,-1){50}}%
+      \put( 0,250){\line( 2,-1){100}}%
+      \put( 0, 50){\line(-2,1){100}}%
+      \put( 0, 50){\line( 0,1){50}}%
+      \put( 0, 50){\line( 2,1){100}}%
+  %
+    \put(0,300){%
+      \setlength{\unitlength}{3\tw/(3*1000)}%
+      \begin{picture}(0,0)(0,150)%
+      %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+      \thicklines%
+      \color{black}%
+        \put( 100, 300){\makebox(0,0)[tl]{$(\pso,\pse_5,\psp)$}}%
+        \put(  15, 300){\makebox(0,0)[l]{$1$}}%
+        \put(-115, 200){\makebox(0,0)[r]{$\frac{2}{3}$}}%
+        \put(  15, 200){\makebox(0,0)[l]{$\frac{2}{3}$}}%
+        \put( 115, 200){\makebox(0,0)[l]{$\frac{2}{3}$}}%
+        \put(-115, 100){\makebox(0,0)[r]{$\frac{1}{3}$}}%
+        \put(  15, 100){\makebox(0,0)[l]{$\frac{1}{3}$}}%
+        \put( 115, 100){\makebox(0,0)[l]{$\frac{1}{3}$}}%
+        \put(  15,   0){\makebox(0,0)[l]{$0$}}%
+      \color{latline}%
+        \put(   0, 300){\line(-1,-1){100} }%
+        \put(   0, 300){\line( 0,-1){100} }%
+        \put(   0, 300){\line( 1,-1){100} }%
+        \put( 100, 100){\line( 0, 1){100} }%
+        \put( 100, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line( 1, 1){100} }%
+        \put(-100, 100){\line( 0, 1){100} }%
+        \put(-100, 100){\line( 1, 1){100} }%
+        \put(   0,   0){\line(-1, 1){100} }%
+        \put(   0,   0){\line( 0, 1){100} }%
+        \put(   0,   0){\line( 1, 1){100} }%
+      \color{latdot}%
+        \put(   0, 300){\circle*{40}}%
+        \put( 100, 200){\circle*{40}}%
+        \put(   0, 200){\circle*{40}}%
+        \put(-100, 200){\circle*{40}}%
+        \put( 100, 100){\circle*{40}}%
+        \put(   0, 100){\circle*{40}}%
+        \put(-100, 100){\circle*{40}}%
+        \put(   0,   0){\circle*{40}}%
+      \end{picture}%
+    }
+    \put(-100,150){%
+      \setlength{\unitlength}{3\tw/(3*1000)}%
+      \begin{picture}(0,0)(0,150)%
+      %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+      \thicklines%
+      \color{black}%
+        \put(   0, 330){\makebox(0,0)[b]{$(\pso,\pse_2,\psp)$}}%
+        \put(  15, 300){\makebox(0,0)[l]{$1$}}%
+        \put( 115, 200){\makebox(0,0)[l]{$\frac{2}{3}$}}%
+        \put(-115, 100){\makebox(0,0)[r]{$\frac{1}{3}$}}%
+        \put(  15,   0){\makebox(0,0)[l]{$0$}}%
+      \color{latline}%
+        \put(   0, 300){\line(-1,-1){100} }%
+        \put(   0, 300){\line( 0,-1){100} }%
+        \put(   0, 300){\line( 1,-1){100} }%
+        \put( 100, 100){\line( 0, 1){100} }%
+        \put( 100, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line( 1, 1){100} }%
+        \put(-100, 100){\line( 0, 1){100} }%
+        \put(-100, 100){\line( 1, 1){100} }%
+        \put(   0,   0){\line(-1, 1){100} }%
+        \put(   0,   0){\line( 0, 1){100} }%
+        \put(   0,   0){\line( 1, 1){100} }%
+      \color{latdot}%
+        \put(   0, 300){\circle*{40}}%
+        \put( 100, 200){\circle*{40}}%
+        \put(-100, 100){\circle*{40}}%
+        \put(   0,   0){\circle*{40}}%
+      \end{picture}%
+    }
+    \put(0,150){%
+      \setlength{\unitlength}{3\tw/(3*1000)}%
+      \begin{picture}(0,0)(0,150)%
+      %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+      \thicklines%
+      \color{black}%
+        \put(   0, 330){\makebox(0,0)[b]{$(\pso,\pse_3,\psp)$}}%
+        \put(  15, 300){\makebox(0,0)[l]{$1$}}%
+        \put(  15, 200){\makebox(0,0)[l]{$\frac{2}{3}$}}%
+        \put(  15, 100){\makebox(0,0)[l]{$\frac{1}{3}$}}%
+        \put(  15,   0){\makebox(0,0)[l]{$0$}}%
+      \color{latline}%
+        \put(   0, 300){\line(-1,-1){100} }%
+        \put(   0, 300){\line( 0,-1){100} }%
+        \put(   0, 300){\line( 1,-1){100} }%
+        \put( 100, 100){\line( 0, 1){100} }%
+        \put( 100, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line( 1, 1){100} }%
+        \put(-100, 100){\line( 0, 1){100} }%
+        \put(-100, 100){\line( 1, 1){100} }%
+        \put(   0,   0){\line(-1, 1){100} }%
+        \put(   0,   0){\line( 0, 1){100} }%
+        \put(   0,   0){\line( 1, 1){100} }%
+      \color{latdot}%
+        \put(   0, 300){\circle*{40}}%
+        \put(   0, 200){\circle*{40}}%
+        \put(   0, 100){\circle*{40}}%
+        \put(   0,   0){\circle*{40}}%
+      \end{picture}%
+    }
+    \put(100,150){%
+      \setlength{\unitlength}{3\tw/(3*1000)}%
+      \begin{picture}(0,0)(0,150)%
+      %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+      \thicklines%
+      \color{black}%
+        \put(   0, 330){\makebox(0,0)[b]{$(\pso,\pse_4,\psp)$}}%
+        \put(  15, 300){\makebox(0,0)[l]{$1$}}%
+        \put(-115, 200){\makebox(0,0)[r]{$\frac{2}{3}$}}%
+        \put( 115, 100){\makebox(0,0)[l]{$\frac{1}{3}$}}%
+        \put(  15,   0){\makebox(0,0)[l]{$0$}}%
+      \color{latline}%
+        \put(   0, 300){\line(-1,-1){100} }%
+        \put(   0, 300){\line( 0,-1){100} }%
+        \put(   0, 300){\line( 1,-1){100} }%
+        \put( 100, 100){\line( 0, 1){100} }%
+        \put( 100, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line( 1, 1){100} }%
+        \put(-100, 100){\line( 0, 1){100} }%
+        \put(-100, 100){\line( 1, 1){100} }%
+        \put(   0,   0){\line(-1, 1){100} }%
+        \put(   0,   0){\line( 0, 1){100} }%
+        \put(   0,   0){\line( 1, 1){100} }%
+      \color{latdot}%
+        \put(   0, 300){\circle*{40}}%
+        \put(-100, 200){\circle*{40}}%
+        \put( 100, 100){\circle*{40}}%
+        \put(   0,   0){\circle*{40}}%
+      \end{picture}%
+    }
+    \put(0,0){%
+      \setlength{\unitlength}{3\tw/(3*1000)}%
+      \begin{picture}(0,0)(0,150)%
+      %{\color{graphpaper}\graphpaper[50](-100,0)(200,300)}%
+      \thicklines%
+      \color{black}%
+        \put( 130, 150){\makebox(0,0)[l]{$(\pso,\pse_1,\psp)$}}%
+        \put(  15, 300){\makebox(0,0)[l]{$1$}}%
+        \put(  15,   0){\makebox(0,0)[l]{$0$}}%
+      \color{latline}%
+        \put(   0, 300){\line(-1,-1){100} }%
+        \put(   0, 300){\line( 0,-1){100} }%
+        \put(   0, 300){\line( 1,-1){100} }%
+        \put( 100, 100){\line( 0, 1){100} }%
+        \put( 100, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line(-1, 1){100} }%
+        \put(   0, 100){\line( 1, 1){100} }%
+        \put(-100, 100){\line( 0, 1){100} }%
+        \put(-100, 100){\line( 1, 1){100} }%
+        \put(   0,   0){\line(-1, 1){100} }%
+        \put(   0,   0){\line( 0, 1){100} }%
+        \put(   0,   0){\line( 1, 1){100} }%
+      \color{latdot}%
+        \put(   0, 300){\circle*{40}}%
+        \put(   0,   0){\circle*{40}}%
+      \end{picture}%
+    }
+  \end{picture}
+  \end{center}
+\end{minipage}
+\begin{minipage}[c]{2\tw/3}
+  \begin{align*}
+    \pse_{ 1} &=\{ && \emptyset, &&           &&           &&           &&             &&             &&             && \setX && \}\\
+    \pse_{ 2} &=\{ && \emptyset, && \setn{x}, &&           &&           &&             &&             && \setn{y,z}, && \setX && \}\\
+    \pse_{ 3} &=\{ && \emptyset, &&           && \setn{y}, &&           &&             && \setn{x,z}, &&             && \setX && \}\\
+    \pse_{ 4} &=\{ && \emptyset, &&           &&           && \setn{z}, && \setn{x,y}, &&             &&             && \setX && \}\\
+    \pse_{ 5} &=\{ && \emptyset, && \setn{x}, && \setn{y}, && \setn{z}, && \setn{x,y}, && \setn{x,z}, && \setn{y,z}, && \setX && \}\\
+  \end{align*}
+Suppose the samples of $\pso$ are generated by a physical process such that they are all
+equally likely to occur.
+Then by varying the sigma-algebra $\pse_n$ effectively varies the probability
+distribution of the probability space $(\pso,\, \pse_n,\, \psp)$.
+This is illustrated by the figure to the left.
+\end{minipage}
+\end{example}
+
+
+
+
+
+
+
+
+
+
 
 
 
