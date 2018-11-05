@@ -652,7 +652,7 @@ Then
    \\&=& \Rxx(\tau) \conv h(\tau)  \conv h^\ast(-\tau)
 \\
 \\
-   Sxy(s)
+  \Sxy(s)
      &\eqd& \opL \Rxy(\tau)
    \\&\eqd& \int_\tau \Rxy(\tau) e^{-s\tau} \; d\tau
    \\&=&    \int_\tau \left[ \Rxx(\tau) \conv h^\ast(-\tau) \right] e^{-s\tau} \; d\tau
@@ -684,8 +684,8 @@ Then
    \\&=& \hat{h}(s) \hat{h}^\ast(-s^\ast) \Sxx(s)
 \\
 \\
-   Sxy(f)
-     &=&    \left. Sxy(s)\right|_{s=j2\pi f}
+   \Sxy(f)
+     &=&    \left.\Sxy(s)\right|_{s=j2\pi f}
    \\&=&    \left. \hat{h}^\ast(-s^\ast) \Sxx(s)\right|_{s=j2\pi f}
    \\&=&    \left.
             \left(\int_u h(u) e^{-(-s^\ast)u} \du \right)^\ast
@@ -698,16 +698,16 @@ Then
    \\&\eqd& \Fh^\ast(f) \Sxx(f)
 \\
 \\
-   Syy(f)
-     &=&    \left. Syy(s)\right|_{s=j2\pi f}
+   \Syy(f)
+     &=&    \left.\Syy(s)\right|_{s=j2\pi f}
    \\&=&    \left. \hat{h}(s) \Sxy(s) \right|_{s=j2\pi f}
    \\&=&    \left. \int_u h(u)e^{-su} \;du \int_\tau \Rxy(v) e^{-sv} \; d\tau\right|_{s=j2\pi f}
    \\&=&    \int_u h(u)e^{-j2\pi fu} \;du \int_\tau \Rxy(v) e^{-j2\pi fv} \; d\tau
-   \\&=&    \Fh(f) Sxy(f)
+   \\&=&    \Fh(f) \Sxy(f)
 \\
 \\
-   Syy(f)
-     &=&    \Fh(f) Sxy(f)
+  \Syy(f)
+     &=&    \Fh(f)\Sxy(f)
    \\&=&    \Fh(f) \Fh^\ast(f) \Sxx(f)
    \\&=&    |\Fh(f)|^2 \Sxx(f)
 \end{eqnarray*}
@@ -1265,7 +1265,7 @@ Then
    \\&=& \Rxx(m) \conv h(m)  \conv h^\ast(-m)
 \\
 \\
-   Sxy(z)
+  \Sxy(z)
      &\eqd& \opZ \Rxy(m)
    \\&\eqd& \sum_m \Rxy(m) z^{-m}
    \\&=&    \sum_m \left[ \Rxx(m) \conv h^\ast(-m) \right] z^{-m}
@@ -1511,7 +1511,37 @@ then the following are true:
 
 
 
+%=======================================
+\section{Beware of Estimators}
+%=======================================
+Estimators yield, as the name implies, estimates.
+These estimates in general contain some error.
 
+%---------------------------------------
+\begin{example}[The Welch estimate of \ope{coherence} with $K=1$]
+%---------------------------------------
+Suppose we have two \prope{uncorrelated} stationary sequences $x[n]$ and $y[n]$. Then, there 
+CSD $\Sxy(\omega)$ should be $0$ because
+\begin{align*}
+  \Sxy(\omega)
+    &\eqd \opDTFT\pE\Rxy(m)
+  \\&=    \opDTFT\pE\brs{x[n]y[n+m]}
+  \\&=    \opDTFT\brs{\pEx[n]} \brs{\pEy[n+m]}
+  \\&=    \opDTFT\brs{0} \brs{0}
+  \\&=    0
+\end{align*}
 
+This will give a coherence of $0$ also:
+\[ C(\omega) = \frac{\Sxy}{\sqrt{\Sxx\Syy}} = 0\]
+
+However, the Welch estimate with $K=1$ will yield
+\begin{align*}
+  \abs{C(\omega)}
+    &= \abs{\frac{\ds\Sxy}{\sqrt{\ds\Sxx\Syy}}}
+  \\&= \abs{\frac{\ds (\opFT x)(\opFT y)^\ast}{\sqrt{\ds\abs{\opFT x}^2\abs{\opFT y}^2}}}
+  \\&= 1
+\end{align*}
+
+\end{example}
 
 
