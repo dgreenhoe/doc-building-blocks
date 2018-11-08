@@ -15,13 +15,17 @@
 # Commands
 #--------------------------------------
 all:
-  cd bsplines
+  cd abcstat
     make
-  cd ..\estimation
+  cd ..\abcdsp
+    make
+  cd ..\abcssp
+    make
+  cd ..\dcsd
+    make
+  cd ..\bsplines
     make
   cd ..\trigsys
-    make
-  cd ..\dsp
     make
   cd ..\xsams
     make
@@ -31,7 +35,7 @@ all:
     make
 #  cd ..\xpsd
 #    make
-  cd ..\dcsd
+  cd ..\estimation
     make
   cd ..\A290826
     make
@@ -40,8 +44,6 @@ all:
   cd ..\A289358
     make
   cd ..\2015ssp
-    make
-  cd ..\abcssp
     make
   cd ..\2016apcssp
     make
@@ -61,12 +63,12 @@ all:
     make
   cd ..\2014plat
    make
-  cd ..\lmc
-    make
-  cd ..\elife
-    make
-  cd ..\zsounds
-    make
+ #cd ..\lmc
+ #  make
+ #cd ..\elife
+ #  make
+ #cd ..\zsounds
+ #  make
   cd ..
 
 cleanall:

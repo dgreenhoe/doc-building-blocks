@@ -9,13 +9,13 @@
 #--------------------------------------
 # Paths
 #--------------------------------------
-PATHDSP    = ../../common/math/graphics/dsp/
-PATHMATH   = ../../common/math/graphics/
-PATHLAT    = ../../common/math/graphics/lat/
+PATHDSP      = ../../common/math/graphics/dsp/
+PATHMATH     = ../../common/math/graphics/
+PATHLAT      = ../../common/math/graphics/lat/
 PATHFRAMES   = ../../common/math/graphics/frames/
 PATHBSPLINES = ../../common/math/graphics/bsplines/
-PATHWAVE   = ../../common/wavelets/graphics/
-PATHSETSTR = ../../common/math/graphics/setstr
+PATHWAVE     = ../../common/wavelets/graphics/
+PATHSETSTR   = ../../common/math/graphics/setstr
 
 #--------------------------------------
 # Files
