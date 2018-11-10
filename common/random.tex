@@ -99,7 +99,7 @@ Let $x(t)$ and $y(t)$ be random processes.
 Then
 
 \begin{tabular}{cll}
-   $\imark$ & $\Mx(t):X\to\R$       & is the \textbf{mean} of $x(t)$                          \\
+   $\imark$ & $\pmeanx(t):X\to\R$       & is the \textbf{mean} of $x(t)$                          \\
    $\imark$ & $\Rxy:X\times X\to\R$ & is the \textbf{crosscorrelation} of $x(t)$ and $y(t)$   \\
    $\imark$ & $\Rxx:X\to\R$         & is the \textbf{autocorrelation function} of $x(t)$      \\
    $\imark$ & $\opR:\vCc\to\vCc$    & is the \textbf{autocorrelation operator}
@@ -117,7 +117,7 @@ such that
      \citerp{keener}{page 101}
    }
 \defbox{\begin{array}{rc>{\ds}ll}
-   \Mx(t)    &\eqd& \pEb{\rvx(t)}             & \text{(mean functional)} \\
+   \pmeanx(t)    &\eqd& \pEb{\rvx(t)}             & \text{(mean functional)} \\
    \Rxy(t,u) &\eqd& \pEb{\rvx(t)\rvy^\ast(u)} & \text{(cross-correlation bilinear functional)} \\
    \Rxx(t,u) &\eqd& \pEb{\rvx(t)\rvx^\ast(u)} & \text{(auto-correlation bilinear functional)} \\
    \opR f    &\eqd& \int_u \Rxx(t,u) f(u) \du & \text{(auto-correlation operator)}
@@ -189,7 +189,7 @@ Let $\opR:\spX\to\spX$ be an auto-correlation operator.
    \\&= \inprod{\int_u \Eb{\fx(t)\fx^\ast(u)} \fy(u) \du}{\fy(t)}
      && \text{by definition of $\Rxx$ (\prefp{def:Rxx})}
    \\&= \pEb{\inprod{\int_u \fx(t)\fx^\ast(u) \fy(u) \du}{\fy(t)}}
-     && \text{by linearity of funtional $\inprodn$ and operator $\int$}
+     && \text{by \prope{linearity} of $\inprodn$ and $\int$}
    \\&= \pEb{\int_u \fx^\ast(u) \fy(u) \du \inprod{\fx(t)}{\fy(t)}}
      && \text{by \prope{additivity} property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
    \\&= \pEb{\inprod{\fy(u)}{\fx(u)} \inprod{\fx(t) }{\fy(t)}}
@@ -204,7 +204,7 @@ Let $\opR:\spX\to\spX$ be an auto-correlation operator.
      &= \inprod{\int_u \Rxx(t,u) \fx(u) \du}{\fy(t)}
      && \text{by definition of $\opR$ (\prefp{def:opR})}
    \\&= \int_u \fx(u) \inprod{\Rxx(t,u)  }{\fy(t)} \du
-     && \text{by \prope{additivity} property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
+     && \text{by \prope{additive} property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
    \\&= \int_u \fx(u) \inprod{\fy(t)}{\Rxx(t,u)}^\ast \du
      && \text{by \prope{conjugate symmetry} property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
    \\&= \inprod{ \fx(u) }{\inprod{\fy(t)}{\Rxx(t,u)} }
@@ -248,7 +248,7 @@ Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues and
   4. & \norm{\psi_n(t)}^2>0, \inprod{\opR f}{f} > 0 \implies \lambda_n>0
      & (if $\opR$ is positive definite, then eigenvalues are positive)
      \\
-  5. & \E{\left| x(t)-\sum_n \inprod{x(t)}{\psi_n(t)} \psi_n(t) \right|^2} = 0
+  5. & \E{\left| x(t)-\sum_{n\in\Z}\inprod{x(t)}{\psi_n(t)} \psi_n(t) \right|^2} = 0
      & ($\{\psi_n(t)\}$ is a basis for $x(t)$)
 \end{array}}
 \end{theorem}
@@ -285,40 +285,40 @@ Because $\opR$ is self-adjoint, this property follows\ifsxref{operator}{thm:self
 \end{align*}
 
 \item $\{\psi_n(t)\}$ is a basis for $x(t)$
-      \[ \E{\left| x(t)-\sum_n \dot{x}_n \psi_n(t) \right|^2} = 0
+      \[ \E{\left| x(t)-\sum_{n\in\Z}\dot{x}_n \psi_n(t) \right|^2} = 0
          \hspace{1cm}\mbox{where } \dot{x}_n\eqd \inprod{x(t)}{\psi_n(t)}
       \]
 
 \begin{eqnarray*}
-   \Eb{x(t) \left(\sum_n \dot{x}_n \psi_n(t)\right)^\ast}
-     &=& \Eb{x(t) \left(\sum_n \int_u x(u)\psi_n^\ast(u)\du \psi_n(t)\right)^\ast}
-   \\&=&  \sum_n \left(\int_u \Eb{x(t)x^\ast(u)}\psi_n(u)\du\right) \psi_n^\ast(t)
-   \\&=&  \sum_n \left(\int_u \Rxx(t,u)\psi_n(u)\du\right) \psi_n^\ast(t)
-   \\&=&  \sum_n \lambda_n\psi_n(t) \psi_n^\ast(t)
-   \\&=&  \sum_n \lambda_n \left|\psi_n(t) \right|^2
+   \Eb{x(t) \left(\sum_{n\in\Z}\dot{x}_n \psi_n(t)\right)^\ast}
+     &=& \Eb{x(t) \left(\sum_{n\in\Z}\int_u x(u)\psi_n^\ast(u)\du \psi_n(t)\right)^\ast}
+   \\&=&  \sum_{n\in\Z}\left(\int_u \Eb{x(t)x^\ast(u)}\psi_n(u)\du\right) \psi_n^\ast(t)
+   \\&=&  \sum_{n\in\Z}\left(\int_u \Rxx(t,u)\psi_n(u)\du\right) \psi_n^\ast(t)
+   \\&=&  \sum_{n\in\Z}\lambda_n\psi_n(t) \psi_n^\ast(t)
+   \\&=&  \sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2
 \\ \\
-   \Eb{\sum_n \dot{x}_n \psi_n(t)\left(\sum_m \dot{x}_m \psi_m(t)\right)^\ast}
-     &=& \Eb{\sum_n \int_u x(u)\psi_n^\ast(u)\du   \psi_n(t)\left(\sum_m \int_v x(v)\psi_m^\ast(v)\dv \psi_m(t)\right)^\ast}
-   \\&=& \sum_n\sum_m \int_u\left(\int_v \Eb{x(u)x^\ast(v)}\psi_m(v)\dv\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
-   \\&=& \sum_n\sum_m \int_u\left(\int_v \Rxx(u,v)\psi_m(v)\dv\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
-   \\&=& \sum_n\sum_m \int_u\left(\lambda_m\psi_m(u)\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
-   \\&=& \sum_n\sum_m \lambda_m \left(\int_u \psi_m(u) \psi_n^\ast(u)\du \right)   \psi_n(t)   \psi_m^\ast(t)
-   \\&=& \sum_n\sum_m \lambda_m \kdelta_{mn}   \psi_n(t)   \psi_m^\ast(t)
-   \\&=& \sum_n \lambda_n   \psi_n(t)   \psi_n^\ast(t)
-   \\&=& \sum_n \lambda_n  \left| \psi_n(t) \right|^2
+   \Eb{\sum_{n\in\Z}\dot{x}_n \psi_n(t)\left(\sum_{m\in\Z}\dot{x}_m \psi_m(t)\right)^\ast}
+     &=& \Eb{\sum_{n\in\Z}\int_u x(u)\psi_n^\ast(u)\du   \psi_n(t)\left(\sum_{m\in\Z}\int_v x(v)\psi_m^\ast(v)\dv \psi_m(t)\right)^\ast}
+   \\&=& \sum_n\sum_{m\in\Z}\int_u\left(\int_v \Eb{x(u)x^\ast(v)}\psi_m(v)\dv\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n\sum_{m\in\Z}\int_u\left(\int_v \Rxx(u,v)\psi_m(v)\dv\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n\sum_{m\in\Z}\int_u\left(\lambda_m\psi_m(u)\right) \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n\sum_{m\in\Z}\lambda_m \left(\int_u \psi_m(u) \psi_n^\ast(u)\du \right)   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_n\sum_{m\in\Z}\lambda_m \kdelta_{mn}   \psi_n(t)   \psi_m^\ast(t)
+   \\&=& \sum_{n\in\Z}\lambda_n   \psi_n(t)   \psi_n^\ast(t)
+   \\&=& \sum_{n\in\Z}\lambda_n  \left| \psi_n(t) \right|^2
 \end{eqnarray*}
 
 
 Using these two results, we can prove the following:
 
 \begin{eqnarray*}
-  &&\E{\left| x(t)-\sum_n \dot{x}_n \psi_n(t) \right|^2}
-  \\&=& \Eb{\left[ x(t)-\sum_n \dot{x}_n \psi_n(t) \right]\left[ x(t)-\sum_m \dot{x}_m \psi_m(t) \right]^\ast}
-  \\&=& \Eb{x(t)x^\ast(t) -x(t)\left(\sum_n \dot{x}_n \psi_n(t)\right)^\ast -x^\ast(t)\sum_n \dot{x}_n \psi_n(t) + \sum_n \dot{x}_n \psi_n(t) \left(\sum_m \dot{x}_m \psi_m(t) \right)^\ast }
-  \\&=& \Eb{x(t)x^\ast(t)} -\Eb{x(t)\left(\sum_n \dot{x}_n \psi_n(t)\right)^\ast} -\Eb{x^\ast(t)\sum_n \dot{x}_n \psi_n(t)} + \Eb{\sum_n \dot{x}_n \psi_n(t) \left(\sum_m \dot{x}_m \psi_m(t) \right)^\ast }
+  &&\E{\left| x(t)-\sum_{n\in\Z}\dot{x}_n \psi_n(t) \right|^2}
+  \\&=& \Eb{\left[ x(t)-\sum_{n\in\Z}\dot{x}_n \psi_n(t) \right]\left[ x(t)-\sum_{m\in\Z}\dot{x}_m \psi_m(t) \right]^\ast}
+  \\&=& \Eb{x(t)x^\ast(t) -x(t)\left(\sum_{n\in\Z}\dot{x}_n \psi_n(t)\right)^\ast -x^\ast(t)\sum_{n\in\Z}\dot{x}_n \psi_n(t) + \sum_{n\in\Z}\dot{x}_n \psi_n(t) \left(\sum_{m\in\Z}\dot{x}_m \psi_m(t) \right)^\ast }
+  \\&=& \Eb{x(t)x^\ast(t)} -\Eb{x(t)\left(\sum_{n\in\Z}\dot{x}_n \psi_n(t)\right)^\ast} -\Eb{x^\ast(t)\sum_{n\in\Z}\dot{x}_n \psi_n(t)} + \Eb{\sum_{n\in\Z}\dot{x}_n \psi_n(t) \left(\sum_{m\in\Z}\dot{x}_m \psi_m(t) \right)^\ast }
   \\&&  \text{by \prop{Mercer's Theorem}\ifsxref{integrat}{thm:mercer}}
-  \\&=& \sum_n \lambda_n |\psi_n(t)|^2 -\sum_n \lambda_n \left|\psi_n(t) \right|^2  -\left(\sum_n \lambda_n \left|\psi_n(t) \right|^2\right)^\ast + \sum_n \lambda_n \left|\psi_n(t) \right|^2
-  \\&=& \sum_n \lambda_n |\psi_n(t)|^2 -\sum_n \lambda_n \left|\psi_n(t) \right|^2  -\sum_n \lambda_n \left|\psi_n(t) \right|^2 + \sum_n \lambda_n \left|\psi_n(t) \right|^2
+  \\&=& \sum_{n\in\Z}\lambda_n |\psi_n(t)|^2 -\sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2  -\left(\sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2\right)^\ast + \sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2
+  \\&=& \sum_{n\in\Z}\lambda_n |\psi_n(t)|^2 -\sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2  -\sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2 + \sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2
   \\&=& 0
 \end{eqnarray*}
 \end{enumerate}
@@ -384,7 +384,7 @@ This criterion is called the  Karhunen-Lo\`{e}ve criterion for $x(t)$.
 \index{linear time invariant}
 \footnote{\citerp{papoulis}{312}}
 %---------------------------------------
-Let $h:\R\to\C$ be the impulse response of a linear time-invariant system and
+Let $\fh:\R\to\C$ be the impulse response of a linear time-invariant system and
 Let $\rvy(t)=h(t)\conv \rvx(t) \eqd \int_u h(u)\rvx(t-u) \du$ as
 illustrated in \prefp{fig:linear-sys}.
 Then
@@ -489,18 +489,18 @@ Then
 %=======================================
 %---------------------------------------
 \begin{definition}
-\label{def:WSS}
+\label{def:wss}
 %---------------------------------------
 A random process $\rvx(t)$ is \textbf{wide sense stationary} (WSS) if
 
 \begin{tabular}{llll}
-   1. & $\Mx(t)$         & is constant with respect to $t$ & (stationary in the mean) \\
+   1. & $\pmeanx(t)$         & is constant with respect to $t$ & (stationary in the mean) \\
    2. & $\Rxx(t+\tau,t)$ & is constant with respect to $t$ & (stationary in correlation)
 \end{tabular}
 \end{definition}
 
 If a process is WSS, mean and correlation are often written
-$\Mx$ and $\Rxx(\tau)$, respectively.
+$\pmeanx$ and $\Rxx(\tau)$, respectively.
 If a pair of processes $\rvx$ and $\rvy$ are WSS,
 then their cross-correlation is often written $\Rxy(\tau)$.
 
@@ -604,7 +604,7 @@ Thus, $\Sxx(f)$ is the power density of $\rvx(t)$ in the frequency domain.
 \index{LTI}
 \footnote{\citerpp{papoulis}{323}{324}}
 %---------------------------------------
-Let $h:\R\to\C$ be the impulse response of a linear time-invariant system and
+Let $\fh:\R\to\C$ be the impulse response of a linear time-invariant system and
 let $\rvy(t)=h(t)\conv \rvx(t) \eqd \int_u h(u)\rvx(t-u) \du$ as
 illustrated in \prefp{fig:linear-sys}.
 Then
@@ -1032,10 +1032,12 @@ then the following are true:
 %---------------------------------------
 %---------------------------------------
 \begin{theorem}
+\label{thm:Rxx}
+\label{thm:Rxy}
 %---------------------------------------
-\thmbox{\begin{array}{rcl|rcl}
-   \Rxx(n,n+m) &=& \Rxx^\ast(n+m,m) & \Rxy(n,n+m) &=& \Ryx^\ast(n+m,m)\\
-   \Rxx(m)     &=& \Rxx^\ast(-m)    & \Rxy(m)     &=& \Ryx^\ast(-m)   
+\thmbox{\begin{array}{rcl}
+   \Rxx(n,n+m) &=& \Rxx^\ast(n+m,m)\\ 
+   \Rxy(n,n+m) &=& \Ryx^\ast(n+m,m)
 \end{array}}
 \end{theorem}
 \begin{proof}
@@ -1053,24 +1055,6 @@ then the following are true:
    \\&\eqd \Ryx^\ast(n+m,n)
      && \text{by definition of $\Rxy$}
      && \text{\xref{def:Rxy}}
-  \\
-  \\
-  \Rxy(m)
-     &\eqd \pE\brs{\rvx(0) \rvy^\ast(m)}
-     && \text{by definition of $\Rxy$}
-     && \text{\xref{def:Rxy}}
-   \\&\eqd \Rxy(0,0+m)
-   \\&=    \Ryx^\ast(0+m,0)
-   \\&\eqd \brp{\E[\rvy(m) \rvx^\ast(0) ]}^\ast
-   \\&=    \brp{\E[\rvy(m) \rvx^\ast(0) ]}^\ast
-   \\&=    \brp{\E[\rvy(n+m) \rvx^\ast(n) ]}^\ast
-   \\&=    \brp{\E[\rvy(k) \rvx^\ast(k-m) ]}^\ast
-     && \text{where $k\eqd n+m$}
-     && \text{$\implies n=k-m$}
-   \\&=    \brp{\E[\rvy(0) \rvx^\ast(-m) ]}^\ast
-   \\&\eqd \Ryx^\ast(-m)
-     && \text{by definition of $\Rxy$}
-     && \text{\xref{def:Rxy}}
    \\
    \\
    \Rxx(n,n+m)
@@ -1078,13 +1062,6 @@ then the following are true:
    \\&= \brlr{\Rxy^\ast(n+m,n)}_{y=x}
      && \text{by previous result}
    \\&= \Rxx^\ast(n+m,n)
-   \\
-   \\
-   \Rxx(m)
-     &= \brlr{\Rxy(m)}_{y=x}
-   \\&= \brlr{\Rxy^\ast(-m)}_{y=x}
-     && \text{by previous result}
-   \\&= \Rxx^\ast(-m)
 \end{align*}
 \end{proof}
 
@@ -1119,58 +1096,74 @@ with impulse response $\fh(t)$ \xref{fig:d-linear-sys}.
 \footnote{
   \citerp{papoulis}{310}
   }
-\index{linear time invariant}
+\label{thm:Rxyh}
 %---------------------------------------
-Let
-\begin{liste}
-   \item $h:\R\to\C$ be the impulse response of a linear time-invariant system
-   \item $\rvy(n)=h(n)\conv \rvx(n) \eqd \sum_m h(m)\rvx(n-m)$.
-\end{liste}
-
-Then
-
-\begin{fsM}
-\thmbox{\begin{array}{rclcl}
-   \Rxy(n,m) &=& \Rxx(n,m)\conv h^\ast(m) &\eqd& \ds \sum_k h^\ast(k) \Rxx(n,m-k)  \\
-   \Ryy(n,m) &=& \Rxy(n,m)\conv h(n)      &\eqd& \ds \sum_k h(k) \Rxy(n-k,m)  \\
-   \Ryy(n,m) &=& \Rxx(n,m)\conv h(n)\conv h^\ast(m)
-                 &\eqd& \ds \sum_p \sum_k h(k)h^\ast(p) \Rxx(n-k,m-p)
-\end{array}}
-\end{fsM}
+Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$, 
+\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+\thmboxt{
+  $\brb{\begin{array}{M}
+    $\opS$ is \prope{linear time invariant} (\prope{LTI})
+  \end{array}}
+  \quad\implies$
+  \\\qquad$
+  \brb{\begin{array}{Frc>{\ds}lc>{\ds}lD}
+       (A).&\Rxy(n,m) &=& \Rxx(n,m)\conv \fh^\ast(m) &\eqd& \sum_{k\in\Z} \fh^\ast(k) \Rxx(n,m-k) & and 
+     \\(B).&\Ryy(n,m) &=& \Rxy(n,m)\conv \fh(n)      &\eqd& \sum_{k\in\Z} \fh(k)      \Rxy(n-k,m) & and 
+     \\(C).&\Ryy(n,m) &=& \Rxx(n,m)\conv \fh(n)\conv h^\ast(m)                                          
+                      &\eqd& \mc{2}{l}{\ds\sum_{p\in\Z} \sum_{k\in\Z} \fh(k)h^\ast(p) \Rxx(n-k,m-p)}
+  \end{array}}$
+  }
 \end{theorem}
 
 \begin{proof}
-\begin{eqnarray*}
+{\begin{align*}
    \Rxy(n,m)
-     &\eqd& \E\left[\rvx(n) \rvy^\ast(m) \right]
-   \\&=&    \E\left[\rvx(n) \left( \sum_k h(k) \rvx(m-k)    \right)^\ast \right]
-   \\&=&    \E\left[\rvx(n) \sum_k h^\ast(k) \rvx^\ast(m-k)     \right]
-   \\&=&    \sum_k h^\ast(k) \E\left[\rvx(n) \rvx^\ast(m-k) \right]
-   \\&=&    \sum_k h^\ast(k) \Rxx(n,m-k)
-   \\&\eqd& \Rxx(n,m) \conv h^\ast(m)
+     &\eqd \pE\brs{\rvx(n) \rvy^\ast(m) }
+     && \text{by definition of $\Rxy$}
+     && \text{\xref{def:Rxy}}
+   \\&= \pE\brs{\rvx(n) \brp{\fh\conv\rvx}^\ast(m)}
+     && \text{by \prope{LTI} hypothesis}
+   \\&\eqd \pE\brs{\rvx(n) \brp{ \sum_{k\in\Z} h(k) \rvx(m-k) }^\ast }
+     && \text{by definition of \ope{convolution}}
+     && \text{\xref{def:dsp_conv}}
+   \\&=    \pE\brs{\rvx(n) \sum_{k\in\Z} \fh^\ast(k) \rvx^\ast(m-k)  }
+     && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
+     && \text{\xref{def:staralg}}
+   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvx(n)\rvx^\ast(m-k)  }
+     && \text{by \prope{distributive} property of $\fieldC$}
+   \\&=    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx(n) \rvx^\ast(m-k) }
+     && \text{by \prope{linear} property of $\pE$}
+     && \text{\xref{thm:pE}}
+   \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(n,m-k)
+     && \text{by definition of $\Rxx$}
+     && \text{\xref{def:Rxx}}
+   \\&\eqd \Rxx(n,m) \conv \fh^\ast(m)
+     && \text{by definition of \ope{convolution}}
+     && \text{\xref{def:dsp_conv}}
+\end{align*}
+
+\begin{align*}
+   \Ryy(n,m)
+     &\eqd \pE\left[\rvy(n) \rvy^\ast(m)  \right]
+   \\&=    \pE\left[\left(\sum_{k\in\Z}\fh(k) \rvx(n-k)\right) \rvy^\ast(m)  \right]
+   \\&=    \sum_{k\in\Z}\fh(k) \E\left[\rvx(n-k)\rvy^\ast(m)\right]
+   \\&=    \sum_{k\in\Z}\fh(k) \Rxy(n-k,m)
+   \\&\eqd  \Rxy(n,m)\conv \fh(n)
 \\
 \\
    \Ryy(n,m)
-     &\eqd& \E\left[\rvy(n) \rvy^\ast(m)  \right]
-   \\&=&    \E\left[\left(\sum_k \fh(k) \rvx(n-k)\right) \rvy^\ast(m)  \right]
-   \\&=&    \sum_k \fh(k) \E\left[\rvx(n-k)\rvy^\ast(m)\right]
-   \\&=&    \sum_k \fh(k) \Rxy(n-k,m)
-   \\&\eqd&  \Rxy(n,m)\conv \fh(n)
-\\
-\\
-   \Ryy(n,m)
-     &\eqd& \E\left[\rvy(n) \rvy^\ast(m)  \right]
-   \\&=&    \E\left[\left(\sum_k \fh(k) \rvx(n-k)\right)
-                    \left(\sum_p \fh(p) \rvx(m-p)\right)^\ast
-              \right]
-   \\&=&    \E\left[\sum_k\sum_p \fh(k)\fh^\ast(p) \rvx(n-k)\rvx^\ast(m-p)
-              \right]
-   \\&=&    \sum_p\sum_k \fh(k)\fh^\ast(p)
-            \E\left[\rvx(n-k)\rvx^\ast(m-p)\right]
-   \\&=&    \sum_p\fh^\ast(p) \sum_k \fh(k) \Rxx(n-k,m-p)
-   \\&=&    \sum_p\fh^\ast(p) \left[\Rxx(n,m-p)\conv\fh(n)\right]
-   \\&\eqd& \Rxx(n,m)\conv\fh(n) \conv \fh^\ast(m)
-\end{eqnarray*}
+     &\eqd \pE\left[\rvy(n) \rvy^\ast(m)  \right]
+   \\&=    \pE\left[\left(\sum_{k\in\Z}\fh(k) \rvx(n-k)\right)
+                   \left(\sum_p \fh(p) \rvx(m-p)\right)^\ast
+             \right]
+   \\&=    \pE\left[\sum_k\sum_p \fh(k)\fh^\ast(p) \rvx(n-k)\rvx^\ast(m-p)
+             \right]
+   \\&=    \sum_p\sum_{k\in\Z}\fh(k)\fh^\ast(p)
+           \pE\left[\rvx(n-k)\rvx^\ast(m-p)\right]
+   \\&=    \sum_p\fh^\ast(p) \sum_{k\in\Z}\fh(k) \Rxx(n-k,m-p)
+   \\&=    \sum_p\fh^\ast(p) \left[\Rxx(n,m-p)\conv\fh(n)\right]
+   \\&\eqd \Rxx(n,m)\conv\fh(n) \conv \fh^\ast(m)
+\end{align*}}
 \end{proof}
 
 
@@ -1182,42 +1175,97 @@ Then
 %---------------------------------------
 \begin{definition}
 %---------------------------------------
-Let
-   $\rvx(n)$ be a random process,
-   $\Mx(n)$ its mean, and
-   $\Rxx(n+m,n)$ its autocorrelation.
-
-Then $\rvx(n)$ is \textbf{wide sense stationary} (WSS) if
-
-\begin{tabular}{llll}
-   1. & $\Mx(n)$         & is constant with respect to $n$ & (stationary in the mean) \\
-   2. & $\Rxx(n+m,n)$ & is constant with respect to $n$ & (stationary in correlation)
-\end{tabular}
+Let $\rvx(n)$ be a random process with \fncte{mean} $\pmeanx(n)$ and
+\fncte{autocorrelation} $\Rxx(n,n+m)$.
+\\
+\defboxt{
+  $\rvx(n)$ is \propd{wide sense stationary} (\propd{WSS}) if
+  \\\indentx
+    $\begin{array}{FlMMD}
+       1. & \pmeanx(n)  & is \prope{constant} with respect to $n$ & (\prope{stationary in the mean})    & and\\
+       2. & \Rxx(n,n+m) & is \prope{constant} with respect to $n$ & (\prope{stationary in correlation})
+    \end{array}$
+  }
 \end{definition}
-
-If a process is WSS, mean and correlation are often written
-$\Mx$ and $\Rxx(m)$, respectively.
-If a pair of processes $\rvx$ and $\rvy$ are WSS,
-then their cross-correlation is often written $\Rxy(m)$.
 
 %---------------------------------------
 \begin{definition}
-\label{def:d-psd}
-\index{power spectral density}
-\index{PSD}
+\label{def:mean_wss}
+\label{def:Rxx_wss}
+\label{def:Rxy_wss}
 %---------------------------------------
-Let $\rvx(n)$ and $\rvy(n)$ be WSS random processes
-with auto-correlation and cross-correlation
-$\Rxx(m), \Ryy(m), \Rxy(m),$ and $\Ryx(m)$.\\
-Then the \textbf{power spectral density} of $\rvx(n)$ and $\rvy(n)$ are defined as
-\defbox{\begin{array}{rclcl}
-   \Sxx(z) &\eqd& \opZ{\Rxx(m)} &\eqd& \ds \sum_m \Rxx(m) z^{-m}     \\
-   \Syy(z) &\eqd& \opZ{\Ryy(m)} &\eqd& \ds \sum_m \Ryy(m) z^{-m}     \\
-   \Sxy(z) &\eqd& \opZ{\Rxy(m)} &\eqd& \ds \sum_m \Rxy(m) z^{-m}     \\
-   \Syx(z) &\eqd& \opZ{\Ryx(m)} &\eqd& \ds \sum_m \Ryx(m) z^{-m}
-\end{array}}
+Let $\rvx(n)$ be a random process with \fncte{mean} $\pmeanx(n)$ and
+\fncte{autocorrelation} $\Rxx(n,n+m)$.\footnote{
+  The $\pmeanx$ and $\Rxx(m)$ definitions \xref{def:mean_wss} are examples
+  of \hie{function overload}---that is, functions that use the same 
+  mnemonic but are distinguished by different domains.
+  }
+\defbox{
+  \brb{\begin{array}{M}
+    $\rvx$ and $\rvy$ are\\
+    \prope{wide sense stationary}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FlMrclD}
+    1. & \pmeanx & is defined as & \pmeanx &\eqd& \pmeanx(0) & and\\
+    2. & \Rxx(m) & is defined as & \Rxx(m) &\eqd& \Rxx(0,m)  & and\\
+    3. & \Rxy(m) & is defined as & \Rxy(m) &\eqd& \Rxy(0,m)  & .
+  \end{array}}
+  }
 \end{definition}
 
+%---------------------------------------
+\begin{corollary}
+\label{cor:Rxx}
+%---------------------------------------
+Let $\rvy(n)$ be a \fncte{random process}.
+Let $\rvx(n)$ be a random process with \fncte{autocorrelation} $\Rxx(n,n+m)$.
+Let $\Rxy$ be the \fncte{cross-correlation} of $\rvx$ and $\rvy$.
+\corbox{
+  \brb{\begin{array}{M}
+    $\rvx$ and $\rvy$ are\\
+    \prope{wide sense stationary}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rclD}
+    \Rxx(m) &=& \Rxx^\ast(-m) & (\prope{conjugate symmetric})\\ 
+    \Rxy(m) &=& \Ryx^\ast(-m)
+  \end{array}}
+}
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \Rxy(m)
+     &\eqd \Rxy(0,m)
+     && \text{by definition of $\Rxy:\Z\to\C$}
+     && \text{\xref{def:Rxy_wss}}
+   \\&\eqd \pE\brs{\rvx(0) \rvy^\ast(m)}
+     && \text{by definition of $\Rxy:\Z^2\to\C$}
+     && \text{\xref{def:Rxy}}
+   \\&\eqd \Rxy(0,0+m)
+   \\&=    \Ryx^\ast(0+m,0)
+     && \text{by \prope{non-WSS result}}
+     && \text{\xref{thm:Rxy}}
+   \\&\eqd \brp{\E[\rvy(m) \rvx^\ast(0) ]}^\ast
+   \\&=    \brp{\E[\rvy(m-m) \rvx^\ast(0-m) ]}^\ast
+     && \text{by \prope{WSS} hypothesis}
+     && \text{\xref{def:wss}}
+   \\&=    \brp{\E[\rvy(0) \rvx^\ast(0-m) ]}^\ast
+   \\&\eqd \Ryx^\ast(0,-m)
+     && \text{by definition of $\Rxy:\Z^2\to\C$}
+     && \text{\xref{def:Rxy}}
+   \\&\eqd \Ryx^\ast(-m)
+     && \text{by definition of $\Rxy:\Z^2\to\C$}
+     && \text{\xref{def:Rxy_wss}}
+   \\
+   \\
+   \Rxx(m)
+     &= \brlr{\Rxy(m)}_{y=x}
+   \\&= \brlr{\Ryx^\ast(-m)}_{y=x}
+     && \text{by previous result}
+   \\&= \Rxx^\ast(-m)
+\end{align*}
+\end{proof}
 
 
 \begin{figure}[ht]\color{figcolor}
@@ -1248,135 +1296,186 @@ Then the \textbf{power spectral density} of $\rvx(n)$ and $\rvy(n)$ are defined 
 
 The next theorem describes the statistical properties of an LTI system
 with impulse response $\fh(t)$ and with an input which is a
-WSS random process
-(see \prefp{fig:d-linear-sys-WSS}).\footnote{\citerp{papoulis}{323}}
+WSS random process \xref{fig:d-linear-sys-WSS}.
 %---------------------------------------
-\begin{theorem}
-\index{convolution}
-\index{linear time invariant systems}
-\index{LTI}
+\begin{corollary}
+\footnote{
+  \citerp{papoulis}{323}
+  }
 %---------------------------------------
-Let
-\begin{liste}
-   \item $\ds \fh:\R\to\C$ be the impulse response of a linear time-invariant system
-   \item $\ds\rvy(n)=h(n) \conv \rvx(n) \eqd \sum_k h(k)\rvx(n-k)$.
-\end{liste}
-Then
-\thmbox{\begin{array}{rclcl}
-   \Rxy(m) &=& \ds \Rxx(m)\conv \fh^\ast(-m)           &\eqd& \ds \sum_k h^\ast(-k) \Rxx(m-k)  \\
-   \Ryy(m) &=& \ds \Rxy(m)\conv \fh(m)                 &\eqd& \ds \sum_k h(k) \Rxy(m-k)  \\
-   \Ryy(m) &=& \ds \Rxx(m)\conv \fh(m)\conv h^\ast(-m) &\eqd& \ds \sum_j \sum_k h^\ast(-j) h(k-j) \Rxx(m-k-j)   \\
-\\
-   \Sxy(z) &=& \ds \Sxx(z) \Zh^\ast\left(\frac{1}{z^\ast}\right) \\
-   \Syy(z) &=& \ds \Sxy(z) \Zh(z)            \\
-   \Syy(z) &=& \ds \Sxx(z) \Zh(z) \Zh^\ast\left(\frac{1}{z^\ast}\right)
-\end{array}}
-\end{theorem}
+Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$, 
+\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+\corboxt{
+  $\brb{\begin{array}{FMMD}
+    (1). & $\opS$ is \prope{linear time invariant}             & (\prope{LTI}) & and\\
+    (2). & $\rvx$ and $\rvy$ are \prope{wide sense stationary} & (\prope{WSS}) & 
+  \end{array}}
+  \quad\implies$
+    \\\qquad$
+  \brb{\begin{array}{Frc>{\ds}lc>{\ds}lD}
+       (A).&\Rxy(m) &=& \Rxx(m)\conv \fh^\ast(-m)           &\eqd& \sum_{k\in\Z}k h^\ast(-k) \Rxx(m-k)  & and 
+     \\(B).&\Ryy(m) &=& \Rxy(m)\conv \fh(m)                 &\eqd& \sum_{k\in\Z}k h(k) \Rxy(m-k)        & and 
+     \\(C).&\Ryy(m) &=& \Rxx(m)\conv \fh(m)\conv h^\ast(-m) &\eqd& \mc{2}{l}{\ds\sum_{j\in\Z}\sum_{k\in\Z} h^\ast(-j) h(k-j) \Rxx(m-k-j)}
+  \end{array}}
+  $
+  }
+\end{corollary}
 \begin{proof}
-\begin{eqnarray*}
-   \Rxx(m) \conv h^\ast(-m)
-     &\eqd& \sum_k \fh^\ast(-k) \Rxx(m-k)
-   \\&=&    \sum_k \fh^\ast(-k) \E\left[\rvx(n) \rvx^\ast(n-m+k) \right]
-   \\&=&    \E\left[\rvx(n) \sum_k \fh^\ast(-k)  \rvx^\ast(n-m+k)     \right]
-   \\&=&    \E\left[\rvx(n) \sum_{k^\prime} \fh^\ast(k^\prime)  \rvx^\ast(n-m-k^\prime)  ^\prime   \right]
-   \\&=&    \E\left[\rvx(n) \rvy^\ast(n-m)  \right]
-   \\&\eqd& \Rxy(m)
+\begin{align*}
+  \Rxy(m)
+     &\eqd Rxy(0,m)
+     && \text{by definition of $\Rxy(m)$}
+     && \text{\xref{def:Rxy_wss}}
+   \\&= \Rxx(0,m)\conv \fh^\ast(m) \eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(0,m-k) 
+     && \text{by \prefp{thm:Rxyh}}
+   \\&\eqd \Rxx(m)\conv \fh^\ast(m) \eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(m-k) 
+     && \text{by definition of $\Rxx(m)$}
+     && \text{\xref{def:Rxx_wss}}
 \\
 \\
-   \Rxy(m) \conv h(m)
-     &\eqd& \sum_k \fh(k) \Rxy(m-k)
-   \\&=&    \sum_k \fh(k) \E\left[\rvx(n+m-k) \rvy^\ast(n) \right]
-   \\&=&    \E\left[\rvy^\ast(n) \sum_k \fh(k) \rvx(n+m-k)    \right]
-   \\&=&    \E\left[\rvy^\ast(n) \rvy(n+m) \right]
-   \\&=&    \E\left[ \rvy(n+m) \rvy^\ast(n)\right]
-   \\&\eqd& \Ryy(m)
+  \Ryy(m)
+     &\eqd Ryy(0,m)
+     && \text{by definition of $\Ryy(m)$}
+     && \text{\xref{def:Rxx_wss}}
+   \\&= \Rxy(0,m)\conv \fh(m) \eqd \sum_{k\in\Z} \fh(k) \Rxy(0-k,m)
+     && \text{by \prefp{thm:Rxyh}}
+   \\&\eqd \Rxy(m)\conv \fh^\ast(m) \eqd \sum_{k\in\Z} \fh^\ast(k) \Rxy(m-k) 
+     && \text{by definition of $\Rxy(m)$}
+     && \text{\xref{def:Rxx_wss}}
+\\
+\\
+   \Rxx(m) \conv \fh^\ast(-m)
+     &\eqd \sum_{k\in\Z} \fh^\ast(-k) \Rxx(m-k)
+     && \text{by definition of \ope{convolution}}
+     && \text{\xref{def:dsp_conv}}
+   \\&\eqd \sum_{k\in\Z} \fh^\ast(-k) \pE\brs{\rvx(n) \rvx^\ast(n-m+k)}
+     && \text{by definition of $\Rxx$}
+     && \text{\xref{def:Rxx_wss}}
+   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(-k) \rvx(n) \rvx^\ast(n-m+k)      }
+     && \text{by \prope{linear} property of $\pE$}
+     && \text{\xref{thm:pE}}
+   \\&=    \pE\brs{\rvx(n) \sum_{k\in\Z} \fh^\ast(-k)  \rvx^\ast(n-m+k)      }
+   \\&=    \pE\brs{\rvx(n) \sum_{k^\prime\in\Z} \fh^\ast(k^\prime)  \rvx^\ast(n-m-k^\prime)}
+     && \text{where $k^\prime\eqd-k$}
+   \\&\eqd \pE\brs{\rvx(n) \brp{\fh^\ast(n) \conv \rvx^\ast(n-m)}}
+     && \text{by definition of \ope{convolution}}
+     && \text{\xref{def:dsp_conv}}
+   \\&=    \pE\brs{\rvx(n) \rvy^\ast(n-m)}
+     && \text{by \prope{LTI} hypothesis}
+     && 
+   \\&\eqd \Rxy(m)
+     && \text{by definition of $\Rxy$}
+     && \text{\xref{def:Rxx_wss}}
+\\
+\\
+   \Rxy(m) \conv \fh(m)
+     &\eqd \sum_{k\in\Z} \fh(k) \Rxy(m-k)
+     && \text{by definition of \ope{convolution}}
+     && \text{\xref{def:dsp_conv}}
+   \\&=    \sum_{k\in\Z} \fh(k) \E\brs{\rvx(n+m-k) \rvy^\ast(n)}
+     && \text{by definition of $\Rxy$}
+     && \text{\xref{def:Rxy_wss}}
+   \\&=    \pE\brs{\rvy^\ast(n) \sum_{k\in\Z}\fh(k) \rvx(n+m-k)}
+     && \text{by \prope{linear} property of $\pE$}
+     && \text{\xref{thm:pE}}
+   \\&=    \pE\brs{\rvy^\ast(n) \brp{\fh(n)\conv\rvy(n+m)} }
+     && \text{by definition of \ope{convolution}}
+     && \text{\xref{def:dsp_conv}}
+   \\&=    \pE\brs{\rvy^\ast(n) \rvy(n+m) }
+     && \text{by \prope{LTI} hypothesis}
+     && 
+   \\&=    \pE\brs{ \rvy(n+m) \rvy^\ast(n)}
+     && \text{by \prope{commutative} prop.}  % of $\fieldR$
+     && \text{\ifxref{algebra}{def:field}}
+   \\&\eqd \Ryy(m)
+     && \text{by definition of $\Ryy$}
+     && \text{\xref{def:Rxx_wss}}
 \\
 \\
    \Ryy(m)
-     &=& \Rxy(m) \conv h(m)
-   \\&=& \Rxx(m) \conv h^\ast(-m) \conv h(m)
-   \\&=& \Rxx(m) \conv h(m)  \conv h^\ast(-m)
-\\
-\\
-  \Sxy(z)
-     &\eqd& \opZ \Rxy(m)
-   \\&\eqd& \sum_m \Rxy(m) z^{-m}
-   \\&=&    \sum_m \left[ \Rxx(m) \conv h^\ast(-m) \right] z^{-m}
-   \\&=&    \sum_m \left[ \sum_k h^\ast(-k) \Rxx(m-k)  \right] z^{-m}
-   \\&=&    \sum_k h^\ast(-k) \sum_m \Rxx(m-k)z^{-m}
-   \\&=&    \sum_k h^\ast(-k) \sum_j \Rxx(j)z^{-(j+k)}
-            \hspace{3em}\mbox{ where $j=m-k\iff m=j+k$}
-   \\&=&    \sum_k h^\ast(-k) z^{-k}   \sum_j \Rxx(j)z^{-j}
-   \\&=&    \sum_k h^\ast(k) z^{-(-k)}   \sum_j \Rxx(j)z^{-j}
-   \\&=&    \left[\sum_k h(k) \left(\frac{1}{z^\ast}\right)^{-k} \right]^\ast  \sum_j \Rxx(j)z^{-j}
-   \\&\eqd& \Zh^\ast\left(\frac{1}{z^\ast}\right) \Sxx(z)
-\\
-\\
-   \Syy(z)
-     &\eqd& \opZ \Ryy(m)
-   \\&\eqd& \sum_m \Ryy(m) z^{-m}
-   \\&=&    \sum_m \left[ \Rxy(m) \conv h(m) \right] z^{-m}
-   \\&=&    \sum_m \left[ \sum_k h(k) \Rxy(m-k)  \right] z^{-m}
-   \\&=&    \sum_k h(k) \sum_m \Rxy(m-k) z^{-m}
-   \\&=&    \sum_k h(k) \sum_m \Rxy(j) z^{-(j+k)}
-            \hspace{3em}\mbox{ where $j=m-k\iff m=j+k$}
-   \\&=&    \sum_k h(k)z^{-k}   \sum_m \Rxy(j) z^{-j}
-   \\&\eqd& \Z\Zh(z) \Sxy(z)
-\\
-\\
-   \Syy(z)
-     &=& \Z\Zh(z) \Sxy(z)
-   \\&=& \Z\Zh(z) \Zh^\ast\left(\frac{1}{z^\ast}\right) \Sxx(z)
-\end{eqnarray*}
+     &= \Rxy(m) \conv\fh(m)
+     && \text{by previous result}
+   \\&= \Rxx(m) \conv\fh^\ast(-m) \conv \fh(m)
+     && \text{by previous result}
+   \\&= \Rxx(m) \conv\fh(m)  \conv \fh^\ast(-m)
+\end{align*}
 \end{proof}
 
+%---------------------------------------
+\begin{definition}
+\label{def:d-psd}
+%---------------------------------------
+Let $\rvx(n)$ and $\rvy(n)$ be WSS random processes
+with auto-correlation and cross-correlation
+$\Rxx(m), \Ryy(m), \Rxy(m),$ and $\Ryx(m)$.
+Let $\opZ$ be the \ope{Z-transform operator}\ifsxref{dsp}{def:opZ}.
+\\
+\defbox{\begin{array}{MMrclcl}
+   The \opd{power spectral density} & (\opd{PSD}) of $\vx$ is           & \Sxx(z) &\eqd& \opZ{\Rxx(m)} &\eqd& \ds \sum_{m\in\Z} \Rxx(m) z^{-m}\\
+   The \opd{cross spectral density} & (\opd{CSD}) of $\vx$ and $\vy$ is & \Sxy(z) &\eqd& \opZ{\Rxy(m)} &\eqd& \ds \sum_{m\in\Z} \Rxy(m) z^{-m}
+\end{array}}
+\end{definition}
 
 %---------------------------------------
 \begin{theorem}
-\index{conjugate symmetric}
+\footnote{
+  \citerp{papoulis}{323}
+  }
 %---------------------------------------
-Let $\rvx:\Z\to\C$ be a WSS random process with
-auto-correlation $\Rxx(m)$.
-Then $\Rxx(m)$ is {\em conjugate symmetric} such that
-\thmbox{ \Rxx^\ast(-m) = \Rxx(m). }
+Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$, 
+\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+\thmbox{
+  \brb{\begin{array}{FMD}
+    (A).& $\fh$ is \prope{linear time invariant} & and\\
+    (B).& $\rvx$ and $\rvy$ are \prope{wide sense stationary}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rclcl}
+       (1).&\Sxy(z) &=& \ds \Sxx(z) \Zh^\ast\brp{\frac{1}{z^\ast}}
+     \\(2).&\Syy(z) &=& \ds \Sxy(z) \Zh(z)
+     \\(3).&\Syy(z) &=& \ds \Sxx(z) \Zh(z) \Zh^\ast\brp{\frac{1}{z^\ast}}
+  \end{array}}
+  }
 \end{theorem}
 \begin{proof}
-\begin{eqnarray*}
-   \Rxx^\ast(-m)
-     &\eqd& \left( \Eb{\rvx(n-m)\rvx^\ast(n)}\right)^\ast
-   \\&=&           \Eb{\rvx^\ast(n-m)\rvx(n)}
-   \\&=&           \Eb{\rvx(n)\rvx^\ast(n-m)}
-   \\&=&           \Eb{\rvx(n+m)\rvx^\ast(n)}
-   \\&\eqd&        \Rxx(m)
-\end{eqnarray*}
+\begin{align*}
+  \Sxy(z)
+     &\eqd \opZ \Rxy(m)
+   \\&\eqd \sum_{m\in\Z}\Rxy(m) z^{-m}
+   \\&=    \sum_{m\in\Z}\left[ \Rxx(m) \conv h^\ast(-m) \right] z^{-m}
+   \\&=    \sum_{m\in\Z}\left[ \sum_{k\in\Z}h^\ast(-k) \Rxx(m-k)  \right] z^{-m}
+   \\&=    \sum_{k\in\Z}h^\ast(-k) \sum_{m\in\Z}\Rxx(m-k)z^{-m}
+   \\&=    \sum_{k\in\Z}h^\ast(-k) \sum_{j\in\Z}\Rxx(j)z^{-(j+k)}
+           \hspace{3em}\mbox{ where $j=m-k\iff m=j+k$}
+   \\&=    \sum_{k\in\Z}h^\ast(-k) z^{-k}   \sum_{j\in\Z}\Rxx(j)z^{-j}
+   \\&=    \sum_{k\in\Z}h^\ast(k) z^{-(-k)}   \sum_{j\in\Z}\Rxx(j)z^{-j}
+   \\&=    \left[\sum_{k\in\Z}h(k) \left(\frac{1}{z^\ast}\right)^{-k} \right]^\ast  \sum_{j\in\Z}\Rxx(j)z^{-j}
+   \\&\eqd \Zh^\ast\left(\frac{1}{z^\ast}\right) \Sxx(z)
+\\
+\\
+   \Syy(z)
+     &\eqd \opZ \Ryy(m)
+   \\&\eqd \sum_{m\in\Z}\Ryy(m) z^{-m}
+   \\&=    \sum_{m\in\Z}\left[ \Rxy(m) \conv h(m) \right] z^{-m}
+   \\&=    \sum_{m\in\Z}\left[ \sum_{k\in\Z}h(k) \Rxy(m-k)  \right] z^{-m}
+   \\&=    \sum_{k\in\Z}h(k) \sum_{m\in\Z}\Rxy(m-k) z^{-m}
+   \\&=    \sum_{k\in\Z}h(k) \sum_{m\in\Z}\Rxy(j) z^{-(j+k)}
+           \hspace{3em}\mbox{ where $j=m-k\iff m=j+k$}
+   \\&=    \sum_{k\in\Z}h(k)z^{-k}   \sum_{m\in\Z}\Rxy(j) z^{-j}
+   \\&\eqd \Z\Zh(z) \Sxy(z)
+\\
+\\
+   \Syy(z)
+     &= \Z\Zh(z) \Sxy(z)
+   \\&= \Z\Zh(z) \Zh^\ast\left(\frac{1}{z^\ast}\right) \Sxx(z)
+\end{align*}
 \end{proof}
-
-
-
-
 
 %---------------------------------------
 \subsection{Whitening}
 \index{whitening filter}
 \label{sec:d-whiten}
 %---------------------------------------
-%---------------------------------------
-\begin{definition}
-\index{rational expression}
-\index{poles}
-\index{zeros}
-%---------------------------------------
-A \textbf{rational expression} $\fp(z)a$ is a polynomial divided by a polynomial
-such that
-\defbox{
-   \fp(z) = \frac{\ds\sum_{n=0}^N b_n z^{-n}}{\ds\sum_{n=0}^M a_n z^{-n}}.
-}
-The \textbf{zeros} of a rational expression are the roots of its numerator polynomial. \\
-The \textbf{poles} of a rational expression are the roots of its denominator polynomial.
-\end{definition}
-
-
-
 \begin{figure}[h]
   \centering
   \includegraphics{graphics/pz_minphase.pdf}
