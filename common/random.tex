@@ -1015,11 +1015,10 @@ then the following are true:
 \label{def:Ryynm}
 \label{def:Rxynm}
 %---------------------------------------
-Let $\rvx(t)$ and $\rvy(t)$ be random processes.\\
+Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
 \defbox{\begin{array}{MlMlc>{\ds}l}
-     The \fnctd{mean}                     & \pmeanx(n) & of $\rvx(n)$              is & \pmeanx(n)&\eqd& \pE\brs{\rvx(n)}                    %& \text{(\prope{mean functional})} \\
-   \\The \fnctd{autocorrelation function} & \Rxx(n,m)  & of $\rvx(n)$              is & \Rxx(n,m) &\eqd& \pE\brs{\rvx(n)\rvx^\ast(n+m)}        %& \text{(\prope{auto-correlation bilinear functional})} \\
-   \\The \fnctd{crosscorrelation}         & \Rxy(n,m)  & of $\rvx(n)$ and $\rvy(n)$is & \Rxy(n,m) &\eqd& \pE\brs{\rvx(n)\rvy^\ast(n+m)}        %& \text{(\prope{cross-correlation bilinear functional})} \\
+     The \fnctd{autocorrelation}  & \Rxx(n,m)  & of $\rvx(n)$               is & \Rxx(n,m) &\eqd& \pE\brs{\rvx(n)\rvx^\ast(n+m)}        %& \text{(\prope{auto-correlation bilinear functional})} \\
+   \\The \fnctd{crosscorrelation} & \Rxy(n,m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(n,m) &\eqd& \pE\brs{\rvx(n)\rvy^\ast(n+m)}        %& \text{(\prope{cross-correlation bilinear functional})} \\
   %\\The \fnctd{autocorrelation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
 \end{array}}
 \end{definition}
@@ -1029,9 +1028,9 @@ Let $\rvx(t)$ and $\rvy(t)$ be random processes.\\
 %---------------------------------------
 %---------------------------------------
 \begin{theorem}
-\label{thm:Rxx}
-\label{thm:Ryy}
-\label{thm:Rxy}
+\label{thm:Rxxnm}
+\label{thm:Ryynm}
+\label{thm:Rxynm}
 %---------------------------------------
 \thmbox{\begin{array}{rcl}
    \Rxx(n,m) &=& \Rxx^\ast(n+m,-m)\\ 
@@ -1045,12 +1044,14 @@ Let $\rvx(t)$ and $\rvy(t)$ be random processes.\\
      && \text{by definition of $\Rxy(n,m)$}
      && \text{\xref{def:Rxynm}}
    \\&= \pE\brs{\rvy^\ast(n+m) \rvx(n)}
-     && \text{by \prope{commutative} property of $\fieldR$}
+     && \text{by \prope{commutative} property of $\fieldC$}
      && \text{\ifxref{algebra}{def:field}}
    \\&= \brp{\pE\brs{\rvy(n+m) \rvx^\ast(n)}}^\ast
-     && \text{by \prope{conjugate symmetric} property of $\inprodn$}
-     && \text{\xref{def:inprod}}
+     && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
+     && \text{\xref{def:staralg}}
    \\&= \brp{\pE\brs{\rvy(n+m) \rvx^\ast(n+m-m)}}^\ast
+     && \text{by \prope{additive identity} property of $\fieldR$}
+     && \text{\ifxref{algebra}{def:field}}
    \\&\eqd \Ryx^\ast(n+m,-m)
      && \text{by definition of $\Rxy$}
      && \text{\xref{def:Rxy}}
@@ -1073,7 +1074,7 @@ Let $\rvx(t)$ and $\rvy(t)$ be random processes.\\
   \put(-100,  10 ){\makebox (100, 40)[b]{$\rvx(n)$}  }
   \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(n,m)$}  }
   \put(-100,   0 ){\vector  (  1,  0){100}             }
-  \put(   0, -50 ){\framebox(100,100){$\conv h(n)$}  }
+  \put(   0, -50 ){\framebox(100,100){$\conv\fh(n)$}  }
   \put( 100,   0 ){\vector  (  1,  0){100}             }
   \put( 110,   0 ){\makebox (100, 40)[lb]{$\ds\rvy(n)=\fh(n)\conv\rvx(n)=\sum_k\fh(k)\rvx(n-k)$}  }
   \put( 100, -50 ){\makebox (100, 40)[t]{$\Ryy(n,m)$}  }
@@ -1107,83 +1108,89 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \\\qquad$
   \brb{\begin{array}{Frc>{\ds}lc>{\ds}lD}
        (A).&\Rxy(n,m) &=& \Rxx(n,m)\conv \fh^\ast(m) &\eqd& \sum_{k\in\Z} \fh^\ast(k) \Rxx(n,m-k) & and 
-     \\(B).&\Ryy(n,m) &=& \Rxy(n,m)\conv \fh(n)      &\eqd& \sum_{k\in\Z} \fh(k)      \Rxy(n-k,m) & and 
-     \\(C).&\Ryy(n,m) &=& \Rxx(n,m)\conv \fh(n)\conv h^\ast(m)                                          
-                      &\eqd& \mc{2}{l}{\ds\sum_{p\in\Z} \sum_{k\in\Z} \fh(k)h^\ast(p) \Rxx(n-k,m-p)}
+     \\(B).&\Ryy(n,m) &=& \Rxy(n,m)\conv \fh(m)      &\eqd& \sum_{k\in\Z} \fh(k)      \Rxy(n,m-k) & and 
+     \\(C).&\Ryy(n,m) &=& \Rxx(n,m)\conv \fh(m)\conv h^\ast(m)
+                      &\eqd& \mc{2}{l}{\ds\sum_{p\in\Z} \sum_{k\in\Z} \fh(k)h^\ast(p) \Rxx(n,m-p-k)}
   \end{array}}$
   }
 \end{theorem}
 
 \begin{proof}
-{\begin{align*}
+\begin{align*}
    \Rxy(n,m)
-     &\eqd \pE\brs{\rvx(n) \rvy^\ast(m) }
-     && \text{by definition of $\Rxy$}
-     && \text{\xref{def:Rxy}}
-   \\&= \pE\brs{\rvx(n) \brp{\fh\conv\rvx}^\ast(m)}
+     &\eqd \pE\brs{\rvx(n) \rvy^\ast(n+m) }
+     && \text{by definition of $\Rxy(n,m)$}
+     && \text{\xref{def:Rxynm}}
+   \\&= \pE\brs{\rvx(n) \brp{\fh\conv\rvx}^\ast(n+m)}
      && \text{by \prope{LTI} hypothesis}
-   \\&\eqd \pE\brs{\rvx(n) \brp{ \sum_{k\in\Z} h(k) \rvx(m-k) }^\ast }
+   \\&\eqd \pE\brs{\rvx(n) \brp{ \sum_{k\in\Z} h(k) \rvx(n+m-k) }^\ast }
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
-   \\&=    \pE\brs{\rvx(n) \sum_{k\in\Z} \fh^\ast(k) \rvx^\ast(m-k)  }
+   \\&=    \pE\brs{\rvx(n) \sum_{k\in\Z} \fh^\ast(k) \rvx^\ast(n+m-k)  }
      && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
      && \text{\xref{def:staralg}}
-   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvx(n)\rvx^\ast(m-k)  }
+   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvx(n)\rvx^\ast(n+m-k)  }
      && \text{by \prope{distributive} property of $\fieldC$}
      && \text{\ifxref{algebra}{def:field}}
-   \\&=    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx(n) \rvx^\ast(m-k) }
+   \\&= \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx(n) \rvx^\ast(n+m-k) }
      && \text{by \prope{linear} property of $\pE$}
      && \text{\xref{thm:pE}}
    \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(n,m-k)
-     && \text{by definition of $\Rxx$}
-     && \text{\xref{def:Rxx}}
+     && \text{by definition of $\Rxx(n,m)$}
+     && \text{\xref{def:Rxxnm}}
    \\&\eqd \Rxx(n,m) \conv \fh^\ast(m)
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
    \\
    \\
    \Ryy(n,m)
-     &\eqd \pE\brs{\rvy(n) \rvy^\ast(m)  }
-     && \text{by definition of $\Ryy$}
-     && \text{\xref{def:Ryy}}
-   \\&=    \pE\brs{\brp{\sum_{k\in\Z}\fh(k) \rvx(n-k)} \rvy^\ast(m)  }
+     &\eqd \pE\brs{\rvy(n) \rvy^\ast(n+m) }
+     && \text{by definition of $\Rxy(n,m)$}
+     && \text{\xref{def:Rxynm}}
+   \\&= \pE\brs{\rvy(n) \brp{\fh\conv\rvy}^\ast(n+m)}
      && \text{by \prope{LTI} hypothesis}
-   \\&=    \pE\brs{\brp{\sum_{k\in\Z}\fh(k) \rvx(n-k) \rvy^\ast(m)}  }
+   \\&\eqd \pE\brs{\rvy(n) \brp{ \sum_{k\in\Z} h(k) \rvy(n+m-k) }^\ast }
+     && \text{by definition of \ope{convolution}}
+     && \text{\xref{def:dsp_conv}}
+   \\&=    \pE\brs{\rvy(n) \sum_{k\in\Z} \fh^\ast(k) \rvy^\ast(n+m-k)  }
+     && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
+     && \text{\xref{def:staralg}}
+   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvy(n)\rvy^\ast(n+m-k)  }
      && \text{by \prope{distributive} property of $\fieldC$}
-     && \text{\xref{def:field}}
-   \\&=    \sum_{k\in\Z}\fh(k) \E\brs{\rvx(n-k)\rvy^\ast(m)}
+     && \text{\ifxref{algebra}{def:field}}
+   \\&=    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvy(n) \rvy^\ast(n+m-k) }
      && \text{by \prope{linear} property of $\pE$}
      && \text{\xref{thm:pE}}
-   \\&=    \sum_{k\in\Z}\fh(k) \Rxy(n-k,m)
-     && \text{by definition of $\Rxy$}
-     && \text{\xref{def:Rxy}}
-   \\&\eqd  \Rxy(n,m)\conv \fh(n)
+   \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Ryy(n,m-k)
+     && \text{by definition of $\Ryy(n,m)$}
+     && \text{\xref{def:Ryynm}}
+   \\&\eqd \Ryy(n,m) \conv \fh^\ast(m)
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
+   \\
+   \\
+   \Ryy(n,m)
+     &= \Rxy(n,m)\conv \fh(m)
+     && \text{by previous result}
+   \\&= \brs{\Rxx(n,m) \conv \fh^\ast(m)}\conv \fh(m)
+     && \text{by previous result}
+   \\&= \Rxx(n,m) \conv \fh(m) \conv \fh^\ast(m)
+     && \text{by previous result}
 \\
 \\
    \Ryy(n,m)
-   \\&= \Rxy(n,m)\conv \fh(n)
+     &= \Rxx(n,m)\conv\fh(m) \conv \fh^\ast(m)
      && \text{by previous result}
-   \\&= \brs{\Rxx(n,m) \conv \fh^\ast(m)}\conv \fh(n)
-     && \text{by previous result}
-   \\&= \Rxx(n,m) \conv \fh(n) \conv \fh^\ast(m)
-     && \text{by previous result}
-\\
-\\
-   \Ryy(n,m)
-     &= \Rxx(n,m)\conv\fh(n) \conv \fh^\ast(m)
-     && \text{by previous result}
-   \\&\eqd \sum_{p\in\Z}\fh^\ast(p) \brs{\Rxx(n,m-p)\conv\fh(n)}
+   \\&\eqd \sum_{p\in\Z}\fh^\ast(p) \brs{\Rxx(n,m-p)\conv\fh(m)}
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
-   \\&= \sum_{p\in\Z}\fh^\ast(p) \sum_{k\in\Z}\fh(k) \Rxx(n-k,m-p)
+   \\&= \sum_{p\in\Z}\fh^\ast(p) \sum_{k\in\Z}\fh(k) \Rxx(n,m-p-k)
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
-   \\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(k) \fh^\ast(p) \Rxx(n-k,m-p)
+   \\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(k) \fh^\ast(p) \Rxx(n,m-p-k)
      && \text{by \prope{distributive} property of $\fieldC$}
      && \text{\xref{def:field}}
-\end{align*}}
+\end{align*}
 \end{proof}
 
 
@@ -1211,8 +1218,8 @@ Let $\rvx(n)$ be a random process with \fncte{mean} $\pmeanx(n)$ and
 %---------------------------------------
 \begin{definition}
 \label{def:mean_wss}
-\label{def:Rxx_wss}
-\label{def:Rxy_wss}
+\label{def:Rxxm}
+\label{def:Rxym}
 %---------------------------------------
 Let $\rvx(n)$ be a random process with \fncte{mean} $\pmeanx(n)$ and
 \fncte{autocorrelation} $\Rxx(n,n+m)$.\footnote{
@@ -1257,26 +1264,22 @@ and $\Rxy$    the \fncte{cross-correlation} of $\rvx$ and $\rvy$.
 \begin{align*}
   \Rxy(m)
      &\eqd \Rxy(0,m)
-     && \text{by definition of $\Rxy:\Z\to\C$}
-     && \text{\xref{def:Rxy_wss}}
-   \\&\eqd \pE\brs{\rvx(0) \rvy^\ast(m)}
-     && \text{by definition of $\Rxy:\Z^2\to\C$}
-     && \text{\xref{def:Rxy}}
-   \\&\eqd \Rxy(0,0+m)
-   \\&=    \Ryx^\ast(0+m,0)
+     && \text{by definition of $\Rxy(m)$}
+     && \text{\xref{def:Rxym}}
+   \\&= \Ryx^\ast(0+m,-m)
      && \text{by \prope{non-WSS result}}
-     && \text{\xref{thm:Rxy}}
-   \\&\eqd \brp{\pE\brs{\rvy(m) \rvx^\ast(0)}}^\ast
-   \\&=    \brp{\pE\brs{\rvy(m-m) \rvx^\ast(0-m)}}^\ast
+     && \text{\xref{thm:Rxynm}}
+   \\&\eqd \brp{\pE\brs{\rvy(0+m) \rvx^\ast(0+m-m)}}^\ast
+   \\&=    \brp{\pE\brs{\rvy(m-m) \rvx^\ast(0+m-m-m)}}^\ast
      && \text{by \prope{WSS} hypothesis}
      && \text{\xref{def:wss}}
-   \\&=    \brp{\pE\brs{\rvy(0) \rvx^\ast(0-m)}}^\ast
+   \\&=    \brp{\pE\brs{\rvy(0) \rvx^\ast(-m)}}^\ast
    \\&\eqd \Ryx^\ast(0,-m)
-     && \text{by definition of $\Rxy:\Z^2\to\C$}
+     && \text{by definition of $\Rxy(m,n)$}
      && \text{\xref{def:Rxy}}
    \\&\eqd \Ryx^\ast(-m)
-     && \text{by definition of $\Rxy:\Z^2\to\C$}
-     && \text{\xref{def:Rxy_wss}}
+     && \text{by definition of $\Rxy(m)$}
+     && \text{\xref{def:Rxym}}
    \\
    \\
    \Rxx(m)
@@ -1299,7 +1302,7 @@ and $\Rxy$    the \fncte{cross-correlation} of $\rvx$ and $\rvy$.
   \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(m)$}  }
   \put(-100, -50 ){\makebox (100, 40)[b]{$\Sxx(z)$}  }
   \put(-100,   0 ){\vector  (  1,  0){100}             }
-  \put(   0, -50 ){\framebox(100,100){$\conv h(n)$}  }
+  \put(   0, -50 ){\framebox(100,100){$\conv\fh(n)$}  }
   \put( 100,   0 ){\vector  (  1,  0){100}             }
   \put( 100,  10 ){\makebox (100, 40)[b]{$\rvy(n)$}  }
   \put( 100, -50 ){\makebox (100, 40)[t]{$\Ryy(m)$}  }
@@ -1335,8 +1338,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \brb{\begin{array}{Frc>{\ds}lc>{\ds}lD}
        (1).&\Rxy(m) &=& \Rxx(m)\conv \fh^\ast(m)            &\eqd& \sum_{k\in\Z} \fh^\ast(k) \Rxx(m-k)  & and 
      \\(2).&\Ryy(m) &=& \Rxy(m)\conv \fh(m)                 &\eqd& \sum_{k\in\Z} \fh(k) \Rxy(m-k)        & and 
-     \\(3).&\Ryy(m) &=& \Rxx(m)\conv \fh(m)\conv h^\ast(-m) &\eqd& %\mc{2}{l}{\ds\sum_{j\in\Z}\sum_{k\in\Z}\fh^\ast(-j)\fh(k-j) \Rxx(m-k-j)}
-                                                                   \mc{2}{l}{\ds\sum_{p\in\Z}\sum_{k\in\Z}\fh(k)h^\ast(p) \Rxx(-k,m-p)}
+     \\(3).&\Ryy(m) &=& \Rxx(m)\conv \fh(m)\conv\fh^\ast(m) &\eqd& \mc{2}{l}{\ds\sum_{p\in\Z}\sum_{k\in\Z}\fh(k)h^\ast(p) \Rxx(m-p-k)}
   \end{array}}
   $
   }
@@ -1346,13 +1348,13 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \Rxy(m)
      &\eqd \Rxy(0,m)
      && \text{by definition of $\Rxy(m)$}
-     && \text{\xref{def:Rxy_wss}}
+     && \text{\xref{def:Rxym}}
    \\&= \Rxx(0,m)\conv \fh^\ast(m) %\eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(0,m-k) 
      && \text{by \prope{non-WSS} case}
      && \text{\xref{thm:Rxyh}}
    \\&\eqd \Rxx(m)\conv \fh^\ast(m) 
      && \text{by definition of $\Rxx(m)$}
-     && \text{\xref{def:Rxx_wss}}
+     && \text{\xref{def:Rxxm}}
    \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(m-k) 
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
@@ -1361,13 +1363,13 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \Ryy(m)
      &\eqd Ryy(0,m)
      && \text{by definition of $\Ryy(m)$}
-     && \text{\xref{def:Rxx_wss}}
+     && \text{\xref{def:Rxxm}}
    \\&= \Rxy(0,m)\conv \fh(m) 
      && \text{by \prope{non-WSS} case}
      && \text{\xref{thm:Rxyh}}
    \\&\eqd \Rxy(m)\conv \fh(m) 
      && \text{by definition of $\Rxy(m)$}
-     && \text{\xref{def:Rxx_wss}}
+     && \text{\xref{def:Rxxm}}
    \\&\eqd \sum_{k\in\Z} \fh(k) \Rxy(m-k) 
 \\
 \\
@@ -1382,69 +1384,14 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \Ryy(m) 
      &\eqd \Ryy(0,m) 
      && \text{by definition of $\Ryy(m)$}
-     && \text{\xref{def:Rxx_wss}}
+     && \text{\xref{def:Rxxm}}
    \\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(k)h^\ast(p) \Rxx(0-k,m-p)
      && \text{by \prope{non-WSS} case}
      && \text{\xref{thm:Rxyh}}
-   \\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(k)h^\ast(p) \Rxx(-k,m-p)
+   \\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(k)h^\ast(p) \Rxx(m-p-k)
+     && \text{by definition of $\Rxx(m)$}
+     && \text{\xref{def:Rxxm}}
 \end{align*}
-
-%20181110%\begin{align*}
-%20181110%   \Rxx(m) \conv \fh^\ast(-m)
-%20181110%     &\eqd \sum_{k\in\Z} \fh^\ast(-k) \Rxx(m-k)
-%20181110%     && \text{by definition of \ope{convolution}}
-%20181110%     && \text{\xref{def:dsp_conv}}
-%20181110%   \\&\eqd \sum_{k\in\Z} \fh^\ast(-k) \pE\brs{\rvx(n) \rvx^\ast(n-m+k)}
-%20181110%     && \text{by definition of $\Rxx$}
-%20181110%     && \text{\xref{def:Rxx_wss}}
-%20181110%   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(-k) \rvx(n) \rvx^\ast(n-m+k)      }
-%20181110%     && \text{by \prope{linear} property of $\pE$}
-%20181110%     && \text{\xref{thm:pE}}
-%20181110%   \\&=    \pE\brs{\rvx(n) \sum_{k\in\Z} \fh^\ast(-k)  \rvx^\ast(n-m+k)      }
-%20181110%   \\&=    \pE\brs{\rvx(n) \sum_{k^\prime\in\Z} \fh^\ast(k^\prime)  \rvx^\ast(n-m-k^\prime)}
-%20181110%     && \text{where $k^\prime\eqd-k$}
-%20181110%   \\&\eqd \pE\brs{\rvx(n) \brp{\fh^\ast(n) \conv \rvx^\ast(n-m)}}
-%20181110%     && \text{by definition of \ope{convolution}}
-%20181110%     && \text{\xref{def:dsp_conv}}
-%20181110%   \\&=    \pE\brs{\rvx(n) \rvy^\ast(n-m)}
-%20181110%     && \text{by \prope{LTI} hypothesis}
-%20181110%     && 
-%20181110%   \\&\eqd \Rxy(m)
-%20181110%     && \text{by definition of $\Rxy$}
-%20181110%     && \text{\xref{def:Rxx_wss}}
-%20181110%\\
-%20181110%\\
-%20181110%   \Rxy(m) \conv \fh(m)
-%20181110%     &\eqd \sum_{k\in\Z} \fh(k) \Rxy(m-k)
-%20181110%     && \text{by definition of \ope{convolution}}
-%20181110%     && \text{\xref{def:dsp_conv}}
-%20181110%   \\&=    \sum_{k\in\Z} \fh(k) \E\brs{\rvx(n+m-k) \rvy^\ast(n)}
-%20181110%     && \text{by definition of $\Rxy$}
-%20181110%     && \text{\xref{def:Rxy_wss}}
-%20181110%   \\&=    \pE\brs{\rvy^\ast(n) \sum_{k\in\Z}\fh(k) \rvx(n+m-k)}
-%20181110%     && \text{by \prope{linear} property of $\pE$}
-%20181110%     && \text{\xref{thm:pE}}
-%20181110%   \\&=    \pE\brs{\rvy^\ast(n) \brp{\fh(n)\conv\rvy(n+m)} }
-%20181110%     && \text{by definition of \ope{convolution}}
-%20181110%     && \text{\xref{def:dsp_conv}}
-%20181110%   \\&=    \pE\brs{\rvy^\ast(n) \rvy(n+m) }
-%20181110%     && \text{by \prope{LTI} hypothesis}
-%20181110%     && 
-%20181110%   \\&=    \pE\brs{ \rvy(n+m) \rvy^\ast(n)}
-%20181110%     && \text{by \prope{commutative} prop.}  % of $\fieldR$
-%20181110%     && \text{\ifxref{algebra}{def:field}}
-%20181110%   \\&\eqd \Ryy(m)
-%20181110%     && \text{by definition of $\Ryy$}
-%20181110%     && \text{\xref{def:Rxx_wss}}
-%20181110%\\
-%20181110%\\
-%20181110%   \Ryy(m)
-%20181110%     &= \Rxy(m) \conv\fh(m)
-%20181110%     && \text{by previous result}
-%20181110%   \\&= \Rxx(m) \conv\fh^\ast(-m) \conv \fh(m)
-%20181110%     && \text{by previous result}
-%20181110%   \\&= \Rxx(m) \conv\fh(m)  \conv \fh^\ast(-m)
-%20181110%\end{align*}
 \end{proof}
 
 %---------------------------------------
@@ -1478,9 +1425,9 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \end{array}}
   \implies
   \brb{\begin{array}{FrclD}
-       (1).&\Sxy(z) &=& \ds \Sxx(z) \Zh^\ast\brp{\frac{1}{z^\ast}} & and 
-     \\(2).&\Syy(z) &=& \ds \Sxy(z) \Zh(z)                         & and 
-     \\(3).&\Syy(z) &=& \mc{2}{l}{\ds \Sxx(z) \Zh(z) \Zh^\ast\brp{\frac{1}{z^\ast}}}
+       (1).&\Sxy(z) &=& \ds \Sxx(z) \Zh^\ast\brp{z^\ast} & and 
+     \\(2).&\Syy(z) &=& \ds \Sxy(z) \Zh(z)               & and 
+     \\(3).&\Syy(z) &=& \mc{2}{l}{\ds \Sxx(z) \Zh(z) \Zh^\ast\brp{z^\ast}}
   \end{array}}
   }
 \end{theorem}
@@ -1490,48 +1437,117 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
      &\eqd \opZ \Rxy(m)
     && \text{by definition of $\Sxy(z)$}
     && \text{\xref{def:csd}}
-   \\&= \opZ \brs{\Rxx(m) \conv \fh(m)}
+   \\&= \opZ \brs{\Rxx(m) \conv \fh^\ast(m)}
     && \text{by \prefp{thm:Rxyh}}
-   \\&= \Sxx(z)  \Zh(z)
+   \\&= \brs{\opZ\Rxx(m)}\,\opZ\brs{\fh^\ast(m)}
     && \text{by \thme{convolution theorem}}
     && \text{\xref{thm:conv}}
-\end{align*}
-
-\begin{align*}
-%  \Sxy(z)
-%     &\eqd \opZ \Rxy(m)
-%    && \text{by definition of $\Sxy(z)$}
-%    && \text{\xref{def:csd}}
-%   \\&\eqd \sum_{m\in\Z}\Rxy(m) z^{-m}
-%    && \text{by definition of $\opZ$}
-%    && \text{\xref{def:opZ}}
-%   \\&=    \sum_{m\in\Z}\brs{ \Rxx(m) \conv h^\ast(-m) } z^{-m}
-%   \\&=    \sum_{m\in\Z}\brs{ \sum_{k\in\Z}h^\ast(-k) \Rxx(m-k)  } z^{-m}
-%   \\&=    \sum_{k\in\Z}h^\ast(-k) \sum_{m\in\Z}\Rxx(m-k)z^{-m}
-%   \\&=    \sum_{k\in\Z}h^\ast(-k) \sum_{j\in\Z}\Rxx(j)z^{-(j+k)}
-%     && \text{where $j=m-k\iff$}
-%     && \text{where $m=j+k$}
-%   \\&=    \sum_{k\in\Z}h^\ast(-k) z^{-k}   \sum_{j\in\Z}\Rxx(j)z^{-j}
-%   \\&=    \sum_{k\in\Z}h^\ast(k) z^{-(-k)}   \sum_{j\in\Z}\Rxx(j)z^{-j}
-%   \\&=    \brs{\sum_{k\in\Z}h(k) \brp{\frac{1}{z^\ast}}^{-k} }^\ast  \sum_{j\in\Z}\Rxx(j)z^{-j}
-%   \\&\eqd \Zh^\ast\brp{\frac{1}{z^\ast}} \Sxx(z)
-%\\
-%\\
-   \Syy(z)
+   \\&= \Sxx(z) \Zh^\ast\brp{z^\ast}
+   \\
+   \\
+  \Syy(z)
      &\eqd \opZ \Ryy(m)
-   \\&\eqd \sum_{m\in\Z}\Ryy(m) z^{-m}
-   \\&=    \sum_{m\in\Z}\brs{ \Rxy(m) \conv h(m) } z^{-m}
-   \\&=    \sum_{m\in\Z}\brs{ \sum_{k\in\Z}h(k) \Rxy(m-k)  } z^{-m}
-   \\&=    \sum_{k\in\Z}h(k) \sum_{m\in\Z}\Rxy(m-k) z^{-m}
-   \\&=    \sum_{k\in\Z}h(k) \sum_{m\in\Z}\Rxy(j) z^{-(j+k)}
-           \hspace{3em}\mbox{ where $j=m-k\iff m=j+k$}
-   \\&=    \sum_{k\in\Z}h(k)z^{-k}   \sum_{m\in\Z}\Rxy(j) z^{-j}
-   \\&\eqd \Z\Zh(z) \Sxy(z)
-\\
-\\
-   \Syy(z)
-     &= \Z\Zh(z) \Sxy(z)
-   \\&= \Z\Zh(z) \Zh^\ast\brp{\frac{1}{z^\ast}} \Sxx(z)
+    && \text{by definition of $\Syy(z)$}
+    && \text{\xref{def:csd}}
+   \\&= \opZ \brs{\Rxy(m) \conv \fh(m)}
+    && \text{by \prefp{thm:Rxyh}}
+   \\&= \brs{\opZ\Rxy(m)}\,\opZ\brs{\fh(m)}
+    && \text{by \thme{convolution theorem}}
+    && \text{\xref{thm:conv}}
+   \\&\eqd \Sxy(z) \Zh(z)
+   \\
+   \\
+  \Syy(z)
+     &= \Sxy(z) \Zh(z)
+     && \text{by previous result}
+   \\&= \Sxx(z) \Zh^\ast\brp{z^\ast} \Zh(z)
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:Swxy}
+%---------------------------------------
+Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$, 
+\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+\corbox{
+  \brb{\begin{array}{FMD}
+    (A).& $\fh$ is \prope{linear time invariant} & and\\
+    (B).& \mc{2}{M}{$\rvx$ and $\rvy$ are \prope{wide sense stationary}}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+       (1).&\Swxy(\omega) &=& \ds \Swxx(\omega) \Fh^\ast(-\omega) & and 
+     \\(2).&\Swyy(\omega) &=& \ds \Swxy(\omega) \Fh(\omega)       & and 
+     \\(3).&\Swyy(\omega) &=& \mc{2}{l}{\ds \Swxx(\omega) \Fh(\omega) \Fh^\ast(-\omega)}
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+   \Swxy(\omega)
+     &= \brlr{\Sxy(z)}_{z=e^{i\omega}}
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
+   \\&= \brlr{\Sxx(z)\Zh^\ast(z)}_{z=e^{i\omega}}
+     && \text{by \prefp{thm:Sxy}}
+   \\&= \Sxx\brp{e^{i\omega}}\Zh^\ast\brp{e^{-i\omega}}
+   \\&= \Swxx(\omega) \Fh^\ast(-\omega)
+   \\
+   \Swyy(\omega)
+     &= \brlr{\Syy(z)}_{z=e^{i\omega}}
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
+   \\&= \brlr{\Sxy(z)\Zh(z)}_{z=e^{i\omega}}
+     && \text{by \prefp{thm:Sxy}}
+   \\&= \Sxy\brp{e^{i\omega}}\Zh\brp{e^{-i\omega}}
+   \\&= \Swxy(\omega) \Fh(\omega)
+   \\
+   \Swyy(\omega)
+     &= \Swxy(\omega) \Fh(\omega)
+     && \text{by previous result}
+   \\&= \Swxx(\omega) \Fh^\ast(-\omega) \Fh(\omega)
+     && \text{by previous result}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:Swxy}
+%---------------------------------------
+Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$, 
+\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+\corbox{
+  \brb{\begin{array}{FMD}
+    (A).& $\fh$ is \prope{linear time invariant} & and\\
+    (B).& $\rvx$ and $\rvy$ are \prope{wide sense stationary} & and\\
+    (C).& $\fh(n)$ is \prope{real-valued}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+       (1).&\Swxy(\omega) &=& \ds \Swxx(\omega) \Fh(\omega) & and 
+     \\(2).&\Swyy(\omega) &=& \ds \Swxy(\omega) \Fh(\omega) & and 
+     \\(3).&\Swyy(\omega) &=& \mc{2}{l}{\ds \Swxx(\omega) \Fh(\omega) \Fh(\omega)}
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+   \Swxy(\omega)
+     &= \Swxx(\omega) \Fh^\ast(-\omega)
+     && \text{by \prefp{cor:Swxy}}
+   \\&= \Swxx(\omega) \Fh(\omega)
+     && \text{by hypothesis (C)}
+   \\
+   \Swyy(\omega)
+     &= \Swxy(\omega) \Fh(\omega)
+     && \text{by \prefp{cor:Swxy}}
+   \\
+   \Swyy(\omega)
+     &= \Swxx(\omega) \Fh^\ast(-\omega) \Fh(\omega)
+     && \text{by \prefp{cor:Swxy}}
+   \\&= \Swxx(\omega) \Fh(\omega) \Fh(\omega)
+     && \text{by hypothesis (C)}
 \end{align*}
 \end{proof}
 
