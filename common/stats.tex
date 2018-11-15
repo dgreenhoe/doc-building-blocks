@@ -42,12 +42,12 @@ the expected value $\pEx\rvX$  of $\rvX$ is {\bf not random}.
 Rather it is a fixed value (like $0$ or $7.9$ or $-2.6$).
 
 On the other hand, eventhough $\pE\rvX$ is {\bf not random},
-note that $\pE(X|Y)$ {\bf is random}.
-This is because $\pE(X|Y)$ is a function of $\rvY$.
+note that $\pE(\rvX|\rvY)$ {\bf is random}.
+This is because $\pE(\rvX|\rvY)$ is a function of $\rvY$.
 That is, once we know that $\rvY$ equals some fixed value $y$
-(like $0$ or $2.7$ or $-5.1$) then $\pE(X|Y=y)$ is also fixed.
+(like $0$ or $2.7$ or $-5.1$) then $\pE(\rvX|\rvY=y)$ is also fixed.
 However, if we don't know the value of $\rvY$,
-then $\rvY$ is still a \fncte{random variable} and the expression $\pE(X|Y)$
+then $\rvY$ is still a \fncte{random variable} and the expression $\pE(\rvX|\rvY)$
 is also random (a function of \fncte{random variable} $\rvY$).
 
 Two common statistics that are conveniently expressed in terms of the
@@ -57,14 +57,19 @@ variance is an indicator of the ``spread".
 %---------------------------------------
 \begin{definition}
 \label{def:Mx}
+\label{def:pvar}
+\label{def:pVar}
 \index{mean}
 \index{variance}
 %---------------------------------------
-Let $\ps$ be a \structe{probability space} and $\rvX:\pso\to\R$ a \fncte{random variable}.
-The {\bf mean} $\pmeanx$ and {\bf variance} $\pVar(X)$ of $\rvX$ are
-\defbox{\begin{array}{rcl}
-  \pmeanx  &\eqd& \pEx\rvX \\
-  \pVar(X) &\eqd& \pEx\left[(X-\pEx\rvX)^2 \right]
+Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$.
+The {\bf mean} $\pmeanx$ and {\bf variance} $\pVar(\rvX)$ of $\rvX$ are
+\defbox{\begin{array}{FM>{\ds}rc>{\ds}l}
+  (1).&The \fnctd{mean} $\pmeanx$ of $\rvX$ is 
+    & \pmeanx  &\eqd& \pEx\rvX 
+  \\
+  (2).&The \fnctd{variance} $\pVar(\rvX)$ or $\pvarx$ of $\rvX$ is 
+    & \pVar(\rvX) &\eqd& \pEx\left[(\rvX-\pEx\rvX)^2 \right]
 \end{array}}
 \end{definition}
 
@@ -73,37 +78,38 @@ The next theorem gives some useful relations for simple statistics.
 \begin{theorem}
 \label{thm:pE}
 %---------------------------------------
-Let $\ps$ be a \structe{probability space} with \fncte{random variable} $\rvX:\pso\to\R$
-and let $a\in\R$.
-\thmbox{\begin{array}{>{\ds}rc>{\ds}lM}
-  \pEx(aX+b)  &=& \brs{a\pEx\rvX} + b    & (\prope{linear}) \\
-  \pVar(aX)   &=& a^2\pVar(X) \\
-  \pVar(X)    &=& \pEx\rvX^2 - (\pEx\rvX)^2
+Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}lCD}
+    \pEx(a\rvX+b)    &=& \brp{a\pEx\rvX} + b       & \forall a,b\in\R & (\prope{linear})
+  \\\pVar(a\rvX+b)   &=& a^2\pVar(\rvX)            & \forall a,b\in\R &
+  \\\pVar(\rvX)      &=& \pEx(\rvX^2) - (\pEx\rvX)^2
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
-  \pEx(aX)
+  \pEx(a\rvX+b)
     &\eqd \int_{x\in\R}\brs{ax+b} \ppx(x)  \dx
   \\&=    a \int_{x\in\R}x \ppx(x)  \dx + b\int_{x\in\R}\ppx(x)  \dx
   \\&= \brs{a\pEx\rvX} + b\brs{1}
   \\&= \brs{a\pEx\rvX} + b
 \\
 \\
-  \pVar(X)
-    &\eqd \pEx\left[(X-\pEx\rvX)^2\right]
-  \\&=    \pEx\left[\rvX^2-2X\pEx\rvX + (\pEx\rvX)^2 \right]
+  \pVar(\rvX)
+    &\eqd \pEx\left[(\rvX-\pEx\rvX)^2\right]
+    &&    \text{by definition of $\pVar$}
+    &&    \text{\xref{def:pvar}}
+  \\&=    \pEx\brs{\rvX^2-2X\pEx\rvX + (\pEx\rvX)^2 }
   \\&=    \pEx[\rvX^2]  - \pEx 2X\pEx\rvX  + \pEx (\pEx\rvX)^2
   \\&=    \pEx[\rvX^2] - 2(\pEx\rvX)[\pEx\rvX] + (\pEx\rvX)^2
-  \\&=    \pEx\rvX^2  - (\pEx\rvX)^2
+  \\&=    \pEx(\rvX^2) - (\pEx\rvX)^2
 \\
 \\
-  \pVar(aX)
-    &=    \pEx(aX)^2  - [\pEx(aX)]^2
-  \\&=    \pEx(a^2X^2)  - [a\pEx\rvX]^2
-  \\&=    a^2 \pEx\rvX^2  - a^2[\pEx\rvX]^2
-  \\&=    a^2\left[ \pEx\rvX^2  - (\pEx\rvX)^2 \right]
-  \\&\eqd a^2 \pVar(X)
+  \pVar(a\rvX+b)
+    &=    \pEx(a\rvX+b)^2  - [\pEx(a\rvX+b)]^2
+  \\&=    \pEx(a^2X^2+2ab\rvX+b^2)  - [a(\pEx\rvX)+b]^2
+  \\&=    a^2 \pEx\rvX^2  +2ab\pEx\rvX + b^2 - \brs{a^2[\pEx\rvX]^2 + 2ab\pEx\rvX + b^2}
+  \\&=    a^2\brs{ \pEx\rvX^2  - (\pEx\rvX)^2 }
+  \\&\eqd a^2 \pVar(\rvX)
 \end{align*}
 \end{proof}
 
@@ -111,6 +117,7 @@ and let $a\in\R$.
 \setlength{\unitlength}{0.3mm}%
 \begin{center}%
 \begin{picture}(200,110)(-50,-10)%
+  \thicklines
   \color{axis}%
     \put(  0,  0){\line(1, 0){120}}%
     \put(  0,  0){\line(0, 1){100}}%
@@ -151,7 +158,7 @@ and illustrated in \prefpp{fig:jensen}.
 %--------------------------------------
 Let $\ff$ be a \prope{convex} function and $\rvX$ be a \fncte{random variable}. Then
 \thmbox{
-  \ff \mbox{ is \prope{convex}} \implies \ff(\pE\rvX) \le \pE\ff(X).
+  \ff \mbox{ is \prope{convex}} \implies \ff(\pE\rvX) \le \pE\ff(\rvX).
   }
 \end{theorem}
 \begin{proof}
@@ -167,7 +174,7 @@ Then
   \ff(\pE\rvX)
     &=   m[\pE\rvX] + c
   \\&=   \pE[mX + c]
-  \\&\le \pE\ff(X)
+  \\&\le \pE\ff(\rvX)
 \end{align*}
 \end{proof}
 
@@ -175,12 +182,11 @@ Then
 \section{Upper bounds on probability}
 %=======================================
 %---------------------------------------
-\begin{theorem}[Markov's inequality]
-\index{Markov's inequality}
-\index{theorems!Markov's inequality}
+\begin{theorem}[\thmd{Markov's inequality}]
 \citetbl{
   \citerp{ross}{395}
   }
+\label{thm:markovineq}
 %---------------------------------------
 Let $\rvX:\Omega\to[0,\infty)$ be a non-negative valued \fncte{random variable} and
 $a\in(0,\infty)$. Then
@@ -221,8 +227,9 @@ Let $\rvX$ be a \fncte{random variable} with mean $\mu$ and variance $\sigma^2$.
 \begin{align*}
   \psp\setn{\abs{\rvX-\mu} \ge a}
     &=   \psp\setn{ (\rvX-\mu)^2 \ge a^2}
-  \\&\le \frac{1}{a^2} \pE(X-\mu)^2 
+  \\&\le \frac{1}{a^2} \pE(\rvX-\mu)^2 
     && \text{by \thme{Markov's inequality}}
+    && \text{\xref{thm:markovineq}}
   \\&=   \frac{\sigma^2}{a^2}
 \end{align*}
 \end{proof}
@@ -282,7 +289,7 @@ Let $\rvX$ be a \fncte{random variable} with mean $\mu$ and variance $\sigma^2$.
   \citerp{proakis}{30}
   }
 %---------------------------------------
-Let $\rvY=\ff(X)$ and $\set{x_n}{n=1,2,\ldots,N}$ be the roots of the equation
+Let $\rvY=\ff(\rvX)$ and $\set{x_n}{n=1,2,\ldots,N}$ be the roots of the equation
 $y=\ff(x)$.
 \thmbox{
   \ppy(y) = \sum_{n=1}^{\xN} \frac{\ppx(x_n)}{|\ff'(x_n)|}
@@ -294,8 +301,8 @@ $\set{A_n}{x_n\in\setA_n, n=1,2,\ldots,\xN}$ and $h\to0$.
 \begin{align*}
   \ppy(y)h
     &= \psp\setn{y \le\rvY < y+h}
-  \\&= \psp\setn{y \le \ff(X) < y+h}
-  \\&= \sum_{n=1}^{\xN} \pPa{y \le \ff(X) < y+h}{\rvX\in\setA_n}
+  \\&= \psp\setn{y \le \ff(\rvX) < y+h}
+  \\&= \sum_{n=1}^{\xN} \pPa{y \le \ff(\rvX) < y+h}{\rvX\in\setA_n}
   \\&= \sum_{n=1}^{\xN} \pPc{\ffi{y} \le\rvX < \ffi{y+h}}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
   \\&= \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
          \sum_{n=1}^{\xN} \pPc{x_n     \le\rvX < x_n + \frac{1}{\ffp{x_n}}h}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & \ffp{x_n}<0 \\
@@ -326,7 +333,7 @@ Let $a,b\in\R, a\ne 0$ and $\rvY=a\rvX+b$. Then
   \ppy(y)h
     &=  \psp\setn{y\le\rvY < y+h}
   \\&=  \psp\setn{y\le a\rvX+b < y+h}
-  \\&=  \psp\setn{y-b\le aX < y-b+h}
+  \\&=  \psp\setn{y-b\le a\rvX < y-b+h}
   \\&=  \left\{\begin{array}{ll}
           \psp\setn{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{a}h} &: a>0 \\
           \psp\setn{\frac{y-b}{a}\ge\rvX > \frac{y-b}{a}+\frac{1}{a}h} &: a<0
@@ -525,7 +532,7 @@ Now we prove the theorem using the above relation.
   \ppy(y)h
     &= \psp\setn{y\le\rvY < y+h}
   \\&= \psp\setn{y\le\rvX^2 < y+h}
-  \\&= \psp\setn{(y\le\rvX^2 < y+h) \land (X<0)}+ \psp\setn{(y\le\rvX^2 < y+h) \land (X\ge0)}
+  \\&= \psp\setn{(y\le\rvX^2 < y+h) \land (\rvX<0)}+ \psp\setn{(y\le\rvX^2 < y+h) \land (\rvX\ge0)}
   \\&= \psp\setn{y\le\rvX^2 < y+h |\rvX<0}\psp\setn{\rvX<0} + \psp\setn{y\le\rvX^2 < y+h |\rvX\ge0}\psp\setn{\rvX\ge0}
   \\&= \psp\setn{-\sqrt{y}\le\rvX < -\sqrt{y+h} |\rvX<0  } \psp\setn{\rvX<0} +
        \psp\setn{+\sqrt{y}\le\rvX < +\sqrt{y+h} |\rvX\ge0} \psp\setn{\rvX\ge0}
@@ -606,7 +613,7 @@ The theorem can also be proved using \prefpp{thm:Y=f(X)}.
 %---------------------------------------
 Let $\rvZ=\tan\Theta$. Then
 \propbox{
-  \ppz(z) = \frac{1}{1+z^2}  \sum_{n\in\Z} \ppth(\atan(z)+n\pi)
+  \ppz(z) = \frac{1}{1+z^2}  \sum_{n\in\rvZ} \ppth(\atan(z)+n\pi)
   }
 \end{proposition}
 \begin{proof}
@@ -633,27 +640,27 @@ Let $h\to0$.
 Now we prove the theorem using the above relation.
 \begin{align*}
   \ppz(z)h
-    &=    \psp\setn{z\le Z < z+h}
+    &=    \psp\setn{z\le \rvZ < z+h}
   \\&=    \psp\setn{z\le \tan\Theta < z+h}
-  \\&=    \sum_{n\in\Z}\psp\setn{z\le \tan\Theta < z+h \land
+  \\&=    \sum_{n\in\rvZ}\psp\setn{z\le \tan\Theta < z+h \land
                  \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
                  }
-  \\&=    \sum_{n\in\Z}\psp\setn{z\le \tan\Theta < z+h \left|
+  \\&=    \sum_{n\in\rvZ}\psp\setn{z\le \tan\Theta < z+h \left|
                  \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
                  \right.}
                  \psp\setn{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
-  \\&=    \sum_{n\in\Z}\psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \left|
+  \\&=    \sum_{n\in\rvZ}\psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \left|
                  \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
                  \right.}
                  \psp\setn{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
-  \\&=    \sum_{n\in\Z}\psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \land
+  \\&=    \sum_{n\in\rvZ}\psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \land
                  \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
                  }
-  \\&=    \sum_{n\in\Z}\psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi }
-  \\&=    \sum_{n\in\Z}\psp\setn{\atan{z}+n\pi \le \Theta < +\atan(z)+n\pi + h\frac{1}{1+z^2} }
-  \\&=    h\frac{1}{1+z^2} \sum_{n\in\Z}\ppth(\atan{z}+n\pi)
+  \\&=    \sum_{n\in\rvZ}\psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi }
+  \\&=    \sum_{n\in\rvZ}\psp\setn{\atan{z}+n\pi \le \Theta < +\atan(z)+n\pi + h\frac{1}{1+z^2} }
+  \\&=    h\frac{1}{1+z^2} \sum_{n\in\rvZ}\ppth(\atan{z}+n\pi)
 \\\implies
-  \ppz(z) &=  \frac{1}{1+z^2} \sum_{n\in\Z}\ppth(\atan{z}+n\pi)
+  \ppz(z) &=  \frac{1}{1+z^2} \sum_{n\in\rvZ}\ppth(\atan{z}+n\pi)
 \end{align*}
 
 The theorem can also be proved using \prefpp{thm:Y=f(X)}.
@@ -662,11 +669,11 @@ The theorem can also be proved using \prefpp{thm:Y=f(X)}.
   \ff'(\theta) &=& \sec^2 \theta    \\
   \ppz(z)
     &= \sum_{n=1}^{\xN} \frac{\ppth(\theta_n)}{|\ff'(\theta_n)|}
-  \\&= \sum_{n\in\Z}\frac{\ppth(\atan{z}+n\pi)}{|\ff'(\atan{z}+n\pi)|}
-  \\&= \sum_{n\in\Z}\frac{\ppth(\atan{z}+n\pi)}{|\sec^2(\atan{z}+n\pi)|}
-  \\&= \sum_{n\in\Z}\cos^2(\atan{z}+n\pi)  \ppth(\atan{z}+n\pi)
-  \\&= \cos^2(\atan{z}) \sum_{n\in\Z} \ppth(\atan{z}+n\pi)
-  \\&= \frac{1}{1+z^2}  \sum_{n\in\Z}\ppth(\atan{z}+n\pi)
+  \\&= \sum_{n\in\rvZ}\frac{\ppth(\atan{z}+n\pi)}{|\ff'(\atan{z}+n\pi)|}
+  \\&= \sum_{n\in\rvZ}\frac{\ppth(\atan{z}+n\pi)}{|\sec^2(\atan{z}+n\pi)|}
+  \\&= \sum_{n\in\rvZ}\cos^2(\atan{z}+n\pi)  \ppth(\atan{z}+n\pi)
+  \\&= \cos^2(\atan{z}) \sum_{n\in\rvZ} \ppth(\atan{z}+n\pi)
+  \\&= \frac{1}{1+z^2}  \sum_{n\in\rvZ}\ppth(\atan{z}+n\pi)
 \end{align*}
 \end{proof}
 
@@ -700,13 +707,13 @@ can be simplified by ``conditioning $\rvX$ on $\rvY$".
 \begin{theorem}
 %---------------------------------------
 Let $\rvX$ and $\rvY$ be \fncte{random variable}s. Then
-\thmbox{\pEx{\rvX} = \pEy\pEx[x|y](X|Y) }
+\thmbox{\pEx{\rvX} = \pEy\pEx[x|y](\rvX|\rvY) }
 \end{theorem}
 \begin{proof}
 \begin{align*}
    \pEy\pEx[x|y](\rvX|\rvY)
-     &\eqd \pEy \left[ \int_{x\in\R}x \pp(X=x|Y) \dx \right]
-   \\&\eqd \int_{y\in\R} \left[\int_{x\in\R}x \pp(x|Y=y) \dx \right] \pp(y) \dy
+     &\eqd \pEy \left[ \int_{x\in\R}x \pp(\rvX=x|\rvY) \dx \right]
+   \\&\eqd \int_{y\in\R} \left[\int_{x\in\R}x \pp(x|\rvY=y) \dx \right] \pp(y) \dy
    \\&=    \int_{y\in\R} \int_{x\in\R}x \pp(x|y)\pp(y) \dx   \dy
    \\&=    \int_{x\in\R}x \int_{y\in\R} \pp(x,y) \dy   \dx
    \\&=    \int_{x\in\R}x \pp(x) \dx
@@ -749,35 +756,35 @@ in \structe{probability space} $\ps$.
 \begin{enumerate}
   \item Proof that $V$ is a vector space:
     \[\begin{array}{lll@{\hs{1cm}}D}
-   1) & \forall \rvX,\rvY, Z\in V
-      & (\rvX+\rvY)+ Z = \rvX+(\rvY+ Z)
+   1) & \forall \rvX,\rvY, \rvZ\in\spV
+      & (\rvX+\rvY)+ \rvZ = \rvX+(\rvY+ \rvZ)
       & \text{($+$ is associative)}
       \\
-   2) & \forall \rvX,\rvY\in V
+   2) & \forall \rvX,\rvY\in\spV
       & \rvX+\rvY = \rvY+\rvX
       & \text{($+$ is commutative)}
       \\
-   3) & \exists  0 \in V \st \forall \rvX\in V
+   3) & \exists  0 \in\spV \st \forall \rvX\in\spV
       & \rvX+ 0 = \rvX
       & \text{($+$ identity)}
       \\
-   4) & \forall \rvX \in V \exists \rvY\in V \st
+   4) & \forall \rvX \in\spV \exists \rvY\in\spV \st
       & \rvX+\rvY =  0
       & \text{($+$ inverse)}
       \\
-   5) & \forall \alpha\in S \text{ and } \rvX,\rvY\in V
+   5) & \forall \alpha\in S \text{ and } \rvX,\rvY\in\spV
       & \alpha\cdot(\rvX+\rvY) = (\alpha \cdot\rvX)+(\alpha\cdot\rvY)
       & \text{($\cdot$ distributes over $+$)}
       \\
-   6) & \forall \alpha,\beta\in S \text{ and } \rvX\in V
+   6) & \forall \alpha,\beta\in S \text{ and } \rvX\in\spV
       & (\alpha+\beta)\cdot\rvX = (\alpha\cdot \rvX)+(\beta\cdot \rvX)
       & \text{($\cdot$ pseudo-distributes over $+$)}
       \\
-   7) & \forall \alpha,\beta\in S \text{ and } \rvX\in V
+   7) & \forall \alpha,\beta\in S \text{ and } \rvX\in\spV
       & \alpha(\beta\cdot\rvX) = (\alpha\cdot\beta)\cdot\rvX
       & \text{($\cdot$ associates with $\cdot$)}
       \\
-   8) & \forall \rvX\in V
+   8) & \forall \rvX\in\spV
       & 1\cdot \rvX = \rvX
       & \text{($\cdot$ identity)}
 \end{array}\]
@@ -785,23 +792,23 @@ in \structe{probability space} $\ps$.
   \item Proof that $\inprod{\rvX}{\rvY}\eqd\pE(\rvX\rvY^\ast)$ is an inner product.
   \[\begin{array}{llllD}
    1) &  \pE(\rvX\rvX^\ast) &\ge 0
-      &  \forall \rvX\in V
+      &  \forall \rvX\in\spV
       &  \text{(non-negative)}
       \\
    2) &  \pE(\rvX\rvX^\ast) &= 0 \iff \rvX=0
-      &  \forall \rvX\in V
+      &  \forall \rvX\in\spV
       &  \text{(non-degenerate)}
       \\
    3) &  \pE(\alpha\rvX\rvY^\ast)    &= \alpha\pE(\rvX\rvY^\ast)
-      &  \forall \rvX,\rvY\in V,\;\forall\alpha\in\C
+      &  \forall \rvX,\rvY\in\spV,\;\forall\alpha\in\C
       &  \text{(homogeneous)}
       \\
-   4) &  \pE[(X+\rvY)Z^\ast] &= \pE(XZ^\ast) + \pE(YZ^\ast)
-      &  \forall \rvX,\rvY, Z\in V
+   4) &  \pE[(\rvX+\rvY)\rvZ^\ast] &= \pE(\rvX\rvZ^\ast) + \pE(Y\rvZ^\ast)
+      &  \forall \rvX,\rvY, \rvZ\in\spV
       &  \text{(additive)}
       \\
    5) &  \pE(\rvX\rvY^\ast) &= \pE(\rvY\rvX^\ast)
-      &  \forall \rvX,\rvY\in V
+      &  \forall \rvX,\rvY\in\spV
       &  \text{(conjugate symmetric)}.
   \end{array}\]
 
@@ -827,7 +834,7 @@ properties:
 Let $\ps$ be a \structe{probability space} with expectation functional $\pE$.
 \thmbox{\begin{array}{l >{\ds}r c >{\ds}l D}
   1. & \sqrt{\pE\left(\sum_{n=1}^{\xN}\rvX_n\right)}
-     &\le& \sum_{n=1}^{\xN} \pE(X_nX_n^\ast)
+     &\le& \sum_{n=1}^{\xN} \pE(\rvX_nX_n^\ast)
      & (\thme{Generalized triangle inequality})
      \\
   2. & \left| \pE(\rvX\rvY^\ast)\right|^2
@@ -835,7 +842,7 @@ Let $\ps$ be a \structe{probability space} with expectation functional $\pE$.
      & (\thme{Cauchy-Schwartz inequality})
      \\
   3. & 2\pE(\rvX\rvX^\ast) + 2\pE(YY^\ast)
-     &=& \pE[(X+\rvY)(X+\rvY)^\ast] + \pE[(X-Y)(X-Y)^\ast]
+     &=& \pE[(\rvX+\rvY)(\rvX+\rvY)^\ast] + \pE[(\rvX-Y)(\rvX-Y)^\ast]
      &   (\thme{Parallelogram Law})
   \end{array}}
 \end{theorem}
@@ -881,7 +888,7 @@ Let $\rvX$ and $\rvY$ be \fncte{random variable}s.
 \begin{proof}
 \begin{align*}
   \ppz(z)
-    &\eqd \lim_{h\to0}\frac{1}{h} \psp\setn{z \le Z < z+h }
+    &\eqd \lim_{h\to0}\frac{1}{h} \psp\setn{z \le \rvZ < z+h }
   \\&=    \lim_{h\to0}\frac{1}{h} \psp\setn{z \le\rvX+\rvY < z+h }
   \\&=    \lim_{h\to0}\frac{1}{h} \int_{y\in\R} \psp\setn{(z \le\rvX+y < z+h) \land (y\le\rvY<y+h) } \dy
   \\&=    \lim_{h\to0}\frac{1}{h} \int_{y\in\R} \psp\setn{(z-y \le\rvX < z-y+h) | (y\le\rvY<y+h) }\psp\setn{y\le\rvY<y+h} \dy
