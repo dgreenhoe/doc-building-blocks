@@ -146,23 +146,27 @@ Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$
 
 \fncte{Jensen's inequality} is an extremely useful application of \prope{convex}ity \xref{def:convex} to the
 \ope{expectation} operator.
-Jensen's inequality is stated in \pref{thm:jensen} (next)
+Jensen's inequality is stated in \pref{cor:jensen} (next)
 and illustrated in \prefpp{fig:jensen}.
 %--------------------------------------
-\begin{theorem}[\thmd{Jensen's inequality}]
+\begin{corollary}[\thmd{Jensen's inequality}]
 \footnote{
   \citerp{cover}{25},
   \citerpp{jensen1906}{179}{180}
   }
-\label{thm:jensen}
+\label{cor:jensen}
 %--------------------------------------
-Let $\ff$ be a \prope{convex} function and $\rvX$ be a \fncte{random variable}. Then
-\thmbox{
-  \ff \mbox{ is \prope{convex}} \implies \ff(\pE\rvX) \le \pE\ff(\rvX).
+Let $\ff$ be a function in $\clFrr$ and $\rvX$ be a \fncte{random variable} on $\ps$.
+\corbox{
+  \brb{\text{$\ff$ is \prope{convex}}} 
+  \quad\implies\quad 
+  \brb{\ff(\pE\rvX) \le \pE\ff(\rvX)}
   }
-\end{theorem}
+\end{corollary}
 \begin{proof}
-Let $mx+c$ be a ``support line" under $\ff(x)$ such that
+\begin{enumerate}
+  \item Proof 1:
+Let $mx+c$ be a ``support line" under $\ff(x)$ \xref{fig:jensen} such that
 \[
   \begin{array}{rcll}
     mx+c &<& \ff(x) & \mbox{for } x\ne \pE\rvX \\
@@ -176,6 +180,16 @@ Then
   \\&=   \pE[mX + c]
   \\&\le \pE\ff(\rvX)
 \end{align*}
+
+  \item Proof 2 (alternate proof):
+    \begin{align*}
+      \ff\brp{\pE\rvX}
+        &\eqd \ff\brp{\sum_{x\in\pse} x \psp(x)}
+      \\&\le \sum_{x\in\pse} \ff(x) \psp(x)
+        && \text{by \thme{Jensen's inequality} for convex sets}
+        && \text{\xref{thm:jensenineq}}
+    \end{align*}
+\end{enumerate}
 \end{proof}
 
 %=======================================
@@ -242,6 +256,7 @@ Let $\rvX$ be a \fncte{random variable} with mean $\mu$ and variance $\sigma^2$.
 \begin{center}
 \begin{footnotesize}
 \begin{picture}(250,150)(-100,-20)
+  \thicklines
   \put(-100,   0){\line(1,0){200}}
   \put(   0, -20){\line(0,1){120}}
   {\color{red}
@@ -283,16 +298,20 @@ Let $\rvX$ be a \fncte{random variable} with mean $\mu$ and variance $\sigma^2$.
 
 %---------------------------------------
 \begin{theorem}
-\label{thm:Y=f(X)}
 \citetbl{
+  \citerppgc{papoulis1984}{95}{96}{0070484686}{``Fundamental Theorem"},
   \citerp{papoulis}{93}, 
   \citerp{proakis}{30}
   }
+\label{thm:Y=f(X)}
 %---------------------------------------
-Let $\rvY=\ff(\rvX)$ and $\set{x_n}{n=1,2,\ldots,N}$ be the roots of the equation
-$y=\ff(x)$.
 \thmbox{
-  \ppy(y) = \sum_{n=1}^{\xN} \frac{\ppx(x_n)}{|\ff'(x_n)|}
+  \brb{\begin{array}{FlD}
+    (1).& \rvY\eqd\ff(\rvX) & and\\
+    (2).& \mc{2}{M}{$\set{x_n}{n=1,2,\ldots,\xN}$ are the \structe{roots} of $y=\ff(x)$}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\ppy(y) = \sum_{n=1}^{\xN} \frac{\ppx(x_n)}{\abs{\ff'(x_n)}}}
 }
 \end{theorem}
 \begin{proof}
@@ -316,18 +335,23 @@ $\set{A_n}{x_n\in\setA_n, n=1,2,\ldots,\xN}$ and $h\to0$.
 \end{proof}
 
 %---------------------------------------
-\begin{proposition}
+\begin{corollary}
 \citetbl{
+  \citerpgc{papoulis1984}{96}{0070484686}{``Illustrations" 1},
   \citerp{papoulis}{95},
   \citerp{proakis}{29}
   }
 %---------------------------------------
-Let $a,b\in\R, a\ne 0$ and $\rvY=a\rvX+b$. Then
-\propbox{
-  \ppy(y) =
-    \frac{1}{|a|} \ppx\left(\frac{y-b}{a}\right)
+\mbox{}\\
+\corbox{
+  \brb{\begin{array}{F>{\ds}lCD}
+    (1).&\rvY\eqd a\rvX+b & a,b\in\R & and\\
+    (2).&a\neq0
+  \end{array}}
+  \quad\implies\quad
+  \brb{\ppy(y) = \frac{1}{\abs{a}} \ppx\brp{\frac{y-b}{a}}}
   }
-\end{proposition}
+\end{corollary}
 \begin{proof}
 \begin{align*}
   \ppy(y)h
@@ -339,24 +363,24 @@ Let $a,b\in\R, a\ne 0$ and $\rvY=a\rvX+b$. Then
           \psp\setn{\frac{y-b}{a}\ge\rvX > \frac{y-b}{a}+\frac{1}{a}h} &: a<0
         \end{array}\right.
   \\&=  \left\{\begin{array}{ll}
-          \psp\setn{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{|a|}h} &: a>0 \\
-          \psp\setn{\frac{y-b}{a}-\frac{1}{|a|}h <\rvX \le \frac{y-b}{a}} &: a<0
+          \psp\setn{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{\abs{a}}h} &: a>0 \\
+          \psp\setn{\frac{y-b}{a}-\frac{1}{\abs{a}}h <\rvX \le \frac{y-b}{a}} &: a<0
         \end{array}\right.
-  \\&=  \frac{1}{|a|}h \ppx\left(\frac{y-b}{a}\right)
+  \\&=  \frac{1}{\abs{a}}h \ppx\left(\frac{y-b}{a}\right)
 \\\implies
 \\
   \ppy(y)
-    &=  \frac{1}{|a|} \ppx\left(\frac{y-b}{a}\right)
+    &=  \frac{1}{\abs{a}} \ppx\left(\frac{y-b}{a}\right)
 \end{align*}
 
-The theorem can also be proved using \prefpp{thm:Y=f(X)}.
+The corollary can also be proved using \prefpp{thm:Y=f(X)}.
 The only root of $y=ax+b$ is $x_1=\frac{y-b}{a}$.
 \begin{align*}
   \ppy(y)
     &= \sum_{n=1}^{\xN} \frac{\ppx(x_n)}{|\ff'(x_n)|}
   \\&= \frac{\ppx(x_1)}{|\ff'(x_1)|}
-  \\&= \frac{\ppx(x_1)}{|a|}
-  \\&= \frac{1}{|a|}\ppx\left(\frac{y-b}{a}\right)
+  \\&= \frac{\ppx(x_1)}{\abs{a}}
+  \\&= \frac{1}{\abs{a}}\ppx\left(\frac{y-b}{a}\right)
 \end{align*}
 \end{proof}
 
@@ -365,6 +389,7 @@ The only root of $y=ax+b$ is $x_1=\frac{y-b}{a}$.
 \begin{center}
 \begin{footnotesize}
 \begin{picture}(350,200)(-100,-20)
+  \thicklines
   \put( -20,   0){\line(1,0){220}}
   \put(   0, -20){\line(0,1){120}}
   \put(   0, 110){\makebox(0,0)[r]{$y$}}
@@ -396,20 +421,22 @@ The only root of $y=ax+b$ is $x_1=\frac{y-b}{a}$.
   }
 \end{figure}
 %---------------------------------------
-\begin{proposition}
+\begin{corollary}
 \citetbl{
+  \citerpgc{papoulis1984}{97}{0070484686}{Example 5-10},
   \citerp{papoulis}{94}
   }
 %---------------------------------------
-Let $\rvY=\frac{1}{\rvX}$. Then
-\propbox{
-  \ppy(y) = \left\{\begin{array}{lM}
-     %                                             & for $y<0$ \\
-     %0                                            & for $y=0$ \\
-     \frac{1}{y^2} \ppx\left( \frac{1}{y} \right) & for $y>0$
-  \end{array}\right.
+\mbox{}\\
+\corbox{
+  \brb{\rvY\eqd \frac{1}{\rvX}} 
+  \quad\implies\quad
+  \brb{\ppy(y) = 
+    \begin{array}{lM}
+      \frac{1}{y^2} \ppx\brp{\frac{1}{y}} & for $y>0$
+    \end{array}}
   }
-\end{proposition}
+\end{corollary}
 \begin{proof}
 Let $h\to0$.
 First we show a useful relation for $\frac{1}{y+h}$.
@@ -437,7 +464,7 @@ Now we prove the theorem using the above relation.
     &=    \frac{1}{y^2} \ppx\left( \frac{1}{y} \right)
 \end{align*}
 
-The theorem can also be proved using \prefpp{thm:Y=f(X)}.
+The corollary can also be proved using \prefpp{thm:Y=f(X)}.
 \begin{align*}
   x_1 &=& \frac{1}{y} \\
   \ff'(x) &=& -\frac{1}{x^2}    \\
@@ -450,15 +477,12 @@ The theorem can also be proved using \prefpp{thm:Y=f(X)}.
 \end{align*}
 \end{proof}
 
-
-
-
-
 \begin{figure}\color{figcolor}
 \setlength{\unitlength}{0.3mm}
 \begin{center}
 \begin{footnotesize}
 \begin{picture}(250,150)(-100,-20)
+  \thicklines
   \put(-100,   0){\line(1,0){200}}
   \put(   0, -20){\line(0,1){120}}
   {\color{red}
@@ -498,15 +522,19 @@ The theorem can also be proved using \prefpp{thm:Y=f(X)}.
   }
 \end{figure}
 %---------------------------------------
-\begin{proposition}
+\begin{corollary}
 \citetbl{
+  \citerpgc{papoulis1984}{95}{0070484686}{Example 5-9},
   \citerp{papoulis}{95},
   \citerp{proakis}{29}
   }
 \label{prop:YX2}
 %---------------------------------------
-Let $\rvY=\rvX^2$. Then
-\propbox{
+\mbox{}\\
+\corbox{
+  \brb{\rvY=\rvX^2}
+  \quad\implies\quad
+  \brb{
   \ppy(y) = \brbl{\begin{array}{lM}
      0                  & for $a<0$ \\
      \text{undefined}   & for $a=0$ \\
@@ -514,7 +542,8 @@ Let $\rvY=\rvX^2$. Then
                         & for $a>0$ 
   \end{array}}
   }
-\end{proposition}
+  }
+\end{corollary}
 \begin{proof}
 Let $h\to0$.
 First we show a useful relation for $\sqrt{y+h}$.
@@ -548,7 +577,7 @@ Now we prove the theorem using the above relation.
         \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
 \end{align*}
 
-The theorem can also be proved using \prefpp{thm:Y=f(X)}.
+The corollary can also be proved using \prefpp{thm:Y=f(X)}.
 \begin{align*}
   x_1 &= -\sqrt{y} \\
   x_2 &= +\sqrt{y} \\
@@ -563,14 +592,12 @@ The theorem can also be proved using \prefpp{thm:Y=f(X)}.
 \end{align*}
 \end{proof}
 
-
-
-
 \begin{figure}\color{figcolor}
 \setlength{\unitlength}{0.15mm}
 \begin{center}
 \begin{footnotesize}
 \begin{picture}(1000,220)(-500,-100)
+  \thicklines
   \put(-500,   0){\line(1,0){1000}}
   \put(   0, -100){\line(0,1){220}}
   \multiput(-400,0)(200,0){5}{
@@ -606,16 +633,18 @@ The theorem can also be proved using \prefpp{thm:Y=f(X)}.
   }
 \end{figure}
 %---------------------------------------
-\begin{proposition}
+\begin{corollary}
 \citetbl{
   \citerpp{papoulis}{99}{100}
   }
 %---------------------------------------
-Let $\rvZ=\tan\Theta$. Then
-\propbox{
-  \ppz(z) = \frac{1}{1+z^2}  \sum_{n\in\rvZ} \ppth(\atan(z)+n\pi)
+\mbox{}\\
+\corbox{
+  \brb{\rvZ=\tan\Theta}
+  \quad\implies\quad
+  \brb{\ppz(z) = \frac{1}{1+z^2}  \sum_{n\in\rvZ} \ppth(\atan(z)+n\pi)}
   }
-\end{proposition}
+\end{corollary}
 \begin{proof}
 Let $z=\frac{y}{x}$ and $x^2 + y^2 = r^2$.
 \begin{align*}
@@ -663,7 +692,7 @@ Now we prove the theorem using the above relation.
   \ppz(z) &=  \frac{1}{1+z^2} \sum_{n\in\rvZ}\ppth(\atan{z}+n\pi)
 \end{align*}
 
-The theorem can also be proved using \prefpp{thm:Y=f(X)}.
+The corollary can also be proved using \prefpp{thm:Y=f(X)}.
 \begin{align*}
   \theta_n &=& \atan{z}+n\pi \\
   \ff'(\theta) &=& \sec^2 \theta    \\
@@ -689,7 +718,7 @@ This probability \fncte{measure} has some basic properties as described in
 \label{thm:P}
 %---------------------------------------
 Let $\ps$ be a \structe{probability space},
-and $\set{B_n}{n=1,2,\ldots,N}$ be a partition of a set $\setB$.
+and $\set{\setB_n}{n=1,2,\ldots,\xN}$ be a partition of a set $\setB$.
 \thmbox{\begin{array}{rc>{\ds}l@{\qquad}l}
   \psp(\setB)  &=&  \sum_{n=1}^{\xN} \psp(\setB_n)    & \forall \setB\in\pse\\
   \psp(\setA\setB) &=&  \sum_{n=1}^{\xN} \psp(\setA\setB_n)   & \forall \setA,\setB\in\pse
@@ -728,10 +757,10 @@ Such a generalization can be done with \fncte{random variable}s.
 Random variables can be viewed as vectors in a vector space.
 Furthermore, the expectation of the product of two \fncte{random variable}s
 (e.g. $\pE(\rvX\rvY)$)
-can be viewed as an innerproduct in an \structe{inner product space}.
-Since we have an inner product space,
+can be viewed as an \fncte{inner product} in an \structe{inner product space}.
+Since we have an \fncte{inner product} space,
 we can then immediately use all the properties of
-\structe{inner product space}s, normed spaces, vector spaces, metric spaces,
+\structe{inner product space}s, \fncte{norm}ed spaces, vector spaces, metric spaces,
 and topological spaces.
 
 %---------------------------------------
@@ -754,7 +783,7 @@ in \structe{probability space} $\ps$.
 \end{theorem}
 \begin{proof}
 \begin{enumerate}
-  \item Proof that $V$ is a vector space:
+  \item Proof that $\spV$ is a vector space:
     \[\begin{array}{lll@{\hs{1cm}}D}
    1) & \forall \rvX,\rvY, \rvZ\in\spV
       & (\rvX+\rvY)+ \rvZ = \rvX+(\rvY+ \rvZ)
@@ -789,7 +818,7 @@ in \structe{probability space} $\ps$.
       & \text{($\cdot$ identity)}
 \end{array}\]
 
-  \item Proof that $\inprod{\rvX}{\rvY}\eqd\pE(\rvX\rvY^\ast)$ is an inner product.
+  \item Proof that $\inprod{\rvX}{\rvY}\eqd\pE(\rvX\rvY^\ast)$ is an \fncte{inner product}.
   \[\begin{array}{llllD}
    1) &  \pE(\rvX\rvX^\ast) &\ge 0
       &  \forall \rvX\in\spV
@@ -812,24 +841,18 @@ in \structe{probability space} $\ps$.
       &  \text{(conjugate symmetric)}.
   \end{array}\]
 
-  \item Proof that $\norm{\rvX}\eqd\sqrt{\pE(\rvX\rvX^\ast)}$ is a norm:
-    This norm is simply induced by the above innerproduct.
+  \item Proof that $\norm{\rvX}\eqd\sqrt{\pE(\rvX\rvX^\ast)}$ is a \fncte{norm}:
+    This \fncte{norm} is simply induced by the above \fncte{inner product}.
   \item Proof that $\opair{\spV}{\inprodn}$ is an \structe{inner product space}:
-    Because $V$ is a vector space and $\inprodn$ is
-    an innerproduct, $\opair{\spV}{\inprodn}$ is an \structe{inner product space}.
+    Because $\spV$ is a vector space and $\inprodn$ is
+    an \fncte{inner product}, $\opair{\spV}{\inprodn}$ is an \structe{inner product space}.
 \end{enumerate}
 \end{proof}
-
-
-
 
 The next theorem gives some results that follow directly from vector space
 properties:
 %---------------------------------------
 \begin{theorem}
-\index{Generalized triangle inequality}
-\index{Cauchy-Schwartz inequality}
-\index{Parallelogram Law}
 %---------------------------------------
 Let $\ps$ be a \structe{probability space} with expectation functional $\pE$.
 \thmbox{\begin{array}{l >{\ds}r c >{\ds}l D}
