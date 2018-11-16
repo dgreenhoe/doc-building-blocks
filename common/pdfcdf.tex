@@ -104,7 +104,7 @@ a \fnctd{joint probability density function}    $\ppx:\pse\times\pso\to\intcc{0}
 a \fnctd{joint cumulative distribution function} $\pcx:\pse\times\pso\to\intcc{0}{1}$
 are defined as
 \defbox{\begin{array}{rc>{\ds}lD}
-  \pcxy(x,y) &\eqd& \pPa{\rvX\le x}{\rvY\le y}
+  \pcxy(x,y) &\eqd& \psp\set{\rvX\le x}{\rvY\le y}
           & (\fncte{joint cumulative distribution function})
           \\
   \ppxy(x,y) &\eqd& \ddy\ddx\pcxy(x,y)
@@ -185,7 +185,7 @@ Then
   \end{array}}
   \implies
   \brb{\begin{array}{rc>{\ds}lc>{\ds}l}
-    \pP{a<\rvX\le b}
+    \psp\setn{a<\rvX\le b}
       &=& \pcx(b) - \pcx(a)
       &=& \int_a^b \ppx(x) \dx
   \end{array}}
@@ -193,10 +193,10 @@ Then
 \end{theorem}
 \begin{proof}
 \begin{align*}
-  \pP{a<\rvX\le b}
-    &= \pP{\rvX\le b} - \pP{\rvX <  a}
+  \psp\setn{a<\rvX\le b}
+    &= \psp\setn{\rvX\le b} - \psp\setn{\rvX <  a}
     && \text{by \thme{sum of products}} && \text{\xref{thm:psp_sop}}
-  \\&= \pP{\rvX\le b} - \pP{\rvX\le a}
+  \\&= \psp\setn{\rvX\le b} - \psp\setn{\rvX\le a}
     && \text{by \prope{continuity} hypothesis}
   \\&\eqd \pcx(b) - \pcx(a)
     && \text{by definition of $\pcx$} && \text{\xref{def:cdf}}
@@ -263,11 +263,11 @@ The properties of the pdf follow closely the properties of \fncte{measure} $\psp
 \begin{proof}
 \begin{align*}
   \pcx(\sup\R)
-    &\eqd \pP{\rvX\le\sup\R} && \text{by definition of $\pcx$} &&\text{\xref{def:cdf}}
+    &\eqd \psp\setn{\rvX\le\sup\R} && \text{by definition of $\pcx$} &&\text{\xref{def:cdf}}
   \\&=    1                  && \text{by definition of $\psp$} &&\text{\xref{def:psp}}
   \\
   \pcx(\inf\R)
-    &\eqd \pP{\rvX\le\inf\R} && \text{by definition of $\pcx$} &&\text{\xref{def:cdf}}
+    &\eqd \psp\setn{\rvX\le\inf\R} && \text{by definition of $\pcx$} &&\text{\xref{def:cdf}}
   \\&=    0                  && \text{by definition of $\psp$} &&\text{\xref{def:psp}}
 \end{align*}
 \end{proof}
@@ -287,12 +287,12 @@ The properties of the pdf follow closely the properties of measure $\psp$.
   \pcxcy(x|y)
     &\eqd \pPc{\rvX\le x}{\rvY=y}
     &&    \text{by definition of $\pcxcy$}              &&\text{\xref{def:concdf}}
-  \\&\eqd \frac{\pPa{\rvX\le x}{\rvY=y}}{\pP{\rvY=y}}
-    &&    \text{by definition of $\pP{\rvX|\rvY}$}         &&\text{\xref{def:conP}}
-  \\&=    \lim_{\varepsilon\to0}\frac{\pPa{\rvX\le x}{y<\rvY\le y+\varepsilon}}
-                                         {\pP{y<\rvY\le y+\varepsilon}}
-  \\&=\mathrlap{\lim_{\varepsilon\to0}\frac{\brs{\pPa{\rvX\le x}{\rvY\le y+\varepsilon}-\pPa{\rvX\le x}{\rvY\le y}}/\varepsilon}
-                                         {\brs{\pP{\rvY\le y+\varepsilon}-\pP{\rvY\le y}}/\varepsilon}}
+  \\&\eqd \frac{\psp\set{\rvX\le x}{\rvY=y}}{\psp\setn{\rvY=y}}
+    &&    \text{by definition of $\psp\setn{\rvX|\rvY}$}         &&\text{\xref{def:conP}}
+  \\&=    \lim_{\varepsilon\to0}\frac{\psp\set{\rvX\le x}{y<\rvY\le y+\varepsilon}}
+                                         {\psp\setn{y<\rvY\le y+\varepsilon}}
+  \\&=\mathrlap{\lim_{\varepsilon\to0}\frac{\brs{\psp\set{\rvX\le x}{\rvY\le y+\varepsilon}-\psp\set{\rvX\le x}{\rvY\le y}}/\varepsilon}
+                                         {\brs{\psp\setn{\rvY\le y+\varepsilon}-\psp\setn{\rvY\le y}}/\varepsilon}}
   \\&\eqd \lim_{\varepsilon\to0}\frac{\brs{\pcxy(x,y+\varepsilon)-\pcxy(x,y)}/\varepsilon}
                                          {\brs{\pcy(y+\varepsilon)-\pcy(y)}/\varepsilon}
     &&    \text{by definition of $\pcxy$}                  &&\text{\xref{def:jointcdf}}
@@ -313,21 +313,21 @@ The properties of the pdf follow closely the properties of measure $\psp$.
 
 \begin{align*}
   %\ppx[x|y](x|y)
-  %  &\eqd \lim_{h\to0} \frac{1}{h} \pP{x\le\rvX < x+h | Y=y}
+  %  &\eqd \lim_{h\to0} \frac{1}{h} \psp\setn{x\le\rvX < x+h | Y=y}
   %  &&    \text{by definition of $\ppx[x|y](x|y)$}
   %  &&    \text{\xref{def:conpdf}}
-  %\\&\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \frac{\pP{(x\le\rvX < x+\varepsilon) \land (Y=y)}}{\pP{Y=y}}
-  %  &&    \text{by definition of $\pP{\rvX|\rvY}$}
+  %\\&\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \frac{\psp\setn{(x\le\rvX < x+\varepsilon) \land (Y=y)}}{\psp\setn{Y=y}}
+  %  &&    \text{by definition of $\psp\setn{\rvX|\rvY}$}
   %  &&    \text{\xref{def:conP}}
-  %\\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \frac{\pP{(x\le\rvX < x+\varepsilon) \land (y\le Y<y+\varepsilon)}}{\pP{y\le Y<y+\varepsilon}}
+  %\\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \frac{\psp\setn{(x\le\rvX < x+\varepsilon) \land (y\le Y<y+\varepsilon)}}{\psp\setn{y\le Y<y+\varepsilon}}
   %\\&\eqd \frac{\ppxy(x,y)}{\ppy(y)}
   %  \qquad\mathrlap{\text{by definitions of $\ppxy$ \xref{def:jointpdf} and $\ppy$ \xref{def:pdf}}}
   %\\
   %\int_y\ppxy(x,y)\dy
-  %  &\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \int_y \pP{x\le X<x+\varepsilon \land y\le Y<y+\varepsilon} \dy
+  %  &\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \int_y \psp\setn{x\le X<x+\varepsilon \land y\le Y<y+\varepsilon} \dy
   %  &&    \text{by definition of $\ppxy$}
   %  &&    \text{\xref{def:jointpdf}}
-  %\\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \pP{x\le X<x+\varepsilon}
+  %\\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \psp\setn{x\le X<x+\varepsilon}
   %  &&    \text{by \thme{sum of products}}
   %  &&    \text{\xref{thm:psp_sop}}
   %\\&\eqd \ppx(x)
@@ -442,11 +442,11 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
 \begin{proof}
 \begin{align*}
   \pcy(y)
-    &\eqd \pP{\rvY\le y}
+    &\eqd \psp\setn{\rvY\le y}
     &&    \text{by definition of \fncte{cdf}}   && \text{\xref{def:cdf}}
-  \\&=    \pP{\pcx(\rvX)\le y}
+  \\&=    \psp\setn{\pcx(\rvX)\le y}
     &&    \text{by hypothesis (1)}
-  \\&=    \pP{\rvX\le \pcx^{-1}(y)}
+  \\&=    \psp\setn{\rvX\le \pcx^{-1}(y)}
     &&    \text{by hypothesis (2) and}          && \text{\prefp{prop:cdf_monotone}}
   \\&\eqd \pcx\brs{\pcx^{-1}(y)}
     &&    \text{by definition of \fncte{cdf}}   && \text{\xref{def:cdf}}
@@ -483,11 +483,11 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
 \begin{proof}
 \begin{align*}
   \pcy(y)
-    &\eqd \pP{\rvY\le y}
+    &\eqd \psp\setn{\rvY\le y}
     &&    \text{by definition of $\pcy$}          &&    \text{\xref{def:cdf}}
-  \\&=    \pP{\pcz^{-1}(\rvX)\le y}
+  \\&=    \psp\setn{\pcz^{-1}(\rvX)\le y}
     &&    \text{by hypothesis (1)}
-  \\&=    \pP{\rvX \le \pcz(y)}
+  \\&=    \psp\setn{\rvX \le \pcz(y)}
     &&    \text{by hypothesis (3) and}            &&    \text{\prefp{prop:cdf_monotone}}
   \\&\eqd \pcx\brs{\pcz(y)}
     &&    \text{by definition of $\pcx$}          &&    \text{\xref{def:cdf}}
@@ -614,37 +614,37 @@ Let $\fg_n(x)\eqd\ff(x)$ but with domain restricted to $x\in\setA_n$.
   \item Using \pref{item:YfX_gn}, the remainder of the proof follows \ldots
     \begin{align*}
       \ppy(y)
-        &\eqd \ddy\pP{\rvY \le y}
+        &\eqd \ddy\psp\setn{\rvY \le y}
         && \text{by definition of $\ppy$ \xref{def:pdf}}
-      \\&= \ddy\pP{\ff(\rvX)\le y}
+      \\&= \ddy\psp\setn{\ff(\rvX)\le y}
         && \text{by hypothesis (1)}
-      \\&= \ddy\sum_{n=1}^{\xN+1} \pPa{\ff(\rvX)\le y}{\rvX\in\setA_n}
+      \\&= \ddy\sum_{n=1}^{\xN+1} \psp\set{\ff(\rvX)\le y}{\rvX\in\setA_n}
         && \text{by \thme{sum of products} \xref{thm:psp_sop}}
-      \\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\ff(\rvX)\le y}{\rvX\in\setA_n}\pP{\rvX\in\setA_n}
-        && \text{by definition of $\pP{\setX|\setY}$ \xref{def:conP}}
-      \\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\fg_n(\rvX)\le y}{\rvX\in\setA_n}\pP{\rvX\in\setA_n}
+      \\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\ff(\rvX)\le y}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
+        && \text{by definition of $\psp\setn{\setX|\setY}$ \xref{def:conP}}
+      \\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\fg_n(\rvX)\le y}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
         && \text{by definition of $\fg_n(x)$}
       \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\pP{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \ge \fgi_n(y)}{\rvX\in\setA_n}\pP{\rvX\in\setA_n} & otherwise
+            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \pPc{\rvX \ge \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & otherwise
            \end{array}}\quad\text{by \pref{item:YfX_gn}}}
       \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\pP{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\pP{\rvX\in\setA_n}}  & otherwise
+            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{1-\pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}}  & otherwise
            \end{array}}}
       \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \pPa{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\pPa{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}}  & otherwise
-           \end{array}}\quad\text{by definition of $\pP{\setX|\setY}$}}
+            \sum_{n=1}^{\xN+1} \psp\set{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{1-\psp\set{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}}  & otherwise
+           \end{array}}\quad\text{by definition of $\psp\setn{\setX|\setY}$}}
       \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \brp{\pP{\rvX \le \fgi_n(y)}-\pP{\rvX < \min\setA_{n-1}}}        & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\brp{\pP{\rvX \le \fgi_n(y)}-\pP{\rvX<\min\setA_{n-1}}}}  & otherwise
+            \sum_{n=1}^{\xN+1} \brp{\psp\setn{\rvX \le \fgi_n(y)}-\psp\setn{\rvX < \min\setA_{n-1}}}        & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{1-\brp{\psp\setn{\rvX \le \fgi_n(y)}-\psp\setn{\rvX<\min\setA_{n-1}}}}  & otherwise
            \end{array}}}
       \\&= \ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \pP{\rvX \le \fgi_n(y)}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\pP{\rvX \le \fgi_n(y)}}  & otherwise
+            \sum_{n=1}^{\xN+1} \psp\setn{\rvX \le \fgi_n(y)}          & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{1-\psp\setn{\rvX \le \fgi_n(y)}}  & otherwise
            \end{array}}
-        && \text{because $\ddy\pP{\rvX<\text{a constant}}=0$}
+        && \text{because $\ddy\psp\setn{\rvX<\text{a constant}}=0$}
       \\&= \brb{\begin{array}{>{\ds}lM}
             \sum_{n=1}^{\xN+1} \ddy\pcx\brs{\fgi_n(y)}         & for $\ffp(x)\ge0$ \\
             \sum_{n=1}^{\xN+1} \ddy\brs{1-\pcx\brp{\fgi_n(y)}} & otherwise
@@ -663,28 +663,28 @@ Let $\fg_n(x)\eqd\ff(x)$ but with domain restricted to $x\in\setA_n$.
   %\item
   %  \begin{align*}
   %    &\ppy(y)
-  %    \\&\eqd \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\pP{y \le Y < y+\varepsilon}
+  %    \\&\eqd \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\psp\setn{y \le Y < y+\varepsilon}
   %      && \text{by def. of $\ppy$ \xref{def:pdf}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\pP{y \le \ff(\rvX)< y+\varepsilon}
+  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\psp\setn{y \le \ff(\rvX)< y+\varepsilon}
   %      && \text{by hypothesis}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPa{y \le \ff(\rvX)< y+\varepsilon}{\rvX\in\setA_n}
+  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \psp\set{y \le \ff(\rvX)< y+\varepsilon}{\rvX\in\setA_n}
   %      && \text{by \thme{sum of products} \xref{thm:psp_sop}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{y \le \ff(\rvX)< y+\varepsilon}{\rvX\in\setA_n}\pP{\rvX\in\setA_n}
-  %      && \text{by def. of $\pP{\setX|\setY}$ \xref{def:conP}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{y \le \fg_n(\rvX)< y+\varepsilon}{\rvX\in\setA_n}\pP{\rvX\in\setA_n}
+  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{y \le \ff(\rvX)< y+\varepsilon}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
+  %      && \text{by def. of $\psp\setn{\setX|\setY}$ \xref{def:conP}}
+  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{y \le \fg_n(\rvX)< y+\varepsilon}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
   %      && \text{by def. of $\fg_n(x)$}
   %    \\&= \mathrlap{\lim_{\varepsilon\to0}\frac{1}{\varepsilon}\brs{\begin{array}{>{\ds}lM}
-  %          \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) \le\rvX < \fgi_n(y+\varepsilon)}{\rvX\in\setA_n}\pP{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
-  %          \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y+\varepsilon) \le\rvX < \fgi_n(y)}{\rvX\in\setA_n}\pP{\rvX\in\setA_n} & otherwise
+  %          \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) \le\rvX < \fgi_n(y+\varepsilon)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
+  %          \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y+\varepsilon) \le\rvX < \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & otherwise
   %         \end{array}}\quad\text{(by \pref{item:YfX_gn}}}
   %    \\&= \mathrlap{\lim_{\varepsilon\to0}\frac{1}{\varepsilon}\brs{\begin{array}{>{\ds}lM}
-  %           \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y)     \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\ffp\brs{\fgi_n(y)}}}{\rvX\in\setA_n}\pP{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
-  %           \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) + \frac{\varepsilon}{\ffp\brs{\fgi_n(y)}} \le\rvX < \fg_n(y)}{\rvX\in\setA_n}\pP{\rvX\in\setA_n}     & otherwise
+  %           \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y)     \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\ffp\brs{\fgi_n(y)}}}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
+  %           \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) + \frac{\varepsilon}{\ffp\brs{\fgi_n(y)}} \le\rvX < \fg_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}     & otherwise
   %         \end{array}}\quad\text{by \pref{ilem:YfX_ffp}}}
-  %    \\&= \mathrlap{\lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}{\rvX\in\setA_n}\pP{\rvX\in\setA_n}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPa{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}{\rvX\in\setA_n}
-  %      && \text{by def. of $\pP{\setX|\setY}$ \xref{def:conP}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pP{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}
+  %    \\&= \mathrlap{\lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}}
+  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \psp\set{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}{\rvX\in\setA_n}
+  %      && \text{by def. of $\psp\setn{\setX|\setY}$ \xref{def:conP}}
+  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \psp\setn{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}
   %      && \text{by def. of \structe{partition} \xref{def:partition}}
   %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}} \ppx\brs{\fgi_n(y)}
   %      && \text{by def. of $\ppx$ \xref{def:pdf}}
@@ -740,16 +740,16 @@ Let $a,b\in\R$.
   %\item An alternative proof is as follows:
   %  \begin{align*}
   %    \ppy(y)h
-  %      &=  \pP{y\le Y < y+h}
-  %    \\&=  \pP{y\le a\rvX+b < y+h}
-  %    \\&=  \pP{y-b\le a\rvX < y-b+h}
+  %      &=  \psp\setn{y\le Y < y+h}
+  %    \\&=  \psp\setn{y\le a\rvX+b < y+h}
+  %    \\&=  \psp\setn{y-b\le a\rvX < y-b+h}
   %    \\&=  \left\{\begin{array}{ll}
-  %            \pP{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{a}h} &\forall a>0 \\
-  %            \pP{\frac{y-b}{a}\ge\rvX > \frac{y-b}{a}+\frac{1}{a}h} &\forall a<0
+  %            \psp\setn{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{a}h} &\forall a>0 \\
+  %            \psp\setn{\frac{y-b}{a}\ge\rvX > \frac{y-b}{a}+\frac{1}{a}h} &\forall a<0
   %          \end{array}\right.
   %    \\&=  \left\{\begin{array}{ll}
-  %            \pP{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{|a|}h}  &\forall a>0 \\
-  %            \pP{\frac{y-b}{a}-\frac{1}{|a|}h <\rvX \le \frac{y-b}{a}} &\forall a<0
+  %            \psp\setn{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{|a|}h}  &\forall a>0 \\
+  %            \psp\setn{\frac{y-b}{a}-\frac{1}{|a|}h <\rvX \le \frac{y-b}{a}} &\forall a<0
   %          \end{array}\right.
   %    \\&=  \frac{1}{|a|}h \ppx\left(\frac{y-b}{a}\right)
   %  \\\implies
@@ -865,11 +865,11 @@ Let $a,b\in\R$.
 %%      \item Now we prove the theorem with some help from \pref{item:Yf1X}:
 %%        \begin{align*}
 %%          \ppy(y)h
-%%            &=    \pP{y\le Y < y+h}
-%%          \\&=    \pP{y\le \frac{1}{\rvX} < y+h}
-%%          \\&=    \pP{\frac{1}{y}\ge\rvX > \frac{1}{y+h}}
-%%          \\&=    \pP{\frac{1}{y}\ge\rvX > \frac{1}{y}-\frac{1}{y^2}h}
-%%          \\&=    \pP{\frac{1}{y}-\frac{1}{y^2}h < \rvX \le \frac{1}{y} }
+%%            &=    \psp\setn{y\le Y < y+h}
+%%          \\&=    \psp\setn{y\le \frac{1}{\rvX} < y+h}
+%%          \\&=    \psp\setn{\frac{1}{y}\ge\rvX > \frac{1}{y+h}}
+%%          \\&=    \psp\setn{\frac{1}{y}\ge\rvX > \frac{1}{y}-\frac{1}{y^2}h}
+%%          \\&=    \psp\setn{\frac{1}{y}-\frac{1}{y^2}h < \rvX \le \frac{1}{y} }
 %%          \\&=    \frac{1}{y^2}h \ppx\left( \frac{1}{y} \right)
 %%        \\\implies
 %%          \ppy(y)
@@ -982,16 +982,16 @@ Let $\rvX$ and $\rvY$ be \fncte{random variable}s.
 %      \item Now, using the above relation, we have
 %            \begin{align*}
 %              \ppy(y)h
-%                &= \pP{y\le Y < y+h}
-%              \\&= \pP{y\le X^2 < y+h}
-%              \\&= \pP{(y\le X^2 < y+h) \land (X<0)}+ \pP{(y\le X^2 < y+h) \land (X\ge0)}
-%              \\&= \pP{y\le X^2 < y+h | X<0}\pP{\rvX<0} + \pP{y\le X^2 < y+h | X\ge0}\pP{\rvX\ge0}
-%              \\&= \pP{-\sqrt{y}\le\rvX < -\sqrt{y+h} | X<0  } \pP{\rvX<0} +
-%                   \pP{+\sqrt{y}\le\rvX < +\sqrt{y+h} | X\ge0} \pP{\rvX\ge0}
-%              \\&= \pP{-\sqrt{y}\le\rvX < -\left(\sqrt{y}+\frac{1}{2\sqrt{y}}h\right) \land X<0   } +
-%                   \pP{+\sqrt{y}\le\rvX <        \sqrt{y}+\frac{1}{2\sqrt{y}}h        \land X\ge0 }
-%              \\&= \pP{-\sqrt{y}\le\rvX < -\left(\sqrt{y}+\frac{1}{2\sqrt{y}}h\right)  } +
-%                   \pP{+\sqrt{y}\le\rvX <        \sqrt{y}+\frac{1}{2\sqrt{y}}h         }
+%                &= \psp\setn{y\le Y < y+h}
+%              \\&= \psp\setn{y\le X^2 < y+h}
+%              \\&= \psp\setn{(y\le X^2 < y+h) \land (X<0)}+ \psp\setn{(y\le X^2 < y+h) \land (X\ge0)}
+%              \\&= \psp\setn{y\le X^2 < y+h | X<0}\psp\setn{\rvX<0} + \psp\setn{y\le X^2 < y+h | X\ge0}\psp\setn{\rvX\ge0}
+%              \\&= \psp\setn{-\sqrt{y}\le\rvX < -\sqrt{y+h} | X<0  } \psp\setn{\rvX<0} +
+%                   \psp\setn{+\sqrt{y}\le\rvX < +\sqrt{y+h} | X\ge0} \psp\setn{\rvX\ge0}
+%              \\&= \psp\setn{-\sqrt{y}\le\rvX < -\left(\sqrt{y}+\frac{1}{2\sqrt{y}}h\right) \land X<0   } +
+%                   \psp\setn{+\sqrt{y}\le\rvX <        \sqrt{y}+\frac{1}{2\sqrt{y}}h        \land X\ge0 }
+%              \\&= \psp\setn{-\sqrt{y}\le\rvX < -\left(\sqrt{y}+\frac{1}{2\sqrt{y}}h\right)  } +
+%                   \psp\setn{+\sqrt{y}\le\rvX <        \sqrt{y}+\frac{1}{2\sqrt{y}}h         }
 %              \\&= \frac{1}{2\sqrt{y}}h\ppx(-\sqrt{y})  +
 %                   \frac{1}{2\sqrt{y}}h\ppx( \sqrt{y})
 %            \\\implies
@@ -1101,24 +1101,24 @@ Let $Z=\tan\Theta$. Then
 %      \item Now we prove the theorem using the above relation.
 %            \begin{align*}
 %              \ppz(z)h
-%                &= \pP{z\le Z < z+h}
-%              \\&= \pP{z\le \tan\Theta < z+h}
-%              \\&= \sum_n \pP{z\le \tan\Theta < z+h \land
+%                &= \psp\setn{z\le Z < z+h}
+%              \\&= \psp\setn{z\le \tan\Theta < z+h}
+%              \\&= \sum_n \psp\setn{z\le \tan\Theta < z+h \land
 %                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
 %                          }
-%              \\&= \sum_n \pP{z\le \tan\Theta < z+h \left|
+%              \\&= \sum_n \psp\setn{z\le \tan\Theta < z+h \left|
 %                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
 %                          \right.}
-%                          \pP{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
-%              \\&= \sum_n \pP{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \left|
+%                          \psp\setn{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
+%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \left|
 %                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
 %                          \right.}
-%                          \pP{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
-%              \\&= \sum_n \pP{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \land
+%                          \psp\setn{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
+%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \land
 %                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
 %                          }
-%              \\&= \sum_n \pP{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi }
-%              \\&= \sum_n \pP{\atan{z}+n\pi \le \Theta < +\atan(z)+n\pi + h\frac{1}{1+z^2} }
+%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi }
+%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < +\atan(z)+n\pi + h\frac{1}{1+z^2} }
 %              \\&= h\frac{1}{1+z^2} \sum_n \ppth(\atan{z}+n\pi)
 %            \\\implies
 %              \ppz(z) &=  \frac{1}{1+z^2} \sum_n \ppth(\atan{z}+n\pi)
@@ -1184,18 +1184,18 @@ Let $\rvX$, $\rvY$, and $\rvZ$ be \fncte{random variable}s. %
   \ppz(z)
     &\eqd \ddz\pcz(z)
     &&    \text{by definition of $\ppz$} &&\text{\xref{def:pdf}}
-  \\&\eqd \ddz\pP{\rvZ \le z}
+  \\&\eqd \ddz\psp\setn{\rvZ \le z}
     &&    \text{by definition of $\pcz$} &&\text{\xref{def:cdf}}
-  \\&=    \ddz\pP{\rvX+\rvY \le z}
+  \\&=    \ddz\psp\setn{\rvX+\rvY \le z}
     &&    \text{by hypothesis (1)}
-  \\&=    \ddz\lim_{\varepsilon\to0}\sum_{n\in\Z} \pPa{\rvX+\rvY \le z}{y+n\varepsilon<\rvY\le y+(n+1)\varepsilon}
+  \\&=    \ddz\lim_{\varepsilon\to0}\sum_{n\in\Z} \psp\set{\rvX+\rvY \le z}{y+n\varepsilon<\rvY\le y+(n+1)\varepsilon}
     &&    \text{by \thme{sum of products}}&&\text{\xref{thm:psp_sop}}
-  %\\&=    \ddz\int_y \pPc{\rvX+y \le z}{y<\rvY\le y+\varepsilon}\pP{y<\rvY\le y+\varepsilon} \dy
+  %\\&=    \ddz\int_y \pPc{\rvX+y \le z}{y<\rvY\le y+\varepsilon}\psp\setn{y<\rvY\le y+\varepsilon} \dy
   %  &&    \text{by definiton of $\pPc{\rvX}{\rvY}$ \xref{def:conprob}}
   \\&=    \ddz\int_{y\in\R} \pPc{\rvX+\rvY \le z}{\rvY=y}\ppy(y) \dy
     &&    \text{by definiton of $\pPc{\rvX}{\rvY}$}&&\text{\xref{def:conprob}}
   \\&=    \ddz\int_{y\in\R} \pPc{\rvX \le z-y}{\rvY=y} \ppy(y) \dy
-  \\&=    \ddz\int_{y\in\R} \pP{\rvX \le z-y}\ppy(y) \dy
+  \\&=    \ddz\int_{y\in\R} \psp\setn{\rvX \le z-y}\ppy(y) \dy
     &&    \text{by hypothesis (2)}
   \\&\eqd \ddz\int_{y\in\R} \pcx(z-y)\ppy(y) \dy
     &&    \text{by definition of $\pcx$}&&\text{\xref{def:cdf}}
@@ -1211,15 +1211,15 @@ Let $\rvX$, $\rvY$, and $\rvZ$ be \fncte{random variable}s. %
 %
 %\begin{align*}
 %  \ppz(z)
-%    &\eqd \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \pP{z \le Z < z+\varepsilon }
+%    &\eqd \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \psp\setn{z \le Z < z+\varepsilon }
 %    &&    \text{by definition of $\ppz$ \xref{def:pdf}}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \pP{z \le X+Y < z+\varepsilon }
+%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \psp\setn{z \le X+Y < z+\varepsilon }
 %    &&    \text{by definition of $\rvZ$}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \pP{(z \le X+y < z+\varepsilon) \land (y\le Y<y+\varepsilon) } \dy
+%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z \le X+y < z+\varepsilon) \land (y\le Y<y+\varepsilon) } \dy
 %    &&    \text{by \thme{sum of products} \xref{thm:psp_sop}}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \pP{(z-y \le\rvX < z-y+\varepsilon) | (y\le Y<y+\varepsilon) }\pP{y\le Y<y+\varepsilon} \dy
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \pP{(z-y \le\rvX < z-y+\varepsilon) | Y=y }\pP{y\le Y<y+\varepsilon} \dy
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \pP{(z-y \le\rvX < z-y+\varepsilon)}\pP{y\le Y<y+\varepsilon} \dy
+%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon) | (y\le Y<y+\varepsilon) }\psp\setn{y\le Y<y+\varepsilon} \dy
+%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon) | Y=y }\psp\setn{y\le Y<y+\varepsilon} \dy
+%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon)}\psp\setn{y\le Y<y+\varepsilon} \dy
 %    &&    \text{by \prope{independence} hypothesis}
 %  \\&\eqd \int_y \ppx(z-y) \ppy(y)  \dy
 %    &&    \text{by definition of $\ppx$ \xref{def:pdf}}
@@ -1344,7 +1344,7 @@ Let $X\sim\pN{\pmeanx}{\pvarx}$ and $\rvY\sim\pN{\pmeany}{\pvary}$ be
 jointly Gaussian random variables and $\pvarxy=\cov{\rvX}{Y}$.
 Then
 \propbox{
-  \pP{\rvX>Y} = \pQ\left( \frac{-\pmeanx + \pmeany}{\pvarx+\pvary-2\pvarxy}\right)
+  \psp\setn{\rvX>Y} = \pQ\left( \frac{-\pmeanx + \pmeany}{\pvarx+\pvary-2\pvarxy}\right)
   }
 \end{proposition}
 \begin{proof}
@@ -1368,9 +1368,9 @@ we just have to determine the mean and variance of $Z$.
   \\&\eqd \pvarx + \pvary -2\pvarxy
 \\
 \\
-  \pP{\rvX>Y}
-    &= \pP{\rvX-Y>0}
-  \\&= \pP{Z>0}
+  \psp\setn{\rvX>Y}
+    &= \psp\setn{\rvX-Y>0}
+  \\&= \psp\setn{Z>0}
   \\&= \left.\pQ\left(\frac{z-\pE Z}{\var Z} \right)\right|_{z=0}
   \\&= \pQ\left(\frac{0-\pmeanx+\pmeany}{\pvarx+\pvary-2\pvarxy} \right)
 \end{align*}

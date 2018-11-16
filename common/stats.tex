@@ -321,13 +321,13 @@ $\set{A_n}{x_n\in\setA_n, n=1,2,\ldots,\xN}$ and $h\to0$.
   \ppy(y)h
     &= \psp\setn{y \le\rvY < y+h}
   \\&= \psp\setn{y \le \ff(\rvX) < y+h}
-  \\&= \sum_{n=1}^{\xN} \pPa{y \le \ff(\rvX) < y+h}{\rvX\in\setA_n}
-  \\&= \sum_{n=1}^{\xN} \pPc{\ffi{y} \le\rvX < \ffi{y+h}}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
+  \\&= \sum_{n=1}^{\xN} \psp\set{y \le \ff(\rvX) < y+h}{\rvX\in\setA_n}
+  \\&= \sum_{n=1}^{\xN} \psp\set{\ffi{y} \le\rvX < \ffi{y+h}}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
   \\&= \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
-         \sum_{n=1}^{\xN} \pPc{x_n     \le\rvX < x_n + \frac{1}{\ffp{x_n}}h}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & \ffp{x_n}<0 \\
-         \sum_{n=1}^{\xN} \pPc{x_n + \frac{1}{\ffp{x_n}}h \le\rvX < x_n}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}     & \ffp{x_n}\ge0
+         \sum_{n=1}^{\xN} \psp\set{x_n     \le\rvX < x_n + \frac{1}{\ffp{x_n}}h}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & \ffp{x_n}<0 \\
+         \sum_{n=1}^{\xN} \psp\set{x_n + \frac{1}{\ffp{x_n}}h \le\rvX < x_n}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}     & \ffp{x_n}\ge0
        \end{array}\right.
-  \\&= \sum_{n=1}^{\xN} \pPa{x_n     \le\rvX < x_n + \frac{1}{|\ffp{x_n}|}h}{\rvX\in\setA_n}
+  \\&= \sum_{n=1}^{\xN} \psp\set{x_n     \le\rvX < x_n + \frac{1}{|\ffp{x_n}|}h}{\rvX\in\setA_n}
   \\&= \sum_{n=1}^{\xN} \psp\setn{x_n     \le\rvX < x_n + \frac{1}{|\ffp{x_n}|}h}
   \\&= \sum_{n=1}^{\xN} h \frac{1}{|\ffp{x_n}|} \ppx(x_n)
   \\&= h \sum_{n=1}^{\xN} \frac{\ppx(x_n)}{|\ffp{x_n}|}
@@ -717,18 +717,23 @@ This probability \fncte{measure} has some basic properties as described in
 \begin{theorem}
 \label{thm:P}
 %---------------------------------------
-Let $\ps$ be a \structe{probability space},
-and $\set{\setB_n}{n=1,2,\ldots,\xN}$ be a partition of a set $\setB$.
-\thmbox{\begin{array}{rc>{\ds}l@{\qquad}l}
-  \psp(\setB)  &=&  \sum_{n=1}^{\xN} \psp(\setB_n)    & \forall \setB\in\pse\\
-  \psp(\setA\setB) &=&  \sum_{n=1}^{\xN} \psp(\setA\setB_n)   & \forall \setA,\setB\in\pse
-\end{array}}
+Let $\ps$ be a \structe{probability space}.
+Let $\setB$ be a set and $\set{\setB_n}{n=1,2,\ldots,\xN}$ a set of sets.
+\thmbox{
+  \brb{\begin{array}{M}
+    $\set{\setB_n}{n=1,2,\ldots,\xN}$ is a \\
+    \structe{partition} of $\setB$.
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{Frc>{\ds}l lD}
+    (1).&\psp(\setB)      &=&  \sum_{n=1}^{\xN} \psp(\setB_n)        & \forall \setB\in\pse & and\\
+    (2).&\psp(\setA\setB) &=&  \sum_{n=1}^{\xN} \psp(\setA\setB_n)   & \forall \setA,\setB\in\pse 
+  \end{array}}
+  }
 \end{theorem}
 \begin{proof}
-This is because $\psp$ is a \fncte{measure} and by \prefpp{def:measure}.
+$\psp$ is a \fncte{measure} and by \prefpp{def:measure}.
 \end{proof}
-
-
 
 Sometimes the problem of finding the expected value of a \fncte{random variable} $\rvX$
 can be simplified by ``conditioning $\rvX$ on $\rvY$".
@@ -860,7 +865,7 @@ Let $\ps$ be a \structe{probability space} with expectation functional $\pE$.
      &\le& \sum_{n=1}^{\xN} \pE(\rvX_nX_n^\ast)
      & (\thme{Generalized triangle inequality})
      \\
-  2. & \left| \pE(\rvX\rvY^\ast)\right|^2
+  2. & \abs{\pE(\rvX\rvY^\ast)}^2
      &\le& \pE(\rvX\rvX^\ast)\:\pE(YY^\ast)
      & (\thme{Cauchy-Schwartz inequality})
      \\
@@ -1035,7 +1040,7 @@ Then
 %---------------------------------------
 Let $\rvX\sim\pN{\pmeanx}{\pvarx}$ and $\rvY\sim\pN{\pmeany}{\pvary}$ be
 jointly Gaussian \fncte{random variable}s and $\pvarxy=\cov{\rvX}{\rvY}$.
-Then
+\\
 \propbox{
   \psp\setn{\rvX>\rvY} = \pQ\brp{\frac{-\pmeanx + \pmeany}{\pvarx+\pvary-2\pvarxy}}
   }
