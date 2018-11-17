@@ -21,8 +21,8 @@ all:
     make
   cd ..\abcssp
     make
-  cd ..\dcsd
-    make
+  #cd ..\dcsd
+  #  make
   cd ..\bsplines
     make
   cd ..\trigsys
@@ -80,8 +80,8 @@ cleanall:
     make clean
   cd ..\xsams
     make clean
-  cd ..\dcsd
-    make clean
+  #cd ..\dcsd
+  #  make clean
   cd ..\bsplines
     make clean
   cd ..\estimation
