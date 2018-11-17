@@ -75,6 +75,307 @@ are defined as
             & (\fncte{conditional probability density function}---\fncte{pdf})
 \end{array}}
 \end{definition}
+
+%=======================================
+\section{Properties}
+%=======================================
+\prefpp{def:pdf} defines the pdf and cdf of a \structe{probability space}
+$\ps$ in terms of \fncte{measure} $\psp$.
+Conversely, the probability \fncte{measure} $\psp\setn{a\le\rvX<b}$
+of an event $\{a\le\rvX<b\}$ can be
+expressed in terms of either the pdf or cdf.
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:pdfddx}
+%---------------------------------------
+Let $\rvX$ a \fncte{random variable} with \fncte{pdf} $\ppx$ and \fncte{cdf} $\pcx$
+\xref{def:pdf} on the \structe{probability space} $\ps$ \xref{def:ps}.\\
+\propboxt{
+  $\brb{\begin{array}{FMD}
+    (1).& $\pcx(x)$ and $\pcy(y)$ are \prope{continuous} & OR \\
+    (2).& $\ppx(x)$ and $\ppy(y)$ are \prope{continuous}
+  \end{array}}$
+  \\\quad$\implies\quad
+  \brb{\begin{array}{rc>{\ds}l}
+      \ppx(x)    &=& \lim_{\varepsilon\to 0} \frac{1}{\varepsilon}\psp\setn{x \le \rvX < x+\varepsilon}
+    \\\ppxy(x,y) &=& \lim_{\varepsilon\to 0} \frac{1}{\varepsilon}\psp\setn{x \le \rvX < x+\varepsilon \land y \le\rvY < y+\varepsilon}
+  \end{array}}$
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \ppx(x)
+    &\eqd \ddx\pcx(x)
+    && \text{by definition of $\ppx$}
+    && \text{\xref{def:pdf}}
+  \\&=    \lim_{\varepsilon\to 0} \frac{1}{\varepsilon}\psp\set{x\in\R}{x \le \rvX < x+\varepsilon}
+    && \text{by definition of $\ddx$}
+    && \text{\xref{def:ddx}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:pdfcdf}
+%---------------------------------------
+Let $\ps$ be a probability space,
+$\rvX$ be a random variable, and $(a,b)$ a real interval.
+\thmbox{
+  \brb{\begin{array}{FMD}
+    (1).& $\pcx(x)$ is \prope{continuous} & OR \\
+    (2).& $\ppx(x)$ is \prope{continuous}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rc>{\ds}lc>{\ds}l}
+    \psp\setn{a<\rvX\le b}
+      &=& \pcx(b) - \pcx(a)
+      &=& \int_a^b \ppx(x) \dx
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \psp\setn{a<\rvX\le b}
+    &= \psp\setn{\rvX\le b} - \psp\setn{\rvX <  a}
+    && \text{by \thme{sum of products}} && \text{\xref{thm:psp_sop}}
+  \\&= \psp\setn{\rvX\le b} - \psp\setn{\rvX\le a}
+    && \text{by \prope{continuity} hypothesis}
+  \\&\eqd \pcx(b) - \pcx(a)
+    && \text{by definition of $\pcx$} && \text{\xref{def:cdf}}
+  \\
+  \\
+  \int_a^b \ppx(x) \dx
+    &\eqd \int_a^b \brs{\ddx\pcx(x)} \dx
+    && \text{by definition of $\ppx$} && \text{\xref{def:pdf}}
+  \\&= \brlr{\pcx(x)}_{x=b} - \brlr{\pcx(x)}_{x=a}
+    && \text{by \thme{Fundamental theorem of calculus}}
+  \\&= \pcx(b) - \pcx(a)
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space},
+$\rvX$ be a \fncte{random variable}, and $\intoo{a}{b}$ a \structe{real interval}.
+\thmbox{\begin{array}{>{\ds}l}
+  \psp\setn{a\le\rvX<b}
+     =  \int_a^b \ppx(x) \dx
+     =  \int_{-\infty}^b \pcx(x) \dx - \int_{-\infty}^a \pcx(x) \dx
+\end{array}}
+\end{theorem}
+
+The properties of the pdf follow closely the properties of \fncte{measure} $\psp$.
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+\thmbox{
+  \brb{\begin{array}{FMD}
+    (A).& $\pcx(x)$ is \prope{continuous} & OR \\
+    (B).& $\ppx(x)$ is \prope{continuous}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{Frc>{\ds}lD}
+    (1).& \ppxcy(x|y) &=& \frac{\ppxy(x,y)}{\ppy(y)} & and \\
+    (2).& \ppx(x)     &=& \int_{y\in\R}\ppxy(x,y) \dy
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \ppxcy(x|y)
+    &\eqd \ddx\pcxcy(x|y)
+    && \text{by definition of $\pcx$}
+    && \text{\xref{def:conprob}}
+  \\&\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \psp\set{x\le\rvX < x+\varepsilon}{\rvY=y}
+    && \text{by definition of $\ddx$}
+    && \text{\xref{def:ddx}}
+  \\&\eqd \lim_{\varepsilon\to0} 
+          \frac{1}{\varepsilon} 
+          \frac{\ds\psp\setn{(x\le\rvX < x+\varepsilon) \land (\rvY=y)}}
+               {\ds\psp\setn{\rvY=y}}
+    && \text{by definition of $\psP\set{\setA}{\setB}$}
+    && \text{\xref{def:conprob}}
+  \\&= \lim_{\varepsilon\to0} 
+       \frac{1}{\varepsilon} 
+       \frac{\ds\psp\setn{(x\le\rvX < x+\varepsilon) \land (y\le\rvY<y+\varepsilon)}}
+            {\ds\psp\setn{y\le\rvY<y+\varepsilon}}
+    && \text{by \prope{continuity} hypothesis}
+  \\&=  \frac{\ds\lim_{\varepsilon\to0} \frac{1}{\varepsilon}\psp\setn{(x\le\rvX < x+\varepsilon) \land (y\le\rvY<y+\varepsilon)}}
+             {\ds\lim_{\varepsilon\to0}                      \psp\setn{y\le\rvY<y+\varepsilon}}
+    && \text{by property of $\ds\lim_{\varepsilon\to0}$}
+  \\&=    \frac{\ppxy(x,y)}{\ppy(y)}
+    && \text{by \prefp{prop:pdfddx}}
+\\
+\\
+  \int_{y\in\R}\ppxy(x,y)\dy
+    &\eqd \int_{y\in\R} \brs{ \ddy\ddx\pcxy(x,y) } \dy
+    && \text{by definition of $\ppx$}
+    && \text{\xref{def:pdf}}
+  \\&= \ddx\pcxy(x,y) 
+  \\&\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon}
+          \int_{y\in\R} \psp\setn{x\le\rvX<x+\varepsilon, y\le\rvY<y+\varepsilon} \dy
+    && \text{by definition of $\ddx$}
+    && \text{\xref{def:ddx}}
+  \\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \psp\setn{x\le\rvX<x+\varepsilon}
+  \\&= \ppx(x)
+    && \text{by \prefp{prop:pdfddx}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:cdf}
+%---------------------------------------
+\thmbox{\begin{array}{rcl}
+  \pcx(\sup\R) &=& 1 \\
+  \pcx(\inf\R) &=& 0
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \pcx(\sup\R)
+    &\eqd \psp\setn{\rvX\le\sup\R} 
+    && \text{by definition of $\pcx$} 
+    &&\text{\xref{def:cdf}}
+  \\&=    1                  
+    %&& \text{by definition of $\psp$} 
+    %&&\text{\xref{def:psp}}
+  \\
+  \pcx(\inf\R)
+    &\eqd \psp\setn{\rvX\le\inf\R} 
+    && \text{by definition of $\pcx$} &&\text{\xref{def:cdf}}
+  \\&=    0                  
+    %&& \text{by definition of $\psp$} 
+    %&&\text{\xref{def:psp}}
+\end{align*}
+\end{proof}
+
+The properties of the pdf follow closely the properties of measure $\psp$.
+%---------------------------------------
+\begin{theorem}
+\label{thm:conpdf}
+%---------------------------------------
+\thmbox{\begin{array}{rc>{\ds}l rc>{\ds}l}
+  \pcxcy(x|y) &=& \frac{\ddy\pcxy(x,y)}{\ppy(y)}  &\qquad
+  \ppxcy(x|y) &=& \frac{\ppxy(x,y)}{\ppy(y)}  \\
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \pcxcy(x|y)
+    &\eqd \pPc{\rvX\le x}{\rvY=y}
+    &&    \text{by definition of $\pcxcy$}              &&\text{\xref{def:concdf}}
+  \\&\eqd \frac{\psp\set{\rvX\le x}{\rvY=y}}{\psp\setn{\rvY=y}}
+    &&    \text{by definition of $\psp\setn{\rvX|\rvY}$}         &&\text{\xref{def:conP}}
+  \\&=    \lim_{\varepsilon\to0}\frac{\psp\set{\rvX\le x}{y<\rvY\le y+\varepsilon}}
+                                         {\psp\setn{y<\rvY\le y+\varepsilon}}
+  \\&=\mathrlap{\lim_{\varepsilon\to0}\frac{\brs{\psp\set{\rvX\le x}{\rvY\le y+\varepsilon}-\psp\set{\rvX\le x}{\rvY\le y}}/\varepsilon}
+                                         {\brs{\psp\setn{\rvY\le y+\varepsilon}-\psp\setn{\rvY\le y}}/\varepsilon}}
+  \\&\eqd \lim_{\varepsilon\to0}\frac{\brs{\pcxy(x,y+\varepsilon)-\pcxy(x,y)}/\varepsilon}
+                                         {\brs{\pcy(y+\varepsilon)-\pcy(y)}/\varepsilon}
+    &&    \text{by definition of $\pcxy$}                  &&\text{\xref{def:jointcdf}}
+  \\&\eqd \frac{\ddy\pcxy(x,y)}{\ddy\pcy(y)}
+    &&    \text{by definition of $\ddy\ff(y)$}
+  \\&\eqd \frac{\ddy\pcxy(x,y)}{\ppy(y)}
+    &&    \text{by definition of $\ppy$}  &&\text{\xref{def:pdf}}
+  \\&=    \frac{\ddy\pcxy(x,y)}{\ppy(y)}
+    &&    \text{because $y$ is fixed}
+  \\
+  \\
+  \ppxcy(x|y)
+    &\eqd \ddx\pcxcy(x|y)                     &&\text{by definition of $\ppxcy$}                  &&\text{\xref{def:conpdf}}
+  \\&=    \ddx\frac{\ddy\pcxy(x,y)}{\ppy(y)}  &&\text{by previous result}
+  \\&=    \frac{\ddx\ddy\pcxy(x,y)}{\ppy(y)}  &&\text{because $\ppy(y)$ is not a function of $x$}
+  \\&\eqd \frac{\ppxy(x,y)}{\ppy(y)}          &&\text{by definition of $\ppxy(x,y)$}              &&\text{\xref{def:jointpdf}}
+\end{align*}
+
+\begin{align*}
+  %\ppxcy(x|y)
+  %  &\eqd \lim_{h\to0} \frac{1}{h} \psp\setn{x\le\rvX < x+h | Y=y}
+  %  &&    \text{by definition of $\ppxcy(x|y)$}
+  %  &&    \text{\xref{def:conpdf}}
+  %\\&\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \frac{\psp\setn{(x\le\rvX < x+\varepsilon) \land (Y=y)}}{\psp\setn{Y=y}}
+  %  &&    \text{by definition of $\psp\setn{\rvX|\rvY}$}
+  %  &&    \text{\xref{def:conP}}
+  %\\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \frac{\psp\setn{(x\le\rvX < x+\varepsilon) \land (y\le Y<y+\varepsilon)}}{\psp\setn{y\le Y<y+\varepsilon}}
+  %\\&\eqd \frac{\ppxy(x,y)}{\ppy(y)}
+  %  \qquad\mathrlap{\text{by definitions of $\ppxy$ \xref{def:jointpdf} and $\ppy$ \xref{def:pdf}}}
+  %\\
+  %\int_y\ppxy(x,y)\dy
+  %  &\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \int_y \psp\setn{x\le X<x+\varepsilon \land y\le Y<y+\varepsilon} \dy
+  %  &&    \text{by definition of $\ppxy$}
+  %  &&    \text{\xref{def:jointpdf}}
+  %\\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \psp\setn{x\le X<x+\varepsilon}
+  %  &&    \text{by \thme{sum of products}}
+  %  &&    \text{\xref{thm:psp_sop}}
+  %\\&\eqd \ppx(x)
+  %  &&    \text{by definition of $\ppx$}
+  %  &&    \text{\xref{def:psp}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:pdf1}
+%---------------------------------------
+Let $\ps$ be a probability space.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l C| >{\ds}rc>{\ds}l}
+    \int_{x\in\R} \ppx(x)    \dx &=& 1       &                  & \int_{x\in\R} \ppxcy(x|y) \dx               &=& 1\\
+    \int_{y\in\R} \ppxy(x,y) \dy &=& \ppx(x) & \forall x\in\pso & \int_{x\in\R}\int_{y\in\R}\ppxy(x,y) \dy\dx &=& 1
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \int_{\R} \ppx(x) \dx
+    &= \pcx(\sup\R) - \pcx(\inf\R)
+    && \text{by \prefp{thm:pdfcdf}}
+  \\&= 1 - 0
+  \\&= 1
+    && \mathrlap{\text{because $0$ is the additive identity element in $\fieldR$}}
+  \\
+  \int_{x\in\R} \ppxcy(x|y) \dx
+    &\eqd \int_{x\in\R} \ddx\pcxcy(x|y) \dx
+    &&    \text{by definition of $\ppxcy(x|y)$ \xref{def:conpdf}}
+  \\&=    \pcxcy(\sup\R|y) - \pcxcy(\inf\R|y)
+    &&    \text{by \thme{Fundamental theorem of calculus}}
+  \\&=    1-0
+  \\&=    1
+    && \mathrlap{\text{because $0$ is the additive identity element in $\fieldR$}}
+  \\
+  \int_{y\in\R} \ppxy(x,y) \dy
+    &= \int_{y\in\R} \ppyx(y,x) \dy
+  \\&= \int_{y\in\R} \ppycx(y|x)\ppx(x) \dy  && \text{by \prefp{thm:conpdf}}
+  \\&= \ppx(x)\int_{y\in\R} \ppycx(y|x) \dy  && \text{because $\ppx(x)$ is not a function of $y$}
+  \\&= \ppx(x)\cdot1                         && \text{by previous result}
+  \\&= \ppx(x)                               && \mathrlap{\text{because $1$ is the multiplicative identity element in $\fieldR$}}
+  \\
+  \int_{x\in\R}\int_{y\in\R} \ppxy(x,y) \dy\dx
+    &= \int_{x\in\R}\ppx(x)\dx               && \text{by previous result}
+  \\&= 1                                     && \text{by previous result}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:cdf_monotone}
+%---------------------------------------
+Let $\ps$ be a probability space, and $\rvX$ a \fncte{random variable}
+with \fncte{probability density function} $\ppx(x)$ and
+\fncte{cumulative distribution function} $\pcx(x)$.
+\propbox{\begin{array}{FMD}
+    (1).& $\pcx(x)$ is \prope{monotone}                                                    &and\\
+    (2).& $\ppx(x)$ is \prope{continuous} $\implies$ $\pcx(x)$ is \prope{strictly monotone}&and\\
+    (3).& $\ppx(x)$ is \prope{continuous} $\implies$ $\pcx(x)$ is \prope{invertible}
+  \end{array}}
+\end{proposition}
+
+
+
+
+
+
 %=======================================
 \section{Discrete distributions}
 %=======================================
