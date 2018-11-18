@@ -2,1072 +2,1060 @@
 % LaTeX File
 % Daniel J. Greenhoe
 %============================================================================
+
 %======================================
-\chapter{Random Variables}
-\label{chp:rval}
+\chapter{Probability Density Functions}
+\label{chp:pdfs}
 %======================================
-\qboxnpq
-  {Joseph Leonard Doob (1910--2004), pioneer of and key contributor to mathematical probability\footnotemark}
-  {../common/people/doobjl_dartmouthedu.jpg}
-  {While writing my book I had an argument with Feller.
-   He asserted that everyone said ``random variable" and I asserted that everyone said ``chance variable."
-   We obviously had to use the same name in our books, so we decided the issue by a stochastic procedure.
-   That is, we tossed for it and he won.}
-\citetblt{
-  quote: & \citerp{snell1997}{307}, \citerp{snell2005}{251}\\
-  %reference: & \citerpg{suhov2008}{238}{0521847672}\\
-  image: & \url{http://www.dartmouth.edu/~chance/Doob/conversation.html}
-  }
-%======================================
+
+%=======================================
 \section{Definitions}
-%======================================
-The concept of the \fncte{random variable} is widely used in probability and
-random processes.
-Before discussing what a \fncte{random variable} \emph{is}, 
-note two things that a \fncte{random variable} is \emph{not} (next remark).
-%---------------------------------------
-\begin{remark}
-\footnote{
-  \citerpg{miller2006}{130}{0471458929},
-  \citerpgc{feldman2010}{4}{3642051588}{``The name ``random variable" is actually a misnomer, since it is not random and not a variable.\ldots the \fncte{random variable} simply maps each point (outcome) in the sample space to a number on the real line\ldots Technically, the space into which the \fncte{random variable} maps the sample space may be more general than the real line\ldots"},
-  \citerpg{curry2011}{4}{3642166180},
-  \citerpgc{trivedi2016}{2.1}{1119314208}{``The term ``random variable" is actually a misnomer, since a \fncte{random variable} $\rvX$ is really a function whose domain is the sample space $S$, and whose range is the set of all real numbers, $\R$."}
-  }
-%---------------------------------------
-As pointed out by others, the term ``random variable" is a ``misnomer":
-\\\rembox{
-  \begin{array}{NM}
-    \imark & A \fncte{random variable} is {\bf not random}.\\
-    \imark & A \fncte{random variable} is {\bf not a variable}.
-  \end{array}}
-\end{remark}
-
-What is it then? It is a \structe{function} (next definition).
-In particular, it is a function that maps from an underlying stochastic process into $\R$.
-Any ``\prope{randomness}" (whatever that means) it may \emph{appear} to have comes from the stochastic process it
-is mapping \emph{from}. But the function itself (the \fncte{random variable} itself) is very deterministic and well-defined.
-What gives it the appearance of being random is that the outcome $\omega$
-of the experiment appears to be random to the observer.
-So the \fncte{random variable} $\rvX(\omega)$ is simply a function of an underlying
-mechanism that appears to be random.
-%---------------------------------------
-\begin{definition}
-\index{random variable}
-\footnote{
-  \citerp{papoulis}{63}
-  }
-%---------------------------------------
-Let $\ps$ be a \structe{probability space} \xref{def:ps}.
-A \fnctd{random variable} $\rvX$ is a function $\rvX$.
-\end{definition}
-
-
-%======================================
-\section{Properties}
-%======================================
-%---------------------------------------
-\begin{proposition}
-\label{prop:cdf_uniform}
-%---------------------------------------
-Let $\ps$ be a probability space, and $\rvX$ a \fncte{random variable}
-with \fncte{cumulative distribution function} $\pcx(x)$.
-\propbox{
-  \brb{\begin{array}{M}
-    $\rvX$ is \prope{uniformly distributed}\\
-    \xref{def:uniform}
-  \end{array}}
-  \iff
-  \pcx(x) = \brb{\begin{array}{cM}
-                   0   & for $x<0$\\
-                   x   & for $0< x \le 1$ \\
-                   1   & otherwise
-            \end{array}}
-  }
-\end{proposition}
-
 %=======================================
-\section{Functions of one random variable}
-%=======================================
-%---------------------------------------
-\begin{theorem}[\thmd{Probability integral transform}]
-\footnote{
-  \citeP{angus1994},
-  \citerpgc{roussas2014}{232}{0128004371}{Theorem 10},
-  \citerpgc{devroye1986}{28}{0387963057}{Theorem 2.1}
-  }
-\label{thm:pit}
-%---------------------------------------
-Let $\ps$ be a probability space.
-Let $\rvX$ be a \fncte{random variable} with \fncte{probability density function} $\ppx(x)$ and \fncte{cumulative distribution function} $\pcx(x)$.
-Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function} $\pcy(y)$.
-\thmbox{
-  \brb{\begin{array}{FMD}
-         (1).&$\rvY=\pcx(\rvX)$               & and\\
-         (2).&$\ppx(x)$ is \prope{continuous} &    \\
-       \end{array}}
-  \quad\implies\quad
-  \brb{\begin{array}{M}
-    $\rvY$ is \prope{uniformly distributed}\\
-    \xref{def:uniform}
-  \end{array}}
-  }
-\end{theorem}
-\begin{proof}
-\begin{align*}
-  \pcy(y)
-    &\eqd \psp\setn{\rvY\le y}
-    &&    \text{by definition of \fncte{cdf}}   && \text{\xref{def:cdf}}
-  \\&=    \psp\setn{\pcx(\rvX)\le y}
-    &&    \text{by hypothesis (1)}
-  \\&=    \psp\setn{\rvX\le \pcx^{-1}(y)}
-    &&    \text{by hypothesis (2) and}          && \text{\prefp{prop:cdf_monotone}}
-  \\&\eqd \pcx\brs{\pcx^{-1}(y)}
-    &&    \text{by definition of \fncte{cdf}}   && \text{\xref{def:cdf}}
-  \\&=    y
-  \\\implies&\quad\text{$\rvY$ is \prope{uniformly distributed}}
-    &&    \text{by}                             && \text{\prefp{prop:cdf_uniform}}
-\end{align*}
-\end{proof}
-
-%---------------------------------------
-\begin{theorem}[\thmd{Inverse probability integral transform}] %[\thmd{Inverse transform sampling}]
-\footnote{
-  \citerpgc{devroye1986}{28}{0387963057}{Theorem 2.1},
-  \citerpgc{balakrishnan2009}{624}{0387096140}{14.2.1 Introduction}
-  }
-\label{thm:its}
-%---------------------------------------
-Let $\ps$ be a probability space.
-Let $\rvX$ be a \fncte{random variable} with \fncte{probability density function} $\ppx(x)$ and \fncte{cumulative distribution function} $\pcx(x)$.
-Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function} $\pcy(y)$.
-\thmbox{
-  \brb{\begin{array}{FMD}
-         (1).&$\rvY=\pcz^{-1}(\rvX)$                       & and\\
-         (2).&$\rvY$ is \prope{uniformly distributed} & and\\
-         (3).&$\ppz(z)$ is \prope{continuous}         &
-       \end{array}}
-  \quad\implies\quad
-  \brb{\begin{array}{M}
-    $\ppy(y) = \ppz(y)$\\
-    ($\rvY$ has distribution $\ppz(y)$)
-  \end{array}}
-  }
-\end{theorem}
-\begin{proof}
-\begin{align*}
-  \pcy(y)
-    &\eqd \psp\setn{\rvY\le y}
-    &&    \text{by definition of $\pcy$}          &&    \text{\xref{def:cdf}}
-  \\&=    \psp\setn{\pcz^{-1}(\rvX)\le y}
-    &&    \text{by hypothesis (1)}
-  \\&=    \psp\setn{\rvX \le \pcz(y)}
-    &&    \text{by hypothesis (3) and}            &&    \text{\prefp{prop:cdf_monotone}}
-  \\&\eqd \pcx\brs{\pcz(y)}
-    &&    \text{by definition of $\pcx$}          &&    \text{\xref{def:cdf}}
-  \\&=    \pcz(y)
-    &&    \text{because $0\le\pcz(y)\le1$ and by} && \text{\prefp{prop:cdf_uniform}}
-  \\\implies&\quad\text{$\ppy(y)=\ppz(y)$}
-    &&    \text{($\rvY$ has the distribution of $\rvZ$)}
-\end{align*}
-\end{proof}
-
-\begin{figure}\color{figcolor}
-\setlength{\unitlength}{0.4mm}
-\thicklines
-\begin{center}
-\begin{footnotesize}
-\begin{picture}(250,150)(-100,-20)
-  {\color{axis}% axis
-    \put(-100,   0){\line(1,0){200}}%
-    \put(   0, -20){\line(0,1){120}}%
-    }
-  {\color{blue}% f(x)
-    \qbezier(-100,100)(0,-100)(100,100)%
-    \put( 100, 105){\makebox(0,0)[b]{$y=\ff(x)$}}%
-    }%
-  {\color{red}% dotted guide lines
-    \qbezier[8](-40,0)(-40,8)(-40,16)%
-    \qbezier[8](40,0)(40,8)(40,16)%
-    \qbezier[28](-80,0)(-80,32)(-80,64)%
-    \qbezier[28](80,0)(80,32)(80,64)%
-    \qbezier[64](-80,64)(0,64)(80,64)%
-    \qbezier[40](-40,16)(0,16)(40,16)%
-    }%
-  \put(   0, 110){\makebox(0,0)[r]{$y$}}
-  \put( 110,   0){\makebox(0,0)[r]{$x$}}
-  \put(  -5,  64){\makebox(0,0)[r]{$y+\varepsilon$}}
-  \put(  -5,  16){\makebox(0,0)[r]{$y$}}
-  \put( -40,  -5){\makebox(0,0)[t]{$\fgi_1(y)$}}
-  \put(  40,  -5){\makebox(0,0)[t]{$\fgi_2(y)$}}
-  \put( -80,  -5){\makebox(0,0)[t]{$\fgi_1(y+\varepsilon)$}}
-  \put(  80,  -5){\makebox(0,0)[t]{$\fgi_2(y+\varepsilon)$}}
-  \put(-100,  40){\makebox(0,0)[r]{$\left.\frac{\dy}{\dx}\right|_{x=\fgi_1(y)}$}}
-  \put( 100,  40){\makebox(0,0)[l]{$\left.\frac{\dy}{\dx}\right|_{x=\fgi_2(y)}$}}
-  \put(  95,  40){\vector(-1,0){35}}%
-  \put( -95,  40){\vector(1,0){35}}%
-  %\put(-100,  20){\makebox(0,0)[r]{$\fgi_1(y) + \left.\frac{\Delta y}{\dy/\dx}\right|_{x=\fgi_1(y)} = \fgi_1(y) + \frac{\varepsilon}{\ffp\brs{\fgi_1(y)}}$}}%
-  \put(-100,  20){\makebox(0,0)[r]{$\fgi_1(y) + \frac{\varepsilon}{\ffp\brs{\fgi_1(y)}}$}}%
-  \put( 100,  20){\makebox(0,0)[l]{$\fgi_2(y) + \left.\frac{\Delta y}{\dy/\dx}\right|_{x=\fgi_2(y)} = \fgi_2(y) + \frac{\varepsilon}{\ffp\brs{\fgi_2(y)}}$}}%
-  \put( -95,  15){\vector( 1,-1){15}}
-  \put(  95,  15){\vector(-1,-1){15}}
-  \put( -60,   0){$\setA_1$}%
-  \put(  60,   0){$\setA_2$}%
-  {\color{red}% slope lines
-    \put(  40,  16){\line(5,6){40}}%   %straight line
-    \put( -40,  16){\line(-5,6){40}}%   %straight line
-    }%
-  %{\color{green}\qbezier(40,16)(60,40)(80,64)}     %straight line
-\end{picture}
-\end{footnotesize}
-\end{center}
-\caption{
-  $\rvY=\ff(\rvX)$
-  \label{fig:YfX}
-  }
-\end{figure}
-
+The probability information about $\sigma$-algebra $\psE$ in a 
+\structe{probability space} \xref{def:ps} is completely
+specified by \fncte{measure} $\psP$.
+However, sometimes it is more convenient to express this same \fncte{measure}
+information in terms of the \fncte{probability density function} or the
+\fncte{cummulative distribution function} of the \structe{probability space}.
 %---------------------------------------
 \begin{definition}
 \footnote{
-  \citerpgc{callahan2010}{189}{144197332X}{Definition 6.1}
+  \citerpgc{linden2014}{93}{1107035902}{Definitions 7.1, 7.2}
   }
-\label{def:cp}
+\label{def:pdf}
+\label{def:cdf}
 %---------------------------------------
-Let $\ff(x)$ be a \structe{differentiable function} in $\clFrr$.
-\defboxt{
-  A point $p\in\R$ is a \propd{critical point} of $\ff(x)$ if
-  \\\indentx$\ffp(p)=0$.
-  }
-\end{definition}
-
-%---------------------------------------
-\begin{theorem}
-\footnote{
-  \citerppgc{papoulis1984}{95}{96}{0070484686}{``Fundamental Theorem"},
-  \citerp{papoulis}{93}, 
-  \citerp{proakis}{30}
-  }
-\label{thm:Y=f(X)}
-\label{thm:YfX}
-%---------------------------------------
-Let $\rvX$ and $\rvY$ be \fncte{random variable}s in $\clFrr$.
-Let $\ff$ be a \structe{differentiable function} in $\clFrr$
-with $\xN$ \prope{critical point}s \xref{def:cp}.
-Let the range of $\rvX$ be partitioned into $\xN+1$ partitions
-$\set{\setA_n}{n=1,2,\ldots,\xN+1}$
-with partition boundaries set at the $\xN$ \structe{critical point}s of $\ff(x)$%
----as illustrated in \prefpp{fig:YfX}.
-Let $\fg_n(x)\eqd\ff(x)$ but with domain restricted to $x\in\setA_n$.
-\thmbox{
-  \brb{\begin{array}{FMD}
-    (1).&$\rvY=\ff(\rvX)$  & and \\
-    (2).&$\ff$ is \prope{differentiable}
-  \end{array}}
-  \implies
-  \brb{\ppy(y) = \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fgi_n(y)}}{\abs{\ffp\brp{\fgi_n(y)}}}}
-  }
-\end{theorem}
-\begin{proof}
-\begin{enumerate}
-  \item \label{item:YfX_gn}
-        The problem with a function $\ff(x)$ with at least $\xN=1$ critical point is that
-        $\ffi(y)$ is \prope{not invertible}.
-        That is,
-        $\ffi(y)$ has more than one solution (and thus the \structe{relation} $\ffi(y)$ is not a \structe{function}).
-        However, note that in each partition $\setA_n$, $\ff(x)$ is \prope{invertible} and thus
-        $\ffi(y)$ in that partition has a \prope{unique} solution.
-        Thus, each $\fg_n(x)$ \emph{is} \prop{invertible} in it's domain (and each $\fgi_n(y)$ exists as a function).
-
-  %\item lemma. \label{ilem:YfX_ffp}  \label{ilem:YfX_dygi}
-  %  \\\indentx$\ds
-  %    \lim_{\varepsilon\to0} \fgi_n(y+\varepsilon)
-  %       = \lim_{\varepsilon\to0}\brs{\fgi_n(y) + \left.\Delta y\frac{1}{\dy/\dx}\right|_{x=\fgi_n(y)}}
-  %       = \lim_{\varepsilon\to0}\brs{\fgi_n(y) + \frac{\varepsilon}{\ffp\brs{\fgi_n(y)}}}
-  %      $
-
-  \item Using \pref{item:YfX_gn}, the remainder of the proof follows \ldots
-    \begin{align*}
-      \ppy(y)
-        &\eqd \ddy\psp\setn{\rvY \le y}
-        && \text{by definition of $\ppy$ \xref{def:pdf}}
-      \\&= \ddy\psp\setn{\ff(\rvX)\le y}
-        && \text{by hypothesis (1)}
-      \\&= \ddy\sum_{n=1}^{\xN+1} \psp\set{\ff(\rvX)\le y}{\rvX\in\setA_n}
-        && \text{by \thme{sum of products} \xref{thm:psp_sop}}
-      \\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\ff(\rvX)\le y}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
-        && \text{by definition of $\psp\setn{\setX|\setY}$ \xref{def:conP}}
-      \\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\fg_n(\rvX)\le y}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
-        && \text{by definition of $\fg_n(x)$}
-      \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \ge \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & otherwise
-           \end{array}}\quad\text{by \pref{item:YfX_gn}}}
-      \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}}  & otherwise
-           \end{array}}}
-      \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \psp\set{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\psp\set{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}}  & otherwise
-           \end{array}}\quad\text{by definition of $\psp\setn{\setX|\setY}$}}
-      \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \brp{\psp\setn{\rvX \le \fgi_n(y)}-\psp\setn{\rvX < \min\setA_{n-1}}}        & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\brp{\psp\setn{\rvX \le \fgi_n(y)}-\psp\setn{\rvX<\min\setA_{n-1}}}}  & otherwise
-           \end{array}}}
-      \\&= \ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \psp\setn{\rvX \le \fgi_n(y)}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\psp\setn{\rvX \le \fgi_n(y)}}  & otherwise
-           \end{array}}
-        && \text{because $\ddy\psp\setn{\rvX<\text{a constant}}=0$}
-      \\&= \brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \ddy\pcx\brs{\fgi_n(y)}         & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \ddy\brs{1-\pcx\brp{\fgi_n(y)}} & otherwise
-           \end{array}}
-        && \text{by \prope{linearity} of $\ddy$ operator}
-      \\&= \brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1}       \ppx\brs{\fgi_n(y)}\ddy\brs{\fgi_n(y)}   & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{-\ppx\brs{\fgi_n(y)}\ddy\brs{\fgi_n(y)}}  & otherwise
-           \end{array}}
-        && \text{\begin{tabular}[t]{@{}l}by definition of $\ppx$ \xref{def:pdf}\\and the \thme{chain rule}\end{tabular}}
-      \\&= \sum_{n=1}^{\xN+1} \ppx\brp{\fgi_n(y)}\abs{\ddy\brs{\fgi_n(y)}}
-      \\&= \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fgi_n(y)}}{\abs{\ffp\brp{\fgi_n(y)}}}
-        && \text{by \prefp{lem:ddyffi}}
-    \end{align*}
-
-  %\item
-  %  \begin{align*}
-  %    &\ppy(y)
-  %    \\&\eqd \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\psp\setn{y \le Y < y+\varepsilon}
-  %      && \text{by def. of $\ppy$ \xref{def:pdf}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\psp\setn{y \le \ff(\rvX)< y+\varepsilon}
-  %      && \text{by hypothesis}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \psp\set{y \le \ff(\rvX)< y+\varepsilon}{\rvX\in\setA_n}
-  %      && \text{by \thme{sum of products} \xref{thm:psp_sop}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{y \le \ff(\rvX)< y+\varepsilon}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
-  %      && \text{by def. of $\psp\setn{\setX|\setY}$ \xref{def:conP}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{y \le \fg_n(\rvX)< y+\varepsilon}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
-  %      && \text{by def. of $\fg_n(x)$}
-  %    \\&= \mathrlap{\lim_{\varepsilon\to0}\frac{1}{\varepsilon}\brs{\begin{array}{>{\ds}lM}
-  %          \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) \le\rvX < \fgi_n(y+\varepsilon)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
-  %          \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y+\varepsilon) \le\rvX < \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & otherwise
-  %         \end{array}}\quad\text{(by \pref{item:YfX_gn}}}
-  %    \\&= \mathrlap{\lim_{\varepsilon\to0}\frac{1}{\varepsilon}\brs{\begin{array}{>{\ds}lM}
-  %           \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y)     \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\ffp\brs{\fgi_n(y)}}}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
-  %           \sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) + \frac{\varepsilon}{\ffp\brs{\fgi_n(y)}} \le\rvX < \fg_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}     & otherwise
-  %         \end{array}}\quad\text{by \pref{ilem:YfX_ffp}}}
-  %    \\&= \mathrlap{\lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \pPc{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \psp\set{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}{\rvX\in\setA_n}
-  %      && \text{by def. of $\psp\setn{\setX|\setY}$ \xref{def:conP}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \psp\setn{\fgi_n(y) \le\rvX < \fgi_n(y) + \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}}}
-  %      && \text{by def. of \structe{partition} \xref{def:partition}}
-  %    \\&= \lim_{\varepsilon\to0}\frac{1}{\varepsilon}\sum_{n=1}^{\xN+1} \frac{\varepsilon}{\abs{\ffp\brp{\fgi_n(y)}}} \ppx\brs{\fgi_n(y)}
-  %      && \text{by def. of $\ppx$ \xref{def:pdf}}
-  %    \\&= \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fgi_n(y)}}{\abs{\ffp\brp{\fgi_n(y)}}}
-  %      && \text{by \prope{linearity} of $\sum$ operator}
-  %  \end{align*}
-\end{enumerate}
-\end{proof}
-
-%---------------------------------------
-\begin{corollary}
-\footnote{
-  \citerpgc{papoulis1984}{96}{0070484686}{``Illustrations" 1},
-  \citerp{papoulis}{95},
-  \citerp{proakis}{29}
-  }
-\label{cor:YaXb}
-%---------------------------------------
-Let $\rvX$ and $\rvY$ be \fncte{random variable}s in $\clFrr$.
-Let $a,b\in\R$.
-\corbox{
-  \brb{\begin{array}{FlCD}
-    (1).&\rvY=a\rvX+b & and \\
-    (2).&a\neq0       &
-  \end{array}}
-  \implies
-  \brb{
-  \ppy(y) = \frac{1}{\abs{a}} \ppx\brp{\frac{y-b}{a}}}
-  }
-\end{corollary}
-\begin{proof}
-%\begin{enumerate}
-%  \item This follows from \prefpp{thm:YfX}:
-    \begin{enumerate}
-      \item \label{item:YaXb_ffp}
-            Note that $\ff(x)=ax+b$ is a \prope{differentiable function} with $\xN=0$ \prope{critical point}s
-            and $\ffp(x)=a$.
-      \item \label{item:YaXb_ffi}
-            The inverse of $\ff(x)$ is $\fg_1(y)=\ffi(y)=\frac{y-b}{a}$.
-      \item It follows that
-        \begin{align*}
-          \ppy(y)
-            &= \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fgi_n(y)}}{\abs{\ff'\brp{\fgi_n(y)}}}
-            && \text{by \prefpp{thm:YfX}}
-          \\&= \frac{\ppx\brp{\ffi(y)}}{\abs{\ff'\brp{\ffi(y)}}}
-            && \text{because $\xN=0$}
-          \\&= \frac{\ppx\brp{\ffi(y)}}{\abs{a}}
-            && \text{by \pref{item:YaXb_ffp}}
-          \\&= \frac{1}{\abs{a}}\ppx\brp{\frac{y-b}{a}}
-            && \text{by \pref{item:YaXb_ffi}}
-        \end{align*}
-    \end{enumerate}
-
-  %\item An alternative proof is as follows:
-  %  \begin{align*}
-  %    \ppy(y)h
-  %      &=  \psp\setn{y\le Y < y+h}
-  %    \\&=  \psp\setn{y\le a\rvX+b < y+h}
-  %    \\&=  \psp\setn{y-b\le a\rvX < y-b+h}
-  %    \\&=  \left\{\begin{array}{ll}
-  %            \psp\setn{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{a}h} &\forall a>0 \\
-  %            \psp\setn{\frac{y-b}{a}\ge\rvX > \frac{y-b}{a}+\frac{1}{a}h} &\forall a<0
-  %          \end{array}\right.
-  %    \\&=  \left\{\begin{array}{ll}
-  %            \psp\setn{\frac{y-b}{a}\le\rvX < \frac{y-b}{a}+\frac{1}{|a|}h}  &\forall a>0 \\
-  %            \psp\setn{\frac{y-b}{a}-\frac{1}{|a|}h <\rvX \le \frac{y-b}{a}} &\forall a<0
-  %          \end{array}\right.
-  %    \\&=  \frac{1}{|a|}h \ppx\left(\frac{y-b}{a}\right)
-  %  \\\implies
-  %  \\
-  %    \ppy(y)
-  %      &=  \frac{1}{|a|} \ppx\left(\frac{y-b}{a}\right)
-  %  \end{align*}
-%\end{enumerate}
-\end{proof}
-
-
-\begin{figure}\color{figcolor}
-\setlength{\unitlength}{0.3mm}
-\thicklines
-\begin{center}
-\begin{footnotesize}
-\begin{picture}(350,200)(-100,-20)
-  \put( -20,   0){\line(1,0){220}}
-  \put(   0, -20){\line(0,1){120}}
-  \put(   0, 110){\makebox(0,0)[r]{$y$}}
-  \put( 210,   0){\makebox(0,0)[r]{$x$}}
-  {\color{red}
-%    \qbezier(10,140)(60,10)(160,10)
-    \qbezier(20,150)(30,30)(150,20)
-    \put( 35, 105){\makebox(0,0)[l]{$y=\frac{1}{x}$}}
-    }
-  \put(40,80){\line(1,-1){40}} %straight line
-  \qbezier[28](0,80)(20,80)(40,80)
-  \qbezier[50](40,0)(40,40)(40,80)
-  \qbezier[40](0,40)(40,40)(80,40)
-  \qbezier[20](80,0)(80,20)(80,40)
-  \put(  -5,  80){\makebox(0,0)[r]{$y+h$}}
-  \put(  -5,  40){\makebox(0,0)[r]{$y$}}
-  \put(  40,  -5){\makebox(0,0)[t]{$\frac{1}{y+h}$}}
-  \put(  80,  -5){\makebox(0,0)[t]{$\frac{1}{y}$}}
-  \put( 100,  60){\makebox(0,0)[l]{$\frac{\Delta y}{\Delta x}=\left.\frac{\dy}{\dx}\right|_{x=\frac{1}{y}}=-y^2$}}
-  \put(  95,  60){\vector(-1,0){35}}
-  \put( 100,  40){\makebox(0,0)[l]{$\frac{1}{y}+\frac{\Delta x}{\Delta y}\Delta y = \frac{1}{y} - \frac{1}{y^2}h$}}
-  \put(  95,  40){\vector(-3,-2){55}}
-\end{picture}
-\end{footnotesize}
-\end{center}
-\caption{
-  $\rvY=\frac{1}{\rvX}$
-  \label{fig:Y=1/X}
-  }
-\end{figure}
-%---------------------------------------
-\begin{corollary}
-\footnote{
-  \citerpgc{papoulis1984}{97}{0070484686}{Example 5-10},
-  \citerp{papoulis}{94}
-  }
-\label{cor:Yf1X}
-%---------------------------------------
-\corbox{
-  \brb{\rvY=\frac{1}{\rvX}}
-  \implies
-  \brb{\ppy(y) = \begin{array}{lM}
-     %                                             & for $y<0$ \\
-     %0                                            & for $y=0$ \\
-     \frac{1}{y^2} \ppx\left( \frac{1}{y} \right) & for $y>0$
-  \end{array}}
-  }
-\end{corollary}
-\begin{proof}
-\begin{enumerate}
-  \item \label{item:Yf1X_ffp}
-        Note that $\ff(x)=1/x$ is a \prope{differentiable function} in $x>0$
-        with $\xN=0$ \prope{critical point}s
-        and $\ffp(x)=-1/x^2$.
-  \item \label{item:Yf1X_ffi}
-        The inverse of $\ff(x)$ is $\fg_1(y)=\ffi(y)=\frac{1}{y}$.
-  \item It follows that
-    \begin{align*}
-      \ppy(y)
-        &= \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fgi_n(y)}}{\abs{\ff'\brp{\fgi_n(y)}}}
-        && \text{by \prefpp{thm:YfX}}
-      \\&= \frac{\ppx\brp{\ffi(y)}}{\abs{\ff'\brp{\ffi(y)}}}
-        && \text{because $\xN=0$}
-      \\&= \frac{1}{\abs{-1/(1/y)^2}}\ppx\brp{\frac{1}{y}}
-      \\&= \frac{1}{y^2}\ppx\brp{\frac{1}{y}}
-    \end{align*}
-\end{enumerate}
-%\begin{enumerate}
-%  \item This follows from \prefpp{thm:YfX}:
-%    \begin{enumerate}
-%      \item The only root of $y=\sfrac{1}{x}$ is $x_1=\sfrac{1}{y}$.
-%      \item $\ff'(x) = -\frac{1}{x^2}$
-%      \item Then
-%        $\ds
-%          \ppy(y)
-%            = \sum_{n=1}^\xN \frac{\ppx(x_n)}{\abs{\ff'(x_n)}}
-%            = \frac{\ppx(x_1)}{|\ff'(x_1)|}
-%            = \frac{\ppx(1/y)}{|\ff'(1/y)|}
-%            = \frac{\ppx(1/y)}{y^2}
-%            = \frac{1}{y^2} \ppx\left( \frac{1}{y} \right)
-%        $
-%    \end{enumerate}
-%
-%%  \item Alternatively, this can be proved as follows:
-%%    \begin{enumerate}
-%%      \item lemma. \label{item:Yf1X}
-%%        Let $h\to0$. First we show a useful relation for $\frac{1}{y+h}$.
-%%        This relation is illustrated in \prefpp{fig:Y=1/X}.
-%%        \begin{align*}
-%%          \frac{1}{y+h}
-%%            &=    y_1 + \frac{1}{m} \Delta y
-%%          \\&=    \frac{1}{y} + \left.\frac{1}{dy/dx}\right|_{x=1/y} h
-%%          \\&=    \frac{1}{y} - \left.x^2\right|_{x=1/y} h
-%%          \\&=    \frac{1}{y} - \frac{1}{y^2} h
-%%        \end{align*}
-%%
-%%      \item Now we prove the theorem with some help from \pref{item:Yf1X}:
-%%        \begin{align*}
-%%          \ppy(y)h
-%%            &=    \psp\setn{y\le Y < y+h}
-%%          \\&=    \psp\setn{y\le \frac{1}{\rvX} < y+h}
-%%          \\&=    \psp\setn{\frac{1}{y}\ge\rvX > \frac{1}{y+h}}
-%%          \\&=    \psp\setn{\frac{1}{y}\ge\rvX > \frac{1}{y}-\frac{1}{y^2}h}
-%%          \\&=    \psp\setn{\frac{1}{y}-\frac{1}{y^2}h < \rvX \le \frac{1}{y} }
-%%          \\&=    \frac{1}{y^2}h \ppx\left( \frac{1}{y} \right)
-%%        \\\implies
-%%          \ppy(y)
-%%            &=    \frac{1}{y^2} \ppx\left( \frac{1}{y} \right)
-%%        \end{align*}
-%%    \end{enumerate}
-%%\end{enumerate}
-\end{proof}
-
-
-
-
-
-\begin{figure}\color{figcolor}
-\setlength{\unitlength}{0.3mm}
-\thicklines
-\begin{center}
-\begin{footnotesize}
-\begin{picture}(250,150)(-100,-20)
-  \put(-100,   0){\line(1,0){200}}
-  \put(   0, -20){\line(0,1){120}}
-  {\color{red}
-    \qbezier(-100,100)(0,-100)(100,100)
-    \put( 100, 105){\makebox(0,0)[b]{$y=x^2$}}
-    }
-  \qbezier[8](-40,0)(-40,8)(-40,16)
-  \qbezier[8](40,0)(40,8)(40,16)
-  \qbezier[28](-80,0)(-80,32)(-80,64)
-  \qbezier[28](80,0)(80,32)(80,64)
-  \qbezier[64](-80,64)(0,64)(80,64)
-  \qbezier[40](-40,16)(0,16)(40,16)
-  \put(   0, 110){\makebox(0,0)[r]{$y$}}
-  \put( 110,   0){\makebox(0,0)[r]{$x$}}
-  \put(  -5,  64){\makebox(0,0)[r]{$y+h$}}
-  \put(  -5,  16){\makebox(0,0)[r]{$y$}}
-  \put( -40,  -5){\makebox(0,0)[t]{$-\sqrt{y}$}}
-  \put(  40,  -5){\makebox(0,0)[t]{$\sqrt{y}$}}
-  \put( -80,  -5){\makebox(0,0)[t]{$-\sqrt{y+h}$}}
-  \put(  80,  -5){\makebox(0,0)[t]{$\sqrt{y+h}$}}
-% \put(  80,  -5){\makebox(0,0)[t]{$\sqrt{y+h}\approx \sqrt{y} + \frac{1}{2\sqrt{y}}h$}}
-  \put( 100,  40){\makebox(0,0)[l]{$\frac{\Delta y}{\Delta x}=\left.\frac{\dy}{\dx}\right|_{x=\sqrt{y}}=2\sqrt{y}$}}
-  \put(  95,  40){\vector(-1,0){35}}
-  \put(-100,  20){\makebox(0,0)[r]{$\sqrt{y}+\frac{\Delta x}{\Delta y}\Delta y = \sqrt{y} - \frac{1}{2\sqrt{y}}h$}}
-  \put( 100,  20){\makebox(0,0)[l]{$\sqrt{y}+\frac{\Delta x}{\Delta y}\Delta y = \sqrt{y} + \frac{1}{2\sqrt{y}}h$}}
-  \put( -95,  15){\vector( 1,-1){15}}
-  \put(  95,  15){\vector(-1,-1){15}}
-  \put(  40,  16){\line(5,6){40}}   %straight line
-  \put( -40,  16){\line(-5,6){40}}   %straight line
-  %{\color{green}\qbezier(40,16)(60,40)(80,64)}     %straight line
-\end{picture}
-\end{footnotesize}
-\end{center}
-\caption{
-  $\rvY=X^2$
-  \label{fig:Y=X^2}
-  }
-\end{figure}
-%---------------------------------------
-\begin{corollary}
-\footnote{
-  \citerpgc{papoulis1984}{95}{0070484686}{Example 5-9},
-  \citerpgc{devroye1986}{27}{0387963057}{Example 4.4},
-  \citerp{papoulis}{95},
-  \citerp{proakis}{29}
-  }
-\label{cor:YX2}
-%---------------------------------------
-Let $\rvX$ and $\rvY$ be \fncte{random variable}s.
-\corbox{
-  \brb{\rvY=\rvX^2}
-  \implies
-  \brb{\ppy(y) = \frac{1}{2\sqrt{y}} \brs{\ppx(-\sqrt{y}) + \ppx( \sqrt{y})}}
-  }
-\end{corollary}
-\begin{proof}
-%\begin{enumerate}
-%  \item The theorem can also be proved using \prefpp{thm:Y=f(X)}:
-    \begin{enumerate}
-      \item The roots of $y=x^2$ are $x_1=-\sqrt{y}$ and $x_2=+\sqrt{y}$. \label{item:YX2_roots}
-      \item The derivative of $\ff(x)\eqd y=x^2$ is $\ff'(x)=2x$. \label{item:YX2_derivative}
-      \item And so it follows that \ldots
-        \begin{align*}
-          \ppy(y)
-            &= \sum_{n=1}^\xN \frac{\ppx(x_n)}{\abs{\ff'(x_n)}}
-            && \text{by \prefp{thm:Y=f(X)}}
-          \\&= \frac{\ppx(x_1)}{|\ff'(x_1)|} + \frac{\ppx(x_2)}{|\ff'(x_2)|}
-            && \text{by definition of $\sum$}
-          \\&= \frac{\ppx(-\sqrt{y})}{|\ff'(-\sqrt{y})|} + \frac{\ppx(\sqrt{y})}{|\ff'(\sqrt{y})|}
-            && \text{by \pref{item:YX2_roots}}
-          \\&= \frac{\ppx(-\sqrt{y})}{2\sqrt{y}} + \frac{\ppx(\sqrt{y})}{2\sqrt{y}}
-            && \text{by \pref{item:YX2_derivative}}
-          \\&=    \left.\left.\frac{1}{2\sqrt{y}}\right[
-                  \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
-            && \text{by \prope{linearity} of $+$ operation}
-        \end{align*}
-    \end{enumerate}
-
-%  \item Alternatively
-%    \begin{enumerate}
-%      \item Let $h\to0$.
-%      \item lemma. First we show a useful relation for $\sqrt{y+h	}$.
-%            This relation is illustrated in \prefpp{fig:Y=X^2}.
-%            \begin{align*}
-%              \sqrt{y+h}
-%                &=    y_1 + \frac{1}{m} \Delta y
-%              \\&=    \sqrt{y} + \left.\frac{1}{dy/dx}\right|_{x=\sqrt{y}} h
-%              \\&=    \sqrt{y} + \left.\frac{1}{2x}\right|_{x=\sqrt{y}} h
-%              \\&=    \sqrt{y} + \frac{1}{2\sqrt{y}} h
-%            \end{align*}
-%
-%      \item Now, using the above relation, we have
-%            \begin{align*}
-%              \ppy(y)h
-%                &= \psp\setn{y\le Y < y+h}
-%              \\&= \psp\setn{y\le X^2 < y+h}
-%              \\&= \psp\setn{(y\le X^2 < y+h) \land (X<0)}+ \psp\setn{(y\le X^2 < y+h) \land (X\ge0)}
-%              \\&= \psp\setn{y\le X^2 < y+h | X<0}\psp\setn{\rvX<0} + \psp\setn{y\le X^2 < y+h | X\ge0}\psp\setn{\rvX\ge0}
-%              \\&= \psp\setn{-\sqrt{y}\le\rvX < -\sqrt{y+h} | X<0  } \psp\setn{\rvX<0} +
-%                   \psp\setn{+\sqrt{y}\le\rvX < +\sqrt{y+h} | X\ge0} \psp\setn{\rvX\ge0}
-%              \\&= \psp\setn{-\sqrt{y}\le\rvX < -\left(\sqrt{y}+\frac{1}{2\sqrt{y}}h\right) \land X<0   } +
-%                   \psp\setn{+\sqrt{y}\le\rvX <        \sqrt{y}+\frac{1}{2\sqrt{y}}h        \land X\ge0 }
-%              \\&= \psp\setn{-\sqrt{y}\le\rvX < -\left(\sqrt{y}+\frac{1}{2\sqrt{y}}h\right)  } +
-%                   \psp\setn{+\sqrt{y}\le\rvX <        \sqrt{y}+\frac{1}{2\sqrt{y}}h         }
-%              \\&= \frac{1}{2\sqrt{y}}h\ppx(-\sqrt{y})  +
-%                   \frac{1}{2\sqrt{y}}h\ppx( \sqrt{y})
-%            \\\implies
-%              \ppy(y)
-%                &=    \left.\left.\frac{1}{2\sqrt{y}}\right[
-%                       \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
-%            \end{align*}
-%  \end{enumerate}
-%\end{enumerate}
-\end{proof}
-
-
-
-
-\begin{figure}\color{figcolor}
-\setlength{\unitlength}{0.15mm}
-\thicklines
-\begin{center}
-\begin{footnotesize}
-\begin{picture}(1000,220)(-500,-100)
-  \put(-500,   0){\line(1,0){1000}}
-  \put(   0, -100){\line(0,1){220}}
-  \multiput(-400,0)(200,0){5}{
-    {\color{red}
-      \qbezier(0,0)(25,25)(50,37)
-      \qbezier(50,37)(75,50)(95,100)
-      \qbezier(0,0)(-25,-25)(-50,-37)
-      \qbezier(-50,-37)(-75,-50)(-95,-100)
-      }
-    \qbezier[14](77,0)(77,32)(77,64)
-    }
-  \put( 100, 105){\makebox(0,0)[b]{$z=\atan\theta$}}
-  \put(-400,-5){\makebox(0,0)[t]{$-2\pi$}}
-  \put(-200,-5){\makebox(0,0)[t]{$- \pi$}}
-  \put( 200,-5){\makebox(0,0)[t]{$  \pi$}}
-  \put( 400,-5){\makebox(0,0)[t]{$ 2\pi$}}
-
-  \put(-323,-5){\makebox(0,0)[t]{$\theta_{-2}$}}
-  \put(-123,-5){\makebox(0,0)[t]{$\theta_{-1}$}}
-  \put(  77,-5){\makebox(0,0)[t]{$\theta_{ 0}$}}
-  \put( 277,-5){\makebox(0,0)[t]{$\theta_{ 1}$}}
-  \put( 477,-5){\makebox(0,0)[t]{$\theta_{ 2}$}}
-
-  \qbezier[130](-315,64)(77,64)(477,64)
-  \put(   0, 110){\makebox(0,0)[r]{$z$}}
-  \put( 520,   0){\makebox(0,0)[l]{$\theta$}}
-\end{picture}
-\end{footnotesize}
-\end{center}
-\caption{
-  $Z=\tan\Theta$
-  \label{fig:Z=tan0}
-  }
-\end{figure}
-%---------------------------------------
-\begin{corollary}
-\footnote{
-  \citerpp{papoulis}{99}{100}
-  }
-\label{cor:ppztan}
-%---------------------------------------
-Let $Z=\tan\Theta$. Then
-\corbox{
-  \brb{\rvZ=\tan\Theta}
-  \quad\implies\quad
-  \brb{\ppz(z) = \frac{1}{1+z^2}  \sum_{n\in\rvZ} \ppth(\atan(z)+n\pi)}
-  }
-\end{corollary}
-\begin{proof}
-%\begin{enumerate}
-%  \item The theorem can also be proved using \prefpp{thm:Y=f(X)}:
-    \begin{enumerate}
-      \item The roots of $z=\tan\theta$ are $\set{\theta_n=\atan{z}+n\pi}{n\in\Z}$. \label{item:ppztan_roots}
-      \item The derivative of $z=\tan\theta$ is  $\ff'(\theta)=\sec^2 \theta$. \label{item:ppztan_derivative}
-      \item It follows that
-        \begin{align*}
-          \ppz(z)
-            &= \sum_{n=1}^\xN \frac{\ppth(\theta_n)}{|\ff'(\theta_n)|}
-          \\&= \sum_n \frac{\ppth(\atan{z}+n\pi)}{|\ff'(\atan{z}+n\pi)|}
-          \\&= \sum_n \frac{\ppth(\atan{z}+n\pi)}{|\sec^2(\atan{z}+n\pi)|}
-          \\&= \sum_n \cos^2(\atan{z}+n\pi)  \ppth(\atan{z}+n\pi)
-          \\&= \cos^2(\atan{z}) \sum_n  \ppth(\atan{z}+n\pi)
-          \\&= \frac{1}{1+z^2}  \sum_n \ppth(\atan{z}+n\pi)
-        \end{align*}
-    \end{enumerate}
-
-%  \item Alternatively \ldots
-%    \begin{enumerate}
-%      \item Let $z=\frac{y}{x}$ and $x^2 + y^2 = r^2$.
-%            \begin{align*}
-%              \cos^2\atan z
-%                &= \cos^2\theta
-%                 = \frac{x^2}{r^2}
-%                 = \frac{x^2}{x^2+y^2}
-%                 = \frac{\frac{x^2}{x^2}}{\frac{x^2}{x^2}+\frac{y^2}{x^2}}
-%                 = \frac{1}{1+z^2}
-%            \end{align*}
-%      \item Let $h\to0$.
-%            \begin{align*}
-%              \atan{z+h}
-%                &= y_1 + \frac{1}{m} \Delta y
-%              \\&= \atan{z} + \left.\frac{1}{\dz/\dth}\right|_{\theta=\atan{z}} h
-%              \\&= \atan{z} + \left.\frac{1}{\sec^2\theta}\right|_{\theta=\atan{z}} h
-%              \\&= \atan{z} + \left.\cos^2\theta\right|_{\theta=\atan{z}} h
-%              \\&= \atan{z} + h\cos^2\atan{z}
-%              \\&= \atan{z} + h\frac{1}{1+z^2}
-%            \end{align*}
-%
-%      \item Now we prove the theorem using the above relation.
-%            \begin{align*}
-%              \ppz(z)h
-%                &= \psp\setn{z\le Z < z+h}
-%              \\&= \psp\setn{z\le \tan\Theta < z+h}
-%              \\&= \sum_n \psp\setn{z\le \tan\Theta < z+h \land
-%                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
-%                          }
-%              \\&= \sum_n \psp\setn{z\le \tan\Theta < z+h \left|
-%                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
-%                          \right.}
-%                          \psp\setn{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
-%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \left|
-%                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
-%                          \right.}
-%                          \psp\setn{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
-%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \land
-%                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
-%                          }
-%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi }
-%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < +\atan(z)+n\pi + h\frac{1}{1+z^2} }
-%              \\&= h\frac{1}{1+z^2} \sum_n \ppth(\atan{z}+n\pi)
-%            \\\implies
-%              \ppz(z) &=  \frac{1}{1+z^2} \sum_n \ppth(\atan{z}+n\pi)
-%            \end{align*}
-%  \end{enumerate}
-%\end{enumerate}
-\end{proof}
-
-
-
-
-%=======================================
-\section{Functions of two random variables}
-%=======================================
-%---------------------------------------
-\begin{theorem}
-\label{thm:pdfconv}
-%---------------------------------------
-Let $\rvX$, $\rvY$, and $\rvZ$ be \fncte{random variable}s. %
-\thmbox{
-  \brb{\begin{array}{FMD}
-    (1). & $\rvZ \eqd \rvX + \rvY$ & and \\
-    (2). & $\rvX$ and $\rvY$ are \prope{independent} & \xref{def:independent}
-  \end{array}}
-  \implies
-  \brb{\ppz(z) = \ppx(z)\conv\ppy(z)}
-  }
-\end{theorem}
-\begin{proof}
-\begin{align*}
-  \ppz(z)
-    &\eqd \ddz\pcz(z)
-    &&    \text{by definition of $\ppz$} &&\text{\xref{def:pdf}}
-  \\&\eqd \ddz\psp\setn{\rvZ \le z}
-    &&    \text{by definition of $\pcz$} &&\text{\xref{def:cdf}}
-  \\&=    \ddz\psp\setn{\rvX+\rvY \le z}
-    &&    \text{by hypothesis (1)}
-  \\&=    \ddz\lim_{\varepsilon\to0}\sum_{n\in\Z} \psp\set{\rvX+\rvY \le z}{y+n\varepsilon<\rvY\le y+(n+1)\varepsilon}
-    &&    \text{by \thme{sum of products}}&&\text{\xref{thm:psp_sop}}
-  %\\&=    \ddz\int_y \pPc{\rvX+y \le z}{y<\rvY\le y+\varepsilon}\psp\setn{y<\rvY\le y+\varepsilon} \dy
-  %  &&    \text{by definiton of $\pPc{\rvX}{\rvY}$ \xref{def:conprob}}
-  \\&=    \ddz\int_{y\in\R} \pPc{\rvX+\rvY \le z}{\rvY=y}\ppy(y) \dy
-    &&    \text{by definiton of $\pPc{\rvX}{\rvY}$}&&\text{\xref{def:conprob}}
-  \\&=    \ddz\int_{y\in\R} \pPc{\rvX \le z-y}{\rvY=y} \ppy(y) \dy
-  \\&=    \ddz\int_{y\in\R} \psp\setn{\rvX \le z-y}\ppy(y) \dy
-    &&    \text{by hypothesis (2)}
-  \\&\eqd \ddz\int_{y\in\R} \pcx(z-y)\ppy(y) \dy
-    &&    \text{by definition of $\pcx$}&&\text{\xref{def:cdf}}
-  \\&=    \int_{y\in\R} \ddz\brs{\pcx(z-y)\ppy(y)} \dy
-    &&    \text{by \prope{linearity} of $\ddz$}
-  \\&=    \int_{y\in\R} \brs{\ddz\pcx(z-y)}\ppy(y) \dy
-    &&    \mathrlap{\text{because $y$ is fixed inside the integral}}
-  \\&\eqd \int_y \ppx(z-y) \ppy(y)  \dy
-    &&    \text{by definition of $\ppx$}&&\text{\xref{def:pdf}}
-  \\&=    \ppx(z) \conv \ppy(z)
-    &&    \text{by definition of $\conv$}&&\text{\xref{def:conv}}
-\end{align*}
-%
-%\begin{align*}
-%  \ppz(z)
-%    &\eqd \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \psp\setn{z \le Z < z+\varepsilon }
-%    &&    \text{by definition of $\ppz$ \xref{def:pdf}}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \psp\setn{z \le X+Y < z+\varepsilon }
-%    &&    \text{by definition of $\rvZ$}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z \le X+y < z+\varepsilon) \land (y\le Y<y+\varepsilon) } \dy
-%    &&    \text{by \thme{sum of products} \xref{thm:psp_sop}}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon) | (y\le Y<y+\varepsilon) }\psp\setn{y\le Y<y+\varepsilon} \dy
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon) | Y=y }\psp\setn{y\le Y<y+\varepsilon} \dy
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon)}\psp\setn{y\le Y<y+\varepsilon} \dy
-%    &&    \text{by \prope{independence} hypothesis}
-%  \\&\eqd \int_y \ppx(z-y) \ppy(y)  \dy
-%    &&    \text{by definition of $\ppx$ \xref{def:pdf}}
-%  \\&=    \ppx(z) \conv \ppy(z)
-%    &&    \text{by definition of $\conv$ \xref{def:conv}}
-%\end{align*}
-\end{proof}
-
-\begin{figure}
-  \centering%
-  \Huge%
-  \begin{tabular}{c>{\Huge}c c>{\Huge}c l}%
-    \tboxc{\includegraphics{graphics/pdf_fairdie_blue.pdf}} &\tbox{+}&%
-    \tboxc{\includegraphics{graphics/pdf_fairdie_red.pdf}}  &\tbox{=}&%
-    \tboxc{\includegraphics{graphics/pdf_dicesum_bluered.pdf}}% 
+Let $\rvX$ a \fncte{random variable} on the \structe{probability space} $\ps$ \xref{def:ps}.
+\defbox{\begin{array}{MM}
+  The \fnctd{cummulative distribution function}
+    &(\fnctd{cdf}) of $\rvX$ is a function $\pcx$ in $\clFor$ such that
+    \\\mc{2}{l}{\indentx\ds\pcx(x) \eqd \psp\setn{\rvX < x }}
     \\
-    \tboxc{\includegraphics{graphics/n0.pdf}}               &\tbox{+}&%
-    \tboxc{\includegraphics{graphics/n0.pdf}}               &\tbox{=}&%
-    \tboxc{\includegraphics{graphics/n1.pdf}}%              
-    \\                                                      
-    \tboxc{\includegraphics{graphics/n0.pdf}}               &\tbox{+}&%
-    \tboxc{\includegraphics{graphics/n1.pdf}}               &\tbox{=}&%
-    \tboxc{\includegraphics{graphics/n2.pdf}}%
-  \end{tabular}
-  \caption{\opb{Sum} of random variables yields \opb{convolution} of pdfs \xref{thm:pdfconv}}
-\end{figure}
+  The \fnctd{probability density function}
+    &(\fnctd{pdf}) of $\rvX$ is a function $\ppx$ in $\clFor$ such that
+    \\\mc{2}{l}{\indentx\ds\ppx(x) \eqd \ddx\pcx(x)}
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:jointpdf}
+\label{def:jointcdf}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space} \xref{def:ps} and
+$\rvX$ and $\rvY:\pso\to\R$ random variables. Then
+a \fnctd{joint probability density function}    $\ppx:\pse\times\pso\to\intcc{0}{1}$ and
+a \fnctd{joint cumulative distribution function} $\pcx:\pse\times\pso\to\intcc{0}{1}$
+are defined as
+\defbox{\begin{array}{rc>{\ds}lD}
+  \pcxy(x,y) &\eqd& \psp\set{\rvX\le x}{\rvY\le y}
+          & (\fncte{joint cumulative distribution function})
+          \\
+  \ppxy(x,y) &\eqd& \ddy\ddx\pcxy(x,y)
+          & (\fncte{joint probability density function})
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:conpdf}
+\label{def:concdf}
+%---------------------------------------
+Let $\ps$ be a \structe{probability space} \xref{def:ps} and
+$\rvX$ a random variable. Then
+a \fnctd{conditional probability density function}    $\ppx:\pse\times\pso\to\intcc{0}{1}$ and
+a \fnctd{conditional cumulative distribution function} $\pcx:\pse\times\pso\to\intcc{0}{1}$
+are defined as
+\defbox{\begin{array}{rc>{\ds}lD}
+  \pcx(x|y) &\eqd& \psp\brb{\rvX \le x|\rvY=y}
+            & (\fncte{conditional cumulative distribution function}---\fncte{cdf})
+            \\
+  \ppx(x|y) &\eqd& \ddx\pcx(x|y)
+  %\ppx(x|y) &\eqd& \lim_{\varepsilon\to 0} \frac{1}{\varepsilon}\psp\brb{x \le\rvX < x+\varepsilon | \rvY=y}
+            & (\fncte{conditional probability density function}---\fncte{pdf})
+\end{array}}
+\end{definition}
+
+%=======================================
+\section{Properties}
+%=======================================
+\prefpp{def:pdf} defines the pdf and cdf of a \structe{probability space}
+$\ps$ in terms of \fncte{measure} $\psp$.
+Conversely, the probability \fncte{measure} $\psp\setn{a\le\rvX<b}$
+of an event $\{a\le\rvX<b\}$ can be
+expressed in terms of either the pdf or cdf.
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:pdfddx}
+%---------------------------------------
+Let $\rvX$ a \fncte{random variable} with \fncte{pdf} $\ppx$ and \fncte{cdf} $\pcx$
+\xref{def:pdf} on the \structe{probability space} $\ps$ \xref{def:ps}.\\
+\propboxt{
+  $\brb{\begin{array}{FMD}
+    (1).& $\pcx(x)$ and $\pcy(y)$ are \prope{continuous} & OR \\
+    (2).& $\ppx(x)$ and $\ppy(y)$ are \prope{continuous}
+  \end{array}}$
+  \\\quad$\implies\quad
+  \brb{\begin{array}{rc>{\ds}l}
+      \ppx(x)    &=& \lim_{\varepsilon\to 0} \frac{1}{\varepsilon}\psp\setn{x \le \rvX < x+\varepsilon}
+    \\\ppxy(x,y) &=& \lim_{\varepsilon\to 0} \frac{1}{\varepsilon}\psp\setn{x \le \rvX < x+\varepsilon \land y \le\rvY < y+\varepsilon}
+  \end{array}}$
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \ppx(x)
+    &\eqd \ddx\pcx(x)
+    && \text{by definition of $\ppx$}
+    && \text{\xref{def:pdf}}
+  \\&=    \lim_{\varepsilon\to 0} \frac{1}{\varepsilon}\psp\set{x\in\R}{x \le \rvX < x+\varepsilon}
+    && \text{by definition of $\ddx$}
+    && \text{\xref{def:ddx}}
+\end{align*}
+\end{proof}
 
 %---------------------------------------
 \begin{theorem}
-\label{thm:x1x2->y1y2}
+\label{thm:pdfcdf}
 %---------------------------------------
-Let
-\begin{liste}
-  \item $X_1$ and $X_2$ be random variables with joint distribution
-        $\ppx[X_1,X_2](x_1,x_2)$
-  \item $\rvY_1=\ff_1(x_1,x_2)$ and $\rvY_2=\ff_2(x_1,x_2)$
-\end{liste}
-Then the joint distribution of $\rvY_1$ and $\rvY_2$ is
+Let $\ps$ be a probability space,
+$\rvX$ be a random variable, and $(a,b)$ a real interval.
 \thmbox{
-  \ppx[Y_1,Y_2](y_1,y_2)
-    = \frac{\ppx[X_1,X_2](x_1,x_2)}{|J(x_1,x_2)|}
-    = \frac{\ppx[X_1,X_2](x_1,x_2)}{
-        \left|\begin{array}{cc}
-          \pderiv{\ff_1}{x_1} & \pderiv{\ff_1}{x_2}   \\
-          \pderiv{\ff_2}{x_1} & \pderiv{\ff_2}{x_2}
-        \end{array}\right|
-        }
-    = \frac{\ppx[X_1,X_2](x_1,x_2)}{
-        \pderiv{\ff_1}{x_1}\pderiv{\ff_2}{x_2} -
-        \pderiv{\ff_1}{x_2}\pderiv{\ff_2}{x_1}
-        }
+  \brb{\begin{array}{FMD}
+    (1).& $\pcx(x)$ is \prope{continuous} & OR \\
+    (2).& $\ppx(x)$ is \prope{continuous}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rc>{\ds}lc>{\ds}l}
+    \psp\setn{a<\rvX\le b}
+      &=& \pcx(b) - \pcx(a)
+      &=& \int_a^b \ppx(x) \dx
+  \end{array}}
   }
 \end{theorem}
-
-%---------------------------------------
-\begin{proposition}
-\label{prop:XY->RT}
-%---------------------------------------
-Let $\rvX$ and $\rvY$ be random variables with joint distribution
-$\ppxy(x,y)$ and
-\[ R^2 \eqd X^2 + Y^2 \hspace{10ex} \Theta \eqd \atan\frac{Y}{\rvX}. \]
-Then
-\propbox{
-  \ppx[R,\Theta](r,\theta)
-    =  r\;\ppxy(r\cos\theta,r\sin\theta)
-  }
-\end{proposition}
 \begin{proof}
 \begin{align*}
-  \ppx[R,\Theta](r,\theta)
-    &= \frac{\ppxy(x,y)}{|J(x,y)|}
-     =  \frac{\ppxy(x,y)}{
-        \left|\begin{array}{cc}
-          \pderiv{R}{x}      & \pderiv{R}{y}   \\
-          \pderiv{\theta}{x} & \pderiv{\theta}{y}
-        \end{array}\right|
-        }
-     =  \frac{\ppxy(x,y)}{
-        \left|\begin{array}{cc}
-          \frac{ x}{\sqrt{x^2+y^2}}  & \frac{y}{\sqrt{x^2+y^2}}   \\
-          \frac{-y}{x^2+y^2}         & \frac{x}{x^2+y^2}
-        \end{array}\right|
-        }
-  \\&= \frac{\ppxy(x,y)}{
-         \frac{x}{\sqrt{x^2+y^2}}\frac{x}{x^2+y^2}  -
-         \frac{y}{\sqrt{x^2+y^2}}\frac{-y}{x^2+y^2}
-       }
-  \\&= \frac{\ppxy(x,y)}{
-         \frac{x^2+y^2}{(x^2+y^2)^{3/2}}
-       }
-  \\&= \ppxy(x,y)\frac{(x^2+y^2)^{3/2}}{x^2+y^2}
-  \\&= \ppxy(r\cos\theta,r\sin\theta)\frac{r^3}{r^2}
-  \\&= r\;\ppxy(r\cos\theta,r\sin\theta)
+  \psp\setn{a<\rvX\le b}
+    &= \psp\setn{\rvX\le b} - \psp\setn{\rvX <  a}
+    && \text{by \thme{sum of products}} && \text{\xref{thm:psp_sop}}
+  \\&= \psp\setn{\rvX\le b} - \psp\setn{\rvX\le a}
+    && \text{by \prope{continuity} hypothesis}
+  \\&\eqd \pcx(b) - \pcx(a)
+    && \text{by definition of $\pcx$} && \text{\xref{def:cdf}}
+  \\
+  \\
+  \int_a^b \ppx(x) \dx
+    &\eqd \int_a^b \brs{\ddx\pcx(x)} \dx
+    && \text{by definition of $\ppx$} && \text{\xref{def:pdf}}
+  \\&= \brlr{\pcx(x)}_{x=b} - \brlr{\pcx(x)}_{x=a}
+    && \text{by \thme{Fundamental theorem of calculus}}
+  \\&= \pcx(b) - \pcx(a)
 \end{align*}
 \end{proof}
 
-
 %---------------------------------------
-\begin{proposition}
-\label{prop:XY->RT_n}
+\begin{theorem}
 %---------------------------------------
-Let $\rvX\sim\pN{0}{\sigma^2}$ and $\rvY\sim\pN{0}{\sigma^2}$ be
-independent random variables and
-\\\indentx$R^2 \eqd X^2 + Y^2 \hspace{10ex} \Theta \eqd \atan\frac{Y}{\rvX}.$\\
-Then
-\propbox{\begin{array}{FMrcl}
-  1. & $R$ and $\Theta$ are independent with joint distribution
-     & \ppx[R,\Theta](r,\theta) &=& \ppr(r)\ppth(\theta)
-\\
-  2. & $R$ has Rayleigh distribution
-     & \ppr(r)  &=& \frac{r}{\sigma^2}\exp{\frac{r^2}{-2\sigma^2}}
-\\
-  3. & $\Theta$ has uniform distribution
-     & \ppth(\theta) &=& \frac{1}{2\pi}
+Let $\ps$ be a \structe{probability space},
+$\rvX$ be a \fncte{random variable}, and $\intoo{a}{b}$ a \structe{real interval}.
+\thmbox{\begin{array}{>{\ds}l}
+  \psp\setn{a\le\rvX<b}
+     =  \int_a^b \ppx(x) \dx
+     =  \int_{-\infty}^b \pcx(x) \dx - \int_{-\infty}^a \pcx(x) \dx
 \end{array}}
-\end{proposition}
-\begin{proof}
-\begin{align*}
-  \ppx[R,\Theta](r,\theta)
-    &= r\;\ppxy(r\cos\theta,r\sin\theta)
-    && \text{by \prefpp{prop:XY->RT}}
-  \\&= r\;\ppx(r\cos\theta) \; \ppy(r\sin\theta)
-    && \text{by independence hypothesis}
-  \\&= r\;
-       \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\frac{(r\cos\theta-0)^2}{-2\sigma^2}}
-       \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\frac{(r\sin\theta-0)^2}{-2\sigma^2}}
-  \\&= \frac{1}{2\pi\sigma^2}\;r\;
-       \exp{\frac{r^2(\cos^2\theta + \sin^2\theta)}{-2\sigma^2}}
-  \\&= \frac{1}{2\pi\sigma^2}\;r\;
-       \exp{\frac{r^2}{-2\sigma^2}}
-  \\&= \left[\frac{1}{2\pi}\right]
-       \left[\frac{r}{\sigma^2}\exp{\frac{r^2}{-2\sigma^2}}\right]
-\end{align*}
-\end{proof}
+\end{theorem}
 
-
+The properties of the pdf follow closely the properties of \fncte{measure} $\psp$.
 %---------------------------------------
-\begin{proposition}
+\begin{theorem}
 %---------------------------------------
-Let $X\sim\pN{\pmeanx}{\pvarx}$ and $\rvY\sim\pN{\pmeany}{\pvary}$ be
-jointly Gaussian random variables and $\pvarxy=\cov{\rvX}{Y}$.
-Then
-\propbox{
-  \psp\setn{\rvX>Y} = \pQ\left( \frac{-\pmeanx + \pmeany}{\pvarx+\pvary-2\pvarxy}\right)
+\thmbox{
+  \brb{\begin{array}{FMD}
+    (A).& $\pcx(x)$ is \prope{continuous} & OR \\
+    (B).& $\ppx(x)$ is \prope{continuous}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{Frc>{\ds}lD}
+    (1).& \ppxcy(x|y) &=& \frac{\ppxy(x,y)}{\ppy(y)} & and \\
+    (2).& \ppx(x)     &=& \int_{y\in\R}\ppxy(x,y) \dy
+  \end{array}}
   }
-\end{proposition}
+\end{theorem}
 \begin{proof}
-Because $\rvX$ and $\rvY$ are jointly Gaussian,
-their linear combination $Z=X-Y$ is also Gaussian.
-A Gaussian distribution is completely defined by its mean and variance.
-So, to determine the distribution of $Z$,
-we just have to determine the mean and variance of $Z$.
 \begin{align*}
-  \pE Z
-    &= \pE\rvX - \pE Y
-  \\&= \pmeanx - \pmeany
+  \ppxcy(x|y)
+    &\eqd \ddx\pcxcy(x|y)
+    && \text{by definition of $\pcx$}
+    && \text{\xref{def:conprob}}
+  \\&\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \psp\set{x\le\rvX < x+\varepsilon}{\rvY=y}
+    && \text{by definition of $\ddx$}
+    && \text{\xref{def:ddx}}
+  \\&\eqd \lim_{\varepsilon\to0} 
+          \frac{1}{\varepsilon} 
+          \frac{\ds\psp\setn{(x\le\rvX < x+\varepsilon) \land (\rvY=y)}}
+               {\ds\psp\setn{\rvY=y}}
+    && \text{by definition of $\psP\set{\setA}{\setB}$}
+    && \text{\xref{def:conprob}}
+  \\&= \lim_{\varepsilon\to0} 
+       \frac{1}{\varepsilon} 
+       \frac{\ds\psp\setn{(x\le\rvX < x+\varepsilon) \land (y\le\rvY<y+\varepsilon)}}
+            {\ds\psp\setn{y\le\rvY<y+\varepsilon}}
+    && \text{by \prope{continuity} hypothesis}
+  \\&=  \frac{\ds\lim_{\varepsilon\to0} \frac{1}{\varepsilon}\psp\setn{(x\le\rvX < x+\varepsilon) \land (y\le\rvY<y+\varepsilon)}}
+             {\ds\lim_{\varepsilon\to0}                      \psp\setn{y\le\rvY<y+\varepsilon}}
+    && \text{by property of $\ds\lim_{\varepsilon\to0}$}
+  \\&=    \frac{\ppxy(x,y)}{\ppy(y)}
+    && \text{by \prefp{prop:pdfddx}}
 \\
 \\
-  \var Z
-    &= \pE Z^2 - (\pE Z)^2
-  \\&= \pE (X-Y)^2 - (\pE\rvX - \pE Y)^2
-  \\&= \pE (X^2-2XY+Y^2) - [(\pE\rvX)^2 -2\pE\rvX \pE Y + (\pE Y)^2 ]
-  \\&= [\pE X^2- (\pE\rvX)^2]  + [Y^2- (\pE Y)^2] - 2[\pE XY - \pE\rvX \pE Y]
-  \\&= \var\rvX + \var Y - 2\cov{\rvX}{Y}
-  \\&\eqd \pvarx + \pvary -2\pvarxy
-\\
-\\
-  \psp\setn{\rvX>Y}
-    &= \psp\setn{\rvX-Y>0}
-  \\&= \psp\setn{Z>0}
-  \\&= \left.\pQ\left(\frac{z-\pE Z}{\var Z} \right)\right|_{z=0}
-  \\&= \pQ\left(\frac{0-\pmeanx+\pmeany}{\pvarx+\pvary-2\pvarxy} \right)
+  \int_{y\in\R}\ppxy(x,y)\dy
+    &\eqd \int_{y\in\R} \brs{ \ddy\ddx\pcxy(x,y) } \dy
+    && \text{by definition of $\ppx$}
+    && \text{\xref{def:pdf}}
+  \\&= \ddx\pcxy(x,y) 
+  \\&\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon}
+          \int_{y\in\R} \psp\setn{x\le\rvX<x+\varepsilon, y\le\rvY<y+\varepsilon} \dy
+    && \text{by definition of $\ddx$}
+    && \text{\xref{def:ddx}}
+  \\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \psp\setn{x\le\rvX<x+\varepsilon}
+  \\&= \ppx(x)
+    && \text{by \prefp{prop:pdfddx}}
 \end{align*}
 \end{proof}
 
+%---------------------------------------
+\begin{theorem}
+\label{thm:cdf}
+%---------------------------------------
+\thmbox{\begin{array}{rcl}
+  \pcx(\sup\R) &=& 1 \\
+  \pcx(\inf\R) &=& 0
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \pcx(\sup\R)
+    &\eqd \psp\setn{\rvX\le\sup\R} 
+    && \text{by definition of $\pcx$} 
+    &&\text{\xref{def:cdf}}
+  \\&=    1                  
+    %&& \text{by definition of $\psp$} 
+    %&&\text{\xref{def:psp}}
+  \\
+  \pcx(\inf\R)
+    &\eqd \psp\setn{\rvX\le\inf\R} 
+    && \text{by definition of $\pcx$} &&\text{\xref{def:cdf}}
+  \\&=    0                  
+    %&& \text{by definition of $\psp$} 
+    %&&\text{\xref{def:psp}}
+\end{align*}
+\end{proof}
+
+The properties of the pdf follow closely the properties of measure $\psp$.
+%---------------------------------------
+\begin{theorem}
+\label{thm:conpdf}
+%---------------------------------------
+\thmbox{\begin{array}{rc>{\ds}l rc>{\ds}l}
+  \pcxcy(x|y) &=& \frac{\ddy\pcxy(x,y)}{\ppy(y)}  &\qquad
+  \ppxcy(x|y) &=& \frac{\ppxy(x,y)}{\ppy(y)}  \\
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \pcxcy(x|y)
+    &\eqd \pPc{\rvX\le x}{\rvY=y}
+    &&    \text{by definition of $\pcxcy$}              &&\text{\xref{def:concdf}}
+  \\&\eqd \frac{\psp\set{\rvX\le x}{\rvY=y}}{\psp\setn{\rvY=y}}
+    &&    \text{by definition of $\psp\setn{\rvX|\rvY}$}         &&\text{\xref{def:conP}}
+  \\&=    \lim_{\varepsilon\to0}\frac{\psp\set{\rvX\le x}{y<\rvY\le y+\varepsilon}}
+                                         {\psp\setn{y<\rvY\le y+\varepsilon}}
+  \\&=\mathrlap{\lim_{\varepsilon\to0}\frac{\brs{\psp\set{\rvX\le x}{\rvY\le y+\varepsilon}-\psp\set{\rvX\le x}{\rvY\le y}}/\varepsilon}
+                                         {\brs{\psp\setn{\rvY\le y+\varepsilon}-\psp\setn{\rvY\le y}}/\varepsilon}}
+  \\&\eqd \lim_{\varepsilon\to0}\frac{\brs{\pcxy(x,y+\varepsilon)-\pcxy(x,y)}/\varepsilon}
+                                         {\brs{\pcy(y+\varepsilon)-\pcy(y)}/\varepsilon}
+    &&    \text{by definition of $\pcxy$}                  &&\text{\xref{def:jointcdf}}
+  \\&\eqd \frac{\ddy\pcxy(x,y)}{\ddy\pcy(y)}
+    &&    \text{by definition of $\ddy\ff(y)$}
+  \\&\eqd \frac{\ddy\pcxy(x,y)}{\ppy(y)}
+    &&    \text{by definition of $\ppy$}  &&\text{\xref{def:pdf}}
+  \\&=    \frac{\ddy\pcxy(x,y)}{\ppy(y)}
+    &&    \text{because $y$ is fixed}
+  \\
+  \\
+  \ppxcy(x|y)
+    &\eqd \ddx\pcxcy(x|y)                     &&\text{by definition of $\ppxcy$}                  &&\text{\xref{def:conpdf}}
+  \\&=    \ddx\frac{\ddy\pcxy(x,y)}{\ppy(y)}  &&\text{by previous result}
+  \\&=    \frac{\ddx\ddy\pcxy(x,y)}{\ppy(y)}  &&\text{because $\ppy(y)$ is not a function of $x$}
+  \\&\eqd \frac{\ppxy(x,y)}{\ppy(y)}          &&\text{by definition of $\ppxy(x,y)$}              &&\text{\xref{def:jointpdf}}
+\end{align*}
+
+\begin{align*}
+  %\ppxcy(x|y)
+  %  &\eqd \lim_{h\to0} \frac{1}{h} \psp\setn{x\le\rvX < x+h | Y=y}
+  %  &&    \text{by definition of $\ppxcy(x|y)$}
+  %  &&    \text{\xref{def:conpdf}}
+  %\\&\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \frac{\psp\setn{(x\le\rvX < x+\varepsilon) \land (Y=y)}}{\psp\setn{Y=y}}
+  %  &&    \text{by definition of $\psp\setn{\rvX|\rvY}$}
+  %  &&    \text{\xref{def:conP}}
+  %\\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \frac{\psp\setn{(x\le\rvX < x+\varepsilon) \land (y\le Y<y+\varepsilon)}}{\psp\setn{y\le Y<y+\varepsilon}}
+  %\\&\eqd \frac{\ppxy(x,y)}{\ppy(y)}
+  %  \qquad\mathrlap{\text{by definitions of $\ppxy$ \xref{def:jointpdf} and $\ppy$ \xref{def:pdf}}}
+  %\\
+  %\int_y\ppxy(x,y)\dy
+  %  &\eqd \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \int_y \psp\setn{x\le X<x+\varepsilon \land y\le Y<y+\varepsilon} \dy
+  %  &&    \text{by definition of $\ppxy$}
+  %  &&    \text{\xref{def:jointpdf}}
+  %\\&=    \lim_{\varepsilon\to0} \frac{1}{\varepsilon} \psp\setn{x\le X<x+\varepsilon}
+  %  &&    \text{by \thme{sum of products}}
+  %  &&    \text{\xref{thm:psp_sop}}
+  %\\&\eqd \ppx(x)
+  %  &&    \text{by definition of $\ppx$}
+  %  &&    \text{\xref{def:psp}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:pdf1}
+%---------------------------------------
+Let $\ps$ be a probability space.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l C| >{\ds}rc>{\ds}l}
+    \int_{x\in\R} \ppx(x)    \dx &=& 1       &                  & \int_{x\in\R} \ppxcy(x|y) \dx               &=& 1\\
+    \int_{y\in\R} \ppxy(x,y) \dy &=& \ppx(x) & \forall x\in\pso & \int_{x\in\R}\int_{y\in\R}\ppxy(x,y) \dy\dx &=& 1
+  \end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \int_{\R} \ppx(x) \dx
+    &= \pcx(\sup\R) - \pcx(\inf\R)
+    && \text{by \prefp{thm:pdfcdf}}
+  \\&= 1 - 0
+  \\&= 1
+    && \mathrlap{\text{because $0$ is the additive identity element in $\fieldR$}}
+  \\
+  \int_{x\in\R} \ppxcy(x|y) \dx
+    &\eqd \int_{x\in\R} \ddx\pcxcy(x|y) \dx
+    &&    \text{by definition of $\ppxcy(x|y)$ \xref{def:conpdf}}
+  \\&=    \pcxcy(\sup\R|y) - \pcxcy(\inf\R|y)
+    &&    \text{by \thme{Fundamental theorem of calculus}}
+  \\&=    1-0
+  \\&=    1
+    && \mathrlap{\text{because $0$ is the additive identity element in $\fieldR$}}
+  \\
+  \int_{y\in\R} \ppxy(x,y) \dy
+    &= \int_{y\in\R} \ppyx(y,x) \dy
+  \\&= \int_{y\in\R} \ppycx(y|x)\ppx(x) \dy  && \text{by \prefp{thm:conpdf}}
+  \\&= \ppx(x)\int_{y\in\R} \ppycx(y|x) \dy  && \text{because $\ppx(x)$ is not a function of $y$}
+  \\&= \ppx(x)\cdot1                         && \text{by previous result}
+  \\&= \ppx(x)                               && \mathrlap{\text{because $1$ is the multiplicative identity element in $\fieldR$}}
+  \\
+  \int_{x\in\R}\int_{y\in\R} \ppxy(x,y) \dy\dx
+    &= \int_{x\in\R}\ppx(x)\dx               && \text{by previous result}
+  \\&= 1                                     && \text{by previous result}
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Discrete distributions}
+%=======================================
 \begin{figure}
-  \centering
-  \begin{tabular}{|c|c|c|}
-    \hline
-    \includegraphics{graphics/n0.pdf}&\includegraphics{graphics/n1.pdf}&\includegraphics{graphics/n2.pdf}\\
-    pdf of $\rvX_1$                  &pdf of $\rvY\eqd\rvX_1+\rvX_2$   &pdf of $\rvY\eqd\rvX_1+\rvX_2+\rvX_3$\\
-    \hline
-    \mc{2}{|c|}{\includegraphics{graphics/n3.pdf}}&\includegraphics{graphics/n4.pdf}\\
-    \mc{2}{|c|}{pdf of $\rvY\eqd\rvX_1+\rvX_2+\rvX_3+\rvX_4$}&pdf of $\rvY\eqd\rvX_1+\rvX_2+\rvX_3+\rvX_4+\rvX_5$\\
-    \hline
-  \end{tabular}
-  \caption{\label{fig:pdf_uniform_sums}
-           The distributions of sums of independent uniformly distributed random variables
-           \xref{ex:pdf_uniform_sums}}
+\centering
+\begin{tabular}{*{11}{c}}
+  $\scriptstyle \psp\setn{ 2}=\frac{1}{36}$ &
+  $\scriptstyle \psp\setn{ 3}=\frac{2}{36}$ &
+  $\scriptstyle \psp\setn{ 4}=\frac{3}{36}$ &
+  $\scriptstyle \psp\setn{ 5}=\frac{4}{36}$ &
+  $\scriptstyle \psp\setn{ 6}=\frac{5}{36}$ &
+  $\scriptstyle \psp\setn{ 7}=\frac{6}{36}$ &
+  $\scriptstyle \psp\setn{ 8}=\frac{5}{36}$ &
+  $\scriptstyle \psp\setn{ 8}=\frac{4}{36}$ &
+  $\scriptstyle \psp\setn{10}=\frac{3}{36}$ &
+  $\scriptstyle \psp\setn{11}=\frac{2}{36}$ &
+  $\scriptstyle \psp\setn{12}=\frac{1}{36}$  
+  \\                  &                  &                  &                  &                  & \diceF\diceA &                  &                  &                  &                  &                  
+  \\                  &                  &                  &                  & \diceE\diceA & \diceE\diceB & \diceF\diceB &                  &                  &                  &                  
+  \\                  &                  &                  & \diceD\diceA & \diceD\diceB & \diceD\diceC & \diceE\diceC & \diceF\diceC &                  &                  &                  
+  \\                  &                  & \diceC\diceA & \diceC\diceB & \diceC\diceC & \diceC\diceD & \diceD\diceD & \diceE\diceD & \diceF\diceD &                  &                  
+  \\                  & \diceB\diceA & \diceB\diceB & \diceB\diceC & \diceB\diceD & \diceB\diceE & \diceC\diceE & \diceD\diceE & \diceE\diceE & \diceF\diceE &                  
+  \\ \diceA\diceA & \diceA\diceB & \diceA\diceC & \diceA\diceD & \diceA\diceE & \diceA\diceF & \diceB\diceF & \diceC\diceF & \diceD\diceF & \diceE\diceF & \diceF\diceF
+\end{tabular}
+  \caption{
+    Probability distribution for two dice (see \prefp{ex:two_dice})
+    \label{fig:two_dice}
+    }
 \end{figure}
 %---------------------------------------
 \begin{example}
-\label{ex:pdf_uniform_sums}
+\label{ex:two_dice}
 %---------------------------------------
-Let $\seqn{\rvX_1, \rvX_2, \rvX_3, \ldots}$ be a \fncte{sequence}
-of \prope{independent} \xref{def:independent}
-\prope{uniformly distributed} random variables.
-Let $\ppx[\xN](x)$ be the \fncte{probability density function} of
-$\rvY\eqd\sum_{n=1}^{\xN}\rvX_n$.
-Some of these distributions are illustrated in \prefpp{fig:pdf_uniform_sums}.
-Note that the distributions of the sequence $\seqn{\ppx[1],\ppx[2],\ppx[3],\ldots}$
-are all \fncte{B-spline}s \xref{def:Bspline} and all form a
-\prope{partition of unity} \xref{def:pun}.
+Suppose we throw two ``fair" dice and want to know the probabilities of their sum.
+Let $X$ represent the sum  of the face values of the two dice.
+The resulting probability distribution is illustrated in \prefpp{fig:two_dice}\cittr{osgood}
+and probability space is as follows:
+
+\exbox{\begin{array}{ll}
+  \pso &= \setn{\text{\diceA\diceA,\; \diceA\diceB,\; \diceA\diceC,\;\ldots,\;\diceF\diceF} }
+  \\
+  \pse &= \left\{ \pset{\set{X=n}{n=2,3,\ldots,10,11,\text{ or } 12}} \right\}
+  \\
+  \psp(e) &= \frac{1}{36} \seto{e}
+\end{array}}
+
 \end{example}
+
+%=======================================
+\section{Continuous distributions}
+%=======================================
+%=======================================
+\subsection{Uniform distribution}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:uniform}
+%---------------------------------------
+The \fnctd{uniform distribution} $\ppx(x)$ is defined as 
+\defbox{
+  \ppx(x) \eqd \brb{\begin{array}{lM}
+                      1  & for $0< x \le 1$\\
+                      0  & otherwise
+                    \end{array}} 
+  }
+\end{definition}
+
+Note that although ``simple" in form, in light of \thme{Wold's Theorem}, the 
+value of the \fncte{uniform distribution} should \emph{not} be taken lightly.
+
+%=======================================
+\subsection{Gaussian distribution}
+\index{Gaussian distribution}
+\index{normal distribution}
+%=======================================
+\qboxnpqt
+  {Bernard A. Lippmann as told by Henri Poincar\'e
+  \index{Lippmann, Bernard A.} \index{Poincar\'e, Henri} 
+  \index{quotes!Lippmann, Bernard A.} \index{quotes!Poincar\'e, Henri} 
+   \footnotemark
+  }
+  {../common/people/poincare.jpg}
+  {Tout le monde y croit cependant, me disait un jour M. Lippmann,
+   car les exp\'erimentateurs s'irnaginent q\`ue c'est un th\'eor\`eme
+   de math\'ematiques, et les math\'ematiciens que c'est un fait
+   exp\'erimental.}
+  {Everyone believes in it [(the normal distribution)] however, 
+   said to me one day Mr. Lippmann, because the experimenters imagine that 
+   it is a theorem of mathematics, 
+   and mathematicians that it is an experimental fact.}
+  \citetblt{
+    quote:       & \citerp{poincare_calc_prob}{171} \\
+    translation: & assisted by \href{http://translate.google.com/}{Google Translate} \\
+    image:       & 
+    }
+
+
+
+\begin{figure}[ht]
+   \begin{center}
+   \includegraphics[height=8cm, width=12cm, clip=]{../common/pdf_norm.eps} 
+   \end{center}
+\caption{
+  Gaussian pdf with $\mu=0$ and $\sigma\in[0.1,2]$.
+  \label{fig:pdf_norm}
+  }
+\end{figure}
+
+%---------------------------------------
+\begin{definition}
+%---------------------------------------
+The \hid{Gaussian distribution} (or \hid{normal distribution} has pdf
+\defbox{
+  \ppx(x) \eqd \frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-(x-\mu)^2}{2\sigma^2}}
+  }
+A random variable $X$ with this distribution is denoted
+\defbox{ X \sim \pN{\mu}{\sigma^2} }
+The function $Q(x)$ is defined as the area under a 
+Gaussian PDF with zero mean and variance equal to one
+from $x$ to infinity such that
+\defbox{Q(x) \eqd \frac{1}{\sqrt{2\pi}} \int_x^\infty e^{\frac{-u^2}{2}} \du }
+\end{definition}
+
+%=======================================
+\subsection{Gamma distribution}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:Gamma(b)}
+\index{gamma function}
+\index{$\Gamma(b)$}
+\citetbl{
+  \citerp{papoulis}{79},
+  \citerp{ross}{222}
+  }
+%---------------------------------------
+Let $b\in\R$. The {\bf gamma function} $\Gamma(b)$ is
+\defbox{ \Gamma(b) \eqd \int_0^\infty x^{b-1} e^{-x} \dx  }
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+\citetbl{
+  \citerp{ross}{223}
+  }
+%---------------------------------------
+Let $b\in\R$ and $n\in\Zp$.
+\formbox{\begin{array}{rcl} 
+  \Gamma(b) &=& (b-1)\Gamma(b-1)  \\
+  \Gamma(n) &=& (n-1)!
+  \end{array}}
+\end{proposition}
+\begin{proof}
+Let
+\[\begin{array}{rcl@{\hspace{2cm}}rcl}
+  u   &=& x^{b-1}   & \du &=& (b-1)x^{b-1} \dx \\
+  \dv &=& e^{-x}\dx & v   &=& -e^{-x}
+\end{array}\]
+
+\begin{eqnarray*}
+  \Gamma(b)
+    &\eqd& \int_0^\infty x^{b-1} e^{-x} \dx  
+  \\&=&    \int_{x=0}^\infty u \dv
+  \\&=&    uv|_{x=0}^\infty - \int_{x=0}^\infty v \du
+  \\&=&    -x^{b-1} e^{-x}|_{x=0}^\infty + (b-1)\int_{x=0}^\infty e^{-x} x^{b-1}\dx
+  \\&=&    (-0+0) + (b-1)\Gamma(b-1)
+\end{eqnarray*}
+
+Note that 
+  \[ \Gamma(1) 
+       = \int_0^\infty x^{1-1} e^{-x} \dx
+       = \int_0^\infty e^{-x} \dx
+       = \left. -e^{-x} \right|_0^\infty 
+       = -0 + 1
+       = 1
+  \]
+\begin{eqnarray*}
+  \Gamma(n)
+    &=& (n-1)\Gamma(n-1)
+  \\&=& (n-1)(n-2)\Gamma(n-2)
+  \\&=& (n-1)(n-2)(n-3)\Gamma(n-3)
+  \\&\vdots& 
+  \\&=& (n-1)(n-2)(n-3)\cdots(1)\Gamma(1)
+  \\&=& (n-1)(n-2)(n-3)\cdots(1)
+  \\&\eqd& (n-1)!
+\end{eqnarray*}
+\end{proof}
+
+%---------------------------------------
+\begin{definition}
+%---------------------------------------
+A {\bf Gamma distribution} $(b,\lambda)$ has pdf
+\defbox{ \ppx(x) \eqd \frac{\lambda}{\Gamma(b)} e^{-\lambda x}(\lambda x)^{b-1} }
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:Gamma_X+Y}
+\citetbl{
+  \citerp{ross}{266}
+  }
+%---------------------------------------
+Let $X$ and $Y$ be independent random variables with 
+Gamma distributions $(a,\lambda)$ and $(b,\lambda)$ respectively.
+Then $Z=X+Y$ has Gamma distribution $(a+b,\lambda)$.
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \ppz(z)
+    &=& \ppx(z)\conv\ppy(z)
+  \\&=& \int_u \ppx(u)\ppy(z-u) \du
+  \\&=& \int_0^z
+        \frac{1}{\Gamma(a)}\lambda e^{-\lambda u}(\lambda u)^{a-1}
+        \frac{1}{\Gamma(b)}\lambda e^{-\lambda(z-u)}(\lambda(z-u))^{b-1} 
+        \du
+  \\&=& \frac{1}{\Gamma(a)}\frac{1}{\Gamma(b)}e^{-\lambda z}\lambda^{1+1+a-1+b-1}
+        \int_0^z  u^{a-1}(z-u)^{b-1}  \du
+  \\&=& \frac{1}{\Gamma(a)}\frac{1}{\Gamma(b)}\lambda e^{-\lambda z}\lambda^{a+b-1}
+        \int_0^1  (vz)^{a-1}(z-vz)^{b-1}  z\dv
+  \\&=& \frac{1}{\Gamma(a)}\frac{1}{\Gamma(b)}\lambda e^{-\lambda z}\lambda^{a+b-1}
+        z^{a-1+b-1+1}
+        \int_0^1  v^{a-1}(1-v)^{b-1}  \dv
+  \\&=& \left[
+        \frac{1}{\Gamma(a)}\frac{1}{\Gamma(b)}
+        \int_0^1  v^{a-1}(1-v)^{b-1}  \dv
+        \right]
+        \lambda e^{-\lambda z}(\lambda z)^{a+b-1}
+  \\&=& C\lambda e^{-\lambda z}(\lambda z)^{a+b-1}
+      \hspace{1cm}\mbox{where $C$ is some constant} 
+  \\&=& \frac{\lambda}{\Gamma(a+b)} e^{-\lambda z}(\lambda z)^{a+b-1}
+      \hspace{1cm}\mbox{$C$ must be the value that makes $\int_z\ppz(z)=1$} 
+\\\implies && \mbox{$\ppz(z)$ is a $(a+b,\lambda)$ Gamma distribution}
+\end{eqnarray*}
+\end{proof}
+
+%=======================================
+\subsection{Chi-squared distributions}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:pdf_chi}
+\index{Chi-squared distribution}
+\citetbl{
+  \citerp{proakis}{41}
+  }
+%---------------------------------------
+The {\bf chi-square distribution} has pdf
+\defbox{
+  \ppy(y) \eqd \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l} 
+    0                        &  y<0 \\ \ds
+    \frac{1}{\sqrt{2\pi\sigma^2y}}\exp{-\frac{y}{2\sigma^2}} &  y\ge 0
+  \end{array}\right.
+  }
+\end{definition}
+
+A random variable $Y$ with {\em chi-squared} distribution is equivalent 
+to the square of random variable with zero-mean Gaussian distribution.
+Thus if you wanted to generate a random value with chi-square distribution,
+you could simply square the output of a Gaussian noise generator.
+%---------------------------------------
+\begin{theorem}
+\index{chi-squared distribution}
+\index{Gamma distribution}
+\label{thm:Gamma=X^2}
+\citetbl{
+  \citerp{ross}{267}
+  }
+%---------------------------------------
+The following distributions are equivalent:
+\begin{enumerate}
+  \item chi-squared distribution
+  \item distribution of $X^2$ where $X\sim\pN{0}{\sigma^2}$
+  \item Gamma distribution $\left(\frac{1}{2},\frac{1}{2\sigma^2} \right)$
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+
+\item Prove $X^2$ has a chi-squared distribution:
+\begin{eqnarray*}
+  \ppy(y)
+    &=& \left.\left.\frac{1}{2\sqrt{y}}\right[
+        \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
+        \hspace{1cm}\mbox{by Proposition~\ref{prop:Y=X^2} page~\pageref{prop:Y=X^2}}
+  \\&=& \left.\left.\frac{1}{2\sqrt{y}}\right[
+        \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{(-\sqrt{y}-0)^2}{2\sigma^2}}+
+        \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{(+\sqrt{y}-0)^2}{2\sigma^2}}
+        \right]
+  \\&=& \left.\left.\frac{1}{2\sqrt{y}}\right[
+        2\frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{y}{2\sigma^2}}+
+        \right]
+  \\&=& \frac{1}{\sqrt{2\pi \sigma^2 y}} \exp{-\frac{y}{2\sigma^2}}
+\end{eqnarray*}
+
+\item Prove chi-distribution is a Gamma distribution $(b,\lambda)$:
+\begin{eqnarray*}
+  b &\eqd& \frac{1}{2} \\
+  \lambda &\eqd& \frac{1}{2\sigma^2} \\
+\\
+  \frac{1}{\sqrt{2\pi\sigma^2y}}\exp{-\frac{y}{2\sigma^2}}
+    &=& \frac{1}{\sqrt{\pi}}\lambda^{1/2} \lambda^{1/2} (\lambda y)^{-1/2} e^{-\lambda y}
+  \\&=& \frac{\lambda}{\sqrt{\pi}} (\lambda y)^{b-1} e^{-\lambda y}
+\end{eqnarray*}
+
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{definition}
+\index{Chi-squared distribution with $n$ degrees of freedom}
+\citetbl{
+  \citerp{proakis}{41}
+  }
+%---------------------------------------
+The {\bf Chi-squared distribution with $n$ degrees of freedom} has pdf
+\defbox{
+  \ppy(y) \eqd \left\{\begin{array}{ll}
+    0 &:y<0 \\ \ds
+    \frac{1}{2\sigma^2\Gamma(n/2)} 
+               \left(\frac{y}{2\sigma^2}\right)^{\frac{n}{2}-1}
+               \exp{-\frac{y}{2\sigma^2}}
+    &:y\ge 0
+    \end{array}\right.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\index{chi-squared distribution with $n$ degrees of freedom}
+\index{Gamma distribution}
+\citetbl{
+  \citerp{ross}{267}
+  }
+%---------------------------------------
+The following distributions are equivalent:
+\begin{enumerate}
+  \item chi-squared distribution with $n$ degrees of freedom
+  \item the distribution of $\ds \sum_{k=1}^n X_k^2$ where
+        $\set{X_k}{X_k\sim\pN{0}{\sigma^2}, k=1,2,\ldots,n}$
+        are independent random variables.
+  \item Gamma distribution $\left(\frac{n}{2}, \frac{1}{2\sigma^2} \right)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Prove chi-squared distribution with $n$ degrees of freedom is the 
+      Gamma distribution $\left(\frac{n}{2}, \frac{1}{2\sigma^2} \right)$:
+  \begin{eqnarray*}
+    \lambda &\eqd& \frac{1}{2\sigma^2} \\
+    b       &\eqd& \frac{1}{2} \\
+    \frac{1}{2\sigma^2\Gamma(n/2)} 
+                 \left(\frac{y}{2\sigma^2}\right)^{\frac{n}{2}-1}
+                 \exp{-\frac{y}{2\sigma^2}}
+      &=& \frac{\lambda}{\Gamma(nb)} 
+          \left(\lambda y \right)^{nb-1}
+          \exp{-\lambda y}
+  \end{eqnarray*}
+
+\item Prove $\sum_{k=1}^n X^2$ is Gamma $\left(\frac{n}{2}, \frac{1}{2\sigma^2} \right)$:
+  \begin{enumerate}
+    \item By Theorem~\ref{thm:Gamma=X^2}, $X_k$ has Gamma distribution 
+          $\left(\frac{1}{2}, \frac{1}{2\sigma^2} \right)$.
+    \item By Theorem~\ref{thm:Gamma_X+Y}, $\sum_{k=1}^n X_k^2$ has 
+          distribution $\left(\frac{n}{2}, \frac{1}{2\sigma^2} \right)$.
+  \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{definition}
+\index{Noncentral chi-square distribution}
+\citetbl{
+  \citerp{proakis}{42}
+  }
+%---------------------------------------
+A {\bf noncentral chi-square distribution} $(\mu,\sigma^2)$
+has pdf
+\defbox{ 
+  \ppy(y) 
+  = \frac{1}{\sqrt{2\pi\sigma^2y}} \exp{\frac{y+\mu^2 }{-2\sigma^2}} 
+          \cosh{\frac{ \mu\sqrt{y}}{\sigma^2}}
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+The following distributions are equivalent:
+\begin{enumerate}
+  \item non-central chi-squared distribution $(\mu,\sigma^2)$
+  \item distribution of $X^2$ where $X\sim\pN{\mu}{\sigma^2}$
+\end{enumerate}
+
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Prove $Y=X^2$ has a non-central chi-squared distribution:
+\begin{eqnarray*}
+  \ppy(y)
+    &=& \left.\left.\frac{1}{2\sqrt{y}}\right[
+        \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
+        \hspace{1cm}\mbox{by Proposition~\ref{prop:Y=X^2} page~\pageref{prop:Y=X^2}}
+  \\&=& \left.\left.\frac{1}{2\sqrt{y}}\right[
+        \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{(-\sqrt{y}-\mu)^2}{2\sigma^2}}+
+        \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{(+\sqrt{y}-\mu)^2}{2\sigma^2}}
+        \right]
+  \\&=& \left.\left.\frac{1}{2\sqrt{y}}\right[
+        \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{y+\mu^2 }{2\sigma^2}} \exp{\frac{-2\mu\sqrt{y}}{2\sigma^2}}+
+        \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{y+\mu^2 }{2\sigma^2}} \exp{\frac{ 2\mu\sqrt{y}}{2\sigma^2}}
+        \right]
+  \\&=& \frac{1}{\sqrt{2\pi\sigma^2y}} \exp{-\frac{y+\mu^2 }{2\sigma^2}} 
+        \frac{1}{2}
+        \left[ 
+          \exp{\frac{ 2\mu\sqrt{y}}{2\sigma^2}} +
+          \exp{\frac{-2\mu\sqrt{y}}{2\sigma^2}}
+        \right]
+  \\&=& \frac{1}{\sqrt{2\pi\sigma^2y}} \exp{\frac{y+\mu^2 }{-2\sigma^2}} 
+          \cosh{\frac{ \mu\sqrt{y}}{\sigma^2}}
+\end{eqnarray*}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerp{proakis}{43}
+  }
+%---------------------------------------
+The {\bf $\alpha$th-order modified Bessel function of the first kind}
+$I_\alpha(x)$ is
+\defbox{
+  I_\alpha(x) = \sum_{k=0}^\infty 
+  \frac{1}{k!\Gamma(\alpha+k+1)} \left(\frac{x}{2}\right)^{\alpha+2k}
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\citetbl{
+  \citerp{proakis}{43}
+  }
+%---------------------------------------
+The {\bf noncentral chi-square with $n$-degrees of freedom} distribution has
+pdf
+\defbox{
+  \ppy(y) = 
+  \frac{1}{2\sigma^2}
+  \left(\frac{y}{s^2}\right)^\frac{n-2}{4}
+  \exp{\frac{y+s^2}{-2\sigma^2}}
+  I_{n/2-1}\left(\sqrt{y}\frac{s}{\sigma^2}\right)
+  \hspace{1cm}\mbox{where }
+  s^2 \eqd \sum_{k=1}^n \mu_k^2
+  }
+\end{definition}
+
+%=======================================
+\subsection{Radial distributions}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\index{Rayleigh distribution}
+\citetbl{
+  \citerp{proakis}{44}
+  }
+%---------------------------------------
+The {\bf Rayleigh distribution} is the pdf
+\defbox{
+  \ppr(r) = \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
+  0 & r<0 \\
+  \frac{r}{\sigma^2}\exp{-\frac{r^2}{2\sigma^2}}
+  & r\ge 0
+  \end{array}\right.
+  }
+\end{definition}
+
+Note that by Proposition~\ref{prop:XY->RT_n},
+this distribution is equivalent to the distribution of 
+$R=\sqrt{X^2+Y^2}$ where $X$ and $Y$ are independent random variables
+each with distribution $\pN{0}{\sigma^2}$.
+
+%---------------------------------------
+\begin{definition}
+\index{Rice distribution}
+\citetbl{
+  \citerp{proakis}{46}
+  }
+%---------------------------------------
+The {\bf Rice distribution} is the pdf
+\defbox{
+  \ppr(r) = \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
+  0 & r<0 \\
+  \frac{r}{\sigma^2}\exp{\frac{r^2+s^2}{-2\sigma^2}}
+  I_o\left(\frac{rs}{\sigma^2}\right)
+  & r\ge 0
+  \end{array}\right.
+  }
+\end{definition}
+
+
+
+
+
+%
+%
+%
+%%=======================================
+%\subsection{Nakagami $m$-distribution}
+%\index{Nakagami $m$-distribution}
+%\citep{proakis}{47}
+%%=======================================
+%
+%
+%%=======================================
+%\subsection{Lognormal distribution}
+%\index{Lognormal distribution}
+%\citep{proakis}{48}
+%%=======================================
+%
+%
+
+
+
+%---------------------------------------
+\begin{definition}[Joint Gaussian pdf]
+\citetbl{
+  \citerp{moon2000}{34},
+  \citerp{proakis}{49}
+  }
+%---------------------------------------
+
+\defbox{\begin{array}{rcl}
+  \vx &\eqd& \left[\begin{array}{c}
+    x_1    \\
+    x_2    \\
+    \vdots \\
+    x_n
+  \end{array}\right]
+  \hspace{8ex}
+  \rvZ_k \eqd X_k - \pE X_k
+\\ \\
+  \vM &\eqd& \left[\begin{array}{cccc}
+    \pE[\rvZ_1 \rvZ_1] & \pE[\rvZ_1 \rvZ_2] & \cdots & \pE[\rvZ_1 \rvZ_n]   \\
+    \pE[\rvZ_2 \rvZ_1] & \pE[\rvZ_2 \rvZ_2] &        & \pE[\rvZ_2 \rvZ_n]   \\
+    \vdots       & \vdots       & \ddots & \vdots         \\
+    \pE[\rvZ_n \rvZ_1] & \pE[\rvZ_n \rvZ_2] & \cdots & \pE[\rvZ_n \rvZ_n]
+  \end{array}\right]
+\\ \\
+  \pp(x_1,x_2,\ldots,x_n) &\eqd&
+    \frac{1}{\sqrt{(2\pi)^n |\vM|}}
+    \exp{-\frac{1}{2}(\vx-\pE\vx)^T\vM^{-1}(\vx-\pE\vx)}
+  \end{array}}
+\end{definition}
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:prob_gaussian_xy}
+%---------------------------------------
+\formbox{\begin{array}{rc>{\ds}l}
+  z_1 &\eqd& x_1 - \pE x_1 \\
+  z_2 &\eqd& x_2 - \pE x_2 \\
+  \abs{M} &\eqd& \abs{\pE[z_1 z_1]\pE[z_2 z_2]-\pE[z_1 z_2]\pE[z_1 z_2]}
+  \\ 
+  \pp(x_1,x_2) &\eqd&
+    \frac{1}{2\pi \sqrt{\abs{M}}}
+    \exp\left(
+      \frac{z_1^2\pE[z_2z_2] - 2z_1z_2\pE[z_1z_2] + z_2^2\pE[z_1z_1]}
+            {-2\abs{M}}
+        \right)
+\end{array}}
+\end{proposition}
+
+
+\begin{figure}
+\begin{tabular}{*{4}{c}}
+  \includegraphics[width=\tw/4-15mm, height=\tw/4-15mm, clip=true]{../common/normxy_00.eps} &
+  \includegraphics[width=\tw/4-15mm, height=\tw/4-15mm, clip=true]{../common/normxy_50.eps} &
+  \includegraphics[width=\tw/4-15mm, height=\tw/4-15mm, clip=true]{../common/normxy_80.eps} & 
+  \includegraphics[width=\tw/4-15mm, height=\tw/4-15mm, clip=true]{../common/normxy_95.eps}
+\end{tabular}
+\caption{
+  Joint Gaussian distributions $p(x,y)$ with varying correlations
+  \label{fig:psub_joint_gaussian}
+  %\citerp{moon2000}{35}
+  }
+\end{figure}
+
+%=======================================
+\section{Joint Gaussian distributions}
+%=======================================
+%---------------------------------------
+\begin{definition}[Joint Gaussian pdf]
+\citetbl{
+  \citerp{proakis}{49}
+  }
+%---------------------------------------
+\defbox{\begin{array}{rclD}
+  \pp(x_1,x_2,\ldots,x_n) 
+    &\eqd& \ds\frac{1}{\sqrt{(2\pi)^n |\vM|}}
+           \exp{-\frac{1}{2}(\vx-\pE\vx)^T\vM^{-1}(\vx-\pE\vx)}
+    &      (Gaussian joint pdf)
+    \\ \\
+  \vx 
+    &\eqd& \left[\begin{array}{c}
+             x_1    \\
+             x_2    \\
+             \vdots \\
+             x_n
+           \end{array}\right]
+    \\
+  \rvZ_k 
+    &\eqd& X_k - \pE X_k
+    & (zero mean random variables)
+    \\ \\
+  \vM 
+    &\eqd& \brs{\begin{array}{cccc}
+             \pE[\rvZ_1 \rvZ_1] & \pE[\rvZ_1 \rvZ_2] & \cdots & \pE[\rvZ_1 \rvZ_n]   \\
+             \pE[\rvZ_2 \rvZ_1] & \pE[\rvZ_2 \rvZ_2] &        & \pE[\rvZ_2 \rvZ_n]   \\
+             \vdots       & \vdots       & \ddots & \vdots         \\
+             \pE[\rvZ_n \rvZ_1] & \pE[\rvZ_n \rvZ_2] & \cdots & \pE[\rvZ_n \rvZ_n]
+           \end{array}}
+    & (correlation matrix)
+\end{array}}
+\end{definition}
+
+
+\begin{figure}[ht]
+   \begin{center}
+   \includegraphics[height=8cm, width=12cm, clip=]{../common/pdf_norm.eps} 
+   \end{center}
+\caption{
+  Gaussian pdf with $\mu=0$ and $\sigma\in[0.1,2]$.
+  \label{fig:net_norm}
+}
+\end{figure}
+
+
+%---------------------------------------
+\begin{lemma}[Leibniz integration rule]
+%---------------------------------------
+  \lembox{
+    \deriv{}{x} \int_{\fa(x)}^{\fb(x)} \fg(t) \dt  
+      = \fg(\fb(x))\fb'(x) - \fg(\fa(x))\fa'(x)
+    }
+\end{lemma}
+
+%---------------------------------------
+\begin{example}[1 variable joint Gaussian pdf]
+%---------------------------------------
+The \hid{Gaussian distribution} (or \hid{normal distribution} has pdf
+\exbox{
+  \ppx(x) \eqd \frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-(x-\mu)^2}{2\sigma^2}}
+  }
+
+\begin{align*}
+  t
+    &= \arg_t \min_t 
+       \brs{
+       \frac{1}{2}\int_t^\infty    \frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-(x-\mu)^2}{2\sigma^2}} +
+       \frac{1}{2}\int_{-\infty}^t \frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-(x-\eta)^2}{2\sigma^2}}
+       }
+  \\&= \arg_t \brb{\pderiv{}{t}
+       \brs{
+       \frac{1}{2}\int_t^\infty    \frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-(x-\mu)^2}{2\sigma^2}} +
+       \frac{1}{2}\int_{-\infty}^t \frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-(x-\eta)^2}{2\sigma^2}}
+       }=0}
+  \\&= \arg_t \brb{\frac{1}{2\sqrt{2\pi\sigma^2}}
+       \brs{
+       \pderiv{}{t}\int_t^\infty    e^{\frac{-(x-\mu)^2}{2\sigma^2}} +
+       \pderiv{}{t}\int_{-\infty}^t e^{\frac{-(x-\eta)^2}{2\sigma^2}}
+       }=0}
+  \\&= \arg_t \brb{
+       \brs{
+       \brp{e^{\frac{-(\infty-\mu)^2}{2\sigma^2}}0 - e^{\frac{-(t-\mu)^2}{2\sigma^2}}1} +
+       \brp{e^{\frac{-(t-\mu)^2}{2\sigma^2}}1 - e^{\frac{-(\infty-\mu)^2}{2\sigma^2}}0}
+       }=0}
+  \\&= \arg_t \brb{
+       \brs{e^{\frac{-(t-\eta)^2}{2\sigma^2}}- e^{\frac{-(t-\mu)^2}{2\sigma^2}}}=0}
+  \\&= \arg_t \brb{(t-\eta)^2=(t-\mu)^2}
+  \\&= \frac{\mu+\eta}{2}
+\end{align*}
+\end{example}
+
+%---------------------------------------
+\begin{example}[2 variable joint Gaussian pdf]
+\label{prop:prob_gaussian_xy}
+%---------------------------------------
+\exbox{\begin{array}{rc>{\ds}l}
+  z_1 &\eqd& x_1 - \pE x_1 \\
+  z_2 &\eqd& x_2 - \pE x_2 \\
+  \abs{M} &\eqd& \abs{\pE[z_1 z_1]\pE[z_2 z_2]-\pE[z_1 z_2]\pE[z_1 z_2]}
+  \\ 
+  \pp(x_1,x_2) &\eqd&
+    \frac{1}{2\pi \sqrt{\abs{M}}}
+    \exp\left(
+      \frac{z_1^2\pE[z_2z_2] - 2z_1z_2\pE[z_1z_2] + z_2^2\pE[z_1z_1]}
+            {-2\abs{M}}
+        \right)
+\end{array}}
+\end{example}
+
+
