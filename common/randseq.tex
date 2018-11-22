@@ -40,8 +40,8 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
 \defbox{\begin{array}{MlMlc>{\ds}l}
      The \fnctd{mean}             & \pmeanx(n) & of $\rvx(n)$               is & \pmeanx(n)&\eqd& \pE\brs{\rvx(n)}
    \\The \fnctd{variance}         & \pvarx(n)  & of $\rvx(n)$               is & \pvarx(n) &\eqd& \pE\brp{\brs{\rvx(n)-\pmeanx(n)}^2}
-   \\The \fnctd{autocorrelation}  & \Rxx(n,m)  & of $\rvx(n)$               is & \Rxx(n,m) &\eqd& \pE\brs{\rvx(n)\rvx^\ast(n+m)}        %& \text{(\prope{auto-correlation bilinear functional})} 
-   \\The \fnctd{crosscorrelation} & \Rxy(n,m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(n,m) &\eqd& \pE\brs{\rvx(n)\rvy^\ast(n+m)}        %& \text{(\prope{cross-correlation bilinear functional})}
+   \\The \fnctd{crosscorrelation} & \Rxy(n,m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(n,m) &\eqd& \pE\brs{\rvy(n+m)\rvx^\ast(n)}
+   \\The \fnctd{autocorrelation}  & \Rxx(n,m)  & of $\rvx(n)$               is & \Rxx(n,m) &\eqd& \brlr{\Rxy(n,m)}_{\rvy=\rvx}
   %\\The \fnctd{autocorrelation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
 \end{array}}
 \end{definition}
@@ -240,6 +240,15 @@ Let $\rvx(n)$ be a \fncte{random sequence} with \fncte{mean} $\pmeanx(n)$ and
 
 %---------------------------------------
 \begin{definition}
+\footnote{
+  \citerpgc{papoulis1984}{263}{0070484686}{``$R_{xy}(\tau)=E\brb{\rvx(t+\tau)\rvy^\ast(t)}$"},
+  \citerpgc{kay1988}{52}{8131733564}{``$r_{xy}[k] = \mfrakE\brb{x^\ast[n]y[n+k]}\quad(3.42)"$},
+  \citerpgc{bendat2011}{111}{1118210824}{$R_{xy}(\tau)=E\brs{\rvx(t)\rvy(t+\tau)}$},
+  \citerpgc{cadzow}{341}{0023180102}{$r_{xy}(n)=E\brs{\rvx(k+n)\rvy^\ast(k)}$ (10.41)}
+  %\citerpgc{koopmans1995}{}{{0124192513}{}
+  \citerpgc{weisstein2002}{594}{1420035223}{entry: Cross-Correlation; $f\star g=\int_{-\infty}{\infty}\bar{f}(\tau)g(t+\tau)\dtau$ (4)},
+  \citerpgc{bracewell1965}{46,243}{???}{cited by other reference} % https://books.google.com/books?id=oVFTDwAAQBAJ&pg=PA92&dq=bracewell+%22pentagram+notation%22&hl=en&sa=X&ved=0ahUKEwigptTEq-DeAhXIi60KHd1RCJIQ6AEILjAB#v=onepage&q=bracewell%20%22pentagram%20notation%22&f=false
+  }
 \label{def:mean_wss}
 \label{def:Rxxm}
 \label{def:Rxym}
@@ -255,8 +264,8 @@ $\pmeanx(n)$, $\pvarx(n)$, $\Rxx(n,m)$, and $\Rxy(n,m)$ \xref{def:Rxynm}.
   \brb{\begin{array}{FMlMlc>{\ds}l}
      (1).&The \fnctd{mean}             & \pmeanx  & of $\rvx(n)$               is & \pmeanx &\eqd& \pE\brs{\rvx(0)}
    \\(2).&The \fnctd{variance}         & \pvarx   & of $\rvx(n)$               is & \pvarx  &\eqd& \pE\brp{\brs{\rvx(0)-\pmeanx}^2}
-   \\(3).&The \fnctd{autocorrelation}  & \Rxx(m)  & of $\rvx(n)$               is & \Rxx(m) &\eqd& \pE\brs{\rvx(0)\rvx^\ast(n+m)}
-   \\(4).&The \fnctd{crosscorrelation} & \Rxy(m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(m) &\eqd& \pE\brs{\rvx(0)\rvy^\ast(n+m)}
+   \\(4).&The \fnctd{crosscorrelation} & \Rxy(m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(m) &\eqd& \pE\brs{\rvy(n+m)\rvx^\ast(0)}
+   \\(3).&The \fnctd{autocorrelation}  & \Rxx(m)  & of $\rvx(n)$               is & \Rxx(m) &\eqd& \brlr{\Rxx(m)}_{\rvy=\rvx}
   %\\The \fnctd{autocorrelation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
 \end{array}}$
   }
@@ -576,6 +585,20 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \\&\eqd \opDTFT                             \brs{\fh^\ast(m) \conv \Rxx(-m)}
   \\&=    \opDTFT                             \brs{\fh^\ast(-n) \conv \Rxx(n)}
   \\&\eqd \Fh^\ast(\omega) \Swxx(\omega)
+\end{align*}
+
+\begin{align*}
+  \Swxy(\omega)
+    &\eqd \opDTFT\pE\Rxy(m)
+  \\&\eqd \opDTFT\pE\brs{\rvy(m)                                 \rvx^\ast(0)}
+  \\&=    \opDTFT\pE\brs{\brp{\fh(m)\conv\rvx(m)}                \rvx^\ast(0)}
+  \\&=    \opDTFT\pE\brs{\brp{\sum_{k\in\Z} \fh(k)\rvx^\ast(m-k)}\rvx^\ast(0)}
+  \\&=    \opDTFT\brp{\sum_{k\in\Z} \fh(k)\pE\brs{\rvx^\ast(m-k)\rvx^\ast(0)}}
+  \\&=    \opDTFT\brp{\sum_{k\in\Z} \fh(k)\Rxx(m-k)}
+  \\&\eqd \opDTFT\brp{\fh(m)\conv\Rxx(m)}
+  \\&=    \opDTFT\brp{\fh(m)\conv\Rxx(m)}
+  \\&=    \brs{\opDTFT\fh(m)} \brs{\opDTFT\Rxx(m)}
+  \\&\eqd \Fh(\omega) \Swxx(\omega)
 \end{align*}
 \end{proof}
 
