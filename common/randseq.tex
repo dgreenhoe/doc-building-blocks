@@ -29,6 +29,12 @@
 %---------------------------------------
 %---------------------------------------
 \begin{definition}
+\footnote{
+  \citerpgc{papoulis1984}{263}{0070484686}{$R_{xy}(m)=E\brb{\rvx(m)\rvy^\ast(0)}$},
+  \citerpgc{cadzow}      {341}{0023180102}{$r_{xy}(m)=E\brs{\rvx(m)\rvy^\ast(0)}$},
+  \citePc  {matlab_xcorr}                 {$R_{xy}(m)=E\setn{x_{n+m}y_n^\ast}   $},
+  \citePc  {matlab_cpsd}                  {$R_{xy}(m)=E\setn{x_{n+m}y_n^\ast}   $}
+  }
 \label{def:pmeanxn}
 \label{def:pvarxn}
 \label{def:Rxxnm}
@@ -40,7 +46,7 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
 \defbox{\begin{array}{MlMlc>{\ds}l}
      The \fnctd{mean}             & \pmeanx(n) & of $\rvx(n)$               is & \pmeanx(n)&\eqd& \pE\brs{\rvx(n)}
    \\The \fnctd{variance}         & \pvarx(n)  & of $\rvx(n)$               is & \pvarx(n) &\eqd& \pE\brp{\brs{\rvx(n)-\pmeanx(n)}^2}
-   \\The \fnctd{crosscorrelation} & \Rxy(n,m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(n,m) &\eqd& \pE\brs{\rvy(n+m)\rvx^\ast(n)}
+   \\The \fnctd{crosscorrelation} & \Rxy(n,m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(n,m) &\eqd& \pE\brs{\rvx(n+m)\rvy^\ast(n)}
    \\The \fnctd{autocorrelation}  & \Rxx(n,m)  & of $\rvx(n)$               is & \Rxx(n,m) &\eqd& \brlr{\Rxy(n,m)}_{\rvy=\rvx}
   %\\The \fnctd{autocorrelation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
 \end{array}}
@@ -63,16 +69,16 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
 \begin{proof}
 \begin{align*}
   \Rxy(n,m)
-     &\eqd \pE\brs{\rvx(n) \rvy^\ast(n+m)}
+     &\eqd \pE\brs{\rvx(n+m) \rvy^\ast(n)}
      && \text{by definition of $\Rxy(n,m)$}
      && \text{\xref{def:Rxynm}}
-   \\&= \pE\brs{\rvy^\ast(n+m) \rvx(n)}
+   \\&= \pE\brs{\rvy^\ast(n) \rvx(n+m)}
      && \text{by \prope{commutative} property of $\fieldC$}
      && \text{\ifxref{algebra}{def:field}}
-   \\&= \brp{\pE\brs{\rvy(n+m) \rvx^\ast(n)}}^\ast
+   \\&= \brp{\pE\brs{\rvy(n) \rvx^\ast(n+m)}}^\ast
      && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
      && \text{\xref{def:staralg}}
-   \\&= \brp{\pE\brs{\rvy(n+m) \rvx^\ast(n+m-m)}}^\ast
+   \\&= \brp{\pE\brs{\rvy(n+m-m) \rvx^\ast(n+m)}}^\ast
      && \text{by \prope{additive identity} property of $\fieldR$}
      && \text{\ifxref{algebra}{def:field}}
    \\&\eqd \Ryx^\ast(n+m,-m)
@@ -113,7 +119,7 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
 
 The next theorem describes the statistical properties of an LTI system
 with impulse response $\fh(t)$ \xref{fig:d-linear-sys}.
-
+\newpage
 %---------------------------------------
 \begin{theorem}
 \footnote{
@@ -141,53 +147,53 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
 \begin{proof}
 \begin{align*}
    \Rxy(n,m)
-     &\eqd \pE\brs{\rvx(n) \rvy^\ast(n+m) }
+     &\eqd \pE\brs{\rvx(n+m) \rvy^\ast(n) }
      && \text{by definition of $\Rxy(n,m)$}
      && \text{\xref{def:Rxynm}}
-   \\&= \pE\brs{\rvx(n) \brp{\fh\conv\rvx}^\ast(n+m)}
+   \\&= \pE\brs{\rvx(n+m) \brp{\fh\conv\rvx}^\ast(n)}
      && \text{by \prope{LTI} hypothesis}
-   \\&\eqd \pE\brs{\rvx(n) \brp{ \sum_{k\in\Z} h(k) \rvx(n+m-k) }^\ast }
+   \\&\eqd \pE\brs{\rvx(n+m) \brp{ \sum_{k\in\Z} h(k) \rvx(n-k) }^\ast }
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
-   \\&=    \pE\brs{\rvx(n) \sum_{k\in\Z} \fh^\ast(k) \rvx^\ast(n+m-k)  }
+   \\&=    \pE\brs{\rvx(n+m) \sum_{k\in\Z} \fh^\ast(k) \rvx^\ast(n-k)  }
      && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
      && \text{\xref{def:staralg}}
-   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvx(n)\rvx^\ast(n+m-k)  }
+   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvx(n+m)\rvx^\ast(n-k)  }
      && \text{by \prope{distributive} property of $\fieldC$}
      && \text{\ifxref{algebra}{def:field}}
-   \\&= \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx(n) \rvx^\ast(n+m-k) }
+   \\&= \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx(n-k+k+m) \rvx^\ast(n-k) }
      && \text{by \prope{linear} property of $\pE$}
      && \text{\xref{thm:pE}}
-   \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(n,m-k)
+   \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(n-k,m+k)
      && \text{by definition of $\Rxx(n,m)$}
      && \text{\xref{def:Rxxnm}}
-   \\&\eqd \Rxx(n,m) \conv \fh^\ast(m)
+   \\&= \Rxx(n-k,m) \conv \fh^\ast(-m)
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
    \\
    \\
    \Ryy(n,m)
-     &\eqd \pE\brs{\rvy(n) \rvy^\ast(n+m) }
+     &\eqd \pE\brs{\rvy(n+m) \rvy^\ast(n) }
      && \text{by definition of $\Rxy(n,m)$}
      && \text{\xref{def:Rxynm}}
-   \\&= \pE\brs{\rvy(n) \brp{\fh\conv\rvy}^\ast(n+m)}
+   \\&= \pE\brs{\rvy(n+m) \brp{\fh\conv\rvy}^\ast(n)}
      && \text{by \prope{LTI} hypothesis}
-   \\&\eqd \pE\brs{\rvy(n) \brp{ \sum_{k\in\Z} h(k) \rvy(n+m-k) }^\ast }
+   \\&\eqd \pE\brs{\rvy(n+m) \brp{ \sum_{k\in\Z} h(k) \rvy(n-k) }^\ast }
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
-   \\&=    \pE\brs{\rvy(n) \sum_{k\in\Z} \fh^\ast(k) \rvy^\ast(n+m-k)  }
+   \\&=    \pE\brs{\rvy(n+m) \sum_{k\in\Z} \fh^\ast(k) \rvy^\ast(n-k)  }
      && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
      && \text{\xref{def:staralg}}
-   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvy(n)\rvy^\ast(n+m-k)  }
+   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvy(n+m)\rvy^\ast(n-k)  }
      && \text{by \prope{distributive} property of $\fieldC$}
      && \text{\ifxref{algebra}{def:field}}
-   \\&=    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvy(n) \rvy^\ast(n+m-k) }
+   \\&=    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvy(n-k+k+m) \rvy^\ast(n-k) }
      && \text{by \prope{linear} property of $\pE$}
      && \text{\xref{thm:pE}}
-   \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Ryy(n,m-k)
+   \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Ryy(n-k,m+k)
      && \text{by definition of $\Ryy(n,m)$}
      && \text{\xref{def:Ryynm}}
-   \\&\eqd \Ryy(n,m) \conv \fh^\ast(m)
+   \\&\eqd \Ryy(n-k,m) \conv \fh^\ast(-m)
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
    \\
@@ -195,22 +201,22 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
    \Ryy(n,m)
      &= \Rxy(n,m)\conv \fh(m)
      && \text{by previous result}
-   \\&= \brs{\Rxx(n,m) \conv \fh^\ast(m)}\conv \fh(m)
+   \\&= \brs{\Rxx(n,m) \conv \fh^\ast(-m)}\conv \fh(-m)
      && \text{by previous result}
-   \\&= \Rxx(n,m) \conv \fh(m) \conv \fh^\ast(m)
+   \\&= \Rxx(n,m) \conv \fh(-m) \conv \fh^\ast(-m)
      && \text{by previous result}
 \\
 \\
    \Ryy(n,m)
-     &= \Rxx(n,m)\conv\fh(m) \conv \fh^\ast(m)
+     &= \Rxx(n,m)\conv\fh(-m) \conv \fh^\ast(-m)
      && \text{by previous result}
-   \\&\eqd \sum_{p\in\Z}\fh^\ast(p) \brs{\Rxx(n,m-p)\conv\fh(m)}
+   \\&\eqd \sum_{p\in\Z}\fh^\ast(-p) \brs{\Rxx(n,m-p)\conv\fh(-m)}
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
-   \\&= \sum_{p\in\Z}\fh^\ast(p) \sum_{k\in\Z}\fh(k) \Rxx(n,m-p-k)
+   \\&= \sum_{p\in\Z}\fh^\ast(-p) \sum_{k\in\Z}\fh(-k) \Rxx(n,m-p-k)
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
-   \\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(k) \fh^\ast(p) \Rxx(n,m-p-k)
+   \\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(-k) \fh^\ast(-p) \Rxx(n,m-p-k)
      && \text{by \prope{distributive} property of $\fieldC$}
      && \text{\xref{def:field}}
 \end{align*}
