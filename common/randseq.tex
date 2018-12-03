@@ -46,9 +46,9 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
 \defbox{\begin{array}{MlMlc>{\ds}l}
      The \fnctd{mean}             & \pmeanx(n) & of $\rvx(n)$               is & \pmeanx(n)&\eqd& \pE\brs{\rvx(n)}
    \\The \fnctd{variance}         & \pvarx(n)  & of $\rvx(n)$               is & \pvarx(n) &\eqd& \pE\brp{\brs{\rvx(n)-\pmeanx(n)}^2}
-   \\The \fnctd{crosscorrelation} & \Rxy(n,m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(n,m) &\eqd& \pE\brs{\rvx(n+m)\rvy^\ast(n)}
-   \\The \fnctd{autocorrelation}  & \Rxx(n,m)  & of $\rvx(n)$               is & \Rxx(n,m) &\eqd& \brlr{\Rxy(n,m)}_{\rvy=\rvx}
-  %\\The \fnctd{autocorrelation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
+   \\The \fnctd{cross-correlation}& \Rxy(n,m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(n,m) &\eqd& \pE\brs{\rvx(n+m)\rvy^\ast(n)}
+   \\The \fnctd{auto-correlation} & \Rxx(n,m)  & of $\rvx(n)$               is & \Rxx(n,m) &\eqd& \brlr{\Rxy(n,m)}_{\rvy=\rvx}
+  %\\The \fnctd{auto-correlation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
 \end{array}}
 \end{definition}
 
@@ -87,10 +87,12 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
    \\
    \\
    \Rxx(n,m)
-     &= \brlr{\Rxy(n,m)}_{y=x}
-   \\&= \brlr{\Rxy^\ast(n+m,-m)}_{y=x}
+     &= \brlr{\Rxy(n,m)}_{\rvy=\rvx}
+     && \text{by $\rvy=\rvx$ constraint}
+   \\&= \brlr{\Rxy^\ast(n+m,-m)}_{\rvy=\rvx}
      && \text{by previous result}
    \\&= \Rxx^\ast(n+m,-m)
+     && \text{by $\rvy=\rvx$ constraint}
 \end{align*}
 \end{proof}
 
@@ -117,9 +119,6 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
 \end{fsK}
 \end{figure}
 
-The next theorem describes the statistical properties of an LTI system
-with impulse response $\fh(t)$ \xref{fig:d-linear-sys}.
-\newpage
 %---------------------------------------
 \begin{theorem}
 \footnote{
@@ -127,30 +126,45 @@ with impulse response $\fh(t)$ \xref{fig:d-linear-sys}.
   }
 \label{thm:Rxyh}
 %---------------------------------------
+Let $\rvx(n)$ be a \fncte{random sequence} with \fncte{mean} $\pmeanx$
+and $\rvy(n)$    a \fncte{random sequence} with \fncte{mean} $\pmeany$.
 Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
-\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
-\thmboxt{
-  $\brb{\begin{array}{M}
-    $\opS$ is \prope{linear time invariant} (\prope{LTI})
+\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$ \xref{fig:d-linear-sys}.
+\thmbox{
+   \brb{\begin{array}{M}
+      $\opS$ is
+    \\\prope{linear time invariant}
+    \\(\prope{LTI})
   \end{array}}
-  \quad\implies$
-  \\\qquad$
-  \brb{\begin{array}{Frc>{\ds}lc>{\ds}lD}
-       (A).&\Rxy(n,m) &=& \Rxx(n,m)\conv \fh^\ast(m) &\eqd& \sum_{k\in\Z} \fh^\ast(k) \Rxx(n,m-k) & and
-     \\(B).&\Ryy(n,m) &=& \Rxy(n,m)\conv \fh(m)      &\eqd& \sum_{k\in\Z} \fh(k)      \Rxy(n,m-k) & and
-     \\(C).&\Ryy(n,m) &=& \Rxx(n,m)\conv \fh(m)\conv h^\ast(m)
-                      &\eqd& \mc{2}{l}{\ds\sum_{p\in\Z} \sum_{k\in\Z} \fh(k)h^\ast(p) \Rxx(n,m-p-k)}
-  \end{array}}$
+  \implies
+  \brb{\begin{array}{Frc>{\ds}l>{\ds}lD}
+       (1).&\pmeany(n)&=& \sum_{k\in\Z} \fh(k)      \pmeanx(m-k)  &= \fh(n)\conv \pmeanx(n) & and
+     \\(2).&\Rxy(n,m) &=& \sum_{k\in\Z} \fh^\ast(k) \Rxx(n-k,m+k) &                         & and 
+     \\(3).&\Ryy(n,m) &=& \sum_{k\in\Z} \fh^\ast(k) \Ryx(n-k,m+k)
+  \end{array}} 
   }
 \end{theorem}
-
 \begin{proof}
 \begin{align*}
+   \pmeany(n)
+     &\eqd \pE\brs{\rvy(n)}
+     && \text{by definition of $\pmeany$}
+   \\&= \pE\brs{\sum_{k\in\Z} \fh(k) \rvx(n-k)}
+     && \text{by \prope{LTI} hypothesis}
+   \\&= \sum_{k\in\Z} \fh(k) \pE\brs{\rvx(n-k)}
+     && \text{by \prope{linearity}}
+   \\&= \sum_{k\in\Z} \fh(k) \pmeanx(n-k)
+     && \text{by definition of $\pmeanx$}
+   \\&\eqd \fh(n)\conv \pmeanx(n) 
+     && \text{by definition of \ope{convolution}}
+     && \text{\xref{def:dsp_conv}}
+   \\
+   \\
    \Rxy(n,m)
      &\eqd \pE\brs{\rvx(n+m) \rvy^\ast(n) }
      && \text{by definition of $\Rxy(n,m)$}
      && \text{\xref{def:Rxynm}}
-   \\&= \pE\brs{\rvx(n+m) \brp{\fh\conv\rvx}^\ast(n)}
+   \\&= \pE\brs{\rvx(n+m) \brp{\fh(n)\conv\rvx(n)}^\ast}
      && \text{by \prope{LTI} hypothesis}
    \\&\eqd \pE\brs{\rvx(n+m) \brp{ \sum_{k\in\Z} h(k) \rvx(n-k) }^\ast }
      && \text{by definition of \ope{convolution}}
@@ -167,58 +181,66 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
    \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Rxx(n-k,m+k)
      && \text{by definition of $\Rxx(n,m)$}
      && \text{\xref{def:Rxxnm}}
-   \\&= \Rxx(n-k,m) \conv \fh^\ast(-m)
-     && \text{by definition of \ope{convolution}}
-     && \text{\xref{def:dsp_conv}}
+   %\\&\eqd \sum_{k'\in\Z} \fh^\ast(-k') \Rxx(n+k',m-k')
+   %  && \text{where $k'\eqd -k$}
+   %\\&\eqd \sum_{k\in\Z} \fh^\ast(-k) \Rxx(n+k,m-k)
+   %  && \text{where $k\eqd k'$}
+   %\\&= \Rxx(n+k,m) \conv \fh^\ast(-m)
+   %  && \text{by definition of \ope{convolution}}
+   %  && \text{\xref{def:dsp_conv}}
    \\
    \\
    \Ryy(n,m)
      &\eqd \pE\brs{\rvy(n+m) \rvy^\ast(n) }
      && \text{by definition of $\Rxy(n,m)$}
      && \text{\xref{def:Rxynm}}
-   \\&= \pE\brs{\rvy(n+m) \brp{\fh\conv\rvy}^\ast(n)}
+   \\&= \pE\brs{\rvy(n+m) \brp{\fh(n)\conv\rvx(n)}^\ast}
      && \text{by \prope{LTI} hypothesis}
-   \\&\eqd \pE\brs{\rvy(n+m) \brp{ \sum_{k\in\Z} h(k) \rvy(n-k) }^\ast }
+   \\&\eqd \pE\brs{\rvy(n+m) \brp{ \sum_{k\in\Z} \fh(k) \rvx(n-k) }^\ast }
      && \text{by definition of \ope{convolution}}
      && \text{\xref{def:dsp_conv}}
-   \\&=    \pE\brs{\rvy(n+m) \sum_{k\in\Z} \fh^\ast(k) \rvy^\ast(n-k)  }
+   \\&=    \pE\brs{\rvy(n+m) \sum_{k\in\Z} \fh^\ast(k) \rvx^\ast(n-k)  }
      && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
      && \text{\xref{def:staralg}}
-   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvy(n+m)\rvy^\ast(n-k)  }
+   \\&=    \pE\brs{ \sum_{k\in\Z} \fh^\ast(k) \rvy(n+m)\rvx^\ast(n-k)  }
      && \text{by \prope{distributive} property of $\fieldC$}
      && \text{\ifxref{algebra}{def:field}}
-   \\&=    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvy(n-k+k+m) \rvy^\ast(n-k) }
+   \\&=    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvy(n-k+k+m) \rvx^\ast(n-k) }
      && \text{by \prope{linear} property of $\pE$}
      && \text{\xref{thm:pE}}
-   \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Ryy(n-k,m+k)
-     && \text{by definition of $\Ryy(n,m)$}
+   \\&\eqd \sum_{k\in\Z} \fh^\ast(k) \Ryx(n-k,m+k)
+     && \text{by definition of $\Rxy(n,m)$}
      && \text{\xref{def:Ryynm}}
-   \\&\eqd \Ryy(n-k,m) \conv \fh^\ast(-m)
-     && \text{by definition of \ope{convolution}}
-     && \text{\xref{def:dsp_conv}}
-   \\
-   \\
-   \Ryy(n,m)
-     &= \Rxy(n,m)\conv \fh(m)
-     && \text{by previous result}
-   \\&= \brs{\Rxx(n,m) \conv \fh^\ast(-m)}\conv \fh(-m)
-     && \text{by previous result}
-   \\&= \Rxx(n,m) \conv \fh(-m) \conv \fh^\ast(-m)
-     && \text{by previous result}
-\\
-\\
-   \Ryy(n,m)
-     &= \Rxx(n,m)\conv\fh(-m) \conv \fh^\ast(-m)
-     && \text{by previous result}
-   \\&\eqd \sum_{p\in\Z}\fh^\ast(-p) \brs{\Rxx(n,m-p)\conv\fh(-m)}
-     && \text{by definition of \ope{convolution}}
-     && \text{\xref{def:dsp_conv}}
-   \\&= \sum_{p\in\Z}\fh^\ast(-p) \sum_{k\in\Z}\fh(-k) \Rxx(n,m-p-k)
-     && \text{by definition of \ope{convolution}}
-     && \text{\xref{def:dsp_conv}}
-   \\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(-k) \fh^\ast(-p) \Rxx(n,m-p-k)
-     && \text{by \prope{distributive} property of $\fieldC$}
-     && \text{\xref{def:field}}
+   %\\&= \sum_{k'\in\Z} \fh^\ast(-k') \Ryx(n+k',m-k')
+   %  && \text{where $k'\eqd-k$}
+   %\\&= \sum_{k\in\Z} \fh^\ast(-k) \Ryx(n+k,m-k)
+   %  && \text{where $k\eqd k'$}
+   %\\&\eqd \Ryx(n+k,m) \conv \fh^\ast(-m)
+   %  && \text{by definition of \ope{convolution}}
+   %  && \text{\xref{def:dsp_conv}}
+   %\\
+   %\\
+   %\Ryy(n,m)
+   %  &= \Rxy(n,m)\conv \fh(m)
+   %  && \text{by previous result}
+   %\\&= \brs{\Rxx(n,m) \conv \fh^\ast(-m)}\conv \fh(-m)
+   %  && \text{by previous result}
+   %\\&= \Rxx(n,m) \conv \fh(-m) \conv \fh^\ast(-m)
+   %  && \text{by previous result}
+   %\\
+   %\\
+   %\Ryy(n,m)
+   %  &= \Rxx(n,m)\conv\fh(-m) \conv \fh^\ast(-m)
+   %  && \text{by previous result}
+   %\\&\eqd \sum_{p\in\Z}\fh^\ast(-p) \brs{\Rxx(n,m-p)\conv\fh(-m)}
+   %  && \text{by definition of \ope{convolution}}
+   %  && \text{\xref{def:dsp_conv}}
+   %\\&= \sum_{p\in\Z}\fh^\ast(-p) \sum_{k\in\Z}\fh(-k) \Rxx(n,m-p-k)
+   %  && \text{by definition of \ope{convolution}}
+   %  && \text{\xref{def:dsp_conv}}
+   %\\&= \sum_{p\in\Z} \sum_{k\in\Z} \fh(-k) \fh^\ast(-p) \Rxx(n,m-p-k)
+   %  && \text{by \prope{distributive} property of $\fieldC$}
+   %  && \text{\xref{def:field}}
 \end{align*}
 \end{proof}
 
@@ -270,9 +292,9 @@ $\pmeanx(n)$, $\pvarx(n)$, $\Rxx(n,m)$, and $\Rxy(n,m)$ \xref{def:Rxynm}.
   \brb{\begin{array}{FMlMlc>{\ds}l}
      (1).&The \fnctd{mean}             & \pmeanx  & of $\rvx(n)$               is & \pmeanx &\eqd& \pE\brs{\rvx(0)}
    \\(2).&The \fnctd{variance}         & \pvarx   & of $\rvx(n)$               is & \pvarx  &\eqd& \pE\brp{\brs{\rvx(0)-\pmeanx}^2}
-   \\(4).&The \fnctd{crosscorrelation} & \Rxy(m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(m) &\eqd& \pE\brs{\rvx(n+m)\rvy^\ast(0)}
-   \\(3).&The \fnctd{autocorrelation}  & \Rxx(m)  & of $\rvx(n)$               is & \Rxx(m) &\eqd& \brlr{\Rxx(m)}_{\rvy=\rvx}
-  %\\The \fnctd{autocorrelation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
+   \\(4).&The \fnctd{cross-correlation} & \Rxy(m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(m) &\eqd& \pE\brs{\rvx(n+m)\rvy^\ast(0)}
+   \\(3).&The \fnctd{auto-correlation}  & \Rxx(m)  & of $\rvx(n)$               is & \Rxx(m) &\eqd& \brlr{\Rxx(m)}_{\rvy=\rvx}
+  %\\The \fnctd{auto-correlation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
 \end{array}}$
   }
 \end{definition}
@@ -297,54 +319,86 @@ $\pmeanx(n)$, $\pvarx(n)$, $\Rxx(n,m)$, and $\Rxy(n,m)$ \xref{def:Rxynm}.
 \end{remark}
 
 %---------------------------------------
-\begin{corollary}
-\label{cor:Rxxm}
-\label{cor:Rxym}
+\begin{proposition}
+\label{prop:Rxynmm}
+\label{prop:Rxxnmm}
 %---------------------------------------
-Let $\rvy(n)$ be a \fncte{random process},
-    $\rvx(n)$    a \fncte{random sequence} with \fncte{autocorrelation} $\Rxx(n,m)$,
+Let $\rvy(n)$ be a \fncte{random sequence},
+    $\rvx(n)$    a \fncte{random sequence} with \fncte{auto-correlation} $\Rxx(n,m)$,
 and $\Rxy$    the \fncte{cross-correlation} of $\rvx$ and $\rvy$.
-\corbox{
+\propbox{
   \brb{\begin{array}{M}
     $\rvx$ and $\rvy$ are\\
     \prope{wide sense stationary}
   \end{array}}
   \implies
-  \brb{\begin{array}{rclD}
-    \Rxx(m) &=& \Rxx     (-m) & (\prope{symmetric})\\
-    \Rxy(m) &=& \Ryx^\ast(-m) & (\prope{conjugate symmetric})
+  \brb{\begin{array}{rcl}
+    \Rxx(n,m) &=& \Rxx(m)\\
+    \Rxy(n,m) &=& \Rxy(m)\\
+    \text{\xref{def:Rxynm}} && \text{\xref{def:Rxym}}
+  \end{array}}
+}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \Rxy(n,m)
+     &\eqd \pE\brs{\rvx[n+m]\rvy^\ast[n]}
+     &&    \text{by definition of $\Rxy(n,m)$}
+     &&    \text{\xref{def:Rxynm}}
+   \\&=    \pE\brs{\rvx[n-n+m]\rvy^\ast[n-n]}
+     &&    \text{by \prope{wide sense stationary} hypothesis}
+   \\&=    \pE\brs{\rvx[m]\rvy^\ast[0]}
+   \\&\eqd \Rxy(m)
+     && \text{by definition of $\Rxy(m)$}
+     && \text{\xref{def:Rxym}}
+   \\
+   \\
+  \Rxx(n,m)
+     &=    \brlr{\Rxy(n,m)}_{\rvy=\rvx}
+   \\&=    \brlr{\Rxy(m)}_{\rvy=\rvx}
+     && \text{by previous result}
+   \\&= \Rxx(m)
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:Rxxm}
+\label{cor:Rxym}
+%---------------------------------------
+Let $\rvx(n)$ be a \fncte{random sequence} with \fncte{auto-correlation} $\Rxx(n,m)$,
+    $\rvy(n)$    a \fncte{random sequence} with \fncte{auto-correlation} $\Ryy(n,m)$,
+and $\Rxy(n,m)$  the \fncte{cross-correlation} of $\rvx$ and $\rvy$.
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\corbox{
+  \brb{\begin{array}{FMD}
+      (A).&$\rvx$ and $\rvy$ are \prope{WSS} & and\\
+    \\(B).&$\opS$ is \prope{LTI}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+    (1).&\Rxx(m) &=& \Rxx     (-m) & (\prope{symmetric})\\
+    (2).&\Rxy(m) &=& \Ryx^\ast(-m) & (\prope{conjugate symmetric})
   \end{array}}
 }
 \end{corollary}
 \begin{proof}
 \begin{align*}
   \Rxy(m)
-     &\eqd \Rxy(0,m)
-     && \text{by definition of $\Rxy(m)$}
-     && \text{\xref{def:Rxym}}
-   \\&= \Ryx^\ast(0+m,-m)
-     && \text{by \prope{non-WSS result}}
-     && \text{\xref{thm:Rxynm}}
-   \\&\eqd \brp{\pE\brs{\rvy(0+m) \rvx^\ast(0+m-m)}}^\ast
-   \\&=    \brp{\pE\brs{\rvy(m-m) \rvx^\ast(0+m-m-m)}}^\ast
-     && \text{by \prope{WSS} hypothesis}
-     && \text{\xref{def:wss}}
-   \\&=    \brp{\pE\brs{\rvy(0) \rvx^\ast(-m)}}^\ast
-   \\&\eqd \Ryx^\ast(0,-m)
-     && \text{by definition of $\Rxy(m,n)$}
-     && \text{\xref{def:Rxy}}
-   \\&\eqd \Ryx^\ast(-m)
-     && \text{by definition of $\Rxy(m)$}
-     && \text{\xref{def:Rxym}}
+     &= \Rxy(n,m)
+     && \text{by \prefp{prop:Rxynmm}}
+   \\&= \Ryx^\ast(n+m,-m)
+     && \text{by \prefp{thm:Rxynm}}
+   \\&= \Ryx^\ast(-m)
+     && \text{by \prefp{prop:Rxynmm}}
    \\
-   \\
-   \Rxx(m)
-     &= \brlr{\Rxy(m)}_{y=x}
-   \\&= \brlr{\Ryx^\ast(-m)}_{y=x}
-     && \text{by previous result}
-   \\&= \Rxx^\ast(-m)
+  \Rxx(m)
+     &= \Rxx(n,m)
+     && \text{by \prefp{prop:Rxynmm}}
+   \\&= \Rxx(n+m,-m)
+     && \text{by \prefp{thm:Rxynm}}
    \\&= \Rxx(-m)
-     && \text{because \prope{real-valued}}
+     && \text{by \prefp{prop:Rxynmm}}
 \end{align*}
 \end{proof}
 
@@ -384,8 +438,16 @@ WSS \fncte{random sequence} \xref{fig:d-linear-sys-WSS}.
   \citerp{papoulis}{323}
   }
 %---------------------------------------
-Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
-\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+%
+%       (1).&\pmeany(n)&=& \sum_{k\in\Z} \fh(k)      \pmeanx(m-k)  &= \fh(n)\conv \pmeanx(n) & and
+%     \\(2).&\Rxy(n,m) &=& \sum_{k\in\Z} \fh^\ast(k) \Rxx(n-k,m+k) &                         & and 
+%     \\(3).&\Ryy(n,m) &=& \sum_{k\in\Z} \fh^\ast(k) \Ryx(n-k,m+k)
+%
+Let $\rvx(n)$ be a \fncte{random sequence} with \fncte{auto-correlation} $\Rxx(n,m)$,
+    $\rvy(n)$    a \fncte{random sequence} with \fncte{auto-correlation} $\Ryy(n,m)$,
+and $\Rxy(n,m)$  the \fncte{cross-correlation} of $\rvx$ and $\rvy$.
+Let $\opS$ be a \structe{system} with input $\rvx(n)$, output $\rvy(n)$, 
+and \fncte{impulse response} $\fh(n)$.
 \corboxt{
   $\brb{\begin{array}{FMMD}
     (A). & $\opS$ is \prope{linear time invariant}             & (\prope{LTI}) & and\\
@@ -1055,7 +1117,7 @@ is $\fx(n)$.\footnote{\citerpp{papoulis}{401}{402}}
 \begin{theorem}
 \label{thm:d-innovations}
 %---------------------------------------
-Let $\fx(n)$ be a WSS \fncte{random sequence} with autocorrelation $\Rxx(m)$
+Let $\fx(n)$ be a WSS \fncte{random sequence} with auto-correlation $\Rxx(m)$
 and spectral density $\Sxx(z)$.
 \textbf{If} $\Sxx(z)$ has a \textbf{rational expression},
 then the following are true:
