@@ -31,7 +31,7 @@
 %\section {Operations}
 %======================================
 %======================================
-\section {Z-transform}
+\section {Convolution operator}
 %======================================
 \ifdochasnot{seq}{
 %--------------------------------------
@@ -86,24 +86,9 @@ For example, $\spllR$ is isomorphic to $\spLLR$, the \structe{space of all absol
 %--------------------------------------
 %Let $\seq{x_n}{n\in\Z}$ and $\seq{y_n}{n\in\Z}$ be sequences \xref{def:seq} in the space $\spllR$ \xref{def:spllR}. 
 \defbox{\begin{array}{M}
-  The \hid{convolution} operation $\hxs{\convd}$ is defined as 
+  The \opd{convolution} operation $\hxs{\convd}$ is defined as 
   \\\indentx
   $\ds{\seqn{x_n}\convd\seqn{y_n}} \eqd \seq{\sum_{m\in\Z} x_{m} y_{n-m}}{n\in\Z}\qquad\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllR$
-\end{array}}
-\end{definition}
-
-%--------------------------------------
-\begin{definition}
-\footnote{
-  \structe{Laurent series}: \citerpg{aa}{49}{0821821466}
-  }
-\label{def:opZ}
-%--------------------------------------
-%Let $\seq{x_n}{n\in\Z}$ be a sequence in the space $\spllR$. %over a ring $\ring$. 
-\defbox{\begin{array}{M}
-  The \opd{z-transform} $\opZ$ of $\seq{x_n}{n\in\Z}$ is defined as
-  \\\indentx
-  $\ds\brs{\hxs{\opZ}\seqn{x_n}}(z) \eqd \mcom{\sum_{n\in\Z} x_n z^{-n}}{Laurent series}\qquad\scy\forall\seqn{x_n}\in\spllR$
 \end{array}}
 \end{definition}
 
@@ -134,6 +119,61 @@ Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
     &&    \text{by \prefp{def:dsp_conv}}
 \end{align*}
 \end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:conv_knk}
+%--------------------------------------
+Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
+\propbox{
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lD}
+      (A).&\fx[n]\convd\fy[n] &=& \sum_{k\in\Z} \fx[k]\fy[n-k] & and
+    \\(B).&\fx[n],\fy[n]      &\in& \spllR & \xref{def:spllR}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{>{\ds}rc>{\ds}l}
+     \sum_{k\in\Z} \fx[k]\fy[n+k] &=& \fx[-n]\convd\fy[n]
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \sum_{k\in\Z} \fx[k]\fy[n+k] 
+    &= \sum_{-p\in\Z} \fx[-p]\fy[n-p] 
+    && \text{where $p\eqd -k$}
+    && \text{$\implies$ $k=-p$}
+  \\&= \sum_{p\in\Z} \fx[-p]\fy[n-p] 
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&= \sum_{p\in\Z} \fx'[p]\fy[n-p] 
+    && \text{where $\fx'[n] \eqd\fx[-n]$}
+    && \text{$\implies$ $\fx[-n]=\fx'[n]$}
+  \\&\eqd \fx'[n]\convd\fy[n]
+    && \text{by definition of \ope{convolution} $\convd$}
+    && \text{\xref{def:convd}}
+  \\&\eqd \fx[-n]\convd\fy[n]
+    && \text{by definition of $\fx'[n]$}
+\end{align*}
+\end{proof}
+
+%======================================
+\section {Z-transform}
+%======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \structe{Laurent series}: \citerpg{aa}{49}{0821821466}
+  }
+\label{def:opZ}
+%--------------------------------------
+%Let $\seq{x_n}{n\in\Z}$ be a sequence in the space $\spllR$. %over a ring $\ring$. 
+\defbox{\begin{array}{M}
+  The \opd{z-transform} $\opZ$ of $\seq{x_n}{n\in\Z}$ is defined as
+  \\\indentx
+  $\ds\brs{\hxs{\opZ}\seqn{x_n}}(z) \eqd \mcom{\sum_{n\in\Z} x_n z^{-n}}{Laurent series}\qquad\scy\forall\seqn{x_n}\in\spllR$
+\end{array}}
+\end{definition}
+
 
 %--------------------------------------
 \begin{theorem}
