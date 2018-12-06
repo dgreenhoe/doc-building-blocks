@@ -127,8 +127,9 @@ Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
 Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
 \propbox{
   \brb{\begin{array}{F>{\ds}rc>{\ds}lD}
-      (A).&\fx[n]\convd\fy[n] &=& \sum_{k\in\Z} \fx[k]\fy[n-k] & and
-    \\(B).&\fx[n],\fy[n]      &\in& \spllR & \xref{def:spllR}
+      (A).&\fx[n]\convd\fy[n] &=&   \sum_{k\in\Z} \fx[k]\fy[n-k] & and
+    \\(B).&\fx[n],\fy[n]      &\in& \spllR                       &
+    \\   .&\fx[n],\fy[n]      &\mc{3}{l}{\spllR \quad\text{(\prope{absolutely summable})}}       %\xref{def:spllR}
   \end{array}}
   \implies
   \brb{\begin{array}{>{\ds}rc>{\ds}l}
@@ -143,7 +144,7 @@ Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
     && \text{where $p\eqd -k$}
     && \text{$\implies$ $k=-p$}
   \\&= \sum_{p\in\Z} \fx[-p]\fy[n-p] 
-    && \text{by \prope{absolutely summable} property}
+    && \text{by \prope{absolutely summable} hypothesis}
     && \text{\xref{def:spllR}}
   \\&= \sum_{p\in\Z} \fx'[p]\fy[n-p] 
     && \text{where $\fx'[n] \eqd\fx[-n]$}
@@ -177,40 +178,96 @@ Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
 
 %--------------------------------------
 \begin{theorem}
+\label{thm:opZ}
 %--------------------------------------
 Let $X(z)\eqd\opZ\fx[n]$ be the \ope{z-transform} of $\fx[n]$.
-\thmbox{\opZ\seqn{a\fx[n]} = a X(z)}
-\end{theorem}
-\begin{proof}
-\begin{align*}
-  a X(z)
-    &\eqd a \opZ \seqn{\fx[n]}                && \text{by definition of $X(z)$}
-  \\&\eqd a \sum_{n\in\Z} \fx[n] z^{-n}       && \text{by definition of $\opZ$ operator}
-  \\&\eqd \sum_{n\in\Z} \brp{a \fx[n]} z^{-n} && \text{by \prope{distributive} property}
-  \\&\eqd \opZ\seqn{a\fx[n]}                  && \text{by definition of $\opZ$ operator}
-\end{align*}
-\end{proof}
-
-%--------------------------------------
-\begin{theorem}
-%--------------------------------------
 \thmbox{
-  \opZ\seqn{\fx[n-k]} = z^{-k}X(z)
+  \brb{\begin{array}{rcl}
+    \Zx(z) &\eqd& \opZ\seqn{\fx[n]}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lCD}
+      (1).&\opZ\seqn{\alpha\fx[n]} &=& \alpha\Zx(z)                    & \forall\seqn{x_n}\in\spllR & and
+    \\(2).&\opZ\seqn{\fx[n-k]}     &=& z^{-k}\Zx(z)                    & \forall\seqn{x_n}\in\spllR & and
+    \\(3).&\opZ\seqn{\fx[-n]}      &=& \Zx\brp{\frac{1}{z}}            & \forall\seqn{x_n}\in\spllR & and
+    \\(4).&\opZ\seqn{\fx^\ast[n]}  &=& \Zx^\ast\brp{z^\ast}            & \forall\seqn{x_n}\in\spllR & and
+    \\(5).&\opZ\seqn{\fx^\ast[-n]} &=& \Zx^\ast\brp{\frac{1}{z^\ast}}  & \forall\seqn{x_n}\in\spllR &
+  \end{array}}
   }
 \end{theorem}
 \begin{proof}
 \begin{align*}
-  z^{-k}X(z) 
+  \alpha\Z\Zx(z)
+    &\eqd \alpha \opZ \seqn{\fx[n]}                && \text{by definition of $\Zx(z)$}
+  \\&\eqd \alpha \sum_{n\in\Z} \fx[n] z^{-n}       && \text{by definition of $\opZ$ operator}
+  \\&\eqd \sum_{n\in\Z} \brp{\alpha\fx[n]} z^{-n}  && \text{by \prope{distributive} property}
+  \\&\eqd \opZ\seqn{\alpha\fx[n]}                  && \text{by definition of $\opZ$ operator}
+  \\
+  z^{-k}\Zx(z) 
     &= z^{-k} \opZ\seqn{\fx[n]}
-   &&\eqd z^{-k}\sum_{n=-\infty}^{n=+\infty} \fx[n] z^{-n}
+    && \text{by definition of $\Zx(z)$}
+    && \text{(left hypothesis)}
+  \\&\eqd z^{-k}\sum_{n=-\infty}^{n=+\infty} \fx[n] z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
   \\&=          \sum_{n=-\infty}^{n=+\infty} \fx[n] z^{-n-k}
   \\&=          \sum_{m-k=-\infty}^{m-k=+\infty} \fx[m-k] z^{-m}
-    && \text{where $m\eqd n+k$ $\implies$ $n=m-k$}
+    && \text{where $m\eqd n+k$}
+    && \text{$\implies$ $n=m-k$}
   \\&=          \sum_{m=-\infty}^{m=+\infty} \fx[m-k] z^{-m}
   \\&=          \sum_{n=-\infty}^{n=+\infty} \fx[n-k] z^{-n}
-    && \text{by change of free variable $m\rightarrow n$}
+    && \text{where $n\eqd m$}
   \\&\eqd \opZ\seqn{\fx[n-k]}
-    && \text{by definition of $\opZ$ operator}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx^\ast[n]}  
+    &\eqd \sum_{n\in\Z}\fx^\ast[n] z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&\eqd \brp{\sum_{n\in\Z}\fx[n] (z^\ast)^{-n}}^\ast
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&\eqd \Zx^\ast(z^\ast)
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx[-n]}  
+    &\eqd \sum_{n\in\Z}\fx[-n] z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&= \sum_{-m\in\Z}\fx[m] z^{m}
+    && \text{where $m\eqd -n$}
+    && \text{$\implies$ $n=-m$}
+  \\&= \sum_{m\in\Z}\fx[m] z^{m}
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&= \sum_{m\in\Z}\fx[m] \brp{\frac{1}{z}}^{-m}
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&\eqd \Zx\brp{\frac{1}{z}}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx^\ast[-n]}  
+    &\eqd \sum_{n\in\Z}\fx^\ast[-n] z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&= \sum_{-m\in\Z}\fx^\ast[m] z^{m}
+    && \text{where $m\eqd -n$}
+    && \text{$\implies$ $n=-m$}
+  \\&= \sum_{m\in\Z}\fx^\ast[m] z^{m}
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&= \sum_{m\in\Z}\fx^\ast[m] \brp{\frac{1}{z}}^{-m}
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&= \brp{\sum_{m\in\Z}\fx[m] \brp{\frac{1}{z^\ast}}^{-m}}^\ast
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&\eqd \Zx^\ast\brp{\frac{1}{z^\ast}}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
 \end{align*}
 \end{proof}
 
