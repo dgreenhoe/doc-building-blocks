@@ -608,7 +608,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \brb{\begin{array}{F>{\ds}rc>{\ds}lD}
        (1).&\ZSxy(z) &=& \ZSxx(z) \Zh^\ast\brp{\frac{1}{z^\ast}}      & and
      \\(2).&\ZSyy(z) &=& \ZSyx(z) \Zh^\ast\brp{\frac{1}{z^\ast}}      & and
-     \\(3).&\ZSyy(z) &=& \ZSxx^\ast\brp{\frac{1}{z^\ast}} \Zh\brp{z} \Zh^\ast\brp{\frac{1}{z^\ast}}
+     \\(3).&\ZSyy(z) &=& \ZSxx(z) \Zh\brp{z} \Zh^\ast\brp{\frac{1}{z^\ast}}
   \end{array}}
   }
 \end{theorem}
@@ -651,6 +651,67 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
      && \text{by previous result}
      && \text{(1)}
    \\&= \ZSxx^\ast\brp{\frac{1}{z^\ast}} \Zh\brp{z} \Zh^\ast\brp{\frac{1}{z^\ast}}
+   \\&= \ZSxx(z) \Zh\brp{z} \Zh^\ast\brp{\frac{1}{z^\ast}}
+     && \text{by \pref{thm:ZSxy_sym}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:Swxy_sym}
+%---------------------------------------
+Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
+\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+\corbox{
+  \brb{\begin{array}{FMD}
+    (A).& $\fh$ is \prope{linear time invariant} & and\\
+    (B).& \mc{2}{M}{$\rvx$ and $\rvy$ are \prope{wide sense stationary}}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lMD}
+       (1).&\Swxx^\ast(\omega) &=& \ds \Swxx(\omega)  & ($\Swxx(\omega)$ is \prope{real-valued}) & and
+     \\(2).&\Swxy^\ast(\omega) &=& \ds \Swyx(\omega)  & ($\Swxy(\omega)$ is \prope{conjugate-symmetric}
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+   \Swxy^\ast(\omega)
+     &= \brlr{\ZSxy^\ast(z)}_{z=e^{i\omega}}
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
+   \\&= \brlr{\ZSyx^{\ast\ast}\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
+     && \text{by \prefp{thm:ZSxy}}
+   \\&= \brlr{\ZSyx\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
+     && \text{by \prope{???} property of \structd{$\invo$-algebra}s}
+     && \text{\xref{def:staralg}}
+   \\&= \ZSyx\brp{\frac{1}{e^{i\omega\ast}}}
+   \\&= \ZSyx\brp{e^{i\omega}}
+   \\&= \Swyx\brp{\omega}
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
+   \\
+   \Swxx^\ast(\omega)
+     &= \brlr{\ZSxx^\ast(z)}_{z=e^{i\omega}}
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
+   \\&= \brlr{\ZSxx^{\ast\ast}\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
+     && \text{by \prefp{thm:ZSxy}}
+   \\&= \brlr{\ZSxx\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
+     && \text{by \prope{???} property of \structd{$\invo$-algebra}s}
+     && \text{\xref{def:staralg}}
+   \\&= \ZSxx\brp{\frac{1}{e^{i\omega\ast}}}
+   \\&= \ZSxx\brp{e^{i\omega}}
+   \\&= \Swxx\brp{\omega}
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
+   \\&\implies\text{$\Swxx(\omega)$ is \prope{real-valued}}
+   \\
+   \Swxx^\ast(\omega)
+     &= \brlr{\Swxy^\ast(\omega)}_{\rvy=\rvx}
+   \\&= \brlr{\Swyx(\omega)}_{\rvy=\rvx}
+     && \text{by previous result}
+   \\&= \Swxx(\omega)
 \end{align*}
 \end{proof}
 
@@ -667,9 +728,9 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
   \end{array}}
   \implies
   \brb{\begin{array}{FrclD}
-       (1).&\Swxy(\omega) &=& \ds \Swxx(\omega) \Fh^\ast(-\omega) & and
-     \\(2).&\Swyy(\omega) &=& \ds \Swxy(\omega) \Fh(\omega)       & and
-     \\(3).&\Swyy(\omega) &=& \mc{2}{l}{\ds \Swxx(\omega) \Fh(\omega) \Fh^\ast(-\omega)}
+       (1).&\Swxy(\omega) &=& \ds \Swxx(\omega) \Fh^\ast(\omega) & and
+     \\(2).&\Swyy(\omega) &=& \ds \Swyx(\omega) \Fh^\ast(\omega)   & and
+     \\(3).&\Swyy(\omega) &=& \mc{2}{l}{\ds \Swxx(\omega) \abs{\Fh(\omega)}^2}
   \end{array}}
   }
 \end{corollary}
@@ -687,30 +748,70 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
      && \text{by definition of \ope{DTFT}}
      && \text{\xref{def:dtft}}
    \\
-   \\
-   \\
-   \\
-   \\
-   \\
-   \\
-   \\
+   \Swyy(\omega)
+     &= \brlr{\ZSyy(z)}_{z=e^{i\omega}}
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
+   \\&= \brlr{\ZSyx(z)\Zh^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
+     && \text{by \prefp{thm:ZSxy}}
+   \\&= \ZSyx\brp{e^{i\omega}} \Zh^\ast\brp{\frac{1}{e^{i\omega\ast}}}
+   \\&= \ZSyx\brp{e^{i\omega}} \Zh^\ast\brp{e^{i\omega}}
+   \\&= \Swyx(\omega) \Fh^\ast(\omega)
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
    \\
    \Swyy(\omega)
      &= \brlr{\ZSyy(z)}_{z=e^{i\omega}}
      && \text{by definition of \ope{DTFT}}
      && \text{\xref{def:dtft}}
-   \\&= \brlr{\ZSxy(z)\Zh(z)}_{z=e^{i\omega}}
+   \\&= \brlr{\ZSxx(z)\Zh\brp{z} \Zh^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
      && \text{by \prefp{thm:ZSxy}}
-   \\&= \ZSxy\brp{e^{i\omega}}\Zh\brp{e^{-i\omega}}
-   \\&= \Swxy(\omega) \Fh(\omega)
+   \\&= \ZSxx\brp{e^{i\omega}} \Zh\brp{e^{i\omega}} \Zh^\ast\brp{\frac{1}{e^{i\omega\ast}}}
+   \\&= \ZSxx\brp{e^{i\omega}} \Zh\brp{e^{i\omega}} \Zh^\ast\brp{e^{i\omega}}
+   \\&= \Swxx(\omega) \Fh(\omega) \Fh^\ast(\omega)
+     && \text{by definition of \ope{DTFT}}
+     && \text{\xref{def:dtft}}
+   \\&= \Swxx(\omega) \abs{\Fh(\omega)}^2
+   \\
+     &\text{alternative proof to previous one:}
    \\
    \Swyy(\omega)
-     &= \Swxy(\omega) \Fh(\omega)
+     &= \Swyx(\omega) \Fh^\ast(\omega)
      && \text{by previous result}
-   \\&= \Swxx(\omega) \Fh^\ast(-\omega) \Fh(\omega)
+     && \text{(2)}
+   \\&= \Swxy^\ast(\omega) \Fh^\ast(\omega)
+     && \text{by \prefp{thm:Swxy}}
+   \\&= \brs{\Swxx(\omega) \Fh^\ast(\omega)}^\ast \Fh^\ast(\omega)
      && \text{by previous result}
+     && \text{(1)}
+   \\&= \Swxx^\ast(\omega) \Fh(\omega) \Fh^\ast(\omega)
+     && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
+     && \text{\xref{def:staralg}}
+   \\&= \Swxx \abs{\Fh(\omega)}^2
+     && \text{by \prefp{thm:Swxx}}
 \end{align*}
 \end{proof}
+
+
+
+
+
+
+
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
+
+
+
+
+
+
 
 %---------------------------------------
 \begin{corollary}
