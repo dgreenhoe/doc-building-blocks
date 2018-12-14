@@ -17,17 +17,17 @@
     which differs from \pref{def:H1}, but see \prefp{rem:Rxym}
     },
   \citerpgc{bendat2011}{185}{1118210824}{$H_1(f) = \ffrac{G_{xy}(f)}{G_{xx}(f)}$ (6.37)},
-  \citeP{bendat1978}{cited by Cobb(1988)---variance estimate for $\fH_1$},
+  \citeP{bendat1978}{cited by Cobb(1988)---variance estimate for $\estH_1$},
   \citePc{allemang1979}{cited by Shin(2008)},
   \citePpc{leuridan1986}{910}{\fncte{Least Squares Technique}; (8) $[G_{xx}](H)=[G_{xy}]$},
-  \citeP{abom1986}{cited by Cobb(1988)---variance estimate for $\fH_1$},
+  \citeP{abom1986}{cited by Cobb(1988)---variance estimate for $\estH_1$},
   \citePppc{allemang1987}{54}{55}{5.3.1 $H_1$ Technique; $[H]=[G_{XF}][G_{FF}]^{-1}$ (11)},
   \citePpc{cobb1988}{2}{$^1\hat{H}(f)=\ffrac{\hat{G}_{yx}(f)}{\hat{G}_{xx}(f)}$ (1)}
   }
 \label{def:H1}
 %---------------------------------------
 \defbox{\begin{array}{Mrc>{\ds}l}
-  The transfer function $\fH_1(\omega)$ is defined as & \fH_1(\omega) &\eqd& \frac{\Swyx(\omega)}{\Swxx(\omega)}
+  The transfer function $\estH_1(\omega)$ is defined as & \estH_1(\omega) &\eqd& \frac{\Swyx(\omega)}{\Swxx(\omega)}
 \end{array}}
 \end{definition}
 
@@ -38,7 +38,6 @@
     which differs from \pref{def:H2}, but see \prefp{rem:Rxym}
     },
   \citerpgc{bendat2011}{186}{1118210824}{$H_2(f) = \ffrac{G_{yy}(f)}{G_{yx}(f)}$ (6.42)},
-
   \citePc{mitchell1980}{cited by Cobb(1988)},
   \citePc{mitchell1982}{cited by Cobb(1988)},
   \citePpc{cobb1988}{3}{$^2\hat{H}(f)=\ffrac{\hat{G}_{yy}(f)}{\hat{G}_{xy}(f)}$ (1)}
@@ -46,45 +45,141 @@
 \label{def:H2}
 %---------------------------------------
 \defbox{\begin{array}{Mrc>{\ds}l}
-  The transfer function $\fH_2(\omega)$ is defined as & \fH_2(\omega) &\eqd& \frac{\Swyy(\omega)}{\Swxy(\omega)}
+  The transfer function $\estH_2(\omega)$ is defined as & \estH_2(\omega) &\eqd& \frac{\Swyy(\omega)}{\Swxy(\omega)}
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
+  \citeP{white2006}
+  }
+\label{def:Hs}
+%---------------------------------------
+\defbox{\begin{array}{Mrc>{\ds}l}
+  The transfer function $\estH_s(\omega)$ is defined as & 
+    \estH_s(\omega) &\eqd& \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + \sqrt{\brs{\Swxx(\omega)\kappa(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}\kappa(\omega)}}
+                                {2\Swxy(\omega)}
 \end{array}}
 \end{definition}
 
 %=======================================
 \section{Properties}
 %=======================================
+\begin{figure}
+  \centering%
+  \includegraphics{graphics/xhyplusv.pdf}
+  \caption{System model with additive input and output noise\label{fig:xhyplusv}}
+\end{figure}
 %---------------------------------------
-\begin{proposition}
+\begin{proposition}[Output noise only case]
 \footnote{
-  \citerpg{shin2008}{293}{0470725648}
+  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=H(f)$ (9.70); $H_2(f)=H(f)\brp{1+\frac{S_{n_yn_y}(f)}{Syy(f)}}$ (9.71)}
   }
 %---------------------------------------
+Let $\opS$ be a \structe{system} with \fncte{impulse response} $\fh[n]$,
+input $\fx[n]$, and output $\fy[n]$.
+Let $\rvu[n]$ and $\rvv[n]$ be \fncte{noise sequence}.
+Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
 \propbox{
-  \brb{\begin{array}{rc>{\ds}l}
-    \fy'[m] &=& \fy[m] + \fv[m]
+  \brb{\begin{array}{FMMD}
+      (A).& The system $\fh$ i s        &\prope{LTI}          & and
+    \\(B).& $\rvx[n]$ and $\rvy[n]$ are &\prope{WSS}          & and
+    \\(C).& $\rvx[n]$ and $\rvv[n]$ are &                     &     
+        \\& \mc{2}{M}{\quad              \prope{uncorrelated}}& and
+    \\(D).& $\rvu[n]=0$                 
   \end{array}}
   \implies
-  \brb{\begin{array}{FrclD}
-          &\fH_1(\omega) = \fH(\omega)
-%    \\(2).&\fH_2(\omega) &=& 
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lDD}
+      (1).&\estH_1(\omega) &=& \fH(\omega)                                              & (\prope{unbiased}) &and
+    \\(2).&\estH_2(\omega) &=& \fH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}} & \begin{tabular}{l}(\prope{biased})\\(\prope{over estimated})\end{tabular}
   \end{array}}
   }
 \end{proposition}
 \begin{proof}
 \begin{align*}
-  \fH_1(\omega)
+  \estH_1(\omega)
     &\eqd \frac{\Swxx[y'x](\omega)}{\Swxx(\omega)}
-    && \text{by definition of $\fH_1$}
+    && \text{by definition of $\estH_1$}
     && \text{\xref{def:H1}}
-  \\&\eqd \frac{\opDTFT\Rxx[y'x][m]}{\Swxx(\omega)}
-  \\&\eqd \frac{\opDTFT\pE\brs{\rvy'[m]\rvx^\ast[0]}}{\Swxx(\omega)}
-  \\&\eqd \frac{\opDTFT\pE\brs{(\rvy[m]+\fv[m])\rvx^\ast[0]}}{\Swxx(\omega)}
-  \\&=    \frac{\opDTFT\pE\brs{\rvy[m]\rvx^\ast[0]}}{\Swxx(\omega)}
-     +    \frac{\opDTFT\pE\brs{\fv[m]\rvx^\ast[0]}}{\Swxx(\omega)}
-  \\&=    \frac{\opDTFT\pE\brs{\rvy[m]\rvx^\ast[0]}}{\Swxx(\omega)}
-     +    0
   \\&=    \frac{\Swyx(\omega)}{\Swxx(\omega)}
-  \\&\eqd \fH(\omega)
+    && \text{by \prefp{prop:Swxyv}}
+  \\&= \fH^\ast(\omega)
+    && \text{by \prope{LTI} hypothesis (A)}
+    && \text{and \prefp{cor:Swxy}}
+  \\
+  \estH_2(\omega)
+    &\eqd \frac{\Swxx[y'y'](\omega)}{\Swxy(\omega)}
+    && \text{by definition of $\estH_2$}
+    && \text{\xref{def:H2}}
+  \\&=    \frac{\Swyy(\omega) + \Swvv(\omega)}{\Swxy(\omega)}
+    && \text{by \prefp{prop:Swxyv}}
+  \\&= \frac{\Swyy(\omega)}{\Swxy(\omega)}
+     + \frac{\Swvv(\omega)}{\Swxy(\omega)}
+  \\&= \fH(\omega)
+     + \frac{\Swvv(\omega)}{\frac{\Swyy(\omega)}{\fH(\omega)}}
+    && \text{by \prefp{cor:Swxy}}
+  \\&= \fH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}[Input noise only case]
+\footnote{
+  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=\frac{H(f)}{1+S_{n_xn_x}/S_{xx}(f)}$ (9.72); $H_2(f)=H(f)$ (9.73)}
+  }
+%---------------------------------------
+Let $\opS$ be a \structe{system} with \fncte{impulse response} $\fh[n]$,
+input $\fx[n]$, and output $\fy[n]$.
+Let $\rvu[n]$ and $\rvv[n]$ be \fncte{noise sequence}.
+Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
+\propbox{
+  \brb{\begin{array}{FMMD}
+      (A).& The system $\fh$ i s        &\prope{LTI}          & and
+    \\(B).& $\rvx[n]$ and $\rvy[n]$ are &\prope{WSS}          & and
+    \\(C).& $\rvy[n]$ and $\rvu[n]$ are &                     &     
+        \\& \mc{2}{M}{\quad              \prope{uncorrelated}}& and
+    \\(D).& $\rvv[n]=0$                 
+  \end{array}}
+  \implies
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lDD}
+      (1).&\estH_1(\omega) &=& \frac{\fH(\omega)}{1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}} & \begin{tabular}{l}(\prope{biased})\\(\prope{under estimated})\end{tabular} &and
+    \\(2).&\estH_2(\omega) &=& \fH(\omega)                                                 & (\prope{unbiased}) &
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \\
+  \estH_1(\omega)
+    &\eqd \frac{\Swxx[yx'](\omega)}{\Swxx[x'x'](\omega)}
+    && \text{by definition of $\estH_1$}
+    && \text{\xref{def:H1}}
+  \\&= \frac{\Swyx(\omega) + \Swyu(\omega)}
+            {\Swxx(\omega) + \Swuu(\omega)}
+    && \text{by \prefp{prop:Swxyv}}
+  \\&= \frac{\Swyx(\omega) + \cancelto{0}{\Swyu(\omega)}}
+            {\Swxx(\omega) + \Swuu(\omega)}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(C)}
+  \\&= \frac{\frac{\Swyx(\omega)}{\Swxx(\omega)}}
+            {\frac{\Swxx(\omega)}{\Swxx(\omega)} + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
+  \\&= \frac{\fH(\omega)}
+            {1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
+  \\
+  \estH_2(\omega)
+    &\eqd \frac{\Swyy(\omega)}{\Swxx[x'y](\omega)}
+    && \text{by definition of $\estH_2$}
+    && \text{\xref{def:H2}}
+  \\&= \frac{\Swyy(\omega)}{\Swxy(\omega) + \Swuy(\omega)}
+    && \text{by \prefp{prop:Swxyv}}
+  \\&= \frac{\Swyy(\omega)}{\Swxy(\omega) + \cancelto{0}{\Swuy(\omega)}}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(C)}
+  \\&= \fH(\omega)
+    && \text{by \prope{LTI} hypothesis (A)}
+    && \text{and \prefp{cor:Swxy}}
 \end{align*}
 \end{proof}
 
@@ -95,7 +190,7 @@ Estimators yield, as the name implies, estimates.
 These estimates in general contain some error.
 
 %---------------------------------------
-\begin{example}[The Welch estimate of \ope{coherence} with $K=1$]
+\begin{example}[The K=1 Welch estimate of coherence]
 %---------------------------------------
 Suppose we have two \prope{uncorrelated} stationary sequences $\rvx[n]$ and $\rvy[n]$. Then, there
 CSD $\Sxy(\omega)$ should be $0$ because

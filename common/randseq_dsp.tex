@@ -1,0 +1,258 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%======================================
+\chapter{Random Sequences DSP}
+%======================================
+%=======================================
+\section{Additive noise}
+%=======================================
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpg{shin2008}{293}{0470725648}
+  }
+\label{prop:Swxyv}
+%---------------------------------------
+Let $\fh[n]$ be the \fncte{impulse response} of a system 
+with input $\fx[n]$ and output $\fy[n]$.
+Let $\fv[n]$ be \fncte{noise sequence} and $\fy'[n]\eqd\fy[n]+\fv[n]$.
+\propbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\fx[n]$ and $\fy[n]$ are &\prope{WSS}          & and
+    \\(B).& $\fx[n]$ and $\fv[n]$ are &\prope{uncorrelated} &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+      (1).&\Swxx[y'y'](\omega) &=& \Swyx(\omega)                 & and
+    \\(2).&\Swxx[y'x] (\omega) &=& \Swyy(\omega) + \Swvv(\omega) & and
+    \\(3).&\Swxx[xy'] (\omega) &=& \Swxy(\omega) & 
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \Swxx[y'y'](\omega)
+    &\eqd \opDTFT\Rxx[y'y'][m]
+    && \text{by definition of \ope{DTFT}}
+    && \text{\xref{def:dtft}}
+  \\&\eqd \opDTFT\pE\brs{\rvy'[m]\rvy'^\ast[0]}
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \opDTFT\pE\brs{(\rvy[m]+\fv[m])(\rvy[0]+\fv[0])^\ast[0]}
+    && \text{by definition of $\rvy'$}
+  \\&= \opDTFT\pE\brs{\rvy[m]\rvy^\ast[0]}
+     + \cancelto{0}{\opDTFT\pE\brs{\rvy[m]\rvv^\ast[0]}}
+     + \cancelto{0}{\opDTFT\pE\brs{\fv[m]\rvy^\ast[0]} }
+     + \opDTFT\pE\brs{\fv[m]\rvv^\ast[0]}
+  \\&= \opDTFT\pE\brs{\rvy[m]\rvy^\ast[0]}
+     + 0 + 0
+     + \opDTFT\pE\brs{\fv[m]\rvv^\ast[0]}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(C)}
+  \\&= \opDTFT\Ryy[m] + \opDTFT\Rvv[m]
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&= \Swyy(\omega) + \Swvv(\omega)
+    && \text{by definition of $\Swyy$}
+    && \text{\xref{def:Swxy}}
+  \\
+  \Swxx[y'x](\omega)
+    &\eqd \opDTFT\Rxx[y'x][m]
+    && \text{by definition of \ope{DTFT}}
+    && \text{\xref{def:dtft}}
+  \\&\eqd \opDTFT\pE\brs{\rvy'[m]\rvx^\ast[0]}
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \opDTFT\pE\brs{(\rvy[m]+\fv[m])\rvx^\ast[0]}
+    && \text{by definition of $\rvy'$}
+  \\&= \opDTFT\pE\brs{\rvy[m]\rvx^\ast[0]}
+     + \opDTFT\pE\brs{\fv[m]\rvx^\ast[0]}
+  \\&= \opDTFT\pE\brs{\rvy[m]\rvx^\ast[0]} +    0
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(B)}
+  \\&= \Swyx(\omega)
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+  \\
+  \Swxx[xy'](\omega)
+    &= \Swxx^\ast[y'x](\omega)
+    && \text{by \prefp{cor:Swxy}}
+  \\&= \Swyx^\ast(\omega)
+    && \text{by previous result}
+  \\&= \Swxy(\omega)
+    && \text{by \prefp{cor:Swxy}}
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Whitening}
+\index{whitening filter}
+\label{sec:d-whiten}
+%=======================================
+\begin{figure}[h]
+  \centering
+  \includegraphics{graphics/pz_minphase.pdf}
+  \caption{
+     Poles ($\times$) and zeros ($o$) of a \prope{minimum phase} filter
+     \label{fig:w_pz_minphase}
+     }
+\end{figure}
+%---------------------------------------
+\begin{definition}
+\index{minimum phase}
+\index{rational expression}
+%---------------------------------------
+Let $\Zh(z)$ be the z-transform of the impulse response of a filter.
+If $\Zh(z)$ can be expressed as a rational expression with poles and zeros
+$r_ne^{i\theta_n}$,
+then the filter is \textbf{minimum phase} if each $r_n<1$
+(all roots lie inside the unit circle in the complex $z$-plane).
+\end{definition}
+See \prefp{fig:w_pz_minphase}.
+
+Note that if $\fL(z)$ has a root at $z=re^{i\theta}$, then
+$\fL^\ast(1/z^\ast)$ has a root at
+\begin{align*}
+   \frac{1}{z^\ast}
+     &= \frac{1}{\brp{re^{i\theta}}^\ast}
+      = \frac{1}{re^{-i\theta}}
+      = \frac{1}{r} e^{i\theta}.
+\end{align*}
+That is, if $\fL(z)$ has a root inside the unit circle,
+then $\fL^\ast(1/z^\ast)$ has a root directly opposite across the unit circle
+boundary (see \prefp{fig:z-roots}).
+A causal stable filter $\Zh(z)$ must have all of its poles inside
+the unit circle.
+A minimum phase filter is a filter with both its poles and zeros inside the
+unit circle.
+One advantage of a minimum phase filter is that its recipricol
+(zeros become poles and poles become zeros)
+is also causal and stable.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,300)(-130,-130)
+  %\graphpaper[10](0,0)(200,200)
+  \thicklines%
+  \color{axis}%
+    \put(-130 ,   0 ){\line(1,0){260} }%
+    \put(   0 ,-130 ){\line(0,1){260} }%
+    \put( 140 ,   0 ){\makebox(0,0)[l]{$\Re$}}%
+    \put(   0 , 140 ){\makebox(0,0)[b]{$\Im$}}%
+  \color{zero}%
+    \qbezier[24](  0,  0)( 56.5,56.5)(113,113)
+    %\put(   0 ,   0 ){\line(1,1){120}}%
+    \put(  28 ,  28 ){\circle{10}}%
+    \put( 113 , 113 ){\circle{10}}%
+    \put(  38 ,  28 ){\makebox(0,0)[l]{zero of $\fL(z)$}}%
+    \put( 123 , 113 ){\makebox(0,0)[l]{zero of $\fL^\ast\brp{\frac{1}{z^\ast}}$}}%
+  \color{pole}%
+    \qbezier[24](0,0)(-61.5,-26.5)(-123,-53)%
+    %\put(   0 ,   0 ){\line(-3,-1){130}}%
+    \put( -76 , -25 ){\makebox(0,0){$\times$}}%
+    \put(-119 , -40 ){\makebox(0,0){$\times$}}%
+    \put( -76 , -25 ){\makebox(0,0)[lt]{pole of $\fL(z)$}}%
+    \put(-119 , -40 ){\makebox(0,0)[lt]{pole of $\fL^\ast\brp{\frac{1}{z^\ast}}$}}%
+  \color{circle}%
+    \input{../common/circle.inp}
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Mirrored roots in complex-z plane
+   \label{fig:z-roots}
+   }
+\end{figure}
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{fsK}
+\begin{center}
+  \setlength{\unitlength}{0.2mm}
+  \begin{picture}(700,100)(-100,-60)
+  \thicklines
+  %\graphpaper[10](0,0)(160,80)
+  \put(-100,  10 ){\makebox (100, 40)[b]{$\rvx(n)$}                  }
+  \put(-100, -50 ){\makebox (100, 40)[t]{$\Rxx(m)$}                  }
+  \put(-100, -50 ){\makebox (100, 40)[b]{$\Sxx(z)$}                  }
+  \put(-100,   0 ){\vector  (  1,  0){100}                           }
+
+  \put(   0, -50 ){\framebox(100,100)   {$\convd\gamma(n)$}           }
+  \put(   0, -40 ){\makebox (100, 80)[t]{whitening}                  }
+  \put(   0, -40 ){\makebox (100, 80)[b]{$\Gamma(z)$}                }
+  \put( 100,   0 ){\vector  (  1,  0)   {200}                        }
+  \put( 100,  10 ){\makebox (200, 40)[t]{white noise process}        }
+  \put( 100,  10 ){\makebox (200, 40)[b]{$\vw(n)$}                 }
+  \put( 100, -50 ){\makebox (200, 40)[t]{$\Rww(m)=\delta(m)$}  }
+  \put( 100, -50 ){\makebox (200, 40)[b]{$\Sww(z)=1$}                }
+
+  \put( 300, -50 ){\framebox(100,100)   {$\convd\fl(n)$}               }
+  \put( 300, -40 ){\makebox (100, 80)[t]{innovations}                }
+  \put( 300, -40 ){\makebox (100, 80)[b]{$\fL(z)$}                     }
+  \put( 400,   0 ){\vector  (  1,  0)   {100}                        }
+  \put( 400,  10 ){\makebox (100, 40)[b]{$\rvx(n)$}                  }
+  \put( 400, -50 ){\makebox (200, 40)[t]{$\Rxx(m)=l(m)\convd\fl^\ast(-m)$}  }
+  \put( 400, -50 ){\makebox (200, 40)[b]{$\Sxx(z)=L(z)\fL^\ast\brp{\frac{1}{z^\ast}}$}  }
+  \end{picture}
+\caption{
+   Innovations and whitening filters
+   \label{fig:d-innovations}
+   }
+\end{center}
+\end{fsK}
+\end{figure}
+
+
+The next theorem demonstrates a method for ``whitening"
+a \fncte{random sequence} $\fx(n)$ with a filter constructed from a decomposition
+of $\Rxx(m)$.
+The technique is stated precisely in \prefp{thm:d-innovations}
+and illustrated in \prefp{fig:d-innovations}.
+Both imply two filters with impulse responses $l(n)$ and $\gamma(n)$.
+Filter $l(n)$ is referred to as the \textbf{innovations filter}
+(because it generates or ``innovates" $\fx(n)$ from a white noise
+process $\fw(n)$)
+and $\gamma(n)$ is referred to as the \textbf{whitening filter}
+because it produces a white noise sequence when the input sequence
+is $\fx(n)$.\footnote{\citerpp{papoulis}{401}{402}}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:d-innovations}
+%---------------------------------------
+Let $\fx(n)$ be a WSS \fncte{random sequence} with auto-correlation $\Rxx(m)$
+and spectral density $\Sxx(z)$.
+\textbf{If} $\Sxx(z)$ has a \textbf{rational expression},
+then the following are true:
+
+\begin{enume}
+   \item There exists a rational expression $\fL(z)$ with minimum phase
+         such that
+         \[ \Sxx(z) =\fL(z)\fL^\ast\brp{\frac{1}{z^\ast}}. \]
+   \item An LTI filter for which the Laplace transform of
+         the impulse response $\gamma(n)$ is
+         \[ \Gamma(z) = \frac{1}{\fL(z)} \]
+         is both causal and stable.
+   \item If $\fx(n)$ is the input to the filter $\gamma(n)$,
+         the output $\fy(n)$ is a \textbf{white noise sequence} such that
+         \[ \Syy(z)=1 \hspace{2cm} \Ryy(m)=\kdelta(m).\]
+\end{enume}
+\end{theorem}
+
+
+\begin{proof}
+\begin{align*}
+   \Sww(z)
+     &= \Gamma(z)\Gamma^\ast\brp{\frac{1}{z^\ast}} \Sxx(z)
+   \\&= \frac{1}{\fL(z)} \frac{1}{\fL^\ast\brp{\frac{1}{z^\ast}}} \Sxx(z)
+   \\&= \frac{1}{\fL(z)} \frac{1}{\fL^\ast\brp{\frac{1}{z^\ast}}}
+        \fL(z)\fL^\ast\brp{\frac{1}{z^\ast}}
+   \\&= 1
+\end{align*}
+\end{proof}
+
