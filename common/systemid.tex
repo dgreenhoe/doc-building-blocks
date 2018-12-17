@@ -22,16 +22,18 @@ Determining $\fh[n]$ and/or $\fH(\omega)$ is part of a topic called ``\ope{syste
 Determining $\fH(\omega)$ in particular is referred to as
 ``\ope{Frequency Response Identification}"\footnote{\citerpg{shin2008}{292}{0470725648}}
 or as 
-``\ope{Frequency Response Function}" (``\ope{FRF}") measurement.\footnote{\citePp{cobb1988}{1}}
-}
-\ope{FRF} measurement is a challenging problem and one that
+``\ope{Frequency Response Function}" (``\ope{FRF}") estimation.\footnote{\citePpc{cobb1988}{1}{FRF ``measurement"}}
+\ope{FRF} estimation is a challenging problem and one that
 many people have developed much effort to. 
 This chapter describes some of that effort.
 
 In the early days, people used a rather obvious technique for determining $\fH(\omega)$---the simple
-sine sweep. That is, they made the input a sine wave with slowly increasing (or decreasing) 
+\fncte{sine sweep}. That is, they made the input a sine wave with slowly increasing (or decreasing) 
 frequency while measuring the resulting output.
-This technique, although effective, was ``very slow".\footnote{\citePpc{cobb1988}{1}{Chapter 1---Introduction}}.
+This technique, although effective, was ``very slow".\footnote{
+  \citeP{leuridan1986}{911}{``Stepped Sine Testing"},
+  \citePpc{cobb1988}{1}{Chapter 1---Introduction}
+  }.
 \emph{And} there is another problem---we don't always have control over the input signal.
 Examples of the latter include live earthquake and volcanic activity analysis.
 
@@ -119,15 +121,39 @@ then it is ideal in the sense that $\estH_2=\fH$ \prefp{prop:estH2}.
 Mitchell's $\estH_2$ contribution ``generated a flurry of activity"\footnote{\citePp{cobb1988}{3}}
 and soon more $\fH$ estimators appeared. 
 As it turns out, in the presence of \emph{both} input and output measurement noise,
-the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\fH$ and 
-Mitchell's $\estH_2$, although ideal when output noise = 0, 
-tends to \prope{over estimate} $\fH$ \xxref{prop:estH1}{prop:estH2}.
-What is needed is an estimator with a parameter that can be adjusted 
-depending on the ratio of output and input noise.
-Wicks and Vold in 1986 introduced such an estimator, often called $\estHs$, with a
-parameter $s$ in the range $\intcc{0}{\infty}$.
-And as it turns out, $\estH_s = \estH_1$ when $s=0$ and 
-$\estH_s\to\estH_2$ as $s\to\infty$ \xref{thm:Hs}.
+the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\fH$ \xref{prop:estH1}
+and Mitchell's $\estH_2$, although ideal when output noise = 0, 
+tends to \prope{over estimate} $\fH$ \xref{prop:estH2}.
+But what about the case when there is noise on both input and output?
+The next estimator is ideal when noise is present on both and the noise power of the two is equal.
+%---------------------------------------
+\begin{definition}[\fnctd{Total Least Squares estimator}]
+\footnote{
+  \citePpc{white2006}{679}{(6)},
+  \citerpgc{shin2008}{294}{0470725648}{(9.69)},
+  }
+\label{def:Hv}
+%---------------------------------------
+\defboxt{
+  The estimate $\estHv(\omega)$ is defined as 
+  \\\indentx$\ds
+  \estHv(\omega) \eqd 
+  \frac{2\Swyx(\omega)}
+       {\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}^2}}
+  $
+  }
+\end{definition}
+
+So $\estH_1$ is the ideal estimator when there is no input noise \xref{prop:estH1},
+$\estH_2$ is the ideal estimator when there is no output noise \xref{prop:estH2},
+and $\estHv$ is the ideal estimator when the noise on input and output is of equal power.
+Of course it wouldn't be long before someone wanted an estimator 
+where the noise power wasn't required to be equal.
+Wicks and Vold in 1986 introduced such an estimator (next definition).
+It features a parameter $s$ in the range $\intcc{0}{\infty}$
+that can be adjusted depending on the ratio of output and input noise.
+And as it turns out, $\estHs = \estH_1$ when $s=0$, $\estHs=\estHv$ when $s=1$, and 
+$\estHs\to\estH_2$ as $s\to\infty$. % \xref{thm:Hs}.
 %---------------------------------------
 \begin{definition}[\fnctd{scaling estimate}]
 \footnote{
@@ -145,7 +171,13 @@ $\estH_s\to\estH_2$ as $s\to\infty$ \xref{thm:Hs}.
   }
 \end{definition}
 
-
+Wicks and Vold's scaling estimator $\estHs$ estimated $\fH$ using a single parameter $s$
+that is \prope{constant} with respect to frequency.
+This is suitable for additive white noise $\rvw[n]$, which has constant spectral density 
+$\Swww(\omega)=\pvar_w^2$.
+Later in 2006, White, Tan and Hammond proposed a generalization of $\estHs$ with a scaling 
+function $\kappa(\omega)$---that is, one that is not in general constant with respect to frequency
+and thus suitable for colored noise (next definition).
 %---------------------------------------
 \begin{definition}
 \footnote{
@@ -153,36 +185,21 @@ $\estH_s\to\estH_2$ as $s\to\infty$ \xref{thm:Hs}.
   \citeP{white2006},
   \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
   }
-\label{def:Hw}
+\label{def:Hkappa}
 %---------------------------------------
 \defboxt{
-  The transfer function $\estHw(\omega)$ is defined as 
+  The transfer function $\estHkappa(\omega)$ is defined as 
   \\\indentx$\ds
-  \estHw(\omega) \eqd \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
-                            {2\Swxy(\omega)}
-  $
-  }
-\end{definition}
-
-%---------------------------------------
-\begin{definition}
-\footnote{
-  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
-  \citeP{white2006},
-  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
-  }
-\label{def:Hw}
-%---------------------------------------
-\defboxt{
-  The transfer function $\estHw(\omega)$ is defined as 
-  \\\indentx$\ds
-  \estHw(\omega) \eqd 
+  \estHkappa(\omega) \eqd 
   \frac{2\kappa(\omega)\Swyx(\omega)}
        {\kappa(\omega)\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\kappa(\omega)\Swxx(\omega)-\Swyy(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
   $
   }
 \end{definition}
 
+The previous estimators all assumed two signals: an input $\rvx[n]$ and an output $\rvy[n]$.
+However, in many practical systems, there is a third signal that is ``driving" the system.
+In 1984 Goyder proposed an estimator for three channels (next definition).
 %---------------------------------------
 \begin{definition}[Three channel estimate]
 \footnote{
@@ -207,6 +224,22 @@ Let $\opS$ be a system with input $\rvx[n]$, output $\rvy[n]$, and a driver $\rv
 %=======================================
 \section{Properties}
 %=======================================
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
+  \citeP{white2006},
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
+  }
+\label{prop:Hkappa}
+%---------------------------------------
+Let $\estHkappa(\omega)$ be defined as in \prefpp{def:Hkappa}.
+\propbox{
+  \estHkappa(\omega) = \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
+                            {2\Swxy(\omega)}
+  }
+\end{proposition}
+
 \begin{figure}
   \centering%
   \includegraphics{graphics/xhyplusv.pdf}
