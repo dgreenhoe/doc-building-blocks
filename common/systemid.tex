@@ -6,9 +6,61 @@
 \chapter{System Identification}
 %============================================================================
 
+Let $\opS$ be a \structe{system} with \fncte{impulse response} $\fh[n]$ with
+with \ope{DTFT} $\fH(\omega)$,
+input $\rvx[n]$, and output $\rvy[n]$. 
+Often in the field of ``digital signal processing" (DSP), $\opS$ is a ``filter" 
+with known $\fh[n]$ and $\fH(\omega)$ because the filter $\opS$ was 
+designed by a designer who had direct control over $\fh[n]$.
+
+However in many other practical situations, $\opS$ is some other system 
+for which $\fh[n]$ and $\fH(\omega)$ is \emph{not} known\ldots but which we may
+want to \ope{estimate}. Examples of such $\opS$ is a 
+device on an industrial shaker table, a communication channel, or the entire earth.
+
+Determining $\fh[n]$ and/or $\fH(\omega)$ is part of a topic called ``\ope{system identication}".
+Determining $\fH(\omega)$ in particular is referred to as
+``\ope{Frequency Response Identification}"\footnote{\citerpg{shin2008}{292}{0470725648}}
+or as 
+``\ope{Frequency Response Function}" (``\ope{FRF}") measurement.\footnote{\citePp{cobb1988}{1}}
+}
+\ope{FRF} measurement is a challenging problem and one that
+many people have developed much effort to. 
+This chapter describes some of that effort.
+
+In the early days, people used a rather obvious technique for determining $\fH(\omega)$---the simple
+sine sweep. That is, they made the input a sine wave with slowly increasing (or decreasing) 
+frequency while measuring the resulting output.
+This technique, although effective, was ``very slow".\footnote{\citePpc{cobb1988}{1}{Chapter 1---Introduction}}.
+\emph{And} there is another problem---we don't always have control over the input signal.
+Examples of the latter include live earthquake and volcanic activity analysis.
+
+An alternative to the sine-sweep input is \fncte{random sequence} input. 
+All the techniques that follow in this chapter are of this type.
+A problem with using random sequences directly for estimating $\fH(\omega)$ is that the 
+estimate $\estH(\omega)$ is itself also random.
+This is not what we want. We want an estimate that we can actually write down 
+on paper or at least plot on paper.
+
+A solution to this is to not use the random sequences directly to estimate $\fH(\omega)$, 
+but instead to first use the \ope{expectation} operator $\pE$ \xref{def:pE}.
+The expectation operator takes a quantity $\rvX$ that are inherently ``random" 
+(with some probability distribution $\pdfp(x)$) and 
+turns it into a deterministic ``constant" $\pE\rvX$.
+
+The operator $\pE$ is also used by the spectral density functions 
+$\Swxx$ and $\Swxy$ \xref{def:Swxy}.
+And $\Swxx$ and $\Swxy$ are what are typically used to calculate $\estH$.
+
 %=======================================
 \section{Definitions}
 %=======================================
+Estimating $\fH$ using random sequences leads to an obvious first estimator 
+often referred to as ``$\fH_1$" (next definition).
+It is a natural first attempt because in the \emph{very special case} of $\opS$ being 
+\prope{linear time invariant} (\prope{LTI}), the input being 
+\prope{wide sense stationary}, and measurement noise equal to $0$,
+then $\fH_1$ equals the true $\fH$ exactly \xref{cor:Swxy}.
 %---------------------------------------
 \begin{definition}[\fnctd{Least Squares Technique}]
 \footnote{
@@ -22,7 +74,8 @@
   \citePpc{leuridan1986}{910}{\fncte{Least Squares Technique}; (8) $[G_{xx}](H)=[G_{xy}]$},
   \citeP{abom1986}{cited by Cobb(1988)---variance estimate for $\estH_1$},
   \citePppc{allemang1987}{54}{55}{5.3.1 $H_1$ Technique; $[H]=[G_{XF}][G_{FF}]^{-1}$ (11)},
-  \citePpc{cobb1988}{2}{$^1\hat{H}(f)=\ffrac{\hat{G}_{yx}(f)}{\hat{G}_{xx}(f)}$ (1)}
+  \citePpc{cobb1988}{2}{$^1\hat{H}(f)=\ffrac{\hat{G}_{yx}(f)}{\hat{G}_{xx}(f)}$ (1)},
+  \citePpc{goyder1984}{438}{$H(i\omega)=\ffrac{S_{qp}}{S_{pp}}$ (3)}
   }
 \label{def:H1}
 %---------------------------------------
@@ -31,15 +84,29 @@
 \end{array}}
 \end{definition}
 
+However, in practical situations, there is measurement error. An example may include 
+``road noise" from a test being performed in a moving vehicle.
+If the measurement error is at the output only (and under the assumptions of \prope{LTI} and \prope{WSS})
+then $\estH_1$ is the ideal estimator in the sense that $\estH_1=\fH$ \xref{prop:estH1}.
+However, in the early 1980s Mitchell pointed out that in the presence of input noise,
+$\estH1$ is far from ideal in the sense that it is \prope{biased};
+in fact, it \prope{under estimates} $\fH$ \xref{prop:estH2}.
+Mitchell proposed a new estimator $\estH_2$ (next definition).
+This estimator $\estH_2$ has the special property that when there is input noise but no 
+output noise (and under \prope{LTI}, \prope{WSS}, and \prope{uncorrelated} assumptions), 
+then it is ideal in the sense that $\estH_2=\fH$ \prefp{prop:estH2}.
 %---------------------------------------
-\begin{definition}
+\begin{definition}[\fnctd{Inverse Method}]
 \footnote{
   \citerpgc{shin2008}{293}{0470725648}{$H_2(f)=\ffrac{\Swyy(f)}{\Swyx(f)}$ (9.65);
     which differs from \pref{def:H2}, but see \prefp{rem:Rxym}
     },
   \citerpgc{bendat2011}{186}{1118210824}{$H_2(f) = \ffrac{G_{yy}(f)}{G_{yx}(f)}$ (6.42)},
   \citePc{mitchell1980}{cited by Cobb(1988)},
-  \citePc{mitchell1982}{cited by Cobb(1988)},
+  \citePc{mitchell1982}{278}{``Define what will be called an inverse method for calculation of a FRF as\ldots"; 
+    $\~H_2(f)=\ffrac{G_{yy}}{G_{yx}}$ (6); 
+    Note this differs with \pref{def:H2} by a conjugate, but note that Mitchell seems to follow Bendat (see his [3] and [4]), 
+    which would explain this difference \xref{rem:Rxym}},
   \citePpc{cobb1988}{3}{$^2\hat{H}(f)=\ffrac{\hat{G}_{yy}(f)}{\hat{G}_{xy}(f)}$ (1)}
   }
 \label{def:H2}
@@ -49,20 +116,93 @@
 \end{array}}
 \end{definition}
 
+Mitchell's $\estH_2$ contribution ``generated a flurry of activity"\footnote{\citePp{cobb1988}{3}}
+and soon more $\fH$ estimators appeared. 
+As it turns out, in the presence of \emph{both} input and output measurement noise,
+the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\fH$ and 
+Mitchell's $\estH_2$, although ideal when output noise = 0, 
+tends to \prope{over estimate} $\fH$ \xxref{prop:estH1}{prop:estH2}.
+What is needed is an estimator with a parameter that can be adjusted 
+depending on the ratio of output and input noise.
+Wicks and Vold in 1986 introduced such an estimator, often called $\estHs$, with a
+parameter $s$ in the range $\intcc{0}{\infty}$.
+And as it turns out, $\estH_s = \estH_1$ when $s=0$ and 
+$\estH_s\to\estH_2$ as $s\to\infty$ \xref{thm:Hs}.
+%---------------------------------------
+\begin{definition}[\fnctd{scaling estimate}]
+\footnote{
+  \citePc{leclere2012}{(10) with $x$ and $y$ swapped}
+  }
+\label{def:Hs}
+%---------------------------------------
+\defboxt{
+  The estimate $\estHs(\omega)$ with \vald{scaling parameter} $s\in\intco{0}{\infty}$ is defined as 
+  \\\indentx$\ds
+  \estHs(\omega) \eqd 
+  \frac{2\Swyx(\omega)}
+       {\Swxx(\omega)-s^2\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-s^2\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}}
+  $
+  }
+\end{definition}
+
+
 %---------------------------------------
 \begin{definition}
 \footnote{
   \citerpgc{shin2008}{293}{0470725648}{(9.67)},
-  \citeP{white2006}
+  \citeP{white2006},
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
   }
-\label{def:Hs}
+\label{def:Hw}
 %---------------------------------------
-\defbox{\begin{array}{Mrc>{\ds}l}
-  The transfer function $\estH_s(\omega)$ is defined as & 
-    \estH_s(\omega) &\eqd& \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + \sqrt{\brs{\Swxx(\omega)\kappa(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}\kappa(\omega)}}
-                                {2\Swxy(\omega)}
-\end{array}}
+\defboxt{
+  The transfer function $\estHw(\omega)$ is defined as 
+  \\\indentx$\ds
+  \estHw(\omega) \eqd \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
+                            {2\Swxy(\omega)}
+  $
+  }
 \end{definition}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
+  \citeP{white2006},
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
+  }
+\label{def:Hw}
+%---------------------------------------
+\defboxt{
+  The transfer function $\estHw(\omega)$ is defined as 
+  \\\indentx$\ds
+  \estHw(\omega) \eqd 
+  \frac{2\kappa(\omega)\Swyx(\omega)}
+       {\kappa(\omega)\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\kappa(\omega)\Swxx(\omega)-\Swyy(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
+  $
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}[Three channel estimate]
+\footnote{
+  \citerpgc{shin2008}{297}{0470725648}{$H_3(f)=\ffrac{S_{ry}(f)}{S_{rx}(f)}$ (9.78)},
+  \citePpc{cobb1988}{4}{$^c\hat{H}(f)=\ffrac{\hat{G}_{ys}(f)}{\hat{G}_{xs}(f)}$ (1.4)},
+  \citePpc{goyder1984}{440}{$H(i\omega)=\ffrac{S_{qz}}{S_{pz}}$ (5)},
+  \citePpc{cobb1990}{450}{(1)}
+  }
+\label{def:Hc}
+%---------------------------------------
+Let $\opS$ be a system with input $\rvx[n]$, output $\rvy[n]$, and a driver $\rvp[n]$.
+\defboxt{
+  The transfer function $\estHc(\omega)$ is defined as 
+  \\\indentx$\ds
+  \estHc(\omega) \eqd \frac{\Swxx[py](\omega)}{\Swxx[px](\omega)}
+  $
+  }
+\end{definition}
+
+
 
 %=======================================
 \section{Properties}
@@ -75,25 +215,27 @@
 %---------------------------------------
 \begin{proposition}[Output noise only case]
 \footnote{
-  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=H(f)$ (9.70); $H_2(f)=H(f)\brp{1+\frac{S_{n_yn_y}(f)}{Syy(f)}}$ (9.71)}
+  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=H(f)$ (9.70); $H_2(f)=H(f)\brp{1+\ffrac{S_{n_yn_y}(f)}{Syy(f)}}$ (9.71)},
+  \citePc{mitchell1982}{278}{$\~H_2(f)=H_0(f)\brp{1+\ffrac{G_{mm}}{G_{vv}}}$}
   }
+\label{prop:estH1}
 %---------------------------------------
 Let $\opS$ be a \structe{system} with \fncte{impulse response} $\fh[n]$,
 input $\fx[n]$, and output $\fy[n]$.
 Let $\rvu[n]$ and $\rvv[n]$ be \fncte{noise sequence}.
 Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
 \propbox{
-  \brb{\begin{array}{FMMD}
-      (A).& The system $\fh$ i s        &\prope{LTI}          & and
+  \brbr{\begin{array}{FMMD}
+      (A).& The system $\fh$ is         &\prope{LTI}          & and
     \\(B).& $\rvx[n]$ and $\rvy[n]$ are &\prope{WSS}          & and
     \\(C).& $\rvx[n]$ and $\rvv[n]$ are &                     &     
-        \\& \mc{2}{M}{\quad              \prope{uncorrelated}}& and
+        \\& \mc{2}{M}{\quad \prope{uncorrelated}}             & and
     \\(D).& $\rvu[n]=0$                 
   \end{array}}
   \implies
-  \brb{\begin{array}{F>{\ds}rc>{\ds}lDD}
-      (1).&\estH_1(\omega) &=& \fH(\omega)                                              & (\prope{unbiased}) &and
-    \\(2).&\estH_2(\omega) &=& \fH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}} & \begin{tabular}{l}(\prope{biased})\\(\prope{over estimated})\end{tabular}
+  \brbl{\begin{array}{F>{\ds}rc>{\ds}lDD}
+      (1).&\estH_1(\omega) &=& \fH(\omega)                                              & (\prope{unbiased}) & and
+    \\(2).&\estH_2(\omega) &=& \fH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}} & \mc{2}{D}{\begin{tabular}{l}(\prope{biased})\\(\prope{over estimated})\end{tabular}}
   \end{array}}
   }
 \end{proposition}
@@ -127,15 +269,17 @@ Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
 %---------------------------------------
 \begin{proposition}[Input noise only case]
 \footnote{
-  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=\frac{H(f)}{1+S_{n_xn_x}/S_{xx}(f)}$ (9.72); $H_2(f)=H(f)$ (9.73)}
+  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=\ffrac{H(f)}{\brp{1+\ffrac{S_{n_xn_x}}{S_{xx}(f)}}}$ (9.72); $H_2(f)=H(f)$ (9.73)},
+  \citePc{mitchell1982}{277}{$\~H_1(f)=\ffrac{H_0(f)}{\brp{1+\ffrac{G_{nn}}{G_{uu}}}}$}
   }
+\label{prop:estH2}
 %---------------------------------------
 Let $\opS$ be a \structe{system} with \fncte{impulse response} $\fh[n]$,
 input $\fx[n]$, and output $\fy[n]$.
 Let $\rvu[n]$ and $\rvv[n]$ be \fncte{noise sequence}.
 Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
 \propbox{
-  \brb{\begin{array}{FMMD}
+  \brbr{\begin{array}{FMMD}
       (A).& The system $\fh$ i s        &\prope{LTI}          & and
     \\(B).& $\rvx[n]$ and $\rvy[n]$ are &\prope{WSS}          & and
     \\(C).& $\rvy[n]$ and $\rvu[n]$ are &                     &     
@@ -143,8 +287,8 @@ Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
     \\(D).& $\rvv[n]=0$                 
   \end{array}}
   \implies
-  \brb{\begin{array}{F>{\ds}rc>{\ds}lDD}
-      (1).&\estH_1(\omega) &=& \frac{\fH(\omega)}{1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}} & \begin{tabular}{l}(\prope{biased})\\(\prope{under estimated})\end{tabular} &and
+  \brbl{\begin{array}{F>{\ds}rc>{\ds}lDD}
+      (1).&\estH_1(\omega) &=& \frac{\fH(\omega)}{1 + \frac{\ds\Swuu(\omega)}{\ds\Swxx(\omega)}} & \begin{tabular}{l}(\prope{biased})\\(\prope{under estimated})\end{tabular} &and
     \\(2).&\estH_2(\omega) &=& \fH(\omega)                                                 & (\prope{unbiased}) &
   \end{array}}
   }
@@ -161,11 +305,11 @@ Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
     && \text{by \prefp{prop:Swxyv}}
   \\&= \frac{\Swyx(\omega) + \cancelto{0}{\Swyu(\omega)}}
             {\Swxx(\omega) + \Swuu(\omega)}
-    && \text{by \prope{uncorrelated} hypothesis}
-    && \text{(C)}
+    && \text{because $\rvy[n]$ and $\rvu[n]$ are \prope{uncorrelated}}
+    && \text{(hypothesis (C))}
   \\&= \frac{\frac{\Swyx(\omega)}{\Swxx(\omega)}}
             {\frac{\Swxx(\omega)}{\Swxx(\omega)} + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
-  \\&= \frac{\fH(\omega)}
+   &&= \frac{\fH(\omega)}
             {1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
   \\
   \estH_2(\omega)
@@ -175,11 +319,11 @@ Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
   \\&= \frac{\Swyy(\omega)}{\Swxy(\omega) + \Swuy(\omega)}
     && \text{by \prefp{prop:Swxyv}}
   \\&= \frac{\Swyy(\omega)}{\Swxy(\omega) + \cancelto{0}{\Swuy(\omega)}}
-    && \text{by \prope{uncorrelated} hypothesis}
-    && \text{(C)}
+    && \text{because $\rvy[n]$ and $\rvu[n]$ are \prope{uncorrelated}}
+    && \text{(hypothesis (C))}
   \\&= \fH(\omega)
-    && \text{by \prope{LTI} hypothesis (A)}
-    && \text{and \prefp{cor:Swxy}}
+    && \text{by \prefp{cor:Swxy}}
+    && \text{and \prope{LTI} hypothesis (A)}
 \end{align*}
 \end{proof}
 

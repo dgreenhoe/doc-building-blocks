@@ -20,8 +20,9 @@ with input $\fx[n]$ and output $\fy[n]$.
 Let $\fv[n]$ be \fncte{noise sequence} and $\fy'[n]\eqd\fy[n]+\fv[n]$.
 \propbox{
   \brb{\begin{array}{FMMD}
-      (A).& $\fx[n]$ and $\fy[n]$ are &\prope{WSS}          & and
-    \\(B).& $\fx[n]$ and $\fv[n]$ are &\prope{uncorrelated} &
+      (A).& $\fx[n]$ and $\fy[n]$ are &\prope{WSS} & and
+    \\(B).& $\fx[n]$ and $\fv[n]$ are &            &
+        \\& \qquad\prope{uncorrelated}&            &
   \end{array}}
   \implies
   \brb{\begin{array}{FrclD}
@@ -42,15 +43,19 @@ Let $\fv[n]$ be \fncte{noise sequence} and $\fy'[n]\eqd\fy[n]+\fv[n]$.
     && \text{\xref{def:Rxym}}
   \\&\eqd \opDTFT\pE\brs{(\rvy[m]+\fv[m])(\rvy[0]+\fv[0])^\ast[0]}
     && \text{by definition of $\rvy'$}
-  \\&= \opDTFT\pE\brs{\rvy[m]\rvy^\ast[0]}
+  \\&= \mathrlap{
+       \opDTFT\pE\brs{\rvy[m]\rvy^\ast[0]}
+     + \opDTFT\pE\brs{\rvy[m]\rvv^\ast[0]}
+     + \opDTFT\pE\brs{\fv[m]\rvy^\ast[0]} 
+     + \opDTFT\pE\brs{\fv[m]\rvv^\ast[0]}
+     }
+  \\&= \mathrlap{
+       \opDTFT\pE\brs{\rvy[m]\rvy^\ast[0]}
      + \cancelto{0}{\opDTFT\pE\brs{\rvy[m]\rvv^\ast[0]}}
      + \cancelto{0}{\opDTFT\pE\brs{\fv[m]\rvy^\ast[0]} }
      + \opDTFT\pE\brs{\fv[m]\rvv^\ast[0]}
-  \\&= \opDTFT\pE\brs{\rvy[m]\rvy^\ast[0]}
-     + 0 + 0
-     + \opDTFT\pE\brs{\fv[m]\rvv^\ast[0]}
-    && \text{by \prope{uncorrelated} hypothesis}
-    && \text{(C)}
+     \quad\text{by \prope{uncorrelated} hypothesis (C)}
+     }
   \\&= \opDTFT\Ryy[m] + \opDTFT\Rvv[m]
     && \text{by definition of $\Rxy$}
     && \text{\xref{def:Rxym}}
