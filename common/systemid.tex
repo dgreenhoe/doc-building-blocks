@@ -61,7 +61,7 @@ Estimating $\fH$ using random sequences leads to an obvious first estimator
 often referred to as ``$\fH_1$" (next definition).
 It is a natural first attempt because in the \emph{very special case} of $\opS$ being 
 \prope{linear time invariant} (\prope{LTI}), the input being 
-\prope{wide sense stationary}, and measurement noise equal to $0$,
+\prope{wide sense stationary}, and measurement noise being equal to $0$,
 then $\fH_1$ equals the true $\fH$ exactly \xref{cor:Swxy}.
 %---------------------------------------
 \begin{definition}[\fnctd{Least Squares Technique}]
@@ -81,18 +81,20 @@ then $\fH_1$ equals the true $\fH$ exactly \xref{cor:Swxy}.
   }
 \label{def:H1}
 %---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
 \defbox{\begin{array}{Mrc>{\ds}l}
   The transfer function $\estH_1(\omega)$ is defined as & \estH_1(\omega) &\eqd& \frac{\Swyx(\omega)}{\Swxx(\omega)}
 \end{array}}
 \end{definition}
 
-However, in practical situations, there is measurement error. An example may include 
+However, in practical situations, there is measurement error \xref{fig:xhyplusv}. 
+An example may include 
 ``road noise" from a test being performed in a moving vehicle.
 If the measurement error is at the output only (and under the assumptions of \prope{LTI} and \prope{WSS})
 then $\estH_1$ is the ideal estimator in the sense that $\estH_1=\fH$ \xref{prop:estH1}.
-However, in the early 1980s Mitchell pointed out that in the presence of input noise,
-$\estH1$ is far from ideal in the sense that it is \prope{biased};
-in fact, it \prope{under estimates} $\fH$ \xref{prop:estH2}.
+However in the early 1980s, Mitchell pointed out that in the presence of input noise,
+$\estH1$ is far from ideal in that it is \prope{biased} with respect to $\fH$;
+in fact, $\estH_1$ \prope{under estimates} $\fH$ \xref{prop:estH2}.
 Mitchell proposed a new estimator $\estH_2$ (next definition).
 This estimator $\estH_2$ has the special property that when there is input noise but no 
 output noise (and under \prope{LTI}, \prope{WSS}, and \prope{uncorrelated} assumptions), 
@@ -113,17 +115,70 @@ then it is ideal in the sense that $\estH_2=\fH$ \prefp{prop:estH2}.
   }
 \label{def:H2}
 %---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
 \defbox{\begin{array}{Mrc>{\ds}l}
   The transfer function $\estH_2(\omega)$ is defined as & \estH_2(\omega) &\eqd& \frac{\Swyy(\omega)}{\Swxy(\omega)}
 \end{array}}
 \end{definition}
 
+Now with two estimators that in general provide two different results,
+an obvious extension is to somehow combine them to produce new estimators (next three definitions).
+%---------------------------------------
+\begin{definition}[\fnctd{Arithmetic mean estimator}]
+\footnote{
+  \citePc{mitchell1982}{279}{``Frequency Response Calculation: The Average Method"},
+  \citePpc{zheng2002}{918}{``1.3 Arithmetic Mean Estimator $H_3$"}
+  }
+\label{def:Havg}
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
+\defbox{\begin{array}{Mrc>{\ds}>{\ds}l}
+  The transfer function $\estHavg(\omega)$ is defined as & \estHavg(\omega) &\eqd& \frac{\estH_1(\omega) + \estH_2(\omega)}{2}
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}[\fnctd{Geometric mean estimator}]
+\footnote{
+  \citePpc{zheng2002}{918}{``1.4 Geometric Mean Estimator $H_4$"}
+  }
+\label{def:Hgm}
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
+\defbox{\begin{array}{Mrc>{\ds}>{\ds}l}
+  The transfer function $\estHgm(\omega)$ is defined as & \estHgm(\omega) &\eqd& \sqrt{\estH_1(\omega)\estH_2(\omega)}
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}[\fnctd{Harmonic mean estimator}]
+\footnote{
+  \citePc{carne2006}{$H_C = [H_A^{-1} + H_B^{-1}]^{-1}$},
+  \citergc{ewins1985}{086380036X}{cited by Carne (2006)}
+  }
+\label{def:Hharm}
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
+\defbox{\begin{array}{Mrc>{\ds}>{\ds}l}
+  The transfer function $\estHharm(\omega)$ is defined as & \estHharm(\omega) &\eqd& \frac{1}{\frac{1}{\estH_1(\omega)} + \frac{1}{\estH_2(\omega)}}
+\end{array}}
+\end{definition}
+
 Mitchell's $\estH_2$ contribution ``generated a flurry of activity"\footnote{\citePp{cobb1988}{3}}
 and soon more $\fH$ estimators appeared. 
-As it turns out, in the presence of \emph{both} input and output measurement noise,
-the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\fH$ \xref{prop:estH1}
-and Mitchell's $\estH_2$, although ideal when output noise = 0, 
-tends to \prope{over estimate} $\fH$ \xref{prop:estH2}.
+%As it turns out, in the presence of \emph{both} input and output measurement noise,
+%the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\fH$ \xref{prop:estH1}
+%and Mitchell's $\estH_2$, although ideal when output noise = 0, 
+%tends to \prope{over estimate} $\fH$ \xref{prop:estH2}.
+%But what about the case when there is noise on both input and output?
+%The next estimator is ideal when noise is present on both and the noise power of the two is equal.
+So far we have 
+\begin{listi}
+  \item $\estH_1$ which is ideal when there is no input noise but 
+        \prope{under estimate}s $\fH$ when there is \xref{prop:estH1}
+  \item $\estH_2$ which is ideal when there is no output noise but
+        \prope{over estimate}s $\fH$ when there is \xref{prop:estH2}.
+\end{listi}
 But what about the case when there is noise on both input and output?
 The next estimator is ideal when noise is present on both and the noise power of the two is equal.
 %---------------------------------------
@@ -134,6 +189,7 @@ The next estimator is ideal when noise is present on both and the noise power of
   }
 \label{def:Hv}
 %---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
 \defboxt{
   The estimate $\estHv(\omega)$ is defined as 
   \\\indentx$\ds
@@ -144,13 +200,13 @@ The next estimator is ideal when noise is present on both and the noise power of
   }
 \end{definition}
 
-So $\estH_1$ is the ideal estimator when there is no input noise \xref{prop:estH1},
-$\estH_2$ is the ideal estimator when there is no output noise \xref{prop:estH2},
-and $\estHv$ is the ideal estimator when the noise on input and output is of equal power.
-Of course it wouldn't be long before someone wanted an estimator 
-where the noise power wasn't required to be equal.
-Wicks and Vold in 1986 introduced such an estimator (next definition).
-It features a parameter $s$ in the range $\intcc{0}{\infty}$
+The estimate $\estHv$ and it's refusal to assume zero input or output noise 
+was definitely a step in the right direction.
+But it still assumes that the input and output noise power to be equal.
+And what if it's not? 
+Enter Wicks and Vold who in 1986 introduced such an estimator (next definition)
+that makes no such assumption.
+It features a parameter $s$ in the range $\intco{0}{\infty}$
 that can be adjusted depending on the ratio of output and input noise.
 And as it turns out, $\estHs = \estH_1$ when $s=0$, $\estHs=\estHv$ when $s=1$, and 
 $\estHs\to\estH_2$ as $s\to\infty$. % \xref{thm:Hs}.
@@ -161,23 +217,25 @@ $\estHs\to\estH_2$ as $s\to\infty$. % \xref{thm:Hs}.
   }
 \label{def:Hs}
 %---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
 \defboxt{
   The estimate $\estHs(\omega)$ with \vald{scaling parameter} $s\in\intco{0}{\infty}$ is defined as 
   \\\indentx$\ds
-  \estHs(\omega) \eqd 
+  \estHs(\omega; s) \eqd 
   \frac{2\Swyx(\omega)}
        {\Swxx(\omega)-s^2\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-s^2\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}}
   $
   }
 \end{definition}
 
-Wicks and Vold's scaling estimator $\estHs$ estimated $\fH$ using a single parameter $s$
+Wicks and Vold's $\estHs$ estimates $\fH$ using a single parameter $s$
 that is \prope{constant} with respect to frequency.
 This is suitable for additive white noise $\rvw[n]$, which has constant spectral density 
-$\Swww(\omega)=\pvar_w^2$.
-Later in 2006, White, Tan and Hammond proposed a generalization of $\estHs$ with a scaling 
+$\Swww(\omega)=\pvar_w$.
+However, not all noise is white noise.
+And later in 2006, White, Tan and Hammond proposed a generalization (next definition) of $\estHs$ with a scaling 
 function $\kappa(\omega)$---that is, one that is not in general constant with respect to frequency
-and thus suitable for colored noise (next definition).
+and is thus suitable in the presence of \prope{colored} noise.
 %---------------------------------------
 \begin{definition}
 \footnote{
@@ -187,8 +245,9 @@ and thus suitable for colored noise (next definition).
   }
 \label{def:Hkappa}
 %---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
 \defboxt{
-  The transfer function $\estHkappa(\omega)$ is defined as 
+  The transfer function $\estHkappa(\omega; \kappa)$ is defined as 
   \\\indentx$\ds
   \estHkappa(\omega) \eqd 
   \frac{2\kappa(\omega)\Swyx(\omega)}
@@ -199,7 +258,7 @@ and thus suitable for colored noise (next definition).
 
 The previous estimators all assumed two signals: an input $\rvx[n]$ and an output $\rvy[n]$.
 However, in many practical systems, there is a third signal that is ``driving" the system.
-In 1984 Goyder proposed an estimator for three channels (next definition).
+In 1984 Goyder proposed an estimator (next definition) that is based on three signals.
 %---------------------------------------
 \begin{definition}[Three channel estimate]
 \footnote{
@@ -218,8 +277,6 @@ Let $\opS$ be a system with input $\rvx[n]$, output $\rvy[n]$, and a driver $\rv
   $
   }
 \end{definition}
-
-
 
 %=======================================
 \section{Properties}
