@@ -18,13 +18,13 @@ for which $\fh[n]$ and $\fH(\omega)$ is \emph{not} known\ldots but which we may
 want to \ope{estimate}. Examples of such $\opS$ is a 
 device on an industrial shaker table, a communication channel, or the entire earth.
 
-Determining $\fh[n]$ and/or $\fH(\omega)$ is part of a topic called ``\ope{system identication}".
+Determining $\fh[n]$ and/or $\fH(\omega)$ is part of an operation called ``\ope{system identication}".
 Determining $\fH(\omega)$ in particular is referred to as
 ``\ope{Frequency Response Identification}"\footnote{\citerpg{shin2008}{292}{0470725648}}
 or as 
 ``\ope{Frequency Response Function}" (``\ope{FRF}") estimation.\footnote{\citePpc{cobb1988}{1}{FRF ``measurement"}}
 \ope{FRF} estimation is a challenging problem and one that
-many people have developed much effort to. 
+many people have devoted much effort to. 
 This chapter describes some of that effort.
 
 In the early days, people used a rather obvious technique for determining $\fH(\omega)$---the simple
@@ -33,9 +33,9 @@ frequency while measuring the resulting output.
 This technique, although effective, was ``very slow".\footnote{
   \citeP{leuridan1986}{911}{``Stepped Sine Testing"},
   \citePpc{cobb1988}{1}{Chapter 1---Introduction}
-  }.
+  }
 \emph{And} there is another problem---we don't always have control over the input signal.
-Examples of the latter include live earthquake and volcanic activity analysis.
+Examples of this include earthquake and volcanic activity analysis.
 
 An alternative to the sine-sweep input is \fncte{random sequence} input. 
 All the techniques that follow in this chapter are of this type.
@@ -46,38 +46,63 @@ on paper or at least plot on paper.
 
 A solution to this is to not use the random sequences directly to estimate $\fH(\omega)$, 
 but instead to first use the \ope{expectation} operator $\pE$ \xref{def:pE}.
-The expectation operator takes a quantity $\rvX$ that are inherently ``random" 
+The expectation operator takes a quantity $\rvX$ that is inherently ``random" 
 (with some probability distribution $\pdfp(x)$) and 
 turns it into a deterministic ``constant" $\pE\rvX$.
 
 The operator $\pE$ is also used by the spectral density functions 
-$\Swxx$ and $\Swxy$ \xref{def:Swxy}.
-And $\Swxx$ and $\Swxy$ are what are typically used to calculate $\estH$.
+$\Swxx(\omega)$ and $\Swxy(\omega)$ \xref{def:Swxy}.
+And $\Swxx(\omega)$ and $\Swxy(\omega)$ are what are typically used to calculate 
+an estimate $\estH(\omega)$.
 
 %=======================================
 \section{Definitions}
 %=======================================
-Estimating $\fH$ using random sequences leads to an obvious first estimator 
-often referred to as ``$\fH_1$" (next definition).
-It is a natural first attempt because in the \emph{very special case} of $\opS$ being 
-\prope{linear time invariant} (\prope{LTI}), the input being 
-\prope{wide sense stationary}, and measurement noise being equal to $0$,
-then $\fH_1$ equals the true $\fH$ exactly \xref{cor:Swxy}.
+%\begin{figure}
+%  \centering%
+%  \includegraphics{graphics/sysH_xyuvpq.pdf}
+%  \caption{System model with additive input and output noise\label{fig:sysH_xyuvpq}}
+%\end{figure}
+%Consider the additive noise system $\opS$ illustrated here: % in \prefpp{fig:sysH_xyuvpq}.
+\begin{minipage}{\tw-70mm}
+Consider the additive noise system $\opS$ illustrated to the right:
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/sysH_xyuv--.pdf}}
+\\
+In the very special (a.k.a unrealistic) case of $\opS$ having \prope{zero measurement noise}
+($\rvu[n]=\rvv[n]=0$), 
+$\fh[n]$ being \prope{linear time invariant} (\prope{LTI}), 
+and input $\rvx[n]$ being \prope{wide sense stationary}\ldots
+then we can determine (a.k.a ``identify") $\fh[n]$ or $\fH(\omega)$
+exactly by $\fH(\omega)=\ffrac{\Swyx(\omega)}{\Swxx(\omega)}$ \xref{cor:Swxy}.
+
+However, in practical situations, there is measurement error \xref{fig:xhyplusv}. 
+An example may include 
+``road noise" from a test being performed in a moving vehicle.
+
+\begin{minipage}{\tw-70mm}
+If the measurement error is at the output only (and under the assumptions of \prope{LTI} and \prope{WSS})
+then $\estH_1$ (next definition) is the ideal estimator in the sense that $\estH_1=\fH$ \xref{prop:estH1}.
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/sysH_xy0v--.pdf}}
+\\
 %---------------------------------------
-\begin{definition}[\fnctd{Least Squares Technique}]
+\begin{definition}[\fnctd{least squares estimate} of $\fH(\omega)$]
 \footnote{
+  \citerppgc{bendat2013}{106}{109}{0471570559}{5.1.1 Optimality of Calculations},
+  \citerpgc{bendat2011}{185}{1118210824}{$H_1(f) = \ffrac{G_{xy}(f)}{G_{xx}(f)}$ (6.37)},
   \citerpgc{shin2008}{293}{0470725648}{
     $H_1(f)=\ffrac{\Swxy(f)}{\Swxx(f)}$ (9.63);
     which differs from \pref{def:H1}, but see \prefp{rem:Rxym}
     },
-  \citerpgc{bendat2011}{185}{1118210824}{$H_1(f) = \ffrac{G_{xy}(f)}{G_{xx}(f)}$ (6.37)},
   \citeP{bendat1978}{cited by Cobb(1988)---variance estimate for $\estH_1$},
   \citePc{allemang1979}{cited by Shin(2008)},
   \citePpc{leuridan1986}{910}{\fncte{Least Squares Technique}; (8) $[G_{xx}](H)=[G_{xy}]$},
   \citeP{abom1986}{cited by Cobb(1988)---variance estimate for $\estH_1$},
   \citePppc{allemang1987}{54}{55}{5.3.1 $H_1$ Technique; $[H]=[G_{XF}][G_{FF}]^{-1}$ (11)},
   \citePpc{cobb1988}{2}{$^1\hat{H}(f)=\ffrac{\hat{G}_{yx}(f)}{\hat{G}_{xx}(f)}$ (1)},
-  \citePpc{goyder1984}{438}{$H(i\omega)=\ffrac{S_{qp}}{S_{pp}}$ (3)}
+  \citePpc{goyder1984}{438}{$H(i\omega)=\ffrac{S_{qp}}{S_{pp}}$ (3)},
+  \citerpgc{pintelon2012}{233}{1118287398}{$\hat{G}(\Omega_k)=S_{yu}(j\omega_k)S_{uu}^{-1}(j\omega_k)$ (7-30)}
   }
 \label{def:H1}
 %---------------------------------------
@@ -87,18 +112,21 @@ Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
 \end{array}}
 \end{definition}
 
-However, in practical situations, there is measurement error \xref{fig:xhyplusv}. 
-An example may include 
-``road noise" from a test being performed in a moving vehicle.
-If the measurement error is at the output only (and under the assumptions of \prope{LTI} and \prope{WSS})
-then $\estH_1$ is the ideal estimator in the sense that $\estH_1=\fH$ \xref{prop:estH1}.
-However in the early 1980s, Mitchell pointed out that in the presence of input noise,
-$\estH1$ is far from ideal in that it is \prope{biased} with respect to $\fH$;
+The estimator $\estH_1$ is a good start.
+However in the early 1980s, L. D. Mitchell pointed out that in the presence of input noise,
+$\estH_1$ is far from ideal in that it is \prope{biased} with respect to $\fH$;
 in fact, $\estH_1$ \prope{under estimates} $\fH$ \xref{prop:estH2}.
 Mitchell proposed a new estimator $\estH_2$ (next definition).
-This estimator $\estH_2$ has the special property that when there is input noise but no 
+
+
+\begin{minipage}{\tw-70mm}
+This estimator has the special property that when there is input noise but no 
 output noise (and under \prope{LTI}, \prope{WSS}, and \prope{uncorrelated} assumptions), 
-then it is ideal in the sense that $\estH_2=\fH$ \prefp{prop:estH2}.
+then it is ideal in the sense that $\estH_2(\omega)=\fH(\omega)$ \xref{prop:estH2}.
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/sysH_xyu0--.pdf}}
+\\
+Note also that in the case of both no input and no output noise, then $\estH_1=\estH_2$ \xref{cor:Swxy}.
 %---------------------------------------
 \begin{definition}[\fnctd{Inverse Method}]
 \footnote{
@@ -107,7 +135,7 @@ then it is ideal in the sense that $\estH_2=\fH$ \prefp{prop:estH2}.
     },
   \citerpgc{bendat2011}{186}{1118210824}{$H_2(f) = \ffrac{G_{yy}(f)}{G_{yx}(f)}$ (6.42)},
   \citePc{mitchell1980}{cited by Cobb(1988)},
-  \citePc{mitchell1982}{278}{``Define what will be called an inverse method for calculation of a FRF as\ldots"; 
+  \citePpc{mitchell1982}{278}{``Define what will be called an inverse method for calculation of a FRF as\ldots"; 
     $\~H_2(f)=\ffrac{G_{yy}}{G_{yx}}$ (6); 
     Note this differs with \pref{def:H2} by a conjugate, but note that Mitchell seems to follow Bendat (see his [3] and [4]), 
     which would explain this difference \xref{rem:Rxym}},
@@ -121,12 +149,32 @@ Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
 \end{array}}
 \end{definition}
 
-Now with two estimators that in general provide two different results,
-an obvious extension is to somehow combine them to produce new estimators (next three definitions).
+Mitchell's $\estH_2$ contribution ``generated a flurry of activity"\footnote{\citePp{cobb1988}{3}}
+and soon more $\fH$ estimators appeared. 
+%As it turns out, in the presence of \emph{both} input and output measurement noise,
+%the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\fH$ \xref{prop:estH1}
+%and Mitchell's $\estH_2$, although ideal when output noise = 0, 
+%tends to \prope{over estimate} $\fH$ \xref{prop:estH2}.
+%But what about the case when there is noise on both input and output?
+%The next estimator is ideal when noise is present on both and the noise power of the two is equal.
+So far we have 
+\begin{listi}
+  \item $\estH_1$ which is ideal when there is no input noise but 
+        \prope{under estimate}s $\fH$ when there is \xref{prop:estH1}
+  \item $\estH_2$ which is ideal when there is no output noise but
+        \prope{over estimate}s $\fH$ when there is \xref{prop:estH2}.
+\end{listi}
+But what about estimators for when there is noise on both input and output?
+Armed with two estimators that between them account for both input and output noise,
+an ``ad hoc" solution might be to somehow take mean values of $\estH_1$ and $\estH_2$ 
+to induce new estimators---this approach summarizes the next three definitions.
+An arguably more mature approach is to find estimators that are optimal with respect to least squares measures---and
+this approach summarizes \pref{def:Hv} -- \prefpp{def:Hkappa}.
+
 %---------------------------------------
 \begin{definition}[\fnctd{Arithmetic mean estimator}]
 \footnote{
-  \citePc{mitchell1982}{279}{``Frequency Response Calculation: The Average Method"},
+  \citePpc{mitchell1982}{279}{``Frequency Response Calculation: The Average Method"},
   \citePpc{zheng2002}{918}{``1.3 Arithmetic Mean Estimator $H_3$"}
   }
 \label{def:Havg}
@@ -164,23 +212,6 @@ Let $\opS$ be a \structe{system} with input $\rvx[n]$ and output $\rvy[n]$.
 \end{array}}
 \end{definition}
 
-Mitchell's $\estH_2$ contribution ``generated a flurry of activity"\footnote{\citePp{cobb1988}{3}}
-and soon more $\fH$ estimators appeared. 
-%As it turns out, in the presence of \emph{both} input and output measurement noise,
-%the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\fH$ \xref{prop:estH1}
-%and Mitchell's $\estH_2$, although ideal when output noise = 0, 
-%tends to \prope{over estimate} $\fH$ \xref{prop:estH2}.
-%But what about the case when there is noise on both input and output?
-%The next estimator is ideal when noise is present on both and the noise power of the two is equal.
-So far we have 
-\begin{listi}
-  \item $\estH_1$ which is ideal when there is no input noise but 
-        \prope{under estimate}s $\fH$ when there is \xref{prop:estH1}
-  \item $\estH_2$ which is ideal when there is no output noise but
-        \prope{over estimate}s $\fH$ when there is \xref{prop:estH2}.
-\end{listi}
-But what about the case when there is noise on both input and output?
-The next estimator is ideal when noise is present on both and the noise power of the two is equal.
 %---------------------------------------
 \begin{definition}[\fnctd{Total Least Squares estimator}]
 \footnote{
@@ -265,7 +296,8 @@ In 1984 Goyder proposed an estimator (next definition) that is based on three si
   \citerpgc{shin2008}{297}{0470725648}{$H_3(f)=\ffrac{S_{ry}(f)}{S_{rx}(f)}$ (9.78)},
   \citePpc{cobb1988}{4}{$^c\hat{H}(f)=\ffrac{\hat{G}_{ys}(f)}{\hat{G}_{xs}(f)}$ (1.4)},
   \citePpc{goyder1984}{440}{$H(i\omega)=\ffrac{S_{qz}}{S_{pz}}$ (5)},
-  \citePpc{cobb1990}{450}{(1)}
+  \citePpc{cobb1990}{450}{(1)},
+  \citerpgc{pintelon2012}{241}{1118287398}{$\hat{G}(\Omega_k)=\hat{G}_{ry}(\Omega_k)\hat{G}_{ru}^{-1}(\Omega_k)$ (7-49)}
   }
 \label{def:Hc}
 %---------------------------------------
@@ -306,7 +338,7 @@ Let $\estHkappa(\omega)$ be defined as in \prefpp{def:Hkappa}.
 \begin{proposition}[Output noise only case]
 \footnote{
   \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=H(f)$ (9.70); $H_2(f)=H(f)\brp{1+\ffrac{S_{n_yn_y}(f)}{Syy(f)}}$ (9.71)},
-  \citePc{mitchell1982}{278}{$\~H_2(f)=H_0(f)\brp{1+\ffrac{G_{mm}}{G_{vv}}}$}
+  \citePpc{mitchell1982}{278}{$\~H_2(f)=H_0(f)\brp{1+\ffrac{G_{mm}}{G_{vv}}}$}
   }
 \label{prop:estH1}
 %---------------------------------------
@@ -360,7 +392,7 @@ Let $\rvx'[n]\eqd\rvx[n]+\rvu[n]$ and $\rvy'[n]\eqd\rvy[n]+\rvv[n]$.
 \begin{proposition}[Input noise only case]
 \footnote{
   \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=\ffrac{H(f)}{\brp{1+\ffrac{S_{n_xn_x}}{S_{xx}(f)}}}$ (9.72); $H_2(f)=H(f)$ (9.73)},
-  \citePc{mitchell1982}{277}{$\~H_1(f)=\ffrac{H_0(f)}{\brp{1+\ffrac{G_{nn}}{G_{uu}}}}$}
+  \citePpc{mitchell1982}{277}{$\~H_1(f)=\ffrac{H_0(f)}{\brp{1+\ffrac{G_{nn}}{G_{uu}}}}$}
   }
 \label{prop:estH2}
 %---------------------------------------
@@ -449,3 +481,11 @@ However, the Welch estimate with $K=1$ will yield
 \end{align*}
 
 \end{example}
+
+
+
+%=======================================
+\section{Coherence}
+%=======================================
+
+\citerppgc{liang2015}{363}{365}{1498702341}{7.4.2 Coherence function}
