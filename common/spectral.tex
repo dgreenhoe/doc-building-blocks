@@ -9,7 +9,7 @@
 %=======================================
 
 %=======================================
-%\subsection{Operator Spectrum}
+\section{Operator Spectrum}
 %=======================================
 %---------------------------------------
 \begin{definition}
@@ -318,5 +318,158 @@ Let $\opN\in\clFxy$ be an operator.
   \end{array}}
 \end{theorem}
 
+%=======================================
+\section{Fredholm kernels}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:op_int}
+\footnote{
+  \citerp{michel1993}{425}
+  }
+\index{Fredholm integral equation of the first kind|textbf}
+%---------------------------------------
+\defbox{\begin{array}{l@{\qquad}l}
+  \mc{2}{l}{\text{A \hid{Fredholm operator} $\opK$ is defined as}}
+  \\&
+  \brs{\opK\ff}(t) 
+  \eqd 
+  \mcom{\int_a^b \mcom{\kappa(t,s)}{kernel} \ff(s) \dd{s} }
+       {Fredholm integral equation of the first kind \footnotemark}
+  \qquad \forall \ff\in \spL_2([a,b])
+  \end{array}}
+\footnotetext{
+   The equation $\int_u \kappa(t,s) \ff(s) \dd{s}$ is a 
+   \fnctd{Fredholm integral equation of the first kind} and
+   $\kappa(t,u)$ is the {\bf kernel} of the equation.
+   References: 
+     \citer{fredholm1900},
+     \citerp{fredholm1903}{365},
+     \citerp{michel1993}{97},
+     \citerp{keener}{101}
+   }
+\end{definition}
 
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Examples of \prop{Fredholm operators} include
+\[
+\begin{array}{llrclrcl}
+  1. & \text{Fourier Transform}
+     & [\opFT \fx](f) &=& \int_t \fx(t) e^{-i2\pi ft}\dt 
+     & \kappa(t,f)    &=& e^{-i2\pi ft}
+\\
+  2. & \text{Inverse Fourier Transform}
+     & [\opFTi \Fx](t) &=& \int_f \Fx(f) e^{i2\pi ft}\df 
+     & \kappa(f,t)    &=& e^{i2\pi ft}
+\\
+  3. & \text{Laplace operator}
+     & [\opL \fx](s) &=& \int_t \fx(t) e^{-st}\dt 
+     & \kappa(t,s)   &=& e^{-st}
+\\
+  4. & \text{autocorrelation operator}
+     & [\opR \fx](t) &=& \int_s R(t,s) \fx(s) \dds 
+     & \kappa(t,s)   &=& R(t,s) %\text{ (autocorrelation function)}
+\end{array}
+\]
+\end{example}
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:intop_KkKk}
+%---------------------------------------
+Let $\opK$ be a \prop{Fredholm operator} with kernel $\kappa(t,s)$ and adjoint $\opKa$.
+\formbox{
+  \brs{\opK\ff}(t) = \int_\setA \kappa(t,s) \ff(s) \dds
+  \qquad\iff\qquad
+  \brs{\opKa\ff}(t) = \int_\setA \kappa^\ast(s,t) \ff(s) \dds
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \brs{\opK\ff}(t) 
+     &= \int_\setA \kappa(t,s) \ff(s) \dds
+   \\\iff
+   \inprod{\brs{\opK \ff}(t)}{\fg(t)}
+     &= \inprod{\int_s \kappa(t,s) \ff(s) \dds}{\fg(t)}
+     && \text{by left hypothesis}
+   \\&= \int_s \ff(s) \inprod{\kappa(t,s)  }{\fg(t)} \dds
+     && \text{by additivity property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
+   \\&= \int_s \ff(s) \inprod{\fg(t)}{\kappa(t,s)}^\ast \dds
+     && \text{by conjugate symmetry property of $\inprodn$\ifsxref{vsinprod}{def:inprod}}
+   \\&= \inprod{ \ff(s) }{\inprod{\fg(t)}{\kappa(t,s)} }
+     && \text{by local definition of $\inprodn$}
+   \\&= \inprod{ \ff(s) }{\mcom{\int_t \kappa^\ast(t,s) \fg(t) \dt}{$\brs{\opKa\fg}(s)$} }
+     && \text{by local definition of $\inprodn$}
+   \\\iff
+   \brs{\opKa\fg}(s) 
+     &= \int_\setA \kappa^\ast(t,s) \fg(t) \dt
+     && \text{by right hypothesis}
+   \\\iff
+   \brs{\opKa\fg}(\sigma) 
+     &= \int_\setA \kappa^\ast(\tau,\sigma) \fg(\tau) \dtau
+     && \text{by change of variable: $\tau=t,\, \sigma=s$}
+   \\\iff
+   \brs{\opKa\ff}(t) 
+     &= \int_\setA \kappa^\ast(s,t) \ff(s) \dds
+     && \text{by change of variable: $t=\sigma,\, s=\tau,\, \ff=\fg$}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:intop_KKkk}
+\footnote{
+  \citerp{michel1993}{430}
+  }
+%---------------------------------------
+Let $\opK$ be an \prop{Fredholm operator} with kernel $\kappa(t,s)$ and adjoint $\opKa$.
+\formbox{
+  \mcom{\opK=\opKa}{$\opK$ is self-adjoint}
+  \qquad\iff\qquad
+  \mcom{\kappa(t,s) = \kappa^\ast(s,t)}{kernel is \prop{conjugate symmetric}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opK = \opKa
+    &\iff \int_\setA \kappa(t,s) \ff(s) \dds = \int_\setA \kappa^\ast(s,t) \ff(s) \dds
+    &&    \text{by \prefp{thm:intop_KkKk}}
+  \\&\iff \kappa(t,s) =  \kappa^\ast(s,t) 
+\end{align*}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}[Mercer's Theorem]
+\label{thm:mercer}
+\footnote{
+  \citerp{gohberg}{198},
+  \citerpp{courant}{138}{140},
+  \citerp{mercer1909}{439}
+  }
+\index{Mercer's Theorem}
+\index{theorems!Mercer's Theorem}
+%---------------------------------------
+Let $\opK$ be an \prop{Fredholm operator} with kernel $\kappa(t,s)$ and
+eigensystem $\seq{(\lambda_n,\phi_n(t))}{n\in\Z}$.
+\formbox{
+  \left.\begin{array}{ll}
+    1.& \mcom{\int_a^b \int_a^b \kappa(t,s) \ff(t) \ff^\ast(s) \ds\dt \ge 0}{positive} \quad \text{and }\\
+    2.& \kappa(t,s) \text{ is continuous on } [a,b]\times[a,b]
+  \end{array}\right\}
+  \implies
+  \left\{\begin{array}{ll}
+    1.& \kappa(t,s) = \sum_n \lambda_n \fphi_n(t) \fphi_n^\ast(s) \quad\text{and}\\
+    2.& \kappa(t,s) \text{ converges absolutely and} \\
+      & \text{uniformly on $[a,b]\times[a,b]$}
+  \end{array}\right.
+  }
+\end{theorem}
+\begin{proof}
+
+\end{proof}
 

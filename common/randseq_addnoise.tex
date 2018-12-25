@@ -1,0 +1,201 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%=======================================
+\chapter{Additive noise}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+\label{thm:xvy}
+%---------------------------------------
+\mbox{}\\
+\tbox{Let $\opS$ be the \structe{system} with $\rvy(n) = \rvx(n) + \rvv(n)$.}
+\qquad\tbox{\includegraphics{graphics/sys_xvy.pdf}}
+\\
+\propbox{
+  \brbr{\begin{array}{FrclDD}
+      (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)         & (\prope{WSS})          & and
+    \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=&\pE\rvx(n)\pE\rvv(n) & (\prope{uncorrelated}) & and
+    \\(C).& \pE\rvv(n)              &=& 0                   & (\prope{zero-mean})    &
+  \end{array}}
+  \implies
+  \brbl{\begin{array}{FrclD}
+      (1).&\Ryy(m)       &=& \Rxx(m)       + \Rvv(m)       & and
+    \\(4).&\Ryv(m)       &=&                 \Rvv(m)       & and
+    \\(2).&\Szyy(z)      &=& \Szxx(z)      + \Szvv(z)      & and
+    \\(5).&\Szyv(z)      &=&                 \Szvv(z)      & and
+    \\(3).&\Swyy(\omega) &=& \Swxx(\omega) + \Swvv(\omega) & and
+    \\(6).&\Swyv(\omega) &=&                 \Swvv(\omega) & 
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \Ryy(m)
+    &\eqd \pE\brs{\rvy(m)\rvy^\ast(0)}
+    && \text{by (A) and definition of $\Ryy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \pE\brs{(\rvx(m)+\rvv(m))(\rvx(0)+\rvv(0))^\ast}
+    && \text{by definition of $\rvy$}
+  \\&= \mathrlap{
+       \pE\brs{\rvx(m)\rvx^\ast(0)}
+     + \pE\brs{\rvx(m)\rvv^\ast(0)}
+     + \pE\brs{\rvv(m)\rvx^\ast(0)} 
+     + \pE\brs{\rvv(m)\rvv^\ast(0)}
+     }
+  \\&= \mathrlap{
+       \pE\brs{\rvx(m)\rvx^\ast(0)}
+     + \pE{\rvx(m)\pE\rvv^\ast(0)}
+     + \pE{\rvv(m)\pE\rvx^\ast(0)} 
+     + \pE\brs{\rvv(m)\rvv^\ast(0)}
+     \quad\text{by \prope{uncorrelated} hypothesis (B)}
+     }
+  \\&= \mathrlap{
+       \pE\brs{\rvx(m)\rvx^\ast(0)}
+     + \pE\rvx(m)\cancelto{0}{\pE\rvv^\ast(0)}
+     + \cancelto{0}{\pE\rvv(m)}\pE\rvx^\ast(0)
+     + \pE\brs{\rvv(m)\rvv^\ast(0)}
+     \quad\text{by \prope{zero-mean} hypothesis (C)}
+     }
+  \\&= \Rxx(m) + \Rvv(m)
+    && \text{by definition of $\Rxx$}
+    && \text{\xref{def:Rxxm}}
+  \\
+  \Ryv(m)
+    &\eqd \pE\brs{\rvy(m)\rvv^\ast(0)}
+    && \text{by (A) and definition of $\Ryy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \pE\brs{(\rvx(m)+\rvv(m))\rvv^\ast(0)}
+    && \text{by definition of $\rvy$}
+  \\&= \pE\brs{\rvx(m)\rvv^\ast(0)} + \pE\brs{\rvv(m)\rvv^\ast(0)}
+  \\&= \pE\rvx(m)\pE\rvv^\ast(0) + \pE\brs{\rvv(m)\rvv^\ast(0)}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(B)}
+  \\&= \pE\rvx(m)\cancelto{0}{\pE\rvv^\ast(0)} + \pE\brs{\rvv(m)\rvv^\ast(0)}
+    && \text{by \prope{zero-mean} hypothesis}
+    && \text{(C)}
+  \\&= \Rxv(m) + \Rvv(m)
+    && \text{by definitions of $\Rxy$ and $\Rxx$}
+    && \text{\xref{def:Rxxm}}
+  \\
+  \Szyy(z)
+    &\eqd \opZ\Ryy(m)
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&= \opZ\Rqq(m) + \opZ\Rvv(m)
+    && \text{by previous result}
+    && \text{(1)}
+  \\&= \Szqq(z) + \Szvv(z)
+    && \text{by definition of $\Szyy$}
+    && \text{\xref{def:Swxy}}
+  \\
+  \Swyy(\omega)
+    &\eqd \opDTFT\Ryy(m)
+    && \text{by definition of $\Swyy$}
+    && \text{\xref{def:Swxx}}
+  \\&= \opDTFT\Rqq(m) + \opDTFT\Rvv(m)
+    && \text{by previous result}
+    && \text{(1)}
+  \\&= \Swqq(\omega) + \Swvv(\omega)
+    && \text{by definition of $\Swyy$}
+    && \text{\xref{def:Swxy}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpg{shin2008}{293}{0470725648}
+  }
+\label{prop:Swxyv}
+%---------------------------------------
+\\\tbox{Let $\opS$ be the \structe{system} illustrated to the right.}
+\qquad\tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}
+\\
+\propbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx(n)$ and $\fy(n)$ are &\prope{WSS}       & and
+    \\(B).& $\rvx(n)$ and $\rvv(n)$ are &                  &
+        \\& \quad\prope{uncorrelated} &                  & and
+    \\(C).& $\pE\rvv(n) = 0$          &(\prope{zero-mean})&
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+          &\Swxy(\omega) &=& \Swxq(\omega)                 & and
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \Swxy(\omega)
+    &\eqd \opDTFT\Rxy(m)
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+  \\&\eqd \opDTFT\pE\brs{\rvx(m)\rvy^\ast(0)}
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \opDTFT\pE\brs{\rvx(m)(\rvq(0)+\rvv(0))^\ast}
+    && \text{by definition of $\opS$}
+  \\&= \opDTFT\pE\brs{\rvx(m)\rvq^\ast(0)+\rvx(m)\rvv^\ast(0)}
+  \\&= \opDTFT\pE\brs{\rvx(m)\rvq^\ast(0)} + \opDTFT\pE\brs{\rvx(m)\rvv^\ast(0)}
+  \\&= \opDTFT\pE\brs{\rvx(m)\rvq^\ast(0)} + \opDTFT\brs{\pE\rvx(m)}\brs{\pE\rvv^\ast(0)}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(B)}
+  \\&= \opDTFT\pE\brs{\rvx(m)\rvq^\ast(0)}
+    && \text{by \prope{zero-mean} hypothesis}
+    && \text{(C)}
+  \\&= \opDTFT\Rxq(m)
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&= \Swxq(\omega)
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:xGw_xHy}
+%---------------------------------------
+\mbox{}\\
+\begin{minipage}{\tw-70mm}
+Let $\opS$ be the \structe{system} illustrated to the right.
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/xGy_xHw.pdf}}
+\\
+\propbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\fg(n)$  is &\prope{LTI}       & and
+    \\(B).& $\rvx(n)$ is &\prope{WSS}       & 
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rcl}
+    \Swwy(\omega) &=& \fG(\omega)\Swxy(\omega)
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \Swwy(\omega)
+    &\eqd \opDTFT\Rwy(m)
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+  \\&\eqd \opDTFT\pE\brs{\rvw(m)\rvy^\ast(0)}
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&= \opDTFT\pE\brs{\sum_{n\in\Z}\fg(n)\rvx(m-n)\rvy^\ast(0)}
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&= \opDTFT\sum_{n\in\Z}\fg(n)\pE\brs{\rvx(m-n)\rvy^\ast(0)}
+  \\&= \opDTFT\sum_{n\in\Z}\fg(n)\Rxy(m-n)
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&= \opDTFT\brs{\fg(n)\convd\Rxy(m-n)}
+    && \text{by definition of \ope{convolution}}
+    && \text{\xref{def:dsp_conv}}
+  \\&= \fG(\omega)\Sxy(\omega)
+    && \text{by \thme{convolution theorem}}
+    && \text{\xref{thm:conv}}
+\end{align*}
+\end{proof}
