@@ -1,0 +1,102 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+% nominal unit = 10mm
+% see pst-node package: https://ctan.org/pkg/pst-node
+%============================================================================
+\begin{pspicture}(-3.7,-1.3)(3.2,1.9)
+  %-------------------------------------
+  % settings
+  %-------------------------------------
+  \psset{%
+    radius=2.25mm,  % radius of adder circles
+    framesize=10mm,% width and height of transfer function boxes
+    labelsep=2pt
+    }%
+  %-------------------------------------
+  % transfer function boxes
+  %-------------------------------------
+  \fnodeput{0}{ 0}{+0.75}{sysG}{$\fg(n)$}%
+  \fnodeput{0}{ 0}{-0.75}{sysH}{$\fh(n)$}%
+    %       |   |   |     |       |____ label in box
+    %       |   |   |     |____________ node name
+    %       |   |   |__________________ y location
+    %       |   |______________________ x location
+    %       |__________________________ angle
+  %--------------------------------------------------------------------------
+  % ADDERS: circles with $+$ inside
+  %--------------------------------------------------------------------------
+  \cnodeput{0}(-2.0,+0.00){addU}{$+$}%
+  \cnodeput{0}( 1.5,+0.75){addW}{$+$}%
+  \cnodeput{0}( 1.5,-0.75){addV}{$+$}%
+    % |     |   |    |     |      |____ $+$ in circle
+    % |     |   |    |     |___________ node label
+    % |     |   |    |_________________ y location
+    % |     |   |______________________ x location
+    % |     |__________________________ angle of + in circle
+    % |________________________________ circle node put
+  %-------------------------------------
+  % node locations
+  %-------------------------------------
+  \pnode(+2.50, 0.75){sysV}%
+  \pnode(-3.00, 0.00){sysX}%
+  \pnode(+2.50, 0.75){sysS}%
+  \pnode(+2.50,-0.75){sysY}%
+  \pnode( 0.85, 0.75){sysR}%
+  \pnode( 0.85,-0.75){sysQ}%
+  \pnode(-2.00, 0.75){sysU}%
+  \pnode(+1.50, 1.50){sysW}%
+  \pnode(+1.50, 0.00){sysV}%
+  \pnode(-1.25, 0.75){sysPg}%
+  \pnode(-1.25,-0.75){sysPh}%
+  \nnode{-1.25}{0.00}{sysP}%
+    %     |     |     |_________________ node name
+    %     |     |_______________________ y location
+    %     |_____________________________ x location
+  %-------------------------------------
+  % label text
+  %-------------------------------------
+  \uput[  0](sysP) {$\rvp(n)$}%
+  \uput[180](sysX) {$\rvx(n)$}%
+  \uput[  0](sysS) {$\rvs(n)$}%
+  \uput[  0](sysY) {$\rvy(n)$}%
+  \uput[ 90](sysV) {$\rvv(n)$}%
+  \uput[ 90](sysU) {$\rvu(n)$}%
+  \uput[ 90](sysW) {$\rvw(n)$}%
+  \uput[ 90](sysR) {$\rvr(n)$}%
+  \uput[-90](sysQ) {$\rvq(n)$}%
+  %-------------------------------------
+  % system connections                     sysW
+  %                             _____        |
+  %                 sysPg      |     | sysR  v 
+  %           sysU    o------->| g[n]|----->(+)------> sysS 
+  %             |     |        |_____|     addW
+  %             v     |                  
+  %    sysX ---(+)----o sysP    __|__(0,0)
+  %           addU    |           |        sysV
+  %                   |         _____        |
+  %                   |        |     | sysQ  v 
+  %                   o------->| h[n]|----->(+)------> sysY 
+  %                 sysPh      |_____|     addV
+  %-------------------------------------
+  \ncline{->}{sysX}{addU}%
+  \ncline{->}{sysU}{addU}%
+  \ncline{addU}{sysP}%
+  \psline(sysP)(sysPg)%
+  \psline(sysP)(sysPh)%
+  \ncline{->}{sysPg}{sysG}%
+  \ncline{->}{sysPh}{sysH}%
+  \ncline{->}{sysG}{addW}%
+  \ncline{->}{sysH}{addV}%
+  \ncline{->}{addW}{sysS}%
+  \ncline{->}{addV}{sysY}%
+  \ncline{->}{sysU}{addU}%
+  \ncline{->}{sysW}{addW}%
+  \ncline{->}{sysV}{addV}%
+  %-------------------------------------
+  % development support--comment out before final version
+  %-------------------------------------
+  \psset{linecolor=red,linewidth=0.50pt}%
+  %\psline(-0.25, 0.00)(0.25,0.00)% __|__ centered at (0,0)
+  %\psline( 0.00,-0.25)(0.00,0.25)%   |
+\end{pspicture}%

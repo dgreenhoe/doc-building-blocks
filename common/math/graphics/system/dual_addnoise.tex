@@ -1,0 +1,77 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+% nominal unit = 10mm
+% see pst-node package: https://ctan.org/pkg/pst-node
+%============================================================================
+\begin{pspicture}(-0.2,-1.1)(3.2,1.9)
+  %-------------------------------------
+  % settings
+  %-------------------------------------
+  \psset{%
+    radius=2.25mm,  % radius of adder circles
+    framesize=10mm,% width and height of transfer function boxes
+    labelsep=2pt
+    }%
+  %--------------------------------------------------------------------------
+  % ADDERS: circles with $+$ inside
+  %--------------------------------------------------------------------------
+  \cnodeput{0}( 1.5,+0.75){addW}{$+$}%
+  \cnodeput{0}( 1.5,-0.75){addV}{$+$}%
+    % |     |   |    |     |      |____ $+$ in circle
+    % |     |   |    |     |___________ node label
+    % |     |   |    |_________________ y location
+    % |     |   |______________________ x location
+    % |     |__________________________ angle of + in circle
+    % |________________________________ circle node put
+  %-------------------------------------
+  % node locations
+  %-------------------------------------
+  \pnode(+2.50, 0.75){sysV}%
+  \pnode(+2.50, 0.75){sysS}%
+  \pnode(+2.50,-0.75){sysY}%
+  \pnode( 0.50, 0.75){sysR}%
+  \pnode( 0.50,-0.75){sysQ}%
+  \pnode(+1.50, 1.50){sysW}%
+  \pnode(+1.50, 0.00){sysV}%
+    %     |     |     |_________________ node name
+    %     |     |_______________________ y location
+    %     |_____________________________ x location
+  %-------------------------------------
+  % label text
+  %-------------------------------------
+  \uput[  0](sysS) {$\rvs(n)$}%
+  \uput[  0](sysY) {$\rvy(n)$}%
+  \uput[ 90](sysV) {$\rvv(n)$}%
+  \uput[ 90](sysW) {$\rvw(n)$}%
+  \uput[180](sysR) {$\rvr(n)$}%
+  \uput[180](sysQ) {$\rvx(n)$}%
+  %-------------------------------------
+  % system connections
+  %                sysW
+  %                 |
+  %                 v 
+  %     sysR ----->(+)------> sysS 
+  %               addW
+  %             
+  %    __|__(0,0)
+  %      |        sysV
+  %                 |
+  %                 v 
+  %     sysQ ----->(+)------> sysY 
+  %               addV
+  %-------------------------------------
+  \ncline{->}{sysR}{addW}%
+  \ncline{->}{sysQ}{addV}%
+  \ncline{->}{addW}{sysS}%
+  \ncline{->}{addV}{sysY}%
+  \ncline{->}{sysU}{addU}%
+  \ncline{->}{sysW}{addW}%
+  \ncline{->}{sysV}{addV}%
+  %-------------------------------------
+  % development support--comment out before final version
+  %-------------------------------------
+  \psset{linecolor=red,linewidth=0.50pt}%
+  %\psline(-0.25, 0.00)(0.25,0.00)% __|__ centered at (0,0)
+  %\psline( 0.00,-0.25)(0.00,0.25)%   |
+\end{pspicture}%
