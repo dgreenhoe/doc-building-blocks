@@ -5,6 +5,28 @@
 %============================================================================
 \chapter{System Identification}
 %============================================================================
+\qboxnpq{
+  Karl R. Popper (1902--1994)
+  \index{Popper, Karl}
+  \index{quotes!Popper, Karl}
+  \footnotemark
+  }
+  {../common/graphics/portraits/popper_karl_wkp_pdomain.jpg}
+  %{Mathematics compares the most diverse phenomena and discovers the secret analogies that unite them.}
+  {%
+  I can therefore gladly admit that falsificationists like myself much 
+  prefer an attempt to solve an interesting problem by a bold conjecture, 
+  even (and especially) if it so turns out to be false, 
+  to any recital of a sequence of irrelevant truisms. 
+  We prefer this because we believe that this is the way in which we can 
+  learn from our mistakes and that in finding that our conjecture was false 
+  we shall have learned much about the truth, 
+  and shall have got nearer to the truth.
+  }
+  \footnotetext{\begin{tabular}[t]{ll}
+    quote: & \citerp{popper1962}{231}, \citerpg{popper1963}{313}{1135971307}\\
+    image: & \url{https://en.wikipedia.org/wiki/File:Karl_Popper.jpg}, ``no known copyright restrictions"
+  \end{tabular}}
 
 Let $\opS$ be a \structe{system} with \fncte{impulse response} $\fh[n]$ with
 with \ope{DTFT} $\fH(\omega)$,
@@ -90,7 +112,7 @@ then $\estH_1$ (next definition) is the ideal estimator in the sense that $\estH
 %---------------------------------------
 \begin{definition}[\fnctd{least squares estimate} of $\fH(\omega)$]
 \footnote{
-  \citerppgc{bendat2013}{106}{109}{0471570559}{5.1.1 Optimality of Calculations},
+  \citerppgc{bendat1993}{106}{109}{0471570559}{5.1.1 Optimality of Calculations},
   \citerpgc{bendat2011}{185}{1118210824}{$H_1(f) = \ffrac{G_{xy}(f)}{G_{xx}(f)}$ (6.37)},
   \citerpgc{shin2008}{293}{0470725648}{
     $H_1(f)=\ffrac{\Swxy(f)}{\Swxx(f)}$ (9.63);
@@ -330,6 +352,73 @@ Let $\estHkappa(\omega)$ be defined as in \prefpp{def:Hkappa}.
                             {2\Swxy(\omega)}
   }
 \end{proposition}
+
+\begin{figure}
+  \centering%
+  \includegraphics{graphics/sysH_estH.pdf}
+  \caption{Ideal least squares estimator for output noise only system\label{fig:sysH_estH}}
+\end{figure}
+%---------------------------------------
+\begin{minipage}{\tw-65mm}
+\begin{theorem}
+\footnotemark
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated to the right.
+Let $\norm{\rvx}\eqd\pE\brs{\rvx\rvx^\ast}$.
+\end{theorem}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/sysH_estH.pdf}}
+\footnotetext{
+  \citerppgc{bendat1980}{98}{100}{0471058874}{5.1.1 Optimal Character of Calculations},
+  \citerppgc{bendat1993}{106}{109}{0471570559}{5.1.1 Optimality of Calculations}
+  }
+\thmbox{
+  \mcom{\argmin_{\estH}\norm{\FW(\omega)-\FQ(\omega)}^2 = \estH_1(\omega)}
+       {$\estH_1$ is the \prope{least-squares estimator} of $\opS$}
+  }
+\begin{proof}
+\begin{align*}
+  \fCost\brp{\estH}
+    &\eqd \norm{\FW(\omega)-\FQ(\omega)}^2
+  \\&\eqd \inprod{\FW(\omega)-\FQ(\omega)}{\FW(\omega)-\FQ(\omega)}
+  \\&\eqd \pE\brp{\brs{\FW(\omega)-\FQ(\omega)}\brs{\FW(\omega)-\FQ(\omega)}^\ast}
+  \\&=    \pE\brs{\FW(\omega)\FW^\ast(\omega)} 
+        - \pE\brs{\FW(\omega)\FQ^\ast(\omega)} 
+        - \pE\brs{\FQ(\omega)\FW^\ast(\omega)} 
+        + \pE\brs{\FQ(\omega)\FQ^\ast(\omega)} 
+  \\&= \Swww(\omega) - \Swwq(\omega) - \Swwq^\ast(\omega) + \Swqq(\omega)
+    \qquad\text{by \thme{Wiener-Kinchin relationship}}
+  \\&= \Swww(\omega) - \Swwy(\omega) - \Swwy^\ast(\omega) + \Swyy(\omega)-\Swvv(\omega)
+  \\&= \Swxx(\omega)\abs{\estH(\omega)}^2 - \estH(\omega)\Swyx(\omega) - \estH^\ast(\omega)\Swyx^\ast(\omega) + \Swyy(\omega)-\Swvv(\omega)
+  \\
+  0
+    &= \pderiv{}{\estH}\fCost\brp{\estH} 
+  \\&= \pderiv{}{\estH}
+       \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast + \Swyy-\Swvv}
+  \\&= \pderiv{}{\estH}
+       \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast + \cancelto{0}{\Swyy}-\cancelto{0}{\Swvv}}
+  \\&= \brs{\begin{array}{c}\pderiv{}{\estH_R}\\\pderiv{}{\estH_I}\end{array}}
+       \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast}
+  \\&= \brs{\begin{array}{c}\pderiv{}{\estH_R}\\\pderiv{}{\estH_I}\end{array}}
+       \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast}
+  \\&= \brs{\begin{array}{c}\pderiv{}{\estH_R}\\\pderiv{}{\estH_I}\end{array}}
+       \Swxx\brp{\estH_R^2+\estH_I^2} 
+     - \brs{\begin{array}{c}\pderiv{}{\estH_R}\estH_R\Re\Swyx\\\pderiv{}{\estH_I}  \estH_I   \Im\Swyx\end{array}}
+     - \brs{\begin{array}{c}\pderiv{}{\estH_R}\estH_R\Re\Swyx\\\pderiv{}{\estH_I}(-\estH_I)(-\Im\Swyx)\end{array}}
+  \\&= \brs{\begin{array}{c}2\Swxx\estH_R\\2\Swxx\estH_I\end{array}}
+     - \brs{\begin{array}{c}\Re\Swyx\\\Im\Swyx\end{array}}
+     - \brs{\begin{array}{c}\Re\Swyx\\\Im\Swyx\end{array}}
+  \\&= 2\Swxx\brs{\begin{array}{c}\estH_R\\\estH_I\end{array}}
+     - 2\brs{\begin{array}{c}\Re\Swyx\\\Im\Swyx\end{array}}
+  \\\implies 0
+    &= 2\Swxx(\omega)\estH(\omega) - 2\Swyx(\omega)
+  \\\implies \estH(\omega)
+    &= \frac{\Swyx(\omega)}{\Swxx(\omega)}
+\end{align*}
+\end{proof}
+
+
+
 
 \begin{figure}
   \centering%
