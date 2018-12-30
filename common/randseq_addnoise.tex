@@ -5,7 +5,9 @@
 %=======================================
 \chapter{Additive noise}
 %=======================================
-
+%=======================================
+\section{Effects of additive noise}
+%=======================================
 %---------------------------------------
 \begin{minipage}{\tw-55mm}
 \begin{theorem}
@@ -16,20 +18,15 @@ Let $\opS$ be the \structe{system} illustrated to the right:
 \end{minipage}
 \qquad\tbox{\includegraphics{graphics/sys_xvy.pdf}}
 \thmbox{
-  \brbr{\begin{array}{FrclDD}
+  \brbr{\begin{array}{@{\hspace{2pt}}FrclDD}
       (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)         &(\prope{WSS})          & and
-    \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=&\pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and 
-    %   \\& \mc{3}{D}{(\prope{uncorrelated})}               &                         and
-    \\(C).& \pE\rvv(n)              &=& 0                   & (\prope{zero-mean})     
+    \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=&\pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
+    \\(C).& \pE\rvv(n)              &=& 0                   & (\prope{zero-mean})
   \end{array}}
   \implies
   \brbl{\begin{array}{FrclD}
       (1).&\Ryy(m)       &=& \Rxx(m)       + \Rvv(m)       & and
-    \\(4).&\Ryv(m)       &=&                 \Rvv(m)       & and
-    \\(2).&\Szyy(z)      &=& \Szxx(z)      + \Szvv(z)      & and
-    \\(5).&\Szyv(z)      &=&                 \Szvv(z)      & and
-    \\(3).&\Swyy(\omega) &=& \Swxx(\omega) + \Swvv(\omega) & and
-    \\(6).&\Swyv(\omega) &=&                 \Swvv(\omega) & 
+    \\(2).&\Ryv(m)       &=&                 \Rvv(m)       &
   \end{array}}
   }
 \\
@@ -44,13 +41,13 @@ Let $\opS$ be the \structe{system} illustrated to the right:
   \\&= \mathrlap{
        \pE\brs{\rvx(m)\rvx^\ast(0)}
      + \pE\brs{\rvx(m)\rvv^\ast(0)}
-     + \pE\brs{\rvv(m)\rvx^\ast(0)} 
+     + \pE\brs{\rvv(m)\rvx^\ast(0)}
      + \pE\brs{\rvv(m)\rvv^\ast(0)}
      }
   \\&= \mathrlap{
        \pE\brs{\rvx(m)\rvx^\ast(0)}
      + \pE{\rvx(m)\pE\rvv^\ast(0)}
-     + \pE{\rvv(m)\pE\rvx^\ast(0)} 
+     + \pE{\rvv(m)\pE\rvx^\ast(0)}
      + \pE\brs{\rvv(m)\rvv^\ast(0)}
      \quad\text{by \prope{uncorrelated} hypothesis (B)}
      }
@@ -67,7 +64,7 @@ Let $\opS$ be the \structe{system} illustrated to the right:
   \\
   \Ryv(m)
     &\eqd \pE\brs{\rvy(m)\rvv^\ast(0)}
-    && \text{by (A) and definition of $\Ryy$}
+    && \text{by (A) and definition of $\Ryv$}
     && \text{\xref{def:Rxym}}
   \\&\eqd \pE\brs{(\rvx(m)+\rvv(m))\rvv^\ast(0)}
     && \text{by definition of $\rvy$}
@@ -81,7 +78,31 @@ Let $\opS$ be the \structe{system} illustrated to the right:
   \\&= \Rxv(m) + \Rvv(m)
     && \text{by definitions of $\Rxy$ and $\Rxx$}
     && \text{\xref{def:Rxxm}}
-  \\
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:xvy}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:xvy}.
+\corbox{
+  \brbr{\begin{array}{@{\hspace{2pt}}FrclDD}
+      (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)         &(\prope{WSS})          & and
+    \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=&\pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
+    \\(C).& \pE\rvv(n)              &=& 0                   & (\prope{zero-mean})
+  \end{array}}
+  \implies
+  \brbl{\begin{array}{FrclD}
+      (1).&\Szyy(z)      &=& \Szxx(z)      + \Szvv(z)      & and
+    \\(2).&\Szyv(z)      &=&                 \Szvv(z)      & and
+    \\(3).&\Swyy(\omega) &=& \Swxx(\omega) + \Swvv(\omega) & and
+    \\(4).&\Swyv(\omega) &=&                 \Swvv(\omega) &
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
   \Szyy(z)
     &\eqd \opZ\Ryy(m)
     && \text{by definition of $\Szxx$}
@@ -106,7 +127,6 @@ Let $\opS$ be the \structe{system} illustrated to the right:
 \end{align*}
 \end{proof}
 
-
 %---------------------------------------
 \begin{minipage}{\tw-55mm}
 \begin{theorem}
@@ -117,52 +137,71 @@ Let $\opS$ be the \structe{system} illustrated to the right:
 \end{minipage}
 \qquad\tbox{\includegraphics{graphics/dual_addnoise.pdf}}
 \thmbox{
-  \brbr{\begin{array}{FMD}
-      (A).& $\rvx(n)$ and $\rvr(n)$ are \prope{WSS}                     & and
-    \\(B).& $\rvx$ and $\rvw$ are \prope{uncorrelated} & and
-    \\(C).& $\rvr$ and $\rvv$ are \prope{uncorrelated} & and
-    \\(D).& $\rvw$ and $\rvv$ are \prope{uncorrelated} & and
-    \\(E).& $\pE\rvv(n)=\pE\rvw(n)=0$ (\prope{zero-mean})     
+  \brb{\begin{array}{FrclDD}
+      (A).& \mc{4}{M}{$\rvx(n)$ and $\rvr(n)$ are \prope{wide sense stationary}}      & and
+    \\(B).& \pE\brs{\rvx(n)\rvw(n)} &=& \pE\rvx(n)\pE\rvw(n) & (\prope{uncorrelated}) & and
+    \\(C).& \pE\brs{\rvr(n)\rvv(n)} &=& \pE\rvr(n)\pE\rvv(n) & (\prope{uncorrelated}) & and
+    \\(D).& \pE\brs{\rvw(n)\rvv(n)} &=& \pE\rvw(n)\pE\rvv(n) & (\prope{uncorrelated}) & and
+    \\(E).& \pE\rvv(n)=\pE\rvw(n)   &=& 0                    & (\prope{zero-mean})
   \end{array}}
   \implies
-  \brb{\begin{array}{FrclD}
-      (1).&\Rsy(m)       &=& \Rrx(m)                       & and
-    \\(2).&\Szsy(z)      &=& \Szrx(z)                      & and
-    \\(3).&\Swsy(\omega) &=& \Swrx(\omega)                 &
+  \brb{\begin{array}{rcl}
+      \Rsy(m)       &=& \Rrx(m)
   \end{array}}
   }
 \\
 \begin{proof}
 \begin{align*}
-  \Rsy(m) 
+  \Rsy(m)
     &\eqd \pE\brs{\rvs(m)\rvy^\ast(0)}
     && \text{by definition of $\Rxy$}
     && \text{\xref{def:Rxym}}
   \\&\eqd \pE\brp{\brs{\rvr(m)+\rvw(m)}(\rvx(0)+\rvv(0))^\ast}
     && \text{by definition of $\opS$}
-  \\&= \pE\brs{\rvr(m)\rvx^\ast(0)}  
-      +\pE\brs{\rvr(m)\rvv^\ast(0)}  
+  \\&= \mathrlap{
+       \pE\brs{\rvr(m)\rvx^\ast(0)}
+      +\pE\brs{\rvr(m)\rvv^\ast(0)}
+      +\pE\brs{\rvw(m)\rvx^\ast(0)}
+      +\pE\brs{\rvw(m)\rvv^\ast(0)}
+      }
+  \\&= \pE\brs{\rvr(m)\rvx^\ast(0)}
+      +\pE\rvr(m)\pE\rvv^\ast(0)
       \\&\qquad
-      +\pE\brs{\rvw(m)\rvx^\ast(0)}  
-      +\pE\brs{\rvw(m)\rvv^\ast(0)}  
-  \\&= \pE\brs{\rvr(m)\rvx^\ast(0)}  
-      +\pE\rvr(m)\pE\rvv^\ast(0)  
-      \\&\qquad
-      +\pE\rvw(m)\pE\rvx^\ast(0)  
-      +\pE\rvw(m)\pE\rvv^\ast(0)  
-    && \text{by \prope{uncorrelated} hypothesis}
-    && \text{(B)}
-  \\&= \pE\brs{\rvr(m)\rvx^\ast(0)}  
+      +\pE\rvw(m)\pE\rvx^\ast(0)
+      +\pE\rvw(m)\pE\rvv^\ast(0)
+    && \text{by \prope{uncorrelated} hypotheses}
+    && \text{(B), (C), and (D)}
+  \\&= \pE\brs{\rvr(m)\rvx^\ast(0)}
       +\pE\rvr(m)\cancelto{0}{\pE\rvv^\ast(0)}
       \\&\qquad
-      +\cancelto{0}{\pE\rvw(m)}\pE\rvx^\ast(0)  
-      +\cancelto{0}{\pE\rvw(m)}\pE\rvv^\ast(0)  
+      +\cancelto{0}{\pE\rvw(m)}\pE\rvx^\ast(0)
+      +\cancelto{0}{\pE\rvw(m)}\pE\rvv^\ast(0)
     && \text{by \prope{zero-mean} hypothesis}
-    && \text{(C)}
+    && \text{(E)}
   \\&= \Rrx(m)
     && \text{by definition of $\Rxy$}
     && \text{\xref{def:Rxym}}
-  \\
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:dual_addnoise}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:dual_addnoise}.
+\corbox{
+  \brb{\begin{array}{M}
+    hypotheses of \prefpp{thm:dual_addnoise}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+      (1).&\Szsy(z)      &=& \Szrx(z)                      & and
+    \\(2).&\Swsy(\omega) &=& \Swrx(\omega)                 &
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
   \Szsy(\omega)
     &\eqd \opZ\Rsy(m)
     && \text{by definition of $\Szxy$}
@@ -187,6 +226,9 @@ Let $\opS$ be the \structe{system} illustrated to the right:
 \end{align*}
 \end{proof}
 
+%=======================================
+\section{Effects of additive noise and filtering}
+%=======================================
 %---------------------------------------
 \begin{minipage}{\tw-70mm}
 \begin{theorem}
@@ -203,17 +245,16 @@ Let $\opS$ be the \structe{system} illustrated to the right.
 \thmbox{
   \brb{\begin{array}{FrclDD}
       (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)         &(\prope{WSS})          & and
-    \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=&\pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and 
-       %\\& \mc{3}{D}{(\prope{uncorrelated})}               &                         and
-    \\(C).& \pE\rvv(n)              &=& 0                   & (\prope{zero-mean})   & 
+    \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=&\pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
+    \\(C).& \pE\brs{\rvx(n)\rvu(n)} &=&\pE\rvx(n)\pE\rvu(n) &(\prope{uncorrelated}) & and
+    \\(D).& \pE\brs{\rvu(n)\rvv(n)} &=&\pE\rvu(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
+    \\(E).& \pE\rvu(n)=\pE\rvv(n)   &=& 0                   & (\prope{zero-mean})   &
   \end{array}}
   \implies
-  \brb{\begin{array}{FrclD}
-      (1).&\Rxy(m)       &=& \Rxq(m)                       & and
-    \\(2).&\Rxy(m)       &=& \Rpy(m)                       & and
-    \\(3).&\Rxy(m)       &=& \Rpq(m)                       & and
-    \\(3).&\Szxy(z)      &=& \Szxq(z)                      & and
-    \\(4).&\Swxy(\omega) &=& \Swxq(\omega)                 &
+  \brb{\begin{array}{rcl}
+      \Rxy(m)&=& \Rxq(m)
+           \\&=& \Rpy(m)
+           \\&=& \Rpq(m)
   \end{array}}
   }
 \\
@@ -232,7 +273,7 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     && \text{(B)}
   \\&= \pE\brs{\rvx(m)\rvq^\ast(0)} + \brs{\pE\rvx(m)}\cancelto{0}{\brs{\pE\rvv^\ast(0)}}
     && \text{by \prope{zero-mean} hypothesis}
-    && \text{(C)}
+    && \text{(E)}
   \\&= \Rxq(m)
     && \text{by definition of $\Rxy$}
     && \text{\xref{def:Rxym}}
@@ -246,10 +287,10 @@ Let $\opS$ be the \structe{system} illustrated to the right.
   \\&= \pE\brs{\rvp(m)\rvy^\ast(0)-\rvu(m)\rvy^\ast(0)}
   \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} - \brs{\pE\rvu(m)}\brs{\pE\rvy^\ast(0)}
     && \text{by \prope{uncorrelated} hypothesis}
-    && \text{(B)}
+    && \text{(C)}
   \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} - \cancelto{0}{\brs{\pE\rvu(m)}}\brs{\pE\rvy^\ast(0)}
     && \text{by \prope{zero-mean} hypothesis}
-    && \text{(C)}
+    && \text{(E)}
   \\&= \Rpy(m)
     && \text{by definition of $\Rxy$}
     && \text{\xref{def:Rxym}}
@@ -260,35 +301,57 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     && \text{\xref{def:Rxym}}
   \\&\eqd \pE\brp{\brs{\rvp(m)-\rvu(m)}\brs{\rvq(m)+\rvv(m)}^\ast(0)}
     && \text{by definition of $\opS$}
-  \\&= \pE\brs{\rvp(m)\rvq^\ast(0)}
+  \\&=\mathrlap{
+       \pE\brs{\rvp(m)\rvq^\ast(0)}
      + \pE\brs{\rvp(m)\rvv^\ast(0)}
-     \\&\qquad
      - \pE\brs{\rvu(m)\rvq^\ast(0)}
      - \pE\brs{\rvu(m)\rvv^\ast(0)}
+     }
   \\&= \pE\brs{\rvp(m)}\pE\brs{\rvq^\ast(0)}
      + \pE\brs{\rvp(m)}\pE\brs{\rvv^\ast(0)}
      \\&\qquad
      - \pE\brs{\rvu(m)}\pE\brs{\rvq^\ast(0)}
      - \pE\brs{\rvu(m)}\pE\brs{\rvv^\ast(0)}
     && \text{by \prope{uncorrelated} hypothesis}
-    && \text{(B)}
+    && \text{(B), (C), and (D)}
   \\&= \pE\brs{\rvp(m)\rvq^\ast(0)}
      + \pE\brs{\rvp(m)}\cancelto{0}{\pE\brs{\rvv^\ast(0)}}
      \\&\qquad
      - \cancelto{0}{\pE\brs{\rvu(m)}}\pE\brs{\rvq^\ast(0)}
      - \cancelto{0}{\pE\brs{\rvu(m)}}\pE\brs{\rvv^\ast(0)}
     && \text{by \prope{zero-mean} hypothesis}
-    && \text{(C)}
+    && \text{(E)}
   \\&= \Rpq(m)
-    && \text{by definition of $\Rxy$}
+    && \text{by definition of $\Rpq$}
     && \text{\xref{def:Rxym}}
-  \\
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_xyuvpq}.
+\label{cor:sysH_xyuvpq}
+%---------------------------------------
+\end{corollary}
+\corbox{
+  \brb{\begin{array}{M}
+    hypotheses of \prefpp{thm:sysH_xyuvpq}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+      (1).&\Szxy(z)      &=& \Szxq(z)                      & and
+    \\(2).&\Swxy(\omega) &=& \Swxq(\omega)                 &
+  \end{array}}
+  }
+\\
+\begin{proof}
+\begin{align*}
   \Szxy(\omega)
     &\eqd \opZ\Rxy(m)
     && \text{by definition of $\Szxy$}
     && \text{\xref{def:Szxy}}
   \\&= \opZ\Rxq(m)
-    && \text{by previous result}
+    && \text{by \prefp{thm:sysH_xyuvpq}}
     && \text{(1)}
   \\&= \Szxq(z)
     && \text{by definition of $\Szxy$}
@@ -299,7 +362,7 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     && \text{by definition of $\Swxy$}
     && \text{\xref{def:Swxy}}
   \\&= \opDTFT\Rxq(m)
-    && \text{by previous result}
+    && \text{by \prefp{thm:sysH_xyuvpq}}
     && \text{(1)}
   \\&= \Swxq(\omega)
     && \text{by definition of $\Swxy$}
@@ -326,20 +389,24 @@ Let $\opS$ be the \structe{system} illustrated to the right.
   \end{array}}
   \implies
   \brb{\begin{array}{FrclD}
-      (1).& \Rsy(m)       &=& \Rrq(m)                  & and
-    \\(2).& \Swsy(\omega) &=& \Swrq(\omega)            & and
-    \\(3).& \Swsy(\omega) &=& \fG(\omega)\Swxy(\omega) &
+      (1).& \Swsy(\omega) &=& \FG(\omega)\Swxy(\omega) & and
+    \\(2).& \Swrq(\omega) &=& \FG(\omega)\Swxy(\omega) &     
   \end{array}}
   }
 \\
 \begin{proof}
 \begin{align*}
+  \Swrq(\omega)
+    &= \FG(\omega)\Swpq(\omega)
+    && \text{by \prefp{thm:xGw_xHy}}
+  \\&= \FG(\omega)\Swxy(\omega)
+    && \text{by \prefp{thm:sysH_xyuvpq}}
+    \\
   \Swsy(\omega)
     &= \Swrq(\omega)
-    && \text{\prefp{thm:dual_addnoise}}
-  \\&= \fG(\omega)\Swxx[pq](\omega)
-    && \text{by \prefp{thm:xGw_xHy}}
-  \\&= \fG(\omega)\Swxy(\omega)
-    && \text{by \prefp{thm:sysH_xyuvpq}}
+    && \text{\prefp{cor:dual_addnoise}}
+  \\&= \FG(\omega)\Swxy(\omega)
+    && \text{by previous result}
 \end{align*}
 \end{proof}
+
