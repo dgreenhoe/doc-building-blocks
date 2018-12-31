@@ -81,12 +81,6 @@ an estimate $\estH(\omega)$.
 %=======================================
 \section{Definitions}
 %=======================================
-%\begin{figure}
-%  \centering%
-%  \includegraphics{graphics/sysH_xyuvpq.pdf}
-%  \caption{System model with additive input and output noise\label{fig:sysH_xyuvpq}}
-%\end{figure}
-%Consider the additive noise system $\opS$ illustrated here: % in \prefpp{fig:sysH_xyuvpq}.
 \begin{minipage}{\tw-70mm}
 Consider the additive noise system $\opS$ illustrated to the right:
 \end{minipage}
@@ -353,11 +347,6 @@ Let $\estHkappa(\omega)$ be defined as in \prefpp{def:Hkappa}.
   }
 \end{proposition}
 
-\begin{figure}
-  \centering%
-  \includegraphics{graphics/sysH_estH.pdf}
-  \caption{Ideal least squares estimator for output noise only system\label{fig:sysH_estH}}
-\end{figure}
 %---------------------------------------
 \begin{minipage}{\tw-65mm}
 \begin{theorem}
@@ -376,6 +365,7 @@ Let $\norm{\rvx}\eqd\pE\brs{\rvx\rvx^\ast}$.
   \mcom{\argmin_{\estH}\norm{\FW(\omega)-\FQ(\omega)}^2 = \estH_1(\omega)}
        {$\estH_1$ is the \prope{least-squares estimator} of $\opS$}
   }
+\\
 \begin{proof}
 \begin{align*}
   \fCost\brp{\estH}
@@ -388,25 +378,28 @@ Let $\norm{\rvx}\eqd\pE\brs{\rvx\rvx^\ast}$.
         - \pE\brs{\FQ(\omega)\FW^\ast(\omega)} 
         + \pE\brs{\FQ(\omega)\FQ^\ast(\omega)} 
        }
-  \\&= \Swww(\omega) - \Swwq(\omega) - \Swwq^\ast(\omega) + \Swqq(\omega)
+  \\&= \Swww(\omega) - \Swwq^\ast(\omega) - \Swwq(\omega) + \Swqq(\omega)
     && \text{by \thme{Wiener-Kinchin relationship}}
-  \\&= \Swww(\omega) - \Swwy(\omega) - \Swwy^\ast(\omega) + \Swyy(\omega)-\Swvv(\omega)
-  \\&= \Swxx(\omega)\abs{\estH(\omega)}^2 - \estH(\omega)\Swyx(\omega) - \estH^\ast(\omega)\Swyx^\ast(\omega) + \Swyy(\omega)-\Swvv(\omega)
+  \\&= \Swxx(\omega)\abs{\estH(\omega)}^2 - \brs{\estH(\omega)\Swxy(\omega)}^\ast - \estH(\omega)\Swxy(\omega) + \Swqq(\omega)
+    && \text{by \prefpp{cor:GHz}}
   \\
   0
     &= \pderiv{}{\estH}\fCost\brp{\estH} 
   \\&= \pderiv{}{\estH}
-       \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast + \Swyy-\Swvv}
+       \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast + \Swqq}
   \\&= \pderiv{}{\estH}
-       \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast + \cancelto{0}{\Swyy}-\cancelto{0}{\Swvv}}
+       \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast + \cancelto{0}{\Swqq}}
+    && \text{because $\Swqq$ does not vary with $\estH$}
   \\&= \brs{\begin{array}{c}\pderiv{}{\estH_R}\\\pderiv{}{\estH_I}\end{array}}
        \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast}
   \\&= \brs{\begin{array}{c}\pderiv{}{\estH_R}\\\pderiv{}{\estH_I}\end{array}}
        \brp{\Swxx\abs{\estH}^2 - \estH\Swyx - \estH^\ast\Swyx^\ast}
-  \\&= \brs{\begin{array}{c}\pderiv{}{\estH_R}\\\pderiv{}{\estH_I}\end{array}}
+  \\&=\mathrlap{
+       \brs{\begin{array}{c}\pderiv{}{\estH_R}\\\pderiv{}{\estH_I}\end{array}}
        \Swxx\brp{\estH_R^2+\estH_I^2} 
-     - \brs{\begin{array}{c}\pderiv{}{\estH_R}\estH_R\Re\Swyx\\\pderiv{}{\estH_I}  \estH_I   \Im\Swyx\end{array}}
-     - \brs{\begin{array}{c}\pderiv{}{\estH_R}\estH_R\Re\Swyx\\\pderiv{}{\estH_I}(-\estH_I)(-\Im\Swyx)\end{array}}
+     - \brs{\begin{array}{c}\pderiv{}{\estH_R}\estH_R\Re\Swxy\\\pderiv{}{\estH_I}(-\estH_I)(-\Im\Swxy)\end{array}}
+     - \brs{\begin{array}{c}\pderiv{}{\estH_R}\estH_R\Re\Swxy\\\pderiv{}{\estH_I}  \estH_I   \Im\Swxy \end{array}}
+     }
   \\&= \brs{\begin{array}{c}2\Swxx\estH_R\\2\Swxx\estH_I\end{array}}
      - \brs{\begin{array}{c}\Re\Swyx\\\Im\Swyx\end{array}}
      - \brs{\begin{array}{c}\Re\Swyx\\\Im\Swyx\end{array}}
