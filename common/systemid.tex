@@ -29,19 +29,19 @@
   \end{tabular}}
 
 Let $\opS$ be a \structe{system} with \fncte{impulse response} $\fh(n)$ with
-with \ope{DTFT} $\fH(\omega)$,
+with \ope{DTFT} $\FH(\omega)$,
 input $\rvx(n)$, and output $\rvy(n)$. 
 Often in the field of ``digital signal processing" (DSP), $\opS$ is a ``filter" 
-with known $\fh(n)$ and $\fH(\omega)$ because the filter $\opS$ was 
+with known $\fh(n)$ and $\FH(\omega)$ because the filter $\opS$ was 
 designed by a designer who had direct control over $\fh(n)$.
 
 However in many other practical situations, $\opS$ is some other system 
-for which $\fh(n)$ and $\fH(\omega)$ is \emph{not} known\ldots but which we may
+for which $\fh(n)$ and $\FH(\omega)$ is \emph{not} known\ldots but which we may
 want to \ope{estimate}. Examples of such $\opS$ is a 
 device on an industrial shaker table, a communication channel, or the entire earth.
 
-Determining $\fh(n)$ and/or $\fH(\omega)$ is part of an operation called ``\ope{system identication}".
-Determining $\fH(\omega)$ in particular is referred to as
+Determining $\fh(n)$ and/or $\FH(\omega)$ is part of an operation called ``\ope{system identication}".
+Determining $\FH(\omega)$ in particular is referred to as
 ``\ope{Frequency Response Identification}"\footnote{\citerpg{shin2008}{292}{0470725648}}
 or as 
 ``\ope{Frequency Response Function}" (``\ope{FRF}") estimation.\footnote{\citePpc{cobb1988}{1}{FRF ``measurement"}}
@@ -49,7 +49,7 @@ or as
 many people have devoted much effort to. 
 This chapter describes some of that effort.
 
-In the early days, people used a rather obvious technique for determining $\fH(\omega)$---the simple
+In the early days, people used a rather obvious technique for determining $\FH(\omega)$---the simple
 \fncte{sine sweep}. That is, they made the input a sine wave with slowly increasing (or decreasing) 
 frequency while measuring the resulting output.
 This technique, although effective, was ``very slow".\footnote{
@@ -62,12 +62,12 @@ Examples of this include earthquake and volcanic activity analysis.
 
 An alternative to the sine-sweep input is \fncte{random sequence} input. 
 All the techniques that follow in this chapter are of this type.
-A problem with using random sequences directly for estimating $\fH(\omega)$ is that the 
+A problem with using random sequences directly for estimating $\FH(\omega)$ is that the 
 estimate $\estH(\omega)$ is itself also random.
 This is not what we want. We want an estimate that we can actually write down 
 on paper or at least plot on paper.
 
-A solution to this is to not use the random sequences directly to estimate $\fH(\omega)$, 
+A solution to this is to not use the random sequences directly to estimate $\FH(\omega)$, 
 but instead to first use the \ope{expectation} operator $\pE$ \xref{def:pE}.
 The expectation operator takes a quantity $\rvX$ that is inherently ``random" 
 (with some probability distribution $\pdfp(x)$) and 
@@ -90,8 +90,8 @@ In the very special (a.k.a unrealistic) case of $\opS$ having \prope{zero measur
 ($\rvu(n)=\rvv(n)=0$), 
 $\fh(n)$ being \prope{linear time invariant} (\prope{LTI}), 
 and input $\rvx(n)$ being \prope{wide sense stationary}\ldots
-then we can determine (a.k.a ``identify") $\fh(n)$ or $\fH(\omega)$
-exactly by $\fH(\omega)=\ffrac{\Swyx(\omega)}{\Swxx(\omega)}$ \xref{cor:Swxy}.
+then we can determine (a.k.a ``identify") $\fh(n)$ or $\FH(\omega)$
+exactly by $\FH(\omega)=\ffrac{\Swyx(\omega)}{\Swxx(\omega)}$ \xref{cor:Swxy}.
 
 However, in practical situations, there is measurement error. % \xref{fig:xhyplusv}. 
 An example may include 
@@ -99,12 +99,12 @@ An example may include
 
 \begin{minipage}{\tw-70mm}
 If the measurement error is at the output only (and under the assumptions of \prope{LTI} and \prope{WSS})
-then $\estH_1$ (next definition) is the ideal estimator in the sense that $\estH_1=\fH$ \xref{prop:estH1}.
+then $\estH_1$ (next definition) is the ideal estimator in the sense that $\estH_1=\FH$ \xref{prop:estH1}.
 \end{minipage}
 \hfill\tbox{\includegraphics{graphics/sysH_xy0v--.pdf}}
 \\
 %---------------------------------------
-\begin{definition}[\fnctd{least squares estimate} of $\fH(\omega)$]
+\begin{definition}[\fnctd{least squares estimate} of $\FH(\omega)$]
 \footnote{
   \citerppgc{bendat1993}{106}{109}{0471570559}{5.1.1 Optimality of Calculations},
   \citerpgc{bendat2011}{185}{1118210824}{$H_1(f) = \ffrac{G_{xy}(f)}{G_{xx}(f)}$ (6.37)},
@@ -131,15 +131,15 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 
 The estimator $\estH_1$ is a good start.
 However in the early 1980s, L. D. Mitchell pointed out that in the presence of input noise,
-$\estH_1$ is far from ideal in that it is \prope{biased} with respect to $\fH$;
-in fact, $\estH_1$ \prope{under estimates} $\fH$ \xref{prop:estH2}.
+$\estH_1$ is far from ideal in that it is \prope{biased} with respect to $\FH$;
+in fact, $\estH_1$ \prope{under estimates} $\FH$ \xref{prop:estH2}.
 Mitchell proposed a new estimator $\estH_2$ (next definition).
 
 
 \begin{minipage}{\tw-70mm}
 This estimator has the special property that when there is input noise but no 
 output noise (and under \prope{LTI}, \prope{WSS}, and \prope{uncorrelated} assumptions), 
-then it is ideal in the sense that $\estH_2(\omega)=\fH(\omega)$ \xref{prop:estH2}.
+then it is ideal in the sense that $\estH_2(\omega)=\FH(\omega)$ \xref{prop:estH2}.
 \end{minipage}
 \hfill\tbox{\includegraphics{graphics/sysH_xyu0--.pdf}}
 \\
@@ -167,19 +167,19 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \end{definition}
 
 Mitchell's $\estH_2$ contribution ``generated a flurry of activity"\footnote{\citePp{cobb1988}{3}}
-and soon more $\fH$ estimators appeared. 
+and soon more $\FH$ estimators appeared. 
 %As it turns out, in the presence of \emph{both} input and output measurement noise,
-%the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\fH$ \xref{prop:estH1}
+%the traditional estimator $\estH_1$, although ideal when input noise = 0, tends to \prope{under estimate} $\FH$ \xref{prop:estH1}
 %and Mitchell's $\estH_2$, although ideal when output noise = 0, 
-%tends to \prope{over estimate} $\fH$ \xref{prop:estH2}.
+%tends to \prope{over estimate} $\FH$ \xref{prop:estH2}.
 %But what about the case when there is noise on both input and output?
 %The next estimator is ideal when noise is present on both and the noise power of the two is equal.
 So far we have 
 \begin{listi}
   \item $\estH_1$ which is ideal when there is no input noise but 
-        \prope{under estimate}s $\fH$ when there is \xref{prop:estH1}
+        \prope{under estimate}s $\FH$ when there is \xref{prop:estH1}
   \item $\estH_2$ which is ideal when there is no output noise but
-        \prope{over estimate}s $\fH$ when there is \xref{prop:estH2}.
+        \prope{over estimate}s $\FH$ when there is \xref{prop:estH2}.
 \end{listi}
 But what about estimators for when there is noise on both input and output?
 Armed with two estimators that between them account for both input and output noise,
@@ -277,7 +277,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
   }
 \end{definition}
 
-Wicks and Vold's $\estHs$ estimates $\fH$ using a single parameter $s$
+Wicks and Vold's $\estHs$ estimates $\FH$ using a single parameter $s$
 that is \prope{constant} with respect to frequency.
 This is suitable for additive white noise $\rvw(n)$, which has constant spectral density 
 $\Swww(\omega)=\pvar_w$.
@@ -473,8 +473,8 @@ Let $\opS$ be the \structe{system} illustrated to the right.
   \end{array}}
   \implies
   \brbl{\begin{array}{F>{\ds}rc>{\ds}lDD}
-      (1).&\estH_1(\omega) &=& \fH(\omega)                                              & (\prope{unbiased}) & and
-    \\(2).&\estH_2(\omega) &=& \fH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}} & \mc{2}{D}{\begin{tabular}{l}(\prope{biased})\\(\prope{over estimated})\end{tabular}}
+      (1).&\estH_1(\omega) &=& \FH(\omega)                                              & (\prope{unbiased}) & and
+    \\(2).&\estH_2(\omega) &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}} & \mc{2}{D}{\begin{tabular}{l}(\prope{biased})\\(\prope{over estimated})\end{tabular}}
   \end{array}}
   }
 \\
@@ -490,7 +490,7 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     && \text{by \prefp{cor:xvy}}
   \\&= \frac{\Swqp(\omega)}{\Swpp(\omega)-\cancelto{0}{\Swuu(\omega)}}
     && \text{by hypothesis (D)}
-  \\&= \fH(\omega)
+  \\&= \FH(\omega)
     && \text{by \prope{LTI} hypothesis (A)}
     && \text{and \prefp{cor:Swxy}}
   \\
@@ -500,13 +500,17 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     && \text{\xref{def:H2}}
   \\&= \frac{\Swqq(\omega) + \Swvv(\omega)}{\Swxy(\omega)}
     && \text{by \prefp{cor:xvy}}
-  \\&= \frac{\Swqq(\omega)}{\Swxy(\omega)} + \frac{\Swvv(\omega)}{\Swxy(\omega)}
-  \\&= \frac{\Swqq(\omega)}{\Swpq(\omega)} + \frac{\Swvv(\omega)}{\Swpq(\omega)}
+  \\&= \frac{\Swqq(\omega) + \Swvv(\omega)}{\Swpq(\omega)}
     && \text{by \prefp{cor:sysH_addnoise}}
-  \\&= \fH(\omega) + \frac{\Swvv(\omega)}{\frac{\Swqq(\omega)}{\fH(\omega)}}
+  \\&= \frac{\Swqq(\omega)}{\Swpq(\omega)} + \frac{\Swvv(\omega)}{\Swpq(\omega)}
+  \\&= \FH(\omega) + \frac{\Swvv(\omega)}{\frac{\Swqq(\omega)}{\FH(\omega)}}
     && \text{by \prope{LTI} hypothesis (A)}
     && \text{and \prefp{cor:Swxy}}
-  \\&= \fH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
+  \\&= \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
+    && \text{by \prope{LTI} hypothesis (A)}
+    && \text{and \prefp{cor:Swxy}}
+  \\&= \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}}
+    && \text{by hypothesis (D)}
 \end{align*}
 \end{proof}
 
@@ -529,43 +533,38 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{prop:estH1}.
   \end{array}}
   \implies
   \brbl{\begin{array}{F>{\ds}rc>{\ds}lDD}
-      (1).&\estH_1(\omega) &=& \frac{\fH(\omega)}{1 + \frac{\ds\Swuu(\omega)}{\ds\Swxx(\omega)}} & \begin{tabular}{l}(\prope{biased})\\(\prope{under estimated})\end{tabular} &and
-    \\(2).&\estH_2(\omega) &=& \fH(\omega)                                                 & (\prope{unbiased}) &
+      (1).&\estH_1(\omega) &=& \frac{\FH(\omega)}{1 + \frac{\ds\Swuu(\omega)}{\ds\Swxx(\omega)}} & \begin{tabular}{l}(\prope{biased})\\(\prope{under estimated})\end{tabular} &and
+    \\(2).&\estH_2(\omega) &=& \FH(\omega)                                                 & (\prope{unbiased}) &
   \end{array}}
   }
 \end{proposition}
 \begin{proof}
-\begin{align*}
-  \\
+{\begin{align*}
   \estH_1(\omega)
-    &\eqd \frac{\Swxx[yx'](\omega)}{\Swxx[x'x'](\omega)}
+    &\eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}
     && \text{by definition of $\estH_1$}
     && \text{\xref{def:H1}}
-  \\&= \frac{\Swyx(\omega) + \Swyu(\omega)}
-            {\Swxx(\omega) + \Swuu(\omega)}
-    && \text{by \prefp{prop:Swxyv}}
-  \\&= \frac{\Swyx(\omega) + \cancelto{0}{\Swyu(\omega)}}
-            {\Swxx(\omega) + \Swuu(\omega)}
-    && \text{because $\rvy(n)$ and $\rvu(n)$ are \prope{uncorrelated}}
-    && \text{(hypothesis (C))}
-  \\&= \frac{\frac{\Swyx(\omega)}{\Swxx(\omega)}}
-            {\frac{\Swxx(\omega)}{\Swxx(\omega)} + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
-   &&= \frac{\fH(\omega)}
-            {1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
-  \\
-  \estH_2(\omega)
-    &\eqd \frac{\Swyy(\omega)}{\Swxx[x'y](\omega)}
-    && \text{by definition of $\estH_2$}
-    && \text{\xref{def:H2}}
-  \\&= \frac{\Swyy(\omega)}{\Swxy(\omega) + \Swuy(\omega)}
-    && \text{by \prefp{prop:Swxyv}}
-  \\&= \frac{\Swyy(\omega)}{\Swxy(\omega) + \cancelto{0}{\Swuy(\omega)}}
-    && \text{because $\rvy(n)$ and $\rvu(n)$ are \prope{uncorrelated}}
-    && \text{(hypothesis (C))}
-  \\&= \fH(\omega)
+  \\&= \frac{\Swqp(\omega)}{\Swxx(\omega)}
+    && \text{by \prefp{cor:sysH_addnoise}}
+  \\&= \frac{\Swpp(\omega)\FH(\omega)}{\Swxx(\omega)}
     && \text{by \prefp{cor:Swxy}}
     && \text{and \prope{LTI} hypothesis (A)}
-\end{align*}
+  \\&= \FH(\omega)\brs{\frac{\Swxx(\omega)+\Swuu(\omega)}{\Swxx(\omega)}}
+    && \text{by \prefp{cor:xvy}}
+  \\&= \FH(\omega)\brs{1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
+  \\
+  \estH_2(\omega)
+    &\eqd \frac{\Swyy(\omega)}{\Swxy(\omega)}
+    && \text{by definition of $\estH_2$}
+    && \text{\xref{def:H2}}
+  \\&= \frac{\Swqq(\omega)}{\Swxy(\omega)}
+    && \text{by hypothesis (D)}
+  \\&= \frac{\Swqq(\omega)}{\Swpq(\omega)}
+    && \text{by \prefp{cor:sysH_addnoise}}
+  \\&= \FH(\omega)
+    && \text{by \prefp{cor:Swxy}}
+    && \text{and \prope{LTI} hypothesis (A)}
+\end{align*}}
 \end{proof}
 
 %=======================================
