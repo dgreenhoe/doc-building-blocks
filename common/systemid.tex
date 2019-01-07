@@ -381,19 +381,19 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
   \citerppgc{bendat1993}{106}{109}{0471570559}{5.1.1 Optimality of Calculations}
   }
 \thmbox{
-  \brb{\begin{array}{FMMD}
+  \brbr{\begin{array}{FMMD}
       (A).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{WSS}          & and
     \\(B).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{uncorrelated} & and
     \\(C).& $\pE\rvu=\pE\rvu=0$            & (\prope{zero-mean})  & and
     \\(D).& $\estH$ is \prope{LTI}         &                      &
   \end{array}}
   \implies
-  \brb{\begin{array}{c}
+  \brbl{\begin{array}{c}
     \ds\argmin_{\estH}\norm{\FW(\omega)-\FQ(\omega)}^2 = \frac{\Swxy^\ast(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
     \\
     \brp{\begin{array}{M}
-      \scs The best \prope{LTI} \prope{least-squares} estimate of $\FH$ is
-      $\estH=\ffrac{\Swxy^\ast}{[\Swxx+\Swuu]}$)
+      \scs The optimal \prope{LTI} \prope{least-squares} estimate of $\FH$ is
+      \\$\estH=\ffrac{\Swxy^\ast}{[\Swxx+\Swuu]}$)
     \end{array}}
   \end{array}}
   }
@@ -423,17 +423,19 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
            \Swww(\omega) - \Swwq(\omega) - \Swwq^\ast(\omega) + \Swqq(\omega)
            \qquad\text{by \thme{Wiener-Khinchin relationship}}
            }
-      \\&= \Swpp(\omega)\abs{\estH(\omega)}^2
+      \\&= \mathrlap{
+           \Swpp(\omega)\abs{\estH(\omega)}^2
          - \estH(\omega)\Swpy(\omega)
          - \brs{\estH(\omega)\Swpy(\omega)}^\ast
          + \Swqq(\omega)
-        && \text{by (A)--(D) and \prefpp{cor:GHz}}
+           \quad\text{by (A)--(D) and \prefpp{cor:GHz}}
+           }
       \\&= \Swxx(\omega)\abs{\estH(\omega)}^2
          + \Swuu(\omega)\abs{\estH(\omega)}^2
          - \estH(\omega)\Swpy(\omega)
          - \brs{\estH(\omega)\Swpy(\omega)}^\ast
          + \Swqq(\omega)
-        && \text{by (A)--(C) and \prefpp{cor:xvy}}
+        && \text{by (A)--(C) and \prefp{cor:xvy}}
       \\&= \Swxx(\omega)\abs{\estH(\omega)}^2
          + \Swuu(\omega)\abs{\estH(\omega)}^2
          - \estH(\omega)\Swxy(\omega)
@@ -527,12 +529,12 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:H1LS}.
 Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
 \corbox{
   \brb{\begin{array}{FMD}
-      (A).&hypotheses of \pref{thm:H1LS} & and
+      (A).&hypotheses of \prefpp{thm:H1LS} & and
     \\(B).&$\rvu(n) = 0$\quad\text{\scs(zero input noise)}
   \end{array}}
   \implies
   {\mcom{\argmin_{\estH}\norm{\FW(\omega)-\FQ(\omega)}^2 = \estH_1(\omega)}
-       {$\estH_1$ is the optimal \prope{least-squares estimator} of $\opS$}}
+       {$\estH_1$ is the optimal \prope{least-squares estimator} of $\FH$}}
   }
 \end{corollary}
 \begin{proof}
@@ -548,6 +550,15 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       && \text{\xref{def:H1}}
   \end{align*}
 \end{proof}
+
+%=======================================
+\section{Properties of LTI systems}
+%=======================================
+The previous section did assume the estimates $\estH_1$ and $\estH_2$  to be 
+\prope{linear time invariant} (\prope{LTI}), but it did \emph{not} assume that 
+the system transfer function $\fH$ itself to be \prope{LTI}. 
+But making the LTI assumption on $\fH$ yields some interesting and insightful
+results, such as those in this section.
 
 %---------------------------------------
 \begin{minipage}{\tw-70mm}
@@ -575,7 +586,7 @@ Let $\opS$ be the \structe{system} illustrated to the right.
   \implies
   \brbl{\begin{array}{F>{\ds}rc>{\ds}lDD}
       (1).&\estH_1(\omega) &=& \FH(\omega)                                              & (\prope{unbiased}) & and
-    \\(2).&\estH_2(\omega) &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}} & \mc{2}{D}{\begin{tabular}{@{}l}(\prope{biased})\\(\prope{over estimated})\end{tabular}}
+    \\(2).&\estH_2(\omega) &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}} & \mc{2}{D}{\begin{tabular}{@{}l}(\prope{biased})\\(\prope{over estimated})\end{tabular}}
   \end{array}}
   }
 \\
@@ -612,8 +623,6 @@ Let $\opS$ be the \structe{system} illustrated to the right.
   \\&= \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
     && \text{by hypotheses (A) and (B)}
     && \text{and \prefp{cor:Swxy}}
-  \\&= \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swyy(\omega)}}
-    && \text{by hypothesis (D)}
 \end{align*}
 \end{proof}
 
@@ -654,12 +663,14 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:estH1}.
     && \text{by definition of $\estH_1$}
     && \text{\xref{def:H1}}
   \\&= \frac{\Swqp(\omega)}{\Swxx(\omega)}
-    && \text{by \prefp{cor:sysH_addnoise}}
+    && \text{by hypotheses (B)--(C)}
+    && \text{and \prefp{cor:sysH_addnoise}}
   \\&= \frac{\Swpp(\omega)\FH(\omega)}{\Swxx(\omega)}
-    && \text{by \prefp{cor:Swxy}}
-    && \text{and \prope{LTI} hypothesis (A)}
+    && \text{by hypothesis (A)}
+    && \text{and \prefp{cor:Swxy}}
   \\&= \FH(\omega)\brs{\frac{\Swxx(\omega)+\Swuu(\omega)}{\Swxx(\omega)}}
-    && \text{by \prefp{cor:xvy}}
+    && \text{by definition of $\opS$}
+    && \text{and \prefp{cor:xvy}}
   \\&= \FH(\omega)\brs{1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
   \\
   \estH_2(\omega)
@@ -669,10 +680,11 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:estH1}.
   \\&= \frac{\Swqq(\omega)}{\Swxy(\omega)}
     && \text{by hypothesis (D)}
   \\&= \frac{\Swqq(\omega)}{\Swpq(\omega)}
-    && \text{by \prefp{cor:sysH_addnoise}}
+    && \text{by hypotheses (B)--(C)}
+    && \text{and \prefp{cor:sysH_addnoise}}
   \\&= \FH(\omega)
-    && \text{by \prefp{cor:Swxy}}
-    && \text{and \prope{LTI} hypothesis (A)}
+    && \text{by hypothesis (A)}
+    && \text{and \prefp{cor:Swxy}}
 \end{align*}}
 \end{proof}
 
