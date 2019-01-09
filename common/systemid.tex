@@ -86,7 +86,38 @@ Consider the additive noise system $\opS$ illustrated to the right:
 \end{minipage}
 \hfill\tbox{\includegraphics{graphics/sysH_xyuv--.pdf}}
 \\
-In the very special (a.k.a unrealistic) case of $\opS$ having \prope{zero measurement noise}
+As a first attempt at estimating the transfer function $\fH$, 
+or at least the magnitude squared of $\fH$,
+we might assume $\fH$ to be \prope{LTI}, take a cue from the relation
+$\Swyy=\Swxx\abs{\FH}^2$ of \prefpp{cor:Swxy},
+%somehow deem the squaring operation to be of little consequence, 
+and arrive at a function called ``\fncte{transmissibility}"
+(next definition).
+%---------------------------------------
+\begin{definition}[\fnctd{transmissibility}]
+\footnote{
+  \citerpgc{goldman1999}{179}{0831130881}{Transmissibility \ldots $H_{ab}'=\ffrac{G_{bb}}{G_{aa}}$},
+  \url{https://link.springer.com/chapter/10.1007/978-3-319-54109-9_4}
+  }
+\label{def:Txy}
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defboxt{
+  \fnctd{transmissibility $\Twxy(\omega)$} is defined as
+  \qquad$\ds
+  \Twxy(\omega) \eqd \frac{\Swyy(\omega)}{\Swxx(\omega)}
+  $
+  }
+\end{definition}
+
+Transmissibility is in essence the ratio of ``\fncte{spectral power}" \xref{rem:spower} 
+output to \fncte{spectral power} input.
+Note that it is a real-valued function (because $\Swxx$ and $\Swyy$ are real-valued).
+We might suspect that we could attain better estimates of $\fH$ by allowing the estimates to be complex-valued. %\ldots 
+%not to mention the idea of taking seriously the squaring operation.
+And in fact, all the remaining estimates in this section are in general complex-valued.
+
+And so to start (again), and in the very special (a.k.a unrealistic) case of $\opS$ having \prope{zero measurement noise}
 ($\rvu(n)=\rvv(n)=0$),
 $\fh(n)$ being \prope{linear time invariant} (\prope{LTI}),
 and input $\rvx(n)$ being \prope{wide sense stationary}\ldots
@@ -220,6 +251,28 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \end{definition}
 
 %---------------------------------------
+\begin{remark}
+%---------------------------------------
+Note that the \fncte{geometric mean estimator} \xref{def:Hgm} and \fncte{transmissibility} \xref{def:Txy}
+are closely related:
+\begin{align*}
+  \estHgm(\omega) 
+    &\eqd \sqrt{\estH_1(\omega)\estH_2(\omega)}
+    && \text{by definition of $\estHgm$}
+    && \text{\xref{def:Hgm}}
+  \\&\eqd \sqrt{\frac{\Swxy^\ast(\omega)}{\Swxx(\omega)}\frac{\Swyy(\omega)}{\Swxy(\omega)}}
+    && \text{by definitions of $\estH_1$ and $\estH_2$}
+    && \text{\xxref{def:H1}{def:H2}}
+  \\&= \sqrt{\frac{\Swyy(\omega)}{\Swxx(\omega)}\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
+  \\&= \sqrt{\Twxy(\omega)}\sqrt{\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
+  \\&= \sqrt{\Twxy(\omega)}\sqrt{e^{-i2\theta}}
+  \\&= \sqrt{\Twxy(\omega)}\,e^{-i\theta}
+\end{align*}
+
+And hence, $\abs{\estHgm}^2 = \Twxy$.
+\end{remark}
+
+%---------------------------------------
 \begin{definition}[\fnctd{Harmonic mean estimator}]
 \footnote{
   \citePc{carne2006}{$H_C = [H_A^{-1} + H_B^{-1}]^{-1}$}
@@ -234,6 +287,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
   & \estHharm(\omega) &\eqd& \frac{1}{\frac{1}{\estH_1(\omega)} + \frac{1}{\estH_2(\omega)}}
 \end{array}}
 \end{definition}
+
 
 %---------------------------------------
 \begin{definition}[\fnctd{Total Least Squares estimator}]
@@ -435,7 +489,7 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
          - \estH(\omega)\Swpy(\omega)
          - \brs{\estH(\omega)\Swpy(\omega)}^\ast
          + \Swqq(\omega)
-        && \text{by (A)--(C) and \prefp{cor:xvy}}
+        && \text{by (A)--(C) and \pref{cor:xvy}}
       \\&= \Swxx(\omega)\abs{\estH(\omega)}^2
          + \Swuu(\omega)\abs{\estH(\omega)}^2
          - \estH(\omega)\Swxy(\omega)
@@ -503,10 +557,6 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= \frac{ \Real\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)} 
          + \frac{i\Imag\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
         && \text{by \pref{ilem:H1LS_R} and \pref{ilem:H1LS_I}}
-      \\&= \frac{\Real\Swyx(\omega) + i\Imag\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
-         = \frac{\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
-         \eqd \estH_1(\omega)
-        && \text{by definition of $\estH_1$ \xref{def:H1}}
     \end{align*}
 \end{enumerate}
 \end{proof}
@@ -597,13 +647,15 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     && \text{by definition of $\estH_1$}
     && \text{\xref{def:H1}}
   \\&= \frac{\Swqp(\omega)}{\Swxx(\omega)}
-    && \text{by \prefp{cor:sysH_addnoise}}
+    && \text{by hypotheses (B)--(C)}
+    && \text{and \prefp{cor:sysH_addnoise}}
   \\&= \frac{\Swqp(\omega)}{\Swpp(\omega)-\Swuu(\omega)}
-    && \text{by \prefp{cor:xvy}}
+    && \text{by hypotheses (B)--(C)}
+    && \text{and \prefp{cor:xvy}}
   \\&= \frac{\Swqp(\omega)}{\Swpp(\omega)-\cancelto{0}{\Swuu(\omega)}}
     && \text{by hypothesis (D)}
   \\&= \FH(\omega)
-    && \text{by \prope{LTI} hypothesis (A)}
+    && \text{by hypothesis (A)}
     && \text{and \prefp{cor:Swxy}}
   \\
   \estH_2(\omega)
@@ -669,7 +721,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:estH1}.
     && \text{by hypothesis (A)}
     && \text{and \prefp{cor:Swxy}}
   \\&= \FH(\omega)\brs{\frac{\Swxx(\omega)+\Swuu(\omega)}{\Swxx(\omega)}}
-    && \text{by definition of $\opS$}
+    && \text{by hypotheses (B)--(C)}
     && \text{and \prefp{cor:xvy}}
   \\&= \FH(\omega)\brs{1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
   \\
