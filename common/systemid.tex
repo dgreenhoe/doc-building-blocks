@@ -28,6 +28,9 @@
     image: & \url{https://en.wikipedia.org/wiki/File:Karl_Popper.jpg}, ``no known copyright restrictions"
   \end{tabular}}
 
+%=======================================
+\section{Estimation techniques}
+%=======================================
 Let $\opS$ be a \structe{system} with \fncte{impulse response} $\fh(n)$ with
 with \ope{DTFT} $\FH(\omega)$,
 input $\rvx(n)$, and output $\rvy(n)$.
@@ -79,14 +82,64 @@ And $\Swxx(\omega)$ and $\Swxy(\omega)$ are what are typically used to calculate
 an estimate $\estH(\omega)$.
 
 %=======================================
+\section{Additive noise system models}
+%=======================================
+\begin{figure}
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+     \includegraphics{graphics/sysH_xyuvpq.pdf}
+    &\includegraphics{graphics/sysH_mnoise.pdf}
+    \\
+      \opd{communications additive noise model}
+     &\opd{measurement    additive noise model}
+    \\
+      The ``input signal" is $\rvx(n)$.
+     &The ``input signal" is $\rvp(n)$.
+    \\\hline
+    \\\mc{2}{|c|}{The two models are equivalent under the relation $\rvu(n)=-\rvu'(n)$.}
+    \\\mc{2}{|c|}{In each model, $\rvx(n)$ and $\rvy(n)$ are ``known", and $\rvu(n)$ and $\rvv(n)$ are not.}
+    \\\hline
+  \end{tabular}
+  \caption{Additive noise models\label{fig:addnoise}}
+\end{figure}
+
+Consider the additive noise systems illustrated in \prefpp{fig:addnoise}.
+\begin{liste}
+  \item The illustration on the left is suitable for modeling a communications system where
+$\rvx$ is the transmitted signal, $\rvy$ is the received signal, $\rvu$ and $\rvv$ are thermal noise,
+and the ``transfer function" $\fH$ is the communications channel (air, water, wires, etc.) that one wishes to estimate.
+
+  \item The illustration on the right is suitable for modeling a testing system where
+$\rvp$ is an input test signal (from an industrial shaker or from a naturally occurring signal originating 
+from geophysical activity), $\rvu'$ is measurement noise, $\rvx$ is the measured input contaminated by noise,
+and $\fH$ is the device under test (a piece of equipment, a building, or the entire earth).
+\end{liste}
+
+Note that the two models are an equivalent system $\opS$ under the relation $\rvu=-\rvu'$.
+But although one might expect such a sign difference to wreak mathematical havoc in resulting equations,
+this is simply not the case here because
+\\\indentx$\ds\Sw{u'u'} = \opFT\pE\brs{\rvu'(m)\rvu'^\ast(0)}
+                        = \opFT\pE\brs{\brp{-\rvu(m)}\brp{-\rvu^\ast(0)}}
+                        = \opFT\pE\brs{\brp{\rvu(m)}\brp{\rvu^\ast(0)}}
+                        = \Swuu$
+\\
+So the sign difference is not that big of a difference after all.
+Rather, the key difference between the two models is simply the interpretation of what the ``input signal" is
+and by extension, what the \fncte{signal-to-noise ratio} (\fncte{SNR}) is:
+\begin{liste}
+  \item In the communications model (on the left), the ``input signal" is $\rvx(n)$
+      and the frequency-domain input \fncte{signal-to-noise ratio} (\fncte{SNR}) is $\ffrac{\Swxx(\omega)}{\Swuu(\omega)}$.
+     
+  \item In the measurement model (on the right), the ``input signal" is $\rvp(n)$
+      and the frequency-domain input \fncte{signal-to-noise ratio} (\fncte{SNR}) is 
+         $\ffrac{\Swpp(\omega)}{\Sw{u'u'}(\omega)} = \ffrac{\Swpp(\omega)}{\Swuu(\omega)}$.
+\end{liste}
+
+%=======================================
 \section{Transfer function estimate definitions}
 %=======================================
-\begin{minipage}{\tw-70mm}
-Consider the additive noise system $\opS$ illustrated to the right:
-\end{minipage}
-\hfill\tbox{\includegraphics{graphics/sysH_xyuv--.pdf}}
-\\
-As a first attempt at estimating the transfer function $\fH$, 
+As a first attempt at estimating the transfer function $\fH$ of $\opS$,
 or at least the magnitude squared of $\fH$,
 we might assume $\fH$ to be \prope{LTI}, take a cue from the relation
 $\Swyy=\Swxx\abs{\FH}^2$ of \prefpp{cor:Swxy},
@@ -121,16 +174,18 @@ We might suspect that we could attain better estimates of $\fH$ by allowing the 
 %not to mention the idea of taking seriously the squaring operation.
 And in fact, all the remaining estimates in this section are in general complex-valued.
 
-And so to start (again), and in the very special (a.k.a unrealistic) case of $\opS$ having \prope{zero measurement noise}
-($\rvu(n)=\rvv(n)=0$),
+And so to start (again), and in the very special (a.k.a unrealistic) case of $\opS$ having 
+\prope{zero measurement noise} (\prope{zero measurement error})
+($\rvm=\rvu=\rvv=0$),
 $\fh(n)$ being \prope{linear time invariant} (\prope{LTI}),
 and input $\rvx(n)$ being \prope{wide sense stationary}\ldots
 then we can determine (a.k.a ``identify") $\fh(n)$ or $\FH(\omega)$
 exactly by $\FH(\omega)=\ffrac{\Swyx(\omega)}{\Swxx(\omega)}$ \xref{cor:Swxy}.
 
-However, in practical situations, there is measurement error. % \xref{fig:xhyplusv}.
-An example may include
-``road noise" from a test being performed in a moving vehicle.
+However, in practical situations, there is measurement noise/error. % \xref{fig:xhyplusv}.
+Examples may include
+``road noise" from a test being performed in a moving vehicle or \fncte{quantization noise} from an 
+\hie{analog-to-digital converter} (\hie{ADC}).
 
 \begin{minipage}{\tw-70mm}
 If the measurement error is at the output only (and under the assumptions of \prope{LTI} and \prope{WSS})
@@ -615,20 +670,16 @@ But making the LTI assumption on $\fH$ yields some interesting and insightful
 results, such as those in this section.
 
 %---------------------------------------
-\begin{minipage}{\tw-70mm}
+%\begin{minipage}{\tw-70mm}
 \begin{theorem}[LTI no input noise case]
-\footnotemark
-Let $\opS$ be the \structe{system} illustrated to the right.
-\label{thm:estH1}
-%---------------------------------------
-\end{theorem}
-\end{minipage}
-\footnotetext{
+\footnote{
   \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=H(f)$ (9.70); $H_2(f)=H(f)\brp{1+\ffrac{S_{n_yn_y}(f)}{S_{yy}(f)}}$ (9.71)},
   \citePpc{mitchell1982}{278}{$\~H_2(f)=H_0(f)\brp{1+\ffrac{G_{mm}}{G_{vv}}}$}
   }
-\hfill\tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}
-\\
+\label{thm:estH1}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}. %to the right.
+%\hfill\tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}
 \thmbox{
   \brbr{\begin{array}{FMMD}
       (A).& The system $\FH$ is         &\prope{LTI}          & and
@@ -643,7 +694,7 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     \\(2).&\estH_2(\omega) &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}} & \mc{2}{D}{\begin{tabular}{@{}l}(\prope{biased})\\(\prope{over estimated})\end{tabular}}
   \end{array}}
   }
-\\
+\end{theorem}
 \begin{proof}
 \begin{align*}
   \estH_1(\omega)
@@ -653,14 +704,16 @@ Let $\opS$ be the \structe{system} illustrated to the right.
   \\&= \frac{\Swqp(\omega)}{\Swxx(\omega)}
     && \text{by hypotheses (B)--(C)}
     && \text{and \prefp{cor:sysH_addnoise}}
-  \\&= \frac{\Swqp(\omega)}{\Swpp(\omega)-\Swuu(\omega)}
+  \\&= \frac{\Swpp(\omega)\FH(\omega)}{\Swxx(\omega)}
+    && \text{and \prefp{cor:Swxy}}
+  \\&= \frac{\Swpp(\omega)\FH(\omega)}{\Swpp(\omega)+\Swuu(\omega)}
     && \text{by hypotheses (B)--(C)}
     && \text{and \prefp{cor:xvy}}
-  \\&= \frac{\Swqp(\omega)}{\Swpp(\omega)-\cancelto{0}{\Swuu(\omega)}}
-    && \text{by hypothesis (D)}
-  \\&= \FH(\omega)
-    && \text{by hypothesis (A)}
-    && \text{and \prefp{cor:Swxy}}
+  %\\&= \frac{\Swqp(\omega)}{\Swpp(\omega)-\cancelto{0}{\Swuu(\omega)}}
+  %  && \text{by hypothesis (D)}
+  %\\&= \FH(\omega)
+  %  && \text{by hypothesis (A)}
+  %  && \text{and \prefp{cor:Swxy}}
   \\
   \estH_2(\omega)
     &\eqd \frac{\Swyy(\omega)}{\Swxy(\omega)}
