@@ -88,8 +88,8 @@ an estimate $\estH(\omega)$.
   \centering
   \begin{tabular}{|c|c|}
     \hline
-     \includegraphics{graphics/sysH_xyuvpq.pdf}
-    &\includegraphics{graphics/sysH_mnoise.pdf}
+     \tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}
+    &\tbox{\includegraphics{graphics/sysH_mnoise.pdf}}
     \\
       \opd{communications additive noise model}
      &\opd{measurement    additive noise model}
@@ -97,8 +97,11 @@ an estimate $\estH(\omega)$.
       The ``input signal" is $\rvx(n)$.
      &The ``input signal" is $\rvp(n)$.
     \\\hline
-    \\\mc{2}{|c|}{The two models are equivalent under the relation $\rvu(n)=-\rvu'(n)$.}
-    \\\mc{2}{|c|}{In each model, $\rvx(n)$ and $\rvy(n)$ are ``known", and $\rvu(n)$ and $\rvv(n)$ are not.}
+      \mc{2}{|l|}{In each model, $\rvx(n)$ and $\rvy(n)$ are ``known", and $\rvu(n)$, $\rvv(n)$, and $\rvw(n)$ are \emph{not}.}
+    \\\mc{2}{|l|}{In definition, the two models are \textbf{equivalent} under the relation $\rvu(n)=-\rvw(n)$.}
+    \\\mc{2}{|l|}{In practice, they are \textbf{different}:}
+    \\\mc{2}{|l|}{\indentx\imarks on the left, $\rvx$ and $\rvu$ would be typically \prope{uncorrelated};}
+    \\\mc{2}{|l|}{\indentx\imarks on the right, $\rvx$ and $\rvw=-\rvu$ are very much \prope{correlated} ($\rvx$ is a function of $\rvu$).}
     \\\hline
   \end{tabular}
   \caption{Additive noise models\label{fig:addnoise}}
@@ -112,28 +115,29 @@ and the ``transfer function" $\fH$ is the communications channel (air, water, wi
 
   \item The illustration on the right is suitable for modeling a testing system where
 $\rvp$ is an input test signal (from an industrial shaker or from a naturally occurring signal originating 
-from geophysical activity), $\rvu'$ is measurement noise, $\rvx$ is the measured input contaminated by noise,
+from geophysical activity), $\rvw$ is measurement noise, $\rvx$ is the measured input contaminated by noise,
 and $\fH$ is the device under test (a piece of equipment, a building, or the entire earth).
 \end{liste}
 
-Note that the two models are an equivalent system $\opS$ under the relation $\rvu=-\rvu'$.
+Note that the two models are an equivalent system $\opS$ under the relation $\rvu=-\rvw$.
 But although one might expect such a sign difference to wreak mathematical havoc in resulting equations,
 this is simply not the case here because
-\\\indentx$\ds\Sw{u'u'} = \opFT\pE\brs{\rvu'(m)\rvu'^\ast(0)}
-                        = \opFT\pE\brs{\brp{-\rvu(m)}\brp{-\rvu^\ast(0)}}
-                        = \opFT\pE\brs{\brp{\rvu(m)}\brp{\rvu^\ast(0)}}
-                        = \Swuu$
+\\\indentx$\ds\Swww = \opFT\pE\brs{\rvw(m)\rvw\ast(0)}
+                    = \opFT\pE\brs{\brp{-\rvu(m)}\brp{-\rvu^\ast(0)}}
+                    = \opFT\pE\brs{\brp{\rvu(m)}\brp{\rvu^\ast(0)}}
+                    = \Swuu$
 \\
 So the sign difference is not that big of a difference after all.
-Rather, the key difference between the two models is simply the interpretation of what the ``input signal" is
-and by extension, what the \fncte{signal-to-noise ratio} (\fncte{SNR}) is:
+But there are some key differences in practice:
 \begin{liste}
   \item In the communications model (on the left), the ``input signal" is $\rvx(n)$
       and the frequency-domain input \fncte{signal-to-noise ratio} (\fncte{SNR}) is $\ffrac{\Swxx(\omega)}{\Swuu(\omega)}$.
-     
-  \item In the measurement model (on the right), the ``input signal" is $\rvp(n)$
+      In the measurement model (on the right), the ``input signal" is $\rvp(n)$
       and the frequency-domain input \fncte{signal-to-noise ratio} (\fncte{SNR}) is 
-         $\ffrac{\Swpp(\omega)}{\Sw{u'u'}(\omega)} = \ffrac{\Swpp(\omega)}{\Swuu(\omega)}$.
+         $\ffrac{\Swpp(\omega)}{\Swww(\omega)} = \ffrac{\Swpp(\omega)}{\Swuu(\omega)}$.
+
+  \item On the left, $\rvx$ and $\rvu$ would be typically \prope{uncorrelated};
+        on the right, $\rvx$ and $\rvw=-\rvu$ are very much \prope{correlated} ($\rvx$ is a function of $\rvu$).
 \end{liste}
 
 %=======================================
@@ -176,7 +180,7 @@ And in fact, all the remaining estimates in this section are in general complex-
 
 And so to start (again), and in the very special (a.k.a unrealistic) case of $\opS$ having 
 \prope{zero measurement noise} (\prope{zero measurement error})
-($\rvm=\rvu=\rvv=0$),
+($\rvv=\rvu=\rvw=0$),
 $\fh(n)$ being \prope{linear time invariant} (\prope{LTI}),
 and input $\rvx(n)$ being \prope{wide sense stationary}\ldots
 then we can determine (a.k.a ``identify") $\fh(n)$ or $\FH(\omega)$
@@ -324,8 +328,12 @@ are closely related:
     && \text{\xxref{def:H1}{def:H2}}
   \\&= \sqrt{\frac{\Swyy(\omega)}{\Swxx(\omega)}\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
   \\&= \sqrt{\Twxy(\omega)}\sqrt{\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
-  \\&= \sqrt{\Twxy(\omega)}\sqrt{e^{-i2\theta}}
-  \\&= \sqrt{\Twxy(\omega)}\,e^{-i\theta}
+    && \text{by definition of $\Twxy$}
+    && \text{\xref{def:Txy}}
+  \\&= \sqrt{\Twxy(\omega)}\sqrt{\frac{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}{\abs{\Swxy(\omega)}e^{i\phi(\omega)}}}
+    && \text{where $\Swxy(\omega)\eqd{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}$}
+  \\&= \sqrt{\Twxy(\omega)}\sqrt{e^{-i2\phi(\omega)}}
+  \\&= \sqrt{\Twxy(\omega)}\,e^{-i\phi(\omega)}
 \end{align*}
 
 And hence, $\abs{\estHgm}^2 = \Twxy$.
@@ -343,7 +351,7 @@ And hence, $\abs{\estHgm}^2 = \Twxy$.
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defbox{\begin{array}{Mrc>{\ds}>{\ds}l}
   The \fnctd{transfer function estimate $\estHharm(\omega)$} is defined as 
-  & \estHharm(\omega) &\eqd& \frac{1}{\frac{1}{\estH_1(\omega)} + \frac{1}{\estH_2(\omega)}}
+  & \estHharm(\omega) &\eqd& \frac{1}{\frac{1}{\ds\estH_1(\omega)} + \frac{1}{\ds\estH_2(\omega)}}
 \end{array}}
 \end{definition}
 
@@ -736,37 +744,38 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}. %to the
 \end{proof}
 
 %---------------------------------------
-\begin{theorem}[LTI no output noise]
+\begin{theorem} %[LTI no output noise]
 \footnote{
+  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=H(f)$ (9.70); $H_2(f)=H(f)\brp{1+\ffrac{S_{n_yn_y}(f)}{S_{yy}(f)}}$ (9.71)},
   \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=\ffrac{H(f)}{\brp{1+\ffrac{S_{n_xn_x}}{S_{xx}(f)}}}$ (9.72); $H_2(f)=H(f)$ (9.73)},
   \citePpc{mitchell1982}{277}{$\~H_1(f)=\ffrac{H_0(f)}{\brp{1+\ffrac{G_{nn}}{G_{uu}}}}$}
+  \citePpc{mitchell1982}{278}{$\~H_2(f)=H_0(f)\brp{1+\ffrac{G_{mm}}{G_{vv}}}$}
   }
 \label{thm:estH2}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:estH1}.
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
 \thmbox{
   \brbr{\begin{array}{FMMD}
       (A).& The system $\fh$ is         &\prope{LTI}          & and
     \\(B).& $\rvx(n)$ and $\rvy(n)$ are &\prope{WSS}          & and
     \\(C).& $\rvy(n)$ and $\rvu(n)$ are &                     &
         \\& \mc{2}{M}{\quad              \prope{uncorrelated}}& and
-    \\(D).& $\rvv(n)=0$
+    %\\(D).& $\rvv(n)=0$
   \end{array}}
   \implies
-  \brbl{\begin{array}{F>{\ds}rc>{\ds}lDD}
-      (1).&\estH_1(\omega) &=& \frac{\FH(\omega)}
-                                    {1 + \frac{\ds\Swuu(\omega)}
-                                              {\ds\Swxx(\omega)}
-                                    }
-          & \begin{tabular}{@{}l}(\prope{biased})\\(\prope{under estimated})\end{tabular}
+  \brbl{\begin{array}{F>{\ds} rc>{\ds}l rc>{\ds}l D}
+      (1).&\estH_1(\omega) &=& \FH(\omega)\brs{1 + \frac{\ds\Swuu(\omega)}
+                                                        {\ds\Swxx(\omega)}}
+                           &=& \FH(\omega)\brs{\frac{1}{1+\frac{\ds\Swww(\omega)}{\ds\Swpp(\omega)}}}
+          %& \begin{tabular}{@{}l}(\prope{biased})\\(\prope{under estimated})\end{tabular}
           &and
-    \\(2).&\estH_2(\omega) &=& \FH(\omega)
-          & (\prope{unbiased}) &
+    \\(2).&\estH_2(\omega) &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
+                           &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
   \end{array}}
   }
 \end{theorem}
 \begin{proof}
-{\begin{align*}
+\begin{align*}
   \estH_1(\omega)
     &\eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}
     && \text{by definition of $\estH_1$}
@@ -782,20 +791,88 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:estH1}.
     && \text{and \prefp{cor:xvy}}
   \\&= \FH(\omega)\brs{1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
   \\
+  \estH_1(\omega)
+    &\eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}
+    && \text{by definition of $\estH_1$}
+    && \text{\xref{def:H1}}
+  \\&= \frac{\Swqp(\omega)}{\Swxx(\omega)}
+    && \text{by hypotheses (B)--(C)}
+    && \text{and \prefp{cor:sysH_addnoise}}
+  \\&= \frac{\Swqp(\omega)}{\Swpp(\omega)+\Swww(\omega)}
+    && \text{by hypotheses (B)--(C)}
+    && \text{and \prefp{cor:sysH_addnoise}}
+  \\&= \frac{\Swpp(\omega)\FH(\omega)}{\Swpp(\omega)+\Swww(\omega)}
+    && \text{by hypothesis (A)}
+    && \text{and \prefp{cor:Swxy}}
+  \\&= \FH(\omega)\brs{\frac{1}{1+\frac{\Swww(\omega)}{\Swpp(\omega)}}}
+  \\
   \estH_2(\omega)
     &\eqd \frac{\Swyy(\omega)}{\Swxy(\omega)}
     && \text{by definition of $\estH_2$}
     && \text{\xref{def:H2}}
-  \\&= \frac{\Swqq(\omega)}{\Swxy(\omega)}
-    && \text{by hypothesis (D)}
-  \\&= \frac{\Swqq(\omega)}{\Swpq(\omega)}
-    && \text{by hypotheses (B)--(C)}
+  \\&= \frac{\Swqq(\omega) + \Swvv(\omega)}{\Swxy(\omega)}
+    && \text{by hypothesis (C)}
+    && \text{and \prefp{cor:xvy}}
+  \\&= \frac{\Swqq(\omega) + \Swvv(\omega)}{\Swpq(\omega)}
+    && \text{by hypothesis (C)}
     && \text{and \prefp{cor:sysH_addnoise}}
-  \\&= \FH(\omega)
-    && \text{by hypothesis (A)}
+  \\&= \frac{\Swqq(\omega)}{\Swpq(\omega)} + \frac{\Swvv(\omega)}{\Swpq(\omega)}
+  \\&= \FH(\omega) + \frac{\Swvv(\omega)}{\frac{\Swqq(\omega)}{\FH(\omega)}}
+    && \text{by \prope{LTI} hypothesis (A)}
     && \text{and \prefp{cor:Swxy}}
-\end{align*}}
+  \\&= \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
+    && \text{by hypotheses (A) and (B)}
+    && \text{and \prefp{cor:Swxy}}
+  \\
+  \estH_2(\omega)
+    &\eqd \frac{\Swyy(\omega)}{\Swxy(\omega)}
+    && \text{by definition of $\estH_2$}
+    && \text{\xref{def:H2}}
+  \\&= \frac{\Swqq(\omega) + \Swvv(\omega)}{\Swxy(\omega)}
+    && \text{by hypothesis (C)}
+    && \text{and \prefp{cor:xvy}}
+  \\&= \frac{\Swqq(\omega) + \Swvv(\omega)}{\Swpq(\omega)}
+    && \text{by hypothesis (C)}
+    && \text{and \prefp{cor:sysH_addnoise}}
+  \\&= \frac{\Swqq(\omega)}{\Swpq(\omega)} + \frac{\Swvv(\omega)}{\Swpq(\omega)}
+  \\&= \FH(\omega) + \frac{\Swvv(\omega)}{\frac{\Swqq(\omega)}{\FH(\omega)}}
+    && \text{by \prope{LTI} hypothesis (A)}
+    && \text{and \prefp{cor:Swxy}}
+  \\&= \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
+    && \text{by hypotheses (A) and (B)}
+    && \text{and \prefp{cor:Swxy}}
+  %\\
+  %\estH_2(\omega)
+  %  &\eqd \frac{\Swyy(\omega)}{\Swxy(\omega)}
+  %  && \text{by definition of $\estH_2$}
+  %  && \text{\xref{def:H2}}
+  %\\&= \frac{\Swqq(\omega)}{\Swxy(\omega)}
+  %  && \text{by hypothesis (D)}
+  %\\&= \frac{\Swqq(\omega)}{\Swpq(\omega)}
+  %  && \text{by hypotheses (B)--(C)}
+  %  && \text{and \prefp{cor:sysH_addnoise}}
+  %\\&= \FH(\omega)
+  %  && \text{by hypothesis (A)}
+  %  && \text{and \prefp{cor:Swxy}}
+\end{align*}
 \end{proof}
+
+
+%=======================================
+\section{Coherence}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerppgc{liang2015}{363}{365}{1498702341}{7.4.2 Coherence function},
+  \citerpgc{ewins1986}{131}{0863800173}{$\gamma^2=\ffrac{H_1(\omega)}{H_2(\omega)}$ (3.8)}
+  }
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defboxt{
+  The \fnctd{coherence} function $\ds\Cxy(\omega) \eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}$
+  }
+\end{definition}
 
 %=======================================
 \section{Beware of estimators}
@@ -831,19 +908,3 @@ However, the Welch estimate with $K=1$ will yield
 \end{example}
 
 
-
-%=======================================
-\section{Coherence}
-%=======================================
-%---------------------------------------
-\begin{definition}
-\footnote{
-  \citerppgc{liang2015}{363}{365}{1498702341}{7.4.2 Coherence function},
-  \citerpgc{ewins1986}{131}{0863800173}{$\gamma^2=\ffrac{H_1(\omega)}{H_2(\omega)}$ (3.8)}
-  }
-%---------------------------------------
-Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defboxt{
-  The \fnctd{coherence} function $\ds\Cxy \eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}$
-  }
-\end{definition}
