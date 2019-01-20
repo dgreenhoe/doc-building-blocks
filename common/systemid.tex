@@ -154,7 +154,8 @@ and arrive at a function called ``\fncte{transmissibility}"
 \begin{definition}
 \footnote{
   \citerpgc{bendat2011}{469}{1118210824}{$\abs{H(f)}=\brs{G_{yy}(f)/G_{xx}(f)}^{1/2}$},
-  \citerpgc{goldman1999}{179}{0831130881}{Transmissibility \ldots $H_{ab}'=\ffrac{G_{bb}}{G_{aa}}$},
+  \citePpc{yan2012}{204}{(1) $\brs{G_{YY}(s)}=\brs{H(s)}\brs{G_{FF}(s)}\brs{H^\ast(s)}^T$},
+  \citerpgc{goldman1999}{179}{0831130881}{Transmissibility \ldots $H_{ab}'=\ffrac{G_{bb}}{G_{aa}}$ (note: differs by $\sqrt{\cdot}$ from Bendat and Piersol},
   \citeP{zhang2016},
   \citeP{yang2012},
   \citePp{zhou2018}{824},
@@ -166,7 +167,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
   \fnctd{transmissibility $\Twxy(\omega)$} is defined as
   \qquad$\ds
-  \Twxy(\omega) \eqd \frac{\Swyy(\omega)}{\Swxx(\omega)}
+  \Twxy(\omega) \eqd \sqrt{\frac{\Swyy(\omega)}{\Swxx(\omega)}}
   $
   }
 \end{definition}
@@ -315,9 +316,15 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 
 %---------------------------------------
 \begin{remark}
+\label{rem:HgmTxy_mag}
 %---------------------------------------
 Note that the \fncte{geometric mean estimator} \xref{def:Hgm} and \fncte{transmissibility} \xref{def:Txy}
 are closely related:
+\rembox{\begin{array}{rc>{\ds}lM}
+  \abs{\estHgm(\omega)} &=& \Twxy(\omega) & ($\Twxy$ is the magnitude of $\estHgm$)
+\end{array}}
+\end{remark}
+\begin{proof}
 \begin{align*}
   \estHgm(\omega) 
     &\eqd \sqrt{\estH_1(\omega)\estH_2(\omega)}
@@ -327,17 +334,80 @@ are closely related:
     && \text{by definitions of $\estH_1$ and $\estH_2$}
     && \text{\xxref{def:H1}{def:H2}}
   \\&= \sqrt{\frac{\Swyy(\omega)}{\Swxx(\omega)}\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
-  \\&= \sqrt{\Twxy(\omega)}\sqrt{\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
+  \\&= \Twxy(\omega)\sqrt{\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
     && \text{by definition of $\Twxy$}
     && \text{\xref{def:Txy}}
-  \\&= \sqrt{\Twxy(\omega)}\sqrt{\frac{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}{\abs{\Swxy(\omega)}e^{i\phi(\omega)}}}
+  \\&= \Twxy(\omega)\sqrt{\frac{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}{\abs{\Swxy(\omega)}e^{i\phi(\omega)}}}
     && \text{where $\Swxy(\omega)\eqd{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}$}
-  \\&= \sqrt{\Twxy(\omega)}\sqrt{e^{-i2\phi(\omega)}}
-  \\&= \sqrt{\Twxy(\omega)}\,e^{-i\phi(\omega)}
+  \\&= \Twxy(\omega)\sqrt{e^{-i2\phi(\omega)}}
+  \\&= \Twxy(\omega)\,e^{-i\phi(\omega)}
 \end{align*}
+\end{proof}
 
-And hence, $\abs{\estHgm}^2 = \Twxy$.
+%---------------------------------------
+\begin{remark}
+\label{rem:HgmTxy_gen}
+%---------------------------------------
+\fncte{Transmissibility} $\Twxy$ is a kind of ``black sheep" of the system identification function family. 
+All the other members of this family ($\estH_1$, $\estH_2$, $\estHv$, $\estHs$) are \prope{complex-valued},
+but $\Twxy$ is only \prope{real-valued}---a seemingly ordinary Joe born into a super-hero family.
+But \pref{rem:HgmTxy_mag} suggests that $\Twxy$ is not simply a ``black sheep", but 
+rather a ``dark horse" with abilities that can easily be unleashed by slight redefinition. 
+In particular, \pref{rem:HgmTxy_mag} demonstrates that $\Twxy$ is the \hie{magnitude} of the geometric mean of 
+$\estH_1$ and $\estH_2$.
+We can thus justifiably define a \fnctd{complex transmissibility} function as $\estHgm$\ldots
+and the magnitude of this \fncte{complex transmissibility} function is the \fncte{ordinary transmissibility}
+function of \prefpp{def:Txy}.
+\rembox{\begin{array}{Mc>{\ds}l}
+  \fnctd{complex transmissibility} $\Twxy'(\omega)$ &\eqd& \estHgm(\omega)
+\end{array}}
 \end{remark}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerppgc{liang2015}{363}{365}{1498702341}{7.4.2 Coherence function},
+  \citerpgc{ewins1986}{131}{0863800173}{$\gamma^2=\ffrac{H_1(\omega)}{H_2(\omega)}$ (3.8)}
+  }
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defboxt{
+  The \fnctd{coherence} function $\ds\Cxy(\omega) \eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{remark}
+\label{rem:HgmTxyCxy}
+%---------------------------------------
+Note that the \fncte{complex transmissibility} $\Twxy'$ of \pref{rem:HgmTxy_gen}
+provides a nice mathematical symmetry (always a good sign of good direction) with coherence 
+in the system identification family tree.
+In particular, note that the following:
+\remboxt{
+  $\Cxy \eqd \sqrt{\frac{\estH_1^\ast}{\estH_2}}$ whereas $\Twxy' \eqd \sqrt{\estH_1 \estH_2}$
+  }
+\end{remark}
+\begin{proof}
+\begin{align*}
+  \sqrt{\frac{\estH_1^\ast(\omega)}{\estH_2(\omega)}}
+    && \text{by definition of $\estHgm$}
+    && \text{\xref{def:Hgm}}
+  %\\&\eqd \sqrt{\frac{\Swxy^\ast(\omega)}{\Swxx(\omega)}\frac{\Swyy(\omega)}{\Swxy(\omega)}}
+  %  && \text{by definitions of $\estH_1$ and $\estH_2$}
+  %  && \text{\xxref{def:H1}{def:H2}}
+  %\\&= \sqrt{\frac{\Swyy(\omega)}{\Swxx(\omega)}\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
+  %\\&= \Twxy(\omega)\sqrt{\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
+  %  && \text{by definition of $\Twxy$}
+  %  && \text{\xref{def:Txy}}
+  %\\&= \Twxy(\omega)\sqrt{\frac{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}{\abs{\Swxy(\omega)}e^{i\phi(\omega)}}}
+  %  && \text{where $\Swxy(\omega)\eqd{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}$}
+  %\\&= \Twxy(\omega)\sqrt{e^{-i2\phi(\omega)}}
+  %\\&= \Twxy(\omega)\,e^{-i\phi(\omega)}
+\end{align*}
+\end{proof}
+
+
 
 %---------------------------------------
 \begin{definition}[\fnctd{Harmonic mean estimator}]
@@ -702,7 +772,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
                            & & \text{\scs\prope{under-estimated}}
     \\(1).&\estH_1(\omega) &=& \FH(\omega)\brs{1 + \frac{\ds\Swuu(\omega)}
                                                         {\ds\Swxx(\omega)}}
-                           &=& \FH(\omega)\brs{\frac{1}{1+\frac{\ds\Swww(\omega)}{\ds\Swpp(\omega)}}}
+                           &=& \FH(\omega)\brs{\text{$\frac{1}{1+\frac{\ds\Swww(\omega)}{\ds\Swpp(\omega)}}$}}
                            &and
     \\(2).&\estH_2(\omega) &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
                            & & 
@@ -769,7 +839,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
 Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
 \corbox{\begin{array}{lcl}
   \brb{\begin{array}{FMM}
-      (A).& hypotheses of \pref{thm:estH1}    & and
+      (A).& \mc{2}{M}{hypotheses of \pref{thm:estH1} \scs and}
     \\(B).& $\rvu(n)=\rvw(n)=0$               & (\prope{no input noise})
   \end{array}}
   &\implies&
@@ -778,7 +848,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
   \end{array}}
   \\
   \brb{\begin{array}{FMM}
-      (A).& hypotheses of \pref{thm:estH1}    & and
+      (A).& \mc{2}{M}{hypotheses of \pref{thm:estH1} \scs and}
     \\(B).& $\rvv(n)=0$                       & (\prope{no output noise})
   \end{array}}
   &\implies&
@@ -789,20 +859,8 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
 \end{corollary}
 
 %=======================================
-\section{Coherence}
+%\section{Coherence}
 %=======================================
-%---------------------------------------
-\begin{definition}
-\footnote{
-  \citerppgc{liang2015}{363}{365}{1498702341}{7.4.2 Coherence function},
-  \citerpgc{ewins1986}{131}{0863800173}{$\gamma^2=\ffrac{H_1(\omega)}{H_2(\omega)}$ (3.8)}
-  }
-%---------------------------------------
-Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defboxt{
-  The \fnctd{coherence} function $\ds\Cxy(\omega) \eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}$
-  }
-\end{definition}
 
 %=======================================
 \section{Beware of estimators}
@@ -838,3 +896,11 @@ However, the Welch estimate with $K=1$ will yield
 \end{example}
 
 
+\section{Estimating noise}
+
+\begin{liste}
+  %\item \citeP{shoo1988}
+  \item \citeP{thong2001}
+  \item \citeP{kim2003}
+  \item \citeP{kamel2004}
+\end{liste}
