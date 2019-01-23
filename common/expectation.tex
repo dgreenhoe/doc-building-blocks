@@ -78,7 +78,7 @@ The next theorem gives some useful relations for simple statistics.
 \begin{theorem}
 \label{thm:pE}
 %---------------------------------------
-Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$.
+Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
 \thmbox{\begin{array}{>{\ds}rc>{\ds}lCD}
     \pEx(a\rvX+b)    &=& \brp{a\pEx\rvX} + b       & \forall a,b\in\R & (\prope{linear})
   \\\pVar(a\rvX+b)   &=& a^2\pVar(\rvX)            & \forall a,b\in\R &
@@ -98,20 +98,61 @@ Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$
     &\eqd \pEx\left[(\rvX-\pEx\rvX)^2\right]
     &&    \text{by definition of $\pVar$}
     &&    \text{\xref{def:pvar}}
-  \\&=    \pEx\brs{\rvX^2-2X\pEx\rvX + (\pEx\rvX)^2 }
-  \\&=    \pEx[\rvX^2]  - \pEx 2X\pEx\rvX  + \pEx (\pEx\rvX)^2
-  \\&=    \pEx[\rvX^2] - 2(\pEx\rvX)[\pEx\rvX] + (\pEx\rvX)^2
+  \\&=    \pEx\brs{\rvX^2-2\rvX\pEx\rvX + (\pEx\rvX)^2 }
+  \\&=    \pEx\rvX^2  - \pEx\brs{2\rvX\pEx\rvX}  + \pEx (\pEx\rvX)^2
+  \\&=    \pEx\rvX^2 - 2(\pEx\rvX)[\pEx\rvX] + (\pEx\rvX)^2
   \\&=    \pEx(\rvX^2) - (\pEx\rvX)^2
 \\
 \\
   \pVar(a\rvX+b)
     &=    \pEx(a\rvX+b)^2  - [\pEx(a\rvX+b)]^2
-  \\&=    \pEx(a^2X^2+2ab\rvX+b^2)  - [a(\pEx\rvX)+b]^2
+  \\&=    \pEx(a^2\rvX^2+2ab\rvX+b^2)  - [a(\pEx\rvX)+b]^2
   \\&=    a^2 \pEx\rvX^2  +2ab\pEx\rvX + b^2 - \brs{a^2[\pEx\rvX]^2 + 2ab\pEx\rvX + b^2}
   \\&=    a^2\brs{ \pEx\rvX^2  - (\pEx\rvX)^2 }
   \\&\eqd a^2 \pVar(\rvX)
 \end{align*}
 \end{proof}
+
+Despite the $\pE(a\rvX+b)=a\pE\rvX+b$ hope that \pref{thm:pE} may have given, 
+note that in general the expectation operator $\pE$ is \prope{non-linear}.
+In particular, in general it is \emph{not} true that $\pE(\rvX+\rvY)$
+equals $\pE\rvX + \pE\rvY$.
+However, in the special case that $\rvX$ and $\rvY$ are \prope{independent},
+then this \emph{is} true (next theorem).
+%---------------------------------------
+\begin{theorem}
+\label{thm:pE}
+%---------------------------------------
+Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
+\thmbox{
+  \brb{\begin{array}{M}
+    $\rvX$ and $\rvY$ are \prope{independent}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{>{\ds}rc>{\ds}lCD}
+    \pEx(a\rvX+b\rvY)  &=& \brp{a\pEx\rvX} + \brp{b\pEx\rvY} & \forall a,b\in\R & (\prope{linear})
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \pExy(a\rvX+b\rvY)
+    &\eqd \int_{x\in\R}\int_{y\in\R}\brs{ax+by} \pdfxy(x,y)  \dy\dx
+    && \text{by definition of $\pE$}
+    && \text{\xref{def:pE}}
+  \\&= \int_{x\in\R}\int_{y\in\R} ax \pdfxy(x,y)  \dy\dx
+     + \int_{x\in\R}\int_{y\in\R} by \pdfxy(x,y)  \dy\dx
+     && \text{by \prope{lineararity} of $\int\int\dy\dx$ operator}
+     && \text{\xref{def:linop}}
+  \\&= \int_{x\in\R}\int_{y\in\R} ax \pdfx(x)\pdfy(y)  \dy\dx
+     + \int_{x\in\R}\int_{y\in\R} by \pdfx(x)\pdfy(y)  \dy\dx
+     && \text{by \prope{independent} property}
+  \\&= a \int_{x\in\R} x \pdfx(x)\dx \int_{y\in\R} \pdfy(y)  \dy
+     + \int_{x\in\R} \pdfx(x) b\int_{y\in\R} y \pdfy(y)  \dy
+  \\&= \brp{a\pEx\rvX} + \brp{b\pEy\rvY}
+\end{align*}
+\end{proof}
+
 
 \begin{figure}[ht]
 \setlength{\unitlength}{0.3mm}%
@@ -191,6 +232,20 @@ Then
     \end{align*}
 \end{enumerate}
 \end{proof}
+
+%---------------------------------------
+\begin{theorem}[\thmd{Law of the Unconscious Statistician}]
+\footnote{
+  \citerpgc{suhov2005}{145}{0521847664}{(2.69)},
+  \citerpgc{allen2018}{490}{1447174208}{18.3.4 The Law of the Unconscious Statistician},
+  \citerpgc{papoulis1990}{124}{0137116985}{Fundamental Theorem}
+  }
+%---------------------------------------
+\thmbox{
+  \pE\brs{\fg(\rvX)} = \int_{x\in\R} \fg(x) \pdfx(x) \dx
+  }
+\end{theorem}
+
 
 %=======================================
 \section{Upper bounds on probability}
