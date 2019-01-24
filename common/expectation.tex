@@ -71,38 +71,126 @@ Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$
 \end{definition}
 
 %=======================================
-\section{Properties}
+\section{Expectation as a linear operator}
 %=======================================
-The next theorem gives some useful relations for simple statistics.
+The next theorem demonstrates that the operator $\pE$ is a 
+\ope{linear operator} \xref{def:linop}---which in turn
+makes $\pE$ part of a distinguished club of operators along with fellow member operators
+differentiation $\opDif$, integration $\int\dx$,
+Laplace $\opLT$, Fourier $\opFT$, z-transform $\opZ$, etc.
+Because $\pE$ is a linear operator, it immediately claims all the properties 
+that it's linear operator birthright grants \xref{cor:pE}. 
 %---------------------------------------
-\begin{theorem}
+\begin{theorem}[\thme{Linearity of $\pE$}]
 \label{thm:pE}
 %---------------------------------------
 Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
 \thmbox{\begin{array}{>{\ds}rc>{\ds}lCD}
-    \pEx(a\rvX+b)    &=& \brp{a\pEx\rvX} + b       & \forall a,b\in\R & (\prope{linear})
-  \\\pVar(a\rvX+b)   &=& a^2\pVar(\rvX)            & \forall a,b\in\R &
-  \\\pVar(\rvX)      &=& \pEx(\rvX^2) - (\pEx\rvX)^2
+    \pEx(a\rvX+b\rvY+c)&=& \brp{a\pEx\rvX} + \brp{b\pEx\rvY} + c& \forall a,b,c\in\R & (\prope{linear})
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
-  \pEx(a\rvX+b)
-    &\eqd \int_{x\in\R}\brs{ax+b} \ppx(x)  \dx
-  \\&=    a \int_{x\in\R}x \ppx(x)  \dx + b\int_{x\in\R}\ppx(x)  \dx
-  \\&= \brs{a\pEx\rvX} + b\brs{1}
-  \\&= \brs{a\pEx\rvX} + b
-\\
-\\
+  \pExy(a\rvX+b\rvY + c)
+    &\eqd \int_{x\in\R}\int_{y\in\R}\brs{ax+by+c} \pdfxy(x,y)  \dy\dx
+    \qquad\text{by definition of $\pE$ \xref{def:pE}}
+  \\&= \int_{x\in\R}\int_{y\in\R} ax \pdfxy(x,y)  \dy\dx
+     + \int_{x\in\R}\int_{y\in\R} by \pdfxy(x,y)  \dy\dx
+     + \int_{x\in\R}\int_{y\in\R} c  \pdfxy(x,y)  \dy\dx
+     %&& \text{by \prope{lineararity} of $\int\int\dy\dx$}
+     %&& \text{\xref{def:linop}}
+  \\&=  \int_{x\in\R} ax \mcom{\int_{y\in\R}\pdfxy(x,y)  \dy}{$\pdfx(x)$}\dx
+     +  \int_{y\in\R} by \mcom{\int_{x\in\R}\pdfxy(x,y)  \dx}{$\pdfy(y)$}\dy
+     + c\int_{y\in\R}    \mcom{\int_{x\in\R}\pdfxy(x,y)  \dx\dy}{$1$}
+     %&& \text{by \prope{lineararity} of $\int\int\dy\dx$}
+     %&& \text{\xref{def:linop}}
+  \\&= a\int_{x\in\R} x \pdfx(x)  \dx
+     + b\int_{y\in\R} y \pdfy(y)  \dy
+     + c
+  \\&= \brp{a\pEx\rvX} + \brp{b\pEy\rvY} + c
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:pE_prop}
+%---------------------------------------
+Let $\opE$ be the an operator from a linear space $\spX$ to a linear space $\spY$, both over a field $\F$.
+\corbox{
+  \begin{array}{F>{\ds}lc>{\ds}lD}
+      1. & \pE\vzero    &=& \vzero                                                            & and
+    \\2. & \pE(-\rvX)    &=& -(\pE\rvX)                                                       & and
+    \\3. & \pE(\rvX-\rvY) &=& \pE\rvX - \pE\rvY                                               & and
+    \\4. & \pE\brp{\sum_{n=1}^\xN \alpha_n\rvX_n}  &=& \sum_{n=1}^\xN \alpha_n\brp{\pE\rvX_n} &
+  \end{array}
+  }
+\end{corollary}
+\begin{proof}
+These all follow immediately from the fact that $\pE$ is a \ope{linear operator} 
+and from \prefpp{thm:L_prop}.
+\end{proof}
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+Projecting a stochastic process onto a basis often yields valuable insights 
+into the nature of the underlying data. 
+Typical projection operators include the Fourier operator $\opFT$, Laplace $\opLT$,
+and z-transform $\opZT$ \ldots not to mention wavelet operators.
+But note that any such projection on a random sequence simply produces another random sequence.
+For example, the Fourier transform $\opFT\rvx(n)$ of a random sequence $\rvx(n)$ is another random 
+sequence.
+
+One way to overcome this difficulty is to simply invoke the \ope{sampling} operator $\opS\rvx(n)$ \xref{chp:sampling},
+yielding a deterministic sequence, and then take the Fourier transform of the resulting 
+deterministic sequence. 
+The problem here is that every time you resample the sequence, you will very likely get a 
+different Fourier transform.
+
+Arguably a better approach (and the standard one at that) 
+is to first invoke the expectation operator $\pE\rvx(n)$, also yielding a deterministic sequence.
+
+The good news here is that because $\pE$ and all the above mentioned operators are \prope{linear}, 
+we can do all the standard arithmetic acrobatics associated with linear algebra operators (next corollary).
+%such as $\opE\opFT\rvx(n)
+\end{remark}
+
+%---------------------------------------
+\begin{corollary}
+%---------------------------------------
+Let $\opM$ and $\opN$ be \ope{linear operator}s \xref{def:linop}.
+\corbox{\begin{array}{>{\scy}rlcl@{\qquad}C@{\qquad}D}
+    1. & \pE\brp{\opM\opN}      &=& \brp{\pE\opM}\opN                          & \forall \pE\in\clLzw,\, \opM\in\clLyz,\, \opN\in\clLxy  & (\prope{associative})
+  \\2. & \pE\brp{\opM\addo\opN} &=& \brp{\pE\opM}\addo\brp{\pE\opN}            & \forall \pE\in\clLyz,\, \opM\in\clLxy,\, \opN\in\clLxy  & (\prope{left distributive})
+  \\3. & \brp{\pE\addo\opM}\opN &=& \brp{\pE\opN}\addo\brp{\opM\opN}           & \forall \pE\in\clLyz,\, \opM\in\clLyz,\, \opN\in\clLxy  & (\prope{right distributive})
+  \\4. & \alpha\brp{\pE\opM}    &=& \brp{\alpha\pE}\opM = \pE\brp{\alpha\opM}  & \forall \pE\in\clLyz,\, \opM\in\clLxy,\, \alpha\in\F    & (\prope{homogeneous})
+\end{array}}
+\end{corollary}
+\begin{proof}
+These all follow immediately from the fact that $\pE$ is a \ope{linear operator} 
+and from \prefpp{thm:L_LMN}.
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:pVar}
+%---------------------------------------
+Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
+\corbox{\begin{array}{>{\ds}rc>{\ds}lCD}
+    \pVar(a\rvX+b)     &=& a^2\pVar(\rvX)                       & \forall a,b  \in\R &
+  \\\pVar(\rvX)        &=& \pEx(\rvX^2) - (\pEx\rvX)^2          &                    &
+\end{array}}
+\end{corollary}
+\begin{proof}
+\begin{align*}
   \pVar(\rvX)
-    &\eqd \pEx\left[(\rvX-\pEx\rvX)^2\right]
+    &\eqd \pEx\brs{(\rvX-\pEx\rvX)^2}
     &&    \text{by definition of $\pVar$}
     &&    \text{\xref{def:pvar}}
   \\&=    \pEx\brs{\rvX^2-2\rvX\pEx\rvX + (\pEx\rvX)^2 }
   \\&=    \pEx\rvX^2  - \pEx\brs{2\rvX\pEx\rvX}  + \pEx (\pEx\rvX)^2
   \\&=    \pEx\rvX^2 - 2(\pEx\rvX)[\pEx\rvX] + (\pEx\rvX)^2
   \\&=    \pEx(\rvX^2) - (\pEx\rvX)^2
-\\
 \\
   \pVar(a\rvX+b)
     &=    \pEx(a\rvX+b)^2  - [\pEx(a\rvX+b)]^2
@@ -112,47 +200,6 @@ Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
   \\&\eqd a^2 \pVar(\rvX)
 \end{align*}
 \end{proof}
-
-Despite the $\pE(a\rvX+b)=a\pE\rvX+b$ hope that \pref{thm:pE} may have given, 
-note that in general the expectation operator $\pE$ is \prope{non-linear}.
-In particular, in general it is \emph{not} true that $\pE(\rvX+\rvY)$
-equals $\pE\rvX + \pE\rvY$.
-However, in the special case that $\rvX$ and $\rvY$ are \prope{independent},
-then this \emph{is} true (next theorem).
-%---------------------------------------
-\begin{theorem}
-\label{thm:pE}
-%---------------------------------------
-Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
-\thmbox{
-  \brb{\begin{array}{M}
-    $\rvX$ and $\rvY$ are \prope{independent}
-  \end{array}}
-  \implies
-  \brb{\begin{array}{>{\ds}rc>{\ds}lCD}
-    \pEx(a\rvX+b\rvY)  &=& \brp{a\pEx\rvX} + \brp{b\pEx\rvY} & \forall a,b\in\R & (\prope{linear})
-  \end{array}}
-  }
-\end{theorem}
-\begin{proof}
-\begin{align*}
-  \pExy(a\rvX+b\rvY)
-    &\eqd \int_{x\in\R}\int_{y\in\R}\brs{ax+by} \pdfxy(x,y)  \dy\dx
-    && \text{by definition of $\pE$}
-    && \text{\xref{def:pE}}
-  \\&= \int_{x\in\R}\int_{y\in\R} ax \pdfxy(x,y)  \dy\dx
-     + \int_{x\in\R}\int_{y\in\R} by \pdfxy(x,y)  \dy\dx
-     && \text{by \prope{lineararity} of $\int\int\dy\dx$ operator}
-     && \text{\xref{def:linop}}
-  \\&= \int_{x\in\R}\int_{y\in\R} ax \pdfx(x)\pdfy(y)  \dy\dx
-     + \int_{x\in\R}\int_{y\in\R} by \pdfx(x)\pdfy(y)  \dy\dx
-     && \text{by \prope{independent} property}
-  \\&= a \int_{x\in\R} x \pdfx(x)\dx \int_{y\in\R} \pdfy(y)  \dy
-     + \int_{x\in\R} \pdfx(x) b\int_{y\in\R} y \pdfy(y)  \dy
-  \\&= \brp{a\pEx\rvX} + \brp{b\pEy\rvY}
-\end{align*}
-\end{proof}
-
 
 \begin{figure}[ht]
 \setlength{\unitlength}{0.3mm}%
@@ -248,7 +295,7 @@ Then
 
 
 %=======================================
-\section{Upper bounds on probability}
+\section{Expectation inequalities}
 %=======================================
 %---------------------------------------
 \begin{theorem}[\thmd{Markov's inequality}]
