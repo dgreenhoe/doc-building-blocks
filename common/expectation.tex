@@ -78,11 +78,12 @@ The next theorem demonstrates that the operator $\pE$ is a
 makes $\pE$ part of a distinguished club of operators along with fellow member operators
 differentiation $\opDif$, integration $\int\dx$,
 Laplace $\opLT$, Fourier $\opFT$, z-transform $\opZ$, etc.
-Because $\pE$ is a linear operator, it immediately claims all the properties 
-that it's linear operator birthright grants \xref{cor:pE}. 
+Because $\pE$ is a linear operator, it immediately inherits all the properties 
+that it's linear operator birthright grants it \xref{cor:pE}. 
 %---------------------------------------
 \begin{theorem}[\thme{Linearity of $\pE$}]
 \label{thm:pE}
+\label{thm:pE_linop}
 %---------------------------------------
 Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
 \thmbox{\begin{array}{>{\ds}rc>{\ds}lCD}
@@ -101,11 +102,11 @@ Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
      %&& \text{\xref{def:linop}}
   \\&=  \int_{x\in\R} ax \mcom{\int_{y\in\R}\pdfxy(x,y)  \dy}{$\pdfx(x)$}\dx
      +  \int_{y\in\R} by \mcom{\int_{x\in\R}\pdfxy(x,y)  \dx}{$\pdfy(y)$}\dy
-     + c\int_{y\in\R}    \mcom{\int_{x\in\R}\pdfxy(x,y)  \dx\dy}{$1$}
+     + c\mcom{\int_{y\in\R}\int_{x\in\R}\pdfxy(x,y)  \dx\dy}{$1$}
      %&& \text{by \prope{lineararity} of $\int\int\dy\dx$}
      %&& \text{\xref{def:linop}}
-  \\&= a\int_{x\in\R} x \pdfx(x)  \dx
-     + b\int_{y\in\R} y \pdfy(y)  \dy
+  \\&= a\mcom{\int_{x\in\R} x \pdfx(x) \dx}{$\pE\rvX$}
+     + b\mcom{\int_{y\in\R} y \pdfy(y) \dy}{$\pE\rvY$}
      + c
   \\&= \brp{a\pEx\rvX} + \brp{b\pEy\rvY} + c
 \end{align*}
@@ -113,15 +114,18 @@ Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
 
 %---------------------------------------
 \begin{corollary}
-\label{cor:pE_prop}
+\label{cor:pE_linop}
 %---------------------------------------
 Let $\opE$ be the an operator from a linear space $\spX$ to a linear space $\spY$, both over a field $\F$.
 \corbox{
   \begin{array}{F>{\ds}lc>{\ds}lD}
-      1. & \pE\vzero    &=& \vzero                                                            & and
-    \\2. & \pE(-\rvX)    &=& -(\pE\rvX)                                                       & and
-    \\3. & \pE(\rvX-\rvY) &=& \pE\rvX - \pE\rvY                                               & and
-    \\4. & \pE\brp{\sum_{n=1}^\xN \alpha_n\rvX_n}  &=& \sum_{n=1}^\xN \alpha_n\brp{\pE\rvX_n} &
+      (1). & \pE\vzero    &=& \vzero                                                            & and
+    \\(2). & \pE(-\rvX)    &=& -(\pE\rvX)                                                       & and
+    \\(3). & \pE(\rvX-\rvY) &=& \pE\rvX - \pE\rvY                                               & and
+  \end{array}
+  \qquad
+  \begin{array}{F>{\ds}lc>{\ds}lD}
+      (4). & \pE\brp{\sum_{n=1}^\xN \alpha_n\rvX_n}  &=& \sum_{n=1}^\xN \alpha_n\brp{\pE\rvX_n} &
   \end{array}
   }
 \end{corollary}
@@ -188,7 +192,11 @@ Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
     &&    \text{by definition of $\pVar$}
     &&    \text{\xref{def:pvar}}
   \\&=    \pEx\brs{\rvX^2-2\rvX\pEx\rvX + (\pEx\rvX)^2 }
+    &&    \text{by \thme{Binomial Theorem}}
+    &&    \text{\ifxref{polynom}{thm:binomial}}
   \\&=    \pEx\rvX^2  - \pEx\brs{2\rvX\pEx\rvX}  + \pEx (\pEx\rvX)^2
+    &&    \text{by \prope{linearity} of $\pE$}
+    &&    \text{\xref{thm:pE_linop}}
   \\&=    \pEx\rvX^2 - 2(\pEx\rvX)[\pEx\rvX] + (\pEx\rvX)^2
   \\&=    \pEx(\rvX^2) - (\pEx\rvX)^2
 \\
@@ -196,8 +204,11 @@ Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
     &=    \pEx(a\rvX+b)^2  - [\pEx(a\rvX+b)]^2
   \\&=    \pEx(a^2\rvX^2+2ab\rvX+b^2)  - [a(\pEx\rvX)+b]^2
   \\&=    a^2 \pEx\rvX^2  +2ab\pEx\rvX + b^2 - \brs{a^2[\pEx\rvX]^2 + 2ab\pEx\rvX + b^2}
+    &&    \text{by \prope{linearity} of $\pE$}
+    &&    \text{\xref{thm:pE_linop}}
   \\&=    a^2\brs{ \pEx\rvX^2  - (\pEx\rvX)^2 }
   \\&\eqd a^2 \pVar(\rvX)
+    &&    \text{by previous result}
 \end{align*}
 \end{proof}
 
