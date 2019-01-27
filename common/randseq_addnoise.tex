@@ -313,34 +313,40 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:dual_addnoise}.
 %=======================================
 \section{Effects of additive noise and filtering}
 %=======================================
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+      \includegraphics{graphics/sysT_xyvq.pdf}
+     &\includegraphics{graphics/sysT_xyup.pdf}
+    \\\xref{thm:sysT_addnoise_v} &\xref{thm:sysT_addnoise_u}
+    \\\hline
+  \end{tabular}
+  \caption{\label{fig:sysT_addnoise}Additive noise with transform $\opT$}
+\end{figure}
+Adding in zero-mean uncorrelated noise \emph{after} a transform (operation) $\opT$
+has \emph{no effect} on cross-correlation across the transform (next theorem).
+However, adding \emph{before} $\opT$ \emph{does} \prefpp{thm:sysT_addnoise_u}.
 %---------------------------------------
-\begin{minipage}{\tw-70mm}
 \begin{theorem}
-Let $\opS$ be the \structe{system} illustrated to the right.
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise}.
 \label{thm:sysH_addnoise}
+\label{thm:sysT_addnoise_v}
 %---------------------------------------
-\end{theorem}
-\end{minipage}
-\hfill\tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}
-\\
 \thmbox{
   \brb{\begin{array}{FrclDD}
-      (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)         &(\prope{WSS})          & and
-    \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=&\pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
-    \\(C).& \pE\brs{\rvx(n)\rvu(n)} &=&\pE\rvx(n)\pE\rvu(n) &(\prope{uncorrelated}) & and
-    \\(D).& \pE\brs{\rvu(n)\rvv(n)} &=&\pE\rvu(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
-    \\(E).& \pE\rvu(n)=\pE\rvv(n)   &=& 0                   & (\prope{zero-mean})   &
+      (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)          &(\prope{WSS})          & and
+    \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=& \pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
+    \\(E).& \pE\rvv(n)              &=& 0                    & (\prope{zero-mean})   &
   \end{array}}
   \implies
-  \brb{\begin{array}{Frcl}
-      (1).& \Rxy(m)&=& \Rxq(m)
-    \\(2).& \Ruy(m)&=& \Ruq(m)
-    \\(3).& \Rpy(m)&=& \Rpq(m)
-    \\(4).& \Rpq(m)&=& \Rxy(m) + \Ruy(m)
-    \\(5).& \Rpq(m)&=& \Rxy(m) + \Ruq(m)
+  \brb{\begin{array}{FrclD}
+      (1).& \Rxy(m)      &=& \Rxq(m)       & and
+    \\(2).& \Szxy(z)     &=& \Szxq(z)      & and
+    \\(3).& \Swxy(\omega)&=& \Swxq(\omega) &
   \end{array}}
   }
-\\
+\end{theorem}
 \begin{proof}
 \begin{align*}
   \Rxy(m)
@@ -361,34 +367,55 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     && \text{by definition of $\Rxy$}
     && \text{\xref{def:Rxym}}
   \\
-  \Ruy(m) 
-    &= \Ruq(m)
+  \Szxy(z)
+    &\eqd \opZ\Rxy(m)
+    && \text{by definition of $\Szxy$}
+    && \text{\xref{def:Szxy}}
+  \\&= \opZ\Rxq(m)
     && \text{by previous result}
-    && \text{(swap $\rvx$ and $\rvu$)}
+    && \text{(1)}
+  \\&= \Szxq(z)
+    && \text{by definition of $\Szxy$}
+    && \text{\xref{def:Szxy}}
   \\
+  \Swxy(\omega)
+    &\eqd \opDTFT\Rxy(m)
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+  \\&= \opDTFT\Rxq(m)
+    && \text{by previous result}
+    && \text{(1)}
+  \\&= \Swxq(\omega)
+    && \text{by definition of $\Swxq$}
+    && \text{\xref{def:Swxy}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:sysH_addnoise}
+\label{thm:sysT_addnoise_u}
+%\includegraphics{graphics/sysH_xyuvpq.pdf}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise}.
+\thmbox{
+  \brb{\begin{array}{FrclDD}
+      (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)         &(\prope{WSS})          & and
+    \\(B).& \pE\brs{\rvx(n)\rvu(n)} &=&\pE\rvx(n)\pE\rvu(n) &(\prope{uncorrelated}) & and
+    \\(C).& \pE\rvu(n)              &=& 0                   & (\prope{zero-mean})   &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{Frcl@{\hspace{2pt}}c@{\hspace{2pt}}lD}
+      (1).& \Rpy(m)      &=& \Rxy(m)       &+& \Ruy(m)       & and 
+    \\(2).& \Szpq(z)     &=& \Szxy(z)      &+& \Szuy(z)      & and
+    \\(3).& \Swpq(\omega)&=& \Swxy(\omega) &+& \Swuy(\omega) &
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
   \Rpy(m)
     &\eqd \pE\brs{\rvp(m)\rvy^\ast(0)}
-    && \text{by definition of $\Rpy$}
-    && \text{\pref{def:Rxym}}
-  \\&\eqd \pE\brs{\rvp(m)(\rvq(0)+\rvv(0))^\ast}
-    && \text{by definition of $\opS$}
-  \\&= \pE\brs{\rvp(m)\rvq^\ast(0)+\rvp(m)\rvv^\ast(0)}
-  \\&= \pE\brs{\rvp(m)\rvq^\ast(0)} + \pE\brs{\rvp(m)\rvv^\ast(0)}
-  \\&= \pE\brs{\rvp(m)\rvq^\ast(0)} + \brs{\pE\rvp(m)}\brs{\pE\rvv^\ast(0)}
-    && \text{by \prope{uncorrelated} hypothesis}
-    && \text{(B)}
-  \\&= \pE\brs{\rvp(m)\rvq^\ast(0)} + \brs{\pE\rvp(m)}\cancelto{0}{\brs{\pE\rvv^\ast(0)}}
-    && \text{by \prope{zero-mean} hypothesis}
-    && \text{(E)}
-  \\&= \Rpq(m)
-    && \text{by definition of $\Rpy$}
-    && \text{\pref{def:Rxym}}
-  \\
-  \Rpq(m)
-    &= \Rpy(m)
-    && \text{by previous result}
-    && \text{(2)}
-  \\&\eqd \pE\brs{\rvp(m)\rvy^\ast(0)}
     && \text{by definition of $\Rpy$}
     && \text{\pref{def:Rxym}}
   \\&\eqd \pE\brp{\brs{\rvx(m)+\rvu(m)}\rvy^\ast(0)}
@@ -397,17 +424,9 @@ Let $\opS$ be the \structe{system} illustrated to the right.
   \\&= \pE\brs{\rvx(m)\rvy^\ast(0)} + \pE\brs{\rvu(m)\rvy^\ast(0)}
     && \text{because $\pE$ is a \ope{linear operator}}
     && \text{\xref{thm:pE_linop}}
-  \\\eqd \Rxy(m) + \Ruy(m)
+  \\&\eqd \Rxy(m) + \Ruy(m)
     && \text{by definition of $\Rxy$}
     && \text{\pref{def:Rxym}}
-  \\
-  \Rpq(m)
-    &= \Rxy(m) + \Ruy(m)
-    && \text{by previous result}
-    && \text{(4)}
-  \\&= \Rxy(m) + \Ruq(m)
-    && \text{by previous result}
-    && \text{(2)}
 \end{align*}
 \end{proof}
 
@@ -433,17 +452,6 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_addnoise}.
 \end{corollary}
 \begin{proof}
 \begin{align*}
-  \Szxy(\omega)
-    &\eqd \opZ\Rxy(m)
-    && \text{by definition of $\Szxy$}
-    && \text{\xref{def:Szxy}}
-  \\&= \opZ\Rxq(m)
-    && \text{by \prefp{thm:sysH_addnoise}}
-    && \text{(1)}
-  \\&= \Szxq(z)
-    && \text{by definition of $\Szxy$}
-    && \text{\xref{def:Szxy}}
-  \\
   \Swxy(\omega)
     &\eqd \opDTFT\Rxy(m)
     && \text{by definition of $\Swxy$}
