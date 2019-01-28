@@ -315,11 +315,12 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:dual_addnoise}.
 %=======================================
 \begin{figure}[h]
   \centering
-  \begin{tabular}{|c|c|}
+  \begin{tabular}{|c|c|c|}
     \hline
       \includegraphics{graphics/sysT_xyvq.pdf}
      &\includegraphics{graphics/sysT_xyup.pdf}
-    \\\xref{thm:sysT_addnoise_v} &\xref{thm:sysT_addnoise_u}
+     &\includegraphics{graphics/sysT_mnoise.pdf}
+    \\\xref{thm:sysT_addnoise_v} &\xref{thm:sysT_addnoise_u} &\xref{thm:sysT_mnoise}
     \\\hline
   \end{tabular}
   \caption{\label{fig:sysT_addnoise}Additive noise with transform $\opT$}
@@ -393,7 +394,6 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise}.
 
 %---------------------------------------
 \begin{theorem}
-\label{thm:sysH_addnoise}
 \label{thm:sysT_addnoise_u}
 %\includegraphics{graphics/sysH_xyuvpq.pdf}
 %---------------------------------------
@@ -431,74 +431,114 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise}.
 \end{proof}
 
 %---------------------------------------
-\begin{corollary}
-\label{cor:sysH_addnoise_z}
+\begin{theorem}
+\label{thm:sysT_mnoise}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_addnoise}.
-\corbox{
-  \brb{\begin{array}{M}
-    hypotheses of\\
-    \pref{thm:sysH_addnoise}
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise} (C).
+\thmbox{
+  \brb{\begin{array}{FrclDD}
+      (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)         &(\prope{WSS})          & and
+    \\(B).& \pE\brs{\rvx(n)\rvu(n)} &=&\pE\rvx(n)\pE\rvu(n) &(\prope{uncorrelated}) & and
+    \\(C).& \pE\rvu(n)              &=& 0                   &(\prope{zero-mean})    &
   \end{array}}
   \implies
-  \brb{\begin{array}{Frcl}
-      (1).& \Szxy(z)&=& \Szxq(z)
-    \\(2).& \Szuy(z)&=& \Szuq(z)
-    \\(3).& \Szpy(z)&=& \Szpq(z)
-    \\(4).& \Szpq(z)&=& \Szxy(z) + \Szuy(z)
-    \\(5).& \Szpq(z)&=& \Szxy(z) + \Szuq(z)
+  \brb{\begin{array}{Frcl@{\hspace{2pt}}c@{\hspace{2pt}}lD}
+      (1).& \Rpy(m)      &=& \Rxy(m)       &+& \Ruy(m)       & and 
+    \\(2).& \Szpq(z)     &=& \Szxy(z)      &+& \Szuy(z)      & and
+    \\(3).& \Swpq(\omega)&=& \Swxy(\omega) &+& \Swuy(\omega) &
   \end{array}}
   }
-\end{corollary}
+\end{theorem}
 \begin{proof}
 \begin{align*}
-  \Swxy(\omega)
-    &\eqd \opDTFT\Rxy(m)
-    && \text{by definition of $\Swxy$}
-    && \text{\xref{def:Swxy}}
-  \\&= \opDTFT\Rxq(m)
-    && \text{by \prefp{thm:sysH_addnoise}}
-    && \text{(1)}
-  \\&= \Swxq(\omega)
-    && \text{by definition of $\Swxy$}
-    && \text{\xref{def:Swxy}}
+  \Rxy(m)
+    &\eqd \pE\brs{\rvx(m)\rvy^\ast(0)}
+    && \text{by definition of $\Rpy$}
+    && \text{\pref{def:Rxym}}
+  \\&\eqd \pE\brp{\brs{\rvp(m)+\rvw(m)}\rvy^\ast(0)}
+    && \text{by definition of $\opS$}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)+\rvw(m)\rvy^\ast(0)}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} + \pE\brs{\rvw(m)\rvy^\ast(0)}
+    && \text{because $\pE$ is a \ope{linear operator}}
+    && \text{\xref{thm:pE_linop}}
+  \\&\eqd \Rpy(m) + \Rwy(m)
+    && \text{by definition of $\Rxy$}
+    && \text{\pref{def:Rxym}}
+  \\&= \Rpy(m) + \cancelto{0}{\Rwy(m)}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(B)}
 \end{align*}
 \end{proof}
 
-%---------------------------------------
-\begin{corollary}
-\label{cor:sysH_addnoise}
-%---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_addnoise}.
-\corbox{
-  \brb{\begin{array}{M}
-    hypotheses of\\
-    \pref{thm:sysH_addnoise}
-  \end{array}}
-  \implies
-  \brb{\begin{array}{Frcl}
-      (1).& \Swxy(\omega)&=& \Swxq(\omega)
-    \\(2).& \Swuy(\omega)&=& \Swuq(\omega)
-    \\(3).& \Swpy(\omega)&=& \Swpq(\omega)
-    \\(4).& \Swpq(\omega)&=& \Swxy(\omega) + \Swuy(\omega)
-    \\(5).& \Swpq(\omega)&=& \Swxy(\omega) + \Swuq(\omega)
-  \end{array}}
-  }
-\end{corollary}
-\begin{proof}
-\begin{align*}
-  \Swxy(\omega)
-    &\eqd \opDTFT\Rxy(m)
-    && \text{by definition of $\Swxy$}
-    && \text{\xref{def:Swxy}}
-  \\&= \opDTFT\Rxq(m)
-    && \text{by \prefp{thm:sysH_addnoise}}
-    && \text{(1)}
-  \\&= \Swxq(\omega)
-    && \text{by definition of $\Swxy$}
-    && \text{\xref{def:Swxy}}
-\end{align*}
-\end{proof}
+%%---------------------------------------
+%\begin{corollary}
+%\label{cor:sysH_addnoise_z}
+%%---------------------------------------
+%Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_addnoise}.
+%\corbox{
+%  \brb{\begin{array}{M}
+%    hypotheses of\\
+%    \pref{thm:sysH_addnoise}
+%  \end{array}}
+%  \implies
+%  \brb{\begin{array}{Frcl}
+%      (1).& \Szxy(z)&=& \Szxq(z)
+%    \\(2).& \Szuy(z)&=& \Szuq(z)
+%    \\(3).& \Szpy(z)&=& \Szpq(z)
+%    \\(4).& \Szpq(z)&=& \Szxy(z) + \Szuy(z)
+%    \\(5).& \Szpq(z)&=& \Szxy(z) + \Szuq(z)
+%  \end{array}}
+%  }
+%\end{corollary}
+%\begin{proof}
+%\begin{align*}
+%  \Swxy(\omega)
+%    &\eqd \opDTFT\Rxy(m)
+%    && \text{by definition of $\Swxy$}
+%    && \text{\xref{def:Swxy}}
+%  \\&= \opDTFT\Rxq(m)
+%    && \text{by \prefp{thm:sysH_addnoise}}
+%    && \text{(1)}
+%  \\&= \Swxq(\omega)
+%    && \text{by definition of $\Swxy$}
+%    && \text{\xref{def:Swxy}}
+%\end{align*}
+%\end{proof}
+%
+%%---------------------------------------
+%\begin{corollary}
+%\label{cor:sysH_addnoise}
+%%---------------------------------------
+%Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_addnoise}.
+%\corbox{
+%  \brb{\begin{array}{M}
+%    hypotheses of\\
+%    \pref{thm:sysH_addnoise}
+%  \end{array}}
+%  \implies
+%  \brb{\begin{array}{Frcl}
+%      (1).& \Swxy(\omega)&=& \Swxq(\omega)
+%    \\(2).& \Swuy(\omega)&=& \Swuq(\omega)
+%    \\(3).& \Swpy(\omega)&=& \Swpq(\omega)
+%    \\(4).& \Swpq(\omega)&=& \Swxy(\omega) + \Swuy(\omega)
+%    \\(5).& \Swpq(\omega)&=& \Swxy(\omega) + \Swuq(\omega)
+%  \end{array}}
+%  }
+%\end{corollary}
+%\begin{proof}
+%\begin{align*}
+%  \Swxy(\omega)
+%    &\eqd \opDTFT\Rxy(m)
+%    && \text{by definition of $\Swxy$}
+%    && \text{\xref{def:Swxy}}
+%  \\&= \opDTFT\Rxq(m)
+%    && \text{by \prefp{thm:sysH_addnoise}}
+%    && \text{(1)}
+%  \\&= \Swxq(\omega)
+%    && \text{by definition of $\Swxy$}
+%    && \text{\xref{def:Swxy}}
+%\end{align*}
+%\end{proof}
 
 \prefpp{thm:ZSxy} demonstrates that if a random input $\rvx(n)$ is processed by an \prope{LTI} system
 $\fh(n)$ with output $\rvy(n)$, then the cross-spectral density and auto-spectral density are 
