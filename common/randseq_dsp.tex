@@ -224,15 +224,16 @@ Let $\opS$ be the system defined in \prefpp{thm:Rxyh}.
 \end{proof}
 
 %---------------------------------------
-\begin{theorem}
+\begin{corollary}
 \footnote{
   \citerp{papoulis}{323}
   }
-\label{thm:ZSxy}
+%\label{thm:ZSxy}
+\label{cor:ZSxy}
 %---------------------------------------
 Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
 \fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
-\thmbox{
+\corbox{
   \brb{\begin{array}{FMD}
     (A).& $\fh$ is \prope{linear time invariant} & and\\
     (B).& \mc{2}{M}{$\rvx$ and $\rvy$ are \prope{wide sense stationary}}
@@ -244,7 +245,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
      \\(3).&\ZSyy(z) &=& \ZSxx(z) \ZH\brp{z} \ZH^\ast\brp{\frac{1}{z^\ast}}
   \end{array}}
   }
-\end{theorem}
+\end{corollary}
 \begin{proof}
 \begin{align*}
   \ZSxy(z)
@@ -315,7 +316,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
      && \text{by definition of \ope{DTFT}}
      && \text{\xref{def:dtft}}
    \\&= \brlr{\ZSxx(z)\ZH^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
-     && \text{by \prefp{thm:ZSxy}}
+     && \text{by \prefp{cor:ZSxy}}
    \\&= \ZSxx\brp{e^{i\omega}}\ZH^\ast\brp{\frac{1}{e^{i\omega\ast}}}
    \\&= \ZSxx\brp{e^{i\omega}}\ZH^\ast\brp{e^{i\omega}}
    \\&= \Swxx(\omega) \FH^\ast(\omega)
@@ -329,7 +330,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
      && \text{by definition of \ope{DTFT}}
      && \text{\xref{def:dtft}}
    \\&= \brp{\brlr{\ZSyx(z)\ZH^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}}^\ast
-     && \text{by \prefp{thm:ZSxy}}
+     && \text{by \prefp{cor:ZSxy}}
    \\&= \brp{\ZSyx\brp{e^{i\omega}} \ZH^\ast\brp{\frac{1}{e^{i\omega\ast}}}}^\ast
    \\&= \brp{\ZSyx\brp{e^{i\omega}} \ZH^\ast\brp{e^{i\omega}}}^\ast
    \\&= \brp{\Swyx(\omega) \FH^\ast(\omega)}^\ast
@@ -342,7 +343,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
      && \text{by definition of \ope{DTFT}}
      && \text{\xref{def:dtft}}
    \\&= \brlr{\ZSxx(z)\ZH\brp{z} \ZH^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
-     && \text{by \prefp{thm:ZSxy}}
+     && \text{by \prefp{cor:ZSxy}}
    \\&= \ZSxx\brp{e^{i\omega}} \ZH\brp{e^{i\omega}} \ZH^\ast\brp{\frac{1}{e^{i\omega\ast}}}
    \\&= \ZSxx\brp{e^{i\omega}} \ZH\brp{e^{i\omega}} \ZH^\ast\brp{e^{i\omega}}
    \\&= \Swxx(\omega) \FH(\omega) \FH^\ast(\omega)
@@ -377,17 +378,18 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
 Let $\opS$ be the \structe{system} illustrated to the right.
 \end{theorem}
 \end{minipage}
-\hfill\tbox{\includegraphics{graphics/xGy_xHw.pdf}}
+\hfill\tbox{\includegraphics{graphics/xTy_xHw.pdf}}
 \\
 \thmbox{
   \brb{\begin{array}{FMMD}
-      (A).& $\fG$     is &\prope{LTI}       & and
+      (A).& $\opH$    is &\prope{LTI}       & and
     \\(B).& $\rvx(n)$ is &\prope{WSS}       & 
+    \\(C).& $\opH=\sum$
   \end{array}}
   \implies
   \brb{\begin{array}{rc>{\ds}lDD}
-    \Rwy(m) &=&    \sum_{n\in\Z}\fg(n)\Rxy(m-n) 
-          \\&\eqd& \fg(m)\convd\Rxy(m)
+    \Rwy(m) &=&    \sum_{n\in\Z}\fh(n)\Rxy(m-n) 
+          \\&\eqd& \fh(m)\convd\Rxy(m)
             && (\ope{convolution})
   \end{array}}
   }
@@ -398,18 +400,35 @@ Let $\opS$ be the \structe{system} illustrated to the right.
     &\eqd \pE\brs{\rvw(m)\rvy^\ast(0)}
     && \text{by definition of $\Rwy$}
     && \text{\xref{def:Rxym}}
-  \\&= \pE\brs{\sum_{n\in\Z}\fg(n)\rvx(m-n)\rvy^\ast(0)}
-    && \text{by \prope{LTI} hypothesis}
-    && \text{(A)}
-  \\&= \sum_{n\in\Z}\fg(n)\pE\brs{\rvx(m-n)\rvy^\ast(0)}
-    && \text{by \prope{linearity}}
-    && \text{\xref{cor:pE_linop}}
-  \\&= \sum_{n\in\Z}\fg(n)\Rxy(m-n)
+  \\&\eqd \pE\brp{\brs{\opH\rvx}(m)\rvy^\ast(0)}
+    && \text{by definition of $\opS$}
+  \\&= \opH\pE\brp{\rvx(m)\rvy^\ast(0)}
+    && \text{by hypothesis (C)}
+  \\&\eqd \opH\Rxy(m)
     && \text{by definition of $\Rxy$}
     && \text{\xref{def:Rxym}}
-  \\&= \brs{\fg(m)\convd\Rxy(m)}
+  \\&= \sum_{n\in\Z}\fh(n)\Rxy(m-n)
+    && \text{by definition of $\opH$}
+  \\&= \brs{\fh(m)\convd\Rxy(m)}
     && \text{by definition of \ope{convolution}}
     && \text{\xref{def:dsp_conv}}
+  %\\
+  %\Rwy(m)
+  %  &\eqd \pE\brs{\rvw(m)\rvy^\ast(0)}
+  %  && \text{by definition of $\Rwy$}
+  %  && \text{\xref{def:Rxym}}
+  %\\&= \pE\brs{\sum_{n\in\Z}\fg(n)\rvx(m-n)\rvy^\ast(0)}
+  %  && \text{by \prope{LTI} hypothesis}
+  %  && \text{(A)}
+  %\\&= \sum_{n\in\Z}\fg(n)\pE\brs{\rvx(m-n)\rvy^\ast(0)}
+  %  && \text{by \prope{linearity}}
+  %  && \text{\xref{cor:pE_linop}}
+  %\\&= \sum_{n\in\Z}\fg(n)\Rxy(m-n)
+  %  && \text{by definition of $\Rxy$}
+  %  && \text{\xref{def:Rxym}}
+  %\\&= \brs{\fg(m)\convd\Rxy(m)}
+  %  && \text{by definition of \ope{convolution}}
+  %  && \text{\xref{def:dsp_conv}}
 \end{align*}
 \end{proof}
 
