@@ -311,7 +311,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:dual_addnoise}.
 \end{proof}
 
 %=======================================
-\section{Effects of additive noise and operators}
+\section{Additive noise and operators}
 %=======================================
 \begin{figure}[h]
   \centering
@@ -322,7 +322,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:dual_addnoise}.
      &\includegraphics{graphics/sysT_mnoise.pdf}
     \\
         (A) \xref{thm:sysT_addnoise_v}
-      & (B) \xref{thm:sysT_addnoise_u}
+      & (B) \xxref{thm:sysT_addnoise_u}{thm:sysT_addnoise_uu}
       & (C) \xref{thm:sysT_mnoise}
     \\\hline
   \end{tabular}
@@ -404,8 +404,8 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise} (B)
 \thmbox{
   \brb{\begin{array}{FMMD}
       (A).& $\rvx(n)$               is  & (\prope{WSS})          & and
-    \\(B).& $\rvx(n)$ and $\rvu(n)$ are & (\prope{uncorrelated}) & and
-    \\(C).& $\rvu(n)$               is  & (\prope{zero-mean})    &
+    \\(B).& $\rvu(n)$               is  & (\prope{zero-mean})    & and
+    \\(C).& $\rvx(n)$ and $\rvu(n)$ are & \mc{2}{D}{(\prope{uncorrelated})}
   \end{array}}
   \implies
   \brb{\begin{array}{Frcl@{\hspace{2pt}}c@{\hspace{2pt}}lD}
@@ -433,6 +433,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise} (B)
 \end{align*}
 \end{proof}
 
+
 %---------------------------------------
 \begin{theorem}
 \label{thm:sysT_mnoise}
@@ -441,8 +442,8 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise} (C)
 \thmbox{
   \brb{\begin{array}{FMMD}
       (A).& $\rvx(n)$               is  & (\prope{WSS})          & and
-    \\(B).& $\rvx(n)$ and $\rvu(n)$ are & (\prope{uncorrelated}) & and
-    \\(C).& $\rvu(n)$               is  & (\prope{zero-mean})    &
+    \\(B).& $\rvu(n)$               is  & (\prope{zero-mean})    & and
+    \\(C).& $\rvx(n)$ and $\rvu(n)$ are & \mc{2}{D}{(\prope{uncorrelated})}
   \end{array}}
   \implies
   \brb{\begin{array}{Frcl@{\hspace{2pt}}c@{\hspace{2pt}}lD}
@@ -474,71 +475,135 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise} (C)
 \end{proof}
 
 
-\prefpp{cor:ZSxy} demonstrates that if a random input $\rvx(n)$ is processed by an \prope{LTI} system
-$\fh(n)$ with output $\rvy(n)$, then the cross-spectral density and auto-spectral density are 
-related simply by
-$\Swxy(\omega)=\Swxx(\omega)\FH^\ast(\omega)$. 
-But what happens to $\Swxy(\omega)$ if we add uncorrelated zero-mean noise into the input $\rvx$
-and similarly to the output $\rvy$?
-The somewhat surprising but happy answer to this question is: \emph{Nothing}!
-\ldots as demonstrated by \pref{cor:sysH_addnoise_lti} (next). 
-That is, uncorrelated additive noise has \emph{no effect} on cross-correlation!
-However note that it \emph{does} have an effect on auto-correlation (also next).
+%=======================================
+\section{Additive noise and LTI operator}
+%=======================================
 %---------------------------------------
-\begin{corollary}
-\label{cor:sysH_addnoise_lti}
+\begin{theorem}
+\label{thm:sysH_addnoise_lti}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_addnoise}.
-\corbox{
-  \brb{\begin{array}{FMD}
-      (A).& $\FH$ is \prope{LTI} &and
-    \\(B).& hypotheses of
-        \\& \pref{thm:sysH_addnoise}&\xrefpo{thm:sysH_addnoise}
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise} (B).
+\thmbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx(n)$               is  & (\prope{WSS})           & and
+    \\(B).& $\rvu(n)$               is  & (\prope{zero-mean})     & and
+    \\(C).& $\rvx(n)$ and $\rvu(n)$ are & (\prope{uncorrelated})  & and
+    \\(D).& $\opH\eqd\opT$          is  & (\prope{linear})        & and
+    \\(E).& $\opH\eqd\opT$          is  & (\prope{time-invariant})&
   \end{array}}
   \implies
   \brb{\begin{array}{FrclD}
-      (1).&\Szyy(z)      &=& \brs{\Szxx(z)     +\Szuu(z)}\ZH(z)\ZH^\ast\brp{\frac{1}{z^\ast}} + \Szvv(z) & and
-    \\(2).&\Swyy(\omega) &=& \brs{\Swxx(\omega)+\Swuu(\omega)}\abs{\FH(\omega)}^2 + \Swvv(\omega)   & and
-    \\(3).&\Szxy(z)      &=&      \Szxx(z)      \ZH^\ast\brp{\frac{1}{z^\ast}}                      & and
-    \\(4).&\Swxy(\omega) &=&      \Swxx(\omega) \FH^\ast(\omega)                                    &
+      (1).& \Rxy(m)      &=& \fh(m)\conv\Rxx(m)  & and 
+    \\(2).& \Szxy(z)     &=& \ZH(z)\Szxx(z)      & and
+    \\(3).& \Swxy(\omega)&=& \FH(\omega)\Swxx(\omega)        &
   \end{array}}
   }
-\end{corollary}
+\end{theorem}
 \begin{proof}
-\begin{align*}
-  \Szyy(z)
-    &= \Szqq(z) + \Szvv(z)
-    && \text{by \prefp{cor:xvy}}
-  \\&= \Szpp(z)\ZH(z)\ZH^\ast\brp{\frac{1}{z^\ast}} + \Szvv(z)
-    && \text{by \prefp{cor:ZSxy}}
-  \\&= \brs{\Szxx(z)+\Szuu(z)}\ZH(z)\ZH^\ast\brp{\frac{1}{z^\ast}} + \Szvv(z)
-    && \text{by \prefp{cor:xvy}}
-  \\
-  \Swyy(\omega)
-    &= \Swqq(\omega) + \Swvv(\omega)
-    && \text{by \prefp{cor:xvy}}
-  \\&= \Swpp(\omega)\abs{\FH(\omega)}^2 + \Swvv(\omega)
-    && \text{by \prefp{cor:Swxy}}
-  \\&= \brs{\Swxx(\omega)+\Swuu(\omega)}\abs{\FH(\omega)}^2 + \Swvv(\omega)
-    && \text{by \prefp{cor:xvy}}
-  \\
-  \Szxy(z)
-    &= \Szpq(z) - \Szuq(z)
-    && \text{by \prefp{cor:sysH_addnoise}}
-  \\&= \Szpp(z)\ZH^\ast\brp{\frac{1}{z^\ast}} - \Szuu(z)\ZH^\ast\brp{\frac{1}{z^\ast}}
-    && \text{by \prefp{cor:ZSxy}}
-  \\&= \brs{\Szxx(z)+\Szuu(z)}\ZH^\ast\brp{\frac{1}{z^\ast}}  - \Szuu(z)\ZH^\ast\brp{\frac{1}{z^\ast}}
-    && \text{by \prefp{cor:xvy}}
-  \\&= \Szxx(z)\ZH^\ast\brp{\frac{1}{z^\ast}}
-  \\
-  \Swxy(\omega)
-    &= \brlr{\Szxy(z)}_{z=e^{-\omega}}
-  \\&= \brlr{\Szxx(z)\ZH^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{-\omega}}
-    && \text{by previous result}
-  \\&= \Swxx(\omega)\FH^\ast(\omega)
-\end{align*}
+\begin{enumerate}
+  \item definition: Let $\seqn{\fh(n)}$ be the \fncte{impulse response} of operator $\opH$.
+  \item lemma: $\ds\opH\vx(n)= \sum_{m\in\Z} \fh(n)\vx(m-n)$. Proof: \label{ilem:sysT_conv}
+        By the \prope{linear time-invariant} hypotheses [(D) and (E)].
+  \item Proof that $\Rxy(m) = \fh(n)\conv\Rxx(m)$:
+    \begin{align*}
+      \Rxy(m)
+        &\eqd \pE\brs{\rvx(m)\rvy^\ast(0)}
+        && \text{by definition of $\Rpy$}
+        && \text{\pref{def:Rxym}}
+      \\&= \pE\brp{\rvx(m)\brs{\opH\rvx^\ast(0) + \opH\rvu^\ast(0)}}
+        && \text{by \prope{linear} hypothesis}
+        && \text{(D)}
+      \\&= \pE\brp{\brs{\rvx(m)\opH\rvx^\ast(0) + \rvx(m)\opH\rvu^\ast(0)}}
+      \\&= \pE\brp{\brs{\rvx(m)\opH\rvx^\ast(0) + \rvx(m)\opH\rvu^\ast(0)}}
+      \\&= \pE\brs{\rvx(m)\opH\rvx^\ast(0)} + \pE\brs{\rvx(m)\opH\rvu^\ast(0)}
+        && \text{by \prope{linearity} of $\opE$}
+        && \text{\xref{thm:pE_linop}}
+      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\pE\brs{\rvx(m)\rvu^\ast(0)}
+        && \text{by \prope{LTI} hypotheses}
+        && \text{(D) and (E)}
+      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\pE\rvx(m)\pE\rvu^\ast(0)
+        && \text{by \prope{uncorrelated} hypothesis}
+        && \text{(C)}
+      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\pE\rvx(m)\cancelto{0}{\pE\rvu^\ast(0)}
+        && \text{by \prope{zero-mean} hypothesis}
+        && \text{(B)}
+      \\&= \opH\Rxx(m)
+        && \text{by definition of $\Rxx$}
+        && \text{\pref{def:Rxxm}}
+      \\&= \fn(n) \conv \Rxx(m)
+        && \text{by \pref{ilem:sysT_conv}}
+    \end{align*}
+\end{enumerate}
 \end{proof}
 
+%20190130_invalid?%\prefpp{cor:ZSxy} demonstrates that if a random input $\rvx(n)$ is processed by an \prope{LTI} system
+%20190130_invalid?%$\fh(n)$ with output $\rvy(n)$, then the cross-spectral density and auto-spectral density are 
+%20190130_invalid?%related simply by
+%20190130_invalid?%$\Swxy(\omega)=\Swxx(\omega)\FH^\ast(\omega)$. 
+%20190130_invalid?%But what happens to $\Swxy(\omega)$ if we add uncorrelated zero-mean noise into the input $\rvx$
+%20190130_invalid?%and similarly to the output $\rvy$?
+%20190130_invalid?%The somewhat surprising but happy answer to this question is: \emph{Nothing}!
+%20190130_invalid?%\ldots as demonstrated by \pref{cor:sysH_addnoise_lti} (next). 
+%20190130_invalid?%That is, uncorrelated additive noise has \emph{no effect} on cross-correlation!
+%20190130_invalid?%However note that it \emph{does} have an effect on auto-correlation (also next).
+%20190130_invalid?%%---------------------------------------
+%20190130_invalid?%\begin{corollary}
+%20190130_invalid?%\label{cor:sysH_addnoise_lti}
+%20190130_invalid?%%---------------------------------------
+%20190130_invalid?%Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_addnoise}.
+%20190130_invalid?%\corbox{
+%20190130_invalid?%  \brb{\begin{array}{FMD}
+%20190130_invalid?%      (A).& $\FH$ is \prope{LTI} &and
+%20190130_invalid?%    \\(B).& hypotheses of
+%20190130_invalid?%        \\& \pref{thm:sysH_addnoise}&\xrefpo{thm:sysH_addnoise}
+%20190130_invalid?%  \end{array}}
+%20190130_invalid?%  \implies
+%20190130_invalid?%  \brb{\begin{array}{FrclD}
+%20190130_invalid?%      (1).&\Szyy(z)      &=& \brs{\Szxx(z)     +\Szuu(z)}\ZH(z)\ZH^\ast\brp{\frac{1}{z^\ast}} + \Szvv(z) & and
+%20190130_invalid?%    \\(2).&\Swyy(\omega) &=& \brs{\Swxx(\omega)+\Swuu(\omega)}\abs{\FH(\omega)}^2 + \Swvv(\omega)   & and
+%20190130_invalid?%    \\(3).&\Szxy(z)      &=&      \Szxx(z)      \ZH^\ast\brp{\frac{1}{z^\ast}}                      & and
+%20190130_invalid?%    \\(4).&\Swxy(\omega) &=&      \Swxx(\omega) \FH^\ast(\omega)                                    &
+%20190130_invalid?%  \end{array}}
+%20190130_invalid?%  }
+%20190130_invalid?%\end{corollary}
+%20190130_invalid?%\begin{proof}
+%20190130_invalid?%\begin{align*}
+%20190130_invalid?%  \Szyy(z)
+%20190130_invalid?%    &= \Szqq(z) + \Szvv(z)
+%20190130_invalid?%    && \text{by \prefp{cor:xvy}}
+%20190130_invalid?%  \\&= \Szpp(z)\ZH(z)\ZH^\ast\brp{\frac{1}{z^\ast}} + \Szvv(z)
+%20190130_invalid?%    && \text{by \prefp{cor:ZSxy}}
+%20190130_invalid?%  \\&= \brs{\Szxx(z)+\Szuu(z)}\ZH(z)\ZH^\ast\brp{\frac{1}{z^\ast}} + \Szvv(z)
+%20190130_invalid?%    && \text{by \prefp{cor:xvy}}
+%20190130_invalid?%  \\
+%20190130_invalid?%  \Swyy(\omega)
+%20190130_invalid?%    &= \Swqq(\omega) + \Swvv(\omega)
+%20190130_invalid?%    && \text{by \prefp{cor:xvy}}
+%20190130_invalid?%  \\&= \Swpp(\omega)\abs{\FH(\omega)}^2 + \Swvv(\omega)
+%20190130_invalid?%    && \text{by \prefp{cor:Swxy}}
+%20190130_invalid?%  \\&= \brs{\Swxx(\omega)+\Swuu(\omega)}\abs{\FH(\omega)}^2 + \Swvv(\omega)
+%20190130_invalid?%    && \text{by \prefp{cor:xvy}}
+%20190130_invalid?%  \\
+%20190130_invalid?%  \Szxy(z)
+%20190130_invalid?%    &= \Szpq(z) - \Szuq(z)
+%20190130_invalid?%    && \text{by \prefp{cor:sysH_addnoise}}
+%20190130_invalid?%  \\&= \Szpp(z)\ZH^\ast\brp{\frac{1}{z^\ast}} - \Szuu(z)\ZH^\ast\brp{\frac{1}{z^\ast}}
+%20190130_invalid?%    && \text{by \prefp{cor:ZSxy}}
+%20190130_invalid?%  \\&= \brs{\Szxx(z)+\Szuu(z)}\ZH^\ast\brp{\frac{1}{z^\ast}}  - \Szuu(z)\ZH^\ast\brp{\frac{1}{z^\ast}}
+%20190130_invalid?%    && \text{by \prefp{cor:xvy}}
+%20190130_invalid?%  \\&= \Szxx(z)\ZH^\ast\brp{\frac{1}{z^\ast}}
+%20190130_invalid?%  \\
+%20190130_invalid?%  \Swxy(\omega)
+%20190130_invalid?%    &= \brlr{\Szxy(z)}_{z=e^{-\omega}}
+%20190130_invalid?%  \\&= \brlr{\Szxx(z)\ZH^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{-\omega}}
+%20190130_invalid?%    && \text{by previous result}
+%20190130_invalid?%  \\&= \Swxx(\omega)\FH^\ast(\omega)
+%20190130_invalid?%\end{align*}
+%20190130_invalid?%\end{proof}
+
+%=======================================
+\section{Additive noise and dual operators}
+%=======================================
 \begin{figure}[h]
   \centering%
   \begin{tabular}{|c|c|}
@@ -546,62 +611,106 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:sysH_addnoise}.
      \includegraphics{graphics/opT_opH_cnoise.pdf}%
     &\includegraphics{graphics/opT_opH_mnoise.pdf}%
    \\
-     (A) \xref{cor:opT_opH_cnoise}
-    &(B) \xref{cor:opT_opH_mnoise}
+     (A) dual communications additive noise system
+    &(B) dual measurement    additive noise system
+   \\\xref{cor:opT_opH_cnoise}&\xref{cor:opT_opH_mnoise}
    \\\hline
   \end{tabular}
+\caption{\label{fig:opT_opH_noise}Dual Additive Noise Systems}
 \end{figure}
 %---------------------------------------
-\begin{minipage}{\tw-80mm}
 \begin{corollary}
 \label{cor:GHz}
 \label{cor:GHw}
 \label{cor:opT_opH_cnoise}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated to the right.
-\end{corollary}
-\end{minipage}
-\hfill\tbox{\includegraphics{graphics/xGy_xHw_addnoise.pdf}}
-\\
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_opH_noise} (A).
+%\hfill\tbox{\includegraphics{graphics/xGy_xHw_addnoise.pdf}}
 \corbox{
   \brb{\begin{array}{FMMD}
-      (A).& $\fg(n)$  is                &\prope{LTI}       & and
-    \\(B).& $\rvx(n)$ is                &\prope{WSS}       & and
-    \\(C).& $\rvu(n)$ and $\rvv(n)$ are &\prope{zero-mean} & and
-    \\(D).& $\rvx(n)$, $\rvu(n)$, $\rvv(n)$ are &\prope{uncorrelated}
+      (A).& $\fg(n)$  is               &\prope{LTI}       & and
+    \\(B).& $\rvx(n)$ is               &\prope{WSS}       & and
+    \\(C).& $\rvu$ and $\rvv$ are      &\prope{zero-mean} & and
+    \\(D).& $\rvx$, $\rvu$, $\rvv$ are &\mc{2}{D}{\prope{uncorrelated}}
   \end{array}}
   \implies
   \brb{\begin{array}{FrclD}
-    (1).& \Szsy(z)      &=& \ZG(z)          \Szpq(z)                      &    \\ 
-        & \mc{3}{l}{\qquad= \ZG(z)     \brs{\Szxy(z)     +\Szuy(z)}}      & and\\
-    (2).& \Swsy(\omega) &=& \FG(\omega)     \Swpq(\omega)                 &    \\
-        & \mc{3}{l}{\qquad= \FG(\omega)\brs{\Swxy(\omega)+\Swuy(\omega)}} &
+    (1).& \Szsy(z)      &=& \ZH(z)     \brs{\Szxy(z)     +\Szuy(z)}      & and\\
+    (2).& \Swsy(\omega) &=& \FH(\omega)\brs{\Swxy(\omega)+\Swuy(\omega)} &
   \end{array}}
   }
-\\
+\end{corollary}
 \begin{proof}
 \begin{align*}
   \Szsy(z)
     &= \Szrq(z)
     && \text{by \prefp{cor:dual_addnoise}}
     && \text{and (B), (C) and (D)}
-  \\&= \ZG(z)\Szpq(z)
+  \\&= \ZH(z)\Szpq(z)
     && \text{by \prefp{thm:xGw_xHy}}
     && \text{and (A)}
-  \\&= \ZG(z)\brs{\Szxy(z) + \Szuy(z)}
-    && \text{by \prefp{cor:sysH_addnoise_z}}
+  \\&= \ZH(z)\brs{\Szxy(z) + \Szuy(z)}
+    && \text{by \prefp{thm:sysT_addnoise_u}}
     && \text{and (A)}
   \\
   \Swsy(\omega)
     &= \Swrq(\omega)
     && \text{by \prefp{cor:dual_addnoise}}
     && \text{and (B), (C) and (D)}
-  \\&= \FG(\omega)\Swpq(\omega)
+  \\&= \FH(\omega)\Swpq(\omega)
     && \text{by \prefp{thm:xGw_xHy}}
     && \text{and (A)}
-  \\&= \FG(\omega)\brs{\Swxy(\omega) + \Swuy(\omega)}
-    && \text{by \prefp{cor:sysH_addnoise}}
+  \\&= \FH(\omega)\brs{\Swxy(\omega) + \Swuy(\omega)}
+    && \text{by \prefp{thm:sysT_addnoise_u}}
     && \text{and (A)}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:GHz}
+\label{cor:GHw}
+\label{cor:opT_opH_mnoise}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_opH_noise} (B).
+\corbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\fg(n)$  is               &\prope{LTI}       & and
+    \\(B).& $\rvx(n)$ is               &\prope{WSS}       & and
+    \\(C).& $\rvu$ and $\rvv$ are      &\prope{zero-mean} & and
+    \\(D).& $\rvp$, $\rvu$, $\rvv$ are &\prope{uncorrelated}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+      (1).& \Szsy(z)      &=& \ZH(z)     \Szxy(z)      & and
+    \\(2).& \Swsy(\omega) &=& \FH(\omega)\Swxy(\omega) &
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \Szsy(z)
+    &= \Szrq(z)
+    && \text{by \prefp{cor:dual_addnoise}}
+    && \text{and (B), (C) and (D)}
+  \\&= \ZH(z)\Szpq(z)
+    && \text{by \prefp{thm:xGw_xHy}}
+    && \text{and (A)}
+  \\&= \ZH(z)\brs{\Szxy(z) - \Szuy(z)}
+    && \text{by \prefp{thm:sysT_addnoise_u}}
+    && \text{and (A)}
+  \\&= \ZH(z)\brs{\Szxy(z) - \cancelto{0}{\Szuy(z)}}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{and (C)}
+  \\
+  \Swsy(\omega)
+    &= \brlr{\Szsy(z)}_{z=e^{i\omega}}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&= \brlr{\ZH(z)\Szxy(z)}_{z=e^{i\omega}}
+    && \text{by previous result}
+    && \text{(1)}
+  \\&= \FH(\omega)\Swxy(\omega)
 \end{align*}
 \end{proof}
 
