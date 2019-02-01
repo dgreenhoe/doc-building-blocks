@@ -328,15 +328,15 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:dual_addnoise}.
   \caption{\label{fig:sysT_addnoise}Additive noise with transform $\opT$}
 \end{figure}
 
-The following three theorems demonstrate:
-\begin{listi}
-  \item Adding in zero-mean uncorrelated noise \textbf{after} a transform (operation) $\opT$
-        has \textbf{no effect} on cross-correlation across input $\rvx(n)$ and output $\rvy(n)$ \xref{thm:sysT_addnoise_v}.
-  \item Adding zero-mean uncorrelated noise \textbf{before} $\opT$ \textbf{does} \xref{thm:sysT_addnoise_u}.
-        \textbf{However}, if $\opT$ is \prope{LTI}, then the cross-correlation is 
-        simply $\Rxy=\fh(n)\conv\Rxx$ \xref{thm:sysH_addnoise_lti}.
-  \item Zero-mean uncorrelated input measurement noise \textbf{does not} \xref{thm:sysT_mnoise}.
-\end{listi}
+%20190201%The following three theorems demonstrate:
+%20190201%\begin{listi}
+%20190201%  \item Adding in zero-mean uncorrelated noise \textbf{after} a transform (operation) $\opT$
+%20190201%        has \textbf{no effect} on cross-correlation across input $\rvx(n)$ and output $\rvy(n)$ \xref{thm:sysT_addnoise_v}.
+%20190201%  \item Adding zero-mean uncorrelated noise \textbf{before} $\opT$ \textbf{does} \xref{thm:sysT_addnoise_u}.
+%20190201%        \textbf{However}, if $\opT$ is \prope{LTI}, then the cross-correlation is 
+%20190201%        simply $\Rxy=\fh(n)\conv\Rxx$ \xref{thm:sysH_addnoise_lti}.
+%20190201%  \item Zero-mean uncorrelated input measurement noise \textbf{does not} \xref{thm:sysT_mnoise}.
+%20190201%\end{listi}
 
 %---------------------------------------
 \begin{theorem}
@@ -501,9 +501,9 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise} (B)
   \end{array}}
   \implies
   \brb{\begin{array}{FrclD}
-      (1).& \Rxy(m)      &=& \fh(m)\conv\Rxx(m)       & and 
-    \\(2).& \Szxy(z)     &=& \ZH(z)     \Szxx(z)      & and
-    \\(3).& \Swxy(\omega)&=& \FH(\omega)\Swxx(\omega) &
+      (1).& \Ryx(m)      &=& \fh(m)\conv\Rxx(m)       & and 
+    \\(2).& \Szyx(z)     &=& \ZH(z)     \Szxx(z)      & and
+    \\(3).& \Swxy(\omega)&=& \FH^\ast(\omega)\Swxx(\omega) &
   \end{array}}
   }
 \end{theorem}
@@ -514,35 +514,70 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:sysT_addnoise} (B)
   \item lemma: $\ds\opH\vx(n)= \sum_{m\in\Z} \fh(n)\vx(m-n) = \fh(n)\conv\Rxx(n)$. \label{ilem:sysT_conv}
         \\Proof: 
         by the \prope{linear time-invariant} hypotheses (D) and definition of \ope{convolution} operator $\conv$ \xref{def:conv}
-  \item Proof that $\Rxy(m) = \fh(n)\conv\Rxx(m)$:
+  \item Proof that $\Ryx(m) = \fh(n)\conv\Rxx(m)$:
     \begin{align*}
-      \Rxy(m)
-        &\eqd \pE\brs{\rvx(m)\rvy^\ast(0)}
+      \Ryx(m)
+        &\eqd \pE\brs{\rvy(m)\rvx^\ast(0)}
         && \text{by definition of $\Rpy$}
         && \text{\xref{def:Rxym}}
-      \\&= \pE\brp{\rvx(m)\brs{\opH\rvx^\ast(0) + \opH\rvu^\ast(0)}}
+      \\&= \pE\brp{\brs{\opH\rvx(m) + \opH\rvu(m)}\rvx^\ast(0)}
         && \text{by \prope{linear} hypothesis}
         && \text{(D)}
-      \\&= \pE\brp{\brs{\rvx(m)\opH\rvx^\ast(0) + \rvx(m)\opH\rvu^\ast(0)}}
-      \\&= \pE\brs{\rvx(m)\opH\rvx^\ast(0)} + \pE\brs{\rvx(m)\opH\rvu^\ast(0)}
+      \\&= \pE\brp{\brs{\opH\rvx^\ast(m)}\rvx^\ast(0) + \brs{\opH\rvu(0)}\rvx^\ast(0)}
+      \\&= \pE\brp{\brs{\opH\rvx^\ast(m)}\rvx^\ast(0)} + \pE\brp{\brs{\opH\rvu(0)}\rvx^\ast(0)}
         && \text{by \prope{linearity} of $\opE$}
         && \text{\xref{thm:pE_linop}}
-      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\pE\brs{\rvx(m)\rvu^\ast(0)}
+      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\pE\brs{\rvu(m)\rvx^\ast(0)}
         && \text{by \prope{LTI} hypotheses}
         && \text{(D)}
-      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\pE\rvx(m)\pE\rvu^\ast(0)
+      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\pE\rvu(m)\pE\rvx^\ast(0)
         && \text{by \prope{uncorrelated} hypothesis}
         && \text{(C)}
-      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\pE\rvx(m)\cancelto{0}{\pE\rvu^\ast(0)}
+      \\&= \opH\pE\brs{\rvx(m)\rvx^\ast(0)} + \opH\cancelto{0}{\pE\rvu(m)}\pE\rvx^\ast(0)
         && \text{by \prope{zero-mean} hypothesis}
         && \text{(B)}
       \\&= \opH\Rxx(m)
         && \text{by definition of $\Rxx$}
-        && \text{\pref{def:Rxxm}}
-      \\&= \fh(n) \conv \Rxx(m)
+        && \text{\xref{def:Rxxm}}
+      \\&= \fh(m) \conv \Rxx(m)
         && \text{by \pref{ilem:sysT_conv}}
     \end{align*}
 \end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{minipage}{\tw-55mm}
+\begin{corollary}
+\label{cor:sysH_cnoise}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated to the right:
+\end{corollary}
+\end{minipage}
+\qquad\tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}
+\corbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx(n)$               is  & (\prope{WSS})           & and
+    \\(B).& $\rvu(n)$               is  & (\prope{zero-mean})     & and
+    \\(C).& $\rvv(n)$               is  & (\prope{zero-mean})     & and
+    \\(D).& $\rvx(n)$, $\rvu(n)$, $\rvv(n)$ are & (\prope{uncorrelated})  & and
+    \\(E).& $\opH\eqd\opT$          is  & (\prope{LTI})           &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclD}
+     %(1).& \Ryx(m)      &=& \fh(m)\conv\Rxx(m)       & and 
+     %(2).& \Szyx(z)     &=& \ZH(z)     \Szxx(z)      & and
+      (1).& \Swxy(\omega)&=& \FH^\ast(\omega)\Swxx(\omega) &
+  \end{array}}
+  }
+\\
+\begin{proof}
+\begin{align*}
+  \Swyx(\omega)
+    &= \Swqx(\omega)
+    && \text{by \prefp{thm:sysT_addnoise_v}}
+  \\&= \FH(\omega)\Swxx(\omega)
+    && \text{by \prefp{thm:sysH_addnoise_lti}}
+\end{align*}
 \end{proof}
 
 %=======================================

@@ -91,8 +91,8 @@ an estimate $\estH(\omega)$.
      \tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}
     &\tbox{\includegraphics{graphics/sysH_mnoise.pdf}}
     \\
-      \opd{communications additive noise model}
-     &\opd{measurement    additive noise model}
+      (A) \opd{communications additive noise model}
+     &(B) \opd{measurement    additive noise model}
     \\
       The ``input signal" is $\rvx(n)$.
      &The ``input signal" is $\rvp(n)$.
@@ -747,37 +747,29 @@ But making the LTI assumption on $\fH$ yields some interesting and insightful
 results, such as those in this section.
 
 %---------------------------------------
-\begin{theorem} %[LTI no output noise]
-\footnote{
-  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=H(f)$ (9.70); $H_2(f)=H(f)\brp{1+\ffrac{S_{n_yn_y}(f)}{S_{yy}(f)}}$ (9.71)},
-  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=\ffrac{H(f)}{\brp{1+\ffrac{S_{n_xn_x}}{S_{xx}(f)}}}$ (9.72); $H_2(f)=H(f)$ (9.73)},
-  \citePpc{mitchell1982}{277}{$\~H_1(f)=\ffrac{H_0(f)}{\brp{1+\ffrac{G_{nn}}{G_{uu}}}}$}
-  \citePpc{mitchell1982}{278}{$\~H_2(f)=H_0(f)\brp{1+\ffrac{G_{mm}}{G_{vv}}}$}
-  }
-\label{thm:estH1}
-\label{thm:estH2}
+\begin{corollary}[Estimating H in communication additive noise system]
+\label{cor:estH1}
+\label{cor:estH2}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
-\thmboxt{
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise} (A).
+\corboxt{
   $\brb{\begin{array}{FMMD}
       (A).& $\fH$ is                                &\prope{linear time invariant} & and
     \\(B).& $\rvx(n)$ is                            &\prope{wide-sense stationary} & and
     \\(C).& $\rvx(n)$, $\rvu(n)$, and $\rvv(n)$ are &\prope{uncorrelated}          & 
   \end{array}}$
   \\\indentx$\implies
-  \brb{\begin{array}{F>{\ds} rc>{\ds}l rc>{\ds}l D}
-    \mc{3}{M}{\scs\prope{biased}:}
-                             & \text{\scs\prope{over-estimated}}
-                           & & \text{\scs\prope{under-estimated}}
-    \\(1).&\estH_1(\omega) &=& \FH(\omega)
-                           &=& \FH(\omega)\brs{\text{$\frac{1}{1+\frac{\ds\Swww(\omega)}{\ds\Swpp(\omega)}}$}}
-                           &and
-    \\(2).&\estH_2(\omega) &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
-                           & & 
+  \brb{\begin{array}{F >{\ds}rc>{\ds}l D}
+    %\mc{3}{M}{\scs\prope{biased}:}
+                           %  & \text{\scs\prope{over-estimated}}
+                           %& & \text{\scs\prope{under-estimated}}
+      (1).&\estH_1(\omega) &=& \FH(\omega) &and
+    \\(2).&\estH_2(\omega) &=& \frac{\Swvv(\omega)}{\FH^\ast(\omega)\Swxx(\omega)} 
+                              +\FH(\omega)\brs{1 + \frac{\Swuu(\omega)}{\Swxx(\omega)}}
                            &
   \end{array}}$
   }
-\end{theorem}
+\end{corollary}
 \begin{proof}
 \begin{align*}
   \estH_1(\omega)
@@ -785,7 +777,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
     && \text{by definition of $\estH_1$}
     && \text{\xref{def:H1}}
   \\&= \frac{\FH(\omega)\Swxx(\omega)}{\Swxx(\omega)}
-    && \text{by \prefp{thm:sysH_addnoise_lti}}
+    && \text{by \prefp{cor:sysH_cnoise}}
   \\&= \FH(\omega)
   \\
   \estH_2(\omega)
@@ -796,10 +788,41 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise}.
     && \text{by \prefp{thm:sysH_addnoise_lti}}
   \\&= \frac{\FH(\omega)\FH^\ast(\omega)}{\FH(\omega)}
   \\&= \FH(\omega)
-  \\
-  \\
-  \\
-  \\
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem} [Estimating H in measurement additive noise system]
+\footnote{
+  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=H(f)$ (9.70); $H_2(f)=H(f)\brp{1+\ffrac{S_{n_yn_y}(f)}{S_{yy}(f)}}$ (9.71)},
+  \citerpgc{shin2008}{294}{0470725648}{$H_1(f)=\ffrac{H(f)}{\brp{1+\ffrac{S_{n_xn_x}}{S_{xx}(f)}}}$ (9.72); $H_2(f)=H(f)$ (9.73)},
+  \citePpc{mitchell1982}{277}{$\~H_1(f)=\ffrac{H_0(f)}{\brp{1+\ffrac{G_{nn}}{G_{uu}}}}$}
+  \citePpc{mitchell1982}{278}{$\~H_2(f)=H_0(f)\brp{1+\ffrac{G_{mm}}{G_{vv}}}$}
+  }
+\label{thm:estH1}
+\label{thm:estH2}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise} (B).
+\thmboxt{
+  $\brb{\begin{array}{FMMD}
+      (A).& $\fH$ is                                &\prope{linear time invariant} & and
+    \\(B).& $\rvx(n)$ is                            &\prope{wide-sense stationary} & and
+    \\(C).& $\rvx(n)$, $\rvu(n)$, and $\rvv(n)$ are &\prope{uncorrelated}          & 
+  \end{array}}$
+  \\\indentx$\implies
+  \brb{\begin{array}{F >{\ds}rc>{\ds}l DD}
+    \\(1).&\estH_1(\omega) &=& \FH(\omega)\brs{\text{$\frac{1}{1+\frac{\ds\Swww(\omega)}{\ds\Swpp(\omega)}}$}}
+                           &(\prope{under-estimated})
+                           &and
+    \\(2).&\estH_2(\omega) &=& \FH(\omega)\brs{1 + \frac{\Swvv(\omega)}{\Swqq(\omega)}}
+                           &(\prope{over-estimated})
+                           &
+  \end{array}}$
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
   \estH_1(\omega)
     &\eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}
     && \text{by definition of $\estH_1$}
