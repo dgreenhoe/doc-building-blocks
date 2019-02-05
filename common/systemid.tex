@@ -555,21 +555,27 @@ as demonstrated in the next theorem.
 \end{minipage}
 \hfill\tbox{\includegraphics{graphics/sysHw_xy.pdf}}
 
+\begin{figure}
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+     \tbox{\includegraphics{graphics/opT_estH_cnoise.pdf}}
+    &\tbox{\includegraphics{graphics/opT_estH_mnoise.pdf}}
+    \\(A) & (B)
+    \\\hline
+  \end{tabular}
+  \caption{Least Square estimation \xref{thm:estHls}\label{fig:estHls}}
+\end{figure}
 %---------------------------------------
-\begin{minipage}{\tw-75mm}
 \begin{theorem}[Best LTI least-squares estimate $\estH$ of $\fH$]
-\footnotemark
-\label{thm:H1LS}
-%---------------------------------------
-Let $\opS$ be the \structe{system} illustrated to the right.
-Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
-\end{theorem}
-\end{minipage}
-\hfill\tbox{\includegraphics{graphics/opT_estH_cnoise.pdf}}
-\footnotetext{
+\footnote{
   \citerppgc{bendat1980}{98}{100}{0471058874}{5.1.1 Optimal Character of Calculations; note: proof minimizing $\Swvv$ but yields same result},
   \citerppgc{bendat1993}{106}{109}{0471570559}{5.1.1 Optimality of Calculations}
   }
+\label{thm:estHls}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:estHls} (A) or (B).
+Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
 \thmbox{
   \brbr{\begin{array}{FMMD}
       (A).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{WSS}          & and
@@ -579,15 +585,15 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
   \end{array}}
   \implies
   \brbl{\begin{array}{c}
-    \ds\argmin_{\estH}\norm{\FW(\omega)-\FQ(\omega)}^2 = \frac{\Swxy^\ast(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
+    \ds\argmin_{\estH}\norm{\FW(\omega)-\FQ(\omega)}^2 = \frac{\Swyp(\omega)}{\Swpp(\omega)}
     \\
     \brp{\begin{array}{M}
       \scs The optimal \prope{LTI} \prope{least-squares} estimate of $\FH$ is
-      \\$\estH=\ffrac{\Swxy^\ast}{[\Swxx+\Swuu]}$)
+      \\$\estHls=\ffrac{\Swyp}{\Swpp}$
     \end{array}}
   \end{array}}
   }
-\\
+\end{theorem}
 \begin{proof}
 \begin{enumerate}
   \item Define the \fncte{cost function} $\fCost\brp{\estH}$ for spectral \prope{least-squares} estimate as \label{item:H1LS_cost_def}
@@ -610,95 +616,133 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
             - \pE\brs{\FQ(\omega)\FR^\ast(\omega)}
             + \pE\brs{\FQ(\omega)\FQ^\ast(\omega)}
            }
-      \\&= \mathrlap{
-           \Swrr(\omega) - \Swwq(\omega) - \Swwq^\ast(\omega) + \Swqq(\omega)
-           \qquad\text{by \thme{Wiener-Khinchin relationship}}
-           }
-      \\&= \mathrlap{
-           \Swpp(\omega)\abs{\estH(\omega)}^2
+      \\&= \Swrr(\omega) - \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)
+        && \text{by \thme{Wiener-Khinchin relationship}}
+      \\&= \Swpp(\omega)\abs{\estH(\omega)}^2
          - \estH(\omega)\Swpy(\omega)
          - \brs{\estH(\omega)\Swpy(\omega)}^\ast
          + \Swqq(\omega)
-           \quad\text{by (A)--(D) and \prefpp{cor:GHz}}
-           }
-      \\&= \Swxx(\omega)\abs{\estH(\omega)}^2
-         + \Swuu(\omega)\abs{\estH(\omega)}^2
-         - \estH(\omega)\Swpy(\omega)
-         - \brs{\estH(\omega)\Swpy(\omega)}^\ast
-         + \Swqq(\omega)
-        && \text{by (A)--(C) and \pref{cor:xvy}}
-      \\&= \Swxx(\omega)\abs{\estH(\omega)}^2
-         + \Swuu(\omega)\abs{\estH(\omega)}^2
-         - \estH(\omega)\Swxy(\omega)
-         - \brs{\estH(\omega)\Swxy(\omega)}^\ast
-         + \Swqq(\omega)
-        && \text{by \prefpp{cor:sysH_addnoise}}
+        &&\text{by (A)--(D) and \prefpp{cor:GHz}}
+      %\\&= \Swxx(\omega)\abs{\estH(\omega)}^2
+      %   + \Swuu(\omega)\abs{\estH(\omega)}^2
+      %   - \estH(\omega)\Swpy(\omega)
+      %   - \brs{\estH(\omega)\Swpy(\omega)}^\ast
+      %   + \Swqq(\omega)
+      %  && \text{by (A)--(C) and \pref{cor:xvy}}
     \end{align*}
 
-  \item lemma: $\estH_R = \ffrac{\Real\Swyx}{\Swxx}$. Proof: \label{ilem:H1LS_R}
+  \item lemma: $\estH_R = \ffrac{\Real\Swyp}{\Swpp}$. Proof: \label{ilem:H1LS_R}
     \begin{align*}
       0 &= \pderiv{}{\estH_R}\fCost\brp{\estH}
       \\&= \pderiv{}{\estH_R}\brp{
-               \Swxx\abs{\estH}^2 
-             + \Swuu\abs{\estH}^2 
-             - \estH\Swxy 
-             - \estH^\ast\Swxy^\ast 
+               \Swpp\abs{\estH}^2 
+            %+ \Swuu\abs{\estH}^2 
+             - \estH\Swpy 
+             - \estH^\ast\Swpy^\ast 
              + \Swqq
              }
         && \text{by \prefp{ilem:H1LS_cost}}
       \\&= \pderiv{}{\estH_R}\brp{
-               \Swxx\brs{\estH_R^2+\estH_I^2} 
-             + \Swuu\brs{\estH_R^2+\estH_I^2} 
-             - (\estH_R+i\estH_I)\Swxy 
-             - (\estH_R+i\estH_I)^\ast\Swxy^\ast 
+               \Swpp\brs{\estH_R^2+\estH_I^2} 
+            %+ \Swuu\brs{\estH_R^2+\estH_I^2} 
+             - (\estH_R+i\estH_I)\Swpy 
+             - (\estH_R+i\estH_I)^\ast\Swpy^\ast 
              + \Swqq
              }
-      \\&= \mathrlap{
-           2\estH_R\Swxx + 2\estH_R\Swuu - \Swxy - \Swxy^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swqq}
-           \qquad\text{because $\rvq$ does not vary with $\estH$}
-           }
-      \\&= 2\estH_R\Swxx + 2\estH_R\Swuu - 2\Real\Swxy
-      \\&= 2\estH_R\Swxx + 2\estH_R\Swuu - 2\Real\Swyx
+      \\&= 2\estH_R\Swpp - \Swpy - \Swpy^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swqq}
+        &&\text{because $\rvq$ does not vary with $\estH$}
+      \\&= 2\estH_R\Swpp  - 2\Real\Swpy
+      \\&= 2\estH_R\Swpp  - 2\Real\Swyp
         && \text{by \prefp{cor:Swxy_sym}}
-      \\&\implies \boxed{\estH_R = \frac{\Real\Swyx}{\Swxx+\Swuu}}
+      \\&\implies \boxed{\estH_R(\omega) = \frac{\Real\Swyp(\omega)}{\Swpp(\omega)}}
     \end{align*}
 
-  \item lemma: $\estH_I = \ffrac{\Imag\Swyx}{\Swxx}$. Proof: \label{ilem:H1LS_I}
+  \item lemma: $\estH_I = \ffrac{\Imag\Swyp}{\Swpp}$. Proof: \label{ilem:H1LS_I}
     \begin{align*}
       0
         &= \pderiv{}{\estH_I}\fCost\brp{\estH}
       \\&= \pderiv{}{\estH_I}
-           \brp{\Swxx\abs{\estH}^2 + \Swuu\abs{\estH}^2 - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swqq}
+           \brp{\Swpp\abs{\estH}^2 - \estH\Swpy - \estH^\ast\Swpy^\ast + \Swqq}
         && \text{by \prefp{ilem:H1LS_cost}}
       \\&= \pderiv{}{\estH_I}\brs{
-           \Swxx\brs{\estH_R^2+\estH_I^2}
-         + \Swuu\brs{\estH_R^2+\estH_I^2}
-         - (\estH_R+i\estH_I)\Swxy
-         - (\estH_R-i\estH_I)\Swxy^\ast
+           \Swpp\brs{\estH_R^2+\estH_I^2}
+        %+ \Swuu\brs{\estH_R^2+\estH_I^2}
+         - (\estH_R+i\estH_I)\Swpy
+         - (\estH_R-i\estH_I)\Swpy^\ast
          + \Swqq}
       \\&= \mathrlap{
-           2\estH_I\Swxx - i\Swxy + i\Swxy^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swqq}
+           2\estH_I\Swpp - i\Swpy + i\Swpy^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swqq}
            \qquad\text{because $\rvq$ does not vary with $\estH$}
            }
-      \\&= 2\estH_I(\Swxx+\Swuu) - 2i(i\Imag\Swxy)
-      \\&= 2\estH_I(\Swxx+\Swuu) + 2i(i\Imag\Swyx)
+      \\&= 2\estH_I\Swpp - 2i(i\Imag\Swpy)
+      \\&= 2\estH_I\Swpp + 2i(i\Imag\Swyp)
         && \text{by \prefp{cor:Swxy_sym}}
-      \\&= 2\estH_I(\Swxx+\Swuu) - 2\Imag\Swyx
-      \\&\implies \boxed{\estH_I = \frac{\Imag\Swyx}{\Swxx+\Swuu}}
+      \\&= 2\estH_I\Swpp - 2\Imag\Swyp
+      \\&\implies \boxed{\estH_I(\omega) = \frac{\Imag\Swyp(\omega)}{\Swpp(\omega)}}
      \end{align*}
 
-  \item Proof that $\estH = \ffrac{\Swyx}{\Swxx+\Swuu} \eqd \estHa$:
+  \item Proof that $\estH = \ffrac{\Swyx}{\Swpp} \eqd \estHa$:
     \begin{align*}
       \estH(\omega)
         &= \estH_R(\omega) + i\estH_I(\omega)
-      \\&= \frac{ \Real\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)} 
-         + \frac{i\Imag\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
+      \\&= \frac{ \Real\Swyp(\omega)}{\Swpp(\omega)} 
+         + \frac{i\Imag\Swyp(\omega)}{\Swpp(\omega)}
         && \text{by \pref{ilem:H1LS_R} and \pref{ilem:H1LS_I}}
+      \\&= \frac{\Swyp(\omega)}{\Swpp(\omega)} 
     \end{align*}
 \end{enumerate}
 \end{proof}
 
-It follows immediately from the previous theorem that, in the special case
+%---------------------------------------
+\begin{corollary}
+\label{cor:H1LSa}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:estHls} (A).
+\corbox{
+  \brb{\begin{array}{FMD}
+      &hypotheses of \prefpp{thm:estHls} & 
+    %\\(B).&$\rvu(n) = 0$\quad\text{\scs(zero input noise)}
+  \end{array}}
+  \implies
+  \estHls(\omega) = \frac{\Swyx(\omega) + \Swyu(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
+  }
+\end{corollary}
+\begin{proof}
+  \begin{align*}
+    \estHls(\omega)
+      &= \frac{\Swyp(\omega)}{\Swpp(\omega)}
+      && \text{by \prefp{thm:estHls}}
+    \\&= \frac{\Swyp(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
+    \\&= \frac{\Swyx(\omega)+\Swyu(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:H1LSa}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:estHls} (B).
+\corbox{
+  \brb{\begin{array}{FMD}
+      &hypotheses of \prefpp{thm:estHls} & 
+    %\\(B).&$\rvu(n) = 0$\quad\text{\scs(zero input noise)}
+  \end{array}}
+  \implies
+  \estHls(\omega) = \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swww(\omega)}
+  }
+\end{corollary}
+\begin{proof}
+  \begin{align*}
+    \estHls(\omega)
+      &= \frac{\Swyp(\omega)}{\Swpp(\omega)}
+      && \text{by \prefp{thm:estHls}}
+    \\&= \frac{\Swyp(\omega)}{\Swxx(\omega)-\Swww(\omega)}
+    \\&= \frac{\Swyx(\omega)-\Swyw(\omega)}{\Swxx(\omega)-\Swww(\omega)}
+    \\&= \frac{\Swyx(\omega)-\cancelto{0}{\Swyw(\omega)}}{\Swxx(\omega)-\Swww(\omega)}
+  \end{align*}
+\end{proof}
+
+It follows immediately from \prefpp{thm:estHls} that, in the special case
 of no input noise ($\rvu(n)=0$), $\estHa$ is the best
 least-squares estimate of $\FH$ (next corollary).
 Moreover, in the special case of $\FH$ being \prope{linear time invariant} (\prope{LTI}),

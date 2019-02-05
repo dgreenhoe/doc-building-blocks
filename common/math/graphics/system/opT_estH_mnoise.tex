@@ -16,8 +16,8 @@
   %-------------------------------------
   % transfer function boxes
   %-------------------------------------
-  \fnodeput{0}{ 0}{+0.75}{sysH}{$\opT$}%
-  \fnodeput{0}{ 0}{-0.75}{estH}{$\estHls$}%
+  \fnodeput{0}{ 0}{+0.75}{sysT}{$\opT$}%
+  \fnodeput{0}{ 0}{-0.75}{sysH}{$\estHls$}%
     %       |   |   |     |       |____ label in box
     %       |   |   |     |____________ node name
     %       |   |   |__________________ y location
@@ -26,8 +26,9 @@
   %--------------------------------------------------------------------------
   % ADDERS: circles with $+$ inside
   %--------------------------------------------------------------------------
-  \cnodeput{0}(-2.0, 0.00){addU}{$+$}%
-  \cnodeput{0}( 1.5, 0.75){addV}{$+$}%
+  \cnodeput{0}(-2.0,+0.00){addU}{$+$}%
+  \cnodeput{0}( 1.5,-0.75){addW}{$+$}%
+  \cnodeput{0}( 1.5,+0.75){addV}{$+$}%
     % |     |   |    |     |      |____ $+$ in circle
     % |     |   |    |     |___________ node label
     % |     |   |    |_________________ y location
@@ -37,53 +38,59 @@
   %-------------------------------------
   % node locations
   %-------------------------------------
-  \pnode( 1.50, 1.50){sysV}%
-  \pnode(-3.00, 0.00){sysX}%
-  \pnode( 2.50, 0.75){sysY}%
+  \pnode(-3.00, 0.75){sysP}%
+  \pnode(-3.00, 0.00){sysU}%
+  \pnode(-2.00,-0.75){sysX}%
+  \pnode(+2.50,-0.75){sysS}%
+  \pnode(+2.50, 0.75){sysY}%
+  \pnode( 0.85,-0.75){sysR}%
   \pnode( 0.85, 0.75){sysQ}%
-  \pnode(-2.00, 0.75){sysU}%
-  \pnode( 1.50,-0.75){sysR}%
-  \pnode(-1.25, 0.75){sysPg}%
+  \pnode(+1.50, 0.00){sysW}%
+  \pnode(+1.50, 1.50){sysV}%
+  \nnode{-2.00}{0.75}{sysPp}%
+  \nnode{-1.25}{0.75}{sysPg}%
   \pnode(-1.25,-0.75){sysPh}%
-  \nnode{-1.25}{0.00}{sysP}%
     %     |     |     |_________________ node name
     %     |     |_______________________ y location
     %     |_____________________________ x location
   %-------------------------------------
   % label text
   %-------------------------------------
-  \uput[  0](sysP) {$\rvp(n)$}%
-  \uput[180](sysX) {$\rvx(n)$}%
+  \uput[180](sysP) {$\rvp(n)$}%
+  \uput[-90](sysX) {$\rvx(n)$}%
+  \uput[  0](sysS) {$\rvs(n)$}%
   \uput[  0](sysY) {$\rvy(n)$}%
   \uput[ 90](sysV) {$\rvv(n)$}%
-  \uput[ 90](sysU) {$\rvu(n)$}%
-  \uput[  0](sysR) {$\rvr(n)$}%
-  \uput[ 90](sysQ) {$\rvq(n)$}%
-  %-------------------------------------                    
-  % system connections                     sysV             
-  %                             _____        |              
-  %                 sysPg      |     | sysQ  v              
-  %           sysU    o------->|  T  |----->(+)------> sysY 
-  %             |     |        |_____|     addV             
-  %             v     |                                     
-  %    sysX ---(+)----o sysP    __|__(0,0)                  
-  %           addU    |           |                         
-  %                   |         _____                       
-  %                   |        |  ^  |                      
-  %                   o------->|  H  |-----> sysR           
-  %                 sysPh      |_____|                      
-  %-------------------------------------                    
-  \ncline{->}{sysX}{addU}%
+  \uput[180](sysU) {$\rvu(n)$}%
+  \uput[ 90](sysW) {$\rvw(n)$}%
+  \uput[ 90](sysR) {$\rvr(n)$}%
+  \uput[-90](sysQ) {$\rvq(n)$}%
+  %-------------------------------------
+  % system connections                     sysV
+  %                             _____        |
+  %          sysPp  sysPg      |     | sysQ  v 
+  %    sysP ----o-----o------->|  T  |----->(+)------> sysY 
+  %             |     |        |_____|     addV
+  %             v     |                  
+  %    sysU -->(+)    |         __|__(0,0)
+  %         addU|     |           |        sysW
+  %             |     |         _____        |
+  %           sysX    |        |  ^  | sysR  v 
+  %                   o------->|  H  |----->(+)------> sysS 
+  %                 sysPh      |_____|     addW
+  %-------------------------------------
+  \ncline{->}{sysP}{sysT}%
+  \ncline{->}{sysPp}{addU}%
   \ncline{->}{sysU}{addU}%
-  \ncline{addU}{sysP}%
-  \psline(sysP)(sysPg)%
-  \psline(sysP)(sysPh)%
-  \ncline{->}{sysPg}{sysH}%
-  \ncline{->}{sysPh}{estH}%
-  \ncline{->}{sysH}{addV}%
-  \ncline{->}{estH}{sysR}%
+  \ncline{sysPg}{sysPh}%
+  \ncline{->}{addU}{sysX}%
+  \ncline{->}{sysPh}{sysH}%
+  \ncline{->}{sysT}{addV}%
+  \ncline{->}{sysH}{addW}%
+  \ncline{->}{addW}{sysS}%
   \ncline{->}{addV}{sysY}%
   \ncline{->}{sysU}{addU}%
+  \ncline{->}{sysW}{addW}%
   \ncline{->}{sysV}{addV}%
   %-------------------------------------
   % development support--comment out before final version
