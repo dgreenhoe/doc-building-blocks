@@ -213,7 +213,8 @@ then $\estHa$ (next definition) is the ideal estimator in the sense that $\estHa
   \citePppc{allemang1987}{54}{55}{5.3.1 $H_1$ Technique; $[H]=[G_{XF}][G_{FF}]^{-1}$ (11)},
   \citePpc{cobb1988}{2}{$^1\hat{H}(f)=\ffrac{\hat{G}_{yx}(f)}{\hat{G}_{xx}(f)}$ (1)},
   \citePpc{goyder1984}{438}{$H(i\omega)=\ffrac{S_{qp}}{S_{pp}}$ (3)},
-  \citerpgc{pintelon2012}{233}{1118287398}{$\hat{G}(\Omega_k)=S_{yu}(j\omega_k)S_{uu}^{-1}(j\omega_k)$ (7-30)}
+  \citerpgc{pintelon2012}{233}{1118287398}{$\hat{G}(\Omega_k)=S_{yu}(j\omega_k)S_{uu}^{-1}(j\omega_k)$ (7-30)},
+  \citePpc{white2006}{678}{$H_1(f)=\ffrac{\hat{S}_{x_my_m}(f)}{\hat{S}_{x_mx_m}(f)}$ (1) which differs by conjugate, references Bendat and Piersol},
   }
 \label{def:H1}
 %---------------------------------------
@@ -251,7 +252,8 @@ Note also that in the case of both no input and no output noise, then $\estHa=\e
     $\~H_2(f)=\ffrac{G_{yy}}{G_{yx}}$ (6);
     Note this differs with \pref{def:H2} by a conjugate, but note that Mitchell seems to follow Bendat (see his [3] and [4]),
     which would explain this difference \xref{rem:Rxym}},
-  \citePpc{cobb1988}{3}{$^2\hat{H}(f)=\ffrac{\hat{G}_{yy}(f)}{\hat{G}_{xy}(f)}$ (1)}
+  \citePpc{cobb1988}{3}{$^2\hat{H}(f)=\ffrac{\hat{G}_{yy}(f)}{\hat{G}_{xy}(f)}$ (1)},
+  \citePpc{white2006}{678}{$H_2(f)=\ffrac{\hat{S}_{y_my_m}(f)}{\hat{S}_{y_mx_m}(f)}$ (2) which differs by conjugate, references Bendat and Piersol}
   }
 \label{def:H2}
 %---------------------------------------
@@ -446,18 +448,20 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 
 The estimate $\estHv$ and it's refusal to assume zero input or output noise
 was definitely a step in the right direction.
-But it still assumes that the input and output noise power to be equal.
+But it still has the limiting assumption that the input and output noise power are equal.
 And what if it's not?
 Enter Wicks and Vold who in 1986 introduced such an estimator (next definition)
 that makes no such assumption.
-It features a parameter $s$ in the range $\intco{0}{\infty}$
+It features a \vale{scaling parameter} $s$ in the range $\intco{0}{\infty}$
 that can be adjusted depending on the ratio of output and input noise.
-And as it turns out, $\estHs = \estHa$ when $s=0$, $\estHs=\estHv$ when $s=1$, and
-$\estHs\to\estHb$ as $s\to\infty$. % \xref{thm:Hs}.
+And as it turns out, $\estHs = \estHb$ when $s=0$, $\estHs=\estHv$ when $s=1$, and
+$\estHs\to\estHa$ as $s\to\infty$. % \xref{thm:Hs}.
 %---------------------------------------
 \begin{definition}[\fnctd{scaling estimate}]
 \footnote{
-  \citePc{leclere2012}{(10) with $x$ and $y$ swapped}
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
+  %\citePpc{white2006}{679}{(6)},
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
   }
 \label{def:Hs}
 %---------------------------------------
@@ -484,7 +488,7 @@ and is thus suitable in the presence of \prope{colored} noise.
 \begin{definition}
 \footnote{
   \citerpgc{shin2008}{293}{0470725648}{(9.67)},
-  \citeP{white2006},
+  %\citePpc{white2006}{679}{(6)},
   \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
   }
 \label{def:Hkappa}
@@ -524,31 +528,15 @@ Let $\opS$ be a system with input $\rvx(n)$, output $\rvy(n)$, and a driver $\rv
 \end{definition}
 
 %=======================================
-\section{Properties}
+\section{Least squares estimates}
 %=======================================
-%---------------------------------------
-\begin{proposition}
-\footnote{
-  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
-  \citeP{white2006},
-  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
-  }
-\label{prop:Hkappa}
-%---------------------------------------
-Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkappa}.
-\propbox{
-  \estHkp(\omega) = \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
-                            {2\Swxy(\omega)}
-  }
-\end{proposition}
-
 \begin{minipage}{\tw-50mm}
 Let $\opS$ be the \structe{system} illustrated to the right.
 \textbf{If} there is no measurement noise on the input and output and \textbf{if}
-$\fh$ is \prope{linear time invariant}, then
-$\fH = \Swxy/\Swxx$ \xref{cor:Rxyh}.
+$\opH$ is \prope{linear time invariant}, then
+$\FH = \Swxy/\Swxx$ \xref{cor:Rxyh}.
 But what if there is output measurement noise?
-And what if $\fH$ is not \prope{LTI}?
+And what if $\opH$ is not \prope{LTI}?
 What is the best least-squares estimate of $\FH$?
 The answer is the estimator $\estHa$ \xref{def:H1},
 as demonstrated in the next theorem.
@@ -568,7 +556,7 @@ as demonstrated in the next theorem.
   \caption{Least Square estimation \xref{thm:estHls}\label{fig:estHls}}
 \end{figure}
 %---------------------------------------
-\begin{theorem}[Optimal LTI least-squares estimate $\estH$ of $\fH$]
+\begin{theorem}[Optimal LTI least-squares estimate $\estH$ of $\opH$]
 \label{thm:estHls}
 %---------------------------------------
 Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (A) or (B).
@@ -774,14 +762,53 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
   \end{align*}
 \end{proof}
 
+%=======================================
+\section{The $\estHs$ estimator}
+%=======================================
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
+  \citePpc{white2006}{679}{(6)},
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
+  }
+\label{prop:Hkappa}
+%---------------------------------------
+Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkappa}.
+\propbox{
+  \estHkp(\omega) = \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
+                            {2\Swxy(\omega)}
+  }
+\end{proposition}
+
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerpgc{shin2008}{293}{0470725648}{(9.67) with $\kappa(\omega)=s^2$},
+  \citePpc{white2006}{679}{(6) with $\kappa(\omega)=s^2$},
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped},
+  \citePc{zheng2002}{918}{10), seems to differ}
+  }
+\label{prop:Hs}
+%---------------------------------------
+Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkappa}.
+\propbox{
+  \estHkp(\omega) = \frac{\Swyy(\omega)- s^2 \Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}}
+                            {2\Swxy(\omega)}
+  }
+\end{proposition}
+
+
+
 
 %=======================================
 \section{Properties of LTI systems}
 %=======================================
 The previous section did assume the estimates $\estHa$ and $\estHb$  to be 
 \prope{linear time invariant} (\prope{LTI}), but it did \emph{not} assume that 
-the system transfer function $\fH$ itself to be \prope{LTI}. 
-But making the LTI assumption on $\fH$ yields some interesting and insightful
+the system transfer function $\opH$ itself to be \prope{LTI}. 
+But making the LTI assumption on $\opH$ yields some interesting and insightful
 results, such as those in this section.
 
 %---------------------------------------
@@ -792,7 +819,7 @@ results, such as those in this section.
 Let $\opS$ be the \structe{system} illustrated in \prefp{fig:addnoise} (A).
 \thmboxt{
   $\brb{\begin{array}{FMMD}
-      (A).& $\fH$ is                                &\prope{linear time invariant} & and
+      (A).& $\opH$ is                               &\prope{linear time invariant} & and
     \\(B).& $\rvx(n)$ is                            &\prope{wide-sense stationary} & and
     \\(C).& $\rvx(n)$, $\rvu(n)$, and $\rvv(n)$ are &\prope{uncorrelated}          & 
   \end{array}}$
@@ -857,7 +884,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:addnoise} (A).
 Let $\opS$ be the \structe{system} illustrated in \prefp{fig:addnoise} (B).
 \thmboxt{
   $\brb{\begin{array}{FMMD}
-      (A).& $\fH$ is                                &\prope{linear time invariant} & and
+      (A).& $\opH$ is                               &\prope{linear time invariant} & and
     \\(B).& $\rvx(n)$ is                            &\prope{wide-sense stationary} & and
     \\(C).& $\rvx(n)$, $\rvu(n)$, and $\rvv(n)$ are &\prope{uncorrelated}          & 
   \end{array}}$
