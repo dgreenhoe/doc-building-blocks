@@ -88,8 +88,8 @@ an estimate $\estH(\omega)$.
   \centering
   \begin{tabular}{|c|c|}
     \hline
-     \tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}
-    &\tbox{\includegraphics{graphics/sysH_mnoise.pdf}}
+     \tbox{\includegraphics{graphics/opT_cnoise.pdf}}
+    &\tbox{\includegraphics{graphics/opT_mnoise.pdf}}
     \\
       (A) \opd{communications additive noise model}
      &(B) \opd{measurement    additive noise model}
@@ -104,7 +104,7 @@ an estimate $\estH(\omega)$.
     \\\mc{2}{|l|}{\indentx\imarks on the right, $\rvx$ and $\rvw=-\rvu$ are very much \prope{correlated} ($\rvx$ is a function of $\rvu$).}
     \\\hline
   \end{tabular}
-  \caption{Additive noise models\label{fig:addnoise}}
+  \caption{Additive noise systems with \prope{linear}/\propb{non-linear} operator $\opT$\label{fig:addnoise}}
 \end{figure}
 
 Consider the additive noise systems illustrated in \prefpp{fig:addnoise}.
@@ -287,44 +287,90 @@ An arguably more mature approach is to find estimators that are optimal with res
 this approach summarizes \pref{def:Hv} -- \prefpp{def:Hkappa}.
 
 %---------------------------------------
-\begin{definition}[\fnctd{Arithmetic mean estimator}]
+\begin{definition}
+\label{def:Ham}
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defboxt{
+    The \fnctd{Arithmetic mean transfer function estimate $\estHam(\omega)$}
+    of $\estHam(\omega)$ and $\estHb(\omega)$ is defined as
+  \\\indentx$
+  \estHam(\omega) \eqd
+    \frac{\ds\abs{\Swxy(\omega)}^2 + \Swxx(\omega)\Swyy(\omega)}
+         {\ds 2\Swxx(\omega)\Swxy(\omega)}
+  $}
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
 \footnote{
   \citePpc{mitchell1982}{279}{``Frequency Response Calculation: The Average Method"},
   \citePpc{zheng2002}{918}{``1.3 Arithmetic Mean Estimator $H_3$"}
   }
-\label{def:Havg}
+\label{prop:Ham}
 %---------------------------------------
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defbox{\begin{array}{Mrc>{\ds}>{\ds}l}
-  The \fnctd{transfer function estimate $\estHam(\omega)$} is defined as
-  & \estHam(\omega) &\eqd& \frac{\estHa(\omega) + \estHb(\omega)}{2}
+\propbox{\begin{array}{rc>{\ds}lM}
+  \estHam(\omega) &=& \frac{\ds\estHa(\omega) + \estHb(\omega)}{2}
+                  & (\fnctb{Arithmetic mean} of $\estHa$ and $\estHb$)
 \end{array}}
-\end{definition}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \estHam(\omega)
+    &\eqd  \frac{\ds\abs{\Swxy(\omega)}^2 + \Swxx(\omega)\Swyy(\omega)}
+                {\ds2\Swxx(\omega)\Swxy(\omega)}
+    && \text{by definition of $\estHam$}
+    && \text{\xref{def:Ham}}
+  \\&=  \frac{\ds \Swxy(\omega) \Swxy^\ast(\omega)}
+             {\ds2\Swxx(\omega) \Swxy     (\omega)}
+      + \frac{\ds \Swxx(\omega) \Swyy     (\omega)}
+             {\ds2\Swxx(\omega) \Swxy     (\omega)}
+  \\&=  \frac{
+        \frac{\ds\Swxy^\ast(\omega)} {\ds\Swxx(\omega)}
+      + \frac{\ds\Swyy     (\omega)} {\ds\Swxy(\omega)}
+        }{2}
+  \\&= \frac{\ds\estHa(\omega) + \estHb(\omega)}{2}
+    && \text{by definitions of $\estHa$ and $\estHb$}
+    && \text{\xxref{def:H1}{def:H2}}
+\end{align*}
+\end{proof}
 
 %---------------------------------------
 \begin{definition}[\fnctd{Geometric mean estimator}]
-\footnote{
-  \citePpc{zheng2002}{918}{``1.4 Geometric Mean Estimator $H_4$"}
-  }
 \label{def:Hgm}
 %---------------------------------------
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defbox{\begin{array}{Mrc>{\ds}>{\ds}l}
   The \fnctd{transfer function estimate $\estHgm(\omega)$} is defined as
-  & \estHgm(\omega) &\eqd& \sqrt{\estHa(\omega)\estHb(\omega)}
+  & \estHgm(\omega) &\eqd& \sqrt{\frac{\Swyy(\omega)\Swxy^\ast(\omega)}{\Swxx(\omega)\Swxy(\omega)}}
 \end{array}}
 \end{definition}
 
 %---------------------------------------
-\begin{remark}
-\label{rem:HgmTxy_mag}
+\begin{proposition}[\fnctd{Geometric mean estimator}]
+\footnote{
+  \citePpc{zheng2002}{918}{``1.4 Geometric Mean Estimator $H_4$"}
+  }
+\label{prop:Hgm}
 %---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\propbox{\begin{array}{rc>{\ds}>{\ds}lM}
+  \estHgm(\omega) &=& \sqrt{\estHa(\omega)\estHb(\omega)}
+    & (\fnctb{Geometric mean} of $\estHa$ and $\estHb$)
+\end{array}}
+\end{proposition}
+
 Note that the \fncte{geometric mean estimator} \xref{def:Hgm} and \fncte{transmissibility} \xref{def:Txy}
-are closely related:
-\rembox{\begin{array}{rc>{\ds}lM}
+are closely related (next).
+%---------------------------------------
+\begin{proposition}
+\label{prop:HgmTxy_mag}
+%---------------------------------------
+\propbox{\begin{array}{rc>{\ds}lM}
   \abs{\estHgm(\omega)} &=& \Twxy(\omega) & ($\Twxy$ is the magnitude of $\estHgm$)
 \end{array}}
-\end{remark}
+\end{proposition}
 \begin{proof}
 \begin{align*}
   \estHgm(\omega)
@@ -352,9 +398,9 @@ are closely related:
 \fncte{Transmissibility} $\Twxy$ is a kind of ``black sheep" of the system identification function family.
 All the other members of this family ($\estHa$, $\estHb$, $\estHv$, $\estHs$) are \prope{complex-valued},
 but $\Twxy$ is only \prope{real-valued}---a seemingly ordinary Joe born into a super-hero family.
-But \pref{rem:HgmTxy_mag} suggests that $\Twxy$ is not simply a ``black sheep", but
+But \pref{prop:HgmTxy_mag} suggests that $\Twxy$ is not simply a ``black sheep", but
 rather a ``dark horse" with abilities that can easily be unleashed by slight redefinition.
-In particular, \pref{rem:HgmTxy_mag} demonstrates that $\Twxy$ is the \hie{magnitude} of the geometric mean of
+In particular, \pref{prop:HgmTxy_mag} demonstrates that $\Twxy$ is the \hie{magnitude} of the geometric mean of
 $\estHa$ and $\estHb$.
 We can thus justifiably define a \fnctd{complex transmissibility} function as $\estHgm$\ldots
 and the magnitude of this \fncte{complex transmissibility} function is the \fncte{ordinary transmissibility}
@@ -408,24 +454,60 @@ In particular, note that the following:
 \end{align*}
 \end{proof}
 
-
+%---------------------------------------
+\begin{definition}
+\label{def:Hhm}
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defboxt{
+    The \fnctd{Harmonic mean transfer function estimate $\estHhm(\omega)$}
+    of $\estHa(\omega)$ and $\estHb(\omega)$ is defined as
+  \\\indentx$
+  \estHhm(\omega) \eqd
+    \frac{\ds\Swyy(\omega)\Swxy^\ast(\omega)}
+         {\ds\Swxx(\omega)\Swyy(\omega) + \abs{\Swxy(\omega)}^2}
+  $}
+\end{definition}
 
 %---------------------------------------
-\begin{definition}[\fnctd{Harmonic mean estimator}]
+\begin{proposition}
 \footnote{
   \citePc{carne2006}{$H_C = [H_A^{-1} + H_B^{-1}]^{-1}$}
   %\citergc{ewins1985}{086380036X}{cited by Carne (2006)}
   %\citerpgc{ewins1986}{???}{0863800173}{...}
   }
-\label{def:Hharm}
+\label{prop:Hhm}
 %---------------------------------------
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defbox{\begin{array}{Mrc>{\ds}>{\ds}l}
-  The \fnctd{transfer function estimate $\estHhm(\omega)$} is defined as
-  & \estHhm(\omega) &\eqd& \frac{1}{\frac{1}{\ds\estHa(\omega)} + \frac{1}{\ds\estHb(\omega)}}
+\propbox{\begin{array}{rc>{\ds}lM}
+  \estHhm(\omega) &=& \frac{1}{\frac{1}{\ds\estHa(\omega)} + \frac{1}{\ds\estHb(\omega)}}
+                  & (\fnctb{Harmonic mean} of $\estHa$ and $\estHb$)
 \end{array}}
-\end{definition}
-
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \estHhm(\omega)
+    &\eqd \frac{\ds\Swyy(\omega)\Swxy^\ast(\omega)}
+               {\ds\Swxx(\omega)\Swyy(\omega) + \abs{\Swxy(\omega)}^2}
+    && \text{by definition of $\estHhm$}
+    && \text{\xref{def:Hhm}}
+  \\&= \frac{1}{\frac{\ds\Swxx(\omega)\Swyy(\omega) + \abs{\Swxy(\omega)}^2}
+                     {\ds\Swyy(\omega)\Swxy^\ast(\omega)}}
+  \\&= \frac{1}{                                     %
+         \frac{\ds\Swxx(\omega)}                     %            1
+              {\Swxy^\ast(\omega)}                   %  -------------------
+         +                                           %   Sxx(w)     Sxy(w)
+         \frac{\ds\Swxy(\omega)}                     %  -------- + --------
+              {\ds\Swyy(\omega)}                     %   Sxy*(w)    Syy(w)
+               }                                     %
+  \\&= \frac{1}{                                     %           1
+         \frac{1}{\estHa(\omega)}                    %   -----------------
+        +\frac{1}{\estHb(\omega)}}                   %      1         1
+    && \text{by definitions of $\estHa$ and $\estHb$}%    ------ + ------
+    && \text{\xxref{def:Ha}{def:Ha}}                 %     H1(w)    H2(w)
+  \\&= \text{\fnctb{Harmonic mean} of $\estHa(\omega)$ and $\estHb(\omega)$}
+\end{align*}
+\end{proof}
 
 %---------------------------------------
 \begin{definition}[\fnctd{Total Least Squares estimator}]
