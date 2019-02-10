@@ -293,7 +293,7 @@ this approach summarizes \pref{def:Hv} -- \prefpp{def:Hkappa}.
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
     The \fnctd{Arithmetic mean transfer function estimate $\estHam(\omega)$}
-    of $\estHam(\omega)$ and $\estHb(\omega)$ is defined as
+    of $\estHa(\omega)$ and $\estHb(\omega)$ is defined as
   \\\indentx$
   \estHam(\omega) \eqd
     \frac{\ds\abs{\Swxy(\omega)}^2 + \Swxx(\omega)\Swyy(\omega)}
@@ -312,7 +312,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \propbox{\begin{array}{rc>{\ds}lM}
   \estHam(\omega) &=& \frac{\ds\estHa(\omega) + \estHb(\omega)}{2}
-                  & (\fnctb{Arithmetic mean} of $\estHa$ and $\estHb$)
+                  & (\fnctb{arithmetic mean} of $\estHa$ and $\estHb$)
 \end{array}}
 \end{proposition}
 \begin{proof}
@@ -336,19 +336,28 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \end{align*}
 \end{proof}
 
-%---------------------------------------
-\begin{definition}[\fnctd{Geometric mean estimator}]
-\label{def:Hgm}
-%---------------------------------------
+% ______________________________________
+%| |               ________________     |
+%|D|              / Syy(w) Sxy*(w)      |
+%|E| Hgm(w) = \  / ----------------     |
+%|F|           \/   Sxx(w) Sxy(w)       |
+%|_|____________________________________|
+\begin{definition}                      %
+\label{def:Hgm}                         %
+%---------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defbox{\begin{array}{Mrc>{\ds}>{\ds}l}
-  The \fnctd{transfer function estimate $\estHgm(\omega)$} is defined as
-  & \estHgm(\omega) &\eqd& \sqrt{\frac{\Swyy(\omega)\Swxy^\ast(\omega)}{\Swxx(\omega)\Swxy(\omega)}}
-\end{array}}
+\defboxt{
+    The \fnctd{Geometric mean transfer function estimate $\estHgm(\omega)$}
+    of $\estHa(\omega)$ and $\estHb(\omega)$ is defined as
+  \\\indentx$
+  \estHgm(\omega) \eqd
+    \sqrt{\frac{\ds\Swyy(\omega)\Swxy^\ast(\omega)}
+               {\ds\Swxx(\omega)\Swxy(\omega)}}
+  $}
 \end{definition}
 
 %---------------------------------------
-\begin{proposition}[\fnctd{Geometric mean estimator}]
+\begin{proposition}
 \footnote{
   \citePpc{zheng2002}{918}{``1.4 Geometric Mean Estimator $H_4$"}
   }
@@ -357,9 +366,27 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \propbox{\begin{array}{rc>{\ds}>{\ds}lM}
   \estHgm(\omega) &=& \sqrt{\estHa(\omega)\estHb(\omega)}
-    & (\fnctb{Geometric mean} of $\estHa$ and $\estHb$)
+    & (\fnctb{geometric mean} of $\estHa$ and $\estHb$)
 \end{array}}
 \end{proposition}
+\begin{proof}
+\begin{align*}
+  \estHgm(\omega)
+    &  \sqrt{\frac{\Swyy(\omega)\Swxy^\ast(\omega)}{\Swxx(\omega)\Swxy(\omega)}}
+    && \text{by \prefp{def:Hgm}}
+  \\&  \sqrt{
+         \frac{\Swxy^\ast(\omega)}
+              {\Swxx(\omega)}
+         \frac{\Swyy(\omega)}
+              {\Swxy(\omega)}
+            }
+    && \text{by \prefp{def:Hgm}}
+  \\&= \sqrt{\estHa(\omega)\estHb(\omega)}
+    && \text{by definitions of $\estHa$ and $\estHb$}
+    && \text{\xxref{def:H1}{def:H2}}
+  \\&= \text{\fnctb{Geometric mean} of $\estHa(\omega)$ and $\estHb(\omega)$}
+\end{align*}
+\end{proof}
 
 Note that the \fncte{geometric mean estimator} \xref{def:Hgm} and \fncte{transmissibility} \xref{def:Txy}
 are closely related (next).
@@ -419,7 +446,8 @@ function of \prefpp{def:Txy}.
 %---------------------------------------
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
-  The \fnctd{coherence} function $\ds\Cxy(\omega) \eqd \frac{\Swyx(\omega)}{\Swxx(\omega)}$
+  The \fnctd{complex coherence} function is defined as
+  \\\indentx$\ds\Cxy(\omega) \eqd \frac{\Swyx(\omega)}{\Swxx(\omega)\Swyy(\omega)}$
   }
 \end{definition}
 
@@ -454,78 +482,151 @@ In particular, note that the following:
 \end{align*}
 \end{proof}
 
-%---------------------------------------
-\begin{definition}
-\label{def:Hhm}
-%---------------------------------------
+% ___________________________________________
+%|D|                Syy(w) Sxy*(w)           |
+%|E| Hhm(w) = ------------------------------ |
+%|F|           Sxx(w) Syy(w) + | Sxy(w) |^2  |
+%|_|_________________________________________|
+\begin{definition}                           %
+\label{def:Hhm}                              %
+%--------------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
     The \fnctd{Harmonic mean transfer function estimate $\estHhm(\omega)$}
     of $\estHa(\omega)$ and $\estHb(\omega)$ is defined as
   \\\indentx$
   \estHhm(\omega) \eqd
-    \frac{\ds\Swyy(\omega)\Swxy^\ast(\omega)}
+    \frac{\ds2\Swyy(\omega)\Swxy^\ast(\omega)}
          {\ds\Swxx(\omega)\Swyy(\omega) + \abs{\Swxy(\omega)}^2}
   $}
 \end{definition}
 
-%---------------------------------------
-\begin{proposition}
-\footnote{
-  \citePc{carne2006}{$H_C = [H_A^{-1} + H_B^{-1}]^{-1}$}
-  %\citergc{ewins1985}{086380036X}{cited by Carne (2006)}
-  %\citerpgc{ewins1986}{???}{0863800173}{...}
-  }
-\label{prop:Hhm}
-%---------------------------------------
+% ________________________________________________________
+%| |                  2                                   |
+%|P|          -----------------                           |
+%|R| Hhm(w) =    1         1                              |
+%|O|           ------ + ------                            |
+%|P|            H1(w)    H2(w)                            |
+%|_|______________________________________________________|
+\begin{proposition}                                       %
+\footnote{                                                %
+  \citePc{carne2006}{$H_C = [H_A^{-1} + H_B^{-1}]^{-1}$}  %
+  %\citergc{ewins1985}{086380036X}{cited by Carne (2006)} %
+  %\citerpgc{ewins1986}{???}{0863800173}{...}             %
+  }                                                       %
+\label{prop:Hhm}                                          %
+%---------------------------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \propbox{\begin{array}{rc>{\ds}lM}
-  \estHhm(\omega) &=& \frac{1}{\frac{1}{\ds\estHa(\omega)} + \frac{1}{\ds\estHb(\omega)}}
+  \estHhm(\omega) &=& \frac{2}{\frac{1}{\ds\estHa(\omega)} + \frac{1}{\ds\estHb(\omega)}}
                   & (\fnctb{Harmonic mean} of $\estHa$ and $\estHb$)
 \end{array}}
 \end{proposition}
 \begin{proof}
 \begin{align*}
   \estHhm(\omega)
-    &\eqd \frac{\ds\Swyy(\omega)\Swxy^\ast(\omega)}
+    &\eqd \frac{\ds2\Swyy(\omega)\Swxy^\ast(\omega)}
                {\ds\Swxx(\omega)\Swyy(\omega) + \abs{\Swxy(\omega)}^2}
     && \text{by definition of $\estHhm$}
     && \text{\xref{def:Hhm}}
-  \\&= \frac{1}{\frac{\ds\Swxx(\omega)\Swyy(\omega) + \abs{\Swxy(\omega)}^2}
+  \\&= \frac{2}{\frac{\ds\Swxx(\omega)\Swyy(\omega) + \abs{\Swxy(\omega)}^2}
                      {\ds\Swyy(\omega)\Swxy^\ast(\omega)}}
-  \\&= \frac{1}{                                     %
-         \frac{\ds\Swxx(\omega)}                     %            1
+  \\&= \frac{2}{                                     %
+         \frac{\ds\Swxx(\omega)}                     %            2
               {\Swxy^\ast(\omega)}                   %  -------------------
          +                                           %   Sxx(w)     Sxy(w)
          \frac{\ds\Swxy(\omega)}                     %  -------- + --------
               {\ds\Swyy(\omega)}                     %   Sxy*(w)    Syy(w)
                }                                     %
-  \\&= \frac{1}{                                     %           1
+  \\&= \frac{2}{                                     %           2
          \frac{1}{\estHa(\omega)}                    %   -----------------
         +\frac{1}{\estHb(\omega)}}                   %      1         1
     && \text{by definitions of $\estHa$ and $\estHb$}%    ------ + ------
-    && \text{\xxref{def:Ha}{def:Ha}}                 %     H1(w)    H2(w)
+    && \text{\xxref{def:H1}{def:H2}}                 %     H1(w)    H2(w)
   \\&= \text{\fnctb{Harmonic mean} of $\estHa(\omega)$ and $\estHb(\omega)$}
 \end{align*}
 \end{proof}
 
-%---------------------------------------
-\begin{definition}[\fnctd{Total Least Squares estimator}]
-\footnote{
-  \citePpc{white2006}{679}{(6)},
-  \citerpgc{shin2008}{294}{0470725648}{(9.69)}
-  }
-\label{def:Hv}
-%---------------------------------------
+% ______________________________________
+%|T|                                    |
+%|H| H1 <= Hhm <= Hgm <= Ham <= H2      |
+%|M|                                    |
+%|_|____________________________________|
+\begin{theorem}                         %
+\label{thm:H1HxH2}                      %
+%---------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defboxt{
-  The \fnctd{transfer function estimate $\estHv(\omega)$} is defined as
-  \\\indentx$\ds
-  \estHv(\omega) \eqd
-  \frac{2\Swyx(\omega)}
-       {\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}^2}}
-  $
+\thmbox{
+  \estHa(\omega) \le \estHhm(\omega) \le \estHgm(\omega) \le \estHam(\omega) \le \estHb(\omega)
   }
+\end{theorem}
+\begin{proof}
+
+\begin{enumerate}
+  \item lemma: \label{ilem:H1H2} $\estHa(\omega)\le\estHb(\omega)$. Proof:
+    \begin{align*}
+      \abs{\estHa}
+        &\eqd \abs{\frac{\Swyx(\omega)}{\Swxx(\omega)}}
+        && \text{by definition of $\estHa$}
+        && \text{\xref{def:H1}}
+      \\&= \abs{\frac{\inprod{\rvy}{\rvx}}{\norm{\rvx}^2}}
+      \\&= \frac{\abs{\inprod{\rvy}{\rvx}}}{\norm{\rvx}^2}
+      \\&\le \frac{\abs{\inprod{\rvy}{\rvx}}}{\norm{\rvx}^2}
+             \abs{\frac{\norm{\rvx}\norm{\rvy}}{\inprod{\rvy}{\rvx}}}^2
+        && \text{by \thme{Cauchy Schwartz inequality}}
+        && \text{\prefp{thm:cs}}
+      \\&= \frac{\norm{\rvy}^2}{\abs{\inprod{\rvy}{\rvx}}}
+      \\&= \abs{\frac{\norm{\rvy}^2}{\inprod{\rvx}{\rvy}}}
+      \\&= \abs{\frac{\Swyy(\omega)}{\Swxy(\omega)}}
+      \\&=   \estHb
+        && \text{by definition of $\estHb$}
+        && \text{\xref{def:H2}}
+    \end{align*}
+  \item remainder of the proof:
+    \begin{align*}
+      \estHa(\omega)
+        &= \min\setn{\estHa(\omega),\,\estHb(\omega)}
+        && \text{by \pref{ilem:H1H2}}
+      \\&\le \estHhm(\omega)
+        && \text{by \prefp{cor:hm_gm_am}}
+		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
+      \\&\le \estHgm(\omega)
+        && \text{by \prefp{cor:hm_gm_am}}
+		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
+      \\&\le \estHam(\omega)
+        && \text{by \prefp{cor:hm_gm_am}}
+		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
+      \\&\le \max\setn{\estHa(\omega),\,\estHb(\omega)}
+        && \text{by \prefp{cor:hm_gm_am}}
+		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
+      \\&= \estHb(\omega)
+        && \text{by \pref{ilem:H1H2}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+% _______________________________________________________________________
+%| |                                   2 Syx(w)                          |
+%|D| Hv(w) = ------------------------------------------------------------|
+%|E|                               ____________________________________  |
+%|F|                           \  /[               ]2      |        |2   |
+%| |          Sxx(w) - Syy(w) + \/ [Sxx(w) - Syy(w)]   + 4 | Sxy(w) |    |
+%|_|_____________________________________________________________________|
+\begin{definition}                                                       %
+\footnote{                                                               %
+  \citePpc{white2006}{679}{(6)},                                         %
+  \citerpgc{shin2008}{294}{0470725648}{(9.69)}                           %
+  }                                                                      %
+\label{def:Hv}                                                           %
+%------------------------------------------------------------------------%
+\defboxt{
+    The \fnctd{Total Least Squares transfer function estimate $\estHv(\omega)$}
+    of $\estHa(\omega)$ and $\estHb(\omega)$ is defined as
+  \\\indentx$
+  \estHv(\omega) \eqd
+  \frac{\ds2\Swyx(\omega)}
+       {\ds\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}^2}}
+  $}
 \end{definition}
 
 The estimate $\estHv$ and it's refusal to assume zero input or output noise
@@ -545,21 +646,24 @@ $\estHs\to\estHa$ as $s\to\infty$. % \xref{thm:Hs}.
 %|F|           2                  \  /[ 2                ]2       2 |        |2   |
 %| |          s  Sxx(w) - Syy(w) + \/ [s  Sxx(w) - Syy(w)]   + 4 s  | Sxy(w) |    |
 %|_|______________________________________________________________________________|
-\begin{definition}[\fnctd{scaling estimate}]
-\footnote{
-  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
-  %\citePpc{white2006}{679}{(6)},
-  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
-  }
-\label{def:Hs}
-%---------------------------------------
+\begin{definition}[\fnctd{scaling estimate}]                                      %
+\footnote{                                                                        %
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},                                   %
+  %\citePpc{white2006}{679}{(6)},                                                 %
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}            %
+  }                                                                               %
+\label{def:Hs}                                                                    %
+%---------------------------------------------------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
-  The \fnctd{transfer function estimate $\estHs(\omega)$} with \vald{scaling parameter} $s\in\intco{0}{\infty}$ is defined as
+  The \fnctd{transfer function estimate $\estHs(\omega)$} 
+  with \vald{scaling parameter} $s\in\intco{0}{\infty}$ is defined as
   \\\indentx$\ds
   \estHs(\omega; s) \eqd
-  \frac{2s^2\Swyx(\omega)}
-       {s^2\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}}
+  \frac{\ds 2s^2\Swyx(\omega)}
+       {\ds  s^2\Swxx(\omega)-\Swyy(\omega) + 
+        \sqrt{\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}
+       }
   $
   }
 \end{definition}
@@ -860,20 +964,23 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
 %|O| Hk(w) = --------------------------------------- ----------------- ------------- |
 %|P|                                       2 Sxy(w)                                  |
 %|_|_________________________________________________________________________________|
-\begin{proposition}
-\footnote{
-  \citePpc{white2006}{679}{(6)},
-  \citerpgc{shin2008}{293}{0470725648}{(9.67)}
-  }
-\label{prop:Hkappa}
-%---------------------------------------
+\begin{proposition}                                                                  %
+\footnote{                                                                           %
+  \citePpc{white2006}{679}{(6)},                                                     %
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)}                                       %
+  }                                                                                  %
+\label{prop:Hkappa}                                                                  %
+%------------------------------------------------------------------------------------%
 Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkappa}.
 \propbox{
-  \estHkp(\omega) = \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
-                            {2\Swxy(\omega)}
+  \estHkp(\omega) 
+    = \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + 
+            \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 + 
+                  4\kappa(\omega)\abs{\Swxy(\omega)}^2}
+           }
+           {2\Swxy(\omega)}
   }
 \end{proposition}
-
 % ________________________________________________________________________________
 %| |                                  __________________________________________  |
 %|P|                    2         \  /[          2       ]2       2 |        |2   |
@@ -881,15 +988,15 @@ Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkappa}.
 %|O| Hs(w) = -------------------------------------------------------------------- |
 %|P|                                      2 Sxy(w)                                |
 %|_|______________________________________________________________________________|
-\begin{proposition}
-\footnote{
-  \citerpgc{shin2008}{293}{0470725648}{(9.67) with $\kappa(\omega)=s^2$},
-  \citePpc{white2006}{679}{(6) with $\kappa(\omega)=s^2$},
-  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped},
-  \citePc{zheng2002}{918}{10), seems to differ}
-  }
-\label{prop:Hs}
-%---------------------------------------
+\begin{proposition}                                                               %
+\footnote{                                                                        %
+  \citerpgc{shin2008}{293}{0470725648}{(9.67) with $\kappa(\omega)=s^2$},         %
+  \citePpc{white2006}{679}{(6) with $\kappa(\omega)=s^2$},                        %
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped},           %
+  \citePc{zheng2002}{918}{10), seems to differ}                                   %
+  }                                                                               %
+\label{prop:Hs}                                                                   %
+%---------------------------------------------------------------------------------%
 Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
 \propbox{
   \estHs(\omega)
@@ -898,12 +1005,16 @@ Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
            }{2\Swxy(\omega)}
   }
 \end{proposition}
-
-
-%---------------------------------------
-\begin{proposition}
-\label{prop:Hs_lim}
-%---------------------------------------
+% ______________________________________ 
+%| |                                    |
+%|P| lim    Hs(w) = H2(w)               |
+%|R| s->0                               |
+%|O| lim    Hs(w) = H1(w)               |
+%|P| s->inf                             |
+%|_|____________________________________|
+\begin{proposition}                     %
+\label{prop:Hs_lim}                     %
+%---------------------------------------%
 Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
 \propbox{\begin{array}{F>{\ds}rc>{\ds}l}
     (1). & \lim_{s\to0     }\estHs(\omega) &=& \estHb(\omega)
