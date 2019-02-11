@@ -1,0 +1,86 @@
+%============================================================================
+% Daniel J. Greenhoe
+% XeLaTeX file
+% nominal unit = 10mm
+% see pst-node package: https://ctan.org/pkg/pst-node
+%============================================================================
+\begin{pspicture}(-3.50,-2.50)(1.90,0.55)
+  %-------------------------------------
+  % settings
+  %-------------------------------------
+  \psset{%
+    radius=2.25mm,  % radius of adder circles
+    framesize=10mm,% width and height of transfer function boxes
+    %framesize=7.5mm,% width and height of transfer function boxes
+    }%
+  %-------------------------------------
+  % operator box
+  %-------------------------------------
+  \fnodeput{0}{ 0}{ 0}{sysT}{$\opH$}%
+    %       |   |  |   |       |____ label in box
+    %       |   |  |   |____________ node name
+    %       |   |  |________________ y location
+    %       |   |___________________ x location
+    %       |_______________________ angle
+  %--------------------------------------------------------------------------
+  % ADDERS: circles with $+$ inside
+  %          (left side)                   (right side)
+  %--------------------------------------------------------------------------
+  \cnodeput{0}(-1.5,-1.0){addU}{$+$}%
+  \cnodeput{0}(+1.5,-1.0){addV}{$+$}%
+    % |     |   |    |    |  |   |____ '+' symbol in circle
+    % |     |   |    |    |  |________ L=left / R=right
+    % |     |   |    |    |___________ node label
+    % |     |   |    |________________ y location
+    % |     |   |_____________________ x location
+    % |     |_________________________ angle of + in circle
+    % |_______________________________ circle node put
+  %-------------------------------------
+  % node locations
+  %-------------------------------------
+  \pnode(-2.50, 0.00){P}% signal input  label location
+  \pnode(-1.50,-2.00){X}% signal input  label location
+  \pnode( 1.50,-2.00){Y}% signal output label location
+  \pnode(-2.50,-1.00){U}% noise  input  label location
+  \pnode( 0.50,-1.00){V}% noise  output label location
+  \pnode(-0.85, 0.00){labX}% signal input  near operator label location
+  \pnode( 1.00, 0.00){labY}% signal output near operator label location
+  \nnode{-1.50}{0.00}{A}% signal output near h(n) label location
+  \pnode( 1.50, 0.00){B}% signal output near h(n) label location
+  %-------------------------------------
+  % label text
+  %-------------------------------------
+  \uput[-90](X) {$\rvx(n)$}% signal input  label
+  \uput[-90](Y) {$\rvy(n)$}% signal output label
+  \uput[180](U) {$\rvw(n)$}% input  noise  label
+  \uput[180](V) {$\rvv(n)$}% output noise  label
+  \uput[180](P) {$\rvp(n)$}% p = x + u
+  \uput[ 90](labY) {$\rvq(n)$}% y = q + v
+  %--------------------------------------
+  % system connections
+  %                         _____
+  %               A        |  |  |    Q  B
+  %   P ----------o------->|--T--|-------o
+  %               |        |__|__|       |
+  %               |                      |
+  %         U -->(+)addU            V-->(+)addV
+  %               |                      |
+  %               |                      |
+  %               X           |          Y
+  %                   where --T-- = (0,0)
+  %---------------------------|----------
+  \ncline{->}{P}{sysT}%
+  \ncline{->}{A}{addU}%
+  \ncline{->}{U}{addU}%
+  \ncline{->}{addU}{X}%
+  \ncline    {sysT}{B}%
+  \ncline{->}{B}{addV}%
+  \ncline{->}{V}{addV}%
+  \ncline{->}{addV}{Y}%
+  %-------------------------------------
+  % development support--comment out before final version
+  %-------------------------------------
+  \psset{linecolor=red,linewidth=0.50pt}%
+  %\psline(-0.25, 0.00)(0.25,0.00)% __|__ centered at (0,0)
+  %\psline( 0.00,-0.25)(0.00,0.25)%   |
+\end{pspicture}%
