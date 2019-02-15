@@ -336,12 +336,12 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \end{align*}
 \end{proof}
 
-% ______________________________________
-%| |               ________________     |
-%|D|              / Syy(w) Sxy*(w)      |
-%|E| Hgm(w) = \  / ----------------     |
-%|F|           \/   Sxx(w) Sxy(w)       |
-%|_|____________________________________|
+% _____________________________________________
+%| |               ________      _________     |
+%|D|              / Sxy*(w)     / Syy(w)       |
+%|E| Hgm(w) = \  / -------- \  / ---------     |
+%|F|           \/   Sxx(w)   \/   Sxy(w)       |
+%|_|___________________________________________|
 \begin{definition}                      %
 \label{def:Hgm}                         %
 %---------------------------------------%
@@ -351,8 +351,10 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
     of $\estHa(\omega)$ and $\estHb(\omega)$ is defined as
   \\\indentx$
   \estHgm(\omega) \eqd
-    \sqrt{\frac{\ds\Swyy(\omega)\Swxy^\ast(\omega)}
-               {\ds\Swxx(\omega)\Swxy(\omega)}}
+    \sqrt{\frac{\ds\Swxy^\ast(\omega)}
+               {\ds\Swxx(\omega)}}
+    \sqrt{\frac{\ds\Swyy(\omega)}
+               {\ds\Swxy(\omega)}}
   $}
 \end{definition}
 
@@ -374,7 +376,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
   \estHgm(\omega)
     &= \sqrt{\frac{\Swyy(\omega)\Swxy^\ast(\omega)}{\Swxx(\omega)\Swxy(\omega)}}
     && \text{by definition of $\estHgm$}
-    && \text{by \prefp{def:Hgm}}
+    && \text{\xref{def:Hgm}}
   \\&= \sqrt{
          \frac{\Swxy^\ast(\omega)}
               {\Swxx(\omega)}
@@ -398,7 +400,7 @@ Let $\phi(\omega)$ be the \fncte{phase} of $\Swxy(\omega)$ such that
 $\ds\Swxy(\omega) \eqd \abs{\Swxy(\omega)}e^{-i\phi(\omega)}$
 \\
 \propbox{\begin{array}{rc>{\ds}ll}
-  \estHgm(\omega) &=& \Twxy(\omega)\,e^{-i\phi(\omega)} & 
+  \estHgm(\omega) &=& \Twxy(\omega)\,e^{-i\phi(\omega)} &
   \brp{\begin{array}{rclMD}
     \abs{ \estHgm(\omega)} &=& \Twxy(\omega)        & is the \fncte{magnitude} of $\estHgm(\omega)$ & and\\
     \angle\estHgm(\omega)  &=& -\angle\Swxy(\omega) & is the \fncte{phase}     of $\estHgm(\omega)$
@@ -406,7 +408,7 @@ $\ds\Swxy(\omega) \eqd \abs{\Swxy(\omega)}e^{-i\phi(\omega)}$
 \end{array}}
 \end{proposition}
 \begin{proof}
-Let $\phi(\omega)$ be the \fncte{phase} of 
+Let $\phi(\omega)$ be the \fncte{phase} of
 \begin{align*}
   \estHgm(\omega)
     &\eqd \sqrt{\estHa(\omega)\estHb(\omega)}
@@ -561,15 +563,18 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 %|M|                                    |
 %|_|____________________________________|
 \begin{theorem}                         %
-\label{thm:H1HxH2}                      %
+\label{thm:H_ineq}                      %
 %---------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \thmbox{
-  \estHa(\omega) \le \estHhm(\omega) \le \estHgm(\omega) \le \estHam(\omega) \le \estHb(\omega)
+  \abs{\estHa(\omega)}  \le
+  \abs{\estHhm(\omega)} \le
+  \abs{\estHgm(\omega)} \le
+  \abs{\estHam(\omega)} \le
+  \abs{\estHb(\omega)}
   }
 \end{theorem}
 \begin{proof}
-
 \begin{enumerate}
   \item lemma: \label{ilem:H1H2} $\estHa(\omega)\le\estHb(\omega)$. Proof:
     \begin{align*}
@@ -586,56 +591,32 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
       \\&= \frac{\norm{\rvy}^2}{\abs{\inprod{\rvy}{\rvx}}}
       \\&= \abs{\frac{\norm{\rvy}^2}{\inprod{\rvx}{\rvy}}}
       \\&= \abs{\frac{\Swyy(\omega)}{\Swxy(\omega)}}
-      \\&=   \estHb
+      \\&= \abs{\estHb}
         && \text{by definition of $\estHb$}
         && \text{\xref{def:H2}}
     \end{align*}
   \item remainder of the proof:
     \begin{align*}
-      \estHa(\omega)
+      \abs{\estHa(\omega)}
         &= \min\setn{\estHa(\omega),\,\estHb(\omega)}
         && \text{by \pref{ilem:H1H2}}
-      \\&\le \estHhm(\omega)
+      \\&\le \abs{\estHhm(\omega)}
         && \text{by \prefp{cor:hm_gm_am}}
 		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
-      \\&\le \estHgm(\omega)
+      \\&\le \abs{\estHgm(\omega)}
         && \text{by \prefp{cor:hm_gm_am}}
 		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
-      \\&\le \estHam(\omega)
+      \\&\le \abs{\estHam(\omega)}
         && \text{by \prefp{cor:hm_gm_am}}
 		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
       \\&\le \max\setn{\estHa(\omega),\,\estHb(\omega)}
         && \text{by \prefp{cor:hm_gm_am}}
 		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
-      \\&= \estHb(\omega)
+      \\&= \abs{\estHb(\omega)}
         && \text{by \pref{ilem:H1H2}}
     \end{align*}
 \end{enumerate}
 \end{proof}
-
-%20190211 make proposition?%% _______________________________________________________________________
-%20190211 make proposition?%%| |                                   2 Syx(w)                          |
-%20190211 make proposition?%%|D| Hv(w) = ------------------------------------------------------------|
-%20190211 make proposition?%%|E|                               ____________________________________  |
-%20190211 make proposition?%%|F|                           \  /[               ]2      |        |2   |
-%20190211 make proposition?%%| |          Sxx(w) - Syy(w) + \/ [Sxx(w) - Syy(w)]   + 4 | Sxy(w) |    |
-%20190211 make proposition?%%|_|_____________________________________________________________________|
-%20190211 make proposition?%\begin{definition}                                                       %
-%20190211 make proposition?%\footnote{                                                               %
-%20190211 make proposition?%  \citePpc{white2006}{679}{(6)},                                         %
-%20190211 make proposition?%  \citerpgc{shin2008}{294}{0470725648}{(9.69)}                           %
-%20190211 make proposition?%  }                                                                      %
-%20190211 make proposition?%\label{def:Hv}                                                           %
-%20190211 make proposition?%%------------------------------------------------------------------------%
-%20190211 make proposition?%\defboxt{
-%20190211 make proposition?%    The \fnctd{Total Least Squares transfer function estimate $\estHv(\omega)$}
-%20190211 make proposition?%    of $\estHa(\omega)$ and $\estHb(\omega)$ is defined as
-%20190211 make proposition?%  \\\indentx$
-%20190211 make proposition?%  \estHv(\omega) \eqd
-%20190211 make proposition?%  \frac{\ds2\Swyx(\omega)}
-%20190211 make proposition?%       {\ds\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}^2}}
-%20190211 make proposition?%  $}
-%20190211 make proposition?%\end{definition}
 
 % _______________________________________________________________________
 %| |                               ____________________________________  |
@@ -652,13 +633,12 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \label{def:Hv}                                                           %
 %------------------------------------------------------------------------%
 \defboxt{
-    The \fnctd{Total Least Squares transfer function estimate $\estHv(\omega)$}
-    of $\estHa(\omega)$ and $\estHb(\omega)$ is defined as
-  \\\indentx$
+  The \fnctd{Total Least Squares transfer function estimate $\estHv(\omega)$} is defined as
+  \\\indentx$\ds
   \estHv(\omega)
-    = \frac{\Swyy(\omega)- \Swxx(\omega) +
+    = \frac{\ds\Swyy(\omega)- \Swxx(\omega) +
             \sqrt{\brs{\Swyy(\omega) -  \Swxx(\omega)}^2 + 4 \abs{\Swxy(\omega)}^2}
-           }{2\Swxy(\omega)}
+           }{\ds2\Swxy(\omega)}
   $}
 \end{definition}
 
@@ -692,7 +672,7 @@ $\estHs\to\estHa$ as $s\to\infty$. % \xref{thm:Hs}.
 %---------------------------------------------------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
-  The \fnctd{transfer function estimate $\estHs(\omega)$} 
+  The \fnctd{transfer function estimate $\estHs(\omega)$}
   with \vald{scaling parameter} $s\in\intco{0}{\infty}$ is defined as
   \\\indentx$\ds
   \estHs(\omega)
@@ -701,7 +681,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
            }{2\Swxy(\omega)}
   $}
 \end{definition}
-% _______________________________ 
+% _______________________________
 %|P|                             |
 %|R| Hs(w; s=0)     = H2(w)      |
 %|O| Hs(w; s=1)     = Hv(w)      |
@@ -710,63 +690,102 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \begin{proposition}              %
 \label{prop:Hs_lim}              %
 %--------------------------------%
-Let $\estHs(\omega)$ be defined as in \pref{def:Hs} (previous).
-\propbox{\begin{array}{F>{\ds}rc>{\ds}l}
-    (1). & \brlr{\estHs(\omega)}_{s=0}     &=& \estHb(\omega)
-  \\(2). & \brlr{\estHs(\omega)}_{s=1}     &=& \estHv(\omega)
-  \\(3). & \lim_{s\to\infty}\estHs(\omega) &=& \estHa(\omega)
+Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
+\propbox{\begin{array}{>{\ds}rc>{\ds}l}
+    \brlr{\estHs(\omega; s)}_{s=0}     &=& \estHb(\omega)
+  \\\brlr{\estHs(\omega; s)}_{s=1}     &=& \estHv(\omega)
+  \\\lim_{s\to\infty}\estHs(\omega; s) &=& \estHa(\omega)
 \end{array}}
 \end{proposition}
 \begin{proof}
 \begin{align*}
-  \brlr{\estHs(\omega; s)}_{s=0}
-    &\eqd \brlr{
+  &\brlr{\estHs(\omega; s)}_{s=0}
+  \\&\eqd \brlr{
        \frac{\Swyy(\omega)- s^2 \Swxx(\omega) +
              \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}
             }{2\Swxy(\omega)}}_{s=0}
-    && \text{by definition of $\estHs$}
-    && \text{by \prefp{def:Hs}}
+    && \text{by def. of $\estHs$}
+    && \text{\xref{def:Hs}}
   \\&= \frac{\Swyy(\omega)- 0 + \sqrt{\brs{\Swyy(\omega) -  0}^2 + 0}}
             {2\Swxy(\omega)}
   \\&= \frac{\Swyy(\omega)}
             {\Swxy(\omega)}
   \\&\eqd \estHb(\omega)
-    && \text{by definition of $\estHb$}
+    && \text{by def. of $\estHb$}
     && \text{\xref{def:H2}}
   \\
-  \brlr{\estHs(\omega; s)}_{s=1}
-    &\eqd \brlr{
+  \\
+  &\brlr{\estHs(\omega; s)}_{s=1}
+  \\&\eqd \brlr{
        \frac{\Swyy(\omega)- s^2 \Swxx(\omega) +
              \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}
             }{2\Swxy(\omega)}}_{s=1}
-    && \text{by definition of $\estHs$}
-    && \text{by \prefp{def:Hs}}
+    && \text{by def. of $\estHs$}
+    && \text{by \xref{def:Hs}}
   \\&= \frac{\Swyy(\omega)- \Swxx(\omega) +
              \sqrt{\brs{\Swyy(\omega) -  \Swxx(\omega)}^2 + 4 \abs{\Swxy(\omega)}^2}
             }{2\Swxy(\omega)}
   \\&\eqd \estHv(\omega)
-    && \text{by definition of $\estHv$}
+    && \text{by def. of $\estHv$}
     && \text{\xref{def:Hv}}
   \\
-  \lim_{s\to\infty}\estHs(\omega; s)
-    &\eqd \lim_{s\to\infty}
-          \frac{2s^2\Swyx(\omega)}
-               {s^2\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}}
-    && \text{by definition of $\estHs$}
-    && \text{\xref{def:Hs}}
-  \\&= \lim_{s\to\infty}
-       \frac{2\Swyx(\omega)}
-            {\Swxx(\omega)-\frac{1}{s^2}\Swyy(\omega) + \sqrt{\frac{1}{s^4}\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + \frac{4}{s^4}s^2\abs{\Swxy(\omega)}^2}}
-  \\&= \lim_{s\to\infty}
-       \frac{2\Swyx(\omega)}
-            {\Swxx(\omega)-\frac{1}{s^2}\Swyy(\omega) + \sqrt{\brs{\frac{1}{s^2}s^2\Swxx(\omega)-\frac{1}{s^2}\Swyy(\omega)}^2 + \frac{4}{s^2}\abs{\Swxy(\omega)}^2}}
-  \\&= \frac{2\Swyx(\omega)}
-             {\Swxx(\omega)-0 + \sqrt{\brs{\Swxx(\omega)-0}^2 + 0}}
-  \\&= \frac{\Swyx(\omega)}
+  \\
+  &\lim_{s\to\infty}\estHs(\omega; s)
+  \\&\eqd \lim_{s\to\infty}
+       \frac{\Swyy(\omega)- s^2 \Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}
+            }{2\Swxy(\omega)}
+    && \text{by def. of $\estHs$}
+    && \text{by \xref{def:Hs}}
+  \\&\eqd \lim_{p\to0}
+       \frac{\Swyy(\omega)- \sfrac{1}{p} \Swxx(\omega) + \sqrt{\brs{\Swyy(\omega) -  \sfrac{1}{p} \Swxx(\omega)}^2 + 4 \sfrac{1}{p} \abs{\Swxy(\omega)}^2}
+            }{2\Swxy(\omega)}
+    && \text{where $p\eqd\sfrac{1}{s^2}$}
+  \\&= \lim_{p\to0}
+       \frac{p\Swyy(\omega)-  \Swxx(\omega) + \sqrt{\brs{p\Swyy(\omega) -  \Swxx(\omega)}^2 + 4p\abs{\Swxy(\omega)}^2}
+            }{2p\Swxy(\omega)}
+    && \text{by mult. by $1=\frac{p}{p}$}
+  \\&= \lim_{p\to0}
+       \frac{\ddp\brs{p\Swyy(\omega)-  \Swxx(\omega) + \sqrt{\brs{p\Swyy(\omega) -  \Swxx(\omega)}^2 + 4p\abs{\Swxy(\omega)}^2}}
+            }{\ddp\brs{2p\Swxy(\omega)}}
+    &&    \text{by \thme{l'H{/<o}pital's rule}}
+  \\&= \lim_{p\to0}
+       \frac{\ds\Swyy(\omega) +
+            \frac{2\brs{p\Swyy(\omega) -  \Swxx(\omega)}\Swyy(\omega) + 4\abs{\Swxy(\omega)}^2}
+                 {2\sqrt{\brs{p\Swyy(\omega) -  \Swxx(\omega)}^2 + 4p\abs{\Swxy(\omega)}^2}}
+            }{\ds2\Swxy(\omega)}
+  \\&= \frac{\ds\Swyy(\omega) +
+            \frac{-2\Swxx(\omega)\Swyy(\omega) + 4\abs{\Swxy(\omega)}^2}
+                 {2\sqrt{\brs{ -  \Swxx(\omega)}^2 }}
+            }{\ds2\Swxy(\omega)}
+  \\&= \frac{2\Swyy(\omega)\Swxx(\omega) - 2\Swxx(\omega)\Swyy(\omega) + 4\abs{\Swxy(\omega)}^2}
+            {4\Swxx(\omega)\Swxy(\omega)}
+  \\&= \frac{4\Swxy^\ast(\omega)\Swxy(\omega)}
+            {4\Swxx(\omega)\Swxy(\omega)}
+  \\&= \frac{\Swxy^\ast(\omega)}
             {\Swxx(\omega)}
   \\&\eqd \estHa(\omega)
-    && \text{by definition of $\estHa(\omega)$}
+    && \text{by def. of $\estHa$}
     && \text{\xref{def:H1}}
+  %\\
+  %\lim_{s\to\infty}\estHs(\omega; s)
+  %  &\eqd \lim_{s\to\infty}
+  %        \frac{2s^2\Swyx(\omega)}
+  %             {s^2\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}}
+  %  && \text{by definition of $\estHs$}
+  %  && \text{\xref{def:Hs}}
+  %\\&= \lim_{s\to\infty}
+  %     \frac{2\Swyx(\omega)}
+  %          {\Swxx(\omega)-\frac{1}{s^2}\Swyy(\omega) + \sqrt{\frac{1}{s^4}\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + \frac{4}{s^4}s^2\abs{\Swxy(\omega)}^2}}
+  %\\&= \lim_{s\to\infty}
+  %     \frac{2\Swyx(\omega)}
+  %          {\Swxx(\omega)-\frac{1}{s^2}\Swyy(\omega) + \sqrt{\brs{\frac{1}{s^2}s^2\Swxx(\omega)-\frac{1}{s^2}\Swyy(\omega)}^2 + \frac{4}{s^2}\abs{\Swxy(\omega)}^2}}
+  %\\&= \frac{2\Swyx(\omega)}
+  %           {\Swxx(\omega)-0 + \sqrt{\brs{\Swxx(\omega)-0}^2 + 0}}
+  %\\&= \frac{\Swyx(\omega)}
+  %          {\Swxx(\omega)}
+  %\\&\eqd \estHa(\omega)
+  %  && \text{by definition of $\estHa(\omega)$}
+  %  && \text{\xref{def:H1}}
 \end{align*}
 \end{proof}
 
@@ -778,23 +797,31 @@ However, not all noise is white noise.
 And later in 2006, White, Tan and Hammond proposed a generalization (next definition) of $\estHs$ with a scaling
 function $\kappa(\omega)$---that is, one that is not in general constant with respect to frequency
 and is thus suitable in the presence of \prope{colored} noise.
-%---------------------------------------
-\begin{definition}
-\footnote{
-  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
-  %\citePpc{white2006}{679}{(6)},
-  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped}
-  }
-\label{def:Hkappa}
-%---------------------------------------
+% ___________________________________________________________________________________
+%| |                                   ____________________________________________  |
+%|D|                               \  /[                   ]2          |        |2   |
+%|E|          Syy(w) - k(w)Sxx(w) + \/ [Syy(w) - k(w)Sxx(w)]   + 4 k(w)| Sxy(w) |    |
+%|F| Hk(w) = --------------------------------------- ----------------- ------------- |
+%| |                                       2 Sxy(w)                                  |
+%|_|_________________________________________________________________________________|
+\begin{definition}                                                                   %
+\footnote{                                                                           %
+  \citePpc{white2006}{679}{(6)},                                                     %
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)}                                       %
+  }                                                                                  %
+\label{def:Hkappa}                                                                   %
+%------------------------------------------------------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
-  The \fnctd{transfer function estimate $\estHkp(\omega; \kappa)$} is defined as
+  The \fnctd{transfer function estimate $\estHkp(\omega; \kappa)$}
+  with \vald{scaling function} $\kappa(\omega)$ is defined as
   \\\indentx$\ds
-  \estHkp(\omega) \eqd
-  \frac{2\kappa(\omega)\Swyx(\omega)}
-       {\kappa(\omega)\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\kappa(\omega)\Swxx(\omega)-\Swyy(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
-  $
+  \estHkp(\omega; \kappa) \eqd
+      \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) +
+            \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 +
+                  4\kappa(\omega)\abs{\Swxy(\omega)}^2}
+           }
+           {2\Swxy(\omega)}$
   }
 \end{definition}
 
@@ -1057,32 +1084,8 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
 \end{proof}
 
 %=======================================
-\section{The $\estHs$ estimator}
+\section{Alternate forms}
 %=======================================
-% ___________________________________________________________________________________
-%| |                                   ____________________________________________  |
-%|P|                               \  /[                   ]2          |        |2   |
-%|R|          Syy(w) - k(w)Sxx(w) + \/ [Syy(w) - k(w)Sxx(w)]   + 4 k(w)| Sxy(w) |    |
-%|O| Hk(w) = --------------------------------------- ----------------- ------------- |
-%|P|                                       2 Sxy(w)                                  |
-%|_|_________________________________________________________________________________|
-\begin{proposition}                                                                  %
-\footnote{                                                                           %
-  \citePpc{white2006}{679}{(6)},                                                     %
-  \citerpgc{shin2008}{293}{0470725648}{(9.67)}                                       %
-  }                                                                                  %
-\label{prop:Hkappa}                                                                  %
-%------------------------------------------------------------------------------------%
-Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkappa}.
-\propbox{
-  \estHkp(\omega) 
-    = \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) + 
-            \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 + 
-                  4\kappa(\omega)\abs{\Swxy(\omega)}^2}
-           }
-           {2\Swxy(\omega)}
-  }
-\end{proposition}
 % ________________________________________________________________________________
 %| |                                   2 s^2 Syx(w)                               |
 %|P| Hs(w) = -------------------------------------------------------------------- |
@@ -1102,11 +1105,66 @@ Let $\estHs(\omega; s)$ be defined as in \prefpp{def:Hs}.
 \propbox{
   \estHs(\omega; s) =
   \frac{\ds 2s^2\Swyx(\omega)}
-       {\ds  s^2\Swxx(\omega)-\Swyy(\omega) + 
+       {\ds  s^2\Swxx(\omega)-\Swyy(\omega) +
         \sqrt{\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}
        }
   }
 \end{proposition}
+% _______________________________________________________________________
+%| |                                   2 Syx(w)                          |
+%|P| Hv(w) = ------------------------------------------------------------|
+%|R|                               ____________________________________  |
+%|O|                           \  /[               ]2      |        |2   |
+%|P|          Sxx(w) - Syy(w) + \/ [Sxx(w) - Syy(w)]   + 4 | Sxy(w) |    |
+%|_|_____________________________________________________________________|
+\begin{proposition}                                                      %
+\footnote{                                                               %
+  \citePpc{white2006}{679}{(6)},                                         %
+  \citerpgc{shin2008}{294}{0470725648}{(9.69)}                           %
+  }                                                                      %
+\label{prop:Hv}                                                          %
+%------------------------------------------------------------------------%
+Let $\estHv(\omega)$ be the \fnctd{Total Least Squares transfer function estimate} \xref{def:Hv}.
+\propbox{
+  \estHv(\omega) \eqd
+  \frac{\ds2\Swyx(\omega)}
+       {\ds\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}^2}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \estHv(\omega)
+    &= \brlr{\estHs(\omega; s)}_{s=1}
+    && \text{by \prefp{prop:Hs_lim}}
+  \\&= \brlr{
+       \frac{\ds 2s^2\Swyx(\omega)}
+         {\ds  s^2\Swxx(\omega)-\Swyy(\omega) +
+          \sqrt{\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}
+         }}_{s=1}
+    && \text{by \prefp{prop:Hs}}
+  \\&= \frac{\ds2\Swyx(\omega)}
+            {\ds\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}^2}}
+\end{align*}
+\end{proof}
+
+%%---------------------------------------
+%\begin{proposition}
+%\footnote{
+%  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
+%  %\citePpc{white2006}{679}{(6)},
+%  }
+%\label{prop:Hkappa}
+%%---------------------------------------
+%Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkappa}.
+%\propboxt{
+%  The \fnctd{transfer function estimate $\estHkp(\omega; \kappa)$} is defined as
+%  \\\indentx$\ds
+%  \estHkp(\omega) \eqd
+%  \frac{2\kappa(\omega)\Swyx(\omega)}
+%       {\kappa(\omega)\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\kappa(\omega)\Swxx(\omega)-\Swyy(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
+%  $
+%  }
+%\end{proposition}
 
 %=======================================
 \section{Estimates for LTI systems}
@@ -1139,10 +1197,10 @@ results, such as those in this section.
 %---------------------------------------
 Let $\opS$ be the \structe{system} illustrated in \prefp{fig:addnoise_LTI} (A).
 \thmboxt{
-  $\brb{\begin{array}{FMMD}
-      (A).& $\opH$ is                               &\prope{linear time invariant} & and
-    \\(B).& $\rvx(n)$ is                            &\prope{wide-sense stationary} & and
-    \\(C).& $\rvx(n)$, $\rvu(n)$, and $\rvv(n)$ are &\prope{uncorrelated}          &
+  $\brb{\begin{array}{FMMMD}
+      (A).& $\opH$ is                               &\prope{linear time invariant} & (\prope{LTI}) & and
+    \\(B).& $\rvx(n)$ is                            &\prope{wide-sense stationary} & (\prope{WSS}) & and
+    \\(C).& $\rvx(n)$, $\rvu(n)$, and $\rvv(n)$ are &\prope{uncorrelated}          &               & 
   \end{array}}$
   \\\indentx$\implies
   \brb{\begin{array}{F >{\ds}rc>{\ds}l D}
