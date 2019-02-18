@@ -650,10 +650,10 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
   The \fnctd{Total Least Squares transfer function estimate $\estHv(\omega)$} is defined as
   \\\indentx$\ds
-  \estHv(\omega)
-    = \frac{\ds\Swyy(\omega)- \Swxx(\omega) +
-            \sqrt{\brs{\Swyy(\omega) -  \Swxx(\omega)}^2 + 4 \abs{\Swxy(\omega)}^2}
-           }{\ds2\Swxy(\omega)}
+  \estHv(\omega) =
+    \frac{\ds\Swyy(\omega)- \Swxx(\omega) +
+          \sqrt{\brs{\Swyy(\omega) -  \Swxx(\omega)}^2 + 4 \abs{\Swxy(\omega)}^2}
+         }{\ds2\Swxy(\omega)}
   $}
 \end{definition}
 
@@ -688,8 +688,8 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
   The \fnctd{transfer function estimate $\estHs(\omega)$}
   with \vald{scaling parameter} $s\in\intco{0}{\infty}$ is defined as
   \\\indentx$\ds
-  \estHs(\omega)
-    = \frac{\Swyy(\omega)- s^2 \Swxx(\omega) +
+  \estHs(\omega) =
+      \frac{\Swyy(\omega)- s^2 \Swxx(\omega) +
             \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}
            }{2\Swxy(\omega)}
   $}
@@ -841,6 +841,58 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
            {2\Swxy(\omega)}$
   }
 \end{definition}
+
+\prefpp{thm:H_ineq} compared the magnitudes of several transfer function estimates 
+and demonstrated a simple \prope{linear} relationship.
+What about phase? The phase of those estimates is even simpler than the magnitude, as demonstrated next.
+% _______________________________________________________________________
+%|P|                                                                     |
+%|R| /_H1 = /_Hhm = /_Hgm = /_Ham = /_H2 = /_Hs = /_Hv = /_Hk = - /_ Sxy |
+%|O|                                                                     |
+%|P|_____________________________________________________________________|
+\begin{proposition}[Estimator phase]    %
+%---------------------------------------
+\propbox{\begin{array}{>{\ds}rc>{\ds}l}
+    \angle\estHa (\omega)
+    &=& \angle\estHhm(\omega)
+     =  \angle\estHgm(\omega)
+     =  \angle\estHam(\omega)
+     =  \angle\estHb (\omega)
+     =  \angle\estHs (\omega)
+     =  \angle\estHv (\omega)
+     =  \angle\estHkp(\omega)
+  \\&=&-\angle\Swxy  (\omega)
+\end{array}}
+\end{proposition}
+\begin{proof}
+\mbox{}\\$\begin{array}{>{\ds}r*{4}{c>{\ds}l}}
+    \angle\estHa  &\eqd& \angle\frac{\Swyx}{\Swxx} &=&                       &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+  \\\angle\estHhm &\eqd& \angle\frac{2\Swyy\Swxy^\ast}{\Swxx\Swyy + \abs{\Swxy}^2}
+                                                   &=&                       &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+  \\\angle\estHgm &\eqd& \angle\frac{\Swxy^\ast}{\abs{\Swxy}}\sqrt{\frac{\ds\Swyy}{\ds\Swxx}}
+                                                   &=&                       &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+  \\\angle\estHam &\eqd& \angle\frac{\abs{\Swxy}^2 + \Swxx\Swyy}{2\Swxx\Swxy}
+                                                   &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+  \\\angle\estHb  &\eqd& \angle\frac{\Swyy}{\Swxy} &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+  \\\angle\estHs  &\eqd& \angle\frac{\Swyy- s^2 \Swxx + \sqrt{\brs{\Swyy -  s^2 \Swxx}^2 + 4 s^2 \abs{\Swxy}^2}}{2\Swxy}
+                                                   &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+  \\\angle\estHv  &\eqd& \angle\frac{\Swyy- \Swxx + \sqrt{\brs{\Swyy -  \Swxx}^2 + 4 \abs{\Swxy}^2}}{2\Swxy}
+                                                   &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+  \\\angle\estHkp &\eqd& \angle\frac{\Swyy-\kappa\Swxx + \sqrt{\brs{\Swyy - \kappa\Swxx}^2 + 4\kappa\abs{\Swxy}^2}}{2\Swxy}
+                                                   &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+\end{array}$
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
 
 The previous estimators all assumed two signals: an input $\rvx(n)$ and an output $\rvy(n)$.
 However, in many practical systems, there is a third signal that is ``driving" the system.
@@ -1132,7 +1184,8 @@ Let $\estHs(\omega; s)$ be defined as in \prefpp{def:Hs}.
 \end{proposition}
 \begin{proof}
 We can transform $\estHs$ from that found in \prefpp{def:Hs} to the forms in this proposition by the
-technique of ``\ope{rationalizing the denominator}"\footnote{\citerpc{slaught1915}{274}{``197. Rationalizing the Denominator."} 
+technique of ``\ope{rationalizing the denominator}"\footnote{\citerpc{slaught1915}{274}{``197. Rationalizing the Denominator."}
+\url{https://archive.org/details/elementaryalgebr00slaurich/page/274} 
 Note that the operation in the proof of \pref{prop:Hs} is being performed essentially in reverse\ldots or rather ``rationalizing the numerator".}
 \begin{align*}
   \estHs 
@@ -1461,10 +1514,6 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
   \end{array}}
 \end{array}}
 \end{corollary}
-
-%=======================================
-%\section{Coherence}
-%=======================================
 
 %=======================================
 \section{Beware of estimators}
