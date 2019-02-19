@@ -284,7 +284,7 @@ Armed with two estimators that between them account for both input and output no
 an ``ad hoc" solution might be to somehow take mean values of $\estHa$ and $\estHb$
 to induce new estimators---this approach summarizes the next three definitions.
 An arguably more mature approach is to find estimators that are optimal with respect to least squares measures---and
-this approach summarizes \pref{def:Hv} -- \prefpp{def:Hkappa}.
+this approach summarizes \pref{def:Hv} -- \prefpp{def:Hkp}.
 
 %---------------------------------------
 \begin{definition}
@@ -367,17 +367,17 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 %---------------------------------------
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \propbox{\begin{array}{rc>{\ds}>{\ds}lM}
-  \estHgm(\omega) &=& \sqrt{\estHa(\omega)\estHb(\omega)}
+  \pm\estHgm(\omega) &=& \sqrt{\estHa(\omega)\estHb(\omega)}
     & (\fnctb{geometric mean} of $\estHa$ and $\estHb$)
 \end{array}}
 \end{proposition}
 \begin{proof}
 \begin{align*}
-  \estHgm(\omega)
-    &\eqd \frac{\Swxy^\ast(\omega)}        % 
-               {\abs{\Swxy(\omega)}}       %|                        ________
-          \sqrt{\frac{\Swyy(\omega)}       %|           Sxy*(w)     / Syy(w) 
-                     {\Swxx(\omega)}}      %| Hgm(w):= -------- \  / --------
+  \pm\estHgm(\omega)
+    &\eqd \pm\frac{\Swxy^\ast(\omega)}     % 
+                  {\abs{\Swxy(\omega)}}    %|                        ________
+             \sqrt{\frac{\Swyy(\omega)}    %|           Sxy*(w)     / Syy(w) 
+                        {\Swxx(\omega)}}   %| Hgm(w):= -------- \  / --------
     && \text{by definition of $\estHgm$}   %|          |Sxy(w)|  \/   Sxx(w) 
     && \text{\xref{def:Hgm}}               %|
   \\&=\mathrlap{
@@ -402,6 +402,13 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
     && \text{\xxref{def:H1}{def:H2}}
   \\&= \mathrlap{\text{\fnctb{Geometric mean} of $\estHa(\omega)$ and $\estHb(\omega)$}}
 \end{align*}
+
+Note that for a complex number $z\eqd\abs{z}e^{i\phi}$, $\sqrt{z}$ has two solutions:\footnote{Many many thanks to Ben Cleveland for his help with this!!!}
+\\\indentx$\ds\sqrt{z} = \sqrt{\abs{z}e^{i\phi}} = \setn{z_1,z_2} 
+   = \setn{\sqrt{\abs{z}}e^{i(\phi/2)},\,\sqrt{\abs{z}}e^{i(\phi/2+\pi)}}
+   = \pm\sqrt{\abs{z}}e^{i(\phi/2)}$
+\\
+because $z_1^2=z$ and $z_2^2=z$.
 \end{proof}
 
 Note that the \fncte{geometric mean estimator} \xref{def:Hgm} and \fncte{transmissibility} \xref{def:Txy}
@@ -460,51 +467,6 @@ function of \prefpp{def:Txy}.
   \fnctd{complex transmissibility} $\Twxy'(\omega)$ &\eqd& \estHgm(\omega)
 \end{array}}
 \end{remark}
-
-%---------------------------------------
-\begin{definition}
-\footnote{
-  \citerppgc{liang2015}{363}{365}{1498702341}{7.4.2 Coherence function},
-  \citerpgc{ewins1986}{131}{0863800173}{$\gamma^2=\ffrac{H_1(\omega)}{H_2(\omega)}$ (3.8)}
-  }
-%---------------------------------------
-Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defboxt{
-  The \fnctd{complex coherence} function is defined as
-  \\\indentx$\ds\Cxy(\omega) \eqd \frac{\Swyx(\omega)}{\Swxx(\omega)\Swyy(\omega)}$
-  }
-\end{definition}
-
-%---------------------------------------
-\begin{remark}
-\label{rem:HgmTxyCxy}
-%---------------------------------------
-Note that the \fncte{complex transmissibility} $\Twxy'$ of \pref{rem:HgmTxy_gen}
-provides a nice mathematical symmetry (always a good sign of good direction) with coherence
-in the system identification family tree.
-In particular, note that the following:
-\remboxt{
-  $\Cxy \eqd \sqrt{\frac{\estHa^\ast}{\estHb}}$ whereas $\Twxy' \eqd \sqrt{\estHa \estHb}$
-  }
-\end{remark}
-\begin{proof}
-\begin{align*}
-  \sqrt{\frac{\estHa^\ast(\omega)}{\estHb(\omega)}}
-    && \text{by definition of $\estHgm$}
-    && \text{\xref{def:Hgm}}
-  %\\&\eqd \sqrt{\frac{\Swxy^\ast(\omega)}{\Swxx(\omega)}\frac{\Swyy(\omega)}{\Swxy(\omega)}}
-  %  && \text{by definitions of $\estHa$ and $\estHb$}
-  %  && \text{\xxref{def:H1}{def:H2}}
-  %\\&= \sqrt{\frac{\Swyy(\omega)}{\Swxx(\omega)}\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
-  %\\&= \Twxy(\omega)\sqrt{\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
-  %  && \text{by definition of $\Twxy$}
-  %  && \text{\xref{def:Txy}}
-  %\\&= \Twxy(\omega)\sqrt{\frac{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}{\abs{\Swxy(\omega)}e^{i\phi(\omega)}}}
-  %  && \text{where $\Swxy(\omega)\eqd{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}$}
-  %\\&= \Twxy(\omega)\sqrt{e^{-i2\phi(\omega)}}
-  %\\&= \Twxy(\omega)\,e^{-i\phi(\omega)}
-\end{align*}
-\end{proof}
 
 % ___________________________________________
 %|D|                Syy(w) Sxy*(w)           |
@@ -826,7 +788,7 @@ and is thus suitable in the presence of \prope{colored} noise.
   \citePpc{white2006}{679}{(6)},                                                     %
   \citerpgc{shin2008}{293}{0470725648}{(9.67)}                                       %
   }                                                                                  %
-\label{def:Hkappa}                                                                   %
+\label{def:Hkp}                                                                      %
 %------------------------------------------------------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
@@ -847,11 +809,13 @@ and demonstrated a simple \prope{linear} relationship.
 What about phase? The phase of those estimates is even simpler than the magnitude, as demonstrated next.
 % _______________________________________________________________________
 %|P|                                                                     |
-%|R| /_H1 = /_Hhm = /_Hgm = /_Ham = /_H2 = /_Hs = /_Hv = /_Hk = - /_ Sxy |
-%|O|                                                                     |
+%|R| /_H1 = /_Hhm = /_Hgm = /_Ham = /_H2 = /_Hs = /_Hv = /_Hk = /_Cxy    |
+%|O|      =-/_Sxy                                                        |
 %|P|_____________________________________________________________________|
 \begin{proposition}[Estimator phase]    %
 %---------------------------------------
+Let $z\eqd\abs{z}e^{i\phi}$ be a \prope{complex} number in the set of complex numbers $\C$.
+Let $\angle z\eqd\phi$ be the \fncte{phase} of $z$.
 \propbox{\begin{array}{>{\ds}rc>{\ds}l}
     \angle\estHa (\omega)
     &=& \angle\estHhm(\omega)
@@ -861,38 +825,40 @@ What about phase? The phase of those estimates is even simpler than the magnitud
      =  \angle\estHs (\omega)
      =  \angle\estHv (\omega)
      =  \angle\estHkp(\omega)
+     =  \angle\Cxy   (\omega)
   \\&=&-\angle\Swxy  (\omega)
 \end{array}}
 \end{proposition}
 \begin{proof}
 \mbox{}\\$\begin{array}{>{\ds}r*{4}{c>{\ds}l}}
     \angle\estHa  &\eqd& \angle\frac{\Swyx}{\Swxx} &=&                       &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:H1}}
   \\\angle\estHhm &\eqd& \angle\frac{2\Swyy\Swxy^\ast}{\Swxx\Swyy + \abs{\Swxy}^2}
                                                    &=&                       &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:Hhm}}
   \\\angle\estHgm &\eqd& \angle\frac{\Swxy^\ast}{\abs{\Swxy}}\sqrt{\frac{\ds\Swyy}{\ds\Swxx}}
                                                    &=&                       &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:Hgm}}
   \\\angle\estHam &\eqd& \angle\frac{\abs{\Swxy}^2 + \Swxx\Swyy}{2\Swxx\Swxy}
                                                    &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:Ham}}
   \\\angle\estHb  &\eqd& \angle\frac{\Swyy}{\Swxy} &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:H2}}
   \\\angle\estHs  &\eqd& \angle\frac{\Swyy- s^2 \Swxx + \sqrt{\brs{\Swyy -  s^2 \Swxx}^2 + 4 s^2 \abs{\Swxy}^2}}{2\Swxy}
                                                    &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:Hs}}
   \\\angle\estHv  &\eqd& \angle\frac{\Swyy- \Swxx + \sqrt{\brs{\Swyy -  \Swxx}^2 + 4 \abs{\Swxy}^2}}{2\Swxy}
                                                    &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:Hv}}
   \\\angle\estHkp &\eqd& \angle\frac{\Swyy-\kappa\Swxx + \sqrt{\brs{\Swyy - \kappa\Swxx}^2 + 4\kappa\abs{\Swxy}^2}}{2\Swxy}
                                                    &=& \angle\frac{1}{\Swxy} &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:Hkp}}
+  \\\angle\Cxy    &\eqd& \angle\frac{\Swxy^\ast}{\sqrt{\Swxx\Swyy}}
+                                                   &=&                       &=& \angle\Swxy^\ast  &=&  -\angle\Swxy
+                \\&\uparrow&\mc{1}{M}{\xref{def:Cxy}}
 \end{array}$
+\\
 \end{proof}
-
-
-
-
-
-
-
-
-
-
-
 
 The previous estimators all assumed two signals: an input $\rvx(n)$ and an output $\rvy(n)$.
 However, in many practical systems, there is a third signal that is ``driving" the system.
@@ -1328,7 +1294,7 @@ Let $\estHv(\omega)$ be the \fnctd{Total Least Squares transfer function estimat
 %  }
 %\label{prop:Hkappa}
 %%---------------------------------------
-%Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkappa}.
+%Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkp}.
 %\propboxt{
 %  The \fnctd{transfer function estimate $\estHkp(\omega; \kappa)$} is defined as
 %  \\\indentx$\ds
@@ -1515,45 +1481,5 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
 \end{array}}
 \end{corollary}
 
-%=======================================
-\section{Beware of estimators}
-%=======================================
-Estimators yield, as the name implies, estimates.
-These estimates in general contain some error.
-
-%---------------------------------------
-\begin{example}[The K=1 Welch estimate of coherence]
-%---------------------------------------
-Suppose we have two \prope{uncorrelated} stationary sequences $\rvx(n)$ and $\rvy(n)$. Then, there
-CSD $\Sxy(\omega)$ should be $0$ because
-\begin{align*}
-  \Sxy(\omega)
-    &\eqd \opDTFT\pE\Rxy(m)
-  \\&=    \opDTFT\pE\brs{x(n)y[n+m]}
-  \\&=    \opDTFT\brs{\pEx(n)} \brs{\pEy[n+m]}
-  \\&=    \opDTFT\brs{0} \brs{0}
-  \\&=    0
-\end{align*}
-
-This will give a coherence of $0$ also:
-\[ C(\omega) = \frac{\Sxy}{\sqrt{\Sxx\Syy}} = 0\]
-
-However, the Welch estimate with $K=1$ will yield
-\begin{align*}
-  \abs{C(\omega)}
-    &= \abs{\frac{\ds\Sxy}{\sqrt{\ds\Sxx\Syy}}}
-  \\&= \abs{\frac{\ds (\opFT x)(\opFT y)^\ast}{\sqrt{\ds\abs{\opFT x}^2\abs{\opFT y}^2}}}
-  \\&= 1
-\end{align*}
-
-\end{example}
 
 
-\section{Estimating noise}
-
-\begin{liste}
-  %\item \citeP{shoo1988}
-  \item \citeP{thong2001}
-  \item \citeP{kim2003}
-  \item \citeP{kamel2004}
-\end{liste}
