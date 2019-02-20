@@ -141,7 +141,7 @@ But there are some key differences in practice:
 \end{liste}
 
 %=======================================
-\section{Transfer function estimate definitions}
+\section{Transfer function estimate definitions and interpretation}
 %=======================================
 As a first attempt at estimating the transfer function $\opH$ of $\opS$,
 or at least the magnitude squared of $\opH$,
@@ -534,67 +534,6 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \end{align*}
 \end{proof}
 
-% ______________________________________
-%|T|                                    |
-%|H| H1 <= Hhm <= Hgm <= Ham <= H2      |
-%|M|                                    |
-%|_|____________________________________|
-\begin{theorem}                         %
-\label{thm:H_ineq}                      %
-%---------------------------------------%
-Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\thmbox{
-  \abs{\estHa(\omega)}  \le
-  \abs{\estHhm(\omega)} \le
-  \abs{\estHgm(\omega)} \le
-  \abs{\estHam(\omega)} \le
-  \abs{\estHb(\omega)}
-  }
-\end{theorem}
-\begin{proof}
-\begin{enumerate}
-  \item lemma: \label{ilem:H1H2} $\estHa(\omega)\le\estHb(\omega)$. Proof:
-    \begin{align*}
-      \abs{\estHa}
-        &\eqd \abs{\frac{\Swyx(\omega)}{\Swxx(\omega)}}
-        && \text{by definition of $\estHa$}
-        && \text{\xref{def:H1}}
-      \\&= \abs{\frac{\inprod{\rvy}{\rvx}}{\norm{\rvx}^2}}
-         = \frac{\abs{\inprod{\rvy}{\rvx}}}{\norm{\rvx}^2}
-      \\&\le \frac{\abs{\inprod{\rvy}{\rvx}}}{\norm{\rvx}^2}
-             \abs{\frac{\norm{\rvx}\norm{\rvy}}{\inprod{\rvy}{\rvx}}}^2
-        && \text{by \thme{Cauchy Schwartz inequality}}
-        && \text{\prefp{thm:cs}}
-      \\&= \frac{\norm{\rvy}^2}{\abs{\inprod{\rvy}{\rvx}}}
-         = \abs{\frac{\norm{\rvy}^2}{\inprod{\rvx}{\rvy}}}
-         = \abs{\frac{\Swyy(\omega)}{\Swxy(\omega)}}
-      \\&= \abs{\estHb}
-        && \text{by definition of $\estHb$}
-        && \text{\xref{def:H2}}
-    \end{align*}
-  \item remainder of the proof:
-    \begin{align*}
-      \abs{\estHa(\omega)}
-        &= \min\setn{\estHa(\omega),\,\estHb(\omega)}
-        && \text{by \pref{ilem:H1H2}}
-      \\&\le \abs{\estHhm(\omega)}
-        && \text{by \prefp{cor:hm_gm_am}}
-		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
-      \\&\le \abs{\estHgm(\omega)}
-        && \text{by \prefp{cor:hm_gm_am}}
-		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
-      \\&\le \abs{\estHam(\omega)}
-        && \text{by \prefp{cor:hm_gm_am}}
-		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
-      \\&\le \max\setn{\estHa(\omega),\,\estHb(\omega)}
-        && \text{by \prefp{cor:hm_gm_am}}
-		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
-      \\&= \abs{\estHb(\omega)}
-        && \text{by \pref{ilem:H1H2}}
-    \end{align*}
-\end{enumerate}
-\end{proof}
-
 % _______________________________________________________________________
 %| |                               ____________________________________  |
 %|D|                           \  /[               ]2      |        |2   |
@@ -628,7 +567,7 @@ that makes no such assumption.
 It features a \vale{scaling parameter} $s$ in the range $\intco{0}{\infty}$
 that can be adjusted depending on the ratio of output and input noise.
 And as it turns out, $\estHs = \estHb$ when $s=0$, $\estHs=\estHv$ when $s=1$, and
-$\estHs\to\estHa$ as $s\to\infty$. % \xref{thm:Hs}.
+$\estHs\to\estHa$ as $s\to\infty$  \xref{prop:Hs_lim}.
 % ________________________________________________________________________________
 %| |                                  __________________________________________  |
 %|D|                    2         \  /[          2       ]2       2 |        |2   |
@@ -647,15 +586,78 @@ $\estHs\to\estHa$ as $s\to\infty$. % \xref{thm:Hs}.
 %---------------------------------------------------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
-  The \fnctd{transfer function estimate $\estHs(\omega)$}
+  The \fnctd{transfer function estimate $\estHs(\omega;s)$}
   with \vald{scaling parameter} $s\in\intco{0}{\infty}$ is defined as
   \\\indentx$\ds
-  \estHs(\omega) =
+  \estHs(\omega;s) \eqd
       \frac{\Swyy(\omega)- s^2 \Swxx(\omega) +
             \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}
            }{2\Swxy(\omega)}
   $}
 \end{definition}
+Wicks and Vold's $\estHs$ estimates $\FH$ using a single parameter $s$
+that is \prope{constant} with respect to frequency.
+This is suitable for additive white noise $\rvw(n)$, which has constant spectral density
+$\Swww(\omega)=\pvar_w$.
+However, not all noise is white noise.
+And later in 2006, White, Tan and Hammond proposed a generalization (next definition) of $\estHs$ with a scaling
+function $\kappa(\omega)$---that is, one that is not in general constant with respect to frequency
+and is thus suitable in the presence of \prope{colored} noise.
+% ___________________________________________________________________________________
+%| |                                   ____________________________________________  |
+%|D|                               \  /[                   ]2          |        |2   |
+%|E|          Syy(w) - k(w)Sxx(w) + \/ [Syy(w) - k(w)Sxx(w)]   + 4 k(w)| Sxy(w) |    |
+%|F| Hk(w) = --------------------------------------- ----------------- ------------- |
+%| |                                       2 Sxy(w)                                  |
+%|_|_________________________________________________________________________________|
+\begin{definition}                                                                   %
+\footnote{                                                                           %
+  \citePpc{white2006}{679}{(6)},                                                     %
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)}                                       %
+  }                                                                                  %
+\label{def:Hkp}                                                                      %
+%------------------------------------------------------------------------------------%
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defboxt{
+  The \fnctd{transfer function estimate $\estHkp(\omega; \kappa)$}
+  with \vald{scaling function} $\kappa(\omega)$ is defined as
+  \\\indentx$\ds
+  \estHkp(\omega; \kappa) \eqd
+      \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) +
+            \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 +
+                  4\kappa(\omega)\abs{\Swxy(\omega)}^2}
+           }
+           {2\Swxy(\omega)}$
+  }
+\end{definition}
+
+
+The previous estimators all assumed two signals: an input $\rvx(n)$ and an output $\rvy(n)$.
+However, in many practical systems, there is a third signal that is ``driving" the system.
+In 1984 Goyder proposed an estimator (next definition) that is based on three signals.
+%---------------------------------------
+\begin{definition}[Three channel estimate]
+\footnote{
+  \citerpgc{shin2008}{297}{0470725648}{$H_3(f)=\ffrac{S_{ry}(f)}{S_{rx}(f)}$ (9.78)},
+  \citePpc{cobb1988}{4}{$^c\hat{H}(f)=\ffrac{\hat{G}_{ys}(f)}{\hat{G}_{xs}(f)}$ (1.4)},
+  \citePpc{goyder1984}{440}{$H(i\omega)=\ffrac{S_{qz}}{S_{pz}}$ (5)},
+  \citePpc{cobb1990}{450}{(1)},
+  \citerpgc{pintelon2012}{241}{1118287398}{$\hat{G}(\Omega_k)=\hat{G}_{ry}(\Omega_k)\hat{G}_{ru}^{-1}(\Omega_k)$ (7-49)}
+  }
+\label{def:Hc}
+%---------------------------------------
+Let $\opS$ be a system with input $\rvx(n)$, output $\rvy(n)$, and a driver $\rvp(n)$.
+\defboxt{
+  The \fnctd{transfer function estimate $\estHc(\omega)$} is defined as
+  \\\indentx$\ds
+  \estHc(\omega) \eqd \frac{\Swxx[py](\omega)}{\Swxx[px](\omega)}
+  $
+  }
+\end{definition}
+
+%=======================================
+\section{Estimator relationships}
+%=======================================
 % _______________________________
 %|P|                             |
 %|R| Hs(w; s=0)     = H2(w)      |
@@ -767,42 +769,108 @@ Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
   %  && \text{\xref{def:H1}}
 \end{align*}
 \end{proof}
+% ______________________________________
+%|T|                                    |
+%|H| Hs is monotonically decreasing in s|
+%|M|                                    |
+%|_|____________________________________|
+\begin{theorem}                         %
+\label{thm:Hs_mono}                     %
+%---------------------------------------%
+Let $\estHs$ be defined as in \prefpp{def:Hs}.
+\thmbox{\begin{array}{M}
+  $\ds\brb{s_1 < s_2} 
+  \qquad\implies\qquad
+  \estHs(\omega;s_1) \le \estHs(\omega;s_2)$
+  \\
+  ($\estHs$ is \propb{monotonically decreasing} in $s$)
+\end{array}}
+\end{theorem}
+\begin{proof}
+Proof not complete ... work in progress
+\begin{enumerate}
+  \item Let $p\eqd s^2$ \label{item:Hs_mono_p}
+  \item lemma: derivative of $\estHs$ with respect to $p\eqd s^2$ \ldots
+    \begin{align*}
+      \ddp\estHs
+        &\eqd \ddp\frac{\Swyy - s^2 \Swxx  +
+                          \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}
+                       }{2\Swxy }
+        && \text{by definition of $\estHs$}
+        && \text{\xref{def:Hs}}
+      \\&\eqd \ddp\frac{\Swyy - p \Swxx  +
+                          \sqrt{\brs{\Swyy  -  p \Swxx }^2 + 4 p \abs{\Swxy }^2}
+                       }{2\Swxy }
+        && \text{by definition of $p$}
+        && \text{\xref{item:Hs_mono_p}}
+      \\&= \frac{- p \Swxx  +
+                   \frac{-2\Swxx\brs{\Swyy  -  p \Swxx } + 4 \abs{\Swxy }^2}
+                        {2\sqrt{\brs{\Swyy  -  p \Swxx }^2 + 4 p \abs{\Swxy }^2}}
+                }{2\Swxy }
+    \end{align*}
+\end{enumerate}
+\end{proof}
 
-Wicks and Vold's $\estHs$ estimates $\FH$ using a single parameter $s$
-that is \prope{constant} with respect to frequency.
-This is suitable for additive white noise $\rvw(n)$, which has constant spectral density
-$\Swww(\omega)=\pvar_w$.
-However, not all noise is white noise.
-And later in 2006, White, Tan and Hammond proposed a generalization (next definition) of $\estHs$ with a scaling
-function $\kappa(\omega)$---that is, one that is not in general constant with respect to frequency
-and is thus suitable in the presence of \prope{colored} noise.
-% ___________________________________________________________________________________
-%| |                                   ____________________________________________  |
-%|D|                               \  /[                   ]2          |        |2   |
-%|E|          Syy(w) - k(w)Sxx(w) + \/ [Syy(w) - k(w)Sxx(w)]   + 4 k(w)| Sxy(w) |    |
-%|F| Hk(w) = --------------------------------------- ----------------- ------------- |
-%| |                                       2 Sxy(w)                                  |
-%|_|_________________________________________________________________________________|
-\begin{definition}                                                                   %
-\footnote{                                                                           %
-  \citePpc{white2006}{679}{(6)},                                                     %
-  \citerpgc{shin2008}{293}{0470725648}{(9.67)}                                       %
-  }                                                                                  %
-\label{def:Hkp}                                                                      %
-%------------------------------------------------------------------------------------%
+% ______________________________________
+%|T|                                    |
+%|H| H1 <= Hhm <= Hgm <= Ham <= H2      |
+%|M|                                    |
+%|_|____________________________________|
+\begin{theorem}                         %
+\label{thm:H_ineq}                      %
+%---------------------------------------%
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defboxt{
-  The \fnctd{transfer function estimate $\estHkp(\omega; \kappa)$}
-  with \vald{scaling function} $\kappa(\omega)$ is defined as
-  \\\indentx$\ds
-  \estHkp(\omega; \kappa) \eqd
-      \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) +
-            \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 +
-                  4\kappa(\omega)\abs{\Swxy(\omega)}^2}
-           }
-           {2\Swxy(\omega)}$
+\thmbox{
+  \abs{\estHa(\omega)}  \le
+  \abs{\estHhm(\omega)} \le
+  \abs{\estHgm(\omega)} \le
+  \abs{\estHam(\omega)} \le
+  \abs{\estHb(\omega)}
   }
-\end{definition}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: \label{ilem:H1H2} $\estHa(\omega)\le\estHb(\omega)$. Proof:
+    \begin{align*}
+      \abs{\estHa}
+        &\eqd \abs{\frac{\Swyx(\omega)}{\Swxx(\omega)}}
+        && \text{by definition of $\estHa$}
+        && \text{\xref{def:H1}}
+      \\&= \abs{\frac{\inprod{\rvy}{\rvx}}{\norm{\rvx}^2}}
+         = \frac{\abs{\inprod{\rvy}{\rvx}}}{\norm{\rvx}^2}
+      \\&\le \frac{\abs{\inprod{\rvy}{\rvx}}}{\norm{\rvx}^2}
+             \abs{\frac{\norm{\rvx}\norm{\rvy}}{\inprod{\rvy}{\rvx}}}^2
+        && \text{by \thme{Cauchy Schwartz inequality}}
+        && \text{\prefp{thm:cs}}
+      \\&= \frac{\norm{\rvy}^2}{\abs{\inprod{\rvy}{\rvx}}}
+         = \abs{\frac{\norm{\rvy}^2}{\inprod{\rvx}{\rvy}}}
+         = \abs{\frac{\Swyy(\omega)}{\Swxy(\omega)}}
+      \\&= \abs{\estHb}
+        && \text{by definition of $\estHb$}
+        && \text{\xref{def:H2}}
+    \end{align*}
+  \item remainder of the proof:
+    \begin{align*}
+      \abs{\estHa(\omega)}
+        &= \min\setn{\estHa(\omega),\,\estHb(\omega)}
+        && \text{by \pref{ilem:H1H2}}
+      \\&\le \abs{\estHhm(\omega)}
+        && \text{by \prefp{cor:hm_gm_am}}
+		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
+      \\&\le \abs{\estHgm(\omega)}
+        && \text{by \prefp{cor:hm_gm_am}}
+		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
+      \\&\le \abs{\estHam(\omega)}
+        && \text{by \prefp{cor:hm_gm_am}}
+		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
+      \\&\le \max\setn{\estHa(\omega),\,\estHb(\omega)}
+        && \text{by \prefp{cor:hm_gm_am}}
+		&& \text{with $\lambda_1=\lambda_2=\sfrac{1}{2}$}
+      \\&= \abs{\estHb(\omega)}
+        && \text{by \pref{ilem:H1H2}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
 
 \prefpp{thm:H_ineq} compared the magnitudes of several transfer function estimates 
 and demonstrated a simple \prope{linear} relationship.
@@ -860,28 +928,9 @@ Let $\angle z\eqd\phi$ be the \fncte{phase} of $z$.
 \\
 \end{proof}
 
-The previous estimators all assumed two signals: an input $\rvx(n)$ and an output $\rvy(n)$.
-However, in many practical systems, there is a third signal that is ``driving" the system.
-In 1984 Goyder proposed an estimator (next definition) that is based on three signals.
-%---------------------------------------
-\begin{definition}[Three channel estimate]
-\footnote{
-  \citerpgc{shin2008}{297}{0470725648}{$H_3(f)=\ffrac{S_{ry}(f)}{S_{rx}(f)}$ (9.78)},
-  \citePpc{cobb1988}{4}{$^c\hat{H}(f)=\ffrac{\hat{G}_{ys}(f)}{\hat{G}_{xs}(f)}$ (1.4)},
-  \citePpc{goyder1984}{440}{$H(i\omega)=\ffrac{S_{qz}}{S_{pz}}$ (5)},
-  \citePpc{cobb1990}{450}{(1)},
-  \citerpgc{pintelon2012}{241}{1118287398}{$\hat{G}(\Omega_k)=\hat{G}_{ry}(\Omega_k)\hat{G}_{ru}^{-1}(\Omega_k)$ (7-49)}
-  }
-\label{def:Hc}
-%---------------------------------------
-Let $\opS$ be a system with input $\rvx(n)$, output $\rvy(n)$, and a driver $\rvp(n)$.
-\defboxt{
-  The \fnctd{transfer function estimate $\estHc(\omega)$} is defined as
-  \\\indentx$\ds
-  \estHc(\omega) \eqd \frac{\Swxx[py](\omega)}{\Swxx[px](\omega)}
-  $
-  }
-\end{definition}
+
+
+
 
 %=======================================
 \section{Least squares estimates}
