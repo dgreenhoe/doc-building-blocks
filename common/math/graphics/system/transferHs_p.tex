@@ -1,0 +1,71 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% nominal unit = 7.5mm
+% plot transfer function estimate Hs as a function of p=s^2
+% with Sxx=Syy=1 and Sxy=1/2
+%                                  __________________________________________
+%                    2         \  /[          2       ]2       2 |        |2
+%          Syy(w) - s  Sxx(w) + \/ [Syy(w) - s  Sxx(w)]   + 4 s  | Sxy(w) |
+% Hs(w) = --------------------------------------------------------------------
+%                                      2 Sxy(w)
+%                     _______________
+%                 \  /[       ]2
+%       = 1 - p +  \/ [ 1 - p ]  + p
+%                     ___________
+%                 \  / 2
+%       = 1 - p +  \/ p  - p + 1
+%============================================================================
+\psset{xunit=1.5\psunit}%
+\psset{yunit=1.5\psunit}%
+\begin{pspicture}(-1.0,-0.5)(4.5,2.5)%
+  %-------------------------------------
+  % parameters
+  %-------------------------------------
+  \psset{plotpoints=512,labelsep=2pt}%
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  \psaxes[linecolor=axis,yAxis=false,linewidth=0.75pt,ticks=none,labels=none]{->}(0,0)(0,0)(3.5,2.5)%
+  \psaxes[linecolor=axis,xAxis=false,linewidth=0.75pt,ticks=none,labels=none]{->}(0,0)(0,0)(3.5,2.5)%
+  %-------------------------------------
+  % node definitions
+  %-------------------------------------
+  \pnode(0,2){H2}%
+  \rput[t](1,2.25){\rnode{H2label}{$\ds\estHb$}}%
+  \pnode(1,1){Hv}%
+  \pnode(1.5,1.5){Hvlabel}%
+  %-------------------------------------
+  % guide lines
+  % 1-2+sqrt(4-2+1)=sqrt(3)-1= 0.73205080756887729352744634150587...
+  %-------------------------------------
+  \psline[linecolor=red,linestyle=dashed,linewidth=0.75pt](0,1)(1,1)(1,0)%
+  \psline[linecolor=red,linestyle=dashed,linewidth=0.75pt](0,0.7320508)(2,0.7320508)(2,0)%
+  \psline[linecolor=red,linestyle=dashed,linewidth=0.75pt](0,0.5)(3.5,0.5)% asymptotic lower bound
+  %-------------------------------------
+  % connections
+  %-------------------------------------
+  \ncline[linecolor=red,linewidth=0.75pt]{->}{H2label}{H2}%
+  \ncline[linecolor=red,linewidth=0.75pt]{->}{Hvlabel}{Hv}%
+  %-------------------------------------
+  % labels
+  %-------------------------------------
+  \small%
+  \uput[180](0,2){$2$}%
+  \uput[165](0,1){$1$}%
+  \uput[180](0,0.7320508){$\sqrt{3}-1$}%
+  \uput[195](0,0.5){$\ffrac{1}{2}$}%
+  %
+  \uput[-90](1,0){$s^2\!=\!1$}%
+  \uput[-90](2,0){$s^2\!=\!2$}%
+  %
+  %\uput[  0](0,2){$\estHb$}%
+  \uput[ 45](Hvlabel){$\ds\estHv$}%
+  \uput[  0](3.5,0){$\scs p\eqd s^2$}%
+  \uput[  0](3.5,0.5){$\ds\estHa$}%
+  %-------------------------------------
+  % function plot
+  %-------------------------------------
+  \psplot[linecolor=blue]{0}{3}{1 x sub x x mul x sub 1 add sqrt add}%
+  \psplot[linecolor=blue,linestyle=dotted]{3}{3.5}{1 x sub x x mul x sub 1 add sqrt add}%
+\end{pspicture}%
