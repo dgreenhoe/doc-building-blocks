@@ -374,11 +374,11 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \begin{proof}
 \begin{align*}
   \pm\estHgm(\omega)
-    &\eqd \pm\frac{\Swxy^\ast(\omega)}     % 
+    &\eqd \pm\frac{\Swxy^\ast(\omega)}     %
                   {\abs{\Swxy(\omega)}}    %|                        ________
-             \sqrt{\frac{\Swyy(\omega)}    %|           Sxy*(w)     / Syy(w) 
+             \sqrt{\frac{\Swyy(\omega)}    %|           Sxy*(w)     / Syy(w)
                         {\Swxx(\omega)}}   %| Hgm(w):= -------- \  / --------
-    && \text{by definition of $\estHgm$}   %|          |Sxy(w)|  \/   Sxx(w) 
+    && \text{by definition of $\estHgm$}   %|          |Sxy(w)|  \/   Sxx(w)
     && \text{\xref{def:Hgm}}               %|
   \\&=\mathrlap{
        \sqrt{
@@ -404,7 +404,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \end{align*}
 
 Note that for a complex number $z\eqd\abs{z}e^{i\phi}$, $\sqrt{z}$ has two solutions:\footnote{Many many thanks to Ben Cleveland for his help with this!!!}
-\\\indentx$\ds\sqrt{z} = \sqrt{\abs{z}e^{i\phi}} = \setn{z_1,z_2} 
+\\\indentx$\ds\sqrt{z} = \sqrt{\abs{z}e^{i\phi}} = \setn{z_1,z_2}
    = \setn{\sqrt{\abs{z}}e^{i(\phi/2)},\,\sqrt{\abs{z}}e^{i(\phi/2+\pi)}}
    = \pm\sqrt{\abs{z}}e^{i(\phi/2)}$
 \\
@@ -567,7 +567,7 @@ that makes no such assumption.
 It features a \vale{scaling parameter} $s$ in the range $\intco{0}{\infty}$
 that can be adjusted depending on the ratio of output and input noise.
 And as it turns out, $\estHs = \estHb$ when $s=0$, $\estHs=\estHv$ when $s=1$, and
-$\estHs\to\estHa$ as $s\to\infty$  \xref{prop:Hs_lim}.
+$\estHs\to\estHa$ as $s\to\infty$  \xref{thm:Hs_lim}.
 % ________________________________________________________________________________
 %| |                                  __________________________________________  |
 %|D|                    2         \  /[          2       ]2       2 |        |2   |
@@ -692,6 +692,32 @@ Let $\opS$ be a system with input $\rvx(n)$, output $\rvy(n)$, and a driver $\rv
   \end{align*}
 \end{proof}
 
+%--------------------------------%
+\begin{lemma}
+\label{lem:Hs_ineq}
+%--------------------------------%
+\lembox{\begin{array}{>{\ds}rcl}
+     \Swyy - p\Swxx  + \sqrt{\brp{ \Swyy - p\Swxx}^2 + 4p\abs{\Swxy }^2} &\ge& 0\\
+    p\Swyy -  \Swxx  + \sqrt{\brp{p\Swyy -  \Swxx}^2 + 4p\abs{\Swxy }^2} &\ge& 0
+\end{array}}
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+           &\Swyy-p\Swxx + \sqrt{\brp{\Swyy-p\Swxx }^2 + 4 p \abs{\Swxy}^2} &&\ge 0
+    \\\iff &\sqrt{\brp{p\Swxx-\Swyy}^2 + 4 p \abs{\Swxy}^2}                 &&\ge p\Swxx - \Swyy
+    \\\iff &      \brp{p\Swxx-\Swyy}^2 + 4 p \abs{\Swxy}^2                  &&\ge \brp{p\Swxx - \Swyy}^2
+    \\\iff &                             4 p \abs{\Swxy}^2                  &&\ge 0
+    \\\iff &                                 \abs{\Swxy}                    &&\ge 0
+    \\
+    \\
+           & p\Swyy -  \Swxx  + \sqrt{\brp{p\Swyy -  \Swxx}^2 + 4p\abs{\Swxy }^2} &&\ge 0
+    \\\iff & \sqrt{\brp{\Swxx -  p\Swyy}^2 + 4p\abs{\Swxy }^2}                    &&\ge \Swxx - p\Swyy
+    \\\iff &       \brp{\Swxx -  p\Swyy}^2 + 4p\abs{\Swxy }^2                     &&\ge \brp{\Swxx - p\Swyy}^2
+    \\\iff &                                 4p\abs{\Swxy }^2                     &&\ge 0
+    \\\iff &                                 \abs{\Swxy}                          &&\ge 0
+  \end{align*}
+\end{proof}
+
 \begin{figure}[h]
   \begin{tabular}{|c|c|}
     \hline
@@ -705,26 +731,34 @@ Let $\opS$ be a system with input $\rvx(n)$, output $\rvy(n)$, and a driver $\rv
   \end{tabular}
   \caption{$\estHs$ with $\Swxx=\Swyy=1$ and $\Swxy=\frac{1}{2}$\label{fig:Hs}}
 \end{figure}
-% _______________________________
-%|P|                             |
-%|R| Hs(w; s=0)     = H2(w)      |
-%|O| Hs(w; s=1)     = Hv(w)      |
-%|P| Hs(w; s=infty) = H1(w)      |
-%|_|_____________________________|
-\begin{proposition}              %
-\label{prop:Hs_lim}              %
-%--------------------------------%
-Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
-\propbox{\begin{array}{>{\ds}rc>{\ds}l}
-    \brlr{\estHs(\omega; s)}_{s=0}     &=& \estHb(\omega)
-  \\\brlr{\estHs(\omega; s)}_{s=1}     &=& \estHv(\omega)
-  \\\lim_{s\to\infty}\estHs(\omega; s) &=& \estHa(\omega)
-\end{array}}
-\end{proposition}
+% ______________________________________
+%| |                                    |
+%|T| Hs is monotonically decreasing in s|
+%|H| Hs(w; s=0)     = H2(w)             |
+%|M| Hs(w; s=1)     = Hv(w)             |
+%| | Hs(w; s=infty) = H1(w)             |
+%|_|____________________________________|
+\begin{theorem}                         %
+\label{thm:Hs_mono}                     %
+\label{thm:Hs_lim}                      %
+%---------------------------------------%
+Let $\estHs$ be defined as in \prefpp{def:Hs}.
+\thmboxt{
+  $\ds\brb{s_1 < s_2}\quad\implies\quad\abs{\estHs(\omega;s_2)} \le \estHs(\omega;s_1)$
+  \qquad($\estHs$ is \propb{monotonically decreasing} in $s$)
+  \\$\begin{array}{>{\ds}r>{\ds}c>{\ds}c}
+      \abs{\estHa(\omega)}  &\le\abs{\estHs(\omega;s)}\le& \abs{\estHb(\omega)}
+    \\\brlr{\estHs(\omega; s)}_{s=0}     &=& \estHb(\omega)
+    \\\brlr{\estHs(\omega; s)}_{s=1}     &=& \estHv(\omega)
+    \\\lim_{s\to\infty}\estHs(\omega; s) &=& \estHa(\omega)
+  \end{array}$
+  }
+\end{theorem}
 \begin{proof}
-{\begin{align*}
-  &\brlr{\estHs(\omega; s)}_{s=0}
-  \\&\eqd \brlr{
+I. Proofs for equalities:
+\begin{align*}
+  \brlr{\estHs(\omega; s)}_{s=0}
+    &\eqd \brlr{
        \frac{\Swyy- s^2 \Swxx + \sqrt{\brs{\Swyy -  s^2 \Swxx}^2 + 4 s^2 \abs{\Swxy}^2}}
             {2\Swxy}
        }_{s=0}
@@ -738,9 +772,8 @@ Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
     && \text{by def. of $\estHb$}
     && \text{\xref{def:H2}}
   \\
-  \\
-  &\brlr{\estHs(\omega; s)}_{s=1}
-  \\&\eqd \brlr{
+  \brlr{\estHs(\omega; s)}_{s=1}
+    &\eqd \brlr{
        \frac{\Swyy- s^2 \Swxx +
              \sqrt{\brs{\Swyy -  s^2 \Swxx}^2 + 4 s^2 \abs{\Swxy}^2}
             }{2\Swxy}}_{s=1}
@@ -753,9 +786,8 @@ Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
     && \text{by def. of $\estHv$}
     && \text{\xref{def:Hv}}
   \\
-  \\
-  &\lim_{s\to\infty}\estHs(\omega; s)
-  \\&\eqd \lim_{s\to\infty}
+  \lim_{s\to\infty}\estHs(\omega; s)
+    &\eqd \lim_{s\to\infty}
        \frac{\Swyy- s^2 \Swxx + \sqrt{\brs{\Swyy -  s^2 \Swxx}^2 + 4 s^2 \abs{\Swxy}^2}
             }{2\Swxy}
     && \text{by def. of $\estHs$}
@@ -763,7 +795,7 @@ Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
   \\&\eqd \lim_{p\to0}
        \frac{\Swyy- \sfrac{1}{p} \Swxx + \sqrt{\brs{\Swyy -  \sfrac{1}{p} \Swxx}^2 + 4 \sfrac{1}{p} \abs{\Swxy}^2}
             }{2\Swxy}
-    && \text{where $p\eqd\sfrac{1}{s^2}$}
+    && \text{where $p\eqd\frac{1}{s^2}$}
   \\&= \lim_{p\to0}
        \frac{p\Swyy-  \Swxx + \sqrt{\brs{p\Swyy -  \Swxx}^2 + 4p\abs{\Swxy}^2}
             }{2p\Swxy}
@@ -772,60 +804,44 @@ Let $\estHs(\omega)$ be defined as in \prefpp{def:Hs}.
        \frac{\ddp\brs{p\Swyy-  \Swxx + \sqrt{\brs{p\Swyy -  \Swxx}^2 + 4p\abs{\Swxy}^2}}
             }{\ddp\brs{2p\Swxy}}
     &&    \text{by \thme{l'H{/<o}pital's rule}}
-  \\&= \lim_{p\to0}
+  \\&=\mathrlap{ \lim_{p\to0}
        \frac{\ds\frac{\Swyy\brp{p\Swyy-\Swxx} + 2 \abs{\Swxy }^2 +  \Swyy\sqrt{\brp{p\Swyy-\Swxx}^2 + 4p\abs{\Swxy}^2}}
                   { \sqrt{\brp{p\Swyy-\Swxx }^2 + 4p\abs{\Swxy}^2}}
             }{\ds2\Swxy}
-    && \text{by \prefp{lem:Hs_ddp}}
+       \quad\text{by \prefp{lem:Hs_ddp}}
+    }
   \\&= \frac{\Swyy\brp{-\Swxx} + 2 \abs{\Swxy }^2 +  \Swyy\sqrt{\brp{-\Swxx}^2}}
             {2\Swxy \sqrt{\brp{-\Swxx }^2}}
-     = \frac{2 \abs{\Swxy }^2}
+  \\&= \frac{2 \abs{\Swxy }^2}
             {2\Swxx\Swxy}
      = \frac{\Swxy^\ast}
             {\Swxx}
-  \\&\eqd \estHa
+     \eqd \estHa
     && \text{by def. of $\estHa$}
     && \text{\xref{def:H1}}
-\end{align*}}
-\end{proof}
-% ______________________________________
-%|T|                                    |
-%|H| Hs is monotonically decreasing in s|
-%|M|                                    |
-%|_|____________________________________|
-\begin{theorem}                         %
-\label{thm:Hs_mono}                     %
-%---------------------------------------%
-Let $\estHs$ be defined as in \prefpp{def:Hs}.
-\thmbox{\begin{array}{M}
-  $\ds\brb{s_1 < s_2} 
-  \qquad\implies\qquad
-  \estHs(\omega;s_2) \le \estHs(\omega;s_1)$
-  \\
-  ($\estHs$ is \propb{monotonically decreasing} in $s$)
-\end{array}}
-\end{theorem}
-\begin{proof}
+\end{align*}
+
+II. Proof for monoticity:
 \begin{enumerate}
   \item Let $p\eqd s^2$ \label{item:Hs_mono_p}
   \item lemma: \label{ilem:Hs_ineq_sq}
     {\begin{align*}
       &\boxed{\brs{2 \abs{\Swxy}^2   +\Swxx\brp{p \Swxx - \Swyy}}^2}
-      \\&=   4 \abs{\Swxy}^4   
-           + 4 \Swxx\abs{\Swxy}^2\brp{p \Swxx - \Swyy} 
-           +   \Swxx^2\brp{p \Swxx - \Swyy}^2 
-      \\&\boxed{\le} 4 \abs{\Swxy}^2\Swxx\Swyy 
+      \\&=   4 \abs{\Swxy}^4
+           + 4 \Swxx\abs{\Swxy}^2\brp{p \Swxx - \Swyy}
+           +   \Swxx^2\brp{p \Swxx - \Swyy}^2
+      \\&\boxed{\le} 4 \abs{\Swxy}^2\Swxx\Swyy
            + 4p\Swxx \abs{\Swxy}^2\Swxx
            - 4 \Swxx \abs{\Swxy}^2\Swyy
-           +   \Swxx^2\brp{p \Swxx - \Swyy}^2 
-        && \brp{\begin{array}[t]{M}
+           +   \Swxx^2\brp{p \Swxx - \Swyy}^2
+        && \brp{\begin{array}{M}
              by \thme{Cauchy Schwartz inequality}\\
              \xref{thm:cs}
            \end{array}}
       \\&=   \cancelto{0}{4 \Swxx \Swyy \abs{\Swxy}^2}
            + 4p\Swxx       \abs{\Swxy}^2\Swxx
            - \cancelto{0}{4 \Swxx \Swyy \abs{\Swxy}^2}
-           +   \Swxx^2\brp{p \Swxx - \Swyy}^2 
+           +   \Swxx^2\brp{p \Swxx - \Swyy}^2
       \\&= \Swxx^2 \brs{\brp{p \Swxx - \Swyy}^2  + 4p\abs{\Swxy}^2 }
       \\&= \boxed{\brs{\Swxx\sqrt{\brp{p \Swxx - \Swyy}^2  + 4p\abs{\Swxy}^2 }}^2}
     \end{align*}}
@@ -834,44 +850,49 @@ Let $\estHs$ be defined as in \prefpp{def:Hs}.
       $2 \abs{\Swxy }^2   +\Swxx\brp{p \Swxx - \Swyy} \le \Swxx\sqrt{\brp{p \Swxx - \Swyy}^2 + 4 p \abs{\Swxy }^2}$.
       Proof:
     \begin{align*}
-        2 \abs{\Swxy}^2   +\Swxx\brp{p \Swxx - \Swyy} 
+        2 \abs{\Swxy}^2   +\Swxx\brp{p \Swxx - \Swyy}
       &\le \Swxx\sqrt{\brp{p \Swxx - \Swyy}^2 + 4 p \abs{\Swxy }^2}
     \\\iff
-       \brs{2 \abs{\Swxy}^2   +\Swxx\brp{p \Swxx - \Swyy}}^2 
+       \brs{2 \abs{\Swxy}^2   +\Swxx\brp{p \Swxx - \Swyy}}^2
        &\le \brs{\Swxx\sqrt{\brp{p \Swxx - \Swyy}^2 + 4 p \abs{\Swxy }^2}}^2
-      && \brp{\begin{array}[t]{M}
-           because $\ff(x)\eqd x^2$\\
-           is \prope{strictly monotonic increasing}
+      && \brp{\begin{array}{M}
+           because $\ff(x)\eqd x^2$ is\\
+           \prope{strictly monotonic increasing}
          \end{array}}
-    \\\text{true by \pref{ilem:Hs_ineq_sq}, so \pref{ilem:Hs_ineq} also true}
     \end{align*}
+    The previous inequality is true by \pref{ilem:Hs_ineq_sq}, so \pref{ilem:Hs_ineq} also true.
 
-  \item lemma: \label{ilem:Hs_mono_ddp}
+  \item Proof that $\ddp\abs{\estHs}\le 0$:
     \begin{align*}
-      \boxed{\ddp\estHs}
-        &\eqd \ddp\frac{\Swyy - s^2 \Swxx  +
-                          \sqrt{\brp{\Swyy - s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}
-                       }{2\Swxy }
+      \ddp\abs{\estHs}
+        &\eqd \ddp\abs{
+           \frac{\Swyy - s^2\Swxx  + \sqrt{\brp{\Swyy-s^2\Swxx }^2 + 4s^2\abs{\Swxy }^2}}
+                {2\Swxy }
+           }
         && \text{by definition of $\estHs$}
         && \text{\xref{def:Hs}}
-      \\&\eqd \ddp\frac{\Swyy-p\Swxx + \sqrt{\brp{\Swyy-p\Swxx }^2 + 4 p \abs{\Swxy}^2}}
-                       {2\Swxy}
+      \\&\eqd \ddp\brs{
+           \frac{\Swyy-p\Swxx + \sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy}^2}}
+                {2\Swxy}
+           }
         && \text{by definition of $p$}
         && \text{\xref{item:Hs_mono_p}}
-      \\&= \frac{\frac{ \Swxx\brp{p\Swxx-\Swyy} + 2 \abs{\Swxy }^2 -  \Swxx\sqrt{\brp{p\Swxx-\Swyy}^2 + 4p\abs{\Swxy}^2}}
-                      { \sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy}^2}}}
-                {2\Swxy}
+      \\&= \ddp\brp{
+           \frac{\abs{\Swyy - p\Swxx  + \sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy }^2}}}
+                {\abs{2\Swxy} }
+           }
+      \\&= \ddp\brp{
+           \frac{\Swyy - p\Swxx  + \sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy }^2}}
+                {2\abs{\Swxy} }
+           }
+        && \text{by \prefp{lem:Hs_ineq}}
+      \\&= \frac{\ds\frac{ \Swxx\brp{p\Swxx-\Swyy} + 2 \abs{\Swxy }^2 -  \Swxx\sqrt{\brp{p\Swxx-\Swyy}^2 + 4p\abs{\Swxy}^2}}
+                         { \sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy}^2}}}
+                {\ds2\abs{\Swxy}}
         && \text{by \prefp{lem:Hs_ddp}}
-%
-%
-%      \\&= \frac{\ds- \Swxx  + \frac{-2\Swxx\brp{\Swyy-p\Swxx}   + 4 \abs{\Swxy}^2}
-%                                    {2\sqrt{\brp{\Swyy-p\Swxx}^2 + 4p\abs{\Swxy}^2}}
-%                }{\ds2\Swxy}
-%      \\&= \frac{4 \abs{\Swxy }^2 -2\Swxx\brp{\Swyy-p\Swxx} - 2\Swxx\sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy}^2}}
-%                {4\Swxy\sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy}^2}}
-%      \\&= \frac{ \Swxx\brp{p\Swxx-\Swyy} + 2 \abs{\Swxy }^2 -  \Swxx\sqrt{\brp{p\Swxx-\Swyy}^2 + 4p\abs{\Swxy}^2}}
-%                {2\Swxy\sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy}^2}}
-      \\&\boxed{\le 0}
+      \\&= \frac{\Swxx\brp{p\Swxx-\Swyy} + 2 \abs{\Swxy }^2 -  \Swxx\sqrt{\brp{p\Swxx-\Swyy}^2 + 4p\abs{\Swxy}^2}}
+                {2\abs{\Swxy} \sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy}^2}}
+      \\&\le 0
         &&\text{by \pref{ilem:Hs_ineq}}
     \end{align*}
 \end{enumerate}
@@ -938,7 +959,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \end{enumerate}
 \end{proof}
 
-\prefpp{thm:H_ineq} compared the magnitudes of several transfer function estimates 
+\prefpp{thm:H_ineq} compared the magnitudes of several transfer function estimates
 and demonstrated a simple \prope{linear} relationship.
 What about phase? The phase of those estimates is even simpler than the magnitude, as demonstrated next.
 % _______________________________________________________________________
@@ -959,7 +980,7 @@ Let $\angle z\eqd\phi$ be the \fncte{phase} of $z$.
      =  \angle\estHs (\omega)
      =  \angle\estHv (\omega)
      =  \angle\estHkp(\omega)
-     =  \angle\Cxy   (\omega)
+  \\&=& \angle\Cxy   (\omega)
   \\&=&-\angle\Swxy  (\omega)
 \end{array}}
 \end{proposition}
@@ -1249,7 +1270,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
 %---------------------------------------------------------------------------------%
 Let $\estHs(\omega; s)$ be defined as in \prefpp{def:Hs}.
 \propbox{\begin{array}{rc>{\ds}l}
-  \estHs(\omega; s) 
+  \estHs(\omega; s)
     &=&
   \frac{\ds 2s^2\Swyx(\omega)}
        {\ds  s^2\Swxx(\omega)-\Swyy(\omega) +
@@ -1262,32 +1283,32 @@ Let $\estHs(\omega; s)$ be defined as in \prefpp{def:Hs}.
 \begin{proof}
 We can transform $\estHs$ from that found in \prefpp{def:Hs} to the forms in this proposition by the
 technique of ``\ope{rationalizing the denominator}"\footnote{\citerpc{slaught1915}{274}{``197. Rationalizing the Denominator."}
-\url{https://archive.org/details/elementaryalgebr00slaurich/page/274} 
+\url{https://archive.org/details/elementaryalgebr00slaurich/page/274}
 Note that the operation in the proof of \pref{prop:Hs} is being performed essentially in reverse\ldots or rather ``rationalizing the numerator".}
 \begin{align*}
-  \estHs 
+  \estHs
     &\eqd \frac{\Swyy - s^2 \Swxx  +
             \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}
            }{2\Swxy }
-    &&\text{by definition of $\estHs$ 
+    &&\text{by definition of $\estHs$
              \xref{def:Hs}}
   \\&= \mathrlap{\frac{
             \brs{\Swyy - s^2 \Swxx  + \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}
             \ocom{\brs{\Swyy - s^2 \Swxx  - \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}}{``\vale{rationalizing factor}"}
             }{
-            2\Swxy 
+            2\Swxy
             \mcom{\brs{\Swyy - s^2 \Swxx  - \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}}{``\vale{rationalizing factor}"}
             }}
   \\&= \frac{
             \brs{\Swyy - s^2 \Swxx}^2  - \brs{\Swyy  -  s^2 \Swxx }^2 - 4 s^2 \abs{\Swxy }^2
             }{
-            2\Swxy 
+            2\Swxy
             \brs{\Swyy - s^2 \Swxx  - \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}
             }
    &&= \frac{
             - 4 s^2 \abs{\Swxy }^2
             }{
-            2\Swxy 
+            2\Swxy
             \brs{\Swyy - s^2 \Swxx  - \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}
             }
   \\&= \boxed{\frac{2 s^2 \Swxy^\ast}
@@ -1308,8 +1329,8 @@ Let $p\eqd s^2$.
 %        \sqrt{\brs{s^2\Swxx -\Swyy }^2 + 4s^2\abs{\Swxy }^2}
 %       }$.
 \begin{align*}
-  \lim_{p\to\infty}\estHs 
-    &=    \lim_{p\to\infty} 
+  \lim_{p\to\infty}\estHs
+    &=    \lim_{p\to\infty}
           \frac{\ds 2\Swyx }
                 {\ds  \Swxx -\frac{1}{p}\Swyy  +
                  \sqrt{\brs{\Swxx -\frac{1}{p}\Swyy }^2 + \frac{4}{p}\abs{\Swxy }^2}
@@ -1320,13 +1341,13 @@ Let $p\eqd s^2$.
                }
   \\&=    \frac{\Swyx }
                {\Swxx }
-     \eqd \estHa 
-    && \text{by def. of $\estHa$ 
+     \eqd \estHa
+    && \text{by def. of $\estHa$
              \xref{def:H1}}
 \end{align*}
 \begin{align*}
   \lim_{p\to0}\estHs
-    &=    \lim_{p\to0} 
+    &=    \lim_{p\to0}
           \frac{2p\Swyx}
                { p\Swxx -\Swyy  + \sqrt{\brs{p\Swxx -\Swyy }^2 + 4p\abs{\Swxy }^2}}
   \\&=    \lim_{p\to0}
@@ -1347,8 +1368,8 @@ Let $p\eqd s^2$.
                {2 \abs{\Swxy }^2}
      =    \frac{\Swyy}
                {\Swxy}
-  \\&\eqd \estHb 
-    && \text{by def. of $\estHb$ 
+  \\&\eqd \estHb
+    && \text{by def. of $\estHb$
              \xref{def:H2}}
 \end{align*}
 \end{proof}
@@ -1378,7 +1399,7 @@ Let $\estHv(\omega)$ be the \fnctd{Total Least Squares transfer function estimat
 \begin{align*}
   \estHv(\omega)
     &= \brlr{\estHs(\omega; s)}_{s=1}
-    && \text{by \prefp{prop:Hs_lim}}
+    && \text{by \prefp{thm:Hs_lim}}
   \\&= \brlr{
        \frac{\ds 2s^2\Swyx(\omega)}
          {\ds  s^2\Swxx(\omega)-\Swyy(\omega) +
@@ -1443,7 +1464,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:addnoise_LTI} (A).
   $\brb{\begin{array}{FMMMD}
       (A).& $\opH$ is                               &\prope{linear time invariant} & (\prope{LTI}) & and
     \\(B).& $\rvx(n)$ is                            &\prope{wide-sense stationary} & (\prope{WSS}) & and
-    \\(C).& $\rvx(n)$, $\rvu(n)$, and $\rvv(n)$ are &\prope{uncorrelated}          &               & 
+    \\(C).& $\rvx(n)$, $\rvu(n)$, and $\rvv(n)$ are &\prope{uncorrelated}          &               &
   \end{array}}$
   \\\indentx$\implies
   \brb{\begin{array}{F >{\ds}rc>{\ds}l D}
