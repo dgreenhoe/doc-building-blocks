@@ -320,29 +320,19 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{thm:dual_addnoise}.
       \includegraphics{graphics/sysT_xyvq.pdf}
      &\includegraphics{graphics/sysT_xyup.pdf}
      &\includegraphics{graphics/sysT_xypw.pdf}
-    \\(A) $\Rxy(m)=\Rxq(m)$         &(B) $\Rxy(m)=\Rpy(m)-\Ruy(m)$     &(C) $\Rxy(m)=\Rpy(m)$
-    \\\xref{thm:sysT_addnoise_v}&    \xref{thm:sysT_addnoise_u}    &    \xref{thm:sysT_addnoise_w}
+    \\(A) $\Rxy(m)=\Rxq(m)$         &(B) $\Rpq(m)=\Rxy(m)+\Ruy(m)$     &(C) $\Rxy(m)=\Rpy(m)$
+    \\\xref{lem:sysT_addnoise_v}&    \xref{thm:sysT_addnoise_u}    &    \xref{thm:sysT_addnoise_w}
     \\\hline
   \end{tabular}
   \caption{\label{fig:opT_addnoise}Additive noise with \prope{linear}/\propb{non-linear} operator $\opT$}
 \end{figure}
 
-%20190201%The following three theorems demonstrate:
-%20190201%\begin{listi}
-%20190201%  \item Adding in zero-mean uncorrelated noise \textbf{after} a transform (operation) $\opT$
-%20190201%        has \textbf{no effect} on cross-correlation across input $\rvx(n)$ and output $\rvy(n)$ \xref{thm:sysT_addnoise_v}.
-%20190201%  \item Adding zero-mean uncorrelated noise \textbf{before} $\opT$ \textbf{does} \xref{thm:sysT_addnoise_u}.
-%20190201%        \textbf{However}, if $\opT$ is \prope{LTI}, then the cross-correlation is 
-%20190201%        simply $\Rxy=\fh(n)\conv\Rxx$ \xref{thm:sysH_addnoise_lti}.
-%20190201%  \item Zero-mean uncorrelated input measurement noise \textbf{does not} \xref{thm:sysT_addnoise_w}.
-%20190201%\end{listi}
-
 %---------------------------------------
-\begin{theorem}
-\label{thm:sysT_addnoise_v}
+\begin{lemma}
+\label{lem:sysT_addnoise_v}
 %---------------------------------------
 Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_addnoise} (A).
-\thmbox{
+\lembox{
   \brb{\begin{array}{FrclDD}
       (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)          &(\prope{WSS})          & and
     \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=& \pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
@@ -355,7 +345,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_addnoise} (A).
     \\(3).& \Swxy(\omega)&=& \Swxq(\omega) &
   \end{array}}
   }
-\end{theorem}
+\end{lemma}
 \begin{proof}
 \begin{align*}
   \Rxy(m)
@@ -364,16 +354,17 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_addnoise} (A).
     && \text{\xref{def:Rxym}}
   \\&\eqd \pE\brs{\rvx(m)(\rvq(0)+\rvv(0))^\ast}
     && \text{by definition of $\opS$}
-  \\&= \pE\brs{\rvx(m)\rvq^\ast(0)+\rvx(m)\rvv^\ast(0)}
+    && \text{\xref{fig:opT_addnoise} (A)}
+  \\&= \pE\brs{\rvx(m)\rvq^\ast(0)+\rvp(m)\rvv^\ast(0)}
   \\&= \pE\brs{\rvx(m)\rvq^\ast(0)} + \pE\brs{\rvx(m)\rvv^\ast(0)}
   \\&= \pE\brs{\rvx(m)\rvq^\ast(0)} + \brs{\pE\rvx(m)}\brs{\pE\rvv^\ast(0)}
     && \text{by \prope{uncorrelated} hypothesis}
     && \text{(B)}
-  \\&= \pE\brs{\rvx(m)\rvq^\ast(0)} + \brs{\pE\rvx(m)}\cancelto{0}{\brs{\pE\rvv^\ast(0)}}
+  \\&= \pE\brs{\rvx(m)\rvq^\ast(0)} + \brs{\pE\rvp(m)}\cancelto{0}{\brs{\pE\rvv^\ast(0)}}
     && \text{by \prope{zero-mean} hypothesis}
     && \text{(E)}
   \\&= \Rxq(m)
-    && \text{by definition of $\Rxy$}
+    && \text{by definition of $\Rxq$}
     && \text{\xref{def:Rxym}}
   \\
   \Szxy(z)
@@ -384,7 +375,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_addnoise} (A).
     && \text{by previous result}
     && \text{(1)}
   \\&= \Szxq(z)
-    && \text{by definition of $\Szxy$}
+    && \text{by definition of $\Szxq$}
     && \text{\xref{def:Szxy}}
   \\
   \Swxy(\omega)
@@ -413,9 +404,9 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_addnoise} (B).
   \end{array}}
   \implies
   \brb{\begin{array}{Frcl@{\hspace{2pt}}c@{\hspace{2pt}}lD}
-      (1).& \Rxy(m)      &=& \Rpy(m)       &-& \Ruy(m)       & and 
-    \\(2).& \Szxy(z)     &=& \Szpy(z)      &-& \Szuy(z)      & and
-    \\(3).& \Swxy(\omega)&=& \Swpy(\omega) &-& \Swuy(\omega) &
+      (1).& \Rpq(m)      &=& \Rxy(m)       &+& \Ruy(m)       & and
+    \\(2).& \Szpq(z)     &=& \Szxy(z)      &+& \Szuy(z)      & and
+    \\(3).& \Swpq(\omega)&=& \Swxy(\omega) &+& \Swuy(\omega) &
   \end{array}}
   }
 \end{theorem}
@@ -481,6 +472,122 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_addnoise} (C).
 \end{align*}
 \end{proof}
 
+
+\begin{figure}[h]
+  \centering%
+  \begin{tabular}{|c|c|}
+     \hline
+     \tbox{\includegraphics{graphics/opT_cnoise.pdf}}%
+    &\tbox{\includegraphics{graphics/opT_mnoise.pdf}}%
+   \\
+     (A) $\Swxy(\omega)= \FH^\ast(\omega)\Swxx(\omega)$ %communications additive noise system
+    &(B) $\Swxy(\omega)= \FH^\ast(\omega)\Swpp(\omega)$ %measurement    additive noise system
+   \\\xref{thm:opT_cnoise}&\xref{thm:opT_mnoise}
+   \\\hline
+  \end{tabular}
+\caption{\label{fig:opT_addnoise}}
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:opT_cnoise}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:opT_addnoise} (A).
+\thmbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx(n)$               is  & (\prope{WSS})           & and
+    \\(B).& $\rvu(n)$               is  & (\prope{zero-mean})     & and
+    \\(C).& $\rvv(n)$               is  & (\prope{zero-mean})     & and
+    \\(D).& $\rvx(n)$, $\rvu(n)$, $\rvv(n)$ are & (\prope{uncorrelated})  & and
+    \\(E).& $\opH$                  is  & (\prope{LTI})           &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclclclD}
+     (1).& \Rpq(m)      &=& \Rpy(m)       &=& \Rxy(m)       &+& \Ruy(m)       & and 
+   \\(2).& \Szpq(z)     &=& \Szpy(z)      &=& \Szxy(z)      &+& \Szuy(z)      & and 
+   \\(3).& \Swpq(\omega)&=& \Swpy(\omega) &=& \Swxy(\omega) &+& \Swuy(\omega) &
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \Rpq(m)
+    &= \Rpy(m)
+    && \text{by \prefp{lem:sysT_addnoise_v}}
+  \\
+  \Rpy(m)
+    &\eqd \pE\brs{\rvp(m)\rvy^\ast(0)}
+    && \text{by definition $\Rpy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \pE\brp{\brs{\rvx(m)+\rvu(m)}\rvy^\ast(0)}
+    && \text{by definition $\opS$}
+    && \text{\xref{fig:opT_addnoise} (A)}
+  \\&= \pE\brs{\rvx(m)\rvy^\ast(0)+\rvu(m)\rvy^\ast(0)}
+  \\&= \pE\brs{\rvx(m)\rvy^\ast(0)} + \pE\brs{\rvu(m)\rvy^\ast(0)}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
+  \\&= \Rxy(m) + \Ruy(m)
+    && \text{by definitions $\Rxy$ and $\Ruy$}
+    && \text{\xref{def:Rxym}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:opT_mnoise}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:opT_addnoise} (B).
+\thmbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx(n)$               is  & (\prope{WSS})           & and
+    \\(B).& $\rvu(n)$               is  & (\prope{zero-mean})     & and
+    \\(C).& $\rvv(n)$               is  & (\prope{zero-mean})     & and
+    \\(D).& $\rvx(n)$, $\rvu(n)$, $\rvv(n)$ are & (\prope{uncorrelated})  & and
+    \\(E).& $\opH$                  is  & (\prope{LTI})           &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclclclD}
+     (1).& \Rpq(m)      &=& \Rpy(m)       &=& \Rxy(m)       &+& \Ruy(m)       & and 
+   \\(2).& \Szpq(z)     &=& \Szpy(z)      &=& \Szxy(z)      &+& \Szuy(z)      & and 
+   \\(3).& \Swpq(\omega)&=& \Swpy(\omega) &=& \Swxy(\omega) &+& \Swuy(\omega) &
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \Rpq(m)
+    &= \Rpy(m)
+    && \text{by \prefp{lem:sysT_addnoise_v}}
+  \\
+  \Rpy(m)
+    &\eqd \pE\brs{\rvp(m)\rvy^\ast(0)}
+    && \text{by definition $\Rpy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \pE\brp{\brs{\rvx(m)+\rvu(m)}\rvy^\ast(0)}
+    && \text{by definition $\opS$}
+    && \text{\xref{fig:opT_addnoise} (A)}
+  \\&= \pE\brs{\rvx(m)\rvy^\ast(0)+\rvu(m)\rvy^\ast(0)}
+  \\&= \pE\brs{\rvx(m)\rvy^\ast(0)} + \pE\brs{\rvu(m)\rvy^\ast(0)}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
+  \\&= \Rxy(m) + \Ruy(m)
+    && \text{by definitions $\Rxy$ and $\Ruy$}
+    && \text{\xref{def:Rxym}}
+\end{align*}
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
 %=======================================
 \section{Additive noise and LTI operators}
 %=======================================
@@ -524,7 +631,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opH_addnoise} (A).
   \begin{align*}
     \Swxy(\omega)
       &= \Swxq(\omega)
-      && \text{by \prefp{thm:sysT_addnoise_v}}
+      && \text{by \prefp{lem:sysT_addnoise_v}}
     \\&= \FH^\ast(\omega)\Swxx(\omega)
       && \text{by \prefp{cor:Swxy}}
   \end{align*}
@@ -628,7 +735,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opH_addnoise} (C).
   \centering%
   \begin{tabular}{|c|c|}
      \hline
-     \tbox{\includegraphics{graphics/sysH_xyuvpq.pdf}}%
+     \tbox{\includegraphics{graphics/sysH_cnoise.pdf}}%
     &\tbox{\includegraphics{graphics/sysH_mnoise.pdf}}%
    \\
      (A) $\Swxy(\omega)= \FH^\ast(\omega)\Swxx(\omega)$ %communications additive noise system
@@ -664,7 +771,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:sysH_addnoise} (A).
 \begin{align*}
   \Swyx(\omega)
     &= \Swqx(\omega)
-    && \text{by \prefp{thm:sysT_addnoise_v}}
+    && \text{by \prefp{lem:sysT_addnoise_v}}
   \\&= \FH(\omega)\Swxx(\omega)
     && \text{by \prefp{cor:Swxy}}
 \end{align*}
@@ -695,9 +802,9 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:sysH_addnoise} (B).
 \begin{align*}
   \Swyx(\omega)
     &= \Swqx(\omega)
-    && \text{by \prefp{thm:sysT_addnoise_v}}
+    && \text{by \prefp{lem:sysT_addnoise_v}}
   \\&= \Swqp(\omega)
-    && \text{by \prefp{thm:sysT_addnoise_v}}
+    && \text{by \prefp{lem:sysT_addnoise_v}}
   \\&= \FH(\omega)\Swpp(\omega)
     && \text{by \prefp{cor:Swxy}}
   %\\&= \FH(\omega)\brs{\Swxx(\omega)-\Swww(\omega)}
@@ -756,7 +863,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_opH_noise} (A)
   \\&= \ZH(z)\brs{\Szxq(z) + \Szuq(z)}
     && \text{by \prefp{thm:sysT_addnoise_u}}
   \\&= \ZH(z)\brs{\Szxy(z) + \Szuy(z)}
-    && \text{by \prefp{thm:sysT_addnoise_v}}
+    && \text{by \prefp{lem:sysT_addnoise_v}}
   \\
   \Swsy(\omega)
     &= \brlr{\Szsy(z)}_{z=e^{i\omega}}
@@ -801,7 +908,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_opH_noise} (B)
     && \text{by \prefp{thm:sysT_addnoise_u}}
   \\&= \ZH(z)\brs{\Szxy(z) - \Szuy(z)}
     && \text{by \prefp{thm:sysT_addnoise_u}}
-    && \text{by \prefp{thm:sysT_addnoise_v}}
+    && \text{by \prefp{lem:sysT_addnoise_v}}
   \\&= \ZH(z)\brs{\Szxy(z) - \cancelto{0}{\Szuy(z)}}
     && \text{by \prope{uncorrelated} hypothesis}
     && \text{and (C)}
