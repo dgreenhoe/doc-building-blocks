@@ -1220,10 +1220,10 @@ But what if there is output measurement noise?
 And what if $\opH$ is not \prope{LTI}?
 What is the best least-squares estimate of $\FH$?
 The answer is the estimator $\estHa$ \xref{def:H1},
-as demonstrated in the next theorem.
+as demonstrated in the next theorem. 
 \end{minipage}
 \hfill\tbox{\includegraphics{graphics/sysHw_xy.pdf}}
-
+\\
 \begin{figure}[h]
   \centering
   \begin{tabular}{|c|c|}
@@ -1237,6 +1237,19 @@ as demonstrated in the next theorem.
   \end{tabular}
   \caption{Least Square estimation \xref{thm:estHls}\label{fig:estHls}}
 \end{figure}
+In particular, \pref{thm:estHls} demonstrates that 
+the optimal \prope{LTI} \prope{least-squares} estimates of $\opT$ are
+\\\indentx
+    $\brs{\begin{array}{>{\ds}rc>{\ds}l}
+      \estGls(\omega) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
+    \end{array}}$
+    \qquad
+    and
+    \qquad
+    $\brs{\begin{array}{>{\ds}r*{2}{c>{\ds}l}}
+      \estHls(\omega) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)} &\eqd& \estHa(\omega)
+    \end{array}}$
+\\
 %---------------------------------------
 \begin{theorem}[Optimal LTI least-squares estimate $\estH$ of $\opH$]
 \label{thm:estHls}
@@ -1246,20 +1259,17 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
 \thmbox{
   \brb{\begin{array}{FMMD}
       (A).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{WSS}          & and
-    \\(B).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{uncorrelated} & and
-    \\(C).& $\pE\rvu=0$                    & (\prope{zero-mean})  & and
+    \\(B).& $\rvx$, $\rvu$, and $\rvv$ are                        & \\
+          & \prope{uncorrelated}                                  & and
+    \\(C).& $\pE\rvu=\pE\rvv=0$                                   & \\
+          & (\prope{zero-mean})                                   & and
     \\(D).& \mc{3}{M}{$\estGls$ and $\estHls$ are \prope{LTI}}
   \end{array}}
   \implies
-  \brb{\begin{array}{>{\ds}c}
-    \argmin_{\estG}\norm{\FR(\omega)-\FQ(\omega)}^2 = \frac{\Swyp(\omega)}{\Swpp(\omega)}\\
-    \argmin_{\estH}\norm{\FS(\omega)-\FY(\omega)}^2 = \frac{\Swyx(\omega)}{\Swxx(\omega)}
+  \brb{\begin{array}{F>{\ds}r>{\ds}c>{\ds}l}
+      (1).&\argmin_{\estG}\norm{\FR(\omega)-\FQ(\omega)}^2 &=& \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
+    \\(2).&\argmin_{\estH}\norm{\FS(\omega)-\FY(\omega)}^2 &=& \frac{\Swyx(\omega)}{\Swxx(\omega)}
     \\
-    \brp{\begin{array}{ND}
-      \mc{2}{N}{\scs The optimal \prope{LTI} \prope{least-squares} estimates of $\opT$ are}
-      \\$\estGls(\omega)=\ffrac{\Swyp(\omega)}{\Swpp(\omega)}$ & and
-      \\$\estHls(\omega)=\ffrac{\Swyx(\omega)}{\Swxx(\omega)}$
-    \end{array}}
   \end{array}}
   }
 \end{theorem}
@@ -1339,7 +1349,9 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= 2\estG_R\Swpp  - 2\Real\Swpy
       \\&= 2\estG_R\Swpp  - 2\Real\Swyp
         && \text{by \prefp{cor:Swxy_sym}}
-      \\&\implies \boxed{\estG_R(\omega) = \frac{\Real\Swyp(\omega)}{\Swpp(\omega)}}
+      \\&= 2\estG_R\Swpp  - 2\Real\Swyx
+        && \text{by \prefp{thm:opT_mnoise}}
+      \\&\implies \boxed{\estG_R(\omega) = \frac{\Real\Swyx(\omega)}{\Swpp(\omega)}}
     \end{align*}
 
   \item lemma: \label{ilem:H1LS_R}
@@ -1386,7 +1398,9 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyp)
         && \text{by \prefp{cor:Swxy_sym}}
       \\&= 2\estG_I\Swpp - 2\Imag\Swyp
-      \\&\implies \boxed{\estG_I(\omega) = \frac{\Imag\Swyp(\omega)}{\Swpp(\omega)}}
+      \\&= 2\estG_I\Swpp - 2\Imag\Swyx
+        && \text{by \prefp{thm:opT_mnoise}}
+      \\&\implies \boxed{\estG_I(\omega) = \frac{\Imag\Swyx(\omega)}{\Swpp(\omega)}}
      \end{align*}
 
   \item lemma: \label{ilem:H1LS_I}
@@ -1419,7 +1433,9 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= \frac{ \Real\Swyp(\omega)}{\Swpp(\omega)}
          + \frac{i\Imag\Swyp(\omega)}{\Swpp(\omega)}
         && \text{by \pref{ilem:G1LS_R} and \pref{ilem:G1LS_I}}
-      \\&= \boxed{\frac{\Swyp(\omega)}{\Swpp(\omega)}}
+      \\&= \frac{\Swyp(\omega)}{\Swpp(\omega)}
+      \\&= \boxed{\frac{\Swyp(\omega)}{\Swxx(\omega)-\Swvv(\omega)}}
+        && \text{by \prefp{thm:xvy}}
       \\
       \boxed{\estH(\omega)}
         &= \estH_R(\omega) + i\estH_I(\omega)

@@ -18,11 +18,6 @@ Let $\opS$ be the \structe{system} illustrated to the right:
 \end{minipage}
 \qquad\tbox{\includegraphics{graphics/sys_xvy.pdf}}
 \thmbox{
-  %\brbr{\begin{array}{@{\hspace{2pt}}FrclDD}
-  %    (A).& \Rxx(n_1,m)             &=& \Rxx(n_2,m)         &(\prope{WSS})          & and
-  %  \\(B).& \pE\brs{\rvx(n)\rvv(n)} &=&\pE\rvx(n)\pE\rvv(n) &(\prope{uncorrelated}) & and
-  %  \\(C).& \pE\rvv(n)              &=& 0                   & (\prope{zero-mean})
-  %\end{array}}
   \brbr{\begin{array}{@{\hspace{2pt}}FMMD}
       (A).& $\rvx(n)$ is                & \prope{WSS}          & and 
     \\(B).& $\rvx(n)$ and $\rvv(n)$ are & \prope{uncorrelated} & and
@@ -30,9 +25,10 @@ Let $\opS$ be the \structe{system} illustrated to the right:
   \end{array}}
   \implies
   \brbl{\begin{array}{FrclD}
-      (1).&\Ryv(m) &=&           \Rvv(m) & and
-    \\(2).&\Ryy(m) &=&           \Rxx(m) + \Rvv(m) & and
-    \\(3).&\Rxx(m) &=& \mc{2}{l}{\Ryy(m) + \Rvv(m) - 2\Real\Ryv(m)}
+      (1).&\Ryv(m) &=&           \Rvv(m)           & and
+    \\(2).&\Rxy(m) &=&           \Rxx(m)           & and
+    \\(3).&\Ryy(m) &=&           \Rxx(m) + \Rvv(m) & and
+    \\(4).&\Rxx(m) &=& \mc{2}{l}{\Ryy(m) + \Rvv(m) - 2\Real\Ryv(m)}
   \end{array}}
   }
 \\
@@ -45,16 +41,38 @@ Let $\opS$ be the \structe{system} illustrated to the right:
   \\&\eqd \pE\brs{(\rvx(m)+\rvv(m))\rvv^\ast(0)}
     && \text{by definition of $\rvy$}
   \\&= \pE\brs{\rvx(m)\rvv^\ast(0)} + \pE\brs{\rvv(m)\rvv^\ast(0)}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
   \\&= \pE\rvx(m)\pE\rvv^\ast(0) + \pE\brs{\rvv(m)\rvv^\ast(0)}
     && \text{by \prope{uncorrelated} hypothesis}
     && \text{(B)}
   \\&= \pE\rvx(m)\cancelto{0}{\pE\rvv^\ast(0)} + \pE\brs{\rvv(m)\rvv^\ast(0)}
     && \text{by \prope{zero-mean} hypothesis}
     && \text{(C)}
-  \\&= \Rxv(m) + \Rvv(m)
-    && \text{by definitions of $\Rxy$ and $\Rxx$}
+  \\&= \Rvv(m)
+    && \text{by definition of $\Rvv$}
+    && \text{\xref{def:Rxxm}}
+  \\
+  \Rxy(m)
+    &\eqd \pE\brs{\rvx(m)\rvy^\ast(0)}
+    && \text{by (A) and definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \pE\brp{\rvx(m)\brs{\rvx(0)+\rvv(0)}^\ast}
+    && \text{by definition of $\rvy$}
+  \\&= \pE\brs{\rvx(m)\rvx^\ast(0)} + \pE\brs{\rvx(m)\rvv^\ast(0)}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
+  \\&= \pE\brs{\rvx(m)\rvx^\ast(0)} + \pE\brs{\rvx(m)} \pE\brs{\rvv^\ast(0)}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(B)}
+  \\&= \pE\brs{\rvx(m)\rvx^\ast(0)} + \pE\brs{\rvx(m)} \cancelto{0}{\pE\brs{\rvv^\ast(0)}}
+    && \text{by \prope{zero-mean} hypothesis}
+    && \text{(C)}
+  \\&= \Rxx(m)
+    && \text{by definition of $\Rxx$}
     && \text{\xref{def:Rxxm}}
 \end{align*}
+%
 \begin{align*}
   \Ryy(m)
     &\eqd \pE\brs{\rvy(m)\rvy^\ast(0)}
@@ -62,26 +80,20 @@ Let $\opS$ be the \structe{system} illustrated to the right:
     %&& \text{\xref{def:Rxym}}
   \\&\eqd \pE\brs{(\rvx(m)+\rvv(m))(\rvx(0)+\rvv(0))^\ast}
     && \text{by definition of $\rvy$}
-  \\&= \mathrlap{
-       \pE\brs{\rvx(m)\rvx^\ast(0)}
+  \\&= \pE\brs{\rvx(m)\rvx^\ast(0)}
      + \pE\brs{\rvx(m)\rvv^\ast(0)}
      + \pE\brs{\rvv(m)\rvx^\ast(0)}
      + \pE\brs{\rvv(m)\rvv^\ast(0)}
-     }
-  \\&= \mathrlap{
-       \pE\brs{\rvx(m)\rvx^\ast(0)}
+  \\&= \pE\brs{\rvx(m)\rvx^\ast(0)}
      + \pE{\rvx(m)\pE\rvv^\ast(0)}
      + \pE{\rvv(m)\pE\rvx^\ast(0)}
      + \pE\brs{\rvv(m)\rvv^\ast(0)}
-     \quad\text{by \prope{uncorrelated} hypothesis (B)}
-     }
-  \\&= \mathrlap{
-       \pE\brs{\rvx(m)\rvx^\ast(0)}
+    &&\text{by \prope{uncorrelated} hypothesis (B)}
+  \\&= \pE\brs{\rvx(m)\rvx^\ast(0)}
      + \pE\rvx(m)\cancelto{0}{\pE\rvv^\ast(0)}
      + \cancelto{0}{\pE\rvv(m)}\pE\rvx^\ast(0)
      + \pE\brs{\rvv(m)\rvv^\ast(0)}
-     \quad\text{by \prope{zero-mean} hypothesis (C)}
-     }
+    &&\text{by \prope{zero-mean} hypothesis (C)}
   \\&= \Rxx(m) + \Rvv(m)
     && \text{by definition of $\Rxx$}
     %&& \text{\xref{def:Rxxm}}
@@ -497,7 +509,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_addnoise} (C).
 \begin{theorem}[\thme{communications additive noise cross-correlation}]
 \label{thm:opT_cnoise}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefp{fig:opT_addnoise} (A).
+\mbox{}\\Let $\opS$ be the \structe{system} illustrated in \prefp{fig:opT_addnoise} (A).
 \thmbox{
   \brbr{\begin{array}{FMMD}
       (A).& $\rvx(n)$               is  & \prope{WSS}           & and
@@ -544,7 +556,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:opT_addnoise} (A).
 \begin{theorem}[\thme{measurement additive noise cross-correlation}]
 \label{thm:opT_mnoise}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefp{fig:opT_addnoise} (B).
+\mbox{}\\Let $\opS$ be the \structe{system} illustrated in \prefp{fig:opT_addnoise} (B).
 \thmbox{
   \brbr{\begin{array}{FMMD}
       (A).& $\rvx(n)$               is  & \prope{WSS}           & and
