@@ -591,8 +591,9 @@ $\estHs\to\estHa$ as $s\to\infty$  \xref{thm:Hs_lim}.
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \defboxt{
   The \fnctd{Scaling transfer function estimate} $\estHs(\omega;s)$ of $\opS$
-  with \vald{scaling parameter} $s\in\intco{0}{\infty}$ is defined as
-  \\\indentx$\ds
+  with \vald{scaling parameter} $s\in\intco{0}{\infty}$ 
+  \\is defined as
+  \indentx$\ds
   \estHs(\omega;s) \eqd
       \frac{\Swyy(\omega)- s^2 \Swxx(\omega) +
             \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}
@@ -1211,19 +1212,6 @@ Let $\estHv(\omega)$ be the \fnctd{Total Least Squares transfer function estimat
 %=======================================
 \section{Least squares estimates}
 %=======================================
-\begin{minipage}{\tw-50mm}
-Let $\opS$ be the \structe{system} illustrated to the right.
-\textbf{If} there is no measurement noise on the input and output and \textbf{if}
-$\opH$ is \prope{linear time invariant}, then
-$\FH = \Swxy/\Swxx$ \xref{cor:Rxyh}.
-But what if there is output measurement noise?
-And what if $\opH$ is not \prope{LTI}?
-What is the best least-squares estimate of $\FH$?
-The answer is the estimator $\estHa$ \xref{def:H1},
-as demonstrated in the next theorem. 
-\end{minipage}
-\hfill\tbox{\includegraphics{graphics/sysHw_xy.pdf}}
-\\
 \begin{figure}[h]
   \centering
   \begin{tabular}{|c|c|}
@@ -1237,7 +1225,25 @@ as demonstrated in the next theorem.
   \end{tabular}
   \caption{Least Square estimation \xref{thm:estHls}\label{fig:estHls}}
 \end{figure}
-In particular, \pref{thm:estHls} demonstrates that 
+
+\begin{minipage}{\tw-50mm}
+Let $\opS$ be the \structe{system} illustrated to the right.
+\textbf{If} there is no measurement noise on the input and output and \textbf{if}
+$\opH$ is \prope{linear time invariant}, then
+$\FH = \Swxy/\Swxx$ \xref{cor:Rxyh}.
+But what if there is output measurement noise?
+And what if $\opH$ is not \prope{LTI}?
+What is the best least-squares estimate of $\FH$?
+The answer depends on how you define ``the best".
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/sysHw_xy.pdf}}
+
+The defintion of ``best" or ``optimal" is given by a \fncte{cost function} $\fCost(\estH)$.
+There are several possible cost functions.
+\pref{def:fCost} provides some.
+%The answer is the estimator $\estHa$ \xref{def:H1}, as demonstrated in the next theorem. 
+\pref{thm:estHls} then demonstrates optimal solutions with respect to these definitions.
+In particular, the theorem demonstrates
 the optimal \prope{LTI} \prope{least-squares} estimates of $\opT$ are
 \\\indentx
     $\brs{\begin{array}{>{\ds}rc>{\ds}l}
@@ -1249,7 +1255,20 @@ the optimal \prope{LTI} \prope{least-squares} estimates of $\opT$ are
     $\brs{\begin{array}{>{\ds}r*{2}{c>{\ds}l}}
       \estHls(\omega) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)} &\eqd& \estHa(\omega)
     \end{array}}$
-\\
+
+%---------------------------------------
+\begin{definition}
+\label{def:fCost}
+%---------------------------------------
+Define the following \fncte{cost function}s for spectral \prope{least-squares} estimates:
+\defbox{
+  \begin{array}{>{\ds}rc>{\ds}l}
+      \fCostrq(\estG) &\eqd& \norm{\FR(\omega)-\FQ(\omega)}^2
+    \\\fCostsy(\estH) &\eqd& \norm{\FS(\omega)-\FY(\omega)}^2
+  \end{array}
+  }
+\end{definition}
+
 %---------------------------------------
 \begin{theorem}[Optimal LTI least-squares estimate $\estH$ of $\opH$]
 \label{thm:estHls}
@@ -1282,11 +1301,6 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\\FS(\omega) &\eqd& \brs{\opDTFT\rvs(n)}(\omega) & is the \ope{DTFT} of $\rvs(n)$
     \end{array}$
 
-  \item Define the following \fncte{cost function}s for spectral \prope{least-squares} estimates: \label{item:H1LS_cost_def}
-    \\\indentx$\begin{array}{rclM}
-        \fCostrq(\estG) &\eqd& \norm{\FR(\omega)-\FQ(\omega)}^2
-      \\\fCostsy(\estH) &\eqd& \norm{\FS(\omega)-\FY(\omega)}^2
-    \end{array}$
 
   \item Define shorthand function names $\estG\eqd\estGls$ and $\estH\eqd\estHls$.
 
@@ -1294,7 +1308,7 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
     \begin{align*}
       \boxed{\fCostrq\brp{\estG}}
         &\eqd \norm{\FR(\omega)-\FQ(\omega)}^2
-        && \text{by \pref{item:H1LS_cost_def}}
+        && \text{by \pref{def:fCost}}
       \\&\eqd \inprod{\FR(\omega)-\FQ(\omega)}{\FR(\omega)-\FQ(\omega)}
       \\&\eqd \pE\brp{\brs{\FR(\omega)-\FQ(\omega)}\brs{\FR(\omega)-\FQ(\omega)}^\ast}
         && \text{by \prefp{thm:pEinprod}}
@@ -1316,7 +1330,7 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\
       \boxed{\fCostsy\brp{\estH}}
         &\eqd \norm{\FS(\omega)-\FY(\omega)}^2
-        && \text{by \pref{item:H1LS_cost_def}}
+        && \text{by \pref{def:fCost}}
       \\&= \Swss(\omega) - \Swsy(\omega) - \Swsy^\ast(\omega) + \Swyy(\omega)
         && \text{by \thme{Wiener-Khinchin relationship}}
       \\&= \boxed{
@@ -1349,8 +1363,6 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= 2\estG_R\Swpp  - 2\Real\Swpy
       \\&= 2\estG_R\Swpp  - 2\Real\Swyp
         && \text{by \prefp{cor:Swxy_sym}}
-      \\&= 2\estG_R\Swpp  - 2\Real\Swyx
-        && \text{by \prefp{thm:opT_mnoise}}
       \\&\implies \boxed{\estG_R(\omega) = \frac{\Real\Swyx(\omega)}{\Swpp(\omega)}}
     \end{align*}
 
@@ -1398,8 +1410,6 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyp)
         && \text{by \prefp{cor:Swxy_sym}}
       \\&= 2\estG_I\Swpp - 2\Imag\Swyp
-      \\&= 2\estG_I\Swpp - 2\Imag\Swyx
-        && \text{by \prefp{thm:opT_mnoise}}
       \\&\implies \boxed{\estG_I(\omega) = \frac{\Imag\Swyx(\omega)}{\Swpp(\omega)}}
      \end{align*}
 
@@ -1434,14 +1444,19 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
          + \frac{i\Imag\Swyp(\omega)}{\Swpp(\omega)}
         && \text{by \pref{ilem:G1LS_R} and \pref{ilem:G1LS_I}}
       \\&= \frac{\Swyp(\omega)}{\Swpp(\omega)}
-      \\&= \boxed{\frac{\Swyp(\omega)}{\Swxx(\omega)-\Swvv(\omega)}}
+      \\&= \frac{\Swyx(\omega)}{\Swpp(\omega)}
+        && \text{by \prefp{thm:opT_mnoise}}
+      \\&= \boxed{\frac{\Swyx(\omega)}{\Swxx(\omega)-\Swvv(\omega)}}
         && \text{by \prefp{thm:xvy}}
       \\
       \boxed{\estH(\omega)}
         &= \estH_R(\omega) + i\estH_I(\omega)
+      \\&= \frac{ \Real\Swyp(\omega)}{\Swxx(\omega)}
+         + \frac{i\Imag\Swyp(\omega)}{\Swxx(\omega)}
+        && \text{by \pref{ilem:H1LS_R} and \pref{ilem:H1LS_I}}
       \\&= \frac{ \Real\Swyx(\omega)}{\Swxx(\omega)}
          + \frac{i\Imag\Swyx(\omega)}{\Swxx(\omega)}
-        && \text{by \pref{ilem:H1LS_R} and \pref{ilem:H1LS_I}}
+        && \text{by \prefp{thm:opT_mnoise}}
       \\&= \boxed{\frac{\Swyx(\omega)}{\Swxx(\omega)}}
     \end{align*}
 \end{enumerate}
