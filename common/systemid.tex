@@ -1700,4 +1700,86 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
 \end{corollary}
 
 
+%---------------------------------------
+\begin{theorem} %[LTI no output noise]
+\label{thm:estHk}
+\label{thm:estHs}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
+\thmboxt{
+  $\estHkp(\omega)$ is the optimal least squares estimate if
+  \\\indentx$\fCost(\estHls)=\Swuu$ and 
+  \\\indentx$\Swvv(\omega)=\kappa(\omega)\Swuu(\omega)$
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item 
+    \begin{align*}
+      %\Swvv 
+      %  &= \Swyy - \Swqq
+      %  && \text{by \prefp{cor:xvy}}
+      %\\&= \Swyy - \Swpq\estH
+      %  && \text{by \prefp{cor:Swxy}}
+      %\\&= \Swyy - \Swxq\estH
+      %  && \text{by \prefp{thm:opT_mnoise}}
+      %\\&= \Swyy - \Swxy\estH
+      %  && \text{by \prefp{thm:opT_mnoise}}
+      %\\
+      %\Swuu 
+      %  &= \Swxx - \Swpp
+      %  && \text{by \prefp{cor:xvy}}
+      %\\&= \Swxx - \Swqp\estH^\ast
+      %  && \text{by \prefp{cor:Swxy}}
+      %\\&= \Swxx - \Swyx\estH^\ast
+      %  && \text{by \prefp{thm:opT_mnoise}}
+      %\\
+      Y-V &= Q = P = H(X-U)
+      \\HU-V &= HX-Y
+      \\\pE\brp{\brs{HU-V}\brs{HU-V}^\ast} &= \pE\brp{\brs{HX-Y}\brs{HX-Y}^\ast}
+      \\
+      \\\implies \abs{\estH}^2\Swuu - \estH\cancelto{0}{\Swuv} - \estH^\ast\cancelto{0}{\Swvu} + \Swvv
+        &= \abs{\estH}^2\Swxx - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy
+      \\\implies&
+        \boxed{
+          \Swuu = \frac{\abs{\estH}^2\Swxx - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
+                       {\kappa+\abs{\estH}^2}
+                \eqd\frac{F}{G}}
+    \end{align*}
 
+  \item 
+    \begin{align*}
+      0 &= \frac{1}{2}G^20 = \frac{1}{2}G^2\pderiv{}{\estH_R}\Swuu
+      \\&= \frac{1}{2}G^2\frac{(F'G-G'F)}{G^2}
+      \\&= \frac{1}{2}(F'G-G'F)
+      \\&= \frac{1}{2}\brs{2\estH_R\Swxx - \Swxy - \Swxy^\ast}G - \frac{1}{2}2\estH_RF
+      \\&= \estH_R\Swxx G - G\Real\Swxy - \estH_RF
+      \\
+      0 &= \frac{1}{2}G^20 = \frac{1}{2}G^2\pderiv{}{\estH_I}\Swuu
+      \\&= \frac{1}{2}G^2\frac{(F'G-G'F)}{G^2}
+      \\&= \frac{1}{2}(F'G-G'F)
+      \\&= \frac{1}{2}\brs{2\estH_I\Swxx - i\Swxy + i\Swxy^\ast}G - \frac{1}{2}2\estH_IF
+      \\&= \estH_I\Swxx G + G\Imag\Swxy - \estH_IF
+      \\
+      0 
+        &= 0 + i0
+      \\&= \brs{\estH_R\Swxx G - G\Real\Swxy - \estH_RF}
+         +i\brs{\estH_I\Swxx G + G\Imag\Swxy - \estH_IF}
+      \\&= \estH\Swxx G - \Swyx G - \estH F
+      \\&= \estH\Swxx\brp{\kappa+\abs{\estH}^2} - \Swyx\brp{\kappa+\abs{\estH}^2} 
+         - \estH\brp{\abs{\estH}^2\Swxx - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
+      \\&= \estH\Swxx\brp{\kappa+\cancelto{0}{\abs{\estH}^2}} - \Swyx\brp{\kappa+\abs{\estH}^2} 
+         - \estH\brp{\cancelto{0}{\abs{\estH}^2\Swxx} - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
+      \\&= \kappa\estH\Swxx - \Swyx\brp{\kappa+\abs{\estH}^2} 
+         + \brp{ \estH^2\Swxy + \abs{\estH}^2\Swxy^\ast - \estH\Swyy}
+      \\&= \kappa\estH\Swxx - \kappa\Swyx - \cancelto{0}{\Swyx\abs{\estH}^2} 
+         + \brp{ \estH^2\Swxy + \cancelto{0}{\abs{\estH}^2\Swxy^\ast} - \estH\Swyy}
+      \\&=  \estH^2\Swxy + \estH\brs{\kappa\Swxx - \Swyy} - \kappa\Swxy^\ast
+      \\
+      \implies&\boxed{
+        \estH = \frac{\brp{Swyy-\kappa\Swxx} \pm \sqrt{\brp{\Swyy-\kappa\Swxx}^2 + 4\kappa\abs{\Swxy}^2}}
+                     {2\Swxy}
+      }% Praise the Lord!!!     2019 March 17 Sunday
+    \end{align*}
+\end{enumerate}
+\end{proof}
