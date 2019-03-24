@@ -49,18 +49,18 @@ Determining $\FH(\omega)$ in particular is referred to as
 or as
 ``\ope{Frequency Response Function}" (``\ope{FRF}") estimation.\footnote{\citePpc{cobb1988}{1}{FRF ``measurement"}}
 \ope{FRF} estimation is a challenging problem and one that
-many people have devoted much effort to.
+many have devoted much effort to.
 This chapter describes some of that effort.
 
-In the early days, people used a rather obvious technique for determining $\FH(\omega)$---the simple
-\fncte{sine sweep}. That is, they made the input a sine wave with slowly increasing (or decreasing)
+In the early days, people used a rather obvious technique for determining $\FH(\omega)$---the humble
+\fncte{sine sweep}. That is, they drove the input with a sine wave with slowly increasing (or decreasing)
 frequency while measuring the resulting output.
 This technique, although effective, was ``very slow".\footnote{
   \citeP{leuridan1986}{911}{``Stepped Sine Testing"},
   \citePpc{cobb1988}{1}{Chapter 1---Introduction},
   \citerppgc{ewins1986}{125}{140}{0863800173}{3.7 \scshape Use of different excitation types}
   }
-\emph{And} there is another problem---we don't always have control over the input signal.
+\emph{And} there is another problem here---we don't always have control over the input signal.
 Examples of this include earthquake and volcanic activity analysis.
 
 An alternative to the sine-sweep input is \fncte{random sequence} input.
@@ -1184,6 +1184,17 @@ Let $p\eqd \kappa$.
 %=======================================
 \section{Least squares estimates of non-linear systems}
 %=======================================
+\qboxns{
+  Per Bak, in \emph{``how nature works\ldots"}
+  \index{Bak, Per}
+  \index{quotes!Bak, Per}
+  \footnotemark
+  }
+  {The legendary Hungarian mathematician John von Neumann once referred to the the theory
+  of nonequilibrium systems as the ``theory of non-elephants," \ldots
+  Nevertheless, such a theory of non-elephants will be attempted here.}
+  \footnotetext{\citerpg{bak2013}{29}{1475754264}{{\textsection} Systems in Balance Are Not Complex}}
+
 \begin{figure}[h]
   \centering
   \begin{tabular}{|c|c|}
@@ -1192,7 +1203,7 @@ Let $p\eqd \kappa$.
     &\tbox{\includegraphics{graphics/opT_estG_estH_mnoise.pdf}}
     \\(A) \ope{Least squares estimation} for             &(B) \ope{Least squares estimations} for
     \\    \structe{communications additive noise model}  &    \structe{measurement additive noise model}
-    \\    \xref{thm:estHls_A}                            &    \xref{thm:estHls_B} %\xref{cor:H1LSb}
+    \\    \xref{cor:estHls_A}                            &    \xref{cor:estHls_B}
     \\\hline
   \end{tabular}
   \caption{Least Square estimation \xref{thm:estHls}\label{fig:estHls}}
@@ -1214,19 +1225,7 @@ The defintion of ``best" or ``optimal" is given by a \fncte{cost function} $\fCo
 There are several possible cost functions.
 \pref{def:fCost} provides some.
 %The answer is the estimator $\estHa$ \xref{def:H1}, as demonstrated in the next theorem.
-\pref{thm:estHls} then demonstrates optimal solutions with respect to these definitions.
-In particular, the theorem demonstrates
-the optimal \prope{LTI} \prope{least-squares} estimates of $\opT$ are
-\\\indentx
-    $\brs{\begin{array}{>{\ds}rc>{\ds}l}
-      \estGls(\omega) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
-    \end{array}}$
-    \qquad
-    and
-    \qquad
-    $\brs{\begin{array}{>{\ds}r*{2}{c>{\ds}l}}
-      \estHls(\omega) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)} &\eqd& \estHa(\omega)
-    \end{array}}$
+\pref{thm:estHls} then demonstrate optimal solutions with respect to these definitions.
 
 %---------------------------------------
 \begin{definition}
@@ -1240,249 +1239,111 @@ Define the following \fncte{cost function}s for spectral \prope{least-squares} e
   \end{array}}
 \end{definition}
 
-
-
-
-
-
 %---------------------------------------
-\begin{theorem}
-\label{thm:estHls_A}
+\begin{lemma}
+\label{lem:H1LS_cost}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (A).
-Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
-\thmbox{
-  \brbr{\begin{array}{FMMD}
-      (A).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{WSS}          & and
-    \\(B).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{uncorrelated} & and
-    \\(C).& $\pE\rvu=\pE\rvv=0$            & (\prope{zero-mean})  & and
-    \\(D).& $\estGls$ and $\estHls$ are    & \prope{LTI}
-  \end{array}}
-  \implies
-  \brbl{\begin{array}{F>{\ds}r>{\ds}c>{\ds}l}
-      (1).&\argmin_{\estG}\fCostrq(\estG) &=& \frac{\Swyx(\omega)+\Swyu(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
-    \\(2).&\argmin_{\estH}\fCostsy(\estH) &=& \frac{\Swyx(\omega)+\Swuy(\omega)}{\Swxx(\omega)}
-    \\
-  \end{array}}
-  }
-\end{theorem}
+Let $\fCostrq(\estG)$ and $\fCostsy(\estH)$ be defined as in \prefpp{def:fCost}.
+\lembox{\begin{array}{>{\ds}rc>{\ds}l}
+  \fCostrq\brp{\estG}
+    &=& \Swpp     (\omega)\abs{\estG     (\omega)}^2
+      - \Swpy     (\omega)     \estG     (\omega)
+      - \Swpy^\ast(\omega)     \estG^\ast(\omega)
+      + \Swqq     (\omega)
+  \\
+  \fCostsy\brp{\estH}
+    &=& \Swxx     (\omega)\abs{\estH     (\omega)}^2
+      - \Swxy     (\omega)     \estH     (\omega)
+      - \Swxy^\ast(\omega)     \estH^\ast(\omega)
+      + \Swyy     (\omega)
+\end{array}}
+\end{lemma}
 \begin{proof}
-\begin{enumerate}
-  \item Define shorthand function names $\estG\eqd\estGls$ and $\estH\eqd\estHls$.
-
-  \item lemma (expanded forms for cost functions): \label{ilem:H1LS_cost}
-    {\begin{align*}
-      &\boxed{\fCostrq\brp{\estG}}
-      \\&\eqd \opDTFT\pE\brp{\brs{\rvr(n)-\rvq(n)}\brs{\rvr(0)-\rvq(0)}^\ast}
-        && \text{by definition of $\fCostrq$}
-        && \text{by \xref{def:fCost}}
-      \\&=    \opFT\brs{
-                \pE\brs{\rvr(n)\rvr^\ast(0)}
-               -\pE\brs{\rvr(n)\rvq^\ast(0)}
-               -\pE\brs{\rvq(n)\rvr^\ast(0)}
-               +\pE\brs{\rvq(n)\rvq^\ast(0)}
-               }
-        && \text{by \prope{linearity} of $\pE$}
-        && \text{\xref{thm:pE_linop}}
-      \\&\eqd \opFT\brs{
-                \Rrr(m)
-               -\Rrq(m)
-               -\Rqr(m)
-               +\Rqq(m)
-               }
-        && \text{by definition of $\Rxy$}
-        && \text{\xref{def:Rxym}}
-      \\&\eqd \brs{
-                \Swrr(\omega)
-               -\Swrq(\omega)
-               -\Swqr(\omega)
-               +\Swqq(\omega)
-               }
-        && \text{by definition of $\Swxy$}
-        && \text{\xref{def:Swxy}}
-      \\&= \boxed{
-           \Swpp(\omega)\abs{\estG(\omega)}^2
-         - \estG(\omega)\Swpy(\omega)
-         - \brs{\estG(\omega)\Swpy(\omega)}^\ast
-         + \Swqq(\omega)
+\begin{align*}
+    %---------------------------
+  &\boxed{\fCostrq\brp{\estG}} %|
+    %---------------------------
+  \\&\eqd \opDTFT\pE\brp{\brs{\rvr(n)-\rvq(n)}\brs{\rvr(0)-\rvq(0)}^\ast}
+    && \text{by definition of $\fCostrq$}
+    && \text{by \xref{def:fCost}}
+  \\&=    \opFT\brs{
+            \pE\brs{\rvr(n)\rvr^\ast(0)}
+           -\pE\brs{\rvr(n)\rvq^\ast(0)}
+           -\pE\brs{\rvq(n)\rvr^\ast(0)}
+           +\pE\brs{\rvq(n)\rvq^\ast(0)}
            }
-        &&\text{by (A)--(D) and}
-        &&\text{\prefp{cor:GHz}}
-      \\
-      &\boxed{\fCostsy\brp{\estH}}
-      \\&\eqd \opDTFT\pE\brp{\brs{{\rvs(n)-\rvy(n)}\brs{\rvs(0)-\rvy(0)}^\ast}}
-        && \text{by definition of $\fCostsy$}
-        && \text{by \xref{def:fCost}}
-      \\&=    \opFT\brs{
-                \pE\brs{\rvs(n)\rvs^\ast(0)}
-               -\pE\brs{\rvs(n)\rvy^\ast(0)}
-               -\pE\brs{\rvy(n)\rvs^\ast(0)}
-               +\pE\brs{\rvy(n)\rvy^\ast(0)}
-               }
-        && \text{by \prope{linearity} of $\pE$}
-        && \text{\xref{thm:pE_linop}}
-      \\&\eqd \opFT\brs{
-                \Rss(m)
-               -\Rsy(m)
-               -\Rys(m)
-               +\Ryy(m)
-               }
-        && \text{by definition of $\Rxy$}
-        && \text{\xref{def:Rxym}}
-      \\&\eqd \brs{
-                \Swss(\omega)
-               -\Swsy(\omega)
-               -\Swys(\omega)
-               +\Swyy(\omega)
-               }
-        && \text{by definition of $\Swxy$}
-        && \text{\xref{def:Swxy}}
-      \\&= \boxed{
-           \Swxx(\omega)\abs{\estH(\omega)}^2
-         - \estH(\omega)\brs{\Swxy(\omega)+\Swuy(\omega)}
-         - \estH^\ast(\omega)\brs{\Swxy(\omega)+\Swuy(\omega)}^\ast
-         + \Swyy(\omega)
-         }
-        &&\text{by (A)--(D) and}
-        &&\text{\prefpp{cor:GHz}}
-    \end{align*}}
-
-  \item lemma: \label{ilem:G1LS_R}
-    \begin{align*}
-      0 &= \pderiv{}{\estG_R}\fCostrq\brp{\estG}
-      \\&= \pderiv{}{\estG_R}\brp{
-               \Swpp\abs{\estG}^2
-             - \estG\Swpy
-             - \estG^\ast\Swpy^\ast
-             + \Swqq
-             }
-        && \text{by \prefp{ilem:H1LS_cost}}
-      \\&= \pderiv{}{\estG_R}\brp{
-               \Swpp\brs{\estG_R^2+\estG_I^2}
-             - (\estG_R+i\estG_I)\Swpy
-             - (\estG_R+i\estG_I)^\ast\Swpy^\ast
-             + \Swqq
-             }
-      \\&= 2\estG_R\Swpp - \Swpy - \Swpy^\ast + \cancelto{0}{\pderiv{}{\estG_R}\Swqq}
-        &&\text{because $\rvq$ does not vary with $\estG$}
-      \\&= 2\estG_R\Swpp  - 2\Real\Swpy
-      \\&= 2\estG_R\Swpp  - 2\Real\Swyp
-        && \text{by \prefp{cor:Swxy_sym}}
-      \\&= 2\estG_R\Swpp - 2\Real\Swyx - 2\Real\Swyu
-        && \text{by \prefp{thm:opT_cnoise}}
-      \\&\implies \boxed{\estG_R(\omega) = \frac{\Real\Swyx(\omega)+\Real\Swyu(\omega)}{\Swpp(\omega)}}
-    \end{align*}
-
-  \item lemma: \label{ilem:H1LS_R}
-    \begin{align*}
-      0 &= \pderiv{}{\estH_R}\fCostsy\brp{\estH}
-      \\&= \pderiv{}{\estH_R}\brp{
-               \Swxx\abs{\estH}^2
-             - \estH\Swxy
-             - \estH^\ast\Swxy^\ast
-             + \Swyy
-             }
-        && \text{by \prefp{ilem:H1LS_cost}}
-      \\&= \pderiv{}{\estH_R}\brp{
-               \Swxx\brs{\estH_R^2+\estH_I^2}
-             - (\estH_R+i\estH_I)\Swxy
-             - (\estH_R+i\estH_I)^\ast\Swxy^\ast
-             + \Swyy
-             }
-      \\&= 2\estH_R\Swxx - \Swxy - \Swxy^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swyy}
-        &&\text{because $\rvy$ does not vary with $\estH$}
-      \\&= 2\estH_R\Swxx  - 2\Real\Swxy
-      \\&= 2\estH_R\Swxx  - 2\Real\Swyx
-        && \text{by \prefp{cor:Swxy_sym}}
-      \\&\implies \boxed{\estH_R(\omega) = \frac{\Real\Swyx(\omega)}{\Swxx(\omega)}}
-    \end{align*}
-
-  \item lemma: \label{ilem:G1LS_I}
-    \begin{align*}
-      0
-        &= \pderiv{}{\estG_I}\fCostrq\brp{\estG}
-      \\&= \pderiv{}{\estG_I}
-           \brp{\Swpp\abs{\estG}^2 - \estG\Swpy - \estG^\ast\Swpy^\ast + \Swqq}
-        && \text{by \prefp{ilem:H1LS_cost}}
-      \\&= \mathrlap{
-           \pderiv{}{\estG_I}\brs{
-           \Swpp\brs{\estG_R^2+\estG_I^2}
-         - (\estG_R+i\estG_I)\Swpy
-         - (\estG_R-i\estG_I)\Swpy^\ast
-         + \Swqq}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
+  \\&\eqd \opFT\brs{
+            \Rrr(m)
+           -\Rrq(m)
+           -\Rqr(m)
+           +\Rqq(m)
            }
-      \\&= 2\estG_I\Swpp - i\Swpy + i\Swpy^\ast + \cancelto{0}{\pderiv{}{\estG_R}\Swqq}
-        && \text{because $\rvq$ does not vary with $\estG$}
-      \\&= 2\estG_I\Swpp - 2i(i\Imag\Swpy)
-      \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyp)
-        && \text{by \prefp{cor:Swxy_sym}}
-      \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyx+i\Imag\Swyu)
-        && \text{by \prefp{thm:opT_mnoise}}
-      \\&= 2\estG_I\Swpp - 2\Imag(\Swyx+\Swyu)
-      \\&\implies \boxed{\estG_I(\omega) = \frac{\Imag\Swyx(\omega)+\Imag\Swyu(\omega)}{\Swpp(\omega)}}
-     \end{align*}
-
-  \item lemma: \label{ilem:H1LS_I}
-    \begin{align*}
-      0
-        &= \pderiv{}{\estH_I}\fCostsy\brp{\estH}
-      \\&= \pderiv{}{\estH_I}
-           \brp{\Swxx\abs{\estH}^2 - \estH(\Swxy+\Swuy) - \estH^\ast(\Swxy^\ast+\Swuy^\ast) + \Swyy}
-        && \text{by \prefp{ilem:H1LS_cost}}
-      \\&= \mathrlap{
-           \pderiv{}{\estH_I}\brs{
-           \Swxx\brs{\estH_R^2+\estH_I^2}
-         - (\estH_R+i\estH_I)(\Swxy+\Swuy)
-         - (\estH_R-i\estH_I)(\Swxy+\Swuy)^\ast
-         + \Swyy}
-         }
-      \\&= 2\estH_I\Swxx - i(\Swxy+\Swuy) + i(\Swxy+\Swuy)^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swyy}
-        && \text{because $\rvq$ does not vary with $\estH$}
-      \\&= 2\estH_I\Swxx - 2i(i\Imag\Swxy) - 2i(i\Imag\Swuy)
-      \\&= 2\estH_I\Swxx + 2i(i\Imag\Swyx) - 2i(i\Imag\Swyu)
-        && \text{by \prefp{cor:Swxy_sym}}
-      \\&= 2\estH_I\Swxx - 2\Imag\Swyx - 2\Imag\Swyu
-      \\&\implies \boxed{\estH_I(\omega) = \frac{\Imag\Swyx(\omega)+\Imag\Swyu(\omega)}{\Swxx(\omega)}}
-     \end{align*}
-
-  \item Proof for $\estG\eqd\estGls$ and $\estH\eqd\estHls$ expressions:
-    \begin{align*}
-      \boxed{\estG(\omega)}
-        &= \estG_R(\omega) + i\estG_I(\omega)
-      \\&= \frac{ \Real\Swyp(\omega)}{\Swpp(\omega)}
-         + \frac{i\Imag\Swyp(\omega)}{\Swpp(\omega)}
-        && \text{by \pref{ilem:G1LS_R} and \pref{ilem:G1LS_I}}
-      \\&= \frac{\Swyp(\omega)}{\Swpp(\omega)}
-      \\&= \frac{\Swyx(\omega)}{\Swpp(\omega)}
-        && \text{by \prefp{thm:opT_mnoise}}
-      \\&= \boxed{\frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}}
-        && \text{by \prefp{thm:xvy}}
-      \\
-      \boxed{\estH(\omega)}
-        &= \estH_R(\omega) + i\estH_I(\omega)
-      \\&= \frac{ \Real\Swyp(\omega)}{\Swxx(\omega)}
-         + \frac{i\Imag\Swyp(\omega)}{\Swxx(\omega)}
-        && \text{by \pref{ilem:H1LS_R} and \pref{ilem:H1LS_I}}
-      \\&= \frac{ \Real\Swyx(\omega) +\Real\Swyu(\omega)}{\Swxx(\omega)}
-         + \frac{i\Imag\Swyx(\omega)+i\Imag\Swyu(\omega)}{\Swxx(\omega)}
-        && \text{by \prefp{thm:opT_mnoise}}
-      \\&= \boxed{\frac{\Swyx(\omega)+\Swyu(\omega)}{\Swxx(\omega)}}
-    \end{align*}
-\end{enumerate}
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \brs{
+            \Swrr(\omega)
+           -\Swrq(\omega)
+           -\Swqr(\omega)
+           +\Swqq(\omega)
+           }
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+  \\&= \boxed{
+       \Swpp(\omega)\abs{\estG(\omega)}^2
+     - \Swpy(\omega)\estG(\omega)
+     - \Swpy^\ast(\omega)\estG^\ast(\omega)
+     + \Swqq(\omega)
+       }
+    &&\text{by (A)--(D) and}
+    &&\text{\prefp{cor:GHz}}
+  \\%---------------------------
+  &\boxed{\fCostsy\brp{\estH}} %|
+    %---------------------------
+  \\&\eqd \opDTFT\pE\brp{\brs{\rvs(n)-\rvy(n)}\brs{\rvs(0)-\rvy(0)}^\ast}
+    && \text{by definition of $\fCostsy$}
+    && \text{by \xref{def:fCost}}
+  \\&=    \opFT\brs{
+            \pE\brs{\rvs(n)\rvs^\ast(0)}
+           -\pE\brs{\rvs(n)\rvy^\ast(0)}
+           -\pE\brs{\rvy(n)\rvs^\ast(0)}
+           +\pE\brs{\rvy(n)\rvy^\ast(0)}
+           }
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
+  \\&\eqd \opFT\brs{
+            \Rss(m)
+           -\Rsy(m)
+           -\Rys(m)
+           +\Ryy(m)
+           }
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \brs{
+            \Swss(\omega)
+           -\Swsy(\omega)
+           -\Swys(\omega)
+           +\Swyy(\omega)
+           }
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+  \\&= \boxed{
+       \Swxx     (\omega)\abs{\estH     (\omega)}^2
+     - \Swxy     (\omega)     \estH     (\omega)
+     - \Swxy^\ast(\omega)     \estH^\ast(\omega)
+     + \Swyy     (\omega)
+     }
+    &&\text{by (A)--(D) and}
+    &&\text{\prefpp{cor:GHz}}
+\end{align*}
 \end{proof}
 
-
-
-
-
-
-
 %---------------------------------------
 \begin{theorem}
-\label{thm:estHls_A}
+\label{thm:estHls}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
-Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (A) or (B).
 \thmbox{
   \brbr{\begin{array}{FMMD}
       (A).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{WSS}          & and
@@ -1492,7 +1353,7 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
   \end{array}}
   \implies
   \brbl{\begin{array}{F>{\ds}r>{\ds}c>{\ds}l}
-      (1).&\argmin_{\estG}\fCostrq(\estG) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
+      (1).&\argmin_{\estG}\fCostrq(\estG) &=& \frac{\Swyp(\omega)}{\Swpp(\omega)}
     \\(2).&\argmin_{\estH}\fCostsy(\estH) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)}
     \\
   \end{array}}
@@ -1502,83 +1363,6 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
 \begin{enumerate}
   \item Define shorthand function names $\estG\eqd\estGls$ and $\estH\eqd\estHls$.
 
-  \item lemma (expanded forms for cost functions): \label{ilem:H1LS_cost}
-    {\begin{align*}
-      &\boxed{\fCostrq\brp{\estG}}
-      \\&\eqd \opDTFT\pE\brp{\brs{\rvr(n)-\rvq(n)}\brs{\rvr(0)-\rvq(0)}^\ast}
-        && \text{by definition of $\fCostrq$}
-        && \text{by \xref{def:fCost}}
-      \\&=    \opFT\brs{
-                \pE\brs{\rvr(n)\rvr^\ast(0)}
-               -\pE\brs{\rvr(n)\rvq^\ast(0)}
-               -\pE\brs{\rvq(n)\rvr^\ast(0)}
-               +\pE\brs{\rvq(n)\rvq^\ast(0)}
-               }
-        && \text{by \prope{linearity} of $\pE$}
-        && \text{\xref{thm:pE_linop}}
-      \\&\eqd \opFT\brs{
-                \Rrr(m)
-               -\Rrq(m)
-               -\Rqr(m)
-               +\Rqq(m)
-               }
-        && \text{by definition of $\Rxy$}
-        && \text{\xref{def:Rxym}}
-      \\&\eqd \brs{
-                \Swrr(\omega)
-               -\Swrq(\omega)
-               -\Swqr(\omega)
-               +\Swqq(\omega)
-               }
-        && \text{by definition of $\Swxy$}
-        && \text{\xref{def:Swxy}}
-      \\&= \boxed{
-           \Swpp(\omega)\abs{\estG(\omega)}^2
-         - \estG(\omega)\Swpy(\omega)
-         - \brs{\estG(\omega)\Swpy(\omega)}^\ast
-         + \Swqq(\omega)
-           }
-        &&\text{by (A)--(D) and}
-        &&\text{\prefp{cor:GHz}}
-      \\
-      &\boxed{\fCostsy\brp{\estH}}
-      \\&\eqd \opDTFT\pE\brp{\brs{{\rvs(n)-\rvy(n)}\brs{\rvs(0)-\rvy(0)}^\ast}}
-        && \text{by definition of $\fCostsy$}
-        && \text{by \xref{def:fCost}}
-      \\&=    \opFT\brs{
-                \pE\brs{\rvs(n)\rvs^\ast(0)}
-               -\pE\brs{\rvs(n)\rvy^\ast(0)}
-               -\pE\brs{\rvy(n)\rvs^\ast(0)}
-               +\pE\brs{\rvy(n)\rvy^\ast(0)}
-               }
-        && \text{by \prope{linearity} of $\pE$}
-        && \text{\xref{thm:pE_linop}}
-      \\&\eqd \opFT\brs{
-                \Rss(m)
-               -\Rsy(m)
-               -\Rys(m)
-               +\Ryy(m)
-               }
-        && \text{by definition of $\Rxy$}
-        && \text{\xref{def:Rxym}}
-      \\&\eqd \brs{
-                \Swss(\omega)
-               -\Swsy(\omega)
-               -\Swys(\omega)
-               +\Swyy(\omega)
-               }
-        && \text{by definition of $\Swxy$}
-        && \text{\xref{def:Swxy}}
-      \\&= \boxed{
-           \Swxx(\omega)\abs{\estH(\omega)}^2
-         - \estH(\omega)\Swxy(\omega)
-         - \brs{\estH(\omega)\Swxy(\omega)}^\ast
-         + \Swyy(\omega)
-         }
-        &&\text{by (A)--(D) and}
-        &&\text{\prefpp{cor:GHz}}
-    \end{align*}}
-
   \item lemma: \label{ilem:G1LS_R}
     \begin{align*}
       0 &= \pderiv{}{\estG_R}\fCostrq\brp{\estG}
@@ -1588,7 +1372,7 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
              - \estG^\ast\Swpy^\ast
              + \Swqq
              }
-        && \text{by \prefp{ilem:H1LS_cost}}
+        && \text{by \prefp{lem:H1LS_cost}}
       \\&= \pderiv{}{\estG_R}\brp{
                \Swpp\brs{\estG_R^2+\estG_I^2}
              - (\estG_R+i\estG_I)\Swpy
@@ -1600,9 +1384,39 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= 2\estG_R\Swpp  - 2\Real\Swpy
       \\&= 2\estG_R\Swpp  - 2\Real\Swyp
         && \text{by \prefp{cor:Swxy_sym}}
-      \\&= 2\estG_R\Swpp  - 2\Real\Swyx
-        && \text{by \prefp{thm:opT_mnoise}}
-      \\&\implies \boxed{\estG_R(\omega) = \frac{\Real\Swyx(\omega)}{\Swpp(\omega)}}
+      \\&\implies \boxed{\estG_R(\omega) = \frac{\Real\Swyp(\omega)}{\Swpp(\omega)}}
+    \end{align*}
+
+  \item lemma: \label{ilem:G1LS_I}
+    \begin{align*}
+      0
+        &= \pderiv{}{\estG_I}\fCostrq\brp{\estG}
+      \\&= \pderiv{}{\estG_I}
+           \brp{\Swpp\abs{\estG}^2 - \estG\Swpy - \estG^\ast\Swpy^\ast + \Swqq}
+        && \text{by \prefp{lem:H1LS_cost}}
+      \\&= \mathrlap{
+           \pderiv{}{\estG_I}\brs{
+           \Swpp\brs{\estG_R^2+\estG_I^2}
+         - (\estG_R+i\estG_I)\Swpy
+         - (\estG_R-i\estG_I)\Swpy^\ast
+         + \Swqq}
+           }
+      \\&= 2\estG_I\Swpp - i\Swpy + i\Swpy^\ast + \cancelto{0}{\pderiv{}{\estG_R}\Swqq}
+        && \text{because $\rvq$ does not vary with $\estG$}
+      \\&= 2\estG_I\Swpp - 2i(i\Imag\Swpy)
+      \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyp)
+        && \text{by \prefp{cor:Swxy_sym}}
+      \\&\implies \boxed{\estG_I(\omega) = \frac{\Imag\Swyp(\omega)}{\Swpp(\omega)}}
+     \end{align*}
+
+  \item Proof for $\estG\eqd\estGls$ expression:
+    \begin{align*}
+      \boxed{\estG(\omega)}
+        &= \estG_R(\omega) + i\estG_I(\omega)
+      \\&= \frac{ \Real\Swyp(\omega)}{\Swpp(\omega)}
+         + \frac{i\Imag\Swyp(\omega)}{\Swpp(\omega)}
+        && \text{by \pref{ilem:G1LS_R} and \pref{ilem:G1LS_I}}
+      \\&= \boxed{\frac{\Swyp(\omega)}{\Swpp(\omega)}}
     \end{align*}
 
   \item lemma: \label{ilem:H1LS_R}
@@ -1614,7 +1428,7 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
              - \estH^\ast\Swxy^\ast
              + \Swyy
              }
-        && \text{by \prefp{ilem:H1LS_cost}}
+        && \text{by \prefp{lem:H1LS_cost}}
       \\&= \pderiv{}{\estH_R}\brp{
                \Swxx\brs{\estH_R^2+\estH_I^2}
              - (\estH_R+i\estH_I)\Swxy
@@ -1629,43 +1443,18 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&\implies \boxed{\estH_R(\omega) = \frac{\Real\Swyx(\omega)}{\Swxx(\omega)}}
     \end{align*}
 
-  \item lemma: \label{ilem:G1LS_I}
-    \begin{align*}
-      0
-        &= \pderiv{}{\estG_I}\fCostrq\brp{\estG}
-      \\&= \pderiv{}{\estG_I}
-           \brp{\Swpp\abs{\estG}^2 - \estG\Swpy - \estG^\ast\Swpy^\ast + \Swqq}
-        && \text{by \prefp{ilem:H1LS_cost}}
-      \\&= \mathrlap{
-           \pderiv{}{\estG_I}\brs{
-           \Swpp\brs{\estG_R^2+\estG_I^2}
-         - (\estG_R+i\estG_I)\Swpy
-         - (\estG_R-i\estG_I)\Swpy^\ast
-         + \Swqq}
-           }
-      \\&= 2\estG_I\Swpp - i\Swpy + i\Swpy^\ast + \cancelto{0}{\pderiv{}{\estG_R}\Swqq}
-        && \text{because $\rvq$ does not vary with $\estG$}
-      \\&= 2\estG_I\Swpp - 2i(i\Imag\Swpy)
-      \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyp)
-        && \text{by \prefp{cor:Swxy_sym}}
-      \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyx)
-        && \text{by \prefp{thm:opT_mnoise}}
-      \\&= 2\estG_I\Swpp - 2\Imag\Swyx
-      \\&\implies \boxed{\estG_I(\omega) = \frac{\Imag\Swyx(\omega)}{\Swpp(\omega)}}
-     \end{align*}
-
   \item lemma: \label{ilem:H1LS_I}
     \begin{align*}
       0
         &= \pderiv{}{\estH_I}\fCostsy\brp{\estH}
       \\&= \pderiv{}{\estH_I}
-           \brp{\Swxx\abs{\estH}^2 - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
-        && \text{by \prefp{ilem:H1LS_cost}}
+           \brp{\Swxx\abs{\estH}^2 - \Swxy\estH - \Swxy^\ast\estH^\ast + \Swyy}
+        && \text{by \prefp{lem:H1LS_cost}}
       \\&= \mathrlap{
            \pderiv{}{\estH_I}\brs{
            \Swxx\brs{\estH_R^2+\estH_I^2}
-         - (\estH_R+i\estH_I)\Swxy
-         - (\estH_R-i\estH_I)\Swxy^\ast
+         - \Swxy     (\estH_R+i\estH_I)
+         - \Swxy^\ast(\estH_R-i\estH_I)
          + \Swyy}
          }
       \\&= 2\estH_I\Swxx - i\Swxy + i\Swxy^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swyy}
@@ -1677,19 +1466,8 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&\implies \boxed{\estH_I(\omega) = \frac{\Imag\Swyx(\omega)}{\Swxx(\omega)}}
      \end{align*}
 
-  \item Proof for $\estG\eqd\estGls$ and $\estH\eqd\estHls$ expressions:
+  \item Proof for $\estH\eqd\estHls$ expression:
     \begin{align*}
-      \boxed{\estG(\omega)}
-        &= \estG_R(\omega) + i\estG_I(\omega)
-      \\&= \frac{ \Real\Swyp(\omega)}{\Swpp(\omega)}
-         + \frac{i\Imag\Swyp(\omega)}{\Swpp(\omega)}
-        && \text{by \pref{ilem:G1LS_R} and \pref{ilem:G1LS_I}}
-      \\&= \frac{\Swyp(\omega)}{\Swpp(\omega)}
-      \\&= \frac{\Swyx(\omega)}{\Swpp(\omega)}
-        && \text{by \prefp{thm:opT_mnoise}}
-      \\&= \boxed{\frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}}
-        && \text{by \prefp{thm:xvy}}
-      \\
       \boxed{\estH(\omega)}
         &= \estH_R(\omega) + i\estH_I(\omega)
       \\&= \frac{ \Real\Swyp(\omega)}{\Swxx(\omega)}
@@ -1703,7 +1481,79 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
 \end{enumerate}
 \end{proof}
 
-It follows immediately from \prefpp{thm:estHls_B} that, in the special case
+Using \pref{thm:estHls} (previous) we can see that the optimal \propb{least-squares} operators $\estGls$ and 
+$\estHls$ for the \propb{non-linear} operator $\opT$ in \prefpp{fig:estHls} (A) and (B) are (next two corollaries)
+\\\indentx$\ds\boxed{
+  \begin{array}{F>{\ds}r>{\ds}c>{\ds}cM}
+      (1).&\estGls(\omega) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)} & for (A)---\structe{communication system}
+    \\(2).&\estGls(\omega) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)} & for (B)---\structe{measurement system}
+    \\(3).&\estHls(\omega) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)}               & for either (A) or (B)
+  \end{array}}$
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:estHls_A}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (A).
+\thmbox{
+  \brb{\begin{array}{O}
+    hypotheses of \pref{thm:estHls}
+    \\\prefpo{thm:estHls}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{F>{\ds}r>{\ds}c>{\ds}c}
+      (1).&\argmin_{\estGls}\fCostrq(\estGls) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
+    \\(2).&\argmin_{\estHls}\fCostsy(\estHls) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)}
+    \\
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \estGls
+    &= \frac{\Swyx(\omega)}{\Swpp(\omega)}
+    && \text{by \prefp{thm:estHls}}
+  \\&= \frac{\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
+    && \text{by \prefp{thm:xvy}}
+  \\
+  \estHls 
+    &= \frac{\Swyx(\omega)}{\Swxx(\omega)}
+    && \text{by \prefp{thm:estHls}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:estHls_B}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
+\thmbox{
+  \brb{\begin{array}{O}
+    hypotheses of \pref{thm:estHls}
+    \\\prefpo{thm:estHls}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{F>{\ds}r>{\ds}c>{\ds}c}
+      (1).&\argmin_{\estGls}\fCostrq(\estGls) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
+    \\(2).&\argmin_{\estHls}\fCostsy(\estHls) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)}
+    \\
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \estG 
+    &= \frac{\Swyx(\omega)}{\Swpp(\omega)}
+    && \text{by \prefp{thm:estHls}}
+  \\&= \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
+    && \text{by \prefp{thm:xvy}}
+  \\
+  \estH &= \frac{\Swyx(\omega)}{\Swxx(\omega)}
+    && \text{by \prefp{thm:estHls}}
+\end{align*}
+\end{proof}
+
+It follows immediately from \prefpp{cor:estHls_A} and \prefpp{cor:estHls_B} that, in the special case
 of no input noise ($\rvu(n)=0$), $\estHa$ is the optimal
 least-squares estimate of $\FH$ (next corollary).
 
@@ -1716,17 +1566,16 @@ least-squares estimate of $\FH$ (next corollary).
   }
 \label{cor:H1LSb}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (A) or (B).
 \corbox{
   \brb{\begin{array}{FMD}
-      (1). & hypotheses of \pref{thm:estHls_B} & and
+      (1). & hypotheses of \pref{thm:estHls} & and
     \\(2). & $\rvu(n)=0$
   \end{array}}
   \implies
   \brb{\estGls(\omega) = \estHls(\omega) = \estHa(\omega)}
   }
 \end{corollary}
-
 
 %=======================================
 \section{Least squares estimates of linear systems}
