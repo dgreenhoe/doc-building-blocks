@@ -536,78 +536,33 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \end{align*}
 \end{proof}
 
-% _______________________________________________________________________
-%| |                               ____________________________________  |
-%|D|                           \  /[               ]2      |        |2   |
-%|E|          Syy(w) - Sxx(w) + \/ [Syy(w) - Sxx(w)]   + 4 | Sxy(w) |    |
-%|F| Hv(w) = ----------------------------------------------------------- |
-%| |                                2 Sxy(w)                             |
-%|_|_____________________________________________________________________|
-\begin{definition}                                                       %
-\footnote{                                                               %
-  \citePpc{white2006}{679}{(6)},                                         %
-  \citerpgc{shin2008}{294}{0470725648}{(9.69)}                           %
-  }                                                                      %
-\label{def:Hv}                                                           %
-%------------------------------------------------------------------------%
-Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defboxt{
-  The \fnctd{Total Least Squares transfer function estimate} $\estHv(\omega)$ of $\opS$ is defined as
-  \\\indentx$\ds
-  \estHv(\omega) =
-    \frac{\ds\Swyy(\omega)- \Swxx(\omega) +
-          \sqrt{\brs{\Swyy(\omega) -  \Swxx(\omega)}^2 + 4 \abs{\Swxy(\omega)}^2}
-         }{\ds2\Swxy(\omega)}
-  $}
-\end{definition}
+A bit of review reveals $\estHa$ at the low end of the estimation problem,
+$\estHb$ at the high end, and $\estHhm$, $\estHgm$, and $\estHam$
+somewhere between.
+But these three ``between" estimates are not shown to be optimal in any sense---they
+are just conceptually interesting.
+What we might really like is a family of estimators that
+\begin{listi}
+  \item include $\estHa$ and $\estHb$ as limiting cases
+  \item include the between cases
+  \item are optimal in some sense
+\end{listi}
+The estimator $\estHkp(\omega;\kappa)$ is one such estimator (next definition) that
+\begin{listi}
+  \item has $\estHa$ and $\estHb$ as limiting cases \xref{thm:Hs_lim},
+  \item is optimal in the least squares sense \xref{thm:estHk}, and
+  \item allows for a system designer to specify an output-input spectral noise ratio $\kappa(\omega)$
+        that can vary with frequency $\omega$.
+\end{listi}
 
-The estimate $\estHv$ and it's refusal to assume zero input or output noise
-was definitely a step in the right direction.
-But it still has the limiting assumption that the input and output noise power are equal.
-And what if it's not?
-Enter Wicks and Vold who in 1986 introduced such an estimator (next definition)
-that makes no such assumption.
-It features a \vale{scaling parameter} $s$ in the range $\intco{0}{\infty}$
-that can be adjusted depending on the ratio of output and input noise.
-And as it turns out, $\estHs = \estHb$ when $s=0$, $\estHs=\estHv$ when $s=1$, and
-$\estHs\to\estHa$ as $s\to\infty$  \xref{thm:Hs_lim}.
-% ________________________________________________________________________________
-%| |                                  __________________________________________  |
-%|D|                    2         \  /[          2       ]2       2 |        |2   |
-%|E|          Syy(w) - s  Sxx(w) + \/ [Syy(w) - s  Sxx(w)]   + 4 s  | Sxy(w) |    |
-%|F| Hs(w) = -------------------------------------------------------------------- |
-%| |                                      2 Sxy(w)                                |
-%|_|______________________________________________________________________________|
-\begin{definition}                                                                %
-\footnote{                                                                        %
-  \citerpgc{shin2008}{293}{0470725648}{(9.67) with $\kappa(\omega)=s^2$},         %
-  \citePpc{white2006}{679}{(6) with $\kappa(\omega)=s^2$},                        %
-  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped},           %
-  \citePpc{wicks1986}{898}{has additional $s$ in denominator},
-  \citePpc{zheng2002}{918}{(10), seems to differ}                                 %
-  }                                                                               %
-\label{def:Hs}                                                                    %
-%---------------------------------------------------------------------------------%
-Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
-\defboxt{
-  The \fnctd{Scaling transfer function estimate} $\estHs(\omega;s)$ of $\opS$
-  with \vald{scaling parameter} $s\in\intco{0}{\infty}$ 
-  \\is defined as
-  \indentx$\ds
-  \estHs(\omega;s) \eqd
-      \frac{\Swyy(\omega)- s^2 \Swxx(\omega) +
-            \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}
-           }{2\Swxy(\omega)}
-  $}
-\end{definition}
-Wicks and Vold's $\estHs$ estimates $\FH$ using a single parameter $s$
-that is \prope{constant} with respect to frequency.
-This is suitable for additive white noise $\rvw(n)$, which has constant spectral density
-$\Swww(\omega)=\pvar_w$.
-However, not all noise is white noise.
-And later in 2006, White, Tan and Hammond proposed a generalization (next definition) of $\estHs$ with a scaling
-function $\kappa(\omega)$---that is, one that is not in general constant with respect to frequency
-and is thus suitable in the presence of \prope{colored} noise.
+Moreover, $\estHkp(\omega)$ includes some special cases:
+\begin{liste}
+  \item In the case of constant $\kappa$, $\estHkp$ simplifies to
+        the \fncte{Scaling transfer function estimate} $\estHs$ \xref{def:Hs}.
+  \item In the case of $\kappa=1$, $\estHkp$ and $\estHs$ simplify to
+        the \fncte{Total least squares transfer function estimate} $\estHv$ \xref{def:Hv}.
+\end{liste}
+
 % ___________________________________________________________________________________
 %| |                                   ____________________________________________  |
 %|D|                               \  /[                   ]2          |        |2   |
@@ -636,6 +591,79 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
   }
 \end{definition}
 
+% ________________________________________________________________________________
+%| |                                  __________________________________________  |
+%|D|                    2         \  /[          2       ]2       2 |        |2   |
+%|E|          Syy(w) - s  Sxx(w) + \/ [Syy(w) - s  Sxx(w)]   + 4 s  | Sxy(w) |    |
+%|F| Hs(w) = -------------------------------------------------------------------- |
+%| |                                      2 Sxy(w)                                |
+%|_|______________________________________________________________________________|
+\begin{definition}                                                                %
+\footnote{                                                                        %
+  \citerpgc{shin2008}{293}{0470725648}{(9.67) with $\kappa(\omega)=s^2$},         %
+  \citePpc{white2006}{679}{(6) with $\kappa(\omega)=s^2$},                        %
+  \citePc{leclere2012}{(10) $\kappa(f)=1/s^2$ and $x$ and $y$ swapped},           %
+  \citePpc{wicks1986}{898}{has additional $s$ in denominator},
+  \citePpc{zheng2002}{918}{(10), seems to differ}                                 %
+  }                                                                               %
+\label{def:Hs}                                                                    %
+%---------------------------------------------------------------------------------%
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defboxt{
+  The \fnctd{Scaling transfer function estimate} $\estHs(\omega;s)$ of $\opS$
+  with \vald{scaling parameter} $s\in\intco{0}{\infty}$
+  \\is defined as
+  \indentx$\ds
+  \estHs(\omega;s) \eqd \estHkp(\omega;\kappa)\quad\text{with $\ds\kappa(\omega)\eqd s^2$}
+      %20190322%\frac{\Swyy(\omega)- s^2 \Swxx(\omega) +
+      %20190322%      \sqrt{\brs{\Swyy(\omega) -  s^2 \Swxx(\omega)}^2 + 4 s^2 \abs{\Swxy(\omega)}^2}
+      %20190322%     }{2\Swxy(\omega)}
+  $}
+\end{definition}
+
+% _______________________________________________________________________
+%| |                               ____________________________________  |
+%|D|                           \  /[               ]2      |        |2   |
+%|E|          Syy(w) - Sxx(w) + \/ [Syy(w) - Sxx(w)]   + 4 | Sxy(w) |    |
+%|F| Hv(w) = ----------------------------------------------------------- |
+%| |                                2 Sxy(w)                             |
+%|_|_____________________________________________________________________|
+\begin{definition}                                                       %
+\footnote{                                                               %
+  \citePpc{white2006}{679}{(6)},                                         %
+  \citerpgc{shin2008}{294}{0470725648}{(9.69)}                           %
+  }                                                                      %
+\label{def:Hv}                                                           %
+%------------------------------------------------------------------------%
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defboxt{
+  The \fnctd{Total Least Squares transfer function estimate} $\estHv(\omega)$ of $\opS$ is defined as
+  \\\indentx$\ds
+  \estHv(\omega) \eqd \estHkp(\omega;\kappa)\qquad\text{with $\ds\kappa(\omega)=1$}
+    %\frac{\ds\Swyy(\omega)- \Swxx(\omega) +
+    %      \sqrt{\brs{\Swyy(\omega) -  \Swxx(\omega)}^2 + 4 \abs{\Swxy(\omega)}^2}
+    %     }{\ds2\Swxy(\omega)}
+  $}
+\end{definition}
+
+%20190322%The estimate $\estHv$ and it's refusal to assume zero input or output noise
+%20190322%was definitely a step in the right direction.
+%20190322%But it still has the limiting assumption that the input and output noise power are equal.
+%20190322%And what if it's not?
+%20190322%Enter Wicks and Vold who in 1986 introduced such an estimator (next definition)
+%20190322%that makes no such assumption.
+%20190322%It features a \vale{scaling parameter} $s$ in the range $\intco{0}{\infty}$
+%20190322%that can be adjusted depending on the ratio of output and input noise.
+%20190322%And as it turns out, $\estHs = \estHb$ when $s=0$, $\estHs=\estHv$ when $s=1$, and
+%20190322%$\estHs\to\estHa$ as $s\to\infty$  \xref{thm:Hs_lim}.
+%20190322%Wicks and Vold's $\estHs$ estimates $\FH$ using a single parameter $s$
+%20190322%that is \prope{constant} with respect to frequency.
+%20190322%This is suitable for additive white noise $\rvw(n)$, which has constant spectral density
+%20190322%$\Swww(\omega)=\pvar_w$.
+%20190322%However, not all noise is white noise.
+%20190322%And later in 2006, White, Tan and Hammond proposed a generalization (next definition) of $\estHs$ with a scaling
+%20190322%function $\kappa(\omega)$---that is, one that is not in general constant with respect to frequency
+%20190322%and is thus suitable in the presence of \prope{colored} noise.
 
 The previous estimators all assumed two signals: an input $\rvx(n)$ and an output $\rvy(n)$.
 However, in many practical systems, there is a third signal that is ``driving" the system.
@@ -874,13 +902,13 @@ II. Proof for monoticity:
            \frac{\Swyy - s^2\Swxx  + \sqrt{\brp{\Swyy-s^2\Swxx }^2 + 4s^2\abs{\Swxy }^2}}
                 {2\Swxy }
            }
-        && \text{by def. of $\estHs$ 
+        && \text{by def. of $\estHs$
                  \xref{def:Hs}}
       \\&\eqd \ddp\brs{
            \frac{\Swyy-p\Swxx + \sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy}^2}}
                 {2\Swxy}
            }
-        && \text{by definition of $p$ 
+        && \text{by definition of $p$
                  \xref{item:Hs_mono_p}}
       \\&= \ddp\brp{
            \frac{\abs{\Swyy - p\Swxx  + \sqrt{\brp{\Swyy-p\Swxx }^2 + 4p\abs{\Swxy }^2}}}
@@ -1025,19 +1053,19 @@ Let $\angle z\eqd\phi$ be the \fncte{phase} of $z$.
 %=======================================
 Any standard kit of algebraic tricks should arguably always include the ability to
 swap the location of a square root between numerator and denominator.
-If you are of this persuasion, after traveling from 
+If you are of this persuasion, after traveling from
 the definition of $\estHs$ on \prefpo{def:Hs}, you won't be dissappointed when arriving
 at the next proposition \xref{prop:Hs}.
 But it has more use than just allowing you to entertain friends at social occasions.
-It also makes it very easy to see (using only algebra) what previously 
+It also makes it very easy to see (using only algebra) what previously
 employed \thme{l'H{/<o}pital's rule} (using calculus)
 in the proof of \pref{thm:Hs_lim}---that $\lim_{s\to\infty}\estHs=\estHa$.
 % ________________________________________________________________________________
-%| |                                   2 s^2 Syx(w)                               |
+%| |                                   2 k Syx(w)                                 |
 %|P| Hs(w) = -------------------------------------------------------------------- |
 %|R|                                  __________________________________________  |
-%|O|           2                  \  /[ 2                ]2       2 |        |2   |
-%|P|          s  Sxx(w) - Syy(w) + \/ [s  Sxx(w) - Syy(w)]   + 4 s  | Sxy(w) |    |
+%|O|                              \  /[                  ]2         |        |2   |
+%|P|           k Sxx(w) - Syy(w) + \/ [ k Sxx(w) - Syy(w)]   + 4 k  | Sxy(w) |    |
 %|_|______________________________________________________________________________|
 \begin{proposition}                                                               %
 \footnote{                                                                        %
@@ -1047,68 +1075,68 @@ in the proof of \pref{thm:Hs_lim}---that $\lim_{s\to\infty}\estHs=\estHa$.
   }                                                                               %
 \label{prop:Hs}                                                                   %
 %---------------------------------------------------------------------------------%
-Let $\estHs(\omega; s)$ be defined as in \prefpp{def:Hs}.
+Let $\estHkp(\omega; \kappa)$ be defined as in \prefpp{def:Hkp}.
 \propbox{\begin{array}{rc>{\ds}l}
-  \estHs(\omega; s)
+  \estHkp(\omega; s)
     &=&
-  \frac{\ds 2s^2\Swyx(\omega)}
-       {\ds  s^2\Swxx(\omega)-\Swyy(\omega) +
-        \sqrt{\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}
+  \frac{\ds 2\kappa(\omega)\Swyx(\omega)}
+       {\ds  \kappa(\omega)\Swxx(\omega)-\Swyy(\omega) +
+        \sqrt{\brs{\kappa(\omega)\Swxx(\omega)-\Swyy(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}
        }
   \\&=& \frac{2 \Swxy^\ast}
-             {\Swxx - \frac{1}{s^2}\Swyy  + \sqrt{\brs{\Swxx - \frac{1}{s^2}\Swyy}^2 + \frac{4}{s^2} \abs{\Swxy }^2}}
+             {\Swxx - \frac{1}{\kappa(\omega)}\Swyy  + \sqrt{\brs{\Swxx - \frac{1}{\kappa(\omega)}\Swyy}^2 + \frac{4}{\kappa(\omega)} \abs{\Swxy }^2}}
 \end{array}}
 \end{proposition}
 \begin{proof}
-We can transform $\estHs$ from that found in \prefpp{def:Hs} to the forms in this proposition by the
+We can transform $\estHkp$ from that found in \prefpp{def:Hs} to the forms in this proposition by the
 technique of ``\ope{rationalizing the denominator}"\footnote{\citerpc{slaught1915}{274}{``197. Rationalizing the Denominator."}
 \url{https://archive.org/details/elementaryalgebr00slaurich/page/274}
 Note that the operation in the proof of \pref{prop:Hs} is being performed essentially in reverse\ldots or rather ``rationalizing the numerator".}
 \begin{align*}
-  \estHs
-    &\eqd \frac{\Swyy - s^2 \Swxx  +
-            \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}
+  \estHkp
+    &\eqd \frac{\Swyy - \kappa \Swxx  +
+            \sqrt{\brs{\Swyy  -  \kappa \Swxx }^2 + 4 \kappa \abs{\Swxy }^2}
            }{2\Swxy }
-    &&\text{by definition of $\estHs$
+    &&\text{by definition of $\estHkp$
              \xref{def:Hs}}
   \\&= \mathrlap{\frac{
-            \brs{\Swyy - s^2 \Swxx  + \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}
-            \ocom{\brs{\Swyy - s^2 \Swxx  - \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}}{``\vale{rationalizing factor}"}
+            \brs{\Swyy - \kappa \Swxx  + \sqrt{\brs{\Swyy  -  \kappa \Swxx }^2 + 4 \kappa \abs{\Swxy }^2}}
+            \ocom{\brs{\Swyy - \kappa \Swxx  - \sqrt{\brs{\Swyy  -  \kappa \Swxx }^2 + 4 \kappa \abs{\Swxy }^2}}}{``\vale{rationalizing factor}"}
             }{
             2\Swxy
-            \mcom{\brs{\Swyy - s^2 \Swxx  - \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}}{``\vale{rationalizing factor}"}
+            \mcom{\brs{\Swyy - \kappa \Swxx  - \sqrt{\brs{\Swyy  -  \kappa \Swxx }^2 + 4 \kappa \abs{\Swxy }^2}}}{``\vale{rationalizing factor}"}
             }}
   \\&= \frac{
-            \brs{\Swyy - s^2 \Swxx}^2  - \brs{\Swyy  -  s^2 \Swxx }^2 - 4 s^2 \abs{\Swxy }^2
+            \brs{\Swyy - \kappa \Swxx}^2  - \brs{\Swyy  -  \kappa \Swxx }^2 - 4 \kappa \abs{\Swxy }^2
             }{
             2\Swxy
-            \brs{\Swyy - s^2 \Swxx  - \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}
+            \brs{\Swyy - \kappa \Swxx  - \sqrt{\brs{\Swyy  -  \kappa \Swxx }^2 + 4 \kappa \abs{\Swxy }^2}}
             }
    &&= \frac{
-            - 4 s^2 \abs{\Swxy }^2
+            - 4 \kappa \abs{\Swxy }^2
             }{
             2\Swxy
-            \brs{\Swyy - s^2 \Swxx  - \sqrt{\brs{\Swyy  -  s^2 \Swxx }^2 + 4 s^2 \abs{\Swxy }^2}}
+            \brs{\Swyy - \kappa \Swxx  - \sqrt{\brs{\Swyy  -  \kappa \Swxx }^2 + 4 \kappa \abs{\Swxy }^2}}
             }
-  \\&= \boxed{\frac{2 s^2 \Swxy^\ast}
-            {s^2 \Swxx - \Swyy  + \sqrt{\brs{s^2 \Swxx - \Swyy}^2 + 4s^2 \abs{\Swxy }^2}}}
-   &&= \frac{2 \frac{s^2}{s^2} \Swxy^\ast}
-            {\frac{s^2}{s^2} \Swxx - \frac{1}{s^2}\Swyy  + \sqrt{\frac{1}{s^4}\brs{s^2 \Swxx - \Swyy}^2 + \frac{4s^2}{s^4} \abs{\Swxy }^2}}
+  \\&= \boxed{\frac{2 \kappa \Swxy^\ast}
+            {\kappa \Swxx - \Swyy  + \sqrt{\brs{\kappa \Swxx - \Swyy}^2 + 4\kappa \abs{\Swxy }^2}}}
+   &&= \frac{2 \frac{\kappa}{\kappa} \Swxy^\ast}
+            {\frac{\kappa}{\kappa} \Swxx - \frac{1}{\kappa}\Swyy  + \sqrt{\frac{1}{s^4}\brs{\kappa \Swxx - \Swyy}^2 + \frac{4\kappa}{s^4} \abs{\Swxy }^2}}
   \\&= \frac{2 \Swxy^\ast}
-            {\Swxx - \frac{1}{s^2}\Swyy  + \sqrt{\brs{\frac{s^2}{s^2} \Swxx - \frac{1}{s^2}\Swyy}^2 + \frac{4}{s^2} \abs{\Swxy }^2}}
+            {\Swxx - \frac{1}{\kappa}\Swyy  + \sqrt{\brs{\frac{\kappa}{\kappa} \Swxx - \frac{1}{\kappa}\Swyy}^2 + \frac{4}{\kappa} \abs{\Swxy }^2}}
    &&= \boxed{\frac{2 \Swxy^\ast}
-            {\Swxx - \frac{1}{s^2}\Swyy  + \sqrt{\brs{\Swxx - \frac{1}{s^2}\Swyy}^2 + \frac{4}{s^2} \abs{\Swxy }^2}}}
+            {\Swxx - \frac{1}{\kappa}\Swyy  + \sqrt{\brs{\Swxx - \frac{1}{\kappa}\Swyy}^2 + \frac{4}{\kappa} \abs{\Swxy }^2}}}
 \end{align*}
 
 Integrity check for $s=0$ and $s\to\infty$ cases:
-Let $p\eqd s^2$.
+Let $p\eqd \kappa$.
 %Let $\ds\fG(s)\eqd
-%  \frac{\ds 2s^2\Swyx }
-%       {\ds  s^2\Swxx -\Swyy  +
-%        \sqrt{\brs{s^2\Swxx -\Swyy }^2 + 4s^2\abs{\Swxy }^2}
+%  \frac{\ds 2\kappa\Swyx }
+%       {\ds  \kappa\Swxx -\Swyy  +
+%        \sqrt{\brs{\kappa\Swxx -\Swyy }^2 + 4\kappa\abs{\Swxy }^2}
 %       }$.
 \begin{align*}
-  \lim_{p\to\infty}\estHs
+  \lim_{p\to\infty}\estHkp
     &=    \lim_{p\to\infty}
           \frac{\ds 2\Swyx }
                 {\ds  \Swxx -\frac{1}{p}\Swyy  +
@@ -1125,7 +1153,7 @@ Let $p\eqd s^2$.
              \xref{def:H1}}
 \end{align*}
 \begin{align*}
-  \lim_{p\to0}\estHs
+  \lim_{p\to0}\estHkp
     &=    \lim_{p\to0}
           \frac{2p\Swyx}
                { p\Swxx -\Swyy  + \sqrt{\brs{p\Swxx -\Swyy }^2 + 4p\abs{\Swxy }^2}}
@@ -1153,62 +1181,6 @@ Let $p\eqd s^2$.
 \end{align*}
 \end{proof}
 
-% _______________________________________________________________________
-%| |                                   2 Syx(w)                          |
-%|P| Hv(w) = ------------------------------------------------------------|
-%|R|                               ____________________________________  |
-%|O|                           \  /[               ]2      |        |2   |
-%|P|          Sxx(w) - Syy(w) + \/ [Sxx(w) - Syy(w)]   + 4 | Sxy(w) |    |
-%|_|_____________________________________________________________________|
-\begin{proposition}                                                      %
-\footnote{                                                               %
-  \citePpc{white2006}{679}{(6)},                                         %
-  \citerpgc{shin2008}{294}{0470725648}{(9.69)}                           %
-  }                                                                      %
-\label{prop:Hv}                                                          %
-%------------------------------------------------------------------------%
-Let $\estHv(\omega)$ be the \fnctd{Total Least Squares transfer function estimate} \xref{def:Hv}.
-\propbox{
-  \estHv(\omega) \eqd
-  \frac{\ds2\Swyx(\omega)}
-       {\ds\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}^2}}
-  }
-\end{proposition}
-\begin{proof}
-\begin{align*}
-  \estHv(\omega)
-    &= \brlr{\estHs(\omega; s)}_{s=1}
-    && \text{by \prefp{thm:Hs_lim}}
-  \\&= \brlr{
-       \frac{\ds 2s^2\Swyx(\omega)}
-         {\ds  s^2\Swxx(\omega)-\Swyy(\omega) +
-          \sqrt{\brs{s^2\Swxx(\omega)-\Swyy(\omega)}^2 + 4s^2\abs{\Swxy(\omega)}^2}
-         }}_{s=1}
-    && \text{by \prefp{prop:Hs}}
-  \\&= \frac{\ds2\Swyx(\omega)}
-            {\ds\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\Swxx(\omega)-\Swyy(\omega)}^2 + 4\abs{\Swxy(\omega)}^2}}
-\end{align*}
-\end{proof}
-
-%%---------------------------------------
-%\begin{proposition}
-%\footnote{
-%  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
-%  %\citePpc{white2006}{679}{(6)},
-%  }
-%\label{prop:Hkappa}
-%%---------------------------------------
-%Let $\estHkp(\omega)$ be defined as in \prefpp{def:Hkp}.
-%\propboxt{
-%  The \fnctd{transfer function estimate $\estHkp(\omega; \kappa)$} is defined as
-%  \\\indentx$\ds
-%  \estHkp(\omega) \eqd
-%  \frac{2\kappa(\omega)\Swyx(\omega)}
-%       {\kappa(\omega)\Swxx(\omega)-\Swyy(\omega) + \sqrt{\brs{\kappa(\omega)\Swxx(\omega)-\Swyy(\omega)}^2 + 4\kappa(\omega)\abs{\Swxy(\omega)}^2}}
-%  $
-%  }
-%\end{proposition}
-
 %=======================================
 \section{Least squares estimates of non-linear systems}
 %=======================================
@@ -1216,11 +1188,11 @@ Let $\estHv(\omega)$ be the \fnctd{Total Least Squares transfer function estimat
   \centering
   \begin{tabular}{|c|c|}
     \hline
-     \tbox{\includegraphics{graphics/opT_estH_cnoise.pdf}}
+     \tbox{\includegraphics{graphics/opT_estG_estH_cnoise.pdf}}
     &\tbox{\includegraphics{graphics/opT_estG_estH_mnoise.pdf}}
-    \\(A) \ope{Least squares estimation} for             &(B) \ope{Least squares estimations} for 
+    \\(A) \ope{Least squares estimation} for             &(B) \ope{Least squares estimations} for
     \\    \structe{communications additive noise model}  &    \structe{measurement additive noise model}
-    \\    \xref{cor:H1LSa}                               &    \xref{cor:H1LSb}
+    \\    \xref{thm:estHls_A}                            &    \xref{thm:estHls_B} %\xref{cor:H1LSb}
     \\\hline
   \end{tabular}
   \caption{Least Square estimation \xref{thm:estHls}\label{fig:estHls}}
@@ -1241,7 +1213,7 @@ The answer depends on how you define ``the best".
 The defintion of ``best" or ``optimal" is given by a \fncte{cost function} $\fCost(\estH)$.
 There are several possible cost functions.
 \pref{def:fCost} provides some.
-%The answer is the estimator $\estHa$ \xref{def:H1}, as demonstrated in the next theorem. 
+%The answer is the estimator $\estHa$ \xref{def:H1}, as demonstrated in the next theorem.
 \pref{thm:estHls} then demonstrates optimal solutions with respect to these definitions.
 In particular, the theorem demonstrates
 the optimal \prope{LTI} \prope{least-squares} estimates of $\opT$ are
@@ -1260,6 +1232,7 @@ the optimal \prope{LTI} \prope{least-squares} estimates of $\opT$ are
 \begin{definition}
 \label{def:fCost}
 %---------------------------------------
+Let $\opS$ be a system defined as in \prefpp{fig:estHls} (A) or (B).
 Define the following \fncte{cost function}s for spectral \prope{least-squares} estimates:
 \defbox{\begin{array}{>{\ds}r*{3}{c>{\ds}l}}
       \fCostrq(\estG) &\eqd& \opFT\norm{\rvr(n)-\rvq(n)}^2 &\eqd& \opFT\inprod{\rvr(n)-\rvq(n)}{\rvr(0)-\rvq(0)} &\eqd& \opFT\pE\brp{\brs{\rvr(n)-\rvq(n)}\brs{\rvr(0)-\rvq(0)}^\ast}
@@ -1267,11 +1240,16 @@ Define the following \fncte{cost function}s for spectral \prope{least-squares} e
   \end{array}}
 \end{definition}
 
+
+
+
+
+
 %---------------------------------------
-\begin{theorem}[Optimal LTI least-squares estimate $\estH$ of $\opH$]
-\label{thm:estHls}
+\begin{theorem}
+\label{thm:estHls_A}
 %---------------------------------------
-Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (A).
 Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
 \thmbox{
   \brbr{\begin{array}{FMMD}
@@ -1282,8 +1260,8 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
   \end{array}}
   \implies
   \brbl{\begin{array}{F>{\ds}r>{\ds}c>{\ds}l}
-      (1).&\argmin_{\estG}\fCostrq(\estG) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
-    \\(2).&\argmin_{\estH}\fCostsy(\estH) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)}
+      (1).&\argmin_{\estG}\fCostrq(\estG) &=& \frac{\Swyx(\omega)+\Swyu(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
+    \\(2).&\argmin_{\estH}\fCostsy(\estH) &=& \frac{\Swyx(\omega)+\Swuy(\omega)}{\Swxx(\omega)}
     \\
   \end{array}}
   }
@@ -1296,7 +1274,8 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
     {\begin{align*}
       &\boxed{\fCostrq\brp{\estG}}
       \\&\eqd \opDTFT\pE\brp{\brs{\rvr(n)-\rvq(n)}\brs{\rvr(0)-\rvq(0)}^\ast}
-        && \text{by \pref{def:fCost}}
+        && \text{by definition of $\fCostrq$}
+        && \text{by \xref{def:fCost}}
       \\&=    \opFT\brs{
                 \pE\brs{\rvr(n)\rvr^\ast(0)}
                -\pE\brs{\rvr(n)\rvq^\ast(0)}
@@ -1332,7 +1311,8 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\
       &\boxed{\fCostsy\brp{\estH}}
       \\&\eqd \opDTFT\pE\brp{\brs{{\rvs(n)-\rvy(n)}\brs{\rvs(0)-\rvy(0)}^\ast}}
-        && \text{by \pref{def:fCost}}
+        && \text{by definition of $\fCostsy$}
+        && \text{by \xref{def:fCost}}
       \\&=    \opFT\brs{
                 \pE\brs{\rvs(n)\rvs^\ast(0)}
                -\pE\brs{\rvs(n)\rvy^\ast(0)}
@@ -1358,7 +1338,239 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
         && \text{by definition of $\Swxy$}
         && \text{\xref{def:Swxy}}
       \\&= \boxed{
-           \Swss(\omega)\abs{\estH(\omega)}^2
+           \Swxx(\omega)\abs{\estH(\omega)}^2
+         - \estH(\omega)\brs{\Swxy(\omega)+\Swuy(\omega)}
+         - \estH^\ast(\omega)\brs{\Swxy(\omega)+\Swuy(\omega)}^\ast
+         + \Swyy(\omega)
+         }
+        &&\text{by (A)--(D) and}
+        &&\text{\prefpp{cor:GHz}}
+    \end{align*}}
+
+  \item lemma: \label{ilem:G1LS_R}
+    \begin{align*}
+      0 &= \pderiv{}{\estG_R}\fCostrq\brp{\estG}
+      \\&= \pderiv{}{\estG_R}\brp{
+               \Swpp\abs{\estG}^2
+             - \estG\Swpy
+             - \estG^\ast\Swpy^\ast
+             + \Swqq
+             }
+        && \text{by \prefp{ilem:H1LS_cost}}
+      \\&= \pderiv{}{\estG_R}\brp{
+               \Swpp\brs{\estG_R^2+\estG_I^2}
+             - (\estG_R+i\estG_I)\Swpy
+             - (\estG_R+i\estG_I)^\ast\Swpy^\ast
+             + \Swqq
+             }
+      \\&= 2\estG_R\Swpp - \Swpy - \Swpy^\ast + \cancelto{0}{\pderiv{}{\estG_R}\Swqq}
+        &&\text{because $\rvq$ does not vary with $\estG$}
+      \\&= 2\estG_R\Swpp  - 2\Real\Swpy
+      \\&= 2\estG_R\Swpp  - 2\Real\Swyp
+        && \text{by \prefp{cor:Swxy_sym}}
+      \\&= 2\estG_R\Swpp - 2\Real\Swyx - 2\Real\Swyu
+        && \text{by \prefp{thm:opT_cnoise}}
+      \\&\implies \boxed{\estG_R(\omega) = \frac{\Real\Swyx(\omega)+\Real\Swyu(\omega)}{\Swpp(\omega)}}
+    \end{align*}
+
+  \item lemma: \label{ilem:H1LS_R}
+    \begin{align*}
+      0 &= \pderiv{}{\estH_R}\fCostsy\brp{\estH}
+      \\&= \pderiv{}{\estH_R}\brp{
+               \Swxx\abs{\estH}^2
+             - \estH\Swxy
+             - \estH^\ast\Swxy^\ast
+             + \Swyy
+             }
+        && \text{by \prefp{ilem:H1LS_cost}}
+      \\&= \pderiv{}{\estH_R}\brp{
+               \Swxx\brs{\estH_R^2+\estH_I^2}
+             - (\estH_R+i\estH_I)\Swxy
+             - (\estH_R+i\estH_I)^\ast\Swxy^\ast
+             + \Swyy
+             }
+      \\&= 2\estH_R\Swxx - \Swxy - \Swxy^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swyy}
+        &&\text{because $\rvy$ does not vary with $\estH$}
+      \\&= 2\estH_R\Swxx  - 2\Real\Swxy
+      \\&= 2\estH_R\Swxx  - 2\Real\Swyx
+        && \text{by \prefp{cor:Swxy_sym}}
+      \\&\implies \boxed{\estH_R(\omega) = \frac{\Real\Swyx(\omega)}{\Swxx(\omega)}}
+    \end{align*}
+
+  \item lemma: \label{ilem:G1LS_I}
+    \begin{align*}
+      0
+        &= \pderiv{}{\estG_I}\fCostrq\brp{\estG}
+      \\&= \pderiv{}{\estG_I}
+           \brp{\Swpp\abs{\estG}^2 - \estG\Swpy - \estG^\ast\Swpy^\ast + \Swqq}
+        && \text{by \prefp{ilem:H1LS_cost}}
+      \\&= \mathrlap{
+           \pderiv{}{\estG_I}\brs{
+           \Swpp\brs{\estG_R^2+\estG_I^2}
+         - (\estG_R+i\estG_I)\Swpy
+         - (\estG_R-i\estG_I)\Swpy^\ast
+         + \Swqq}
+           }
+      \\&= 2\estG_I\Swpp - i\Swpy + i\Swpy^\ast + \cancelto{0}{\pderiv{}{\estG_R}\Swqq}
+        && \text{because $\rvq$ does not vary with $\estG$}
+      \\&= 2\estG_I\Swpp - 2i(i\Imag\Swpy)
+      \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyp)
+        && \text{by \prefp{cor:Swxy_sym}}
+      \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyx+i\Imag\Swyu)
+        && \text{by \prefp{thm:opT_mnoise}}
+      \\&= 2\estG_I\Swpp - 2\Imag(\Swyx+\Swyu)
+      \\&\implies \boxed{\estG_I(\omega) = \frac{\Imag\Swyx(\omega)+\Imag\Swyu(\omega)}{\Swpp(\omega)}}
+     \end{align*}
+
+  \item lemma: \label{ilem:H1LS_I}
+    \begin{align*}
+      0
+        &= \pderiv{}{\estH_I}\fCostsy\brp{\estH}
+      \\&= \pderiv{}{\estH_I}
+           \brp{\Swxx\abs{\estH}^2 - \estH(\Swxy+\Swuy) - \estH^\ast(\Swxy^\ast+\Swuy^\ast) + \Swyy}
+        && \text{by \prefp{ilem:H1LS_cost}}
+      \\&= \mathrlap{
+           \pderiv{}{\estH_I}\brs{
+           \Swxx\brs{\estH_R^2+\estH_I^2}
+         - (\estH_R+i\estH_I)(\Swxy+\Swuy)
+         - (\estH_R-i\estH_I)(\Swxy+\Swuy)^\ast
+         + \Swyy}
+         }
+      \\&= 2\estH_I\Swxx - i(\Swxy+\Swuy) + i(\Swxy+\Swuy)^\ast + \cancelto{0}{\pderiv{}{\estH_R}\Swyy}
+        && \text{because $\rvq$ does not vary with $\estH$}
+      \\&= 2\estH_I\Swxx - 2i(i\Imag\Swxy) - 2i(i\Imag\Swuy)
+      \\&= 2\estH_I\Swxx + 2i(i\Imag\Swyx) - 2i(i\Imag\Swyu)
+        && \text{by \prefp{cor:Swxy_sym}}
+      \\&= 2\estH_I\Swxx - 2\Imag\Swyx - 2\Imag\Swyu
+      \\&\implies \boxed{\estH_I(\omega) = \frac{\Imag\Swyx(\omega)+\Imag\Swyu(\omega)}{\Swxx(\omega)}}
+     \end{align*}
+
+  \item Proof for $\estG\eqd\estGls$ and $\estH\eqd\estHls$ expressions:
+    \begin{align*}
+      \boxed{\estG(\omega)}
+        &= \estG_R(\omega) + i\estG_I(\omega)
+      \\&= \frac{ \Real\Swyp(\omega)}{\Swpp(\omega)}
+         + \frac{i\Imag\Swyp(\omega)}{\Swpp(\omega)}
+        && \text{by \pref{ilem:G1LS_R} and \pref{ilem:G1LS_I}}
+      \\&= \frac{\Swyp(\omega)}{\Swpp(\omega)}
+      \\&= \frac{\Swyx(\omega)}{\Swpp(\omega)}
+        && \text{by \prefp{thm:opT_mnoise}}
+      \\&= \boxed{\frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}}
+        && \text{by \prefp{thm:xvy}}
+      \\
+      \boxed{\estH(\omega)}
+        &= \estH_R(\omega) + i\estH_I(\omega)
+      \\&= \frac{ \Real\Swyp(\omega)}{\Swxx(\omega)}
+         + \frac{i\Imag\Swyp(\omega)}{\Swxx(\omega)}
+        && \text{by \pref{ilem:H1LS_R} and \pref{ilem:H1LS_I}}
+      \\&= \frac{ \Real\Swyx(\omega) +\Real\Swyu(\omega)}{\Swxx(\omega)}
+         + \frac{i\Imag\Swyx(\omega)+i\Imag\Swyu(\omega)}{\Swxx(\omega)}
+        && \text{by \prefp{thm:opT_mnoise}}
+      \\&= \boxed{\frac{\Swyx(\omega)+\Swyu(\omega)}{\Swxx(\omega)}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:estHls_A}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
+Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
+\thmbox{
+  \brbr{\begin{array}{FMMD}
+      (A).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{WSS}          & and
+    \\(B).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{uncorrelated} & and
+    \\(C).& $\pE\rvu=\pE\rvv=0$            & (\prope{zero-mean})  & and
+    \\(D).& $\estGls$ and $\estHls$ are    & \prope{LTI}
+  \end{array}}
+  \implies
+  \brbl{\begin{array}{F>{\ds}r>{\ds}c>{\ds}l}
+      (1).&\argmin_{\estG}\fCostrq(\estG) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
+    \\(2).&\argmin_{\estH}\fCostsy(\estH) &=& \frac{\Swyx(\omega)}{\Swxx(\omega)}
+    \\
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Define shorthand function names $\estG\eqd\estGls$ and $\estH\eqd\estHls$.
+
+  \item lemma (expanded forms for cost functions): \label{ilem:H1LS_cost}
+    {\begin{align*}
+      &\boxed{\fCostrq\brp{\estG}}
+      \\&\eqd \opDTFT\pE\brp{\brs{\rvr(n)-\rvq(n)}\brs{\rvr(0)-\rvq(0)}^\ast}
+        && \text{by definition of $\fCostrq$}
+        && \text{by \xref{def:fCost}}
+      \\&=    \opFT\brs{
+                \pE\brs{\rvr(n)\rvr^\ast(0)}
+               -\pE\brs{\rvr(n)\rvq^\ast(0)}
+               -\pE\brs{\rvq(n)\rvr^\ast(0)}
+               +\pE\brs{\rvq(n)\rvq^\ast(0)}
+               }
+        && \text{by \prope{linearity} of $\pE$}
+        && \text{\xref{thm:pE_linop}}
+      \\&\eqd \opFT\brs{
+                \Rrr(m)
+               -\Rrq(m)
+               -\Rqr(m)
+               +\Rqq(m)
+               }
+        && \text{by definition of $\Rxy$}
+        && \text{\xref{def:Rxym}}
+      \\&\eqd \brs{
+                \Swrr(\omega)
+               -\Swrq(\omega)
+               -\Swqr(\omega)
+               +\Swqq(\omega)
+               }
+        && \text{by definition of $\Swxy$}
+        && \text{\xref{def:Swxy}}
+      \\&= \boxed{
+           \Swpp(\omega)\abs{\estG(\omega)}^2
+         - \estG(\omega)\Swpy(\omega)
+         - \brs{\estG(\omega)\Swpy(\omega)}^\ast
+         + \Swqq(\omega)
+           }
+        &&\text{by (A)--(D) and}
+        &&\text{\prefp{cor:GHz}}
+      \\
+      &\boxed{\fCostsy\brp{\estH}}
+      \\&\eqd \opDTFT\pE\brp{\brs{{\rvs(n)-\rvy(n)}\brs{\rvs(0)-\rvy(0)}^\ast}}
+        && \text{by definition of $\fCostsy$}
+        && \text{by \xref{def:fCost}}
+      \\&=    \opFT\brs{
+                \pE\brs{\rvs(n)\rvs^\ast(0)}
+               -\pE\brs{\rvs(n)\rvy^\ast(0)}
+               -\pE\brs{\rvy(n)\rvs^\ast(0)}
+               +\pE\brs{\rvy(n)\rvy^\ast(0)}
+               }
+        && \text{by \prope{linearity} of $\pE$}
+        && \text{\xref{thm:pE_linop}}
+      \\&\eqd \opFT\brs{
+                \Rss(m)
+               -\Rsy(m)
+               -\Rys(m)
+               +\Ryy(m)
+               }
+        && \text{by definition of $\Rxy$}
+        && \text{\xref{def:Rxym}}
+      \\&\eqd \brs{
+                \Swss(\omega)
+               -\Swsy(\omega)
+               -\Swys(\omega)
+               +\Swyy(\omega)
+               }
+        && \text{by definition of $\Swxy$}
+        && \text{\xref{def:Swxy}}
+      \\&= \boxed{
+           \Swxx(\omega)\abs{\estH(\omega)}^2
          - \estH(\omega)\Swxy(\omega)
          - \brs{\estH(\omega)\Swxy(\omega)}^\ast
          + \Swyy(\omega)
@@ -1388,6 +1600,8 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= 2\estG_R\Swpp  - 2\Real\Swpy
       \\&= 2\estG_R\Swpp  - 2\Real\Swyp
         && \text{by \prefp{cor:Swxy_sym}}
+      \\&= 2\estG_R\Swpp  - 2\Real\Swyx
+        && \text{by \prefp{thm:opT_mnoise}}
       \\&\implies \boxed{\estG_R(\omega) = \frac{\Real\Swyx(\omega)}{\Swpp(\omega)}}
     \end{align*}
 
@@ -1434,7 +1648,9 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
       \\&= 2\estG_I\Swpp - 2i(i\Imag\Swpy)
       \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyp)
         && \text{by \prefp{cor:Swxy_sym}}
-      \\&= 2\estG_I\Swpp - 2\Imag\Swyp
+      \\&= 2\estG_I\Swpp + 2i(i\Imag\Swyx)
+        && \text{by \prefp{thm:opT_mnoise}}
+      \\&= 2\estG_I\Swpp - 2\Imag\Swyx
       \\&\implies \boxed{\estG_I(\omega) = \frac{\Imag\Swyx(\omega)}{\Swpp(\omega)}}
      \end{align*}
 
@@ -1487,7 +1703,7 @@ Let $\norm{\rvX}^2\eqd\pE\brs{\rvX\rvX^\ast}$.
 \end{enumerate}
 \end{proof}
 
-It follows immediately from \prefpp{thm:estHls} that, in the special case
+It follows immediately from \prefpp{thm:estHls_B} that, in the special case
 of no input noise ($\rvu(n)=0$), $\estHa$ is the optimal
 least-squares estimate of $\FH$ (next corollary).
 
@@ -1503,7 +1719,7 @@ least-squares estimate of $\FH$ (next corollary).
 Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
 \corbox{
   \brb{\begin{array}{FMD}
-      (1). & hypotheses of \pref{thm:estHls} & and 
+      (1). & hypotheses of \pref{thm:estHls_B} & and
     \\(2). & $\rvu(n)=0$
   \end{array}}
   \implies
@@ -1689,11 +1905,11 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
 
 
 %---------------------------------------
-\begin{theorem} %[LTI no output noise]
+\begin{theorem}
 \footnote{
   \citePpc{wicks1986}{898}{has additional $s$ in denominator},
-  \citerpgc{shin2008}{293}{0470725648}{(9.67) with $\kappa(\omega)=s^2$},         %
-  \citePpc{white2006}{679}{(6) with $\kappa(\omega)=s^2$}                        %
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
+  \citePpc{white2006}{679}{(6)}
   }
 \label{thm:estHk}
 \label{thm:estHs}
@@ -1701,15 +1917,15 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
 Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
 \thmboxt{
   $\estHkp(\omega)$ \xref{def:Hkp} is the \propb{optimal least squares estimate} if
-  \\\indentx$\fCost(\estHls)=\Swuu$ and 
+  \\\indentx$\fCost(\estHls)=\Swuu$ and
   \\\indentx$\Swvv(\omega)=\kappa(\omega)\Swuu(\omega)$
   }
 \end{theorem}
 \begin{proof}
 \begin{enumerate}
-  \item 
+  \item
     \begin{align*}
-      \Swvv 
+      \Swvv
         &= \Swyy - \Swqq
         && \text{by \prefp{cor:xvy}}
       \\&= \Swyy - \Swpq\estH
@@ -1717,7 +1933,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
       \\&= \Swyy - \Swxy\estH
         && \text{by \prefp{thm:opT_mnoise}}
       \\
-      \Swuu 
+      \Swuu
         &= \Swxx - \Swpp
         && \text{by \prefp{cor:xvy}}
       \\&= \Swxx - \frac{\Swqp}{\estH}
@@ -1746,7 +1962,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
                 \eqd\frac{F(\omega)}{G(\omega)}}}
     \end{align*}
 
-  \item 
+  \item
     \begin{align*}
       0 &= \frac{1}{2}G^20 = \frac{1}{2}G^2\pderiv{}{\estH_R}\Swuu
       \\&= \frac{1}{2}G^2\frac{(F'G-G'F)}{G^2}
@@ -1762,18 +1978,18 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
       \\&= \frac{1}{2}\brs{2\estH_I\Swxx - i\Swxy + i\Swxy^\ast}G - \frac{1}{2}2\estH_IF
       \\&= \estH_I\Swxx G + G\Imag\Swxy - \estH_IF
       \\
-      0 
+      0
         &= 0 + i0
       \\&= \brs{\estH_R\Swxx G - G\Real\Swxy - \estH_RF}
          +i\brs{\estH_I\Swxx G + G\Imag\Swxy - \estH_IF}
       \\&= \estH\Swxx G - \Swyx G - \estH F
-      \\&= \estH\Swxx\brp{\kappa+\abs{\estH}^2} - \Swyx\brp{\kappa+\abs{\estH}^2} 
+      \\&= \estH\Swxx\brp{\kappa+\abs{\estH}^2} - \Swyx\brp{\kappa+\abs{\estH}^2}
          - \estH\brp{\abs{\estH}^2\Swxx - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
-      \\&= \estH\Swxx\brp{\kappa+\cancelto{}{\abs{\estH}^2}} - \Swyx\brp{\kappa+\abs{\estH}^2} 
+      \\&= \estH\Swxx\brp{\kappa+\cancelto{}{\abs{\estH}^2}} - \Swyx\brp{\kappa+\abs{\estH}^2}
          - \estH\brp{\cancelto{}{\abs{\estH}^2\Swxx} - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
-      \\&= \kappa\estH\Swxx - \Swyx\brp{\kappa+\abs{\estH}^2} 
+      \\&= \kappa\estH\Swxx - \Swyx\brp{\kappa+\abs{\estH}^2}
          + \brp{ \estH^2\Swxy + \abs{\estH}^2\Swxy^\ast - \estH\Swyy}
-      \\&= \kappa\estH\Swxx - \kappa\Swyx - \cancelto{}{\Swyx\abs{\estH}^2} 
+      \\&= \kappa\estH\Swxx - \kappa\Swyx - \cancelto{}{\Swyx\abs{\estH}^2}
          + \brp{ \estH^2\Swxy + \cancelto{}{\abs{\estH}^2\Swxy^\ast} - \estH\Swyy}
       \\&=  \estH^2\Swxy + \estH\brs{\kappa\Swxx - \Swyy} - \kappa\Swxy^\ast
       \\
