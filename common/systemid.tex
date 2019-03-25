@@ -1481,7 +1481,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (A) or (B).
 \end{enumerate}
 \end{proof}
 
-Using \pref{thm:estHls} (previous) we can see that the optimal \propb{least-squares} operators $\estGls$ and 
+Using \pref{thm:estHls} (previous) we can see that the optimal \propb{least-squares} operators $\estGls$ and
 $\estHls$ for the \propb{non-linear} operator $\opT$ in \prefpp{fig:estHls} (A) and (B) are (next two corollaries)
 \\\indentx$\ds\boxed{
   \begin{array}{F>{\ds}r>{\ds}c>{\ds}cM}
@@ -1516,7 +1516,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (A).
   \\&= \frac{\Swyx(\omega)}{\Swxx(\omega)+\Swuu(\omega)}
     && \text{by \prefp{thm:xvy}}
   \\
-  \estHls 
+  \estHls
     &= \frac{\Swyx(\omega)}{\Swxx(\omega)}
     && \text{by \prefp{thm:estHls}}
 \end{align*}
@@ -1542,7 +1542,7 @@ Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls} (B).
 \end{corollary}
 \begin{proof}
 \begin{align*}
-  \estG 
+  \estG
     &= \frac{\Swyx(\omega)}{\Swpp(\omega)}
     && \text{by \prefp{thm:estHls}}
   \\&= \frac{\Swyx(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
@@ -1764,10 +1764,19 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
 \label{thm:estHs}
 %---------------------------------------
 Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
-\thmboxt{
-  $\estHkp(\omega)$ \xref{def:Hkp} is the \propb{optimal least squares estimate} if
-  \\\indentx$\fCost(\estHls)=\Swuu$ and
-  \\\indentx$\Swvv(\omega)=\kappa(\omega)\Swuu(\omega)$
+Let $\estHkp(\omega)$ be the transfer function estimate defined in \prefpp{def:Hkp}.
+%Let \\\indentx$\norm{\Swxx(\omega)}^2\eqd\inprod{\Swxx(\omega)}{\Swxx(\omega)}\eqd\pE ...$
+\thmbox{
+  \brb{\begin{array}{FMD}
+      (1).& There exists $\kappa(\omega)$ such that     &
+        \\& $\Swvv(\omega)=\kappa(\omega)\Swuu(\omega)$ & and
+    \\(2).& $\fCost(\estHls)=\Swuu(\omega)$             &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{>{\ds}rc>{\ds}l}
+    \argmin_{\estH}\fCost(\estH) &=& \estHkp(\omega)
+    \\\mc{3}{D}{($\estHkp$ is the ``optimal" estimator for minimizing system noise)}
+  \end{array}}
   }
 \end{theorem}
 \begin{proof}
@@ -1775,20 +1784,14 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
   \item
     \begin{align*}
       \Swvv
-        &= \Swyy - \Swqq
-        && \text{by \prefp{cor:xvy}}
-      \\&= \Swyy - \Swpq\estH
-        && \text{by \prefp{cor:Swxy}}
-      \\&= \Swyy - \Swxy\estH
-        && \text{by \prefp{thm:opT_mnoise}}
+        &= \Swyy - \Swqq               && \text{by \prefp{cor:xvy}}
+      \\&= \Swyy - \Swpq\estH          && \text{by \prefp{cor:Swxy}}
+      \\&= \Swyy - \Swxy\estH          && \text{by \prefp{thm:opT_mnoise}}
       \\
       \Swuu
-        &= \Swxx - \Swpp
-        && \text{by \prefp{cor:xvy}}
-      \\&= \Swxx - \frac{\Swqp}{\estH}
-        && \text{by \prefp{cor:Swxy}}
-      \\&= \Swxx - \frac{\Swyx}{\estH}
-        && \text{by \prefp{thm:opT_mnoise}}
+        &= \Swxx - \Swpp               && \text{by \prefp{cor:xvy}}
+      \\&= \Swxx - \frac{\Swqp}{\estH} && \text{by \prefp{cor:Swxy}}
+      \\&= \Swxx - \frac{\Swyx}{\estH} && \text{by \prefp{thm:opT_mnoise}}
       \\
       \Swuu\brs{\abs{\estH}^2+\kappa}
         &= \abs{\estH}^2\Swuu +\kappa\Swuu
@@ -1808,32 +1811,63 @@ Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
         \boxed{
           \Swuu(\omega) = \frac{\abs{\estH(\omega)}^2\Swxx(\omega) - \estH(\omega)\Swxy(\omega) - \estH^\ast(\omega)\Swxy^\ast(\omega) + \Swyy(\omega)}
                        {\kappa(\omega)+\abs{\estH(\omega)}^2}
-                \eqd\frac{F(\omega)}{G(\omega)}}}
+                }}
     \end{align*}
 
-  \item
+  \item Let \label{item:estHk_FG}
+        $\begin{array}[t]{rclD}
+             F &\eqd& \abs{\estH(\omega)}^2\Swxx(\omega) - \estH(\omega)\Swxy(\omega) - \estH^\ast(\omega)\Swxy^\ast(\omega) + \Swyy(\omega) & and
+           \\G &\eqd& \kappa(\omega)+\abs{\estH(\omega)}^2
+        \end{array}$
+
+  \item lemma $\brp{\pderiv{}{\estH_R}\Swuu}$: \label{ilem:estHk_HR}
     \begin{align*}
-      0 &= \frac{1}{2}G^20 = \frac{1}{2}G^2\pderiv{}{\estH_R}\Swuu
+      \boxed{0}
+        &= \frac{1}{2}G^20 = \frac{1}{2}G^2\pderiv{}{\estH_R}\Swuu
+        && \text{set $\pderiv{}{\estH_R}\Swuu=0$ to find optimum $\estH_R$}
       \\&= \frac{1}{2}G^2\frac{(F'G-G'F)}{G^2}
         && \text{by \thme{Quotient Rule}}
       \\&= \frac{1}{2}(F'G-G'F)
       \\&= \frac{1}{2}\brs{2\estH_R\Swxx - \Swxy - \Swxy^\ast}G - \frac{1}{2}2\estH_RF
-      \\&= \estH_R\Swxx G - G\Real\Swxy - \estH_RF
-      \\
+        && \text{by definition of $F$, $G$}
+        && \text{\xref{item:estHk_FG}}
+      \\&= \boxed{\estH_R\Swxx G - G\Real\Swxy - \estH_RF}
+    \end{align*}
+
+  \item lemma $\brp{\pderiv{}{\estH_I}\Swuu}$: \label{ilem:estHk_HI}
+    \begin{align*}
+      \boxed{0}
       0 &= \frac{1}{2}G^20 = \frac{1}{2}G^2\pderiv{}{\estH_I}\Swuu
+        && \text{set $\pderiv{}{\estH_I}\Swuu=0$ to find optimum $\estH_I$}
       \\&= \frac{1}{2}G^2\frac{(F'G-G'F)}{G^2}
         && \text{by \thme{Quotient Rule}}
       \\&= \frac{1}{2}(F'G-G'F)
       \\&= \frac{1}{2}\brs{2\estH_I\Swxx - i\Swxy + i\Swxy^\ast}G - \frac{1}{2}2\estH_IF
-      \\&= \estH_I\Swxx G + G\Imag\Swxy - \estH_IF
-      \\
+        && \text{by definition of $F$, $G$}
+        && \text{\xref{item:estHk_FG}}
+      \\&= \boxed{\estH_I\Swxx G + G\Imag\Swxy - \estH_IF}
+    \end{align*}
+
+  \item
+    \begin{align*}
       0
         &= 0 + i0
+         = \frac{1}{2}G^20
+         + \frac{1}{2}G^20
+         = \frac{1}{2}G^2\pderiv{}{\estH_R}\Swuu
+         +i\frac{1}{2}G^2\pderiv{}{\estH_I}\Swuu
       \\&= \brs{\estH_R\Swxx G - G\Real\Swxy - \estH_RF}
          +i\brs{\estH_I\Swxx G + G\Imag\Swxy - \estH_IF}
+        && \text{by \pref{ilem:estHk_HR} and \pref{ilem:estHk_HI}}
+      \\&= \mathrlap{
+             \estH\Swxx G - \Swxy^\ast G - \estH F
+             \quad\text{because $\Real(z) + i\Imag(z)=z$ and $\Real(z) - i\Imag(z)=z^\ast$}
+             }
       \\&= \estH\Swxx G - \Swyx G - \estH F
+        && \text{by \prefp{cor:Swxy_sym}}
       \\&= \estH\Swxx\brp{\kappa+\abs{\estH}^2} - \Swyx\brp{\kappa+\abs{\estH}^2}
          - \estH\brp{\abs{\estH}^2\Swxx - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
+        && \text{by $F$, $G$ defs.}
       \\&= \estH\Swxx\brp{\kappa+\cancelto{}{\abs{\estH}^2}} - \Swyx\brp{\kappa+\abs{\estH}^2}
          - \estH\brp{\cancelto{}{\abs{\estH}^2\Swxx} - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
       \\&= \kappa\estH\Swxx - \Swyx\brp{\kappa+\abs{\estH}^2}
