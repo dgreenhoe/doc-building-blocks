@@ -28,6 +28,16 @@
 %---------------------------------------
 %---------------------------------------
 \begin{definition}
+\label{def:randseq}
+%---------------------------------------
+\defboxt{
+    A \fnctd{random sequence} is a \fncte{sequence} \ifsxref{seq}{def:seq} 
+  \\over a \structe{probability space} \xref{def:ps}.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
 \footnote{
   \citerpgc{papoulis1984}{263}{0070484686}{$R_{xy}(m)=E\brb{\rvx(m)\rvy^\ast(0)}$},
   \citerpgc{cadzow}      {341}{0023180102}{$r_{xy}(m)=E\brs{\rvx(m)\rvy^\ast(0)}$},
@@ -376,7 +386,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
    \\&= \brlr{\ZSyx^{\ast\ast}\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
      && \text{by \prefp{cor:ZSxy}}
    \\&= \brlr{\ZSyx\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
-     && \text{by \prope{???} property of \structd{$\invo$-algebra}s}
+     && \text{by \prope{involutory} property of \structd{$\invo$-algebra}s}
      && \text{\xref{def:staralg}}
    \\&= \ZSyx\brp{\frac{1}{e^{i\omega\ast}}}
    \\&= \ZSyx\brp{e^{i\omega}}
@@ -391,7 +401,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
    \\&= \brlr{\ZSxx^{\ast\ast}\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
      && \text{by \prefp{cor:ZSxy}}
    \\&= \brlr{\ZSxx\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
-     && \text{by \prope{???} property of \structd{$\invo$-algebra}s}
+     && \text{by \prope{involutory} property of \structd{$\invo$-algebra}s}
      && \text{\xref{def:staralg}}
    \\&= \ZSxx\brp{\frac{1}{e^{i\omega\ast}}}
    \\&= \ZSxx\brp{e^{i\omega}}
@@ -408,6 +418,125 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
 \end{align*}
 \end{proof}
 
+%=======================================
+\section{Estimating correlation}
+%=======================================
+The \fncte{correlation function} $\Rxy(m)$ \xref{def:Rxym} is a statistical property of 
+\fncte{random sequences} \xref{def:randseq} over a 
+\structe{probability space} $\ps$ \xref{def:ps}. 
+In academic posits, it can often be calculated because the \fncte{probability function} $\psP$ is \emph{known}.
+However in real-world applications, $\psP$ is \emph{not} known\ldots
+and as such the true $\Rxy$ is also not known. 
+But, $\Rxy$ can of course be \emph{estimated}. 
+The following definition gives a very common estimator of the true $\Rxy(m)$ of a \prope{wide-sense stationary} \xref{def:wss}
+\fncte{random process} $\rvx(n)$.
+
+%---------------------------------------
+\begin{definition}
+\label{def:estRxy}
+%---------------------------------------
+\defbox{
+  \estRxy(m) \eqd \frac{1}{\xN}\sum_{n=1}^\xN \rvx(n) \rvy^\ast(n+m)
+  }
+\end{definition}
+
+For \prope{wide-sense stationary} processes, the estimator $\estRxy(m)$ 
+is \prope{unbiased} (next).
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\propbox{
+  \brb{\begin{array}{M}
+    $\rvx(n)$ is \prope{wide-sense stationary}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rclD}
+    \pE\estRxy(m) &=& \Rxy(m) & (\prope{unbiased})
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \pE\estRxy(m) 
+    &= \pE\estRxy(n,m) 
+    && \text{by \prope{wide-sense stationary} hypothesis}
+  \\&\eqd \pE\frac{1}{\xN}\sum_{k=1}^\xN \rvx(k+n) \rvy^\ast(k+n+m)
+    && \text{by definition of $\estRxy$}
+    && \text{\xref{def:estRxy}}
+  \\&= \frac{1}{\xN}\sum_{n=1}^\xN \pE\brs{\rvx(k+n) \rvy^\ast(k+n+m)}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
+  \\&\eqd \frac{1}{\xN}\sum_{n=1}^\xN \Rxy(n,m)
+    && \text{by definition of $\Rxy(n,m)$}
+    && \text{\xref{def:Rxy}}
+  \\&\eqd \frac{1}{\xN}\sum_{n=1}^\xN \Rxy(m)
+    && \text{by \prope{wide-sense stationary} hypothesis}
+  \\&= \Rxy(m)
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Estimating spectral density}
+%=======================================
+Like the \fncte{cross-correlation function} $\Rxy(m)$, the \fncte{cross-spectral density} $\Swxy(\omega)$ 
+not known, but can be \emph{estimated}. 
+There are a number of ways of doing this of course.
+But intuitively, we might start with the more or less obvious.
+\begin{align*}
+  \Swxy(\omega) 
+    &\eqd \brs{\opDTFT\Rxy(m)}(\omega)
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+  \\&\eqd \brs{\opDTFT\pE\brs{\rvx(m)\rvy^\ast(0)}}(\omega)
+    && \text{by definition of $\Rxy(m)$}
+    && \text{\xref{def:Rxym}}
+\end{align*}
+
+\ope{Linear operator}s \xref{def:linop} are not in general \prope{commutative}. 
+In particular, it is in general \emph{not true} that $\opDTFT\pE=\pE\opDTFT$.
+However, as a method of \ope{estimation}, we could give it a try:
+\begin{align*}
+  \Swxy(\omega) 
+    &= \opDTFT\pE\brs{\rvx(m)\rvy^\ast(0)}
+    && \text{by previous result}
+  \\&\eqa \pE\opDTFT\brs{\rvx(m)\rvy^\ast(0)}
+    && \text{by a little bit of mathematical recklessness}
+\end{align*}
+
+Note that
+\begin{listi}
+  \item The \ope{Discrete-time Fourier Transform} $\opDTFT\brs{\rvx(m)\rvy^\ast(0)}$
+        of the \prope{random} $\rvx\rvy$ product is itself \prope{random}.
+  \item The \ope{expectation operator} $\pE$ in front of this random sequence makes it 
+        \prope{non-random} (\prope{deterministic}).
+  \item The expectation of a random sequence can itself be estimated by simple \prope{averaging}.
+  \item Thus, one way to estimate the true $\Rxy(m)$ is to calculate the average of the Fourier Transforms of
+        $\rvx(n)$ and $\rvy(n)$.
+\end{listi}
+
+The proposal of using the Fourier Transforms averaging method goes back to Arthur Schuster's 1898 paper 
+to find ``hidden periodicities" in ``meteorological phenomena".\footnote{\citeP{schuster1898}}, and the
+average itself came to be known as the \fnctd{periodogram}. 
+Later it was discovered that the data must first be \ope{smoothed} for the estimate to be ``\prope{consistent}".
+Peter Welch's 1967 paper introduced a periodogram of data that was first smoothed using 
+\fncte{window functions}.\footnote{\citeP{welch1967}}
+This method is now commonly called ``\ope{Welch's Method}".
+
+%=======================================
+\section{Spectral Power}
+%=======================================
+The term ``\fncte{spectral power}" is a bit of an oxymoron because ``spectral" 
+deals with leaving the time-domain for the frequency-domain, howbeit 
+the concept of power is solidly founded on the concept of time in that power = energy per time.
+
+However, \prope{Parseval's Theorem} \xref{prop:parseval_reconstruction}
+demonstrates that power in time can also be calculated in frequency.
+So, it makes some sense to speak of the term ``spectral power". 
+Moreover, one way to estimate this power is to average the 
+Fourier Transforms of the product $\rvx(n)\rvy(n)$\ldots that is, to use an estimate of 
+the auto-correlation $\Rxy(m)$.
+Thus, an alternate name for \fncte{auto-spectral density} is \fnctb{power spectral density} (PSD).
 
 
 
