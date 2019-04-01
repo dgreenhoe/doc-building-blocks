@@ -21,11 +21,8 @@
   \end{tabular}}
 
 %=======================================
-%\section{Random sequences}
-%=======================================
-%---------------------------------------
 \section{Definitions}
-%---------------------------------------
+%=======================================
 %---------------------------------------
 \begin{definition}
 \label{def:randseq}
@@ -91,8 +88,8 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s.\\
      && \text{by \prope{additive identity} property of $\fieldR$}
      && \text{\ifxref{algebra}{def:field}}
    \\&\eqd \Ryx^\ast(n+m,-m)
-     && \text{by definition of $\Rxy$}
-     && \text{\xref{def:Rxy}}
+     && \text{by definition of $\Rxy(n,m)$}
+     && \text{\xref{def:Rxynm}}
    \\
    \\
    \Rxx(n,m)
@@ -150,8 +147,8 @@ $\pmeanx(n)$, $\pvarx(n)$, $\Rxx(n,m)$, and $\Rxy(n,m)$ \xref{def:Rxynm}.
   \end{array}}\quad\implies$
   \\\quad$
   \brb{\begin{array}{FMlMlc>{\ds}l}
-     (1).&The \fnctd{mean}             & \pmeanx  & of $\rvx(n)$               is & \pmeanx &\eqd& \pE\brs{\rvx(0)}
-   \\(2).&The \fnctd{variance}         & \pvarx   & of $\rvx(n)$               is & \pvarx  &\eqd& \pE\brp{\brs{\rvx(0)-\pmeanx}^2}
+     (1).&The \fnctd{mean}              & \pmeanx  & of $\rvx(n)$               is & \pmeanx &\eqd& \pE\brs{\rvx(0)}
+   \\(2).&The \fnctd{variance}          & \pvarx   & of $\rvx(n)$               is & \pvarx  &\eqd& \pE\brp{\brs{\rvx(0)-\pmeanx}^2}
    \\(4).&The \fnctd{cross-correlation} & \Rxy(m)  & of $\rvx(n)$ and $\rvy(n)$ is & \Rxy(m) &\eqd& \pE\brs{\rvx(m)\rvy^\ast(0)}
    \\(3).&The \fnctd{auto-correlation}  & \Rxx(m)  & of $\rvx(n)$               is & \Rxx(m) &\eqd& \brlr{\Rxy(m)}_{\rvy=\rvx}
   %\\The \fnctd{auto-correlation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u) f(u) \du     %& \text{(\prope{auto-correlation operator})}
@@ -221,6 +218,65 @@ and $\Rxy$    the \fncte{cross-correlation} of $\rvx$ and $\rvy$.
 \end{align*}
 \end{proof}
 
+
+\begin{figure}[ht]\color{figcolor}
+\centering%
+\setlength{\unitlength}{0.08mm}
+\begin{tabular}{*{3}{c@{\hspace{1cm}}}c}
+$\Real{\Rxx(m)}$ & $\Imag{\Rxx(m)}$ & $|\Rxx(m)|$ & $\angle\Rxx(m)$
+\\
+\begin{picture}(340,300)(-150,-150)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines%
+  \color{figcolor}%
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \put(-100,   0){\line( 1,1){100} }
+  \put( 100,   0){\line(-1,1){100} }
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  \thicklines%
+  \color{figcolor}%
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \qbezier(0,0)( 20, 80)( 100, 100)
+  \qbezier(0,0)(-20,-80)(-100,-100)
+  \put( 100,   0){\line(0, 1){100} }
+  \put(-100,   0){\line(0,-1){100} }
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  \thicklines%
+  \color{figcolor}%
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \qbezier(0,100)( 20,20)( 100, 0)
+  \qbezier(0,100)(-20,20)(-100, 0)
+\end{picture}
+&
+\begin{picture}(340,300)(-150,-150)
+  \thicklines%
+  \color{figcolor}%
+  \put(-150,   0){\line(1,0){300} }
+  \put(   0,-150){\line(0,1){300} }
+  \put( 160,   0){\makebox(0,0)[l]{$f$} }
+  \put( 100,   0){\line(0, 1){100} }
+  \put(-100,   0){\line(0,-1){100} }
+  \put(-100,-100){\line(1, 1){200} }
+\end{picture}
+\\
+(\prope{symmetric}) & (\prope{anti-symmetric}) & (\prope{symmetric}) & (\prope{anti-symmetric})
+\end{tabular}
+\caption{
+   \fncte{auto-correlation} $\Rxx(m)$
+   \label{fig:Rxxm}
+   }
+\end{figure}
+
 %---------------------------------------
 \begin{corollary}
 \label{cor:Rxxm}
@@ -232,13 +288,18 @@ and $\Rxy(n,m)$  the \fncte{cross-correlation} of $\rvx$ and $\rvy$.
 Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
 \corbox{
   \brb{\begin{array}{FMD}
-      (A).&$\rvx$ and $\rvy$ are \prope{WSS} & and
-    \\(B).&$\opS$ is \prope{LTI}             &
+      (A).&$\rvx$ is \prope{WSS} & and
+    \\(B).&$\rvy$ is \prope{WSS} & and
+    \\(C).&$\opS$ is \prope{LTI} &
   \end{array}}
   \implies
   \brb{\begin{array}{Frc>{\ds}lDD}
-      (1).&\Rxx(m) &=& \Rxx^\ast(-m)               & (\prope{conjugate symmetric}) & and
-    \\(2).&\Rxy(m) &=& \Ryx^\ast(-m)               & (\prope{conjugate symmetric})
+      (1).&      \Rxy(m) &=&       \Ryx^\ast(-m)  &                               & and
+    \\(2).&      \Rxx(m) &=&       \Rxx^\ast(-m)  & (\prope{conjugate symmetric}) & and
+    \\(3).&\Real \Rxx(m) &=& \Real \Rxx     (-m)  & (\prope{symmetric})           & and
+    \\(4).&\Imag \Rxx(m) &=&-\Imag \Rxx     (-m)  & (\prope{anti-symmetric})      & and
+    \\(5).&\abs{ \Rxx(m)}&=& \abs{ \Rxx     (-m)} & (\prope{symmetric})           & and
+    \\(6).&\angle\Rxx(m) &=&-\angle\Rxx     (-m)  & (\prope{anti-symmetric})      &
   \end{array}}
 }
 \end{corollary}
@@ -247,7 +308,7 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
   \Rxy(m)
      &= \Rxy(n,m)
      && \text{by \prefp{prop:Rxynmm}}
-     && \text{and hypothesis (A)}
+     && \text{and hypotheses (A),(B)}
    \\&= \Ryx^\ast(n+m,-m)
      && \text{by \prefp{thm:Rxynm}}
      && \text{and hypothesis (B)}
@@ -267,8 +328,6 @@ Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
      && \text{and hypothesis (A)}
 \end{align*}
 \end{proof}
-
-
 
 %=======================================
 \section{Spectral density}
@@ -302,10 +361,11 @@ with auto-correlation $\Rxx(m)$ and cross-correlation $\Rxy(m)$.
 Let $\opDTFT$ be the \ope{Discrete Time Fourier Transform} (\ope{DTFT}) operator\ifsxref{dtft}{def:dtft}.
 \\
 \defbox{\begin{array}{M rclcl}
-  The \opd{power spectral density}
-  \\(\opd{PSD}) $\ZSxx(z)$ of $\vx$ is           & \Swxx(z) &\eqd& \opDTFT{\Rxx(m)} &\eqd& \ds \sum_{m\in\Z} \Rxx(m) e^{-i\omega m}
+  The \opd{auto-spectral density}
+  \\$\ZSxx(z)$ of $\vx$ is           & \Swxx(z) &\eqd& \opDTFT{\Rxx(m)} &\eqd& \ds \sum_{m\in\Z} \Rxx(m) e^{-i\omega m}
   \\The \opd{cross spectral density}
   \\(\opd{CSD}) $\ZSxy(z)$ of $\vx$ and $\vy$ is & \Swxy(z) &\eqd& \opDTFT{\Rxy(m)} &\eqd& \ds \sum_{m\in\Z} \Rxy(m) e^{-i\omega m}
+  \\\mc{6}{M}{The \opd{auto-spectral density} is also called \opd{power spectral density} (\opd{PSD}).}
 \end{array}}
 \end{definition}
 
@@ -418,110 +478,6 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
 \end{align*}
 \end{proof}
 
-%=======================================
-\section{Estimating correlation}
-%=======================================
-The \fncte{correlation function} $\Rxy(m)$ \xref{def:Rxym} is a statistical property of 
-\fncte{random sequences} \xref{def:randseq} over a 
-\structe{probability space} $\ps$ \xref{def:ps}. 
-In academic posits, it can often be calculated because the \fncte{probability function} $\psP$ is \emph{known}.
-However in real-world applications, $\psP$ is \emph{not} known\ldots
-and as such the true $\Rxy$ is also not known. 
-But, $\Rxy$ can of course be \emph{estimated}. 
-The following definition gives a very common estimator of the true $\Rxy(m)$ of a \prope{wide-sense stationary} \xref{def:wss}
-\fncte{random process} $\rvx(n)$.
-
-%---------------------------------------
-\begin{definition}
-\label{def:estRxy}
-%---------------------------------------
-\defbox{
-  \estRxy(m) \eqd \frac{1}{\xN}\sum_{n=1}^\xN \rvx(n) \rvy^\ast(n+m)
-  }
-\end{definition}
-
-For \prope{wide-sense stationary} processes, the estimator $\estRxy(m)$ 
-is \prope{unbiased} (next).
-
-%---------------------------------------
-\begin{proposition}
-%---------------------------------------
-\propbox{
-  \brb{\begin{array}{M}
-    $\rvx(n)$ is \prope{wide-sense stationary}
-  \end{array}}
-  \implies
-  \brb{\begin{array}{rclD}
-    \pE\estRxy(m) &=& \Rxy(m) & (\prope{unbiased})
-  \end{array}}
-  }
-\end{proposition}
-\begin{proof}
-\begin{align*}
-  \pE\estRxy(m) 
-    &= \pE\estRxy(n,m) 
-    && \text{by \prope{wide-sense stationary} hypothesis}
-  \\&\eqd \pE\frac{1}{\xN}\sum_{k=1}^\xN \rvx(k+n) \rvy^\ast(k+n+m)
-    && \text{by definition of $\estRxy$}
-    && \text{\xref{def:estRxy}}
-  \\&= \frac{1}{\xN}\sum_{n=1}^\xN \pE\brs{\rvx(k+n) \rvy^\ast(k+n+m)}
-    && \text{by \prope{linearity} of $\pE$}
-    && \text{\xref{thm:pE_linop}}
-  \\&\eqd \frac{1}{\xN}\sum_{n=1}^\xN \Rxy(n,m)
-    && \text{by definition of $\Rxy(n,m)$}
-    && \text{\xref{def:Rxy}}
-  \\&\eqd \frac{1}{\xN}\sum_{n=1}^\xN \Rxy(m)
-    && \text{by \prope{wide-sense stationary} hypothesis}
-  \\&= \Rxy(m)
-\end{align*}
-\end{proof}
-
-%=======================================
-\section{Estimating spectral density}
-%=======================================
-Like the \fncte{cross-correlation function} $\Rxy(m)$, the \fncte{cross-spectral density} $\Swxy(\omega)$ 
-not known, but can be \emph{estimated}. 
-There are a number of ways of doing this of course.
-But intuitively, we might start with the more or less obvious.
-\begin{align*}
-  \Swxy(\omega) 
-    &\eqd \brs{\opDTFT\Rxy(m)}(\omega)
-    && \text{by definition of $\Swxy$}
-    && \text{\xref{def:Swxy}}
-  \\&\eqd \brs{\opDTFT\pE\brs{\rvx(m)\rvy^\ast(0)}}(\omega)
-    && \text{by definition of $\Rxy(m)$}
-    && \text{\xref{def:Rxym}}
-\end{align*}
-
-\ope{Linear operator}s \xref{def:linop} are not in general \prope{commutative}. 
-In particular, it is in general \emph{not true} that $\opDTFT\pE=\pE\opDTFT$.
-However, as a method of \ope{estimation}, we could give it a try:
-\begin{align*}
-  \Swxy(\omega) 
-    &= \opDTFT\pE\brs{\rvx(m)\rvy^\ast(0)}
-    && \text{by previous result}
-  \\&\eqa \pE\opDTFT\brs{\rvx(m)\rvy^\ast(0)}
-    && \text{by a little bit of mathematical recklessness}
-\end{align*}
-
-Note that
-\begin{listi}
-  \item The \ope{Discrete-time Fourier Transform} $\opDTFT\brs{\rvx(m)\rvy^\ast(0)}$
-        of the \prope{random} $\rvx\rvy$ product is itself \prope{random}.
-  \item The \ope{expectation operator} $\pE$ in front of this random sequence makes it 
-        \prope{non-random} (\prope{deterministic}).
-  \item The expectation of a random sequence can itself be estimated by simple \prope{averaging}.
-  \item Thus, one way to estimate the true $\Rxy(m)$ is to calculate the average of the Fourier Transforms of
-        $\rvx(n)$ and $\rvy(n)$.
-\end{listi}
-
-The proposal of using the Fourier Transforms averaging method goes back to Arthur Schuster's 1898 paper 
-to find ``hidden periodicities" in ``meteorological phenomena".\footnote{\citeP{schuster1898}}, and the
-average itself came to be known as the \fnctd{periodogram}. 
-Later it was discovered that the data must first be \ope{smoothed} for the estimate to be ``\prope{consistent}".
-Peter Welch's 1967 paper introduced a periodogram of data that was first smoothed using 
-\fncte{window functions}.\footnote{\citeP{welch1967}}
-This method is now commonly called ``\ope{Welch's Method}".
 
 %=======================================
 \section{Spectral Power}
@@ -534,8 +490,8 @@ However, \prope{Parseval's Theorem} \xref{prop:parseval_reconstruction}
 demonstrates that power in time can also be calculated in frequency.
 So, it makes some sense to speak of the term ``spectral power". 
 Moreover, one way to estimate this power is to average the 
-Fourier Transforms of the product $\rvx(n)\rvy(n)$\ldots that is, to use an estimate of 
-the auto-correlation $\Rxy(m)$.
+Fourier Transforms of the product $\abs{\rvx(n)}^2=\rvx(n)\rvx^\ast(n)$\ldots that is, to use an estimate of 
+the auto-spectral density $\Swxx(\omega)$.
 Thus, an alternate name for \fncte{auto-spectral density} is \fnctb{power spectral density} (PSD).
 
 

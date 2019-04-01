@@ -1,0 +1,938 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%=======================================
+\chapter{Optimal Symbol Detection}
+%=======================================
+%=======================================
+\section{ML Estimation}
+%=======================================
+%--------------------------------------
+\begin{theorem}
+\label{thm:estML_QAM}
+%--------------------------------------
+In an AWGN channel with received signal $\fr(t)=s(t;\phi)+n(t)$
+Let
+\begin{liste}
+   \item $\fr(t)=s(t;\phi)+n(t)$ be the received signal in an AWGN channel
+   \item $n(t)$ a Gaussian white noise process
+   \item $\fs(t;\phi)$ the transmitted signal such that
+       \[s(t;\phi) = \sum_{n\in\Z} a_n \sym(t-nT)\cos(2\pi f_ct+\theta_n+\phi).\]
+\end{liste}
+
+Then the optimal ML estimate of $\phi$ is either of the two equivalent
+expressions
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l}
+   \estML[\phi]
+     &=&  -\atan\left[
+         \frac{\ds\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\sin(2\pi f_c t+\theta_n)\dt}
+              {\ds\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\cos(2\pi f_c t+\theta_n)\dt}
+         \right]
+\\ \\
+     &=&  \ds\arg_\phi\brp{
+            \sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\left[\sym(t-nT)\sin(2\pi f_ct+\theta_n+\phi)\right] \dt = 0
+            }.
+\end{array}
+}
+\end{theorem}
+\begin{proof}
+
+\begin{align*}
+   \estML[\phi]
+     &=    \arg_\phi\left(
+            2\int_{t\in\R} \fr(t)\left[\pderiv{}{\phi}s(t;\phi)\right] \dt =
+            \pderiv{}{\phi}\int_{t\in\R} s^2(t;\phi) \dt
+            \right)
+            \hspace{1cm}\mbox{by \prefp{thm:estML_general}}
+   \\&=    \arg_\phi\left(
+            2\int_{t\in\R} \fr(t)\left[\pderiv{}{\phi}s(t;\phi)\right] \dt =
+            \pderiv{}{\phi}\norm{s(t;\phi)}^2 \dt
+            \right)
+   \\&=    \arg_\phi\left(
+            2\int_{t\in\R} \fr(t)\left[\pderiv{}{\phi}s(t;\phi)\right] \dt = 0
+            \right)
+   \\&=    \arg_\phi\left(
+            \int_{t\in\R} \fr(t)\left[\pderiv{}{\phi}\sum_{n\in\Z} a_n \sym(t-nT)\cos(2\pi f_ct+\theta_n+\phi)\right] \dt = 0
+            \right)
+   \\&=    \arg_\phi\left(
+            -\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\left[\sym(t-nT)\sin(2\pi f_ct+\theta_n+\phi)\right] \dt = 0
+            \right)
+   \\&=    \arg_\phi\left(
+            \sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\left[
+            \sin(2\pi f_ct+\theta_n)\cos(\phi) +
+            \sin(\phi)\cos(2\pi f_ct+\theta_n)
+            \right] \dt = 0
+            \right)
+   \\&=    \arg_\phi\left(
+            \sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)
+            \sin(\phi)\cos(2\pi f_ct+\theta_n) \dt
+            = -
+            \sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)
+            \sin(2\pi f_ct+\theta_n)\cos(\phi) \dt
+            \right)
+   \\&=    \arg_\phi\left(
+            \sin(\phi)\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)
+            \cos(2\pi f_ct+\theta_n) \dt
+            = -
+            \cos(\phi)\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)
+            \sin(2\pi f_ct+\theta_n) \dt
+            \right)
+   \\&=    \arg_\phi\left(
+            \frac{\sin(\phi)}{\cos(\phi)}
+            =-
+            \frac{\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+                 {\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+            \right)
+   \\&=    \arg_\phi\left(
+            \tan(\phi)
+            =-
+            \frac{\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+                 {\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+            \right)
+   \\&=    \arg_\phi\left(
+            \phi =-\atan\left(
+            \frac{\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+                 {\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+            \right)
+            \right)
+   \\&=    -\atan\left(
+            \frac{\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+                 {\sum_{n\in\Z} a_n \int_{t\in\R} \fr(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+            \right)
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Generalized coherent modulation}
+\index{orthonormal basis}
+%=======================================
+\begin{figure}[ht]\color{figcolor}
+\centering%
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,200)(-100,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thicklines
+  \put(-100,   0 ){\line(1,0){300} }
+  %\put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](  0,0)(  0, 60)(  0,120)
+  \qbezier[30](100,0)(100, 60)(100,120)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -10 ){\makebox(0,0)[t]{$\fdots_n(m)$} }
+  \put( 100, -10 ){\makebox(0,0)[t]{$\fdots_p(m)$} }
+  \put(   0, 130 ){\makebox(0,0)[bl]{$(\fdotr_n|m)$} }
+  \put( 100, 130 ){\makebox(0,0)[bl]{$(\fdotr_p|m)$} }
+\end{picture}
+\caption{
+  Distributions of orthonormal components
+   \label{fig:gcm_pdf}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let
+\begin{liste}
+   \item $(V, \inprod{\cdot}{\cdot}, S)$ be a modulation space
+   \item $\Psi\eqd\{ \psi_n(t): n=1,2,\ldots,N\}$
+         be a set of orthonormal functions that span $\setS$
+   \item $\fdotr_n\eqd \inprod{\fr(t)}{\psi_n(t)}$
+   \item $R \eqd \{ \fdotr_n: n=1,2,\ldots, N\}$
+   \item $\fdots_n(m)\eqd \inprod{s(t;m)}{\psi_n(t)}$
+\end{liste}
+
+and let $V$ be partitioned into {\bf decision regions}
+\[ \{ D_m: m=1,2,\ldots, |S|\} \]
+such that
+\[ \fr(t)\in D_{\hat{m}} \iff \hat{m}=\arg\max_m\pP{s(t;m)|\fr(t)}. \]
+
+Then the {\bf probability of detection error} is
+\thmbox{
+   \pP{\mbox{error}} =
+     1 - \left( \frac{1}{\sqrt{2\pi\sigma^2}} \right)^\xN
+         \sum_m \pP{\mbox{$m$ sent}}
+         \int_{\vr \in D_m}
+         \exp{\frac{-1}{2\sigma^2}
+                   \sum_{n=1}^\xN [\fdotr_n-\fdots_n(m)]^2 }
+         \;d\vr .
+ }
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \pP{\mbox{error}}
+     &= 1 - \pP{\mbox{no error}}
+   \\&= 1 - \sum_m \pP{\mbox{($m$ sent)}\land\mbox{($\hat{m}=m$ detected)}}
+   \\&= 1 - \sum_m \pP{\mbox{($\hat{m}=m$ detected)}|\mbox{($m$ sent)}}
+                    \pP{\mbox{$m$ sent}}
+   \\&= 1 - \sum_m \pP{\mbox{$m$ sent}}
+                    \pP{\vr |\mbox{($m$ sent)}}
+   \\&= 1 - \sum_m \pP{\mbox{$m$ sent}}
+                    \int_{\vr \in D_m}\pdfpb{\vr |\mbox{($m$ sent)}} d\vr
+   \\&= 1 - \sum_m \pP{\mbox{$m$ sent}}
+                    \int_{\vr \in D_m} \prod_n \pdfpb{\fdotr_n|m} \;d\vr
+   \\&= 1 - \sum_m \pP{\mbox{$m$ sent}}
+                    \int_{\vr \in D_m} \prod_{n=1}^\xN
+                    \frac{1}{\sqrt{2\pi\sigma^2}}
+                    \exp{\frac{-[\fdotr_n-\pE\fdotr_n]^2}{2\sigma^2}}
+                    \;d\vr
+   \\&= 1 - \left( \frac{1}{\sqrt{2\pi\sigma^2}} \right)^\xN
+         \sum_m \pP{\mbox{$m$ sent}}
+         \int_{\vr \in D_m}
+         \exp{\frac{-1}{2\sigma^2}
+                   \sum_{n=1}^\xN [\fdotr_n-\fdots_n(m)]^2 }
+         \;d\vr
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Frequency Shift Keying (FSK)}
+\index{Frequency Shift Keying!coherent}
+\index{FSK!coherent}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+In an FSK modulation space,
+the optimal ML estimator of $m$ is
+   \thmbox{ \hat{m} = \arg\max_m \fdotr_m. }
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \hat{m}
+     &=  \arg\max_m \pP{\fr(t)|s(t;m)}
+   \\&=  \arg\min_m \sum_{n=1}^\xN [\fdotr_n - \fdots_n(m)]^2
+       & \ds \mbox{ by \prefpp{thm:ml_est_det} }
+   \\&=  \arg\min_m \sum_{n=1}^\xN [\fdotr^2_n -2\fdotr_n\fdots_n(m)+\fdots^2_n(m)]
+   \\&=  \arg\min_m \sum_{n=1}^\xN [ -2\fdotr_n\fdots_n(m)+\fdots^2_n(m)]
+       & \ds \mbox{ $\fdotr^2_n$ is independent of $m$}
+   \\&=  \arg\min_m \sum_{n=1}^\xN [ -2\fdotr_n a\kdelta_{mn}+ a^2\kdelta_{mn}]
+       & %\ds \mbox{ by \prefpp{def:fsk}}
+   \\&=  \arg\min_m [ -2a\fdotr_m + a^2]
+   \\&=  \arg\min_m [ -\fdotr_m ]
+       & \ds \mbox{ $a$ and $2$ independent of $m$}
+   \\&=  \arg\max_m [ \fdotr_m ]
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+If an FSK modulation space let
+\[
+\begin{array}{rcl l| lllll}
+   z_2 &\eqd& \fdotr_{1}(1) - \fdotr_{2}(1) &\hspace{1cm}& z_2>0 &\implies& \fdotr_1>\fdotr_2 &|& m=1 \\
+   z_3 &\eqd& \fdotr_{1}(1) - \fdotr_{3}(1) &\hspace{1cm}& z_3>0 &\implies& \fdotr_1>\fdotr_3 &|& m=1 \\
+       &\vdots&                               &            & \\
+   z_M &\eqd& \fdotr_{1}(1) - \fdotr_{M}(1) &\hspace{1cm}& z_M>0 &\implies& \fdotr_1>\fdotr_M &|& m=1 \\
+\end{array}
+\]
+
+Then the {\bf probability of detection error} is
+\thmbox{
+   \pP{\mbox{error}}
+     = 1 - \frac{M-1}{M} \int_0^\infty\int_0^\infty \cdots \int_0^\infty
+                           \pdfp(z_2,z_3,\ldots,z_M) \; dz_2 dz_3 \cdots dz_M
+}
+where
+
+\begin{math}
+\pdfp(z_2,z_3,\ldots,z_M)
+   =
+   \frac{1}{(2\pi)^\frac{M-1}{2}\sqrt{\mathrm{det}{R}}}
+   \exp{
+      -\frac{1}{2}
+      \left[
+      \begin{array}{c}
+         z_2 - \fdots \\
+         z_3 - \fdots \\
+         \vdots \\
+         z_M - \fdots
+      \end{array}
+      \right]^T
+      R^{-1}
+      \left[
+      \begin{array}{c}
+         z_2 - \fdots \\
+         z_3 - \fdots \\
+         \vdots \\
+         z_M - \fdots
+      \end{array}
+      \right]
+   }
+\end{math}
+
+and
+
+\[
+   R =
+   \left[
+   \begin{array}{cccc}
+      \cov{z_2}{z_2}  & \cov{z_2}{z_3} & \cdots & \cov{z_2}{z_M}  \\
+      \cov{z_3}{z_2}  & \cov{z_3}{z_3} & \cdots & \cov{z_3}{z_M}  \\
+      \vdots          & \vdots         & \ddots & \vdots          \\
+      \cov{z_M}{z_2}  & \cov{z_M}{z_3} & \cdots & \cov{z_M}{z_M}
+   \end{array}
+   \right]
+%   =
+%   \left[
+%   \begin{array}{cccc}
+%      2\xN_o    &  \xN_o   &  \cdots &  \xN_o   \\
+%       \xN_o    & 2\xN_o   &  \cdots &  \xN_o   \\
+%       \vdots & \vdots &  \ddots & \vdots \\
+%       \xN_o    &  \xN_o   &  \cdots &  2\xN_o
+%   \end{array}
+%   \right]
+   =
+   \xN_o \left[
+   \begin{array}{cccc}
+      2      & 1      &  \cdots &  1     \\
+      1      & 2      &  \cdots &  1     \\
+      \vdots & \vdots &  \ddots & \vdots \\
+      1      & 1      &  \cdots &  2
+   \end{array}
+   \right]
+\]
+
+The inverse matrix $R^{-1}$ is equivalent to (????) \attention
+
+\[
+   R^{-1} \eqq
+   \frac{1}{M\xN_o} \left[
+   \begin{array}{cccc}
+      M-1     & -1      &  \cdots &  -1     \\
+      -1      & M-1     &  \cdots &  -1     \\
+      \vdots  & \vdots  &  \ddots & \vdots  \\
+      -1      & -1      &  \cdots & M-1
+   \end{array}
+   \right]
+\]
+\end{theorem}
+
+
+\begin{proof}
+\begin{align*}
+   \pE{z_k}
+     &= \pEb{\fdotr_{11}-\fdotr_{1k}}
+   \\&= \pE{\fdotr_{11}}- \pE{\fdotr_{1k}}
+   \\&= \fdots - 0
+   \\&= \fdots
+\end{align*}
+
+\begin{align*}
+   \cov{z_m}{z_n}
+     &= \pEb{z_m z_n} - [\pE z_m][\pE z_n]
+   \\&= \pEb{(\fdotr_{11}-\fdotr_{1m})(\fdotr_{11}-\fdotr_{1n})} - \fdots^2
+   \\&= \pEb{\fdotr_{11}^2 -\fdotr_{11}\fdotr_{1n} - \fdotr_{1m}\fdotr_{11} \fdotr_{1m}\fdotr_{1n}} - \fdots^2
+   \\&= [\var \fdotr_{11} + (\pE \fdotr_{11})^2] - \pEb{\fdotr_{11}}\pEb{\fdotr_{1n}} - \pEb{\fdotr_{1m}}\pEb{\fdotr_{11}} + [\cov{\fdotr_{1m}}{\fdotr_{1n}} + (\pE \fdotr_{1m})(\pE \fdotr_{1n})] - \fdots^2
+   \\&= [\var \fdotr_{11} + \fdots^2] - a\cdot0 - 0\cdot a + [\cov{\fdotr_{1m}}{\fdotr_{1n}} + 0\cdot0] - \fdots^2
+   \\&= \var \fdotr_{11} + \cov{\fdotr_{1m}}{\fdotr_{1n}}
+   \\&= \xN_o + \cov{\fdotr_{1m}}{\fdotr_{1n}}
+   \\&= \left\{
+         \begin{tabular}{ll}
+            $2\xN_o$ & for $m=n$ \\
+            $\xN_o$  & for $m\ne n$.
+         \end{tabular}
+         \right.
+\end{align*}
+
+\begin{align*}
+   P\{\mbox{error}\}
+     &= 1 - P\{\mbox{no error}\}
+   \\&= 1 - \sum_{m=1}^M P\{\mbox{m transmitted)}\land (\forall k\ne m, \fdotr_m > \fdotr_k \}
+   \\&= 1 - (M-1) P\{\mbox{1 transmitted)}\land (\fdotr_{11}>\fdotr_{12}) \land (\fdotr_{11}>\fdotr_{13}) \land\cdots\land (\fdotr_{11}>\fdotr_{1M})  \}
+   \\&= 1 - (M-1) P\{(\fdotr_{11}-\fdotr_{12}>0) \land (\fdotr_{11}-\fdotr_{13}>0) \land\cdots\land (\fdotr_{11}-\fdotr_{1M}>0)|\mbox{1 transmitted)}\}P\{\mbox{1 transmitted)}  \}
+   \\&= 1 - \frac{M-1}{M} P\{(z_2>0) \land (z_3>0) \land\cdots\land (z_M>0)|\mbox{1 transmitted)}\}
+   \\&= 1 - \frac{M-1}{M}
+   \int_0^\infty\int_0^\infty \cdots \int_0^\infty
+        \pdfp(z_2,z_3,\ldots,z_M) \;
+   dz_2 dz_3 \cdots dz_M.
+\end{align*}
+
+\end{proof}
+
+%---------------------------------------
+\section{Quadrature Amplitude Modulation (QAM)}
+\index{Quadrature Amplitude Modulation}
+\index{QAM}
+\index{Quadrature Amplitude Modulation}
+\index{QAM}
+%---------------------------------------
+
+%---------------------------------------
+\subsection{Receiver statistics}
+%---------------------------------------
+\begin{figure}[ht]
+\centering%
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,200)(-100,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thicklines
+  \put(-100,   0 ){\line(1,0){300} }
+  %\put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](  0,0)(  0, 60)(  0,120)
+  \qbezier[30](100,0)(100, 60)(100,120)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -10 ){\makebox(0,0)[t]{$a_m$} }
+  \put( 100, -10 ){\makebox(0,0)[t]{$b_m$} }
+  \put( -30, 100 ){\makebox(0,0)[br]{$(\fdotr_c|m)$} }
+  \put( 130, 100 ){\makebox(0,0)[bl]{$(\fdotr_s|m)$} }
+\end{picture}
+\caption{
+  Distributions of QAM components
+   \label{fig:qam_pdf}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot}$ be a QAM modulation space such that
+\begin{align*}
+   \fr(t) &= \fs(t;m) + \fn(t) \\
+   \fdotr_c &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s &\eqd& \inprod{\fr(t)}{\psi_\fs(t)}.
+\end{align*}
+
+Then $(\fdotr_c|m)$ and $(\fdotr_s|m)$ are {\bf independent}
+and have {\bf marginal distributions}
+\begin{align*}
+   (\fdotr_c|m) &\sim& \pN{a_m}{\sigma^2} = \pN{r_m\cos\theta_m}{\sigma^2}  \\
+   (\fdotr_s|m) &\sim& \pN{b_m}{\sigma^2} = \pN{r_m\sin\theta_m}{\sigma^2}.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+See \prefpp{thm:ms_stats} page~\pageref{thm:ms_stats}.
+\end{proof}
+
+%---------------------------------------
+\subsection{Detection}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot},S)$ be a QAM modulation space with
+\begin{align*}
+   \fr(t) = \fs(t;m)+\fn(t) \\
+   \fdotr_c &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s &\eqd& \inprod{\fr(t)}{\psi_\fs(t)}.
+\end{align*}
+
+Then $\{\fdotr_c,\fdotr_s\}$ are sufficient statistics for
+optimal ML detection and the optimal ML estimate of $m$ is
+\[ \estML[u][m] = \arg\min_m
+      \left[
+         (\fdotr_c-a_m)^2  + (\fdotr_s-b_m)^2
+      \right].
+\]
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \estML[u][m]
+     &=  \arg\max_m \pP{\fr(t)|s(t;m)}
+     && \text{by \prefpp{def:ML}}
+   \\&=  \arg\min_m \sum_{n=1}^\xN [\fdotr_n - \fdots_n(m)]^2
+     && \text{by \prefpp{thm:ml_est_det}}
+   \\&=  \arg\min_m \brs{(\fdotr_c-a_m)^2  + (\fdotr_s-b_m)^2}
+     %&& \text{by \prefpp{def:qam}}.
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\subsection{Probability of error}
+%---------------------------------------
+\begin{figure}[ht]
+\centering%
+\setlength{\unitlength}{0.1mm}
+\begin{picture}(400,400)(-200,-200)
+  %\graphpaper[10](0,0)(400,400)
+  \thicklines
+  \put(-180 ,   0 ){\line(1,0){360} }
+  \put(   0 ,-180 ){\line(0,1){360} }
+
+  \put( 190 ,  -5 ){$\psi_c$}
+  \put( -10 , 190 ){$\psi_s$}
+
+  \put(-150 , 150 ){\circle*{10}}
+  \put( -50 , 150 ){\circle*{10}}
+  \put(  50 , 150 ){\circle*{10}}
+  \put( 150 , 150 ){\circle*{10}}
+
+  \put(-150 ,  50 ){\circle*{10}}
+  \put( -50 ,  50 ){\circle*{10}}
+  \put(  50 ,  50 ){\circle*{10}}
+  \put( 150 ,  50 ){\circle*{10}}
+
+  \put(-150 , -50 ){\circle*{10}}
+  \put( -50 , -50 ){\circle*{10}}
+  \put(  50 , -50 ){\circle*{10}}
+  \put( 150 , -50 ){\circle*{10}}
+
+  \put(-150 ,-150 ){\circle*{10}}
+  \put( -50 ,-150 ){\circle*{10}}
+  \put(  50 ,-150 ){\circle*{10}}
+  \put( 150 ,-150 ){\circle*{10}}
+\end{picture}
+\hspace{2cm}
+\begin{picture}(400,400)(-200,-200)
+  %\graphpaper[10](0,0)(400,400)
+  \thicklines
+  \put(-180 ,   0 ){\line(1,0){360} }
+  \put(   0 ,-180 ){\line(0,1){360} }
+  \thicklines
+  \put(-180 , 100 ){\line(1,0){360} }
+  \put(-180 ,-100 ){\line(1,0){360} }
+  \put(-100 ,-180 ){\line(0,1){360} }
+  \put( 100 ,-180 ){\line(0,1){360} }
+
+  \put( 190 ,  -5 ){$\psi_c$}
+  \put( -10 , 190 ){$\psi_s$}
+
+  \put(-160 , 150 ){$D_{ 1}$ }
+  \put( -60 , 150 ){$D_{ 2}$ }
+  \put(  40 , 150 ){$D_{ 3}$ }
+  \put( 140 , 150 ){$D_{ 4}$ }
+
+  \put(-160 ,  50 ){$D_{ 5}$ }
+  \put( -60 ,  50 ){$D_{ 6}$ }
+  \put(  40 ,  50 ){$D_{ 7}$ }
+  \put( 140 ,  50 ){$D_{ 8}$ }
+
+  \put(-160 , -50 ){$D_{ 9}$ }
+  \put( -60 , -50 ){$D_{10}$ }
+  \put(  40 , -50 ){$D_{11}$ }
+  \put( 140 , -50 ){$D_{12}$ }
+
+  \put(-160 ,-150 ){$D_{13}$ }
+  \put( -60 ,-150 ){$D_{14}$ }
+  \put(  40 ,-150 ){$D_{15}$ }
+  \put( 140 ,-150 ){$D_{16}$ }
+\end{picture}
+\caption{
+   QAM-16 cosstellation and decision regions
+   \label{fig:QAM-16}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+In a QAM-16 constellation as shown in \prefpp{fig:QAM-16},
+the probability of error is
+\[ \pP{\mbox{error}} = \frac{9}{4} Q^2\left(\frac{\fdots_{21}-\fdots_{11}}{2\xN_o}\right).\]
+\end{theorem}
+
+\begin{proof}
+Let
+\[ d \eqd \fdots_{21}-\fdots_{11}.\]
+
+Then
+\begin{align*}
+   \pP{\mbox{error}}
+     &= \sum_{m=1}^M \pP{[s(t;m)\mbox{ transmitted }]\land
+                            [(\fdotr_1,\fdotr_2)\notin D_m] }
+   \\&= \sum_{m=1}^M \pP{[(\fdotr_1,\fdotr_2)\notin D_m]|
+                            [s(t;m)\mbox{ transmitted }] }
+                      \pP{[s(t;m)\mbox{ transmitted }]}
+   \\&= \frac{1}{M}
+         \sum_{m=1}^M \pP{[(\fdotr_1,\fdotr_2)\notin D_m]|
+                            [s(t;m)\mbox{ transmitted }] }
+   \\&= \frac{1}{M}\left[
+         4 \pP{(\fdotr_1,\fdotr_2)\notin D_1 | s_1(t)} +
+         8 \pP{(\fdotr_1,\fdotr_2)\notin D_2 | s_2(t)} +
+         4 \pP{(\fdotr_1,\fdotr_2)\notin D_6 | s_6(t)}
+         \right]
+   \\&= \frac{1}{M}\left[
+         4 \int\int_{(x,y)\notin D_1} \pdf_{xy|1}(x,y)\dx\dy +
+         8 \int\int_{(x,y)\notin D_2} \pdf_{xy|2}(x,y)\dx\dy + \right.
+         \\& \left.4 \int\int_{(x,y)\notin D_6} \pdf_{xy|6}(x,y)\dx\dy
+         \right]
+   \\&= \frac{1}{M}\left[
+         4 \int\int_{(x,y)\notin D_1} \pdf_{x|1}(x) \pdf_{y|1}(y)\dx\dy +
+         8 \int\int_{(x,y)\notin D_2} \pdf_{x|2}(x) \pdf_{y|2}(y)\dx\dy + \right.
+         \\& \left.4 \int\int_{(x,y)\notin D_6} \pdf_{x|6}(x) \pdf_{y|6}(y)\dx\dy
+         \right]
+   \\&= \frac{1}{M} \left[
+         4 Q\left(\frac{d}{2\xN_o}\right) Q\left(\frac{d}{2\xN_o}\right) +
+         8 Q\left(\frac{d}{2\xN_o}\right) 2Q\left(\frac{d}{2\xN_o}\right) +
+         4\cdot2 Q\left(\frac{d}{2\xN_o}\right) 2Q\left(\frac{d}{2\xN_o}\right)
+         \right]
+   \\&= \frac{9}{4} Q^2\left(\frac{d}{2\xN_o}\right)
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Phase Shift Keying (PSK)}
+\index{Phase Shift Keying}
+\index{PSK}
+%=======================================
+%---------------------------------------
+\subsection{Receiver statistics}
+%---------------------------------------
+\begin{figure}[ht]
+\centering%
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,200)(-100,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thicklines
+  \put(-100,   0 ){\line(1,0){300} }
+  %\put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](  0,0)(  0, 60)(  0,120)
+  \qbezier[30](100,0)(100, 60)(100,120)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -10 ){\makebox(0,0)[t]{$r\cos\theta_m$} }
+  \put( 100, -10 ){\makebox(0,0)[t]{$r\sin\theta_m$} }
+  \put( -30, 100 ){\makebox(0,0)[br]{$(\fdotr_c|m)$} }
+  \put( 130, 100 ){\makebox(0,0)[bl]{$(\fdotr_s|m)$} }
+\end{picture}
+\caption{
+  Distributions of PSK components
+   \label{fig:psk_pdf}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let
+\begin{align*}
+   \fdotr_c   &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s   &\eqd& \inprod{\fr(t)}{\psi_\fs(t)} \\
+   \theta_m       &\eqd& \atan\left[\frac{\fdotr_s(m)}{\fdotr_c(m)}\right].
+\end{align*}
+
+The statistics $(\fdotr_c|m)$ and $(\fdotr_s|m)$ are {\bf independent}
+with marginal distributions
+\begin{align*}
+   (\fdotr_c|m) &\sim& \pN{r\cos\theta_m}{\sigma^2} \\
+   (\fdotr_s|m) &\sim& \pN{r\sin\theta_m}{\sigma^2} \\
+   \pdf_{\theta_m}(\theta|m)  &=  \int_0^\infty x \pdf_{\fdotr_c}(x|m)
+                                                 \pdf_{\fdotr_s}(x\tan\theta|m) dx.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+
+Indepence and marginal distributions of $\fdotr_1(m)$ and $\fdotr_2(m)$
+follow directly from
+\prefpp{thm:ms_stats} (page~\pageref{thm:ms_stats}).
+
+Let $X\eqd\fdotr_1(m)$, $Y\eqd\fdotr_2(m)$ and $\Theta\eqd\theta_m$.
+Then\footnote{A similar example is in \citerp{papoulis}{138}}
+\begin{align*}
+   \pdft(\theta)d\theta
+     &\eqd \pP{\theta < \Theta \le \theta + d\theta}
+   \\&=    \pP{\theta < \atan\frac{Y}{X} \le \theta + d\theta}
+   \\&=    \pP{\tan(\theta) < \frac{Y}{X} \le \tan(\theta + d\theta)}
+   \\&=    \pP{\tan(\theta) < \frac{Y}{X} \le \tan\theta + (1+\tan^2\theta)\dth}
+   \\&=    \int_0^\infty \pPa{\tan\theta < \frac{Y}{X} \le \tan\theta + (1+\tan^2\theta)\dth}{(x<X\le x+\dx)}
+   \\&=    \int_0^\infty \pPc{\tan\theta < \frac{Y}{x} \le \tan\theta + (1+\tan^2\theta)\dth}{x<X\le x+dx}\pP{x<X\le x+\dx}
+   \\&=    \int_0^\infty \pPc{x\tan\theta < Y \le x\tan\theta + x(1+\tan^2\theta)\dth)}{X=x} \pdfx(x)\dx
+   \\&=    \int_0^\infty [\ppy(x\tan\theta)x(1+\tan^2\theta)] \ppx(x) \dx \dth
+   \\&=    (1+\tan^2\theta) \int_0^\infty x\ppy(x\tan\theta) \ppx(x) \dx \dth
+\\\implies\\
+   \pdft(\theta)d\theta
+     &= (1+\tan^2\theta) \int_0^\infty x\ppy(x\tan\theta) \ppx(x) \dx
+\end{align*}
+\attention
+\end{proof}
+
+%---------------------------------------
+\subsection{Detection}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot},S)$ be a PSK modulation space with
+\begin{align*}
+   \fr(t) = \fs(t;m)+\fn(t) \\
+   \fdotr_c &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s &\eqd& \inprod{\fr(t)}{\psi_\fs(t)}.
+\end{align*}
+
+Then $\{\fdotr_c,\fdotr_s\}$ are sufficient statistics for
+optimal ML detection and the optimal ML estimate of $m$ is
+\[ \estML[u][m] = \arg\min_m
+      \left[
+         (\fdotr_1-r\cos\theta_m)^2  +
+         (\fdotr_2-r\sin\theta_m)^2
+      \right].
+\]
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \estML[u][m]
+     &=  \arg\max_m \pP{\fr(t)|s(t;m)}
+     && \text{by \prefpp{def:ML}}
+   \\&=  \arg\min_m \sum_{n=1}^\xN [\fdotr_n - \fdots_n(m)]^2
+     &&  \text{by \prefpp{thm:ml_est_det}}
+   \\&=  \arg\min_m
+      \left[
+         (\fdotr_1-r\cos\theta_m)^2  +
+         (\fdotr_2-r\sin\theta_m)^2
+      \right].
+    %&& \text{by \prefpp{def:psk}}.
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\subsection{Probability of error}
+%---------------------------------------
+\begin{figure}[ht]
+\centering%
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(240,240)(-120,-120)%
+  %\color{graphpaper}{\graphpaper[10](-120,-120)(240,240)}%
+  \thicklines%
+  \color{black}%
+    \put(  30 ,   0 ){\makebox(0,0)[l]{$\theta$} }%
+  \color{axis}%
+    \put(   0 ,   0 ){\line( 2, 1){80}}%
+    \put(   0 ,   0 ){\line( 1, 2){40}}%
+    \put(   0 ,   0 ){\line(-1, 2){40}}%
+    \put(   0 ,   0 ){\line(-2, 1){80}}%
+    \put(   0 ,   0 ){\line(-2,-1){80}}%
+    \put(   0 ,   0 ){\line(-1,-2){40}}%
+    \put(   0 ,   0 ){\line( 1,-2){40}}%
+    \put(   0 ,   0 ){\line( 2,-1){80}}%
+  \color{blue}%
+    \put( 100 ,   0 ){$D_1$}%
+    \put(  75 ,  75 ){$D_2$}%
+    \put(   0 , 100 ){$D_3$}%
+    \put( -75 ,  75 ){$D_4$}%
+    \put(-110 ,   0 ){$D_5$}%
+    \put( -80 , -80 ){$D_6$}%
+    \put(   0 ,-100 ){$D_7$}%
+    \put(  75 , -75 ){$D_8$}%
+  \color{zero}%
+    \put(  80 ,   0 ){\circle{10}}%
+    \put(  57 ,  57 ){\circle{10}}%
+    \put(   0 ,  80 ){\circle{10}}%
+    \put( -57 ,  57 ){\circle{10}}%
+    \put( -80 ,   0 ){\circle{10}}%
+    \put( -57 , -57 ){\circle{10}}%
+    \put(   0 , -80 ){\circle{10}}%
+    \put(  57 , -57 ){\circle{10}}%
+  \setlength{\unitlength}{0.16mm}%
+  \color{red}%
+    \input{../common/circle.inp}%
+\end{picture}%
+\caption{
+   PSK-8 Decision regions
+   \label{fig:PSK_Dm}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+The probability of error using PSK modulation is
+\begin{align*}
+   \pP{\mbox{error}}
+     &= M \left[
+              1 - \int_{\frac{2\pi}{M}\left(m-\frac{3}{2}\right)}^{\frac{2\pi}{M}\left(m-\frac{1}{2}\right)}
+                  \pdf_{\theta_1}(\theta) \; d\theta
+           \right].
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+See \prefpp{fig:PSK_Dm}.
+
+\begin{align*}
+   \pP{\mbox{error}}
+     &= \sum_{m=1}^M \pP{\mbox{error}|s(t;m) \mbox{ was transmitted}}
+   \\&= M \pP{\mbox{error}|s_1(t) \mbox{ was transmitted}}
+   \\&= M \left[
+              1 - \int_{\frac{2\pi}{M}\left(m-\frac{3}{2}\right)}^{\frac{2\pi}{M}\left(m-\frac{1}{2}\right)}
+                  \pdf_{\theta_1}(\theta) \; d\theta
+           \right].
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\section{Pulse Amplitude Modulation (PAM)}
+\index{Pulse Amplitude Modulation}
+\index{PAM}
+\index{Pulse Amplitude Modulation}
+\index{PAM}
+%---------------------------------------
+
+%---------------------------------------
+\subsection{Receiver statistics}
+%---------------------------------------
+\begin{figure}[ht]
+\centering%
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(200,200)(-100,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thicklines
+  \put(-100,   0 ){\line(1,0){200} }
+  %\put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](  0,0)(  0, 60)(  0,120)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \put(   0, -10 ){\makebox(0,0)[t]{$a_m$} }
+  \put( -30, 100 ){\makebox(0,0)[br]{$(\fdotr|m)$} }
+\end{picture}
+\caption{
+  Distribution of PAM component
+   \label{fig:pam_pdf}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot}$ be a PAM modulation space such that
+\begin{align*}
+   \fr(t) &= \fs(t;m) + \fn(t) \\
+   \fdotr_c &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s &\eqd& \inprod{\fr(t)}{\psi_\fs(t)}.
+\end{align*}
+
+Then $(\fdotr|m)$ has {\bf distribution}
+\[ \fdotr(m) \sim  \pN{a_m}{\sigma^2}.  \]
+\end{theorem}
+
+\begin{proof}
+This follows directly from
+\prefpp{thm:ms_stats} (page~\pageref{thm:ms_stats}).
+\end{proof}
+
+%---------------------------------------
+\subsection{Detection}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot},S)$ be a PAM modulation space with
+\begin{align*}
+   \fr(t)    &=    \fs(t;m)+\fn(t) \\
+   \fdotr &\eqd& \inprod{\fr(t)}{\psi(t)}.
+\end{align*}
+
+Then $\fdotr$ is a sufficient statistic for the
+optimal ML detection of $m$ and the optimal ML estimate of $m$ is
+   \[ \estML[u][m] = \arg\min_m |\fdotr - a_m |. \]
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \estML[u][m]
+     &=  \arg\max_m \pP{\fr(t)|a_m}
+       & \ds \mbox{ by \prefpp{def:ML}}
+   \\&=  \arg\min_m \sum_{n=1}^\xN [\fdotr_n - \fdots_n(m)]^2
+       & \ds \mbox{ by \prefpp{thm:ml_est_det} }
+   \\&=  \arg\min_m [\fdotr - \fdots(m)]^2
+   \\&=  \arg\min_m |\fdotr - \fdots(m)|
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\subsection{Probability of error}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+The probability of detection error in a PAM modulation space is
+   \[ \pP{\mbox{error}} = 2\frac{M-1}{M} \Qb{\frac{a_2-a_1}{2\sqrt{\xN_o}}} .\]
+\end{theorem}
+
+\begin{proof}
+Let $d\eqd a_2-a_1$ and $\sigma\eqd \sqrt{\var{\fdotr}}=\sqrt{\xN_o}$.
+Also, let the decision regions $D_m$ be as illustrated in \prefpp{fig:PAM_norm}.
+Then
+\begin{align*}
+   \pP{error}
+     &= \sum_{m=1}^M \pP{s(t;m) \mbox{ sent } \land r\notin D_m}
+   \\&= \sum_{m=1}^M \pP{\fdotr \notin D_m | \fs(t;m) \mbox{ sent } }\pP{s(t;m) \mbox{ sent }}
+   \\&= \sum_{m=1}^M \pP{\fdotr_m \notin D_m } \frac{1}{M}
+   \\&= \frac{1}{M}\left(
+             \Qb{\frac{d}{2\sigma}} +
+            2\Qb{\frac{d}{2\sigma}} +
+            \ldots
+            2\Qb{\frac{d}{2\sigma}} +
+             \Qb{\frac{d}{2\sigma}}
+         \right)
+   \\&= 2\frac{M-1}{M} \Qb{\frac{d}{2\sigma}}
+   \\&= 2\frac{M-1}{M} \Qb{\frac{\fdots_2-\fdots_1}{2\sqrt{\xN_o}}}
+\end{align*}
+\end{proof}
+
+\begin{figure}[ht]
+\centering%
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(500,160)(-100,-30)
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-100 ,   0 ){\line(1,0){500} }
+
+  \put(  50 , -10 ){\line(0,-1){40} }
+  \put( 150 , -10 ){\line(0,-1){40} }
+  \put( 250 , -10 ){\line(0,-1){40} }
+
+  \put(   0 , -30 ){$D_1$ }
+  \put( 100 , -30 ){$D_2$ }
+  \put( 200 , -30 ){$D_3$ }
+  \put( 300 , -30 ){$D_4$ }
+
+  %\qbezier[12]( 60,  0)( 60, 30)( 60, 60)
+  %\qbezier[12](  0, 60)( 30, 60)( 60, 60)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \qbezier( 160,  60)( 200, 180)( 240,  60)
+  \qbezier( 100,   0)( 140,   0)( 160,  60)
+  \qbezier( 240,  60)( 260,   0)( 300,   0)
+
+  \qbezier( 260,  60)( 300, 180)( 340,  60)
+  \qbezier( 200,   0)( 240,   0)( 260,  60)
+  \qbezier( 340,  60)( 360,   0)( 400,   0)
+\end{picture}
+\caption{
+  4-ary PAM in AWGN channel
+   \label{fig:PAM_norm}
+   }
+\end{figure}
