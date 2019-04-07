@@ -3,61 +3,67 @@
 % LaTeX File
 % lattice of frames
 % nominal xunit = 10mm
-% nominal yunit = 12mm
+% nominal yunit = 10mm
 %============================================================================
-\begin{pspicture}(-6.3,1)(8.8,9)%
-   \footnotesize
+\begin{pspicture}(-9,-7.75)(9,0.93)%
+   %------------------------------------
+   % parameters
+   %------------------------------------
    \psset{%
-     linecolor=blue,
-     linewidth=1pt,
      cornersize=relative,
      framearc=0.25,
-     gridcolor=graph,
-     subgriddiv=1,
-     gridlabels=4pt,
-     gridwidth=0.2pt,
      }%
-   \rput(0, 8){\rnode{bayesian}   {\psframebox{\parbox{60mm}{\centering
-     \ope{Bayesian}\\
-     pdf known, cost function defined\\
-     $\ds\estB \eqd \arg\min_{\theta} C(\theta,\pdfp(x,y))$
-     }}}}%
-   \rput(-3, 6){\rnode{pdfknown}   {\psframebox{\parbox{50mm}{\centering
-     pdf known
-     }}}}%
-   \rput(3, 6){\rnode{pdfnotknown}      {\psframebox{\parbox{50mm}{\centering
-     pdf not known
-     }}}}%
-   \rput(5, 4){\rnode{minimax}     {\psframebox{\parbox{50mm}{\centering
-     \ope{mini-max}
-     }}}}%
-   \rput(5, 2){\rnode{np}     {\psframebox{\parbox{50mm}{\centering
-     \ope{Neyman-Pearson}
+   %------------------------------------
+   % node definitions
+   %------------------------------------
+   \nnode{-2.7}{-1.8}{pdfknown}%
+   \pnode(3.8,-1.9){pdfnotknown}%
+   %------------------------------------
+   % top
+   %------------------------------------
+   \rput(0,-0.1){\rnode{bayesian}{\psframebox{$\begin{array}{N}
+     \opb{Bayesian}
+     \\pdf known, cost function defined
+     \\$\ds\estB \eqd \argmin_{\theta} \fCost(\theta,\pdfp(\fx,\fy))$
+   \end{array}$}}}%
+   %------------------------------------
+   % pdf known
+   %------------------------------------
+   \rput[l](-8.9,-3){\rnode{meansq}{\psframebox{\parbox{50mm}{\centering
+     \opb{mean square}
+     \\$\ds\estMS\eqd\argmin_{\theta} \E\norm{\fCost(\theta,\pdfp(\fx,\fy))}^2$
      }}}}%
    %
-   \rput(-1, 4){\rnode{MAP}{\psframebox{$\begin{array}{N}
-     \ope{MAP}
-     \end{array}$}}}%
+   \rput(-3.2,-4){\rnode{median}{\psframebox{\parbox{50mm}{\centering
+     \opb{median}
+     }}}}%
    %
-   \rput(-3, 4){\rnode{median}{\psframebox{$\begin{array}{N}
-     \ope{median}
-     \end{array}$}}}%
+   \rput(0,-5){\rnode{MAP}{\psframebox{\parbox{50mm}{\centering
+     \opb{MAP}
+     \\$\ds\estMAP\eqd\arg\max_{\theta} \pP{\fx(t;\theta)|\fy(t)}$
+     }}}}%
    %
-   \rput(-5, 4){\rnode{meansq}{\psframebox{$\begin{array}{N}
-     \ope{mean square}
-     \end{array}$}}}%
+   \rput(0,-7){\rnode{ML}{\psframebox{\parbox{50mm}{\centering
+     \opb{ML}
+     \\$\ds\estML\eqd\argmax_{\theta} \pP{y(t)|\fx(t;\theta)}$
+     }}}}%
+   %------------------------------------
+   % pdf not known
+   %------------------------------------
+   \rput[r](8.9,-3){\rnode{minimax}{\psframebox{\parbox{50mm}{\centering
+     \opb{mini-max}
+     \\$\ds\estMM\eqd\arg\min_{\theta}\max_{\pdfp}\fCost(\theta,\pdfp(\fx,\fy))$
+     }}}}%
+   \rput[r](8.9,-5){\rnode{np}{\psframebox{\parbox{50mm}{\centering
+     \opb{Neyman-Pearson}
+     }}}}%
    %
-   \rput(-2, 2){\rnode{ML}{\psframebox{$\begin{array}{N}
-     \ope{ML}
-     \end{array}$}}}%
-   %
-   %\rput(0,0){\rnode{obases}     {\psframebox{\parbox{60mm}{\centering
-   %  }}}}%
-   %%
-   %\rput(  0,-1.5){\ovalnode{zero}      {$\spZero$}}%
-   %%
-   \ncline{bayesian}{pdfnotknown}%
-   \ncline{pdfnotknown}{minimax}%
+   %------------------------------------
+   % connecting lines
+   %------------------------------------
+   %\ncline{bayesian}{pdfnotknown}%
+   %\ncline{pdfnotknown}{minimax}%
+   \ncline{bayesian}{minimax}%
    \ncline{minimax}{np}%
    \ncline{pdfnotknown}{rbases}%
    \ncline{np}{obases}%
@@ -68,16 +74,16 @@
    \ncline{pdfknown}{meansq}%
    \ncline{MAP}{ML}%
    \ncline{ML}{rbases}%
-   %\ncline{rbases}{obases}%
-   %\ncline{obases}{zero}%
-   %
-   %\psccurve[linestyle=dashed,linecolor=red,fillstyle=none]%
-   %  (0,-5)(20,4)(70,60)(20,60)(15,55)(-5,38)(-20,35)(-10,20)(-25,5)%
-   %\psline[linecolor=red]{->}(60,75)(60,68)%
-   %\uput[135](60,75){complete spaces}%
-   %\psline[linecolor=red]{->}(26,80)(15,74)%
-   %\psline[linecolor=red]{->}(30,80)(30,62.5)%
-   %\uput[90](28,80){analytic spaces}%
-   %
-   %\psgrid[unit=10\psunit](-6,-4)(6,9)%
+   %------------------------------------
+   % labeling
+   %------------------------------------
+   \uput[135](pdfknown){pdf known}%
+   \uput[ 45](pdfnotknown){pdf not known}%
+   \uput[180](0,-6){no prior probability information}%
+   \uput[180](6.2,-4.2){no cost function}%
+   %------------------------------------
+   % guides (comment out before publishing)
+   %------------------------------------
+   %\psline[linecolor=red](-1,0)(1,0)%
+   %\psline[linecolor=red](0,-1)(0,1)%
 \end{pspicture}
