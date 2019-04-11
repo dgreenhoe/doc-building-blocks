@@ -1921,3 +1921,133 @@ Let $\estHkp(\omega)$ be the transfer function estimate defined in \prefpp{def:H
     \end{align*}
 \end{enumerate}
 \end{proof}
+
+
+%============================================================================
+\section{Coherence}
+%============================================================================
+%=======================================
+\subsection{Application}
+%=======================================
+Coherence has two basic purposes:
+\begin{enume}
+  \item The \fncte{coherence} of $\rvx$ and $\rvy$ is a measure of how closely
+        $\rvx$ and $\rvy$ are statistically related. 
+        That is, it is an indication of how much $\rvx$ and $\rvy$ 
+        ``cohere" or ``stick" together 
+  \item The \fncte{coherence} of $\rvx$ and $\rvy$ is a measure of how reliable
+        are the estimates $\estHa$ and $\estHb$ \xxref{def:H1}{def:H2}.
+        If the coherence is $0.70$ or above, then we can have high confidence that
+        the estimates $\estHa$ and $\estHb$ are ``good" 
+        estimates.\footnote{\citerpgc{liang2015}{363}{365}{1498702341}{7.4.2\scshape Coherece Function}}
+\end{enume}
+
+%=======================================
+\subsection{Definitions}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citePp{chen2012}{4699}{(1), (2)},
+  \citerppgc{liang2015}{363}{365}{1498702341}{7.4.2 Coherence function},
+  \citerpgc{ewins1986}{131}{0863800173}{$\gamma^2=\ffrac{H_1(\omega)}{H_2(\omega)}$ (3.8)}
+  }
+\label{def:Cxy}
+\label{def:oCxy}
+%---------------------------------------
+Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+\defbox{\begin{array}{MM>{\ds}rc>{\ds}l}
+  The \fnctd{complex coherence} function &is defined as&
+    \Cxy(\omega) &\eqd& \frac{\Swxy^\ast(\omega)}{\sqrt{\Swxx(\omega)\Swyy(\omega)}}
+    \\
+  The \fnctd{ordinary coherence} function &is defined as&
+    \oCxy(\omega) &\eqd& \frac{\abs{\Swxy(\omega)}^2}{\Swxx(\omega)\Swyy(\omega)}
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:oCxy}
+%---------------------------------------
+\propbox{\begin{array}{>{\ds}rc>{\ds}l}
+  \oCxy(\omega) &=& \frac{\estHa(\omega)}{\estHb(\omega)}
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \oCxy(\omega) 
+    &\eqd \frac{\abs{\Swxy}^2}{\Swxx\Swyy}
+    && \text{by definition of $\oCxy$}
+    && \text{\xref{def:oCxy}}
+  \\&= \frac{\ds\frac{\Swxy^\ast}{\Swxx}}
+            {\ds\frac{\Swyy}     {\Swxy}}
+  \\&\eqd \frac{\estHa}
+               {\estHb}
+    && \text{by definitions of $\estHa$ and $\estHb$}
+    && \text{\xxref{def:H1}{def:H2}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{remark}
+\label{rem:HgmTxyCxy}
+%---------------------------------------
+Note that the \fncte{complex transmissibility} $\Twxy'$ of \pref{rem:HgmTxy_gen}
+provides a nice mathematical symmetry (always a good sign of good direction) with \fncte{coherence}
+in the system identification family tree.
+In particular, note that the following:
+\remboxt{
+  $\Cxy \eqd \sqrt{\frac{\estHa^\ast}{\estHb}}$ whereas $\Twxy' \eqd \sqrt{\estHa \estHb}$
+  }
+\end{remark}
+\begin{proof}
+\begin{align*}
+  \sqrt{\frac{\estHa^\ast(\omega)}{\estHb(\omega)}}
+    && \text{by definition of $\estHgm$}
+    && \text{\xref{def:Hgm}}
+  %\\&\eqd \sqrt{\frac{\Swxy^\ast(\omega)}{\Swxx(\omega)}\frac{\Swyy(\omega)}{\Swxy(\omega)}}
+  %  && \text{by definitions of $\estHa$ and $\estHb$}
+  %  && \text{\xxref{def:H1}{def:H2}}
+  %\\&= \sqrt{\frac{\Swyy(\omega)}{\Swxx(\omega)}\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
+  %\\&= \Twxy(\omega)\sqrt{\frac{\Swxy^\ast(\omega)}{\Swxy(\omega)}}
+  %  && \text{by definition of $\Twxy$}
+  %  && \text{\xref{def:Txy}}
+  %\\&= \Twxy(\omega)\sqrt{\frac{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}{\abs{\Swxy(\omega)}e^{i\phi(\omega)}}}
+  %  && \text{where $\Swxy(\omega)\eqd{\abs{\Swxy(\omega)}e^{-i\phi(\omega)}}$}
+  %\\&= \Twxy(\omega)\sqrt{e^{-i2\phi(\omega)}}
+  %\\&= \Twxy(\omega)\,e^{-i\phi(\omega)}
+\end{align*}
+\end{proof}
+
+%=======================================
+\subsection{A warning}
+%=======================================
+Estimators yield, as the name implies, estimates.
+These estimates in general contain some error.
+
+%---------------------------------------
+\begin{example}[The K=1 Welch estimate of coherence]
+%---------------------------------------
+Suppose we have two \prope{uncorrelated} stationary sequences $\rvx(n)$ and $\rvy(n)$. Then, there
+CSD $\Sxy(\omega)$ should be $0$ because
+\begin{align*}
+  \Sxy(\omega)
+    &\eqd \opDTFT\pE\Rxy(m)
+  \\&=    \opDTFT\pE\brs{x(n)y[n+m]}
+  \\&=    \opDTFT\brs{\pEx(n)} \brs{\pEy[n+m]}
+  \\&=    \opDTFT\brs{0} \brs{0}
+  \\&=    0
+\end{align*}
+
+This will give a coherence of $0$ also:
+\[ C(\omega) = \frac{\Sxy}{\sqrt{\Sxx\Syy}} = 0\]
+
+However, the Welch estimate with $K=1$ will yield
+\begin{align*}
+  \abs{C(\omega)}
+    &= \abs{\frac{\ds\Sxy}{\sqrt{\ds\Sxx\Syy}}}
+  \\&= \abs{\frac{\ds (\opFT x)(\opFT y)^\ast}{\sqrt{\ds\abs{\opFT x}^2\abs{\opFT y}^2}}}
+  \\&= 1
+\end{align*}
+
+\end{example}
