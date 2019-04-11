@@ -1,0 +1,938 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\section{Operations on Sequences}
+%\label{app:dsp}
+%\label{app:ztrans}
+%======================================
+
+
+
+
+
+%A digital filter is an operator on a sequence 
+%For a wide class of digital filters, this operator is linear.
+%This operation can often be more clearly 
+%understood by the use of a special transform called the {\em Z-transform} (\prefp{def:opZ}).
+%The Z-transform represents linear filters by ratios of polynomials
+%(a polynomial divided by a polynomial) in a free variable $z$.
+%The roots of the numerator polynomial are called \structe{zeros}.
+%The roots of the denominator polynomial are called \structe{poles}.
+%The location in the $z$-plane of these poles and zeros 
+%determine the behavior of the filter operation.
+
+
+
+
+%======================================
+%\subsection{Operations}
+%======================================
+%======================================
+\subsection{Convolution operator}
+%======================================
+\ifdochasnot{seq}{
+%--------------------------------------
+\begin{definition}
+\label{def:sequence}
+\label{def:seq}
+\footnote{
+  \citerp{bromwich1908}{1},
+  \citerpgc{thomson2008}{23}{143484367X}{Definition 2.1},
+  \citerpg{joshi1997}{31}{8122408265}
+  }
+\label{def:tuple}
+%--------------------------------------
+Let $\clFyx$ be the set of all functions from a set $\setY$ to a set $\setX$.
+Let $\Z$ be the set of integers.
+\defbox{\begin{array}{l}
+  \text{A function $\ff$ in $\clFyx$ is a \hid{sequence} over $\setX$ if $\setY=\Z$.}\\
+  \text{A sequence may be denoted in the form $\ds\seqxZ{x_n}$ or simply as $\ds\seqn{x_n}$.}\\
+  %\text{A function $\ff$ in $\clFyx$ is an \hid{n-tuple} over $\setX$ if $\setY=\setn{1,2,\ldots,\xN}$.}\\
+  %\text{An n-tuple may be denoted in the form $\ds\tuplexn{x_n}$ or simply as $\ds\tuplen{x_n}$.}
+\end{array}}
+\end{definition}
+  }
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{kubrusly2011}{347}{0817649972}{Example 5.K}
+  }
+\label{def:spllR}
+\label{def:spllF}
+%--------------------------------------
+Let $\fieldF$ be a \structe{field} \xref{def:field}.
+\defboxt{
+  The \structd{space of all absolutely square summable sequences} $\spllF$ over $\F$ is defined as
+  \\\indentx$\ds\spllF\eqd\set{\seqxZ{x_n}}{\sum_{n\in\Z}\abs{x_n}^2 < \infty}$
+  }
+\end{definition}
+
+The space $\spllR$ is an example of a \structe{separable Hilbert space}. 
+In fact, $\spllR$ is the \emph{only} separable Hilbert space in the sense that all separable Hilbert spaces
+are isomorphically equivalent. 
+For example, $\spllR$ is isomorphic to $\spLLR$, the \structe{space of all absolutely square Lebesgue integrable functions}.
+%That is, their topological structure is the same.
+%Differences occur in the nature of operators on the spaces.
+
+%--------------------------------------
+\begin{definition}
+\label{def:dsp_conv}
+\label{def:convd}
+\index{convolution}
+%--------------------------------------
+%Let $\seq{x_n}{n\in\Z}$ and $\seq{y_n}{n\in\Z}$ be sequences \xref{def:seq} in the space $\spllR$ \xref{def:spllR}. 
+\defbox{\begin{array}{M}
+  The \opd{convolution} operation $\hxs{\convd}$ is defined as 
+  \\\indentx
+  $\ds{\seqn{x_n}\convd\seqn{y_n}} \eqd \seq{\sum_{m\in\Z} x_{m} y_{n-m}}{n\in\Z}\qquad\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllR$
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{proposition}
+%--------------------------------------
+Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
+\propbox{
+  \seqn{x_n}\convd\seqn{y_n} = \seqn{y_n}\convd\seqn{x_n}
+  \qquad{\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllR}
+  \qquad\text{($\convd$ is \prope{commutative})}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  [x\convd y](n)
+    &\eqd \sum_{m\in\Z} x_m y_{n-m}
+    &&    \text{by \prefp{def:dsp_conv}}
+  \\&=    \sum_{k\in\Z} x_{n-k} y(k)
+    &&    \text{where $k=n-m \iff m=n-k$}
+  \\&=    \sum_{k\in\Z} x_{n-k} y(k)
+    &&    \text{by change commutivity of addition}
+  \\&=    \sum_{m\in\Z} x_{n-m} y_m
+    &&    \text{by change of variables}
+  \\&=    \sum_{m\in\Z} y_m x_{n-m} 
+    &&    \text{by \prop{commutative} property of the field over $\C$}
+  \\&\eqd \brp{y\convd x}_n
+    &&    \text{by \prefp{def:dsp_conv}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:conv_knk}
+%--------------------------------------
+Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
+\propbox{
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lD}
+      (A).&\fx[n]\convd\fy[n] &=&   \sum_{k\in\Z} \fx[k]\fy[n-k] & and
+    \\(B).&\fx[n],\fy[n]      &\in& \spllR                       &
+    \\    &                    \mc{4}{l}{\spllR \quad\text{(\prope{absolutely summable} \xrefnp{def:spllR})}}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{>{\ds}rc>{\ds}l}
+     \sum_{k\in\Z} \fx[k]\fy[n+k] &=& \fx[-n]\convd\fy[n]
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \sum_{k\in\Z} \fx[k]\fy[n+k] 
+    &= \sum_{-p\in\Z} \fx[-p]\fy[n-p] 
+    && \text{where $p\eqd -k$}
+    && \text{$\implies$ $k=-p$}
+  \\&= \sum_{p\in\Z} \fx[-p]\fy[n-p] 
+    && \text{by \prope{absolutely summable} hypothesis}
+    && \text{\xref{def:spllR}}
+  \\&= \sum_{p\in\Z} \fx'[p]\fy[n-p] 
+    && \text{where $\fx'[n] \eqd\fx[-n]$}
+    && \text{$\implies$ $\fx[-n]=\fx'[n]$}
+  \\&\eqd \fx'[n]\convd\fy[n]
+    && \text{by definition of \ope{convolution} $\convd$}
+    && \text{\xref{def:convd}}
+  \\&\eqd \fx[-n]\convd\fy[n]
+    && \text{by definition of $\fx'[n]$}
+\end{align*}
+\end{proof}
+
+%======================================
+\subsection{Z-transform}
+%======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \structe{Laurent series}: \citerpg{aa}{49}{0821821466}
+  }
+\label{def:opZ}
+%--------------------------------------
+%Let $\seq{x_n}{n\in\Z}$ be a sequence in the space $\spllR$. %over a ring $\ring$. 
+\defbox{\begin{array}{M}
+  The \opd{z-transform} $\opZ$ of $\seq{x_n}{n\in\Z}$ is defined as
+  \\\indentx
+  $\ds\brs{\hxs{\opZ}\seqn{x_n}}(z) \eqd \mcom{\sum_{n\in\Z} x_n z^{-n}}{Laurent series}\qquad\scy\forall\seqn{x_n}\in\spllR$
+\end{array}}
+\end{definition}
+
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:opZ}
+%--------------------------------------
+Let $X(z)\eqd\opZ\fx[n]$ be the \ope{z-transform} of $\fx[n]$.
+\thmbox{
+  \brb{\begin{array}{rcl}
+    \Zx(z) &\eqd& \opZ\seqn{\fx[n]}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{F>{\ds}lc>{\ds}lCD}
+      (1).&\opZ\seqn{\alpha\fx[n]} &=& \alpha\Zx(z)                    & \forall\seqn{x_n}\in\spllR & and
+    \\(2).&\opZ\seqn{\fx[n-k]}     &=& z^{-k}\Zx(z)                    & \forall\seqn{x_n}\in\spllR & and
+    \\(3).&\opZ\seqn{\fx[-n]}      &=& \Zx\brp{\frac{1}{z}}            & \forall\seqn{x_n}\in\spllR & and
+    \\(4).&\opZ\seqn{\fx^\ast[n]}  &=& \Zx^\ast\brp{z^\ast}            & \forall\seqn{x_n}\in\spllR & and
+    \\(5).&\opZ\seqn{\fx^\ast[-n]} &=& \Zx^\ast\brp{\frac{1}{z^\ast}}  & \forall\seqn{x_n}\in\spllR &
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \alpha\Z\Zx(z)
+    &\eqd \alpha \opZ \seqn{\fx[n]}                && \text{by definition of $\Zx(z)$}
+  \\&\eqd \alpha \sum_{n\in\Z} \fx[n] z^{-n}       && \text{by definition of $\opZ$ operator}
+  \\&\eqd \sum_{n\in\Z} \brp{\alpha\fx[n]} z^{-n}  && \text{by \prope{distributive} property}
+  \\&\eqd \opZ\seqn{\alpha\fx[n]}                  && \text{by definition of $\opZ$ operator}
+  \\
+  z^{-k}\Zx(z) 
+    &= z^{-k} \opZ\seqn{\fx[n]}
+    && \text{by definition of $\Zx(z)$}
+    && \text{(left hypothesis)}
+  \\&\eqd z^{-k}\sum_{n=-\infty}^{n=+\infty} \fx[n] z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&=          \sum_{n=-\infty}^{n=+\infty} \fx[n] z^{-n-k}
+  \\&=          \sum_{m-k=-\infty}^{m-k=+\infty} \fx[m-k] z^{-m}
+    && \text{where $m\eqd n+k$}
+    && \text{$\implies$ $n=m-k$}
+  \\&=          \sum_{m=-\infty}^{m=+\infty} \fx[m-k] z^{-m}
+  \\&=          \sum_{n=-\infty}^{n=+\infty} \fx[n-k] z^{-n}
+    && \text{where $n\eqd m$}
+  \\&\eqd \opZ\seqn{\fx[n-k]}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx^\ast[n]}  
+    &\eqd \sum_{n\in\Z}\fx^\ast[n] z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&\eqd \brp{\sum_{n\in\Z}\fx[n] (z^\ast)^{-n}}^\ast
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&\eqd \Zx^\ast(z^\ast)
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx[-n]}  
+    &\eqd \sum_{n\in\Z}\fx[-n] z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&= \sum_{-m\in\Z}\fx[m] z^{m}
+    && \text{where $m\eqd -n$}
+    && \text{$\implies$ $n=-m$}
+  \\&= \sum_{m\in\Z}\fx[m] z^{m}
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&= \sum_{m\in\Z}\fx[m] \brp{\frac{1}{z}}^{-m}
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&\eqd \Zx\brp{\frac{1}{z}}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx^\ast[-n]}  
+    &\eqd \sum_{n\in\Z}\fx^\ast[-n] z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&= \sum_{-m\in\Z}\fx^\ast[m] z^{m}
+    && \text{where $m\eqd -n$}
+    && \text{$\implies$ $n=-m$}
+  \\&= \sum_{m\in\Z}\fx^\ast[m] z^{m}
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&= \sum_{m\in\Z}\fx^\ast[m] \brp{\frac{1}{z}}^{-m}
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&= \brp{\sum_{m\in\Z}\fx[m] \brp{\frac{1}{z^\ast}}^{-m}}^\ast
+    && \text{by \prope{absolutely summable} property}
+    && \text{\xref{def:spllR}}
+  \\&\eqd \Zx^\ast\brp{\frac{1}{z^\ast}}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[\thmd{convolution theorem}]
+\label{thm:conv}
+%--------------------------------------
+Let $\convd$ be the convolution operator \xref{def:dsp_conv}.
+%$\seq{x_n}{n\in\Z}$ and $\seq{y_n}{n\in\Z}$ be sequences in the space $\spllR$. %be sequences over a ring $\ring$.
+\thmbox{
+  \opZ\mcom{\brp{\seqn{x_n}\convd\seqn{y_n}}}{sequence convolution} = \mcom{\brp{\opZ\seqn{x_n}}\;\brp{\opZ\seqn{y_n}}}{series multiplication}
+  \qquad{\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllR}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  [\opZ(x\convd y)](z)
+    &\eqd \opZ {\left(\sum_{m\in\Z} x_m y_{n-m}\right)}
+    &&    \text{by \prefp{def:dsp_conv}}
+  \\&\eqd \sum_{n\in\Z} \sum_{m\in\Z} x_m y_{n-m} z^{-n}
+    &&    \text{by \prefp{def:opZ}}
+  \\&=    \sum_{n\in\Z} \sum_{m\in\Z} x_m y_{n-m} z^{-n}
+  \\&=    \sum_{m\in\Z} \sum_{n\in\Z} x_m y_{n-m} z^{-n}
+  \\&=    \sum_{m\in\Z} \sum_{k\in\Z} x_m y_k z^{-(m+k)}
+    &&    \text{where $k=n-m \iff n=m+k$}
+  \\&=    {\left[\sum_{m\in\Z} x_m z^{-m}\right]} 
+          {\left[\sum_{k\in\Z} y_k z^{-k}\right]}
+  \\&\eqd \brp{\opZ\seqn{x_n}}\;\brp{\opZ\seqn{y_n}}
+    &&    \text{by \prefp{def:opZ}}
+\end{align*}
+\end{proof}
+
+
+
+%%---------------------------------------
+%\subsection{From z-domain back to time-domain}
+%%---------------------------------------
+%\begin{figure}
+%  \centering
+%  \includegraphics[width=\tw/2-2mm]{graphics/iir2n.pdf}
+%  \includegraphics[width=\tw/2-2mm]{graphics/dfI_order2_156.pdf}
+%  \caption{Direct form 1 order 2 IIR filters\label{fig:df1iir2}}
+%\end{figure}
+%\begin{align*}
+% \Zy(z) &=  b_0X(z) + b_1z^{-1}X(z)  + b_2z^{-2}X(z) - a_1 z^{-1}Y(z) + a_2z^{-2}Y(z)
+%  \\\\
+%  \fy[n] &= b_0\fx[n] + b_1\fx[n-1] + b_2\fx[n-2] - a_1\fy[n-1] - a_2\fy[n-2]
+%\end{align*}
+%
+%%---------------------------------------
+%\begin{example}
+%%---------------------------------------
+%See \prefpp{fig:df1iir2}
+%
+%$\ds{\frac{3z^2 + 5z + 7}{2z^2 + 10z + 12}}$
+%=
+%$\ds{\frac{3z^2 + 5z + 7}{2\brp{z^2 + 5z + 6}}}$
+%=
+%$\ds{\frac{\brp{\sfrac{3}{2}z^2 + \sfrac{5}{2}z + \sfrac{7}{2}}}
+%               {z^2 + 5z + 6}}$
+%=
+%$\ds{\frac{\brp{\sfrac{3}{2} + \sfrac{5}{2}z^{-1} + \sfrac{7}{2}z^{-2}}}
+%               {1 + 5z^{-1} + 6z^{-2}}}$
+%\end{example}
+%
+%
+%%=======================================
+%\subsection{Zero locations}
+%%=======================================
+%The system property of \prope{minimum phase} is defined in \pref{def:minphase} (next) and 
+%illustrated in \prefpp{fig:pz_minphase}.
+%\begin{figure}[h]
+%  \centering%
+%  \begin{tabular}{cc}
+%    \includegraphics{graphics/pz_realcoefs.pdf}%
+%    &\includegraphics{graphics/pz_minphase.pdf}%
+%    \\\emph{not} minimum phase & \prope{minimum phase}
+%  \end{tabular}
+%  \caption{Minimum Phase filter\label{fig:pz_minphase}}
+%\end{figure}
+%%--------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpg{farina2000}{91}{0471384569},
+%  \citerpg{dumitrescu2007}{36}{1402051247}
+%  }
+%\label{def:minphase}
+%\index{minimum phase}
+%%--------------------------------------
+%Let $\Zx(z)\eqd\opZ\seqn{x_n}$ be the \fncte{z transform} \xref{def:opZ} of a sequence $\seqxZ{x_n}$ in $\spllR$.
+%Let $\seqxZ{z_n}$ be the \structe{zeros} of $\Zx(z)$.
+%\defbox{\begin{array}{M}
+%  The sequence $\seqn{x_n}$ is \hid{minimum phase} if
+%  \\\indentx$\ds\mcom{\abs{z_n}<1\qquad \forall n\in\Z}{$\Zx(z)$ has all its \structe{zeros} inside the unit circle}$
+%\end{array}}
+%\end{definition}
+%
+%The impulse response of a minimum phase filter has most of its energy concentrated
+%near the beginning of its support, as demonstrated next.
+%%--------------------------------------
+%\begin{theorem}[\thmd{Robinson's Energy Delay Theorem}]
+%\footnote{
+%  \citerpg{dumitrescu2007}{36}{1402051247},
+%  \citor{robinson1962},  % referenced by claerbout1976
+%  \citorc{robinson1966}{???},  % referenced by online thesis
+%  \citerpp{claerbout1976}{52}{53}
+%  %\citerp{os}{291}\\
+%  %\citerp{mallat}{253}
+%  }
+%\label{thm:ztr_redp}
+%\label{thm:redt}
+%\index{minimum phase!energy}
+%\index{energy}
+%%--------------------------------------
+%Let $\fp(z)\eqd\sum_{n=0}^\xN a_n z^{-n}$ 
+%and $\fq(z)\eqd\sum_{n=0}^\xN b_n z^{-n}$ 
+%be polynomials.
+%\thmbox{
+%  \brb{\begin{array}{lMD}
+%    \fp & is \prope{minimum phase} & and\\
+%    \fq & is \emph{not} minimum phase & 
+%  \end{array}}
+%  \implies
+%  \mcom{\sum_{n=0}^{m-1} \abs{a_n}^2}{\parbox{20mm}{``energy" of the first $m$ coefficients of $\fp(z)$}} \ge 
+%  \mcom{\sum_{n=0}^{m-1} \abs{b_n}^2}{\parbox{20mm}{``energy" of the first $m$ coefficients of $\fq(z)$}} 
+%  \qquad \forall 0\le m\le\xN
+%  }
+%\end{theorem}
+%
+%But for more \prope{symmetry}, put some zeros inside and some outside the unit circle.
+%
+%\begin{figure}[h]
+%\begin{center}
+%\footnotesize
+%\setlength{\unitlength}{0.08mm}
+%\begin{tabular}{|c|c|}
+%  \hline
+%  Daubechies-4 & Symlets-4
+%  \\\hline
+%  \includegraphics{graphics/D4_pz.pdf}&\includegraphics{graphics/S4_pz.pdf} \\
+%  \includegraphics{graphics/d4_phi_h.pdf}&\includegraphics{graphics/s4_phi_h.pdf}\\ 
+%  \hline
+%  \prope{minimum phase} & \emph{not} minimum phase
+%  \\\hline
+%\end{tabular}
+%\caption{
+%   Daubechies-4 and Symlet-4 scaling functions pole-zero plots
+%   \label{fig:pz_d4}
+%   }
+%\end{center}
+%\end{figure}
+%%--------------------------------------
+%\begin{example}
+%%--------------------------------------
+%An example of a minimum phase polynomial is the Daubechies-4 scaling function.
+%%This function is generated by a minimum phase filter.
+%The minimum phase polynomial causes most of the energy to be concentrated near the origin, making it very \hie{asymmetric}.
+%In contrast, the Symlet-4 has a design very similar to that of Daubechies-4, 
+%but the selected zeros are not all within the unit circle in the complex $z$ plane.
+%This results in a scaling function that is more symmetric and less contrated near the origin.
+%Both scaling functions are illustrated in \prefpp{fig:pz_d4}.
+%\end{example}
+%
+%%=======================================
+%\subsection{Pole locations}
+%%=======================================
+%%---------------------------------------
+%%\subsection{Stability and pole location}
+%%---------------------------------------
+%For a stable filter, put all the poles \emph{inside} the unit circle.
+%%--------------------------------------
+%\begin{theorem}
+%\index{stability}
+%%--------------------------------------
+%A causal LTI filter is {\bf stable} if all of its poles are {\bf inside} the unit circle.
+%\end{theorem}
+%
+%\begin{figure}[ht]
+%  \centering%
+%  \begin{tabular}{c@{\hspace{1cm}}c}
+%     \includegraphics{graphics/pz_stable.pdf}
+%    &\includegraphics{graphics/pz_unstable.pdf}
+%    \\stable & unstable
+%\end{tabular}
+%  \caption{
+%     Pole-zero plot stable/unstable causal LTI filters \xref{ex:pz_unstable}
+%     \label{fig:pz_unstable}
+%     }
+%\end{figure}
+%%--------------------------------------
+%\begin{example}
+%\label{ex:pz_unstable}
+%%--------------------------------------
+%Stable/unstable filters are illustrated in \prefpp{fig:pz_unstable}.
+%\end{example}
+%
+%
+%%---------------------------------------
+%%\subsection{The Reappearing Roots: Now you don't see them, now you do}
+%%---------------------------------------
+%
+%True or False? This filter has no poles:
+%
+%  $\ds H(z)= b_0 + b_1 z^{-1} + b_2 z^{-2}$
+%
+%\includegraphics{graphics/dfI_order2_fir.pdf}
+%
+%
+%\begin{align*}
+%  H(z)
+%    &= b_0 + b_1 z^{-1} + b_2 z^{-2}
+%     = \frac{z^2}{z^2} \times \frac{b_0 + b_1 z^{-1} + b_2 z^{-2}}{1}
+%     = \frac{b_0 z^2 + b_1 z^{1} + b_2 }{z^2}
+%\end{align*}
+%
+%\includegraphics{graphics/pz_pole00.pdf}
+%
+%%---------------------------------------
+%\subsection{Mirroring for real coefficients}
+%%---------------------------------------
+%\begin{figure}
+%  \centering
+%  \includegraphics{graphics/pz_minphase.pdf}%
+%  \includegraphics{graphics/pz_realcoefs_11.pdf}
+%\caption{Conjugate pair structure yielding real coefficients\label{fig:realcoefs}}
+%\end{figure}
+%
+%If you want real coefficients, choose poles and zeros in conjugate pairs (next).
+%%---------------------------------------
+%\begin{proposition}
+%%---------------------------------------
+%\propbox{
+%  \brb{\begin{array}{M}
+%    \structe{zeros} and \structe{poles}\\
+%    occur in \structe{conjugate pairs} 
+%  \end{array}}
+%  \quad\implies\quad
+%  \brb{\begin{array}{M}
+%    \structe{coefficients} \\
+%    are \prope{real}.
+%  \end{array}}
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \brp{z-p_1}\brp{z-p_1^*}
+%    &= \brs{z-\brp{a+ib}} \brs{z-\brp{a-ib}}
+%  \\&= z^2 +\brs{-a+ib-ib-a}z - \brs{ib}^2
+%  \\&= z^2 -2a z + b^2
+%\end{align*}
+%\end{proof}
+%
+%%---------------------------------------
+%\begin{example}
+%%---------------------------------------
+%See \prefpp{fig:realcoefs}.
+%\begin{align*}
+%  H(z)   &= G\frac{\brs{z-z_1}\brs{z-z_2}}
+%                  {\brs{z-p_1}\brs{z-p_2}}
+%          = G\frac{\brs{z-\brp{1+i}}\brs{z-\brp{1-i}}}
+%                  {\brs{z-\brp{-\sfrac{2}{3}+i\sfrac{1}{2}}}\brs{z-\brp{-\sfrac{2}{3}-i\sfrac{1}{2}}}}
+%       \\&= G\frac{z^2 - z\brs{\brp{1-i}+\brp{1+i}} + \brp{1-i}\brp{1+i}}
+%                  {z^2 - z\brs{\brp{-\sfrac{2}{3}+i\sfrac{1}{2}}+\brp{-\sfrac{2}{3}+i\sfrac{1}{2}}} + \brp{-\sfrac{2}{3}+i\sfrac{1}{2}}\brp{-\sfrac{2}{3}+i\sfrac{1}{2}}}
+%       \\&= G\frac{z^2 - 2z + 2}
+%                  {z^2 - \sfrac{4}{3}z + \brp{\sfrac{4}{3}+\sfrac{1}{4}}}
+%          = G\frac{z^2 - 2z + 2}
+%                  {z^2 - \sfrac{4}{3}z + \sfrac{19}{12}}
+%\end{align*}
+%\end{example}
+%
+%
+%%=======================================
+%\subsection{Rational polynomial operators}
+%%=======================================
+%A digital filter is simply an operator on $\spllR$.
+%If the digital filter is a causal LTI system, then it can be expressed as 
+%a rational polynomial in $z$ as shown next.
+%
+%%=======================================
+%\begin{lemma}
+%%=======================================
+%A causal LTI operator $\mathcal{H}$ can be expressed as a rational expression $\Zh(z)$.
+%\begin{align*}
+% \Zh(z) &= \frac{b_0 + b_1z^{-1} + b_2z^{-2} + \cdots + b_Nz^{-N}}
+%                {1   + a_1z^{-1} + a_2z^{-2} + \cdots + a_Nz^{-N}}
+%   \\   &= \frac{\sum\limits_{n=0}^{N} b_n z^{-n}}
+%                {1   + \sum\limits_{n=1}^{N} a_n z^{-n}}
+%\end{align*}
+%\end{lemma}
+%
+%
+%A filter operation $\Zh(z)$ can be expressed as a product of its roots (poles and zeros).
+%\begin{align*}
+% \Zh(z) &= \frac{b_0 + b_1z^{-1} + b_2z^{-2} + \cdots + b_\xN z^{-\xN}}
+%                {1   + a_1z^{-1} + a_2z^{-2} + \cdots + a_\xN z^{-\xN}}
+%   \\   &= \alpha\frac{(z-z_1)(z-z_2)\cdots(z-z_\xN)}
+%                {(z-p_1)(z-p_2)\cdots(z-p_\xN)}
+%\end{align*}
+%where $\alpha$ is a constant, $z_i$ are the zeros, and $p_i$ are the poles.
+%The poles and zeros of such a rational expression are often plotted in the z-plane with a unit circle
+%about the origin (representing $z=e^{i\omega}$).
+%Poles are marked with $\times$ and zeros with $\bigcirc$.
+%An example is shown in \prefp{fig:pz}.  
+%Notice that in this figure the zeros and poles are either real or occur in 
+%complex conjugate pairs.
+%
+%\begin{figure}[ht]
+%  \centering
+%  \includegraphics{graphics/pz_realcoefs.pdf}
+%  \caption{
+%     Pole-zero plot for rational expression with real coefficients
+%     \label{fig:pz}
+%     }
+%\end{figure}
+%
+%
+%
+%%======================================
+%\subsection{Filter Banks}
+%%======================================
+%\structe{Conjugate quadrature filters} (next definition) are used in \structe{filter banks}.
+%If $\Zx(z)$ is a \structe{low-pass filter}, then the conjugate quadrature filter of $\Zy(z)$ is a \structe{high-pass filter}.
+%
+%%--------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpg{strang1996}{109}{0961408871},
+%  \citerppgc{haddad1992}{256}{259}{0323138365}{section 4.5},
+%  \citerpgc{vaidyanathan1993}{342}{0136057187}{(7.2.7), (7.2.8)},
+%  \citor{smith1984},
+%  \citor{smith1986},
+%  \citor{mintzer1985}
+%  }
+%\label{def:cqf}
+%%--------------------------------------
+%Let $\seqxZ{x_n}$ and $\seqxZ{y_n}$ be \structe{sequences} \xref{def:seq} in $\spllR$ \xref{def:spllR}.
+%\defboxt{
+%  The sequence $\seqn{y_n}$ is a \fnctd{conjugate quadrature filter} with shift $\xN$ with respect to $\seqn{x_n}$ if
+%  \\\indentx$\ds y_n = \pm(-1)^n x^\ast_{\xN-n}$\\
+%  A \structe{conjugate quadrature filter} is also called a \hid{CQF} or a \hid{Smith-Barnwell filter}.
+%  \\
+%  Any triple $\otriple{\seqn{x_n}}{\seqn{y_n}}{\xN}$ in this form is said to satisfy the
+%  \\\indentx\propd{conjugate quadrature filter condition} or
+%  the \propd{CQF condition}.
+%  }
+%\end{definition}
+%
+%%--------------------------------------
+%\begin{theorem}[\thmd{CQF theorem}]
+%%\begin{theorem} % [\thmd{conjugate quadrature filters}/\thmd{CQF}/\thmd{Smith-Barnwell filters}]
+%\label{thm:cqf}
+%\footnote{
+%  %\citerpgc{dau}{135}{0898712742}{(5.1.34)},
+%  %\citerpgc{vidakovic}{59}{0471293652}{(3.34)},
+%  \citerpg{strang1996}{109}{0961408871},
+%  \citerppgc{mallat}{236}{238}{012466606X}{(7.58),(7.73)},
+%  \citerppgc{haddad1992}{256}{259}{0323138365}{section 4.5},
+%  \citerpgc{vaidyanathan1993}{342}{0136057187}{(7.2.7), (7.2.8)}
+%  }
+%%--------------------------------------
+%Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the sequences $\seqxZ{y_n}$ and $\seqxZ{x_n}$, respectively, in $\spllR$ \xref{def:spllR}.
+%\thmboxt{
+%  $\ds\begin{array}{>{\ds}r c rc>{\ds}l DD}
+%    \mcom{y_{n} = \pm (-1)^n x^\ast_{\xN-n}}
+%         {(1) \structe{CQF} in ``time"}
+%      &\iff& \Zy(z)      &=& \pm (-1)^\xN z^{-\xN} \Zx^\ast\brp{\frac{-1}{z^\ast}}   & (2)& \structe{CQF} in ``z-domain"
+%    \\&\iff& \Dy(\omega) &=& \pm (-1)^\xN e^{-i\omega\xN} \Dx^\ast(\omega+\pi)       & (3)& \structe{CQF} in ``frequency"
+%    \\&\iff& x_{n}       &=& \pm (-1)^\xN (-1)^n y^\ast_{\xN-n}                      & (4)& ``reversed" \structe{CQF} in ``time"
+%    \\&\iff& \Zx(z)      &=& \pm z^{-\xN} \Zy^\ast\brp{\frac{-1}{z^\ast}}            & (5)& ``reversed" \structe{CQF} in ``z-domain"
+%    \\&\iff& \Dx(\omega) &=& \pm e^{-i\omega\xN} \Dy^\ast(\omega+\pi)                & (6)& ``reversed" \structe{CQF} in ``frequency"
+%  \end{array}$
+%  \\$\indentx\scy\forall\xN\in\Z$
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $(1)\implies(2)$:
+%    \begin{align*}
+%      \Zy(z)
+%        &= \sum_{n\in\Z}  y_{n}  z^{-n}
+%        && \text{by definition of \fncte{z-transform}}
+%        && \text{\xref{def:opZ}}
+%      \\&= \sum_{n\in\Z} \mcom{(\pm) (-1)^n x^\ast_{\xN-n}}{\structe{CQF}} z^{-n}
+%        && \text{by (1)}
+%      \\&= \pm\sum_{m\in\Z} (-1)^{\xN-m} x_m^\ast z^{-(\xN-m)}
+%        && \text{where $m\eqd\xN-n \implies$}
+%        && \text{$n=\xN-m$}
+%      \\&= \pm (-1)^\xN z^{-\xN}
+%           \sum_{m\in\Z}(-1)^{-m} x_m^\ast \brp{z^{-1}}^{-m}
+%      \\&= \pm (-1)^\xN z^{-\xN}
+%           \sum_{m\in\Z} x^\ast_m \brp{-\frac{1}{z}}^{-m}
+%      \\&= \pm (-1)^\xN z^{-\xN}
+%           \brs{\sum_{m\in\Z} x_m \brp{-\frac{1}{z^\ast}}^{-m}}^\ast
+%      \\&= \pm (-1)^\xN z^{-\xN}\Zx^\ast\brp{\frac{-1}{z^\ast}}
+%        && \text{by definition of \fncte{z-transform}}
+%        && \text{\xref{def:opZ}}
+%    \end{align*}
+%
+%  \item Proof that $(1)\impliedby(2)$:
+%    \begin{align*}
+%      \Zy(z)
+%        &= \pm (-1)^\xN z^{-\xN} \Zx^\ast\brp{\frac{-1}{z^\ast}}
+%        && \text{by (2)}
+%      \\&= \pm (-1)^\xN z^{-\xN} \brs{\sum_{m\in\Z} x_m \brp{\frac{-1}{z^\ast}}^{-m}}^\ast
+%        && \text{by definition of \fncte{z-transform}}
+%        && \text{\xref{def:opZ}}
+%      \\&= \pm (-1)^\xN z^{-\xN} \brs{\sum_{m\in\Z} x^\ast_m \brp{-z^{-1}}^{-m}}
+%        && \text{by definition of \fncte{z-transform}}
+%        && \text{\xref{def:opZ}}
+%      \\&= \sum_{m\in\Z}(\pm) (-1)^{\xN-m} x^\ast_m z^{-(\xN-m)}
+%      \\&= \sum_{m\in\Z}(\pm) (-1)^{n} x^\ast_{\xN-n} z^{-n}
+%        && \text{where $n=\xN-m$ $\implies$}
+%        && \text{$m\eqd\xN-n$}
+%      \\&\implies x_n = \pm (-1)^n x^\ast_{\xN-n}
+%    \end{align*}
+%
+%  \item Proof that $(1)\implies(3)$:
+%    \begin{align*}
+%      \Dy(\omega)
+%        &\eqd \Zx(z)\Big|_{z=e^{i\omega}}
+%        &&    \text{by definition of \fncte{DTFT} \xref{def:dtft}}
+%      \\&=    \brs{\pm (-1)^\xN z^{-\xN}\Zx\brp{\frac{-1}{z^\ast}}}_{z=e^{i\omega}}
+%        &&    \text{by (2)}
+%      \\&=    \pm (-1)^\xN e^{-i\omega\xN}\Zx\brp{e^{i\pi}e^{\i\omega}}
+%      \\&=    \pm (-1)^\xN e^{-i\omega\xN}\Zx\brp{e^{i(\omega+\pi)}}
+%      \\&=    \pm (-1)^\xN e^{-i\omega\xN}\Dx\brp{\omega+\pi}
+%        &&    \text{by definition of \fncte{DTFT} \xref{def:dtft}}
+%    \end{align*}
+%
+%  \item Proof that $(1)\implies(6)$:
+%    \begin{align*}
+%      \Dx(\omega) 
+%        &= \sum_{n\in\Z}  y_{n}  e^{-i\omega n}
+%        && \text{by definition of \fncte{DTFT}}
+%        && \text{\xref{def:dtft}}
+%      \\&= \sum_{n\in\Z} \mcom{\pm (-1)^n x_{\xN-n}^\ast}{\structe{CQF}} e^{-i\omega n}
+%        && \text{by (1)}
+%      \\&= \sum_{m\in\Z}\pm (-1)^{\xN-m} x_m^\ast e^{-i\omega (\xN-m)}
+%        && \text{where $m\eqd\xN-n \implies$}
+%        && \text{$n=\xN-m$}
+%      \\&= \pm (-1)^\xN e^{-i\omega\xN}
+%           \sum_{m\in\Z}(-1)^m x_m^\ast e^{i\omega m}
+%      \\&= \pm (-1)^\xN e^{-i\omega\xN}
+%           \sum_{m\in\Z}e^{i\pi m} x_m^\ast e^{i\omega m}
+%      \\&= \pm (-1)^\xN e^{-i\omega\xN}
+%           \sum_{m\in\Z}x_m^\ast e^{i (\omega+\pi )m}
+%      \\&= \pm (-1)^\xN e^{-i\omega\xN}
+%           \left[ \sum_{m\in\Z}x_m e^{-i(\omega+\pi )m} \right]^\ast
+%      \\&= \pm (-1)^\xN e^{-i\omega\xN}\Dx^\ast\left(\omega+\pi \right)
+%        && \text{by definition of \fncte{DTFT}}
+%        && \text{\xref{def:dtft}}
+%    \end{align*}
+%
+%  \item Proof that $(1)\impliedby(3)$:
+%    \begin{align*}
+%      y_n
+%        &= \frac{1}{2\pi}\int_{-\pi}^{+\pi} \Dy(\omega) e^{i\omega n} \dw
+%        && \text{by \thme{inverse DTFT}}
+%        && \text{\xref{thm:idtft}}
+%      \\&= \frac{1}{2\pi}\int_{-\pi}^{+\pi} \mcom{\pm (-1)^\xN e^{-i\xN\omega} \Dx^\ast(\omega+\pi)}{right hypothesis} e^{i\omega n} \dw
+%        && \text{by right hypothesis}
+%      \\&= \pm (-1)^\xN\frac{1}{2\pi}\int_{-\pi}^{+\pi}  \Dx^\ast(\omega+\pi) e^{i\omega(n-\xN)} \dw
+%        && \text{by right hypothesis}
+%      \\&= \pm (-1)^\xN\frac{1}{2\pi}\int_{0}^{2\pi}  \Dx^\ast(v) e^{i(v-\pi)(n-\xN)} \dv
+%        && \text{where $v\eqd\omega+\pi$ $\implies$}
+%        && \text{$\omega=v-\pi$}
+%      \\&= \pm (-1)^\xN e^{-i\pi(n-\xN)} \frac{1}{2\pi}\int_{0}^{2\pi}  \Dx^\ast(v) e^{iv(n-\xN)} \dv
+%      \\&= \pm (-1)^\xN \mcom{(-1)^\xN}{$e^{i\pi N}$} \mcom{(-1)^n}{$e^{-i\pi n}$} 
+%           \brs{\frac{1}{2\pi}\int_{0}^{2\pi}  \Dx(v) e^{iv(\xN-n)} \dv}^\ast
+%      \\&= \pm (-1)^n x_{\xN-n}^\ast
+%        && \text{by \thme{inverse DTFT}}
+%        && \text{\xref{thm:idtft}}
+%    \end{align*}
+%
+%  \item Proof that (1)$\iff$(4): % 2013jun14fri
+%    \begin{align*}
+%      y_{n} = \pm (-1)^n x^\ast_{\xN-n}
+%        &\iff (\pm)(-1)^n y_{n} = (\pm)(\pm) (-1)^n (-1)^n x^\ast_{\xN-n}
+%      \\&\iff \pm(-1)^n y_{n} = x^\ast_{\xN-n}
+%      \\&\iff \brp{\pm(-1)^n y_{n}}^\ast = \brp{x^\ast_{\xN-n}}^\ast
+%      \\&\iff \pm(-1)^n y^\ast_{n} = x_{\xN-n}
+%      \\&\iff x_{\xN-n} = \pm(-1)^n y^\ast_{n}
+%      \\&\iff x_m = \pm(-1)^{\xN-m} y^\ast_{\xN-m}
+%        && \text{where $m\eqd \xN-n\implies$}
+%        && \text{$n=\xN-m$}
+%      \\&\iff x_m = \pm(-1)^{\xN-m} y^\ast_{\xN-m}
+%      \\&\iff x_m = \pm(-1)^\xN (-1)^m y^\ast_{\xN-m}
+%      \\&\iff x_n = \pm(-1)^\xN (-1)^n y^\ast_{\xN-n}
+%        &&    \text{by change of free variables}
+%    \end{align*} 
+%
+%  \item Proofs for (5) and (6): not included. See proofs for (2) and (3).
+%\end{enumerate}
+%\end{proof}
+%
+%
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpp{vidakovic}{82}{83},
+%  \citerpp{mallat}{241}{242}
+%  }
+%\label{thm:cqf_ddw}
+%%--------------------------------------
+%Let $\Dy(\omega)$ and $\Dx(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of the sequences $\seqxZ{y_n}$ and $\seqxZ{x_n}$, respectively, in $\spllR$ \xref{def:spllR}.
+%\thmboxt{
+%  Let $y_n = \pm(-1)^n x^\ast_{N-n}$ (\prope{CQF condition}, {\scs\prefp{def:cqf}}). Then\\
+%  $\brb{\begin{array}{D@{\qquad}>{\ds}rc>{\ds}lcl@{\qquad}D}
+%       (A)&\left.\opddwn  \Dy(\omega)\right|_{\omega=0} = 0
+%          &\iff  & \left.\opddwn  \Dx(\omega)\right|_{\omega=\pi}   &=& 0 & (B)
+%       \\&&\iff  & \sum_{k\in\Z} (-1)^k k^n  x_k                    &=& 0 & (C)
+%       \\&&\iff  & \sum_{k\in\Z} k^n  y_k                           &=& 0 & (D)
+%  \end{array}}
+%  \quad\scy\forall n\in\Znn$
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that (A)$\implies$(B): 
+%    \begin{align*}
+%      0
+%        &= \opddwn\Dy(\omega)\Big|_{\omega=0}
+%        && \text{by (A)}
+%      \\&= \opddwn(\pm)(-1)^\xN e^{-i\omega\xN}\Dx^\ast(\omega+\pi)\Big|_{\omega=0}
+%        && \text{by \thme{CQF theorem}}
+%        && \text{\xref{thm:cqf}}
+%      \\&= \brlr{(\pm)(-1)^\xN \sum_{\ell=0}^n \bcoef{n}{\ell} \brs{\opddw}^\ell\brs{e^{-i\omega\xN}}\cdot\brs{\opddw}^{n-\ell}\brs{\Dx^\ast(\omega+\pi)}}_{\omega=0}
+%        && \text{by \thme{Leibnitz GPR}}
+%        && \text{\xref{lem:LGPR}}
+%      \\&= \brlr{(\pm)(-1)^\xN 
+%                 \sum_{\ell=0}^n \bcoef{n}{\ell} {-i\xN}^\ell e^{-i\omega\xN}\brs{\opddw}^{n-\ell}\brs{\Dx^\ast(\omega+\pi)}
+%                }_{\omega=0}
+%      \\&= \brlr{(\pm)(-1)^\xN  \cancelto{1}{e^{-i0\xN}} \sum_{\ell=0}^n \bcoef{n}{\ell} {-i\xN}^\ell \brs{\opddw}^{n-\ell}\brs{\Dx^\ast(\omega+\pi)}}_{\omega=0}
+%    \end{align*}
+%  \[\begin{array}{r rcl l}
+%    \implies & \Dx^{(0)}(\pi) &=& 0 \\
+%    \implies & \Dx^{(1)}(\pi) &=& 0 \\
+%    \implies & \Dx^{(2)}(\pi) &=& 0 \\
+%    \implies & \Dx^{(3)}(\pi) &=& 0 \\
+%    \implies & \Dx^{(4)}(\pi) &=& 0 \\
+%    \vdots   & \mc{1}{c}{\vdots}    \\
+%    \implies & \Dx^{(n)}(\pi) &=& 0 & \text{for $n=0,1,2,\ldots$}
+%  \end{array}\]
+%
+%  \item Proof that (A)$\impliedby$(B): 
+%    \begin{align*}
+%      0
+%        &= \opddwn\Dx(\omega)\Big|_{\omega=\pi}
+%        && \text{by (B)}
+%      \\&= \opddwn(\pm) e^{-i\omega\xN} \Dy^\ast(\omega+\pi)\Big|_{\omega=\pi}
+%        && \text{by \thme{CQF theorem}}
+%        && \text{\xref{thm:cqf}}
+%      \\&= \brlr{(\pm) \sum_{\ell=0}^n \bcoef{n}{\ell} \brs{\opddw}^\ell\brs{e^{-i\omega\xN}}\cdot\brs{\opddw}^{n-\ell}\brs{\Dy^\ast(\omega+\pi)}}_{\omega=\pi}
+%        && \text{by \thme{Leibnitz GPR}}
+%        && \text{\xref{lem:LGPR}}
+%      \\&= \brlr{(\pm) \sum_{\ell=0}^n \bcoef{n}{\ell} (-i\xN)^\ell e^{-i\omega\xN}\brs{\opddw}^{n-\ell}\brs{\Dy^\ast(\omega+\pi)}}_{\omega=\pi}
+%      \\&= \brlr{(\pm) \cancelto{1}{e^{-i\pi\xN}} \sum_{\ell=0}^n \bcoef{n}{\ell} {-i\xN}^\ell \brs{\opddw}^{n-\ell}\brs{\Dy^\ast(\omega+\pi)}}_{\omega=\pi}
+%      \\&= \brlr{(\pm) (-1)^\xN \sum_{\ell=0}^n \bcoef{n}{\ell} {-i\xN}^\ell \brs{\opddw}^{n-\ell}\brs{\Dy^\ast(\omega+\pi)}}_{\omega=\pi}
+%    \end{align*}
+%  \[\begin{array}{r rcl l}
+%    \implies & \Dy^{(0)}(0) &=& 0 \\
+%    \implies & \Dy^{(1)}(0) &=& 0 \\
+%    \implies & \Dy^{(2)}(0) &=& 0 \\
+%    \implies & \Dy^{(3)}(0) &=& 0 \\
+%    \implies & \Dy^{(4)}(0) &=& 0 \\
+%    \vdots   & \mc{1}{c}{\vdots}    \\
+%    \implies & \Dy^{(n)}(0) &=& 0 \\
+%    \implies & \Dy^{(n)}(0) &=& 0 & \text{for $n=0,1,2,\ldots$}
+%  \end{array}\]
+%
+%
+%  \item Proof that (B)$\iff$(C): by \prefp{thm:dtft_ddw}
+%  \item Proof that (A)$\iff$(D): by \prefp{thm:dtft_ddw}
+%  \item Proof that (CQF)$\notimpliedby$(A): Here is a counterexample: $\Dy(\omega)=0$.
+%
+%\end{enumerate}
+%\end{proof}
+%
+%
+%%---------------------------------------
+%\subsection{Inverting non-minimum phase filters}
+%%---------------------------------------
+%\prope{Minimum phase} filters are easy to invert: each \structe{zero} becomes a \structe{pole} 
+%and each \structe{pole} becomes a \structe{zero}.
+%\begin{figure}
+%\centering
+%$\begin{array}{ccccc}
+%     \tbox{\includegraphics{graphics/pz_minphase.pdf}}
+%    &\tbox{$\times$}
+%    &\tbox{\includegraphics{graphics/pz_minphase_inv.pdf}}
+%    &\tbox{$=$}
+%    &\tbox{$1$}
+%  \\
+%     \ds\frac{\brp{z-z_1}\brp{z-z_2}\brp{z-z_3}\brp{z-z_4}}
+%             {\brp{z-p_1}\brp{z-p_2}\brp{z-p_3}\brp{z-p_4}}
+%    &\times
+%    &\ds\frac{\brp{z-p_1}\brp{z-p_2}\brp{z-p_3}\brp{z-p_4}}
+%             {\brp{z-z_1}\brp{z-z_2}\brp{z-z_3}\brp{z-z_4}}
+%    &=
+%    &1
+%\end{array}$
+%\end{figure}
+%
+%\begin{tabular}{ccccc}
+%     \tbox{\includegraphics{graphics/pz_unstable2.pdf}}
+%    &\tbox{$\times$}&
+%     \tbox{\includegraphics{graphics/pz_allpass.pdf}}
+%    &\tbox{$=$}&
+%     \tbox{\includegraphics{graphics/pz_unall.pdf}}
+%  \\unstable&&all-pass&&stable!
+%\end{tabular}
+%
+%\begin{align*}
+%  \abs{A\brp{z}}_{z=e^{i\omega}}
+%    &= \frac{1}{r}\abs{\frac{z-r          e^{i\phi}}
+%                            {z-\frac{1}{r}e^{i\phi}}}_{z=e^{i\omega}}
+%   &&= \abs{\frac{ z- re^{i\phi}}
+%                 {rz-  e^{i\phi}}}_{z=e^{i\omega}}
+%  \\&= \abs{e^{i\phi}\brp{
+%            \frac{e^{-i\phi}z-r}
+%                 {rz- e^{i\phi}}}}_{z=e^{i\omega}}
+%   &&= \abs{z\brp{
+%            \frac{e^{-i\phi}-rz^{-1}}
+%                 {rz- e^{i\phi}}}}_{z=e^{i\omega}}
+%  \\&= \abs{-z\brp{
+%            \frac{rz^{-1}- e^{-i\phi}}
+%                 {rz     - e^{ i\phi}}}}_{z=e^{i\omega}}
+%   &&= \abs{\mcom{e^{i\pi}}{$-1$}e^{i\omega}\brp{
+%            \frac{re^{-i\omega} - e^{-i\phi}}
+%                 {re^{ i\omega} - e^{ i\phi}}}}
+%  \\&= \abs{\frac{1}{e^{-iv}}\brp{
+%            \frac{re^{-i\omega} - e^{-i\phi}}
+%                 {\brp{re^{ i\omega} - e^{ i\phi}}^\ast}}}
+%   &&= \abs{\frac{re^{-i\omega} - e^{-i\phi}}
+%                 {re^{-i\omega} - e^{-i\phi}}}
+%  \\&= 1
+%\end{align*}
+%
+%
+%
+%
+%%%--------------------------------------
+%%\begin{definition}
+%%\index{causal}
+%%%--------------------------------------
+%%A filter (or system or operator) $\mathcal{H}$ is {\bf causal} 
+%%if its current output does not depend on future inputs.
+%%\end{definition}
+%%
+%%%--------------------------------------
+%%\begin{definition}
+%%\index{time-invariant}
+%%%--------------------------------------
+%%A filter (or system or operator) $\mathcal{H}$ is {\bf time-invariant} 
+%%if the mapping it performs does not change with time.
+%%\end{definition}
+%%
+%%%--------------------------------------
+%%\begin{definition}
+%%\index{linear}
+%%%--------------------------------------
+%%An operation $\mathcal{H}$ is {\bf linear} if any output $y_n$ can be described
+%%as a linear combination of inputs $x_n$ as in 
+%%\begin{eqnarray*}
+%%   y_n &=& \sum\limits_m h(m) x(n-m).
+%%\end{eqnarray*}
+%%\end{definition}
+%

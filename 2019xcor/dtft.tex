@@ -1,0 +1,709 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%======================================
+\section{Discrete Time Fourier Transform}
+%======================================
+%%======================================
+%\section{Definition}
+%%======================================
+%--------------------------------------
+\begin{definition}
+\label{def:dtft}
+%\footnote{
+%  \structe{Laurent series}: \citerpg{aa}{49}{0821821466}
+%  }
+%--------------------------------------
+%Let $\seq{x_n}{n\in\Z}$ be a sequence in the space $\spllR$. %over a ring $\ring$. 
+\defbox{\begin{array}{M}
+  The \opd{discrete-time Fourier transform} $\opDTFT$ of $\seq{x_n}{n\in\Z}$ is defined as
+  \\\indentx$\ds
+  \brs{\opDTFT\seqn{x_n}}(\omega) \eqd \sum_{n\in\Z} x_n e^{-i\omega n}
+  \qquad{\scy\forall\seqxZ{x_n}\in\spllR}
+  $
+\end{array}}
+\end{definition}
+%
+%\begin{minipage}{\tw-35mm}
+%If we compare the definition of the \fncte{Discrete Time Fourier Transform} \xref{def:dtft} 
+%to the definition of the Z-transform\ifsxref{dsp}{def:opZ},
+%we see that the DTFT is just a special case of the more general Z-Transform, with $z = e^{i\omega}$.
+%If we imagine $z\in\C$ as a complex plane, then $e^{i\omega}$ is 
+%a unit circle in this plane.
+%The ``frequency" $\omega$ in the DTFT is the unit circle in the much larger z-plane,
+%as illustrated to the right.
+%\end{minipage}%
+%\hfill\tbox{\includegraphics{graphics/unitcircle.pdf}}
+
+
+%======================================
+%\section{Properties}
+%======================================
+%%--------------------------------------
+%\begin{proposition}[\thmd{DTFT periodicity}]
+%\label{prop:dtft_2pi}
+%\label{prop:dtft_periodic}
+%%--------------------------------------
+%Let $\Dx(\omega)\eqd\opDTFT\brs{\seqn{x_n}}(\omega)$ be the \fncte{discrete-time Fourier transform} \xref{def:dtft}
+%of a sequence $\seqxZ{x_n}$ in $\spllR$.
+%\propbox{
+%  \mcom{\Dx(\omega) = \Dx(\omega+2\pi n)}{\prope{periodic} with period $2\pi$} \qquad \forall n\in\Z
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%   \Dx\brp{\omega+2\pi n}
+%     & = \sum_{m\in\Z} x_m e^{-i \left(\omega+2\pi n\right)m}
+%     &&= \sum_{m\in\Z} x_m e^{-i\omega m} \cancelto{1}{e^{-i2\pi nm}} \nonumber
+%   \\&=  \sum_{m\in\Z} x_m e^{-i\omega m}
+%     &&= \Dx(\omega) \label{equ:qc1}
+%%\\
+%%   \Fg\left(\omega+2\pi n\right)
+%%     &=  \sum_{m\in\Z} g_m e^{-i(\omega+2\pi n)m}
+%%     &&= \sum_{m\in\Z} g_m e^{-i\omega m} e^{-i2\pi nm}
+%%     &&= \sum_{m\in\Z} g_m e^{-i\omega m}  \nonumber
+%%     &&= \Fh(\omega) \label{equ:qc1}
+%%   \\&=  \Fg(\omega) \label{equ:psi_qc1}
+%\end{align*}
+%\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:dtft_conjneg}
+%--------------------------------------
+Let $\Dx(\omega)\eqd\opDTFT\brs{\seqn{\fx[n]}}(\omega)$ be the \fncte{discrete-time Fourier transform} \xref{def:dtft}
+of a sequence $\seqxZ{x_n}$ in $\spllR$.
+\thmbox{
+  \brb{\begin{array}{>{\ds}rc>{\ds}l}
+    \Fx(\omega) &\eqd& \opDTFT\seqn{\fx[n]}
+    %\\\mc{3}{F}{(\ope{DTFT})}
+    %\\\mc{3}{M}{\xref{def:dtft}}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lD}
+      (1).&\opDTFT\seqn{\fx      [-n]} &=& \Fx      (-\omega) & and
+    \\(2).&\opDTFT\seqn{\fx^\conj[ n]} &=& \Fx^\conj(-\omega) & and
+    \\(3).&\opDTFT\seqn{\fx^\conj[-n]} &=& \Fx^\conj( \omega) & 
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opDTFT\seqn{\fx[-n]}
+    &\eqd \sum_{n\in\Z} \fx[-n] e^{-i\omega n}
+    && \text{by definition of \ope{DTFT}}
+    && \text{\xref{def:dtft}}
+  \\&= \sum_{m\in\Z} \fx[m] e^{i\omega m}
+     && \text{where $m\eqd-n$ $\implies$ $n=-m$}
+  \\&= \sum_{m\in\Z} \fx[m] e^{-i(-\omega)m}
+  \\&\eqd \Fx(-\omega)
+    && \text{by left hypothesis}
+    \\
+    \\
+  \opDTFT\seqn{\fx^\conj[n]}
+    &\eqd \sum_{n\in\Z} \fx^\conj[n] e^{-i\omega n}
+    && \text{by definition of \ope{DTFT}}
+    && \text{\xref{def:dtft}}
+  \\&= \brp{\sum_{n\in\Z} \fx[n] e^{i\omega n}}^\conj
+     && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
+     && \text{\xref{def:staralg}}
+  \\&= \brp{\sum_{n\in\Z} \fx[n] e^{-i(-\omega)n}}^\conj
+  \\&\eqd \Fx^\conj(-\omega)
+    && \text{by left hypothesis}
+    \\
+    \\
+  \opDTFT\seqn{\fx^\conj[-n]}
+    &\eqd \sum_{n\in\Z} \fx^\conj[-n] e^{-i\omega n}
+    && \text{by definition of \ope{DTFT}}
+    && \text{\xref{def:dtft}}
+  \\&= \brp{\sum_{n\in\Z} \fx[-n] e^{i\omega n}}^\conj
+     && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
+     && \text{\xref{def:staralg}}
+  \\&= \brp{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}^\conj
+     && \text{where $m\eqd-n$ $\implies$ $n=-m$}
+  \\&\eqd \Fx^\conj(\omega)
+    && \text{by left hypothesis}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:dtft_conjneg_real}
+%--------------------------------------
+Let $\Dx(\omega)\eqd\opDTFT\brs{\seqn{\fx[n]}}(\omega)$ be the \fncte{discrete-time Fourier transform} \xref{def:dtft}
+of a sequence $\seqxZ{\fx[n]}$ in $\spllR$.
+\thmbox{
+  \brb{\begin{array}{FMD}
+      (1).&$\Fx(\omega) \eqd \opDTFT\seqn{\fx[n]}$ & and
+    \\(2).&$\seqn{\fx[n]}$ is \prope{real-valued}
+  \end{array}}
+  \quad\implies\quad
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lc>{\ds}lD}
+      (1).&\opDTFT\seqn{\fx      [-n]} &=& \Fx      (-\omega) & &              & and
+    \\(2).&\opDTFT\seqn{\fx^\conj[ n]} &=& \Fx^\conj(-\omega) &=& \Fx( \omega) & and
+    \\(3).&\opDTFT\seqn{\fx^\conj[-n]} &=& \Fx^\conj( \omega) &=& \Fx(-\omega) & 
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opDTFT\seqn{\fx[-n]}
+    &\eqd \sum_{n\in\Z} \fx[-n] e^{-i\omega n}
+    && \text{by definition of \ope{DTFT}}
+    && \text{\xref{def:dtft}}
+  \\&= \sum_{m\in\Z} \fx[m] e^{i\omega m}
+     && \text{where $m\eqd-n$ $\implies$ $n=-m$}
+  \\&= \sum_{m\in\Z} \fx[m] e^{-i(-\omega)m}
+  \\&\eqd \Fx(-\omega)
+    && \text{by left hypothesis}
+    \\
+    \\
+  \boxed{\Fx^\conj(-\omega)}
+    &= \boxed{\opDTFT\seqn{\fx^\conj[n]}}
+    && \text{by \prefp{thm:dtft_conjneg}}
+  \\&= \opDTFT\seqn{\fx[n]}
+    && \text{by \prope{real-valued} hypothesis}
+  \\&= \boxed{\Fx(\omega)}
+    && \text{by definition of $\Fx(\omega)$}
+    && \text{\xref{def:dtft}}
+    \\
+    \\
+  \boxed{\Fx^\conj( \omega)}
+    &= \boxed{\opDTFT\seqn{\fx^\conj[-n]}}
+    && \text{by \prefp{thm:dtft_conjneg}}
+  \\&= \opDTFT\seqn{\fx[-n]}
+    && \text{by \prope{real-valued} hypothesis}
+  \\&= \boxed{\Fx(-\omega)}
+    && \text{by result (1)}
+\end{align*}
+\end{proof}
+
+%%\begin{center}
+%%\begin{tabular}{cc}
+%%  \includegraphics{graphics/pounityz.pdf}&\includegraphics{graphics/Fhw.pdf}
+%%\end{tabular}
+%%\end{center}
+%%--------------------------------------
+%\begin{proposition}
+%\label{prop:tzf}
+%\label{prop:dsp_zone}
+%%--------------------------------------
+%Let $\Zx(z)$ be the \fncte{Z-transform}\ifsxref{dsp}{def:opZ} and 
+%$\Dx(\omega)$ the \fncte{discrete-time Fourier transform} \xref{def:dtft} of $\seqn{x_n}$.
+%\propbox{
+%                  \mcom{\brb{\sum_{n\in\Z}  x_n  = c}}{(1) time domain}               
+%  \quad\iff\quad  \mcom{\brb{\Zx(z)\Big|_{z=1}   = c}}{(2) z domain}                  
+%  \quad\iff\quad  \mcom{\brb{\Dx(\omega)\Big|_{\omega=0} = c}}{(3) frequency domain}
+%  \qquad\scy\forall\seqxZ{x_n}\in\spllR,\,c\in\R
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that (1) $\implies$ (2):
+%    \begin{align*}
+%      \Zx(z)\Big|_{z=1}
+%        &= \left.\sum_{n\in\Z} x_n z^{-n} \right|_{z=1}
+%        && \text{by definition of $\Zx(z)$\ifsxref{dsp}{def:opZ}}
+%      \\&= \sum_{n\in\Z} x_n
+%        && \text{because $z^n=1$ for all $n\in\Z$}
+%      \\&= c
+%        && \text{by hypothesis (1)}
+%    \end{align*}
+%
+%  %\item Proof that (2) $\implies$ (3):
+%  %  \begin{align*}
+%  %    c
+%  %      &= \sum_{n\in\Z} x_n
+%  %      && \text{by previous result}
+%  %    \\&= \left.\sum_{n\in\Z} x_n e^{-i\omega n} \right|_{\omega=0}
+%  %      && \text{because $e^0=1$}
+%  %    \\&= \Dx(\omega)\Big|_{\omega=0}
+%  %      && \text{by definition of $\Dx(\omega)$ \xref{def:dtft}}
+%  %  \end{align*}
+%
+%  \item Proof that (2) $\implies$ (3):
+%    \begin{align*}
+%      \Dx(\omega)\Big|_{\omega=0}
+%        &= \left.\sum_{n\in\Z} x_n e^{-i\omega n} \right|_{\omega=0}
+%        && \text{by definition of $\Dx(\omega)$}
+%        && \text{\xref{def:dtft}}
+%      \\&= \left.\sum_{n\in\Z} x_n z^{-n} \right|_{z=1}
+%      \\&= \Zx(z)\Big|_{z=1}
+%        && \text{by definition of $\Zx(z)$}
+%        && \text{\ifsxref{dsp}{def:opZ}}
+%      \\&= c
+%        && \text{by hypothesis (2)}
+%    \end{align*}
+%
+%  \item Proof that (3) $\implies$ (1):
+%    \begin{align*}
+%      \sum_{n\in\Z} x_n
+%        &= \left.\sum_{n\in\Z} x_n e^{-i\omega n} \right|_{\omega=0}
+%      \\&= \Dx(\omega)
+%        && \text{by definition of $\Dx(\omega)$}
+%        && \text{\xref{def:dtft}}
+%      \\&= c
+%        && \text{by hypothesis (3)}
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+%
+%%---------------------------------------
+%\begin{proposition}
+%\label{prop:dtft_real}
+%%---------------------------------------
+%If the coefficients are \propb{real}, then the magnitude response (MR) is \propb{symmetric}.
+%\end{proposition}
+%\begin{proof}
+%\begin{align*}
+%  \abs{\Fh(-\omega)}
+%    &\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
+%   &&\eqd \abs{\sum_{m\in\Z} \fx[m] z^{-m}}_{z=e^{-i\omega}}
+%  \\&= \abs{\sum_{m\in\Z} \fx[m] e^{i\omega m}}
+%   &&= \abs{\brp{\sum_{m\in\Z} \fx^\ast[m] e^{-i\omega m}}^\ast}
+%  \\&= \mcom{\abs{\brp{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}^\ast}}
+%            { if $x[m]$ is \prope{real}}
+%   &&= \abs{\sum_{m\in\Z} \fx[m] e^{-i\omega m}}
+%  \\&\eqd \abs{\Zh(z)}_{z=e^{-i\omega}}
+%   &&\eqd \abs{\Fh(\omega)}
+%\end{align*}
+%\end{proof}
+%
+%
+%%=======================================
+%%\section{Zeros on the unit circle}
+%%=======================================
+%
+%%-------------------------------------
+%\begin{proposition}
+%\footnote{
+%  \citerpg{chui}{123}{0121745848}
+%  }
+%\label{prop:dsp_zminone}
+%\index{zero at $-1$}
+%%-------------------------------------
+%%Let $\seq{\alpha_n}{n\in\Z}\in\spII$
+%%with Fourier Transform $\Falpha(\omega)\eqd\sum_{n\in\Z} \alpha_n \fkerna{n}{\omega}$.
+%\propboxt{
+%  $\ds\begin{array}{lclcl}
+%    \mcom{\sum_{n\in\Z} (-1)^n x_n = c}
+%         {(1) in ``time"}
+%    &\iff&
+%    \mcom{\left. \Zx(z)\right|_{z=-1} = c}
+%         {(2) in ``$z$ domain"}
+%    &\iff&
+%    \mcom{\left. \Dx(\omega)\right|_{\omega=\pi} = c}
+%         {(3) in ``frequency"}
+%    \\&\iff&
+%    \mc{3}{>{\ds}l}{%
+%      \mcom{\opair{\sum_{n\in\Z} h_{2n}}{\sum_{n\in\Z} h_{2n+1}} = \opair{\frac{1}{2}\brp{\sum_{n\in\Z} h_n+c}}{\frac{1}{2}\brp{\sum_{n\in\Z} h_n-c}}}
+%           {(4) sum of even, sum of odd}
+%      }
+%  \end{array}$
+%  \\
+%  $\indentx\scy\forall c\in\R,\,\seqxZ{x_n},\,\seqxZ{y_n}\in\spllR$
+%  }
+%\end{proposition}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that (1)$\implies$(2):
+%    \begin{align*}
+%      \left.\Zx(z)\right|_{z=-1}
+%        &= \left.\sum_{n\in\Z} x_n z^{-n} \right|_{z=-1}
+%      \\&= \sum_{n\in\Z} (-1)^n x_n
+%      \\&= c
+%        && \text{by (1)}
+%    \end{align*}
+%
+%  \item Proof that (2)$\implies$(3):
+%    \begin{align*}
+%      \brlr{\sum_{n\in\Z} x_n e^{-i\omega n}}_{\omega=\pi}
+%        &= \sum_{n\in\Z} (-1)^n x_n
+%      \\&= \sum_{n\in\Z} (-1)^{-n} x_n
+%        &= \brlr{\sum_{n\in\Z} z^{-n} x_n}_{z=-1}
+%      \\&= c
+%        && \text{by (2)}
+%    \end{align*}   
+%
+%  \item Proof that (3)$\implies$(1):
+%    \begin{align*}
+%      \sum_{n\in\Z} (-1)^n x_n 
+%        &= \sum_{n\in\Z} (-1)^{-n} x_n 
+%      \\&= \brlr{\sum_{n\in\Z} e^{-i\omega n} x_n}_{\omega=\pi}
+%      \\&= c
+%        && \text{by (3)}
+%    \end{align*}   
+%
+%  %\item Proof that (1)$\impliedby$(2):
+%  %  \begin{align*}
+%  %    c
+%  %      &= \left.\Zx(z)\right|_{z=-1}
+%  %      && \text{by (2)}
+%  %    \\&= \left.\sum_{n\in\Z} x_n z^{-n}\right|_{z=-1}
+%  %    \\&= \sum_{n\in\Z} (-1)^n x_n
+%  %  \end{align*}
+%
+%  \item Proof that (2)$\implies$(4):
+%    \begin{enumerate}
+%      \item Define $\ds A \eqd \sum_{n\in\Z}  h_{2n} \hspace{20mm} B \eqd \sum_{n\in\Z}  h_{2n+1}$.
+%      
+%      \item Proof that $A-B=c$:
+%        \begin{align*}
+%          c
+%            &= \sum_{n\in\Z} (-1)^n  x_n
+%            && \text{by (2)}
+%          \\&=   \mcom{\sum_{n\in\Ze} (-1)^n  x_n}{even terms}
+%               + \mcom{\sum_{n\in\Zo} (-1)^n  x_n}{odd terms}
+%          \\&=   \sum_{n\in\Z} (-1)^{2n}    x_{2n}
+%               + \sum_{n\in\Z} (-1)^{2n+1}  x_{2n+1}
+%          \\&=   \mcom{\sum_{n\in\Z}  x_{2n}}{$A$} - \mcom{\sum_{n\in\Z}  x_{2n+1}}{$B$}
+%          \\&\eqd A-B
+%            &&  \text{by definitions of $A$ and $B$}
+%        \end{align*}
+%      
+%      \item Proof that $\ds A+B=\sum_{n\in\Z}x_n$:
+%        \begin{align*}
+%          \sum_{n\in\Z}  x_n
+%            &= \sum_{n\mathrm{\;even}}  x_n  + \sum_{n\mathrm{\;odd}}  x_n
+%          \\&= \mcom{\sum_{n\in\Z}  x_{2n}}{$A$} + \mcom{\sum_{n\in\Z}  x_{2n+1}}{$B$}
+%          \\&= A+B
+%            && \text{by definitions of $A$ and $B$}
+%        \end{align*}
+%      
+%      \item This gives two simultaneous equations:
+%        \begin{align*}
+%          A - B &= c \\
+%          A + B &= \sum_{n\in\Z} x_n
+%        \end{align*}
+%      
+%      \item Solutions to these equations give
+%        \begin{align*}
+%         \sum_{n\in\Z}  x_{2n}    &\eqd A &= \frac{1}{2}\brp{\sum_{n\in\Z} x_n + c} \\
+%         \sum_{n\in\Z}  x_{2n+1}  &\eqd B &= \frac{1}{2}\brp{\sum_{n\in\Z} x_n - c}
+%        \end{align*}
+%    \end{enumerate}
+%  
+%  \item Proof that (2)$\impliedby$(4):
+%    \begin{align*}
+%      \sum_{n\in\Z} (-1)^n  x_n
+%        &= \mcom{\sum_{n\in\Ze} (-1)^n  x_n}{even terms}
+%          +\mcom{\sum_{n\in\Zo} (-1)^n  x_n}{odd terms}
+%      \\&= \sum_{n\in\Z} (-1)^{2n  }  x_{2n} + \sum_{n\in\Z} (-1)^{2n+1}  x_{2n+1}
+%      \\&= \sum_{n\in\Z}  x_{2n} -\sum_{n\in\Z}  x_{2n+1}
+%      \\&= \frac{1}{2}\brp{\sum_{n\in\Z}x_n+c} - \frac{1}{2}\brp{\sum_{n\in\Z}x_n-c}
+%        && \text{by (3)}
+%      \\&= c
+%    \end{align*}
+%
+%\end{enumerate}
+%\end{proof}
+%
+%
+%
+%
+%%--------------------------------------
+%\begin{lemma}
+%\label{lem:even}
+%\index{function!even}
+%%--------------------------------------
+%Let $\Ff(\omega)$ be the \fncte{DTFT} \xref{def:dtft} of a sequence $\seqxZ{x_n}$. 
+%\lembox{
+%  \mcom{\seqxZ{x_n\in\R}}{\prope{real-valued} sequence} 
+%  \qquad\implies\qquad
+%  \mcom{\abs{\Dx(\omega)}^2 = \abs{\Dx(-\omega)}^2}{\prope{even}}
+%  \qquad\scy\forall\seqxZ{x_n}\in\spllR
+%  }
+%\end{lemma}
+%\begin{proof}
+%\begin{align*}
+%   |\Dx(\omega)|^2
+%     &=  \left. |\Zx(z)|^2  \right|_{z=e^{i\omega}}
+%   \\&=  \left. \Zx(z)\Zx^\ast(z)  \right|_{z=e^{i\omega}}
+%   \\&=  \left.
+%         \left[ \sum_{n\in\Z}  x_n z^{-n} \right]
+%         \left[ \sum_{m\in\Z}  x_m z^{-n} \right]^\ast
+%         \right|_{z=e^{i\omega}}
+%   \\&=  \left.
+%         \left[ \sum_{n\in\Z}  x_n z^{-n} \right]
+%         \left[ \sum_{m\in\Z}  x^\ast_m (z^\ast)^{-m} \right]
+%         \right|_{z=e^{i\omega}}
+%   \\&=  \left.
+%         \sum_{n\in\Z} \sum_{m\in\Z}  x_n x^\ast_m z^{-n} (z^\ast)^{-m}
+%         \right|_{z=e^{i\omega}}
+%   \\&=  \left.\sum_{n\in\Z} \left[
+%            | x_n|^2 +
+%            \sum_{m>n}  x_n x^\ast_m z^{-n} (z^\ast)^{-m} +
+%            \sum_{m<n}  x_n x^\ast_m z^{-n} (z^\ast)^{-m} 
+%            \right]
+%         \right|_{z=e^{i\omega}}
+%   \\&=  \sum_{n\in\Z}
+%         \left[
+%            | x_n|^2 +
+%            \sum_{m>n}  x_n  x_m e^{i\omega (m-n)}  +
+%            \sum_{m<n}  x_n  x_m e^{i\omega (m-n)}
+%         \right]
+%   \\&=  \sum_{n\in\Z}
+%         \left[
+%            | x_n|^2 +
+%            \sum_{m>n}  x_n  x_m e^{ i\omega(m-n)}  +
+%            \sum_{m>n}  x_n  x_m e^{-i\omega(m-n)}
+%         \right]
+%   \\&=  \sum_{n\in\Z}
+%         \left[
+%            | x_n|^2 +
+%            \sum_{m>n}  x_n  x_m
+%            \left( e^{i\omega (m-n)}  + e^{-i\omega(m-n)}  \right)
+%         \right]
+%   \\&=  \sum_{n\in\Z}
+%         \left[
+%            | x_n|^2 + \sum_{m>n}  x_n  x_m 2\cos[\omega(m-n)]
+%         \right]
+%   \\&=  \sum_{n\in\Z} | x_n|^2 +
+%         2\sum_{n\in\Z} \sum_{m>n}  x_n  x_m \cos[\omega(m-n)]
+%\end{align*}
+%Since $\cos$ is real and even, then $|\Dx(\omega)|^2$
+%must also be real and even.
+%\end{proof}
+%
+%
+%
+%
+%%--------------------------------------
+%\begin{theorem}[\thmd{inverse DTFT}]
+%\footnote{
+%  \citerpgc{chitode2009}{3-95}{818431678X}{(3.6.2)}
+%  }
+%\label{thm:idtft}
+%%--------------------------------------
+%Let $\Dx(\omega)$ be the \structe{discrete-time Fourier transform} \xref{def:dtft} of a sequence $\seqxZ{x_n}\in\spllR$.
+%Let $\iFx$ be the inverse of $\Dx$.
+%\thmbox{
+%  \mcom{
+%  \brb{\Dx(\omega) \eqd %
+%  \sum_{n\in\Z} x_n e^{-i\omega n}}
+%  }{$\Dx(\omega)\eqd\opDTFT\seqn{x_n}$}
+%  \quad\implies\quad
+%  \mcom{
+%  \brb{
+%    %\brs{\opiDTFT\Dx}(n)\eqd 
+%    x_n = \frac{1}{2\pi}\int_{\alpha-\pi}^{\alpha+\pi} \Dx(\omega) e^{i\omega n} \dw
+%    \quad\scy\forall\alpha\in\R
+%    }
+%  }{$\seqn{x_n}=\opiDTFT\opDTFT\seqn{x_n}$}
+%  %\quad\implies\quad 
+%  %\brb{\opiDTFT\opDTFT\seqn{x_n} = \seqn{x_n} \quad\scy\forall \seqn{x_n}\in\spllR}
+%  \quad\scy\forall\seqxZ{x_n}\in\spllR
+%  }
+%\end{theorem}
+%\begin{proof}
+%\begin{align*}
+%  \frac{1}{2\pi}\int_{\alpha-\pi}^{\alpha+\pi} \Dx(\omega) e^{i\omega n} \dw
+%    &= \frac{1}{2\pi}\int_{\alpha-\pi}^{\alpha+\pi} \mcom{\brs{\sum_{m\in\Z} x_m e^{-i\omega m}}}{$\Dx(\omega)$} e^{i\omega n} \dw
+%    && \text{by definition of $\Dx(\omega)$}
+%  \\&= \frac{1}{2\pi}\int_{\alpha-\pi}^{\alpha+\pi} \sum_{m\in\Z} x_m e^{-i\omega(m-n)}\dw
+%  \\&= \frac{1}{2\pi}\sum_{m\in\Z} x_m \int_{\alpha-\pi}^{\alpha+\pi} e^{-i\omega(m-n)}\dw
+%  \\&= \frac{1}{2\pi}\sum_{m\in\Z} x_m \brs{2\pi\kdelta_{m-n}}
+%  \\&= x_n 
+%\end{align*}
+%\end{proof}
+%
+%%--------------------------------------
+%\begin{theorem}[\thmd{orthonormal quadrature conditions}]
+%\footnote{
+%  \citerppgc{dau}{132}{137}{0898712742}{(5.1.20),(5.1.39)}
+%  }
+%\label{thm:oquadcon}
+%%--------------------------------------
+%Let $\Dx(\omega)$ be the \structe{discrete-time Fourier transform} \xref{def:dtft} of a sequence $\seqxZ{x_n}\in\spllR$.
+%Let $\kdelta_n$ be the \fncte{kronecker delta function} at $n$\ifsxref{frames}{def:kdelta}.
+%\thmbox{
+%  \begin{array}{>{\ds}rcl c >{\ds}rcl@{\qquad}C}
+%    \sum_{m\in\Z} x_m y^\ast_{m-2n} &=& 0          &\iff& \Dx(\omega)\Dy^\ast(\omega)+\Dx(\omega+\pi)\Dy^\ast(\omega+\pi) &=& 0 & \forall n\in\Z,\,\forall \seqn{x_n},\seqn{y_n}\in\spllR\\
+%    \sum_{m\in\Z} x_m x^\ast_{m-2n} &=& \kdelta_n  &\iff& \abs{\Dx(\omega)}^2 +\abs{\Dx(\omega +\pi)}^2                   &=& 2 & \forall n\in\Z,\,\forall \seqn{x_n},\seqn{y_n}\in\spllR%
+%  \end{array}
+%  }
+%\end{theorem}
+%\begin{proof}
+%Let $z\eqd e^{i\omega}$.
+%\begin{enumerate}
+%\item Proof that
+%  $\ds
+%  2\sum_{n\in\Z} \left[ \sum_{k\in\Z}x_k y^\ast_{k-2n} \right] e^{-i2\omega n}
+%    = \Dx(\omega) \Dy^\ast(\omega) + \Dx(\omega+\pi) \Dy^\ast(\omega+\pi)
+%    \label{item:quadcon}
+%  $:
+%\begin{align*}
+%  &2\sum_{n\in\Z} \left[ \sum_{k\in\Z}x_k y^\ast_{k-2n} \right] e^{-i2\omega n}
+%  \\&= 2\sum_{k\in\Z}x_k \sum_{n\in\Z} y^\ast_{k-2n} z^{-2n} %e^{-i2\omega n}
+%  \\&= 2\sum_{k\in\Z}x_k \sum_{n\mathrm{\;even}} y^\ast_{k-n} z^{-n} %e^{-i\omega n}
+%  \\&= \sum_{k\in\Z}x_k \sum_{n\in\Z} y^\ast_{k-n} z^{-n} %e^{-i\omega n}
+%       \left( 1 + e^{i\pi n} \right)
+%  \\&= \sum_{k\in\Z}x_k \sum_{n\in\Z} y^\ast_{k-n} z^{-n} %e^{-i\omega n}
+%     + \sum_{k\in\Z}x_k \sum_{n\in\Z} y^\ast_{k-n} z^{-n}  e^{i\pi n}
+%  \\&= \sum_{k\in\Z}x_k \sum_{m\in\Z} y^\ast_m z^{-(k-m)} %e^{-i\omega(k-m)}
+%     + \sum_{k\in\Z}x_k \sum_{m\in\Z} y^\ast_m e^{-i\left(\omega+\pi\right)(k-m)} 
+%     \qquad\text{where $m\eqd k-n$}% \implies n=k-m
+%  \\&= \sum_{k\in\Z}x_k z^{-k} \sum_{m\in\Z} y^\ast_m z^m %e^{+i\omega m}
+%     + \sum_{k\in\Z}x_k e^{-i\left(\omega+\pi\right)k} \sum_{m\in\Z} y^\ast_m e^{+i\left(\omega+\pi\right)m} 
+%  \\&= \sum_{k\in\Z}x_k e^{-i\omega k} 
+%       \left[\sum_{m\in\Z} y_m e^{-i\omega m} \right]^\ast
+%     + \sum_{k\in\Z}x_k e^{-i\left(\omega+\pi\right)k} 
+%       \left[\sum_{m\in\Z} y_m e^{-i\left(\omega+\pi\right)m} \right]^\ast
+%  \\&\eqd \Dx(\omega) \Dy^\ast(\omega)
+%     + \Dx(\omega+\pi) \Dy^\ast(\omega+\pi)
+%\end{align*}
+%
+%\item Proof that
+%  $\sum_{m\in\Z} x_m y^\ast_{m-2n} = 0
+%   \implies
+%   \Dx(\omega) \Dy^\ast(\omega) + \Dx(\omega+\pi) \Dy^\ast(\omega+\pi)=0
+%  $: 
+%\begin{align*}
+%  0 
+%    &= 2\sum_{n\in\Z} \left[ \sum_{k\in\Z}x_k y^\ast_{k-2n} \right] e^{-i2\omega n}
+%    && \text{by left hypothesis}
+%  \\&= \Dx(\omega) \Dy^\ast(\omega)
+%      +\Dx(\omega+\pi) \Dy^\ast(\omega+\pi)
+%    && \text{by \pref{item:quadcon}}
+%\end{align*}
+%
+%
+%\item Proof that 
+%  $\sum_{m\in\Z} x_m y^\ast_{m-2n} = 0
+%   \impliedby
+%   \Dx(\omega) \Dy^\ast(\omega) + \Dx(\omega+\pi) \Dy^\ast(\omega+\pi)=0
+%  $: 
+%\begin{align*}
+%  2\sum_{n\in\Z} \left[ \sum_{k\in\Z}x_k y^\ast_{k-2n} \right] e^{-i2\omega n}
+%    &= \Dx(\omega) \Dy^\ast(\omega) + \Dx(\omega+\pi) \Dy^\ast(\omega+\pi)
+%    && \text{by \pref{item:quadcon}}
+%  \\&= 0
+%    && \text{by right hypothesis}
+%\end{align*}
+%Thus by the above equation, 
+%$\sum_{n\in\Z} \left[ \sum_{k\in\Z}x_k y^\ast_{k-2n} \right] e^{-i2\omega n}=0$.
+%The only way for this to be true is if 
+%$\sum_{k\in\Z}x_k y^\ast_{k-2n}=0$.
+%
+%
+%\item Proof that
+%  $\sum_{m\in\Z} x_m x^\ast_{m-2n} = \kdelta_n
+%   \implies
+%   |\Dx(\omega)|^2 + |\Dx(\omega'+\pi)|^2 = 2
+%  $: \\
+%  Let $ g_{n} \eqd x_n$. 
+%\begin{align*}
+%  2 
+%    &= 2\sum_{n\in\Z} \kdelta_{n\in\Z} e^{-i2\omega n}
+%  \\&= 2\sum_{n\in\Z} \left[ \sum_{k\in\Z}x_k y^\ast_{k-2n} \right] e^{-i2\omega n}
+%    && \text{by left hypothesis}
+%  \\&= \Dx(\omega) \Dy^\ast(\omega)
+%     + \Dx(\omega+\pi) \Dy^\ast(\omega+\pi)
+%    && \text{by \pref{item:quadcon}}
+%\end{align*}
+%
+%
+%\item Proof that 
+%  $\sum_{m\in\Z} x_m x^\ast_{m-2n} = \kdelta_n
+%   \impliedby
+%   |\Dx(\omega)|^2 + |\Dx(\omega'+\pi)|^2 = 2
+%  $: \\
+%  Let $ g_{n} \eqd x_n$. 
+%\begin{align*}
+%  2\sum_{n\in\Z} \left[ \sum_{k\in\Z}x_k y^\ast_{k-2n} \right] e^{-i2\omega n}
+%    &= \Dx(\omega) \Dy^\ast(\omega) + \Dx(\omega+\pi) \Dy^\ast(\omega+\pi)
+%    && \text{by \pref{item:quadcon}}
+%  \\&= 2
+%    && \text{by right hypothesis}
+%\end{align*}
+%Thus by the above equation, 
+%$\sum_{n\in\Z} \left[ \sum_{k\in\Z}x_k y^\ast_{k-2n} \right] e^{-i2\omega n}=1$.
+%The only way for this to be true is if 
+%$\sum_{k\in\Z}x_k y^\ast_{k-2n}=\kdelta_n$.
+%
+%\end{enumerate}
+%\end{proof}
+%
+%%=======================================
+%%\section{Basis theory properties}
+%%=======================================
+%
+%
+%%=======================================
+%\section{Derivatives}
+%%=======================================
+%%--------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpp{vidakovic}{82}{83},
+%  \citerpp{mallat}{241}{242}
+%  }
+%\label{thm:dtft_ddw}
+%\index{vanishing moments}
+%%--------------------------------------
+%Let $\Dx(\omega)$ be the \fncte{DTFT} \xref{def:dtft} of a sequence $\seqxZ{x_n}$.
+%\thmbox{\begin{array}{F@{\qquad}>{\ds}rcl@{\qquad}c@{\qquad}>{\ds}lcl@{\qquad}F@{\qquad}C}
+%  (A) & \opddwn \Dx(\omega)\Big|_{\omega=0}   &=& 0  &\iff& \sum_{k\in\Z} k^n  x_k        &=& 0  & (B) & \forall n\in\Znn\\
+%  (C) & \opddwn \Dx(\omega)\Big|_{\omega=\pi} &=& 0  &\iff& \sum_{k\in\Z} (-1)^k k^n  x_k &=& 0  & (D) & \forall n\in\Znn
+%\end{array}}
+%\end{theorem}
+%\begin{proof}
+%\begin{enumerate}
+%  \item Proof that $(A)\implies(B)$: 
+%    \begin{align*}
+%      0
+%        &= \left.\opddwn \Dx(\omega)\right|_{\omega=0}
+%        && \text{by hypothesis (A)}
+%      \\&= \left.\opddwn \sum_{k\in\Z} x_ke^{-i\omega k} \right|_{\omega=0}
+%        && \text{by definition of $\Dx(\omega)$ \xref{def:dtft}}
+%      \\&= \left. \sum_{k\in\Z} x_k \opddwn e^{-i\omega k} \right|_{\omega=0}
+%      \\&= \left. \sum_{k\in\Z} x_k\left[(-i)^n k^n e^{-i\omega k}\right] \right|_{\omega=0}
+%      \\&= (-i)^n \sum_{k\in\Z} k^n x_k
+%    \end{align*}
+%
+%  \item Proof that $(A)\impliedby(B)$: 
+%    \begin{align*}
+%      \left.\opddwn \Dx(\omega)\right|_{\omega=0}
+%        &= \left.\opddwn \sum_{k\in\Z} x_ke^{-i\omega k} \right|_{\omega=0}
+%        && \text{by definition of $\Fg$}
+%      \\&= \left. \sum_{k\in\Z} x_k\left[\opddwn e^{-i\omega k}\right] \right|_{\omega=0}
+%       %&& \text{by Leibnitz GPR \prefpo{lem:LGPR}}
+%      \\&= \left. \sum_{k\in\Z} x_k\left[(-i)^n k^n e^{-i\omega k}\right] \right|_{\omega=0}
+%      \\&= (-i)^n \sum_{k\in\Z} k^n x_k
+%      \\&= 0
+%        && \text{by hypothesis (B)}
+%    \end{align*}
+%
+%  \item Proof that $(C)\implies(D)$: 
+%    \begin{align*}
+%        0
+%          &= \left.\opddwn \Dx(\omega)\right|_{\omega=\pi}
+%          && \text{by hypothesis (C)}
+%        \\&= \left.\opddwn \sum_{k\in\Z} x_k e^{-i\omega k} \right|_{\omega=\pi}
+%          && \text{by definition of $\Dx$ \xref{def:dtft}}
+%        \\&= \left. \sum_{k\in\Z} x_k \opddwn e^{-i\omega k} \right|_{\omega=\pi}
+%        \\&= \left. \sum_{k\in\Z} x_k \left[(-i)^n k^n e^{-i\omega k}\right] \right|_{\omega=\pi}
+%        \\&= \sum_{k\in\Z} x_k \left[(-i)^n k^n (-1)^k\right]
+%        \\&= (-i)^n \sum_{k\in\Z} (-1)^k k^n x_k 
+%    \end{align*}
+%
+%  \item Proof that $(C)\impliedby(D)$: 
+%    \begin{align*}
+%      \left.\opddwn \Dx(\omega)\right|_{\omega=\pi}
+%        &= \left.\opddwn \sum_{k\in\Z} x_k e^{-i\omega k} \right|_{\omega=\pi}
+%        && \text{by definition of $\Dx$ \xref{def:dtft}}
+%      \\&= \left. \sum_{k\in\Z} x_k \opddwn e^{-i\omega k} \right|_{\omega=\pi}
+%      \\&= \left. \sum_{k\in\Z} x_k \left[(-i)^n k^n e^{-i\omega k}\right] \right|_{\omega=\pi}
+%      \\&= \sum_{k\in\Z} x_k \left[(-i)^n k^n (-1)^k\right]
+%      \\&= (-i)^n \sum_{k\in\Z} (-1)^k k^n x_k 
+%      \\&= 0
+%        && \text{by hypothesis (D)}
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
+%
+%
+
+
+
