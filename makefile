@@ -15,7 +15,9 @@
 # Commands
 #--------------------------------------
 all:
-  cd abcstat
+  cd 2019xcor
+    make
+  cd ..\abcstat
     make
   cd ..\abcdsp
     make
