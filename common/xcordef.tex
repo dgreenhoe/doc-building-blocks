@@ -6,36 +6,54 @@
 \chapter{The Effects of the Cross-Correlation Definition}
 \label{app:xcordef}
 %======================================
+%=======================================
+\section{Introduction}
+%=======================================
 In the literature, there are varying and in general incompatible definitions of
-\fncte{cross-correlation} functions $\Rxy(n,m)$ and $\Rxy(m)$ \xxref{def:Rxynm}{def:Rxym}.
-The choice of definitions has consequences for results involving $\Swxy$ \xref{def:Swxy}.
-Here is a very limited overview:
-\\\defbox{\begin{array}{>{\qquad}cNM>{\ds}rc>{\ds}l}
-  \mc{6}{M}{References that put conjugate $\conj$ on $\rvy$:}
-  \\&\imark&\citerpg{papoulis1984}{263}{0070484686} & R_{xy}(m) &\eqd& E\brb{\rvx(m)\rvy^\ast(0)}
-  \\&\imark&\citerpg{cadzow}{341}{0023180102}       & r_{xy}(m) &\eqd& E\brs{\rvx(m)\rvy^\ast(0)}
-  \\&\imark&\citeP{matlab_xcorr}                    & R_{xy}(m) &\eqd& E\setn{x_{n+m}y_n^\ast}
-  \\&\imark&\citeP{matlab_cpsd}                     & R_{xy}(m) &\eqd& E\setn{x_{n+m}y_n^\ast}
+\fncte{cross-correlation} functions $\Rxy(n,m)$ and its \ope{wide-sense stationary} special case $\Rxy(m)$. % \xxref{def:Rxynm}{def:Rxym}.
+The choice of definitions has consequences for results involving the \fncte{cross-spectral density} function
+$\Swxy(\omega)$, %\xref{def:Swxy}.
+which is defined as the \ope{Discrete-time Fourier Transform} of $\Rxy(m)$,
+as well as the more general $\Szxy(z)$,
+which is defined as the \ope{Z-Transform} of $\Rxy(m)$:
+\begin{definition}\label{def:Swxy}\label{def:Szxy}
+\defbox{
+  \Swxy(\omega) \eqd \opDTFT\Rxy(m) \eqd \sum_{m\in\Z}\Rxy(m) e^{-i\omega m}
+  \qquad\qquad
+  \Szxy(z)       \eqd \opZ\Rxy(m) \eqd \sum_{m\in\Z}\Rxy(m) z^{-m}
+  }
+\end{definition}
+
+%======================================
+\section{Definitions}
+%======================================
+Here is a very limited overview of the definitions of $\Rxy(m)$:
+\\\defbox{\begin{array}{lM>{\ds}rc>{\ds}l}
+  \mc{5}{M}{References that put conjugate $\conj$ on $\rvy$:}
+  \\&\citerpg{papoulis1984}{263}{0070484686} & R_{xy}(m) &\eqd& E\brb{\rvx(m)\rvy^\ast(0)}
+  \\&\citerpg{cadzow}{341}{0023180102}       & r_{xy}(m) &\eqd& E\brs{\rvx(m)\rvy^\ast(0)}
+  \\&\citeP{matlab_xcorr}                    & R_{xy}(m) &\eqd& E\setn{x_{n+m}y_n^\ast}
+  \\&\citeP{matlab_cpsd}                     & R_{xy}(m) &\eqd& E\setn{x_{n+m}y_n^\ast}
   \\
-  \mc{6}{M}{References that put conjugate $\conj$ on $\rvx$:}
-  \\&\imark&\citerpg{kay1988}{52}{8131733564}                    & r_{xy}[m] &\eqd& \mathcal{E}\brb{x^\ast[0]y[m]}
-  \\&\imark&\citerpg{weisstein2002}{594}{1420035223}\footnotemark& f\star g  &\eqd& \int_{-\infty}^{\infty}\bar{f}(\tau)g(t+\tau)\dtau
-  \\&\imark&\citePpc{leuridan1986}{2}{(7)}                       & GXY_1     &\eqd& \sum X_1^\ast Y
+  \mc{5}{M}{References that put conjugate $\conj$ on $\rvx$:}
+  \\&\citerpg{kay1988}{52}{8131733564}                    & r_{xy}[m] &\eqd& \mathcal{E}\brb{x^\ast[0]y[m]}
+  \\&\citerpg{weisstein2002}{594}{1420035223}\footnotemark& f\star g  &\eqd& \int_{-\infty}^{\infty}\bar{f}(\tau)g(t+\tau)\dtau
+  \\&\citePpc{leuridan1986}{2}{(7)}                       & GXY_1     &\eqd& \sum X_1^\ast Y
   \\
-  \mc{6}{M}{References that use no conjugate $\conj$:}
-  \\&\imark&\citerpg{bendat2010}{111}{1118210824}          & R_{xy}(m)            &\eqd& E\brs{\rvx(0)\rvy(m)}
-  \\&\imark&\citerpg{helstrom1991}{369}{0023535717}        & \Rxy(t_1,t_2)        &\eqd& E[\rvx(t_1)\rvy(t_2)]
-  \\&\imark&\citerpg{proakis1996}{A4}{0133737624}          & \gamma_{xy}(t_1,t_2) &\eqd& E(X_{t_1}Y_{t_2})
-  \\&\imark&\citerpg{shin2008}{280}{0470725648}            & R_{xy}(\tau)         &\eqd& E[x(t)y(t+\tau)]
-  \\&\imark&\citerpg{bracewell1978}{46}{007007013X}\footnotemark & g^\ast\star h  &\eqd& \int_{-\infty}^{\infty}g^\ast(u)h(u+x)\du   %{Pentagram notation for cross correlation}
+  \mc{5}{M}{References that use no conjugate $\conj$:}
+  \\&\citerpg{bendat2010}{111}{1118210824}          & R_{xy}(m)            &\eqd& E\brs{\rvx(0)\rvy(m)}
+  \\&\citerpg{helstrom1991}{369}{0023535717}        & \Rxy(t_1,t_2)        &\eqd& E[\rvx(t_1)\rvy(t_2)]
+  \\&\citerpg{proakis1996}{A4}{0133737624}          & \gamma_{xy}(t_1,t_2) &\eqd& E(X_{t_1}Y_{t_2})
+  \\&\citerpg{shin2008}{280}{0470725648}            & R_{xy}(\tau)         &\eqd& E[x(t)y(t+\tau)]
+  \\&\citerpg{bracewell1978}{46}{007007013X}\footnotemark & g^\ast\star h  &\eqd& \int_{-\infty}^{\infty}g^\ast(u)h(u+x)\du   %{Pentagram notation for cross correlation}
 \end{array}}
 \addtocounter{footnote}{-1}
 \footnotetext{
-  Bracewell and Weisstein here use the \ope{integral operator} $\int_{\R}\!\dx$ rather than the 
-  \ope{expectation operator} $\pE$. 
-  That is, they use a \ope{time average} rather than an \ope{ensemble average}. 
+  Bracewell and Weisstein here use the \ope{integral operator} $\int_{\R}\!\dx$ rather than the
+  \ope{expectation operator} $\pE$.
+  That is, they use a \ope{time average} rather than an \ope{ensemble average}.
   But in essence, the two types of operators are ``the same" because both types represent
-  \ope{inner product}s. 
+  \ope{inner product}s.
   That is, $\int_{x\in\R}\ff(x)\fg^\ast(x)\dx\eqd\inprod{\ff(x)}{\fg(x)}_1$ and
   $\pE\brs{\rvx(t)\rvy^\ast(t)}\eqd\inprod{\rvx(t)}{\rvy(t)}_2$
   (both are inner products, but operate in perpendicular orientations across the ensemble plane).
@@ -43,31 +61,323 @@ Here is a very limited overview:
 \stepcounter{footnote}
 \footnotetext{
   Note that Bracewell's ``\ope{Pentagram notation for cross correlation}"
-  $g^\ast\star h =\int_{-\infty}^{\infty}g^\ast(u)h(u+x)\du$ 
+  $g^\ast\star h =\int_{-\infty}^{\infty}g^\ast(u)h(u+x)\du$
   implies
-  $g\star h =\int_{-\infty}^{\infty}g(u)h(u+x)\du$ 
+  $g\star h =\int_{-\infty}^{\infty}g(u)h(u+x)\du$
   (and hence in the ``References that use no conjugate" category).
   }
+%\end{definition}
+
+In terms of the expectation operator $\pE$,
+there are a total of eight different ways of defining the cross-correlation $\Rxy(m)$ of
+\prope{complex-valued} \prope{wide-sense stationary} sequences $\rvx(n)$ and $\rvy(n)$.
+There are eight because each sequence may be defined with or without the conjugate operator $\ast$,
+and $\rvx$ may lead or lag $\rvy$
+($2\times2\times2=8$).
+
+Here is a formalized list of the eight definitions.
+%---------------------------------------
+\begin{definition}
+\label{def:Rxym}
+%---------------------------------------
+\defbox{\begin{array}{FM   >{\ds}r  c     l *{4}{@{\hspace{0pt}}l}         }
+    (1).&\fnctd{Papoulis}:        & \Rxy(m) &\eqd& \pE[\rvx     &(m)&\rvy^\ast&(0&)]
+  \\(2).&\fnctd{Kay}:             & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)&\rvy     &(m&)]
+  \\(3).&\fnctd{y-star-m}:        & \Rxy(m) &\eqd& \pE[\rvx     &(0)&\rvy^\ast&(m&)]
+  \\(4).&\fnctd{x-star-m}:        & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)&\rvy     &(0&)]
+  \\(5).&\fnctd{Bendat}:          & \Rxy(m) &\eqd& \pE[\rvx     &(0)&\rvy     &(m&)]
+  \\(6).&\fnctd{alt-Bendat}:      & \Rxy(m) &\eqd& \pE[\rvx     &(m)&\rvy     &(0&)]
+  \\(7).&\fnctd{Bendat-star}:     & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)&\rvy^\ast&(m&)]
+  \\(8).&\fnctd{alt-Bendat-star}: & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)&\rvy^\ast&(0&)]
+\end{array}}
+\end{definition}
+
+%=======================================
+\section{Results}
+%=======================================
+Depending on which one of the eight definitions of $\Rxy(m)$ we select:
+\\\indentx$\begin{array}{FMM}
+  \imark & We get four different results for $\Szxy(z)$ & \xref{prop:RxySzxy}\\
+  \imark & We get four different results for $\Swxy(\omega)$ & \xref{prop:RxySwxy}\\
+  \imark & If $\rvx$ and $\rvy$ are \prope{real-valued}, we get two different results for $\Swxy(\omega)$ & \xref{prop:RxySwxy_real}
+\end{array}$
+%---------------------------------------
+\begin{proposition}
+\label{prop:RxySzxy}
+%---------------------------------------
+%\propbox{
+Let (1)--(8) below correspond to the eight definitions of $\Rxy(m)$ in \pref{def:Rxym}.
+\\
+$\begin{array}{Fc        l         c l       @{\hspace{0pt}}l        @{\hspace{0pt}}l         D    l         c  l       *{3}{@{\hspace{0pt}}l}                                 c  l       *{5}{@{\hspace{0pt}}l}}
+    (1) &      \implies& \Szxy(z) &=&\ZH^\ast&\brp{\frac{1}{z^\ast}} &\Szxx(z)               &and& \Szyy(z) &=& \ZH     &(z)               &\Szxy     &(z)                    &=& \ZH     &(z)               &\ZH^\ast&\brp{\frac{1}{z^\ast}} &\Szxx     &(z)
+  \\(2) &      \implies& \Szxy(z) &=&\ZH     &(z)                    &\Szxx(z)               &and& \Szyy(z) &=& \ZH     &(z)               &\Szxy^\ast&\brp{\frac{1}{z^\ast}} &=& \ZH     &(z)               &\ZH^\ast&\brp{\frac{1}{z^\ast}} &\Szxx^\ast&\brp{\frac{1}{z^\ast}}
+  \\(3) &      \implies& \Szxy(z) &=&\ZH^\ast&\brp{z^\ast}           &\Szxx\brp{z}           &and& \Szyy(z) &=& \ZH^\ast&\brp{z^\ast}      &\Szxy^\ast&\brp{\frac{1}{z^\ast}} &=& \ZH^\ast&\brp{z^\ast}      &\ZH     &\brp{\frac{1}{z}}      &\Szxx^\ast&\brp{\frac{1}{z^\ast}}
+  \\(4) &      \implies& \Szxy(z) &=&\ZH     &\brp{\frac{1}{z}}      &\Szxx(z)               &and& \Szyy(z) &=& \ZH     &\brp{\frac{1}{z}} &\Szxy^\ast&\brp{\frac{1}{z^\ast}} &=& \ZH     &\brp{\frac{1}{z}} &\ZH^\ast&\brp{z^\ast}           &\Szxx^\ast&\brp{\frac{1}{z^\ast}}
+  \\(5) &      \implies& \Szxy(z) &=&\ZH     &(z)                    &\Szxx(z)               &and& \Szyy(z) &=& \ZH     &(z)               &\Szxy^\ast&\brp{\frac{1}{z^\ast}} &=& \ZH     &(z)               &\ZH^\ast&\brp{\frac{1}{z^\ast}} &\Szxx^\ast&\brp{\frac{1}{z^\ast}}
+  \\(6) &      \implies& \Szxy(z) &=&\ZH     &\brp{\frac{1}{z}}      &\Szxx(z)               &and& \Szyy(z) &=& \ZH     &\brp{\frac{1}{z}} &\Szxy^\ast&\brp{\frac{1}{z^\ast}} &=& \ZH     &\brp{\frac{1}{z}} &\ZH^\ast&\brp{z^\ast}           &\Szxx^\ast&\brp{\frac{1}{z^\ast}}
+  \\(7) &      \implies& \Szxy(z) &=&\ZH^\ast&\brp{z^\ast}           &\Szxx(z)               &and& \Szyy(z) &=& \ZH^\ast&\brp{z^\ast}      &\Szxy^\ast&\brp{\frac{1}{z^\ast}} &=& \ZH^\ast&\brp{z^\ast}      &\ZH     &\brp{\frac{1}{z}}      &\Szxx^\ast&\brp{\frac{1}{z^\ast}}
+  \\(8) &      \implies& \Szxy(z) &=&\ZH     &\brp{\frac{1}{z}}      &\Szxx(z)               &and& \Szyy(z) &=& \ZH     &\brp{\frac{1}{z}} &\Szxy^\ast&\brp{\frac{1}{z^\ast}} &=& \ZH     &\brp{\frac{1}{z}} &\ZH^\ast&\brp{z^\ast}           &\Szxx^\ast&\brp{\frac{1}{z^\ast}}
+\end{array}$
+%}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+\intertext{(1). If we follow Papoulis $\brp{\Rxy(m)\eqd\pE\brs{\rvx(m)\rvy^\ast(0)}}$, then\ldots}
+    \Szyt(z)
+      &\eqd \opZ\Ryt(m)
+      && \text{by definition of $\Szty(z)$}                                    && \text{\xref{def:Szxy}}
+    \\&\eqd \opZ\pE\brs{\rvy(m)\rvt^\ast(0)}
+      && \text{by Papoulis' definition of $\Rty(m)$}                           && \text{\xref{def:Rxym}}
+    \\&=    \opZ\pE\brs{\brp{\sum_{k\in\Z} \fh(k)\rvx(m-k)}\rvt^\ast(0)}
+      && \text{by \prope{LTI} property}                                        &&
+    \\&=    \opZ        \sum_{k\in\Z} \fh(k) \pE\brs{\rvx(m-k)\rvt^\ast(0)}
+      && \text{by \prope{linearity} of $\opE$}                                 && \text{\xref{thm:pE_linop}}
+    \\&\eqd \opZ        \sum_{k\in\Z} \fh(k) \Rxt(m-k)
+      && \text{by this definition of $\Rxy(m)$}                                &&
+    \\&= \opZ\brs{\fh(m) \convd \Rxt(m)}
+      && \text{by definition of \ope{convolution}}                             && \text{\xref{def:convd}}
+    \\&= \brs{\opZ\fh(m)} \brs{\opZ\Rxt(m)}
+      && \text{by \thme{convolution theorem}}                                  && \text{\xref{thm:conv}}
+    \\&= \ZH(z) \Szxt(z)
+      && \text{by property of the \ope{Z-transform}}                           && \text{by \xref{thm:opZ}}
+\end{align*}
+
+\begin{align*}
+    \boxed{\Szxy(z)}
+      &=\mcom{\Szyx^\ast\brp{\frac{1}{z^\ast}}}{by \prefpp{thm:ZSxy_sym}}
+     &&\eqd \brlr{\Szyt^\ast\brp{\frac{1}{z^\ast}}}_{\rvt\eqd\rvx}
+     &&=\boxed{\ZH^\ast\brp{\frac{1}{z^\ast}} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+     \\
+    \boxed{\Szyy(z)}
+      &\eqd \brlr{\Szyt(z)}_{\rvt\eqd\rvy}
+     &&=    \brlr{ \ZH(z) \Szxt\brp{z}}_{\rvt\eqd\rvy}
+     &&=    \boxed{\ZH(z) \Szxy\brp{z}}
+    \\&=    \boxed{\ZH(z) \ZH^\ast\brp{\frac{1}{z^\ast}} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+\\
+    (2).\quad\Szty(z)
+      &\eqd \opZ\Rty(m)
+     &&\eqd \opZ\pE\brs{\rvt^\ast(0)\rvy(m)}
+     &&=    \opZ\pE\brs{\rvt^\ast(0)\brp{\fh(m)\convd\rvx(m)}}
+    \\&=    \opZ\pE\brs{\rvt^\ast(0)\brp{\sum_{k\in\Z} \fh(k)\rvx(m-k)}}
+     &&=    \opZ\brp{\sum_{k\in\Z} \fh(k)\pE\brs{\rvt^\ast(0)\rvx(m-k)}}
+     &&\eqd \opZ\brp{\sum_{k\in\Z} \fh(k)\Rtx(m-k)}
+    \\&\eqd \opZ\brp{\fh(m)\convd\Rtx(m)}
+     &&=    \brs{\opZ\fh(m)}\brs{\opZ\Rtx(m)}
+     &&\eqd \ZH(z) \Sztx(z)
+    \\
+    \boxed{\Szxy(z)}
+      &\eqd \brlr{\Szty}_{\rvt=\rvx}
+     &&=    \brlr{\ZH(z) \Sztx(z)}_{\rvt=\rvx}
+     &&=    \ZH(z) \Szxx(z)
+     \\
+    \boxed{\Szyy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt\eqd\rvy}
+     &&=    \brlr{\ZH(z) \Sztx(z)}_{\rvt\eqd\rvy}
+     &&=    \ZH(z) \Szyx(z)
+    \\&=    \boxed{\ZH(z) \Szxy^\ast\brp{\frac{1}{z^\ast}}}
+     &&=    \boxed{\ZH(z) \ZH^\ast\brp{\frac{1}{z^\ast}} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+\\
+    (3).\quad\Szty(z)
+      &\eqd \opZ\Rty(m)
+     &&\eqd \opZ\pE\brs{\rvt(0)\rvy^\ast(m)}
+       \mathrlap{\qquad=    \opZ\pE\brp{\rvt(0)\brs{\sum_{k\in\Z} \fh(k)\rvx(m-k)}^\ast}}
+    \\&=    \opZ\pE\brs{\rvt(0) \sum_{k\in\Z} \fh^\ast(k)      \rvx^\ast(m-k)}
+     &&=    \opZ        \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvt(0)\rvx^\ast(m-k)}
+     &&\eqd \opZ        \sum_{k\in\Z} \fh^\ast(k) \Rtx(m-k)
+    \\&\eqd \opZ\brs{\fh^\ast(m) \convd \Rtx(m)}
+     &&=    \brs{\opZ\fh^\ast(m)} \brs{\opZ\Rtx(m)}
+     &&= \ZH^\ast\brp{z^\ast} \Sztx\brp{z}
+    \\
+    \boxed{\Szxy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvx}
+     &&= \brlr{\ZH^\ast\brp{z^\ast} \Sztx\brp{z}}_{\rvt=\rvx}
+     &&= \boxed{\ZH^\ast\brp{z^\ast} \Szxx\brp{z}}
+    \\
+    \boxed{\Szyy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvy}
+     &&= \brlr{\ZH^\ast\brp{z^\ast} \Sztx\brp{z}}_{\rvt=\rvy}
+     &&= \ZH^\ast\brp{z^\ast} \Szyx\brp{z}
+    \\&= \boxed{\ZH^\ast\brp{z^\ast} \Szxy^\ast\brp{\frac{1}{z^\ast}}}
+     &&= \boxed{\ZH^\ast\brp{z^\ast} \ZH\brp{\frac{1}{z}} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+\\
+    (4).\quad\Szty(z)
+      &\eqd \opZ\Rxy(m)
+     &&\eqd \opZ\pE\brs{\rvt^\ast(m)\rvy(0)}
+     &&=    \opZ\pE\brs{\rvt^\ast(m)\sum_{k\in\Z} \fh(k)           \rvx(0-k)}
+    \\&=    \opZ\sum_{k\in\Z} \fh(k)\pE\brs{\rvt^\ast(m)\rvx(0-k)}
+     &&=    \opZ\sum_{k\in\Z} \fh(k)\pE\brs{\rvt^\ast(m+k)\rvx(0)}
+     &&=    \opZ\sum_{k\in\Z} \fh(k)\Rtx(m+k)
+    \\&=    \opZ\sum_{k'\in\Z} \fh(-k')\Rtx(m-k')
+      && \text{where $k'\eqd k$}
+    \\&\eqd \opZ\brs{\fh(-m) \convd \Rtx(m)}
+     &&= \brs{\opZ\fh(-m)} \brs{\opZ\Rtx(m)}
+     &&= \ZH\brp{\frac{1}{z}} \Sztx(z)
+    \\
+    \boxed{\Szxy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvx}
+     &&= \brlr{\ZH\brp{\frac{1}{z}} \Sztx(z)}_{\rvt=\rvx}
+     &&= \boxed{\ZH\brp{\frac{1}{z}} \Szxx(z)}
+    \\
+    \boxed{\Szyy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvy}
+     &&= \brlr{\ZH\brp{\frac{1}{z}} \Sztx(z)}_{\rvt=\rvy}
+     &&= \ZH\brp{\frac{1}{z}} \Szyx(z)
+    \\&= \boxed{\ZH\brp{\frac{1}{z}} \Szxy^\ast\brp{\frac{1}{z^\ast}}}
+     &&= \boxed{\ZH\brp{\frac{1}{z}} \ZH^\ast\brp{z^\ast} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+\\
+    (5).\quad\Szty(z)
+      &\eqd \opZ\Rty(m)
+     &&\eqd \opZ\pE\brs{\rvt(0)\rvy(m)}
+    \\&=    \opZ\pE\brs{\rvt(0)\brp{\sum_{k\in\Z} \fh(k) \rvx(m-k)}}
+     &&=    \opZ                    \sum_{k\in\Z} \fh(k) \pE\brs{\rvt(0)\rvx(m-k)}
+     &&\eqd \opZ                    \sum_{k\in\Z} \fh(k) \Rtx(m-k)
+    \\&\eqd \opZ\brs{\fh(m) \convd \Rtx(m)}
+      &&
+      &&= \ZH(z) \Sztx(z)
+    \\
+    \boxed{\Szxy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvx}
+     &&= \brlr{\ZH(z) \Sztx(z)}_{\rvt=\rvx}
+     &&= \boxed{\ZH(z) \Szxx(z)}
+    \\
+    \boxed{\Szyy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvy}
+     &&= \brlr{\ZH(z) \Sztx(z)}_{\rvt=\rvy}
+     &&= \ZH(z) \Szyx(z)
+    \\&= \boxed{\ZH(z) \Szxy^\ast\brp{\frac{1}{z^\ast}}}
+     &&= \boxed{\ZH(z) \ZH^\ast\brp{\frac{1}{z^\ast}} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+\\
+   (6).\quad\Szty(z)
+      &\eqd \opZ\Rty(m)
+     &&\eqd \opZ\pE\brs{\rvt(m)\rvy(0)}
+       \mathrlap{\qquad
+       =    \opZ\pE\brs{\rvt(m)\brp{\sum_{k\in\Z} \fh(k) \rvx(0-k)}}}
+    \\&=    \opZ\sum_{k\in\Z} \fh(k) \pE\brs{\rvt(m)\rvx(-k)}
+     &&=    \opZ\sum_{k\in\Z} \fh(k) \pE\brs{\rvt(m+k)\rvx(0)}
+     &&\eqd \opZ\sum_{k\in\Z} \fh(k) \Rtx(m+k)
+    \\&\mcom{\eqd \opZ\brs{\fh(-m) \convd \Rtx(m)}}{by \prefp{prop:conv_knk}}
+     &&= \opZ\brs{\fh(-m)} \brs{\opZ\Rtx(m)}
+     &&= \ZH\brp{\frac{1}{z}} \Sztx(z)
+    \\
+    \boxed{\Szxy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvx}
+     &&= \brlr{\ZH\brp{\frac{1}{z}} \Sztx(z)}_{\rvt=\rvx}
+     &&= \boxed{\ZH\brp{\frac{1}{z}} \Szxx(z)}
+    \\
+    \boxed{\Szyy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvy}
+     &&= \brlr{\ZH\brp{\frac{1}{z}} \Sztx(z)}_{\rvt=\rvy}
+     &&= \ZH\brp{\frac{1}{z}} \Szyx(z)
+    \\&= \boxed{\ZH\brp{\frac{1}{z}} \Szxy^\ast\brp{\frac{1}{z^\ast}}}
+     &&= \boxed{\ZH\brp{\frac{1}{z}} \ZH^\ast\brp{z^\ast} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+\\
+    (7).\quad\Szty(z)
+      &\eqd \opZ\Rty(m)
+     &&\eqd \opZ\pE\brs{\rvt^\ast(0)\rvy^\ast(m)}
+     &&=    \opZ\pE\brs{\rvt^\ast(0)\rvy^\ast(m)}
+    \\&=    \opZ\pE\brs{\rvt^\ast(0)\brp{\sum_{k\in\Z} \fh(k) \rvx(m-k)}^\ast}
+     &&=    \opZ                    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvt^\ast(0)\rvx^\ast(m-k)}
+     &&\eqd \opZ                    \sum_{k\in\Z} \fh^\ast(k) \Rtx(m-k)
+    \\&\eqd \opZ\brs{\fh^\ast(m) \convd \Rtx(m)}
+     &&= \brs{\opZ\fh^\ast(m)} \brs{\opZ\Rtx(m)}
+     &&= \ZH^\ast\brp{z^\ast} \Sztx(z)
+    \\
+    \boxed{\Szxy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvx}
+     &&= \brlr{\ZH^\ast\brp{z^\ast} \Sztx(z)}_{\rvt=\rvx}
+     &&= \boxed{\ZH^\ast\brp{z^\ast} \Szxx(z)}
+    \\
+    \boxed{\Szyy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvy}
+     &&= \brlr{\ZH^\ast\brp{z^\ast} \Sztx(z)}_{\rvt=\rvy}
+     &&= \ZH^\ast\brp{z^\ast} \Szyx(z)
+    \\&= \boxed{\ZH^\ast\brp{z^\ast} \Szxy^\ast\brp{\frac{1}{z^\ast}}}
+     &&= \boxed{\ZH^\ast\brp{z^\ast} \ZH\brp{\frac{1}{z}} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+\\
+    (8).\quad\Szty(z)
+      &\eqd \opZ\Rty(m)
+     &&\eqd \opZ\pE\brs{\rvt^\ast(m)\rvy^\ast(0)}
+       \mathrlap{\qquad=    \opZ\pE\brs{\rvt^\ast(m)\brp{\sum_{k\in\Z} \fh^\ast(k) \rvx^\ast(0-k)}}}
+    \\&=    \opZ\sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvt^\ast(m)\rvx^\ast(-k)}
+     &&=    \opZ\sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvt^\ast(0)\rvx^\ast(-m-k)}
+    \\&=    \opZ\sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvt^\ast(-m-k)\rvx^\ast(0)}
+     &&\eqd \opZ                    \sum_{k\in\Z} \fh^\ast(k) \Rtx^\ast(-m-k)
+     &&=    \opZ                    \sum_{k\in\Z} \fh^\ast(k) \Rtx(m+k)
+    \\&\eqd \opZ\brs{\fh(-m) \convd \Rtx(m)}
+     &&= \opZ\brs{\fh(-m) \convd \Rtx(m)}
+     &&= \brs{\opZ\fh(-m)} \brs{\opZ\Rtx(m)}
+    \\&= \ZH\brp{\frac{1}{z}} \Sztx(z)
+    \\
+    \boxed{\Szxy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvx}
+     &&= \brlr{\ZH\brp{\frac{1}{z}} \Sztx(z)}_{\rvt=\rvx}
+     &&= \boxed{\ZH\brp{\frac{1}{z}} \Szxx(z)}
+    \\
+    \boxed{\Szyy(z)}
+      &\eqd \brlr{\Szty(z)}_{\rvt=\rvy}
+     &&= \brlr{\ZH\brp{\frac{1}{z}} \Sztx(z)}_{\rvt=\rvy}
+     &&= \ZH\brp{\frac{1}{z}} \Szyx(z)
+    \\&= \boxed{\ZH\brp{\frac{1}{z}} \Szxy^\ast\brp{\frac{1}{z^\ast}}}
+     &&= \boxed{\ZH\brp{\frac{1}{z}} \ZH^\ast\brp{z^\ast} \Szxx^\ast\brp{\frac{1}{z^\ast}}}
+  \end{align*}
+\end{proof}
 
 %---------------------------------------
-\begin{remark}
-\label{rem:Rxym}
+\begin{proposition}
+\label{prop:Rxym}
+\label{prop:RxySwxy}
 %---------------------------------------
+Let (1)--(8) below correspond to the eight definitions of $\Rxy(m)$ in \pref{def:Rxym}.
+\\
+$\begin{array}{Fc        l              c l       *{2}{@{\hspace{0pt}}r}       D    l              c  l@{\hspace{0pt}}r *{2}{@{\hspace{0pt}}l} c  l*{2}{@{\hspace{0pt}}r}}
+    (1) &      \implies& \Swxy(\omega) &=&\FH^\ast&( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy     &( \omega) &=& |\FH&( \omega)|^2 &\Swxx(\omega)
+  \\(2) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&( \omega) &=& |\FH&( \omega)|^2 &\Swxx(\omega)
+  \\(3) &      \implies& \Swxy(\omega) &=&\FH^\ast&(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
+  \\(4) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
+  \\(5) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&( \omega) &=& |\FH&( \omega)|^2 &\Swxx(\omega)
+  \\(6) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
+  \\(7) &      \implies& \Swxy(\omega) &=&\FH^\ast&(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
+  \\(8) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
+\end{array}$
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  (1).\quad\boxed{\Swxy(\omega)}
+      &= \brlr{\Szxy(z)}_{z=e^{i\omega}}
+    \\&= \brlr{\ZH^\ast\brp{\frac{1}{z^\ast}} \Szxx(z)}_{z=e^{i\omega}}
+      && \text{by $\Szxy(z)$ result}         &&    \text{\xref{prop:RxySzxy}}
+    \\&= \ZH^\ast\brp{e^{i\omega}} \Szxx\brp{e^{i\omega}}
+      && \text{(evaluation around unit circle in $z$-plane)}
+    \\&= \boxed{\FH^\ast(\omega) \Swxx(\omega)}
+      && \text{by definition of \ope{DTFT}}  &&    \text{\xref{def:dtft}}
+    \\
+    \boxed{\Swyy(\omega)}
+      &= \brlr{\Szyy(z)}_{z=e^{i\omega}}
+    \\&= \brlr{\ZH(z) \Szxy(z)}_{z=e^{i\omega}}
+      && \text{by $\Szxy(z)$ result}         &&    \text{\xref{prop:RxySzxy}}
+    \\&= \ZH\brp{e^{i\omega}} \Szxy\brp{e^{i\omega}}
+      && \text{(evaluation around unit circle in $z$-plane)}
+    \\&= \boxed{\FH(\omega) \Swxy(\omega)}
+      && \text{by definition of \ope{DTFT}}  &&    \text{\xref{def:dtft}}
+    \\
+    \boxed{\Swyy(\omega)}
+      &= \brlr{\Szyy(z)}_{z=e^{i\omega}}
+    \\&= \brlr{\ZH(z) \ZH^\ast\brp{\frac{1}{z^\ast}} \Szxx^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
+      && \text{by $\Szxy(z)$ result}         &&    \text{\xref{prop:RxySzxy}}
+    \\&= \ZH\brp{e^{i\omega}} \ZH^\ast\brp{\frac{1}{e^{-i\omega}}} \Szxx^\ast\brp{\frac{1}{e^{-i\omega}}}
+    \\&= \ZH\brp{e^{i\omega}} \ZH^\ast\brp{e^{i\omega}} \Szxx^\ast\brp{e^{i\omega}}
+    \\&= \FH\brp{\omega} \FH^\ast(\omega) \Swxx^\ast(\omega)
+    \\&= \abs{\FH\brp{\omega}}^2 \Swxx^\ast(\omega)
+    \\&= \boxed{\abs{\FH\brp{\omega}}^2 \Swxx(\omega)}
+      && \text{because $\Swxx(\omega)$ is \prope{real-valued}}  
+      && \text{\xref{cor:Swxy_sym}}
+\end{align*}
+
+The other seven $\Swxy/\Swyy$ proofs follow in like manner.
+\end{proof}
+
 Note the following:
 \begin{enumerate}
-\item Depending on how we define $\Rxy(m)$ we can get 8 different results for $\Swxy(\omega)$:\label{item:RxySwxy}
-\\\propbox{\begin{array}{FM >{\ds}rc l*{3}{@{\hspace{0pt}}l} c >{\ds}rc l*{2}{@{\hspace{0pt}}l}}
-    (1).&Papoulis:        & \Rxy(m) &\eqd& \pE[\rvx     &(m)\rvy^\ast&(0&)] &\implies& \Swxy(\omega) &=&\Fh^\ast&( &\omega)\Swxx(\omega)
-  \\(2).&Kay:             & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)\rvy     &(m&)] &\implies& \Swxy(\omega) &=&\Fh     &( &\omega)\Swxx(\omega)
-  \\(3).&y-star-m:        & \Rxy(m) &\eqd& \pE[\rvx     &(0)\rvy^\ast&(m&)] &\implies& \Swxy(\omega) &=&\Fh^\ast&(-&\omega)\Swxx(\omega)
-  \\(4).&x-star-m:        & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)\rvy     &(0&)] &\implies& \Swxy(\omega) &=&\Fh     &(-&\omega)\Swxx(\omega)
-  \\(5).&Bendat:          & \Rxy(m) &\eqd& \pE[\rvx     &(0)\rvy     &(m&)] &\implies& \Swxy(\omega) &=&\Fh     &( &\omega)\Swxx(\omega)
-  \\(6).&alt-Bendat:      & \Rxy(m) &\eqd& \pE[\rvx     &(m)\rvy     &(0&)] &\implies& \Swxy(\omega) &=&\Fh     &(-&\omega)\Swxx(\omega)
-  \\(7).&Bendat-star      & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)\rvy^\ast&(m&)] &\implies& \Swxy(\omega) &=&\Fh^\ast&(-&\omega)\Swxx(\omega)
-  \\(8).&alt-Bendat-star: & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)\rvy^\ast&(0&)] &\implies& \Swxy(\omega) &=&\Fh     &(-&\omega)\Swxx(\omega)
-\end{array}}
-
-
 \item The \ope{expectation} operator $\pE\brp{\rvX\rvY^\ast}$ is an \fncte{inner product}.
 As such, it would seem the most natural to follow the convention of other inner product definitions
 and thus put the conjugate $\conj$ on $\rvy$ (i.e. follow Papoulis):
@@ -77,239 +387,42 @@ and thus put the conjugate $\conj$ on $\rvy$ (i.e. follow Papoulis):
   \\\imark & \inprod{\rvX}{\rvY}     &\eqd& \pE\brp{\rvX\rvY^\conj}
 \end{array}$
 
-\item If we view $\Rxy(m)$ as an \ope{analysis} of $\rvy$ in terms of $\rvx$ 
+\item If we view $\Rxy(m)$ as an \ope{analysis} of $\rvy$ in terms of $\rvx$
       (or as a \ope{projection} of $\rvy$ onto $\rvx$),
       then it would seem more natural to put the conjugate on $\rvx$ (i.e. follow Kay).
-      This is what is done in Fourier analysis when projecting a function $\ff(t)$ onto the 
-      set of basis functions $\set{e^{i\omega n}}{\omega\in\R}$, as in 
+      This is what is done in Fourier analysis when projecting a function $\ff(t)$ onto the
+      set of basis functions $\set{e^{i\omega n}}{\omega\in\R}$, as in
       \\\begin{align*}
-        \opDTFT\brs{\rvy[n]}(\omega) 
-          &\eqd \inprod{\rvy[n]}{e^{i\omega n}} 
-          && \text{(\ope{project} $\rvy[n]$ onto $e^{i\omega n}$ for some $\omega\in\R$)}
-        \\&\eqd \sum_{n\in\Z} \rvy[n] \brs{e^{+i\omega n}}^\ast
-        \\&\eqd \sum_{n\in\Z} \rvy[n] e^{-i\omega n}
+        \opDTFT\brs{\rvy(n)}(\omega)
+          &\eqd \inprod{\rvy(n)}{e^{i\omega n}}
+          && \text{(\ope{project} $\rvy(n)$ onto $e^{i\omega n}$ for some $\omega\in\R$)}
+        \\&\eqd \sum_{n\in\Z} \rvy(n) \brs{e^{+i\omega n}}^\ast
+        \\&\eqd \sum_{n\in\Z} \rvy(n) e^{-i\omega n}
       \end{align*}
       But arguably, a ``projection of $\rvy$ onto $\rvx$" would better be served by the use of $\Ryx(m)$ rather than $\Rxy(m)$.
 
 \item If we follow Kay, then there is the advantage that you also end up with Bendat's result for $\Swxy(\omega)$.
-
-\item In the special case where $\rvx[n]$ and $\rvy[n]$ are \propb{real-valued} and by 
-      \prefpp{thm:dtft_conjneg_real}, \pref{item:RxySwxy} becomes
-\\\propbox{\begin{array}{FM >{\ds}rc l*{3}{@{\hspace{0pt}}l} c >{\ds}rc l@{\hspace{0pt}}l}
-    (1s).&Papoulis:        & \Rxy(m) &\eqd& \pE[\rvx     &(m)\rvy^\ast&(0&)] &\implies& \Swxy(\omega) &=&\Fh^\ast&(\omega)\Swxx(\omega)
-  \\(2s).&Kay:             & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)\rvy     &(m&)] &\implies& \Swxy(\omega) &=&\Fh     &(\omega)\Swxx(\omega)
-  \\(3s).&y-star-m:        & \Rxy(m) &\eqd& \pE[\rvx     &(0)\rvy^\ast&(m&)] &\implies& \Swxy(\omega) &=&\Fh     &(\omega)\Swxx(\omega)
-  \\(4s).&x-star-m:        & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)\rvy     &(0&)] &\implies& \Swxy(\omega) &=&\Fh^\ast&(\omega)\Swxx(\omega)
-  \\(5s).&Bendat:          & \Rxy(m) &\eqd& \pE[\rvx     &(0)\rvy     &(m&)] &\implies& \Swxy(\omega) &=&\Fh     &(\omega)\Swxx(\omega)
-  \\(6s).&alt-Bendat:      & \Rxy(m) &\eqd& \pE[\rvx     &(m)\rvy     &(0&)] &\implies& \Swxy(\omega) &=&\Fh^\ast&(\omega)\Swxx(\omega)
-  \\(7s).&Bendat-star      & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)\rvy^\ast&(m&)] &\implies& \Swxy(\omega) &=&\Fh     &(\omega)\Swxx(\omega)
-  \\(8s).&alt-Bendat-star: & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)\rvy^\ast&(0&)] &\implies& \Swxy(\omega) &=&\Fh^\ast&(\omega)\Swxx(\omega)
-\end{array}}
 \end{enumerate}
-\end{remark}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:RxySwxy_real}
+%---------------------------------------
+Let (1)--(8) below correspond to the eight definitions of $\Rxy(m)$ in \pref{def:Rxym}.
+\\\textbf{If} $\rvx(n)$ and $\rvy(n)$ are \propb{real-valued}, then the following hold:
+\\
+$\begin{array}{Fc        l              c l       *{2}{@{\hspace{0pt}}r}       D    l              c  l@{\hspace{0pt}}r *{2}{@{\hspace{0pt}}l} c  l*{2}{@{\hspace{0pt}}r}}
+    (1) &      \implies& \Swxy(\omega) &=&\FH^\ast&( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy     &(\omega) &=& |\FH&(\omega)|^2 &\Swxx(\omega)
+  \\(2) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&(\omega) &=& |\FH&(\omega)|^2 &\Swxx(\omega)
+  \\(3) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&(\omega) &=& |\FH&(\omega)|^2 &\Swxx(\omega)
+  \\(4) &      \implies& \Swxy(\omega) &=&\FH^\ast&( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&( \omega)&\Swxy^\ast&(\omega) &=& |\FH&(\omega)|^2 &\Swxx(\omega)
+  \\(5) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&(\omega) &=& |\FH&(\omega)|^2 &\Swxx(\omega)
+  \\(6) &      \implies& \Swxy(\omega) &=&\FH^\ast&( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&( \omega)&\Swxy^\ast&(\omega) &=& |\FH&(\omega)|^2 &\Swxx(\omega)
+  \\(7) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&(\omega) &=& |\FH&(\omega)|^2 &\Swxx(\omega)
+  \\(8) &      \implies& \Swxy(\omega) &=&\FH^\ast&( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&( \omega)&\Swxy^\ast&(\omega) &=& |\FH&(\omega)|^2 &\Swxx(\omega)
+\end{array}$
+\end{proposition}
 \begin{proof}
-\begin{enumerate}
-\item If we follow Papoulis $\brp{\Rxy(m)\eqd\pE\brs{\rvx(m)\rvy^\ast(0)}}$, then\ldots \label{item:Rxy_papoulis}
-  \begin{align*}
-    \Swxy(\omega)
-      &\eqd \opDTFT\pE\Rxy(m)
-      && \text{by definition of $\Swxy(\omega)$}
-      && \text{\xref{def:Swxy}}
-    \\&\eqd \opDTFT\pE\brs{\rvx(m)\rvy^\ast(0)}
-      && \text{by Papoulis' definition of $\Rxy(m)$}
-    \\&=    \opDTFT\pE\brs{\rvx(m)\brp{\sum_{k\in\Z} \fh(k)\rvx(0-k)}^\ast}
-      && \text{by \prope{LTI} property}
-    \\&=    \opDTFT\pE\brs{\rvx(m) \sum_{k\in\Z} \fh^\ast(k)      \rvx^\ast(0-k)}
-      && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
-      && \text{\xref{def:staralg}}
-    \\&=    \opDTFT        \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx(m)\rvx^\ast(0-k)}
-    \\&=    \opDTFT        \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx(0)\rvx^\ast(-m-k)}
-      &&    \text{by \prope{wide sense stationary} property}
-    \\&=    \opDTFT        \sum_{k\in\Z} \fh^\ast(k) \brp{\pE\brs{\rvx(-m-k)\rvx^\ast(0)}}^\ast
-    \\&\eqd \opDTFT        \sum_{k\in\Z} \fh^\ast(k) \Rxx^\ast(-m-k)
-      && \text{by Papoulis' definition of $\Rxy(m)$}
-    \\&\eqd \opDTFT\brs{\fh^\ast(-m) \convd \Rxx^\ast(-m)}
-      && \text{by definition of \ope{convolution}}
-      && \text{\xref{def:conv}}
-    \\&=    \brs{\opDTFT\fh^\ast(-m)} \brs{\opDTFT\Rxx^\ast(-m)}
-      && \text{by \thme{convolution theorem}}
-      && \text{\xref{thm:conv}}
-    \\&\eqd \Fh^\ast(\omega) \Swxx^\ast(\omega)
-      && \text{by \prefp{thm:dtft_conjneg}}
-    \\&= \Fh^\ast(\omega) \Swxx(\omega)
-      && \text{because $\Swxx(\omega)$ is \prope{real-valued}}
-  \end{align*}
-
-\item If we follow Kay $\brp{\Rxy(m)\eqd\pE\brs{\rvx^\ast(0)\rvy(m)}}$, then\ldots
-  \begin{align*}
-    \Swxy(\omega)
-      &\eqd \opDTFT\Rxy(m)
-      && \text{by definition of $\Swxy(\omega)$}
-      && \text{\xref{def:Swxy}}
-    \\&\eqd \opDTFT\pE\brs{\rvy(m)\rvx^\ast(0)}
-      && \text{by Kay's definition of $\Rxy(m)$}
-    \\&=    \opDTFT\pE\brs{\brp{\fh(m)\convd\rvx(m)}\rvx^\ast(0)}
-      && \text{by \prope{LTI} property}
-      && \text{\xref{thm:conv}}
-    \\&=    \opDTFT\pE\brs{\brp{\sum_{k\in\Z} \fh(k)\rvx(m-k)}\rvx^\ast(0)}
-    \\&=    \opDTFT\brp{\sum_{k\in\Z} \fh(k)\pE\brs{\rvx(m-k)\rvx^\ast(0)}}
-      && \text{by \prope{linearity} of $\sum$}
-    \\&\eqd \opDTFT\brp{\sum_{k\in\Z} \fh(k)\Rxx(m-k)}
-      && \text{by Kay's definition of $\Rxy(m)$}
-    \\&\eqd \opDTFT\brp{\fh(m)\convd\Rxx(m)}
-      && \text{by definition of \ope{convolution}}
-      && \text{\xref{def:conv}}
-    \\&=    \brs{\opDTFT\fh(m)}\brs{\opDTFT\Rxx(m)}
-    \\&\eqd \Fh(\omega) \Swxx(\omega)
-      && \text{by definitions of $\Fh(\omega)$ and $\Swxx(\omega)$}
-      && \text{\xref{def:dtft}}
-  \end{align*}
-
-\item For y-star-m $\brp{\Rxy(m)\eqd\pE\brs{\rvx(0)\rvy^\ast(m)}}$ \ldots \label{item:Rxy_ystarm}
-  \begin{align*}
-    \Swxy(\omega)
-      &\eqd \opDTFT\pE\Rxy(m)
-      && \text{by definition of $\Swxy(\omega)$}
-      && \text{\xref{def:Swxy}}
-    \\&\eqd \opDTFT\pE\brs{\rvx(0)\rvy^\ast(m)}
-      && \text{by \pref{item:Rxy_ystarm} definition of $\Rxy(m)$}
-    \\&=    \opDTFT\pE\brs{\rvx(0)\brp{\sum_{k\in\Z} \fh(k)\rvx(m-k)}^\ast}
-      && \text{by \prope{LTI} property}
-    \\&=    \opDTFT\pE\brs{\rvx(0) \sum_{k\in\Z} \fh^\ast(k)      \rvx^\ast(m-k)}
-      && \text{by \prope{distributive} property of \structd{$\invo$-algebra}s}
-      && \text{\xref{def:staralg}}
-    \\&=    \opDTFT        \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx(0)\rvx^\ast(m-k)}
-    \\&\eqd \opDTFT        \sum_{k\in\Z} \fh^\ast(k) \Rxx^\ast(m-k)
-      && \text{by \pref{item:Rxy_ystarm} definition of $\Rxy(m)$}
-    \\&\eqd \opDTFT\brs{\fh(m) \convd \Rxx^\ast(m)}
-      && \text{by definition of \ope{convolution}}
-      && \text{\xref{def:conv}}
-    \\&=    \brs{\opDTFT\fh^\ast(m)} \brs{\opDTFT\Rxx^\ast(m)}
-      && \text{by \thme{convolution theorem}}
-      && \text{\xref{thm:conv}}
-    \\&\eqd \Fh(\omega) \Swxx(\omega)
-      && \text{by definition of \ope{DTFT}}
-      && \text{\xref{def:dtft}}
-  \end{align*}
-
-\item For x-star-m $\brp{\Rxy(m)\eqd\pE\brs{\rvx^\ast(m)\rvy(0)}}$ \ldots \label{item:Rxy_xstarm}
-  \begin{align*}
-    \Swxy(\omega)
-      &\eqd \opDTFT\pE\Rxy(m)
-      && \text{by definition of $\Swxy(\omega)$}
-      && \text{\xref{def:Swxy}}
-    \\&\eqd \opDTFT\pE\brs{\rvx^\ast(m)\rvy(0)}
-      && \text{by \pref{item:Rxy_xstarm} definition of $\Rxy(m)$}
-    \\&=    \opDTFT\pE\brs{\rvx^\ast(m)\sum_{k\in\Z} \fh(k)           \rvx(0-k)}
-      && \text{by \prope{LTI} property}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh(k)\pE\brs{\rvx^\ast(m)\rvx(0-k)}
-      && \text{by \prope{linearity} of $\sum$}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh(k)\pE\brs{\rvx^\ast(m+k)\rvx(0)}
-      && \text{by \prope{wide sense stationary} property}
-      && \text{\xref{def:wss}}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh(k)\Rxx(m+k)
-      && \text{by \pref{item:Rxy_xstarm} definition of $\Rxy(m)$}
-    \\&=    \opDTFT\sum_{k'\in\Z} \fh(-k')\Rxx(m-k')
-      && \text{where $k'\eqd k$}
-    \\&\eqd \opDTFT\brs{\fh(-m) \convd \Rxx(m)}
-      && \text{by definition of \ope{convolution}}
-      && \text{\xref{def:conv}}
-    \\&\eqd \brs{\opDTFT\fh(-m)} \brs{\opDTFT\Rxx(m)}
-      && \text{by \thme{convolution theorem}}
-      && \text{\xref{thm:conv}}
-    \\&\eqd \Fh(-\omega) \Swxx(\omega)
-      && \text{by \prefp{thm:dtft_conjneg}}
-  \end{align*}
-
-\item If we follow Bendat $\brp{\Rxy(m)\eqd\pE\brs{\rvx(0)\rvy(m)}}$, then\ldots \label{item:Rxy_bendat}
-  \begin{align*}
-    \Swxy(\omega)
-      &\eqd \opDTFT\pE\Rxy(m)
-      && \text{by definition of $\Swxy(\omega)$}
-      && \text{\xref{def:Swxy}}
-    \\&\eqd \opDTFT\pE\brs{\rvx(0)\rvy(m)}
-      && \text{by Bendat's definition of $\Rxy(m)$}
-    \\&=    \opDTFT\pE\brs{\rvx(0)\brp{\sum_{k\in\Z} \fh(k) \rvx(m-k)}}
-      && \text{by \prope{LTI} property}
-    \\&=    \opDTFT                    \sum_{k\in\Z} \fh(k) \pE\brs{\rvx(0)\rvx(m-k)}
-      && \text{by \prope{linearity} of $\sum$}
-    \\&\eqd \opDTFT                    \sum_{k\in\Z} \fh(k) \Rxx(m-k)
-      && \text{by Bendat's definition of $\Rxy(m)$}
-    \\&\eqd \opDTFT\brs{\fh(m) \convd \Rxx(m)}
-    \\&\eqd \Fh(\omega) \Swxx(\omega)
-  \end{align*}
-
-\item For alt-Bendat $\brp{\Rxy(m)\eqd\pE\brs{\rvx(m)\rvy(0)}}$ \ldots \label{item:Rxy_bendatalt}
-  \begin{align*}
-    \Swxy(\omega)
-      &\eqd \opDTFT\pE\Rxy(m)
-      && \text{by definition of $\Swxy(\omega)$}
-      && \text{\xref{def:Swxy}}
-    \\&\eqd \opDTFT\pE\brs{\rvx(m)\rvy(0)}
-      && \text{by \pref{item:Rxy_bendatalt} definition of $\Rxy(m)$}
-    \\&=    \opDTFT\pE\brs{\rvx(m)\brp{\sum_{k\in\Z} \fh(k) \rvx(0-k)}}
-      && \text{by \prope{LTI} property}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh(k) \pE\brs{\rvx(m)\rvx(-k)}
-      && \text{by \prope{linearity} of $\sum$}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh(k) \pE\brs{\rvx(0)\rvx(-m-k)}
-      && \text{by \prope{wide sense stationary} property}
-      && \text{\xref{def:wss}}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh(k) \pE\brs{\rvx(-m-k)\rvx(0)}
-      && \text{by \prope{commutative} property}
-    \\&\eqd \opDTFT                    \sum_{k\in\Z} \fh(k) \Rxx(-m-k)
-      && \text{by \pref{item:Rxy_bendatalt} definition of $\Rxy(m)$}
-    \\&\eqd \opDTFT\brs{\fh(-m) \convd \Rxx(-m)}
-      && \text{by definition of \ope{convolution} operation}
-      && \text{\xref{def:conv}}
-    \\&\eqd \opDTFT\brs{\fh(-m) \convd \Rxx(m)}
-      && \text{by \prefp{cor:Rxxm}}
-    \\&\eqd \Fh(-\omega) \Swxx(\omega)
-  \end{align*}
-
-\item For Bendat-star $\brp{\Rxy(m)\eqd\pE\brs{\rvx^\ast(0)\rvy^\ast(m)}}$, then\ldots \label{item:Rxy_bendat-star}
-  \begin{align*}
-    \Swxy(\omega)
-      &\eqd \opDTFT\pE\Rxy(m)
-      && \text{by definition of $\Swxy(\omega)$}
-      && \text{\xref{def:Swxy}}
-    \\&\eqd \opDTFT\pE\brs{\rvx^\ast(0)\rvy^\ast(m)}
-      && \text{by Bendat-star definition of $\Rxy(m)$}
-    \\&=    \opDTFT\pE\brs{\rvx^\ast(0)\rvy^\ast(m)}
-    \\&=    \opDTFT\pE\brs{\rvx^\ast(0)\brp{\sum_{k\in\Z} \fh(k) \rvx(m-k)}^\ast}
-      && \text{by \prope{LTI} property}
-    \\&=    \opDTFT                    \sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx^\ast(0)\rvx^\ast(m-k)}
-      && \text{by \prope{linearity} of $\sum$}
-    \\&\eqd \opDTFT                    \sum_{k\in\Z} \fh^\ast(k) \Rxx(m-k)
-      && \text{by Bendat-star definition of $\Rxy(m)$}
-    \\&\eqd \opDTFT\brs{\fh^\ast(m) \convd \Rxx(m)}
-    \\&\eqd \Fh^\ast(-\omega) \Swxx(\omega)
-  \end{align*}
-
-\item For alt-Bendat-star $\brp{\Rxy(m)\eqd\pE\brs{\rvx^\ast(m)\rvy^\ast(0)}}$ \ldots \label{item:Rxy_bendatalt}
-  \begin{align*}
-    \Swxy(\omega)
-      &\eqd \opDTFT\pE\Rxy(m)
-      && \text{by definition of $\Swxy(\omega)$}
-      && \text{\xref{def:Swxy}}
-    \\&\eqd \opDTFT\pE\brs{\rvx^\ast(m)\rvy^\ast(0)}
-      && \text{by \pref{item:Rxy_bendatalt} definition of $\Rxy(m)$}
-    \\&=    \opDTFT\pE\brs{\rvx^\ast(m)\brp{\sum_{k\in\Z} \fh^\ast(k) \rvx^\ast(0-k)}}
-      && \text{by \prope{LTI} property}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx^\ast(m)\rvx^\ast(-k)}
-      && \text{by \prope{linearity} of $\sum$}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx^\ast(0)\rvx^\ast(-m-k)}
-      && \text{by \prope{wide sense stationary} property}
-      && \text{\xref{def:wss}}
-    \\&=    \opDTFT\sum_{k\in\Z} \fh^\ast(k) \pE\brs{\rvx^\ast(-m-k)\rvx^\ast(0)}
-      && \text{by \prope{commutative} property}
-    \\&\eqd \opDTFT                    \sum_{k\in\Z} \fh^\ast(k) \Rxx^\ast(-m-k)
-      && \text{by \pref{item:Rxy_bendatalt} definition of $\Rxy(m)$}
-    \\&\eqd \opDTFT\brs{\fh(-m) \convd \Rxx^\ast(-m)}
-      && \text{by definition of \ope{convolution} operation}
-      && \text{\xref{def:conv}}
-    \\&\eqd \opDTFT\brs{\fh(-m) \convd \Rxx(m)}
-      && \text{by \prefp{cor:Rxxm}}
-    \\&\eqd \Fh(-\omega) \Swxx(\omega)
-  \end{align*}
-\end{enumerate}
+These results follow directly from \pref{prop:RxySwxy} and \prefpp{thm:dtft_conjneg_real}.
 \end{proof}
+
