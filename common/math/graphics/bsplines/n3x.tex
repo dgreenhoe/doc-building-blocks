@@ -1,0 +1,45 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% N_3(x) B-spline
+% nominal unit = 10mm
+%============================================================================
+\begin{pspicture}(-1,-0.5)(5,1)
+  %-------------------------------------
+  % parameters
+  %-------------------------------------
+  \psset{plotpoints=64,labelsep=1pt}%
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  \psaxes[linewidth=0.75pt,linecolor=axis,yAxis=false,ticks=x,labels=x]{<->}(0,0)(-1,0)(5,1)% x axis
+  \psaxes[linewidth=0.75pt,linecolor=axis,xAxis=false,ticks=x,labels=x]{->}(0,0)(-1,0)(5,1)%  y axis
+  %-------------------------------------
+  % annotation
+  %-------------------------------------
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](2,0)(2,0.667)%
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](0,0.667)(2,0.667)%
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](1,0)(1,0.1667)%
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](3,0)(3,0.1667)%
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](0,0.1667)(3,0.1667)%
+  \uput[180](0,0.667){$\sfrac{2}{3}$}%
+  \uput[180](0,0.1667){$\sfrac{1}{6}$}%
+  %-------------------------------------------------------------------------
+  % for n=3                                   
+  %        1  n+1        (n+1)                   1   4          ( 4 )        
+  % N_n(x)--- SUM (-1)^k (   ) (x-k)^n s(x-k) = --- SUM  (-1)^k (   ) (x-k)^3 s(x-k)
+  %        n! k=1        ( k )                   3! k=1         ( k )       
+  %
+  % where s(x) = 0 for x<0 and 1 for x>=0  (step function)
+  %-------------------------------------------------------------------------
+  \psplot{0}{1}  {1 x 0 sub 3 exp mul   6 div}%
+  \psplot{1}{2}  {1 x 0 sub 3 exp mul   4 x 1 sub 3 exp mul sub   6 div}%
+  \psplot{2}{3}  {1 x 0 sub 3 exp mul   4 x 1 sub 3 exp mul sub   6 x 2 sub 3 exp mul add   6 div}%
+  \psplot{3}{4}  {1 x 0 sub 3 exp mul   4 x 1 sub 3 exp mul sub   6 x 2 sub 3 exp mul add   4 x 3 sub 3 exp mul sub   6 div}%
+  \psplot{4}{4.5}{1 x 0 sub 3 exp mul   4 x 1 sub 3 exp mul sub   6 x 2 sub 3 exp mul add   4 x 3 sub 3 exp mul sub   1 x 4 sub 3 exp mul add 6 div}%
+  %    N_3(x) = [(4choose0)(x-0)^3    - (4choose1)(x-1)^3       + (4choose2)(x-2)^3       - (4choose3)(x-3)^3       + (4choose4)(x-4)^3      ]/3!
+  %           = [        1 (x-0)^3    -         4 (x-1)^3       +         6 (x-2)^3       -         4 (x-3)^3       +         1 (x-4)^3      ]/6 
+  \psline(0,0)(-0.5,0)%
+  \psline[linestyle=dotted](-0.5,0)(-0.75,0)%
+  \psline[linestyle=dotted](4.5,0)(4.75,0)%
+\end{pspicture}%

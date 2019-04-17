@@ -1,0 +1,81 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% N_4(x) B-spline
+% nominal unit = 10mm
+%============================================================================
+\begin{pspicture}(-1,-0.5)(6,1.5)
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  \psaxes[linewidth=0.75pt,linecolor=axis,yAxis=false,ticks=none,labels=none]{<->}(0,0)(-1,0)(6,1.5)% x axis
+  \psaxes[linewidth=0.75pt,linecolor=axis,xAxis=false,ticks=none,labels=none]{->}(0,0)(-1,0)(6,1.5)%  y axis
+  %-------------------------------------
+  % annotation
+  %-------------------------------------
+  %\psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](2.5,0)(2.5,0.5989583)%
+  %\psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](0,0.6)(2.5,0.5989583)%
+  %\psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](3,0)(3,0.4583)%
+  %\psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](2,0)(2,0.4583)%
+  %\psline[linestyle=dashed,linewidth=0.75pt,linecolor=red](2,0.4583)(4,0.4583)%
+  \psline[linestyle=solid,linewidth=0.75pt,linecolor=black](5,0.1)(5,-0.1)%
+  \psline[linestyle=solid,linewidth=0.75pt,linecolor=black](4,0.1)(4,-0.1)%
+  \psline[linestyle=solid,linewidth=0.75pt,linecolor=black](3,0.1)(3,-0.1)%
+  \psline[linestyle=solid,linewidth=0.75pt,linecolor=black](2,0.1)(2,-0.1)%
+  \psline[linestyle=solid,linewidth=0.75pt,linecolor=black](1,0.1)(1,-0.1)%
+  \psline[linestyle=solid,linewidth=0.75pt,linecolor=black](0,0.1)(0,-0.1)%
+  %\rput(0,0.5989583){$\frac{115}{192}\approx0.60$}%
+  %\uput[0](4,0.4583){$\frac{11}{24}\approx0.46$}%
+  \rput[t](0,-5pt){%
+    \rput[t](0,0){$0$}%
+    \rput[t](1,0){$1$}%
+    \rput[t](2,0){$2$}%
+    \rput[t](3,0){$3$}%
+    \rput[t](4,0){$4$}%
+    \rput[t](5,0){$5$}%
+   %\rput[t](2.5,0){$\sfrac{5}{2}$}%
+    }%
+  %-------------------------------------------------------------------------
+  % for n=4
+  %        1  n+1        (n+1)                   1   5          ( 4 )        
+  % N_n(x)--- SUM (-1)^k (   ) (x-k)^n s(x-k) = --- SUM  (-1)^k (   ) (x-k)^4 s(x-k)
+  %        n! k=1        ( k )                   4! k=1         ( k )       
+  %
+  % where s(x) = 0 for x<0 and 1 for x>=0  (step function)
+  %-------------------------------------------------------------------------
+  \psplot[plotpoints=64]{0}{1}  {1 x 0 sub 4 exp mul   24 div}%
+  \psplot[plotpoints=64]{1}{2}  {1 x 0 sub 4 exp mul   5 x 1 sub 4 exp mul sub   24 div}%
+  \psplot[plotpoints=64]{2}{3}  {1 x 0 sub 4 exp mul   5 x 1 sub 4 exp mul sub  10 x 2 sub 4 exp mul add   24 div}%
+  \psplot[plotpoints=64]{3}{4}  {1 x 0 sub 4 exp mul   5 x 1 sub 4 exp mul sub  10 x 2 sub 4 exp mul add  10 x 3 sub 4 exp mul sub   24 div}%
+  \psplot[plotpoints=64]{4}{5}  {1 x 0 sub 4 exp mul   5 x 1 sub 4 exp mul sub  10 x 2 sub 4 exp mul add  10 x 3 sub 4 exp mul sub   5 x 4 sub 4 exp mul add 24 div}%
+  \psplot[plotpoints=64]{5}{5.5}{1 x 0 sub 4 exp mul   5 x 1 sub 4 exp mul sub  10 x 2 sub 4 exp mul add  10 x 3 sub 4 exp mul sub   5 x 4 sub 4 exp mul add 24 div   1 x 5 sub 4 exp mul sub 24 div}%
+  %                   N_4(x) = [(5choose0)(x-0)^4    - (5choose1)(x-1)^4       + (5choose2)(x-2)^4       - (5choose3)(x-3)^4       + (5choose4)(x-4)^4      ]/3!
+  %                          = [        1 (x-0)^4    -         4 (x-1)^4       +         6 (x-2)^4       -         4 (x-3)^4       +         1 (x-4)^4      ]/6 
+  \psline(0,0)(-0.5,0)
+  \psline[linestyle=dotted](-0.5,0)(-0.75,0)%
+  \psline[linestyle=dotted](5.5,0)(5.75,0)%
+  %-------------------------------------
+  % h_k coefficients
+  %        sqrt(2) (n+1)
+  % h_k = -------- (   ) = (0.04419417382415922027505277263...) x {1, 5, 10, 10, 5, 1}
+  %        2^(n+1) ( k )
+  %-------------------------------------
+  \pnode(0, 0.04419417382415922027505277263155){h0}%
+  \pnode(1, 0.22097086912079610137526386315777){h1}%
+  \pnode(2, 0.44194173824159220275052772631553){h2}%
+  \pnode(3, 0.44194173824159220275052772631553){h3}%
+  \pnode(4, 0.22097086912079610137526386315777){h4}%
+  \pnode(5, 0.04419417382415922027505277263155){h5}%
+  \psline[linecolor=red]{-o}(0,0)(h0)%  
+  \psline[linecolor=red]{-o}(1,0)(h1)%  
+  \psline[linecolor=red]{-o}(2,0)(h2)%  
+  \psline[linecolor=red]{-o}(3,0)(h3)%  
+  \psline[linecolor=red]{-o}(4,0)(h4)%  
+  \psline[linecolor=red]{-o}(5,0)(h5)%  
+  \uput{0pt}[90](h0){$\scy\frac{\sqrt{2}}{32}=0.0441\cdots$}%
+  \uput{3pt}[90](h1){$\scy\frac{5\sqrt{2}}{32}$}%
+  \uput{3pt}[90](h2){$\scy\frac{10\sqrt{2}}{32}$}%
+  \uput{3pt}[90](h3){$\scy\frac{10\sqrt{2}}{32}$}%
+  \uput{3pt}[60](h4){$\scy\frac{5\sqrt{2}}{32}=0.220\cdots$}%
+  \uput{3pt}[30](h5){$\scy\frac{\sqrt{2}}{32}$}%
+\end{pspicture}%

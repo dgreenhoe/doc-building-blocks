@@ -1,0 +1,75 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% B_2(x) B-spline wavelet
+% nominal unit = 10mm
+%============================================================================
+\begin{pspicture}(-1,-1.5)(4,1.5)
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  \psaxes[linewidth=0.75pt,linecolor=axis,yAxis=false,ticks=x,labels=none]{<->}(0,0)(-1,-1.5)(4,1.5)% x axis
+  \psaxes[linewidth=0.75pt,linecolor=axis,xAxis=false,ticks=y,labels=y]{<->}(0,0)(-1,-1.5)(4,1.5)%  y axis
+  %-------------------------------------
+  % nodes
+  %-------------------------------------
+  \pnode(0, 0.17677669529663688110021109052621){g0}%
+  \pnode(1,-0.53033008588991064330063327157864){g1}%
+  \pnode(2, 0.53033008588991064330063327157864){g2}%
+  \pnode(3,-0.17677669529663688110021109052621){g3}%
+  %-------------------------------------
+  % non-zero g_k coefficients
+  %-------------------------------------
+  \uput{0pt}[10](g0){$\scy\frac{\sqrt{2}}{8}$}%
+  \uput{2pt}[-135](g1){$\scy-\frac{3\sqrt{2}}{8}$}%
+  \uput{0pt}[45](g2){$\scy\frac{3\sqrt{2}}{8}$}%
+  \uput{0pt}[-45](g3){$\scy-\frac{\sqrt{2}}{8}$}%
+  \psline[linecolor=red]{-o}(0,0)(g0)%
+  \psline[linecolor=red]{-o}(1,0)(g1)%
+  \psline[linecolor=red]{-o}(2,0)(g2)%
+  \psline[linecolor=red]{-o}(3,0)(g3)%
+  %-------------------------------------
+  % marker lines
+  %-------------------------------------
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=axis](0,0.45)(1.8,0.45)%
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=axis](1.8,0.45)(1.8,0)%
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=axis](0,-0.45)(1.2,-0.45)%
+  \psline[linestyle=dashed,linewidth=0.75pt,linecolor=axis](1.2,-0.45)(1.2,0)%
+  \uput[180](0,0.45){$0.45$}%
+  \uput[180](0,-0.45){$-0.45$}%
+  %-------------------------------------
+  % x-axis labels
+  %-------------------------------------
+  \uput{1pt}[90](1.2,0){$\sfrac{6}{5}$}%
+  \uput{1pt}[-90](1.8,0){$\sfrac{9}{5}$}%
+  \rput[b](0,5pt){%on top of x-axis number labels
+    \rput[b](1,0){$1$}%
+    \rput[b](3,0){$3$}%
+    }%
+  \rput[t](0,-5pt){%under x-axis number labels
+    %\rput[t](1.5,0){$\sfrac{3}{2}$}%
+    %\rput[t](2.5,0){$\sfrac{5}{2}$}%
+    \rput[t](0,0){$0$}%
+    \rput[t](2,0){$2$}%
+    }%
+  %-------------------------------------
+  % B_2(x)
+  %-------------------------------------
+  \psplot[plotpoints=64]{0}{0.5}{4 x 2 exp mul 8 div}%                            for  0.0 <= x <= 1/2
+  \psplot[plotpoints=64]{0.5}{1.0}{-20 x 2 exp mul 24 x mul add -6 add 8 div}%    for  0.5 <x< 1.0
+  \psplot[plotpoints=64]{1.0}{1.5}{40 x 2 exp mul -96 x mul add 54 add 8 div}%    for  1.0 <x< 1.5
+  \psplot[plotpoints=64]{1.5}{2.0}{-40 x 2 exp mul 144 x mul add -126 add 8 div}% for  1.5 <x< 2.0
+  \psplot[plotpoints=64]{2.0}{2.5}{20 x 2 exp mul -96 x mul add 114 add 8 div}%   for  2.0 <x< 2.5
+  \psplot[plotpoints=64]{2.5}{3.0}{-4 x 2 exp mul 24 x mul add -36 add 8 div}%    for  2.5 <x< 3.0
+  \psline(3,0)(3.5,0)\psline[linestyle=dotted](3.5,0)(3.75,0)%                       0    for x >= 0
+  \psline(0,0)(-0.5,0)\psline[linestyle=dotted](-0.5,0)(-0.75,0)%                       0    for x >= 0
+\end{pspicture}
+% Maxima output
+%8 B(x)=  0  for x<=0
+%8 B(x)=  4*x^2  for  0 <x< 0.5
+%8 B(x)=  (-20*x^2)+24*x-6  for  0.5 <x< 1.0
+%8 B(x)=  40*x^2-96*x+54  for  1.0 <x< 1.5
+%8 B(x)=  (-40*x^2)+144*x-126  for  1.5 <x< 2.0
+%8 B(x)=  20*x^2-96*x+114  for  2.0 <x< 2.5
+%8 B(x)=  (-4*x^2)+24*x-36  for  2.5 <x< 3.0
+%8 B(x)=  0  for x> 3  \psline(0,0)(-0.5,0)\psline[linestyle=dotted](-0.5,0)(-0.75,0)%                    0    for x <= 0
