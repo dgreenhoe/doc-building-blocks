@@ -19,6 +19,7 @@ FILE_SRC  = ../common/backmata.tex      \
             dtft.tex                    \
             estHx.tex                   \
             expectation.tex             \
+            normalg.tex                 \
             randseq.tex                 \
             xcordef.tex
 
