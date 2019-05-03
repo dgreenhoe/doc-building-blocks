@@ -2,26 +2,6 @@
 % LaTeX File
 % Daniel J. Greenhoe
 %============================================================================
-
-
-%=======================================
-\section{Introduction}
-%=======================================
-In the literature, there are varying and in general incompatible definitions of
-\fncte{cross-correlation} functions $\Rxy(n,m)$ and its \ope{wide-sense stationary} special case $\Rxy(m)$. % \xxref{def:Rxynm}{def:Rxym}.
-The choice of definitions has consequences for results involving the \fncte{cross-spectral density} function
-$\Swxy(\omega)$, %\xref{def:Swxy}.
-which is defined as the \ope{Discrete-time Fourier Transform} of $\Rxy(m)$,
-as well as the more general $\Szxy(z)$,
-which is defined as the \ope{Z-Transform} of $\Rxy(m)$:
-\begin{definition}\label{def:Swxy}\label{def:Szxy}
-\defbox{
-  \Szxy(z)       \eqd \opZ\Rxy(m) \eqd \sum_{m\in\Z}\Rxy(m) z^{-m}
-  \qquad\qquad
-  \Swxy(\omega) \eqd \opDTFT\Rxy(m) \eqd \sum_{m\in\Z}\Rxy(m) e^{-i\omega m}
-  }
-\end{definition}
-
 %======================================
 \section{Definitions}
 %======================================
@@ -82,20 +62,30 @@ Here is a formalized list of the eight definitions.
 %---------------------------------------
 \mbox{}\\$\begin{array}{|*{2}{FM   >{\ds}r  c     l *{4}{@{\hspace{0pt}}l}  |}}
   \hline
-    (1).&\fnctd{Papoulis}:        & \Rxy(m) &\eqd& \pE[\rvx     &(m)&\rvy^\ast&(0&)]  &(5).&\fnctd{Bendat}:          & \Rxy(m) &\eqd& \pE[\rvx     &(0)&\rvy     &(m&)]
-  \\(2).&\fnctd{Kay}:             & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)&\rvy     &(m&)]  &(6).&\fnctd{alt-Bendat}:      & \Rxy(m) &\eqd& \pE[\rvx     &(m)&\rvy     &(0&)]
-  \\(3).&\fnctd{y-star-m}:        & \Rxy(m) &\eqd& \pE[\rvx     &(0)&\rvy^\ast&(m&)]  &(7).&\fnctd{Bendat-star}:     & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)&\rvy^\ast&(m&)]
-  \\(4).&\fnctd{x-star-m}:        & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)&\rvy     &(0&)]  &(8).&\fnctd{alt-Bendat-star}: & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)&\rvy^\ast&(0&)]
+    (1).&\fnctd{Papoulis}:        & \Rxy(m) &\eqd& \pE[\rvx     &(m)&\rvy^\ast&(0&)]  &(5).&\fnctd{Bendat-Piersol}:\footnotemark  & \Rxy(m) &\eqd& \pE[\rvx     &(0)&\rvy     &(m&)]
+  \\(2).&\fnctd{Kay}:             & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)&\rvy     &(m&)]  &(6).&\fnctd{alt-BP}:          & \Rxy(m) &\eqd& \pE[\rvx     &(m)&\rvy     &(0&)]
+  \\(3).&\fnctd{y-star-m}:        & \Rxy(m) &\eqd& \pE[\rvx     &(0)&\rvy^\ast&(m&)]  &(7).&\fnctd{BP-star}:         & \Rxy(m) &\eqd& \pE[\rvx^\ast&(0)&\rvy^\ast&(m&)]
+  \\(4).&\fnctd{x-star-m}:        & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)&\rvy     &(0&)]  &(8).&\fnctd{alt-BP-star}:     & \Rxy(m) &\eqd& \pE[\rvx^\ast&(m)&\rvy^\ast&(0&)]
   \\\hline
 \end{array}$
 \end{definition}
+\footnotetext{
+  Note that Bendat and Piersol are well known and highly cited for their work related to 
+  random vibration testing. 
+  In this field, data samples are customarily collected using an analog-to-digital converter (ADC)
+  and as such, for this application, are customarily \prope{real-valued}.
+  Therefore, it is very understandable that these authors would define $\Rxy(m)$ 
+  \emph{without} any conjugate operator.
+  }
 
 %=======================================
 \section{Results}
 %=======================================
-Depending on which one of the eight definitions of $\Rxy(m)$ we select, we get \ldots
+The 8 different definitions of $\Rxy(m)$ listed in \pref{def:Rxym} yield \ldots
+%Depending on which one of the eight definitions of $\Rxy(m)$ is selected, we get \ldots
 \\\indentx$\begin{array}{FMlM}
-    \imark & 3 different relations on the pair   & \opair{\Ryx(m)}{\Rxy(m)}                            & \xref{prop:Rxy}
+    \imark & \mc{2}{M}{only 4 cases in which $\Swxx(\omega)$ is guarenteed to be \prope{real-valued}}  & \xref{prop:Swxx_real}
+  \\\imark & 3 different relations on the pair   & \opair{\Ryx(m)}{\Rxy(m)}                            & \xref{prop:Rxy}
   \\\imark & 2 different relations on the pair   & \opair{\Rxx(-m)}{\Rxx(m)}                           & \xref{prop:Rxy}
   \\\imark & 4 different relations on the triple & \otriple{\Szxy(z)     }{\ZH(z)     }{\Szxx(z)     } & \xref{prop:RxySzxy}
   \\\imark & 4 different relations on the triple & \otriple{\Szxy(z)     }{\ZH(z)     }{\Szyy(z)     } & \xref{prop:RxySzxy}
@@ -113,16 +103,10 @@ Depending on which one of the eight definitions of $\Rxy(m)$ we select, we get \
 %\propbox{
 Let (1)--(8) below correspond to the eight definitions of $\Rxy(m)$ in \pref{def:Rxym}.
 \\
-$\begin{array}{|Fc        l       c l@{\hspace{0pt}}c D   l         c l@{\hspace{0pt}}c D|}
+$\begin{array}{|Mc        l       c l@{\hspace{0pt}}c D   l         c l@{\hspace{0pt}}c D|}
   \hline
-    (1) &      \implies& \Ryx(m) &=&\Rxy^\ast&(-m) &and&  \Rxx(-m) &=&\Rxx^\ast&(m) & (\prope{conjugate symmetric})
-  \\(2) &      \implies& \Ryx(m) &=&\Rxy^\ast&(-m) &and&  \Rxx(-m) &=&\Rxx^\ast&(m) & (\prope{conjugate symmetric})
-  \\(3) &      \implies& \Ryx(m) &=&\Rxy^\ast&(-m) &and&  \Rxx(-m) &=&\Rxx^\ast&(m) & (\prope{conjugate symmetric})
-  \\(4) &      \implies& \Ryx(m) &=&\Rxy^\ast&(-m) &and&  \Rxx(-m) &=&\Rxx^\ast&(m) & (\prope{conjugate symmetric})
-  \\(5) &      \implies& \Ryx(m) &=&\Rxy     &(-m) &and&  \Rxx(-m) &=&\Rxx     &(m) & (\prope{symmetric})
-  \\(6) &      \implies& \Ryx(m) &=&\Rxy     &(-m) &and&  \Rxx(-m) &=&\Rxx     &(m) & (\prope{symmetric})
-  \\(7) &      \implies& \Ryx(m) &=&\Rxy     &(-m) &and&  \Rxx(-m) &=&\Rxx     &(m) & (\prope{symmetric})
-  \\(8) &      \implies& \Ryx(m) &=&\Rxy     &(-m) &and&  \Rxx(-m) &=&\Rxx     &(m) & (\prope{symmetric})
+    (1), (2), (3), or (4) & \implies& \Ryx(m) &=&\Rxy^\ast&(-m) &and&  \Rxx(-m) &=&\Rxx^\ast&(m) & (\prope{conjugate symmetric})
+  \\(5), (6), (7), or (8) & \implies& \Ryx(m) &=&\Rxy     &(-m) &and&  \Rxx(-m) &=&\Rxx     &(m) & (\prope{symmetric})
   \\\hline
 \end{array}$
 %}
@@ -194,19 +178,80 @@ $\begin{array}{|Fc        l       c l@{\hspace{0pt}}c D   l         c l@{\hspace
 
 %---------------------------------------
 \begin{proposition}
-\label{prop:Rxy}
+\label{prop:Szxy}
 %---------------------------------------
-\propbox{
-  \brb{\text{$\Rxx(m)$ definition follows (1) or (2) or (3) or (4)}}
-  \quad\implies\quad
-  \brb{\begin{array}{rclM}
-    \Swxx^\ast(\omega) &=& \Swxx(\omega) & (\prope{real-valued})
-  \end{array}}
-}
+%\propbox{
+Let (1)--(8) below correspond to the eight definitions of $\Rxy(m)$ in \pref{def:Rxym}.
+\\
+$\begin{array}{|Mc        l       c l@{\hspace{0pt}}c D   l         c l@{\hspace{0pt}}c D|}
+  \hline
+    (1), (2), (3), or (4) & \implies& \Szyx(z) &=&\Szxy^\ast&\brp{\frac{1}{z^\ast}} &and&  \Szxx(z) &=&\Szxx^\ast&\brp{\frac{1}{z^\ast}} & 
+  \\(5), (6), (7), or (8) & \implies& \Szyx(z) &=&\Szxy     &\brp{\frac{1}{z}}      &and&  \Szxx(z) &=&\Szxx     &\brp{\frac{1}{z}}      & 
+  \\\hline
+\end{array}$
+%}
 \end{proposition}
 \begin{proof}
-This follows from $\Rxx(m)$ (1)--(4) being \prope{conjugate symmetric} \xref{prop:Rxy}
-and from \prefpp{prop:dtft_conjsym}.
+\begin{align*}
+  (1)-(4):\,\ZSyx(z)
+     &\eqd \opZ \Ryx(m)
+    && \text{by definition of $\ZSxy(z)$}                          && %\text{\xref{def:csd}}
+  \\&\eqd \sum_{m\in\Z}\Ryx(m) z^{-m}
+    && \text{by definition of $\opZ$}                              && \text{\xref{def:opZ}}
+  \\&\eqd \sum_{m\in\Z} \Rxy^\ast(-m) z^{-m}
+    && \text{by \prope{conjugate symmetry} property}               && \text{\xref{prop:Rxy}}
+  \\&= \brs{\sum_{m\in\Z} \Rxy(-m) (z^\ast)^{-m}}^\ast
+    && \text{by \prope{antiautomorphic} property of *-algebras}    && \text{\xref{def:staralg}}
+  \\&= \brs{\sum_{-p\in\Z} \Rxy(p) (z^\ast)^{p}}^\ast
+    && \text{where $p\eqd -m$}                                     && \text{$\implies$ $m=-p$}
+  \\&= \brs{\sum_{p\in\Z} \Rxy(p) (z^\ast)^{p}}^\ast
+    && \text{by \prope{absolutely summable} property}             %&& \text{\xref{def:spllR}}
+  \\&= \brs{\sum_{p\in\Z} \Rxy(p) \brp{\frac{1}{z^\ast}}^{-p}}^\ast
+  \\&= \ZSxy^\ast\brp{\frac{1}{z^\ast}}
+    && \text{by definition of $\opZ$}                              && \text{\xref{def:opZ}}
+\end{align*}
+\begin{align*}
+  (1)-(4):\,\ZSxx(z)
+    &\eqd \brlr{\ZSxy(z)}_{\rvy=\rvx}
+   &&= \brlr{\ZSyx^\ast(z)}_{\rvy=\rvx}
+   &&= \brlr{\ZSxy^\ast\brp{\frac{1}{z^\ast}}}_{\rvy=\rvx}
+   &&= \ZSxx^\ast\brp{\frac{1}{z^\ast}}
+  \\
+  (5)-(8):\,\ZSyx(z)
+    &= \sum_{m\in\Z} \Rxy(-m) z^{-m}
+   &&= \sum_{-p\in\Z} \Rxy(p) z^{p}
+   &&= \sum_{p\in\Z} \Rxy(p) \brp{\frac{1}{z}}^{-p}
+   &&= \ZSxy\brp{\frac{1}{z}}
+  \\
+  (5)-(8):\,\ZSxx(z)
+    &= \brlr{\ZSxy(z)}_{\rvy=\rvx}
+   &&= \brlr{\ZSyx(z)}_{\rvy=\rvx}
+   &&= \brlr{\ZSxy\brp{\frac{1}{z}}}_{\rvy=\rvx}
+   &&= \ZSxx\brp{\frac{1}{z}}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:Swxx_real}
+%---------------------------------------
+Let (1)--(8) correspond to the eight definitions of $\Rxy(m)$ in \pref{def:Rxym}.
+$\begin{array}{|M           c         r                   c  l               M|}
+  \hline
+    (1), (2), (3), or (4) & \implies& \Swxx^\ast(\omega) &=& \Swxx(\omega) & (\prope{real-valued})
+  \\\hline
+\end{array}$
+\end{proposition}
+\begin{proof}
+{\begin{align*}
+  \Swxx^\ast(\omega)
+    &= \brlr{\Szxx^\ast\brp{z}}_{z=e^{i\omega}}
+  \\&= \brlr{\Szxx^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
+  \\&= \brlr{\Szxx\brp{z}}_{z=e^{i\omega}}
+    && \text{by \prefp{prop:Szxy}}
+  \\&= \Swxx(\omega)
+\end{align*}}
 \end{proof}
 
 %---------------------------------------
@@ -437,16 +482,16 @@ $\begin{array}{|Fc        l         c l       @{\hspace{0pt}}l        @{\hspace{
 %---------------------------------------
 Let (1)--(8) below correspond to the eight definitions of $\Rxy(m)$ in \pref{def:Rxym}.
 \\
-$\begin{array}{|Fc        l              c l       *{2}{@{\hspace{0pt}}r}       D    l              c  l@{\hspace{0pt}}r *{2}{@{\hspace{0pt}}l} c  l*{2}{@{\hspace{0pt}}r}|}
+$\begin{array}{|Fc        l              c l       *{2}{@{\hspace{0pt}}r}       D    l              c  l@{\hspace{0pt}}r *{2}{@{\hspace{0pt}}l} c  l@{\hspace{0pt}}r@{\hspace{0pt}}l@{\hspace{0pt}}r|}
   \hline
-    (1) &      \implies& \Swxy(\omega) &=&\FH^\ast&( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy     &( \omega) &=& |\FH&( \omega)|^2 &\Swxx(\omega)
-  \\(2) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&( \omega) &=& |\FH&( \omega)|^2 &\Swxx(\omega)
-  \\(3) &      \implies& \Swxy(\omega) &=&\FH^\ast&(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
-  \\(4) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
-  \\(5) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&( \omega) &=& |\FH&( \omega)|^2 &\Swxx(\omega)
-  \\(6) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
-  \\(7) &      \implies& \Swxy(\omega) &=&\FH^\ast&(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
-  \\(8) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx(\omega)
+    (1) &      \implies& \Swxy(\omega) &=&\FH^\ast&( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy     &( \omega) &=& |\FH&( \omega)|^2 &\Swxx     &(\omega)
+  \\(2) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&( \omega) &=& |\FH&( \omega)|^2 &\Swxx     &(\omega)
+  \\(3) &      \implies& \Swxy(\omega) &=&\FH^\ast&(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx     &(\omega)
+  \\(4) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx     &(\omega)
+  \\(5) &      \implies& \Swxy(\omega) &=&\FH     &( \omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &( \omega)&\Swxy^\ast&( \omega) &=& |\FH&( \omega)|^2 &\Swxx^\ast&(\omega)
+  \\(6) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx^\ast&(\omega)
+  \\(7) &      \implies& \Swxy(\omega) &=&\FH^\ast&(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH^\ast&(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx^\ast&(\omega)
+  \\(8) &      \implies& \Swxy(\omega) &=&\FH     &(-\omega) &\Swxx(\omega)   &and& \Swyy(\omega) &=& \FH     &(-\omega)&\Swxy^\ast&( \omega) &=& |\FH&(-\omega)|^2 &\Swxx^\ast&(\omega)
   \\\hline
 \end{array}$
 \end{proposition}
@@ -475,15 +520,16 @@ $\begin{array}{|Fc        l              c l       *{2}{@{\hspace{0pt}}r}       
     \\&= \brlr{\ZH(z) \ZH^\ast\brp{\frac{1}{z^\ast}} \Szxx^\ast\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
       && \text{by $\Szxy(z)$ result}         &&    \text{\xref{prop:RxySzxy}}
     \\&= \ZH\brp{e^{i\omega}} \ZH^\ast\brp{\frac{1}{e^{-i\omega}}} \Szxx^\ast\brp{\frac{1}{e^{-i\omega}}}
-    \\&= \ZH\brp{e^{i\omega}} \ZH^\ast\brp{e^{i\omega}} \Szxx^\ast\brp{e^{i\omega}}
-    \\&= \FH\brp{\omega} \FH^\ast(\omega) \Swxx^\ast(\omega)
-    \\&= \abs{\FH\brp{\omega}}^2 \Swxx^\ast(\omega)
+    \\&=\mathrlap{ 
+         \ZH\brp{e^{i\omega}} \ZH^\ast\brp{e^{i\omega}} \Szxx^\ast\brp{e^{i\omega}}
+       = \FH\brp{\omega} \FH^\ast(\omega) \Swxx^\ast(\omega)
+       = \abs{\FH\brp{\omega}}^2 \Swxx^\ast(\omega)}
     \\&= \boxed{\abs{\FH\brp{\omega}}^2 \Swxx(\omega)}
       && \text{because $\Swxx(\omega)$ is \prope{real-valued}}  
       && \text{\xref{cor:Swxy_sym}}
 \end{align*}
 
-The other seven $\Swxy/\Swyy$ proofs follow in like manner.
+The other seven sets of proofs follow in like manner.
 \end{proof}
 
 
@@ -542,7 +588,7 @@ and thus put the conjugate $\conj$ on $\rvy$ (i.e. follow Papoulis):
       \end{align*}
       But arguably, a ``projection of $\rvy$ onto $\rvx$" would better be served by the use of $\Ryx(m)$ rather than $\Rxy(m)$.
 
-\item If we follow Kay, then there is the advantage that you also end up with Bendat's result for $\Swxy(\omega)$.
+\item If we follow Kay, then there is the advantage that you also end up with the Bendat-Piersol result for $\Swxy(\omega)$.
 \end{enumerate}
 
 
