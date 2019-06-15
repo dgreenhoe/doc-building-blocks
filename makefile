@@ -15,7 +15,7 @@
 # Commands
 #--------------------------------------
 all:
-  cd 2019xcor
+  cd 2019x
     make
   cd ..\abcstat
     make
@@ -166,7 +166,7 @@ ap:
 
 
 backup:
-  zip -o -9 -r xsd.zip * -x *\plots\*.tex *\bingo*.tex *\old\* *\wavr_old\* tmp*.* t.* *.mp4 *.ppm *.xcf *.odp *.odt *.ttf *.mp3 *.wav *.synctex *.ctx *.zip *.pdf *.ps *.dvi *.aux *.eps *.exe *.prn *.obj *.tmp *.bak *.bat *.tds *.png *.jpg *.jpeg *.gif *.bmp *.log *.js *.css *.swf *.xdv *.dat *.tec *.otf *.*dx *.url *.out *.tar *.gz *.0 *.txt *.htm *.html *\*files\* *\mainx.* *\s\* *\trash\* trash\* *\save\* *\save2\* *\deprecated\* deprecated\* tmp\* ec\*.tex *.xlg *.ind *.ilg
+  zip -o -9 -r xsd.zip * -x *\.git\*.* *\objects\* *\plots\*.tex *\bingo*.tex *\old\* *\wavr_old\* tmp*.* t.* *.mp4 *.ppm *.xcf *.odp *.odt *.ttf *.mp3 *.wav *.synctex *.ctx *.zip *.pdf *.ps *.dvi *.aux *.eps *.exe *.prn *.obj *.tmp *.bak *.bat *.tds *.png *.jpg *.jpeg *.gif *.bmp *.log *.js *.css *.swf *.xdv *.dat *.tec *.otf *.*dx *.url *.out *.tar *.gz *.0 *.txt *.htm *.html *\*files\* *\mainx.* *\s\* *\trash\* trash\* *\save\* *\save2\* *\deprecated\* deprecated\* tmp\* ec\*.tex *.xlg *.ind *.ilg
 
 archiveap:
   #copy /v apengzhtA5\apengzhtA5.pdf  apengzhtA5\pdfs\AncientPath_engzhtA5_20180116x.pdf
