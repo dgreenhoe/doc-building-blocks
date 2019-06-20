@@ -1,0 +1,381 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%============================================================================
+\subsection{Case study: Operator with measurement noise}
+%============================================================================
+%20190606%\begin{figure}[h]
+%20190606%  \centering
+%20190606%  \begin{tabular}{|c|c|}
+%20190606%    \hline
+%20190606%      \includegraphics{graphics/sysT_xyvq.pdf}
+%20190606%    %&\includegraphics{graphics/sysT_xyup.pdf}
+%20190606%     &\includegraphics{graphics/sysT_xypw.pdf}
+%20190606%    %\\(A) $\Rxy(m)=\Rxq(m)$         &(B) $\Rpy(m)=\Rxy(m)+\Ruy(m)$     &(C) $\Rxy(m)=\Rpy(m)$
+%20190606%    %\\\xref{lem:opT_addnoise_v}&    \xref{lem:opT_addnoise_u}    &    \xref{lem:opT_addnoise_w}
+%20190606%    \\(A) $\Rxy(m)=\Rxq(m)$         &(B) $\Rxy(m)=\Rpy(m)$
+%20190606%    \\\xref{lem:opT_addnoise_v}&    \xref{lem:opT_addnoise_w}
+%20190606%    \\\hline
+%20190606%  \end{tabular}
+%20190606%  \caption{\label{fig:opT_addnoise}Additive noise with \prope{not necessarily linear} operator $\opT$}
+%20190606%\end{figure}
+%---------------------------------------
+\begin{minipage}{\tw-70mm}
+\begin{lemma}
+\label{lem:opT_addnoise_v}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated to the right,
+where $\opT$ is \prope{not necessarily linear}.
+\end{lemma}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/sysT_xyvq.pdf}}
+\\
+\lembox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx(n)$ is                & \prope{wide sense stationary} & and
+    \\(B).& $\rvx(n)$ and $\rvv(n)$ are & \prope{uncorrelated}          & and
+    \\(C).& $\rvv(n)$ is                & \prope{zero-mean}             &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rclD}
+      \Rxy(m)      &=& \Rxq(m)       & and
+    \\\Szxy(z)     &=& \Szxq(z)      & and
+    \\\Swxy(\omega)&=& \Swxq(\omega) &
+  \end{array}}
+  \quad
+  \begin{array}{M}
+    for all\\
+    (1)--(8)
+  \end{array}
+  }
+\\
+\begin{proof}
+\begin{align*}
+  \Rxy(m)
+    &\eqd \pE\brs{\rvx(m)\rvy^\ast(0)}
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \pE\brs{\rvx(m)(\rvq(0)+\rvv(0))^\ast}
+    && \text{by definition of $\opS$}
+   %&& \text{\xref{fig:opT_addnoise} (A)}
+  \\&= \pE\brs{\rvx(m)\rvq^\ast(0)+\rvp(m)\rvv^\ast(0)}
+    && \text{by \prope{distributive} property of $\fieldC$}
+  \\&= \pE\brs{\rvx(m)\rvq^\ast(0)} + \pE\brs{\rvx(m)\rvv^\ast(0)}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{prop:pE_linop}}
+  \\&= \pE\brs{\rvx(m)\rvq^\ast(0)} + \brs{\pE\rvx(m)}\brs{\pE\rvv^\ast(0)}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(B)}
+  \\&= \pE\brs{\rvx(m)\rvq^\ast(0)} + \pE\brs{\rvp(m)}\cancelto{0}{\pE\brs{\rvv^\ast(0)}}
+    && \text{by \prope{zero-mean} hypothesis}
+    && \text{(C)}
+  \\&= \Rxq(m)
+    && \text{by definition of $\Rxq$}
+    && \text{\xref{def:Rxym}}
+  %20190605%\\
+  %20190605%\Szxy(z)
+  %20190605%  &\eqd \opZ\Rxy(m)
+  %20190605%  && \text{by definition of $\Szxy$}
+  %20190605%  && \text{\xref{def:Szxy}}
+  %20190605%\\&= \opZ\Rxq(m)
+  %20190605%  && \text{by previous result}
+  %20190605%  && \text{(1)}
+  %20190605%\\&= \Szxq(z)
+  %20190605%  && \text{by definition of $\Szxq$}
+  %20190605%  && \text{\xref{def:Szxy}}
+  %20190605%\\
+  %20190605%\Swxy(\omega)
+  %20190605%  &\eqd \opDTFT\Rxy(m)
+  %20190605%  && \text{by definition of $\Swxy$}
+  %20190605%  && \text{\xref{def:Swxy}}
+  %20190605%\\&= \opDTFT\Rxq(m)
+  %20190605%  && \text{by previous result}
+  %20190605%  && \text{(1)}
+  %20190605%\\&= \Swxq(\omega)
+  %20190605%  && \text{by definition of $\Swxq$}
+  %20190605%  && \text{\xref{def:Swxy}}
+\end{align*}
+\begin{align*}
+    (2).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(0) \rvy(m)}
+      &&\eqd \pE\brp{\rvx^\ast(0) \brs{\rvq(m) + \rvv(m)}}
+      &&\eqd \pE\brs{\rvx^\ast(0) \rvq(m)} + \pE\brs{\rvx^\ast(0)}\cancelto{0}{\brs{\pE{\rvv(m))}}}
+      &&=    \Rxq(m)
+     \\
+    (3).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx(0)\rvy^\ast(m)}
+      &&\eqd \pE\brp{\rvx(0) \brs{\rvq(m) + \rvv(m)}^\ast}
+      &&\eqd \pE\brs{\rvx(0) \rvq^\ast(m)} + \pE\brs{\rvx^\ast(0)}\cancelto{0}{\brs{\pE{\rvv^\ast(m))}}}
+      &&=    \Rxq(m)
+     \\
+    (4).\quad\Rxy(m)
+      &\eqd \pE\brs{\rvx^\ast(m)\rvy(0)}
+      &&\eqd \pE\brp{\rvx^\ast(m) \brs{\rvq(0) + \rvv(0)}}
+      &&\eqd \pE\brs{\rvx^\ast(m) \rvq(0)} + \pE\brs{\rvx^\ast(m)}\cancelto{0}{\brs{\pE{\rvv(0))}}}
+      &&=    \Rxq(m)
+     \\
+    (5).\quad\Rxy(m)
+      &\eqd \pE\brs{\rvx(0)\rvy(m)}
+      &&\eqd \pE\brp{\rvx(0) \brs{\rvq(m) + \rvv(m)}}
+      &&\eqd \pE\brs{\rvx(0) \rvq(m)} + \pE\brs{\rvx(0)}\cancelto{0}{\brs{\pE{\rvv(m))}}}
+      &&=    \Rxq(m)
+     \\
+    (6).\quad\Rxy(m)
+      &\eqd \pE\brs{\rvx(m)\rvy(0)}
+      &&\eqd \pE\brp{\rvx(m) \brs{\rvq(0) + \rvv(0)}}
+      &&\eqd \pE\brs{\rvx(m) \rvq(0)} + \pE\brs{\rvx(m)}\cancelto{0}{\brs{\pE{\rvv(0))}}}
+      &&=    \Rxq(m)
+    \\
+    (7).\quad\Rxy(m)
+      &\eqd \pE\brs{\rvx^\ast(0)\rvy^\ast(m)}
+      &&\eqd \pE\brp{\rvx^\ast(0) \brs{\rvq(m) + \rvv(m)}^\ast}
+      &&\eqd \pE\brs{\rvx^\ast(0) \rvq^\ast(m)} + \pE\brs{\rvx^\ast(0)}\cancelto{0}{\brs{\pE{\rvv^\ast(m))}}}
+      &&=    \Rxq(m)
+    \\
+    (8).\quad\Rxy(m)
+      &\eqd \pE\brs{\rvx^\ast(m)\rvy^\ast(0)}
+      &&\eqd \pE\brp{\rvx^\ast(m) \brs{\rvq(0) + \rvv(0)}^\ast}
+      &&\eqd \pE\brs{\rvx^\ast(m) \rvq^\ast(0)} + \pE\brs{\rvx^\ast(m)}\cancelto{0}{\brs{\pE{\rvv^\ast(0))}}}
+      &&=    \Rxq(m)
+  \end{align*}
+\end{proof}
+
+%20190605%%---------------------------------------
+%20190605%\begin{lemma}
+%20190605%\label{lem:opT_addnoise_u}
+%20190605%%---------------------------------------
+%20190605%Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:opT_addnoise} (B).
+%20190605%\lembox{
+%20190605%  \brb{\begin{array}{FMMD}
+%20190605%      (A).& $\rvx(n)$               is  & (\prope{WSS})          & and
+%20190605%    \\(B).& $\rvu(n)$               is  & (\prope{zero-mean})    & and
+%20190605%    \\(C).& $\rvx(n)$ and $\rvu(n)$ are & \mc{2}{M}{(\prope{uncorrelated})}
+%20190605%  \end{array}}
+%20190605%  \implies
+%20190605%  \brb{\begin{array}{Frcl@{\hspace{2pt}}c@{\hspace{2pt}}lD}
+%20190605%      (1).& \Rpq(m)      &=& \Rxy(m)       &+& \Ruy(m)       & and
+%20190605%    \\(2).& \Szpq(z)     &=& \Szxy(z)      &+& \Szuy(z)      & and
+%20190605%    \\(3).& \Swpq(\omega)&=& \Swxy(\omega) &+& \Swuy(\omega) &
+%20190605%  \end{array}}
+%20190605%  }
+%20190605%\end{lemma}
+%20190605%\begin{proof}
+%20190605%\begin{align*}
+%20190605%  \Rxy(m)
+%20190605%    &\eqd \pE\brs{\rvx(m)\rvy^\ast(0)}
+%20190605%    && \text{by definition of $\Rxy$}
+%20190605%    && \text{\xref{def:Rxym}}
+%20190605%  \\&\eqd \pE\brp{\brs{\rvp(m)-\rvu(m)}\rvy^\ast(0)}
+%20190605%    && \text{by definition of $\opS$}
+%20190605%  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)-\rvu(m)\rvy^\ast(0)}
+%20190605%  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} - \pE\brs{\rvu(m)\rvy^\ast(0)}
+%20190605%    && \text{because $\pE$ is a \ope{linear operator}}
+%20190605%    && \text{\xref{prop:pE_linop}}
+%20190605%  \\&\eqd \Rpy(m) - \Ruy(m)
+%20190605%    && \text{by definition of $\Rxy$}
+%20190605%    && \text{\xref{def:Rxym}}
+%20190605%\end{align*}
+%20190605%\end{proof}
+
+%---------------------------------------
+\begin{minipage}{\tw-70mm}
+\begin{lemma}
+\label{lem:opT_addnoise_w}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated to the right,
+where $\opT$ is \prope{not necessarily linear}.
+\end{lemma}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/sysT_xypw.pdf}}
+\\
+\lembox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx(n)$               is  & \prope{WSS}          & and
+    \\(B).& $\rvu(n)$               is  & \prope{zero-mean}    & and
+    \\(C).& $\rvx(n)$ and $\rvu(n)$ are & \mc{2}{M}{\prope{uncorrelated}}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rclD}
+      \Rxy(m)      &=& \Rpy(m)       & and 
+    \\\Szxy(z)     &=& \Szpy(z)      & and
+    \\\Swxy(\omega)&=& \Swpy(\omega) &
+  \end{array}}
+  \quad
+  \begin{array}{M}
+    for all\\
+    (1)--(8)
+  \end{array}
+  }
+\\
+\begin{proof}
+\begin{align*}
+  \Rxy(m)
+    &\eqd \pE\brs{\rvx(m)\rvy^\ast(0)}
+    && \text{by definition of $\Rpy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \pE\brp{\brs{\rvp(m)+\rvu(m)}\rvy^\ast(0)}
+    && \text{by definition of $\opS$}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)+\rvu(m)\rvy^\ast(0)}
+    && \text{by \prope{distributive} property of $\fieldC$}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} + \pE\brs{\rvu(m)\rvy^\ast(0)}
+    && \text{because $\pE$ is a \ope{linear operator}}
+    && \text{\xref{prop:pE_linop}}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} + \pE\brs{\rvu(m)}\pE\brs{\rvy^\ast(0)}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(C)}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} + \pE\brs{\rvu(m)}\cancelto{0}{\pE\brs{\rvy^\ast(0)}}
+    && \text{by \prope{zero-mean} hypothesis}
+    && \text{(B)}
+  \\&\eqd \Rpy(m)
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+\end{align*}
+\begin{align*}
+    (2).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(0) \rvy(m)}
+      &&\eqd \pE\brp{\brs{\rvp(0)+\rvu(0)}^\ast\rvy(m)}
+      &&=    \pE\brs{\rvp^\ast(0)\rvy(m)} + \cancelto{0}{\pE\brs{\rvu^\ast(0)}}\pE\brs{\rvy(m)}
+      &&=    \Rpy(m)
+     \\
+    (3).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx(0)\rvy^\ast(m)}
+      &&\eqd \pE\brp{\brs{\rvp(0)+\rvu(0)}\rvy^\ast(m)}
+      &&=    \pE\brs{\rvp(0)\rvy^\ast(m)} + \cancelto{0}{\pE\brs{\rvu^\ast(0)}}\pE\brs{\rvy^\ast(m)}
+      &&=    \Rpy(m)
+     \\
+    (4).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(m)\rvy(0)}
+      &&\eqd \pE\brp{\brs{\rvp(m)+\rvu(m)}^\ast\rvy(0)}
+      &&=    \pE\brs{\rvp^\ast(m)\rvy(0)} + \cancelto{0}{\pE\brs{\rvu^\ast(m)}}\pE\brs{\rvy(0)}
+      &&=    \Rpy(m)
+     \\
+    (5).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx(0)\rvy(m)}
+      &&\eqd \pE\brp{\brs{\rvp(0)+\rvu(0)}\rvy(m)}
+      &&=    \pE\brs{\rvp(0)\rvy(m)} + \cancelto{0}{\pE\brs{\rvu(0)}}\pE\brs{\rvy(m)}
+      &&=    \Rpy(m)
+     \\
+    (6).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx(m)\rvy(0)}
+      &&\eqd \pE\brp{\brs{\rvp(m)+\rvu(m)}\rvy(0)}
+      &&=    \pE\brs{\rvp(m)\rvy(0)} + \cancelto{0}{\pE\brs{\rvu(m)}}\pE\brs{\rvy(0)}
+      &&=    \Rpy(m)
+    \\
+    (7).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(0)\rvy^\ast(m)}
+      &&\eqd \pE\brp{\brs{\rvp(0)+\rvu(0)}^\ast\rvy^\ast(m)}
+      &&=    \pE\brs{\rvp^\ast(0)\rvy^\ast(m)} + \cancelto{0}{\pE\brs{\rvu^\ast(0)}}\pE\brs{\rvy^\ast(m)}
+      &&=    \Rpy(m)
+    \\
+    (8).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(m)\rvy^\ast(0)}
+      &&\eqd \pE\brp{\brs{\rvp(m)+\rvu(m)}^\ast\rvy^\ast(0)}
+      &&=    \pE\brs{\rvp^\ast(m)\rvy^\ast(0)} + \cancelto{0}{\pE\brs{\rvu^\ast(m)}}\pE\brs{\rvy^\ast(0)}
+      &&=    \Rpy(m)
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{minipage}{\tw-70mm}
+\begin{proposition}[\thme{measurement additive noise cross-correlation}]
+\label{prop:opT_mnoise}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated to the right,
+where $\opT$ is \prope{not necessarily linear}.
+\end{proposition}
+\end{minipage}
+\hfill\tbox{\includegraphics{graphics/opT_mnoise.pdf}}
+\\
+\propbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx(n)$               is  & \prope{WSS}           & and
+    \\(B).& $\rvu(n)$               is  & \prope{zero-mean}     & and
+    \\(C).& $\rvv(n)$               is  & \prope{zero-mean}     & and
+    \\(D).& \mc{3}{M}{$\rvx(n)$, $\rvw(n)$, $\rvv(n)$ are \prope{uncorrelated}}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{r*{3}{@{\hspace{1pt}}c@{\hspace{1pt}}l}D}
+     \Rpq(m)      &=& \Rpy(m)       &=& \Rxq(m)        &=& \Rxy(m)        & and 
+   \\\Szpq(z)     &=& \Szpy(z)      &=& \Szxq(z)       &=& \Szxy(z)       & and 
+   \\\Swpq(\omega)&=& \Swpy(\omega) &=& \Swxq(\omega)  &=& \Swxy(\omega)  &
+  \end{array}}
+  \quad
+  \begin{array}{M}
+    for all\\
+    (1)--(8)
+  \end{array}
+  }
+\\
+\begin{proof}
+\begin{align*}
+  \Rpq(m)
+    &= \Rpy(m)
+    && \text{by \prefp{lem:opT_addnoise_v}}
+  \\
+  \Rpq(m)
+    &= \Rxq(m)
+    && \text{by \prefp{lem:opT_addnoise_w}}
+  \\
+  \Rxy(m)
+    &\eqd \pE\brs{\rvx(m)\rvy^\ast(0)}
+    && \text{by definition $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \pE\brp{\brs{\rvp(m)+\rvw(m)}\rvy^\ast(0)}
+    && \text{by definition $\opS$}
+   %&& \text{\xref{fig:opT_addnoise} (B)}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)+\rvw(m)\rvy^\ast(0)}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} + \pE\brs{\rvw(m)\rvy^\ast(0)}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{prop:pE_linop}}
+  \\&= \pE\brs{\rvp(m)\rvy^\ast(0)} + \cancelto{0}{\pE\brs{\rvw(m)\rvy^\ast(0)}}
+    && \text{by \prope{uncorrelated} hypothesis}
+    && \text{(D)}
+  \\&= \Rpy(m)
+    && \text{by definition of $\Rpy$}
+    && \text{\xref{def:Rxym}}
+\end{align*}
+\begin{align*}
+    (2).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(0) \rvy(m)}
+      &&\eqd \pE\brp{\brs{\rvp(0)+\rvw(0)}^\ast\rvy(m)}
+      &&=    \pE\brs{     \rvp^\ast(0)\rvy(m)} + \cancelto{0}{\brs{\pE\rvw^\ast(0)}} \brs{\pE\rvy(m)}
+      &&= \Rpy(m)
+     \\
+    (3).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx(0)\rvy^\ast(m)}
+      &&\eqd \pE\brp{\brs{\rvp(0)+\rvw(0)}     \rvy^\ast(m)}
+      &&=    \pE\brs{     \rvp(0)\rvy^\ast(m)} + \cancelto{0}{\brs{\pE\rvw(0)}} \brs{\pE\rvy^\ast(m)}
+      &&= \Rpy(m)
+     \\
+    (4).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(m)\rvy(0)}
+      &&\eqd \pE\brp{\brs{\rvp(m)+\rvw(m)}^\ast\rvy(0)}
+      &&=    \pE\brs{     \rvp^\ast(m)\rvy(0)} + \cancelto{0}{\brs{\pE\rvw^\ast(m)}} \brs{\pE\rvy(0)}
+      &&= \Rpy(m)
+     \\
+    (5).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx(0)\rvy(m)}
+      &&\eqd \pE\brp{\brs{\rvp(0)+\rvw(0)}     \rvy(m)}
+      &&=    \pE\brs{     \rvp(0)\rvy(m)} + \cancelto{0}{\brs{\pE\rvw(0)}} \brs{\pE\rvy(m)}
+      &&= \Rpy(m)
+     \\
+    (6).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx(m)\rvy(0)}
+      &&\eqd \pE\brp{\brs{\rvp(m)+\rvw(m)}\rvy(0)}
+      &&=    \pE\brs{     \rvp(m)\rvy(0)} + \cancelto{0}{\brs{\pE\rvw(m)}} \brs{\pE\rvy(0)}
+      &&= \Rpy(m)
+    \\
+    (7).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(0)\rvy^\ast(m)}
+      &&\eqd \pE\brp{\brs{\rvp(0)+\rvw(0)}^\ast\rvy^\ast(m)}
+      &&=    \pE\brs{     \rvp^\ast(0)\rvy^\ast(m)} + \cancelto{0}{\brs{\pE\rvw^\ast(0)}} \brs{\pE\rvy^\ast(m)}
+      &&= \Rpy(m)
+    \\
+    (8).\quad\Rxy(m)
+       &\eqd \pE\brs{\rvx^\ast(m)\rvy^\ast(0)}
+      &&\eqd \pE\brp{\brs{\rvp(m)+\rvw(m)}^\ast\rvy^\ast(0)}
+      &&=    \pE\brs{     \rvp^\ast(m)\rvy^\ast(0)} + \cancelto{0}{\brs{\pE\rvw^\ast(m)}} \brs{\pE\rvy^\ast(0)}
+      &&= \Rpy(m)
+  \end{align*}
+\end{proof}
