@@ -6,20 +6,26 @@
 \chapter{DSP Calculus}
 %=======================================
 
-\fbox{displacement}\qquad\fbox{velocity}\qquad\fbox{acceleration}
+%\fbox{displacement}\qquad\fbox{velocity}\qquad\fbox{acceleration}
+%
+%How are they related?
+%
+%
+%%---------------------------------------
+%% Definitions
+%%---------------------------------------
 
-How are they related?
 
-
-%---------------------------------------
-% Definitions
-%---------------------------------------
-\defbox{\begin{array}{rc>{\ds}l}
-  \fv(t) &\eqd& \ddt \fx(t)
-  \\
-  \fa(t) &\eqd& \ddt \fv(t)
-\end{array}}
+%\defbox{\begin{array}{rc>{\ds}l}
+%  \fv(t) &\eqd& \ddt \fx(t)
+%  \\
+%  \fa(t) &\eqd& \ddt \fv(t)
+%\end{array}}
  
+%=======================================
+\section{Fourier Transform calculus}
+%=======================================
+
 \thmbox{\begin{array}{rc>{\ds}l}
   \fx(t) &=& \int_{u=0}^t \fv(u) \du + \mcom{\fx(0)}{initial condition}
   \\
@@ -30,16 +36,18 @@ How are they related?
 \thme{Fundamental Theorem of Calculus}
 \end{proof}
 
-
-
-
-
 %---------------------------------------
-%\newpage\mbox{} 
+\begin{proposition}
 %---------------------------------------
-What is the Fourier Transform of the Differential Operator?
- 
-{\begin{align*}
+\mbox{}\\
+\propboxt{
+  The \ope{Fourier Transform} of the \ope{differential operator} is
+  \\\indentx$\ds
+    \opFT \brs{\ddt \fx(t)} = i\omega \FX(\omega)
+  $}
+\end{proposition}
+\begin{proof}
+\begin{align*}
   \boxed{\opFT \brs{\ddt \fx(t)}} 
     &\eqd \int_{t=-\infty}^{t=+\infty} \mcom{\brs{\ddt \fx(t)}}{$\dv$} \mcom{e^{-i\omega t}}{$u$} \dt
   \\&= \brlr{\mcom{e^{-i\omega t}}{$u$} \mcom{\fx(t)}{$v$}}_{t=-\infty}^{t=+\infty}
@@ -49,15 +57,24 @@ What is the Fourier Transform of the Differential Operator?
       -(-i\omega)\mcom{\int_{t=-\infty}^{t=+\infty} \fx(t) e^{-i\omega t} \dt}{\ope{Fourier Transform} of $\fx(t)$}
     && \text{assuming $\fx(t)$ started at $0$}
   \\&= \boxed{i\omega X(\omega)}
-\end{align*}}
-
+\end{align*}
+\end{proof}
 
 %---------------------------------------
 %\newpage\mbox{} 
 %---------------------------------------
-What is the Fourier Transform of the Integral Operator?
- 
-{\begin{align*}
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\mbox{}\\
+\propboxt{
+  The \ope{Fourier Transform} of the \ope{integration operator} is
+  \\\indentx$\ds
+    \opFT \int_{u=-\infty}^{u=t} \fx(u) \du = \frac{1}{i\omega} \FX(\omega)
+  $}
+\end{proposition}
+\begin{proof}
+\begin{align*}
   \boxed{\opFT \int_{u=-\infty}^{u=t} \fx(u) \du}
     &\eqd \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=t} \fx(u) \du} e^{-i\omega t} \dt
   \\&= \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fx(u) \fh(t-u) \du} e^{-i\omega t} \dt
@@ -71,12 +88,16 @@ What is the Fourier Transform of the Integral Operator?
   \\&= \brs{\int_{v=0}^{v=+\infty} e^{-i\omega v} \dv} X(\omega)
   \\&= \brlr{\frac{1}{-i\omega}e^{-i\omega v}}_{v=0}^{v=+\infty} X(\omega)
      \quad=\quad \boxed{\frac{1}{i\omega} X(\omega)}
-\end{align*}}
-%
+\end{align*}
 
-%---------------------------------------
-%\newpage\mbox{} 
-%---------------------------------------
+%=======================================
+\section{Digital differentiation methods}
+%=======================================
+%=======================================
+%\subsection{Method 1: Difference}
+%=======================================
+
+
 Digital Differentiation Method \#1: \ope{Difference}\footnote{\citerpgc{williams1986}{69}{9780132018562}{Difference}}
  
 \begin{align*}
@@ -85,20 +106,24 @@ Digital Differentiation Method \#1: \ope{Difference}\footnote{\citerpgc{williams
   \\\\
   \opZ\brb{\fy[n]} &= \opZ\brb{\fx[n] - \fx[n-1]}
   \\
-  Y(z) &= X(z) + z^{-1}X(z)
+  \ZY(z) &= \ZX(z) + z^{-1}\ZX(z)
   \\\\
-  \frac{Y(z)}{X(z)} &= 1-z^{-1} \quad=\quad \boxed{\frac{z-1}{z}}
+  \frac{\ZY(z)}{\ZX(z)} &= 1-z^{-1} \quad=\quad \boxed{\frac{z-1}{z}}
   \qquad\brb{\begin{array}{MM}
     How many zeros? & Where?\\
     How many poles? & Where?
   \end{array}}
 \end{align*}
 
-
 %---------------------------------------
 %\newpage\mbox{} 
 %---------------------------------------
  
+\begin{figure}[h]
+  \centering
+  \includegraphics{graphics/diff.pdf}
+  \caption{Digital differentiation methods\label{fig:differentiation}}
+\end{figure}
 Is digital differentiation equivalent to continuous differentiation?\footnote{\citerpgc{williams1986}{70}{9780132018562}{Figure 2.14(a)}}
  
 \begin{align*}
@@ -118,7 +143,6 @@ Is digital differentiation equivalent to continuous differentiation?\footnote{\c
 %---------------------------------------
 %\newpage\mbox{} 
 %---------------------------------------
-\includegraphics{graphics/diff.pdf}
 
 
 %---------------------------------------
@@ -145,7 +169,11 @@ Digital Differentiation Method \#2: \ope{Central Difference}\footnote{\citerpgc{
 %---------------------------------------
 %\newpage\mbox{} 
 %---------------------------------------
- 
+\begin{figure}
+  \centering 
+  \includegraphics{graphics/cendiff.pdf}
+  \caption{Central difference}
+\end{figure}
 Central Difference = Continuous Differentiation?\footnote{\citerpgc{williams1986}{70}{9780132018562}{Figure 2.14(b)}}
  
 \begin{align*}
@@ -169,16 +197,9 @@ Central Difference = Continuous Differentiation?\footnote{\citerpgc{williams1986
 \end{align*}
 
 
-%---------------------------------------
-%\newpage\mbox{} 
-%---------------------------------------
-\includegraphics{graphics/cendiff.pdf}
-
-
-
-%---------------------------------------
-%\newpage\mbox{} 
-%---------------------------------------
+%=======================================
+\section{Digital integration
+%=======================================
 Digital Integration Method \#1: \opd{Summation}
  
 {\begin{align*}
