@@ -15,7 +15,7 @@
 # Commands
 #--------------------------------------
 all:
-  cd 2019x
+  cd 2019xcordef
     make
   cd ..\abcstat
     make
