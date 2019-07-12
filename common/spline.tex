@@ -1296,7 +1296,7 @@ Let $\support\ff$ be the \structe{support} of a function $\ff\in\clFrr$.
 \section{Projection properties}
 %=======================================
 %=======================================
-\subsection{Projection onto B-splines}
+%\subsection{Projection onto B-splines}
 %=======================================
 In the case where $\seqkZ{\fN_n(x-k)}$ is to be used as a basis in some subspace of $\spLLR$,
 one may want to \ope{project} a function $\ff(x)$ onto a basis function $\fN_n(x-k)$.
@@ -1401,7 +1401,7 @@ and $\ff^{(n)}$ the \fncte{$n$th derivative} of $\ff(x)$.
 \end{figure}
 
 %=======================================
-\subsection{Projection of B-splines onto complex exponentials}
+\section{Fourier analysis}
 %=======================================
 Simply put, no matter what new and fancy basis sequences are discovered,
 the \ope{Fourier transform} never goes out of style. 
@@ -1432,31 +1432,54 @@ Such a hunch would be confirmed because it is useful for proving that
 \label{lem:FTNn}
 %---------------------------------------
 Let $\opFT$ be the \hie{Fourier Transform} operator \xref{def:ft}.
-\thmbox{%
+\lembox{%
   \opFT\fN_n(\omega) =   \fscale\brp{\frac{\ds 1-e^{-i\omega}}{\ds i\omega}}^{n+1}
                      =   \fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\frac{\sin\brp{\sfrac{\omega}{2}}}{\sfrac{\omega}{2}}}^{n+1}
                      \eqd\fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\sinc{\frac{\omega}{2}}                              }^{n+1}
   }
 \end{lemma}
 \begin{proof}
-\begin{align*}
-  \opFT\fN_n(\omega)       
-    &= \fscale \int_\R \fN_n(x) e^{-i\omega x}\dx
-    && \text{by definition of $\opFT$}
-    && \text{\xref{def:opFT}}
-  \\&= \fscale \int_{\intco{0}{1}^{n+1}} e^{-i\omega(x_1+x_2+\cdots+x_{n+1})}\dx_1\,\dx_2\,\cdots,\,\dx_{n+1}
-    && \text{by \prefp{thm:int_fNn}}
-  \\&= \fscale \prod_{k=1}^{n+1} \brp{\int_\intco{0}{1} e^{-i\omega x_k}\dx_k}
-    && \text{because $e^{x+y}=e^x e^y$}
-  \\&= \fscale \brp{\int_0^1 e^{-i\omega x}\dx}^{n+1}
-  \\&= \fscale \brp{\left.\frac{\ds e^{-i\omega x}}{\ds-i\omega}\right|_0^1}^{n+1}
-  \\&= \fscale \brp{\frac{\ds 1-e^{-i\omega}}{\ds i\omega}}^{n+1}
-  \\&= \fscale \brs{e^{-i\frac{\omega}{2}} \brp{\frac{e^{i\frac{\omega}{2}} - e^{-i\frac{\omega}{2}}}{i\omega}}}^{n+1}
-  \\&= \fscale \brs{e^{-i\frac{\omega}{2}} \brp{\frac{2i\sin\brp{\frac{\omega}{2}}}{\frac{2i\omega}{2}}}}^{n+1}
-    && \text{by \thme{Euler formulas}}
-    && \text{\xref{cor:trig_ceesee}}
-  \\&= \fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\frac{\sin\brp{\sfrac{\omega}{2}}}{\sfrac{\omega}{2}}}^{n+1}
-\end{align*}
+\begin{enumerate}
+  \item Proof using \prefp{thm:int_fNn}:
+    \begin{align*}
+      \opFT\fN_n(\omega)       
+        &= \fscale \int_\R \fN_n(x) e^{-i\omega x}\dx
+        && \text{by definition of $\opFT$}
+        && \text{\xref{def:opFT}}
+      \\&= \fscale \int_{\intco{0}{1}^{n+1}} e^{-i\omega(x_1+x_2+\cdots+x_{n+1})}\dx_1\,\dx_2\,\cdots,\,\dx_{n+1}
+        && \text{by \pref{thm:int_fNn}}
+      \\&= \fscale \prod_{k=1}^{n+1} \brp{\int_\intco{0}{1} e^{-i\omega x_k}\dx_k}
+        && \text{because $e^{x+y}=e^x e^y$}
+      \\&= \fscale \brp{\int_0^1 e^{-i\omega x}\dx}^{n+1}
+         = \fscale \brp{\left.\frac{\ds e^{-i\omega x}}{\ds-i\omega}\right|_0^1}^{n+1}
+      \\&= \fscale \brp{\frac{\ds 1-e^{-i\omega}}{\ds i\omega}}^{n+1}
+         = \fscale \brs{e^{-i\frac{\omega}{2}} \brp{\frac{e^{i\frac{\omega}{2}} - e^{-i\frac{\omega}{2}}}{i\omega}}}^{n+1}
+      \\&= \fscale \brs{e^{-i\frac{\omega}{2}} \brp{\frac{2i\sin\brp{\frac{\omega}{2}}}{\frac{2i\omega}{2}}}}^{n+1}
+        && \text{by \thme{Euler formulas}}
+        && \text{\xref{cor:trig_ceesee}}
+      \\&= \fscale e^{-i\frac{(n+1)\omega}{2}} \brp{\frac{\sin\brp{\sfrac{\omega}{2}}}{\sfrac{\omega}{2}}}^{n+1}
+    \end{align*}
+
+  \item Proof using \exme{rectangular pulse} example \xref{ex:ft_pulse} and \thme{Convolution Theorem} \xref{thm:conv}:
+    \begin{align*}
+      \opFT\fN_n(\omega)
+        &= \brs{\sqrt{2\pi}}^n \brs{\opFT\fN_0}^{n+1}
+        && \text{by \thme{Convolution Theorem}}
+        && \text{\xref{thm:conv}}
+      \\&= \frac{1}{\sqrt{2\pi}}\brs{\sqrt{2\pi}
+         \frac{c(b-a)}{\sqrt{2\pi}}
+        e^{-i\brp{\frac{a+b}{2}\omega}}
+        \brp{\frac{\sin\brp{\frac{b-a}{2}\omega}}{\brp{\frac{b-a}{2}\omega}}}
+        }^{n+1}
+        && \text{\begin{tabular}{l}by \exme{rectangular pulse} example\\with $a=0$, $b=c=1$\end{tabular}}
+        && \text{\xref{ex:ft_pulse}}
+      \\&= \frac{1}{\sqrt{2\pi}}\brs{\sqrt{2\pi}
+       \frac{1}{\sqrt{2\pi}}
+        e^{-i\brp{\frac{\omega}{2}}}
+        \brp{\frac{\sin\brp{\frac{\omega}{2}}}{\brp{\sfrac{\omega}{2}}}}}^{n+1}
+      \\&= \frac{1}{\sqrt{2\pi}}e^{-i\brp{\frac{(n+1)\omega}{2}}}
+        \brp{\frac{\sin\brp{\frac{\omega}{2}}}{\brp{\sfrac{\omega}{2}}}}^{n+1}
+    \end{align*}
 %
 %  \item Proof for $\Fh(\omega) = \sqrt{2}\left( \frac{1 + e^{-i\omega/2}}{2}\right)^n$:
 %    \begin{align*}
@@ -1473,6 +1496,7 @@ Let $\opFT$ be the \hie{Fourier Transform} operator \xref{def:ft}.
 %      \\&= \sqrt{2} 
 %           \left(\frac{1+e^{-i\omega}}{2}\right)^n
 %    \end{align*}
+\end{enumerate}
 \end{proof}
 
 %-------------------------------------
