@@ -19,8 +19,6 @@ all:
     make
   cd ..\abcstat
     make
-  cd ..\abcdsp
-    make
   cd ..\abcssp
     make
   #cd ..\dcsd
@@ -65,6 +63,8 @@ all:
     make
   cd ..\2014plat
    make
+  cd ..\abcdsp
+    make
  #cd ..\lmc
  #  make
  #cd ..\elife
