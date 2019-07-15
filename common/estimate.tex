@@ -2133,26 +2133,34 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
    }
 \end{figure}
 
-
-
-
-%--------------------------------------
-\begin{example}[Adaptive filter]
-%--------------------------------------
 In many adaptive filter and equalization applications,
 the autocorrelation matrix $U$ is simply the $m$-element
-random data vector $\vx(k)$ at time $k$ such that
-\[
+random data vector $\vx(k)$ at time $k$, as in the \thme{Wiener-Hopf equations} (next).
+%--------------------------------------
+\begin{corollary}[\thmd{Wiener-Hopf equations}]
+\footnote{
+  \citerppgc{ifeachor1993}{547}{549}{020154413X}{\textsection ``9.3 Basic Wiener filter theory"}, 
+  \citerppgc{ifeachor2002}{651}{654}{0201596199}{\textsection ``10.3 Basic Wiener filter theory"}   % TODO: check 654 
+  }
+%--------------------------------------
+\corbox{
+  \brb{
    U \eqd \vx(k) \eqd
-   \left[\begin{array}{l}
+   \brs{\begin{array}{l}
       x(k) \\
       x(k-1) \\
       x(k-2) \\
       \vdots \\
       x(k-m+1)
-   \end{array}\right].
-\]
-
+   \end{array}}}
+  \implies
+  \brb{\begin{array}{rcl}
+    \estMS                          &=& R^{-1}W  \\
+    \fCost(\estMS)                  &=& W^T R^{-1} R R^{-1}W - 2W^T R^{-1}W + \E{\vy^T\vy} \\
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
 This is a special case of the more general case discussed
 in \prefpp{thm:est_mms}.
 Here, the dimension of $U$ is $m\times1$ (n=1).
@@ -2162,23 +2170,17 @@ In this special case, we have the following results
 \xref{fig:est_adapt}:
 
 \begin{align*}
-   \hat{y}(\vp)   &\eqd& \vx^T \vp    \\
-   e(\vp)    &\eqd& \hat{y}-y \\
-   \fCost(\vp) &\eqd& \E\norm{\ve}^2 \eqd \Eb{e^2} \\
-   \estMS      &\eqd& \arg\min_\vp \fCost(\vp)  \\
-   R           &\eqd& \Eb{\vx\vx^T}   \\
-   W           &\eqd& \Eb{ \vx y }.
+   \hat{y}(\vp)   &\eqd \vx^T \vp    \\
+   e(\vp)    &\eqd \hat{y}-y \\
+   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \Eb{e^2} \\
+   \estMS      &\eqd \arg\min_\vp \fCost(\vp)  \\
+   R           &\eqd \Eb{\vx\vx^T}   \\
+   W           &\eqd \Eb{ \vx y }    \\
+    \fCost(\vp)                     &= \vp^T R \vp -2W^T\vp  + \Eb{\vy^T\vy} \\
+    \grad_\vp \fCost(\vp)           &= 2R\vp - 2W  \\
+    \fCost(\estMS)|_{R\mbox{ real}} &=    \E{\vy^T\vy} - W^T R^{-1}W.
 \end{align*}
-
-\exbox{\begin{array}{rcl}
-   \estMS                          &=& R^{-1}W  \\
-   \fCost(\vp)                     &=& \vp^T R \vp -2W^T\vp  + \Eb{\vy^T\vy} \\
-   \grad_\vp \fCost(\vp)           &=& 2R\vp - 2W  \\
-   \fCost(\estMS)                  &=& W^T R^{-1} R R^{-1}W - 2W^T R^{-1}W + \E{\vy^T\vy} \\
-   \fCost(\estMS)|_{R\mbox{ real}} &=&    \E{\vy^T\vy} - W^T R^{-1}W.
-\end{array}}
-\end{example}
-
+\end{proof}
 
 %======================================
 \subsubsection{Least squares}
