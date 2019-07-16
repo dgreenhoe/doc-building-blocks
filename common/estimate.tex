@@ -282,14 +282,37 @@ defbox{
 \begin{proof}
 \begin{align*}
   \pE\meanest
-    &\eqd \pE \frac{1}{\xN}\sum_{n=1}^{n=\xN} \rvx_n
+    &\eqd \pE \sum_{n\in\Z} \lambda_n\rvx_n
     && \text{by definition of \fncte{average}}
     && \text{\xref{def:average}}
-  \\&=  \frac{1}{\xN}\sum_{n=1}^{n=\xN} \pE\rvx_n
+  \\&=  \sum_{n\in\Z} \lambda_n\pE\rvx_n
     && \text{by \prope{linearity} of $\pE$}
     && \text{\xref{thm:pE_linop}}
-  \\&=  \frac{1}{\xN}\xN\mean
+  \\&=  \mean\sum_{n\in\Z}\lambda_n
     && \text{by \prope{stationarity} of $\rvx_n$}
+  \\&=  \mean
+    && \text{by $\sum\lambda_n=1$ hypothesis}
+  \\
+  \var(\meanest) 
+    &\eqd \pE\brp{\meanest-\pE\meanest}^2
+    && \text{by definition of \fncte{variance}}
+  \\&= \pE\brp{\meanest-\mean}^2
+    && \text{by previous result}
+  \\&= \pE\brp{\frac{1}{\xN}\sum_{n=1}^{\xN}\rvx_n -\mean}^2
+    && \text{by definition of $\meanest$}
+  \\&= \pE\brs{\frac{1}{\xN}\sum_{n=1}^{\xN}\rvx_n -\frac{1}{\xN}\sum_{n=1}^{\xN}\mean}^2
+  \\&= \pE\brs{\frac{1}{\xN}\sum_{n=1}^{\xN}(\rvx_n-\mean)}^2
+  \\&= \frac{1}{\xN^2}\pE\brs{\sum_{n=1}^{\xN}(\rvx_n-\mean)\sum_{m=1}^{\xN}(\rvx_m-\mean)}
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\brp{\pE\brs{(\rvx_n-\mean)(\rvx_m-\mean)}                                     }
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\brp{\pE\brs{\rvx_n\rvx_m}-\mean\pE\brs{\rvx_n}-\mean\pE\brs{\rvx_m}+\mean^2   }
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\brp{\pE\brs{\rvx_n\rvx_m}-\mean^2-\mean^2+\mean^2                             }
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\brp{\pE\brs{\rvx_n\rvx_m}-\mean^2                                             }
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\brp{\pE\brs{\rvx_n\rvx_m}}
+     + \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\brp{\mean^2}
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\brp{\pE\brs{\rvx_n^2}}
+     + \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\brp{\mean^2}
+  \\&\vdots
+  \\&= \frac{\sigma^2}{\xN}
   \\
   \mse(\meanest) 
     &= \pE\brp{\meanest-\pE\meanest}^2
