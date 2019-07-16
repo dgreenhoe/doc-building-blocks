@@ -207,8 +207,109 @@ Let $\fs(t;\theta)$ be a function with unknown parameter $\theta$.
 \end{align*}
 \end{proof}
 
+%======================================
+\section{Parameter estimation}
+%======================================
+%---------------------------------------
+\begin{definition}
+\label{def:mse}
+%---------------------------------------
+defbox{
+  \mse(\est) \eqd \pE\brs{\brp{\hat{\theta}-\theta}^2}
+  }
+\end{definition}
 
+%---------------------------------------
+\begin{theorem}
+\label{thm:mse}
+\footnote{
+  \citerpgc{kay1988}{45}{8131733564}{\textsection\scshape``3.3 Estimation Theory"}
+  }
+%---------------------------------------
+\thmbox{
+  \mse(\hat{\theta}) = 
+      \mcom{\pE\brs{\brp{\hat{\theta}-\pE\hat{\theta}}^2}}{variance of $\hat{\theta}$}
+    + \mcom{\brs{\pE\hat{\theta} - \theta}^2}{bias of $\hat{\theta}$ squared}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \mse(\hat{\theta}) 
+    &\eqd \pE\brs{\brp{\hat{\theta}-\theta}^2}
+    && \text{by definition of $\mse$}
+    && \text{\xref{def:mse}}
+  \\&= \pE\brs{\brp{\hat{\theta}-\pE\hat{\theta}+\pE\hat{\theta}-\theta}^2}
+  \\&= \pE\brs{
+         \brp{\hat{\theta}-\pE\hat{\theta}}^2
+        +\mcom{\brp{\pE\hat{\theta}-\theta}^2}{constant}
+        -2\brp{\hat{\theta}-\pE\hat{\theta}}\brp{\pE\hat{\theta}-\theta}
+       }
+  \\&= \pE\brp{\hat{\theta}-\pE\hat{\theta}}^2
+        +\brp{\pE\hat{\theta}-\theta}^2
+        -2\pE\brs{
+         \hat{\theta}\pE\hat{\theta}
+        -\hat{\theta}\theta
+        -\pE\hat{\theta}\hat{\theta}
+        +\pE\hat{\theta}\theta
+        }
+  \\&= \pE\brp{\hat{\theta}-\pE\hat{\theta}}^2
+        +\brp{\pE\hat{\theta}-\theta}^2
+        -2\brs{
+         \pE\hat{\theta}\pE\hat{\theta}
+        -\pE\hat{\theta}\pE\theta
+        -\pE\hat{\theta}\pE\hat{\theta}
+        +\pE\hat{\theta}\pE\theta
+        }
+  \\&= \pE\brp{\hat{\theta}-\pE\hat{\theta}}^2
+        +\brp{\pE\hat{\theta}-\theta}^2
+        -0
+\end{align*}
+\end{proof}
 
+%---------------------------------------
+\begin{theorem}
+\label{thm:mse_mean}
+\footnote{
+  \citerpgc{kay1988}{45}{8131733564}{\textsection\scshape``3.3 Estimation Theory"}
+  }
+%---------------------------------------
+\thmbox{\begin{array}{rclD}
+  \pE\hat{\mean} &=& \mean                   & (\prope{unbiased})
+  \\
+  \mse(\hat{\mean}) &=& \frac{\sigma^2}{\xN} & (\prope{consistent})
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \pE\hat{mean}
+    &\eqd \pE \frac{1}{\xN}\sum_{n=1}^{n=\xN} \rvx_n
+    && \text{by definition of \fncte{arithmetic mean}}
+  \\&=  \frac{1}{\xN}\sum_{n=1}^{n=\xN} \pE\rvx_n
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
+  \\&=  \frac{1}{\xN}\xN\mean
+    && \text{by \prope{stationarity} of $\rvx_n$}
+  \\
+  \mse(\hat{\mean}) 
+    &= \pE\brp{\hat{\mean}-\pE\hat{\mean}}^2
+        +\brp{\pE\hat{\mean}-\mean}^2
+    && \text{by \prefp{thm:mse}}
+  \\&= \pE\brp{\hat{\mean}-\mean}^2
+        +\cancelto{0}{\brp{\mean-\mean}^2}
+    && \text{by previous result}
+  \\&= \pE\brs{\hat{\mean}^2+\mean^2 -2\hat{\mean}\mean}
+  \\&= \pE\brs{\hat{\mean}^2}+\mean^2 -2\mean\pE\hat{\mean}
+  \\&= \pE\brs{\hat{\mean}^2} - \mean^2
+  \\&= \pE\brs{\frac{1}{\xN}\sum_{n=1}^{\xN}\rvx_n \frac{1}{\xN}\sum_{m=1}^{\xN}\rvx_m } - \mean^2
+  \\&= \frac{1}{\xN^2}\pE\brs{\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\rvx_n \rvx_m } - \mean^2
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\pE\brs{\rvx_n \rvx_m } - \mean^2
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\pE\brs{\rvx_n^2} - \mean^2
+  \\&= \frac{1}{\xN^2}\sum_{n=1}^{\xN}\pE\brs{\rvx_n^2} - \frac{1}{\xN}\sum_{n=1}^{\xN}\mean^2
+  \\
+  \\
+  \\&= \frac{\sigma^2}{\xN} & (\prope{consistent})
+\end{align*}
+\end{proof}
 
 %======================================
 \section{System model}
