@@ -19,6 +19,8 @@ all:
     make
   cd ..\abcstat
     make
+  cd ..\probability
+    make
   cd ..\abcssp
     make
   #cd ..\dcsd
