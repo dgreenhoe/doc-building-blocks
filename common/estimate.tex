@@ -233,7 +233,7 @@ much information as having the entire $\rvy(t)$ waveform
 (an uncountably infinite number of values)
 with respect to the following cases:
 \begin{enume}
-   \item the conditional probability of $\rvx(t;u)$ given $\rvy(t)$
+   \item the conditional probability of $\rvx(t;\estT)$ given $\rvy(t)$
    \item the \fncte{MAP estimate} of the information sequence
    \item the \fncte{ML estimate} of the information sequence.
 \end{enume}
@@ -258,12 +258,14 @@ in this chapter).
 \index{ML}  \index{maximum likelihood estimation}
 %---------------------------------------
 Let $\opSys$ be an additive White Gaussian noise system and
-$\Psi$ an orthonormal basis for $\rvx(t;u)$ such that
+$\Psi$ an orthonormal basis for $\rvx(t;\estT)$ such that
 \\\indentx$\begin{array}{rcl}
      \rvy(t)&=&    \rvx(t;\estT) + \rvv(t)
    \\\Psi  &=&    \set{\psi_n}{n=1,2,\ldots,\xN}
-   \\\setY &\eqd& \set{\fdoty_n}{n=1,2,\ldots,\xN}
 \end{array}$
+\\
+Then $\setY\eqd\set{\fdoty_n}{n=1,2,\ldots,\xN}$ is a \valb{sufficient statistic} for $\fy(t)$ 
+such that\ldots
 \thmbox{
   \brb{\begin{array}{M}
      $\rvv(t)$ is \prope{AWGN}
@@ -550,11 +552,11 @@ Because the noise is also white,
    \cov{\fdotv_m}{\fdotv_n}
       &= \cov{\inprod{\fn(t)}{\psi_m(t)}}{\inprod{\fn(t)}{\psi_n(t)}}
     \\&= \pE\brs{\inprod{\fn(t)}{\psi_m(t)} \inprod{\fn(t)}{\psi_n(t)}}
-    \\&= \pE\brs{\inprod{\fn(t)}{\psi_m(t)} \inprod{n(u)}{\psi_n(u)}}
-    \\&= \pE\brs{ \inprod{n(u)\inprod{\fn(t)}{\psi_m(t)}}{\psi_n(u)}}
-    \\&= \pE\brs{ \inprod{\inprod{n(u)\fn(t)}{\psi_m(t)}}{\psi_n(u)}}
-    \\&= \inprod{\inprod{\pE\brs{ n(u)\fn(t)}}{\psi_m(t)}}{\psi_n(u)}
-    \\&= \inprod{\inprod{\sigma^2 \delta(t-u)}{\psi_m(t)}}{\psi_n(u)}
+    \\&= \pE\brs{\inprod{\fn(t)}{\psi_m(t)} \inprod{n(\estT)}{\psi_n(\estT)}}
+    \\&= \pE\brs{ \inprod{n(\estT)\inprod{\fn(t)}{\psi_m(t)}}{\psi_n(\estT)}}
+    \\&= \pE\brs{ \inprod{\inprod{n(\estT)\fn(t)}{\psi_m(t)}}{\psi_n(\estT)}}
+    \\&= \inprod{\inprod{\pE\brs{ n(\estT)\fn(t)}}{\psi_m(t)}}{\psi_n(\estT)}
+    \\&= \inprod{\inprod{\sigma^2 \delta(t-\estT)}{\psi_m(t)}}{\psi_n(\estT)}
     \\&= \sigma^2 \inprod{\psi_n(t)}{\psi_m(t)}
     \\&= \left\{
           \begin{tabular}{ll}
@@ -792,7 +794,7 @@ Then
 \begin{align*}
    \estML[a]
      &= \argmax_a
-         \left[ 2\inprod{\rvy(t)}{\rvx(t;u)}-\norm{\rvx(t;\phi)}^2 \right]
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\phi)}^2 \right]
      && \text{by \prefpp{thm:estML_general}}
    \\&= \argmax_a
          \left[ 2\inprod{\rvy(t)}{a\lambda(t)}-\norm{a\lambda(t)}^2 \right]
@@ -992,7 +994,7 @@ Then the optimal ML-estimate of parameter $ \phi $ is
 \begin{align*}
    \estML[\phi]
      &= \argmax_\phi
-         \left[ 2\inprod{\rvy(t)}{\rvx(t;u)}-\norm{\rvx(t;\phi)}^2 \right]
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\phi)}^2 \right]
      && \text{by \prefpp{thm:estML_general}}
    \\&= \argmax_\phi
          \left[ 2\inprod{\rvy(t)}{\rvx(t;\phi)} \right]
@@ -1040,8 +1042,8 @@ Then the optimal ML-estimate of parameter $ \phi $ is
 Let $\opSys$ be an additive white gaussian noise system
 such that
 $\begin{array}[t]{rcl}
-   \rvy(t)     &=& [\opCawgn s](t) = \rvx(t;u) + \fn(t) \\
-   \rvx(t;u)   &=& \fg( u )
+   \rvy(t)     &=& [\opCawgn s](t) = \rvx(t;\estT) + \fn(t) \\
+   \rvx(t;\estT)   &=& \fg(\estT)
 \end{array}$\\
 where $\fg$ is one-to-one and onto (invertible).
 \\
@@ -1049,49 +1051,49 @@ where $\fg$ is one-to-one and onto (invertible).
   Then the optimal ML-estimate of parameter $ u $ is
    & \estML &=& \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right).
   \\
-  If an \fncte{ML estimate} $\estML[u]$ is unbiased ($\pE \estML[u] = \theta$) then
-    & \var\estML[u] &\ge&
+  If an \fncte{ML estimate} $\estML$ is unbiased ($\pE \estML = \theta$) then
+    & \var\estML &\ge&
       \frac{\sigma^2}{\xN}
       \frac{1}{\left[ \pderiv{\fg(\theta)}{\theta} \right]^2}.
   \\
-  If $\fg(\theta) = \theta$ then $\estML[u]$ is an {\bf \prope{efficient} estimate} such that
-   & \var\estML[u] &=& \frac{\sigma^2}{\xN}.
+  If $\fg(\theta) = \theta$ then $\estML$ is an \propb{efficient} estimate such that
+   & \var\estML &=& \frac{\sigma^2}{\xN}.
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
-   \estML[u]
-     &= \argmin_u
-         \left[ \sum_{n=1}^\xN [\fdoty_n-\fg( u )]^2 \right]
-   \\&= \arg_u\left[
-            \pderiv{}{ u }\sum_{n=1}^\xN [\fdoty_n-\fg( u )]^2 = 0
+   \estML
+     &= \argmin_{\estT}
+         \left[ \sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]^2 \right]
+   \\&= \arg_{\estT}\left[
+            \pderiv{}{\estT}\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]^2 = 0
          \right]
-   \\&= \arg_u\left[
-             2\sum_{n=1}^\xN [\fdoty_n-\fg( u )]\pderiv{}{ u }\fg( u ) = 0
+   \\&= \arg_{\estT}\left[
+             2\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]\pderiv{}{\estT}\fg(\estT) = 0
          \right]
-   \\&= \arg_u\left[
-             2\sum_{n=1}^\xN [\fdoty_n-\fg( u )] = 0
+   \\&= \arg_{\estT}\left[
+             2\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)] = 0
          \right]
-   \\&= \arg_u\left[
-             \sum_{n=1}^\xN \fdoty_n = \xN \fg( u )
+   \\&= \arg_{\estT}\left[
+             \sum_{n=1}^\xN \fdoty_n = \xN \fg(\estT)
          \right]
-   \\&= \arg_u\left[
-             \fg( u ) = \frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n
+   \\&= \arg_{\estT}\left[
+             \fg(\estT) = \frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n
          \right]
-   \\&= \arg_u\left[
+   \\&= \arg_{\estT}\left[
               u  = \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right)
          \right]
    \\&= \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right)
 \end{align*}
 
 
-If $\estML[u]$ is unbiased ($\pE\estML[u]= u $), we can use
-the Cram\'er-Rao bound to find a lower bound on the variance:
+If $\estML$ is unbiased ($\pE\estML=\theta$), we can use
+the \vale{Cram\'er-Rao bound} to find a lower bound on the variance:
 
 \begin{align*}
-   \var\estML[u]
-     &\eqd \pE\brs{\estML[u]-\pE\estML[u]}^2
-   \\&= \pE\brs{\estML[u]-\theta}^2
+   \var\estML
+     &\eqd \pE\brs{\estML-\pE\estML}^2
+   \\&= \pE\brs{\estML-\theta}^2
    \\&\ge \frac{-1}{\pE\left(
               \pderiv{^2}{\theta^2} \ln \pdfpb{\rvy(t)|s(t;\theta)}
            \right)}
@@ -1157,7 +1159,7 @@ the Cram\'er-Rao bound to find a lower bound on the variance:
 
 The inequality becomes equality (an \prope{efficient} estimate)
 if and only if
-\[ \estML[u] - \theta =
+\[ \estML - \theta =
    \left( \frac{-1}{\pE\left(
               \pderiv{^2}{\theta^2} \ln \pdfpb{\rvy(t)|s(t;\theta)}
            \right)} \right)
@@ -1180,14 +1182,10 @@ if and only if
    \\&= -\frac{1}{\pderiv{\fg(\theta)}{\theta}}
          \left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n - \fg(\theta) \right)
    \\&= -\frac{1}{\pderiv{\fg(\theta)}{\theta}}
-         \left(\estML[u] - \fg(\theta) \right)
-   \\&= -(\estML[u] - \theta)
+         \left(\estML - \fg(\theta) \right)
+   \\&= -(\estML - \theta)
 \end{align*}
 \end{proof}
-
-
-
-
 
 %======================================
 \section{Colored noise}
@@ -1285,14 +1283,14 @@ Let the \hie{signal to noise ratio} SNR be defined as
                 {\pE\brs{|\inprod{\fn(t)}{\rvx(t)}|^2}}
    \\&=    \frac{\abs{\inprod{\rvx(t)}{f(t)}}^2}
                 {\pE\brs{\left[\int_{t\in\R} \fn(t)\rvx^\ast(t)\;dt\right]
-                      \left[\int_u n(u)f^\ast(u)\;du\right]^\ast}
+                      \left[\int_{\estT} n(\estT)f^\ast(\estT)\;du\right]^\ast}
                 }
    \\&=    \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
-                {\pE\brs{\int_{t\in\R} \int_u \fn(t)n^\ast(u)\rvx^\ast(t)\rvx(u)\;dtdu}}
+                {\pE\brs{\int_{t\in\R} \int_{\estT} \fn(t)n^\ast(\estT)\rvx^\ast(t)\rvx(\estT)\;dtdu}}
    \\&=    \frac{|\inprod{\rvx(t)}{f(t)}|^2}
-                {\int_{t\in\R} \int_u \pE\brs{\fn(t)n^\ast(u)}\rvx^\ast(t)\rvx(u)\;dtdu}
+                {\int_{t\in\R} \int_{\estT} \pE\brs{\fn(t)n^\ast(\estT)}\rvx^\ast(t)\rvx(\estT)\;dtdu}
    \\&=    \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
-                {\int_{t\in\R} \int_u \frac{1}{2}\xN_o\delta(t-u) \rvx^\ast(t)\rvx(u)\;dtdu}
+                {\int_{t\in\R} \int_{\estT} \frac{1}{2}\xN_o\delta(t-\estT) \rvx^\ast(t)\rvx(\estT)\;dtdu}
    \\&=    \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
                 {\frac{1}{2}\xN_o \int_{t\in\R} \rvx^\ast(t)\rvx(t)\dt}
    \\&=    \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
@@ -1334,29 +1332,6 @@ sampled at time $T$. % (see \prefpp{fig:mf}).
 By \prefpp{thm:mf_maxSNR}, the optimal impulse response is
 $\fh(T-t)=f(t)=\rvx(t)$.
 That is, the optimal $\fh(t)$ is just a ``flipped" and shifted version of $\rvx(t)$.
-
-%\begin{figure}[ht] \color{figcolor}
-%\centering%
-%
-%\setlength{\unitlength}{0.15mm}
-%\begin{picture}(350,100)
-%  \thicklines
-%  %\graphpaper[10](0,0)(700,100)
-%  \put(   90,  60 ){\makebox( 0,50)[br]{$\rvy(t)=\rvx(t)+\fn(t)$} }
-%  \put(    0,  50 ){\vector(1,0){100} }
-%
-%  \put( 100 ,  00 ){\framebox( 100,100){$\conv \fh(t)$} }
-%  \put( 200 ,  50 ){\vector(1,0){ 50} }
-%  \put( 250 ,  50 ){\usebox{\picSampler}}
-%  \put( 350 ,  50 ){\vector(1,0){100} }
-%\end{picture}
-%\caption{
-%   Matched Filter
-%   \label{fig:mf}
-%   }
-%\end{figure}
-
-
 
 %--------------------------------------
 \section{Estimation techniques}
@@ -1456,7 +1431,6 @@ That is, the optimal $\fh(t)$ is just a ``flipped" and shifted version of $\rvx(
    }
 \end{figure}
 
-
 %\begin{figure}[ht]
 %\center{\epsfig{file=estimate.eps, width=12cm, clip=}}
 %%\center{\includegraphics[0,0][4in,4in]{df1.eps}}
@@ -1465,7 +1439,6 @@ That is, the optimal $\fh(t)$ is just a ``flipped" and shifted version of $\rvx(
 %   \label{fig:estimate}
 %   }
 %\end{figure}
-
 
 %--------------------------------------
 \subsection{Sequential decoding}
