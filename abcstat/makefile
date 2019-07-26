@@ -22,6 +22,7 @@ FILE_SRC  =                       \
   ../common/com_channel.tex       \
   ../common/dtft.tex              \
   ../common/expectation.tex       \
+  ../common/kl_basis.tex          \
   ../common/latd.tex              \
   ../common/latc.tex              \
   ../common/latb.tex              \

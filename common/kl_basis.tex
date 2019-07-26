@@ -1,0 +1,1116 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%=======================================
+\chapter{Sufficient statistics}
+%=======================================
+%=======================================
+\section{Sufficient statistics}
+%=======================================
+\prefpp{thm:sstat} (next) shows that the finite set
+$\setY\eqd\set{\fdoty_n}{n=1,2,\ldots,N}$ provides just as
+much information as having the entire $\rvy(t)$ waveform
+(an uncountably infinite number of values)
+with respect to the following cases:
+\begin{enume}
+   \item the conditional probability of $\rvx(t;\estT)$ given $\rvy(t)$
+   \item the \fncte{MAP estimate} of the information sequence
+   \item the \fncte{ML estimate} of the information sequence.
+\end{enume}
+That is, even with a drastic reduction in the amount of information
+from uncountably infinite to finite $\xN$,
+no information is lost with respect to the quantities listed above.
+
+This amazing result is very useful in practical system implementation
+and also for proving other theoretical results
+(notably estimation and detection theorems which come later
+in this chapter).
+
+
+%---------------------------------------
+\begin{theorem}[\thmd{Sufficient statistic theorem}]
+\footnote{
+  \citePpc{fisher1922}{316}{``Criterion of Sufficiency"}
+  }
+\label{thm:sstat}
+\index{optimal receiver}
+\index{MAP} \index{maximum a-posteriori probability estimation}
+\index{ML}  \index{maximum likelihood estimation}
+%---------------------------------------
+Let $\opSys$ be an additive White Gaussian noise system and
+$\Psi$ an orthonormal basis for $\rvx(t;\estT)$ such that
+\\\indentx$\begin{array}{rcl}
+     \rvy(t)&=&    \rvx(t;\estT) + \rvv(t)
+   \\\Psi  &=&    \set{\psi_n}{n=1,2,\ldots,\xN}
+\end{array}$
+\\
+Then $\setY\eqd\set{\fdoty_n}{n=1,2,\ldots,\xN}$ is a \valb{sufficient statistic} for $\fy(t)$ 
+such that\ldots
+\thmbox{
+  \brb{\begin{array}{M}
+     $\rvv(t)$ is \prope{AWGN}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{Frc>{\ds}lc>{\ds}l}
+     (1). & \mc{3}{l}{\psP\set{ \rvx(t;\estT)}{\rvy(t)}} &=& \psP\set{\rvx(t;\estT)}{\setY}
+   \\(2). & \estMAP &\eqd& \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\rvy(t)} &=& \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\setY} 
+   \\(3). & \estML  &\eqd& \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\estT)} &=& \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+Let $\ds\rvv'(t) \eqd \rvv(t) - \sum_{n=1}^\xN \fdotv_n \psi_n(t)$.
+\begin{enumerate}
+\item The relationship between $\setY$ and $\rvv'(t)$ is given by
+\begin{align*}
+   \rvy(t)
+     &= \sum_{n=1}^\xN \inprod{\rvy(t)}{\psi_n(t)}\psi_n(t) +
+        \left[\rvy(t)- \sum_{n=1}^\xN \inprod{\rvy(t)}{\psi_n(t)}\psi_n(t) \right]
+   \\&= \sum_{n=1}^\xN \inprod{\rvy(t)}{\psi_n(t)}\psi_n(t) +
+        \left[\rvy(t)- \sum_{n=1}^\xN \inprod{\rvx(t)+\rvv(t)}{\psi_n(t)}\psi_n(t) \right]
+   \\&= \sum_{n=1}^\xN \fdoty_n\psi_n(t) +
+        \left[\rvx(t)+\rvv(t) - \sum_{n=1}^\xN \inprod{\rvx(t)}{\psi_n(t)}\psi_n(t)
+                        - \sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t) \right]
+   \\&= \sum_{n=1}^\xN \fdoty_n\psi_n(t) +
+        \rvx(t)+\rvv(t) - \rvx(t) - \left[ \rvv(t) - \rvv'(t)\right]
+   \\&= \sum_{n=1}^\xN \fdoty_n\psi_n(t) + \rvv'(t).
+\end{align*}
+
+\item Proof that the set of statistics $\setY$ and the random process $\rvv'(t)$ are \prope{uncorrelated}:
+\begin{align*}
+   \pE\brs{\fdoty_n \rvv'(t)}
+     &= \pE\brs{\inprod{\rvy(t)}{\psi_n(t)}\left( \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t)\right)}
+   \\&= \pE\brs{\inprod{\rvx(t)+\rvv(t)}{\psi_n(t)}\left( \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t)\right)}
+   \\&= \pE\brs{\Bigg(\inprod{\rvx(t)}{\psi_n(t)}+\inprod{\rvv(t)}{\psi_n(t)}\Bigg)
+            \left( \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t)\right)}
+   \\&= \pE\brs{\Bigg(\fdotx_n+\fdotv_n\Bigg)
+            \left( \rvv(t)-\sum_{n=1}^\xN \fdotv_n\psi_n(t)\right)}
+   \\&= \pE\brs{\fdotx_n \rvv(t) - \fdotx_n \sum_{n=1}^\xN \fdotv_n\psi_n(t)
+            +\fdotv_n \rvv(t) - \fdotv_n \sum_{n=1}^\xN \fdotv_n\psi_n(t) }
+   \\&= \pE\brs{\fdotx_n \rvv(t)} -
+        \pE\brs{\fdotx_n \sum_{n=1}^\xN \fdotv_n\psi_n(t)} +
+        \pE\brs{\inprod{\rvv(t)}{\psi_n(t)} \rvv(t)} -
+        \pE\brs{\sum_{m=1}^\xN \fdotv_n \fdotv_m\psi_m(t)}
+   \\&= \fdotx_n \cancelto{0}{\pE{\rvv(t)}} -
+        \fdotx_n \sum_{n=1}^\xN \cancelto{0}{\pE\brs{\fdotv_n}}\psi_n(t) +
+        \pE\brs{\inprod{\rvv(t)\rvv(\estT)}{\psi_n(\estT)} } -
+        \sum_{m=1}^\xN \pE\brs{\fdotv_n \fdotv_m}\psi_m(t)
+   \\&= 0 - 0 +
+        \inprod{\pE\brs{\rvv(t)n(\estT)}}{\psi_n(\estT)} -
+        \sum_{m=1}^\xN \xN_o\kdelta_{mn} \psi_m(t)
+     \qquad\text{(because $\fdotv_n$ is white)}
+   \\&= \inprod{\xN_o\delta(t-\estT)}{\psi_n(\estT)} - \xN_o\psi_n(t)
+   \\&= \xN_o\psi_n(t) - \xN_o\psi_n(t)
+   \\&= 0
+\end{align*}
+
+\item This implies $\fdoty_n$ and $\rvv'(t)$ are uncorrelated.
+Since they are Gaussian processes (due to channel operator hypothesis),
+they are also independent.
+
+\item Proof that $P\set{\rvx(t;\estT)}{\rvy(t)}=P\set{\rvx(t;\estT)}{\fdoty_1,\;\fdoty_2,\ldots,\fdoty_{\xN}}$:
+\begin{align*}
+   \psP\set{\rvx(t;\estT)}{\rvy(t)}
+     &= \psP\set{\rvx(t;\estT)}{\sum_{n=1}^\xN\fdoty_n \psi_n(t) + \rvv'(t)}
+   \\&= \psP\set{\rvx(t;\estT)}{R, \rvv'(t)}
+     && \text{because $\setY$ and $\rvv'(t)$ can be extracted by $\inprod{\cdots}{\fpsi_n(t)}$}
+   \\&= \frac{\psP\set{R, \rvv'(t)}{\rvx(t;\estT)}  P\setn{\rvx(t;\estT)} }
+             {\psP\setn{R,\rvv'(t)}}
+   \\&= \frac{\psP\setn{ R|\rvx(t;\estT)}\psP\setn{ \rvv'(t)|\rvx(t;\estT)}\psP\setn{\rvx(t;\estT)}}
+             {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
+     && \text{by \prope{independence} of $\setY$ and $\rvv'(t)$}
+   \\&= \frac{\psP\setn{ R|\rvx(t;\estT)}\psP\setn{ \rvv'(t)}\psP\setn{\rvx(t;\estT)}}
+             {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
+   \\&= \frac{\psP\setn{ R|\rvx(t;\estT)} \psP\setn{\rvx(t;\estT)}}
+             {\psP\setn{\setY}}
+   \\&= \frac{\psP\setn{ R,\rvx(t;\estT)}}
+             {\psP\setn{\setY}}
+   \\&= \psP\set{\rvx(t;\estT)}{\setY}
+\end{align*}
+
+\item Proof that $\setY$ is a sufficient statistic for the \vale{MAP estimate}:
+\begin{align*}
+   \estMAP
+     &\eqd \argmax_{\estT} \psP\setn{\rvx(t;\estT)|\rvy(t)}
+     &&    \text{by definition of \vale{MAP estimate}}
+   \\&=    \argmax_{\estT} \psP\setn{\rvx(t;\estT)|R}
+     &&    \text{by result 4.}
+\end{align*}
+
+\item Proof that $\setY$ is a sufficient statistic for the \vale{ML estimate}:
+\begin{align*}
+   \estML
+     &\eqd \argmax_{\estT} \psP\setn{\rvy(t)|\rvx(t;\estT)}
+     &&    \text{by definition of \fncte{ML estimate}}
+   \\&=    \argmax_{\estT} \psP\setn{\sum_{n=1}^\xN\fdoty_n\psi_n(t)+\rvv'(t)|\rvx(t;\estT)}
+   \\&=    \argmax_{\estT} \psP\setn{R,\rvv'(t)|\rvx(t;\estT)}
+     &&    \text{because $\setY$ and $\rvv'(t)$ can be extracted by  $\inprod{\cdots}{\fpsi_n(t)}$}
+   \\&=    \argmax_{\estT} \psP\setn{R|\rvx(t;\estT)}\psP\setn{\rvv'(t)|\rvx(t;\estT)}
+     &&    \text{by \prope{independence} of $\setY$ and $\rvv'(t)$}
+   \\&=    \argmax_{\estT} \psP\setn{R|\rvx(t;\estT)}\psP\setn{\rvv'(t)}
+     &&    \text{by \prope{independence} of $\rvx(t)$ and $\rvv'(t)$}
+   \\&=    \argmax_{\estT} \psP\setn{R|\rvx(t;\estT)}
+     &&    \text{by \prope{independence} of $\rvv'(t)$ and $\estT$}
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+
+Depending on the nature of the channel (additive, white, and/or Gaussian)
+we can know certain characteristics of the noise and received statistics.
+These are described in the next four theorems.
+%======================================
+%\subsection{Additive noise channel}
+%\label{sec:opCan}
+%======================================
+
+
+%---------------------------------------
+\begin{theorem}%[Additive noise projection statistics]
+\label{thm:an_stats}
+\index{projection statistics!Additive noise channel}
+%---------------------------------------
+Let $\opC=\opCan$ be an additive noise channel.
+\thmbox{
+\mcom{\opC=\opCan}{additive noise channel}
+\implies
+\left\{
+\begin{array}{lrcl}
+   \pE(\fdoty_n|\theta)       &= \fdotx_n(\theta) + \pE \fdotv_n
+\end{array}
+\right.
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \pE(\fdoty_n |\theta)
+     &\eqd \brp{\inprod{\rvy(t)}{\psi_n(t)}  |\theta}
+   \\&=    {\inprod{\rvx(t;\theta)+\fn(t)}{\psi_n(t)}}
+   \\&=    {\inprod{\rvx(t;\theta)}{\psi_n(t)}} +   {\inprod{\fn(t)}{\psi_n(t)}}
+   \\&=    \inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \psi_k(t)}{\psi_n(t)} + \fdotv_n
+   \\&=    \sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\psi_k(t)}{\psi_n(t)} + \fdotv_n
+   \\&=    \fdotx_n(\theta)  + \fdotv_n
+\\ \\
+   \pE({\fdoty_n} | \theta)
+     &= \pE\brs{\fdotx_n(\theta)  + \fdotv_n}
+   \\&= \pE{\fdotx_n(\theta) } +   \pE{\fdotv_n}
+   \\&= \fdotx_n(\theta)
+\end{align*}
+\end{proof}
+
+
+%======================================
+%\subsection{Additive gaussian noise channel}
+%\label{sec:opCagn}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\centering%
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,160)(-200,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thicklines
+  \put(-200,   0 ){\line(1,0){400} }
+  \put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](100,0)(100, 60)(100,120)
+  \qbezier[30](-100,0)(-100, 60)(-100,120)
+
+  \qbezier(- 60,  60)(-100, 180)(-140,  60)
+  \qbezier(-  0,   0)(- 40,   0)(- 60,  60)
+  \qbezier(-140,  60)(-160,   0)(-200,   0)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -20 ){\makebox(0,0)[t]{$0$} }
+  \put(  30, 100 ){\makebox(0,0)[bl]{$\fdotv_n$} }
+  \put(-100, -20 ){\makebox(0,0)[t]{$\fdotx_n(\theta_1)$} }
+  \put(-130, 100 ){\makebox(0,0)[br]{$(\fdoty_n|\theta_1)$} }
+  \put( 100, -20 ){\makebox(0,0)[t]{$\fdotx_n(\theta_2)$} }
+  \put( 130, 100 ){\makebox(0,0)[bl]{$(\fdoty_n|\theta_2)$} }
+\end{picture}
+\caption{
+  Additive Gaussian noise channel Statistics
+   %\label{fig:awgn_stats}
+   }
+\end{figure}
+
+
+
+%---------------------------------------
+\begin{theorem}%[Additive Gaussian noise projection statistics]
+\label{thm:agn_stats}
+\index{projection statistics!Additive Gaussian noise channel}
+%---------------------------------------
+Let $\opC=\opCagn$ be an additive gaussian noise channel
+with distribution $\fn(t)\sim\pN{0}{\sigma^2}$ for all $t$.
+%(see \prefpp{fig:agn_stats})
+\thmbox{
+\mcom{\opC=\opCagn}{additive Gaussian channel}
+\implies
+\left\{
+\begin{array}{rclD}
+   \pE\fdotv_n           &=   & 0                               & \\%\text{\scriptsize(noise projection is zero-mean                )} \\
+   \pE(\fdoty_n|\theta)  &=   & \fdotx_n(\theta)                & \\%\text{\scriptsize(expected receiver projection = transmitted projection )} \\
+   \fdotv_n              &\sim& \pN{0}{\sigma^2}                & (noise projections are Gaussian        ) \\
+   \fdoty_n|\theta       &\sim& \pN{\fdotx_n(\theta)}{\sigma^2} & (receiver projections are Gaussian     ) \\
+\end{array}
+\right.
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \pE\fdotv_{n}
+     &= \pE\inprod{\fn(t)}{\psi_n(t)}
+   \\&= \inprod{\pE\fn(t)}{\psi_n(t)}
+   \\&= \inprod{0}{\psi_n(t)}
+   \\&= 0
+\\
+\\
+   (\fdoty_n |\theta)
+     &\eqd {\inprod{\rvy(t)}{\psi_n(t)}}  |\theta
+   \\&=    {\inprod{\rvx(t;\theta)+\fn(t)}{\psi_n(t)}}
+   \\&=    {\inprod{\rvx(t;\theta)}{\psi_n(t)}} +   {\inprod{\fn(t)}{\psi_n(t)}}
+   \\&=    \inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \psi_k(t)}{\psi_n(t)} + \fdotv_n
+   \\&=    \sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\psi_k(t)}{\psi_n(t)} + \fdotv_n
+   \\&=    \fdotx_n(\theta)  + \fdotv_n
+\\ \\
+   \pE({\fdoty_n} | \theta)
+     &= \pE\brs{\fdotx_n(\theta)  + \fdotv_n}
+   \\&= \pE{\fdotx_n(\theta) } +   \pE{\fdotv_n}
+   \\&= \fdotx_n(\theta)
+\end{align*}
+
+The distributions follow because they are linear operations on
+Gaussian processes.
+\end{proof}
+
+
+
+
+%======================================
+%\subsection{Additive white noise channel}
+%\label{sec:opCawn}
+%======================================
+
+
+%---------------------------------------
+\begin{theorem}%[Additive white noise projection statistics]
+\label{thm:awn_stats}
+\index{projection statistics!Additive white noise channel}
+%---------------------------------------
+Let $\opC=\opCawn$ be an additive white noise channel.
+\thmbox{
+\mcom{\opC=\opCawn}{additive white channel}
+\implies
+\left\{
+\begin{array}{lclD}
+   \pE\fdotv_n                            &=& 0                     & (noise projection is zero-mean) \\
+   \pE(\fdoty_n|\theta)                   &=& \fdotx_n(\theta)      & (expected receiver projection = transmitted projection) \\
+   \cov{\fdotv_n}{\fdotv_m}               &=& \sigma^2 \kdelta_{nm} & (noise projections are uncorrelated) \\
+   \cov{\fdoty_n|\theta}{\fdoty_m|\theta }&=& \sigma^2 \kdelta_{nm} & (receiver projections are uncorrelated)
+\end{array}
+\right.
+}
+\end{theorem}
+
+\begin{proof}
+Because the noise is additive (see \prefpp{thm:an_stats})
+\begin{align*}
+   \pE\fdotv_{n}           &= 0  \\
+   (\fdoty_n |\theta)      &= \fdotx_n(\theta)  + \fdotv_n \\
+   \pE({\fdoty_n} | \theta) &= \fdotx_n(\theta).
+\end{align*}
+
+Because the noise is also white,
+\begin{align*}
+   \cov{\fdotv_m}{\fdotv_n}
+      &= \cov{\inprod{\fn(t)}{\psi_m(t)}}{\inprod{\fn(t)}{\psi_n(t)}}
+    \\&= \pE\brs{\inprod{\fn(t)}{\psi_m(t)} \inprod{\fn(t)}{\psi_n(t)}}
+    \\&= \pE\brs{\inprod{\fn(t)}{\psi_m(t)} \inprod{n(\estT)}{\psi_n(\estT)}}
+    \\&= \pE\brs{ \inprod{n(\estT)\inprod{\fn(t)}{\psi_m(t)}}{\psi_n(\estT)}}
+    \\&= \pE\brs{ \inprod{\inprod{n(\estT)\fn(t)}{\psi_m(t)}}{\psi_n(\estT)}}
+    \\&= \inprod{\inprod{\pE\brs{ n(\estT)\fn(t)}}{\psi_m(t)}}{\psi_n(\estT)}
+    \\&= \inprod{\inprod{\sigma^2 \delta(t-\estT)}{\psi_m(t)}}{\psi_n(\estT)}
+    \\&= \sigma^2 \inprod{\psi_n(t)}{\psi_m(t)}
+    \\&= \left\{
+          \begin{tabular}{ll}
+             $\sigma^2$ & for $n=m$ \\
+             $0$   & for $n\ne m$.
+          \end{tabular}
+          \right.
+\\
+\\
+   \cov{\fdoty_n|\theta}{\fdoty_m|\theta }
+      &= \pE\brs{\fdoty_n \fdoty_m |\theta} - [\pE\fdoty_n|\theta][\pE\fdoty_m|\theta ]
+    \\&= \pE\brs{(\fdotx_n(\theta) +\fdotv_n)(\fdotx_m(\theta) +\fdotv_m)} - \fdotx_n(\theta) \fdotx_m(\theta)
+    \\&= \pE\brs{(\fdotx_n(\theta) +\fdotv_n)(\fdotx_m(\theta) +\fdotv_m)} - \fdotx_n(\theta) \fdotx_m(\theta)
+    \\&= \pE\brs{\fdotx_n(\theta) \fdotx_m(\theta) +\fdotx_n(\theta) \fdotv_m+ \fdotv_n\fdotx_m(\theta) +\fdotv_n\fdotv_m } - \fdotx_n(\theta) \fdotx_m(\theta)
+    \\&= \fdotx_n(\theta) \fdotx_m(\theta) + \fdotx_n(\theta) \pE\brs{\fdotv_m}+ \pE\brs{\fdotv_n}\fdotx_m(\theta) +\pE\brs{\fdotv_n\fdotv_m}  - \fdotx_n(\theta) \fdotx_m(\theta)
+    \\&= 0 + \fdotx_n(\theta) \cdot0 + 0\cdot\fdotx_m(\theta) + \cov{\fdotv_n}{\fdotv_m}+[\pE\fdotv_n][\pE\fdotv_m]
+    \\&= \sigma^2 \kdelta_{nm} + 0\cdot0
+    \\&= \left\{
+          \begin{tabular}{ll}
+             $\sigma^2$ & for $n=m$ \\
+             $0$   & for $n\ne m$.
+          \end{tabular}
+          \right.
+\end{align*}
+\end{proof}
+
+
+%======================================
+%\subsection{Additive white gaussian noise channel}
+%\label{sec:opCawgn}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\centering%
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,160)(-200,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thicklines
+  \put(-200,   0 ){\line(1,0){400} }
+  \put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](100,0)(100, 60)(100,120)
+  \qbezier[30](-100,0)(-100, 60)(-100,120)
+
+  \qbezier(- 60,  60)(-100, 180)(-140,  60)
+  \qbezier(-  0,   0)(- 40,   0)(- 60,  60)
+  \qbezier(-140,  60)(-160,   0)(-200,   0)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -20 ){\makebox(0,0)[t]{$0$} }
+  \put(  30, 100 ){\makebox(0,0)[bl]{$\fdotv_n$} }
+  \put(-100, -20 ){\makebox(0,0)[t]{$\fdotx_n(\theta_1)$} }
+  \put(-130, 100 ){\makebox(0,0)[br]{$(\fdoty_n|\theta_1)$} }
+  \put( 100, -20 ){\makebox(0,0)[t]{$\fdotx_n(\theta_2)$} }
+  \put( 130, 100 ){\makebox(0,0)[bl]{$(\fdoty_n|\theta_2)$} }
+\end{picture}
+\caption{
+  Additive white Gaussian noise channel statistics
+   \label{fig:awgn_stats}
+   }
+\end{figure}
+
+
+
+%---------------------------------------
+\begin{theorem}%[AWGN projection statistics]
+\label{thm:awgn_stats}
+\label{thm:ms_stats}
+\index{projection statistics!Additive white Gaussian noise channel}
+%---------------------------------------
+Let $\opC=\opCawgn$ be an additive gaussian noise channel
+with distribution $\fn(t)\sim\pN{0}{\sigma^2}$ for all $t$.
+\thmbox{
+\mcom{\opC=\opCawgn}{AWGN}
+\implies
+\left\{
+\begin{array}{rclD}
+   \fdotv_n                            &\sim& \pN{0}{\sigma^2}                     & (noise projections are Gaussian        ) \\
+   \fdoty_n|\theta                     &\sim& \pN{\fdotx_n(\theta)}{\sigma^2}      & (receiver projections are Gaussian     ) \\
+   \cov{\fdotv_n}{\fdotv_m}            &=   & \sigma^2 \kdelta_{nm}                & (noise projections are uncorrelated    ) \\
+   \cov{\fdoty_n}{\fdoty_m }           &=   & \sigma^2 \kdelta_{nm}                & (receiver projections are uncorrelated ) \\
+   \psp\{\fdotv_n=a \land \fdotv_m=b\} &=   & \psp\{\fdotv_n=a\}\psp\{\fdotv_m=b\} & (noise    projections are independent  ) \\
+   \psp\{\fdoty_n=a \land \fdoty_m=b\} &=   & \psp\{\fdoty_n=a\}\psp\{\fdoty_m=b\} & (receiver projections are independent  )
+\end{array}
+\right.
+}
+\end{theorem}
+
+\begin{proof}
+The distributions follow because they are linear operations on
+Gaussian processes.
+
+By \prefpp{thm:awn_stats} (for AWN channel)
+\begin{align*}
+   \pE{\fdotv_{n}} &= 0
+\\
+   \cov{\fdotv_m}{\fdotv_n} &= \sigma^2 \kdelta_{mn}
+\\
+   \fdoty_n &= \fdotx_n  + \fdotv_n
+\\
+   \pE{\fdoty_n} &= \fdotx_n
+\\
+   \cov{\fdoty_n}{\fdoty_m } &= \sigma^2 \kdelta_{mn}
+\end{align*}
+Because the processes are Gaussian,
+uncorrelatedness implies \prope{independence}.
+\end{proof}
+
+%======================================
+\section{Optimal symbol estimation}
+\label{sec:awgn_est}
+\index{maximum likelihood estimation}
+%======================================
+The AWGN projection statistics provided by
+\prefpp{thm:awgn_stats} help generate the optimal
+ML-estimates for a number of communication systems.
+These ML-estimates can be expressed in either of two standard forms:
+\begin{liste}
+  \item {\bf Spectral decompostion}:
+     The optimal estimate is expressed in terms of \hie{projections}
+     of signals onto orthonormal basis functions.
+  \item {\bf Matched signal}:
+     The optimal estimate is expressed in terms of the (noisy)
+     received signal correlated with (``matched" with)
+     the (noiseless) transmitted signal.
+\end{liste}
+\prefpp{thm:estML_general} (next) expresses the general
+optimal \fncte{ML estimate} in both of these forms.
+
+Parameter detection is a special case of parameter estimation.
+In parameter detection, the estimate is a member of an finite set.
+In parameter estimation, the estimate is a member of an infinite set
+\xref{sec:awgn_est}.
+
+
+%---------------------------------------
+\begin{theorem}[\thmd{General ML estimation}]
+\index{maximum likelihood estimation!general}
+\label{thm:estML_general}
+\label{thm:ml_est_det}
+%\citepp{srv}{157}{158}
+%---------------------------------------
+Let $\Psi$ be an orthonormal set spanning $\rvx(t)$ such that
+\\\indentx$\begin{array}{rcl}
+    \Psi     &\eqd& \seqn{\psi_1(t), \psi_2(t), \ldots, \psi_n(t)}
+  \\\fdoty_n &\eqd& \inprod{\rvy(t)}{\psi_n(t)}
+  \\\fdotx_n &\eqd& \inprod{\rvx(t)}{\psi_n(t)}
+  \\\rvy(t)  &=   & \rvx(t;\estT) + \fn(t).
+\end{array}$
+\\
+Then the optimal ML-estimate $\estML$ of parameter $\theta$ is
+\thmbox{\begin{array}{rc>{\ds}l@{\qquad}D}
+   \estML
+     &=& \argmin_{\estT} \left[ \sum_{n=1}^\xN [\fdoty_n-\fdotx_n(\estT)]^2 \right]
+       & (spectral decomposition)
+   \\&=& \argmax_{\estT}
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\estT)}^2 \right]
+       & (matched signal)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \estML
+     &= \argmax_{\estT} \psP\setn{\rvy(t)|\rvx(t;\estT)}
+   \\&= \argmax_{\estT} \psP\setn{\fdoty_1,\fdoty_2,\ldots,\fdoty_n|\rvx(t;\estT)}
+     && \text{by \prefpp{thm:sstat}}
+   \\&= \argmax_{\estT} \prod_{n=1}^\xN \psP\setn{\fdoty_n|\rvx(t;\estT)}
+   \\&= \argmax_{\estT} \prod_{n=1}^\xN \pdfpb{\fdoty_n|\rvx(t;\estT)}
+   \\&= \argmax_{\estT} \prod_{n=1}^\xN
+         \frac{1}{\sqrt{2\pi\sigma^2}}
+         \exp{\frac{[\fdoty_n-\fdotx_n(\estT)]^2}{-2\sigma^2} }
+     && \text{by \prefpp{thm:awgn_stats}}
+   \\&= \argmax_{\estT}
+         \left( \frac{1}{\sqrt{2\pi\sigma^2}} \right)^\xN
+         \exp{\frac{-1}{2\sigma^2} \sum_{n=1}^\xN [\fdoty_n-\fdotx_n(\estT)]^2 }
+   \\&= \argmax_{\estT}
+         \left[ -\sum_{n=1}^\xN [\fdoty_n-\fdotx_n(\estT)]^2 \right]
+\\ \\
+   \\&= \argmax_{\estT}
+         \left[ -\lim_{N\to\infty}\sum_{n=1}^\xN [\fdoty_n-\fdotx_n(\estT)]^2 \right]
+     && \text{by \prefpp{thm:sstat}}
+   \\&= \argmax_{\estT}
+         \left[ -\norm{\rvy(t)-\rvx(t;\estT)}^2 \right]
+     && \text{by \thme{Plancheral's formula}}
+     && \text{\xref{thm:plancherel}}
+   \\&= \argmax_{\estT}
+         \left[ -\norm{\rvy(t)}^2 +2\Real\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\estT)}^2 \right]
+   \\&= \argmax_{\estT}
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\estT)}^2 \right]
+     && \text{because $\rvy(t)$ \prope{independent} of $\estT$}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}[\thmd{ML amplitude estimation}]
+\label{thm:estML_amplitude}
+\footnote{
+  \citerppg{srv}{158}{159}{013125295X}
+  }
+\index{maximum likelihood estimation!amplitude}
+%---------------------------------------
+Let $\opSys$ be an additive white gaussian noise system
+such that
+\begin{align*}
+   \rvy(t)     &=     [\opCawgn s](t) = \rvx(t;a) + \fn(t) \\
+   \rvx(t;a)   &\eqd  a  \sym(t).
+\end{align*}
+Then
+\thmbox{\begin{array}{rclM}
+  \estML[a]    &=&  \frac{1}{\norm{\lambda(t)}^2} \inprod{\rvy(t)}{\lambda(t)}
+               &    (optimal ML-estimate of $a$)
+             \\&=&  \frac{1}{\norm{\sym(t)}^2} \sum_{n=1}^\xN \fdoty_n \fdotlam_n
+               & %\text{(optimal ML-estimate of $a$)}
+\\\pE\estML[a] &=& a
+               &   ($\estML[a]$ is \propb{unbiased})
+\\\var\estML[a]&=& \frac{\sigma^2}{\norm{\sym(t)}^2}
+               &  (variance of estimate $\estML[a]$)
+\\\var\estML[a]&=& \mbox{CR lower bound}
+               &   ($\estML[a]$ is an {\bf \prope{efficient} estimate})
+\end{array}}
+\end{theorem}
+
+\begin{proof}\\
+\begin{enumerate}
+\item \fncte{ML estimate} in ``matched signal" form:
+\begin{align*}
+   \estML[a]
+     &= \argmax_a
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\phi)}^2 \right]
+     && \text{by \prefpp{thm:estML_general}}
+   \\&= \argmax_a
+         \left[ 2\inprod{\rvy(t)}{a\lambda(t)}-\norm{a\lambda(t)}^2 \right]
+     && \text{by hypothesis}
+   \\&= \arg_a
+         \left[ \pderiv{}{a}2a\inprod{\rvy(t)}{\lambda(t)}-\pderiv{}{a}a^2\norm{\lambda(t)}^2 =0\right]
+   \\&= \arg_a
+         \left[ 2\inprod{\rvy(t)}{\lambda(t)}-2a\norm{\lambda(t)}^2 =0\right]
+   \\&= \arg_a
+         \left[ \inprod{\rvy(t)}{\lambda(t)}=a\norm{\lambda(t)}^2 \right]
+   \\&= \frac{1}{\norm{\lambda(t)}^2} \inprod{\rvy(t)}{\lambda(t)}
+\end{align*}
+
+\item \fncte{ML estimate} in ``spectral decomposition" form:
+\begin{align*}
+   \estML[a]
+     &= \argmin_a
+         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n - \fdotx_n( a )}^2 }
+     && \text{by \prefpp{thm:estML_general}}
+   \\&= \arg_a
+         \brp{ \pderiv{}{ a }\sum_{n=1}^\xN \brs{\fdoty_n - \fdotx_n( a )}^2=0 }
+   \\&= \arg_a
+         \brp{ 2\sum_{n=1}^\xN \brs{\fdoty_n - \fdotx_n( a )}\pderiv{}{ a }\fdotx_n( a )=0 }
+   \\&= \arg_a
+         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n - \inprod{ a \lambda(t)}{\psi_n(t)}}\pderiv{}{ a }\inprod{ a \lambda(t)}{\psi_n(t)}=0 }
+   \\&= \arg_a
+         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n -  a \inprod{\lambda(t)}{\psi_n(t)}}\pderiv{}{ a }( a \inprod{\lambda(t)}{\psi_n(t)})=0 }
+   \\&= \arg_a
+         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n -  a \fdotlam_n } \inprod{\lambda(t)}{\psi_n(t)}=0 }
+   \\&= \arg_a
+         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n -  a \fdotlam_n } \fdotlam_n=0 }
+   \\&= \arg_a
+         \brp{ \sum_{n=1}^\xN \fdoty_n\fdotlam_n = \sum_{n=1}^\xN  a \fdotlam_n^2 }
+   \\&= \brp{\frac{1}{\sum_{n=1}^\xN \fdotlam_n^2}}
+         \sum_{n=1}^\xN \fdoty_n\fdotlam_n
+   \\&= \frac{1}{\norm{\lambda(t)}^2}
+         \sum_{n=1}^\xN \fdoty_n\fdotlam_n
+\end{align*}
+
+\item Prove that the estimate $\estML[a]$ is \propb{unbiased}:
+
+\begin{align*}
+   \pE\estML[a]
+     &= \pE\frac{1}{\norm{\sym(t)}^2} \int_{t\in\R} \rvy(t)\sym(t) \dt
+     && \text{by previous result}
+   \\&= \pE\frac{1}{\norm{\sym(t)}^2} \int_{t\in\R} [ a \sym(t)+\fn(t)]\sym(t) \dt
+     && \text{by hypothesis}
+   \\&= \frac{1}{\norm{\sym(t)}^2} \int_{t\in\R} \pE[ a \sym(t)+\fn(t)]\sym(t) \dt
+     && \text{by linearity of $\int\cdot\dt$ and $\pE$}
+   \\&= \frac{1}{\norm{\sym(t)}^2}  a  \int_{t\in\R} \sym^2(t) \dt
+     && \text{by $\pE$ operation}
+   \\&= \frac{1}{\norm{\sym(t)}^2}  a  \norm{\sym(t)}^2
+     && \text{by definition of $\norm{\cdot}^2$}
+   \\&=   a
+\end{align*}
+
+\item Compute the variance of $\estML[a]$:
+\begin{align*}
+  \pE \estML[a]^2
+    &= \pE \left[ \frac{1}{\norm{\lambda(t)}^2} \int_{t\in\R} \rvy(t)\lambda(t) \dt\right]^2
+  \\&= \pE \left[  \frac{1}{\norm{\lambda(t)}^4}
+        \int_{t\in\R} \rvy(t)\lambda(t) \dt \int_v \rvy(v)\lambda(v) \dv
+        \right]
+  \\&= \pE \left[  \frac{1}{\norm{\lambda(t)}^4}
+        \int_{t\in\R} \int_v [a\lambda(t) + \fn(t)][a\lambda(v) + \fn(v)]
+        \lambda(t) \lambda(v)
+        \dv\dt \right]
+  \\&= \pE \left[  \frac{1}{\norm{\lambda(t)}^4}
+        \int_{t\in\R} \int_v
+        [a^2\lambda(t)\lambda(v) + a\lambda(t)\fn(v) + a\lambda(v)\fn(t) + \fn(t)\fn(v)]
+        \lambda(t) \lambda(v)
+        \dv\dt \right]
+  \\&= \left[  \frac{1}{\norm{\lambda(t)}^4}
+        \int_{t\in\R} \int_v
+        [a^2\lambda(t)\lambda(v) + 0 + 0 + \sigma^2\delta(t-v)]
+        \lambda(t) \lambda(v)
+        \dv\dt \right]
+  \\&= \frac{1}{\norm{\lambda(t)}^4}
+        \int_{t\in\R} \int_v a^2\lambda^2(t)\lambda^2(v) \dv\dt +
+        \frac{1}{\norm{\lambda(t)}^4}
+        \int_{t\in\R} \int_v \sigma^2\delta(t-v) \lambda(t) \lambda(v) \dv\dt
+  \\&= \frac{1}{\norm{\lambda(t)}^4}
+        a^2 \int_{t\in\R} \lambda^2(t) \dt \int_v \lambda^2(v) \dv +
+        \frac{1}{\norm{\lambda(t)}^4}
+        \sigma^2\int_{t\in\R} \lambda^2(t) \dt
+  \\&= a^2 \frac{1}{\norm{\lambda(t)}^4}
+        \norm{\lambda(t)}^2 \norm{\lambda(v)}^2 +
+        \frac{1}{\norm{\lambda(t)}^4}
+        \sigma^2 \norm{\lambda(t)}^2
+  \\&= a^2 + \frac{\sigma^2}{\norm{\lambda(t)}^2}
+\\
+\\
+  \var\estML[a]
+    &= \pE \estML[a]^2 - (\pE \estML[a])^2
+  \\&= \left.\left.\left(a^2 + \frac{\sigma^2}{\norm{\lambda(t)}^2}\right) - \right( a^2 \right)
+  \\&= \frac{\sigma^2}{\norm{\lambda(t)}^2}
+\end{align*}
+
+\item Compute the Cram\'er-Rao Bound:
+\begin{align*}
+   \pdfpb{\rvy(t)|s(t; a)}
+     &=  \pdfpb{\fdoty_1, \fdoty_2,\ldots,\fdoty_{\xN}|s(t; a)}
+   \\&=  \prod_{n=1}^\xN \frac{1}{\sqrt{2\pi\sigma^2}}
+          \exp{\frac{(\fdoty_n- a\fdotlam_n)^2}{-2\sigma^2}}
+   \\&=  \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^\xN
+          \exp{\frac{1}{-2\sigma^2} \sum_{n=1}^\xN (\fdoty_n- a\fdotlam_n)^2}
+\\
+\\
+   \pderiv{}{a}\ln\pdfpb{\rvy(t)|s(t; a)}
+     &=  \pderiv{}{a}\ln
+          \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^\xN
+          \exp{\frac{1}{-2\sigma^2} \sum_{n=1}^\xN (\fdoty_n- a\fdotlam_n)^2}
+   \\&=  \pderiv{}{a}\ln
+          \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^\xN
+       +  \pderiv{}{a}\ln
+          \exp{\frac{1}{-2\sigma^2} \sum_{n=1}^\xN (\fdoty_n- a\fdotlam_n)^2}
+   \\&=  \pderiv{}{a}
+          \frac{1}{-2\sigma^2} \sum_{n=1}^\xN (\fdoty_n- a\fdotlam_n)^2
+   \\&=  \frac{1}{-2\sigma^2} \sum_{n=1}^\xN 2(\fdoty_n- a\fdotlam_n)(- \fdotlam_n)
+   \\&=  \frac{1}{\sigma^2} \sum_{n=1}^\xN \fdotlam_n(\fdoty_n- a\fdotlam_n)
+\\
+\\
+   \pderiv{^2}{a^2}\ln\pdfpb{\rvy(t)|s(t; a)}
+     &=  \pderiv{}{a}\pderiv{}{a}\ln\pdfpb{\rvy(t)|s(t; a)}
+   \\&=  \pderiv{}{a}
+          \frac{1}{\sigma^2} \sum_{n=1}^\xN \fdotlam_n(\fdoty_n- a\fdotlam_n)
+   \\&=  \frac{1}{\sigma^2} \sum_{n=1}^\xN \fdotlam_n(-\fdotlam_n)
+   \\&=  \frac{-1}{\sigma^2} \sum_{n=1}^\xN \fdotlam_n^2
+   \\&=  \frac{-\norm{\lambda(t)}^2}{\sigma^2}
+\\
+\\
+   \var\estML[a]
+     &\eqd \pE\brs{\estML[a]-\pE\estML[a]}^2
+   \\&=    \pE\brs{\estML[a]- a}^2
+   \\&\ge  \frac{-1}{\pE\brp{\pderiv{^2}{ a^2} \ln \pdfpb{\rvy(t)|s(t; a)}}}
+   \\&=    \frac{-1}{\pE\brp{\frac{-\norm{\lambda(t)}^2}{\sigma^2}}}
+   \\&=    \frac{\sigma^2}{\norm{\lambda(t)}^2}
+     \qquad\text{(Cram\'er-Rao lower bound of the variance)}
+\end{align*}
+
+\item Prove that $\estML[a]$ is an {\bf \prope{efficient} estimate}:
+
+A estimate is \prope{efficient} if
+$\var\estML[a]=\mbox{CR lower bound}$.
+We have already proven this, so $\estML[a]$ is an \prope{efficient} estimate.
+
+Also, even without explicitly computing the variance of $\estML[a]$,
+the variance equals the \vale{Cram\'er-Rao lower bound}
+(and hence $\estML[a]$ is an \prope{efficient} estimate)
+if and only if
+\\\indentx$\ds\estML[a] -  a =
+   \brp{\frac{-1}{\pE\brs{
+              \pderiv{^2}{ a^2} \ln \pdfpb{\rvy(t)|s(t; a)}
+           }}}
+   \brp{\pderiv{}{ a} \ln \pdfpb{\rvy(t)|s(t; a)}}
+  $
+\begin{align*}
+   \brp{\frac{-1}{\pE\brp{\pderiv{^2}{ a^2} \ln \pdfpb{\rvy(t)|s(t; a)}}}}
+   \brp{\pderiv{}{ a} \ln \pdfpb{\rvy(t)|s(t; a)}}
+     &= \left(\frac{\sigma^2}{\norm{\lambda(t)}^2}\right)
+         \left(
+           \frac{1}{\sigma^2} \sum_{n=1}^\xN \fdotlam( \fdoty - a \fdotlam)
+         \right)
+   \\&= \frac{1}{\norm{\lambda(t)}^2} \sum_{n=1}^\xN \fdotlam \fdoty -
+         \frac{1}{\norm{\lambda(t)}^2} \sum_{n=1}^\xN \fdotlam^2
+   \\&= \estML[a] - a
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}[\thmd{ML phase estimation}]
+\label{thm:estML_phase}
+\footnote{
+  \citerppg{srv}{159}{160}{013125295X}
+  }
+\index{maximum likelihood estimation!phase}
+%---------------------------------------
+Let $\opSys$ be an additive white gaussian noise system
+such that
+$\begin{array}[t]{rcl}
+   \rvy(t)     &=& [\opCawgn s](t) = \rvx(t;\phi) + \fn(t) \\
+   \rvx(t;\phi) &=& A\cos(2\pi f_ct +  \phi).
+\end{array}$
+\\
+Then the optimal ML-estimate of parameter $ \phi $ is
+\thmbox{
+   \estML[\phi]
+      =   -\atan\left(
+           \frac{\inprod{\rvy(t)}{\sin(2\pi f_ct)}}
+                {\inprod{\rvy(t)}{\cos(2\pi f_ct)}}
+           \right)
+   }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \estML[\phi]
+     &= \argmax_\phi
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\phi)}^2 \right]
+     && \text{by \prefpp{thm:estML_general}}
+   \\&= \argmax_\phi
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\phi)} \right]
+     && \text{because $\norm{\rvx(t;\phi)}$ does not depend on $\phi$}
+   \\&= \arg_\phi
+         \left[ \pderiv{}{\phi} \inprod{\rvy(t)}{\rvx(t;\phi)} = 0 \right]
+   \\&= \arg_\phi
+         \left[ \inprod{\rvy(t)}{\pderiv{}{\phi} \rvx(t;\phi)} = 0 \right]
+     && \text{because $\inprod{\cdot}{\cdot}$ is a linear operator}
+   \\&= \arg_\phi
+         \left[ \inprod{\rvy(t)}{\pderiv{}{\phi} A\cos(2\pi f_ct+\phi)} = 0 \right]
+   \\&= \arg_\phi
+         \left[ \inprod{\rvy(t)}{-A\sin(2\pi f_ct+\phi)} = 0 \right]
+   \\&= \arg_\phi
+         \left[ -A\inprod{\rvy(t)}{\cos(2\pi f_ct)\sin\phi+\sin(2\pi f_ct)\cos\phi} = 0 \right]
+   \\&= \arg_\phi \left[
+           \sin\phi\inprod{\rvy(t)}{\cos(2\pi f_ct)} =
+          -\cos\phi\inprod{\rvy(t)}{\sin(2\pi f_ct)}
+           \right]
+   \\&= \arg_\phi \left[
+           \frac{\sin\phi}{\cos\phi} =
+          -\frac{\inprod{\rvy(t)}{\sin(2\pi f_ct)}}
+                {\inprod{\rvy(t)}{\cos(2\pi f_ct)}}
+           \right]
+   \\&= \arg_\phi \left[
+           \tan\phi =
+          -\frac{\inprod{\rvy(t)}{\sin(2\pi f_ct)}}
+                {\inprod{\rvy(t)}{\cos(2\pi f_ct)}}
+           \right]
+   \\&=  -\atan\left(
+           \frac{\inprod{\rvy(t)}{\sin(2\pi f_ct)}}
+                {\inprod{\rvy(t)}{\cos(2\pi f_ct)}}
+           \right)
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}[\thmd{ML estimation of a function of a parameter}]
+\label{thm:estML-CR}
+\footnote{
+  \citerppg{srv}{142}{143}{013125295X}
+  }
+%---------------------------------------
+Let $\opSys$ be an additive white gaussian noise system
+such that
+$\begin{array}[t]{rcl}
+   \rvy(t)     &=& [\opCawgn s](t) = \rvx(t;\estT) + \fn(t) \\
+   \rvx(t;\estT)   &=& \fg(\estT)
+\end{array}$\\
+where $\fg$ is one-to-one and onto (invertible).
+\\
+\thmbox{\begin{array}{M>{\ds}rc>{\ds}l}
+  Then the optimal ML-estimate of parameter $ u $ is
+   & \estML &=& \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right).
+  \\
+  If an \fncte{ML estimate} $\estML$ is unbiased ($\pE \estML = \theta$) then
+    & \var\estML &\ge&
+      \frac{\sigma^2}{\xN}
+      \frac{1}{\left[ \pderiv{\fg(\theta)}{\theta} \right]^2}.
+  \\
+  If $\fg(\theta) = \theta$ then $\estML$ is an \propb{efficient} estimate such that
+   & \var\estML &=& \frac{\sigma^2}{\xN}.
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \estML
+     &= \argmin_{\estT}
+         \left[ \sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]^2 \right]
+   \\&= \arg_{\estT}\left[
+            \pderiv{}{\estT}\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]^2 = 0
+         \right]
+   \\&= \arg_{\estT}\left[
+             2\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]\pderiv{}{\estT}\fg(\estT) = 0
+         \right]
+   \\&= \arg_{\estT}\left[
+             2\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)] = 0
+         \right]
+   \\&= \arg_{\estT}\left[
+             \sum_{n=1}^\xN \fdoty_n = \xN \fg(\estT)
+         \right]
+   \\&= \arg_{\estT}\left[
+             \fg(\estT) = \frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n
+         \right]
+   \\&= \arg_{\estT}\left[
+              u  = \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right)
+         \right]
+   \\&= \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right)
+\end{align*}
+
+
+If $\estML$ is unbiased ($\pE\estML=\theta$), we can use
+the \vale{Cram\'er-Rao bound} to find a lower bound on the variance:
+
+\begin{align*}
+   \var\estML
+     &\eqd \pE\brs{\estML-\pE\estML}^2
+   \\&= \pE\brs{\estML-\theta}^2
+   \\&\ge \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln \pdfpb{\rvy(t)|s(t;\theta)}
+           \right)}
+   \\&=   \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln
+              \pdfpb{\fdoty_1, \fdoty_2,\ldots,\fdoty_{\xN}|s(t;\theta)}
+           \right)}
+   \\&=   \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln\left[
+              \left(\frac{1}{\sqrt{2\pi\sigma^2}} \right)^\xN
+              \exp{\frac{-1}{2\sigma^2}\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2 }\right]
+           \right)}
+   \\&=   \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln\left[
+              \left(\frac{1}{\sqrt{2\pi\sigma^2}} \right)^\xN \right]
+              +
+              \pderiv{^2}{\theta^2} \ln\left[
+              \exp{\frac{-1}{2\sigma^2}\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2 }\right]
+           \right)}
+  \\&=   \frac{-1}{\pE\left(
+             \pderiv{^2}{\theta^2}
+             \left(\frac{-1}{2\sigma^2}\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2 \right)
+          \right)}
+  \\&=   \frac{2\sigma^2}{\pE\left(
+             \pderiv{}{\theta} \pderiv{}{\theta}
+             \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2
+          \right)}
+  \\&=   \frac{2\sigma^2}{\pE\left(
+             -2\pderiv{}{\theta}
+             \pderiv{\fg(\theta)}{\theta}
+             \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]
+          \right)}
+  \\&=   \frac{-\sigma^2}{\pE\left(
+             \pderiv{\fg^2(\theta)}{\theta^2}
+             \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]
+             +
+             \pderiv{\fg(\theta)}{\theta}
+             \pderiv{}{\theta}
+             \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]
+          \right)}
+   \\&=   \frac{-\sigma^2}{\pE\left(
+              \pderiv{\fg^2(\theta)}{\theta^2}
+              \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]
+              -N
+              \pderiv{\fg(\theta)}{\theta}
+              \pderiv{\fg(\theta)}{\theta}
+           \right)}
+   \\&=   \frac{-\sigma^2}{
+              \pderiv{\fg^2(\theta)}{\theta^2}
+              \sum_{n=1}^\xN \pE[\fdoty_n-\fg(\theta)]
+              -N
+              \pderiv{\fg(\theta)}{\theta}
+              \pderiv{\fg(\theta)}{\theta}
+           }
+   \\&=   \frac{-\sigma^2}{
+              -N
+              \pderiv{\fg(\theta)}{\theta}
+              \pderiv{\fg(\theta)}{\theta}
+           }
+   \\&=   \frac{\sigma^2}{\xN}
+           \frac{1}{\left[ \pderiv{\fg(\theta)}{\theta} \right]^2}
+\end{align*}
+
+The inequality becomes equality (an \prope{efficient} estimate)
+if and only if
+\[ \estML - \theta =
+   \left( \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln \pdfpb{\rvy(t)|s(t;\theta)}
+           \right)} \right)
+   \left(\pderiv{}{\theta} \ln \pdfpb{\rvy(t)|s(t;\theta)} \right).
+\]
+
+\begin{align*}
+   \left( \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln \pdfpb{\rvy(t)|s(t;\theta)}
+           \right)} \right)
+   \left(\pderiv{}{\theta} \ln \pdfpb{\rvy(t)|s(t;\theta)} \right)
+     &= \left(
+         \frac{\sigma^2}{\xN}
+           \frac{1}{\left[ \pderiv{\fg(\theta)}{\theta} \right]^2} \right)
+         \left(\frac{-1}{2\sigma^2}(2)\pderiv{\fg(\theta)}{\theta}
+         \sum_{n=1}^\xN [\fdoty_n - \fg(\theta) ]\right)
+   \\&= -\frac{1}{\xN}
+         \frac{1}{\pderiv{\fg(\theta)}{\theta}}
+         \left(\sum_{n=1}^\xN [\fdoty_n - \fg(\theta) ] \right)
+   \\&= -\frac{1}{\pderiv{\fg(\theta)}{\theta}}
+         \left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n - \fg(\theta) \right)
+   \\&= -\frac{1}{\pderiv{\fg(\theta)}{\theta}}
+         \left(\estML - \fg(\theta) \right)
+   \\&= -(\estML - \theta)
+\end{align*}
+\end{proof}
+
+%======================================
+\section{Colored noise}
+\index{noise!colored}
+%======================================
+This chapter presented several theorems whose results depended on the
+noise being white.
+However if the noise is {\bf colored}, then these results are
+invalid.
+But there is still hope for colored noise.
+Processing colored signals can be accomplished using two techniques:
+\begin{enume}
+   \item Karhunen-Lo\`{e}ve basis functions
+      \footnote{{\bf Karhunen-Lo\`{e}ve}: \prefpp{sec:KL}}
+   \item whitening filter
+\footnote{
+   \begin{tabular}[t]{ll}
+      \ope{Continuous data whitening}: & \prefp{sec:whiten}  \\
+      \ope{Discrete data whitening}:   & \prefp{sec:d-whiten}
+   \end{tabular}
+   }
+\end{enume}
+
+\paragraph{Karhunen-Lo\`{e}ve.}
+If the noise is white, the set $\{\inprod{\rvy(t)}{\psi_n(t)}\}$
+is a sufficient statistic regardless of which
+set $\{\psi_n(t)\}$ of orthonormal basis functions are used.
+If the noise is colored, and if $\{\psi_n(t)\}$ satisfy the
+Karhunen-Lo\`{e}ve criterion
+   \[ \int_{t_2}\Rxx(t_1,t_2)\psi_n(t_2)\dd{t_2} = \lambda_n \psi_n(t_1) \]
+then $\{\inprod{\rvy(t)}{\psi_n(t)}\}$ is still a sufficient statistic.
+
+\paragraph{Whitening filter.}
+The whitening filter makes the received signal $\rvy(t)$ statistically white
+(uncorrelated in time). In this case,
+any orthonormal basis set can be used to generate sufficient statistics.
+
+
+
+
+%======================================
+\section{Signal matching}
+\index{matched filter}
+%======================================
+\paragraph{Detection methods.}
+There are basically two types of detection methods:
+\begin{enume}
+   \item signal matching
+   \item orthonormal decomposition.
+\end{enume}
+
+Let $\setS$ be the set of transmitted waveforms and
+$\setY$ be a set of orthonormal basis functions that span $\setS$.
+\hie{Signal matching} computes the innerproducts of a
+received signal $\rvy(t)$ with each signal from $\setS$.
+\hie{Orthonormal decomposition} computes the innerproducts of
+$\rvy(t)$ with each signal from the set $\setY$.
+
+In the case where $|S|$ is large, often $|R|<<|S|$
+making orthonormal decomposition much easier to implement.
+For example, in a QAM-64 modulation system,
+signal matching requires $|S|=64$ innerproduct calculations,
+while orthonormal decomposition only requires $|R|=2$
+innerproduct calculations because all 64 signals in $\setS$ can be spanned
+by just 2 orthonormal basis functions.
+
+\paragraph{Maximizing SNR.}
+\prefpp{thm:sstat} shows that the innerproducts of $\rvy(t)$ with
+basis functions of $\setY$ is sufficient for optimal detection.
+\prefpp{thm:mf_maxSNR} (next) shows that a receiver can
+maximize the SNR of a received signal when signal matching is used.
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:mf_maxSNR}
+%--------------------------------------
+Let $\rvx(t)$ be a transmitted signal, $\fn(t)$ noise, and $\rvy(t)$ the received signal
+in an AWGN channel.
+Let the \hie{signal to noise ratio} SNR be defined as
+\\\indentx$\ds
+      \snr[\rvy(t)] \eqd \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
+                            {\pE\brs{|\inprod{\fn(t)}{\rvx(t)}|^2}}.
+          $
+\thmboxt{
+  $\ds\snr[\rvy(t)] \le \frac{2\norm{\rvx(t)}^2}{\xN_o }$
+  \qquad
+  and is maximized (equality) when $\rvx(t)=a\rvx(t)$, where $a\in\R$.
+  }
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \snr[\rvy(t)]
+     &\eqd \frac{\abs{\inprod{\rvx(t)}{\rvx(t)}}^2}
+                {\pE\brs{|\inprod{\fn(t)}{\rvx(t)}|^2}}
+   \\&=    \frac{\abs{\inprod{\rvx(t)}{f(t)}}^2}
+                {\pE\brs{\left[\int_{t\in\R} \fn(t)\rvx^\ast(t)\;dt\right]
+                      \left[\int_{\estT} n(\estT)f^\ast(\estT)\;du\right]^\ast}
+                }
+   \\&=    \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
+                {\pE\brs{\int_{t\in\R} \int_{\estT} \fn(t)n^\ast(\estT)\rvx^\ast(t)\rvx(\estT)\;dtdu}}
+   \\&=    \frac{|\inprod{\rvx(t)}{f(t)}|^2}
+                {\int_{t\in\R} \int_{\estT} \pE\brs{\fn(t)n^\ast(\estT)}\rvx^\ast(t)\rvx(\estT)\;dtdu}
+   \\&=    \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
+                {\int_{t\in\R} \int_{\estT} \frac{1}{2}\xN_o\delta(t-\estT) \rvx^\ast(t)\rvx(\estT)\;dtdu}
+   \\&=    \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
+                {\frac{1}{2}\xN_o \int_{t\in\R} \rvx^\ast(t)\rvx(t)\dt}
+   \\&=    \frac{|\inprod{\rvx(t)}{\rvx(t)}|^2}
+                {\frac{1}{2}\xN_o \norm{\rvx(t)}^2}
+   \\&\le  \frac{|\norm{\rvx(t)}\;\norm{\rvx(t)}|^2}
+                {\frac{1}{2}\xN_o \norm{\rvx(t)}^2}
+     &&    \text{by \thme{Cauchy-Schwarz Inequality}}
+     &&    \text{\ifsxref{vsinprod}{thm:cs}}
+   \\&=    \frac{2\norm{\rvx(t)}^2}
+                {\xN_o }
+\end{align*}
+The Cauchy-Schwarz Inequality becomes an equality
+($\snr$ is maximized) when $\rvx(t)=a\rvx(t)$.
+\end{proof}
+
+\paragraph{Implementation.}
+The innerproduct operations can be implemented using either
+  \begin{dingautolist}{"C0}
+     \item a correlator or
+     \item a matched filter.
+  \end{dingautolist}
+
+A correlator is simply an integrator of the form
+   $\ds\inprod{\rvy(t)}{f(t)} = \int_0^T \rvy(t)f(t)\dt.$
+
+A matched filter introduces a function $\fh(t)$ such that
+$\fh(t) =\rvx(T-t)$ (which implies $\rvx(t)=h(T-t)$) giving
+  \[
+    \mcom{\inprod{\rvy(t)}{\rvx(t)} = \int_0^T \rvy(t)\rvx(t)\dt }
+         {correlator}
+    =
+    \mcom{\left.\int_0^\infty \rvx(\tau)h(t-\tau)\dtau\right|_{t=T}
+            = \left.\rvx(t)\conv \fh(t)\right|_{t=T}
+         }{matched filter}.
+  \]
+
+This shows that $\fh(t)$ is the impulse response of a filter operation
+sampled at time $T$. % (see \prefpp{fig:mf}).
+By \prefpp{thm:mf_maxSNR}, the optimal impulse response is
+$\fh(T-t)=f(t)=\rvx(t)$.
+That is, the optimal $\fh(t)$ is just a ``flipped" and shifted version of $\rvx(t)$.
+
+
+
+
