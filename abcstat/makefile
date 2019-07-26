@@ -19,6 +19,7 @@ FILE_SRC  =                       \
   ../common/quotepagepair.tex     \
   ../common/binomial.tex          \
   ../common/calculus.tex          \
+  ../common/com_channel.tex       \
   ../common/dtft.tex              \
   ../common/expectation.tex       \
   ../common/latd.tex              \

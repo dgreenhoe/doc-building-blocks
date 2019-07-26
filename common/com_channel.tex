@@ -1,0 +1,402 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%======================================
+\section{System model}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\centering%
+\setlength{\unitlength}{0.20mm}
+\begin{picture}(700,150)(-100,-50)
+  \thicklines
+  %\graphpaper[10](0,0)(500,100)
+  \put(-100 ,  60 ){\makebox( 100,0)[b]{$\su$} }
+  \put(-100 ,  50 ){\vector(1,0){100} }
+
+  \put(  00 ,  10 ){\makebox( 100, 80)[t]{transmit} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put(  00 ,  00 ){\framebox( 100,100){} }
+
+  \put( 100 ,  60 ){\makebox( 100,0)[b]{$\fs(t;\vu)$} }
+  \put( 100 ,  50 ){\vector(1,0){100} }
+
+  \put( 200 ,  10 ){\makebox( 100, 80)[t]{channel} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[b]{$\opC$} }
+  \put( 200 ,  00 ){\framebox(100,100){} }
+
+  \put( 300 ,  60 ){\makebox( 100,0)[b]{$\fr(t;\vu)$} }
+  \put( 300 ,  50 ){\vector(1,0){100} }
+
+  \put( 400 ,  00 ){\framebox(100,100){} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[t]{receive} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[b]{$\opR$} }
+
+  \put( 500 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 500 ,  50 ){\vector(1,0){100} }
+
+  \put(- 90 , -10 ){\makebox( 0, 0)[tl]{$\vu\eqd\su$} }
+  \put( 110 , -10 ){\makebox( 0, 0)[tl]{$\fs(t;\vu)=\opT\vu$} }
+  \put( 310 , -10 ){\makebox( 0, 0)[tl]{$\fr(t;\vu)=\opC\opT\vu$} }
+  \put( 510 , -10 ){\makebox( 0, 0)[tl]{$\sue=\opSys\vu=\opR\opC\opT\vu$} }
+
+\end{picture}
+\caption{
+   Communication system model
+   \label{fig:sys_model}
+   }
+\end{figure}
+
+A communication system is an operator.
+%\footnote{
+%   \begin{tabular}[t]{lll}
+%      \hie{operator}:                & \pref{def:operator} & page~\pageref{def:operator}\\
+%      \hie{operator multiplication}: & \pref{def:op+x}     & page~\pageref{def:op+x}
+%   \end{tabular}
+%   }
+$\opSys$ over an information sequence $\su$ that generates an
+estimated information sequence $\sue$.
+The system operator factors into a
+receive operator $\opR$, a channel operator $\opC$, and
+a transmit operator $\opT$ such that
+   \[ \opSys = \opR\opC\opT. \]
+The transmit operator
+operates on an information sequence $\su$ to generate
+a channel signal $\fs(t;\vu)$.
+The channel operator operates on the transmitted signal $\fs(t;\vu)$
+to generate the received signal $\fr(t;\vu)$.
+The receive operator operates on the received signal $\fr(t;\vu)$
+to generate the estimate $\sue$
+(see \prefpp{fig:sys_model}).
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:comsys}
+\index{communication system}
+%---------------------------------------
+Let $U$ be the set of all sequences $\su$ and let
+\defbox{
+\begin{array}{lllll}
+   \imark & \opSys &:U    &\to U    & \text{ (system   operator)  } \\
+   \imark & \opT   &:U    &\to \vRc & \text{ (transmit operator)} \\
+   \imark & \opC   &:\vRc &\to \vRc & \text{ (channel  operator) } \\
+   \imark & \opR   &:\vRc &\to U    & \text{ (receive  operator) }
+\end{array}
+}\\
+be operators.
+A {\bf digital communication system} is the operation $\opSys$
+on the set of information sequences $U$ such that
+$\opSys \eqd \opR\opC\opT$.
+\end{definition}
+
+Communication systems can be continuous or discrete valued in
+time and/or amplitude:
+
+   \begin{tabular}{|c||c|c|}
+      \hline
+         $\fs(t)=a(t)\psi(t)$   &  continuous time $t$      & discrete time $t$   \\
+      \hline
+      \hline
+         continuous amplitude $a(t)$ & analog communications   & discrete-time communications  \\
+      \hline
+         discrete amplitude $a(t)$   &---                    & digital communications \\
+      \hline
+   \end{tabular}
+
+{\bf In this document, we normally take the approach that}
+\begin{enume}
+   \item $\opC$ is stochastic
+         %\footnote{
+         %An exception to this is
+         %in \prefpp{chp:isi} (ISI) \prefpp{chp:isi},
+         %where $\opC$ is deterministic
+         %($\opC$ is simply a bandlimiting operation).
+         %However in any real-world system, $\opC$ is always stochastic.
+         %}
+   \item There is no structural constraint on $\opR$.
+   \item $\opR$ is optimum with respect to the ML-criterion.
+\end{enume}
+These characteristics are explained more fully below.
+
+%======================================
+\subsection{Channel operator}
+%======================================
+Real-world physical channels perform a number of operations on
+a signal.
+Often these operations are closely modeled by a channel
+operator $\opC$.
+Properties that characterize a particular
+channel operator associated with some physical channel include
+\begin{liste}
+   \item linear or non-linear
+   \item time-invariant or time-variant
+   \item memoryless or non-memoryless
+   \item deterministic or stochastic.
+\end{liste}
+Examples of physical channels include
+free space, air, water, soil, copper wire, and fiber optic cable.
+Information is carried through a channel using some physical process.
+These processes include:
+
+\begin{tabular}{cl|ll}
+             & Process          & Example             \\
+   \hline
+   $\imark$ & electromagnetic waves & free space, air    &\\% (see \prefpp{app:em})  \\
+   $\imark$ & acoustic waves        & water, soil         \\
+   $\imark$ & electric field potential (voltage)  & wire                \\
+   $\imark$ & light            & fiber optic cable   \\
+   $\imark$ & quantum mechanics         &
+\end{tabular}
+
+
+%======================================
+\subsection{Receive operator}
+%======================================
+Let $\opI$ be the \hie{identity operator}.\footnote{
+  $\opI$ is the \hie{identity operator} if for any operator $\opX$,
+  $\opX\opI = \opI\opX = \opX.$
+  }
+Ideally, $\opR$ is selected such that
+   $\opR\opC\opT = \opI$.
+In this case we say that $\opR$ is the \hie{left inverse}\footnote{
+  \begin{tabular}[t]{llll}
+    $\opXi{X}$ is the & \hie{left  inverse}& of $\opX$ if & $\opXi{X}\opX=\opI$. \\
+    $\opXi{X}$ is the & \hie{right inverse}& of $\opX$ if & $\opX\opXi{X}=\opI$. \\
+    $\opXi{X}$ is the & \hie{      inverse}& of $\opX$ if & $\opXi{X}\opX=\opX\opXi{X}=\opI$.
+  \end{tabular}
+   }
+of $\opC\opT$ and denote this left inverse by $\opCTi$.
+One example of a system where this inverse exists is the
+noiseless ISI system.  %\xref{chp:isi}.
+While this is quite useful for mathematical analysis and system design,
+$\opCTi$ does not actually exist for any real-world system.
+
+When $\opCTi$ does not exist, the ``ideal" $\opR$ is one that is
+optimum
+  \begin{enume}
+    \item with respect to some \hie{criterion} (or cost function)
+    \item and sometimes under some structural \hie{constraint}.
+  \end{enume}
+When a structural constraint is imposed on $\opR$,
+the solution is called \hie{structured}; otherwise,
+it is called \hie{non-structured}.\footnote{\citerpg{vantrees1}{12}{0471095176}}
+A common example of a structured approach is the use of a
+transversal filter (FIR filter in DSP) in which optimal coefficients
+are found for the filter.
+A structured $\opR$ is only optimal with respect to the
+imposed constraint.
+Even though $\opR$ may be optimal with respect to this structure,
+$\opR$ may not be optimal in general;
+that is, there may be another structure that would lead to a ``better"
+solution.
+In a non-structured approach, $\opR$ is free to take any form
+whatsoever (practical or impractical) and therefore leads to the
+best of the best solutions.
+
+The nature of $\opR$ depends heavily on the nature of $\opC$.
+If $\opCTi$ does not exist,
+then the ideal $\opR$ is one that is optimal with respect to some criterion.
+If $\opC$ is deterministic,
+then appropriate optimization criterion may include
+\begin{liste}
+   \item least square error (LSE) criterion
+   \item minimum absolute error criterion
+   \item minimum peak distortion criterion.
+\end{liste}
+If $\opC$ is stochastic
+%\footnote{
+%  An example of a stochastic $\opC$ includes the additive noise channel
+%  operator $\opCan$ and the AWGN channel operator $\opCawgn$.
+%  \xref{chp:awgn}
+%  }
+then appropriate optimization criterion may include
+\\\begin{tabular}{clll}
+     $\imark$ & Bayes:                                  & pdf known and cost function defined
+   \\$\imark$ & Maximum aposteriori probability (MAP):  & pdf known and uniform cost function
+   \\$\imark$ & Maximum likelihood (ML):                & pdf known and no prior probability information
+   \\$\imark$ & mini-max:                               & pdf not known but a cost function is defined
+   \\$\imark$ & Neyman-Pearson:                         & pdf not known and no cost function defined.
+\end{tabular}
+
+Making $\opR$ optimum with respect to one of these criterion leads to
+an \hie{estimate} $\sue = \opR\opC\opT\vu$ that is also optimum
+with respect to the same criterion \xref{def:ML}.
+
+%20190726-see {def:ML}%%---------------------------------------
+%20190726-see {def:ML}%\begin{definition}
+%20190726-see {def:ML}%%---------------------------------------
+%20190726-see {def:ML}%Let the following estimates be defined as follows:
+%20190726-see {def:ML}%\defbox{\begin{array}{MM>{\ds}lc>{\ds}l}
+%20190726-see {def:ML}%   \opd{Bayesian}:                        &             & \estB   &\eqd& \argmin_{\theta} C(\theta,\pdfp(s,r)) \\
+%20190726-see {def:ML}%   \opd{Mean square}                      &(\opd{MS}):  & \estMS  &\eqd& \argmin_{\theta} \pE\norm{C(\theta,\pdfp(s,r))}^2 \\
+%20190726-see {def:ML}%   \opd{mini-max}                         &(\opd{MM}):  & \estMM  &\eqd& \argmin_{\theta}\max_{\pdfp} C(\theta,\pdfp(s,r)) \\
+%20190726-see {def:ML}%   \opd{maximum a-posteriori probability} &(\opd{MAP}): & \estMAP &\eqd& \argmax_{\theta} \pP{s(t;\theta)|\fr(t)} \\
+%20190726-see {def:ML}%   \opd{maximum likelihood}               &(\opd{ML}):  & \estML  &\eqd& \argmax_{\theta} \pP{\fr(t)|s(t;\theta)}
+%20190726-see {def:ML}%\end{array}}
+%20190726-see {def:ML}%\end{definition}
+
+%======================================
+\section{Optimization in the case of additional operations}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\centering%
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(900,150)(-100,-50)
+  \thicklines
+  %\graphpaper[10](0,0)(500,100)
+  \put(-100 ,  60 ){\makebox( 100,0)[b]{$\su$} }
+  \put(-100 ,  50 ){\vector(1,0){100} }
+
+  \put(  00 ,  10 ){\makebox( 100, 80)[t]{transmit} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put(  00 ,  00 ){\framebox( 100,100){} }
+
+  \put( 100 ,  60 ){\makebox( 100,0)[b]{$\fs(t;\vu)$} }
+  \put( 100 ,  50 ){\vector(1,0){100} }
+
+  \put( 200 ,  10 ){\makebox( 100, 80)[t]{channel} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[b]{$\opC$} }
+  \put( 200 ,  00 ){\framebox(100,100){} }
+
+  \put( 300 ,  60 ){\makebox( 100,0)[b]{$\fr(t;\vu)$} }
+  \put( 300 ,  50 ){\vector(1,0){100} }
+
+  \put( 400 ,  00 ){\framebox(100,100){} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[t]{} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[b]{$\opX$} }
+
+ %\put( 500 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 500 ,  50 ){\vector(1,0){100} }
+
+  \put( 600 ,  00 ){\framebox(100,100){} }
+  \put( 600 ,  10 ){\makebox( 100, 80)[t]{receive} }
+  \put( 600 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 600 ,  10 ){\makebox( 100, 80)[b]{$\opR$} }
+
+  \put( 700 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 700 ,  50 ){\vector(1,0){100} }
+
+  \put(- 90 , -10 ){\makebox( 0, 0)[tl]{$\vu\eqd\su$} }
+  \put( 110 , -10 ){\makebox( 0, 0)[tl]{$\fs(t;\vu)=\opT\vu$} }
+  \put( 310 , -10 ){\makebox( 0, 0)[tl]{$\fr(t;\vu)=\opC\opT\vu$} }
+  \put( 510 , -10 ){\makebox( 0, 0)[tl]{$\opX\opC\opT\vu$} }
+  \put( 710 , -10 ){\makebox( 0, 0)[tl]{$\sue=\opR\opX\opC\opT\vu$} }
+
+\end{picture}
+\caption{
+   Theorem of reversibility
+   \label{fig:thm_rev}
+   }
+\end{figure}
+
+Often in communication systems, an additional  operator $\opX$ is
+inserted such that (see \prefpp{fig:thm_rev})
+   \[ \opSys = \opR\opX\opC\opT.\]
+An example of such an operator $\opX$ is a receive filter.
+Is it still possible to find an $\opR$ that will perform as well as
+the case where $\opX$ is not inserted?
+In general, the answer is ``no".
+For example, if $\opX r=0$, then all received information is lost
+and obviously there is no $\opR$ that can recover from this event.
+However, in the case where the right inverse $\opXi{X}$ of $\opX$ exists,
+then the answer to the question is ``yes" and an optimum  $\opR$
+still exists.
+That is, it doesn't matter if an $\opX$ is inserted into system
+as long as $\opX$ is invertible.
+This is stated formally in the next theorem.
+%--------------------------------------
+\begin{theorem}[\thmd{Theorem of Reversibility}]
+\footnote{
+  \citerppg{vantrees1}{289}{290}{0471095176}
+  }
+\label{thm:reversibility}
+%--------------------------------------
+Let
+\begin{liste}
+   \item $\est = \opR\opC\opT\vu$ be the optimum estimate of $\vu$
+   \item $\opX$ be an operator with right inverse $\opXi{X}$.
+\end{liste}
+Then there exists some $\opR'$ such that
+   \thmbox{ \est = \opR'\opX\opC\opT\vu. }
+\end{theorem}
+\begin{proof}
+  Let $\opR'=\opR\opXi{X}$.
+  Then
+  \[ \opR'\opX\opC\opT\vu = \opR\opXi{X}\opC\opT\vu = \opR\opC\opT\vu = \est. \]
+\end{proof}
+
+%======================================
+\section{Channel Statistics}
+%======================================
+The receiver needs to make a decision as to what
+sequence $\seqn{u}$ the transmitter has sent.
+This decision should be optimal in some sense.
+Very often the optimization criterion is chosen to be
+the \hie{maximal likelihood (ML)} criterion.
+The information that the receiver can use to make an optimal
+decision is the received signal $\fr(t)$.
+
+If the symbols in $\fr(t)$ are statistically \hie{independent},
+then the optimal estimate of the current symbol depends only on the
+current symbol period of $\fr(t)$.
+Using other symbol periods of $\fr(t)$ has absolutely no
+additional benefit.
+Note that the AWGN channel is \hie{memoryless};
+that is, the way the channel treats the current symbol has
+nothing to do with the way it has treated any other symbol.
+Therefore, if the symbols sent by the transmitter into the channel
+are independent, the symbols coming out of the channel are also
+independent.
+
+However, also note that the symbols sent by the transmitter
+are often very intentionally not independent;
+but rather a strong relationship between symbols is intentionally
+introduced. This relationship is called \hie{channel coding}.
+With proper channel coding, it is theoretically possible
+to reduce the probability of communication error to any
+arbitrarily small value as long as the channel is operating below its
+\hie{channel capacity}.
+
+This chapter assumes that the received symbols are
+statistically independent;
+and therefore optimal decisions at the receiver
+for the current symbol are made
+only from the current symbol period of $\fr(t)$.
+
+The received signal $\fr(t)$ over a single symbol period
+contains an uncountably infinite number of points.
+That is a lot.
+It would be nice if the receiver did not have to look
+at all those uncountably infinite number of points
+when making an optimal decision.
+And in fact the receiver does indeed not have to.
+As it turns out, a single finite set of \hie{statistics}
+$\setn{\fdotr_1,\;\fdotr_2,\ldots,\fdotr_N}$
+is sufficient for the receiver to make an optimal decision as to
+which value the transmitter sent.
+
+%---------------------------------------
+\begin{definition}
+\label{def:chan_stats}
+\index{channel statistics}
+%---------------------------------------
+Let $\opC$ be an additive noise channel
+%such that $\fr(t)=[\opC\fs](t)=\fs(t)+\fn(t)$
+%and $\set{\fpsi_n}{n=1,2,\ldots,N}$ be a basis for $\fs(t)$.
+%\defbox{\begin{array}{lll}
+%  \fdotr_n    &\eqd& \inprod{\fr(t)}  {\psi_n(t)}  \\
+  %\fdots_n(u) &\eqd& \inprod{\fs(t;u)}{\psi_n(t)} \\
+%  \fdotn_n    &\eqd& \inprod{\fn(t)}  {\psi_n(t)}
+%\end{array}}
+\end{definition}
+
+
+
+
