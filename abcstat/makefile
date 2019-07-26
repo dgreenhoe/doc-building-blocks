@@ -25,6 +25,7 @@ FILE_SRC  =                       \
   ../common/latc.tex              \
   ../common/latb.tex              \
   ../common/lattice.tex           \
+  ../common/moment_estimation.tex \
   ../common/order.tex             \
   ../common/pdfcdf.tex            \
   ../common/probspace.tex         \

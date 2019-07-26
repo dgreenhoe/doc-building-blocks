@@ -1,0 +1,163 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%=======================================
+\chapter{Moment Estimation}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:mse}
+%---------------------------------------
+\defbox{
+  \mse(\estT) \eqd \pE\brs{\brp{\estT-\theta}^2}
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:mse}
+\footnote{
+  \citerpgc{kay1988}{45}{8131733564}{\textsection\scshape``3.3 Estimation Theory"}
+  }
+%---------------------------------------
+\thmbox{
+  \mse(\estT) =
+      \mcom{\pE\brs{\brp{\estT-\pE\estT}^2}}{variance of $\estT$}
+    + \mcom{\brs{\pE\estT - \theta}^2}{bias of $\estT$ squared}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \mse(\estT)
+    &\eqd \pE\brs{\brp{\estT-\theta}^2}
+    && \text{by definition of $\mse$}
+    && \text{\xref{def:mse}}
+  \\&= \pE\brs{\brp{\estT-\pE\estT+\pE\estT-\theta}^2}
+  \\&= \pE\brs{
+         \brp{\estT-\pE\estT}^2
+        +\mcom{\brp{\pE\estT-\theta}^2}{constant}
+        -2\brp{\estT-\pE\estT}\brp{\pE\estT-\theta}
+       }
+  \\&= \pE\brp{\estT-\pE\estT}^2
+        +\brp{\pE\estT-\theta}^2
+        -2\pE\brs{
+         \estT\pE\estT
+        -\estT\theta
+        -\pE\estT\estT
+        +\pE\estT\theta
+        }
+  \\&= \pE\brp{\estT-\pE\estT}^2
+        +\brp{\pE\estT-\theta}^2
+        -2\brs{
+         \pE\estT\pE\estT
+        -\pE\estT\pE\theta
+        -\pE\estT\pE\estT
+        +\pE\estT\pE\theta
+        }
+  \\&= \pE\brp{\estT-\pE\estT}^2
+        +\brp{\pE\estT-\theta}^2
+        -0
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:mse_mean}
+%---------------------------------------
+Let $\ds\meanest\eqd\sum_{n=1}^\xN \lambda_n \rvx_n$ with $\sum_{n=1}^{\xN}\lambda_n=1$
+be the \fncte{arithmetic mean} \xref{def:am}.
+
+\thmbox{
+  \brb{\begin{array}{FMD}
+      (A).& $\seqn{\rvx_n}$ is \prope{wide sense stationary} & and
+    \\(B).& $\mu\eqd\pE\rvx_n$                               & and
+    \\(C).& $\seqn{\rvx_n}$ is \prope{uncorrelated}          & and
+    \\(D).& \mc{2}{M}{$\ds\meanest\eqd\sum_{n=1}^\xN \lambda_n \rvx_n$ (\fncte{arithmetic mean})}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclDD}
+      (1).& \pE\meanest    &=& \mean                               & (\prope{unbiased})   & and
+    \\(2).& \var(\meanest) &=& \mc{2}{l}{\ds\sigma^2\sum_{n=1}^{\xN}\lambda_n^2 }         & and
+    \\(3).& \mse(\meanest) &=& \mc{2}{l}{\ds\sigma^2\sum_{n=1}^{\xN}\lambda_n^2 }         &
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \pE\meanest
+    &\eqd \pE \sum_{n\in\Z} \lambda_n\rvx_n
+    && \text{by definition of \fncte{arithmetic mean}}
+    && \text{\xref{def:am}}
+  \\&=  \sum_{n\in\Z} \lambda_n\pE\rvx_n
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
+  \\&=  \mean\sum_{n\in\Z}\lambda_n
+    && \text{by \prope{WSS} hypothesis}
+    && \text{(A)}
+  \\&=  \mean
+    && \text{by $\sum\lambda_n=1$ hypothesis}
+    && \text{\xref{def:am}}
+  \\
+  \var(\meanest)
+    &\eqd \pE\brp{\meanest-\pE\meanest}^2
+    && \text{by definition of \fncte{variance}}
+  \\&= \pE\brp{\meanest-\mean}^2
+    && \text{by previous result}
+  \\&= \pE\brp{\sum_{n=1}^{\xN}\lambda_n\rvx_n -\mean}^2
+    && \text{by definition of $\meanest$}
+  \\&= \pE\brs{\sum_{n=1}^{\xN}\rvx_n -\mean\mcom{\sum_{n=1}^{\xN}\lambda_n}{$1$}}^2
+  \\&= \pE\brs{\sum_{n=1}^{\xN}\lambda_n(\rvx_n-\mean)}^2
+  \\&= \pE\brs{\sum_{n=1}^{\xN}\lambda_n(\rvx_n-\mean)\sum_{m=1}^{\xN}\lambda_m(\rvx_m-\mean)}
+  \\&= \sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\lambda_n\lambda_m\brp{\pE\brs{(\rvx_n-\mean)(\rvx_m-\mean)}                                     }
+  \\&= \sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\lambda_n\lambda_m\brp{\pE\brs{\rvx_n\rvx_m}-\mean\pE\brs{\rvx_n}-\mean\pE\brs{\rvx_m}+\mean^2   }
+  \\&= \sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\lambda_n\lambda_m\brp{\pE\brs{\rvx_n\rvx_m}-\mean^2-\mean^2+\mean^2                             }
+  \\&= \sum_{n=1}^{\xN}\sum_{m=1}^{\xN}\lambda_n\lambda_m\brp{\pE\brs{\rvx_n\rvx_m}-\mean^2                                             }
+  \\&= \mathrlap{
+       \sum_{n=1}^{\xN} \lambda_n^2 {\pE\brs{\rvx_n^2    }-\mean^2}
+     + \sum_{n=1}^{\xN}\sum_{m\neq n }\lambda_n\lambda_m\brp{\pE\brs{\rvx_n\rvx_m}-\mean^2 }
+       }
+  \\&= \mathrlap{
+       \sum_{n=1}^{\xN} \lambda_n^2 \brp{\pE\brs{\rvx_n^2    }-\mean^2                                             }
+     + \sum_{n=1}^{\xN}\sum_{m\neq n  }\lambda_n\lambda_m\brp{\pE\rvx_n\pE\rvx_m  }-\mean^2
+       }
+  \\&= \mathrlap{
+       \sum_{n=1}^{\xN} \lambda_n^2 \sigma^2
+     + \cancelto{0}{
+       \frac{1}{\xN^2}\sum_{n=1}^{\xN}\sum_{m\neq n  }\lambda_n\lambda_m\brp{\mean\mean           -\mean^2}
+       }
+       }
+  \\&= \sigma^2\sum_{n=1}^{\xN} \lambda_n^2
+  \\
+  \mse(\meanest)
+    &= \pE\brp{\meanest-\pE\meanest}^2
+        +\brp{\pE\meanest-\mean}^2
+    && \text{by \prefp{thm:mse}}
+  \\&= \sigma^2\sum_{n=1}^{\xN}\lambda_n^2 + \brp{\mean-\mean}^2
+    && \text{by previous results}
+  \\&= \sigma^2\sum_{n=1}^{\xN}\lambda_n^2
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:mse_average}
+\footnote{
+  \citerpgc{kay1988}{45}{8131733564}{\textsection\scshape``3.3 Estimation Theory"}
+  }
+%---------------------------------------
+\corbox{
+  \brb{\begin{array}{FMD}
+      (A).& $\seqn{\rvx_n}$ is \prope{wide sense stationary} & and
+    \\(B).& $\mu\eqd\pE\rvx_n$                               & and
+    \\(C).& $\seqn{\rvx_n}$ is \prope{uncorrelated}          & and
+    \\(D).& \mc{2}{M}{$\ds\meanest\eqd\frac{1}{\xN}\sum_{n=1}^\xN \rvx_n$ \qquad(\fncte{average})}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclDD}
+      (1).& \pE\meanest    &=& \mean                & (\prope{unbiased})   & and
+    \\(2).& \var(\meanest) &=& \frac{\sigma^2}{\xN} &                      & and
+    \\(3).& \mse(\meanest) &=& \frac{\sigma^2}{\xN} & (\prope{consistent})
+  \end{array}}
+  }
+\end{corollary}
