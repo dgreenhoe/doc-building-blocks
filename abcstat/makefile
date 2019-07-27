@@ -22,12 +22,14 @@ FILE_SRC  =                       \
   ../common/com_channel.tex       \
   ../common/dtft.tex              \
   ../common/expectation.tex       \
+  ../common/gradient_search.tex   \
   ../common/kl_basis.tex          \
   ../common/latd.tex              \
   ../common/latc.tex              \
   ../common/latb.tex              \
   ../common/lattice.tex           \
   ../common/moment_estimation.tex \
+  ../common/norm_minimization.tex \
   ../common/order.tex             \
   ../common/pdfcdf.tex            \
   ../common/probspace.tex         \

@@ -1,0 +1,463 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Norm Minimization}
+%======================================
+\begin{figure}[ht]
+\centering%
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(700,450)(-100,-300)
+  \thicklines
+  %\graphpaper[10](0,0)(700,100)
+  \put(-100,  10){\makebox ( 50,  0)[b]{$x$}               }
+  \put(-100,   0){\line    (  1,  0)   { 50}               }
+  \put(- 50,- 75){\line    (  0,  1)   {150}               }
+  \put(- 50,  75){\vector  (  1,  0)   { 50}               }
+  \put(- 50,- 75){\vector  (  1,  0)   { 50}               }
+  \put(   0,  25){\framebox(100,100)[c]{process}           }
+
+  \put(   0,-125){\framebox(100,100)[c]{}                  }
+  \put(   0,-115){\makebox (100, 80)[t]{estimate} }
+  \put(   0,-115){\makebox (100, 80)[c]{operator} }
+  \put(   0,-115){\makebox (100, 80)[b]{$U$}            }
+
+  \put(   0,-275){\framebox(100,100)[c]{estimate $\vp$}    }
+  \put(  50,-175){\vector  (  0,  1)   { 50}               }
+  \put(  60,-150){\makebox (  0,  0)[l]{$\estn$}           }
+
+  \put( 100,  85){\makebox ( 50,  0)[b]{$y$}               }
+  \put( 100,  75){\line    (  1,  0)   { 50}               }
+  %\put( 100,- 65){\makebox ( 50,  0)[b]{$U\estn$}            }
+  \put( 100,- 75){\line    (  1,  0)   { 50}               }
+  \put( 150,  75){\line    (  0, -1)   { 50}               }
+  \put( 150,- 75){\line    (  0,  1)   { 50}               }
+  \put( 150,  25){\vector  (  1,  0)   { 50}               }
+  \put( 150, -25){\vector  (  1,  0)   { 50}               }
+
+  \put( 200,- 50){\framebox(100,100)[c]{cost}    }
+  \put( 300,  10){\makebox (100,  0)[b]{$C(\estn,x,y)$}      }
+  \put( 300,   0){\vector  (  1,  0)   {100}               }
+  \put( 400,- 50){\framebox(100,100)[c]{$\grad_\vp$}        }
+  \put( 510,  10){\makebox (100,  0)[lb]{$\grad_\vp C(\vp,x,y)$}      }
+  \put( 500,   0){\vector  (  1,  0)   {100}               }
+
+\end{picture}
+\caption{
+   Estimation using gradient of cost function
+   \label{fig:est-grad}
+   }
+\end{figure}
+
+Norm minimization techniques are very powerful
+in that an optimum solution can be computed
+in one step without iteration or recursion.
+In this section we present two types of norm minimization:
+\footnote{
+   The Least Squares algorithm is nothing new to mathematics.
+   It was first developed in 1795 by Gauss who was also the first
+   to discover the FFT.
+   }
+
+\begin{enume}
+  \item minimum mean square estimation (MMSE): \\
+        The MMS estimate is a \hie{stochastic} estimate.
+        To compute the MMS estimate, the we do not need to know
+        the actual data values, but we must know certain system statistics
+        which are the
+        input data autocorrelation and input/output crosscorrelation.
+        The cost function is the expected value of the norm squared error.
+   \item least square estimation (LSE): \\
+        The LS estimate is a \hie{deterministic} estimate.
+        To compute the LS estimate, we must know the actual data values
+        (although these may be ``noisy" measurements).
+        The cost function is the norm squared error.
+\end{enume}
+
+Solutions to both are given in terms of two matrices:
+
+\begin{tabular}{lll}
+   $\setY$: Autocorrelation matrix \\
+   $W$: Crosscorrelation matrix.
+\end{tabular}
+
+%--------------------------------------
+\section{Minimum mean square estimation}
+\label{sec:est_mms}
+%--------------------------------------
+%--------------------------------------
+\begin{definition}
+\label{def:est_matrices}
+%--------------------------------------
+Let the following vectors, matrices, and functions
+be defined as follows:
+
+\defbox{\begin{tabular}{lcll}
+   $\vx  $&$\in$&$ \vCm        $  & data vector                       \\
+   $\vy  $&$\in$&$ \vCn        $  & processed data vector             \\
+   $\vye $&$\in$&$ \vCn        $  & processed data estimate vector    \\
+   $\ve  $&$\in$&$ \vCn        $  & error vector                     \\
+   $\vp  $&$\in$&$ \vRm        $  & parameter vector                 \\
+   $U    $&$\in$&$ \mCmn       $  & regression matrix                \\
+   $R    $&$\in$&$ \mCmm       $  & autocorrelation matrix           \\
+   $W    $&$\in$&$ \vCm        $  & cross-correlation vector         \\
+   $C    $&$:  $&$ \vRm\to\Rnn $  & cost function
+\end{tabular}}
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}[\thmd{Minimum mean square estimation}]
+\label{thm:est_mms}
+%--------------------------------------
+Let
+\begin{align*}
+   \vye(\vp)   &\eqd U^H\vp    \\
+   \ve(\vp)    &\eqd \vye-\vy \\
+   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \Eb{\ve^H\ve} \\
+   \estMS      &\eqd \argmin_\vp \fCost(\vp)  \\
+   R           &\eqd \Eb{UU^H}   \\
+   W           &\eqd \Eb{ U\vy}.
+\end{align*}
+
+Then
+\thmbox{\begin{array}{rcl}
+   \estMS                          &=& (\Real{\setY})^{-1}(\Real{W})  \\
+   \fCost(\vp)                     &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \E{\vy^H\vy} \\
+   \grad_\vp \fCost(\vp)           &=& 2\Reb{\setY}\vp - 2\Real{W}  \\
+   \fCost(\estMS)                  &=& (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy} \\
+   \fCost(\estMS)|_{R\mbox{ real}} &=& \E{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}).
+\end{array}}
+\end{theorem}
+\begin{proof}
+See \prefpp{app:mc} for a Matrix Calculus reference.
+
+\begin{align*}
+   \fCost(\vp)
+     &\eqd \E \norm{\ve}^2
+   \\&=    \Eb{\ve^H\ve}
+   \\&=    \Eb{ \left(\vye-\vy\right)^H\left(\vye-\vy\right) }
+   \\&=    \Eb{ \left(U^H\vp-\vy\right)^H\left(U^H\vp-\vy\right) }
+   \\&=    \Eb{ \left(\vp^HU-\vy^H\right)\left(U^H\vp-\vy\right) }
+   \\&=    \Eb{ \vp^HUU^H\vp - \vp^HU\vy -\vy^HU^H\vp + \vy^H\vy }
+   \\&=    \vp^H\Eb{UU^H}\vp - \vp^H\Eb{U\vy} -\Eb{\vy^HU^H}\vp + \E{\vy^H\vy}
+   \\&=    \vp^H\Eb{UU^H}\vp - (\Eb{U\vy}^H\vp)^H -\Eb{U\vy}^H\vp + \E{\vy^H\vy}
+   \\&=    \vp^H R \vp - (W^H\vp)^H -W^H\vp + \E{\vy^H\vy}
+   \\&=    \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \E{\vy^H\vy}
+   \\&=    \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \E{\vy^H\vy}
+   \\&=    \vp^H R \vp - 2\Reb{W^H}\vp + \E{\vy^H\vy}
+\\
+\\
+   \grad_\vp \fCost(\vp)
+     &= \grad_\vp \left[ \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \E{\vy^H\vy} \right]
+   \\&= R\vp + R^T\vp - [(W^H)^\ast]^T - [W^H]^T + 0
+   \\&= R\vp + (R^H)^\ast\vp - W - W^\ast
+   \\&= R\vp + R^\ast\vp - W - W^\ast
+   \\&= (R + R^\ast)\vp - (W + W^\ast)
+   \\&= 2(\Real{\setY})\vp - 2\Real{W}
+\\
+\\
+   \vpo
+     &= (\Real{\setY})^{-1}(\Real{W})
+\\
+\\
+   \fCost(\vpo)
+     &=    \vpo^H R \vpo - 2\Reb{W^H}\vpo + \E{\vy^H\vy}
+   \\&=    [(\Real{\setY})^{-1}(\Real{W})]^H R [(\Real{\setY})^{-1}(\Real{W})] - 2\Reb{W^H}[(\Real{\setY})^{-1}(\Real{W})] + \E{\vy^H\vy}
+   \\&=    (\Real{W^H})(\Real{\setY})^{-H} R (\Real{\setY})^{-1}(\Real{W}) - 2\Reb{W^H}(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy}
+   \\&=    (\Real{W^H})(\Real{R^H})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2\Reb{W^H}(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy}
+   \\&=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy}
+\\
+\\
+   \fCost(\vpo)|_{R\mbox{ real}}
+     &=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy}
+   \\&=    (\Real{W^H})R^{-1} R R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \E{\vy^H\vy}
+   \\&=    (\Real{W^H}) R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \E{\vy^H\vy}
+   \\&=    \E{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W})
+\end{align*}
+\end{proof}
+
+
+
+
+\begin{figure}[ht]
+\centering%
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(700,450)(-100,-300)
+  \thicklines
+  \put(-100,  10){\makebox ( 50,  0)[b]{$\vx$}               }
+  \put(-100,   0){\line    (  1,  0)   { 50}               }
+  \put(- 50,- 75){\line    (  0,  1)   {150}               }
+  \put(- 50,  75){\vector  (  1,  0)   { 50}               }
+  \put(- 50,- 75){\vector  (  1,  0)   { 50}               }
+  \put(   0,  25){\framebox(100,100)[c]{process}           }
+
+  \put(   0,-125){\framebox(100,100)[c]{}                  }
+  \put(   0,-115){\makebox (100, 80)[t]{estimate} }
+  \put(   0,-115){\makebox (100, 80)[c]{process} }
+  %\put(   0,-115){\makebox (100, 80)[b]{$U$}            }
+
+  \put(   0,-275){\framebox(100,100)[c]{estimate $\vp$}    }
+  \put(  50,-175){\vector  (  0,  1)   { 50}               }
+  \put(  60,-150){\makebox (  0,  0)[l]{$\estn=R^{-1}W$}           }
+
+  \put( 110,  85){\makebox ( 50,  0)[lb]{$y$}               }
+  \put( 110, -65){\makebox ( 50,  0)[lb]{$\hat{y}=\vx^T\vp$}               }
+  \put( 100,  75){\vector  (  1,  0)   {150}               }
+  \put( 100,- 75){\vector  (  1,  0)   {150}               }
+  \put( 250,   0){\circle{40} }
+  \put( 250,   0){\makebox(0,0)[c]{$+$} }
+  \put( 250,  75){\vector  (  0, -1)   { 60}               }
+  \put( 250, -75){\vector  (  0,  1)   { 60}               }
+
+  \put( 300,  10){\makebox (100,  0)[b]{$e=\hat{y}-y$}      }
+  \put( 270,   0){\vector  (  1,  0)   {80}               }
+  \put( 350,   0){\vector  (  0, -1)   {225}               }
+  \put( 350,-225){\vector  ( -1,  0)   {250}               }
+\end{picture}
+\caption{
+   Adative filter example
+   \label{fig:est_adapt}
+   }
+\end{figure}
+
+In many adaptive filter and equalization applications,
+the autocorrelation matrix $U$ is simply the $m$-element
+random data vector $\vx(k)$ at time $k$, as in the \thme{Wiener-Hopf equations} (next).
+%--------------------------------------
+\begin{corollary}[\thmd{Wiener-Hopf equations}]
+\footnote{
+  \citerppgc{ifeachor1993}{547}{549}{020154413X}{\textsection ``9.3 Basic Wiener filter theory"},
+  \citerppgc{ifeachor2002}{651}{654}{0201596199}{\textsection ``10.3 Basic Wiener filter theory"}   % TODO: check 654
+  }
+%--------------------------------------
+\corbox{
+  \brb{
+   U \eqd \vx(k) \eqd
+   \brs{\begin{array}{l}
+      x(k) \\
+      x(k-1) \\
+      x(k-2) \\
+      \vdots \\
+      x(k-m+1)
+   \end{array}}}
+  \implies
+  \brb{\begin{array}{rcl}
+    \estMS                          &=& R^{-1}W  \\
+    \fCost(\estMS)                  &=& W^T R^{-1} R R^{-1}W - 2W^T R^{-1}W + \E{\vy^T\vy} \\
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+This is a special case of the more general case discussed
+in \prefpp{thm:est_mms}.
+Here, the dimension of $U$ is $m\times1$ (n=1).
+As a result,
+$\vy$, $\vye$, and $\ve$ are simply scalar quantities (not vectors).
+In this special case, we have the following results
+\xref{fig:est_adapt}:
+
+\begin{align*}
+   \hat{y}(\vp)   &\eqd \vx^T \vp    \\
+   e(\vp)    &\eqd \hat{y}-y \\
+   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \Eb{e^2} \\
+   \estMS      &\eqd \argmin_\vp \fCost(\vp)  \\
+   R           &\eqd \Eb{\vx\vx^T}   \\
+   W           &\eqd \Eb{ \vx y }    \\
+    \fCost(\vp)                     &= \vp^T R \vp -2W^T\vp  + \Eb{\vy^T\vy} \\
+    \grad_\vp \fCost(\vp)           &= 2R\vp - 2W  \\
+    \fCost(\estMS)|_{R\mbox{ real}} &=    \E{\vy^T\vy} - W^T R^{-1}W.
+\end{align*}
+\end{proof}
+
+%======================================
+\section{Least squares}
+\label{sec:ls}
+%======================================
+%--------------------------------------
+\begin{theorem}[\thmd{Least squares}]
+\label{thm:ls}
+\index{least squares}
+%--------------------------------------
+Let
+\begin{align*}
+   \vye(\vp)   &\eqd U^H\vp                      \\
+   \ve(\vp)    &\eqd \vye-\vy                    \\
+   \fCost(\vp) &\eqd \norm{\ve}^2 \eqd \ve^H\ve  \\
+   \estLS      &\eqd \argmin_\vp \fCost(\vp)    \\
+   R           &\eqd UU^H                        \\
+   W           &\eqd U\vy.
+\end{align*}
+
+Then
+\thmbox{\begin{array}{rcl}
+   \estLS                          &=& (\Real{\setY})^{-1}(\Real{W})  \\
+   \fCost(\vp)                     &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \E{\vy^H\vy} \\
+   \grad_\vp \fCost(\vp)           &=& 2\Reb{\setY}\vp - 2\Real{W}  \\
+   \fCost(\estLS)                  &=& (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy} \\
+   \fCost(\estLS)|_{R\mbox{ real}} &=& \E{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}).
+\end{array}}
+\end{theorem}
+
+\begin{proof}
+See \prefpp{app:mc} for a Matrix Calculus reference.
+
+\begin{align*}
+   \fCost(\vp)
+     &\eqd \norm{\ve}^2
+   \\&=    e^H\ve
+   \\&=    \left(\vye-\vy\right)^H\left(\vye-\vy\right)
+   \\&=    \left(U^H\vp-\vy\right)^H\left(U^H\vp-\vy\right)
+   \\&=    \left(\vp^HU-\vy^H\right)\left(U^H\vp-\vy\right)
+   \\&=    \vp^HUU^H\vp - \vp^HU\vy -\vy^HU^H\vp + \vy^H\vy
+   \\&=    \vp^H R \vp - (W^H\vp)^H -W^H\vp + \vy^H\vy
+   \\&=    \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \vy^H\vy
+   \\&=    \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \vy^H\vy
+   \\&=    \vp^H R \vp - 2\Reb{W^H}\vp + \vy^H\vy
+\\
+\\
+   \grad_\vp \fCost(\vp)
+     &= \grad_\vp \left[ \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \vy^H\vy \right]
+   \\&= R\vp + R^T\vp - [(W^H)^\ast]^T - [W^H]^T + 0
+   \\&= R\vp + (R^H)^\ast\vp - W - W^\ast
+   \\&= R\vp + R^\ast\vp - W - W^\ast
+   \\&= (R + R^\ast)\vp - (W + W^\ast)
+   \\&= 2(\Real{\setY})\vp - 2\Real{W}
+\\
+\\
+   \vpo
+     &= (\Real{\setY})^{-1}(\Real{W})
+\\
+\\
+   \fCost(\vpo)
+     &=    \vpo^H R \vpo - 2\Reb{W^H}\vpo + \vy^H\vy
+   \\&=    [(\Real{\setY})^{-1}(\Real{W})]^H R [(\Real{\setY})^{-1}(\Real{W})] - 2\Reb{W^H}[(\Real{\setY})^{-1}(\Real{W})] + \vy^H\vy
+   \\&=    (\Real{W^H})(\Real{\setY})^{-H} R (\Real{\setY})^{-1}(\Real{W})     - 2\Reb{W^H}(\Real{\setY})^{-1}(\Real{W})       + \vy^H\vy
+   \\&=    (\Real{W^H})(\Real{R^H})^{-1} R (\Real{\setY})^{-1}(\Real{W})   - 2\Reb{W^H}(\Real{\setY})^{-1}(\Real{W})     + \vy^H\vy
+   \\&=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W})     - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W})      + \vy^H\vy
+\\
+\\
+   \fCost(\vpo)|_{R\mbox{ real}}
+     &=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \vy^H\vy
+   \\&=    (\Real{W^H})R^{-1} R R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \vy^H\vy
+   \\&=    (\Real{W^H}) R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \vy^H\vy
+   \\&=    \vy^H\vy - (\Real{W^H})R^{-1}(\Real{W})
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{example}[Polynomial approximation]
+\index{polynomial approximation}
+\index{least squares}
+\index{Vandermonde matrix}
+%---------------------------------------
+\mbox{}\\
+Suppose we {\bf know} the locations
+$\set{(x_n,y_n)}{n=1,2,3,4,5}$ of 5 data points.
+Let $\vx$ and $\vy$ represent the locations of these points such that
+\[
+   \vx \eqd
+   \left[\begin{array}{l}
+      x_1  \\
+      x_2  \\
+      x_3  \\
+      x_4  \\
+      x_5
+   \end{array}\right]
+   \qquad\qquad
+   \vy \eqd
+   \left[\begin{array}{l}
+      y_1  \\
+      y_2  \\
+      y_3  \\
+      y_4  \\
+      y_5
+   \end{array}\right]
+\]
+Suppose we want to find a second order polynomial
+  \[ c x^2 + bx + a \]
+that best approximates
+these 5 points in the least squares sense.
+We define the matrix $U$ (known) and vector $\estn$ (to be computed)
+as follows:
+\[
+   U^H \eqd
+   \mcom{
+   \left[\begin{array}{lll}
+      1  & x_1 & x_1^2  \\
+      1  & x_2 & x_2^2  \\
+      1  & x_3 & x_3^2  \\
+      1  & x_4 & x_4^2  \\
+      1  & x_5 & x_5^2
+   \end{array}\right]
+   }{Vandermonde matrix \footnotemark}
+   \addtocounter{footnote}{-1}\footnote{\citer{horn}{29}}
+   \qquad\qquad
+   \estn \eqd
+   \left[\begin{array}{l}
+      a  \\
+      b  \\
+      c  \\
+   \end{array}\right]
+\]
+Then, using \prefpp{thm:ls}, the best coefficients $\estn$
+for the polynomial are
+\begin{align*}
+  \estn
+    &= \left[\begin{array}{l}
+          a  \\
+          b  \\
+          c  \\
+       \end{array}\right]
+  \\&= R^{-1}W
+  \\&= (UU^H)^{-1}\; (U\vy)
+  \\&= \left(
+       \left[\begin{array}{lll}
+          1  & x_1 & x_1^2  \\
+          1  & x_2 & x_2^2  \\
+          1  & x_3 & x_3^2  \\
+          1  & x_4 & x_4^2  \\
+          1  & x_5 & x_5^2
+       \end{array}\right]^H
+       \left[\begin{array}{lll}
+          1  & x_1 & x_1^2  \\
+          1  & x_2 & x_2^2  \\
+          1  & x_3 & x_3^2  \\
+          1  & x_4 & x_4^2  \\
+          1  & x_5 & x_5^2
+       \end{array}\right]
+       \right)^{-1}
+       \left(
+       \left[\begin{array}{lll}
+          1  & x_1 & x_1^2  \\
+          1  & x_2 & x_2^2  \\
+          1  & x_3 & x_3^2  \\
+          1  & x_4 & x_4^2  \\
+          1  & x_5 & x_5^2
+       \end{array}\right]^H
+       \left[\begin{array}{l}
+          y_1  \\
+          y_2  \\
+          y_3  \\
+          y_4  \\
+          y_5
+       \end{array}\right]
+       \right)
+\end{align*}
+\end{example}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
