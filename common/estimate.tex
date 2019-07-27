@@ -8,6 +8,9 @@
 \label{app:est}
 \index{estimation theory}
 %======================================
+%======================================
+\section{Estimation types}
+%======================================
 %--------------------------------------
 \paragraph{Estimation types.}
 %--------------------------------------
@@ -75,10 +78,10 @@ Norm minimization and gradient search algorithms are all linear algorithms.
 While this restriction to linear operations often simplifies calculations,
 it often yields an estimate that is not optimal in the ML sense.
 
-%--------------------------------------
+%=======================================
 \section{Estimation criterion}
 \label{sec:est_criterion}
-%--------------------------------------
+%=======================================
 \begin{figure}[h]
 \centering%
 \includegraphics{graphics/latestimation.pdf}
@@ -104,9 +107,9 @@ it often yields an estimate that is not optimal in the ML sense.
 %--------------------------------------
 Let\\
 $\begin{array}{FlM}
-    (A).& x(t;\theta)          & be a function with unknown parameter $\theta$
-  \\(B).& y(t)                 & a known function which is statistically dependent on $x(t;\theta)$
-  \\(C).& C(\theta,\pdfp(x,y)) & be a cost function.
+    (A).& \rvx(t;\theta)            & be a random process with unknown parameter $\theta$
+  \\(B).& \rvy(t)                   & an observed random process which is statistically dependent on $\rvx(t;\theta)$
+  \\(C).& \fCost(\theta,\pdfp(x,y)) & be a cost function.
 \end{array}$
 \tbox{
 \setlength{\unitlength}{0.15mm}
@@ -123,7 +126,7 @@ $\begin{array}{FlM}
 \end{picture}
 }
 \\
-Then the following \fnctd{estimate}s are defined as follows:
+Then the following \fnctd{estimate}s are defined as described here:
 \defbox{\begin{array}{FMMlc>{\ds}l}
      (1).&\fnctd{Bayesian estimate}                         &                          & \estB   &\eqd& \argmin_{\theta} C(\theta,\pdfp(x,y))
    \\(2).&\fnctd{Mean square estimate}                      &(``\fnctd{MS  estimate}") & \estMS  &\eqd& \argmin_{\theta} \E\norm{C(\theta,\pdfp(x,y))}^2
@@ -140,7 +143,7 @@ Then the following \fnctd{estimate}s are defined as follows:
 \begin{theorem}
 \label{thm:map=ml}
 %--------------------------------------
-Let $\rvx(t;\theta)$ be a function with unknown parameter $\theta$.
+Let $\rvx(t;\theta)$ be a random process with unknown parameter $\theta$.
 \thmbox{
   \brb{\text{$\psP\setn{\theta}=$\prope{constant}}}
   \quad\implies\quad
@@ -165,8 +168,17 @@ Let $\rvx(t;\theta)$ be a function with unknown parameter $\theta$.
 \end{align*}
 \end{proof}
 
+%=======================================
+\section{Measures of estimator quality}
+\label{sec:quality}
+%=======================================
 %---------------------------------------
 \begin{definition}
+\footnote{
+  \citerpgc{silverman1986}{35}{9780412246203}{\textsection ``1.3.2 Measures of discrepancy\ldots"},
+  \citergc{bendat2010}{1118210824}{\textsection ``1.4.3 Error Analysis Criteria"},
+  \citerp{bendat1966}{183}{\textsection ``5.3 Statistical Errors for Parameter Estimates"}
+  }
 \label{def:mse}
 %---------------------------------------
 \defboxt{
@@ -175,20 +187,59 @@ Let $\rvx(t;\theta)$ be a function with unknown parameter $\theta$.
   }
 \end{definition}
 
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citergc{bendat2010}{1118210824}{\textsection ``1.4.3 Error Analysis Criteria"}
+  }
+\label{def:nre}
+%---------------------------------------
+\defboxt{
+  The \fnctd{normalized rms error} $\nre(\estT)$ of an estimate $\estT$ of a parameter $\theta$ is defined as
+  \\\indentx$\ds\nre(\estT) \eqd \frac{\sqrt{\mse(\estT)}}{\theta} 
+                            \eqd \frac{\sqrt{\pE\brs{\brp{\estT-\theta}^2}}}{\theta}$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{silverman1986}{35}{9780412246203}{\textsection ``1.3.2 Measures of discrepancy\ldots"},
+  \citePpc{rosenblatt1956}{835}{``integrated mean square error"}
+  }
+\label{def:mise}
+%---------------------------------------
+\defboxt{
+  The \fnctd{mean integrated square error} $\mise(\estT)$ of an estimate $\estT$ of a parameter $\theta$ is defined as
+  \\\indentx$\ds\mise(\estT) \eqd \pE\int_{\theta\in\R}\brs{\brp{\estT-\theta}^2}$
+  }
+\end{definition}
+
 The \fncte{mean square error} of $\estT$ can be expressed as the sum of two components:
 the variance of $\estT$ and the bias of $\estT$ squared (next Theorem).
+For an example of \pref{thm:mse} in action, see the proof for the $\mse(\meanest)$ of the 
+\fncte{arithmetic mean estimate} as provided in \prefpp{thm:mse_mean}.
 %---------------------------------------
 \begin{theorem}
-\label{thm:mse}
 \footnote{
-  \citerpgc{kay1988}{45}{8131733564}{\textsection\scshape``3.3 Estimation Theory"}
+  \citerpgc{kay1988}{45}{8131733564}{\textsection\scshape``3.3 Estimation Theory"},
+  \citerpgc{stuart1991}{629}{9780340560235}{``Minium mean-square-error estimation"},
+  \citergc{bendat2010}{1118210824}{\textsection ``1.4.3 Error Analysis Criteria"},
+  \citerp{bendat1966}{183}{\textsection ``5.3 Statistical Errors for Parameter Estimates"},
+  \citerpgc{bendat1980}{39}{0471058874}{\textsection ``2.4.1 Bias versus Random Errors"}
   }
+\label{thm:mse}
 %---------------------------------------
-\thmbox{
-  \mse(\estT) =
+\thmbox{\begin{array}{rc>{\ds}l}
+  \mse(\estT) &=&
       \mcom{\pE\brs{\brp{\estT-\pE\estT}^2}}{variance of $\estT$}
     + \mcom{\brs{\pE\estT - \theta}^2}{bias of $\estT$ squared}
-  }
+  \\
+  \nre(\estT) &=&
+    \frac{\sqrt{
+    \pE\brs{\brp{\estT-\pE\estT}^2} + \brs{\pE\estT - \theta}^2
+    }}{\theta}
+\end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
@@ -196,12 +247,15 @@ the variance of $\estT$ and the bias of $\estT$ squared (next Theorem).
     &\eqd \pE\brs{\brp{\estT-\theta}^2}
     && \text{by definition of $\mse$}
     && \text{\xref{def:mse}}
-  \\&= \pE\brs{\brp{\estT-\pE\estT+\pE\estT-\theta}^2}
+  \\&= \pE\brs{\brp{\estT\mcom{-\pE\estT+\pE\estT}{$0$}-\theta}^2}
+    && \text{by \prope{additive identity} property of $\fieldC$}
   \\&= \pE\brs{
          \brp{\estT-\pE\estT}^2
         +\mcom{\brp{\pE\estT-\theta}^2}{constant}
         -2\brp{\estT-\pE\estT}\brp{\pE\estT-\theta}
        }
+    && \text{by \thme{Binomial Theorem}}
+    && \text{\ifxref{polynom}{thm:binomial}}
   \\&= \pE\brp{\estT-\pE\estT}^2
         +\brp{\pE\estT-\theta}^2
         -2\pE\brs{
@@ -210,17 +264,20 @@ the variance of $\estT$ and the bias of $\estT$ squared (next Theorem).
         -\pE\estT\estT
         +\pE\estT\theta
         }
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
   \\&= \pE\brp{\estT-\pE\estT}^2
         +\brp{\pE\estT-\theta}^2
-        -2\brs{
+        -2\mcom{\brs{
          \pE\estT\pE\estT
         -\pE\estT\pE\theta
         -\pE\estT\pE\estT
         +\pE\estT\pE\theta
-        }
+        }}{$0$}
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{thm:pE_linop}}
   \\&= \pE\brp{\estT-\pE\estT}^2
         +\brp{\pE\estT-\theta}^2
-        -0
 \end{align*}
 \end{proof}
 
