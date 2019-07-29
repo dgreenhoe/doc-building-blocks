@@ -115,71 +115,97 @@ Let
 \begin{align*}
    \vye(\vp)   &\eqd U^H\vp    \\
    \ve(\vp)    &\eqd \vye-\vy \\
-   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \Eb{\ve^H\ve} \\
+   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \pE\brs{\ve^H\ve} \\
    \estMS      &\eqd \argmin_\vp \fCost(\vp)  \\
-   R           &\eqd \Eb{UU^H}   \\
-   W           &\eqd \Eb{ U\vy}.
+   R           &\eqd \pE\brs{UU^H}   \\
+   W           &\eqd \pE\brs{ U\vy}.
 \end{align*}
 
 Then
 \thmbox{\begin{array}{rcl}
-   \estMS                          &=& (\Real{\setY})^{-1}(\Real{W})  \\
-   \fCost(\vp)                     &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \E{\vy^H\vy} \\
-   \grad_\vp \fCost(\vp)           &=& 2\Reb{\setY}\vp - 2\Real{W}  \\
-   \fCost(\estMS)                  &=& (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy} \\
-   \fCost(\estMS)|_{R\mbox{ real}} &=& \E{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}).
+     \estMS                          &=& (\Real{\setY})^{-1}(\Real{W})
+   \\\fCost(\vp)                     &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \pE{\vy^H\vy}
+   \\\grad_\vp \fCost(\vp)           &=& 2\Real\brs{\setY}\vp - 2\Real{W}
+   \\\fCost(\estMS)                  &=& 
+     \brbl{\begin{array}{>{\ds}lM}
+         \mc{2}{>{\ds}l}{\pE{\vy^H\vy} + (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W})}
+       \\\pE{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}) & if $R$ is \propb{real-valued}
+     \end{array}}
 \end{array}}
 \end{theorem}
 \begin{proof}
 See \prefpp{app:mc} for a Matrix Calculus reference.
 
-\begin{align*}
-   \fCost(\vp)
-     &\eqd \E \norm{\ve}^2
-   \\&=    \Eb{\ve^H\ve}
-   \\&=    \Eb{ \left(\vye-\vy\right)^H\left(\vye-\vy\right) }
-   \\&=    \Eb{ \left(U^H\vp-\vy\right)^H\left(U^H\vp-\vy\right) }
-   \\&=    \Eb{ \left(\vp^HU-\vy^H\right)\left(U^H\vp-\vy\right) }
-   \\&=    \Eb{ \vp^HUU^H\vp - \vp^HU\vy -\vy^HU^H\vp + \vy^H\vy }
-   \\&=    \vp^H\Eb{UU^H}\vp - \vp^H\Eb{U\vy} -\Eb{\vy^HU^H}\vp + \E{\vy^H\vy}
-   \\&=    \vp^H\Eb{UU^H}\vp - (\Eb{U\vy}^H\vp)^H -\Eb{U\vy}^H\vp + \E{\vy^H\vy}
-   \\&=    \vp^H R \vp - (W^H\vp)^H -W^H\vp + \E{\vy^H\vy}
-   \\&=    \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \E{\vy^H\vy}
-   \\&=    \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \E{\vy^H\vy}
-   \\&=    \vp^H R \vp - 2\Reb{W^H}\vp + \E{\vy^H\vy}
-\\
-\\
-   \grad_\vp \fCost(\vp)
-     &= \grad_\vp \left[ \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \E{\vy^H\vy} \right]
-   \\&= R\vp + R^T\vp - [(W^H)^\ast]^T - [W^H]^T + 0
-   \\&= R\vp + (R^H)^\ast\vp - W - W^\ast
-   \\&= R\vp + R^\ast\vp - W - W^\ast
-   \\&= (R + R^\ast)\vp - (W + W^\ast)
-   \\&= 2(\Real{\setY})\vp - 2\Real{W}
-\\
-\\
-   \vpo
-     &= (\Real{\setY})^{-1}(\Real{W})
-\\
-\\
-   \fCost(\vpo)
-     &=    \vpo^H R \vpo - 2\Reb{W^H}\vpo + \E{\vy^H\vy}
-   \\&=    [(\Real{\setY})^{-1}(\Real{W})]^H R [(\Real{\setY})^{-1}(\Real{W})] - 2\Reb{W^H}[(\Real{\setY})^{-1}(\Real{W})] + \E{\vy^H\vy}
-   \\&=    (\Real{W^H})(\Real{\setY})^{-H} R (\Real{\setY})^{-1}(\Real{W}) - 2\Reb{W^H}(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy}
-   \\&=    (\Real{W^H})(\Real{R^H})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2\Reb{W^H}(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy}
-   \\&=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy}
-\\
-\\
-   \fCost(\vpo)|_{R\mbox{ real}}
-     &=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy}
-   \\&=    (\Real{W^H})R^{-1} R R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \E{\vy^H\vy}
-   \\&=    (\Real{W^H}) R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \E{\vy^H\vy}
-   \\&=    \E{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W})
-\end{align*}
+\begin{enumerate}
+  \item Proof that cost $\fCost(\vp)=\vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \pE{\vy^H\vy}$: \label{item:est_mms_cost}
+    \begin{align*}
+       \boxed{\fCost(\vp)}
+         &\eqd \pE\norm{\ve}^2
+         && \text{by definition of \fncte{cost function} $\fCost$}
+       \\&\eqd \pE\brs{\ve^H\ve}
+         && \text{by definition of \fncte{norm} $\normn$}
+       \\&\eqd \pE\brs{\brp{\vye-\vy}^H\brp{\vye-\vy}}
+         && \text{by definition of \fncte{error vector} $\ve$}
+       \\&\eqd \pE\brs{\brp{U^H\vp-\vy}^H\brp{U^H\vp-\vy}}
+         && \text{by definition of estimate $\vye$}
+       \\&=    \pE\brs{\brp{\vp^HU-\vy^H}\brp{U^H\vp-\vy}}
+         && \text{by \prope{distributive} prop. of \structe{*-algebra}s}
+         && \text{\xref{def:staralg}}
+       \\&=    \pE\brs{ \vp^HUU^H\vp - \vp^HU\vy -\vy^HU^H\vp + \vy^H\vy }
+         && \text{by \structe{matrix algebra} ring property}
+       \\&=    \vp^H\pE\brs{UU^H}\vp - \vp^H\pE\brs{U\vy} -\pE\brs{\vy^HU^H}\vp + \pE{\vy^H\vy}
+         && \text{by \prope{linearity} $\pE$}
+         && \text{\xref{thm:pE_linop}}
+       \\&=    \vp^H\pE\brs{UU^H}\vp - (\pE\brs{U\vy}^H\vp)^H -\pE\brs{U\vy}^H\vp + \pE{\vy^H\vy}
+       \\&=    \vp^H R \vp - (W^H\vp)^H -W^H\vp + \pE{\vy^H\vy}
+       \\&=    \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \pE{\vy^H\vy}
+       \\&=    \boxed{\vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \pE{\vy^H\vy}}
+       \\&=    \vp^H R \vp - 2\Real\brs{W^H}\vp + \pE{\vy^H\vy}
+    \end{align*}
+
+  \item Proof that optimal $\vpo=(\Real{\setY})^{-1}(\Real{W})$: \label{item:est_mms_vpo}
+    \begin{align*}
+      \grad_\vp \fCost(\vp)
+        &= \grad_\vp \brs{\vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \pE{\vy^H\vy} }
+        && \text{by previous resut}
+      \\&= R\vp + R^T\vp - \grad_{\vp}\brs{(W^H)^\ast\vp + W^H\vp} + 0
+        && \text{by \thme{quadratic form} result \xref{thm:mc_xAx}}
+      \\&= R\vp + R^T\vp - [(W^H)^\ast]^T - [W^H]^T + 0
+        && \text{by \thme{affine equations} result \xref{thm:mc_Ax}}
+      \\&= R\vp + (R^H)^\ast\vp - W - W^\ast
+        && \text{by definition of \ope{Hermitian Transpose} $^H$}
+      \\&= R\vp + R^\ast\vp - W - W^\ast
+        && \text{because $R$ is \prope{Hermitian symmetric}}
+      \\&= (R + R^\ast)\vp - (W + W^\ast)
+        && \text{by \prope{ring} property}
+      \\&= 2(\Real{\setY})\vp - 2\Real{W}
+        && \text{by definition of $\Real$ \xref{def:Re}}
+      \\
+      \implies\vpo
+        &= (\Real{\setY})^{-1}(\Real{W})
+        && \text{by setting $\grad_\vp \fCost(\vp)=0$}
+    \end{align*}
+
+  \item Cost of optimal $\vpo$:
+    \begin{align*}
+      \fCost(\vpo)
+        &=    \vpo^H R \vpo - 2\Real\brs{W^H}\vpo + \pE{\vy^H\vy}
+        &&    \text{by \pref{item:est_mms_cost}}
+      \\&=    [(\Real{\setY})^{-1}(\Real{W})]^H R [(\Real{\setY})^{-1}(\Real{W})] - 2\Real\brs{W^H}[(\Real{\setY})^{-1}(\Real{W})] + \pE{\vy^H\vy}
+        &&    \text{by \pref{item:est_mms_vpo}}
+      \\&=    (\Real{W^H})(\Real{\setY})^{-H} R (\Real{\setY})^{-1}(\Real{W}) - 2\Real\brs{W^H}(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy}
+      \\&=    (\Real{W^H})(\Real{R^H})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2\Real\brs{W^H}(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy}
+      \\&=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy}
+        \\
+        \\
+      \fCost(\vpo)|_{R\mbox{ real}}
+        &=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy}
+      \\&=    (\Real{W^H})R^{-1} R R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \pE{\vy^H\vy}
+      \\&=    (\Real{W^H}) R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \pE{\vy^H\vy}
+      \\&=    \pE{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W})
+    \end{align*}
+\end{enumerate}
 \end{proof}
-
-
-
 
 \begin{figure}[ht]
 \centering%
@@ -229,7 +255,8 @@ random data vector $\vx(k)$ at time $k$, as in the \thme{Wiener-Hopf equations} 
 \begin{corollary}[\thmd{Wiener-Hopf equations}]
 \footnote{
   \citerppgc{ifeachor1993}{547}{549}{020154413X}{\textsection ``9.3 Basic Wiener filter theory"},
-  \citerppgc{ifeachor2002}{651}{654}{0201596199}{\textsection ``10.3 Basic Wiener filter theory"}   % TODO: check 654
+  \citerppgc{ifeachor2002}{651}{654}{0201596199}{\textsection ``10.3 Basic Wiener filter theory"},   % TODO: check 654
+  \citerpgc{kay1988}{51}{9788131733561}{\textsection ``3.3.3 Random Parameters"}
   }
 %--------------------------------------
 \corbox{
@@ -245,7 +272,7 @@ random data vector $\vx(k)$ at time $k$, as in the \thme{Wiener-Hopf equations} 
   \implies
   \brb{\begin{array}{rcl}
     \estMS                          &=& R^{-1}W  \\
-    \fCost(\estMS)                  &=& W^T R^{-1} R R^{-1}W - 2W^T R^{-1}W + \E{\vy^T\vy} \\
+    \fCost(\estMS)                  &=& W^T R^{-1} R R^{-1}W - 2W^T R^{-1}W + \pE{\vy^T\vy} \\
   \end{array}}
   }
 \end{corollary}
@@ -261,13 +288,13 @@ In this special case, we have the following results
 \begin{align*}
    \hat{y}(\vp)   &\eqd \vx^T \vp    \\
    e(\vp)    &\eqd \hat{y}-y \\
-   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \Eb{e^2} \\
+   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \pE\brs{e^2} \\
    \estMS      &\eqd \argmin_\vp \fCost(\vp)  \\
-   R           &\eqd \Eb{\vx\vx^T}   \\
-   W           &\eqd \Eb{ \vx y }    \\
-    \fCost(\vp)                     &= \vp^T R \vp -2W^T\vp  + \Eb{\vy^T\vy} \\
+   R           &\eqd \pE\brs{\vx\vx^T}   \\
+   W           &\eqd \pE\brs{ \vx y }    \\
+    \fCost(\vp)                     &= \vp^T R \vp -2W^T\vp  + \pE\brs{\vy^T\vy} \\
     \grad_\vp \fCost(\vp)           &= 2R\vp - 2W  \\
-    \fCost(\estMS)|_{R\mbox{ real}} &=    \E{\vy^T\vy} - W^T R^{-1}W.
+    \fCost(\estMS)|_{R\mbox{ real}} &=    \pE{\vy^T\vy} - W^T R^{-1}W.
 \end{align*}
 \end{proof}
 
@@ -293,10 +320,10 @@ Let
 Then
 \thmbox{\begin{array}{rcl}
    \estLS                          &=& (\Real{\setY})^{-1}(\Real{W})  \\
-   \fCost(\vp)                     &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \E{\vy^H\vy} \\
-   \grad_\vp \fCost(\vp)           &=& 2\Reb{\setY}\vp - 2\Real{W}  \\
-   \fCost(\estLS)                  &=& (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \E{\vy^H\vy} \\
-   \fCost(\estLS)|_{R\mbox{ real}} &=& \E{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}).
+   \fCost(\vp)                     &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \pE{\vy^H\vy} \\
+   \grad_\vp \fCost(\vp)           &=& 2\Real\brs{\setY}\vp - 2\Real{W}  \\
+   \fCost(\estLS)                  &=& (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy} \\
+   \fCost(\estLS)|_{R\mbox{ real}} &=& \pE{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}).
 \end{array}}
 \end{theorem}
 
@@ -314,7 +341,7 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
    \\&=    \vp^H R \vp - (W^H\vp)^H -W^H\vp + \vy^H\vy
    \\&=    \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \vy^H\vy
    \\&=    \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \vy^H\vy
-   \\&=    \vp^H R \vp - 2\Reb{W^H}\vp + \vy^H\vy
+   \\&=    \vp^H R \vp - 2\Real\brs{W^H}\vp + \vy^H\vy
 \\
 \\
    \grad_\vp \fCost(\vp)
@@ -331,10 +358,10 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
 \\
 \\
    \fCost(\vpo)
-     &=    \vpo^H R \vpo - 2\Reb{W^H}\vpo + \vy^H\vy
-   \\&=    [(\Real{\setY})^{-1}(\Real{W})]^H R [(\Real{\setY})^{-1}(\Real{W})] - 2\Reb{W^H}[(\Real{\setY})^{-1}(\Real{W})] + \vy^H\vy
-   \\&=    (\Real{W^H})(\Real{\setY})^{-H} R (\Real{\setY})^{-1}(\Real{W})     - 2\Reb{W^H}(\Real{\setY})^{-1}(\Real{W})       + \vy^H\vy
-   \\&=    (\Real{W^H})(\Real{R^H})^{-1} R (\Real{\setY})^{-1}(\Real{W})   - 2\Reb{W^H}(\Real{\setY})^{-1}(\Real{W})     + \vy^H\vy
+     &=    \vpo^H R \vpo - 2\Real\brs{W^H}\vpo + \vy^H\vy
+   \\&=    [(\Real{\setY})^{-1}(\Real{W})]^H R [(\Real{\setY})^{-1}(\Real{W})] - 2\Real\brs{W^H}[(\Real{\setY})^{-1}(\Real{W})] + \vy^H\vy
+   \\&=    (\Real{W^H})(\Real{\setY})^{-H} R (\Real{\setY})^{-1}(\Real{W})     - 2\Real\brs{W^H}(\Real{\setY})^{-1}(\Real{W})       + \vy^H\vy
+   \\&=    (\Real{W^H})(\Real{R^H})^{-1} R (\Real{\setY})^{-1}(\Real{W})   - 2\Real\brs{W^H}(\Real{\setY})^{-1}(\Real{W})     + \vy^H\vy
    \\&=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W})     - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W})      + \vy^H\vy
 \\
 \\
