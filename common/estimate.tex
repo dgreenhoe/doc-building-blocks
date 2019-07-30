@@ -115,12 +115,12 @@ $\begin{array}{FlM}
 \begin{picture}(200,100)(-50,-50)
   \thicklines
   %\graphpaper[10](0,0)(700,100)
-  \put(- 50,  10){\makebox ( 50, 50)[b]{$x(t)$}            }
+  \put(- 50,  10){\makebox ( 50, 50)[b]{$\rvx(t)$}            }
   \put(- 50,   0){\vector  (  1,  0)   {50}                }
   \put(   0, -50){\framebox(100,100)[c]{}                  }
   \put(   0, -20){\makebox (100, 50)[t]{stochastic}        }
   \put(   0, -20){\makebox (100, 50)[b]{operator}          }
-  \put( 100,  10){\makebox ( 50, 50)[b]{$y(t)$}            }
+  \put( 100,  10){\makebox ( 50, 50)[b]{$\rvy(t)$}            }
   \put( 100,   0){\vector  (  1,  0)   {50}                }
 \end{picture}
 }
@@ -133,8 +133,8 @@ Then the following \fnctd{estimate}s are defined as described here:
    \\(4).&\mc{2}{M}{\begin{tabular}[t]{@{}l}\fnctd{maximum a-posteriori probability estimate}\\
                                          (``\fnctd{MAP estimate}")
                     \end{tabular}}
-         & \estMAP &\eqd& \argmax_{\theta} \psP\setn{x(t;\theta)|y(t)}
-   \\(5).&\fnctd{maximum likelihood estimate}               &(``\fnctd{ML  estimate}") & \estML  &\eqd& \argmax_{\theta} \psP\setn{y(t)|x(t;\theta)}
+         & \estMAP &\eqd& \argmax_{\theta} \psP\setn{\rvx(t;\theta)|\rvy(t)}
+   \\(5).&\fnctd{maximum likelihood estimate}               &(``\fnctd{ML  estimate}") & \estML  &\eqd& \argmax_{\theta} \psP\setn{\rvy(t)|\rvx(t;\theta)}
 \end{array}}
 \end{definition}
 
@@ -152,15 +152,20 @@ Let $\rvx(t;\theta)$ be a random process with unknown parameter $\theta$.
 \begin{proof}
 \begin{align*}
    \estMAP
-     &\eqd \argmax_{\theta} \psP\setn{s(t;\theta)|r(t)}
+     &\eqd \argmax_{\theta} \psP\setn{\rvx(t;\theta)|\rvy(t)}
      &&    \text{by definition of $\estMAP$}
      &&    \text{\xref{def:estMAP}}
-   \\&=    \argmax_{\theta} \frac{\psP\setn{s(t;\theta) \land \rvy(t)}}
+   \\&\eqd \argmax_{\theta} \frac{\psP\setn{\rvx(t;\theta) \land \rvy(t)}}
                                {\psP\setn{r(t)}}
-   \\&=    \argmax_{\theta} \frac{\psP\setn{r(t) | \rvx(t;\theta) }\psP\setn{s(t;\theta) }}
-                               {\psP\setn{r(t)}}
-   \\&=    \argmax_{\theta} \psP\setn{r(t) | \rvx(t;\theta) }\psP\setn{s(t;\theta) }
-   \\&=    \argmax_{\theta} \psP\setn{r(t) | \rvx(t;\theta) }
+     && \text{by definition of \fncte{conditional probability}}
+     && \text{\xref{def:conprob}}
+   \\&\eqd \argmax_{\theta} \frac{\psP\setn{r(t) | \rvx(t;\theta) }\psP\setn{\rvx(t;\theta) }}
+                               {\psP\setn{\rvy(t)}}
+     && \text{by definition of \fncte{conditional probability}}
+     && \text{\xref{def:conprob}}
+   \\&=    \argmax_{\theta} \psP\setn{\rvy(t) | \rvx(t;\theta) }\psP\setn{\rvx(t;\theta)}
+     &&\mathrlap{\text{because $\rvy(t)$ is independent of $\theta$}}
+   \\&=    \argmax_{\theta} \psP\setn{\rvy(t) | \rvx(t;\theta) }
    \\&\eqd \estML
      &&  \text{by definition of $\estML$}
      &&  \text{\xref{def:estML}}
