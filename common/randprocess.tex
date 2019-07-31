@@ -81,23 +81,20 @@ and \prefp{fig:X(t,w)graph}.
 }
 \end{figure}
 
-
 %---------------------------------------
 \begin{definition}
 \footnote{
   \citerpgc{papoulis1984}{216}{0070484686}{$R_{xy}(t_1,t_2)=E\brb{\rvx(t_1)\rvy^\ast(t_2)}$ (9-35)},
   }
 \label{def:Rxx}
-\label{def:opR}
 \label{def:Rxy}
 %---------------------------------------
 Let $\rvx(t)$ and $\rvy(t)$ be random processes.\\
 \defbox{
   \begin{array}{MlMlc>{\ds}l}
-       The \fnctd{mean}                     & \pmeanx(t) & of $\rvx(t)$              is & \pmeanx(t)&\eqd& \pE\brs{\rvx(t)}                    %& \text{(\prope{mean functional})} \\
-     \\The \fnctd{cross-correlation}        & \Rxy(t)    & of $\rvx(t)$ and $\rvy(t)$is & \Rxy(t,u) &\eqd& \pE\brs{\rvx(t)\rvy^\ast(u)}        %& \text{(\prope{cross-correlation bilinear functional})} \\
+       The \fnctd{mean}                      & \pmeanx(t) & of $\rvx(t)$              is & \pmeanx(t)&\eqd& \pE\brs{\rvx(t)}                    %& \text{(\prope{mean functional})} \\
+     \\The \fnctd{cross-correlation}         & \Rxy(t)    & of $\rvx(t)$ and $\rvy(t)$is & \Rxy(t,u) &\eqd& \pE\brs{\rvx(t)\rvy^\ast(u)}        %& \text{(\prope{cross-correlation bilinear functional})} \\
      \\The \fnctd{auto-correlation function} & \Rxx(t)    & of $\rvx(t)$              is & \Rxx(t,u) &\eqd& \pE\brs{\rvx(t)\rvx^\ast(u)}        %& \text{(\prope{auto-correlation bilinear functional})} \\
-     \\The \fnctd{auto-correlation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u)\ff(u) \du     %& \text{(\prope{auto-correlation operator})}
   \end{array}
   }
 \end{definition}
@@ -157,6 +154,17 @@ let $\Rxx(t,u)$ be the auto-correlation of $\fx(t)$.
 \section{Eigen-analysis of random processes}
 \label{sec:KL}
 %=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:opR}
+%---------------------------------------
+Let $\rvx(t)$ be random processes with \fncte{auto-correlation} function \xref{def:Rxx} $\Rxx(t,u)$.
+\defboxt{
+  The \opd{auto-correlation operator} $\opR$ of $\rvx(t)$ is defined as
+  \\\indentx$\opR\ff  \eqd \int_{u\in\R}\Rxx(t,u)\ff(u) \du$
+  }
+\end{definition}
+
 %---------------------------------------
 \begin{definition}
 \label{def:white}
@@ -312,46 +320,40 @@ Because $\opR$ is self-adjoint, this property follows\ifsxref{operator}{thm:self
   \citerpp{keener}{114}{119}
   }
 %---------------------------------------
-Let $\opR$ be the \ope{auto-correlation operator} of a \fncte{random process} $\rvx(t)$.
-\\
-\thmboxt{
-  $\brb{\begin{array}{FMD}
-      (A).&$\seq{\lambda_n}{n\in\Z}$ are the eigenvalues of $\opR$ & and
-    \\(B).&$\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ & such that
-    \\(C).&$\opR \psi_n = \lambda_n \psi_n$
-  \end{array}}$
-  \\\indentx$\implies\quad
-  \brb{\begin{array}{M}
-       $\ds\pE\brb{\abs{ x(t)-\sum_{n\in\Z}\inprod{x(t)}{\psi_n(t)} \psi_n(t) }^2} = 0$
-     \\($\setn{\psi_n(t)}$ is a \structe{basis} for $\rvx(t)$)
-  \end{array}}$
+Let $\opR$ be the \ope{auto-correlation operator} \xref{def:opR} 
+of a \fncte{random process} $\rvx(t)$.
+Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues of $\opR$
+and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
+    $\opR \psi_n = \lambda_n \psi_n$.
+\thmbox{
+  \mcom{\pE\brp{\abs{ x(t)-\sum_{n\in\Z}\inprod{x(t)}{\psi_n(t)} \psi_n(t) }^2} = 0}
+       {\prope{convergence in probability}}
+    \qquad($\setn{\psi_n(t)}$ is a \structe{basis} for $\rvx(t)$)
   }
 \end{theorem}
 \begin{proof}
 \begin{enumerate}
-\item $\{\psi_n(t)\}$ is a basis for $\rvx(t)$
-      \[ \pE\brb{\left| x(t)-\sum_{n\in\Z}\dot{x}_n \psi_n(t) \right|^2} = 0
-         \hspace{1cm}\mbox{where } \dot{x}_n\eqd \inprod{x(t)}{\psi_n(t)}
-      \]
-
-\begin{align*}
-   \pE\brs{x(t) \brp{\sum_{n\in\Z}\dot{x}_n \psi_n(t)}^\ast}
-     &= \pE\brs{x(t) \brp{\sum_{n\in\Z}\int_{u\in\R}x(u)\psi_n^\ast(u)\du \psi_n(t)}^\ast}
-   \\&= \sum_{n\in\Z}\brp{\int_{u\in\R}\pE\brs{x(t)x^\ast(u)}\psi_n(u)\du} \psi_n^\ast(t)
-   \\&= \sum_{n\in\Z}\brp{\int_{u\in\R}\Rxx(t,u)\psi_n(u)\du} \psi_n^\ast(t)
-   \\&= \sum_{n\in\Z}\lambda_n\psi_n(t) \psi_n^\ast(t)
-   \\&= \sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2
-\\ \\
-   \pE\brs{\sum_{n\in\Z}\dot{x}_n \psi_n(t)\brp{\sum_{m\in\Z}\dot{x}_m \psi_m(t)}^\ast}
-     &= \pE\brs{\sum_{n\in\Z}\int_{u\in\R}x(u)\psi_n^\ast(u)\du   \psi_n(t)\brp{\sum_{m\in\Z}\int_v x(v)\psi_m^\ast(v)\dv \psi_m(t)}^\ast}
-   \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\int_v \pE\brs{x(u)x^\ast(v)}\psi_m(v)\dv} \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
-   \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\int_v \Rxx(u,v)\psi_m(v)\dv} \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
-   \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\lambda_m\psi_m(u)} \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
-   \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \brp{\int_{u\in\R}\psi_m(u) \psi_n^\ast(u)\du }   \psi_n(t)   \psi_m^\ast(t)
-   \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \kdelta_{mn}   \psi_n(t)   \psi_m^\ast(t)
-   \\&= \sum_{n\in\Z}\lambda_n   \psi_n(t)   \psi_n^\ast(t)
-   \\&= \sum_{n\in\Z}\lambda_n  \left| \psi_n(t) \right|^2
-\end{align*}
+\item Proof that $\setn{\psi_n(t)}$ is a \structe{basis} for $\rvx(t)$ such that
+      \\$\ds\pE\brb{\left| x(t)-\sum_{n\in\Z}\dot{x}_n \psi_n(t) \right|^2} = 0$
+        \qquad where \quad$\dot{x}_n\eqd \inprod{x(t)}{\psi_n(t)}$
+    \begin{align*}
+       \pE\brs{x(t) \brp{\sum_{n\in\Z}\dot{x}_n \psi_n(t)}^\ast}
+         &= \pE\brs{x(t) \brp{\sum_{n\in\Z}\int_{u\in\R}x(u)\psi_n^\ast(u)\du \psi_n(t)}^\ast}
+       \\&= \sum_{n\in\Z}\brp{\int_{u\in\R}\pE\brs{x(t)x^\ast(u)}\psi_n(u)\du} \psi_n^\ast(t)
+       \\&= \sum_{n\in\Z}\brp{\int_{u\in\R}\Rxx(t,u)\psi_n(u)\du} \psi_n^\ast(t)
+       \\&= \sum_{n\in\Z}\lambda_n\psi_n(t) \psi_n^\ast(t)
+       \\&= \sum_{n\in\Z}\lambda_n \left|\psi_n(t) \right|^2
+    \\ \\
+       \pE\brs{\sum_{n\in\Z}\dot{x}_n \psi_n(t)\brp{\sum_{m\in\Z}\dot{x}_m \psi_m(t)}^\ast}
+         &= \pE\brs{\sum_{n\in\Z}\int_{u\in\R}x(u)\psi_n^\ast(u)\du   \psi_n(t)\brp{\sum_{m\in\Z}\int_v x(v)\psi_m^\ast(v)\dv \psi_m(t)}^\ast}
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\int_v \pE\brs{x(u)x^\ast(v)}\psi_m(v)\dv} \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\int_v \Rxx(u,v)\psi_m(v)\dv} \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\lambda_m\psi_m(u)} \psi_n^\ast(u)\du   \psi_n(t)   \psi_m^\ast(t)
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \brp{\int_{u\in\R}\psi_m(u) \psi_n^\ast(u)\du }   \psi_n(t)   \psi_m^\ast(t)
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \kdelta_{mn}   \psi_n(t)   \psi_m^\ast(t)
+       \\&= \sum_{n\in\Z}\lambda_n   \psi_n(t)   \psi_n^\ast(t)
+       \\&= \sum_{n\in\Z}\lambda_n  \left| \psi_n(t) \right|^2
+    \end{align*}
 
 
 \item Using the previous two results, we can prove the following:
