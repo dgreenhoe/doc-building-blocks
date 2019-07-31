@@ -96,8 +96,8 @@ Let $\rvx(t)$ and $\rvy(t)$ be random processes.\\
   \begin{array}{MlMlc>{\ds}l}
        The \fnctd{mean}                     & \pmeanx(t) & of $\rvx(t)$              is & \pmeanx(t)&\eqd& \pE\brs{\rvx(t)}                    %& \text{(\prope{mean functional})} \\
      \\The \fnctd{cross-correlation}        & \Rxy(t)    & of $\rvx(t)$ and $\rvy(t)$is & \Rxy(t,u) &\eqd& \pE\brs{\rvx(t)\rvy^\ast(u)}        %& \text{(\prope{cross-correlation bilinear functional})} \\
-     \\The \fnctd{autocorrelation function} & \Rxx(t)    & of $\rvx(t)$              is & \Rxx(t,u) &\eqd& \pE\brs{\rvx(t)\rvx^\ast(u)}        %& \text{(\prope{auto-correlation bilinear functional})} \\
-     \\The \fnctd{autocorrelation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u)\ff(u) \du     %& \text{(\prope{auto-correlation operator})}
+     \\The \fnctd{auto-correlation function} & \Rxx(t)    & of $\rvx(t)$              is & \Rxx(t,u) &\eqd& \pE\brs{\rvx(t)\rvx^\ast(u)}        %& \text{(\prope{auto-correlation bilinear functional})} \\
+     \\The \fnctd{auto-correlation operator} & \opR\ff    & of $\ff(t)$               is & \opR f    &\eqd& \int_{u\in\R}\Rxx(t,u)\ff(u) \du     %& \text{(\prope{auto-correlation operator})}
   \end{array}
   }
 \end{definition}
@@ -117,7 +117,7 @@ The equation $\int_{u\in\R}\Rxx(t,u)\ff(u) \du$ is a
 \end{remark}
 
 %---------------------------------------
-\section{Properties}
+%\section{Properties}
 %---------------------------------------
 
 %---------------------------------------
@@ -153,13 +153,38 @@ let $\Rxx(t,u)$ be the auto-correlation of $\fx(t)$.
 \end{align*}
 \end{proof}
 
+%=======================================
+\section{Eigen-analysis of random processes}
+\label{sec:KL}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:white}
+%---------------------------------------
+Let $\rvx(t)$ be a \fncte{random process} with \fncte{auto-correlation} $\Rxx(\tau)$ \xref{def:Rxx}.
+\defboxt{
+  A \fncte{random process} $\rvx(t)$ is \propd{white} if $\Rxx(\tau)=\delta(\tau)$
+  }
+\end{definition}
+
+If a random process $\rvx(t)$ is \prope{white} \xref{def:white}
+and the set $\Psi=\setn{\psi_1(t),\psi_2(t),\ldots,\psi_N(t)\}}$ 
+is \textbf{any} set of orthonormal basis functions, then the innerproducts
+$\inprod{n(t)}{\psi_n(t)}$ and $\inprod{n(t)}{\psi_m(t)}$ are \prope{uncorrelated}
+for $m\ne  n$.
+However, if $\rvx(t)$ is \propb{colored} (not white), then the innerproducts are not
+in general uncorrelated.
+But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opR$ such
+that $\ds\opR \psi_n = \lambda_n \psi_n$,
+then by \prefpp{thm:Rxx_prop}, the set $\setn{\psi_n(t)}$ are \prope{orthogonal} and
+the innerproducts \textbf{are} \prope{uncorrelated} even though $\rvx(t)$ is
+not white.
+This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(t)$.
 
 %---------------------------------------
 \begin{theorem}
-\index{non-negative}
-\index{positive definite}
 %---------------------------------------
-Let $\opR:\spX\to\spX$ be an auto-correlation operator.
+Let $\opR$ be an \ope{auto-correlation} operator.
 \thmbox{\begin{array}{lll}
   \inprod{\opR \fx}{\fx} \ge 0
     & \forall \fx\in\spX
@@ -171,7 +196,7 @@ Let $\opR:\spX\to\spX$ be an auto-correlation operator.
 \end{theorem}
 \begin{proof}
 \begin{align*}
-\intertext{1. Proof that $\opR$ is non-negative:}
+\intertext{1. Proof that $\opR$ is \prope{non-negative}:}
    \inprod{\opR \fy}{\fy}
      &= \inprod{\int_{u\in\R}\Rxx(t,u) \fy(u) \du}{\fy(t)}
      && \text{by definition of $\opR$}
@@ -281,34 +306,13 @@ Because $\opR$ is self-adjoint, this property follows\ifsxref{operator}{thm:self
 \end{enumerate}
 \end{proof}
 
-
-%=======================================
-\section{Basis for random processes}
-\label{sec:KL}
-%=======================================
-If a random process $\rvx(t)$ is white
-\footnote{{\em white noise process}: random process $\rvx(t)$ with autocorrelation $\Rxx(\tau)=\delta(\tau)$}
-and $\Psi=\{\psi_1(t),\psi_2(t),\ldots,\psi_N(t)\}$ is \textbf{any} set of orthonormal basis functions,
-then the innerproducts
-$\inprod{n(t)}{\psi_n(t)}$ and $\inprod{n(t)}{\psi_m(t)}$ are \prope{uncorrelated}
-for $m\ne  n$.
-However, if $\rvx(t)$ is colored (not white), then the innerproducts are not
-in general uncorrelated.
-But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opR$ such
-that
-\[ \opR \psi_n = \lambda_n \psi_n,\]
-then by \prefp{thm:Rxx_prop}, $\{\psi_n(t)\}$ are orthogonal and
-the innerproducts \textbf{are} uncorrelated eventhough $\rvx(t)$ is
-not white.
-This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(t)$.
-
 %---------------------------------------
 \begin{theorem}[\thmd{Karhunen-Lo/`eve Expansion}]
 \footnote{
   \citerpp{keener}{114}{119}
   }
 %---------------------------------------
-Let $\opR$ be the \ope{autocorrelation operator} of a \fncte{random process} $\rvx(t)$.
+Let $\opR$ be the \ope{auto-correlation operator} of a \fncte{random process} $\rvx(t)$.
 \\
 \thmboxt{
   $\brb{\begin{array}{FMD}
