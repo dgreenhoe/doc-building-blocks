@@ -70,6 +70,7 @@ GRP_DSP  =                     \
   pz_unstable.pdf              \
   pz_unstable2.pdf             \
   pz_unall.pdf                 \
+  rectangular_1N.pdf           \
   samplat.pdf                  \
   sin_pi_t_sampled.pdf         \
   sinclat.pdf                  \
