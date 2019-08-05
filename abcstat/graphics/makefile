@@ -54,6 +54,7 @@ GRP_DSP  =                     \
   S4_pz.pdf                    \
   d4_phi_h.pdf                 \
   s4_phi_h.pdf                 \
+  hanninglp50.pdf              \
   hpfwc.pdf                    \
   lpfwc.pdf                    \
   iir2n.pdf                    \

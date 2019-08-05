@@ -112,11 +112,31 @@ be the \fncte{arithmetic mean} \xref{def:am}.
 These results follow from \prefpp{thm:mse_mean} with $\lambda_n=\frac{1}{\xN}$.
 \end{proof}
 
-What is the best sequence $\seqn{\lambda_n}$ to use? 
-The next lemma shows that $\lambda_n=\frac{1}{\xN}$, and hence 
-of all the possible $\seqn{\lambda_n}$ of the \fncte{arithmetic mean} estimators \xref{thm:mse_mean},
-the \fnctb{average} estimator (with $\lambda_n=1/\xN$) \xref{cor:mse_average}, 
-leads to the lowest $\mse$ (the best estimator).
+
+The \fncte{arithmetic mean} estimator $\meanest\eqd\sum\lambda_n\rvx_n$
+is \prope{unbiased} and \prope{consistent} for any $\sum\lambda_n=1$ and
+yields \fncte{mean square error} $\mse(\meanest)=\sigma^2\sum\lambda_n^2$
+\xref{thm:mse_mean}.
+But\ldots
+\begin{enume}
+  \item Said qualitatively: ``What is the 'best' sequence $\seqn{\lambda_n}$ to use?"
+  \item Said quantitatively: ``What sequence $\seqn{\lambda_n}$ yields the smallest $\mse(\meanest)$?"
+\end{enume}
+For example, would fashioning $\seqn{\lambda_n}$ to be a scaled version of a standard 
+window function, like the \fncte{Hanning window} illustrated below,
+yield the best $\mse(\meanest)$?
+\\\indentx\includegraphics{graphics/hanninglp50.pdf}
+\\
+\prefpp{prop:lambda_sq} answers question (2) stating
+that the best sequence in terms of minimal $\mse$
+is the sequence $\seqn{\lambda_n}\eqd\frac{1}{\xN}\seqn{\ldots,1,1,1,\ldots}$,
+which is the \fncte{average} estimator,
+which yields  $\mse(\meanest)= \frac{\sigma^2}{\xN}$ \xref{cor:mse_average}.
+That is, it turns out that $\frac{1}{\xN}\le\sum\lambda_n^2$ for all possible sequences $\seqn{\lambda_n}$.
+This fact is demonstrated by \pref{lem:lambda_sq} (next),
+which in turn follows more or less directly from the ubiquitous 
+\ineqe{Cauchy-Schwarz Inequality} \xref{thm:cs}.
+
 %---------------------------------------
 \begin{lemma}
 \label{lem:lambda_sq}
@@ -128,7 +148,6 @@ leads to the lowest $\mse$ (the best estimator).
   }
 \end{lemma}
 \begin{proof}
-\url{http://faculty.wwu.edu/sarkara/ph4.pdf}
 \begin{enumerate}
   \item Let the sequence $\seqn{a_n}$ be defined as $\seqn{a_n}\eqd\seqn{\ldots,1,1,1,\ldots}$
         \label{idef:lambda_sq_an}
@@ -159,4 +178,26 @@ leads to the lowest $\mse$ (the best estimator).
           \\&= \boxed{\sum_{n=1}^{\xN} \lambda_n^2}
         \end{align*}
 \end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:lambda_sq}
+%---------------------------------------
+Let $\mse(\text{average mean})$ be the mean square error of the \fncte{average} estimator \xref{cor:mse_average}
+and $\mse(\text{arithmetic mean})$ be the mean square error of the \fncte{arithmetic} estimator \xref{thm:mse_mean}.
+\propbox{
+  \mse(\text{average mean}) \le \mse(\text{arithmetic mean})
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \mse(\text{average mean}) 
+    &= \sigma^2\frac{1}{\xN}
+    && \text{by \prefp{cor:mse_average}}
+  \\&\le \sigma^2 \sum_{n=1}^{\xN} \lambda_n^2
+    && \text{by \prefp{lem:lambda_sq}}
+  \\&= \mse(\text{arithmetic mean})
+    && \text{by \prefp{thm:mse_mean}}
+\end{align*}
 \end{proof}
