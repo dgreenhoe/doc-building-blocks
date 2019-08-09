@@ -5,6 +5,9 @@
 %=======================================
 \chapter{Moment Estimation}
 %=======================================
+%=======================================
+\section{Mean Estimation}
+%=======================================
 %---------------------------------------
 \begin{theorem}
 \label{thm:mse_mean}
@@ -85,6 +88,16 @@ be the \fncte{arithmetic mean} \xref{def:am}.
   \\&= \sigma^2\sum_{n=1}^{\xN}\lambda_n^2
 \end{align*}
 \end{proof}
+
+%---------------------------------------
+\begin{definition}
+\label{def:average}
+%---------------------------------------
+\defboxt{
+  The \fnctd{average} of a length $\xN$ sequence $\seqn{\rvx_n}$ is defined as
+  \\\indentx$\ds\meanest\eqd\frac{1}{\xN}\sum_{n=1}^\xN \rvx_n$
+  }
+\end{definition}
 
 %---------------------------------------
 \begin{corollary}
@@ -202,3 +215,81 @@ and $\mse(\text{arithmetic mean})$ be the mean square error of the \fncte{arithm
     && \text{by \prefp{thm:mse_mean}}
 \end{align*}
 \end{proof}
+
+%=======================================
+\section{Variance Estimation}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:varest}
+%---------------------------------------
+\defbox{\begin{array}{rc>{\ds}l}
+    \varest_B &\eqd& \frac{1}{\xN}  \sum_{n=1}^{\xN} \brp{\rvx_n - \meanest}^2
+  \\\varest   &\eqd& \frac{1}{\xN-1}\sum_{n=1}^{\xN} \brp{\rvx_n - \meanest}^2
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:varest}
+%---------------------------------------
+Let $\meanest$ be the \fncte{average} \xref{def:average} of a sequence $\seqn{\rvx_n}$.
+\thmbox{
+  \brb{\begin{array}{FMD}
+      (A).& $\seqn{\rvx_n}$ is \prope{wide sense stationary} & and
+    \\(B).& $\mu\eqd\pE\rvx_n$                               & and
+    \\(C).& $\seqn{\rvx_n}$ is \prope{uncorrelated}          & and
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FrclDD}
+      (1).& \pE\varest_B  &=& \frac{\xN-1}{\xN}\sigma^2            & (\prope{biased})   & and
+    \\(2).& \pE\varest    &=&                  \sigma^2            & (\prope{unbiased}) &
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: $\pE(\rvx_n\meanest) = \frac{1}{\xN}\sigma^2+\mean^2$. Proof: \label{ilem:varest}
+    \begin{align*}
+      \pE\brp{\rvx_n\meanest}
+        &\eqd \pE\brp{\rvx_n\frac{1}{\xN}\sum_{m=1}^{\xN}\rvx_m}
+        && \text{by definition of \fncte{average}}
+        && \text{\xref{def:average}}
+      \\&= \pE\brp{\frac{1}{\xN}\sum_{m=1}^{\xN}\rvx_n\rvx_m}
+      \\&= \frac{1}{\xN}\sum_{m=1}^{\xN}\pE\brp{\rvx_n\rvx_m}
+      \\&= \frac{1}{\xN}\brs{\pE\rvx_n^2 + \sum_{m\neq n}\pE\brp{\rvx_n\rvx_m}}
+      \\&= \frac{1}{\xN}\brs{\pE\rvx_n^2 + \sum_{m\neq n}\brp{\pE\rvx_n}\brp{\pE\rvx_m}}
+      \\&= \frac{1}{\xN}\brs{\brp{\sigma^2+\mean^2} + (\xN-1)\mean^2}
+      \\&= \mean^2 - \brp{\frac{1}{\xN}\sigma^2+\mean^2}
+    \end{align*}
+
+  \item Proof for \prope{biased} result: 
+        \begin{align*}
+          \pE\varest_B
+            &\eqd \pE\brs{\frac{1}{\xN}  \sum_{n=1}^{\xN} \brp{\rvx_n - \meanest}^2}
+            && \text{by definition of $\varest_B$}
+            && \text{\xref{def:varest}}
+          \\&= \frac{1}{\xN} \pE\brs{ \sum_{n=1}^{\xN} \brp{\rvx_n \mcom{-\mean + \mean}{$0$} - \meanest}^2}
+          \\&= \frac{1}{\xN}  \sum_{n=1}^{\xN} \brs{ \mcom{\pE\brp{\rvx_n -\mean}^2}{$\sigma^2$} + 2\pE\brs{(\rvx_n -\mean)(\mean - \meanest)} + \pE\brp{\mean - \mcom{\meanest}{$\pE\mean$}}^2 }
+          \\&= \frac{1}{\xN}  \sum_{n=1}^{\xN} \brs{ \sigma^2 + 2\pE\brs{\rvx_n\mean - \rvx_n\meanest -\mean^2 + \mean\meanest} + \frac{1}{\xN}\sigma^2 }
+          \\&= \frac{1}{\xN}  \sum_{n=1}^{\xN} \brs{ \sigma^2 + 2\brs{\mean^2 - \pE(\rvx_n\meanest) -\mean^2 + \mean^2} + \frac{1}{\xN}\sigma^2 }
+          \\&= \frac{1}{\xN}  \sum_{n=1}^{\xN} \brs{ \sigma^2 + 2\brs{\mean^2 - \brp{\frac{1}{\xN}\sigma^2+\mu^2} } + \frac{1}{\xN}\sigma^2 }
+            && \text{by \xref{ilem:varest}}
+          \\&= \frac{1}{\xN}  \sum_{n=1}^{\xN} \brs{ \sigma^2 - \frac{1}{\xN}\sigma^2} 
+          \\&= \frac{\xN-1}{\xN}\sigma^2
+        \end{align*}
+
+  \item Proof for \prope{unbiased} result: 
+        \begin{align*}
+          \pE\varest
+            &\eqd \pE\brs{\frac{1}{\xN-1}  \sum_{n=1}^{\xN} \brp{\rvx_n - \meanest}^2}
+            && \text{by definition of $\varest$}
+            && \text{\xref{def:varest}}
+          \\&= \frac{\xN}{\xN-1}\pE\brs{  \frac{1}{\xN}  \sum_{n=1}^{\xN-1} \brp{\rvx_n - \meanest}^2}
+          \\&= \frac{\xN}{\xN-1}\frac{\xN-1}{\xN}\sigma^2
+            && \text{by \prope{biased} result}
+          \\&= \sigma^2
+        \end{align*}
+\end{enumerate}
+\end{proof}
+
