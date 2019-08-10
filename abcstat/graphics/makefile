@@ -402,7 +402,7 @@ PRG_TYPESET = xelatex.exe
 # master build control
 #--------------------------------------
 top: $(GRP_MATH) $(GRP_SETOPS) $(GRP_DSP) $(GRP_FRAMES) $(GRP_SETSTR) $(GRP_LATU) $(GRP_LAT) $(GRP_LATTICE) $(GRP_LATA) $(GRP_LATM) $(GRP_LATD) $(GRP_LATC) $(GRP_NEG) $(GRP_OSETU) $(GRP_OSET) $(GRP_BOOLEAN) $(GRP_ORTHOLAT) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SPLINE) $(GRP_SYSTEM) $(GRP_TOPOLOGY)
-	@echo Done ... sto/graphics pdfs are ready!
+	@echo Done ... graphics pdfs are ready!
 
 #--------------------------------------
 # implicit build control

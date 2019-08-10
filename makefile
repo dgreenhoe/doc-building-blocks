@@ -15,9 +15,7 @@
 # Commands
 #--------------------------------------
 all:
-  cd 2019xcordef
-    make
-  cd ..\abcstat
+  cd abcstat
     make
   cd ..\probability
     make
@@ -37,6 +35,8 @@ all:
     make
 #  cd ..\xpsd
 #    make
+  cd ..\2019xcordef
+    make
   cd ..\estimation
     make
   cd ..\A290826
