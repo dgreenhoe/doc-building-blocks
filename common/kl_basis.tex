@@ -38,8 +38,8 @@ in this chapter).
 \index{MAP} \index{maximum a-posteriori probability estimation}
 \index{ML}  \index{maximum likelihood estimation}
 %---------------------------------------
-Let $\opSys$ be an additive White Gaussian noise system and
-$\Psi$ an orthonormal basis for $\rvx(t;\estT)$ such that
+Let %$\opSys$ be an additive White Gaussian noise system and
+$\Psi$ be an orthonormal basis for $\rvx(t;\estT)$ such that
 \\\indentx$\begin{array}{rcl}
      \rvy(t)&=&    \rvx(t;\estT) + \rvv(t)
    \\\Psi  &=&    \set{\psi_n}{n=1,2,\ldots,\xN}
@@ -77,7 +77,7 @@ Let $\ds\rvv'(t) \eqd \rvv(t) - \sum_{n=1}^\xN \fdotv_n \psi_n(t)$.
    \\&= \sum_{n=1}^\xN \fdoty_n\psi_n(t) + \rvv'(t).
 \end{align*}
 
-\item Proof that the set of statistics $\setY$ and the random process $\rvv'(t)$ are \prope{uncorrelated}:
+\item lemma: $\setY$ and $\rvv'(t)$ are \prope{uncorrelated}:\label{ilem:sstat_uncorrelated}
 \begin{align*}
    \pE\brs{\fdoty_n \rvv'(t)}
      &= \pE\brs{\inprod{\rvy(t)}{\psi_n(t)}\left( \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t)\right)}
@@ -103,59 +103,64 @@ Let $\ds\rvv'(t) \eqd \rvv(t) - \sum_{n=1}^\xN \fdotv_n \psi_n(t)$.
    \\&= \inprod{\xN_o\delta(t-\estT)}{\psi_n(\estT)} - \xN_o\psi_n(t)
    \\&= \xN_o\psi_n(t) - \xN_o\psi_n(t)
    \\&= 0
+   \\&\implies\text{\propb{uncorrelated}}
 \end{align*}
 
-\item This implies $\fdoty_n$ and $\rvv'(t)$ are uncorrelated.
-Since they are Gaussian processes (due to channel operator hypothesis),
-they are also independent.
+\item lemma: $\fdoty_n$ and $\rvv'(t)$ are \prope{uncorrelated}. Proof:\\
+      By \pref{ilem:sstat_uncorrelated}, $\fdoty_n$ and $\rvv'(t)$ are \prope{uncorrelated}.
+      By hypothesis, they are \prope{Gaussian}, and thus are also \propb{independent}.
+      \label{ilem:sstat_independent}
 
-\item Proof that $P\set{\rvx(t;\estT)}{\rvy(t)}=P\set{\rvx(t;\estT)}{\fdoty_1,\;\fdoty_2,\ldots,\fdoty_{\xN}}$:
+\item Proof that $\psP\set{\rvx(t;\estT)}{\rvy(t)}=\psP\set{\rvx(t;\estT)}{\fdoty_1,\;\fdoty_2,\ldots,\fdoty_{\xN}}$:
+      \label{item:sstat_P}
+
 \begin{align*}
    \psP\set{\rvx(t;\estT)}{\rvy(t)}
      &= \psP\set{\rvx(t;\estT)}{\sum_{n=1}^\xN\fdoty_n \psi_n(t) + \rvv'(t)}
-   \\&= \psP\set{\rvx(t;\estT)}{R, \rvv'(t)}
+   \\&= \psP\set{\rvx(t;\estT)}{\setY, \rvv'(t)}
      && \text{because $\setY$ and $\rvv'(t)$ can be extracted by $\inprod{\cdots}{\fpsi_n(t)}$}
-   \\&= \frac{\psP\set{R, \rvv'(t)}{\rvx(t;\estT)}  P\setn{\rvx(t;\estT)} }
-             {\psP\setn{R,\rvv'(t)}}
-   \\&= \frac{\psP\setn{ R|\rvx(t;\estT)}\psP\setn{ \rvv'(t)|\rvx(t;\estT)}\psP\setn{\rvx(t;\estT)}}
+   \\&= \frac{\psP\set{\setY, \rvv'(t)}{\rvx(t;\estT)}  P\setn{\rvx(t;\estT)} }
+             {\psP\setn{\setY,\rvv'(t)}}
+   \\&= \frac{\psP\set{ \setY}{\rvx(t;\estT)}\psP\set{ \rvv'(t)}{\rvx(t;\estT)}\psP\setn{\rvx(t;\estT)}}
              {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
-     && \text{by \prope{independence} of $\setY$ and $\rvv'(t)$}
-   \\&= \frac{\psP\setn{ R|\rvx(t;\estT)}\psP\setn{ \rvv'(t)}\psP\setn{\rvx(t;\estT)}}
+     && \text{by \prope{independence} of $\setY$ and $\rvv'(t)$ \xref{ilem:sstat_independent}}
+   \\&= \frac{\psP\set{ \setY}{\rvx(t;\estT)}\psP\setn{ \rvv'(t)}\psP\setn{\rvx(t;\estT)}}
              {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
-   \\&= \frac{\psP\setn{ R|\rvx(t;\estT)} \psP\setn{\rvx(t;\estT)}}
+     && \text{by \prope{independence} of $\fx$ and $\rvv$}
+   \\&= \frac{\psP\set{\setY}{\rvx(t;\estT)} \psP\setn{\rvx(t;\estT)}}
              {\psP\setn{\setY}}
-   \\&= \frac{\psP\setn{ R,\rvx(t;\estT)}}
+   \\&= \frac{\psP\setn{ \setY,\rvx(t;\estT)}}
              {\psP\setn{\setY}}
    \\&= \psP\set{\rvx(t;\estT)}{\setY}
+     && \text{by definition of \fncte{conditional probability} \xref{def:conprob}}
 \end{align*}
 
 \item Proof that $\setY$ is a sufficient statistic for the \vale{MAP estimate}:
 \begin{align*}
    \estMAP
-     &\eqd \argmax_{\estT} \psP\setn{\rvx(t;\estT)|\rvy(t)}
+     &\eqd \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\rvy(t)}
      &&    \text{by definition of \vale{MAP estimate}}
-   \\&=    \argmax_{\estT} \psP\setn{\rvx(t;\estT)|R}
-     &&    \text{by result 4.}
+   \\&=    \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\setY}
+     &&    \text{by \pref{item:sstat_P}}
 \end{align*}
 
-\item Proof that $\setY$ is a sufficient statistic for the \vale{ML estimate}:
+\item Proof that $\setY$ is a \prope{sufficient statistic} for the \fncte{ML estimate}:
 \begin{align*}
    \estML
-     &\eqd \argmax_{\estT} \psP\setn{\rvy(t)|\rvx(t;\estT)}
+     &\eqd \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\estT)}
      &&    \text{by definition of \fncte{ML estimate}}
-   \\&=    \argmax_{\estT} \psP\setn{\sum_{n=1}^\xN\fdoty_n\psi_n(t)+\rvv'(t)|\rvx(t;\estT)}
-   \\&=    \argmax_{\estT} \psP\setn{R,\rvv'(t)|\rvx(t;\estT)}
+   \\&=    \argmax_{\estT} \psP\set{\sum_{n=1}^\xN\fdoty_n\psi_n(t)+\rvv'(t)}{\rvx(t;\estT)}
+   \\&=    \argmax_{\estT} \psP\set{\setY,\rvv'(t)}{\rvx(t;\estT)}
      &&    \text{because $\setY$ and $\rvv'(t)$ can be extracted by  $\inprod{\cdots}{\fpsi_n(t)}$}
-   \\&=    \argmax_{\estT} \psP\setn{R|\rvx(t;\estT)}\psP\setn{\rvv'(t)|\rvx(t;\estT)}
+   \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}\psP\setn{\rvv'(t)}{\rvx(t;\estT)}
      &&    \text{by \prope{independence} of $\setY$ and $\rvv'(t)$}
-   \\&=    \argmax_{\estT} \psP\setn{R|\rvx(t;\estT)}\psP\setn{\rvv'(t)}
+   \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}\psP\setn{\rvv'(t)}
      &&    \text{by \prope{independence} of $\rvx(t)$ and $\rvv'(t)$}
-   \\&=    \argmax_{\estT} \psP\setn{R|\rvx(t;\estT)}
+   \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}
      &&    \text{by \prope{independence} of $\rvv'(t)$ and $\estT$}
 \end{align*}
 \end{enumerate}
 \end{proof}
-
 
 %Depending on the nature of the channel (additive, white, and/or Gaussian)
 %we can know certain characteristics of the noise and received statistics.
@@ -164,7 +169,6 @@ they are also independent.
 %\subsection{Additive noise channel}
 %\label{sec:opCan}
 %======================================
-
 
 %---------------------------------------
 \begin{theorem}%[Additive noise projection statistics]

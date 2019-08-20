@@ -32,10 +32,19 @@ x = sunspot.month;
 #x = mydata$Sales.of.shampoo.over.a.three.year.period
 
 #https://www.kaggle.com/shenba/time-series-datasets/version/1
- mydata = read.csv(file="Electric_Production.csv");
- x = mydata$IPG2211A2N
-x_ts = as.ts(x)
-x_psd = welchPSD(x_ts, length(x_ts)/5)
+# mydata = read.csv(file="Electric_Production.csv");
+# x = mydata$IPG2211A2N
+#x_ts = as.ts(x)
+#x_psd = welchPSD(x_ts, length(x_ts)/4)
+#plot(x_psd$power, type="l", ylim=c(0,100), col="blue")
+
+#https://www.kaggle.com/nodarokroshiashvili/time-series
+ mydata = read.csv(file="TS.csv");
+ x = mydata$price
+ x = x-mean(x);
+ x_ts = as.ts(x)
+ x_psd = welchPSD(x_ts, length(x_ts)/4)
+ plot(x_psd$power, type="l", ylim=c(0,2.5e9), col="green")
 
  print(names(mydata))
 #---------------------------------------
@@ -48,5 +57,4 @@ x_smooth = smooth(x, kind="3R");
 #plot(mydata, col="blue");
 #lines(x, col="blue")
 #lines(x_smooth, col="red")
-plot(c(10:40), x_psd$power[10:40], type="l")
 
