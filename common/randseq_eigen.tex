@@ -1,0 +1,290 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Random Process Eigen-Analysis}
+%======================================
+
+
+%=======================================
+%\section{Eigen-analysis of random processes}
+\label{sec:KL}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\label{def:opR}
+%---------------------------------------
+Let $\rvx(t)$ be random processes with \fncte{auto-correlation} function \xref{def:Rxx} $\Rxx(t,u)$.
+\defboxt{
+  The \opd{auto-correlation operator} $\opR$ of $\rvx(t)$ is defined as
+  \\\indentx$\opR\ff  \eqd \int_{u\in\R}\Rxx(t,u)\ff(u) \du$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:white}
+%---------------------------------------
+Let $\rvx(t)$ be a \fncte{random process} with \fncte{auto-correlation} $\Rxx(\tau)$ \xref{def:Rxx}.
+\defboxt{
+  A \fncte{random process} $\rvx(t)$ is \propd{white} if $\Rxx(\tau)=\delta(\tau)$
+  }
+\end{definition}
+
+If a random process $\rvx(t)$ is \prope{white} \xref{def:white}
+and the set $\Psi=\setn{\fpsi_1(t),\fpsi_2(t),\ldots,\fpsi_N(t)\}}$
+is \textbf{any} set of orthonormal basis functions, then the innerproducts
+$\inprod{n(t)}{\fpsi_n(t)}$ and $\inprod{n(t)}{\fpsi_m(t)}$ are \prope{uncorrelated}
+for $m\ne  n$.
+However, if $\rvx(t)$ is \propb{colored} (not white), then the innerproducts are not
+in general uncorrelated.
+But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opR$ such
+that $\ds\opR \fpsi_n = \lambda_n \fpsi_n$,
+then by \prefpp{thm:Rxx_prop}, the set $\setn{\fpsi_n(t)}$ are \prope{orthogonal} and
+the innerproducts \textbf{are} \prope{uncorrelated} even though $\rvx(t)$ is
+not white.
+This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(t)$.
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:opR}
+%---------------------------------------
+Let $\opR$ be an \ope{auto-correlation} operator.
+\thmbox{\begin{array}{lll}
+  \inprod{\opR \rvx}{\rvx} \ge 0
+    & \forall \rvx\in\spX
+    & \text{(\prope{non-negative})}  \\
+  \inprod{\opR \rvx}{\fy} = \inprod{\rvx}{\opR \fy}
+    & \forall \rvx,\fy\in\spX
+    & \text{(\prope{self-adjoint})}
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+\intertext{1. Proof that $\opR$ is \prope{non-negative}:}
+   \inprod{\opR \fy}{\fy}
+     &= \inprod{\int_{u\in\R}\Rxx(t,u) \fy(u) \du}{\fy(t)}
+     && \text{by definition of $\opR$}
+     && \text{\xref{def:opR}}
+   \\&= \inprod{\int_{u\in\R}\pE\brs{\rvx(t)\rvx^\ast(u)} \fy(u) \du}{\fy(t)}
+     && \text{by definition of $\Rxx(t,u)$}
+     && \text{\xref{def:Rxx}}
+   \\&= \pE\brs{\inprod{\int_{u\in\R}\rvx(t)\rvx^\ast(u) \fy(u) \du}{\fy(t)}}
+     && \text{by \prope{linearity} of $\inprodn$ and $\int$}
+     && \text{\ifsxref{vsinprod}{def:inprod}}
+   \\&= \pE\brs{\int_{u\in\R}\rvx^\ast(u) \fy(u) \du \inprod{\rvx(t)}{\fy(t)}}
+     && \text{by \prope{additivity} property of $\inprodn$}
+     && \text{\ifsxref{vsinprod}{def:inprod}}
+   \\&= \pE\brs{\inprod{\fy(u)}{\rvx(u)} \inprod{\rvx(t) }{\fy(t)}}
+     && \text{by local definition of $\inprodn$}
+     && \text{\ifsxref{vsinprod}{def:inprod}}
+   \\&= \pE\brs{\inprod{\rvx(u)}{\fy(u)}^\ast \inprod{\rvx(t) }{\fy(t)}}
+     && \text{by \prope{conjugate symmetry} prop.}
+     && \text{\ifsxref{vsinprod}{def:inprod}}
+   \\&= \pE{\abs{\inprod{\rvx(t) }{\fy(t)}}^2}
+     && \text{by definition of $\absn$}
+     && \text{\xref{def:abs}}
+   \\&\ge 0
+\intertext{2. Proof that $\opR$ is self-adjoint:}
+   \inprod{\brs{\opR \rvx}(t)}{\fy}
+     &= \inprod{\int_{u\in\R}\Rxx(t,u) \rvx(u) \du}{\fy(t)}
+     && \text{by definition of $\opR$}
+     && \text{\xref{def:opR}}
+   \\&= \int_{u\in\R}\rvx(u) \inprod{\Rxx(t,u)  }{\fy(t)} \du
+     && \text{by \prope{additive} property of $\inprodn$}
+     && \text{\ifsxref{vsinprod}{def:inprod}}
+   \\&= \int_{u\in\R}\rvx(u) \inprod{\fy(t)}{\Rxx(t,u)}^\ast \du
+     && \text{by \prope{conjugate symmetry} prop.}
+     && \text{\ifsxref{vsinprod}{def:inprod}}
+   \\&= \inprod{ \rvx(u) }{\inprod{\fy(t)}{\Rxx(t,u)} }
+     && \text{by local definition of $\inprodn$}
+     && \text{\ifsxref{vsinprod}{def:inprod}}
+   \\&= \inprod{ \rvx(u) }{\int_{t\in\R}\fy(t) \Rxx^\ast(t,u)\dt }
+     && \text{by local definition of $\inprodn$}
+     && \text{\ifsxref{vsinprod}{def:inprod}}
+   \\&= \inprod{ \rvx(u) }{\int_{t\in\R}\fy(t) \Rxx(u,t)\dt }
+     && \text{by property of $\Rxx$}
+     && \text{\xref{thm:Rxx_prop}}
+   \\&= \inprod{ \rvx(u) }{\mcom{\opR}{$\opRa$} \fy }
+     && \text{by definition of $\opR$}
+     && \text{\xref{def:opR}}
+   \\\implies&\qquad \opR=\opRa \qquad\implies \text{$\opR$ is \prope{self adjoint}}
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Properties}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpp{keener}{114}{119}
+  }
+\label{thm:opR_eigen}
+%---------------------------------------
+Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues and
+    $\seq{\fpsi_n}{n\in\Z}$ be the eigenfunctions of
+    operator $\opR$ such that
+    $\opR \fpsi_n = \lambda_n \fpsi_n$.
+\thmbox{\begin{array}{rlp{7cm}}
+  1. & \lambda_n \in \R
+     & (eigenvalues of $\opR$ are \prope{real})
+     \\
+  2. & \lambda_n\ne \lambda_m \implies \inprod{\fpsi_n}{\fpsi_m}=0
+     & (eigenfunctions associated with distinct eigenvalues are \prope{orthogonal})
+     \\
+  3. & \norm{\fpsi_n(t)}^2>0 \implies \lambda_n\ge0
+     & (eigenvalues are \prope{non-negative})
+     \\
+  4. & \norm{\fpsi_n(t)}^2>0, \inprod{\opR\ff}{\ff} > 0 \implies \lambda_n>0
+     & (if $\opR$ is \prope{positive definite}, then eigenvalues are \prope{positive})
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Proof that eigenvalues are \prope{real-valued}:
+Because $\opR$ is self-adjoint, its eigenvalues are real\ifsxref{operator}{thm:self_adjoint}.
+
+\item eigenfunctions associated with distinct eigenvalues are orthogonal:
+Because $\opR$ is self-adjoint, this property follows\ifsxref{operator}{thm:self_adjoint}.
+
+\item Proof that eigenvalues are \prope{non-negative}:
+\begin{align*}
+   0 &\ge \inprod{\opR \fpsi_n}{\fpsi_n}
+     &&   \text{by definition of non-negative definite}
+   \\&=   \inprod{\lambda_n \fpsi_n}{\fpsi_n}
+     &&   \text{by hypothesis}
+   \\&=   \lambda_n \inprod{\fpsi_n}{\fpsi_n}
+     &&   \text{by definition of inner-products}
+   \\&=   \lambda_n \norm{\fpsi_n}^2
+     &&   \text{by definition of norm induced by inner-product}
+\end{align*}
+
+\item Eigenvalues are \prope{positive} if $\opR$ is \prope{positive definite}:
+\begin{align*}
+   0 &> \inprod{\opR \fpsi_n}{\fpsi_n}
+     && \text{by definition of \prope{positive definite}}
+   \\&= \inprod{\lambda_n \fpsi_n}{\fpsi_n}
+     && \text{by hypothesis}
+   \\&= \lambda_n \inprod{\fpsi_n}{\fpsi_n}
+     && \text{by definition of inner-products}
+   \\&= \lambda_n \norm{\fpsi_n}^2
+     && \text{by definition of norm induced by inner-product}
+\end{align*}
+
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}[\thmd{Karhunen-Lo/`eve Expansion}]
+\footnote{
+  \citerpp{keener}{114}{119}
+  }
+\label{thm:kle}
+%---------------------------------------
+Let $\opR$ be the \ope{auto-correlation operator} \xref{def:opR}
+of a \fncte{random process} $\rvx(t)$.
+Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues of $\opR$
+and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
+    $\opR \fpsi_n = \lambda_n \fpsi_n$.
+\thmbox{
+  \mcom{\norm{\fpsi_n(t)}=1}
+       {$\setn{\fpsi_n(t)}$ are \prope{normalized}}
+  \implies
+  \mcom{\pE\brp{\abs{\rvx(t)-\sum_{n\in\Z}\inprod{\rvx(t)}{\fpsi_n(t)} \fpsi_n(t) }^2} = 0}
+       {\prope{convergence in probability}}
+    \qquad\text{($\setn{\fpsi_n(t)}$ is a \structe{basis} for $\rvx(t)$)}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Define $\ds\dotx_n\eqd \inprod{\rvx(t)}{\fpsi_n(t)}$ \label{idef:kle_xdot}
+  \item Define $\ds\opR\rvx(t) \eqd \int_{u\in\R} \Rxx(t,u)\rvx(u)\du$ \label{idef:kle_R}
+
+  \item lemma: \label{ilem:kle_mercer}
+        $\ds\pE\brs{\rvx(t)\rvx(t)} = \sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2$. Proof:
+        \begin{align*}
+          \pE\brs{\rvx(t)\rvx(t)}
+            &= \sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2
+            && \begin{array}{MMM}
+                   by  & \prope{non-negative} property & \xref{thm:opR}
+                 \\and & \thme{Mercer's Theorem}       & \xref{thm:mercer}
+               \end{array}
+        \end{align*}
+
+  \item lemma: \label{ilem:kle_1}
+    \begin{align*}
+       &\pE\brs{\rvx(t) \brp{\sum_{n\in\Z}\dotx_n \fpsi_n(t)}^\ast}
+       \\&\eqd \pE\brs{\rvx(t) \brp{\sum_{n\in\Z}\int_{u\in\R}\rvx(u)\fpsi_n^\ast(u)\du \fpsi_n(t)}^\ast}
+         && \text{by definition of $\dotx$}
+         && \text{\xref{idef:kle_xdot}}
+       \\&= \sum_{n\in\Z}\brp{\int_{u\in\R}\pE\brs{\rvx(t)\rvx^\ast(u)}\fpsi_n(u)\du} \fpsi_n^\ast(t)
+         && \text{by \prope{linearity}}
+         && \text{\xref{thm:pE_linop}}
+       \\&\eqd \sum_{n\in\Z}\brp{\int_{u\in\R}\Rxx(t,u)\fpsi_n(u)\du} \fpsi_n^\ast(t)
+         && \text{by definition of $\Rxx(t,u)$}
+         && \text{\xref{def:Rxx}}
+       \\&\eqd \sum_{n\in\Z}\brp{\opR\fpsi_n(t) \fpsi_n^\ast(t)}
+         && \text{by definition of $\opR$}
+         && \text{\xref{idef:kle_R}}
+       \\&= \sum_{n\in\Z}\lambda_n\fpsi_n(t) \fpsi_n^\ast(t)
+         && \text{by property of \structe{eigen-system}}
+       \\&= \sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2
+    \end{align*}
+
+  \item lemma: \label{ilem:kle_2}
+    \begin{align*}
+       &\pE\brs{\sum_{n\in\Z}\dotx_n \fpsi_n(t)\brp{\sum_{m\in\Z}\dotx_m \fpsi_m(t)}^\ast}
+       \\&\eqd \pE\brs{\sum_{n\in\Z}\int_{u\in\R}\rvx(u)\fpsi_n^\ast(u)\du   \fpsi_n(t)\brp{\sum_{m\in\Z}\int_v \rvx(v)\fpsi_m^\ast(v)\dv \fpsi_m(t)}^\ast}
+         && \text{by definition of $\dotx$}
+         && \text{\xref{idef:kle_xdot}}
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\int_v \pE\brs{\rvx(u)\rvx^\ast(v)}\fpsi_m(v)\dv} \fpsi_n^\ast(u)\du   \fpsi_n(t)   \fpsi_m^\ast(t)
+         && \text{by \prope{linearity}}
+         && \text{\xref{thm:pE_linop}}
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\int_v \Rxx(u,v)\fpsi_m(v)\dv} \fpsi_n^\ast(u)\du   \fpsi_n(t)   \fpsi_m^\ast(t)
+         && \text{by definition of $\Rxx(t,u)$}
+         && \text{\xref{def:Rxx}}
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\opR\fpsi_m(u)} \fpsi_n^\ast(u)\du   \fpsi_n(t)   \fpsi_m^\ast(t)
+         && \text{by definition of $\opR$}
+         && \text{\xref{idef:kle_R}}
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\lambda_m\fpsi_m(u)} \fpsi_n^\ast(u)\du   \fpsi_n(t)   \fpsi_m^\ast(t)
+         && \text{by property of \structe{eigen-system}}
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \brp{\int_{u\in\R}\fpsi_m(u) \fpsi_n^\ast(u)\du }   \fpsi_n(t)   \fpsi_m^\ast(t)
+         && \text{by \prope{linearity}}
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \norm{\fpsi(t)}^2 \kdelta_{mn}   \fpsi_n(t)   \fpsi_m^\ast(t)
+         && \text{by \prope{orthogonal} property} 
+         && \text{\xref{thm:opR_eigen}}
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \kdelta_{mn}   \fpsi_n(t)   \fpsi_m^\ast(t)
+         && \text{by \prope{normalized} hypothesis}
+       \\&= \sum_{n\in\Z}\lambda_n   \fpsi_n(t)   \fpsi_n^\ast(t)
+         && \text{by definition of \fncte{Kronecker delta} $\kdelta$}
+         && \text{\xref{def:kdelta}}
+       \\&= \sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2
+    \end{align*}
+
+\item Proof that $\setn{\fpsi_n(t)}$ is a \structe{basis} for $\rvx(t)$:
+  \begin{align*}
+    &\pE\brp{\abs{\rvx(t)-\sum_{n\in\Z}\dotx_n \fpsi_n(t) }^2}
+    \\&= \pE\brp{\brs{\rvx(t)-\sum_{n\in\Z}\dotx_n \fpsi_n(t) }\brs{\rvx(t)-\sum_{m\in\Z}\dotx_m \fpsi_m(t) }^\ast}
+    \\&= \pE\brp{
+         \rvx(t)\rvx^\ast(t)
+       - \rvx(t)\brs{\sum_{n\in\Z}\dotx_n \fpsi_n(t)}^\ast
+       - \rvx^\ast(t)\sum_{n\in\Z}\dotx_n \fpsi_n(t)
+       + \brs{\sum_{n\in\Z}\dotx_n \fpsi_n(t)} \brs{\sum_{m\in\Z}\dotx_m \fpsi_m(t) }^\ast
+       }
+    \\&= \pE\brp{\rvx(t)\rvx^\ast(t)}
+       - \pE\brs{\rvx(t)\brs{\sum_{n\in\Z}\dotx_n \fpsi_n(t)}^\ast}
+       - \pE\brs{\rvx^\ast(t)\sum_{n\in\Z}\dotx_n \fpsi_n(t)}
+       + \pE\brs{\sum_{n\in\Z}\dotx_n \fpsi_n(t) \brs{\sum_{m\in\Z}\dotx_m \fpsi_m(t) }^\ast }
+    \\&\qquad\text{by \prope{linearity} of $\pE$ \xref{thm:pE_linop}}
+    \\&= \mcom{\sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2}{by \pref{ilem:kle_mercer}}
+       - \mcom{\sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2}{by \pref{ilem:kle_1}}
+       - \mcom{\brs{\sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2}^\ast}{by \pref{ilem:kle_1}}
+       + \mcom{\sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2}{by \pref{ilem:kle_2}}
+    \\&= 0
+  \end{align*}
+\end{enumerate}
+\end{proof}
+

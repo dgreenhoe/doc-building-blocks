@@ -34,6 +34,7 @@ FILE_SRC  =                       \
   ../common/randseq.tex           \
   ../common/randseq_addnoise.tex  \
   ../common/randseq_dsp.tex       \
+  ../common/randseq_eigen.tex     \
   ../common/randvar.tex           \
   ../common/info.tex              \
   ../common/estimate.tex          \
