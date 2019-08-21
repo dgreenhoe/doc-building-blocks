@@ -24,13 +24,9 @@ FILE_SRC  =                       \
   ../common/expectation.tex       \
   ../common/gradient_search.tex   \
   ../common/kl_basis.tex          \
-  ../common/latd.tex              \
-  ../common/latc.tex              \
-  ../common/latb.tex              \
-  ../common/lattice.tex           \
   ../common/moment_estimation.tex \
   ../common/norm_minimization.tex \
-  ../common/order.tex             \
+  ../common/operator.tex          \
   ../common/pdfcdf.tex            \
   ../common/probspace.tex         \
   ../common/spline.tex            \
@@ -50,7 +46,6 @@ FILE_SRC  =                       \
   ../common/ortholat.tex          \
   ../common/mat_calc.tex          \
   ../common/subspace.tex          \
-  ../common/morph.tex             \
   ../common/pnseq.tex             \
   ../common/problatn.tex          \
   ../common/problatoc.tex         \
