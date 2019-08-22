@@ -3,30 +3,28 @@
 % Daniel J. Greenhoe
 %============================================================================
 %=======================================
-\chapter{KL-expansion application}
+\chapter{Sufficient Statistics Estimation}
 %=======================================
 %=======================================
 \section{Sufficient statistics}
 %=======================================
 \prefpp{thm:sstat} (next) shows that the finite set
-$\setY\eqd\set{\fdoty_n}{n=1,2,\ldots,N}$ provides just as
-much information as having the entire $\rvy(t)$ waveform
+$\setY\eqd\set{\fdoty_n}{n=1,2,\ldots,\xN}$ (a finite number of values) provides just as
+good an estimate as having the entire $\rvy(t)$ waveform
 (an uncountably infinite number of values)
 with respect to the following cases:
 \begin{enume}
    \item the conditional probability of $\rvx(t;\estT)$ given $\rvy(t)$
-   \item the \fncte{MAP estimate} of the information sequence
-   \item the \fncte{ML estimate} of the information sequence.
+   \item the \fncte{MAP estimate} of the sequence
+   \item the \fncte{ML estimate}  of the sequence.
 \end{enume}
-That is, even with a drastic reduction in the amount of information
+That is, even with a drastic reduction in the number of statistics
 from uncountably infinite to finite $\xN$,
-no information is lost with respect to the quantities listed above.
+no quality is lost with respect to the estimators listed above.
 
 This amazing result is very useful in practical system implementation
 and also for proving other theoretical results
-(notably estimation and detection theorems which come later
-in this chapter).
-
+(notably estimation and detection theorems).
 
 %---------------------------------------
 \begin{theorem}[\thmd{Sufficient statistic theorem}]
@@ -38,130 +36,193 @@ in this chapter).
 \index{MAP} \index{maximum a-posteriori probability estimation}
 \index{ML}  \index{maximum likelihood estimation}
 %---------------------------------------
-Let %$\opSys$ be an additive White \prope{Gaussian} noise system and
-$\Psi$ be an orthonormal basis for $\rvx(t;\estT)$ such that
-\\\indentx$\begin{array}{rcl}
-     \rvy(t)&=&    \rvx(t;\estT) + \rvv(t)
-   \\\Psi  &=&    \set{\psi_n}{n=1,2,\ldots,\xN}
-\end{array}$
-\\
-Then $\setY\eqd\set{\fdoty_n}{n=1,2,\ldots,\xN}$ is a \valb{sufficient statistic} for $\fy(t)$ 
-such that\ldots
+Let $\Psi\eqd\set{\fpsi_n}{n=1,2,\ldots,\xN}$ be an \structe{orthonormal basis} for a parameterized function $\rvx(t;\theta)$
+with parameter $\theta$.
+Let $\fy(t)$ be $\fx(t;\theta)$ plus random noise $\rvv(t)$ such that $\rvy(t)\eqd\rvx(t;\estT)+\rvv(t)$.
+Let the set $\setY$ be defined as $\setY\eqd\set{\fdoty_n}{1,2,\ldots,\xN}$ 
+where each $\fdoty_n$ is the projection of $\fy(t)$ onto the \fncte{basis vector} $\fpsi_n(t)$ such that 
+\\\indentx$\ds
+  \fdoty_n \eqd \inprod{\fy(t)}{\fpsi_n(t)}
+           \eqd \int_{t\in\R}\fy(t)\fpsi_n(t)\dt
+$.\\
+Let $\estMAP$ be the \fncte{MAP estimate} 
+and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
 \thmbox{
-  \brb{\begin{array}{M}
-     $\rvv(t)$ is \prope{AWGN}
+  \brb{\begin{array}{FMD}
+     (A). & $\rvv(t)$ is \prope{zero-mean}                       & and 
+   \\(B). & $\rvv(t)$ is \prope{uncorrelated}                    &     
+        \\&                                   (\prope{white})    & and 
+   \\(C). & $\rvv(t)$ is \prope{Gaussian}                        & 
   \end{array}}
   \implies
-  \brb{\begin{array}{Frc>{\ds}lc>{\ds}l}
-     (1). & \mc{3}{l}{\psP\set{ \rvx(t;\estT)}{\rvy(t)}} &=& \psP\set{\rvx(t;\estT)}{\setY}
-   \\(2). & \estMAP &\eqd& \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\rvy(t)} &=& \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\setY} 
-   \\(3). & \estML  &\eqd& \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\estT)} &=& \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}
-  \end{array}}
+  \mcom{\brb{\begin{array}{F rc>{\ds}l D}
+     (1). & \mc{3}{l}{\psP\set{ \rvx(t;\estT)}{\rvy(t)} = \psP\set{\rvx(t;\estT)}{\setY}}        & and
+   \\(2). & \estMAP                           &=& \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\setY} & and
+   \\(3). & \estML                            &=& \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)} &
+  \end{array}}}{the $\xN$ element set $\setY$ is a \prope{sufficient statistic} for estimating $\fx(t)$}
   }
 \end{theorem}
 \begin{proof}
-Let $\ds\rvv'(t) \eqd \rvv(t) - \sum_{n=1}^\xN \fdotv_n \psi_n(t)$.
 \begin{enumerate}
-\item The relationship between $\setY$ and $\rvv'(t)$ is given by
-\begin{align*}
-   \rvy(t)
-     &= \sum_{n=1}^\xN \inprod{\rvy(t)}{\psi_n(t)}\psi_n(t) +
-        \left[\rvy(t)- \sum_{n=1}^\xN \inprod{\rvy(t)}{\psi_n(t)}\psi_n(t) \right]
-   \\&= \sum_{n=1}^\xN \inprod{\rvy(t)}{\psi_n(t)}\psi_n(t) +
-        \left[\rvy(t)- \sum_{n=1}^\xN \inprod{\rvx(t)+\rvv(t)}{\psi_n(t)}\psi_n(t) \right]
-   \\&= \sum_{n=1}^\xN \fdoty_n\psi_n(t) +
-        \left[\rvx(t)+\rvv(t) - \sum_{n=1}^\xN \inprod{\rvx(t)}{\psi_n(t)}\psi_n(t)
-                        - \sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t) \right]
-   \\&= \sum_{n=1}^\xN \fdoty_n\psi_n(t) +
-        \rvx(t)+\rvv(t) - \rvx(t) - \left[ \rvv(t) - \rvv'(t)\right]
-   \\&= \sum_{n=1}^\xN \fdoty_n\psi_n(t) + \rvv'(t).
-\end{align*}
+  \item Definition: Let $\ds\rvv'(t) \eqd \rvv(t) - \sum_{n=1}^\xN \fdotv_n \fpsi_n(t)$.
+        \label{idef:sstat_vprime}
 
-\item lemma: $\setY$ and $\rvv'(t)$ are \prope{uncorrelated}:\label{ilem:sstat_uncorrelated}
-\begin{align*}
-   \pE\brs{\fdoty_n \rvv'(t)}
-     &= \pE\brs{\inprod{\rvy(t)}{\psi_n(t)}\left( \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t)\right)}
-   \\&= \pE\brs{\inprod{\rvx(t)+\rvv(t)}{\psi_n(t)}\left( \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t)\right)}
-   \\&= \pE\brs{\Bigg(\inprod{\rvx(t)}{\psi_n(t)}+\inprod{\rvv(t)}{\psi_n(t)}\Bigg)
-            \left( \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\psi_n(t)}\psi_n(t)\right)}
-   \\&= \pE\brs{\Bigg(\fdotx_n+\fdotv_n\Bigg)
-            \left( \rvv(t)-\sum_{n=1}^\xN \fdotv_n\psi_n(t)\right)}
-   \\&= \pE\brs{\fdotx_n \rvv(t) - \fdotx_n \sum_{n=1}^\xN \fdotv_n\psi_n(t)
-            +\fdotv_n \rvv(t) - \fdotv_n \sum_{n=1}^\xN \fdotv_n\psi_n(t) }
-   \\&= \pE\brs{\fdotx_n \rvv(t)} -
-        \pE\brs{\fdotx_n \sum_{n=1}^\xN \fdotv_n\psi_n(t)} +
-        \pE\brs{\inprod{\rvv(t)}{\psi_n(t)} \rvv(t)} -
-        \pE\brs{\sum_{m=1}^\xN \fdotv_n \fdotv_m\psi_m(t)}
-   \\&= \fdotx_n \cancelto{0}{\pE{\rvv(t)}} -
-        \fdotx_n \sum_{n=1}^\xN \cancelto{0}{\pE\brs{\fdotv_n}}\psi_n(t) +
-        \pE\brs{\inprod{\rvv(t)\rvv(\estT)}{\psi_n(\estT)} } -
-        \sum_{m=1}^\xN \pE\brs{\fdotv_n \fdotv_m}\psi_m(t)
-   \\&= 0 - 0 +
-        \inprod{\pE\brs{\rvv(t)n(\estT)}}{\psi_n(\estT)} -
-        \sum_{m=1}^\xN \xN_o\kdelta_{mn} \psi_m(t)
-     \qquad\text{(because $\fdotv_n$ is white)}
-   \\&= \inprod{\xN_o\delta(t-\estT)}{\psi_n(\estT)} - \xN_o\psi_n(t)
-   \\&= \xN_o\psi_n(t) - \xN_o\psi_n(t)
-   \\&= 0
-   \\&\implies\text{\propb{uncorrelated}}
-\end{align*}
+  \item lemma: The relationship between $\setY$ and $\rvv'(t)$ is given by
+        \label{ilem:sstat_Yvprime}
+  \begin{align*}
+     &\boxed{\rvy(t)}
+     \\&= \sum_{n=1}^\xN \inprod{\rvy(t)}{\fpsi_n(t)}\fpsi_n(t) +
+          \brs{\rvy(t)- \sum_{n=1}^\xN \inprod{\rvy(t)}{\fpsi_n(t)}\fpsi_n(t) }
+       && \begin{array}{@{}M}%
+            by \prope{additive identity} property\\
+            of $\fieldC$%
+          \end{array}
+     \\&\eqd \sum_{n=1}^\xN \inprod{\rvy(t)}{\fpsi_n(t)}\fpsi_n(t) +
+          \brs{\rvy(t)- \sum_{n=1}^\xN \inprod{\rvx(t)+\rvv(t)}{\fpsi_n(t)}\fpsi_n(t) }
+       && \text{by definition of $\fy(t)$}
+     \\&= \sum_{n=1}^\xN \fdoty_n\fpsi_n(t) +
+          \mcom{\rvx(t)+\rvv(t)}{$\fy(t)$}
+             - \mcom{\sum_{n=1}^\xN \inprod{\rvx(t)}{\fpsi_n(t)}\fpsi_n(t)}{$\fx(t)$}
+             - \mcom{\sum_{n=1}^\xN \inprod{\rvv(t)}{\fpsi_n(t)}\fpsi_n(t)}{$\rvv(t)-\rvv'(t)$}
+       && \begin{array}{@{}M}
+            by definition of $\fdoty_n$ and\\
+            \prope{additive} property of $\inprodn$\\ 
+            \xref{def:inprod}
+          \end{array}
+     \\&= \sum_{n=1}^\xN \fdoty_n\fpsi_n(t) +
+          \rvx(t)+\rvv(t) - \rvx(t) - \brs{\rvv(t) - \rvv'(t)}
+     \\&= \boxed{\sum_{n=1}^\xN \fdoty_n\fpsi_n(t) + \rvv'(t)}
+  \end{align*}
 
-\item lemma: $\fdoty_n$ and $\rvv'(t)$ are \prope{uncorrelated}. Proof:\\
-      By \pref{ilem:sstat_uncorrelated}, $\fdoty_n$ and $\rvv'(t)$ are \prope{uncorrelated}.
-      By hypothesis, they are \prope{Gaussian}, and thus are also \propb{independent}.
-      \label{ilem:sstat_independent}
+  \item Definitions. Let \label{idef:sstat_dotxv}
+        $\begin{array}[t]{@{}r c>{\ds}l c>{\ds}l D}
+            \fdotx_n &\eqd& \inprod{\fx(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fx(t)\fpsi_n(t)\dt & and 
+          \\\fdotv_n &\eqd& \inprod{\rvv(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\rvv(t)\fpsi_n(t)\dt &.
+        \end{array}$
 
-\item Proof that $\psP\set{\rvx(t;\estT)}{\rvy(t)}=\psP\set{\rvx(t;\estT)}{\fdoty_1,\;\fdoty_2,\ldots,\fdoty_{\xN}}$:
-      \label{item:sstat_P}
+  \item lemma: $\pE\brs{\fdotv_n\rvv(t)} = N_o\fpsi_n(t)$. Proof: \label{ilem:sstat_vdotv}
+    \begin{align*}
+      &\pE\brs{\fdotv_n\rvv(t)} 
+      \\&\eqd \pE\brs{\brp{\int_{t\in\R}\rvv(u)\fpsi_n(u)\du} \rvv(t)}
+        && \text{by definition of $\fdotv_n(t)$}
+        && \text{\xref{idef:sstat_dotxv}}
+      \\&= \pE\brs{\int_{t\in\R}\rvv(u)\rvv(t)\fpsi_n(u)\du}
+        && \text{by \prope{linearity} of $\int\du$ operator}
+      \\&= \int_{t\in\R}\pE\brs{\rvv(u)\rvv(t)}\fpsi_n(u)\du
+        && \text{by \prope{linearity} of $\pE$}
+        && \text{\xref{thm:pE_linop}}
+      \\&= \int_{t\in\R}N_o\delta(u-t)\fpsi_n(u)\du
+        && \text{by \prope{white} hypothesis}
+      \\&= N_o\fpsi_n(t)
+        && \text{by property of \fncte{Dirac delta} $\delta(t)$}
+    \end{align*}
 
-\begin{align*}
-   \psP\set{\rvx(t;\estT)}{\rvy(t)}
-     &= \psP\set{\rvx(t;\estT)}{\sum_{n=1}^\xN\fdoty_n \psi_n(t) + \rvv'(t)}
-   \\&= \psP\set{\rvx(t;\estT)}{\setY, \rvv'(t)}
-     && \begin{array}{M}
-          because $\setY$ and $\rvv'(t)$ can be\\ 
-          extracted by $\inprod{\cdots}{\fpsi_n(t)}$
-        \end{array}
-   \\&= \frac{\psP\set{\setY, \rvv'(t)}{\rvx(t;\estT)}  P\setn{\rvx(t;\estT)} }
-             {\psP\setn{\setY,\rvv'(t)}}
-   \\&= \frac{\psP\set{ \setY}{\rvx(t;\estT)}\psP\set{ \rvv'(t)}{\rvx(t;\estT)}\psP\setn{\rvx(t;\estT)}}
-             {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
-     && \text{by \prope{independence} of $\setY$ and $\rvv'(t)$ \xref{ilem:sstat_independent}}
-   \\&= \frac{\psP\set{ \setY}{\rvx(t;\estT)}\psP\setn{ \rvv'(t)}\psP\setn{\rvx(t;\estT)}}
-             {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
-     && \text{by \prope{independence} of $\fx$ and $\rvv$}
-   \\&= \frac{\psP\set{\setY}{\rvx(t;\estT)} \psP\setn{\rvx(t;\estT)}}
-             {\psP\setn{\setY}}
-   \\&= \frac{\psP\setn{ \setY,\rvx(t;\estT)}}
-             {\psP\setn{\setY}}
-   \\&= \psP\set{\rvx(t;\estT)}{\setY}
-     && \text{by definition of \fncte{conditional probability} \xref{def:conprob}}
-\end{align*}
-
-\item Proof that $\setY$ is a sufficient statistic for the \vale{MAP estimate}:
-\begin{align*}
-   \estMAP
-     &\eqd \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\rvy(t)}
-     &&    \text{by definition of \vale{MAP estimate}}
-   \\&=    \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\setY}
-     &&    \text{by \pref{item:sstat_P}}
-\end{align*}
-
-\item Proof that $\setY$ is a \prope{sufficient statistic} for the \fncte{ML estimate}:
-\begin{align*}
-   \estML
-     &\eqd \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\estT)}
-     &&    \text{by definition of \fncte{ML estimate}}
-   \\&=    \argmax_{\estT} \psP\set{\sum_{n=1}^\xN\fdoty_n\psi_n(t)+\rvv'(t)}{\rvx(t;\estT)}
-   \\&=    \argmax_{\estT} \psP\set{\setY,\rvv'(t)}{\rvx(t;\estT)}
-     &&    \text{because $\setY$ and $\rvv'(t)$ can be extracted by  $\inprod{\cdots}{\fpsi_n(t)}$}
-   \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}\psP\setn{\rvv'(t)}{\rvx(t;\estT)}
-     &&    \text{by \prope{independence} of $\setY$ and $\rvv'(t)$}
-   \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}\psP\setn{\rvv'(t)}
-     &&    \text{by \prope{independence} of $\rvx(t)$ and $\rvv'(t)$}
-   \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}
-     &&    \text{by \prope{independence} of $\rvv'(t)$ and $\estT$}
-\end{align*}
+  \item lemma: $\setY$ and $\rvv'(t)$ are \prope{uncorrelated}:\label{ilem:sstat_uncorrelated} Proof:
+  \begin{align*}
+     &\pE\brs{\fdoty_n \rvv'(t)}
+     \\&\eqd \pE\brs{\inprod{\rvy(t)}{\fpsi_n(t)}\brp{ \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\fpsi_n(t)}\fpsi_n(t)}}
+       && \text{by definitions of $\fdoty_n$ and $\rvv'(t)$}
+     \\&\eqd \pE\brs{\inprod{\rvx(t)+\rvv(t)}{\fpsi_n(t)}\left( \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\fpsi_n(t)}\fpsi_n(t)\right)}
+       && \text{by definition of $\fy(t)$}
+     \\&= \pE\brs{\Bigg(\inprod{\rvx(t)}{\fpsi_n(t)}+\inprod{\rvv(t)}{\fpsi_n(t)}\Bigg)
+              \brp{ \rvv(t)-\sum_{n=1}^\xN \inprod{\rvv(t)}{\fpsi_n(t)}\fpsi_n(t)}}
+       && \begin{array}{@{}M}%
+            by \prope{additive} property of\\ 
+            $\inprodn$ \xref{def:inprod}%
+          \end{array}
+     \\&= \pE\brs{\Bigg(\fdotx_n+\fdotv_n\Bigg)
+              \left( \rvv(t)-\sum_{n=1}^\xN \fdotv_n\fpsi_n(t)\right)}
+       && \begin{array}{@{}M}%
+            by definitions of $\fdotx_n$ and $\fdotv_n$\\
+            \xref{idef:sstat_dotxv}
+          \end{array}
+     \\&= \pE\brs{\fdotx_n \rvv(t) - \fdotx_n \sum_{n=1}^\xN \fdotv_n\fpsi_n(t)
+              +\fdotv_n \rvv(t) - \fdotv_n \sum_{n=1}^\xN \fdotv_n\fpsi_n(t) }
+     \\&= \pE\brs{\fdotx_n \rvv(t)}
+          - \pE\brs{\fdotx_n \sum_{n=1}^\xN \fdotv_n\fpsi_n(t)}
+          + \pE\brs{\fdotv_n\rvv(t)}
+          - \pE\brs{\sum_{m=1}^\xN \fdotv_n \fdotv_m\fpsi_m(t)}
+       && \begin{array}{@{}M}%
+            by \prope{linearity} of $\pE$\\%
+            \xref{thm:pE_linop}%
+          \end{array}
+     \\&= \fdotx_n \cancelto{0}{\pE{\rvv(t)}}
+          - \fdotx_n \sum_{n=1}^\xN \cancelto{0}{\pE\brs{\fdotv_n}}\fpsi_n(t)
+          + \pE\brs{\fdotv_n\rvv(t)}
+          - \sum_{m=1}^\xN \pE\brs{\fdotv_n \fdotv_m}\fpsi_m(t)
+       && \begin{array}{@{}M}%
+            by \prope{linearity} of $\pE$\\%
+            \xref{thm:pE_linop}%
+          \end{array}
+     \\&= 0 - 0
+          + \pE\brs{\fdotv_n\rvv(t)} 
+          - \sum_{m=1}^\xN N_o\kdelta_{mn} \fpsi_m(t)
+       && \text{by \prope{white} hypothesis}
+     \\&= N_o\fpsi_n(t) - N_o\fpsi_n(t)
+       && \text{by \pref{ilem:sstat_vdotv}}
+     \\&= 0
+     \\&\implies\text{\propb{uncorrelated}}
+  \end{align*}
+  
+  \item lemma: $\fdoty_n$ and $\rvv'(t)$ are \prope{uncorrelated}. Proof:\\
+        By \pref{ilem:sstat_uncorrelated}, $\fdoty_n$ and $\rvv'(t)$ are \prope{uncorrelated}.
+        By hypothesis, they are \prope{Gaussian}, and thus are also \propb{independent}.
+        \label{ilem:sstat_independent}
+  
+  \item Proof that $\psP\set{\rvx(t;\estT)}{\rvy(t)}=\psP\set{\rvx(t;\estT)}{\fdoty_1,\;\fdoty_2,\ldots,\fdoty_{\xN}}$:
+        \label{item:sstat_P}
+  
+  \begin{align*}
+     \psP\set{\rvx(t;\estT)}{\rvy(t)}
+       &= \psP\set{\rvx(t;\estT)}{\sum_{n=1}^\xN\fdoty_n \fpsi_n(t) + \rvv'(t)}
+     \\&= \psP\set{\rvx(t;\estT)}{\setY, \rvv'(t)}
+       && \begin{array}{M}
+            because $\setY$ and $\rvv'(t)$ can be\\ 
+            extracted by $\inprod{\cdots}{\fpsi_n(t)}$
+          \end{array}
+     \\&= \frac{\psP\set{\setY, \rvv'(t)}{\rvx(t;\estT)}  P\setn{\rvx(t;\estT)} }
+               {\psP\setn{\setY,\rvv'(t)}}
+     \\&= \frac{\psP\set{ \setY}{\rvx(t;\estT)}\psP\set{ \rvv'(t)}{\rvx(t;\estT)}\psP\setn{\rvx(t;\estT)}}
+               {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
+       && \text{by \prope{independence} of $\setY$ and $\rvv'(t)$ \xref{ilem:sstat_independent}}
+     \\&= \frac{\psP\set{ \setY}{\rvx(t;\estT)}\psP\setn{ \rvv'(t)}\psP\setn{\rvx(t;\estT)}}
+               {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
+       && \text{by \prope{independence} of $\fx$ and $\rvv$}
+     \\&= \frac{\psP\set{\setY}{\rvx(t;\estT)} \psP\setn{\rvx(t;\estT)}}
+               {\psP\setn{\setY}}
+     \\&= \frac{\psP\setn{ \setY,\rvx(t;\estT)}}
+               {\psP\setn{\setY}}
+     \\&= \psP\set{\rvx(t;\estT)}{\setY}
+       && \begin{array}{@{}M}%
+            by definition of \fncte{conditional probability}\\ 
+            \xref{def:conprob}
+          \end{array}
+  \end{align*}
+  
+  \item Proof that $\setY$ is a sufficient statistic for the \vale{MAP estimate}:
+  \begin{align*}
+     \estMAP
+       &\eqd \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\rvy(t)}
+       &&    \text{by definition of \vale{MAP estimate} \xref{def:estMAP}}
+     \\&=    \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\setY}
+       &&    \text{by \pref{item:sstat_P}}
+  \end{align*}
+  
+  \item Proof that $\setY$ is a \prope{sufficient statistic} for the \fncte{ML estimate}:
+  \begin{align*}
+     \estML
+       &\eqd \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\estT)}
+       &&    \text{by definition of \fncte{ML estimate} \xref{def:estML}}
+     \\&=    \argmax_{\estT} \psP\set{\sum_{n=1}^\xN\fdoty_n\fpsi_n(t)+\rvv'(t)}{\rvx(t;\estT)}
+     \\&=    \argmax_{\estT} \psP\set{\setY,\rvv'(t)}{\rvx(t;\estT)}
+       &&    \text{because $\setY$ and $\rvv'(t)$ can be extracted by  $\inprod{\cdots}{\fpsi_n(t)}$}
+     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}\psP\setn{\rvv'(t)}{\rvx(t;\estT)}
+       &&    \text{by \prope{independence} of $\setY$ and $\rvv'(t)$}
+     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}\psP\setn{\rvv'(t)}
+       &&    \text{by \prope{independence} of $\rvx(t)$ and $\rvv'(t)$}
+     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}
+       &&    \text{by \prope{independence} of $\rvv'(t)$ and $\estT$}
+  \end{align*}
 \end{enumerate}
 \end{proof}
 
@@ -190,11 +251,11 @@ Let $\opC=\opCan$ be an additive noise channel.
 \begin{proof}
 \begin{align*}
    \pE(\fdoty_n |\theta)
-     &\eqd \brp{\inprod{\rvy(t)}{\psi_n(t)}  |\theta}
-   \\&=    {\inprod{\rvx(t;\theta)+\fn(t)}{\psi_n(t)}}
-   \\&=    {\inprod{\rvx(t;\theta)}{\psi_n(t)}} +   {\inprod{\fn(t)}{\psi_n(t)}}
-   \\&=    \inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \psi_k(t)}{\psi_n(t)} + \fdotv_n
-   \\&=    \sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\psi_k(t)}{\psi_n(t)} + \fdotv_n
+     &\eqd \brp{\inprod{\rvy(t)}{\fpsi_n(t)}  |\theta}
+   \\&=    {\inprod{\rvx(t;\theta)+\fn(t)}{\fpsi_n(t)}}
+   \\&=    {\inprod{\rvx(t;\theta)}{\fpsi_n(t)}} +   {\inprod{\fn(t)}{\fpsi_n(t)}}
+   \\&=    \inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n
+   \\&=    \sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n
    \\&=    \fdotx_n(\theta)  + \fdotv_n
 \\ \\
    \pE({\fdoty_n} | \theta)
@@ -270,18 +331,18 @@ with distribution $\fn(t)\sim\pN{0}{\sigma^2}$ for all $t$.
 \begin{proof}
 \begin{align*}
    \pE\fdotv_{n}
-     &= \pE\inprod{\fn(t)}{\psi_n(t)}
-   \\&= \inprod{\pE\fn(t)}{\psi_n(t)}
-   \\&= \inprod{0}{\psi_n(t)}
+     &= \pE\inprod{\fn(t)}{\fpsi_n(t)}
+   \\&= \inprod{\pE\fn(t)}{\fpsi_n(t)}
+   \\&= \inprod{0}{\fpsi_n(t)}
    \\&= 0
 \\
 \\
    (\fdoty_n |\theta)
-     &\eqd {\inprod{\rvy(t)}{\psi_n(t)}}  |\theta
-   \\&=    {\inprod{\rvx(t;\theta)+\fn(t)}{\psi_n(t)}}
-   \\&=    {\inprod{\rvx(t;\theta)}{\psi_n(t)}} +   {\inprod{\fn(t)}{\psi_n(t)}}
-   \\&=    \inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \psi_k(t)}{\psi_n(t)} + \fdotv_n
-   \\&=    \sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\psi_k(t)}{\psi_n(t)} + \fdotv_n
+     &\eqd {\inprod{\rvy(t)}{\fpsi_n(t)}}  |\theta
+   \\&=    {\inprod{\rvx(t;\theta)+\fn(t)}{\fpsi_n(t)}}
+   \\&=    {\inprod{\rvx(t;\theta)}{\fpsi_n(t)}} +   {\inprod{\fn(t)}{\fpsi_n(t)}}
+   \\&=    \inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n
+   \\&=    \sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n
    \\&=    \fdotx_n(\theta)  + \fdotv_n
 \\ \\
    \pE({\fdoty_n} | \theta)
@@ -332,14 +393,14 @@ Because the noise is additive (see \prefpp{thm:an_stats})
 Because the noise is also \prope{white},
 \begin{align*}
    \cov{\fdotv_m}{\fdotv_n}
-      &= \cov{\inprod{\fn(t)}{\psi_m(t)}}{\inprod{\fn(t)}{\psi_n(t)}}
-    \\&= \pE\brs{\inprod{\fn(t)}{\psi_m(t)} \inprod{\fn(t)}{\psi_n(t)}}
-    \\&= \pE\brs{\inprod{\fn(t)}{\psi_m(t)} \inprod{n(\estT)}{\psi_n(\estT)}}
-    \\&= \pE\brs{ \inprod{n(\estT)\inprod{\fn(t)}{\psi_m(t)}}{\psi_n(\estT)}}
-    \\&= \pE\brs{ \inprod{\inprod{n(\estT)\fn(t)}{\psi_m(t)}}{\psi_n(\estT)}}
-    \\&= \inprod{\inprod{\pE\brs{ n(\estT)\fn(t)}}{\psi_m(t)}}{\psi_n(\estT)}
-    \\&= \inprod{\inprod{\sigma^2 \delta(t-\estT)}{\psi_m(t)}}{\psi_n(\estT)}
-    \\&= \sigma^2 \inprod{\psi_n(t)}{\psi_m(t)}
+      &= \cov{\inprod{\fn(t)}{\fpsi_m(t)}}{\inprod{\fn(t)}{\fpsi_n(t)}}
+    \\&= \pE\brs{\inprod{\fn(t)}{\fpsi_m(t)} \inprod{\fn(t)}{\fpsi_n(t)}}
+    \\&= \pE\brs{\inprod{\fn(t)}{\fpsi_m(t)} \inprod{n(\estT)}{\fpsi_n(\estT)}}
+    \\&= \pE\brs{ \inprod{n(\estT)\inprod{\fn(t)}{\fpsi_m(t)}}{\fpsi_n(\estT)}}
+    \\&= \pE\brs{ \inprod{\inprod{n(\estT)\fn(t)}{\fpsi_m(t)}}{\fpsi_n(\estT)}}
+    \\&= \inprod{\inprod{\pE\brs{ n(\estT)\fn(t)}}{\fpsi_m(t)}}{\fpsi_n(\estT)}
+    \\&= \inprod{\inprod{\sigma^2 \delta(t-\estT)}{\fpsi_m(t)}}{\fpsi_n(\estT)}
+    \\&= \sigma^2 \inprod{\fpsi_n(t)}{\fpsi_m(t)}
     \\&= \brbl{\begin{array}{lM}
              \sigma^2 & for $n=m$ \\
              0        & for $n\ne m$.
@@ -483,9 +544,9 @@ In parameter estimation, the estimate is a member of an infinite set
 %---------------------------------------
 Let $\Psi$ be an orthonormal set spanning $\rvx(t)$ such that
 \\\indentx$\begin{array}{rcl}
-    \Psi     &\eqd& \seqn{\psi_1(t), \psi_2(t), \ldots, \psi_n(t)}
-  \\\fdoty_n &\eqd& \inprod{\rvy(t)}{\psi_n(t)}
-  \\\fdotx_n &\eqd& \inprod{\rvx(t)}{\psi_n(t)}
+    \Psi     &\eqd& \seqn{\fpsi_1(t), \fpsi_2(t), \ldots, \fpsi_n(t)}
+  \\\fdoty_n &\eqd& \inprod{\rvy(t)}{\fpsi_n(t)}
+  \\\fdotx_n &\eqd& \inprod{\rvx(t)}{\fpsi_n(t)}
   \\\rvy(t)  &=   & \rvx(t;\estT) + \fn(t).
 \end{array}$
 \\
@@ -592,11 +653,11 @@ Then
    \\&= \arg_a
          \brp{ 2\sum_{n=1}^\xN \brs{\fdoty_n - \fdotx_n( a )}\pderiv{}{ a }\fdotx_n( a )=0 }
    \\&= \arg_a
-         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n - \inprod{ a \lambda(t)}{\psi_n(t)}}\pderiv{}{ a }\inprod{ a \lambda(t)}{\psi_n(t)}=0 }
+         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n - \inprod{ a \lambda(t)}{\fpsi_n(t)}}\pderiv{}{ a }\inprod{ a \lambda(t)}{\fpsi_n(t)}=0 }
    \\&= \arg_a
-         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n -  a \inprod{\lambda(t)}{\psi_n(t)}}\pderiv{}{ a }( a \inprod{\lambda(t)}{\psi_n(t)})=0 }
+         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n -  a \inprod{\lambda(t)}{\fpsi_n(t)}}\pderiv{}{ a }( a \inprod{\lambda(t)}{\fpsi_n(t)})=0 }
    \\&= \arg_a
-         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n -  a \fdotlam_n } \inprod{\lambda(t)}{\psi_n(t)}=0 }
+         \brp{ \sum_{n=1}^\xN \brs{\fdoty_n -  a \fdotlam_n } \inprod{\lambda(t)}{\fpsi_n(t)}=0 }
    \\&= \arg_a
          \brp{ \sum_{n=1}^\xN \brs{\fdoty_n -  a \fdotlam_n } \fdotlam_n=0 }
    \\&= \arg_a
@@ -982,13 +1043,13 @@ Processing colored signals can be accomplished using two techniques:
 \end{enume}
 
 \paragraph{Karhunen-Lo\`{e}ve.}
-If the noise is white, the set $\{\inprod{\rvy(t)}{\psi_n(t)}\}$
+If the noise is white, the set $\{\inprod{\rvy(t)}{\fpsi_n(t)}\}$
 is a sufficient statistic regardless of which
-set $\{\psi_n(t)\}$ of orthonormal basis functions are used.
-If the noise is colored, and if $\{\psi_n(t)\}$ satisfy the
+set $\{\fpsi_n(t)\}$ of orthonormal basis functions are used.
+If the noise is colored, and if $\{\fpsi_n(t)\}$ satisfy the
 Karhunen-Lo\`{e}ve criterion
-   \[ \int_{t_2}\Rxx(t_1,t_2)\psi_n(t_2)\dd{t_2} = \lambda_n \psi_n(t_1) \]
-then $\{\inprod{\rvy(t)}{\psi_n(t)}\}$ is still a sufficient statistic.
+   \[ \int_{t_2}\Rxx(t_1,t_2)\fpsi_n(t_2)\dd{t_2} = \lambda_n \fpsi_n(t_1) \]
+then $\{\inprod{\rvy(t)}{\fpsi_n(t)}\}$ is still a sufficient statistic.
 
 \paragraph{Whitening filter.}
 The whitening filter makes the received signal $\rvy(t)$ statistically white
@@ -1042,7 +1103,7 @@ Let the \hie{signal to noise ratio} SNR be defined as
                             {\pE\brs{\abs{\inprod{\fn(t)}{\rvx(t)}}^2}}.
           $
 \thmboxt{
-  $\ds\snr[\rvy(t)] \le \frac{2\norm{\rvx(t)}^2}{\xN_o }$
+  $\ds\snr[\rvy(t)] \le \frac{2\norm{\rvx(t)}^2}{N_o }$
   \qquad
   and is maximized (equality) when $\rvx(t)=a\rvx(t)$, where $a\in\R$.
   }
@@ -1062,17 +1123,17 @@ Let the \hie{signal to noise ratio} SNR be defined as
    \\&=    \frac{\abs{\inprod{\rvx(t)}{f(t)}}^2}
                 {\int_{t\in\R} \int_{\estT} \pE\brs{\fn(t)n^\ast(\estT)}\rvx^\ast(t)\rvx(\estT)\;dtdu}
    \\&=    \frac{\abs{\inprod{\rvx(t)}{\rvx(t)}}^2}
-                {\int_{t\in\R} \int_{\estT} \frac{1}{2}\xN_o\delta(t-\estT) \rvx^\ast(t)\rvx(\estT)\;dtdu}
+                {\int_{t\in\R} \int_{\estT} \frac{1}{2}N_o\delta(t-\estT) \rvx^\ast(t)\rvx(\estT)\;dtdu}
    \\&=    \frac{\abs{\inprod{\rvx(t)}{\rvx(t)}}^2}
-                {\frac{1}{2}\xN_o \int_{t\in\R} \rvx^\ast(t)\rvx(t)\dt}
+                {\frac{1}{2}N_o \int_{t\in\R} \rvx^\ast(t)\rvx(t)\dt}
    \\&=    \frac{\abs{\inprod{\rvx(t)}{\rvx(t)}}^2}
-                {\frac{1}{2}\xN_o \norm{\rvx(t)}^2}
+                {\frac{1}{2}N_o \norm{\rvx(t)}^2}
    \\&\le  \frac{\abs{\norm{\rvx(t)}\;\norm{\rvx(t)}}^2}
-                {\frac{1}{2}\xN_o \norm{\rvx(t)}^2}
+                {\frac{1}{2}N_o \norm{\rvx(t)}^2}
      &&    \text{by \thme{Cauchy-Schwarz Inequality}}
      &&    \text{\ifsxref{vsinprod}{thm:cs}}
    \\&=    \frac{2\norm{\rvx(t)}^2}
-                {\xN_o }
+                {N_o }
 \end{align*}
 The Cauchy-Schwarz Inequality becomes an equality
 ($\snr$ is maximized) when $\rvx(t)=a\rvx(t)$.
