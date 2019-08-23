@@ -235,13 +235,18 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
 %======================================
 
 %---------------------------------------
-\begin{theorem}%[Additive noise projection statistics]
-\label{thm:an_stats}
+\begin{proposition}[\thme{Additive noise projection statistics}]
+\label{prop:an_stats}
 \index{projection statistics!Additive noise channel}
 %---------------------------------------
-Let $\opC=\opCan$ be an additive noise channel.
+%Let $\opC=\opCan$ be an additive noise channel.
 \thmbox{
-\mcom{\opC=\opCan}{additive noise channel}
+  \brb{\begin{array}{FMD}
+    (A). & $\Psi$ is an \structe{orthonormal basis} for $\fx(t)$ & and
+  \\(B). & $\fy(t) \eqd \fx(t) + \fv(t)$
+  \end{array}}
+  %\mcom{\opC=\opCan}{additive noise channel}
+  \implies
 \implies
 \brb{\begin{array}{lrcl}
    \pE(\fdoty_n|\theta)       &= \fdotx_n(\theta) + \pE \fdotv_n
@@ -251,16 +256,25 @@ Let $\opC=\opCan$ be an additive noise channel.
 \begin{proof}
 \begin{align*}
    \pE(\fdoty_n |\theta)
-     &\eqd \brp{\inprod{\rvy(t)}{\fpsi_n(t)}  |\theta}
-   \\&=    {\inprod{\rvx(t;\theta)+\fn(t)}{\fpsi_n(t)}}
-   \\&=    {\inprod{\rvx(t;\theta)}{\fpsi_n(t)}} +   {\inprod{\fn(t)}{\fpsi_n(t)}}
-   \\&=    \inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n
-   \\&=    \sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n
-   \\&=    \fdotx_n(\theta)  + \fdotv_n
-\\ \\
-   \pE({\fdoty_n} | \theta)
-     &= \pE\brs{\fdotx_n(\theta)  + \fdotv_n}
+     &\eqd \pE\brp{\inprod{\rvy(t)}{\fpsi_n(t)}  |\theta}
+     && \text{by definition of $\fdoty_n$}
+   \\&= \pE{\inprod{\rvx(t;\theta)+\fv(t)}{\fpsi_n(t)}}
+     && \text{by definition of $\fy(t)$}
+   \\&= \pE{\inprod{\rvx(t;\theta)}{\fpsi_n(t)}} +   {\inprod{\fv(t)}{\fpsi_n(t)}}
+     && \text{by \prope{additive} property of $\inprodn$}
+     && \text{\xref{def:inprod}}
+   \\&= \pE\brp{\inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n}
+     && \text{by definition of $\fdotv_n$}
+   \\&= \pE\brp{\sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n}
+     && \text{by \prope{additive} property of $\inprodn$}
+     && \text{\xref{def:inprod}}
+   \\&= \pE\brp{\sum_{k=1}^\xN \fdotx_k(\theta) \kdelta_{k-n}(t) + \fdotv_n}
+     && \text{by \prope{orthonormal} hypothesis of $\Psi$}
+   \\&= \pE\brp{\fdotx_n(\theta) + \fdotv_n}
+     && \text{by definition of $\kdelta$}
    \\&= \pE{\fdotx_n(\theta) } +   \pE{\fdotv_n}
+     && \text{by \prope{linearity} of $\pE$}
+     && \text{\xref{thm:pE_linop}}
    \\&= \fdotx_n(\theta)
 \end{align*}
 \end{proof}
@@ -383,7 +397,7 @@ Let $\opC=\opCawn$ be an additive white noise channel.
 \end{theorem}
 
 \begin{proof}
-Because the noise is additive (see \prefpp{thm:an_stats})
+Because the noise is additive (see \prefpp{prop:an_stats})
 \begin{align*}
    \pE\fdotv_{n}           &= 0  \\
    (\fdoty_n |\theta)      &= \fdotx_n(\theta)  + \fdotv_n \\
@@ -766,7 +780,7 @@ Then
    \\&\ge  \frac{-1}{\pE\brp{\pderiv{^2}{ a^2} \ln \pdfpb{\rvy(t)|\fx(t; a)}}}
    \\&=    \frac{-1}{\pE\brp{\frac{-\norm{\lambda(t)}^2}{\sigma^2}}}
    \\&=    \frac{\sigma^2}{\norm{\lambda(t)}^2}
-     \qquad\text{(Cram\'er-Rao lower bound of the variance)}
+     \qquad\text{(Cram/'er-Rao lower bound of the variance)}
 \end{align*}
 
 \item Proof that $\estML[a]$ is an \prope{efficient} estimate:
@@ -776,7 +790,7 @@ $\var\estML[a]=\mbox{CR lower bound}$.
 We have already proven this, so $\estML[a]$ is an \prope{efficient} estimate.
 
 Also, even without explicitly computing the variance of $\estML[a]$,
-the variance equals the \vale{Cram\'er-Rao lower bound}
+the variance equals the \vale{Cram/'er-Rao lower bound}
 (and hence $\estML[a]$ is an \prope{efficient} estimate)
 if and only if
 \\\indentx$\ds\estML[a] -  a =
@@ -875,13 +889,13 @@ Then the optimal ML-estimate of parameter $ \phi $ is
 Let $\opSys$ be an additive white gaussian noise system
 such that
 $\begin{array}[t]{rcl}
-   \rvy(t)     &=& [\opCawgn\fx](t) = \rvx(t;\estT) + \fn(t) \\
-   \rvx(t;\estT)   &=& \fg(\estT)
+   \rvy(t)     &=& [\opCawgn\fx](t) = \rvx(t;\theta) + \fv(t) \\
+   \rvx(t;\theta)   &=& \fg(\theta)
 \end{array}$\\
-where $\fg$ is one-to-one and onto (invertible).
+and $\fg$ is \prope{one-to-one and onto} (\prope{invertible}).
 \\
 \thmbox{\begin{array}{M>{\ds}rc>{\ds}l}
-  Then the optimal ML-estimate of parameter $ u $ is
+  Then the optimal ML-estimate of parameter $\theta$ is
    & \estML &=& \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right).
   \\
   If an \fncte{ML estimate} $\estML$ is unbiased ($\pE \estML = \theta$) then
@@ -896,96 +910,108 @@ where $\fg$ is one-to-one and onto (invertible).
 \begin{proof}
 \begin{align*}
    \estML
-     &= \argmin_{\estT}
-         \left[ \sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]^2 \right]
-   \\&= \arg_{\estT}\left[
-            \pderiv{}{\estT}\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]^2 = 0
+     &= \argmin_{\theta}
+         \brs{\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2 }
+     && \text{by \prefp{thm:estML_general}}
+   \\&= \arg_{\theta}\brs{
+            \pderiv{}{\theta}\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2 = 0
+         }
+     && \text{because form is \prope{quadratic}}
+   \\&= \arg_{\theta}\left[
+             2\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]\pderiv{}{\theta}\fg(\theta) = 0
          \right]
-   \\&= \arg_{\estT}\left[
-             2\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)]\pderiv{}{\estT}\fg(\estT) = 0
+   \\&= \arg_{\theta}\left[
+             2\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)] = 0
          \right]
-   \\&= \arg_{\estT}\left[
-             2\sum_{n=1}^\xN [\fdoty_n-\fg(\estT)] = 0
+   \\&= \arg_{\theta}\left[
+             \sum_{n=1}^\xN \fdoty_n = \xN \fg(\theta)
          \right]
-   \\&= \arg_{\estT}\left[
-             \sum_{n=1}^\xN \fdoty_n = \xN \fg(\estT)
+   \\&= \arg_{\theta}\left[
+             \fg(\theta) = \frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n
          \right]
-   \\&= \arg_{\estT}\left[
-             \fg(\estT) = \frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n
-         \right]
-   \\&= \arg_{\estT}\left[
-              u  = \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right)
-         \right]
+   \\&= \arg_{\theta}\brs{
+              \theta  = \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right)
+         }
    \\&= \fg^{-1}\left(\frac{1}{\xN}\sum_{n=1}^\xN \fdoty_n\right)
 \end{align*}
 
 
 If $\estML$ is unbiased ($\pE\estML=\theta$), we can use
-the \vale{Cram\'er-Rao bound} to find a lower bound on the variance:
+the \vale{Cram/'er-Rao bound} to find a lower bound on the variance:
 
 \begin{align*}
    \var\estML
      &\eqd \pE\brs{\estML-\pE\estML}^2
    \\&= \pE\brs{\estML-\theta}^2
-   \\&\ge \frac{-1}{\pE\left(
+   \\&\ge \frac{-1}{\ds\pE\brp{
               \pderiv{^2}{\theta^2} \ln \pdfpb{\rvy(t)|\fx(t;\theta)}
-           \right)}
-   \\&=   \frac{-1}{\pE\left(
+           }}
+     && \text{by \ineqe{Cram/'er-Rao Inequality}}
+   \\&=   \frac{-1}{\ds\pE\brp{
               \pderiv{^2}{\theta^2} \ln
               \pdfpb{\fdoty_1, \fdoty_2,\ldots,\fdoty_{\xN}|\fx(t;\theta)}
-           \right)}
-   \\&=   \frac{-1}{\pE\left(
+           }}
+     && \text{by \thme{Sufficient Statistic Theorem}}
+     && \text{\xref{thm:sstat}}
+   \\&=   \frac{-1}{\ds\pE\brp{
               \pderiv{^2}{\theta^2} \ln\left[
               \left(\frac{1}{\sqrt{2\pi\sigma^2}} \right)^\xN
               \exp{\frac{-1}{2\sigma^2}\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2 }\right]
-           \right)}
-   \\&=   \frac{-1}{\pE\left(
+           }}
+     && \begin{array}{@{}M}
+         by \prope{AWGN} hypothesis 
+         and \prefp{thm:awgn_stats}
+        \end{array}
+   \\&=   \frac{-1}{\ds\pE\brp{
               \pderiv{^2}{\theta^2} \ln\left[
               \left(\frac{1}{\sqrt{2\pi\sigma^2}} \right)^\xN \right]
               +
               \pderiv{^2}{\theta^2} \ln\left[
               \exp{\frac{-1}{2\sigma^2}\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2 }\right]
-           \right)}
-  \\&=   \frac{-1}{\pE\left(
+           }}
+  \\&=   \frac{-1}{\ds\pE\brp{
              \pderiv{^2}{\theta^2}
              \left(\frac{-1}{2\sigma^2}\sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2 \right)
-          \right)}
-  \\&=   \frac{2\sigma^2}{\pE\left(
+          }}
+  \\&=   \frac{2\sigma^2}{\ds\pE\brp{
              \pderiv{}{\theta} \pderiv{}{\theta}
              \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]^2
-          \right)}
-  \\&=   \frac{2\sigma^2}{\pE\left(
+          }}
+  \\&=   \frac{2\sigma^2}{\ds\pE\brp{
              -2\pderiv{}{\theta}
              \pderiv{\fg(\theta)}{\theta}
              \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]
-          \right)}
-  \\&=   \frac{-\sigma^2}{\pE\left(
+          }}
+    && \text{by \thme{Chain Rule}}
+  \\&=   \frac{-\sigma^2}{\ds\pE\brp{
              \pderiv{\fg^2(\theta)}{\theta^2}
              \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]
              +
              \pderiv{\fg(\theta)}{\theta}
              \pderiv{}{\theta}
              \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]
-          \right)}
-   \\&=   \frac{-\sigma^2}{\pE\left(
+          }}
+     && \text{by \thme{Product Rule}}
+   \\&=   \frac{-\sigma^2}{\ds\pE\brp{
               \pderiv{\fg^2(\theta)}{\theta^2}
               \sum_{n=1}^\xN [\fdoty_n-\fg(\theta)]
               -N
               \pderiv{\fg(\theta)}{\theta}
               \pderiv{\fg(\theta)}{\theta}
-           \right)}
-   \\&=   \frac{-\sigma^2}{
+           }}
+   \\&=   \frac{-\sigma^2}{\ds
               \pderiv{\fg^2(\theta)}{\theta^2}
               \sum_{n=1}^\xN \pE[\fdoty_n-\fg(\theta)]
-              -N
+              -\xN
               \pderiv{\fg(\theta)}{\theta}
               \pderiv{\fg(\theta)}{\theta}
            }
    \\&=   \frac{-\sigma^2}{
-              -N
+              -\xN
               \pderiv{\fg(\theta)}{\theta}
               \pderiv{\fg(\theta)}{\theta}
            }
+     && \text{because derivative of constant = 0}
    \\&=   \frac{\sigma^2}{\xN}
            \frac{1}{\left[ \pderiv{\fg(\theta)}{\theta} \right]^2}
 \end{align*}
