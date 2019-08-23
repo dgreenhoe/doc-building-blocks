@@ -517,3 +517,36 @@ Let $\mu^4\eqd\pE\brs{\brp{\rvx_n-\mean}^4}$ be the \fncte{4th central moment} o
 \end{align*}}
 \end{proof}
 
+%=======================================
+\section{Recursive forms}
+%=======================================
+In software/firmware implementations, recursive forms are very useful and efficient.
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  \citerppgc{candy2009}{11}{12}{9780470430576}{Example 1.3},
+  \citerppgc{candy2016}{12}{13}{9781119125457}{Example 1.3}
+  }
+%---------------------------------------
+\propbox{
+  \mcom{\meanest_{\xN}}{new}
+    = \mcom{\meanest_{\xN-1}}{previous} 
+      \mcomr{\frac{1}{\xN}}{weight}\mcom{\brs{\rvy(\xN) - \meanest_{\xN-1}}}{error}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \mcom{\meanest_{\xN}}{new}
+    &\eqd \frac{1}{\xN} \sum_{n=1}^{\xN} \rvx_n
+    && \text{by definition of \fncte{average}}
+    && \text{\xref{def:average}}
+  \\&= \frac{1}{\xN}\rvx_{\xN} + \frac{1}{\xN} \sum_{n=1}^{\xN-1} \rvx_n
+  \\&= \frac{1}{\xN}\rvx_{\xN} + \frac{\xN-1}{\xN}\brp{\frac{1}{\xN-1}} \sum_{n=1}^{\xN-1} \rvx_n
+  \\&\eqd \frac{1}{\xN}\rvx_{\xN} + \frac{\xN-1}{\xN}\meanest_{\xN-1}
+    && \text{by definition of \fncte{average}}
+    && \text{\xref{def:average}}
+  \\&= \frac{1}{\xN}\rvx_{\xN} + \meanest_{\xN-1} - \frac{1}{\xN}\meanest_{\xN-1}
+  \\&= \mcom{\meanest_{\xN-1}}{previous} 
+      \mcomr{\frac{1}{\xN}}{weight}\mcom{\brs{\rvy(\xN) - \meanest_{\xN-1}}}{error}
+\end{align*}
+\end{proof}
