@@ -416,7 +416,7 @@ Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$,
        \pE({\fdoty_n} | \theta) &= \fdotx_n(\theta).
     \end{align*}
 
-  \item Proof for (3):
+  \item Proof for (3):\label{item:awn_stats_covvv}
 \begin{align*}
    \cov{\fdotv_m}{\fdotv_n}
       &= \cov{\inprod{\fv(t)}{\fpsi_m(t)}}{\inprod{\fv(t)}{\fpsi_n(t)}}
@@ -451,11 +451,11 @@ Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$,
       \cov{\fdoty_n|\theta}{\fdoty_m|\theta }
          &= \pE\brs{\fdoty_n \fdoty_m |\theta} - [\pE\fdoty_n|\theta][\pE\fdoty_m|\theta ]
        \\&= \pE\brs{(\fdotx_n(\theta) +\fdotv_n)(\fdotx_m(\theta) +\fdotv_m)} - \fdotx_n(\theta) \fdotx_m(\theta)
-       \\&= \pE\brs{(\fdotx_n(\theta) +\fdotv_n)(\fdotx_m(\theta) +\fdotv_m)} - \fdotx_n(\theta) \fdotx_m(\theta)
        \\&= \pE\brs{\fdotx_n(\theta) \fdotx_m(\theta) +\fdotx_n(\theta) \fdotv_m+ \fdotv_n\fdotx_m(\theta) +\fdotv_n\fdotv_m } - \fdotx_n(\theta) \fdotx_m(\theta)
        \\&= \fdotx_n(\theta) \fdotx_m(\theta) + \fdotx_n(\theta) \pE\brs{\fdotv_m}+ \pE\brs{\fdotv_n}\fdotx_m(\theta) +\pE\brs{\fdotv_n\fdotv_m}  - \fdotx_n(\theta) \fdotx_m(\theta)
        \\&= 0 + \fdotx_n(\theta) \cdot0 + 0\cdot\fdotx_m(\theta) + \cov{\fdotv_n}{\fdotv_m}+[\pE\fdotv_n][\pE\fdotv_m]
        \\&= \sigma^2 \kdelta_{nm} + 0\cdot0
+         && \text{by \pref{item:awn_stats_covvv}}
        \\&= \brbl{\begin{array}{lM}
                 \sigma^2 & for $n=m$ \\
                 0        & for $n\ne m$.
@@ -580,18 +580,11 @@ In parameter estimation, the estimate is a member of an infinite set
 \label{thm:ml_est_det}
 %\citepp{srv}{157}{158}
 %---------------------------------------
-Let $\Psi$ be an orthonormal set spanning $\rvx(t)$ such that
-\\\indentx$\begin{array}{rcl}
-    \Psi     &\eqd& \seqn{\fpsi_1(t), \fpsi_2(t), \ldots, \fpsi_n(t)}
-  \\\fdoty_n &\eqd& \inprod{\rvy(t)}{\fpsi_n(t)}
-  \\\fdotx_n &\eqd& \inprod{\rvx(t)}{\fpsi_n(t)}
-  \\\rvy(t)  &=   & \rvx(t;\estT) + \fv(t).
-\end{array}$
-\\
-Then the optimal ML-estimate $\estML$ of parameter $\theta$ is
+Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
+Let $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
 \thmbox{\begin{array}{rc>{\ds}l@{\qquad}D}
    \estML
-     &=& \argmin_{\estT} \left[ \sum_{n=1}^\xN [\fdoty_n-\fdotx_n(\estT)]^2 \right]
+     &=& \argmin_{\estT} \brs{ \sum_{n=1}^\xN [\fdoty_n-\fdotx_n(\estT)]^2 }
        & (spectral decomposition)
    \\&=& \argmax_{\estT}
          \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\estT)}^2 \right]
