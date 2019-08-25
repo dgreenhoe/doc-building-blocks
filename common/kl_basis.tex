@@ -3,10 +3,10 @@
 % Daniel J. Greenhoe
 %============================================================================
 %=======================================
-\chapter{Sufficient Statistics Estimation}
+\chapter{Sufficient Statistics}
 %=======================================
 %=======================================
-\section{Sufficient statistics}
+\section{Main result}
 %=======================================
 \prefpp{thm:sstat} (next) shows that the finite set
 $\setY\eqd\set{\fdoty_n}{n=1,2,\ldots,\xN}$ (a finite number of values) provides just as
@@ -21,10 +21,33 @@ with respect to the following cases:
 That is, even with a drastic reduction in the number of statistics
 from uncountably infinite to finite $\xN$,
 no quality is lost with respect to the estimators listed above.
-
 This amazing result is very useful in practical system implementation
 and also for proving other theoretical results
 (notably estimation and detection theorems).
+
+But first, some definitions (next) that are used repeatedly in this chapter.
+%---------------------------------------
+\begin{definition}
+\label{def:sstat}
+%---------------------------------------
+Let $\Psi\eqd\set{\fpsi_n}{n=1,2,\ldots,\xN}$ be an \structe{orthonormal basis} 
+for a parameterized function $\rvx(t;\theta)$ with parameter $\theta$.
+Let $\fy(t)$ be $\fx(t;\theta)$ plus a \fncte{random process} $\rvv(t)$ such that 
+\\\indentx$\ds
+  \rvy(t)\eqd\rvx(t;\theta)+\rvv(t)
+$\\
+Let $\fdoty_n$, $\fdotx_n$, and $\fdotv_n$ be \ope{projections}\ifsxref{operator}{def:opP}
+onto the \fncte{basis vector} $\fpsi_n(t)$ such that 
+\defbox{\begin{array}{r c>{\ds}l c>{\ds}l c>{\ds}l D}
+    \fdotx_n &\eqd& \opP_n\fx(t) &\eqd& \inprod{\fx(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fx(t)\fpsi_n(t)\dt
+  \\\fdotv_n &\eqd& \opP_n\fv(t) &\eqd& \inprod{\fv(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fv(t)\fpsi_n(t)\dt
+  \\\fdoty_n &\eqd& \opP_n\fy(t) &\eqd& \inprod{\fy(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fy(t)\fpsi_n(t)\dt
+\end{array}}
+\\
+Let the set $\setY$ be defined as $\setY\eqd\set{\fdoty_n}{1,2,\ldots,\xN}$ 
+Let $\estMAP$ be the \fncte{MAP estimate} 
+and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
+\end{definition}
 
 %---------------------------------------
 \begin{theorem}[\thmd{Sufficient Statistic Theorem}]
@@ -36,15 +59,7 @@ and also for proving other theoretical results
 \index{MAP} \index{maximum a-posteriori probability estimation}
 \index{ML}  \index{maximum likelihood estimation}
 %---------------------------------------
-Let $\Psi\eqd\set{\fpsi_n}{n=1,2,\ldots,\xN}$ be an \structe{orthonormal basis} for a parameterized function $\rvx(t;\theta)$
-with parameter $\theta$.
-Let $\fy(t)$ be $\fx(t;\theta)$ plus random noise $\rvv(t)$ such that $\rvy(t)\eqd\rvx(t;\estT)+\rvv(t)$.
-Let the set $\setY$ be defined as $\setY\eqd\set{\fdoty_n}{1,2,\ldots,\xN}$ 
-where each $\fdoty_n$ is the projection of $\fy(t)$ onto the \fncte{basis vector} $\fpsi_n(t)$ such that 
-\\\indentx$\ds
-  \fdoty_n \eqd \inprod{\fy(t)}{\fpsi_n(t)}
-           \eqd \int_{t\in\R}\fy(t)\fpsi_n(t)\dt
-$.\\
+Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
 Let $\estMAP$ be the \fncte{MAP estimate} 
 and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
 \thmbox{
@@ -234,21 +249,20 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
 %These are described in the next four theorems.
 
 %---------------------------------------
-\begin{theorem}[\thme{Additive noise projection statistics}]
+\begin{theorem}[\thme{Sufficient statistics for additive noise system}]
 \label{thm:an_stats}
 \index{projection statistics!Additive noise channel}
 %---------------------------------------
-%Let $\opC=\opCan$ be an additive noise channel.
+Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
 \thmbox{
   \brb{\begin{array}{FMD}
     (A). & $\Psi$ is an \structe{orthonormal basis} for $\fx(t)$ & and
-  \\(B). & $\fy(t) \eqd \fx(t) + \fv(t)$
+  \\(B). & $\fy(t) \eqd \fx(t) + \fv(t)$                         & (\prope{additive noise})
   \end{array}}
-  %\mcom{\opC=\opCan}{additive noise channel}
   \implies
 \implies
-\brb{\begin{array}{lrcl}
-   \pE(\fdoty_n|\theta)       &= \fdotx_n(\theta) + \pE \fdotv_n
+\brb{\begin{array}{lrclD}
+   \pE(\fdoty_n|\theta)       &= \fdotx_n(\theta) + \pE \fdotv_n & (\prope{additive noise})
 \end{array}}
 }
 \end{theorem}
@@ -320,18 +334,18 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
    }
 \end{figure}
 
-
-
 %---------------------------------------
 \begin{theorem}%[Additive \prope{Gaussian} noise projection statistics]
 \label{thm:agn_stats}
 \index{projection statistics!Additive \prope{Gaussian} noise channel}
 %---------------------------------------
-Let $\opC=\opCagn$ be an additive gaussian noise channel
-with distribution $\fn(t)\sim\pN{0}{\sigma^2}$ for all $t$.
-%(see \prefpp{fig:agn_stats})
+Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
 \thmbox{
-\mcom{\opC=\opCagn}{additive \prope{Gaussian} channel}
+  \mcom{\brb{\begin{array}{FMD}
+    (A). & $\Psi$ is an \structe{orthonormal basis} for $\fx(t)$ & and
+  \\(B). & $\fy(t) \eqd \fx(t) + \fv(t)$                         & (\prope{additive noise})
+  \\(C). & $\fv(t)\sim\pN(0,\sigma^2)$                            & (\prope{Gaussian})
+  \end{array}}}{additive \prope{Gaussian} channel}
 \implies
 \brb{\begin{array}{rclD}
    \pE\fdotv_n           &=   & 0                               & \\%\text{\scriptsize(noise projection is zero-mean                )} \\
@@ -368,23 +382,22 @@ The distributions follow because they are linear operations on
 Gaussian processes.
 \end{proof}
 
-
-
-
 %======================================
 %\subsection{Additive white noise channel}
 %\label{sec:opCawn}
 %======================================
-
-
 %---------------------------------------
 \begin{theorem}%[Additive white noise projection statistics]
 \label{thm:awn_stats}
 \index{projection statistics!Additive white noise channel}
 %---------------------------------------
-Let $\opC=\opCawn$ be an additive white noise channel.
+Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
 \thmbox{
-\mcom{\opC=\opCawn}{additive white channel}
+  \mcom{\brb{\begin{array}{FMD}
+    (A). & $\Psi$ is an \structe{orthonormal basis} for $\fx(t)$ & and
+  \\(B). & $\fy(t) \eqd \fx(t) + \fv(t)$                         & (\prope{additive noise})
+  \\(C). & $\fv(t)\sim\pN(0,\sigma^2)$                           & (\prope{Gaussian})
+  \end{array}}}{\prope{additive Gaussian} channel}
 \implies
 \brb{\begin{array}{lclD}
    \pE\fdotv_n                            &=& 0                     & (noise projection is zero-mean) \\
@@ -394,7 +407,6 @@ Let $\opC=\opCawn$ be an additive white noise channel.
 \end{array}}
 }
 \end{theorem}
-
 \begin{proof}
 Because the noise is additive (see \prefpp{thm:an_stats})
 \begin{align*}
@@ -434,7 +446,6 @@ Because the noise is also \prope{white},
           \end{array}}
 \end{align*}
 \end{proof}
-
 
 %======================================
 %\subsection{Additive white gaussian noise channel}
@@ -477,48 +488,47 @@ Because the noise is also \prope{white},
    }
 \end{figure}
 
-
-
 %---------------------------------------
 \begin{theorem}%[AWGN projection statistics]
 \label{thm:awgn_stats}
 \label{thm:ms_stats}
 \index{projection statistics!Additive white \prope{Gaussian} noise channel}
 %---------------------------------------
-Let $\opC=\opCawgn$ be an additive gaussian noise channel
-with distribution $\fn(t)\sim\pN{0}{\sigma^2}$ for all $t$.
+Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
 \thmbox{
-\mcom{\opC=\opCawgn}{AWGN}
+  \mcom{\brb{\begin{array}{FMD}
+    (A). & $\Psi$ is an \structe{orthonormal basis} for $\fx(t)$ & and
+  \\(B). & $\fy(t) \eqd \fx(t) + \fv(t)$                         & (\prope{additive noise})
+  \\(C). & $\fv(t)$ is                                           & (\prope{white noise})
+  \\(D). & $\fv(t)\sim\pN(0,\sigma^2)$                           & (\prope{Gaussian})
+  \end{array}}}{\prope{additive white Gaussian} channel}
 \implies
-\brbl{\begin{array}{rclD}
-   \fdotv_n                            &\sim& \pN{0}{\sigma^2}                     & (noise projections are \prope{Gaussian}        ) \\
-   \fdoty_n|\theta                     &\sim& \pN{\fdotx_n(\theta)}{\sigma^2}      & (receiver projections are \prope{Gaussian}     ) \\
-   \cov{\fdotv_n}{\fdotv_m}            &=   & \sigma^2 \kdelta_{nm}                & (noise projections are \prope{uncorrelated}    ) \\
-   \cov{\fdoty_n}{\fdoty_m }           &=   & \sigma^2 \kdelta_{nm}                & (receiver projections are \prope{uncorrelated} ) \\
-   \psp\{\fdotv_n=a \land \fdotv_m=b\} &=   & \psp\{\fdotv_n=a\}\psp\{\fdotv_m=b\} & (noise    projections are \prope{independent}  ) \\
-   \psp\{\fdoty_n=a \land \fdoty_m=b\} &=   & \psp\{\fdoty_n=a\}\psp\{\fdoty_m=b\} & (receiver projections are \prope{independent}  )
+\brb{\begin{array}{FrclD}
+     (1). & \fdotv_n                            &\sim& \pN{0}{\sigma^2}                     & (noise projections are \prope{Gaussian}        )
+   \\(2). & \fdoty_n|\theta                     &\sim& \pN{\fdotx_n(\theta)}{\sigma^2}      & (receiver projections are \prope{Gaussian}     )
+   \\(3). & \cov{\fdotv_n}{\fdotv_m}            &=   & \sigma^2 \kdelta_{nm}                & (noise projections are \prope{uncorrelated}    )
+   \\(4). & \cov{\fdoty_n}{\fdoty_m }           &=   & \sigma^2 \kdelta_{nm}                & (receiver projections are \prope{uncorrelated} )
+   \\(5). & \psp\{\fdotv_n=a \land \fdotv_m=b\} &=   & \psp\{\fdotv_n=a\}\psp\{\fdotv_m=b\} & (noise    projections are \prope{independent}  )
+   \\(6). & \psp\{\fdoty_n=a \land \fdoty_m=b\} &=   & \psp\{\fdoty_n=a\}\psp\{\fdoty_m=b\} & (receiver projections are \prope{independent}  )
 \end{array}}
 }
 \end{theorem}
-
 \begin{proof}
-The distributions follow because they are \prope{linear} operations on
-\prope{Gaussian} processes.
+\begin{enumerate}
+  \item Proof for (1) and (2) follow because the operations are \prope{linear} on \prope{Gaussian} processes.
 
-By \prefpp{thm:awn_stats} (for AWN channel)
-\begin{align*}
-   \pE{\fdotv_{n}} &= 0
-\\
-   \cov{\fdotv_m}{\fdotv_n} &= \sigma^2 \kdelta_{mn}
-\\
-   \fdoty_n &= \fdotx_n  + \fdotv_n
-\\
-   \pE{\fdoty_n} &= \fdotx_n
-\\
-   \cov{\fdoty_n}{\fdoty_m } &= \sigma^2 \kdelta_{mn}
-\end{align*}
-Because the processes are \prope{Gaussian},
-\prope{uncorrelatedness} implies \prope{independence}.
+  \item By \prefpp{thm:awn_stats} (for AWN channel)
+    \begin{align*}
+       \pE{\fdotv_{n}} &= 0
+     \\\cov{\fdotv_m}{\fdotv_n} &= \sigma^2 \kdelta_{mn}
+     \\\fdoty_n &= \fdotx_n  + \fdotv_n
+     \\\pE{\fdoty_n} &= \fdotx_n
+     \\\cov{\fdoty_n}{\fdoty_m } &= \sigma^2 \kdelta_{mn}
+    \end{align*}
+
+  \item Because the processes are \prope{Gaussian},
+        \prope{uncorrelated} implies \prope{independent}.
+\end{enumerate}
 \end{proof}
 
 %======================================
