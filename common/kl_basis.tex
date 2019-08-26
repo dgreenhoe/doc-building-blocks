@@ -99,6 +99,64 @@ Let $\Psi$, $\rvv(t)$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:ssta
 
 %---------------------------------------
 \begin{lemma}
+\label{lem:fdotv_white}
+%---------------------------------------
+Let $\Psi$, $\rvy(t;\theta)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
+\lembox{
+  \brb{\begin{array}{FrclDD}
+    (A). & \cov{\fv(t)}{\fv(u)}      &=        & \sigma^2\delta(t-u) & (\propb{white})    
+  \\(B). & \pE\brs{\fv(t)}           &=        & 0                   & (\prope{zero-mean})
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FlclD}
+       (1). & \pE\fdotv_n              &=& 0                      & (\prope{zero-mean})    %& and 
+     \\(2). & \cov{\fdotv_n}{\fdotv_m} &=& \sigma^2 \kdelta_{n-m} & (\prope{uncorrelated}) %& and 
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item %Because the noise is \prope{additive} (hypothesis A)\ldots
+    \begin{align*}
+         \pE\fdotv_{n}            &= 0                            && \text{by \prope{additive} property and \prefp{thm:an_stats}}
+    \end{align*}
+
+  \item 
+    \begin{align*}
+     \cov{\fdotv_m}{\fdotv_n}
+        &= \cov{\inprod{\fv(t)}{\fpsi_m(t)}}{\inprod{\fv(t)}{\fpsi_n(t)}}
+        && \text{by def. of $\fdotv_n$}
+        && \text{\xref{def:sstat}}
+      \\&= \cov{\brp{\int_{t\in\R} \fv(t) \fpsi_m(t)\dt}}
+               {\brp{\int_{u\in\R} \fv(u) \fpsi_n(u)\du}}
+        && \text{by def. of $\inprodn$}
+        && \text{\xref{def:sstat}}
+      \\&= \pE\brs{\brp{\int_{t\in\R} \fv(t) \fpsi_m(t)\dt} 
+                   \brp{\int_{u\in\R} \fv(u) \fpsi_n(u)\du}}
+        && \text{by def. of $\pCov$}
+      \\&= \pE\brs{\int_{t\in\R}\int_{u\in\R} \fv(t)\fv(u) \fpsi_m(t) \fpsi_n(u) \dt\du} 
+      \\&= \int_{t\in\R}\int_{u\in\R} \pE\brs{\fv(t)\fv(u)} \fpsi_m(t) \fpsi_n(u) \dt\du
+      \\&= \int_{t\in\R}\int_{u\in\R} \sigma^2\delta(t-u) \fpsi_m(t) \fpsi_n(u) \dt\du
+        && \text{by \prope{white} hyp.}
+        && \text{(B)}
+      \\&= \sigma^2 \int_{t\in\R}  \fpsi_m(t) \fpsi_n(u) \dt
+      \\&= \sigma^2 \inprod{\fpsi_m(t)}{\fpsi_n(u)}
+        && \text{by def. of $\inprodn$}
+        && \text{\xref{def:sstat}}
+      \\&= \brbl{\begin{array}{lM}
+               \sigma^2 & for $n=m$ \\
+               0        & for $n\ne m$.
+            \end{array}}
+        && \text{by \prope{orthonormal} prop.}
+        && \text{\xref{def:sstat}}
+    \end{align*}
+  
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{lemma}
 \label{lem:fdotv_cov}
 %---------------------------------------
 Let $\Psi$, $\rvy(t;\theta)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
@@ -123,7 +181,7 @@ Let $\Psi$, $\rvy(t;\theta)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fd
   \item 
     \begin{align*}
        \pE{\fdotv_{n}}           &= 0                      && \text{by \prope{AWN} properties and \prefp{thm:awn_stats}}
-     \\\cov{\fdotv_m}{\fdotv_n}  &= \sigma^2 \kdelta_{mn}  && \text{by \prope{AWN} properties and \prefp{thm:awn_stats}}
+     \\\cov{\fdotv_m}{\fdotv_n}  &= \sigma^2 \kdelta_{mn}  && \text{by \prope{AWN} properties and \prefp{lem:fdotv_white}}
     \end{align*}
 
   \item Because the processes are \prope{Gaussian},
@@ -512,36 +570,6 @@ Let $\Psi$, $\rvy(t;\theta)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fd
        \\\pE({\fdoty_n} | \theta) &= \fdotx_n(\theta)             && \text{by \prope{additive} property and \prefp{thm:an_stats}}
     \end{align*}
 
-  \item Proof for (3):\label{item:awn_stats_covvv}
-    \begin{align*}
-     \cov{\fdotv_m}{\fdotv_n}
-        &= \cov{\inprod{\fv(t)}{\fpsi_m(t)}}{\inprod{\fv(t)}{\fpsi_n(t)}}
-        && \text{by def. of $\fdotv_n$}
-        && \text{\xref{def:sstat}}
-      \\&= \cov{\brp{\int_{t\in\R} \fv(t) \fpsi_m(t)\dt}}
-               {\brp{\int_{u\in\R} \fv(u) \fpsi_n(u)\du}}
-        && \text{by def. of $\inprodn$}
-        && \text{\xref{def:sstat}}
-      \\&= \pE\brs{\brp{\int_{t\in\R} \fv(t) \fpsi_m(t)\dt} 
-                   \brp{\int_{u\in\R} \fv(u) \fpsi_n(u)\du}}
-        && \text{by def. of $\pCov$}
-      \\&= \pE\brs{\int_{t\in\R}\int_{u\in\R} \fv(t)\fv(u) \fpsi_m(t) \fpsi_n(u) \dt\du} 
-      \\&= \int_{t\in\R}\int_{u\in\R} \pE\brs{\fv(t)\fv(u)} \fpsi_m(t) \fpsi_n(u) \dt\du
-      \\&= \int_{t\in\R}\int_{u\in\R} \sigma^2\delta(t-u) \fpsi_m(t) \fpsi_n(u) \dt\du
-        && \text{by \prope{white} hyp.}
-        && \text{(B)}
-      \\&= \sigma^2 \int_{t\in\R}  \fpsi_m(t) \fpsi_n(u) \dt
-      \\&= \sigma^2 \inprod{\fpsi_m(t)}{\fpsi_n(u)}
-        && \text{by def. of $\inprodn$}
-        && \text{\xref{def:sstat}}
-      \\&= \brbl{\begin{array}{lM}
-               \sigma^2 & for $n=m$ \\
-               0        & for $n\ne m$.
-            \end{array}}
-        && \text{by \prope{orthonormal} prop.}
-        && \text{\xref{def:sstat}}
-    \end{align*}
-  
   \item Proof for (4):
     \begin{align*}
       \cov{\fdoty_n(\theta)}{\fdoty_m|\theta }
@@ -551,7 +579,7 @@ Let $\Psi$, $\rvy(t;\theta)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fd
        \\&= \fdotx_n(\theta) \fdotx_m(\theta) + \fdotx_n(\theta) \pE\brs{\fdotv_m}+ \pE\brs{\fdotv_n}\fdotx_m(\theta) +\pE\brs{\fdotv_n\fdotv_m}  - \fdotx_n(\theta) \fdotx_m(\theta)
        \\&= 0 + \fdotx_n(\theta) \cdot0 + 0\cdot\fdotx_m(\theta) + \cov{\fdotv_n}{\fdotv_m}+[\pE\fdotv_n][\pE\fdotv_m]
        \\&= \sigma^2 \kdelta_{nm} + 0\cdot0
-         && \text{by \pref{item:awn_stats_covvv}}
+         && \text{by \pref{lem:fdotv_white}}
        \\&= \brbl{\begin{array}{lM}
                 \sigma^2 & for $n=m$ \\
                 0        & for $n\ne m$.
@@ -620,7 +648,7 @@ Let $\Psi$, $\rvy(t;\theta)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fd
   \brbl{\begin{array}{FrclD}
        (1). & \fdoty_n(\theta)          &\sim& \pN{\fdotx_n(\theta)}{\sigma^2}     & (\prope{Gaussian})
      \\(2). & \cov{\fdoty_n}{\fdoty_m } &=   & \sigma^2 \kdelta_{nm}               & (\prope{uncorrelated})
-     \\(3). & \mc{4}{M}{$\psP\setn{\fdoty_n \land \fdoty_m} = \psP\setn{\fdoty_n}\psP\setn{\fdoty_m}$ (\prope{independent})}
+     \\(3). & \mc{3}{l}{\psP\setn{\fdoty_n \land \fdoty_m} = \psP\setn{\fdoty_n}\psP\setn{\fdoty_m} & (\prope{independent})
   \end{array}}
   }
 \end{theorem}
@@ -631,7 +659,6 @@ Let $\Psi$, $\rvy(t;\theta)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fd
   \item 
     \begin{align*}
        \pE{\fdotv_{n}}           &= 0                      && \text{by \prope{AWN} properties and \prefp{thm:awn_stats}}
-     \\\cov{\fdotv_m}{\fdotv_n}  &= \sigma^2 \kdelta_{mn}  && \text{by \prope{AWN} properties and \prefp{thm:awn_stats}}
      \\\fdoty_n                  &= \fdotx_n  + \fdotv_n   && \text{by \prope{AWN} properties and \prefp{thm:awn_stats}}
      \\\pE{\fdoty_n}             &= \fdotx_n               && \text{by \prope{AWN} properties and \prefp{thm:awn_stats}}
      \\\cov{\fdoty_n}{\fdoty_m } &= \sigma^2 \kdelta_{mn}  && \text{by \prope{AWN} properties and \prefp{thm:awn_stats}}
