@@ -3,10 +3,10 @@
 % Daniel J. Greenhoe
 %============================================================================
 %=======================================
-\chapter{Sufficient Statistics}
+\chapter{Projection Statistics for Additive Noise Systems}
 %=======================================
 %=======================================
-\section{Main result}
+\section{Projection Statistics}
 %=======================================
 \prefpp{thm:sstat} (next) shows that the finite set
 $\setY\eqd\set{\fdoty_n}{n=1,2,\ldots,\xN}$ (a finite number of values) provides just as
@@ -14,7 +14,7 @@ good an estimate as having the entire $\rvy(t)$ waveform
 (an uncountably infinite number of values)
 with respect to the following cases:
 \begin{enume}
-   \item the conditional probability of $\rvx(t;\estT)$ given $\rvy(t)$
+   \item the conditional probability of $\rvx(t;\theta)$ given $\rvy(t)$
    \item the \fncte{MAP estimate} of the sequence
    \item the \fncte{ML estimate}  of the sequence.
 \end{enume}
@@ -39,9 +39,9 @@ $\\
 Let $\fdoty_n$, $\fdotx_n$, and $\fdotv_n$ be \ope{projections}\ifsxref{operator}{def:opP}
 onto the \fncte{basis vector} $\fpsi_n(t)$ such that 
 \defbox{\begin{array}{r c>{\ds}l c>{\ds}l c>{\ds}l D}
-    \fdotx_n &\eqd& \opP_n\fx(t) &\eqd& \inprod{\fx(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fx(t)\fpsi_n(t)\dt
-  \\\fdotv_n &\eqd& \opP_n\fv(t) &\eqd& \inprod{\fv(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fv(t)\fpsi_n(t)\dt
-  \\\fdoty_n &\eqd& \opP_n\fy(t) &\eqd& \inprod{\fy(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fy(t)\fpsi_n(t)\dt
+    \fdotx_n(\theta) &\eqd& \opP_n\fx(t) &\eqd& \inprod{\fx(t;\theta)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fx(t;\theta)\fpsi_n(t)\dt
+  \\\fdotv_n         &\eqd& \opP_n\fv(t) &\eqd& \inprod{\fv(t)}       {\fpsi_n(t)} &\eqd& \int_{t\in\R}\fv(t)       \fpsi_n(t)\dt
+  \\\fdoty_n         &\eqd& \opP_n\fy(t) &\eqd& \inprod{\fy(t)}       {\fpsi_n(t)} &\eqd& \int_{t\in\R}\fy(t)       \fpsi_n(t)\dt
 \end{array}}
 \\
 Let the set $\setY$ be defined as $\setY\eqd\set{\fdoty_n}{1,2,\ldots,\xN}$ 
@@ -49,6 +49,37 @@ Let $\estMAP$ be the \fncte{MAP estimate}
 and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
 \end{definition}
 
+%---------------------------------------
+\begin{lemma}
+\label{lem:fdotv}
+%---------------------------------------
+Let $\Psi$, $\rvv(t)$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
+\lembox{
+  \brb{\begin{array}{rclM}
+    \pE\fv(t) &=& 0 & (\prope{zero-mean})
+  \end{array}}
+  \brb{\begin{array}{rclM}
+  \pE\fdotv_{n} &=& 0 & (\prope{zero-mean})
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \pE\fdotv_{n}
+    &= \pE\inprod{\fv(t)}{\fpsi_n(t)}
+    && \text{by definition of $\fdotv_n$}
+    && \text{\xref{def:sstat}}
+  \\&= \inprod{\pE\fv(t)}{\fpsi_n(t)}
+    && \text{by \prope{linearity} of $\inprodn$}
+  \\&= \inprod{0}{\fpsi_n(t)}
+    && \text{by \prope{zero-mean} hypothesis}
+  \\&= 0
+\end{align*}
+\end{proof}
+
+%=======================================
+\section{Sufficient Statistics}
+%=======================================
 %---------------------------------------
 \begin{theorem}[\thmd{Sufficient Statistic Theorem}]
 \footnote{
@@ -65,21 +96,20 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
 \thmbox{
   \brb{\begin{array}{FMD}
      (A). & $\rvv(t)$ is \prope{zero-mean}                       & and 
-   \\(B). & $\rvv(t)$ is \prope{uncorrelated}                    &     
-        \\&                                   (\prope{white})    & and 
+   \\(B). & $\rvv(t)$ is \prope{white}                           & and
    \\(C). & $\rvv(t)$ is \prope{Gaussian}                        & 
   \end{array}}
   \implies
   \mcom{\brb{\begin{array}{F rc>{\ds}l D}
-     (1). & \mc{3}{l}{\psP\set{ \rvx(t;\estT)}{\rvy(t)} = \psP\set{\rvx(t;\estT)}{\setY}}        & and
-   \\(2). & \estMAP                           &=& \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\setY} & and
-   \\(3). & \estML                            &=& \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)} &
-  \end{array}}}{the $\xN$ element set $\setY$ is a \prope{sufficient statistic} for estimating $\fx(t)$}
+     (1). & \mc{3}{l}{\psP\set{ \rvx(t;\theta)}{\rvy(t)} = \psP\set{\rvx(t;\theta)}{\setY}}        & and
+   \\(2). & \estMAP                           &=& \argmax_{\estT} \psP\set{\rvx(t;\theta)}{\setY} & and
+   \\(3). & \estML                            &=& \argmax_{\estT} \psP\set{\setY}{\rvx(t;\theta)} &
+  \end{array}}}{the $\xN$ element set $\setY$ is a \prope{sufficient statistic} for estimating $\fx(t;\theta)$}
   }
 \end{theorem}
 \begin{proof}
 \begin{enumerate}
-  \item Definition: Let $\ds\rvv'(t) \eqd \rvv(t) - \sum_{n=1}^\xN \fdotv_n \fpsi_n(t)$.
+  \item definition: Let $\ds\rvv'(t) \eqd \rvv(t) - \sum_{n=1}^\xN \fdotv_n \fpsi_n(t)$.
         \label{idef:sstat_vprime}
 
   \item lemma: The relationship between $\setY$ and $\rvv'(t)$ is given by
@@ -109,18 +139,12 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
      \\&= \boxed{\sum_{n=1}^\xN \fdoty_n\fpsi_n(t) + \rvv'(t)}
   \end{align*}
 
-  \item Definitions. Let \label{idef:sstat_dotxv}
-        $\begin{array}[t]{@{}r c>{\ds}l c>{\ds}l D}
-            \fdotx_n &\eqd& \inprod{\fx(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\fx(t)\fpsi_n(t)\dt & and 
-          \\\fdotv_n &\eqd& \inprod{\rvv(t)}{\fpsi_n(t)} &\eqd& \int_{t\in\R}\rvv(t)\fpsi_n(t)\dt &.
-        \end{array}$
-
   \item lemma: $\pE\brs{\fdotv_n\rvv(t)} = N_o\fpsi_n(t)$. Proof: \label{ilem:sstat_vdotv}
     \begin{align*}
       &\pE\brs{\fdotv_n\rvv(t)} 
       \\&\eqd \pE\brs{\brp{\int_{t\in\R}\rvv(u)\fpsi_n(u)\du} \rvv(t)}
         && \text{by definition of $\fdotv_n(t)$}
-        && \text{\xref{idef:sstat_dotxv}}
+        && \text{\xref{def:sstat}}
       \\&= \pE\brs{\int_{t\in\R}\rvv(u)\rvv(t)\fpsi_n(u)\du}
         && \text{by \prope{linearity} of $\int\du$ operator}
       \\&= \int_{t\in\R}\pE\brs{\rvv(u)\rvv(t)}\fpsi_n(u)\du
@@ -149,7 +173,7 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
               \left( \rvv(t)-\sum_{n=1}^\xN \fdotv_n\fpsi_n(t)\right)}
        && \begin{array}{@{}M}%
             by definitions of $\fdotx_n$ and $\fdotv_n$\\
-            \xref{idef:sstat_dotxv}
+            \xref{def:sstat}
           \end{array}
      \\&= \pE\brs{\fdotx_n \rvv(t) - \fdotx_n \sum_{n=1}^\xN \fdotv_n\fpsi_n(t)
               +\fdotv_n \rvv(t) - \fdotv_n \sum_{n=1}^\xN \fdotv_n\fpsi_n(t) }
@@ -179,35 +203,35 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
      \\&\implies\text{\propb{uncorrelated}}
   \end{align*}
   
-  \item lemma: $\setY$ and $\rvv'(t)$ are \prope{independent}. Proof:\\
+  \item lemma: $\setY$ and $\rvv'(t)$ are \prope{independent}. Proof:
         By \pref{ilem:sstat_uncorrelated}, $\fdoty_n$ and $\rvv'(t)$ are \prope{uncorrelated}.
         By hypothesis, they are \prope{Gaussian}, and thus are also \propb{independent}.
         \label{ilem:sstat_independent}
   
-  \item Proof that $\psP\set{\rvx(t;\estT)}{\rvy(t)}=\psP\set{\rvx(t;\estT)}{\fdoty_1,\;\fdoty_2,\ldots,\fdoty_{\xN}}$:
+  \item Proof that $\psP\set{\rvx(t;\theta)}{\rvy(t)}=\psP\set{\rvx(t;\theta)}{\fdoty_1,\;\fdoty_2,\ldots,\fdoty_{\xN}}$:
         \label{item:sstat_P}
   
   \begin{align*}
-     \psP\set{\rvx(t;\estT)}{\rvy(t)}
-       &= \psP\set{\rvx(t;\estT)}{\sum_{n=1}^\xN\fdoty_n \fpsi_n(t) + \rvv'(t)}
-     \\&= \psP\set{\rvx(t;\estT)}{\setY, \rvv'(t)}
+     \psP\set{\rvx(t;\theta)}{\rvy(t)}
+       &= \psP\set{\rvx(t;\theta)}{\sum_{n=1}^\xN\fdoty_n \fpsi_n(t) + \rvv'(t)}
+     \\&= \psP\set{\rvx(t;\theta)}{\setY, \rvv'(t)}
        && \begin{array}{M}
             because $\setY$ and $\rvv'(t)$ can be\\ 
             extracted by $\inprod{\cdots}{\fpsi_n(t)}$
           \end{array}
-     \\&= \frac{\psP\set{\setY, \rvv'(t)}{\rvx(t;\estT)}  P\setn{\rvx(t;\estT)} }
+     \\&= \frac{\psP\set{\setY, \rvv'(t)}{\rvx(t;\theta)}  P\setn{\rvx(t;\theta)} }
                {\psP\setn{\setY,\rvv'(t)}}
-     \\&= \frac{\psP\set{ \setY}{\rvx(t;\estT)}\psP\set{ \rvv'(t)}{\rvx(t;\estT)}\psP\setn{\rvx(t;\estT)}}
+     \\&= \frac{\psP\set{ \setY}{\rvx(t;\theta)}\psP\set{ \rvv'(t)}{\rvx(t;\theta)}\psP\setn{\rvx(t;\theta)}}
                {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
        && \text{by \prope{independence} of $\setY$ and $\rvv'(t)$ \xref{ilem:sstat_independent}}
-     \\&= \frac{\psP\set{ \setY}{\rvx(t;\estT)}\psP\setn{ \rvv'(t)}\psP\setn{\rvx(t;\estT)}}
+     \\&= \frac{\psP\set{ \setY}{\rvx(t;\theta)}\psP\setn{ \rvv'(t)}\psP\setn{\rvx(t;\theta)}}
                {\psP\setn{\setY}\psP\setn{\rvv'(t)}}
        && \text{by \prope{independence} of $\fx$ and $\rvv$}
-     \\&= \frac{\psP\set{\setY}{\rvx(t;\estT)} \psP\setn{\rvx(t;\estT)}}
+     \\&= \frac{\psP\set{\setY}{\rvx(t;\theta)} \psP\setn{\rvx(t;\theta)}}
                {\psP\setn{\setY}}
-     \\&= \frac{\psP\setn{ \setY,\rvx(t;\estT)}}
+     \\&= \frac{\psP\setn{ \setY,\rvx(t;\theta)}}
                {\psP\setn{\setY}}
-     \\&= \psP\set{\rvx(t;\estT)}{\setY}
+     \\&= \psP\set{\rvx(t;\theta)}{\setY}
        && \begin{array}{@{}M}%
             by definition of \fncte{conditional probability}\\ 
             \xref{def:conprob}
@@ -217,26 +241,27 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
   \item Proof that $\setY$ is a \prope{sufficient statistic} for the \vale{MAP estimate}:
   \begin{align*}
      \estMAP
-       &\eqd \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\rvy(t)}
+       &\eqd \argmax_{\estT} \psP\set{\rvx(t;\theta)}{\rvy(t)}
        &&    \text{by definition of \vale{MAP estimate} \xref{def:estMAP}}
-     \\&=    \argmax_{\estT} \psP\set{\rvx(t;\estT)}{\setY}
+     \\&=    \argmax_{\estT} \psP\set{\rvx(t;\theta)}{\setY}
        &&    \text{by \pref{item:sstat_P}}
   \end{align*}
   
   \item Proof that $\setY$ is a \prope{sufficient statistic} for the \fncte{ML estimate}:
   \begin{align*}
      \estML
-       &\eqd \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\estT)}
+       &\eqd \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\theta)}
        &&    \text{by definition of \fncte{ML estimate} \xref{def:estML}}
-     \\&=    \argmax_{\estT} \psP\set{\sum_{n=1}^\xN\fdoty_n\fpsi_n(t)+\rvv'(t)}{\rvx(t;\estT)}
-     \\&=    \argmax_{\estT} \psP\set{\setY,\rvv'(t)}{\rvx(t;\estT)}
+     \\&=    \argmax_{\estT} \psP\set{\sum_{n=1}^\xN\fdoty_n\fpsi_n(t)+\rvv'(t)}{\rvx(t;\theta)}
+     \\&=    \argmax_{\estT} \psP\set{\setY,\rvv'(t)}{\rvx(t;\theta)}
        &&    \text{because $\setY$ and $\rvv'(t)$ can be extracted by  $\inprod{\cdots}{\fpsi_n(t)}$}
-     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}\psP\setn{\rvv'(t)}{\rvx(t;\estT)}
-       &&    \text{by \prope{independence} of $\setY$ and $\rvv'(t)$}
-     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}\psP\setn{\rvv'(t)}
+     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\theta)}\psP\setn{\rvv'(t)}{\rvx(t;\theta)}
+       &&    \text{by \prope{independence} of $\setY$ and $\rvv'(t)$ 
+                   \xref{ilem:sstat_independent}}
+     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\theta)}\psP\setn{\rvv'(t)}
        &&    \text{by \prope{independence} of $\rvx(t)$ and $\rvv'(t)$}
-     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\estT)}
-       &&    \text{by \prope{independence} of $\rvv'(t)$ and $\estT$}
+     \\&=    \argmax_{\estT} \psP\set{\setY}{\rvx(t;\theta)}
+       &&    \text{by \prope{independence} of $\rvv'(t)$ and $\theta$}
   \end{align*}
 \end{enumerate}
 \end{proof}
@@ -256,9 +281,10 @@ and $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
 Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$, and $\setY$ be defined as in \prefpp{def:sstat}.
 \thmbox{
   \brb{\begin{array}{FrclDD}
-    (A). & \fy(t)                    &\eqd     & \fx(t) + \fv(t) & (\propb{additive})              & and
-  \\(B). & \fx(t)                    &\subseteq& \linspan\Psi    & ($\Psi$ \prope{spans} $\fx(t)$) & and
-  \\(C). & \inprod{\fpsi_n}{\fpsi_m} &=        & \kdelta_{mn}    & (\prope{orthonormal})
+    (A). & \fy(t)                    &\eqd     & \fx(t;\theta) + \fv(t) & (\propb{additive})              & and
+  \\(B). & \pE\brs{\fv(t)}           &=        & 0                      & (\prope{zero-mean})             & and
+  \\(C). & \fx(t)                    &\subseteq& \linspan\Psi           & ($\Psi$ \prope{spans} $\fx(t)$) & and
+  \\(C). & \inprod{\fpsi_n}{\fpsi_m} &=        & \kdelta_{mn}           & (\prope{orthonormal})
   \end{array}}
   \implies
   \brb{\begin{array}{lrcl}
@@ -280,6 +306,7 @@ Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$,
      && \text{\xref{def:inprod}}
    \\&= \pE\brp{\inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n}
      && \text{by definition of $\fdotv_n$}
+     && \text{\xref{def:sstat}}
    \\&= \pE\brp{\sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n}
      && \text{by \prope{additive} property of $\inprodn$}
      && \text{\xref{def:inprod}}
@@ -288,7 +315,8 @@ Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$,
      && \text{(C)}
    \\&= \pE\brp{\fdotx_n(\theta) + \fdotv_n}
      && \text{by definition of $\kdelta$}
-   \\&= \pE{\fdotx_n(\theta) } +   \pE{\fdotv_n}
+     && \text{\ifsxref{vsinprod}{def:kdelta}}
+   \\&= \pE{\fdotx_n(\theta) } + \cancelto{0}{\pE{\fdotv_n}}
      && \text{by \prope{linearity} of $\pE$}
      && \text{\xref{thm:pE_linop}}
    \\&= \fdotx_n(\theta)
@@ -359,32 +387,36 @@ Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$,
 }
 \end{theorem}
 \begin{proof}
-\begin{align*}
-   \pE\fdotv_{n}
-     &= \pE\inprod{\fv(t)}{\fpsi_n(t)}
-   \\&= \inprod{\pE\fv(t)}{\fpsi_n(t)}
-   \\&= \inprod{0}{\fpsi_n(t)}
-   \\&= 0
-\\
-\\
-   (\fdoty_n |\theta)
-     &\eqd {\inprod{\rvy(t)}{\fpsi_n(t)}}  |\theta
-   \\&=    {\inprod{\rvx(t;\theta)+\fv(t)}{\fpsi_n(t)}}
-     && \text{by \prope{additive} hypothesis}
-     && \text{hypothesis (A)}
-   \\&=    {\inprod{\rvx(t;\theta)}{\fpsi_n(t)}} +   {\inprod{\fv(t)}{\fpsi_n(t)}}
-   \\&=    \inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n
-   \\&=    \sum_{k=1}^\xN \fdotx_k(\theta) \inprod{\fpsi_k(t)}{\fpsi_n(t)} + \fdotv_n
-   \\&=    \fdotx_n(\theta)  + \fdotv_n
-\\ \\
-   \pE({\fdoty_n} | \theta)
-     &= \pE\brs{\fdotx_n(\theta)  + \fdotv_n}
-   \\&= \pE{\fdotx_n(\theta) } +   \pE{\fdotv_n}
-   \\&= \fdotx_n(\theta)
-\end{align*}
+\begin{enumerate}
+  \item Proof for (1): By hypothesis (3) and \prefp{lem:fdotv}.
 
-The distributions follow because they are linear operations on
-Gaussian processes.
+  \item Proof for (2):
+    \begin{align*}
+       \pE(\fdoty_n |\theta)
+         &\eqd \pE\brs{\inprod{\rvy(t)}{\fpsi_n(t)}  |\theta}
+         && \text{by definition of $\fdoty_n$}
+         && \text{\xref{def:sstat}}
+       \\&= \pE\brs{\inprod{\rvx(t;\theta)+\fv(t)}{\fpsi_n(t)}}
+         && \text{by \prope{additive} hypothesis}
+         && \text{hypothesis (A)}
+       \\&= \pE\brs{\inprod{\rvx(t;\theta)}{\fpsi_n(t)}} +   \pE\brs{\inprod{\fv(t)}{\fpsi_n(t)}}
+         && \text{by \prope{additive} property of $\inprodn$}
+         && \text{\xref{def:inprod}}
+       \\&= \pE\inprod{\sum_{k=1}^\xN \fdotx_k(\theta) \fpsi_k(t)}{\fpsi_n(t)} + \pE\fdotv_n
+       \\&=    \sum_{k=1}^\xN \pE\brs{\fdotx_k(\theta)}\inprod{\fpsi_k(t)}{\fpsi_n(t)} + \pE\fdotv_n
+       \\&=    \sum_{k=1}^\xN \pE\brs{\fdotx_k(\theta)}\kdelta_{k-n}(t) + \pE\fdotv_n
+         && \text{by \prope{orthonormal} hypothesis}
+         && \text{(D)}
+       \\&=  \pE\fdotx_n(\theta)  + \pE\fdotv_n
+         && \text{by definition of $\kdelta$}
+         && \text{\ifsxref{vsinprod}{def:kdelta}}
+       \\&= \fdotx_n(\theta) + 0
+         && \text{by \prefp{lem:fdotv}}
+    \end{align*}
+
+  \item Proof for (3) and (4): 
+        The distributions follow because they are linear operations on Gaussian processes.
+\end{enumerate}
 \end{proof}
 
 %======================================
@@ -401,16 +433,17 @@ Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$,
   \mcom{\brbr{\begin{array}{FrclD}
     (A). & \fy(t)                    &\eqd     & \fx(t) + \fv(t)     & and %& (\propb{additive})              & and
   \\(B). & \cov{\fv(t)}{\fv(u)}      &=        & \sigma^2\delta(t-u) & and %& (\propb{white})                 & and
+  \\(C). & \pE\brs{\fv(t)}           &=        & 0                   & and %  (\prope{zero-mean})             & and
  %\\(B). & \fv(t)                    &\sim     & \pN{0}{\sigma^2}    & and %& (\propb{Gaussian})              & and
-  \\(C). & \fx(t)                    &\subseteq& \linspan\Psi        & and %& ($\Psi$ \prope{spans} $\fx(t)$) & and
-  \\(D). & \inprod{\fpsi_n}{\fpsi_m} &=        & \kdelta_{mn}        &     %& (\prope{orthonormal})
+  \\(E). & \fx(t)                    &\subseteq& \linspan\Psi        & and %& ($\Psi$ \prope{spans} $\fx(t)$) & and
+  \\(E). & \inprod{\fpsi_n}{\fpsi_m} &=        & \kdelta_{mn}        &     %& (\prope{orthonormal})
   \end{array}}}{\prope{additive white} system}
   \implies
-  \brbl{\begin{array}{FlclD}
-       (1). & \pE\fdotv_n                            &=& 0                     & (\prope{zero-mean})
-     \\(2). & \pE(\fdoty_n|\theta)                   &=& \fdotx_n(\theta)      & 
-     \\(3). & \cov{\fdotv_n}{\fdotv_m}               &=& \sigma^2 \kdelta_{nm} & (\prope{uncorrelated})
-     \\(4). & \cov{\fdoty_n|\theta}{\fdoty_m|\theta }&=& \sigma^2 \kdelta_{nm} & (\prope{uncorrelated})
+  \brbl{\begin{array}{FlclDD}
+       (1). & \pE\fdotv_n                            &=& 0                     & (\prope{zero-mean})    & and 
+     \\(2). & \pE(\fdoty_n|\theta)                   &=& \fdotx_n(\theta)      &                        & and 
+     \\(3). & \cov{\fdotv_n}{\fdotv_m}               &=& \sigma^2 \kdelta_{nm} & (\prope{uncorrelated}) & and 
+     \\(4). & \cov{\fdoty_n|\theta}{\fdoty_m|\theta }&=& \sigma^2 \kdelta_{nm} & (\prope{uncorrelated}) &
   \end{array}}
   }
 \end{theorem}
@@ -427,29 +460,29 @@ Let $\Psi$, $\rvy(t)$, $\rvx(t)$, $\rvv(t)$, $\fdoty_n$, $\fdotx_n$, $\fdotv_n$,
     \begin{align*}
      \cov{\fdotv_m}{\fdotv_n}
         &= \cov{\inprod{\fv(t)}{\fpsi_m(t)}}{\inprod{\fv(t)}{\fpsi_n(t)}}
-        && \text{by definition of $\fdotv_n$}
+        && \text{by def. of $\fdotv_n$}
         && \text{\xref{def:sstat}}
       \\&= \cov{\brp{\int_{t\in\R} \fv(t) \fpsi_m(t)\dt}}
                {\brp{\int_{u\in\R} \fv(u) \fpsi_n(u)\du}}
-        && \text{by definition of $\inprodn$}
+        && \text{by def. of $\inprodn$}
         && \text{\xref{def:sstat}}
       \\&= \pE\brs{\brp{\int_{t\in\R} \fv(t) \fpsi_m(t)\dt} 
                    \brp{\int_{u\in\R} \fv(u) \fpsi_n(u)\du}}
-        && \text{by definition of $\pCov$}
+        && \text{by def. of $\pCov$}
       \\&= \pE\brs{\int_{t\in\R}\int_{u\in\R} \fv(t)\fv(u) \fpsi_m(t) \fpsi_n(u) \dt\du} 
       \\&= \int_{t\in\R}\int_{u\in\R} \pE\brs{\fv(t)\fv(u)} \fpsi_m(t) \fpsi_n(u) \dt\du
       \\&= \int_{t\in\R}\int_{u\in\R} \sigma^2\delta(t-u) \fpsi_m(t) \fpsi_n(u) \dt\du
-        && \text{by \prope{white} hypothesis}
+        && \text{by \prope{white} hyp.}
         && \text{(B)}
       \\&= \sigma^2 \int_{t\in\R}  \fpsi_m(t) \fpsi_n(u) \dt
       \\&= \sigma^2 \inprod{\fpsi_m(t)}{\fpsi_n(u)}
-        && \text{by definition of $\inprodn$}
+        && \text{by def. of $\inprodn$}
         && \text{\xref{def:sstat}}
       \\&= \brbl{\begin{array}{lM}
                \sigma^2 & for $n=m$ \\
                0        & for $n\ne m$.
             \end{array}}
-        && \text{by \prope{orthonormal} property}
+        && \text{by \prope{orthonormal} prop.}
         && \text{\xref{def:sstat}}
     \end{align*}
   
@@ -596,18 +629,18 @@ Let $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
      &=& \argmin_{\estT} \brs{ \sum_{n=1}^\xN [\fdoty_n-\fdotx_n(\estT)]^2 }
        & (spectral decomposition)
    \\&=& \argmax_{\estT}
-         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\estT)}^2 \right]
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\theta)}-\norm{\rvx(t;\theta)}^2 \right]
        & (matched signal)
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
    \estML
-     &= \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\estT)}
-   \\&= \argmax_{\estT} \psP\set{\fdoty_1,\fdoty_2,\ldots,\fdoty_n}{\rvx(t;\estT)}
+     &= \argmax_{\estT} \psP\set{\rvy(t)}{\rvx(t;\theta)}
+   \\&= \argmax_{\estT} \psP\set{\fdoty_1,\fdoty_2,\ldots,\fdoty_n}{\rvx(t;\theta)}
      && \text{by \prefpp{thm:sstat}}
-   \\&= \argmax_{\estT} \prod_{n=1}^\xN \psP\set{\fdoty_n}{\rvx(t;\estT)}
-   \\&= \argmax_{\estT} \prod_{n=1}^\xN \pdfpb{\fdoty_n|\rvx(t;\estT)}
+   \\&= \argmax_{\estT} \prod_{n=1}^\xN \psP\set{\fdoty_n}{\rvx(t;\theta)}
+   \\&= \argmax_{\estT} \prod_{n=1}^\xN \pdfpb{\fdoty_n|\rvx(t;\theta)}
    \\&= \argmax_{\estT} \prod_{n=1}^\xN
          \frac{1}{\sqrt{2\pi\sigma^2}}
          \exp{\frac{[\fdoty_n-\fdotx_n(\estT)]^2}{-2\sigma^2} }
@@ -622,13 +655,13 @@ Let $\estML$  be the \fncte{ML estimate} \xref{def:estML} of $\theta$.
          \left[ -\lim_{N\to\infty}\sum_{n=1}^\xN [\fdoty_n-\fdotx_n(\estT)]^2 \right]
      && \text{by \prefpp{thm:sstat}}
    \\&= \argmax_{\estT}
-         \left[ -\norm{\rvy(t)-\rvx(t;\estT)}^2 \right]
+         \left[ -\norm{\rvy(t)-\rvx(t;\theta)}^2 \right]
      && \text{by \thme{Plancheral's formula}}
      && \text{\xref{thm:plancherel}}
    \\&= \argmax_{\estT}
-         \left[ -\norm{\rvy(t)}^2 +2\Real\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\estT)}^2 \right]
+         \left[ -\norm{\rvy(t)}^2 +2\Real\inprod{\rvy(t)}{\rvx(t;\theta)}-\norm{\rvx(t;\theta)}^2 \right]
    \\&= \argmax_{\estT}
-         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\estT)}^2 \right]
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\theta)}-\norm{\rvx(t;\theta)}^2 \right]
      && \text{because $\rvy(t)$ \prope{independent} of $\estT$}
 \end{align*}
 \end{proof}
@@ -668,7 +701,7 @@ Then
 \begin{align*}
    \estML[a]
      &= \argmax_a
-         \left[ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\phi)}^2 \right]
+         \left[ 2\inprod{\rvy(t)}{\rvx(t;\theta)}-\norm{\rvx(t;\phi)}^2 \right]
      && \text{by \prefpp{thm:estML_general}}
    \\&= \argmax_a
          \left[ 2\inprod{\rvy(t)}{a\lambda(t)}-\norm{a\lambda(t)}^2 \right]
@@ -867,7 +900,7 @@ Then the optimal ML-estimate of parameter $ \phi $ is
 \begin{align*}
    \estML[\phi]
      &= \argmax_\phi
-         \brs{ 2\inprod{\rvy(t)}{\rvx(t;\estT)}-\norm{\rvx(t;\phi)}^2 }
+         \brs{ 2\inprod{\rvy(t)}{\rvx(t;\theta)}-\norm{\rvx(t;\phi)}^2 }
      && \text{by \prefpp{thm:estML_general}}
    \\&= \argmax_\phi
          \brs{ 2\inprod{\rvy(t)}{\rvx(t;\phi)} }
@@ -1212,9 +1245,9 @@ $\fh(t) =\rvx(T-t)$ (which implies $\rvx(t)=h(T-t)$) giving
   \]
 
 This shows that $\fh(t)$ is the impulse response of a filter operation
-sampled at time $T$. % (see \prefpp{fig:mf}).
+sampled at time $\tau$. % (see \prefpp{fig:mf}).
 By \prefpp{thm:mf_maxSNR}, the optimal impulse response is
-$\fh(T-t)=f(t)=\rvx(t)$.
+$\fh(\tau-t)=\ff(t)=\rvx(t)$.
 That is, the optimal $\fh(t)$ is just a ``flipped" and shifted version of $\rvx(t)$.
 
 
