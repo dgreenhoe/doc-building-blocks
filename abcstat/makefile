@@ -28,6 +28,7 @@ FILE_SRC  =                       \
   ../common/operator.tex          \
   ../common/pdfcdf.tex            \
   ../common/probspace.tex         \
+  ../common/matched_filter.tex    \
   ../common/spline.tex            \
   ../common/randprocess.tex       \
   ../common/randseq.tex           \
