@@ -22,7 +22,6 @@ FILE_SRC  =                       \
   ../common/com_channel.tex       \
   ../common/dtft.tex              \
   ../common/expectation.tex       \
-  ../common/gradient_search.tex   \
   ../common/kl_basis.tex          \
   ../common/moment_estimation.tex \
   ../common/norm_minimization.tex \

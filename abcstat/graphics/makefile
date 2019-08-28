@@ -9,19 +9,11 @@
 #--------------------------------------
 # Paths
 #--------------------------------------
+PATHDATA     = ../../common/math/graphics/data/
 PATHDSP      = ../../common/math/graphics/dsp/
-PATHFRAME      = ../../common/math/graphics/frames/
+PATHFRAME    = ../../common/math/graphics/frames/
 PATHMATH     = ../../common/math/graphics/
 PATHBSPLINES = ../../common/math/graphics/bsplines/
-PATHOSET     = ../../common/math/graphics/oset
-PATHOSETU    = ../../common/math/graphics/osetu
-PATHLAT      = ../../common/math/graphics/lat
-PATHLATU     = ../../common/math/graphics/latu
-PATHNEG      = ../../common/math/graphics/neg
-PATHLATOC    = ../../common/math/graphics/latoc
-PATHNEG      = ../../common/math/graphics/neg
-PATHLOGIC    = ../../common/math/graphics/
-PATHFUZZY    = ../../common/math/graphics/fuzzy
 PATHPROB     = ../../common/math/graphics/prob
 PATHVENN     = ../../common/math/graphics/venn
 PATHSETOPS   = ../../common/math/graphics/setops
@@ -32,6 +24,11 @@ PATHWAVE     = ../../common/wavelets/graphics/
 #--------------------------------------
 # Files
 #--------------------------------------
+GRP_DATA = \
+  dji30_20171006-20181004.pdf  \
+  earthquake_kapi_20180928.pdf \
+  sunspots_1749-2004.pdf
+
 GRP_DSP  =                     \
   sinc.pdf                     \
   sinsin02.pdf                 \
@@ -109,23 +106,6 @@ GRP_PROB =                     \
   pdf_fairdie_blue.pdf         \
   pdf_fairdie_red.pdf
 
-GRP_LATU = \
-  lat1.pdf                     \
-  lat2_l2.pdf                  \
-  lat4_l4.pdf                  \
-  lat6_m2m2.pdf                \
-  lat6_o6bslash.pdf            \
-  lat7_m2inm2_alt.pdf          \
-  lat7_m2inm2.pdf              \
-  m2tol4.pdf                   \
-  m3ton5.pdf                   \
-  n5ton5.pdf                   \
-  lat8_l2e3.pdf                \
-  lat4_l4.pdf                  \
-  lat4_m2.pdf                  \
-  lat5_l2onm2.pdf              \
-  lat5_m2onl2.pdf
-
 GRP_LAT = \
   lat4_m2_1xy0.pdf             \
   lat5_m3_xyz.pdf              \
@@ -138,77 +118,6 @@ GRP_LAT = \
   lat6_n6_0abcp1.pdf           \
   lat5_n5_0acp1.pdf
 
-GRP_NEG = \
-  lat2_L2_10_-0-1.pdf                 \
-  lat3_L3_1-1_x-x_0-0.pdf             \
-  lat3_L3_1-0_x-1_0-x.pdf             \
-  lat3_L3_1-x_x-0_0-1.pdf             \
-  lat6_o6_1-0_a-b_b-a_c-d_d-c_0-1.pdf \
-  lat3_L3_1x0_-0-1-x.pdf              \
-  lat3_L3_1x0_-1x0.pdf                \
-  lat3_L3_1-0-a_a_0-1.pdf             \
-  lat3_L3_1-a-0_a-1_0.pdf             \
-  lat3_L3_1x0_-0-x-1.pdf              \
-  lat3_L3_1_a-0_0-1-a.pdf             \
-  lat3_L3_1-0_a_0-1-x.pdf             \
-  lat4_m2_1-0_a_b-b_0-1-a.pdf         \
-  lat4_m2_a-b_b-a.pdf                 \
-  lat4_bn4_a-a_b-b.pdf                \
-  lat4_m2_1-0_a_b-b_0-1-a.pdf         \
-  lat3_L3_1-0_a_0-1-x.pdf             \
-  lat3_L3_1x0_-0-x-1.pdf              \
-  lat5_m3_negdm.pdf                   \
-  lat5_m3_negkl.pdf                   \
-  lat6_o6_negdm.pdf                   \
-  lat6_o6_negor.pdf                   \
-  lat6_o6slash_nonantitone.pdf        \
-  lat6_o6slash_kleene.pdf             \
-  lat8_l2e3_setxyz.pdf                \
-  lat8_l2e3_abc_dm.pdf                \
-  lat8_l2e3_abc_ortho.pdf
-
-GRP_OSET = \
-  oset4_Nref.pdf                   \
-  oset3_wedge.pdf                  \
-  oset4_Nref.pdf                   \
-  oset3_wedge.pdf                  \
-  oset4_Nref.pdf                   \
-  oset3_wedge.pdf                  \
-  oset7_wedge_oplus_Nref.pdf       \
-  oset4_Nref.pdf                   \
-  oset3_wedge.pdf                  \
-  oset12_wedge_times_Nref.pdf      \
-  oset4_Nref.pdf                   \
-  oset3_wedge.pdf                  \
-  oset12_wedge_otimes_Nref.pdf
-
-GRP_ORTHOLAT =               \
-  lat6_o6_latoc_pq.pdf       \
-  lat6_o6_xy.pdf             \
-  lat8_o8_xyp.pdf            \
-  lat8_l3l4l4l3_xypoc.pdf    \
-  lat8_2e3m2_xyzoc.pdf       \
-  lat10_n5n5oc_xyp.pdf       \
-  lat10_m4m4oc_wxyz.pdf      \
-  lat10_o8m2_xypqoc.pdf      \
-  lat10_hsum_pxyz.pdf        \
-  latocdil7_abxyzcd.pdf      \
-  lat6_m4_wxyz.pdf           \
-  lat8_m6_xyzoc.pdf          \
-  lat1_01.pdf                \
-  lat2_l2_01.pdf             \
-  lat4_m2_latoc_p.pdf        \
-  lat8_l2e3_latoc_pqr.pdf    \
-  lat16_l2e4_latoc_pqrs.pdf  \
-  lat32_l2e5_latoc_pqrst.pdf \
-  r3subspaces_xyzxcyczc.pdf  \
-  lat6_o6_pqab01.pdf         \
-  lat6_primo_pqra01.pdf      \
-  lat6_o6.pdf                \
-  lat8_l2e3.pdf              \
-  lat6_mo2_xy.pdf            \
-  lat2_l2.pdf                \
-  lat12_mo2x2.pdf
 
 GRP_POUNITY =                \
   coscos11.pdf               \
@@ -232,51 +141,6 @@ GRP_POUNITY =                \
   rsin_pun.pdf               \
   rsin02hn.pdf               
                              
-GRP_SETOPS =                 \
-  latsetops.pdf              \
-  setop_0000.pdf             \
-  setop_0001.pdf             \
-  setop_0010.pdf             \
-  setop_0011.pdf             \
-  setop_0100.pdf             \
-  setop_0101.pdf             \
-  setop_0110.pdf             \
-  setop_0111.pdf             \
-  setop_1000.pdf             \
-  setop_1001.pdf             \
-  setop_1010.pdf             \
-  setop_1011.pdf             \
-  setop_1100.pdf             \
-  setop_1101.pdf             \
-  setop_1110.pdf             \
-  setop_1111.pdf             
-                             
-GRP_BOOLEAN =                \
-  lat2_l2_setx.pdf           \
-  lat4_l2e2_setxy.pdf        \
-  lat4_m2_setxy.pdf          \
-  lat8_2e3_setxyz.pdf        
-                             
-GRP_SETSTR = \               
-  lat5_m3_nontop.pdf         \
-  lat5_n5_nontop.pdf         \
-  lat5_l2onm2_top.pdf        \
-  lat5_m2onl2_top.pdf        \
-  lat5_l5_top.pdf            \
-  lat6_primo_ss_xyz.pdf      \
-  lat5_m3_ss_xyz.pdf         \
-  latwavxyz.pdf              \
-  latlattopxyz.pdf           \
-  lattopxy.pdf               \
-  lat2xyzdotted.pdf          \
-  latlatalgwxyz.pdf          \
-  latlatringxyz.pdf          \
-  latlatpartitionsxyz.pdf    \
-  latlatringxy.pdf           \
-  latlatalgxyz.pdf           \
-  latlatpartwxyz.pdf         \
-  latlattopxyz_covers.pdf
-
 GRP_SPLINE =                 \
   fstep.pdf                  \
   tent_pun.pdf               \
@@ -401,7 +265,7 @@ PRG_TYPESET = xelatex.exe
 #--------------------------------------
 # master build control
 #--------------------------------------
-top: $(GRP_MATH) $(GRP_SETOPS) $(GRP_DSP) $(GRP_FRAMES) $(GRP_SETSTR) $(GRP_LATU) $(GRP_LAT) $(GRP_LATTICE) $(GRP_LATA) $(GRP_LATM) $(GRP_LATD) $(GRP_LATC) $(GRP_NEG) $(GRP_OSETU) $(GRP_OSET) $(GRP_BOOLEAN) $(GRP_ORTHOLAT) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SPLINE) $(GRP_SYSTEM) $(GRP_TOPOLOGY)
+top: $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SPLINE) $(GRP_SYSTEM)
 	@echo Done ... graphics pdfs are ready!
 
 #--------------------------------------
@@ -424,6 +288,11 @@ top: $(GRP_MATH) $(GRP_SETOPS) $(GRP_DSP) $(GRP_FRAMES) $(GRP_SETSTR) $(GRP_LATU
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
 
+{$(PATHDATA)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
 {$(PATHDSP)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
@@ -434,37 +303,7 @@ top: $(GRP_MATH) $(GRP_SETOPS) $(GRP_DSP) $(GRP_FRAMES) $(GRP_SETSTR) $(GRP_LATU
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
 
-{$(PATHLAT)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHLATU)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHNEG)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHLATOC)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
 %.pdf : shell_%.tex
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHNEG)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHLOGIC)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
@@ -475,26 +314,6 @@ top: $(GRP_MATH) $(GRP_SETOPS) $(GRP_DSP) $(GRP_FRAMES) $(GRP_SETSTR) $(GRP_LATU
 	del shell_$&.pdf
 
 {$(PATHVENN)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHSETOPS)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHSETSTR)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHOSET)}.tex.pdf:
-	$(PRG_TYPESET) shell_$&.tex
-	copy /V/Y shell_$&.pdf $&.pdf
-	del shell_$&.pdf
-
-{$(PATHOSETU)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf

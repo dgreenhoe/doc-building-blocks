@@ -33,8 +33,6 @@ all:
     make
   cd ..\xsro
     make
-#  cd ..\xpsd
-#    make
   cd ..\2019xcordef
     make
   cd ..\estimation

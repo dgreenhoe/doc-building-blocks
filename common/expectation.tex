@@ -8,6 +8,7 @@
 %======================================
 %=======================================
 \section{Definitions}
+\label{sec:pE_defs}
 \index{expectation operator}
 %=======================================
 In a \structe{probability space} $\ps$ \xref{def:ps}, all probability information
@@ -40,15 +41,6 @@ indeed appear to be random.
 However, eventhough $\rvX$ appears to be random,
 the expected value $\pEx\rvX$  of $\rvX$ is {\bf not random}.
 Rather it is a fixed value (like $0$ or $7.9$ or $-2.6$).
-
-On the other hand, eventhough $\pE\rvX$ is {\bf not random},
-note that $\pE(\rvX|\rvY)$ {\bf is random}.
-This is because $\pE(\rvX|\rvY)$ is a function of $\rvY$.
-That is, once we know that $\rvY$ equals some fixed value $y$
-(like $0$ or $2.7$ or $-5.1$) then $\pE(\rvX|\rvY=y)$ is also fixed.
-However, if we don't know the value of $\rvY$,
-then $\rvY$ is still a \fncte{random variable} and the expression $\pE(\rvX|\rvY)$
-is also random (a function of \fncte{random variable} $\rvY$).
 
 Two common statistics that are conveniently expressed in terms of the
 expectation operator are the \hie{mean} and \hie{variance}.
@@ -404,12 +396,27 @@ Let $\rvX$ be a \fncte{random variable} with mean $\mu$ and variance $\sigma^2$.
 \end{theorem}
 
 %=======================================
-\section{Joint and conditional probability spaces}
+\section{Conditional expectation}
 %=======================================
 Sometimes the problem of finding the expected value of a \fncte{random variable} $\rvX$
 can be simplified by ``conditioning $\rvX$ on $\rvY$".
+It has already been pointed out in \prefpp{sec:pE_defs} 
+that the expected value $\pEx\rvX$  of $\rvX$ is \textbf{not random}.
+On the other hand, 
+note that $\pE(\rvX|\rvY)$ \textbf{is random}.
+This is because $\pE(\rvX|\rvY)$ is a function of $\rvY$.
+That is, once we know that $\rvY$ equals some fixed value $y$
+(like $0$ or $2.7$ or $-5.1$) then $\pE(\rvX|\rvY=y)$ is also fixed.
+However, if we don't know the value of $\rvY$,
+then $\rvY$ is still a \fncte{random variable} and the expression $\pE(\rvX|\rvY)$
+is also random (a function of \fncte{random variable} $\rvY$).
+
 %---------------------------------------
 \begin{theorem}
+\footnote{
+  \citerpc{jazwinski1970}{40}{``Theorem 2.9 (Conditional Expectations)"},
+  \citerpg{jazwinski2007}{40}{9780486318196} %{``Theorem 2.9 (Conditional Expectations)"}
+  }
 %---------------------------------------
 Let $\rvX$ and $\rvY$ be \fncte{random variable}s. Then
 \thmbox{\pEx{\rvX} = \pEy\pEx[x|y](\rvX|\rvY) }
@@ -417,12 +424,20 @@ Let $\rvX$ and $\rvY$ be \fncte{random variable}s. Then
 \begin{proof}
 \begin{align*}
    \pEy\pEx[x|y](\rvX|\rvY)
-     &\eqd \pEy \left[ \int_{x\in\R}x \pp(\rvX=x|\rvY) \dx \right]
-   \\&\eqd \int_{y\in\R} \left[\int_{x\in\R}x \pp(x|\rvY=y) \dx \right] \pp(y) \dy
+     &\eqd \pEy \brs{ \int_{x\in\R}x \pp(\rvX=x|\rvY) \dx}
+     && \text{by definition of $\pE$}
+     && \text{\xref{def:pE}}
+   \\&\eqd \int_{y\in\R} \brs{\int_{x\in\R}x \pp(x|\rvY=y) \dx } \pp(y) \dy
+     && \text{by definition of $\pE$}
+     && \text{\xref{def:pE}}
    \\&=    \int_{y\in\R} \int_{x\in\R}x \pp(x|y)\pp(y) \dx   \dy
    \\&=    \int_{x\in\R}x \int_{y\in\R} \pp(x,y) \dy   \dx
+     && \text{by \prefp{thm:pdf_cond}}
    \\&=    \int_{x\in\R}x \pp(x) \dx
+     && \text{by \prefp{thm:pdf_cond}}
    \\&\eqd \pEx\rvX
+     && \text{by definition of $\pE$}
+     && \text{\xref{def:pE}}
 \end{align*}
 \end{proof}
 
