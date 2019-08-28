@@ -24,7 +24,7 @@
   \put(   0,-115){\makebox (100, 80)[c]{operator} }
   \put(   0,-115){\makebox (100, 80)[b]{$U$}            }
 
-  \put(   0,-275){\framebox(100,100)[c]{estimate $\vp$}    }
+  \put(   0,-275){\framebox(100,100)[c]{estimate $\vtheta$}    }
   \put(  50,-175){\vector  (  0,  1)   { 50}               }
   \put(  60,-150){\makebox (  0,  0)[l]{$\estn$}           }
 
@@ -40,8 +40,8 @@
   \put( 200,- 50){\framebox(100,100)[c]{cost}    }
   \put( 300,  10){\makebox (100,  0)[b]{$C(\estn,x,y)$}      }
   \put( 300,   0){\vector  (  1,  0)   {100}               }
-  \put( 400,- 50){\framebox(100,100)[c]{$\grad_\vp$}        }
-  \put( 510,  10){\makebox (100,  0)[lb]{$\grad_\vp C(\vp,x,y)$}      }
+  \put( 400,- 50){\framebox(100,100)[c]{$\grad_\vtheta$}        }
+  \put( 510,  10){\makebox (100,  0)[lb]{$\grad_\vtheta C(\vtheta,x,y)$}      }
   \put( 500,   0){\vector  (  1,  0)   {100}               }
 
 \end{picture}
@@ -59,7 +59,7 @@ In this section we present two types of norm minimization:\footnote{
    It was first published by Legendre in 1805, but there is a credible claim by Gauss
    that he had it as far back as 1795.
    Gauss, by the way, was also the first to discover the FFT.
-   References: 
+   References:
    \citePp{sorenson1970}{63},
    \citeP{plackett1972},
    \citeP{stigler1981},
@@ -98,18 +98,13 @@ Solutions to both are given in terms of two matrices:
 %--------------------------------------
 Let the following vectors, matrices, and functions
 be defined as follows:
-
-\defbox{\begin{tabular}{lcll}
-   $\vx  $&$\in$&$ \vCm        $  & data vector                       \\
-   $\vy  $&$\in$&$ \vCn        $  & processed data vector             \\
-   $\vye $&$\in$&$ \vCn        $  & processed data estimate vector    \\
-   $\ve  $&$\in$&$ \vCn        $  & error vector                     \\
-   $\vp  $&$\in$&$ \vRm        $  & parameter vector                 \\
-   $U    $&$\in$&$ \mCmn       $  & regression matrix                \\
-   $R    $&$\in$&$ \mCmm       $  & autocorrelation matrix           \\
-   $W    $&$\in$&$ \vCm        $  & cross-correlation vector         \\
-   $C    $&$:  $&$ \vRm\to\Rnn $  & cost function
-\end{tabular}}
+\defbox{\begin{array}{lclM | lclM}
+     \vx    &\in& \vCm         & \fncte{data vector}                      & U      &\in& \mCmn        & \ope{regression matrix}         
+   \\\vy    &\in& \vCn         & \fncte{processed data vector}            & R      &\in& \mCmm        & \ope{autocorrelation matrix}    
+   \\\vye   &\in& \vCn         & \fncte{processed data estimate vector}   & W      &\in& \vCm         & \fncte{cross-correlation vector}
+   \\\ve    &\in& \vCn         & \fncte{error vector}                     & \fCost &:  & \vRm\to\Rnn  & \fncte{cost function}           
+   \\\vtheta    &\in& \vRm         & \fncte{parameter vector}                 & 
+\end{array}}
 \end{definition}
 
 %--------------------------------------
@@ -117,24 +112,25 @@ be defined as follows:
 \label{thm:est_mms}
 %--------------------------------------
 Let
-\begin{align*}
-   \vye(\vp)   &\eqd U^H\vp    \\
-   \ve(\vp)    &\eqd \vye-\vy \\
-   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \pE\brs{\ve^H\ve} \\
-   \estMS      &\eqd \argmin_\vp \fCost(\vp)  \\
-   R           &\eqd \pE\brs{UU^H}   \\
-   W           &\eqd \pE\brs{ U\vy}.
-\end{align*}
-
+\begin{array}[t]{|rcl|}
+   \hline
+     \vye(\vtheta)   &\eqd& \opU^H\vtheta
+   \\\ve(\vtheta)    &\eqd& \vye-\vy
+   \\\fCost(\vtheta) &\eqd& \pE\norm{\ve}^2 \eqd \pE\brs{\ve^H\ve}
+   \\\estMS      &\eqd& \argmin_\vtheta \fCost(\vtheta)
+   \\R           &\eqd& \pE\brs{\opU\opU^H}
+   \\W           &\eqd& \pE\brs{\opU\vy}
+   \\\hline
+\end{array}
 Then
 \thmbox{\begin{array}{rcl}
      \estMS                          &=& (\Real{\setY})^{-1}(\Real{W})
-   \\\fCost(\vp)                     &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \pE{\vy^H\vy}
-   \\\grad_\vp \fCost(\vp)           &=& 2\Real\brs{\setY}\vp - 2\Real{W}
-   \\\fCost(\estMS)                  &=& 
+   \\\fCost(\vtheta)                     &=& \vtheta^H R \vtheta - (W^H\vtheta)^\ast -W^H\vtheta + \pE{\vy^H\vy}
+   \\\grad_\vtheta \fCost(\vtheta)           &=& 2\Real\brs{\setY}\vtheta - 2\Real{W}
+   \\\fCost(\estMS)                  &=&
      \brbl{\begin{array}{>{\ds}lM}
          \mc{2}{>{\ds}l}{\pE{\vy^H\vy} + (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W})}
-       \\\pE{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}) & if $R$ is \propb{real-valued}
+       \\\pE{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}) & if $\opR$ is \propb{real-valued}
      \end{array}}
 \end{array}}
 \end{theorem}
@@ -142,72 +138,77 @@ Then
 See \prefpp{app:mc} for a Matrix Calculus reference.
 
 \begin{enumerate}
-  \item Proof that cost $\fCost(\vp)=\vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \pE{\vy^H\vy}$: \label{item:est_mms_cost}
+  \item Proof that cost $\fCost(\vtheta)=\vtheta^H R \vtheta - (W^H)^\ast\vtheta -W^H\vtheta + \pE{\vy^H\vy}$: \label{item:est_mms_cost}
     \begin{align*}
-       \boxed{\fCost(\vp)}
+       \boxed{\fCost(\vtheta)}
          &\eqd \pE\norm{\ve}^2
          && \text{by definition of \fncte{cost function} $\fCost$}
        \\&\eqd \pE\brs{\ve^H\ve}
          && \text{by definition of \fncte{norm} $\normn$}
        \\&\eqd \pE\brs{\brp{\vye-\vy}^H\brp{\vye-\vy}}
          && \text{by definition of \fncte{error vector} $\ve$}
-       \\&\eqd \pE\brs{\brp{U^H\vp-\vy}^H\brp{U^H\vp-\vy}}
+       \\&\eqd \pE\brs{\brp{\opU^H\vtheta-\vy}^H\brp{\opU^H\vtheta-\vy}}
          && \text{by definition of estimate $\vye$}
-       \\&=    \pE\brs{\brp{\vp^HU-\vy^H}\brp{U^H\vp-\vy}}
-         && \text{by \prope{distributive} prop. of \structe{*-algebra}s}
-         && \text{\xref{def:staralg}}
-       \\&=    \pE\brs{ \vp^HUU^H\vp - \vp^HU\vy -\vy^HU^H\vp + \vy^H\vy }
+       \\&=\mathrlap{\pE\brs{\brp{\vtheta^H\opU-\vy^H}\brp{\opU^H\vtheta-\vy}}
+            \text{by \prope{distributive} prop. of \structe{*-algebra}s 
+                  \xref{def:staralg}}}
+       \\&=    \pE\brs{ \vtheta^H\opU\opU^H\vtheta - \vtheta^H\opU\vy -\vy^H\opU^H\vtheta + \vy^H\vy }
          && \text{by \structe{matrix algebra} ring property}
-       \\&=    \vp^H\pE\brs{UU^H}\vp - \vp^H\pE\brs{U\vy} -\pE\brs{\vy^HU^H}\vp + \pE{\vy^H\vy}
-         && \text{by \prope{linearity} $\pE$}
-         && \text{\xref{thm:pE_linop}}
-       \\&=    \vp^H\pE\brs{UU^H}\vp - (\pE\brs{U\vy}^H\vp)^H -\pE\brs{U\vy}^H\vp + \pE{\vy^H\vy}
-       \\&=    \vp^H R \vp - (W^H\vp)^H -W^H\vp + \pE{\vy^H\vy}
-       \\&=    \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \pE{\vy^H\vy}
-       \\&=    \boxed{\vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \pE{\vy^H\vy}}
-       \\&=    \vp^H R \vp - 2\Real\brs{W^H}\vp + \pE{\vy^H\vy}
+       \\&=    \vtheta^H\pE\brs{\opU\opU^H}\vtheta - \vtheta^H\pE\brs{\opU\vy} -\pE\brs{\vy^H\opU^H}\vtheta + \pE{\vy^H\vy}
+         && \text{by \prope{linearity} $\pE$ 
+                  \xref{thm:pE_linop}}
+       \\&=    \vtheta^H\pE\brs{\opU\opU^H}\vtheta - (\pE\brs{\opU\vy}^H\vtheta)^H -\pE\brs{\opU\vy}^H\vtheta + \pE{\vy^H\vy}
+       \\&\eqd \vtheta^H \opR \vtheta - (\opW^H\vtheta)^H -\opW^H\vtheta + \pE{\vy^H\vy}
+         && \text{by definitions of $\opR$ and $\opW$}
+       \\&=    \vtheta^H \opR \vtheta - (\opW^H\vtheta)^\ast -\opW^H\vtheta + \pE{\vy^H\vy}
+         && \text{because $\opW^H\vtheta$ is a \prope{scalar}}
+       \\&=    \boxed{\vtheta^H \opR \vtheta - (\opW^H)^\ast\vtheta -\opW^H\vtheta + \pE{\vy^H\vy}}
+       \\&=    \vtheta^H \opR \vtheta - 2\Real\brs{\opW^H}\vtheta + \pE{\vy^H\vy}
     \end{align*}
 
-  \item Proof that optimal $\vpo=(\Real{\setY})^{-1}(\Real{W})$: \label{item:est_mms_vpo}
+  \item Proof that optimal $\vthetao=(\Real{\setY})^{-1}(\Real{W})$: \label{item:est_mms_vpo}
     \begin{align*}
-      \grad_\vp \fCost(\vp)
-        &= \grad_\vp \brs{\vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \pE{\vy^H\vy} }
-        && \text{by previous resut}
-      \\&= R\vp + R^T\vp - \grad_{\vp}\brs{(W^H)^\ast\vp + W^H\vp} + 0
+      \grad_\vtheta \fCost(\vtheta)
+        &= \grad_\vtheta \brs{\vtheta^H \opR \vtheta - (\opW^H)^\ast\vtheta -\opW^H\vtheta + \pE{\vy^H\vy} }
+        && \text{by \pref{item:est_mms_cost}}
+      \\&= \opR\vtheta + \opR^T\vtheta - \grad_{\vtheta}\brs{(\opW^H)^\ast\vtheta + \opW^H\vtheta} + 0
         && \text{by \thme{quadratic form} result \xref{thm:mc_xAx}}
-      \\&= R\vp + R^T\vp - [(W^H)^\ast]^T - [W^H]^T + 0
+      \\&= \opR\vtheta + \opR^T\vtheta - [(\opW^H)^\ast]^T - [\opW^H]^T
         && \text{by \thme{affine equations} result \xref{thm:mc_Ax}}
-      \\&= R\vp + (R^H)^\ast\vp - W - W^\ast
+      \\&= \opR\vtheta + (R^H)^\ast\vtheta - \opW - \opW^\ast
         && \text{by definition of \ope{Hermitian Transpose} $^H$}
-      \\&= R\vp + R^\ast\vp - W - W^\ast
+      \\&= \opR\vtheta + \opR^\ast\vtheta - \opW - \opW^\ast
         && \text{because $R$ is \prope{Hermitian symmetric}}
-      \\&= (R + R^\ast)\vp - (W + W^\ast)
+      \\&= (R + \opR^\ast)\vtheta - (\opW + \opW^\ast)
         && \text{by \prope{ring} property}
-      \\&= 2(\Real{\setY})\vp - 2\Real{W}
+      \\&= 2(\Real{\setY})\vtheta - 2\Real{\opW}
         && \text{by definition of $\Real$ \xref{def:Re}}
       \\
-      \implies\vpo
-        &= (\Real{\setY})^{-1}(\Real{W})
-        && \text{by setting $\grad_\vp \fCost(\vp)=0$}
+      \implies\vthetao
+        &= (\Real{\setY})^{-1}(\Real{\opW})
+        && \text{by setting $\grad_\vtheta \fCost(\vtheta)=0$}
     \end{align*}
 
-  \item Cost of optimal $\vpo$:
+  \item Cost of optimal $\vthetao$:
     \begin{align*}
-      \fCost(\vpo)
-        &=    \vpo^H R \vpo - 2\Real\brs{W^H}\vpo + \pE{\vy^H\vy}
+      \fCost(\vthetao)
+        &=    \vthetao^H \opR \vthetao - 2\Real\brs{\opW^H}\vthetao + \pE{\vy^H\vy}
         &&    \text{by \pref{item:est_mms_cost}}
-      \\&=    [(\Real{\setY})^{-1}(\Real{W})]^H R [(\Real{\setY})^{-1}(\Real{W})] - 2\Real\brs{W^H}[(\Real{\setY})^{-1}(\Real{W})] + \pE{\vy^H\vy}
+      \\&=    \brs{(\Real{\setY})^{-1}(\Real{\opW})}^H 
+              \opR\brs{(\Real{\setY})^{-1}(\Real{\opW})} 
+            - 2\Real\brs{\opW^H}\brs{(\Real{\setY})^{-1}(\Real{\opW})} 
+            + \pE{\vy^H\vy}
         &&    \text{by \pref{item:est_mms_vpo}}
-      \\&=    (\Real{W^H})(\Real{\setY})^{-H} R (\Real{\setY})^{-1}(\Real{W}) - 2\Real\brs{W^H}(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy}
-      \\&=    (\Real{W^H})(\Real{R^H})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2\Real\brs{W^H}(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy}
-      \\&=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy}
+      \\&=    (\Real{\opW^H})(\Real{\setY})^{-H} \opR (\Real{\setY})^{-1}(\Real{\opW}) - 2\Real\brs{\opW^H}(\Real{\setY})^{-1}(\Real{\opW}) + \pE{\vy^H\vy}
+      \\&=    (\Real{\opW^H})(\Real{\opR^H})^{-1} \opR (\Real{\setY})^{-1}(\Real{\opW}) - 2\Real\brs{\opW^H}(\Real{\setY})^{-1}(\Real{\opW}) + \pE{\vy^H\vy}
+      \\&=    (\Real{\opW^H})(\Real{\setY})^{-1} \opR (\Real{\setY})^{-1}(\Real{\opW}) - 2(\Real{\opW^H})(\Real{\setY})^{-1}(\Real{\opW}) + \pE{\vy^H\vy}
         \\
         \\
-      \fCost(\vpo)|_{R\mbox{ real}}
-        &=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy}
-      \\&=    (\Real{W^H})R^{-1} R R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \pE{\vy^H\vy}
-      \\&=    (\Real{W^H}) R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \pE{\vy^H\vy}
-      \\&=    \pE{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W})
+      \fCost(\vthetao)|_{\opR\mbox{ real}}
+        &=    (\Real{\opW^H})(\Real{\setY})^{-1} \opR (\Real{\setY})^{-1}(\Real{\opW}) - 2(\Real{\opW^H})(\Real{\setY})^{-1}(\Real{\opW}) + \pE{\vy^H\vy}
+      \\&=    (\Real{\opW^H})\opR^{-1} \opR \opR^{-1}(\Real{\opW}) - 2(\Real{\opW^H})\opR^{-1}(\Real{\opW}) + \pE{\vy^H\vy}
+      \\&=    (\Real{\opW^H}) \opR^{-1}(\Real{\opW}) - 2(\Real{\opW^H})\opR^{-1}(\Real{\opW}) + \pE{\vy^H\vy}
+      \\&=    \pE{\vy^H\vy} - (\Real{\opW^H})\opR^{-1}(\Real{\opW})
     \end{align*}
 \end{enumerate}
 \end{proof}
@@ -229,12 +230,12 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
   \put(   0,-115){\makebox (100, 80)[c]{process} }
   %\put(   0,-115){\makebox (100, 80)[b]{$U$}            }
 
-  \put(   0,-275){\framebox(100,100)[c]{estimate $\vp$}    }
+  \put(   0,-275){\framebox(100,100)[c]{estimate $\vtheta$}    }
   \put(  50,-175){\vector  (  0,  1)   { 50}               }
   \put(  60,-150){\makebox (  0,  0)[l]{$\estn=R^{-1}W$}           }
 
   \put( 110,  85){\makebox ( 50,  0)[lb]{$y$}               }
-  \put( 110, -65){\makebox ( 50,  0)[lb]{$\hat{y}=\vx^T\vp$}               }
+  \put( 110, -65){\makebox ( 50,  0)[lb]{$\hat{y}=\vx^T\vtheta$}               }
   \put( 100,  75){\vector  (  1,  0)   {150}               }
   \put( 100,- 75){\vector  (  1,  0)   {150}               }
   \put( 250,   0){\circle{40} }
@@ -291,14 +292,14 @@ In this special case, we have the following results
 \xref{fig:est_adapt}:
 
 \begin{align*}
-   \hat{y}(\vp)   &\eqd \vx^T \vp    \\
-   e(\vp)    &\eqd \hat{y}-y \\
-   \fCost(\vp) &\eqd \E\norm{\ve}^2 \eqd \pE\brs{e^2} \\
-   \estMS      &\eqd \argmin_\vp \fCost(\vp)  \\
+   \hat{y}(\vtheta)   &\eqd \vx^T \vtheta    \\
+   e(\vtheta)    &\eqd \hat{y}-y \\
+   \fCost(\vtheta) &\eqd \E\norm{\ve}^2 \eqd \pE\brs{e^2} \\
+   \estMS      &\eqd \argmin_\vtheta \fCost(\vtheta)  \\
    R           &\eqd \pE\brs{\vx\vx^T}   \\
    W           &\eqd \pE\brs{ \vx y }    \\
-    \fCost(\vp)                     &= \vp^T R \vp -2W^T\vp  + \pE\brs{\vy^T\vy} \\
-    \grad_\vp \fCost(\vp)           &= 2R\vp - 2W  \\
+    \fCost(\vtheta)                     &= \vtheta^T R \vtheta -2W^T\vtheta  + \pE\brs{\vy^T\vy} \\
+    \grad_\vtheta \fCost(\vtheta)           &= 2R\vtheta - 2W  \\
     \fCost(\estMS)|_{R\mbox{ real}} &=    \pE{\vy^T\vy} - W^T R^{-1}W.
 \end{align*}
 \end{proof}
@@ -314,10 +315,10 @@ In this special case, we have the following results
 %--------------------------------------
 Let
 \begin{align*}
-   \vye(\vp)   &\eqd U^H\vp                      \\
-   \ve(\vp)    &\eqd \vye-\vy                    \\
-   \fCost(\vp) &\eqd \norm{\ve}^2 \eqd \ve^H\ve  \\
-   \estLS      &\eqd \argmin_\vp \fCost(\vp)    \\
+   \vye(\vtheta)   &\eqd U^H\vtheta                      \\
+   \ve(\vtheta)    &\eqd \vye-\vy                    \\
+   \fCost(\vtheta) &\eqd \norm{\ve}^2 \eqd \ve^H\ve  \\
+   \estLS      &\eqd \argmin_\vtheta \fCost(\vtheta)    \\
    R           &\eqd UU^H                        \\
    W           &\eqd U\vy.
 \end{align*}
@@ -325,8 +326,8 @@ Let
 Then
 \thmbox{\begin{array}{rcl}
    \estLS                          &=& (\Real{\setY})^{-1}(\Real{W})  \\
-   \fCost(\vp)                     &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \pE{\vy^H\vy} \\
-   \grad_\vp \fCost(\vp)           &=& 2\Real\brs{\setY}\vp - 2\Real{W}  \\
+   \fCost(\vtheta)                     &=& \vtheta^H R \vtheta - (W^H\vtheta)^\ast -W^H\vtheta + \pE{\vy^H\vy} \\
+   \grad_\vtheta \fCost(\vtheta)           &=& 2\Real\brs{\setY}\vtheta - 2\Real{W}  \\
    \fCost(\estLS)                  &=& (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \pE{\vy^H\vy} \\
    \fCost(\estLS)|_{R\mbox{ real}} &=& \pE{\vy^H\vy} - (\Real{W^H})R^{-1}(\Real{W}).
 \end{array}}
@@ -336,41 +337,41 @@ Then
 See \prefpp{app:mc} for a Matrix Calculus reference.
 
 \begin{align*}
-   \fCost(\vp)
+   \fCost(\vtheta)
      &\eqd \norm{\ve}^2
    \\&=    e^H\ve
    \\&=    \left(\vye-\vy\right)^H\left(\vye-\vy\right)
-   \\&=    \left(U^H\vp-\vy\right)^H\left(U^H\vp-\vy\right)
-   \\&=    \left(\vp^HU-\vy^H\right)\left(U^H\vp-\vy\right)
-   \\&=    \vp^HUU^H\vp - \vp^HU\vy -\vy^HU^H\vp + \vy^H\vy
-   \\&=    \vp^H R \vp - (W^H\vp)^H -W^H\vp + \vy^H\vy
-   \\&=    \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \vy^H\vy
-   \\&=    \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \vy^H\vy
-   \\&=    \vp^H R \vp - 2\Real\brs{W^H}\vp + \vy^H\vy
+   \\&=    \left(U^H\vtheta-\vy\right)^H\left(U^H\vtheta-\vy\right)
+   \\&=    \left(\vtheta^HU-\vy^H\right)\left(U^H\vtheta-\vy\right)
+   \\&=    \vtheta^HUU^H\vtheta - \vtheta^HU\vy -\vy^HU^H\vtheta + \vy^H\vy
+   \\&=    \vtheta^H R \vtheta - (W^H\vtheta)^H -W^H\vtheta + \vy^H\vy
+   \\&=    \vtheta^H R \vtheta - (W^H\vtheta)^\ast -W^H\vtheta + \vy^H\vy
+   \\&=    \vtheta^H R \vtheta - (W^H)^\ast\vtheta -W^H\vtheta + \vy^H\vy
+   \\&=    \vtheta^H R \vtheta - 2\Real\brs{W^H}\vtheta + \vy^H\vy
 \\
 \\
-   \grad_\vp \fCost(\vp)
-     &= \grad_\vp \left[ \vp^H R \vp - (W^H)^\ast\vp -W^H\vp + \vy^H\vy \right]
-   \\&= R\vp + R^T\vp - [(W^H)^\ast]^T - [W^H]^T + 0
-   \\&= R\vp + (R^H)^\ast\vp - W - W^\ast
-   \\&= R\vp + R^\ast\vp - W - W^\ast
-   \\&= (R + R^\ast)\vp - (W + W^\ast)
-   \\&= 2(\Real{\setY})\vp - 2\Real{W}
+   \grad_\vtheta \fCost(\vtheta)
+     &= \grad_\vtheta \left[ \vtheta^H R \vtheta - (W^H)^\ast\vtheta -W^H\vtheta + \vy^H\vy \right]
+   \\&= R\vtheta + R^T\vtheta - [(W^H)^\ast]^T - [W^H]^T + 0
+   \\&= R\vtheta + (R^H)^\ast\vtheta - W - W^\ast
+   \\&= R\vtheta + R^\ast\vtheta - W - W^\ast
+   \\&= (R + R^\ast)\vtheta - (W + W^\ast)
+   \\&= 2(\Real{\setY})\vtheta - 2\Real{W}
 \\
 \\
-   \vpo
+   \vthetao
      &= (\Real{\setY})^{-1}(\Real{W})
 \\
 \\
-   \fCost(\vpo)
-     &=    \vpo^H R \vpo - 2\Real\brs{W^H}\vpo + \vy^H\vy
+   \fCost(\vthetao)
+     &=    \vthetao^H R \vthetao - 2\Real\brs{W^H}\vthetao + \vy^H\vy
    \\&=    [(\Real{\setY})^{-1}(\Real{W})]^H R [(\Real{\setY})^{-1}(\Real{W})] - 2\Real\brs{W^H}[(\Real{\setY})^{-1}(\Real{W})] + \vy^H\vy
    \\&=    (\Real{W^H})(\Real{\setY})^{-H} R (\Real{\setY})^{-1}(\Real{W})     - 2\Real\brs{W^H}(\Real{\setY})^{-1}(\Real{W})       + \vy^H\vy
    \\&=    (\Real{W^H})(\Real{R^H})^{-1} R (\Real{\setY})^{-1}(\Real{W})   - 2\Real\brs{W^H}(\Real{\setY})^{-1}(\Real{W})     + \vy^H\vy
    \\&=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W})     - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W})      + \vy^H\vy
 \\
 \\
-   \fCost(\vpo)|_{R\mbox{ real}}
+   \fCost(\vthetao)|_{R\mbox{ real}}
      &=    (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W}) + \vy^H\vy
    \\&=    (\Real{W^H})R^{-1} R R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \vy^H\vy
    \\&=    (\Real{W^H}) R^{-1}(\Real{W}) - 2(\Real{W^H})R^{-1}(\Real{W}) + \vy^H\vy
@@ -480,16 +481,139 @@ for the polynomial are
 \end{align*}
 \end{example}
 
+%======================================
+%\section{Gradient search techniques}
+\section{Recursive forms}
+%=======================================
+One of the biggest advantages of using a recursive form / gradient search technique is
+that it can be implemented \hie{recursively} as shown in the next equation.
+The general form of the gradient search parameter estimation techniques is\footnote{\citerp{nelles2001}{90}}
+\thmbox{
+   \vtheta_n = \vtheta_{n-1} - \eta_{n-1} R \;\left[\gradxy{\vtheta}{\fCost(\vtheta_n)}\right]
+}
+where at time $n$
+
+\begin{tabular}{lll}
+   $\vtheta_n$      & is the \hie{state    }   & (vector)  \\
+   $\eta_n$     & is the \hie{step size}   & (scalar)  \\
+   $\setY$          & is the \hie{direction}   & (matrix)  \\
+   $\gradxy{\vtheta}{\fCost(\vtheta_n)}$      & is the \hie{gradient } of the cost function $\fCost(\vtheta_n)$   & (vector)
+\end{tabular}
+
+Two major categories of gradient search techniques are
+\begin{liste}
+   \item steepest descent (includes LMS)
+   \item Newton's method (includes RLS and Kalman filters).
+\end{liste}
+
+The key difference between the two is that
+{\bf \hie{steepest descent} uses only first derivative information},
+while
+{\bf \hie{Newton's method} uses both first and second derivative information}
+making it converge much faster but with significantly higher
+complexity.
+
+%======================================
+\subsubsection*{First derivative techniques}
+\label{sec:1st-deriv}
+%======================================
+\paragraph{Steepest descent.}
+In this algorithm, $R=I$ (identity matrix).
+First derivative information is contained in $\grad\fCost$.
+Second derivative information, if present, is contained in $\setY$.
+Thus, steepest descent algorithms do not use second derivative information.
+\thmbox{
+  \vtheta_n = \vtheta_{n-1} - \eta_{n-1} \;\left[ \gradxy{\vtheta}{\fCost(\vtheta_n)} \right]
+}
+\paragraph{Least Mean Squares (LMS).}\footnote{\citerp{mik}{526}}
+This is a special case of \hie{steepest descent}.
+In minimum mean square estimation \xref{sec:est_mms},
+the cost function $\fCost(\vtheta)$ is defined as a
+\hie{statistical average} of the error vector such that
+$\fCost(\vtheta) = \Eb{\ve^H\ve}$.
+In this case the gradient $\grad\fCost$ is difficult to compute.
+However, the LMS algorithm greatly simplifies the problem by
+instead defining the cost function as a function of the
+\hie{instantaneous error} such that
+\begin{align*}
+   \vy &= y(n)
+\\
+   \vye &= \hat{y}(n)
+\\
+   \fCost(\vtheta)
+   &= \norm{e(n)}^2
+ \\&= e^2(n)
+ \\&= (\hat{y}(n)-y(n))^2
+\end{align*}
+
+Computing the gradient of this cost function is then
+just a special case of \hie{least squares estimation} \xref{sec:ls}.
+Using LS, we let $U=\vx^T$ and hence
+\begin{align*}
+   \gradxy{\vtheta}{\fCost(\vtheta)}
+   &= 2U^TU \vtheta -2U^T\vy                   && \text{ by \prefp{thm:ls}}
+\\ &= 2\vx\vx^T \vtheta -2\vx y               && \text{ by above definitions}
+\\ &= 2\vx\hat{y} -2\vx y                    && \text{ }
+\\ &= 2\vx(\hat{y} -y)                      && \text{ }
+\\ &= 2\vx e(n)                && \text{ }
+\end{align*}
+
+The LMS algorithm uses this instantaneous gradient for $\grad\fCost$,
+lets $R=I$, and uses a constant step size $\eta$ to give
+\thmbox{
+  \vtheta_n = \vtheta_{n-1} - 2\eta \vx_n e(n)
+}
+%--------------------------------------
+\subsubsection*{Second derivative techniques}
+%--------------------------------------
+\paragraph{Newton's Method.}
+This algorithm uses the \hie{Hessian} matrix $H$,
+which is the second derivative of the cost function $\fCost(\vtheta)$,
+and lets $R=H^{-1}$.
+\begin{align*}
+   H_n &\eqd& \grad_\vtheta\grad_\vtheta \fCost(\vtheta_n)
+\\
+   \vtheta_n &= \vtheta_{n-1} - \eta_{n-1} H_n^{-1} \left[\grad_\vtheta\fCost(\vtheta_n)\right]
+\end{align*}
+
+
+\paragraph{Kalman filtering}\footnote{\citerp{nelles2001}{66}}
+\begin{align*}
+   \gamma(k) &= \frac{1}{x^T(k)P(k-1)\vx(k)+1}P(k-1)x(k) \\
+   P(k) &= (I-\gamma(k)x^T(k))P(k-1)+V \\
+   e(k) &= y(k) - x^T(k)\vthetae(k-1) \\
+   \vthetae(k) &= \vthetae(k-1) + \gamma(k)e(k)
+\end{align*}
+
+\if 0
+\paragraph{RLS with forgetting}\footnote{\citerp{nelles2001}{64}}
+This algorithm introduces a forgetting factor $\lambda$
+to help the algorithm track non-stationary channels.
+\begin{align*}
+   \gamma(k) &= \frac{1}{x^T(k)P(k-1)\vx(k)+\lambda}  P(k-1)x(k) \\
+   P(k) &= \frac{1}{\lambda}(I-\gamma(k)x^T(k))P(k-1)+V \\
+   e(k) &= y(k) - x^T(k)\vthetae(k-1) \\
+   \vthetae(k) &= \vthetae(k-1) + \gamma(k)e(k)
+\end{align*}
+\fi
+
+\paragraph{Recursive Least Squares (RLS)}\footnote{\citerp{nelles2001}{66}}
+This algorithm is a special case of either the RLS with forgetting
+or the Kalman filter.
+\begin{align*}
+   \gamma(k) &= \frac{1}{x^T(k)P(k-1)\vx(k)+1}  P(k-1)x(k) \\
+   P(k) &= (I-\gamma(k)x^T(k))P(k-1) \\
+   e(k) &= y(k) - x^T(k)\vthetae(k-1) \\
+   \vthetae(k) &= \vthetae(k-1) + \gamma(k)e(k)
+\end{align*}
 
 
 
 
-
-
-
-
-
-
-
-
+%--------------------------------------
+\section{Direct search}
+%--------------------------------------
+A direct search algorithm may be used in cases where the cost
+function over $\vtheta$ has several local minimums, making convergence difficult.
+Furthermore, direct search algorithms can be very computationally demanding.
 
