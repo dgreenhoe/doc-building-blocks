@@ -1,0 +1,1193 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Communications Systems}
+\index{communication systems}
+\label{chp:comsys}
+%======================================
+%======================================
+\section{System model}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}
+\begin{picture}(700,150)(-100,-50)
+  \thinlines
+  %\graphpaper[10](0,0)(500,100)
+  \put(-100 ,  60 ){\makebox( 100,0)[b]{$\su$} }
+  \put(-100 ,  50 ){\vector(1,0){100} }
+
+  \put(  00 ,  10 ){\makebox( 100, 80)[t]{transmit} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put(  00 ,  00 ){\framebox( 100,100){} }
+
+  \put( 100 ,  60 ){\makebox( 100,0)[b]{$s(t;\vu)$} }
+  \put( 100 ,  50 ){\vector(1,0){100} }
+
+  \put( 200 ,  10 ){\makebox( 100, 80)[t]{channel} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[b]{$\opC$} }
+  \put( 200 ,  00 ){\framebox(100,100){} }
+
+  \put( 300 ,  60 ){\makebox( 100,0)[b]{$r(t;\vu)$} }
+  \put( 300 ,  50 ){\vector(1,0){100} }
+
+  \put( 400 ,  00 ){\framebox(100,100){} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[t]{receive} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[b]{$\opR$} }
+
+  \put( 500 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 500 ,  50 ){\vector(1,0){100} }
+
+  \put(- 90 , -10 ){\makebox( 0, 0)[tl]{$\vu\eqd\su$} }
+  \put( 110 , -10 ){\makebox( 0, 0)[tl]{$s(t;\vu)=\opT\vu$} }
+  \put( 310 , -10 ){\makebox( 0, 0)[tl]{$r(t;\vu)=\opC\opT\vu$} }
+  \put( 510 , -10 ){\makebox( 0, 0)[tl]{$\sue=\opSys\vu=\opR\opC\opT\vu$} }
+
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Communication system model
+   \label{fig:sys_model}
+   }
+\end{figure}
+
+A communication system is an operator $\opSys$ over an 
+information sequence $\su$ that generates an
+estimated information sequence $\sue$.
+The system operator factors into a
+receive operator $\opR$, a channel operator $\opC$, and
+a transmit operator $\opT$ such that
+   \[ \opSys = \opR\opC\opT. \]
+The transmit operator
+operates on an information sequence $\su$ to generate
+a channel signal $\fs(t;\vu)$.
+The channel operator operates on the transmitted signal $\fs(t;\vu)$
+to generate the received signal $\fr(t;\vu)$.
+The receive operator operates on the received signal $\fr(t;\vu)$
+to generate the estimate $\sue$
+(see \prefpp{fig:sys_model}).
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:comsys}
+\index{communication system}
+%---------------------------------------
+Let $U$ be the set of all sequences $\su$ and let
+\defbox{
+\begin{array}{lllll}
+   \bullet & \opSys &:U    &\to U    & \text{ (system   operator)  } \\
+   \bullet & \opT   &:U    &\to \vRc & \text{ (transmit operator)} \\
+   \bullet & \opC   &:\vRc &\to \vRc & \text{ (channel  operator) } \\
+   \bullet & \opR   &:\vRc &\to U    & \text{ (receive  operator) }
+\end{array}
+}
+be operators.
+A {\bf digital communication system} is the operation $\opSys$
+on the set of information sequences $U$ such that
+\[ \opSys \eqd \opR\opC\opT.\]
+\end{definition}
+
+Communication systems can be continuous or discrete valued in
+time and/or amplitude:
+
+\begin{center}
+   \begin{tabular}{|c||c|c|}
+      \hline
+         $\fs(t)=a(t)\psi(t)$   &  continuous time $t$      & discrete time $t$   \\
+      \hline
+      \hline
+         continuous amplitude $a(t)$ & analog communications   & discrete-time communications  \\
+      \hline
+         discrete amplitude $a(t)$   & ---                     & digital communications \\
+      \hline
+   \end{tabular}
+\end{center}
+
+{\bf In this document, we normally take the approach that}
+\begin{enume}
+   \item $\opC$ is stochastic
+         \footnote{
+         An exception to this is
+         in Chapter~\ref{chp:isi} (ISI) \prefpo{chp:isi},
+         where $\opC$ is deterministic
+         ($\opC$ is simply a bandlimiting operation).
+         However in any real-world system, $\opC$ is always stochastic.
+         }
+   \item There is no structural constraint on $\opR$.
+   \item $\opR$ is optimum with respect to the ML-criterion.
+\end{enume}
+These characteristics are explained more fully below.
+
+%======================================
+\subsection{Channel operator}
+%======================================
+Real-world physical channels perform a number of operations on
+a signal.
+Often these operations are closely modeled by a channel
+operator $\opC$.
+Properties that characterize a particular
+channel operator associated with some physical channel include
+\begin{liste}
+   \item linear or non-linear
+   \item time-invariant or time-variant
+   \item memoryless or non-memoryless
+   \item deterministic or stochastic.
+\end{liste}
+Examples of physical channels include
+free space, air, water, soil, copper wire, and fiber optic cable.
+Information is carried through a channel using some physical process.
+These processes include:
+
+\begin{tabular}{cl|ll}
+             & Process          & Example             \\
+   \hline
+   $\bullet$ & electromagnetic waves & free space, air    & (see Appendix~\ref{app:em}, \prefpo{app:em})  \\
+   $\bullet$ & acoustic waves        & water, soil         \\
+   $\bullet$ & electric field potential (voltage)  & wire                \\
+   $\bullet$ & light            & fiber optic cable   \\
+   $\bullet$ & quantum mechanics         &
+\end{tabular}
+
+
+%======================================
+\subsection{Receive operator}
+%======================================
+Let $\opI$ be the \hie{identity operator}.\footnote{
+  $\opI$ is the {\em identity operator} if for any operator $\opX$,
+  $\opX\opI = \opI\opX = \opX.$
+  }
+Ideally, $\opR$ is selected such that
+   \[ \opR\opC\opT = \opI. \]
+In this case we say that $\opR$ is the {\em left inverse}\footnote{
+  \begin{tabular}[t]{llll}
+    $\opXi{X}$ is the & {\em left  inverse}& of $\opX$ if & $\opXi{X}\opX=\opI$. \\
+    $\opXi{X}$ is the & {\em right inverse}& of $\opX$ if & $\opX\opXi{X}=\opI$. \\
+    $\opXi{X}$ is the & {\em       inverse}& of $\opX$ if & $\opXi{X}\opX=\opX\opXi{X}=\opI$.
+  \end{tabular}
+   }
+of $\opC\opT$ and denote this left inverse by $\opCTi$.
+One example of a system where this inverse exists is the
+noiseless ISI system (Chapter~\ref{chp:isi} \prefpo{chp:isi}).
+While this is quite useful for mathematical analysis and system design,
+$\opCTi$ does not actually exist for any real-world system.
+
+When $\opCTi$ does not exist, the ``ideal" $\opR$ is one that is
+optimum
+  \begin{enume}
+    \item with respect to some {\em criterion} (or cost function)
+    \item and sometimes under some structural {\em constraint}.
+  \end{enume}
+When a structural constraint is imposed on $\opR$,
+the solution is called {\em structured}; otherwise,
+it is called {\em non-structured}.\citep{vantrees1}{12}
+A common example of a structured approach is the use of a
+transversal filter (FIR filter in DSP) in which optimal coefficients
+are found for the filter.
+A structured $\opR$ is only optimal with respect to the
+imposed constraint.
+Even though $\opR$ may be optimal with respect to this structure,
+$\opR$ may not be optimal in general;
+that is, there may be another structure that would lead to a ``better"
+solution.
+In a non-structured approach, $\opR$ is free to take any form
+whatsoever (practical or impractical) and therefore leads to the
+best of the best solutions.
+
+The nature of $\opR$ depends heavily on the nature of $\opC$.
+If $\opCTi$ does not exist,
+then the ideal $\opR$ is one that is optimal with respect to some criterion.
+If $\opC$ is deterministic,
+then appropriate optimization criterion may include
+\begin{liste}
+   \item least square error (LSE) criterion
+   \item minimum absolute error criterion
+   \item minimum peak distortion criterion.
+\end{liste}
+If $\opC$ is stochastic\footnote{
+  An example of a stochastic $\opC$ includes the additive noise channel
+  operator $\opCan$ and the AWGN channel operator $\opCawgn$
+  (Chapter~\ref{chp:awgn} \prefpo{chp:awgn})
+  }
+then appropriate optimization criterion may include\footnote{
+  {\em Estimation}: Appendix~\ref{app:est} \prefpo{app:est}
+  }
+
+\begin{tabular}{llll}
+   $\bullet$ & Bayes:                                  & pdf known and cost function defined \\
+   $\bullet$ & Maximum aposteriori probability (MAP):  & pdf known and uniform cost function \\
+   $\bullet$ & Maximum likelihood (ML):                & pdf known and no prior probability information\\
+   $\bullet$ & mini-max:                               & pdf not known but a cost function is defined \\
+   $\bullet$ & Neyman-Pearson:                         & pdf not known and no cost function defined.
+\end{tabular}
+
+Making $\opR$ optimum with respect to one of these criterion leads to
+an {\em estimate} $\sue = \opR\opC\opT\vu$ that is also optimum
+with respect to the same criterion.\footnote{
+   {\em Optimal estimates}:
+   \prefpp{def:ML} \prefpo{def:ML}
+   }
+\[
+\begin{array}{llcl}
+   \text{Bayesian:}                               & \estB   &\eqd& \ds \arg\min_{\theta} C(\theta,\pdfp(s,r)) \\
+   \text{Mean square (MS):}                       & \estMS  &\eqd& \ds \arg\min_{\theta} \pE\norm{C(\theta,\pdfp(s,r))}^2 \\
+   \text{mini-max (MM):}                          & \estMM  &\eqd& \ds \arg\min_{\theta}\max_{\pdfp} C(\theta,\pdfp(s,r)) \\
+   \text{maximum a-posteriori probability (MAP):} & \estMAP &\eqd& \ds \arg\max_{\theta} \pP{s(t;\theta)|\fr(t)} \\
+   \text{maximum likelihood (ML):}                & \estML  &\eqd& \ds \arg\max_{\theta} \pP{\fr(t)|s(t;\theta)} \\
+\end{array}
+\]
+
+%======================================
+\section{Optimization in the case of additional operations}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(900,150)(-100,-50)
+  \thinlines
+  %\graphpaper[10](0,0)(500,100)
+  \put(-100 ,  60 ){\makebox( 100,0)[b]{$\su$} }
+  \put(-100 ,  50 ){\vector(1,0){100} }
+
+  \put(  00 ,  10 ){\makebox( 100, 80)[t]{transmit} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put(  00 ,  00 ){\framebox( 100,100){} }
+
+  \put( 100 ,  60 ){\makebox( 100,0)[b]{$s(t;\vu)$} }
+  \put( 100 ,  50 ){\vector(1,0){100} }
+
+  \put( 200 ,  10 ){\makebox( 100, 80)[t]{channel} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[b]{$\opC$} }
+  \put( 200 ,  00 ){\framebox(100,100){} }
+
+  \put( 300 ,  60 ){\makebox( 100,0)[b]{$r(t;\vu)$} }
+  \put( 300 ,  50 ){\vector(1,0){100} }
+
+  \put( 400 ,  00 ){\framebox(100,100){} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[t]{} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[b]{$\opX$} }
+
+ %\put( 500 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 500 ,  50 ){\vector(1,0){100} }
+
+  \put( 600 ,  00 ){\framebox(100,100){} }
+  \put( 600 ,  10 ){\makebox( 100, 80)[t]{receive} }
+  \put( 600 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 600 ,  10 ){\makebox( 100, 80)[b]{$\opR$} }
+
+  \put( 700 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 700 ,  50 ){\vector(1,0){100} }
+
+  \put(- 90 , -10 ){\makebox( 0, 0)[tl]{$\vu\eqd\su$} }
+  \put( 110 , -10 ){\makebox( 0, 0)[tl]{$s(t;\vu)=\opT\vu$} }
+  \put( 310 , -10 ){\makebox( 0, 0)[tl]{$r(t;\vu)=\opC\opT\vu$} }
+  \put( 510 , -10 ){\makebox( 0, 0)[tl]{$\opX\opC\opT\vu$} }
+  \put( 710 , -10 ){\makebox( 0, 0)[tl]{$\sue=\opR\opX\opC\opT\vu$} }
+
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Theorem of reversibility
+   \label{fig:thm_rev}
+   }
+\end{figure}
+
+Often in communication systems, an additional  operator $\opX$ is
+inserted such that (see \prefpp{fig:thm_rev})
+   \[ \opSys = \opR\opX\opC\opT.\]
+An example of such an operator $\opX$ is a receive filter.
+Is it still possible to find an $\opR$ that will perform as well as
+the case where $\opX$ is not inserted?
+In general, the answer is ``no".
+For example, if $\opX r=0$, then all received information is lost
+and obviously there is no $\opR$ that can recover from this event.
+However, in the case where the right inverse $\opXi{X}$ of $\opX$ exists,
+then the answer to the question is ``yes" and an optimum  $\opR$
+still exists.
+That is, it doesn't matter if an $\opX$ is inserted into system
+as long as $\opX$ is invertible.
+This is stated formally in the next theorem.
+%--------------------------------------
+\begin{theorem}[\hib{Theorem of Reversibility}] 
+\citepp{vantrees1}{289}{290}
+\label{thm:reversibility}
+%--------------------------------------
+Let
+\begin{liste}
+   \item $\est = \opR\opC\opT\vu$ be the optimum estimate of $\vu$
+   \item $\opX$ be an operator with right inverse $\opXi{X}$.
+\end{liste}
+Then there exists some $\opR'$ such that
+   \formbox{ \est = \opR'\opX\opC\opT\vu. }
+\end{theorem}
+\begin{proof}
+  Let $\opR'=\opR\opXi{X}$.
+  Then
+  \[ \opR'\opX\opC\opT\vu = \opR\opXi{X}\opC\opT\vu = \opR\opC\opT\vu = \est. \]
+\end{proof}
+
+
+%======================================
+\section{Alternative system partitioning}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.18mm}
+\begin{picture}(600,400)(-300,-100)
+  \thinlines
+  %\graphpaper[10](0,0)(700,100)
+
+  \put(-300, 210 ){\makebox (  50, 50)[b]{$\su$}        }
+  \put(-300, 200 ){\vector  (   1,  0)   {100}          }
+  \put(-200, 150 ){\framebox( 100,100)   {coding}       }
+  \put(-150, 150 ){\vector  (   0, -1)   {100}          }
+  \put(-200,- 50 ){\framebox( 100,100)   {modulator}    }
+  \put(-100,   0 ){\vector  (   1,  0)   { 50}          }
+  \put(- 50,- 50 ){\framebox( 100,100)   {channel}      }
+  \put(  50,   0 ){\vector  (   1,  0)   { 50}          }
+  \put( 100,- 50 ){\framebox( 100,100)   {demodulator}  }
+  \put( 150,  50 ){\vector  (   0,  1)   {100}          }
+  \put( 100, 150 ){\framebox( 100,100)   {decoding}     }
+  \put( 250, 210 ){\makebox (  50, 50)[b]{$\sue$}        }
+  \put( 200, 200 ){\vector  (   1,  0)   {100}          }
+
+  \put(-250, 110 ){\dashbox ( 500,180)[tr]{outer transceiver}}
+  \put(-250,- 90 ){\dashbox ( 500,180)[br]{inner transceiver}}
+\end{picture}
+\end{fsK}
+\end{center}
+\caption{
+   Inner/outer transceiver
+   \label{fig:inner_outer}
+   }
+\end{figure}
+
+A communication system can be partitioned into two parts
+(see \prefpp{fig:inner_outer}):
+\citep{meyr}{2}
+
+\begin{tabular}{lll}
+   1.& outer transceiver: & data encoding/decoding \\
+   2.& inner transceiver: & modulation/demodulation.
+\end{tabular}
+
+The outer transceiver can perform several types of coding
+on the data sequence to be transmitted:
+
+\begin{tabular}{llp{10cm}}
+   1.& source coding: &
+       compress data sequence size
+       (lower limit is Shannon Entropy $H$)
+\\
+   2.& channel coding: &
+       modify data sequence such that errors induced by the channel can be
+       detected and corrected
+       (all errors can be theoretically corrected if the data
+        rate is at or below the Shannon channel capacity $C$).
+\\
+   3.& modulation coding: &
+       make sequence ``more suitable" for transmission through channel
+\\
+   4.& encryption: &
+       increase the difficulty which an eavesdropper would need
+       to be able to know the data sequence.
+\end{tabular}
+
+
+
+
+%======================================
+\section{Narrowband Signals}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{picture}(700,200)
+  %\graphpaper[10](0,0)(600,200)
+  \thicklines
+  \put(   0 , 100 ){\line(1,0){600} }
+  \put( 300 ,   0 ){\line(0,1){200} }
+  \put(   0 ,   0 ){\makebox( 200, 90)[t]{$-f_c$} }
+  \put( 400 ,   0 ){\makebox( 200, 90)[t]{$+f_c$} }
+  \put( 610 ,   0 ){\makebox( 100,200)[l]{$f$} }
+  \put( 310 , 100 ){\makebox( 100,100)[tl]{$|\Fx(f)|$} }
+  \thinlines
+  \put( 100 ,  90 ){\line( 0,1){20} }
+  \put( 500 ,  90 ){\line( 0,1){20} }
+  \put( 470 , 100 ){\line( 1,2){30} }
+  \put( 530 , 100 ){\line(-1,2){30} }
+  \put(  70 , 100 ){\line( 1,2){30} }
+  \put( 130 , 100 ){\line(-1,2){30} }
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+   Narrowband signal
+   \label{fig:narrowband}
+   }
+\end{figure}
+
+Communication systems are often assumed to be {\em narrowband} meaning
+the bandwidth of the information carrying signal is ``small" compared
+to the carrier frequency
+(see \prefpp{fig:narrowband}).
+
+%---------------------------------------
+\begin{definition}
+\label{def:narrowband}
+\index{narrowband}
+%---------------------------------------
+Let $\fx:\R\to\R$ be an information carrying waveform,
+$\Fx(f)=[\opFT\fx](f)$ and $\f_c\in\R$.
+Then $\fx(t)$ is a {\bf narrowband signal} if
+\begin{enume}
+   \item The energy of $\Fx(f)$ is located in the vicinity of frequency $\pm f_c$
+   \item the bandwidth of $\Fx(f)$ is ``small" compared to $f_c$.
+\end{enume}
+If $\fx(t)$ is the transmitted signal in a communication system
+$\opSys=\opR\opC\opT$ such that $\fx(t) = \opT\vu$, then
+$\opSys$ is a {\bf narrowband system}.
+\end{definition}
+
+%=======================================
+\subsection{Time representation}
+\index{narrowband!time representation}
+%=======================================
+\begin{minipage}{\tw/3}%
+  \color{figcolor}
+  \begin{center}
+  \begin{fsL}
+  \setlength{\unitlength}{0.20mm}
+  \begin{picture}(250,240)(-100,-100)
+    %\graphpaper[10](-100,-100)(200,200)
+    \thinlines
+    \put(-100,   0){\line(1,0){200} }
+    \put(   0,-100){\line(0,1){200} }
+    \put( 105,   0){\makebox(0,0)[l]{$\Re$}}
+    \put(   0, 105){\makebox(0,0)[b]{$\Im$}}
+    \put(   0,   0){\vector(1,1){80} }
+    \qbezier[16](80, 0)(80,40)(80,80)
+    \qbezier[16]( 0,80)(40,80)(80,80)
+  
+    \put( 80,-5){\line(0,1){10} }
+    \put(-5, 80){\line(1,0){10} }
+    \put( 80,-10){\makebox(0,0)[t ]{$\fp(t)$}}
+    \put(-10, 80){\makebox(0,0)[r ]{$\fq(t)$}}
+    \put( 40, 40){\makebox(0,0)[br]{$\fa(t)$}}
+    \put( 30,  5){\makebox(0,0)[bl]{$\theta(t)$} }
+    \put( 85,85){\makebox(0,0)[bl]{$\fx_l(t) = \fp(t) + i\fq(t)$} }
+  \end{picture}
+  \end{fsL}
+  \end{center}
+  %\caption{
+  %   Time representation components for narrowband signal
+  %   \label{fig:PQ}
+  %   }
+  %\end{figure}
+\end{minipage}%
+\begin{minipage}{2\tw/3}%
+  Narrowband signals have three common time representations
+  (next definition).
+  These three forms are equivalent under some simple relations
+  (next proposition).
+\end{minipage}%
+
+%---------------------------------------
+\begin{definition}
+\label{def:canforms}
+\index{quadrature} \index{complex envelope} \index{amplitude and phase}
+\index{Rice's representation}
+\index{amplitude}
+\index{phase}
+\index{quadrature component}
+\index{inphase component}
+\index{complex envelope}
+%---------------------------------------
+Let the following quantities be defined as
+\defbox{
+\begin{array}{l@{\hspace{1cm}}l @{\hspace{2cm}} l@{\hspace{1cm}}l }
+  \fa:     \R\to\R & \text{amplitude}            &
+  \theta:  \R\to\R & \text{phase}                \\
+  \fp:     \R\to\R & \text{quadrature component} &
+  \fq:     \R\to\R & \text{inphase component}    \\
+  \fx_l:   \R\to\C & \text{complex envelope}.
+\end{array}
+}
+A narrowband signal $\fx:\R\to\R$ can be represented
+by any of the following three {\bf canonical forms}:
+\defbox{
+\begin{array}{lll}
+   1. & \text{amplitude and phase:    } & \fx(t) = \fa(t)\cos\left[ 2\pi f_c t + \theta(t) \right]    \\
+   2. & \text{quadrature:\footnotemark} & \fx(t) = \fp(t)\cos(2\pi f_c t) - \fq(t)\sin(2\pi f_c t)    \\
+   3. & \text{complex envelope:       } & \fx(t) = \Reb{\fx_l(t)e^{i2\pi f_c t}}.
+\end{array}
+}
+   \footnotetext{
+   $\fx(t) = \fp(t)\cos(2\pi f_c t) - \fq(t)\sin(2\pi f_c t) $
+   is also known as {\em Rice's representation}. \\
+   Reference: \cite[page 23]{srv}
+   }
+\end{definition}
+
+
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+Under the relations
+\[ \fx_l(t) = \fp(t) + i\fq(t) = \fa(t)e^{i\theta(t)}, \]
+the three forms given in \prefpp{def:canforms} are equivalent and
+%(see \prefpp{fig:PQ})
+\propbox{
+  \begin{array}{lll@{\hspace{1cm}}lll}
+    \fa(t)      &=& \sqrt{\fp^2(t) + \fq^2(t)} &
+    \theta(t)   &=& \arctan\frac{\fq(t)}{\fp(t)} \\
+    \fp(t)      &=& \fa(t)\cos\theta  &
+    \fq(t)      &=& \fa(t)\sin\theta \\
+    \fp(t)      &=& \Reb{\fs_l(t)} &
+    \fq(t)      &=& \Imb{\fs_l(t)}
+  \end{array}
+  }
+\end{proposition}
+
+\begin{proof}
+
+\begin{align*}
+  \intertext{Proof that $(1) \iff (2)$: }
+   \fx(t)
+     &= \fa(t)\cos\left[ 2\pi f_c t + \theta(t) \right]
+   \\&= \fa(t)\cos[\theta(t)]\cos[2\pi f_c t] -\fa(t)\sin[\theta(t)]\sin[2\pi f_c t]
+   \\&= \fp(t)\cos[2\pi f_c t] -\fq(t)\sin[2\pi f_c t]
+  \\
+  \intertext{Proof that $(2) \iff (3)$: }
+  \fx(t)
+    &= \fp(t)\cos[2\pi f_c t] -\fq(t)\sin[2\pi f_c t]
+  \\&= \Re\left( [\fp(t)+i\fq(t)][\cos(2\pi f_c t) + i\sin(2\pi f_c t)]\right)
+  \\&= \Reb{s_l(t)e^{i2\pi f_c t}}.
+\end{align*}
+
+Component relations:
+\[\begin{array}{*{12}{l}}
+   \fp
+     &=& \Reb{\fp + i\fq}
+     &=& \Reb{\fx_l}
+\\
+   \fq
+     &=& \Imb{\fp + i\fq}
+     &=& \Imb{\fx_l}
+\\ \\
+   \fp
+     &=& \Reb{\fp + i\fq}
+     &=& \Reb{\fa e^{i\theta}}
+     &=& \Reb{\fa\cos\theta + i\fa\sin\theta}
+     &=& \fa\cos\theta
+\\
+   \fq
+     &=& \Imb{\fp + i\fq}
+     &=& \Imb{\fa e^{i\theta}}
+     &=& \Imb{\fa\cos\theta + i\fa\sin\theta}
+     &=& \fa\sin\theta
+\end{array}\]
+\[\begin{array}{*{12}{l}}
+   \fa^2
+     &=& \fa^2 (\cos^2\theta + \sin^2\theta)
+     &=& (\fa \cos\theta)^2 + (\fa\sin\theta)^2
+     &=& \fp^2 + \fq^2
+\\
+   \tan\theta
+     &=& \frac{\sin\theta}{\cos\theta}
+     &=& \frac{\fa\sin\theta}{\fa\cos\theta}
+     &=& \frac{\fq}{\fp}
+\end{array}\]
+
+\end{proof}
+
+
+%======================================
+\subsection{Frequency Representation}
+\index{narrowband!frequency representation}
+%======================================
+Any real-valued time signal $\fx:\R\to\R$
+is always {\em hermitian symmetric} in frequency
+such that (see \prefpp{fig:freq_rep})
+$\Fx(f) =  \Fx^\ast(-f)$.
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{tabular}{cc}
+\begin{picture}(700,200)
+  %\graphpaper[10](0,0)(600,200)
+  \thinlines
+  \put(   0 , 100 ){\line(1,0){600} }
+  \put( 300 ,  20 ){\line(0,1){180} }
+  \put(   0 ,  00 ){\makebox( 200, 90)[t]{$-f_c$} }
+  \put( 400 ,  00 ){\makebox( 200, 90)[t]{$+f_c$} }
+  \put( 610 ,   0 ){\makebox( 100,200)[l]{$f$} }
+  \put( 310 , 100 ){\makebox( 100,100)[tl]{$\Reb{\Fx(f)}$} }
+  \thinlines
+  \put( 100 ,  90 ){\line( 0,1){20} }
+  \put( 500 ,  90 ){\line( 0,1){20} }
+  \put( 470 , 100 ){\line( 1,2){30} }
+  \put( 530 , 100 ){\line(-1,2){30} }
+  \put(  70 , 100 ){\line( 1,2){30} }
+  \put( 130 , 100 ){\line(-1,2){30} }
+\end{picture}
+&
+\begin{picture}(700,200)
+  \thinlines
+  \put(   0 , 100 ){\line(1,0){600} }
+  \put( 300 ,  20 ){\line(0,1){180} }
+  \put(   0 ,  00 ){\makebox( 200, 90)[t]{$-f_c$} }
+  \put( 400 ,  00 ){\makebox( 200, 90)[t]{$+f_c$} }
+  \put( 610 ,  00 ){\makebox( 100,200)[l]{$f$} }
+  \put( 310 , 100 ){\makebox( 100,100)[tl]{$\Imb{\Fx(f)}$} }
+  \thinlines
+  \put( 100 ,  90 ){\line( 0, 1){20} }
+  \put( 500 ,  90 ){\line( 0, 1){20} }
+  \put( 470 , 100 ){\line( 1, 2){30} }
+  \put( 530 , 100 ){\line(-1, 2){30} }
+  \put(  70 , 100 ){\line( 1,-2){30} }
+  \put( 130 , 100 ){\line(-1,-2){30} }
+\end{picture}
+\\
+\begin{picture}(700,200)
+  \thinlines
+  \put(   0 , 100 ){\line(1,0){600} }
+  \put( 300 ,  20 ){\line(0,1){180} }
+  \put(   0 ,  00 ){\makebox( 200, 90)[t]{$-f_c$} }
+  \put( 400 ,  00 ){\makebox( 200, 90)[t]{$+f_c$} }
+  \put( 610 ,  00 ){\makebox( 100,200)[l]{$f$} }
+  \put( 310 , 100 ){\makebox( 100,100)[tl]{$|\Fx(f)|$} }
+  \thinlines
+  \put( 100 ,  90 ){\line( 0,1){20} }
+  \put( 500 ,  90 ){\line( 0,1){20} }
+  \put( 470 , 100 ){\line( 1,2){30} }
+  \put( 530 , 100 ){\line(-1,2){30} }
+  \put(  70 , 100 ){\line( 1,2){30} }
+  \put( 130 , 100 ){\line(-1,2){30} }
+\end{picture}
+&
+\begin{picture}(700,200)
+  \thinlines
+  \put(   0 , 100 ){\line(1,0){600} }
+  \put( 300 ,  20 ){\line(0,1){180} }
+  \put(   0 ,   0 ){\makebox( 200, 90)[t]{$-f_c$} }
+  \put( 400 ,   0 ){\makebox( 200, 90)[t]{$+f_c$} }
+  \put( 610 ,   0 ){\makebox( 100,200)[l]{$f$} }
+  \put( 310 , 100 ){\makebox( 100,100)[tl]{$\angle\Fx(f)$} }
+  \thinlines
+  \put( 100 ,  90 ){\line( 0, 1){20} }
+  \put( 500 ,  90 ){\line( 0, 1){20} }
+  \put( 470 , 100 ){\line( 0,-1){60} }
+  \put( 470 ,  40 ){\line( 1, 2){60} }
+  \put( 530 , 100 ){\line( 0, 1){60} }
+  \put(  70 , 100 ){\line( 0,-1){60} }
+  \put(  70 ,  40 ){\line( 1, 2){60} }
+  \put( 130 , 100 ){\line( 0, 1){60} }
+\end{picture}
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+   Frequency characteristics of any real-valued signal $\fx(t)$
+   \label{fig:freq_rep}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+\label{sthm:FTreal}
+%---------------------------------------
+For any real valued function $\fx:\R\to\R$ with Fourier transform
+$\Fx:\R\to\C$
+\footnote{{\em Fourier transform of real-valued function}:
+  see also \prefpp{thm:FTreal} \prefpo{thm:FTreal}
+  }
+\thmbox{
+  \begin{array}{rcll}
+  \Fx(f)       &=& \Fx^\ast(-f)    & \text{ (hermitian symmetric )} \\
+  \Reb{\Fx(f)} &=& \Reb{\Fx(-f)}   & \text{ (symmetric           )} \\
+  \Imb{\Fx(f)} &=& -\Imb{\Fx(-f)}  & \text{ (anti-symmetric      )} \\
+  |\Fx(f)|     &=& |\Fx(-f)|       & \text{ (symmetric           )} \\
+  \angle\Fx(f) &=& -\angle\Fx(-f)  & \text{ (anti-symmetric      )}.
+  \end{array}
+  }
+\end{theorem}
+\begin{proof}
+\[\begin{array}{*{10}{l}}
+   \Fx(f)
+     &\eqd& [\opFT{\fx(t)}](f)
+     &\eqd& \inprod{\fx(t)}{e^{i2\pi ft}}
+     &=&     \inprod{\fx(t)}{e^{i2\pi(-f)t}}^\ast
+     &\eqd& \Fx^\ast(-f)
+\\
+   \Reb{\Fx(f)}
+     &=& \Reb{\Fx^\ast(-f)}
+     &=& \Reb{\Fx(-f)}
+\\
+   \Imb{\Fx(f)}
+     &=& \Imb{\Fx^\ast(-f)}
+     &=& -\Imb{\Fx(-f)}
+\\
+   |\Fx(f)|
+     &=& |\Fx^\ast(-f)|
+     &=& |\Fx(-f)|
+\\
+   \angle\Fx(f)
+     &=& \angle\Fx^\ast(-f)
+     &=& -\angle\Fx(-f)
+\end{array}\]
+\end{proof}
+
+
+%=======================================
+\subsection{Lowpass representation}
+\index{narrowband!lowpass representation}
+%=======================================
+The complex envelope $\fx_l:\R\to\C$ of a narrowband signal
+$\fx:\R\to\R$ is sometimes called the {\bf lowpass representation}
+of $\fx(t)$.
+Because all the information carried by $\fx(t)$
+is contained within a small band of $\Fx(f)$,
+the lowpass representation $\fx_l(t)$ along with the parameter $f_c$
+is a sufficient representation of $\fx(t)$
+and thus the high frequency factor $e^{i2\pi f_c t}$ may be ignored.
+
+The sufficiency of the low-pass representation $\fx_l(t)$
+is demonstrated in that
+\begin{enume}
+   \item $\fx_l(t)$ together with $f_c$ is sufficient to represent
+         $\fx(t)$ in time (by \prefpp{def:canforms})
+   \item $\Fx_l(f)$ together with $f_c$ is sufficient to represent
+         $\Fx(f)$ in frequency (\prefpp{thm:xxl})
+   \item $\fx_l(t)$ is sufficient to calculate the energy in $\fx(t)$
+         (\prefpp{thm:xxl})
+   \item $\fx_l(t)$ and the impulse response $\fh(t)$ of an LTI operation
+         is sufficient to calculate the output of the LTI operation
+         on $\fx(t)$ (\prefpp{thm:cmplxEnvLTI}).
+\end{enume}
+%---------------------------------------
+\begin{theorem}
+\label{thm:xxl}
+%---------------------------------------
+Let $\fx:\R\to\R$ be a narrowband signal at center frequency $f_c\in\R$
+and $\fx_l:\R\to\C$ the complex envelope of $\fx(t)$ such that
+  $\fx(t) = \Reb{\fx_l(t) e^{-i2\pi f_c t}}$.
+Then
+\thmbox{
+\begin{array}{rcl}
+   \Fx(f)
+     &=& \frac{1}{2}\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c)\\
+\\
+  \flE{\fx(t)}
+     &\eqa&  \frac{1}{2}\flE{\fx_l(t)} \\
+\\
+   |\Fx(f)|^2
+     &=& \frac{1}{4} |\Fx_l( f-f_c)|^2 +
+         \frac{1}{4} |\Fx_l(-f-f_c)|^2
+         \\
+\\
+   \angle\Fx(f)
+     &=& \left\{\begin{array}{rl}
+         \angle\Fx_l(f-f_c) &:f\eqa +f_c \\
+         -\angle\Fx_l(f+f_c) &:f\eqa -f_c
+         \end{array}\right.
+\end{array}
+}
+\end{theorem}
+\begin{proof} \\
+
+\begin{eqnarray*}
+   \flE{\fx(t)}
+        &\eqd& \norm{\fx(t)}^2
+      \\&=&    \norm{\Reb{ \fx_l(t)e^{j2\pi f_ct}}}^2
+      \\&=&    \norm{\frac{1}{2}\fx_l(t)e^{j2\pi f_ct} + \frac{1}{2}\fx_l^\ast(t)e^{-j2\pi f_ct} }^2
+      \\&=&    \norm{ \frac{1}{2}\fx_l(t)e^{j2\pi f_ct} }^2
+          +    \norm{ \frac{1}{2}\fx_l^\ast(t)e^{-j2\pi f_ct} }^2
+          +    2\Reb{\inprod{\frac{1}{2}\fx_l(t)e^{j2\pi f_ct}}{\frac{1}{2}\fx_l^\ast(t)e^{-j2\pi f_ct}}}
+      \\&=&    \frac{1}{4}\norm{ \fx_l(t) }^2
+          +    \frac{1}{4}\norm{ \fx_l(t) }^2
+          +    \frac{1}{2}\Reb{\inprod{\fx_l(t)e^{j2\pi f_ct}}{\fx_l^\ast(t)e^{-j2\pi f_ct}}}
+      \\&\eqa& \frac{1}{2}\norm{ \fx_l(t) }^2
+      \\&\eqd& \frac{1}{2}\flE{\fx_l(t)}
+\\ \\
+   \Fx(f)
+        &\eqd& [\opFT{\fx(t)}](f)
+      \\&\eqd& \inprod{\fx(t)}{e^{j2\pi ft}}
+      \\&=   & \inprod{\Reb{ \fx_l(t)e^{j2\pi f_ct}}}
+                            {e^{j2\pi ft}}
+      \\&=   & \inprod{\frac{1}{2}\left[ \fx_l(t)e^{j2\pi f_ct} + \fx_l^\ast(t)e^{-j2\pi f_ct}   \right]}
+                            {e^{j2\pi ft}}
+      \\&=   & \frac{1}{2} \inprod{\fx_l(t)     e^{ j2\pi f_ct}}{ e^{j2\pi ft}}
+             + \frac{1}{2} \inprod{\fx_l^\ast(t)e^{-j2\pi f_ct}}{ e^{j2\pi ft}}
+      \\&=&    \frac{1}{2} \int_t  \fx_l(t)e^{-j2\pi(f-f_c)t}  \; dt
+          +    \frac{1}{2} \left[ \int_t  \fx_l(t) e^{-j2\pi(- f-f_c)t} \; dt \right]^\ast
+      \\&=&    \frac{1}{2} \inprod{\fx_l(t)}{e^{j2\pi(f-f_c)t}}
+          +    \frac{1}{2} \inprod{\fx_l(t)}{e^{j2\pi(- f-f_c)t}}^\ast
+      \\&\eqd& \frac{1}{2}\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c)
+\\ \\
+   \Reb{\Fx(f)}
+     &=& \Reb{\frac{1}{2}\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c)}
+   \\&=& \frac{1}{2}\Reb{\Fx_l(f-f_c)} + \frac{1}{2}\Reb{\Fx_l^\ast(-f-f_c)}
+   \\&=& \frac{1}{2}\Reb{\Fx_l(f-f_c)} + \frac{1}{2}\Reb{\Fx_l(-f-f_c)}
+\\ \\
+   \Imb{\Fx(f)}
+     &=& \Imb{\frac{1}{2}\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c)}
+   \\&=& \frac{1}{2}\Imb{\Fx_l(f-f_c)} + \frac{1}{2}\Imb{\Fx_l^\ast(-f-f_c)}
+   \\&=& \frac{1}{2}\Imb{\Fx_l(f-f_c)} - \frac{1}{2}\Imb{\Fx_l(-f-f_c)}
+\\ \\
+   |\Fx(f)|^2
+     &=& \left| \frac{1}{2}\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c) \right|^2
+   \\&=& \frac{1}{4}
+         \left[\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c) \right]
+         \left[\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c) \right]^\ast
+   \\&=& \frac{1}{4} \left[
+         \Fx_l     ( f-f_c) \Fx_l^\ast( f-f_c) +
+         \Fx_l     ( f-f_c) \Fx_l     (-f-f_c) +
+         \Fx_l^\ast(-f-f_c) \Fx_l^\ast( f-f_c) +
+         \Fx_l^\ast(-f-f_c) \Fx_l     (-f-f_c)
+         \right]
+   \\&=& \frac{1}{4} \left[
+         |\Fx_l( f-f_c)|^2 +
+         2\Reb{\Fx_l     ( f-f_c) \Fx_l     (-f-f_c)} +
+         |\Fx_l^\ast(-f-f_c)|^2
+         \right]
+   \\&=& \frac{1}{4} \left[
+         |\Fx_l( f-f_c)|^2 + |\Fx_l(-f-f_c)|^2 + 0
+         \right]
+\\ \\
+   \angle\Fx(f)
+     &=& \angle\left[ \frac{1}{2}\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c) \right]
+   \\&=& \angle\left[ \Fx_l(f-f_c) + \Fx_l^\ast(-f-f_c) \right]
+   \\&=& \atan\frac{\Imb{\Fx_l(f-f_c) + \Fx_l^\ast(-f-f_c) }}
+                   {\Reb{\Fx_l(f-f_c) + \Fx_l^\ast(-f-f_c) }}
+   \\&=& \atan\frac{\Imb{\Fx_l(f-f_c)} + \Imb{\Fx_l^\ast(-f-f_c) }}
+                   {\Reb{\Fx_l(f-f_c)} + \Reb{\Fx_l^\ast(-f-f_c) }}
+   \\&=& \atan\frac{\Imb{\Fx_l(f-f_c)} - \Imb{\Fx_l(-f-f_c) }}
+                   {\Reb{\Fx_l(f-f_c)} + \Reb{\Fx_l(-f-f_c) }}
+   \\&=& \left\{\begin{array}{rl}
+          \angle\Fx_l(f-f_c) &:f\eqa +f_c \\
+         -\angle\Fx_l(f+f_c) &:f\eqa -f_c
+         \end{array}\right.
+\end{eqnarray*}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}{\bf Lowpass LTI theorem.}
+\label{thm:cmplxEnvLTI}
+\index{lowpass LTI theorem}
+%---------------------------------------
+\begin{enume}
+  \item Let $\fx:\R\to\R$ be a narrowband signal
+        at center frequency $f_c\in\R$,
+        with complex envelope $\fx_l:\R\to\C$,
+        and Fourier transform $\Fx:\R\to\C$.
+  \item Let $\fh:\R\to\R$ be the narrowband impulse response
+        of an LTI operation such that $\fh(t)$ is located
+        at center frequency $f_c\in\R$,
+        has complex envelope $\fh_l:\R\to\C$,
+        and Fourier transform $\Fh:\R\to\C$.
+  \item Let $\fy:\R\to\R$ be the response of
+        the LTI operation on $\fx(t)$.
+        Let the complex envelope of $\fy(t)$ be $\fy_l:\R\to\C$
+        and the Fourier transform $\Fy:\R\to\C$.
+\end{enume}
+Then
+\formbox{
+\begin{array}{rcl}
+  \fy_l(t) &=& \frac{1}{2} \fh_l(t) \conv \fx_l(t) \\
+  \Fy_l(f) &=& \frac{1}{2} \Fh_l(f)       \Fx_l(f).
+\end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \Reb{ \fy_l(t)e^{i2\pi f_ct}}
+     &=& \fy(t)
+   \\&=& \fh(t) \conv \fx(t)
+   \\&=& \int_u \fh(u)\fx(t-u)\du
+   \\&=& \int_u \Reb{ \fh_l(u)e^{i2\pi \ff_cu}}
+                \Reb{ \fx_l(t-u)e^{i2\pi \ff_c(t-u)}} \du
+   \\&=& \frac{1}{4}
+         \int_u \left[\fh_l(t)  e^{i2\pi f_ct    } + \fh_l^\ast(t  )e^{-i2\pi f_c t }\right]
+                \left[\fx_l(t-u)e^{i2\pi f_c(t-u)} + \fx_l^\ast(t-u)e^{-i2\pi f_c(t-u)}\right] \du
+   \\&=& \frac{1}{4}\int_u \fh_l(u)     e^{ i2\pi \ff_cu} \fx_l(t-u)     e^{ i2\pi f_c(t-u)} \du
+       + \frac{1}{4}\int_u \fh_l(u)     e^{ i2\pi \ff_cu} \fx_l^\ast(t-u)e^{-i2\pi f_c(t-u)} \du +
+   \\&&  \frac{1}{4}\int_u \fh_l^\ast(u)e^{-i2\pi \ff_cu} \fx_l(t-u)     e^{ i2\pi f_c(t-u)} \du
+       + \frac{1}{4}\int_u \fh_l^\ast(u)e^{-i2\pi \ff_cu} \fx_l^\ast(t-u)e^{-i2\pi f_c(t-u)} \du
+%
+   \\&=& \frac{1}{4}e^{ i2\pi f_ct} \int_u \fh_l(u)\fx_l(t-u)                         \du
+       + \frac{1}{4}e^{-i2\pi f_ct} \int_u \fh_l(u) e^{ i4\pi \ff_cu} \fx_l^\ast(t-u) \du +
+   \\&&  \frac{1}{4}e^{ i2\pi f_ct} \int_u \fh_l^\ast(u)e^{-i4\pi \ff_cu} \fx_l(t-u)  \du
+       + \frac{1}{4}e^{-i2\pi f_ct} \int_u \fh_l^\ast(u) \fx_l^\ast(t-u)              \du
+%
+   \\&=& \frac{1}{4}      e^{ i2\pi f_ct} \int_u \fh_l(u)\fx_l(t-u)                         \du
+        +\frac{1}{4}\left(e^{ i2\pi f_ct} \int_u \fh_l(u)\fx_l(t-u)                         \du \right)^\ast +
+   \\&&  \frac{1}{4}      e^{ i2\pi f_ct} \int_u \fh_l^\ast(u) e^{-i4\pi \ff_cu} \fx_l(t-u) \du
+       + \frac{1}{4}\left(e^{ i2\pi f_ct} \int_u \fh_l^\ast(u) e^{-i4\pi \ff_cu} \fx_l(t-u) \du \right)^\ast
+%
+   \\&=& \frac{1}{2}\Reb{ e^{ i2\pi f_ct} \int_u \fh_l(u)\fx_l(t-u)                         \du }
+        +\frac{1}{2}\Reb{ e^{ i2\pi f_ct} \int_u \fh_l^\ast(u) e^{-i4\pi \ff_cu} \fx_l(t-u) \du }
+   \\&=& \frac{1}{2}\Reb{ e^{ i2\pi f_ct} [\fh_l\conv\fx_l](t) }
+        +\frac{1}{2}\Reb{ e^{ i2\pi f_ct} \int_u \fh_l^\ast(u) \fx_l(t-u) e^{-i4\pi \ff_cu} \du }
+   \\&\eqa& \frac{1}{2}\Reb{ e^{ i2\pi f_ct} [\fh_l\conv\fx_l](t) }
+        + 0 ?
+\end{eqnarray*}
+\attention
+Note that convolving $\fx_l(t)$ with $\fh(t)$ directly does
+not work (we still need the factor $e^{i2\pi \ff_c(t)}$).
+\begin{eqnarray*}
+   \Reb{ \fy_l(t)e^{i2\pi f_ct}}
+     &=& \fy(t)
+   \\&=& \fh(t) \conv \fx(t)
+   \\&=& \int_u \fh(u)\fx(t-u)\du
+   \\&=& \int_u \fh(u)
+                \Reb{ \fx_l(t-u)e^{i2\pi \ff_c(t-u)}} \du
+   \\&=& \Reb{ \int_u \fh(u)
+                \fx_l(t-u)e^{i2\pi \ff_c(t-u)} \du }
+   \\&=& \Reb{ \fh(t)\conv\left[\fx_l(t)e^{i2\pi \ff_c(t)}\right]}
+\end{eqnarray*}
+\end{proof}
+
+
+
+%======================================
+\subsection{Narrowband noise processes}
+%======================================
+A narrowband noise process $\fn(t)$ can be represented in any of the
+three canonical forms presented in \prefpp{def:canforms}
+(\prefpo{def:canforms}):
+\begin{align*}
+   \fn(t)
+     &= \fa(t)\cos[2\pi f_ct + \theta(t)]              
+     && \text{(amplitude and phase)}
+   \\&= \fp(t)\cos(2\pi f_ct) - \fq(t) \sin(2\pi f_c t)  
+     && \text{(quadrature)}
+   \\&= \Re\left(\fn_l(t)e^{j2\pi f_ct}\right)                 
+     && \text{(complex envelope).}
+\end{align*}
+
+
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{tabular}{cccc}
+\begin{picture}(230,200)(-100,-100)
+  %\graphpaper[10](0,0)(200,200)
+  \thicklines
+  \put(-100 ,   0){\line    (   1,   0){200} }
+  \put(   0 ,-100){\line    (   0,   1){200} }
+  \put( 110 ,   0){\makebox (   0,   0)[l]{$\tau$} }
+  \put(  40 ,  40){\makebox (   0,   0)[bl]{$\Rpp(\tau)$} }
+  \thinlines
+  \qbezier(  0, 80)( 40, 20)( 80,  0)
+  \qbezier(  0, 80)(-40, 20)(-80,  0)
+\end{picture}
+&
+\begin{picture}(230,200)(-100,-100)
+  %\graphpaper[10](0,0)(200,200)
+  \thicklines
+  \put(-100 ,   0){\line    (   1,   0){200} }
+  \put(   0 ,-100){\line    (   0,   1){200} }
+  \put( 110 ,   0){\makebox (   0,   0)[l]{$\tau$} }
+  \put(  10 , -20){\makebox (   0,   0)[tl]{$\Rpq(\tau)$} }
+  \thinlines
+  \put(- 40 ,- 80){\line    (   1,   2){ 80} }
+  \qbezier( 40, 80)( 50, 30)( 80,  0)
+  \qbezier(-80,  0)(-50,-30)(-40,-80)
+\end{picture}
+&
+\begin{picture}(230,200)(-100,-100)
+  %\graphpaper[10](0,0)(200,200)
+  \thicklines
+  \put(-100 ,   0){\line    (   1,   0){200} }
+  \put(   0 ,-100){\line    (   0,   1){200} }
+  \put( 110 ,   0){\makebox (   0,   0)[l]{$\tau$} }
+  \put(  10 ,  50){\makebox (   0,   0)[l]{$\Rqp(\tau)$} }
+  \thinlines
+  \put(- 40 ,  80){\line    (   1,  -2){ 80} }
+  \qbezier( 40,-80)( 50,-30)( 80,  0)
+  \qbezier(-80,  0)(-50, 30)(-40, 80)
+\end{picture}
+&
+\begin{picture}(230,200)(-100,-100)
+  %\graphpaper[10](0,0)(200,200)
+  \thicklines
+  \put(-100 ,   0){\line    (   1,   0){200} }
+  \put(   0 ,-100){\line    (   0,   1){200} }
+  \put( 110 ,   0){\makebox (   0,   0)[l]{$\tau$} }
+  \put(  40 ,  40){\makebox (   0,   0)[bl]{$\Rqq(\tau)$} }
+  \thinlines
+  \qbezier(  0, 80)( 40, 20)( 80,  0)
+  \qbezier(  0, 80)(-40, 20)(-80,  0)
+\end{picture}
+\\
+%\mc{4}{c}{
+%  \setlength{\unitlength}{0.2mm}
+%  \begin{picture}(250,240)(-100,-100)
+%    %\graphpaper[10](-100,-100)(200,200)
+%    \thinlines
+%    \put(-100,   0){\line(1,0){200} }
+%    \put(   0,-100){\line(0,1){200} }
+%    \put( 105,   0){\makebox(0,0)[l]{$\cos2\pi f_ct$}}
+%    \put(   0, 105){\makebox(0,0)[b]{$\sin2\pi f_ct$}}
+%    \put(   0,   0){\vector(1,1){80} }
+%    \qbezier[16](80, 0)(80,40)(80,80)
+%    \qbezier[16]( 0,80)(40,80)(80,80)
+%    \put( 80,-5){\line(0,1){10} }
+%    \put(-5, 80){\line(1,0){10} }
+%    \put( 80,-10){\makebox(0,0)[t ]{$\Rpp(\tau)$}}
+%    \put(-10, 80){\makebox(0,0)[r ]{$\Rpq(\tau)$}}
+%    \put( 40, 40){\makebox(0,0)[br]{$\Rxx[nn](\tau)$}}
+%    %\put( 30,  5){\makebox(0,0)[bl]{$\theta(t)$} }
+%    \put( 85,85){\makebox(0,0)[lb]{$\Rzz(\tau)=2\Rpp(\tau)-2i\Rpq(\tau)$}}
+%  \end{picture}
+%  }
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+   Correlations of inphase component $\fp(t)$ and quadrature component $\fq(t)$
+   \label{fig:Rpq}
+   }
+\end{figure}
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+Let $\fn:\R\to\R$ be a narrowband noise process with
+quadrature components $\fp:\R\to\R$ and $\fq:\R\to\R$ and
+complex envelope $\fz:\R\to\C$
+such that
+\begin{eqnarray*}
+  n(t) &=& \fp(t)\cos(2\pi f_ct) - \fq(t) \sin(2\pi f_c t) \\
+       &=& \Reb{\fz(t)e^{i2\pi f_ct}} \\
+  \Rxy(\tau) &\eqd& \Eb{\fx(t+\tau)\fy^\ast(t)}.
+\end{eqnarray*}
+Then (see \prefpp{fig:Rpq})
+\thmbox{
+\begin{array}{llD}
+   1. & \Eb{p(t)} = \Eb{q(t)} = 0                                        & (component means are zero                 ) \\
+   2. & \Rpp(\tau)=\Rqq(\tau)                                            & (autocorrelations are equal               ) \\
+   3. & \Rpq(\tau)=-\Rqp(\tau)                                           & (crosscorrelations are additive inverses  ) \\
+   4. & \Rpp(\tau)=\Rpp(-\tau)                                           & (autocorrelations are symmetric           ) \\
+   5. & \Rpq(\tau)=-\Rpq(-\tau), \Rqp(\tau)=-\Rqp(-\tau)                 & (crosscorrelations are anti-symmetric     ) \\
+   6. & \Rpq(0)=0                                                        & (components are uncorrelated for $\tau=0$ ) \\
+   7. & \Rxx[nn](\tau) = \Rpp(\tau)\cos(2\pi f_c\tau) + \Rpq(\tau)\sin(2\pi f_c\tau) & (noise autocorrelation                    ) \\
+   8. & \Rzz(\tau) = 2\Rpp(\tau) - 2i\Rpq(\tau)                          & (complex envelope autocorrelation         ).
+\end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   0 &=& \Eb{n(t)}
+   \\&=& \Eb{p(t)\cos(2\pi f_ct) - q(t)\sin(2\pi f_c t)}
+   \\&=& \Eb{p(t)\cos(2\pi f_ct)} - \Eb{q(t)\sin(2\pi f_c t)}
+   \\&=& \Eb{p(t)}\cos(2\pi f_ct) - \Eb{q(t)}\sin(2\pi f_c t)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \Rxx[nn](\tau)
+     &=& \Eb{n(t+\tau)n(t)}
+   \\&=& \Eb{
+         \left( p(t+\tau)\cos(2\pi f_ct + 2\pi f_c\tau) - q(t) \sin(2\pi f_ct + 2\pi f_c\tau)  \right)
+         \left( p(t     )\cos(2\pi f_ct               ) - q(t) \sin(2\pi f_ct               )  \right)
+         }
+   \\&=& \Eb{ p(t+\tau)p(t) \cos(2\pi f_ct + 2\pi f_c\tau) \cos(2\pi f_ct) }
+        -\Eb{ p(t+\tau)q(t) \cos(2\pi f_ct + 2\pi f_c\tau) \sin(2\pi f_ct) }
+   \\&& -\Eb{ q(t+\tau)p(t) \sin(2\pi f_ct + 2\pi f_c\tau) \cos(2\pi f_ct) }
+        +\Eb{ q(t+\tau)q(t) \sin(2\pi f_ct + 2\pi f_c\tau) \sin(2\pi f_ct) }
+%
+   \\&=& \Rpp(\tau) \Eb{ \cos(2\pi f_ct + 2\pi f_c\tau) \cos(2\pi f_ct) }
+        -\Rpq(\tau) \Eb{ \cos(2\pi f_ct + 2\pi f_c\tau) \sin(2\pi f_ct) }
+   \\&& -\Rqp(\tau) \Eb{ \sin(2\pi f_ct + 2\pi f_c\tau) \cos(2\pi f_ct) }
+        +\Rqq(\tau) \Eb{ \sin(2\pi f_ct + 2\pi f_c\tau) \sin(2\pi f_ct) }
+%
+   \\&=& \frac{1}{2} \Rpp(\tau) \left[ \cos(2\pi f_c\tau) + \cos(4\pi f_ct + 2\pi f_c\tau) \right]
+        -\frac{1}{2} \Rpq(\tau) \left[-\sin(2\pi f_c\tau) + \sin(4\pi f_ct + 2\pi f_c\tau) \right]
+   \\&& -\frac{1}{2} \Rqp(\tau) \left[ \sin(2\pi f_c\tau) + \sin(4\pi f_ct + 2\pi f_c\tau) \right]
+        +\frac{1}{2} \Rqq(\tau) \left[ \cos(2\pi f_c\tau) - \cos(4\pi f_ct + 2\pi f_c\tau) \right]
+%
+   \\&=& \frac{1}{2}\left[ \Rpp(\tau) + \Rqq(\tau)\right] \cos(2\pi f_c\tau)
+        +\frac{1}{2}\left[ \Rpq(\tau) - \Rqp(\tau)\right] \sin(2\pi f_c\tau)
+   \\&& +\frac{1}{2}\left[ \Rpp(\tau) - \Rqq(\tau)\right] \cos(4\pi f_ct + 2\pi f_c\tau)
+        -\frac{1}{2}\left[ \Rpq(\tau) + \Rqp(\tau)\right] \sin(4\pi f_ct + 2\pi f_c\tau)
+\end{eqnarray*}
+
+Because $\Rxx[nn](\tau)$ is not a function of $t$,
+the last two terms must be zero for all $t$,
+which implies
+\begin{eqnarray*}
+   \Rpp(\tau) &=& \Rqq(\tau)   \\
+   \Rpq(\tau) &=& -\Rqp(\tau).
+\end{eqnarray*}
+
+From these we have
+\begin{eqnarray*}
+\Rxx[nn](\tau)
+     &=& \frac{1}{2}\left[ \Rpp(\tau) + \Rqq(\tau)\right] \cos(2\pi f_c\tau)
+        +\frac{1}{2}\left[ \Rpq(\tau) - \Rqp(\tau)\right] \sin(2\pi f_c\tau)
+   \\&& +\frac{1}{2}\left[ \Rpp(\tau) - \Rqq(\tau)\right] \cos(4\pi f_ct + 2\pi f_c\tau)
+        -\frac{1}{2}\left[ \Rpq(\tau) + \Rqp(\tau)\right] \sin(4\pi f_ct + 2\pi f_c\tau)
+%
+   \\&=& \Rpp(\tau)\cos(2\pi f_c\tau) +\Rpq(\tau)\sin(2\pi f_c\tau)
+\end{eqnarray*}
+
+\begin{align*}
+   \Rpq(\tau)
+     &=      -\Rqp(\tau)
+   \\&\eqd -\Eb{q(t+\tau) p(t)}
+   \\&=       \Eb{p(t) q(t+\tau)}
+   \\&\eqd -\Rpq(-\tau)
+\end{align*}
+
+This implies
+$\Rpq(\tau)$ is odd-symmetric. \\
+\begin{eqnarray*}
+     &&          \Rpq(\tau)= -\Rpq(-\tau)
+   \\&\implies&  \Rpq(0)= -\Rpq(0)
+   \\&\implies&  \Rpq(0)=0.
+\end{eqnarray*}
+
+
+\begin{eqnarray*}
+   \Rzz(\tau)
+     &\eqd& \Eb{z(t+\tau)z^\ast(t)}
+   \\&=&      \Eb{\left( x(t+\tau) + iy(t+\tau)\right)\left( x(t) + iy(t)\right)^\ast}
+   \\&=&      \Eb{\left( x(t+\tau) + iy(t+\tau)\right)\left( x^\ast(t) - iy^\ast(t)\right)}
+%
+   \\&=&      \Eb{ x(t+\tau)x^\ast(t) }
+       -     i\Eb{ x(t+\tau)y^\ast(t) }
+       +     i\Eb{ y(t+\tau)x^\ast(t) }
+       +      \Eb{ y(t+\tau)y^\ast(t) }
+%
+   \\&\eqd& \Rpp(\tau) - i\Rpq(\tau) + i\Rqp(\tau) + \Rqq(\tau)
+   \\&=&      \Rpp(\tau) - i\Rpq(\tau) - i\Rpq(\tau) + \Rqq(\tau)
+   \\&=&      2\Rpp(\tau) - 2i\Rpq(\tau)
+\end{eqnarray*}
+\end{proof}
+
+
+
+

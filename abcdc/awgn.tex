@@ -1,0 +1,2557 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Additive Noise Channel}
+\label{chp:awgn}
+\index{channel!additive noise}
+%======================================
+%======================================
+\section{System model}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}                  
+\begin{picture}(700,150)(-100,-50) 
+  \thinlines                                      
+  %\graphpaper[10](0,0)(500,100)                  
+  \put(-100 ,  60 ){\makebox( 100,0)[b]{$u$} }
+  \put(-100 ,  50 ){\vector(1,0){100} }
+
+  \put(  00 ,  10 ){\makebox( 100, 80)[t]{transmit} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put(  00 ,  00 ){\framebox( 100,100){} }
+
+  \put( 100 ,  60 ){\makebox( 100,0)[b]{$s(t;u)$} }
+  \put( 100 ,  50 ){\vector(1,0){140} }
+
+
+  \put( 200 ,  00 ){\makebox(100, 95)[t]{$\fn(t)$} }
+  \put( 260,   50 ){\line  (1,0){ 45} }
+  \put( 250 ,  80 ){\vector(0,-1){20} }
+  \put( 250,   50) {\circle{20}                   }
+  \put( 200 ,  00 ){\dashbox(100,100){$+$} }
+  \put( 200 ,  10 ){\makebox(100, 90)[b]{channel $\opC$} }
+
+  %\put( 200 ,  10 ){\makebox( 100, 80)[t]{channel} }
+  %\put( 200 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  %\put( 200 ,  10 ){\makebox( 100, 80)[b]{\opC} }
+  %\put( 200 ,  00 ){\framebox(100,100){} }
+
+  \put( 300 ,  60 ){\makebox( 100,0)[b]{$r(t;u)$} }
+  \put( 300 ,  50 ){\vector(1,0){100} }
+
+  \put( 400 ,  00 ){\framebox(100,100){} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[t]{receive} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[b]{$\opR$} }
+
+  \put( 500 ,  60 ){\makebox( 100,0)[b]{$\estML[u]$} }
+  \put( 500 ,  50 ){\vector(1,0){100} }
+
+  %\put(- 90 , -10 ){\makebox( 0, 0)[tl]{$\vu\eqd\su$} }
+  \put( 110 , -10 ){\makebox( 0, 0)[tl]{$s(t;u)=\opT u$} }
+  \put( 310 , -10 ){\makebox( 0, 0)[tl]{$r(t;u)=\opC\opT u$} }
+  \put( 510 , -10 ){\makebox( 0, 0)[tl]{$\estML[u]=\opR\opC\opT u$} }
+
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Additive noise system model
+   \label{fig:addNoise_model}
+   }
+\end{figure}
+
+
+
+%\paragraph{System disturbances.}
+\index{noise}
+\index{intersymbol interference (ISI)}
+There are two fundamental disturbances in any communication system 
+which increase the probability of communication error:
+\begin{dingautolist}{"AC}
+   \item noise
+   \item intersymbol interference (ISI)
+\end{dingautolist}
+ISI is produced as a result of band-limited communication channels.
+Unlike ISI, it is not possible to completely eliminate noise
+from the system.
+Noise is produced by a number of sources;
+one of them being \hie{thermal noise} and therefore can 
+never be eliminated in any system which operates 
+above $-273^\circ$ C (absolute zero).
+
+In this chapter, 
+the channel operator $\opC$ is assumed to have infinite bandwidth
+(not bandlimited) and therefore there is no ISI in the system.
+This chapter treats the problem of channel noise alone.
+
+A channel operator $\opC$ which contributes noise to the system
+(a random operator) is often described using three characteristics:\\
+\begin{tabular}{lll}
+  \circOne   & its relationship to the signal: & usually additive \\
+  \circTwo   & its autocorrelation:            & whether it is {\em white} or {\em colored} \\
+  \circThree & its distribution:               & e.g. Gaussian, Rayleigh, Rician, etc.
+\end{tabular}
+
+In this chapter, the channel operator always introduces noise
+that is {\em additive} such that  
+%$\fr(t) \eqd [\opC \fs](t) = \fs(t) + \fn(t)$,
+as illustrated in \prefpp{fig:addNoise_model}.
+Most of this chapter also assumes the constaints of the added
+noise being uncorrelated with itself (white) and having a Gaussian distribution.
+
+%---------------------------------------
+\begin{definition}
+\label{def:opCan}
+\index{additive noise}
+%---------------------------------------
+Let $\fn(t)$ be a zero-mean random process such that
+   \[ [\opC \fs](t) = \fs(t) + \fn(t). \]
+\defboxp{\begin{enume}
+   \item If $\fn(t)$ is a random process,                then $\opC=\opCan  $ is the {\bf additive noise operator}.                
+   \item If $\fn(t)$ is a Gaussian random process,       then $\opC=\opCagn $ is the {\bf additive gaussian noise operator}.
+   \item If $\fn(t)$ is a white random process,          then $\opC=\opCawn $ is the {\bf additive white noise operator}.
+   \item If $\fn(t)$ is a white Gaussian random process, then $\opC=\opCawgn$ is the {\bf additive white gaussian noise operator}.
+\end{enume}}
+\end{definition}
+
+
+\prefpp{def:opCan} defines four channel operators.
+Of the four, the {\em additive noise} operator $\opCan$ is the 
+most general (least restrictive) and 
+the {\em additive white Gaussian noise} operator is the most restrictive.
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+  \hline
+  operator   & additive & white   & gaussian  \\
+\hline
+\hline
+  $\opCan  $ & $\surd$ &         &          \\
+  \cline{2-4}                    
+  $\opCagn $ & $\surd$ &         & $\surd$  \\
+  \cline{2-4}                    
+  $\opCawn $ & $\surd$ & $\surd$ &          \\
+  \cline{2-4}                    
+  $\opCawgn$ & $\surd$ & $\surd$ & $\surd$  \\
+  \hline
+\end{tabular}
+\end{center}
+
+
+%======================================
+\section{Channel Statistics}
+%======================================
+The receiver needs to make a decision as to what 
+sequence $\seqn{u}$ the transmitter has sent.
+This decision should be optimal in some sense.
+Very often the optimization criterion is chosen to be
+the {\em maximal likelihood (ML)} criterion.
+The information that the receiver can use to make an optimal 
+decision is the received signal $\fr(t)$.
+
+If the symbols in $\fr(t)$ are statistically {\em independent},
+then the optimal estimate of the current symbol depends only on the 
+current symbol period of $\fr(t)$. 
+Using other symbol periods of $\fr(t)$ has absolutely no 
+additional benefit. 
+Note that the AWGN channel is {\em memoryless};
+that is, the way the channel treats the current symbol has
+nothing to do with the way it has treated any other symbol.
+Therefore, if the symbols sent by the transmitter into the channel
+are independent, the symbols coming out of the channel are also 
+independent.
+
+However, also note that the symbols sent by the transmitter
+are often very intentionally not independent;
+but rather a strong relationship between symbols is intentionally 
+introduced. This relationship is called {\em channel coding}.
+With proper channel coding, it is theoretically possible 
+to reduce the probability of communication error to any 
+arbitrarily small value as long as the channel is operating below its
+{\em channel capacity}.
+
+This chapter assumes that the received symbols are 
+statistically independent;
+and therefore optimal decisions at the receiver 
+for the current symbol are made 
+only from the current symbol period of $\fr(t)$.
+
+The received signal $\fr(t)$ over a single symbol period
+contains an uncountably infinite number of points.
+That is a lot. 
+It would be nice if the receiver did not have to look 
+at all those uncountably infinite number of points
+when making an optimal decision.
+And in fact the receiver does indeed not have to.
+As it turns out, a single finite set of {\em statistics}
+$\setn{\fdotr_1,\;\fdotr_2,\ldots,\fdotr_N}$
+is sufficient for the receiver to make an optimal decision as to 
+which value the transmitter sent.
+
+%---------------------------------------
+\begin{definition}
+\label{def:chan_stats}
+\index{channel statistics}
+%---------------------------------------
+Let $\opC$ be an additive noise channel 
+%such that $\fr(t)=[\opC\fs](t)=\fs(t)+\fn(t)$
+%and $\set{\fpsi_n}{n=1,2,\ldots,N}$ be a basis for $\fs(t)$.
+%\defbox{\begin{array}{lll}
+%  \fdotr_n    &\eqd& \inprod{\fr(t)}  {\psi_n(t)}  \\ 
+  %\fdots_n(u) &\eqd& \inprod{\fs(t;u)}{\psi_n(t)} \\
+%  \fdotn_n    &\eqd& \inprod{\fn(t)}  {\psi_n(t)} 
+%\end{array}}
+\end{definition}
+
+
+
+\prefpp{thm:sstat} (next) shows that the finite set
+$\set{\fdotr_n}{n=1,2,\ldots,N}$ provides just as
+much information as having the entire $\fr(t)$ waveform
+(an uncountably infinite number of values) 
+with respect to the following cases:
+\begin{enume}
+   \item the conditional probability of $\fs(t;u)$ given $\fr(t)$
+   \item the MAP estimate of the information sequence
+   \item the ML estimate of the information sequence.
+\end{enume}
+That is, even with a drastic reduction in the amount of information
+from uncountably infinite to finite $N$,
+no information is lost with respect to the quantities listed above.
+
+This amazing result is very useful in practical system implementation
+and also for proving other theoretical results
+(notably estimation and detection theorems which come later 
+in this chapter).
+
+
+%---------------------------------------
+\begin{theorem}[Sufficient statistic theorem]
+\label{thm:sstat}
+\index{sufficient statistic theorem}
+\index{optimal receiver}
+\index{MAP} \index{maximum a-posteriori probability estimation}
+\index{ML}  \index{maximum likelihood estimation}
+%---------------------------------------
+Let $\opSys$ be an additive White Gaussian noise system and 
+$\Psi$ an orthonormal basis for $\fs(t;u)$ such that
+\begin{eqnarray*}
+   \fr(t)      &=   & [\opCawgn s](t) = \fs(t;u) + \fn(t)      \\
+   \Psi      &=& \set{\psi_n}{n=1,2,\ldots, N} 
+\end{eqnarray*}
+\thmbox{\begin{array}{lrc>{\ds}l}
+   1. & P\set{ \fs(t;u)}{\fr(t)} &=&    P\set{\fs(t;u)}{\fdotr_1,\;\fdotr_2,\ldots,\fdotr_N}            \\
+   2. & \estMAP[u]               &\eqd& \arg\max_u P\set{\fs(t;u)}{\fr(t)} \\
+      &                          &=&    \arg\max_u P\set{\fs(t;u)}{\fdotr_1,\;\fdotr_2,\ldots,\fdotr_N} \\
+   3. & \estML[u]                &\eqd& \arg\max_u P\set{\fr(t)}{\fs(t;u)} \\
+      &                          &=&    \arg\max_u P\set{\fdotr_1,\;\fdotr_2,\ldots,\fdotr_N}{\fs(t;u)}
+\end{array}}
+\end{theorem}
+\begin{proof}
+Let
+\begin{align*}
+  \fn'(t) &\eqd \fn(t) - \sum_{n=1}^N \fdotn_n \psi_n(t) \\
+  R       &\eqd \set{\fdotr_n}{n=1,2,\ldots,N}
+\end{align*}
+
+\begin{enumerate}
+\item The relationship between $R$ and $\fn'(t)$ is given by
+\begin{align*}
+   \fr(t)
+     &= \sum_{n=1}^N \inprod{\fr(t)}{\psi_n(t)}\psi_n(t) + 
+        \left[\fr(t)- \sum_{n=1}^N \inprod{\fr(t)}{\psi_n(t)}\psi_n(t) \right]
+   \\&= \sum_{n=1}^N \inprod{\fr(t)}{\psi_n(t)}\psi_n(t) + 
+        \left[\fr(t)- \sum_{n=1}^N \inprod{\fs(t)+\fn(t)}{\psi_n(t)}\psi_n(t) \right]
+   \\&= \sum_{n=1}^N \fdotr_n\psi_n(t) + 
+        \left[\fs(t)+\fn(t) - \sum_{n=1}^N \inprod{\fs(t)}{\psi_n(t)}\psi_n(t)
+                        - \sum_{n=1}^N \inprod{\fn(t)}{\psi_n(t)}\psi_n(t) \right]
+   \\&= \sum_{n=1}^N \fdotr_n\psi_n(t) + 
+        \fs(t)+\fn(t) - \fs(t) - \left[ \fn(t) - \fn'(t)\right]
+   \\&= \sum_{n=1}^N \fdotr_n\psi_n(t) + \fn'(t).
+\end{align*}
+
+\item The set of statistics $R$ and the random process $\fn'(t)$ are 
+uncorrelated:
+\begin{align*}
+   \pEb{\fdotr_n \fn'(t)}
+     &= \pEb{\inprod{\fr(t)}{\psi_n(t)}\left( \fn(t)-\sum_{n=1}^N \inprod{\fn(t)}{\psi_n(t)}\psi_n(t)\right)}
+   \\&= \pEb{\inprod{\fs(t)+\fn(t)}{\psi_n(t)}\left( \fn(t)-\sum_{n=1}^N \inprod{\fn(t)}{\psi_n(t)}\psi_n(t)\right)}
+   \\&= \pEb{\Bigg(\inprod{\fs(t)}{\psi_n(t)}+\inprod{\fn(t)}{\psi_n(t)}\Bigg)
+            \left( \fn(t)-\sum_{n=1}^N \inprod{\fn(t)}{\psi_n(t)}\psi_n(t)\right)}
+   \\&= \pEb{\Bigg(\fdots_n+\fdotn_n\Bigg)
+            \left( \fn(t)-\sum_{n=1}^N \fdotn_n\psi_n(t)\right)}
+   \\&= \pEb{\fdots_n \fn(t) - \fdots_n \sum_{n=1}^N \fdotn_n\psi_n(t) 
+            +\fdotn_n \fn(t) - \fdotn_n \sum_{n=1}^N \fdotn_n\psi_n(t) }
+   \\&= \pEb{\fdots_n \fn(t)} - 
+        \pEb{\fdots_n \sum_{n=1}^N \fdotn_n\psi_n(t)} + 
+        \pEb{\inprod{\fn(t)}{\psi_n(t)} \fn(t)} -  
+        \pEb{\sum_{m=1}^N \fdotn_n \fdotn_m\psi_m(t)}
+   \\&= \fdots_n \cancelto{0}{\pE{\fn(t)}} - 
+        \fdots_n \sum_{n=1}^N \cancelto{0}{\pEb{\fdotn_n}}\psi_n(t) + 
+        \pEb{\inprod{\fn(t)\fn(u)}{\psi_n(u)} } -  
+        \sum_{m=1}^N \pEb{\fdotn_n \fdotn_m}\psi_m(t)
+   \\&= 0 - 0 +
+        \inprod{\pEb{\fn(t)n(u)}}{\psi_n(u)} -  
+        \sum_{m=1}^N N_o\kdelta_{mn} \psi_m(t)
+     && \text{(because $\dot{\fn}_n$ is white)}
+   \\&= \inprod{N_o\delta(t-u)}{\psi_n(u)} - N_o\psi_n(t)
+   \\&= N_o\psi_n(t) - N_o\psi_n(t)
+   \\&= 0
+\end{align*}
+
+\item This implies $\fdotr_n$ and $\fn'(t)$ are uncorrelated.
+Since they are Gaussian processes (due to channel operator hypothesis), 
+they are also independent.
+
+\item Proof that $P\set{\fs(t;u)}{\fr(t)}=P\set{\fs(t;u)}{\fdotr_1,\;\fdotr_2,\ldots,\fdotr_N}$:
+\begin{align*}
+   P\set{\fs(t;u)}{\fr(t)}
+     &= P\set{\fs(t;u)}{\sum_{n=1}^N\fdotr_n \psi_n(t) + \fn'(t)}
+   \\&= P\set{\fs(t;u)}{R, \fn'(t)}
+     && \text{because $R$ and $\fn'(t)$ can be extracted by $\inprod{\cdots}{\fpsi_n(t)}$}
+   \\&= \frac{P\set{R, \fn'(t)}{\fs(t;u)}  P\setn{\fs(t;u)} }
+             {P\setn{R,\fn'(t)}}
+   \\&= \frac{\pP{ R|\fs(t;u)}\pP{ \fn'(t)|\fs(t;u)}\pP{\fs(t;u)}}
+             {\pP{R}\pP{\fn'(t)}}
+     && \text{by independence of $R$ and $\fn'(t)$}
+   \\&= \frac{\pP{ R|\fs(t;u)}\pP{ \fn'(t)}\pP{\fs(t;u)}}
+             {\pP{R}\pP{\fn'(t)}}
+   \\&= \frac{\pP{ R|\fs(t;u)} \pP{\fs(t;u)}}
+             {\pP{R}}
+   \\&= \frac{\pP{ R,\fs(t;u)}} 
+             {\pP{R}}
+   \\&= P\set{\fs(t;u)}{R}
+\end{align*}
+
+\item Proof that $R$ is a sufficient statistic for the MAP estimate:
+\begin{align*}
+   \estMAP[u]
+     &\eqd \arg\max_u \pP{\fs(t;u)|\fr(t)}
+     &&    \text{by definition of MAP estimate}
+   \\&=    \arg\max_u \pP{\fs(t;u)|R}
+     &&    \text{by result 4.}
+\end{align*}
+
+\item Proof that $R$ is a sufficient statistic for the ML estimate:
+\begin{align*}
+   \estML[u]
+     &\eqd \arg\max_u \pP{\fr(t)|\fs(t;u)}
+     &&    \text{by definition of ML estimate}
+   \\&=    \arg\max_u \pP{\sum_{n=1}^N\fdotr_n\psi_n(t)+\fn'(t)|\fs(t;u)}
+   \\&=    \arg\max_u \pP{R,\fn'(t)|\fs(t;u)}
+     &&    \text{because $R$ and $\fn'(t)$ can be extracted by  $\inprod{\cdots}{\fpsi_n(t)}$}
+   \\&=    \arg\max_u \pP{R|\fs(t;u)}\pP{\fn'(t)|\fs(t;u)}
+     &&    \text{by independence of $R$ and $\fn'(t)$}
+   \\&=    \arg\max_u \pP{R|\fs(t;u)}\pP{\fn'(t)}
+     &&    \text{by independence of $\fs(t)$ and $\fn'(t)$}
+   \\&=    \arg\max_u \pP{R|\fs(t;u)}
+     &&    \text{by independence of $\fn'(t)$ and $u$}
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+
+Depending on the nature of the channel (additive, white, and/or Gaussian)
+we can know certain characteristics of the noise and received statistics.
+These are described in the next four theorems.
+%======================================
+%\subsection{Additive noise channel}
+%\label{sec:opCan}
+%======================================
+
+
+%---------------------------------------
+\begin{theorem}%[Additive noise projection statistics]
+\label{thm:an_stats}
+\index{projection statistics!Additive noise channel}
+%---------------------------------------
+Let $\opC=\opCan$ be an additive noise channel.
+\thmbox{
+\mcom{\opC=\opCan}{additive noise channel} 
+\implies
+\left\{
+\begin{array}{lrcl}
+   \pE(\fdotr_n|\theta)       &=& \fdots_n(\theta) + \pE \fdotn_n  
+\end{array}
+\right.
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   (\fdotr_n |\theta)
+     &\eqd {\inprod{\fr(t)}{\psi_n(t)}}  |\theta
+   \\&=    {\inprod{\fs(t;\theta)+\fn(t)}{\psi_n(t)}} 
+   \\&=    {\inprod{\fs(t;\theta)}{\psi_n(t)}} +   {\inprod{\fn(t)}{\psi_n(t)}} 
+   \\&=    \inprod{\sum_{k=1}^N \fdots_k(\theta) \psi_k(t)}{\psi_n(t)} + \fdotn_n 
+   \\&=    \sum_{k=1}^N \fdots_k(\theta) \inprod{\psi_k(t)}{\psi_n(t)} + \fdotn_n 
+   \\&=    \fdots_n(\theta)  + \fdotn_n
+\\ \\
+   \pE({\fdotr_n} | \theta)
+     &= \pEb{\fdots_n(\theta)  + \fdotn_n}
+   \\&= \pE{\fdots_n(\theta) } +   \pE{\fdotn_n}
+   \\&= \fdots_n(\theta)  
+\end{align*}
+\end{proof}
+
+
+%======================================
+%\subsection{Additive gaussian noise channel}
+%\label{sec:opCagn}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,160)(-200,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put(-200,   0 ){\line(1,0){400} }
+  \put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](100,0)(100, 60)(100,120)
+  \qbezier[30](-100,0)(-100, 60)(-100,120)
+
+  \qbezier(- 60,  60)(-100, 180)(-140,  60)
+  \qbezier(-  0,   0)(- 40,   0)(- 60,  60)
+  \qbezier(-140,  60)(-160,   0)(-200,   0)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -20 ){\makebox(0,0)[t]{$0$} }
+  \put(  30, 100 ){\makebox(0,0)[bl]{$\fdotn_n$} }
+  \put(-100, -20 ){\makebox(0,0)[t]{$\fdots_n(\theta_1)$} }
+  \put(-130, 100 ){\makebox(0,0)[br]{$(\fdotr_n|\theta_1)$} }
+  \put( 100, -20 ){\makebox(0,0)[t]{$\fdots_n(\theta_2)$} }
+  \put( 130, 100 ){\makebox(0,0)[bl]{$(\fdotr_n|\theta_2)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+  Additive Gaussian noise channel Statistics 
+   %\label{fig:awgn_stats}
+   }
+\end{figure}
+
+
+
+%---------------------------------------
+\begin{theorem}%[Additive Gaussian noise projection statistics]
+\label{thm:agn_stats}
+\index{projection statistics!Additive Gaussian noise channel}
+%---------------------------------------
+Let $\opC=\opCagn$ be an additive gaussian noise channel
+with distribution $\fn(t)\sim\pN{0}{\sigma^2}$ for all $t$.
+%(see \prefpp{fig:agn_stats})
+\thmbox{
+\mcom{\opC=\opCagn}{additive Gaussian channel} 
+\implies
+\left\{
+\begin{array}{rclD}
+   \pE\fdotn_n           &=   & 0                               & \\%\text{\scriptsize(noise projection is zero-mean                )} \\
+   \pE(\fdotr_n|\theta)  &=   & \fdots_n(\theta)                & \\%\text{\scriptsize(expected receiver projection = transmitted projection )} \\
+   \fdotn_n              &\sim& \pN{0}{\sigma^2}                & (noise projections are Gaussian        ) \\
+   \fdotr_n|\theta       &\sim& \pN{\fdots_n(\theta)}{\sigma^2} & (receiver projections are Gaussian     ) \\
+\end{array}
+\right.
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \pE\fdotn_{n}
+     &= \pE\inprod{\fn(t)}{\psi_n(t)}
+   \\&= \inprod{\pE\fn(t)}{\psi_n(t)}
+   \\&= \inprod{0}{\psi_n(t)}
+   \\&= 0
+\\ 
+\\
+   (\fdotr_n |\theta)
+     &\eqd {\inprod{\fr(t)}{\psi_n(t)}}  |\theta
+   \\&=    {\inprod{\fs(t;\theta)+\fn(t)}{\psi_n(t)}} 
+   \\&=    {\inprod{\fs(t;\theta)}{\psi_n(t)}} +   {\inprod{\fn(t)}{\psi_n(t)}} 
+   \\&=    \inprod{\sum_{k=1}^N \fdots_k(\theta) \psi_k(t)}{\psi_n(t)} + \fdotn_n 
+   \\&=    \sum_{k=1}^N \fdots_k(\theta) \inprod{\psi_k(t)}{\psi_n(t)} + \fdotn_n 
+   \\&=    \fdots_n(\theta)  + \fdotn_n
+\\ \\
+   \pE({\fdotr_n} | \theta)
+     &= \pEb{\fdots_n(\theta)  + \fdotn_n}
+   \\&= \pE{\fdots_n(\theta) } +   \pE{\fdotn_n}
+   \\&= \fdots_n(\theta)  
+\end{align*}
+
+The distributions follow because they are linear operations on 
+Gaussian processes.
+\end{proof}
+
+
+
+
+%======================================
+%\subsection{Additive white noise channel}
+%\label{sec:opCawn}
+%======================================
+
+
+%---------------------------------------
+\begin{theorem}%[Additive white noise projection statistics]
+\label{thm:awn_stats}
+\index{projection statistics!Additive white noise channel}
+%---------------------------------------
+Let $\opC=\opCawn$ be an additive white noise channel.
+\thmbox{
+\mcom{\opC=\opCawn}{additive white channel}
+\implies
+\left\{
+\begin{array}{lclD}
+   \pE\fdotn_n                            &=& 0                     & (noise projection is zero-mean) \\
+   \pE(\fdotr_n|\theta)                   &=& \fdots_n(\theta)      & (expected receiver projection = transmitted projection) \\
+   \cov{\fdotn_n}{\fdotn_m}               &=& \sigma^2 \kdelta_{nm} & (noise projections are uncorrelated) \\
+   \cov{\fdotr_n|\theta}{\fdotr_m|\theta }&=& \sigma^2 \kdelta_{nm} & (receiver projections are uncorrelated) 
+\end{array}
+\right.
+}
+\end{theorem}
+
+\begin{proof}
+Because the noise is additive (see \prefpp{thm:an_stats})
+\begin{eqnarray*}
+   \pE\fdotn_{n}           &=& 0  \\
+   (\fdotr_n |\theta)      &=& \fdots_n(\theta)  + \fdotn_n \\
+   \pE({\fdotr_n} | \theta) &=& \fdots_n(\theta).
+\end{eqnarray*}
+
+Because the noise is also white,
+\begin{eqnarray*}
+   \cov{\fdotn_m}{\fdotn_n}
+      &=& \cov{\inprod{\fn(t)}{\psi_m(t)}}{\inprod{\fn(t)}{\psi_n(t)}}
+    \\&=& \pEb{\inprod{\fn(t)}{\psi_m(t)} \inprod{\fn(t)}{\psi_n(t)}}
+    \\&=& \pEb{\inprod{\fn(t)}{\psi_m(t)} \inprod{n(u)}{\psi_n(u)}}
+    \\&=& \pEb{ \inprod{n(u)\inprod{\fn(t)}{\psi_m(t)}}{\psi_n(u)}}
+    \\&=& \pEb{ \inprod{\inprod{n(u)\fn(t)}{\psi_m(t)}}{\psi_n(u)}}
+    \\&=& \inprod{\inprod{\pEb{ n(u)\fn(t)}}{\psi_m(t)}}{\psi_n(u)}
+    \\&=& \inprod{\inprod{\sigma^2 \delta(t-u)}{\psi_m(t)}}{\psi_n(u)}
+    \\&=& \sigma^2 \inprod{\psi_n(t)}{\psi_m(t)}
+    \\&=& \left\{
+          \begin{tabular}{ll}
+             $\sigma^2$ & for $n=m$ \\
+             $0$   & for $n\ne m$.
+          \end{tabular}
+          \right.
+\\ 
+\\
+   \cov{\fdotr_n|\theta}{\fdotr_m|\theta }
+      &=& \pEb{\fdotr_n \fdotr_m |\theta} - [\pE\fdotr_n|\theta][\pE\fdotr_m|\theta ]
+    \\&=& \pEb{(\fdots_n(\theta) +\fdotn_n)(\fdots_m(\theta) +\fdotn_m)} - \fdots_n(\theta) \fdots_m(\theta)
+    \\&=& \pEb{(\fdots_n(\theta) +\fdotn_n)(\fdots_m(\theta) +\fdotn_m)} - \fdots_n(\theta) \fdots_m(\theta) 
+    \\&=& \pEb{\fdots_n(\theta) \fdots_m(\theta) +\fdots_n(\theta) \fdotn_m+ \fdotn_n\fdots_m(\theta) +\fdotn_n\fdotn_m } - \fdots_n(\theta) \fdots_m(\theta) 
+    \\&=& \fdots_n(\theta) \fdots_m(\theta) + \fdots_n(\theta) \pEb{\fdotn_m}+ \pEb{\fdotn_n}\fdots_m(\theta) +\pEb{\fdotn_n\fdotn_m}  - \fdots_n(\theta) \fdots_m(\theta) 
+    \\&=& 0 + \fdots_n(\theta) \cdot0 + 0\cdot\fdots_m(\theta) + \cov{\fdotn_n}{\fdotn_m}+[\pE\fdotn_n][\pE\fdotn_m]
+    \\&=& \sigma^2 \kdelta_{nm} + 0\cdot0
+    \\&=& \left\{
+          \begin{tabular}{ll}
+             $\sigma^2$ & for $n=m$ \\
+             $0$   & for $n\ne m$.
+          \end{tabular}
+          \right.
+\end{eqnarray*}
+\end{proof}
+
+
+%======================================
+%\subsection{Additive white gaussian noise channel}
+%\label{sec:opCawgn}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,160)(-200,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put(-200,   0 ){\line(1,0){400} }
+  \put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](100,0)(100, 60)(100,120)
+  \qbezier[30](-100,0)(-100, 60)(-100,120)
+
+  \qbezier(- 60,  60)(-100, 180)(-140,  60)
+  \qbezier(-  0,   0)(- 40,   0)(- 60,  60)
+  \qbezier(-140,  60)(-160,   0)(-200,   0)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -20 ){\makebox(0,0)[t]{$0$} }
+  \put(  30, 100 ){\makebox(0,0)[bl]{$\fdotn_n$} }
+  \put(-100, -20 ){\makebox(0,0)[t]{$\fdots_n(\theta_1)$} }
+  \put(-130, 100 ){\makebox(0,0)[br]{$(\fdotr_n|\theta_1)$} }
+  \put( 100, -20 ){\makebox(0,0)[t]{$\fdots_n(\theta_2)$} }
+  \put( 130, 100 ){\makebox(0,0)[bl]{$(\fdotr_n|\theta_2)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+  Additive white Gaussian noise channel statistics
+   \label{fig:awgn_stats}
+   }
+\end{figure}
+
+
+
+%---------------------------------------
+\begin{theorem}%[AWGN projection statistics]
+\label{thm:awgn_stats}
+\label{thm:ms_stats}
+\index{projection statistics!Additive white Gaussian noise channel}
+%---------------------------------------
+Let $\opC=\opCawgn$ be an additive gaussian noise channel
+with distribution $\fn(t)\sim\pN{0}{\sigma^2}$ for all $t$.
+\thmbox{
+\mcom{\opC=\opCawgn}{AWGN}
+\implies
+\left\{
+\begin{array}{rclD}
+   \fdotn_n                            &\sim& \pN{0}{\sigma^2}                     & (noise projections are Gaussian        ) \\
+   \fdotr_n|\theta                     &\sim& \pN{\fdots_n(\theta)}{\sigma^2}      & (receiver projections are Gaussian     ) \\
+   \cov{\fdotn_n}{\fdotn_m}            &=   & \sigma^2 \kdelta_{nm}                & (noise projections are uncorrelated    ) \\
+   \cov{\fdotr_n}{\fdotr_m }           &=   & \sigma^2 \kdelta_{nm}                & (receiver projections are uncorrelated ) \\
+   \psp\{\fdotn_n=a \land \fdotn_m=b\} &=   & \psp\{\fdotn_n=a\}\psp\{\fdotn_m=b\} & (noise    projections are independent  ) \\
+   \psp\{\fdotr_n=a \land \fdotr_m=b\} &=   & \psp\{\fdotr_n=a\}\psp\{\fdotr_m=b\} & (receiver projections are independent  ) 
+\end{array}
+\right.
+}
+\end{theorem}
+
+\begin{proof}
+The distributions follow because they are linear operations on 
+Gaussian processes.
+
+By \prefpp{thm:awn_stats} (for AWN channel)
+\begin{eqnarray*}
+   \pE{\fdotn_{n}} &=& 0
+\\
+   \cov{\fdotn_m}{\fdotn_n} &=& \sigma^2 \kdelta_{mn}
+\\
+   \fdotr_n &=& \fdots_n  + \fdotn_n
+\\
+   \pE{\fdotr_n} &=& \fdots_n
+\\
+   \cov{\fdotr_n}{\fdotr_m } &=& \sigma^2 \kdelta_{mn}
+\end{eqnarray*}
+Because the processes are Gaussian,
+uncorrelatedness implies independence.
+\end{proof}
+
+
+
+
+%======================================
+\section{Optimal symbol estimation}
+\label{sec:awgn_est}
+\index{maximum likelihood estimation}
+%======================================
+The AWGN projection statistics provided by 
+\prefpp{thm:awgn_stats} help generate the optimal 
+ML-estimates for a number of communication systems.
+These ML-estimates can be expressed in either of two standard forms:
+\begin{liste}
+  \item {\bf Spectral decompostion}: 
+     The optimal estimate is expressed in terms of {\em projections}
+     of signals onto orthonormal basis functions.
+  \item {\bf Matched signal}:
+     The optimal estimate is expressed in terms of the (noisy)
+     received signal correlated with (``matched" with)
+     the (noiseless) transmitted signal.
+\end{liste}
+\prefpp{thm:estML_general} (next) expresses the general 
+optimal ML estimate in both of these forms.
+
+Parameter detection is a special case of parameter estimation.
+In parameter detection, the estimate is a member of an finite set.
+In parameter estimation, the estimate is a member of an infinite set
+(Section~\ref{sec:awgn_est} page~\pageref{sec:awgn_est}).
+
+
+%---------------------------------------
+\begin{theorem}[General ML estimation]
+\index{maximum likelihood estimation!general}
+\label{thm:estML_general}
+\label{thm:ml_est_det}
+%\citepp{srv}{157}{158}
+%---------------------------------------
+Let $\Psi$ be an orthonormal set spanning $\fs(t)$ such that
+\begin{eqnarray*}
+  \Psi     &\eqd& \{ \psi_1(t), \psi_2(t), \ldots, \psi_n(t)\} \\
+  \fdotr_n &\eqd& \inprod{\fr(t)}{\psi_n(t)}                   \\
+  \fdots_n &\eqd& \inprod{\fs(t)}{\psi_n(t)}                   \\
+  \fr(t)     &=&    [\opCawgn s](t) = \fs(t;u) + \fn(t).
+\end{eqnarray*}
+Then the optimal ML-estimate $\estML[u]$ of parameter $ u $ is
+\thmbox{\begin{array}{rc>{\ds}ll@{\qquad}D}
+   \estML[u] 
+     &=& \arg\min_u 
+         \left[ \sum_{n=1}^N [\fdotr_n-\fdots_n(u)]^2 \right]
+       & (spectral decomposition)
+   \\&=& \arg\max_u 
+         \left[ 2\inprod{\fr(t)}{\fs(t;u)}-\norm{\fs(t;u)}^2 \right]
+       & (matched signal)
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \estML[u]
+     &=& \arg\max_u \pP{\fr(t)|\fs(t;u)}
+   \\&=& \arg\max_u \pP{\fdotr_1,\fdotr_2,\ldots,\fdotr_n|\fs(t;u)}
+       \hspace{3ex}\mbox{(by \prefpp{thm:sstat})}
+   \\&=& \arg\max_u \prod_{n=1}^N \pP{\fdotr_n|\fs(t;u)}
+   \\&=& \arg\max_u \prod_{n=1}^N \pdfpb{\fdotr_n|\fs(t;u)}
+   \\&=& \arg\max_u \prod_{n=1}^N 
+         \frac{1}{\sqrt{2\pi\sigma^2}}
+         \exp{\frac{[\fdotr_n-\fdots_n(u)]^2}{-2\sigma^2} }
+       \hspace{3ex}\mbox{(by \prefpp{thm:awgn_stats})}
+   \\&=& \arg\max_u 
+         \left( \frac{1}{\sqrt{2\pi\sigma^2}} \right)^N
+         \exp{\frac{-1}{2\sigma^2} \sum_{n=1}^N [\fdotr_n-\fdots_n(u)]^2 }
+   \\&=& \arg\max_u 
+         \left[ -\sum_{n=1}^N [\fdotr_n-\fdots_n(u)]^2 \right]
+\\ \\
+   \\&=& \arg\max_u 
+         \left[ -\lim_{N\to\infty}\sum_{n=1}^N [\fdotr_n-\fdots_n(u)]^2 \right]
+       \hspace{3ex}\mbox{(by \prefpp{thm:sstat})}
+   \\&=& \arg\max_u 
+         \left[ -\norm{\fr(t)-\fs(t;u)}^2 \right]
+         \hspace{8ex}\mbox{(by Plancheral's formula -- \prefpp{thm:inprod_plancheral})}
+   \\&=& \arg\max_u 
+         \left[ -\norm{\fr(t)}^2 +2\Re\inprod{\fr(t)}{\fs(t;u)}-\norm{\fs(t;u)}^2 \right]
+   \\&=& \arg\max_u 
+         \left[ 2\inprod{\fr(t)}{\fs(t;u)}-\norm{\fs(t;u)}^2 \right]
+         \hspace{8ex}\mbox{(because $\fr(t)$ independent of $u$)}
+\end{eqnarray*}
+\end{proof}
+
+
+
+%---------------------------------------
+\begin{theorem}[ML amplitude estimation]
+\label{thm:estML_amplitude}
+\index{maximum likelihood estimation!amplitude}
+%---------------------------------------
+Let $\opSys$ be an additive white gaussian noise system 
+such that\citepp{srv}{158}{159}
+\begin{eqnarray*} 
+   \fr(t)     &=   & [\opCawgn s](t) = \fs(t;a) + \fn(t) \\
+   \fs(t;a) &\eqd&  a  \sym(t).
+\end{eqnarray*}
+Then 
+
+\thmbox{
+\begin{array}{rcl@{\hspace{8ex}}l}
+  \estML[a] 
+    &= \frac{1}{\norm{\lambda(t)}^2} \inprod{\fr(t)}{\lambda(t)}
+      & \mbox{(optimal ML-estimate of $a$)}
+\\ 
+     &= \frac{1}{\norm{\sym(t)}^2} \sum_{n=1}^N \fdotr_n \fdotlam_n 
+      & %\mbox{(optimal ML-estimate of $a$)}
+\\
+   \pE\estML[a] &=&  a 
+      & \mbox{($\estML[a]$ is {\bf unbiased})}
+\\
+   \var\estML[a] &=& \frac{\sigma^2}{\norm{\sym(t)}^2}
+      & \mbox{(variance of estimate $\estML[a]$)}
+\\
+   \var\estML[a] &=& \mbox{CR lower bound}
+      & \mbox{($\estML[a]$ is an {\bf efficient estimate})}
+\end{array}
+}
+\end{theorem}
+
+\begin{proof}\\
+\begin{enumerate}
+\item ML estimate in ``matched signal" form:
+\begin{eqnarray*}
+   \estML[a] 
+     &=& \arg\max_a 
+         \left[ 2\inprod{\fr(t)}{\fs(t;u)}-\norm{\fs(t;\phi)}^2 \right]
+         \hspace{8ex}\mbox{by \prefpp{thm:estML_general}}
+   \\&=& \arg\max_a 
+         \left[ 2\inprod{\fr(t)}{a\lambda(t)}-\norm{a\lambda(t)}^2 \right]
+         \hspace{8ex}\mbox{by hypothesis}
+   \\&=& \arg_a 
+         \left[ \pderiv{}{a}2a\inprod{\fr(t)}{\lambda(t)}-\pderiv{}{a}a^2\norm{\lambda(t)}^2 =0\right]
+   \\&=& \arg_a 
+         \left[ 2\inprod{\fr(t)}{\lambda(t)}-2a\norm{\lambda(t)}^2 =0\right]
+   \\&=& \arg_a 
+         \left[ \inprod{\fr(t)}{\lambda(t)}=a\norm{\lambda(t)}^2 \right]
+   \\&=& \frac{1}{\norm{\lambda(t)}^2} \inprod{\fr(t)}{\lambda(t)}
+\end{eqnarray*}
+
+\item ML estimate in ``spectral decomposition" form:
+\begin{eqnarray*}
+   \estML[a] 
+     &=& \arg\min_a 
+         \bp{ \sum_{n=1}^N \bs{\fdotr_n - \fdots_n( a )}^2 }
+         \hspace{4ex} \mbox{by \prefpp{thm:estML_general}}
+   \\&=& \arg_a 
+         \bp{ \pderiv{}{ a }\sum_{n=1}^N \bs{\fdotr_n - \fdots_n( a )}^2=0 }
+   \\&=& \arg_a 
+         \bp{ 2\sum_{n=1}^N \bs{\fdotr_n - \fdots_n( a )}\pderiv{}{ a }\fdots_n( a )=0 }
+   \\&=& \arg_a 
+         \bp{ \sum_{n=1}^N \bs{\fdotr_n - \inprod{ a \lambda(t)}{\psi_n(t)}}\pderiv{}{ a }\inprod{ a \lambda(t)}{\psi_n(t)}=0 }
+   \\&=& \arg_a 
+         \bp{ \sum_{n=1}^N \bs{\fdotr_n -  a \inprod{\lambda(t)}{\psi_n(t)}}\pderiv{}{ a }( a \inprod{\lambda(t)}{\psi_n(t)})=0 }
+   \\&=& \arg_a 
+         \bp{ \sum_{n=1}^N \bs{\fdotr_n -  a \fdotlam_n } \inprod{\lambda(t)}{\psi_n(t)}=0 }
+   \\&=& \arg_a 
+         \bp{ \sum_{n=1}^N \bs{\fdotr_n -  a \fdotlam_n } \fdotlam_n=0 }
+   \\&=& \arg_a 
+         \bp{ \sum_{n=1}^N \fdotr_n\fdotlam_n = \sum_{n=1}^N  a \fdotlam_n^2 }
+   \\&=& \bp{\frac{1}{\sum_{n=1}^N \fdotlam_n^2}} 
+         \sum_{n=1}^N \fdotr_n\fdotlam_n
+   \\&=& \frac{1}{\norm{\lambda(t)}^2}
+         \sum_{n=1}^N \fdotr_n\fdotlam_n
+\end{eqnarray*}
+
+\item Prove that the estimate $\estML[a]$ is {\bf unbiased}:
+
+\begin{align*}
+   \pE\estML[a]
+     &= \pE\frac{1}{\norm{\sym(t)}^2} \int_t \fr(t)\sym(t) \dt
+     && \text{by previous result}
+   \\&= \pE\frac{1}{\norm{\sym(t)}^2} \int_t [ a \sym(t)+\fn(t)]\sym(t) \dt
+     && \text{by hypothesis}
+   \\&= \frac{1}{\norm{\sym(t)}^2} \int_t \pE[ a \sym(t)+\fn(t)]\sym(t) \dt
+     && \text{by linearity of $\int\cdot\dt$ and $\pE$}
+   \\&= \frac{1}{\norm{\sym(t)}^2}  a  \int_t \sym^2(t) \dt
+     && \text{by $\pE$ operation}
+   \\&= \frac{1}{\norm{\sym(t)}^2}  a  \norm{\sym(t)}^2
+     && \text{by definition of $\norm{\cdot}^2$}
+   \\&= a 
+\end{align*}
+
+\item Compute the variance of $\estML[a]$:
+\begin{eqnarray*}
+  \pE \estML[a]^2
+    &=& \pE \left[ \frac{1}{\norm{\lambda(t)}^2} \int_t \fr(t)\lambda(t) \dt\right]^2
+  \\&=& \pE \left[  \frac{1}{\norm{\lambda(t)}^4} 
+        \int_t \fr(t)\lambda(t) \dt \int_v \fr(v)\lambda(v) \dv
+        \right]
+  \\&=& \pE \left[  \frac{1}{\norm{\lambda(t)}^4} 
+        \int_t \int_v [a\lambda(t) + \fn(t)][a\lambda(v) + \fn(v)]
+        \lambda(t) \lambda(v) 
+        \dv\dt \right]
+  \\&=& \pE \left[  \frac{1}{\norm{\lambda(t)}^4} 
+        \int_t \int_v 
+        [a^2\lambda(t)\lambda(v) + a\lambda(t)\fn(v) + a\lambda(v)\fn(t) + \fn(t)\fn(v)]
+        \lambda(t) \lambda(v) 
+        \dv\dt \right]
+  \\&=& \left[  \frac{1}{\norm{\lambda(t)}^4} 
+        \int_t \int_v 
+        [a^2\lambda(t)\lambda(v) + 0 + 0 + \sigma^2\delta(t-v)]
+        \lambda(t) \lambda(v) 
+        \dv\dt \right]
+  \\&=& \frac{1}{\norm{\lambda(t)}^4} 
+        \int_t \int_v a^2\lambda^2(t)\lambda^2(v) \dv\dt +
+        \frac{1}{\norm{\lambda(t)}^4} 
+        \int_t \int_v \sigma^2\delta(t-v) \lambda(t) \lambda(v) \dv\dt 
+  \\&=& \frac{1}{\norm{\lambda(t)}^4} 
+        a^2 \int_t \lambda^2(t) \dt \int_v \lambda^2(v) \dv +
+        \frac{1}{\norm{\lambda(t)}^4} 
+        \sigma^2\int_t \lambda^2(t) \dt 
+  \\&=& a^2 \frac{1}{\norm{\lambda(t)}^4} 
+        \norm{\lambda(t)}^2 \norm{\lambda(v)}^2 +
+        \frac{1}{\norm{\lambda(t)}^4} 
+        \sigma^2 \norm{\lambda(t)}^2
+  \\&=& a^2 + \frac{\sigma^2}{\norm{\lambda(t)}^2} 
+\\ 
+\\
+  \var\estML[a] 
+    &=& \pE \estML[a]^2 - (\pE \estML[a])^2 
+  \\&=& \left.\left.\left(a^2 + \frac{\sigma^2}{\norm{\lambda(t)}^2}\right) - \right( a^2 \right)
+  \\&=& \frac{\sigma^2}{\norm{\lambda(t)}^2}
+\end{eqnarray*}
+
+\item Compute the Cram\'er-Rao Bound:
+\begin{eqnarray*}
+   \pdfpb{\fr(t)|s(t; a)}
+     &=&  \pdfpb{\fdotr_1, \fdotr_2,\ldots,\fdotr_N|s(t; a)}
+   \\&=&  \prod_{n=1}^N \frac{1}{\sqrt{2\pi\sigma^2}}
+          \exp{\frac{(\fdotr_n- a\fdotlam_n)^2}{-2\sigma^2}}
+   \\&=&  \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^N
+          \exp{\frac{1}{-2\sigma^2} \sum_{n=1}^N (\fdotr_n- a\fdotlam_n)^2}
+\\
+\\
+\\
+   \pderiv{}{a}\ln\pdfpb{\fr(t)|s(t; a)}
+     &=&  \pderiv{}{a}\ln
+          \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^N
+          \exp{\frac{1}{-2\sigma^2} \sum_{n=1}^N (\fdotr_n- a\fdotlam_n)^2}
+   \\&=&  \pderiv{}{a}\ln
+          \left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^N
+       +  \pderiv{}{a}\ln
+          \exp{\frac{1}{-2\sigma^2} \sum_{n=1}^N (\fdotr_n- a\fdotlam_n)^2}
+   \\&=&  \pderiv{}{a}
+          \frac{1}{-2\sigma^2} \sum_{n=1}^N (\fdotr_n- a\fdotlam_n)^2 
+   \\&=&  \frac{1}{-2\sigma^2} \sum_{n=1}^N 2(\fdotr_n- a\fdotlam_n)(- \fdotlam_n)
+   \\&=&  \frac{1}{\sigma^2} \sum_{n=1}^N \fdotlam_n(\fdotr_n- a\fdotlam_n)
+\\
+\\
+\\
+   \pderiv{^2}{a^2}\ln\pdfpb{\fr(t)|s(t; a)}
+     &=&  \pderiv{}{a}\pderiv{}{a}\ln\pdfpb{\fr(t)|s(t; a)}
+   \\&=&  \pderiv{}{a}
+          \frac{1}{\sigma^2} \sum_{n=1}^N \fdotlam_n(\fdotr_n- a\fdotlam_n)
+   \\&=&  \frac{1}{\sigma^2} \sum_{n=1}^N \fdotlam_n(-\fdotlam_n)
+   \\&=&  \frac{-1}{\sigma^2} \sum_{n=1}^N \fdotlam_n^2
+   \\&=&  \frac{-\norm{\lambda(t)}^2}{\sigma^2} 
+\\
+\\
+\\
+   \var\estML[a] 
+     &\eqd& \pEb{\estML[a]-\pE\estML[a]}^2
+   \\&=& \pEb{\estML[a]- a}^2
+   \\&\ge& \frac{-1}{\pE\left(
+              \pderiv{^2}{ a^2} \ln \pdfpb{\fr(t)|s(t; a)}
+           \right)}
+   \\&=&   \frac{-1}{\pE\left(
+           \frac{-\norm{\lambda(t)}^2}{\sigma^2} 
+           \right)}
+   \\&=&   \frac{\sigma^2}{\norm{\lambda(t)}^2}
+           \hspace{2cm}\mbox{(Cram\'er-Rao lower bound of the variance)}
+\end{eqnarray*}
+
+\item Prove that $\estML[a]$ is an {\bf efficient estimate}:
+
+A estimate is efficient if 
+$\var\estML[a]=\mbox{CR lower bound}$.
+We have already proven this, so $\estML[a]$ is an efficient estimate.
+
+Also, even without explicitly computing the variance of $\estML[a]$,
+the variance equals the Cram\'er-Rao lower bound 
+(and hence $\estML[a]$ is an efficient estimate)
+if and only if
+\[ \estML[a] -  a = 
+   \left( \frac{-1}{\pE\left(
+              \pderiv{^2}{ a^2} \ln \pdfpb{\fr(t)|s(t; a)}
+           \right)} \right)
+   \left(\pderiv{}{ a} \ln \pdfpb{\fr(t)|s(t; a)} \right).
+\]
+
+\begin{eqnarray*}
+   \left( \frac{-1}{\pE\left(
+              \pderiv{^2}{ a^2} \ln \pdfpb{\fr(t)|s(t; a)}
+           \right)} \right)
+   \left(\pderiv{}{ a} \ln \pdfpb{\fr(t)|s(t; a)} \right)
+     &=& \left(\frac{\sigma^2}{\norm{\lambda(t)}^2}\right)
+         \left(
+           \frac{1}{\sigma^2} \sum_{n=1}^N \fdotlam( \fdotr - a \fdotlam)
+         \right)
+   \\&=& \frac{1}{\norm{\lambda(t)}^2} \sum_{n=1}^N \fdotlam \fdotr -
+         \frac{1}{\norm{\lambda(t)}^2} \sum_{n=1}^N \fdotlam^2
+   \\&=& \estML[a] - a
+\end{eqnarray*}
+
+
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}[ML phase estimation]
+\label{thm:estML_phase}
+\index{maximum likelihood estimation!phase}
+%---------------------------------------
+Let $\opSys$ be an additive white gaussian noise system 
+such that\citepp{srv}{159}{160}
+\begin{eqnarray*} 
+   \fr(t)     &=& [\opCawgn s](t) = \fs(t;\phi) + \fn(t) \\
+   \fs(t;\phi) &=& A\cos(2\pi f_ct +  \phi).
+\end{eqnarray*}
+Then the optimal ML-estimate of parameter $ \phi $ is
+\thmbox{
+   \estML[\phi] 
+      =   -\atan\left(
+           \frac{\inprod{\fr(t)}{\sin(2\pi f_ct)}} 
+                {\inprod{\fr(t)}{\cos(2\pi f_ct)}} 
+           \right)
+   }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \estML[\phi]
+     &=& \arg\max_\phi 
+         \left[ 2\inprod{\fr(t)}{\fs(t;u)}-\norm{\fs(t;\phi)}^2 \right]
+         \hspace{3ex}\mbox{by \prefpp{thm:estML_general}}
+   \\&=& \arg\max_\phi 
+         \left[ 2\inprod{\fr(t)}{\fs(t;\phi)} \right]
+         \hspace{3ex}\mbox{because $\norm{\fs(t;\phi)}$ does not depend on $\phi$}
+   \\&=& \arg_\phi 
+         \left[ \pderiv{}{\phi} \inprod{\fr(t)}{\fs(t;\phi)} = 0 \right]
+   \\&=& \arg_\phi 
+         \left[ \inprod{\fr(t)}{\pderiv{}{\phi} \fs(t;\phi)} = 0 \right]
+         \hspace{3ex}\mbox{because $\inprod{\cdot}{\cdot}$ is a linear operator}
+   \\&=& \arg_\phi 
+         \left[ \inprod{\fr(t)}{\pderiv{}{\phi} A\cos(2\pi f_ct+\phi)} = 0 \right]
+   \\&=& \arg_\phi 
+         \left[ \inprod{\fr(t)}{-A\sin(2\pi f_ct+\phi)} = 0 \right]
+   \\&=& \arg_\phi 
+         \left[ -A\inprod{\fr(t)}{\cos(2\pi f_ct)\sin\phi+\sin(2\pi f_ct)\cos\phi} = 0 \right]
+   \\&=& \arg_\phi \left[ 
+           \sin\phi\inprod{\fr(t)}{\cos(2\pi f_ct)} = 
+          -\cos\phi\inprod{\fr(t)}{\sin(2\pi f_ct)} 
+           \right]
+   \\&=& \arg_\phi \left[ 
+           \frac{\sin\phi}{\cos\phi} = 
+          -\frac{\inprod{\fr(t)}{\sin(2\pi f_ct)}} 
+                {\inprod{\fr(t)}{\cos(2\pi f_ct)}} 
+           \right]
+   \\&=& \arg_\phi \left[ 
+           \tan\phi = 
+          -\frac{\inprod{\fr(t)}{\sin(2\pi f_ct)}} 
+                {\inprod{\fr(t)}{\cos(2\pi f_ct)}} 
+           \right]
+   \\&=&  -\atan\left(
+           \frac{\inprod{\fr(t)}{\sin(2\pi f_ct)}} 
+                {\inprod{\fr(t)}{\cos(2\pi f_ct)}} 
+           \right)
+\end{eqnarray*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}[ML estimation of a function of a parameter]
+\label{thm:estML-CR}
+\index{maximum likelihood estimation!function of a parameter}
+%---------------------------------------
+Let $\opSys$ be an additive white gaussian noise system 
+such that\citepp{srv}{142}{143}
+\begin{eqnarray*} 
+   \fr(t)     &=& [\opCawgn s](t) = \fs(t;u) + \fn(t) \\
+   \fs(t;u) &=& \fg( u ) 
+\end{eqnarray*}
+where $\fg$ is one-to-one and onto (invertible).
+
+\thmboxp{
+\begin{enume}
+  \item Then the optimal ML-estimate of parameter $ u $ is
+   \[\estML[u] = \fg^{-1}\left(\frac{1}{N}\sum_{n=1}^N \fdotr_n\right).\]
+
+  \item If an ML estimate $\estML[u]$ is unbiased ($\pE \estML[u] = \theta$)
+   then 
+   \[ \var\estML[u] \ge   
+      \frac{\sigma^2}{N}
+      \frac{1}{\left[ \pderiv{\fg(\theta)}{\theta} \right]^2}.
+   \]
+
+  \item If $\fg(\theta) = \theta$ then 
+        $\estML[u]$ is an {\bf efficient estimate} such that
+   \[ \var\estML[u] = \frac{\sigma^2}{N}.  \]
+\end{enume}
+}
+\end{theorem}
+
+Notice that the variance of the estimator approaches $0$ 
+(approaches a perfect estimator) as $N\to\infty$ 
+or as $\sigma^2\to 0$ (noise power decreases).
+
+
+\begin{proof}
+\begin{eqnarray*}
+   \estML[u]
+     &=& \arg\min_u 
+         \left[ \sum_{n=1}^N [\fdotr_n-\fg( u )]^2 \right]
+   \\&=& \arg_u\left[
+            \pderiv{}{ u }\sum_{n=1}^N [\fdotr_n-\fg( u )]^2 = 0
+         \right]
+   \\&=& \arg_u\left[
+             2\sum_{n=1}^N [\fdotr_n-\fg( u )]\pderiv{}{ u }\fg( u ) = 0
+         \right]
+   \\&=& \arg_u\left[
+             2\sum_{n=1}^N [\fdotr_n-\fg( u )] = 0
+         \right]
+   \\&=& \arg_u\left[
+             \sum_{n=1}^N \fdotr_n = N \fg( u )
+         \right]
+   \\&=& \arg_u\left[
+             \fg( u ) = \frac{1}{N}\sum_{n=1}^N \fdotr_n
+         \right]
+   \\&=& \arg_u\left[
+              u  = \fg^{-1}\left(\frac{1}{N}\sum_{n=1}^N \fdotr_n\right)
+         \right]
+   \\&=& \fg^{-1}\left(\frac{1}{N}\sum_{n=1}^N \fdotr_n\right)
+\end{eqnarray*}
+
+
+If $\estML[u]$ is unbiased ($\pE\estML[u]= u $), we can use
+the Cram\'er-Rao bound to find a lower bound on the variance:
+
+\begin{eqnarray*}
+   \var\estML[u] 
+     &\eqd& \pEb{\estML[u]-\pE\estML[u]}^2
+   \\&=& \pEb{\estML[u]-\theta}^2
+   \\&\ge& \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln \pdfpb{\fr(t)|s(t;\theta)}
+           \right)}
+   \\&=&   \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln 
+              \pdfpb{\fdotr_1, \fdotr_2,\ldots,\fdotr_N|s(t;\theta)}
+           \right)}
+   \\&=&   \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln\left[ 
+              \left(\frac{1}{\sqrt{2\pi\sigma^2}} \right)^N 
+              \exp{\frac{-1}{2\sigma^2}\sum_{n=1}^N [\fdotr_n-\fg(\theta)]^2 }\right]
+           \right)}
+   \\&=&   \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln\left[ 
+              \left(\frac{1}{\sqrt{2\pi\sigma^2}} \right)^N \right]
+              +
+              \pderiv{^2}{\theta^2} \ln\left[ 
+              \exp{\frac{-1}{2\sigma^2}\sum_{n=1}^N [\fdotr_n-\fg(\theta)]^2 }\right]
+           \right)}
+  \\&=&   \frac{-1}{\pE\left(
+             \pderiv{^2}{\theta^2} 
+             \left(\frac{-1}{2\sigma^2}\sum_{n=1}^N [\fdotr_n-\fg(\theta)]^2 \right)
+          \right)}
+  \\&=&   \frac{2\sigma^2}{\pE\left(
+             \pderiv{}{\theta} \pderiv{}{\theta} 
+             \sum_{n=1}^N [\fdotr_n-\fg(\theta)]^2 
+          \right)}
+  \\&=&   \frac{2\sigma^2}{\pE\left(
+             -2\pderiv{}{\theta} 
+             \pderiv{\fg(\theta)}{\theta}
+             \sum_{n=1}^N [\fdotr_n-\fg(\theta)] 
+          \right)}
+  \\&=&   \frac{-\sigma^2}{\pE\left(
+             \pderiv{\fg^2(\theta)}{\theta^2}
+             \sum_{n=1}^N [\fdotr_n-\fg(\theta)] 
+             +
+             \pderiv{\fg(\theta)}{\theta}
+             \pderiv{}{\theta}
+             \sum_{n=1}^N [\fdotr_n-\fg(\theta)] 
+          \right)}
+   \\&=&   \frac{-\sigma^2}{\pE\left(
+              \pderiv{\fg^2(\theta)}{\theta^2}
+              \sum_{n=1}^N [\fdotr_n-\fg(\theta)] 
+              -N
+              \pderiv{\fg(\theta)}{\theta}
+              \pderiv{\fg(\theta)}{\theta}
+           \right)}
+   \\&=&   \frac{-\sigma^2}{
+              \pderiv{\fg^2(\theta)}{\theta^2}
+              \sum_{n=1}^N \pE[\fdotr_n-\fg(\theta)] 
+              -N
+              \pderiv{\fg(\theta)}{\theta}
+              \pderiv{\fg(\theta)}{\theta}
+           }
+   \\&=&   \frac{-\sigma^2}{
+              -N
+              \pderiv{\fg(\theta)}{\theta}
+              \pderiv{\fg(\theta)}{\theta}
+           }
+   \\&=&   \frac{\sigma^2}{N}
+           \frac{1}{\left[ \pderiv{\fg(\theta)}{\theta} \right]^2}
+\end{eqnarray*}
+
+The inequality becomes equality (an efficient estimate) 
+if and only if
+\[ \estML[u] - \theta = 
+   \left( \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln \pdfpb{\fr(t)|s(t;\theta)}
+           \right)} \right)
+   \left(\pderiv{}{\theta} \ln \pdfpb{\fr(t)|s(t;\theta)} \right).
+\]
+
+\begin{eqnarray*}
+   \left( \frac{-1}{\pE\left(
+              \pderiv{^2}{\theta^2} \ln \pdfpb{\fr(t)|s(t;\theta)}
+           \right)} \right)
+   \left(\pderiv{}{\theta} \ln \pdfpb{\fr(t)|s(t;\theta)} \right)
+     &=& \left(
+         \frac{\sigma^2}{N}
+           \frac{1}{\left[ \pderiv{\fg(\theta)}{\theta} \right]^2} \right)
+         \left(\frac{-1}{2\sigma^2}(2)\pderiv{\fg(\theta)}{\theta}
+         \sum_{n=1}^N [\fdotr_n - \fg(\theta) ]\right)
+   \\&=& -\frac{1}{N}
+         \frac{1}{\pderiv{\fg(\theta)}{\theta}}
+         \left(\sum_{n=1}^N [\fdotr_n - \fg(\theta) ] \right)
+   \\&=& -\frac{1}{\pderiv{\fg(\theta)}{\theta}}
+         \left(\frac{1}{N}\sum_{n=1}^N \fdotr_n - \fg(\theta) \right)
+   \\&=& -\frac{1}{\pderiv{\fg(\theta)}{\theta}}
+         \left(\estML[u] - \fg(\theta) \right)
+   \\&=& -(\estML[u] - \theta)
+\end{eqnarray*}
+\end{proof}
+
+
+
+%=======================================
+\section{Optimal symbol detection}
+%=======================================
+%=======================================
+\subsection{Generalized coherent modulation}
+\index{orthonormal basis}
+%=======================================
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,200)(-100,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put(-100,   0 ){\line(1,0){300} }
+  %\put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](  0,0)(  0, 60)(  0,120)
+  \qbezier[30](100,0)(100, 60)(100,120)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -10 ){\makebox(0,0)[t]{$\fdots_n(m)$} }
+  \put( 100, -10 ){\makebox(0,0)[t]{$\fdots_p(m)$} }
+  \put(   0, 130 ){\makebox(0,0)[bl]{$(\fdotr_n|m)$} }
+  \put( 100, 130 ){\makebox(0,0)[bl]{$(\fdotr_p|m)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+  Distributions of orthonormal components
+   \label{fig:gcm_pdf}
+   }
+\end{figure}
+
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let 
+\begin{liste}
+   \item $(V, \inprod{\cdot}{\cdot}, S)$ be a modulation space 
+   \item $\Psi\eqd\{ \psi_n(t): n=1,2,\ldots,N\}$ 
+         be a set of orthonormal functions that span $S$
+   \item $\fdotr_n\eqd \inprod{\fr(t)}{\psi_n(t)}$
+   \item $R \eqd \{ \fdotr_n: n=1,2,\ldots, N\}$
+   \item $\fdots_n(m)\eqd \inprod{s(t;m)}{\psi_n(t)}$
+\end{liste}
+
+and let $V$ be partitioned into {\bf decision regions}
+\[ \{ D_m: m=1,2,\ldots, |S|\} \]
+such that 
+\[ \fr(t)\in D_{\hat{m}} \iff \hat{m}=\arg\max_m\pP{s(t;m)|\fr(t)}. \]
+
+Then the {\bf probability of detection error} is
+\thmbox{ 
+   \pP{\mbox{error}} = 
+     1 - \left( \frac{1}{\sqrt{2\pi\sigma^2}} \right)^N
+         \sum_m \pP{\mbox{$m$ sent}}
+         \int_{\vect{r}\in D_m} 
+         \exp{\frac{-1}{2\sigma^2}
+                   \sum_{n=1}^N [\fdotr_n-\fdots_n(m)]^2 }
+         \;d\vect{r}.
+ }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \pP{\mbox{error}}
+     &= 1 - \pP{\mbox{no error}}
+   \\&= 1 - \sum_m \pP{\mbox{($m$ sent)}\land\mbox{($\hat{m}=m$ detected)}}
+   \\&= 1 - \sum_m \pP{\mbox{($\hat{m}=m$ detected)}|\mbox{($m$ sent)}}
+                   \pP{\mbox{$m$ sent}}
+   \\&= 1 - \sum_m \pP{\mbox{$m$ sent}}
+                   \pP{\vect{r}|\mbox{($m$ sent)}}
+   \\&= 1 - \sum_m \pP{\mbox{$m$ sent}}
+                   \int_{\vect{r}\in D_m}\pdfpb{\vect{r}|\mbox{($m$ sent)}} d\vect{r}
+   \\&= 1 - \sum_m \pP{\mbox{$m$ sent}}
+                   \int_{\vect{r}\in D_m} \prod_n \pdfpb{\fdotr_n|m} \;d\vect{r}
+   \\&= 1 - \sum_m \pP{\mbox{$m$ sent}}
+                   \int_{\vect{r}\in D_m} \prod_{n=1}^N
+                   \frac{1}{\sqrt{2\pi\sigma^2}}
+                   \exp{\frac{-[\fdotr_n-\pE\fdotr_n]^2}{2\sigma^2}}
+                   \;d\vect{r}
+   \\&= 1 - \left( \frac{1}{\sqrt{2\pi\sigma^2}} \right)^N
+        \sum_m \pP{\mbox{$m$ sent}}
+        \int_{\vect{r}\in D_m} 
+        \exp{\frac{-1}{2\sigma^2}
+                  \sum_{n=1}^N [\fdotr_n-\fdots_n(m)]^2 }
+        \;d\vect{r}
+\end{align*}
+\end{proof}
+
+
+
+%=======================================
+\subsection{Frequency Shift Keying (FSK)}
+\index{Frequency Shift Keying!coherent}
+\index{FSK!coherent}
+%=======================================
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+In an FSK modulation space, 
+the optimal ML estimator of $m$ is
+   \formbox{ \hat{m} = \arg\max_m \fdotr_m. }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \hat{m}
+     &= \arg\max_m \pP{\fr(t)|s(t;m)}
+   \\&= \arg\min_m \sum_{n=1}^N [\fdotr_n - \fdots_n(m)]^2
+     && \text{ by \prefpp{thm:ml_est_det} }
+   \\&= \arg\min_m \sum_{n=1}^N [\fdotr^2_n -2\fdotr_n\fdots_n(m)+\fdots^2_n(m)]
+   \\&= \arg\min_m \sum_{n=1}^N [ -2\fdotr_n\fdots_n(m)+\fdots^2_n(m)]
+     && \text{ $\fdotr^2_n$ is independent of $m$}
+   \\&= \arg\min_m \sum_{n=1}^N [ -2\fdotr_n a\kdelta_{mn}+ a^2\kdelta_{mn}]
+     && \text{ by \prefpp{def:fsk}}
+   \\&= \arg\min_m [ -2a\fdotr_m + a^2]
+   \\&= \arg\min_m [ -\fdotr_m ]
+     && \text{ $a$ and $2$ independent of $m$}
+   \\&= \arg\max_m [ \fdotr_m ]
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+If an FSK modulation space let 
+\[
+\begin{array}{rcl l| lllll}
+   z_2 &\eqd& \fdotr_{1}(1) - \fdotr_{2}(1) &\hspace{1cm}& z_2>0 &\implies& \fdotr_1>\fdotr_2 &|& m=1 \\
+   z_3 &\eqd& \fdotr_{1}(1) - \fdotr_{3}(1) &\hspace{1cm}& z_3>0 &\implies& \fdotr_1>\fdotr_3 &|& m=1 \\
+       &\vdots&                               &            & \\    
+   z_M &\eqd& \fdotr_{1}(1) - \fdotr_{M}(1) &\hspace{1cm}& z_M>0 &\implies& \fdotr_1>\fdotr_M &|& m=1 \\
+\end{array}
+\]
+
+Then the {\bf probability of detection error} is
+\formbox{
+   \pP{\mbox{error}} 
+     = 1 - \frac{M-1}{M} \int_0^\infty\int_0^\infty \cdots \int_0^\infty
+                           \pdfp(z_2,z_3,\ldots,z_M) \; dz_2 dz_3 \cdots dz_M
+}
+where
+
+\begin{math}
+\pdfp(z_2,z_3,\ldots,z_M)
+   = 
+   \frac{1}{(2\pi)^\frac{M-1}{2}\sqrt{\mathrm{det}{R}}}
+   \exp{
+      -\frac{1}{2}
+      \left[  
+      \begin{array}{c}
+         z_2 - \fdots \\
+         z_3 - \fdots \\
+         \vdots \\
+         z_M - \fdots
+      \end{array}
+      \right]^T
+      R^{-1}
+      \left[  
+      \begin{array}{c}
+         z_2 - \fdots \\
+         z_3 - \fdots \\
+         \vdots \\
+         z_M - \fdots
+      \end{array}
+      \right]
+   }
+\end{math}
+
+and
+
+\[
+   R = 
+   \left[
+   \begin{array}{cccc}
+      \cov{z_2}{z_2}  & \cov{z_2}{z_3} & \cdots & \cov{z_2}{z_M}  \\
+      \cov{z_3}{z_2}  & \cov{z_3}{z_3} & \cdots & \cov{z_3}{z_M}  \\
+      \vdots          & \vdots         & \ddots & \vdots          \\
+      \cov{z_M}{z_2}  & \cov{z_M}{z_3} & \cdots & \cov{z_M}{z_M}  
+   \end{array}
+   \right]
+%   = 
+%   \left[
+%   \begin{array}{cccc} 
+%      2N_o    &  N_o   &  \cdots &  N_o   \\
+%       N_o    & 2N_o   &  \cdots &  N_o   \\
+%       \vdots & \vdots &  \ddots & \vdots \\
+%       N_o    &  N_o   &  \cdots &  2N_o  
+%   \end{array}
+%   \right]
+   = 
+   N_o \left[
+   \begin{array}{cccc} 
+      2      & 1      &  \cdots &  1     \\
+      1      & 2      &  \cdots &  1     \\
+      \vdots & \vdots &  \ddots & \vdots \\
+      1      & 1      &  \cdots &  2  
+   \end{array}
+   \right]
+\]
+
+
+The inverse matrix $R^{-1}$ is equivalent to (????) \attention
+
+\[
+   R^{-1} \eqq
+   \frac{1}{MN_o} \left[
+   \begin{array}{cccc} 
+      M-1     & -1      &  \cdots &  -1     \\
+      -1      & M-1     &  \cdots &  -1     \\
+      \vdots  & \vdots  &  \ddots & \vdots  \\
+      -1      & -1      &  \cdots & M-1
+   \end{array}
+   \right]
+\]
+\end{theorem}
+
+
+\begin{proof}
+\begin{eqnarray*}
+   \pE{z_k}
+     &=& \pEb{\fdotr_{11}-\fdotr_{1k}} 
+   \\&=& \pE{\fdotr_{11}}- \pE{\fdotr_{1k}} 
+   \\&=& \fdots - 0
+   \\&=& \fdots
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \cov{z_m}{z_n}
+     &=& \pEb{z_m z_n} - [\pE z_m][\pE z_n]
+   \\&=& \pEb{(\fdotr_{11}-\fdotr_{1m})(\fdotr_{11}-\fdotr_{1n})} - \fdots^2
+   \\&=& \pEb{\fdotr_{11}^2 -\fdotr_{11}\fdotr_{1n} - \fdotr_{1m}\fdotr_{11} \fdotr_{1m}\fdotr_{1n}} - \fdots^2
+   \\&=& [\var \fdotr_{11} + (\pE \fdotr_{11})^2] - \pEb{\fdotr_{11}}\pEb{\fdotr_{1n}} - \pEb{\fdotr_{1m}}\pEb{\fdotr_{11}} + [\cov{\fdotr_{1m}}{\fdotr_{1n}} + (\pE \fdotr_{1m})(\pE \fdotr_{1n})] - \fdots^2
+   \\&=& [\var \fdotr_{11} + \fdots^2] - a\cdot0 - 0\cdot a + [\cov{\fdotr_{1m}}{\fdotr_{1n}} + 0\cdot0] - \fdots^2
+   \\&=& \var \fdotr_{11} + \cov{\fdotr_{1m}}{\fdotr_{1n}} 
+   \\&=& N_o + \cov{\fdotr_{1m}}{\fdotr_{1n}} 
+   \\&=& \left\{
+         \begin{tabular}{ll}
+            $2N_o$ & for $m=n$ \\
+            $N_o$  & for $m\ne n$.
+         \end{tabular}
+         \right.
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   P\{\mbox{error}\}
+     &=& 1 - P\{\mbox{no error}\}
+   \\&=& 1 - \sum_{m=1}^M P\{\mbox{m transmitted)}\land (\forall k\ne m, \fdotr_m > \fdotr_k \}
+   \\&=& 1 - (M-1) P\{\mbox{1 transmitted)}\land (\fdotr_{11}>\fdotr_{12}) \land (\fdotr_{11}>\fdotr_{13}) \land\cdots\land (\fdotr_{11}>\fdotr_{1M})  \}
+   \\&=& 1 - (M-1) P\{(\fdotr_{11}-\fdotr_{12}>0) \land (\fdotr_{11}-\fdotr_{13}>0) \land\cdots\land (\fdotr_{11}-\fdotr_{1M}>0)|\mbox{1 transmitted)}\}P\{\mbox{1 transmitted)}  \}
+   \\&=& 1 - \frac{M-1}{M} P\{(z_2>0) \land (z_3>0) \land\cdots\land (z_M>0)|\mbox{1 transmitted)}\}
+   \\&=& 1 - \frac{M-1}{M}
+   \int_0^\infty\int_0^\infty \cdots \int_0^\infty
+        \pdfp(z_2,z_3,\ldots,z_M) \; 
+   dz_2 dz_3 \cdots dz_M.
+\end{eqnarray*}
+
+\end{proof}
+
+
+
+
+
+%---------------------------------------
+\subsection{Quadrature Amplitude Modulation (QAM)}
+\index{Quadrature Amplitude Modulation}
+\index{QAM}
+\index{Quadrature Amplitude Modulation}
+\index{QAM}
+%---------------------------------------
+
+%---------------------------------------
+\subsubsection{Receiver statistics}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,200)(-100,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put(-100,   0 ){\line(1,0){300} }
+  %\put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](  0,0)(  0, 60)(  0,120)
+  \qbezier[30](100,0)(100, 60)(100,120)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -10 ){\makebox(0,0)[t]{$a_m$} }
+  \put( 100, -10 ){\makebox(0,0)[t]{$b_m$} }
+  \put( -30, 100 ){\makebox(0,0)[br]{$(\fdotr_c|m)$} }
+  \put( 130, 100 ){\makebox(0,0)[bl]{$(\fdotr_s|m)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+  Distributions of QAM components
+   \label{fig:qam_pdf}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot}$ be a QAM modulation space such that
+\begin{eqnarray*}
+   \fr(t) &=& s(t;m) + \fn(t) \\
+   \fdotr_c &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s &\eqd& \inprod{\fr(t)}{\psi_\fs(t)}. 
+\end{eqnarray*}
+
+Then $(\fdotr_c|m)$ and $(\fdotr_s|m)$ are {\bf independent}
+and have {\bf marginal distributions}
+\begin{eqnarray*}
+   (\fdotr_c|m) &\sim& \pN{a_m}{\sigma^2} = \pN{r_m\cos\theta_m}{\sigma^2}  \\
+   (\fdotr_s|m) &\sim& \pN{b_m}{\sigma^2} = \pN{r_m\sin\theta_m}{\sigma^2}.
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+See \prefpp{thm:ms_stats} page~\pageref{thm:ms_stats}.
+\end{proof}
+
+
+
+%---------------------------------------
+\subsubsection{Detection}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot},S)$ be a QAM modulation space with
+\begin{eqnarray*}
+   \fr(t) = s(t;m)+\fn(t) \\
+   \fdotr_c &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s &\eqd& \inprod{\fr(t)}{\psi_\fs(t)}.
+\end{eqnarray*}
+
+Then $\{\fdotr_c,\fdotr_s\}$ are sufficient statistics for 
+optimal ML detection and the optimal ML estimate of $m$ is
+\[ \estML[u][m] = \arg\min_m 
+      \left[ 
+         (\fdotr_c-a_m)^2  + (\fdotr_s-b_m)^2 
+      \right]. 
+\]
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \estML[u][m]
+     &= \arg\max_m \pP{\fr(t)|s(t;m)}
+     && \text{by \prefpp{def:ML}}
+   \\&= \arg\min_m \sum_{n=1}^N [\fdotr_n - \fdots_n(m)]^2
+     && \text{by \prefpp{thm:ml_est_det} }
+   \\&= \arg\min_m 
+      \left[ 
+         (\fdotr_c-a_m)^2  + (\fdotr_s-b_m)^2 
+      \right]. 
+     && \text{by \prefpp{def:qam}}.
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\subsubsection{Probability of error}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{picture}(400,400)(-200,-200)
+  %\graphpaper[10](0,0)(400,400)                  
+  \thinlines
+  \put(-180 ,   0 ){\line(1,0){360} }
+  \put(   0 ,-180 ){\line(0,1){360} }
+
+  \put( 190 ,  -5 ){$\psi_c$}
+  \put( -10 , 190 ){$\psi_s$}
+
+  \put(-150 , 150 ){\circle*{10}}
+  \put( -50 , 150 ){\circle*{10}}
+  \put(  50 , 150 ){\circle*{10}}
+  \put( 150 , 150 ){\circle*{10}}
+
+  \put(-150 ,  50 ){\circle*{10}}
+  \put( -50 ,  50 ){\circle*{10}}
+  \put(  50 ,  50 ){\circle*{10}}
+  \put( 150 ,  50 ){\circle*{10}}
+
+  \put(-150 , -50 ){\circle*{10}}
+  \put( -50 , -50 ){\circle*{10}}
+  \put(  50 , -50 ){\circle*{10}}
+  \put( 150 , -50 ){\circle*{10}}
+
+  \put(-150 ,-150 ){\circle*{10}}
+  \put( -50 ,-150 ){\circle*{10}}
+  \put(  50 ,-150 ){\circle*{10}}
+  \put( 150 ,-150 ){\circle*{10}}
+\end{picture}
+\hspace{2cm}
+\begin{picture}(400,400)(-200,-200)
+  %\graphpaper[10](0,0)(400,400)                  
+  \thicklines
+  \put(-180 ,   0 ){\line(1,0){360} }
+  \put(   0 ,-180 ){\line(0,1){360} }
+  \thinlines
+  \put(-180 , 100 ){\line(1,0){360} }
+  \put(-180 ,-100 ){\line(1,0){360} }
+  \put(-100 ,-180 ){\line(0,1){360} }
+  \put( 100 ,-180 ){\line(0,1){360} }
+
+  \put( 190 ,  -5 ){$\psi_c$}
+  \put( -10 , 190 ){$\psi_s$}
+
+  \put(-160 , 150 ){$D_{ 1}$ }
+  \put( -60 , 150 ){$D_{ 2}$ }
+  \put(  40 , 150 ){$D_{ 3}$ }
+  \put( 140 , 150 ){$D_{ 4}$ }
+                  
+  \put(-160 ,  50 ){$D_{ 5}$ }
+  \put( -60 ,  50 ){$D_{ 6}$ }
+  \put(  40 ,  50 ){$D_{ 7}$ }
+  \put( 140 ,  50 ){$D_{ 8}$ }
+                  
+  \put(-160 , -50 ){$D_{ 9}$ }
+  \put( -60 , -50 ){$D_{10}$ }
+  \put(  40 , -50 ){$D_{11}$ }
+  \put( 140 , -50 ){$D_{12}$ }
+                  
+  \put(-160 ,-150 ){$D_{13}$ }
+  \put( -60 ,-150 ){$D_{14}$ }
+  \put(  40 ,-150 ){$D_{15}$ }
+  \put( 140 ,-150 ){$D_{16}$ }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   QAM-16 cosstellation and decision regions
+   \label{fig:QAM-16}
+   }
+\end{figure}
+
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+In a QAM-16 constellation as shown in \prefpp{fig:QAM-16},
+the probability of error is
+\[ \pP{\mbox{error}} = \frac{9}{4} Q^2\left(\frac{\fdots_{21}-\fdots_{11}}{2N_o}\right).\]
+\end{theorem}
+
+\begin{proof}
+Let 
+\[ d \eqd \fdots_{21}-\fdots_{11}.\]
+
+Then
+\begin{eqnarray*}
+   \pP{\mbox{error}}
+     &=& \sum_{m=1}^M \pP{[s(t;m)\mbox{ transmitted }]\land
+                            [(\fdotr_1,\fdotr_2)\notin D_m] }
+   \\&=& \sum_{m=1}^M \pP{[(\fdotr_1,\fdotr_2)\notin D_m]|
+                            [s(t;m)\mbox{ transmitted }] }
+                      \pP{[s(t;m)\mbox{ transmitted }]}
+   \\&=& \frac{1}{M}
+         \sum_{m=1}^M \pP{[(\fdotr_1,\fdotr_2)\notin D_m]|
+                            [s(t;m)\mbox{ transmitted }] }
+   \\&=& \frac{1}{M}\left[
+         4 \pP{(\fdotr_1,\fdotr_2)\notin D_1 | s_1(t)} +
+         8 \pP{(\fdotr_1,\fdotr_2)\notin D_2 | s_2(t)} +
+         4 \pP{(\fdotr_1,\fdotr_2)\notin D_6 | s_6(t)} 
+         \right]
+   \\&=& \frac{1}{M}\left[
+         4 \int\int_{(x,y)\notin D_1} \pdf_{xy|1}(x,y) dxdy +
+         8 \int\int_{(x,y)\notin D_2} \pdf_{xy|2}(x,y) dxdy + \right.
+         \\&& \left.4 \int\int_{(x,y)\notin D_6} \pdf_{xy|6}(x,y) dxdy
+         \right]
+   \\&=& \frac{1}{M}\left[
+         4 \int\int_{(x,y)\notin D_1} \pdf_{x|1}(x) \pdf_{y|1}(y) dxdy +
+         8 \int\int_{(x,y)\notin D_2} \pdf_{x|2}(x) \pdf_{y|2}(y) dxdy + \right.
+         \\&& \left.4 \int\int_{(x,y)\notin D_6} \pdf_{x|6}(x) \pdf_{y|6}(y) dxdy
+         \right]
+   \\&=& \frac{1}{M} \left[
+         4 Q\left(\frac{d}{2N_o}\right) Q\left(\frac{d}{2N_o}\right) + 
+         8 Q\left(\frac{d}{2N_o}\right) 2Q\left(\frac{d}{2N_o}\right) + 
+         4\cdot2 Q\left(\frac{d}{2N_o}\right) 2Q\left(\frac{d}{2N_o}\right) 
+         \right]
+   \\&=& \frac{9}{4} Q^2\left(\frac{d}{2N_o}\right)
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+
+
+%=======================================
+\subsection{Phase Shift Keying (PSK)}
+\index{Phase Shift Keying}
+\index{PSK}
+%=======================================
+
+
+
+%---------------------------------------
+\subsubsection{Receiver statistics}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,200)(-100,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put(-100,   0 ){\line(1,0){300} }
+  %\put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](  0,0)(  0, 60)(  0,120)
+  \qbezier[30](100,0)(100, 60)(100,120)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \put(   0, -10 ){\makebox(0,0)[t]{$r\cos\theta_m$} }
+  \put( 100, -10 ){\makebox(0,0)[t]{$r\sin\theta_m$} }
+  \put( -30, 100 ){\makebox(0,0)[br]{$(\fdotr_c|m)$} }
+  \put( 130, 100 ){\makebox(0,0)[bl]{$(\fdotr_s|m)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+  Distributions of PSK components
+   \label{fig:psk_pdf}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let 
+\begin{eqnarray*}
+   \fdotr_c   &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s   &\eqd& \inprod{\fr(t)}{\psi_\fs(t)} \\
+   \theta_m       &\eqd& \atan\left[\frac{\fdotr_s(m)}{\fdotr_c(m)}\right].
+\end{eqnarray*}
+
+The statistics $(\fdotr_c|m)$ and $(\fdotr_s|m)$ are {\bf independent} 
+with marginal distributions
+\begin{eqnarray*}
+   (\fdotr_c|m) &\sim& \pN{r\cos\theta_m}{\sigma^2} \\
+   (\fdotr_s|m) &\sim& \pN{r\sin\theta_m}{\sigma^2} \\
+   \pdf_{\theta_m}(\theta|m)  &=&  \int_0^\infty x \pdf_{\fdotr_c}(x|m) 
+                                                 \pdf_{\fdotr_s}(x\tan\theta|m) dx.
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+
+Indepence and marginal distributions of $\fdotr_1(m)$ and $\fdotr_2(m)$
+follow directly from 
+\prefpp{thm:ms_stats} (page~\pageref{thm:ms_stats}).
+
+
+Let $X\eqd\fdotr_1(m)$, $Y\eqd\fdotr_2(m)$ and $\Theta\eqd\theta_m$.
+Then 
+\footnote{ A similar example is in \\\cite[page 138]{papoulis}}
+\begin{eqnarray*}
+   \pdft(\theta)d\theta
+     &\eqd& \pP{\theta < \Theta \le \theta + d\theta} 
+   \\&=&    \pP{\theta < \atan\frac{Y}{X} \le \theta + d\theta} 
+   \\&=&    \pP{\tan(\theta) < \frac{Y}{X} \le \tan(\theta + d\theta)} 
+   \\&=&    \pP{\tan(\theta) < \frac{Y}{X} \le \tan\theta + (1+\tan^2\theta)\dth} 
+   \\&=&    \int_0^\infty \pPa{\tan\theta < \frac{Y}{X} \le \tan\theta + (1+\tan^2\theta)\dth}{(x<X\le x+\dx)} 
+   \\&=&    \int_0^\infty \pPc{\tan\theta < \frac{Y}{x} \le \tan\theta + (1+\tan^2\theta)\dth}{x<X\le x+dx}\pP{x<X\le x+\dx} 
+   \\&=&    \int_0^\infty \pPc{x\tan\theta < Y \le x\tan\theta + x(1+\tan^2\theta)\dth)}{X=x} \pdfx(x)\dx 
+   \\&=&    \int_0^\infty [\ppy(x\tan\theta)x(1+\tan^2\theta)] \ppx(x) \dx \dth
+   \\&=&    (1+\tan^2\theta) \int_0^\infty x\ppy(x\tan\theta) \ppx(x) \dx \dth
+\\\implies\\
+   \pdft(\theta)d\theta
+     &=& (1+\tan^2\theta) \int_0^\infty x\ppy(x\tan\theta) \ppx(x) \dx 
+\end{eqnarray*}
+\attention
+\end{proof}
+
+
+
+%---------------------------------------
+\subsubsection{Detection}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot},S)$ be a PSK modulation space with
+\begin{eqnarray*}
+   \fr(t) = s(t;m)+\fn(t) \\
+   \fdotr_c &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s &\eqd& \inprod{\fr(t)}{\psi_\fs(t)}.
+\end{eqnarray*}
+
+Then $\{\fdotr_c,\fdotr_s\}$ are sufficient statistics for 
+optimal ML detection and the optimal ML estimate of $m$ is
+\[ \estML[u][m] = \arg\min_m 
+      \left[ 
+         (\fdotr_1-r\cos\theta_m)^2  +
+         (\fdotr_2-r\sin\theta_m)^2 
+      \right]. 
+\]
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \estML[u][m]
+     &= \arg\max_m \pP{\fr(t)|s(t;m)}
+     && \text{by \prefpp{def:ML}}
+   \\&= \arg\min_m \sum_{n=1}^N [\fdotr_n - \fdots_n(m)]^2
+     && \text{by \prefpp{thm:ml_est_det} }
+   \\&= \arg\min_m 
+      \left[ 
+         (\fdotr_1-r\cos\theta_m)^2  +
+         (\fdotr_2-r\sin\theta_m)^2 
+      \right]. 
+     && \text{by \prefpp{def:psk}}.
+\end{align*}
+\end{proof}
+
+
+
+
+%---------------------------------------
+\subsubsection{Probability of error}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(230,230)(-100,-100)
+  %\graphpaper[10](-100,-100)(230,230)                  
+  \thicklines                                      
+  %\put(-100 ,   0 ){\line(1,0){200} }
+  %\put(   0 ,-100 ){\line(0,1){200} }
+  \thinlines
+  \put(   0 ,   0 ){\line( 2, 1){80} }
+  \put(   0 ,   0 ){\line( 1, 2){40} }
+  \put(   0 ,   0 ){\line(-1, 2){40} }
+  \put(   0 ,   0 ){\line(-2, 1){80} }
+  \put(   0 ,   0 ){\line(-2,-1){80} }
+  \put(   0 ,   0 ){\line(-1,-2){40} }
+  \put(   0 ,   0 ){\line( 1,-2){40} }
+  \put(   0 ,   0 ){\line( 2,-1){80} }
+  
+  \put(  28 ,   0 ){\makebox(  50, 50)[bl]{$\theta$} }
+  %\put( 110 ,  -5 ){$\psi_1$}
+  %\put(   0 , 110 ){$\psi_2$}
+
+  \put( 100 ,   0 ){$D_1$}
+  \put(  75 ,  75 ){$D_2$}
+  \put(   0 , 100 ){$D_3$}
+  \put( -75 ,  75 ){$D_4$}
+  \put(-110 ,   0 ){$D_5$}
+  \put( -80 , -80 ){$D_6$}
+  \put(   0 ,-100 ){$D_7$}
+  \put(  75 , -75 ){$D_8$}
+
+  \put(  80 ,   0 ){\circle{10}}
+  \put(  57 ,  57 ){\circle{10}}
+  \put(   0 ,  80 ){\circle{10}}
+  \put( -57 ,  57 ){\circle{10}}
+  \put( -80 ,   0 ){\circle{10}}
+  \put( -57 , -57 ){\circle{10}}
+  \put(   0 , -80 ){\circle{10}}
+  \put(  57 , -57 ){\circle{10}}
+
+  %\put(   0 ,   0 ){\circle{160}}
+  %\qbezier[20](  0, 80)( 80, 80)( 80, 00)
+  %\qbezier[20](-80,  0)(-80, 80)(  0, 80)
+  %\qbezier[20](-80,  0)(-80,-80)(  0,-80)
+  %\qbezier[20](  0,-80)( 80,-80)( 80,  0)
+  \setlength{\unitlength}{0.16mm}
+  \input{../common/circle.inp}
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   PSK-8 Decision regions
+   \label{fig:PSK_Dm}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+The probability of error using PSK modulation is
+\begin{eqnarray*}
+   \pP{\mbox{error}}
+     &=& M \left[ 
+              1 - \int_{\frac{2\pi}{M}\left(m-\frac{3}{2}\right)}^{\frac{2\pi}{M}\left(m-\frac{1}{2}\right)}
+                  \pdf_{\theta_1}(\theta) \; d\theta
+           \right].
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+See \prefpp{fig:PSK_Dm}.
+
+\begin{eqnarray*}
+   \pP{\mbox{error}}
+     &=& \sum_{m=1}^M \pP{\mbox{error}|s(t;m) \mbox{ was transmitted}}
+   \\&=& M \pP{\mbox{error}|s_1(t) \mbox{ was transmitted}}
+   \\&=& M \left[ 
+              1 - \int_{\frac{2\pi}{M}\left(m-\frac{3}{2}\right)}^{\frac{2\pi}{M}\left(m-\frac{1}{2}\right)}
+                  \pdf_{\theta_1}(\theta) \; d\theta
+           \right].
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+
+
+
+%---------------------------------------
+\subsection{Pulse Amplitude Modulation (PAM)}
+\index{Pulse Amplitude Modulation}
+\index{PAM}
+\index{Pulse Amplitude Modulation}
+\index{PAM}
+%---------------------------------------
+
+
+%---------------------------------------
+\subsubsection{Receiver statistics}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(200,200)(-100,-30)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put(-100,   0 ){\line(1,0){200} }
+  %\put(   0, -10 ){\line(0,1){150} }
+
+  \qbezier[30](  0,0)(  0, 60)(  0,120)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \put(   0, -10 ){\makebox(0,0)[t]{$a_m$} }
+  \put( -30, 100 ){\makebox(0,0)[br]{$(\fdotr|m)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+  Distribution of PAM component
+   \label{fig:pam_pdf}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot}$ be a PAM modulation space such that
+\begin{eqnarray*}
+   \fr(t) &=& s(t;m) + \fn(t) \\
+   \fdotr_c &\eqd& \inprod{\fr(t)}{\psi_c(t)} \\
+   \fdotr_s &\eqd& \inprod{\fr(t)}{\psi_\fs(t)}. 
+\end{eqnarray*}
+
+Then $(\fdotr|m)$ has {\bf distribution}
+\[ \fdotr(m) \sim  \pN{a_m}{\sigma^2}.  \]
+\end{theorem}
+
+\begin{proof}
+This follows directly from 
+\prefpp{thm:ms_stats} (page~\pageref{thm:ms_stats}).
+\end{proof}
+
+
+%---------------------------------------
+\subsubsection{Detection}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(V,\inprod{\cdot}{\cdot},S)$ be a PAM modulation space with
+\begin{eqnarray*}
+   \fr(t)    &=&    s(t;m)+\fn(t) \\
+   \fdotr &\eqd& \inprod{\fr(t)}{\psi(t)}.
+\end{eqnarray*}
+
+Then $\fdotr$ is a sufficient statistic for the
+optimal ML detection of $m$ and the optimal ML estimate of $m$ is
+   \[ \estML[u][m] = \arg\min_m |\fdotr - a_m |. \]
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \estML[u][m]
+     &= \arg\max_m \pP{\fr(t)|a_m}
+     && \text{by \prefpp{def:ML}}
+   \\&= \arg\min_m \sum_{n=1}^N [\fdotr_n - \fdots_n(m)]^2
+     && \text{by \prefpp{thm:ml_est_det} }
+   \\&= \arg\min_m [\fdotr - \fdots(m)]^2
+   \\&= \arg\min_m |\fdotr - \fdots(m)|
+\end{align*}   
+\end{proof}
+
+
+%---------------------------------------
+\subsubsection{Probability of error}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+The probability of detection error in a PAM modulation space is
+   \[ \pP{\mbox{error}} = 2\frac{M-1}{M} \Qb{\frac{a_2-a_1}{2\sqrt{N_o}}} .\]
+\end{theorem}
+
+\begin{proof}
+Let $d\eqd a_2-a_1$ and $\sigma\eqd \sqrt{\var{\fdotr}}=\sqrt{N_o}$.
+Also, let the decision regions $D_m$ be as illustrated in \prefpp{fig:PAM_norm}.
+Then
+\begin{eqnarray*}
+   \pP{error}
+     &=& \sum_{m=1}^M \pP{s(t;m) \mbox{ sent } \land r\notin D_m} 
+   \\&=& \sum_{m=1}^M \pP{\fdotr \notin D_m | s(t;m) \mbox{ sent } }\pP{s(t;m) \mbox{ sent }} 
+   \\&=& \sum_{m=1}^M \pP{\fdotr_m \notin D_m } \frac{1}{M}
+   \\&=& \frac{1}{M}\left(
+             \Qb{\frac{d}{2\sigma}} +
+            2\Qb{\frac{d}{2\sigma}} + 
+            \ldots
+            2\Qb{\frac{d}{2\sigma}} + 
+             \Qb{\frac{d}{2\sigma}} 
+         \right)
+   \\&=& 2\frac{M-1}{M} \Qb{\frac{d}{2\sigma}} 
+   \\&=& 2\frac{M-1}{M} \Qb{\frac{\fdots_2-\fdots_1}{2\sqrt{N_o}}} 
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(500,160)(-100,-30)
+  %\graphpaper[10](-100,0)(500,150)                  
+  \thinlines                                      
+  \put(-100 ,   0 ){\line(1,0){500} }
+
+  \put(  50 , -10 ){\line(0,-1){40} }
+  \put( 150 , -10 ){\line(0,-1){40} }
+  \put( 250 , -10 ){\line(0,-1){40} }
+
+  \put(   0 , -30 ){$D_1$ }
+  \put( 100 , -30 ){$D_2$ }
+  \put( 200 , -30 ){$D_3$ }
+  \put( 300 , -30 ){$D_4$ }
+
+  %\qbezier[12]( 60,  0)( 60, 30)( 60, 60)
+  %\qbezier[12](  0, 60)( 30, 60)( 60, 60)
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+
+  \qbezier( 160,  60)( 200, 180)( 240,  60)
+  \qbezier( 100,   0)( 140,   0)( 160,  60)
+  \qbezier( 240,  60)( 260,   0)( 300,   0)
+
+  \qbezier( 260,  60)( 300, 180)( 340,  60)
+  \qbezier( 200,   0)( 240,   0)( 260,  60)
+  \qbezier( 340,  60)( 360,   0)( 400,   0)
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+  4-ary PAM in AWGN channel
+   \label{fig:PAM_norm}
+   }
+\end{figure}
+
+
+
+
+%======================================
+\section{Colored noise}
+\index{noise!colored}
+%======================================
+This chapter presented several theorems whose results depended on the 
+noise being white. 
+However if the noise is {\bf colored}, then these results are
+invalid.
+But there is still hope for colored noise.
+Processing colored signals can be accomplished using two techniques:
+\begin{enume}
+   \item Karhunen-Lo\`{e}ve basis functions
+      \footnote{{\bf Karhunen-Lo\`{e}ve}: Section~\ref{sec:KL} page~\pageref{sec:KL}}
+   \item whitening filter
+\footnote{
+   \begin{tabular}[t]{lll}
+      {\bf Continuous data whitening}: & Section~\ref{sec:whiten}   & page~\pageref{sec:whiten}.\\
+      {\bf Discrete data whitening}:   & Section~\ref{sec:d-whiten} & page~\pageref{sec:d-whiten}.
+   \end{tabular}
+   }
+\end{enume}
+ 
+\paragraph{Karhunen-Lo\`{e}ve.}
+If the noise is white, the set $\{\inprod{\fr(t)}{\psi_n(t)}\}$
+is a sufficient statistic regardless of which 
+set $\{\psi_n(t)\}$ of orthonormal basis functions are used.
+If the noise is colored, and if $\{\psi_n(t)\}$ satisfy the 
+Karhunen-Lo\`{e}ve criterion
+   \[ \int_{t_2}\Rxx(t_1,t_2)\psi_n(t_2)\dd{t_2} = \lambda_n \psi_n(t_1) \]
+then $\{\inprod{\fr(t)}{\psi_n(t)}\}$ is still a sufficient statistic.
+
+\paragraph{Whitening filter.}
+The whitening filter makes the received signal $\fr(t)$ statistically white 
+(uncorrelated in time). In this case, 
+any orthonormal basis set can be used to generate sufficient statistics.
+
+
+
+
+%======================================
+\section{Signal matching}
+\index{matched filter}
+%======================================
+\paragraph{Detection methods.}
+There are basically two types of detection methods:
+\begin{enume}
+   \item signal matching
+   \item orthonormal decomposition.
+\end{enume}
+
+Let $S$ be the set of transmitted waveforms and
+$R$ be a set of orthonormal basis functions that span $S$.
+{\em Signal matching} computes the innerproducts of a 
+received signal $\fr(t)$ with each signal from $S$.
+{\em Orthonormal decomposition} computes the innerproducts of 
+$\fr(t)$ with each signal from the set $R$.
+
+In the case where $|S|$ is large, often $|R|<<|S|$
+making orthonormal decomposition much easier to implement.
+For example, in a QAM-64 modulation system,
+signal matching requires $|S|=64$ innerproduct calculations,
+while orthonormal decomposition only requires $|R|=2$ 
+innerproduct calculations because all 64 signals in $S$ can be spanned 
+by just 2 orthonormal basis functions.
+
+\paragraph{Maximizing SNR.}
+\prefpp{thm:sstat} shows that the innerproducts of $\fr(t)$ with 
+basis functions of $R$ is sufficient for optimal detection.
+\prefpp{thm:mf_maxSNR} (next) shows that a receiver can 
+maximize the SNR of a received signal when signal matching is used.
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:mf_maxSNR}
+%--------------------------------------
+Let $\fs(t)$ be a transmitted signal, $\fn(t)$ noise, and $\fr(t)$ the received signal
+in an AWGN channel.
+Let the {\em signal to noise ratio} SNR be defined as 
+   \[ \snr[\fr(t)] \eqd \frac{|\inprod{\fs(t)}{\fx(t)}|^2}
+                            {\pEb{|\inprod{\fn(t)}{\fx(t)}|^2}}. \]
+Then, $\snr[\fr(t)]$ is 
+\formbox{
+  \snr[\fr(t)] \le \frac{2\norm{\fs(t)}^2}{N_o }
+  }
+and is maximized (equality) when $\fx(t)=a\fs(t)$, where $a\in\R$.
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \snr[\fr(t)]
+     &\eqd \frac{\abs{\inprod{\fs(t)}{\fx(t)}}^2}
+                {\pEb{|\inprod{\fn(t)}{\fx(t)}|^2}}
+   \\&=    \frac{\abs{\inprod{\fs(t)}{f(t)}}^2}
+                {\pEb{\left[\int_t \fn(t)\fx^\ast(t)\;dt\right] 
+                      \left[\int_u n(u)f^\ast(u)\;du\right]^\ast}
+                }
+   \\&=    \frac{|\inprod{\fs(t)}{\fx(t)}|^2}
+                {\pEb{\int_t \int_u \fn(t)n^\ast(u)\fx^\ast(t)\fx(u)\;dtdu}}
+   \\&=    \frac{|\inprod{\fs(t)}{f(t)}|^2}
+                {\int_t \int_u \pEb{\fn(t)n^\ast(u)}\fx^\ast(t)\fx(u)\;dtdu}
+   \\&=    \frac{|\inprod{\fs(t)}{\fx(t)}|^2}
+                {\int_t \int_u \frac{1}{2}N_o\delta(t-u) \fx^\ast(t)\fx(u)\;dtdu}
+   \\&=    \frac{|\inprod{\fs(t)}{\fx(t)}|^2}
+                {\frac{1}{2}N_o \int_t \fx^\ast(t)\fx(t)\dt}
+   \\&=    \frac{|\inprod{\fs(t)}{\fx(t)}|^2}
+                {\frac{1}{2}N_o \norm{\fx(t)}^2}
+   \\&\le  \frac{|\norm{\fs(t)}\;\norm{\fx(t)}|^2}
+                {\frac{1}{2}N_o \norm{\fx(t)}^2}
+     &&    \text{by Cauchy-Schwarz Inequality page~\pageref{thm:cs}}
+   \\&=    \frac{2\norm{\fs(t)}^2}
+                {N_o }
+\end{align*}
+The Cauchy-Schwarz Inequality becomes an equality 
+($\snr$ is maximized) when $\fx(t)=a\fs(t)$.
+\end{proof}
+
+\paragraph{Implementation.}
+The innerproduct operations can be implemented using either
+  \begin{dingautolist}{"C0}
+     \item a correlator or 
+     \item a matched filter.
+  \end{dingautolist}
+
+A correlator is simply an integrator of the form
+   \[ \inprod{\fr(t)}{f(t)} = \int_0^T \fr(t)f(t)\dt.\]
+
+A matched filter introduces a function $h(t)$ such that
+$h(t) =s(T-t)$ (which implies $\fs(t)=h(T-t)$) giving
+  \[
+    \mcom{\inprod{\fr(t)}{\fs(t)} = \int_0^T \fr(t)\fs(t)\dt }
+         {correlator}
+    = 
+    \mcom{\left.\int_0^\infty s(\tau)h(t-\tau)\dtau\right|_{t=T}
+            = \left.\fs(t)\conv h(t)\right|_{t=T}
+         }{matched filter}.
+  \]
+ 
+This shows that $h(t)$ is the impulse response of a filter operation
+sampled at time $T$ (see \prefpp{fig:mf}).
+By \prefpp{thm:mf_maxSNR}, the optimal impulse response is
+$h(T-t)=f(t)=\fs(t)$.
+That is, the optimal $h(t)$ is just a ``flipped" and shifted version of $\fs(t)$.
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}                  
+\begin{picture}(350,100)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+  \put(   90,  60 ){\makebox( 0,50)[br]{$\fr(t)=\fs(t)+\fn(t)$} }
+  \put(    0,  50 ){\vector(1,0){100} }
+
+  \put( 100 ,  00 ){\framebox( 100,100){$\conv h(t)$} }
+  \put( 200 ,  50 ){\vector(1,0){ 50} }
+  \put( 250 ,  50 ){\usebox{\picSampler}}
+  \put( 350 ,  50 ){\vector(1,0){100} }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Matched Filter
+   \label{fig:mf}
+   }
+\end{figure}
+
+
+
+%=======================================
+\section{Channel Capacity}
+%=======================================
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.17mm}                  
+\begin{picture}(900,200)(-100,-50)
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+  \put(-100, 125 ){\vector(0,-1){40}}
+  \put(-100, 130 ){\makebox(0,0)[bl]{$R_d$ (data rate)}}
+  \put(-100,  60 ){\makebox(30,0)[br]{$\{u_n\}$} }
+  \put(-100,  50 ){\vector(1,0){50} }
+
+  \put(-70, -50 ){\dashbox{4}( 280,160){} }
+  \put(-70, -40 ){\makebox( 280,160)[b]{transmitter} }
+  \put(   50, 130 ){\makebox(0,0)[bl]{$R_c$ (signal rate)}}
+  \put(   75, 125 ){\vector(0,-1){40}}
+  \put(   50,  60 ){\makebox(50,50)[b]{$\{y_n\}$} }
+  \put(   50,  50 ){\vector(1,0){50} }
+
+  \put(- 50,  00 ){\framebox( 100,100){} }
+  \put(- 50,  10 ){\makebox( 100,80)[t]{channel} }
+  \put(- 50,  10 ){\makebox( 100,80)[ ]{coder} }
+  \put(- 50,  10 ){\makebox( 100,80)[b]{$(L,N)$} }
+  \put( 100,  00 ){\framebox( 100,100){modulator} }
+  \put( 200,  50 ){\vector(1,0){100} }
+
+  \put( 350, 125 ){\vector(0,-1){25}}
+  \put( 300, 130 ){\makebox(0,0)[bl]{$\frac{L}{N}=\frac{R_d}{R_c}\eqd R<C$ (channel capacity)}}
+  \put( 300,  00 ){\framebox( 100,100){} }
+  \put( 300,  30 ){\makebox( 100, 40)[t]{channel} }
+  \put( 300,  10 ){\makebox( 100, 40)[b]{$\pp(Y|X)$} }
+  \put( 210,  60 ){\makebox( 90, 50)[b]{$s(t)$} }
+  \put( 400,  60 ){\makebox( 80, 50)[b]{$r(t)$} }
+
+  \put( 400,  50 ){\vector(1,0){100} }
+  \put( 500,  00 ){\framebox(100,100){demodulator} }
+  \put( 600,  60 ){\makebox(50,50)[b]{$\{\hat{y}_n\}$} }
+  \put( 600,  50 ){\vector(1,0){50}}
+  \put( 650,  00 ){\framebox(100,100){} }
+  \put( 650,  30 ){\makebox(100,40)[t]{channel} }
+  \put( 650,  30 ){\makebox(100,40)[b]{decoder} }
+  \put( 480, -50 ){\dashbox{4}( 280,160){} }
+  \put( 480, -40 ){\makebox( 280,160)[b]{receiver} }
+
+  \put( 760,  60 ){\makebox(40,50)[b]{$\{\ue_n\}$} }
+  \put( 750,  50 ){\vector(1,0){50}}
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Memoryless modulation system model
+   %\label{fig:i_mod_model}
+   }
+\end{figure}
+
+
+
+
+
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}                  
+\begin{picture}(700,150)(-100,0) 
+  \thinlines                                      
+  %\graphpaper[10](0,0)(500,100)                  
+  \put(-100 ,  60 ){\makebox( 100,0)[b]{$\su$} }
+  \put(-100 ,  50 ){\vector(1,0){100} }
+
+  \put(  00 ,  10 ){\makebox( 100, 80)[t]{transmit} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put(  00 ,  00 ){\framebox( 100,100){} }
+
+  \put( 100 ,  60 ){\makebox( 100,0)[b]{$X$} }
+  \put( 100 ,  50 ){\vector(1,0){140} }
+
+
+  \put( 200 ,  00 ){\makebox(100, 95)[t]{$Z$} }
+  \put( 260,   50 ){\line  (1,0){ 45} }
+  \put( 250 ,  80 ){\vector(0,-1){20} }
+  \put( 250,   50) {\circle{20}                   }
+  \put( 200 ,  00 ){\dashbox(100,100){$+$} }
+  \put( 200 ,  10 ){\makebox(100, 90)[b]{channel $\opC$} }
+
+  %\put( 200 ,  10 ){\makebox( 100, 80)[t]{channel} }
+  %\put( 200 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  %\put( 200 ,  10 ){\makebox( 100, 80)[b]{\opC} }
+  %\put( 200 ,  00 ){\framebox(100,100){} }
+
+  \put( 300 ,  60 ){\makebox( 100,0)[b]{$Y$} }
+  \put( 300 ,  50 ){\vector(1,0){100} }
+
+  \put( 400 ,  00 ){\framebox(100,100){} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[t]{receive} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[b]{$\opR$} }
+
+  \put( 500 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 500 ,  50 ){\vector(1,0){100} }
+
+  %\put(- 90 , -10 ){\makebox( 0, 0)[tl]{$\vu\eqd\su$} }
+  %\put( 110 , -10 ){\makebox( 0, 0)[tl]{$s(t;\vu)=\opT\vu$} }
+  %\put( 310 , -10 ){\makebox( 0, 0)[tl]{$r(t;\vu)=\opC\opT\vu$} }
+  %\put( 510 , -10 ){\makebox( 0, 0)[tl]{$\sue=\opR\opC\opT\vu$} }
+
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Additive noise system model
+   %\label{fig:i_addNoise_model}
+   }
+\end{figure}
+
+How much information can be reliably sent through the channel?
+The answer depends on the {\em channel capacity} 
+\footnote{{\em channel capacity}: 
+  \prefpp{def:iC} page~\pageref{def:iC}
+  }
+$\iC$.
+As proven by the {\em Noisy Channel Coding Theorem} (NCCT),
+\footnote{{\em noisy channel coding theorem}:
+  \prefpp{thm:ncct} page~\pageref{thm:ncct}
+  }
+each transmitted symbol can carry up to $\iC$ bits for any arbitrarily 
+small probability of error greater than zero.
+The price for decreasing error is increasing the block code size.
+
+Note that the NCCT does not say at what rate
+(in bits/second) you can send data through the AWGN channel.
+The AWGN channel knows nothing of time (and is therefore not a 
+realistic channel). 
+The NCCT channel merely gives a {\em coding rate}.
+That is, the number of information bits each symbol can carry.
+Channels that limit the rate (in bits/second) that can be sent through
+it are obviously aware of time and are often referred to as 
+{\em bandlimited channels}.
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+Let $Z\sim\pN{0}{\sigma^2}$. Then
+\formbox{  \iH(Z) = \frac{1}{2}\log_2 2\pi e \sigma^2  }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \iH(Z)
+    &=& \pEz \log \frac{1}{\pp(Z)}
+  \\&=& -\pEz \log \pp(z) 
+  \\&=& -\pEz
+         \log \left[\frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{-z^2}{2\sigma^2}} \right] 
+  \\&=& -\pEz \left[
+        -\frac{1}{2}\log(2\pi\sigma^2) 
+        + \frac{-z^2}{2\sigma^2} \log e 
+        \right] 
+  \\&=& \frac{1}{2} \pEz \left[
+        \log(2\pi\sigma^2) 
+        + \frac{\log e}{\sigma^2}z^2  
+        \right] 
+  \\&=& \frac{1}{2} \left[
+        \log(2\pi\sigma^2) + \frac{\log e}{\sigma^2}\pEz z^2  
+        \right] 
+  \\&=& \frac{1}{2} \left[
+        \log(2\pi\sigma^2) + \frac{\log e}{\sigma^2}(\sigma^2+0)
+        \right] 
+  \\&=& \frac{1}{2} \left[
+        \log(2\pi\sigma^2) + \log e
+        \right] 
+  \\&=& \frac{1}{2} \log(2\pi e\sigma^2) 
+\end{eqnarray*}
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}
+\citetbl{
+  \citerp{cover}{241}
+  }
+%--------------------------------------
+Let $Y=X+Z$ be a Gaussian channel with $\pE X^2=P$ and
+$Z\sim\pN{0}{\sigma^2}$. Then
+\formbox{ 
+  \iI(X;Y) \le \frac{1}{2}\log\left( 1 + \frac{P}{\sigma^2}\right) = \iC 
+  %\hspace{1cm}\mbox{bits per usage}
+  }
+\end{theorem}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+\begin{enumerate}
+  \item If there is no transmitted energy ($P=0$), then the capacity of
+        the channel to pass information is
+    \begin{eqnarray*}
+      \iC 
+        &=& \frac{1}{2}\log_2\left( 1 + \frac{P}{\sigma^2}\right)
+      \\&=& \frac{1}{2}\log_2\left( 1 + \frac{0}{\sigma^2}\right)
+      \\&=& 0
+    \end{eqnarray*}
+  That is, the symbols cannot carry any information.
+
+  \item If there is finite symbol energy and no noise ($\sigma^2=0$),
+        then the capacity of the channel to pass information is
+    \begin{eqnarray*}
+      \iC 
+        &=& \frac{1}{2}\log_2\left( 1 + \frac{P}{0}\right)
+      \\&=& \infty
+    \end{eqnarray*}
+  That is, each symbol can carry an infinite amount of information.
+  That is, we can use a modulation scheme with an infinite 
+  number of of signaling waveforms (analog modulation)
+  and thus each symbol can be represented by one of an 
+  infinite number of waveforms.
+
+  \item If the transmitted energy is ($P=15\sigma^2$), 
+        then the capacity of the channel to pass information is
+    \begin{eqnarray*}
+      \iC 
+        &=& \frac{1}{2}\log_2\left( 1 + \frac{15\sigma^2}{\sigma^2}\right)
+      \\&=& \frac{1}{2}\log_2\left( 1 + 15\right)
+      \\&=& \frac{1}{2} 4
+      \\&=& 2
+    \end{eqnarray*}
+  This means
+  \begin{eqnarray*}
+    2
+      &=& \iC
+       >  \rchan
+       \eqd \frac{\mbox{information bits}}{\mbox{symbol}}
+       = \frac{\mbox{information bits}}{\mbox{coded bits}} \times
+         \frac{\mbox{coded bits}}{\mbox{symbol}}
+       = \rcode \rsym
+  \end{eqnarray*}
+  This means that if the coding rate is $\rcode=1/4$,
+  then we must use a modulation with $256$ ($\rsym=8$ bits/symbol) 
+  or fewer waveforms.
+
+  Conversely, if the modulation scheme uses $4$ waveforms, then
+  $\rsym=2$ bits/symbol and so the code rate $\rcode$ can be 
+  up to $1$ (almost no coding redundancy is needed).
+
+
+  \item If there is the transmitted energy ($P=\sigma^2$), 
+        then the capacity of the channel to pass information is
+    \begin{eqnarray*}
+      \iC 
+        &=& \frac{1}{2}\log_2\left( 1 + \frac{\sigma^2}{\sigma^2}\right)
+      \\&=& \frac{1}{2}\log_2\left( 1 + 1\right)
+      \\&=& \frac{1}{2} 
+    \end{eqnarray*}
+  That is, each symbol can carry just under $1/2$ bits of information.
+  This means
+  \begin{eqnarray*}
+    \frac{1}{2}
+      &=& \iC
+       >  \rchan
+       \eqd \frac{\mbox{information bits}}{\mbox{symbol}}
+       = \frac{\mbox{information bits}}{\mbox{coded bits}} \times
+         \frac{\mbox{coded bits}}{\mbox{symbol}}
+       = \rcode \rsym
+  \end{eqnarray*}
+  This means that if the coding rate is $\rcode=1/4$,
+  then we must use a modulation with $4$ ($\rsym=2$ bits/symbol) 
+  or fewer waveforms.
+
+  Conversely, if the modulation scheme uses $16$ waveforms, then
+  $\rsym=4$ bits/symbol and so the code rate $\rcode$ must be
+  less than $1/8$.
+\end{enumerate}
+\end{example}

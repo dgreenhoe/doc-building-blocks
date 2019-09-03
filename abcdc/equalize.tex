@@ -1,0 +1,847 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Distorted Frequency Response Channel}
+\index{channel!distorted frequency response}
+\label{chp:eq}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}                  
+\begin{picture}(900,150)(-200,-100)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(-170,  -80 ){\dashbox{5}( 280,160)   {}             }
+  \put(-170,  -70 ){\makebox( 280,160)[b]   {transmitter}             }
+  \put(-180,   10 ){\makebox (  0, 40)[br]{$\su$}        }
+  \put(-200,    0 ){\vector  (   1,  0)   { 50}          }
+  \put(-150,  -50 ){\framebox( 100,100)   {mapper}    }
+
+  \put(- 50,   10 ){\makebox (  50, 40)[b]{$\sa$}        }
+  \put(- 50,    0 ){\vector  (   1,  0)   { 50}          }
+  \put(   0,  -50 ){\framebox( 100,100)   {modulator}    }
+  \put( 110,   10 ){\makebox (  90,  0)[b]{$s(t;\va)$}       }
+  \put( 110,  -90 ){\makebox (   0,  0)[lt]{$\ds s(t;\va)=\sum_n a_n \lambda(t-nT)$}       }
+  \put( 100,    0 ){\vector  (   1,  0)   {100}         }
+  \put( 200,  -50 ){\framebox( 100,100)   {$\conv h_c(t)$} }
+  \put( 200,  -30 ){\makebox ( 100, 80)[b]{frequency}    }
+  \put( 200,  -40 ){\makebox ( 100, 80)[b]{distortion}   }
+
+  \put( 300,   10 ){\makebox (  50, 40)[b]{$w(t)$}       }
+  \put( 350,    0 ){\usebox{\picAWGN}}
+  \put( 460,   10 ){\makebox ( 90, 50)[b]{$r(t)$}       }
+  \put( 460,  -90 ){\makebox (   0,  0)[lt]{$\ds r(t)=w(t)+n(t)=\sum_n a_n \fh(t-nT) + n(t)$}       }
+
+  \put( 190,  -80 ){\dashbox{5}( 270,160)   {}             }
+  \put( 190,  -70 ){\makebox ( 270,160)[b]{channel}      }
+
+  \put( 500,    0 ){\line     (   1,  0)   {50}         }
+  \put( 550,  -50 ){\framebox ( 100,100){receiver}   }
+  \put( 660,   10 ){\makebox ( 40, 50)[b]{$\sue$}       }
+  \put( 650,    0 ){\vector  (   1,  0)   {50}         }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Equalization system model
+   \label{fig:eq_system_model}
+   }
+\end{figure}
+
+
+%======================================
+\section{Channel Model}
+%======================================
+In this chapter, the channel model includes both deterministic and random 
+distortion.
+
+\begin{tabular}{lll}
+   \circOne & linear deterministic distortion  & (convolution with $h_c(t)$) \\
+   \circTwo & linear stochastic distortion     & (additive white Gaussian noise).
+\end{tabular}
+
+Let 
+
+\begin{tabular}{ll}
+   $\su$        & be the information sequence \\
+   $\sa$        & be a mapped sequence under a one to one function $a_n=f(u_n)$ \\
+   $\lambda(t)$ & be the {\em modulation waveform} \\
+   $s(t;\va)$   & be the {\em transmitted waveform} \\
+   $h_c(t)$     & be the {\em channel impulse response} \\
+   $n(t)$       & be the {\em channel noise} with distribution $n(t)\sim \pN{0}{\sigma^2}$.
+\end{tabular}
+
+The following definitions apply throughout this chapter:
+\defbox{
+\begin{array}{rcl}
+   \fs(t;\sa) &\eqd& \sum_n a_n \lambda(t-nT) \\
+   \fh(t)     &\eqd& \lambda(t)\conv\fh_c(t) = \int_\tau \fh(\tau)\lambda(t-\tau) \dtau \\
+   w(t)       &\eqd& \int_\tau h_c(\tau)s(t-\tau) \; d\tau \\
+   r(t)       &\eqd& w(t) + n(t). \\
+\end{array}}
+
+Under these definitions the received signal can be expressed as follows:
+\begin{eqnarray*}
+   r(t)       
+     &=&    w(t) + n(t)
+   \\&=&    \int_\tau h_c(\tau)s(t-\tau) \dtau + n(t)
+   \\&=&    \int_\tau h_c(\tau)\sum_n a_n \lambda(t-\tau-nT) \dtau + n(t)
+   \\&=&    \sum_n a_n \int_\tau \fh_c(\tau)\lambda(t-\tau-nT) \dtau + n(t)
+   \\&=&    \sum_n a_n \fh(t-nT) + n(t)
+\end{eqnarray*}
+
+%======================================
+\section{Sufficient statistic sequence}
+\label{sec:fd_ml}
+%======================================
+%======================================
+\subsection{Receiver statistics}
+%======================================
+Define the innerproduct quantities as
+\defbox{\begin{array}{rcl}
+   \dot{r}_n    &\eqd& \inprod{r(t)}{\psi_n(t)}  \\ 
+   \dot{n}_n    &\eqd& \inprod{n(t)}{\psi_n(t)}  \\
+   \dot{h}_n(m) &\eqd& \inprod{\fh(t-mT)}{\psi_n(t)} 
+\end{array}}
+
+The quantity $\dot{r}_n$ is a random variable with form
+\begin{eqnarray*}
+   \dot{r}_n
+     &\eqd& \inprod{r(t)}{\psi_n(t)} 
+   \\&=&    \inprod{w(t)+n(t)}{\psi_n(t)} 
+   \\&=&    \inprod{w(t)}{\psi_n(t)} + \inprod{n(t)}{\psi_n(t)} 
+   \\&=&    \inprod{\sum_m a_m \fh(t-mT)}{\psi_n(t)} + \inprod{n(t)}{\psi_n(t)} 
+   \\&=&    \sum_m a_m \inprod{\fh(t-mT)}{\psi_n(t)} + \inprod{n(t)}{\psi_n(t)} 
+   \\&=&    \sum_m a_m \dot{h}_n(m) + \dot{n}_n.
+\end{eqnarray*}
+
+By \prefpp{thm:ms_stats},
+the quantity $\dot{r}_n$ given $\va $ has Gaussian distribution
+\[
+   (\dot{r}_n|\va ) \sim \pN{\sum_m a_m \dot{h}_n(m)}{\sigma^2}
+\]
+and $\dot{r}_n|\va $ and $\dot{r}_m|\va $ are independent for $n\ne m$.
+
+
+%======================================
+\subsection{ML estimate and sufficient statistic}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}                  
+\begin{picture}(1000,200)(0,-80)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   10 ){\makebox (  50, 40)[b]{$\sa$}        }
+  \put(   0,    0 ){\vector  (   1,  0)   { 50}          }
+  \put(  50,  -50 ){\framebox( 100,100)   {modulator}    }
+  \put( 150,   10 ){\makebox (  50, 40)[b]{$\fs(t;\sa)$}       }
+  \put( 150,    0 ){\vector  (   1,  0)   { 50}         }
+  \put( 200,  -50 ){\framebox( 100,100)   {$\conv \fh(t)$} }
+  \put( 200,  -40 ){\makebox ( 100, 80)[t]{$\Lh(s)$} }
+  \put( 200,  -80 ){\makebox ( 100, 30)[ ]{$\Zh(z)$} }
+  \put( 200,  -40 ){\makebox ( 100, 30)[t]{frequency}    }
+  \put( 200,  -40 ){\makebox ( 100, 30)[b]{distortion}   }
+  \put( 300,    0 ){\line    (   1,  0)   { 50}         }
+
+  \put( 300,   10 ){\makebox (  50, 40)[b]{$\fw(t;\sa)$}       }
+  \put( 350,    0 ){\usebox{\picAWGN}}
+  \put( 450,   10 ){\makebox (  50, 50)[b]{$r(t)$}       }
+
+  \put( 500,  -50 ){\framebox( 100,100)   {$\conv \fh(-t)$} }
+  \put( 500,  -40 ){\makebox ( 100, 80)[t]{$\Lh(-s)$} }
+  \put( 500,  -80 ){\makebox ( 100, 30)[ ]{$\Zh(1/z)$} }
+  \put( 500,  -40 ){\makebox ( 100, 30)[t]{matched}      }
+  \put( 500,  -40 ){\makebox ( 100, 30)[b]{filter}       }
+  \put( 600,    0 ){\vector  (   1,  0)   { 50}         }
+
+  \put( 650,    0 ){\usebox{\picSampler}}
+  \put( 750,    0 ){\vector  (   1,  0)   {100}         }
+
+  \put(  40,  -80 ){\dashbox{5}( 720,160)   {}             }
+  \put(  40,   90 ){\makebox ( 720, 30)[b]{equivalent digital system}}
+
+  \put( 780,   10 ){\makebox ( 100, 40)[lb]{$\ds \fdotr_n=\sum_m a_{n-m}\Rhh(m)+\fdotn_n$}}
+
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Sufficient statistic sequence $(\fdotr_n)$ for ML estimation
+   \label{fig:sstat_ML}
+   }
+\end{figure}
+
+
+%--------------------------------------
+\begin{definition}
+\label{def:eq_stats}
+%--------------------------------------
+\defbox{\begin{array}{rclcll}
+   \Rhh(m) &\eqd& \inprod{\fh(t+mT)}{\fh(t)} &\eqd& \ds\int_t \fh(t+mT)h^\ast(t)\dt & \mbox{(autocorrelation)} 
+\\
+   \fdotr_n &\eqd& \inprod{r(t)}{\fh(t-nT)} &\eqd& \ds\int_t r(t)h^\ast(t-nT)\dt & \mbox{(receive statistic)} 
+\\
+   \fdotn_n &\eqd& \inprod{n(t)}{\fh(t-nT)} &\eqd& \ds\int_t n(t)h^\ast(t-nT)\dt & \mbox{(noise statistic)} 
+\end{array}}
+\end{definition}
+
+Under these definitions, the receive statistic can be represented as follows
+(see \prefp{fig:sstat_ML}):
+\begin{eqnarray*}
+   \fdotr_n
+     &\eqd& \inprod{r(t)}{\fh(t-nT)} 
+   \\&=&    \inprod{\sum_m a_n \fh(t-mT) + n(t)}{\fh(t-nT)} 
+   \\&=&    \inprod{\sum_m a_n \fh(t-mT)}{\fh(t-nT)} + \inprod{n(t)}{\fh(t-nT)} 
+   \\&=&    \sum_m a_m \inprod{\fh(t-mT)}{\fh(t-nT)} + \inprod{n(t)}{\fh(t-nT)} 
+   \\&=&    \sum_m a_m \Rhh(n-m) + \fdotn_n
+   \\&=&    \sum_k a_{n-k} \Rhh(k) + \fdotn_n
+            \hspace{3ex}k=n-m \iff m=n-k
+   \\&=&    \sum_m a_{n-m} \Rhh(m) + \fdotn_n
+            \hspace{3ex}\mbox{by change of free variable}
+\end{eqnarray*}
+%--------------------------------------
+\begin{theorem}
+\label{thm:eq-ml}
+\index{maximum likelihood}
+%--------------------------------------
+Under Definitions~\ref{def:eq_stats},
+\begin{enume}
+   \item The sequence $(\fdotr_n)$ is a {\bf sufficient statistic} 
+         for determining the maximum likelihood (ML) estimate of $\va$.
+   \item The ML estimate of $\va$ is
+\formbox{
+  \estML[\va ] = \arg\max_\va  \left( 
+    2\sum_n a_n \fdotr_n -\sum_n\sum_m a_n a_{m+n} \Rhh(m)
+    \right).
+}
+\end{enume}
+\end{theorem}
+
+
+
+\begin{proof}
+\begin{eqnarray*}
+   \estML[\va ]
+     &\eqd& \arg\max_\va  \pP{r(t)|\fs(t;\sa)}
+   \\&=&    \arg\max_\va   
+            \left[ 
+            2\int_t r(t)\fw(t;\sae) -\int_t \fw^2(t;\sae) \dt 
+            \right]
+            \hspace{8ex}\mbox{by \prefpp{thm:estML_general} page~\pageref{thm:estML_general}}
+   \\&=&    \arg\max_\va   
+            \left[ 
+            2\int_t r(t)\sum_n a_n \fh(t-nT) \dt 
+            -\int_t \sum_n a_n \fh(t-nT)\sum_m a_m \fh(t-mT) \dt 
+            \right]
+   \\&=&    \arg\max_\va   
+            \left[ 
+             2\sum_n a_n \int_t r(t)\fh(t-nT) \dt 
+            -\sum_n \sum_m a_n a_m  \int_t \fh(t-nT)\fh(t-mT) \dt 
+            \right]
+   \\&=&    \arg\max_\va   
+            \left[ 
+             2\sum_n a_n \int_t r(t)\fh(t-nT) \dt
+            -\sum_n \sum_m a_n a_m \Rhh(m-n)
+            \right]
+   \\&=&    \arg\max_\va   
+            \left[ 
+             2\sum_n a_n \int_t r(t)\fh(t-nT) \dt
+            -\sum_n\sum_k a_n a_k \Rhh(k-n)
+            \right]
+   \\&=&    \arg\max_\va   
+            \left[ 
+             2\sum_n a_n \int_t r(t)\fh(t-nT) \dt
+            -\sum_n\sum_m a_n a_{m+n} \Rhh(m)
+            \right]
+   \\&=&    \arg\max_\va   
+            \left[ 
+             2\sum_n a_n \fdotr_n
+            -\sum_n\sum_m a_n a_{m+n} \Rhh(m)
+            \right]
+\end{eqnarray*}
+\end{proof}
+
+If the autocorrelation is zero for $|n|>L$, then
+\prefpp{thm:eq-ml} reduces to the simpler form 
+stated in \pref{cor:eq-ml} (next).
+%--------------------------------------
+\begin{corollary}
+\label{cor:eq-ml}
+%--------------------------------------
+If 
+   \[ \Rhh(n) = 0 \mbox{ for } |n|>L \]
+then 
+
+\corbox{
+   \estML[\va ]
+     =    \arg\max_\va   
+            \left( 
+             2\sum_n a_n \fdotr_n
+            -\sum_n a_n \left[ a_n \Rhh(0) + 2\sum_{m=1}^L a_{m+n} \Rhh(m) \right]
+            \right)
+  }
+\end{corollary}
+\begin{proof}
+First note that 
+   \[ \sum_n \sum_{m=-L}^L a_{m+n} \Rhh(m) \]
+is maximized when $a_{m+n}$ is symmetric about $n$ (??????). \attention
+Then
+
+\begin{eqnarray*}
+   \estML[\va ]
+     &=&    \arg\max_\va   
+            \left( 
+             2\sum_n a_n \fdotr_n
+            -\sum_n\sum_m a_n a_{m+n} \Rhh(m)
+            \right)
+   \\&=&    \arg\max_\va   
+            \left( 
+             2\sum_n a_n \fdotr_n
+            -\sum_n a_n \sum_{m=-L}^L a_{m+n} \Rhh(m)
+            \right)
+   \\&=&    \arg\max_\va   
+            \left( 
+             2\sum_n a_n \fdotr_n -\sum_n a_n 
+             \left[ 
+                a_n \Rhh(0) +
+                \sum_{m=-L}^1 a_{m+n} \Rhh(m) +
+                \sum_{m=1}^L a_{m+n} \Rhh(m)
+            \right]
+            \right)
+   \\&=&    \arg\max_\va   
+            \left( 
+             2\sum_n a_n \fdotr_n -\sum_n a_n 
+             \left[ 
+                a_n \Rhh(0) +
+                2\sum_{m=1}^L a_{m+n} \Rhh(m)
+            \right]
+            \right)
+\end{eqnarray*}
+\end{proof}
+
+
+%======================================
+\subsection{Statistics of sufficient statistic sequence $(\fdotr_n)$}
+\index{noise!colored}
+%======================================
+The elements of the ML sufficient sequence $(\fdotr_n|\va )$ have
+Gaussian distribution, however the sequence is {\bf colored}.
+That is $\fdotr_n$ is correlated 
+with $\fdotr_m$ (and therefore also not independent).
+To whiten the sequence $(\fdotr_n)$, a whitening filter may be used. 
+Whitening filters can be implemented in 
+analog (\prefp{sec:whiten}) or digitally (\prefp{sec:d-whiten}).
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+\thmbox{\begin{array}{rcl}
+   \E{\fdotn_n}               &=&    \ds 0                                           \\
+   \cov{\fdotn_n}{\fdotn_m}   &=&    \ds N_o \Rhh(n-m)                               \\
+   \E\fdotr_n|\va             &=&    \ds \sum_m a_{n-m} \Rhh(m)                      \\
+   \fdotr_n|\va               &\sim& \ds \pN{\sum_m a_{n-m} \Rhh(m)}{N_o \Rhh(0)} \\
+   \cov{\fdotr_n|\va }{\fdotr_m|\va } &=& N_o \Rhh(n-m) 
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \E{\fdotn_n}
+     &=&    \E \inprod{n(t)}{\fh(t-nT}  
+   \\&=&    \inprod{\E n(t)}{\fh(t-nT}  
+   \\&=&    \inprod{0}{\fh(t-nT}  
+   \\&=&    0
+   \\
+   \\
+   \cov{\fdotn_n}{\fdotn_m}
+     &=& \Eb{\fdotn_n \fdotn_m} - \Eb{\fdotn_n}\Eb{\fdotn_m}
+   \\&=& \Eb{\fdotn_n \fdotn_m} - 0\cdot0
+   \\&=& \Eb{\inprod{n(t)}{\fh(t-nT)} \inprod{n(t)}{\fh(t-mT)}}
+   \\&=& \Eb{\inprod{n(t)}{\fh(t-nT)} \inprod{n(u)}{\fh(u-mT)}}
+   \\&=& \Eb{\inprod{n(t)\inprod{n(u)}{\fh(u-mT)}}{\fh(t-nT)} }
+   \\&=& \Eb{\inprod{\inprod{n(t)n(u)}{\fh(u-mT)}}{\fh(t-nT)} }
+   \\&=& \inprod{\inprod{\Eb{n(t)n(u)}}{\fh(u-mT)}}{\fh(t-nT)}
+   \\&=& \inprod{\inprod{N_o\delta(t-u)}{\fh(u-mT)}}{\fh(t-nT)}
+   \\&=& N_o \inprod{\fh(t-mT)}{\fh(t-nT)}
+   \\&=& N_o \Rhh(n-m)
+   \\
+   \\
+   \E\fdotr_n 
+     &\eqd& \E\inprod{r(t)}{\fh(t-nT)}  
+   \\&=&    \E\inprod{\sum_k a_k \fh(t-kT) + n(t)}{\fh(t-nT)}  
+   \\&=&    \inprod{\sum_k a_k \fh(t-kT) + \E n(t)}{\fh(t-nT)}  
+   \\&=&    \inprod{\sum_k a_k \fh(t-kT) + 0}{\fh(t-nT)}  
+   \\&=&    \sum_k a_k \inprod{\fh(t-kT)}{\fh(t-nT)}  
+   \\&=&    \sum_k a_k \Rhh(n-k)
+   \\&=&    \sum_m a_{n-m} \Rhh(m)  \hspace{3ex}m=n-k \iff k=n-m
+   \\
+   \\
+   \cov{\fdotr_n}{\fdotr_m}
+     &=& \Eb{\left(\fdotr_n-\E{\fdotr_n}\right)\left(\fdotr_m-\E{\fdotr_m}\right)}
+   \\&=& \Eb{\fdotn_n \fdotn_m }
+   \\&=& \cov{\fdotn_n}{\fdotn_m}
+   \\&=& N_o \Rhh(n-m)
+\end{eqnarray*}
+\end{proof}
+
+
+%======================================
+\subsection{Spectrum of sufficient statistic sequence $(\fdotr_n)$}
+%======================================
+The Fourier Transform cannot be used to evaluate the spectrum of the 
+sequences $(\fdotr_n)$, $\Rhh(m)$, and $(\fdotn_n)$ directly
+because the sequences are not functions of a continuous variable.
+Instead we compute the spectral content of their sampled 
+continuous equivalents as defined next:
+\defbox{\begin{array}{rcl}
+   R_s(t)        &\eqd& \inprod{\fh(u+t)}{\fh(u)}\sum_n\delta(t-nT) \\
+   \fdotr_s(t) &\eqd& \inprod{r(u)}{\fh(u-t)}\sum_n\delta(t-nT) \\
+   \fdotn_s(t) &\eqd& \inprod{n(u)}{\fh(u-t)}\sum_n\delta(t-nT) \\
+   a_s(t) &\eqd& a(t)\sum_n\delta(t-nT).
+\end{array}}
+
+Note that under these definitions
+
+\propbox{\begin{array}{rcl}
+   \Rhh(m)     &=& R_s(t)|_{t=mT}         \\
+   \fdotr_n  &=& \fdotr_s(t)|_{t=nT}  \\
+   \fdotn_n  &=& \fdotn_s(t)|_{t=nT}  \\
+   a_n         &=& a_s(t)|_{t=nT}.        
+\end{array}}
+
+
+
+\begin{eqnarray*}
+     S_s(f) 
+     &\eqd& [\opFT R_s](f)
+   \\&=& \left[\opFT{\inprod{\fh(u+t)}{\fh(u)}\sum_n\delta(t-nT)}\right](f)
+   \\&=& \frac{1}{T} \sum_n \left[\opFT\inprod{\fh(u+t)}{\fh(u)}\right]\left(f-\frac{n}{T}\right)
+         \hspace{3ex}\mbox{by \prefpp{thm:f_sampling} page~\pageref{thm:f_sampling}}
+   \\&=& \frac{1}{T} \sum_n \int_t\inprod{\fh(u+t)}{\fh(u)} e^{-i2\pi\left(f-\frac{n}{T}\right)t}\dt
+   \\&=& \frac{1}{T} \sum_n \int_t \int_u \fh(u+t) h^\ast(u) e^{-i2\pi\left(f-\frac{n}{T}\right)t}\dt
+   \\&=& \frac{1}{T} \sum_n \int_t \int_u \fh(u+t) h^\ast(u) e^{-i2\pi\left(f-\frac{n}{T}\right)t}\dt
+         \hspace{3ex}v=u+t\iff t=v-u
+   \\&=& \frac{1}{T} \sum_n \int_v \int_u \fh(v) \fh^\ast(u) e^{-i2\pi\left(f-\frac{n}{T}\right)(v-u)}\du\dv
+   \\&=& \frac{1}{T} \sum_n \int_u \fh^\ast(u) e^{i2\pi\left(f-\frac{n}{T}\right)u} \du
+                            \int_v \fh(v)      e^{-i2\pi\left(f-\frac{n}{T}\right)v}\dv
+   \\&=& \frac{1}{T} \sum_n \left(\int_u \fh(u) e^{-i2\pi\left(f-\frac{n}{T}\right)u}\du \right)^\ast
+                            \int_v \fh(v)      e^{-i2\pi\left(f-\frac{n}{T}\right)v}\dv
+   \\&=& \frac{1}{T} \sum_n \Fh^\ast\left(f-\frac{n}{T}\right)
+                            \Fh     \left(f-\frac{n}{T}\right)
+   \\&=& \frac{1}{T} \sum_n \left|\Fh\left(f-\frac{n}{T}\right)\right|^2
+\\
+\\
+   \left[\opFT \fdotn_s\right](f)
+     &=& \left[\opFT{\inprod{n(u)}{\fh(u-t)}\sum_n\delta(t-nT)}\right](f)
+   \\&=& \frac{1}{T}\sum_n[\opFT{\inprod{n(u)}{\fh(u-t)}}]\left(f-\frac{n}{T}\right)
+   \\&=& \frac{1}{T}\sum_n\int_t \inprod{n(u)}{\fh(u-t)} e^{-i2\pi\left(f-\frac{n}{T}\right)t}\dt
+   \\&=& \frac{1}{T}\sum_n\int_t \int_u n(u)\fh^\ast(u-t) e^{-i2\pi\left(f-\frac{n}{T}\right)t}\du\dt
+   \\&=& \frac{1}{T}\sum_n\int_v \int_u n(u)\fh^\ast(v) e^{-i2\pi\left(f-\frac{n}{T}\right)(u-v)}\du\dv
+         \hspace{3ex}v=u-t\iff t=u-v
+   \\&=& \frac{1}{T}\sum_n\int_u n(u) e^{-i2\pi\left(f-\frac{n}{T}\right)u}\du
+                          \int_v \fh^\ast(v) e^{i2\pi\left(f-\frac{n}{T}\right)v}\dv
+   \\&=& \frac{1}{T}\sum_n\int_u n(u) e^{-i2\pi\left(f-\frac{n}{T}\right)u}\du
+                          \left[\int_v \fh(v) e^{i2\pi\left(f-\frac{n}{T}\right)v}\dv\right]^\ast
+   \\&=& \frac{1}{T}\sum_n \ft{n}     \left(f-\frac{n}{T}\right) 
+                           \Fh^\ast\left(f-\frac{n}{T}\right)
+\\
+\\
+   \left[\opFT{\fdotr}\right](f)
+     &=& \ft{a}_s(f) S_s(f) + \ft{\fdotn}_s(f)
+   \\&=& \ft{a}_s(f) S_s(f) + \ft{\fdotn}_s(f)
+   \\&=& \ft{a}_s(f) 
+         \frac{1}{T} \sum_n \left|\Fh\left(f-\frac{n}{T}\right)\right|^2
+         +\frac{1}{T}\sum_n \ft{n}     \left(f-\frac{n}{T}\right) 
+                           \Fh^\ast\left(f-\frac{n}{T}\right)
+\end{eqnarray*}
+
+Note that the Fourier Transform $\ft{n}(f)$ only exists if it has finite energy 
+(such as with most bandlimited noise). 
+Thus, if $n(t)$ is a true white noise process,
+$\ft{n}(f)$ does not exist.
+
+
+
+%======================================
+\section{Implementations}
+%======================================
+%======================================
+\subsection{Trellis}
+\label{eq_trellis}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}                  
+\begin{picture}(1000,200)(0,-80)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   10 ){\makebox (  50, 40)[b]{$a_n$}        }
+  \put(   0,    0 ){\vector  (   1,  0)   { 50}          }
+  \put(  50,  -50 ){\framebox( 100,100)   {modulator}    }
+  \put( 150,   10 ){\makebox (  50, 40)[b]{$\fs(t;\sa)$}       }
+  \put( 150,    0 ){\vector  (   1,  0)   { 50}         }
+  \put( 200,  -50 ){\framebox( 100,100)   {$\conv \fh(t)$} }
+  \put( 200,  -40 ){\makebox ( 100, 80)[t]{$\Lh(s)$} }
+  \put( 200,  -80 ){\makebox ( 100, 30)[ ]{$\Zh(z)$} }
+  \put( 200,  -40 ){\makebox ( 100, 30)[t]{frequency}    }
+  \put( 200,  -40 ){\makebox ( 100, 30)[b]{distortion}   }
+  \put( 300,    0 ){\line    (   1,  0)   { 50}         }
+
+  \put( 300,   10 ){\makebox (  50, 40)[b]{$w(t)$}       }
+  \put( 350,    0 ){\vector  (   1,  0)   { 40}          }
+  \put( 350,  -50 ){\dashbox{4}( 100,100)   {$+$}          }
+  \put( 350,  -40 ){\makebox ( 100, 80)[b]{noise}        }
+  \put( 350,  -50 ){\makebox ( 100, 95)[t]{$n(t)$}       }
+  \put( 400,    0 ){\circle{20}                          }
+  \put( 410,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 400,   30 ){\vector  (   0, -1)   { 20}          }
+  \put( 450,    0 ){\line    (   1,  0)   { 50}         }
+
+  \put( 500,  -50 ){\framebox( 100,100)   {$\conv \fh(-t)$} }
+  \put( 500,  -40 ){\makebox ( 100, 80)[t]{$\hat{h}(-s)$} }
+  \put( 500,  -80 ){\makebox ( 100, 30)[ ]{$\hat{h}(1/z)$} }
+  \put( 500,  -40 ){\makebox ( 100, 30)[t]{matched}      }
+  \put( 500,  -40 ){\makebox ( 100, 30)[b]{filter}       }
+  \put( 600,    0 ){\vector  (   1,  0)   { 50}         }
+
+  \put( 650,  -50 ){\dashbox{4}( 100,100)   {} }
+  \put( 650,  -40 ){\makebox ( 100, 80)[b]{sampler}      }
+  \put( 650,    0 ){\line    (   1,  0)   { 15}          }
+  \put( 650,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 690,    0 ){\line    (   1,  1)   { 25}          }
+  \put( 710,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 750,    0 ){\vector  (   1,  0)   {100}          }
+
+  \put( 450,   10 ){\makebox (  50, 50)[b]{$r(t)$}       }
+  \put(  40,  -80 ){\dashbox{5}( 720,160)   {}             }
+  \put(  40,   90 ){\makebox ( 720, 30)[b]{equivalent digital system}}
+
+  \put( 780,   10 ){\makebox ( 70, 40)[lb]{$\fdotr_n$}}
+  \put( 850,  -50 ){\framebox( 100,100)   {} }
+  \put( 850,  -40 ){\makebox( 100,80)[c]{trellis} }
+  \put( 850,  -40 ){\makebox( 100,80)[b]{estimate} }
+  \put( 950,    0 ){\vector  (   1,  0)   {50}          }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Trellis implementation
+   \label{fig:eq_trellis}
+   }
+\end{figure}
+
+The ML estimate can be computed by the use of a trellis. 
+The distance metrics $\mu(n;\va ,L)$ for the trellis can be computed 
+recursively.
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+Let a metric $\mu(n;\va ,L)$ be defined such that
+\begin{eqnarray*}
+   \Rhh(n) &=& 0 \mbox{ for } |n|>L.
+\\
+   \mu(n;\va ,L) 
+      &\eqd& 2\sum_{k=-\infty}^n a_k \fdotr_k -\sum_{k=-\infty}^n a_k 
+             \left[ 
+                a_k \Rhh(0) +
+                2\sum_{m=1}^L a_{m+k} \Rhh(m)
+            \right]
+\end{eqnarray*}
+
+Then 
+\formbox{
+   \mu(n;\va ,L) = \mu(n-1;\va ,L) +
+      2a_n \fdotr_n -a_n^2 \Rhh(0) - 2a_n\sum_{m=1}^L a_{m+n} \Rhh(m)
+  }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   &&\mu(n;\va ,L) - \mu(n-1;\va ,L)
+      \\&=& 
+         \left(
+             2\sum_{k=-\infty}^n a_k \fdotr_k -\sum_{k=-\infty}^n a_k 
+             \left[ 
+                a_k \Rhh(0) +
+                2\sum_{m=1}^L a_{m+k} \Rhh(m)
+            \right]
+         \right) -
+         \\&&
+         \left(
+             2\sum_{k=-\infty}^{n-1} a_k \fdotr_k -\sum_{k=-\infty}^{n-1} a_k 
+             \left[ 
+                a_k \Rhh(0) +
+                2\sum_{m=1}^L a_{m+k} \Rhh(m)
+            \right]
+         \right)
+      \\&=& 
+             2a_n \fdotr_n 
+             -a_n \left[ a_n \Rhh(0) + 2\sum_{m=1}^L a_{m+n} \Rhh(m)\right]
+      \\&=& 2a_n \fdotr_n -a_n^2 \Rhh(0) - 2a_n\sum_{m=1}^L a_{m+n} \Rhh(m)
+\end{eqnarray*}
+\end{proof}
+
+%--------------------------------------
+\begin{example}
+%--------------------------------------
+Let $L=2$ in a binary $(M=2)$ communications channel.
+Then 
+\begin{eqnarray*}
+   \mu(n;\va ,L) 
+     &=& \mu(n-1;\va ,L) +
+         2a_n \fdotr_n -a_n^2 \Rhh(0) - 2a_n\sum_{m=1}^L a_{m+n} \Rhh(m)
+   \\&=& \mu(n-1;\va ,2) +
+         2a_n \fdotr_n -a_n^2 \Rhh(0) 
+       - 2a_n a_{n+1} \Rhh(1)
+       - 2a_n a_{n+2} \Rhh(2)
+\end{eqnarray*}
+
+
+The metric $\mu(n;\va ,1)$ is controlled by three binary variables
+$(a_{n-1},a_n,a_{n+1})$ and therefore the can be represented with 
+an $2^{3-1}=4$ state trellis.
+At each time interval $n$, each of the 8 path metrics in the set
+\[ 
+   \left\{ \mu(n;(a_n,a_{n+1},a_{n+2}),2): a_i\in\{-1,+1\} \right\}
+\]
+are computed and the ``shortest path" through the trellis is selected.
+\end{example}
+
+
+
+
+
+%======================================
+\subsection{Minimum mean square estimate}
+\label{sec:eq_mmse}
+%======================================
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}                  
+\begin{picture}(1000,200)(0,-80)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   10 ){\makebox (  50, 40)[b]{$a_n$}        }
+  \put(   0,    0 ){\vector  (   1,  0)   { 50}          }
+  \put(  50,  -50 ){\framebox( 100,100)   {modulator}    }
+  \put( 150,   10 ){\makebox (  50, 40)[b]{$\fs(t;\sa)$}       }
+  \put( 150,    0 ){\vector  (   1,  0)   { 50}         }
+  \put( 200,  -50 ){\framebox( 100,100)   {$\conv \fh(t)$} }
+  \put( 200,  -40 ){\makebox ( 100, 80)[t]{$\Lh(s)$} }
+  \put( 200,  -80 ){\makebox ( 100, 30)[ ]{$\Zh(z)$} }
+  \put( 200,  -40 ){\makebox ( 100, 30)[t]{frequency}    }
+  \put( 200,  -40 ){\makebox ( 100, 30)[b]{distortion}   }
+  \put( 300,    0 ){\line    (   1,  0)   { 50}         }
+
+  \put( 300,   10 ){\makebox (  50, 40)[b]{$w(t)$}       }
+  \put( 350,    0 ){\vector  (   1,  0)   { 40}          }
+  \put( 350,  -50 ){\dashbox{4}( 100,100)   {$+$}          }
+  \put( 350,  -40 ){\makebox ( 100, 80)[b]{noise}        }
+  \put( 350,  -50 ){\makebox ( 100, 95)[t]{$n(t)$}       }
+  \put( 400,    0 ){\circle{20}                          }
+  \put( 410,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 400,   30 ){\vector  (   0, -1)   { 20}          }
+  \put( 450,    0 ){\line    (   1,  0)   { 50}         }
+
+  \put( 500,  -50 ){\framebox( 100,100)   {$\conv \fh(-t)$} }
+  \put( 500,  -40 ){\makebox ( 100, 80)[t]{$\hat{h}(-s)$} }
+  \put( 500,  -80 ){\makebox ( 100, 30)[ ]{$\hat{h}(1/z)$} }
+  \put( 500,  -40 ){\makebox ( 100, 30)[t]{matched}      }
+  \put( 500,  -40 ){\makebox ( 100, 30)[b]{filter}       }
+  \put( 600,    0 ){\vector  (   1,  0)   { 50}         }
+
+  \put( 650,  -50 ){\dashbox{4}( 100,100)   {} }
+  \put( 650,  -40 ){\makebox ( 100, 80)[b]{sampler}      }
+  \put( 650,    0 ){\line    (   1,  0)   { 15}          }
+  \put( 650,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 690,    0 ){\line    (   1,  1)   { 25}          }
+  \put( 710,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 750,    0 ){\vector  (   1,  0)   {100}          }
+
+  \put( 450,   10 ){\makebox (  50, 50)[b]{$r(t)$}       }
+  \put(  40,  -80 ){\dashbox{5}( 720,160)   {}             }
+  \put(  40,   90 ){\makebox ( 720, 30)[b]{equivalent digital system}}
+
+  \put( 780,   10 ){\makebox ( 70, 40)[lb]{$\fdotr_n$}}
+  \put( 850,  -50 ){\framebox( 100,100)   {} }
+  \put( 850,  -40 ){\makebox( 100,80)[c]{MMSE} }
+  \put( 850,  -40 ){\makebox( 100,80)[b]{estimate} }
+  \put( 950,    0 ){\vector  (   1,  0)   {50}          }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Minimum Mean Square Estimate Implementation
+   \label{fig:eq_mmse}
+   }
+\end{figure}
+
+\prefpp{thm:eq-ml} guarantees that the sequence $(\fdotr_n)$
+is a sufficient statistic for computing the ML estimate of information
+sequence $(a_n)$.
+Using $(\fdotr_n)$, Section~\ref{eq_trellis} shows that the ML estimate
+can be computed using a trellis.
+However, the trellis calculations can be very computationally demanding.
+A simpler approach is to use minimum mean square estimation (MMSE).
+MMSE can be computationally less demanding, but yields an estimate 
+that is not equal to the ML estimate (MMSE is suboptimal).
+Minimum mean square estimation is presented in 
+Section~\ref{sec:est_mms} (page~\pageref{sec:est_mms}).
+Let
+
+\begin{tabular}{ll}
+   $M$: estimate order  & ($M$ is odd)\\
+   $N$: parameter order & ($N$ is odd). 
+\end{tabular}
+
+Then an estimate $\hat{\va}$ of the transmitted symbols can be calculated 
+as follows.
+
+\[
+   \hat{\va} \eqd
+   \left[\begin{array}{l}
+      \hat{a}_{n-\frac{M-1}{2}} \\ 
+      \vdots                    \\ 
+      \hat{a}_{n-1}             \\
+      \hat{a}_{n}               \\
+      \hat{a}_{n+1}             \\
+      \vdots                    \\ 
+      \hat{a}_{n+\frac{M-1}{2}}  
+   \end{array}\right]
+   = U^H \vp
+%
+   \hspace{3cm}
+%
+   \vp \eqd
+   \left[\begin{array}{l}
+      \vp_{n-\frac{N-1}{2}} \\ 
+      \vdots                    \\ 
+      \vp_{n-1}             \\
+      \vp_{n}               \\
+      \vp_{n+1}             \\
+      \vdots                    \\ 
+      \vp_{n+\frac{N-1}{2}}  
+   \end{array}\right]
+\]
+
+\[
+   U^H \eqd
+   \left[\begin{array}{llll}
+      \fdotr_{n-\left(\frac{M-1}{2}\right)+\left(\frac{N-1}{2}\right)}    & \fdotr_{n-\left(\frac{M-1}{2}\right)+\left(\frac{N-1}{2}-1\right)}  & \cdots & \fdotr_{n-\left(\frac{M-1}{2}\right)-\left(\frac{N-1}{2}\right)}  \\
+      \vdots                                                                & \vdots                                                                & \ddots & \vdots                                                                \\
+      \fdotr_{n-(1)+\left(\frac{N-1}{2}\right)}                           & \fdotr_{n-(1)+\left(\frac{N-1}{2}-1\right)}                         & \cdots & \fdotr_{n-(1)-\left(\frac{N-1}{2}\right)}                         \\
+      \fdotr_{n+(0)+\left(\frac{N-1}{2}\right)}                           & \fdotr_{n+(0)+\left(\frac{N-1}{2}-1\right)}                         & \cdots & \fdotr_{n+(0)-\left(\frac{N-1}{2}\right)}                         \\
+      \fdotr_{n+(1)+\left(\frac{N-1}{2}\right)}                           & \fdotr_{n+(1)+\left(\frac{N-1}{2}-1\right)}                         & \cdots & \fdotr_{n+(1)-\left(\frac{N-1}{2}\right)}                         \\
+      \vdots                                                                & \vdots                                                                & \ddots & \vdots                                                                \\
+      \fdotr_{n+\left(\frac{M-1}{2}\right)+\left(\frac{N-1}{2}\right)}    & \fdotr_{n+\left(\frac{M-1}{2}\right)+\left(\frac{N-1}{2}-1\right)}  & \cdots & \fdotr_{n+\left(\frac{M-1}{2}\right)-\left(\frac{N-1}{2}\right)} 
+   \end{array}\right]
+\]
+
+
+Let
+\begin{eqnarray*}
+   \hat{\va}(\vp)   &\eqd& U^H\vp    \\
+   \ve(\vp)    &\eqd& \hat{\va}-\va \\
+   \fCost(\vp) &\eqd& \E\norm{\ve}^2 \eqd \Eb{\ve^T\ve} \\
+   \estMS      &\eqd& \arg\min_\vp \fCost(\vp)  \\
+   R           &\eqd& \Eb{UU^H} \\
+   W           &\eqd& \Eb{ U\vy}.
+\end{eqnarray*}
+
+Then 
+\begin{eqnarray*}
+   \fCost(\vp)           &=& \vp^H R \vp - (W^H\vp)^\ast -W^H\vp + \Eb{\va^H\va} \\
+   \grad_\vp \fCost(\vp) &=& 2\Reb{R}\vp - 2\Re{W}  \\
+   \estMS                  &=& (\Re{R})^{-1}(\Re{W})  \\
+   \fCost(\estMS)        &=&    (\Re{W^H})(\Re{R})^{-1} R (\Re{R})^{-1}(\Re{W}) - 2(\Re{W^H})(\Re{R})^{-1}(\Re{W}) + \Eb{\va^H\va} \\
+   \fCost(\estMS)|_{R\mbox{ real}} &=&    \Eb{\va^H\va} - (\Re{W^H})R^{-1}(\Re{W}).
+\end{eqnarray*}
+
+
+
+%======================================
+\subsection{Minimum peak distortion estimate}
+\label{sec:eq_pd}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}                  
+\begin{picture}(1000,200)(0,-80)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   10 ){\makebox (  50, 40)[b]{$a_n$}        }
+  \put(   0,    0 ){\vector  (   1,  0)   { 50}          }
+  \put(  50,  -50 ){\framebox( 100,100)   {modulator}    }
+  \put( 150,   10 ){\makebox (  50, 40)[b]{$\fs(t;\sa)$}       }
+  \put( 150,    0 ){\vector  (   1,  0)   { 50}         }
+  \put( 200,  -50 ){\framebox( 100,100)   {$\conv \fh(t)$} }
+  \put( 200,  -40 ){\makebox ( 100, 80)[t]{$\Lh(s)$} }
+  \put( 200,  -80 ){\makebox ( 100, 30)[ ]{$\Zh(z)$} }
+  \put( 200,  -40 ){\makebox ( 100, 30)[t]{frequency}    }
+  \put( 200,  -40 ){\makebox ( 100, 30)[b]{distortion}   }
+  \put( 300,    0 ){\line    (   1,  0)   { 50}         }
+
+  \put( 300,   10 ){\makebox (  50, 40)[b]{$w(t)$}       }
+  \put( 350,    0 ){\vector  (   1,  0)   { 40}          }
+  \put( 350,  -50 ){\dashbox{4}( 100,100)   {$+$}          }
+  \put( 350,  -40 ){\makebox ( 100, 80)[b]{noise}        }
+  \put( 350,  -50 ){\makebox ( 100, 95)[t]{$n(t)$}       }
+  \put( 400,    0 ){\circle{20}                          }
+  \put( 410,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 400,   30 ){\vector  (   0, -1)   { 20}          }
+  \put( 450,    0 ){\line    (   1,  0)   { 50}         }
+
+  \put( 500,  -50 ){\framebox( 100,100)   {$\conv \fh(-t)$} }
+  \put( 500,  -40 ){\makebox ( 100, 80)[t]{$\hat{h}(-s)$} }
+  \put( 500,  -80 ){\makebox ( 100, 30)[ ]{$\hat{h}(1/z)$} }
+  \put( 500,  -40 ){\makebox ( 100, 30)[t]{matched}      }
+  \put( 500,  -40 ){\makebox ( 100, 30)[b]{filter}       }
+  \put( 600,    0 ){\vector  (   1,  0)   { 50}         }
+
+  \put( 650,  -50 ){\dashbox{4}( 100,100)   {} }
+  \put( 650,  -40 ){\makebox ( 100, 80)[b]{sampler}      }
+  \put( 650,    0 ){\line    (   1,  0)   { 15}          }
+  \put( 650,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 690,    0 ){\line    (   1,  1)   { 25}          }
+  \put( 710,    0 ){\line    (   1,  0)   { 40}          }
+  \put( 750,    0 ){\vector  (   1,  0)   {100}          }
+
+  \put( 450,   10 ){\makebox (  50, 50)[b]{$r(t)$}       }
+  \put(  40,  -80 ){\dashbox{5}( 720,160)   {}             }
+  \put(  40,   90 ){\makebox ( 720, 30)[b]{equivalent digital system}}
+
+  \put( 780,   10 ){\makebox ( 70, 40)[lb]{$\fdotr_n$}}
+  \put( 850,  -50 ){\framebox( 100,100)   {$\frac{1}{\Zh(z)\hat{h}(1/z)}$} }
+  \put( 950,    0 ){\vector  (   1,  0)   {50}          }
+
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Peak distortion estimation
+   \label{fig:eq_pd}
+   }
+\end{figure}
+
+Peak distortion is achieved when there is {\bf no} ISI.
+This means that the impulse response of the channel and post-channel processing
+must be only an impulse.
+Ideally this can be achieved by filtering $\fdotr_n$ with the inverse of the
+equivalent system digital filters.
+See \prefpp{fig:eq_pd}.
+
+

@@ -1,0 +1,1208 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Modulation}
+\label{chp:mod_sin}
+%======================================
+The transmission is performed by allowing the information sequence $\su$ to
+affect the behavior of a {\em carrier} signal.
+This technique is called {\em modulation} and we say that the 
+information sequence {\em modulates} the carrier.
+There are two general types of modulation:\\
+\index{modulation!memoryless}
+\index{modulation!with memory}
+\begin{tabular}{lll}
+   1. & memoryless modulation:  & only depends on the current signal value   \\
+   2. & modulation with memory: & depends on current and past signal values.
+\end{tabular}
+
+\index{estimation}
+The {\em receiver} generates an estimate\footnote{
+   {\em estimation theory}: 
+   Section~\ref{sec:awgn_est} \prefpo{sec:awgn_est},
+   Appendix~\ref{app:est} \prefpo{app:est}
+   }
+$\sue$ of the sent information sequence $\su$ from the received signal $r(t)$.
+
+
+%======================================
+\section{Memoryless Modulation}
+%======================================
+%======================================
+\subsection{Definitions}
+%======================================
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.17mm}                  
+\begin{picture}(900,150)(-100,-50)
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+  \put(-100,  60 ){\makebox(30,0)[b]{$u$} }
+  \put(-100,  50 ){\vector(1,0){50} }
+
+  \put(-70, -50 ){\dashbox{4}( 280,160){} }
+  \put(-70, -40 ){\makebox( 280,160)[b]{transmitter} }
+  \put(   50,  60 ){\makebox(50,50)[b]{$\theta$} }
+  \put(   50,  50 ){\vector(1,0){50} }
+
+  \put(- 50,  00 ){\framebox( 100,100){mapper} }
+  \put( 100,  00 ){\framebox( 100,100){modulator} }
+  \put( 200,  50 ){\vector(1,0){100} }
+
+  \put( 300,  00 ){\framebox(100,100){} }
+  \put( 300,  10 ){\makebox(100, 90)[b]{channel} }
+  \put( 210,  60 ){\makebox( 90, 50)[b]{$s(t;\theta)$} }
+  \put( 400,  60 ){\makebox( 80, 50)[b]{$r(t;\theta)$} }
+
+  \put( 400,  50 ){\vector(1,0){100} }
+  \put( 500,  00 ){\framebox(100,100){detector} }
+  \put( 600,  60 ){\makebox(50,50)[b]{$\hat{\theta}$} }
+  \put( 600,  50 ){\vector(1,0){50}}
+  \put( 650,  00 ){\framebox(100,100){} }
+  \put( 650,  30 ){\makebox(100,40)[t]{inverse} }
+  \put( 650,  30 ){\makebox(100,40)[b]{mapper} }
+  \put( 480, -50 ){\dashbox{4}( 280,160){} }
+  \put( 480, -40 ){\makebox( 280,160)[b]{receiver} }
+
+  \put( 760,  60 ){\makebox(40,50)[b]{$\ue$} }
+  \put( 750,  50 ){\vector(1,0){50}}
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Memoryless modulation system model
+   \label{fig:mod_model}
+   }
+\end{figure}
+
+
+%---------------------------------------
+\begin{definition}[Digital modulation]
+\index{modulation!sinusoidal carriers}
+\label{def:psk}
+\label{def:qam}
+\label{def:pam}
+%---------------------------------------
+Let 
+\begin{liste}
+  \item $a_n\in\{0,1,\ldots,K-1\}$, $f_n\in\{0,1,\ldots,M-1\}$, and $\theta_n\in\{0,1,\ldots,N-1\}$
+  \item $a_{\mathsf{offset}}, f_{\mathsf{offset}}, \theta_{\mathsf{offset}}\in\R$
+  \item $E,F\in\Rp$
+  \item $T\in(0,\infty)$ be the signalling period
+  \item $\{u_n\}$ be an information sequence to be sent to a receiver
+  \item $\fg$ be a function of the form
+        \[ (a_n,f_n,\theta_n) = \fg(u_n). \]
+  \item $S$ be a set of modulation waveforms
+    \defbox{
+      S \eqd \left\{
+        \fs(t;u_n)=
+        \left[a_n - a_{\mathsf{offset}}\left] \sqrt{\frac{2E}{T}} 
+        \cos\left[2\pi\left[f_c+F f_n- f_{\mathsf{offset}}\left]t +
+        \left[\theta_n \frac{2\pi}{N}-\theta_{\mathsf{offset}} \right]
+        \right.\right.\right.\right.
+      \right]\right\}
+      }
+\end{liste}
+Then
+\begin{liste}
+  \item A {\bf memoryless digital modulation using sinusoidal carriers} (MDMSC)
+        is the pair $(\fg,S)$.
+  \item A {\bf Pulse Amplitude Modulation} (PAM) is MDMSC with 
+        \[f_n= f_{\mathsf{offset}} = \theta_n = \theta_{\mathsf{offset}} = 0\]
+  \item A {\bf Phase Shift Keying} (PSK) is MDMSC with 
+        \[a_n = a_{\mathsf{offset}} = f_n = f_{\mathsf{offset}} = 0\]
+  \item A {\bf Frequency Shift Keying} (FSK) is MDMSC with 
+        \[a_n = a_{\mathsf{offset}} = \theta_n = \theta_{\mathsf{offset}} = 0\]
+  \item A {\bf Quadrature Amplitude Modulation} (QAM) is MDMSC with 
+        \[f_n = f_{\mathsf{offset}} = 0\]
+\end{liste}
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $(\fg,S)$ be an MDMSC.
+The energy $\opE \fs(t;n)$ of $\fs(t;n)\in S$ is
+\formbox{ \opE s_n \eqa a_n^2 E. }
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+  \opE \fs(t;n)
+    &\eqd& \norm{a_n \sqrt{\frac{2E}{T}} \cos(2\pi(f_c+\Delta f f_n)t+\theta_n)}^2
+  \\&=& a_n^2 \frac{2E}{T}
+        \norm{ \cos(2\pi(f_c+\Delta f f_n)t+\theta_n)}^2
+  \\&=& a_n^2 \frac{2E}{T}
+        \int_0^T \cos^2(2\pi(f_c+\Delta f f_n)t+\theta_n) \dt
+  \\&=& a_n^2 \frac{2E}{T}\frac{1}{2}
+        \int_0^T 1 + \cos(4\pi(f_c+\Delta f f_n)t+4\theta_n) \dt
+  \\&=& a_n^2 \frac{E}{T}\left[
+        \int_0^T 1  \dt +
+        \int_0^T \cos(4\pi(f_c+\Delta f f_n)t+4\theta_n) \dt
+        \right]
+  \\&\eqa& a_n^2 \frac{E}{T}  \int_0^T 1  \dt
+  \\&=&    a_n^2 E
+\end{eqnarray*}
+\end{proof}
+
+%======================================
+\subsection{Orthogonality}
+%======================================
+
+%---------------------------------------
+\begin{proposition}
+\label{lem:pam_basis}
+%---------------------------------------
+Let $(V, \inprod{\cdot}{\cdot}, S)$ be a PAM modulation space and 
+$s(t;m)\in S$.
+Then the set
+\[
+   \Psi \eqd \left\{ 
+      \psi(t) = \frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)
+      \right\}
+\]
+
+is an orthonormal basis for $S$.
+\end{proposition}
+
+\begin{proof}
+
+1. $\Psi$ spans $S$:
+\begin{eqnarray*}
+   s(t;m) 
+     &\eqd& a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) 
+   \\&=&    a_m\psi(t)
+\end{eqnarray*}
+
+2. $\Psi$ is orthonormal with respect to $\inprod{\cdot}{\cdot}$.
+
+\begin{eqnarray*}
+   \inprod{\psi_c(t)}{\psi_c(t)}
+      &=& \inprod{\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
+                 {\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
+    \\&=& \frac{\sqrt{2}}{\norm{\sym}}\frac{\sqrt{2}}{\norm{\sym}}
+          \inprod{ \sym(t) \cos(2\pi f_c t)}
+                 { \sym(t) \cos(2\pi f_c t)}
+    \\&=& \frac{2}{\norm{\sym}^2}
+          \opL
+          \int_0^T \sym^2(t) \cos^2(2\pi f_c t) \; dt
+    \\&=& \frac{2}{\norm{\sym}^2}
+          \opL
+          \int_0^T \sym^2(t)\frac{1}{2}\left[1+ \cos(4\pi f_c t)\right] \; dt
+    \\&=& \frac{2}{\norm{\sym}^2}\frac{1}{2}
+          \int_0^T \sym^2(t)\left[ 1 \right] \; dt
+    \\&=& \frac{1}{\norm{\sym}^2}
+          \inprod{\sym(t)}{\sym(t)}
+    \\&=& \frac{1}{\norm{\sym}^2}
+          \norm{\sym(t)}^2
+    \\&=& 1
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+%---------------------------------------
+\begin{proposition}
+\label{lem:psk_basis}
+%---------------------------------------
+Let $(V, \inprod{\cdot}{\cdot}, S)$ be a PSK modulation space and 
+$s(t;\theta_m)\in S$.
+Then the set
+\[
+   \Psi \eqd \left\{ \begin{array}{rcl}
+      \psi_c(t) &=& \frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t), \\
+      \psi_s(t) &=& -\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)
+      \end{array}\right\}
+\]
+
+is an orthonormal basis for $S$.
+\end{proposition}
+
+\begin{proof}
+
+1. $\Psi$ spans $S$:
+\begin{eqnarray*}
+   s(t;a_m,b_m) 
+     &\eqd& r\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t + \theta_m)
+   \\&=&    r\frac{\sqrt{2}}{\norm{\sym}} \sym(t) 
+            \left[ \cos\theta_m\cos(2\pi f_ct)-\sin\theta_m\sin(2\pi f_ct)\right]  
+   \\&=&    r\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\cos\theta_m\cos(2\pi f_ct) - 
+            r\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\sin\theta_m\sin(2\pi f_ct)
+   \\&=&    r\cos\theta_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\cos(2\pi f_ct) - 
+            r\sin\theta_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\sin(2\pi f_ct)
+   \\&=&    r\cos\theta_m \psi_c(t) + r_m\sin\theta_m \psi_s(t)
+\end{eqnarray*}
+
+2. $\Psi$ is orthonormal with respect to $\inprod{\cdot}{\cdot}$.
+
+See proof of Proposition~\ref{lem:QAM_basis} \prefpo{lem:QAM_basis}.
+
+\end{proof}
+
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(230,230)(-100,-100)
+  %\graphpaper[10](0,0)(200,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){200} }
+  \put(   0 ,-100 ){\line(0,1){200} }
+  \put(   0 ,   0 ){\vector(1,1){60} }
+  \thinlines
+  %\put(   0 ,  60 ){\line(1,0){60} }
+  %\put(  60 ,   0 ){\line(0,1){60} }
+  \qbezier[12]( 60,  0)( 60, 30)( 60, 60)
+  \qbezier[12](  0, 60)( 30, 60)( 60, 60)
+  
+  %\put(  60 ,-100 ){\makebox(  40, 90)[t]{$r\cos\theta$} }
+  %\put(-100 ,   0 ){\makebox(  90, 90)[rt]{$r\sin\theta$} }
+  \put( -30,   60 ){$\dot{s}_2(m)$ }
+  \put(  50,  -15 ){$\dot{s}_1(m)$ }
+  \put( -20 ,   0 ){\makebox(  80, 80){$r$} }
+  \put(  28 ,   5 ){\makebox(  50, 50)[bl]{$\theta_m=\frac{2\pi}{8}(m-1)$} }
+  \put( 110 ,  -5 ){$\psi_1=\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)$}
+  \put(   0 , 110 ){$\psi_2=-\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)$}
+
+  \put(  80 ,   0 ){\circle*{10}}
+  \put(  57 ,  57 ){\circle*{10}}
+  \put(   0 ,  80 ){\circle*{10}}
+  \put( -57 ,  57 ){\circle*{10}}
+  \put( -80 ,   0 ){\circle*{10}}
+  \put( -57 , -57 ){\circle*{10}}
+  \put(   0 , -80 ){\circle*{10}}
+  \put(  57 , -57 ){\circle*{10}}
+
+  %\put(   0 ,   0 ){\circle{160}}
+  %\qbezier[20](  0, 80)( 80, 80)( 80, 00)
+  %\qbezier[20](-80,  0)(-80, 80)(  0, 80)
+  %\qbezier[20](-80,  0)(-80,-80)(  0,-80)
+  %\qbezier[20](  0,-80)( 80,-80)( 80,  0)
+  \setlength{\unitlength}{0.16mm}
+  \input{../common/circle.inp}
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   PSK vector representation, $M=8$
+   \label{fig:PSK_vector}
+   }
+\end{figure}
+
+
+
+%---------------------------------------
+\begin{theorem}[Orthogonality for FSK]
+%---------------------------------------
+Let $(g,S)$ be an FSK modulation.
+\begin{enume}
+  \item If $F\in\set{n\frac{1}{2T}}{k\in\Zp}$, 
+        then $\fs_m,\fs_n\in S$ are orthogonal for $m\not=n$.
+  \item If $\fs_1,\fs_2\in S$ possibly different phases and
+        $F\in\set{n\frac{1}{T}}{k\in\Zp}$, 
+        then $\fs_m,\fs_n\in S$ are orthogonal for $m\not=n$.
+\end{enume}
+\end{theorem}
+\begin{proof}
+
+\begin{enumerate}
+  \item Proof for identical phases:
+\begin{eqnarray*}
+   \inprod{\psi_m(t)}{\psi_n(t)}
+     &=&   \inprod{\sqrt{\frac{2}{T}}\cos[2\pi (f_c+mf_d)t]}
+                  {\sqrt{\frac{2}{T}}\cos[2\pi (f_c+nf_d)t]}
+   \\&=&   \frac{2}{T}\inprod{\cos[2\pi (f_c+mf_d)t]}{\cos[2\pi (f_c+nf_d)t]}
+   \\&=&   \frac{2}{T}\int_0^T \cos[2\pi (f_c+mf_d)t] \cos[2\pi (f_c+nf_d)t] \; dt
+   \\&=&   \frac{1}{2}\frac{2}{T}\int_0^T \cos[2\pi(f_c+mf_d)t-2\pi(f_c+nf_d)t]+  \cos[2\pi(f_c+mf_d)t+2\pi(f_c+nf_d)t] \; dt
+   \\&=&   \frac{1}{T}\int_0^T \cos[2\pi(m-n)f_dt] + \cos[4\pi(f_ct+2\pi(m+n)f_dt] \; dt
+   \\&\eqa& \frac{1}{T}\int_0^T \cos[2\pi(m-n)f_dt]  \; dt
+   \\&=&   \left.\frac{1}{T} \frac{1}{2\pi(m-n)f_d} \sin[2\pi(m-n)f_dt] \right|_0^T
+   \\&=&   \frac{\sin[2\pi(m-n)f_dT]}{2\pi(m-n)f_d T} 
+   \\&=&   \left\{
+           \begin{tabular}{ll}
+              $1$                                           & for $m=n$ \\
+              $\frac{\sin[2\pi(m-n)f_dT]}{2\pi(m-n)f_d T}$  & for $m\ne n$.
+           \end{tabular}
+           \right.
+   \\&=&   \left\{
+           \begin{tabular}{ll}
+              $1$                                           & for $m=n$ \\
+              $0$  &       for $m\ne n$ and $f_d=\frac{k}{2T}$, $k=1,2,3,\ldots$.
+           \end{tabular}
+           \right.
+\end{eqnarray*}
+
+\item Proof for different phase:
+\begin{eqnarray*}
+   \inprod{\psi_m(t;\phi)}{\psi_n(t)}
+      &=& \opL \inprod{\cos(2\pi f_m t + \phi)}{\cos(2\pi f_n t)}
+    \\&=& \opL \int_t^{t+T} \cos(2\pi f_m t + \phi) \cos(2\pi f_n t) \; dt
+    \\&=& \int_t^{t+T} \cos\left[2\pi (f_m-f_n) t + \phi\right] \dt
+    \\&=& \left.\frac{\sin[2\pi (f_m-f_n) t + \phi]}
+                     {2\pi(f_m-f_n)}
+          \right|_t^{t+T}
+    \\&=& \frac{\sin[2\pi (f_m-f_n)(t+T) + \phi]-\sin[2\pi (f_m-f_n)t + \phi]}{2\pi(f_m-f_n)}
+\end{eqnarray*}
+
+For orthogonality, this implies
+
+\begin{eqnarray*}
+   2\pi (f_m-f_n)(t+T) + \phi &=& 2\pi (f_m-f_n)t + \phi + k2\pi, k=1,2,3,\ldots \\
+   2\pi (f_m-f_n)T  &=& k2\pi \\
+   (f_m-f_n)T  &=& k \\
+   f_m-f_n  &=& \frac{k}{T} \\
+\end{eqnarray*}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{lem:QAM_basis}
+%---------------------------------------
+Let $(V, \inprod{\cdot}{\cdot}, S)$ be a QAM modulation space and 
+$s(t;a_m,b_m)\in S$.
+Then the set
+\[
+   \Psi \eqd \left\{ \begin{array}{rcl}
+      \psi_c(t) &=& \frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t), \\
+      \psi_s(t) &=& -\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)
+      \end{array}\right\}
+\]
+
+is an orthonormal basis for $S$.
+\end{proposition}
+
+\begin{proof}
+
+1. $\Psi$ spans $S$:
+\begin{eqnarray*}
+   s(t;a_m,b_m) 
+     &\eqd& a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
+            b_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)
+   \\&=&    a_m\psi_c(t) + b_m\psi_s(t)
+\end{eqnarray*}
+
+2. $\Psi$ is orthonormal with respect to $\inprod{\cdot}{\cdot}$.
+
+\begin{eqnarray*}
+   \inprod{\psi_c(t)}{\psi_c(t)}
+      &=& \inprod{\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
+                 {\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
+    \\&=& \frac{\sqrt{2}}{\norm{\sym}}\frac{\sqrt{2}}{\norm{\sym}}
+          \inprod{ \sym(t) \cos(2\pi f_c t)}
+                 { \sym(t) \cos(2\pi f_c t)}
+    \\&=& \frac{2}{\norm{\sym}^2}
+          \opL
+          \int_0^T \sym^2(t) \cos^2(2\pi f_c t) \; dt
+    \\&=& \frac{2}{\norm{\sym}^2}
+          \opL
+          \int_0^T \sym^2(t)\frac{1}{2}\left[1+ \cos(4\pi f_c t)\right] \; dt
+    \\&=& \frac{2}{\norm{\sym}^2}\frac{1}{2}
+          \int_0^T \sym^2(t)\left[ 1 \right] \; dt
+    \\&=& \frac{1}{\norm{\sym}^2}
+          \inprod{\sym(t)}{\sym(t)}
+    \\&=& \frac{1}{\norm{\sym}^2}
+          \norm{\sym(t)}^2
+    \\&=& 1
+\\ \\
+   \inprod{\psi_s(t)}{\psi_s(t)}
+      &=& \inprod{\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)}
+                 {\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)}
+    \\&=& \frac{\sqrt{2}}{\norm{\sym}}\frac{\sqrt{2}}{\norm{\sym}}
+          \inprod{ \sym(t) \sin(2\pi f_c t)}
+                 { \sym(t) \sin(2\pi f_c t)}
+    \\&=& \frac{2}{\norm{\sym}^2}
+          \opL
+          \int_0^T \sym^2(t) \sin^2(2\pi f_c t) \; dt
+    \\&=& \frac{2}{\norm{\sym}^2}
+          \opL
+          \int_0^T \sym^2(t)\frac{1}{2}\left[1- \cos(4\pi f_c t)\right] \; dt
+    \\&=& \frac{2}{\norm{\sym}^2}\frac{1}{2}
+          \int_0^T \sym^2(t)\left[ 1 \right] \; dt
+    \\&=& \frac{1}{\norm{\sym}^2}
+          \inprod{\sym(t)}{\sym(t)}
+    \\&=& \frac{1}{\norm{\sym}^2}
+          \norm{\sym(t)}^2
+    \\&=& 1
+\\ \\
+   \inprod{\psi_s(t)}{\psi_c(t)}
+      &=& \inprod{\psi_c(t)}{\psi_s(t)}
+    \\&=& \inprod{\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
+                 {\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)}
+    \\&=& \frac{\sqrt{2}}{\norm{\sym}}\frac{\sqrt{2}}{\norm{\sym}}
+          \inprod{ \sym(t) \cos(2\pi f_c t)}
+                 { \sym(t) \sin(2\pi f_c t)}
+    \\&=& \frac{2}{\norm{\sym}^2}
+          \opL
+          \int_0^T \sym^2(t) \cos(2\pi f_c t)\sin(2\pi f_c t) \; dt
+    \\&=& \frac{2}{\norm{\sym}^2}
+          \opL
+          \int_0^T \sym^2(t)\frac{1}{2}
+          \left[\sin(4\pi f_c t)-\sin(0)\right] \; dt
+    \\&=& \frac{1}{\norm{\sym}^2}
+          \int_0^T \sym^2(t)
+          \left[\opL\sin(4\pi f_c t)-0\right] \; dt
+    \\&=& \frac{1}{\norm{\sym}^2}
+          \int_0^T \sym^2(t)
+          \left[0-0\right] \; dt
+    \\&=& 0
+\end{eqnarray*}
+\end{proof}
+
+
+Definition~\ref{def:qam} represents elements of $S$ in rectangular form
+$(a_m,b_m)$.
+The elements of $S$ can also be represented in polar form
+$(r_m,\theta_m)$ as shown below.
+\begin{eqnarray*}
+   s(t;m) 
+     &=& \dot{s}_c(a_m) \psi_c(t) + \dot{s}_c(b_m) \psi_s(t)
+   \\&=& r_m \frac{\sqrt{2}}{\norm{\sym}} \sym(t) 
+         \left[
+            a_m \cos(2\pi f_c t) -b_m \sin(2\pi f_c t)
+         \right]
+   \\&=& r_m \frac{\sqrt{2}}{\norm{\sym}} \sym(t) 
+         \left[
+            \cos\theta_m \cos(2\pi f_c t) -\sin\theta_m \sin(2\pi f_c t)
+         \right]
+   \\&=& r_m \frac{\sqrt{2}}{\norm{\sym}} \sym(t)  
+         \cos\left[ 2\pi f_c t + \theta_m \right]
+\end{eqnarray*}
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(230,230)(-100,-100)
+  %\graphpaper[10](0,0)(200,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){200} }
+  \put(   0 ,-100 ){\line(0,1){200} }
+  \put(   0 ,   0 ){\vector(1,1){60} }
+  \thinlines
+  %\put(   0 ,  60 ){\line(1,0){60} }
+  %\put(  60 ,   0 ){\line(0,1){60} }
+  \qbezier[12]( 60,  0)( 60, 30)( 60, 60)
+  \qbezier[12](  0, 60)( 30, 60)( 60, 60)
+  
+  \put(  50 , -15 ){$a_m$} 
+  \put( -30 ,  55 ){$b_m$} 
+  \put(  10 ,  34 ){$r_m$} 
+  \put(  20 ,   5 ){$\theta_m$} 
+  \put( 110 ,  -5 ){$\psi_c(t)=\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)$}
+  \put(   0 , 110 ){$\psi_s(t)=-\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)$}
+
+  \put(  60 ,  60 ){\circle*{10}}
+  \put( -60 ,  60 ){\circle*{10}}
+  \put( -60 , -60 ){\circle*{10}}
+  \put(  60 , -60 ){\circle*{10}}
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   QAM rectangular $(a_m,b_m)$ and polar $(r_m,\theta_m)$ representations
+   \label{fig:QAM_vector}
+   }
+\end{figure}
+
+
+%=======================================
+\subsection{Measures}
+%=======================================
+%---------------------------------------
+\subsubsection{Measures}
+%---------------------------------------
+%---------------------------------------
+\begin{theorem}
+\index{energy!Pulse Amplitude Modulation}
+\index{distance!Pulse Amplitude Modulation}
+%---------------------------------------
+The PAM modulation space has {\bf energy} and {\bf distance} measures
+\begin{eqnarray*}
+   \flE{s(t;m)}          &=& a_m^2                \\
+   \metric{s(t;m)}{s(t;n)} &=& |a_m - a_n|.
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+Because PAM is a modulation space,
+\begin{liste}
+   \item the energy measure follows from \prefp{thm:ms_energy} (\prefpo{thm:ms_energy})
+   \item the distance measure from \prefp{thm:ms_dist}  (\prefpo{thm:ms_dist}).
+\end{liste}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{thm:ms_energy}
+\index{energy!generalized coherent modulation}
+%---------------------------------------
+Let
+\begin{liste}
+   \item $(V, \inprod{\cdot}{\cdot}, S)$ be a modulation space and $s(t)\in S$
+   \item $\Psi\eqd\{ \psi_n(t): n=1,2,\ldots,N\}$ 
+         be a set of orthonormal functions that span $S$
+   \item $\dot{s}_n\eqd\inprod{s(t)}{\psi_n(t)}$
+\end{liste}
+
+Then the {\bf energy} in $s(t)$ is
+\[ \flE s(t) = \sum_{n=1}^N |\dot{s}_n|^2. \]
+\end{proposition}
+
+\begin{proof}
+\begin{align*}
+   \flE s(t)
+     &\eqd \norm{s(t)}^2      
+   \\&=    \norm{\sum_{n=1}^N \dot{s}_n \psi_n(t)}^2  
+   \\&=    \sum_{n=1}^N |\dot{s}_n|^2   
+     &&    \text{by \prefp{thm:ortho_norm} (\prefpo{thm:ortho_norm}) }
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{thm:ms_dist}
+\index{distance!generalized coherent modulation}
+%---------------------------------------
+Let 
+\begin{liste}
+   \item $(V, \inprod{\cdot}{\cdot}, S)$ be a modulation space and $s(t;m)\in S$
+   \item $\Psi\eqd\{ \psi_n(t): n=1,2,\ldots,N\}$ 
+         be a set of orthonormal functions that span $S$
+   \item $\dot{s}_n(m)\eqd\inprod{s(t;m)}{\psi_n(t)}$
+\end{liste}
+
+Then the {\bf distance} between waveforms $s(t;m)$ and $s(t;k)$ is
+\[ \metric{s(t;m)}{s(t;k)} \eqd \sqrt{\sum_{n=1}^N |\dot{s}_n(m)-\dot{s}_n(k)|^2}. \]
+\end{proposition}
+
+\begin{proof}
+\begin{eqnarray*}
+   \distsq{s(t;m)}{s(t;k)}
+     &\eqd& \norm{ s(t;m)-s(t;k)}^2 
+   \\&=&    \sum_{n=1}^N |\dot{s}_n(m)-\dot{s}_n(k)|^2 
+        \hspace{1cm}\mbox{ by \prefp{thm:ortho_dist} (\prefpo{thm:ortho_dist})} 
+\end{eqnarray*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{theorem}
+\index{energy!Phase Shift Keying}
+\index{distance!Phase Shift Keying}
+%---------------------------------------
+The PSK modulation space has {\bf energy} and {\bf distance} measures
+\begin{eqnarray*}
+   \flE{s(t;m)}  &=& \ds r^2              
+\\
+   \metric{s(t;m)}{s(t;n)} 
+     &=& r \sqrt{ 2 - 2\cos\left( \theta_m - \theta_n \right)}.
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \flE{s(t;m)} 
+     &\eqd \norm{s(t;m)}^2
+   \\&=    \norm{\dot{s}_c(m)\psi_1(t) + \dot{s}_s(m)\psi_2(t)}^2
+   \\&=    \dot{s}_c^2(m) + \dot{s}_s^2(m)  
+     &&    \text{by \prefp{thm:ortho_norm} }
+   \\&=    \left( r \cos\theta_m \right)^2 +
+           \left( r \sin\theta_m \right)^2 
+   \\&=    r^2 \left( \cos^2\theta_m + \sin^2\theta_m \right)
+   \\&=    r^2
+\end{align*}
+
+
+\begin{eqnarray*}
+   \distsq{s(t;m)}{s(t;n)}
+     &=& \norm{s(t;m)-s(t;n)}^2
+   \\&=& \norm{ [\dot{s}_c(m)\psi_1(t)+\dot{s}_s(m)\psi_2(t)]-   
+                [\dot{s}_c(n)\psi_1(t)+\dot{s}_s(n)\psi_2(t)]
+              }^2
+   \\&=& \norm{ [\dot{s}_c(m)-\dot{s}_c(n)]\psi_1(t) +
+                [\dot{s}_s(m)-\dot{s}_s(n)]\psi_2(t)
+              }^2
+   \\&=& [\dot{s}_c(m)-\dot{s}_c(n)]^2 + [\dot{s}_s(m)-\dot{s}_s(n)]^2
+         \hspace{3ex} \mbox{ by \prefp{thm:ortho_dist} }
+   \\&=& [r\cos \theta_m - r\cos \theta_n]^2 + [r\sin \theta_m + r\sin \theta_n ]^2
+   \\&=& r^2\left( [\cos \theta_m - \cos \theta_n]^2 + [\sin \theta_m + \sin \theta_n ]^2 \right)
+   \\&=& r^2\left( [\cos^2\theta_m -2\cos \theta_m\cos \theta_n + \cos^2 \theta_n] + 
+                   [\sin^2\theta_m -2\sin \theta_m\sin \theta_n + \sin^2 \theta_n]\right)
+   \\&=& r^2\left( [\cos^2\theta_m + \sin^2 \theta_m] +
+                   [\cos^2\theta_n + \cos^2 \theta_n] -
+                   2[\cos \theta_m\cos \theta_n + \sin \theta_m \sin \theta_n ] 
+            \right)
+   \\&=& r^2[ 1 + 1 - 2\cos(\theta_m-\theta_n) ]
+   \\&=& 2r^2[ 1 - \cos(\theta_m-\theta_n) ]
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+%---------------------------------------
+\begin{theorem}
+\index{energy!Frequency Shift Keying}
+\index{distance!Frequency Shift Keying}
+%---------------------------------------
+The FSK modulation space has {\bf energy} and {\bf distance} measures
+equivalent to
+\begin{eqnarray*}
+   \flE{s(t;m)}          &=& \dot{s}^2            \\
+   \metric{s(t;m)}{s(t;n)} &=& \sqrt{2}\;\dot{s}.
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+The energy measure is a result of \prefp{thm:ms_energy} (\prefpo{thm:ms_energy}).\\
+For distance,
+\begin{align*}
+   \distsq{s(t;m)}{s(t;n)}
+     &= \sum_{k=1}^N |\dot{s}_k(m)-\dot{s}_{nk}|^2 
+     && \text{\prefp{thm:ms_dist}}
+   \\&= \sum_{k=1}^N |\dot{s}_k(m)-\dot{s}_{nk}|^2 
+   \\&= (\dot{s}-0)^2 + (\dot{s}-0)^2
+   \\&= 2\dot{s}^2.
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\index{energy!Quadrature Amplitude Modulation}
+\index{distance!Quadrature Amplitude Modulation}
+%---------------------------------------
+The QAM modulation space has {\bf energy} and {\bf distance} measures
+equivalent to
+\begin{align*}
+  \flE{s(t;m)}    &= a_m^2 + b_m^2  &=& r_m^2 
+  \\
+  \metric{s(t;m)}{s(t;n)} 
+    &= \sqrt{(a_m-a_n)^2 + (b_m-b_n)^2}.
+\end{align*}
+\end{theorem}
+\begin{proof}
+\begin{eqnarray*}
+   \flE{s(t;m)} 
+     &\eqd& \norm{s(t;m)}^2 
+   \\&=&    \norm{
+            a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
+            b_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t) 
+            }^2
+   \\&=&    \norm{ a_m \psi_c(t) + b_m \psi_s(t) }^2
+   \\&=&    a_m^2 + b_m^2  \hspace{1cm}\mbox{ by \prefp{thm:ortho_norm} \prefpo{thm:ortho_norm} }
+   \\&=&    ( r_m \cos\theta_m )^2 + ( r_m \sin\theta_m )^2 
+   \\&=&    r_m^2 \left( \cos^2\theta_m + \sin^2\theta_m \right)
+   \\&=&    r_m^2
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \distsq{s(t;m)}{s(t;n)}
+     &\eqd& \norm{s(t;m) - s(t;n) }^2
+   %\\&=& \norm{\left(
+   %         a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
+   %         b_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t) 
+   %      \right) - \left(
+   %         a_n\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
+   %         b_n\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t) 
+   %      \right) }^2
+   \\&=& \norm{\left(a_m \psi_c(t) + b_m\psi_s(t)\right) - 
+               \left(a_n \psi_c(t) + b_n\psi_s(t)\right) }^2
+   \\&=& |a_m-a_n|^2 + |b_m-b_n|^2
+         \hspace{1cm}\mbox{by \prefp{thm:ortho_dist} \prefpo{thm:ortho_dist}}
+\end{eqnarray*}
+\end{proof}
+
+
+
+\clearpage
+%======================================
+\section{Continuous Phase Modulation (CPM)}
+\index{Continuous Phase Modulation}
+\index{CPM}
+\label{sec:CPM}
+%======================================
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.17mm}                  
+\begin{picture}(900,150)(-100,-50)
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+  \put(-100,  60 ){\makebox(30,0)[b]{$u_n$} }
+  \put(-100,  50 ){\vector(1,0){50} }
+
+  \put(-70, -50 ){\dashbox{4}( 280,160){} }
+  \put(-70, -40 ){\makebox( 280,160)[b]{transmitter} }
+  \put(   50,  60 ){\makebox(50,50)[b]{$y_n$} }
+  \put(   50,  50 ){\vector(1,0){50} }
+
+  \put(- 50,  00 ){\framebox( 100,100){mapper} }
+  \put( 100,  00 ){\framebox( 100,100){modulator} }
+  \put( 200,  50 ){\vector(1,0){100} }
+
+  \put( 300,  00 ){\framebox(100,100){} }
+  \put( 300,  10 ){\makebox(100, 80)[c]{channel} }
+  \put( 210,  60 ){\makebox( 90, 50)[b]{$\fs(t;\{u_n\})$} }
+  \put( 400,  60 ){\makebox( 80, 50)[b]{$\fr(t;\{u_n\})$} }
+
+  \put( 400,  50 ){\vector(1,0){100} }
+  \put( 500,  00 ){\framebox(100,100){detector} }
+  \put( 600,  60 ){\makebox(50,50)[b]{$\hat{y_n}$} }
+  \put( 600,  50 ){\vector(1,0){50}}
+  \put( 650,  00 ){\framebox(100,100){} }
+  \put( 650,  30 ){\makebox(100,40)[t]{inverse} }
+  \put( 650,  30 ){\makebox(100,40)[b]{mapper} }
+  \put( 480, -50 ){\dashbox{4}( 280,160){} }
+  \put( 480, -40 ){\makebox( 280,160)[b]{receiver} }
+
+  \put( 760,  60 ){\makebox(40,50)[b]{$\{u_n\}$} }
+  \put( 750,  50 ){\vector(1,0){50}}
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Continuous Phase Modulation system model
+   \label{fig:cpm_model}
+   }
+\end{figure}
+
+
+
+
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{tabular}{cc}
+   LREC & LRC 
+\\
+\begin{picture}(200,200)(-50,-20)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put( -20 ,   0 ){\line(1,0){170} }
+  \put(   0 , -20 ){\line(0,1){170} }
+
+  \put( -30 , 100 ){$\frac{1}{2}$ }
+  \put(  50 , -20 ){\makebox(100,40)[b]{$LT$} }
+  \put( 160 , -10 ){$t$ }
+  \qbezier[12](100,  0)(100, 50)(100,100)
+  \qbezier[12](  0,100)( 50,100)(100,100)
+  %\multiput(  0,100)(10,0){10}{\line(1,0){5}}
+
+  \put(  0,  0){\line(1,1){100}}
+  \put(100,100){\line(1,0){50}}
+\end{picture}                                   
+&
+\begin{picture}(200,150)(-50,-20)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put( -20 ,   0 ){\line(1,0){170} }
+  \put(   0 , -20 ){\line(0,1){170} }
+
+  \put( -30 , 100 ){$\frac{1}{2}$ }
+  \put(  50 , -20 ){\makebox(100,40)[b]{$LT$} }
+  \put( 160 , -10 ){$t$ }
+  \qbezier[12](100,  0)(100, 50)(100,100)
+  \qbezier[12](  0,100)( 50,100)(100,100)
+
+  \qbezier(   0,   0)(  30,   0)(  50,  50)
+  \qbezier(  50,  50)(  70, 100)( 100, 100)
+  \put(100,100){\line(1,0){50}}
+\end{picture}
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+  CPM phase pulses $\rho(t)$
+   \label{fig:CPM_pp}
+   }
+\end{figure}
+
+
+Continuous modulation can be realized using {\em phase pulses}
+which are illustrated in Figure~\ref{fig:CPM_pp} and defined in 
+Definition~\ref{def:CPM_pp} (next).
+%---------------------------------------
+\begin{definition}
+\label{def:CPM_pp}
+%---------------------------------------
+Let $L\in\Zp$ be the {\bf response length}
+and $T$ the {\bf signalling rate}.
+The function $\rho:\R\to\R$ is a {\bf phase pulse} if
+\begin{enume}
+   \item $\rho(t)$ is continuous
+   \item $\rho(t)=0$ for $t\le0$
+   \item $\rho(t)=\frac{1}{2}$ for $t\ge LT$.
+\end{enume}
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:CPM}
+%---------------------------------------
+Let 
+\begin{eqnarray*}
+   n   & = & \floor{\frac{t}{T}} \\
+   x_n &\in& \{0,1,\ldots, M-1 \} \\
+   y_n & = & 2x_n -1 \in \{ \pm1, \pm2,\ldots, \pm(M-1)\}.
+\end{eqnarray*}
+
+Then
+{\bf Continuous Phase Modulation} (CPM) signalling waveforms are
+\begin{eqnarray*}
+   \fs(t;\ldots,u_{n-1},u_n)
+     &=& a \frac{2}{\sqrt{T}} 
+           \cos\left[ 
+              2\pi f_ct + 
+              2\pi\sum_{k=-\infty}^n y_k h_k \rho(t-kT)
+           \right]
+   \\&=& a \frac{2}{\sqrt{T}} 
+           \cos\left( \begin{array}{ccccc}
+              \ds \underbrace{2\pi f_ct} &+&
+              \ds \underbrace{\pi \sum_{k=-\infty}^{n-L} y_k h_k}  &+&
+              \ds \underbrace{2\pi \sum_{k=n-L+1}^n y_k h_k \rho(t-kT)}
+              \\
+              \mbox{carrier} && \mbox{state} && \mbox{maintains continuous phase}
+           \end{array}
+           \right)
+\end{eqnarray*}
+\end{definition}
+
+
+%---------------------------------------
+\subsection{Phase Pulse waveforms}
+%---------------------------------------
+\[   \rho(t) = \int_t \rho'(t) \; dt \]
+
+\begin{fsL}
+\begin{align*}
+   \intertext{Rectangular (LREC)} \\
+   \rho'(t) &=
+      \left\{ 
+         \begin{tabular}{ll}
+            $\frac{1}{2LT}$   & for $0\le t \le LT$ \\
+            $0$               & otherwise
+         \end{tabular}
+      \right.
+&
+   \rho(t) &= 
+      \left\{ 
+         \begin{tabular}{ll}
+            $0$               & for $t<0$ \\
+            $\frac{1}{2LT}t$  & for $0\le t< LT$ \\
+            $\frac{1}{2}$     & for $t\ge LT$ 
+         \end{tabular}
+      \right.
+\\ \\
+   \intertext{Raised Cosine (LRC)} \\
+   \rho'(t) &= 
+      \left\{ 
+         \begin{array}{ll}
+            \frac{1}{2LT}\left[ 1 - \cos\left(\frac{2\pi}{LT}t\right) \right]  & \mbox{for } 0\le t< LT \\
+            0              & \mbox{otherwise}
+         \end{array}
+      \right.
+&
+   \rho(t) &=
+      \left\{ 
+         \begin{array}{ll}
+            0             & \mbox{for } t<0 \\
+            \frac{1}{2LT}\left[ t - \frac{LT}{2\pi}\sin\left(\frac{2\pi}{LT}t\right) \right]  & \mbox{for } 0\le t< LT \\
+            \frac{1}{2}   & \mbox{for } t\ge LT
+         \end{array}
+      \right.
+\\ \\
+   \intertext{Gaussian Minimum Shift Keying (GMSK)} \\
+   \rho'(t) &= 
+      \left\{ 
+         \begin{array}{ll}
+            \Qb{\frac{2\pi B(t-\frac{T}{2})}{\sqrt{ln2}}} -   
+            \Qb{\frac{2\pi B(t+\frac{T}{2})}{\sqrt{ln2}}}
+            & \mbox{for } 0\le t< LT \\
+            0              & \mbox{otherwise}
+         \end{array}
+      \right.
+&
+   \rho(t) &=
+      \int_{-\infty}^t \rho'(t) \; dt
+\end{align*}
+\end{fsL}
+
+
+
+
+
+
+
+
+
+
+%---------------------------------------
+\subsection{Special Cases}
+%---------------------------------------
+%---------------------------------------
+\begin{definition}
+\index{Full Response Continuous Phase Modulation}
+\index{Partial Response Continuous Phase Modulation}
+%---------------------------------------
+{\bf Full response} CPM has response length $L=1$.
+{\bf Partial response} CPM has response length $L\ge2$.
+\end{definition}
+
+In the case of Full Response CPM, the signalling waveform simplifies to
+\begin{align*}
+   \fs(t;\ldots,u_{n-1},u_n)
+     &= a \frac{2}{\sqrt{T}} 
+          \cos\left(
+             2\pi f_ct + 
+             \pi \sum_{k=-\infty}^{n-L} y_k h_k  + 
+             2\pi \sum_{k=n-L+1}^n y_k h_k \rho(t-kT)
+          \right)
+   \\&= a \frac{2}{\sqrt{T}} 
+          \cos\left(
+             2\pi f_ct + 
+             \pi \sum_{k=-\infty}^{n-1} y_k h_k  + 
+             2\pi \sum_{k=n-1+1}^n y_k h_k \rho(t-kT)
+          \right)
+   \\&= a \frac{2}{\sqrt{T}} 
+          \cos\brp{
+             \mcom{2\pi f_ct}{carrier} +
+             \mcom{\pi \sum_{k=-\infty}^{n-1} y_k h_k}{state}  +
+             \mcom{2\pi y_n h_n \rho(t-nT)}{maintains c.p.}
+             }
+\end{align*}
+
+
+%---------------------------------------
+\begin{definition}
+\index{Continuous Phase Frequency Shift Keying}
+\index{CPFSK}
+%---------------------------------------
+{\bf Continuous Phase Frequency Shift Keying} (CPFSK)
+is full response CPM ($L=1$) with $h_n=h$ is constant
+and LREC phase pulse.
+\end{definition}
+
+In CPFSK, the signalling waveform is
+\begin{align*}
+   \fs(t;\ldots,u_{n-1},u_n)
+     &=& a \frac{2}{\sqrt{T}} 
+           \cos\left(
+              2\pi f_ct + 
+              \pi \sum_{k=-\infty}^{n-L} y_k h_k  + 
+              2\pi \sum_{k=n-L+1}^n y_k h_k \rho(t-kT)
+           \right)
+   \\&=& a \frac{2}{\sqrt{T}} 
+           \cos\left(
+              2\pi f_ct + 
+              \pi \sum_{k=-\infty}^{n-1} y_k h  + 
+              2\pi y_n h 
+              \left( \frac{1}{2T}(t-nT)  \right)
+           \right)
+   \\&=& a \frac{2}{\sqrt{T}} 
+           \cos\brp{
+             \mcom{2\pi \left(f_c +  \frac{h}{2T}y_n \right)t}{carrier} +
+             \mcom{\pi h\sum_{k=-\infty}^{n-1} y_k }{state}  -
+             \mcom{\pi hn y_n }{maintains c.p.}
+             }
+\end{align*}
+
+Two sinusoidal waveforms are \hie{coherent} if their frequency difference is 
+$k\frac{1}{2T}$. 
+The waveforms of CPFSK are therefore orthogonal if $h=m\frac{1}{2}$.
+%---------------------------------------
+\begin{definition}
+\index{Orthogonal Continuous Phase Frequency Shift Keying}
+%---------------------------------------
+{\bf Orthogonal Continuous Phase Frequency Shift Keying}
+is full response CPM ($L=1$) with $h_n\in\set{m\frac{1}{2}}{m\in\Z}$
+and LREC phase pulse.
+\end{definition}
+
+For $m\in\Zp$, orthogonal CPFSK signalling waveforms are
+\begin{align*}
+   \fs(t;\ldots,u_{n-1},u_n)
+     &= a \frac{2}{\sqrt{T}} 
+          \cos\left(
+             2\pi f_ct + 
+             \pi \sum_{k=-\infty}^{n-L} y_k h_k  + 
+             2\pi \sum_{k=n-L+1}^n y_k h_k \rho(t-kT)
+          \right)
+   \\&= a \frac{2}{\sqrt{T}} 
+          \cos\left(
+             2\pi \left(f_c +  \frac{h}{2T}y_n \right)t 
+             + \pi \sum_{k=-\infty}^{n-1} y_k h  
+             -\pi hn y_n  
+          \right)
+   \\&= a \frac{2}{\sqrt{T}} 
+          \cos\brp{
+            \mcom{2\pi \left(f_c +  \frac{m}{4T}y_n \right)t}{carrier} +
+            \mcom{\frac{m}{2}\pi \sum_{k=-\infty}^{n-1} y_k }{state}  -
+            \mcom{\frac{m}{2}\pi n y_n }{maintains c.p.}
+            }
+\end{align*}
+
+The minimum value of $m$ in orthogonal CPFSK is $1$. 
+When $m=1$ (the minimum value for orthogonality), 
+the orthogonal CPFSK is also called {\em Minimum Shift Keying}.
+%---------------------------------------
+\begin{definition}
+\index{Minimum Shift Keying}
+\index{MSK}
+%---------------------------------------
+{\bf Minimum Phase Shift Keying} (MSK) is 
+is full response CPM ($L=1$) with $h_n=\frac{1}{2}$
+and LREC phase pulse.
+\end{definition}
+
+In MSK, the signalling waveform is
+\begin{eqnarray*}
+   \fs(t;\ldots,u_{n-1},u_n)
+     &=& a \frac{2}{\sqrt{T}} 
+           \cos\left( 
+              2\pi f_ct + 
+              \frac{\pi}{2} \left( \sum_{k=-\infty}^{n-1} y_k  +
+              \frac{t-nT}{T}\cdot y_n \right)
+           \right).
+   \\&=& a \frac{2}{\sqrt{T}} 
+           \cos\left(
+              2\pi \left(f_c +  \frac{m}{4T}y_n \right)t 
+              + \frac{m}{2}\pi \sum_{k=-\infty}^{n-1} y_k   
+              -\frac{m}{\pi} n y_n  
+           \right)
+   \\&=& a \frac{2}{\sqrt{T}} 
+           \cos\brp{
+              \mcom{2\pi \left(f_c +  \frac{1}{4T}y_n \right)t}{carrier} +
+              \mcom{\frac{\pi}{2} \sum_{k=-\infty}^{n-1} y_k }{state}  -
+              \mcom{\frac{\pi}{2} n y_n }{maintains c.p.}
+           }
+\end{eqnarray*}
+
+
+In summary:
+
+\begin{tabular}{l|lll}
+   Technique & $\rho(t)$ & $L$ & $h_k$ \\
+\hline
+   Continuous Phase Frequency Shift Keying (CPFSK) & LREC & $1$  & $h$ (constant) \\
+   Minimum Shift Keying (MSK)                      & LREC & $1$  & $\frac{1}{2}$ 
+\end{tabular}
+
+
+
+
+
+%---------------------------------------
+\subsection{Detection}
+\index{trellis}
+%---------------------------------------
+The state of the signalling waveforms at intervals $nT$ can be
+described by trellis diagrams.
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(500,320)(-100,0)
+  %\graphpaper[10](0,0)(300,300)
+  \put( -90 , 300 ){$\phi_3=\frac{3\pi}{2}$}
+  \put( -90 , 200 ){$\phi_2=\pi$}
+  \put( -90 , 100 ){$\phi_1=\frac{\pi}{2}$}
+  \put( -90 ,   0 ){$\phi_0=0$}
+
+  \thinlines
+  \multiput(0,0)(100,0){5}{
+     \put(   0 ,   0 ){\circle*{10}}
+     \put(   0 , 100 ){\circle*{10}}
+     \put(   0 , 200 ){\circle*{10}}
+     \put(   0 , 300 ){\circle*{10}}
+  }
+
+  \qbezier[40](  0,  0)( 50,150)(100,300)
+  \qbezier[40](100,300)(250,150)(400,  0)
+  \qbezier[20](100,100)(150, 50)(200,  0)
+  \qbezier[40](200,  0)(250,150)(300,300)
+  \qbezier[40](300,300)(350,250)(400,200)
+
+  \put(  0,  0){\line( 1, 1){300}}
+  \put(100,300){\line( 1,-3){100}}
+  \put(200,  0){\line( 1, 1){200}}
+  \put(300,300){\line( 1,-3){100}}
+\end{picture}                                   
+\end{fsL}
+\hspace{1cm}
+\begin{tabular}{cl}
+   $\cdots$ & $x_n=0$ \\
+   ---      & $x_n=1$ 
+\end{tabular}
+\caption{
+  CPM $M=2$, $h=1/2$ (MSK-2) trellis diagram
+   \label{fig:MSK-2_trellis}
+   }
+\end{center}
+\end{figure}
+
+
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(500,320)(-100,0)
+  %\graphpaper[10](0,0)(300,300)
+  \put( -90 , 200 ){$\phi_2=\frac{4}{3}\pi$}
+  \put( -90 , 100 ){$\phi_1=\frac{2}{3}\pi$}
+  \put( -90 ,   0 ){$\phi_0=0$}
+
+  \thinlines
+  \multiput(0,0)(100,0){5}{
+     \put(   0 ,   0 ){\circle*{10}}
+     \put(   0 , 100 ){\circle*{10}}
+     \put(   0 , 200 ){\circle*{10}}
+  }
+
+  \qbezier[40](  0,  0)( 50,100)(100,200)
+  \qbezier[40](100,200)(200,100)(300,  0)
+  \qbezier[20](100,100)(150, 50)(200,  0)
+  \qbezier[40](200,  0)(250,100)(300,200)
+  \qbezier[40](300,  0)(350,100)(400,200)
+  \qbezier[40](200,200)(300,100)(400,  0)
+  \qbezier[40](300,200)(350,150)(400,100)
+
+  \put(  0,  0){\line( 1, 1){200}}
+  \put(200,  0){\line( 1, 1){200}}
+  \put(200,100){\line( 1, 1){100}}
+  \put(300,  0){\line( 1, 1){100}}
+  \put(100,200){\line( 1,-2){100}}
+  \put(200,200){\line( 1,-2){100}}
+  \put(300,200){\line( 1,-2){100}}
+\end{picture}                                   
+\end{fsL}
+\hspace{1cm}
+\begin{tabular}{cl}
+   $\cdots$ & $x_n=0$ \\
+   ---      & $x_n=1$ 
+\end{tabular}
+\caption{
+  CPM $M=2$, $h=2/3$ trellis diagram
+   \label{fig:CPM_M2_h23_trellis}
+   }
+\end{center}
+\end{figure}
+
+
+

@@ -1,0 +1,2727 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Line Coding}
+\label{chp:modulation_codes}
+\index{modulation codes}
+\index{line codes}
+\index{baseband modulation}
+%======================================
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.20mm}                  
+\begin{picture}(800,100)(50,-50)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   50,   0 ){\vector  (   1,  0)   {50}           }
+  \put( 100,  -50){\framebox( 100,100)    {}             }
+  \put( 100,  -30){\makebox( 100,  60)[t] {modulation}   }
+  \put( 100,  -30){\makebox( 100,  60)[c] {coder}        }
+ %\put( 100,  -30){\makebox( 100,  60)[b] {(state machine)}       }
+
+  \put( 200,    0 ){\vector  (   1,  0)   {50}           }
+  \put( 250,  -50 ){\framebox( 100,100)   {}             }
+  \put( 250,  -30 ){\makebox ( 100, 60)[t]{mapping}      }
+  \put( 250,  -30 ){\makebox ( 100, 60)[c]{$0\to-1$}     }
+  \put( 250,  -30 ){\makebox ( 100, 60)[b]{$1\to+1$}     }
+  \put( 350,    0 ){\vector  (   1,  0)   {50}           }
+  \put( 400,  -50 ){\framebox( 100,100)   {modulator}    }
+
+  \put( 550,  -50 ){\dashbox{4}( 100,100)   {$+$}          }
+  \put( 550,  -40 ){\makebox ( 100,100)[b]{channel}      }
+  \put( 550,  -50 ){\makebox ( 100, 95)[t]{$n(t)$}       }
+  \put( 600,   00 ){\circle{20}                          }
+  \put( 500,    0 ){\vector  (   1,  0)   {90}           }
+  \put( 610,    0 ){\vector  (   1,  0)   {90}           }
+  \put( 600,   30 ){\vector  (   0, -1)   {20}           }
+
+  \put(  50,   10 ){\makebox (  50, 50)[b]{$\su$}        }
+  \put( 200,   10 ){\makebox (  50, 50)[b]{$\sy$}        }
+  \put( 350,   10 ){\makebox (  50, 50)[b]{$\sa$}        }
+  \put( 500,   10 ){\makebox (  50, 50)[b]{$s(t;\vu)$}       }
+  \put( 650,   10 ){\makebox (  50, 50)[b]{$r(t;\vu)$}       }
+
+  \put( 700,  -50 ){\framebox( 100,100)   {receiver}    }
+  \put( 800,   10 ){\makebox( 50,0)[b]   {$\sue$}    }
+  \put( 800,    0 ){\vector  (   1,  0)   {50}           }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Modulation coding system model
+   \label{fig:modcode_model}
+   }
+\end{figure}
+
+
+This chapter discusses {\em modulation coding}. 
+Modulation codes are also called {\em line codes} or 
+{\em data translation codes}. \citep{proakis}{579}
+Modulation coding is a transform $T:\su\to\sy$
+from an input sequence $\su$ to an encoded sequence $\sy$
+(see Figure~\ref{fig:modcode_model}).
+Modulation codes typically seek to accomplish two objectives:
+
+\begin{tabular}{llp{10cm}}
+   1.& time shaping: & 
+     eliminate long strings of ones or zeros to improve synchronization
+     or make media access more reliable.
+\\
+   2.& spectral shaping: &
+     modify spectral characteristics such as reducing the DC component.
+\end{tabular}
+
+A particular modulation code may be specified using several 
+methods including
+
+\begin{tabular}{llp{10cm}}
+   1.& state machine \\
+   2.& transition matrix \\
+   3.& algebraic equations.
+\end{tabular}
+
+%---------------------------------------
+\section{Channel model}
+%---------------------------------------
+The modulation coding system model is illustrated in 
+Figure~\ref{fig:modcode_model}.
+
+The {\em modulation coding state machine} is a transform
+$T:(u_n)\to(y_n)$.
+Modulation coding can be modeled as a {\em state-space} with
+input $u_n$, output $y_n$, state $\vx_n$ and state equations 
+\footnote{\citerc{smithIII}{\url{\ldots/State\_Space\_Models.html}}}
+\begin{eqnarray*}
+   \vx_{n+1} &=& f_1(\vx_n, u_n) \\
+   y_n         &=& f_2(\vx_n, u_n).
+\end{eqnarray*}
+
+Other quantities appearing in Figure~\ref{fig:modcode_model}
+can be expressed as
+\[
+\begin{array}{lrcl}
+   \mbox{mapping output:}   & a_n &=& 2y_n-1  \\
+   \mbox{channel signal:}   & s(t)&=& \sum_n a_n \lambda(t-nT) \\
+   \mbox{receive signal:}   & r(t)&=& s(t) + n(t).
+\end{array}
+\]
+The signaling waveform $\lambda(t)$ can be any of a number of waveforms.
+A common choice is the simple pulse function illustrated in 
+Figure~\ref{fig:rpulse}.
+But this assumes the channel supports an infinitely wide bandwidth signal.
+Bandlimited choices of signaling waveforms are described in 
+Chapter~\ref{chp:isi} (page~\pageref{chp:isi}).
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{picture}(360,100)(-100,0)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0,1){100} }
+  \put(    0 , 100 ){\line(1,0){100} }
+  \put(  100 ,   0 ){\line(0,1){100} }
+  \put(  -10 , -40 ){$0$ }
+  \put(   90 , -40 ){$T$ }
+  \put(  -60 ,  90 ){$A$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Pulse signaling waveform
+   \label{fig:rpulse}
+   }
+\end{figure}
+
+
+
+%=======================================
+\section{Non-Return to Zero Modulation (NRZ)}
+\label{sec:NRZ}
+\index{Non-Return to Zero}
+\index{NRZ}
+%=======================================
+%---------------------------------------
+\subsection{Description}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{picture}(1400,300)(-100,-130)
+  %\graphpaper[10](0,0)(300,300)
+  \thicklines
+  \put        (-100,   0){\line( 1, 0){1400}} 
+
+  \thinlines
+  \put        (   0, 100){\line( 1, 0){ 100}}   
+  \put        (   0,   0){\line( 0, 1){ 100}} 
+  \put        ( 100,   0){\line( 0, 1){ 100}} 
+
+  \put        ( 100,   0){\line( 0,-1){ 100}} 
+  \put        ( 100,-100){\line( 1, 0){ 200}}   
+  \put        ( 300,-100){\line( 0, 1){ 200}} 
+  \put        ( 300, 100){\line( 1, 0){ 100}}   
+  \put        ( 400, 100){\line( 0,-1){ 200}} 
+  \put        ( 400,-100){\line( 1, 0){ 100}} 
+  \put        ( 500,-100){\line( 0, 1){ 200}} 
+  \put        ( 500, 100){\line( 1, 0){ 300}} 
+  \put        ( 800, 100){\line( 0,-1){ 200}} 
+  \put        ( 800,-100){\line( 1, 0){ 300}} 
+  \put        (1100,-100){\line( 0, 1){ 200}} 
+  \put        (1100, 100){\line( 1, 0){ 100}} 
+  \put        (1200, 100){\line( 0,-1){ 100}} 
+
+  %\multiput(0,-10)(100,  0){13}{\line(0,1){20}} 
+  \multiput(0,0)(100,  0){13}{\qbezier[30](  0,-130)(  0,  0)(  0, 160)}
+
+  \put        (   0, 130 ){\makebox (100,0){1}     }
+  \put        ( 100, 130 ){\makebox (100,0){0}     }
+  \put        ( 200, 130 ){\makebox (100,0){0}     }
+  \put        ( 300, 130 ){\makebox (100,0){1}     }
+  \put        ( 400, 130 ){\makebox (100,0){0}     }
+  \put        ( 500, 130 ){\makebox (100,0){1}     }
+  \put        ( 600, 130 ){\makebox (100,0){1}     }
+  \put        ( 700, 130 ){\makebox (100,0){1}     }
+  \put        ( 800, 130 ){\makebox (100,0){0}     }
+  \put        ( 900, 130 ){\makebox (100,0){0}     }
+  \put        (1000, 130 ){\makebox (100,0){0}     }
+  \put        (1100, 130 ){\makebox (100,0){1}     }
+
+  \put        ( -10, 100 ){\makebox (  0, 0)[r]{$+A$}     }
+  \put        ( -10,-100 ){\makebox (  0, 0)[r]{$-A$}     }
+  \put        ( -100, 130 ){\makebox (  0, 0)[r]{$u_n:$}     }
+  \put        ( -100,  50 ){\makebox (  0, 0)[r]{$s(t):$}     }
+
+\end{picture}                                   
+\end{fsL}
+\caption{
+  NRZ modulated waveform
+   \label{fig:NRZ_wave}
+   }
+\end{center}
+\end{figure}
+
+The non-return to zero (NRZ) waveform is illustrated in Figure~\ref{fig:NRZ_wave}.
+
+%---------------------------------------
+\subsection{Statistics}
+%---------------------------------------
+Note that even if the data sequence $u_n$ is an IID and WSS 
+\footnote{IID: independently and identically distributed. 
+WSS: wide sense stationary}
+sequence, 
+the channel signal $s(t)$ is {\bf not} WSS.
+Specifically, the autocorrelation 
+$\Rss(t+\tau,t)$ of $s(t)$ is not just a function of the time difference $\tau$,
+but also a function of time $t$.
+This is due to the fact that within a bit period, if one point is known
+then all the points in that bit period are known.
+Thus the points in a single bit period are 
+certainly not independent and their autocorrelation is a function of time.
+
+However, it is still possible to compute the time average of the 
+autocorrelation and the Fourier transform of this average
+(similar to the spectral density).
+This is described in Theorem~\ref{thm:NRZ_stat} and 
+illustrated in Figure~\ref{fig:NRZ_stat}.
+
+
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.075mm}
+\begin{figure}[ht]
+
+\begin{tabular}{ccc}
+
+
+\begin{picture}(800,300)(-400,-150)
+  %\graphpaper[10](0,0)(300,300)
+  \thicklines
+  \put        (-400,   0){\line( 1, 0){ 750}} 
+  \put        (-150,-150){\line( 1, 1){ 300}}
+
+  \thinlines
+  \multiput(-400,0)(100,0){6}{
+  \put        (   0,-100){\line( 0, 1){  50}}
+  \put        (   0,- 50){\line( 1, 1){ 174}}
+  \put        (   0,-100){\line( 2, 1){ 200}}
+  \put        (   0,- 50){\line( 2, 1){ 200}}
+  \put        ( 200,   0){\line( 0, 1){  50}}
+  %\put        ( 150,  50){\line( 0, 1){  50}}
+  \put        ( 174, 125){\line( 1,-3){  25}}
+}
+  \put        ( 310, 50 ){\makebox (  0, 0)[l]{$A^2$}     }
+  \put        ( 360,  0 ){\makebox (  0, 0)[l]{$t$}     }
+  \put        (-150,-160 ){\makebox (  0, 0)[t]{$\tau$}     }
+  \qbezier[20]( 100,-130)( 100,-70)( 100,  0)
+  \put        ( 100,-130 ){\makebox (  0, 0)[t]{$T$}    } 
+\end{picture}
+                                   
+&
+
+\begin{picture}(350,300)(-150,-150)
+  %\graphpaper[10](0,0)(300,300)
+  \thinlines
+
+  \put        (-150,   0){\line( 1, 0){ 300}} 
+  \put        (   0, -50){\line( 0, 1){ 180}}
+  \put        (-100,   0){\line( 1, 1){ 100}}
+  \put        ( 100,   0){\line(-1, 1){ 100}}
+
+  \put        ( -20, 100 ){\makebox (  0, 0)[r]{$A^2$}     }
+  \put        (-100, -10 ){\makebox (0, 0)[t]{$-T$}     }
+  \put        ( 100, -10 ){\makebox (0, 0)[t]{$+T$}     }
+  \put        ( 160,  0 ){\makebox (  0, 0)[l]{$\tau$}     }
+\end{picture}
+
+&
+
+\begin{picture}(750,300)(-350,-150)
+  %\graphpaper[10](0,0)(300,300)
+  \thinlines
+
+  \put        (-350,   0){\line( 1, 0){ 700}} 
+  \put        (   0, -50){\line( 0, 1){ 180}}
+  \qbezier    (-100,   0)(   0, 200)( 100,   0)
+  \qbezier    ( 100,   0)( 150,-100)( 200,   0)
+  \qbezier    ( 200,   0)( 250,  70)( 300,   0)
+  \qbezier    (-100,   0)(-150,-100)(-200,   0)
+  \qbezier    (-200,   0)(-250,  70)(-300,   0)
+
+  \put        ( -20, 100 ){\makebox (  0, 0)[r]{$A^2$}     }
+
+  \multiput(-300,0)(100,  0){7}{\qbezier[20](  0,-50)(  0,-25)(  0, 0)}
+  \put        (-300, -60 ){\makebox (0, 0)[t]{$-\frac{3}{T}$}     }
+  \put        (-200, -60 ){\makebox (0, 0)[t]{$-\frac{2}{T}$}     }
+  \put        (-100, -60 ){\makebox (0, 0)[t]{$-\frac{1}{T}$}     }
+  \put        (   0, -60 ){\makebox (0, 0)[t]{$0$}     }
+  \put        ( 100, -60 ){\makebox (0, 0)[t]{$ \frac{1}{T}$}     }
+  \put        ( 200, -60 ){\makebox (0, 0)[t]{$ \frac{2}{T}$}     }
+  \put        ( 300, -60 ){\makebox (0, 0)[t]{$ \frac{3}{T}$}     }
+  \put        ( 360,  0 ){\makebox (  0, 0)[l]{$f$}     }
+
+\end{picture}
+                             
+\\
+$\Rss(t+\tau,t)$ & $\avgRss(\tau)$  & $\avgSss(f)$
+\end{tabular}
+\caption{
+  Statistics of NRZ modulated waveform
+  \label{fig:NRZ_stat}
+}
+\end{figure}
+\end{fsL}
+\end{center}
+
+
+
+%\begin{figure}[ht]
+%\begin{center}
+%\input{"sinc_sqt.lpl"}
+%\end{center}
+%\caption{
+%  $A^2 T \frac{\sin(\pi fT)}{\pi fT}$
+%  \label{fig:sinc_sqt}
+%}
+%\end{figure}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:NRZ_stat}
+%--------------------------------------
+Let
+\begin{liste}
+   \item $u_n:\Z\to\{0,1\}$ be an IID WSS random process with probabilities 
+         \[ \psp\{u_n=0\}=\psp\{u_n=1\}= \frac{1}{2} \hspace{1cm}\mbox{for all $n$}\]
+   \item $s(t)$ be the waveform NRZ modulated by $u_n$
+   \item $\Rss(t+\tau,t)$ be the autocorrelation of $s(t)$ such that
+         \[ \Rss(t+\tau,t) \eqd \Eb{s(t+\tau)s(t)}\]
+   \item $\avgRss(\tau)$ be the time average of $\Rss(t+\tau,t)$.
+         \[ \avgRss(\tau) \eqd \frac{1}{T}\int_0^T \Rss(t+\tau,t) \dt \]
+   \item $\avgSss(f)$ be the Fourier transform of $\avgRss(\tau)$ such that
+         \[ \avgSss(f) \eqd \int_\tau \avgRss(\tau) e^{-i2\pi f\tau} \dtau.\]
+\end{liste}
+
+Then 
+\begin{eqnarray*}
+   \Rss(t+\tau,t) 
+     &=& \left\{
+         \begin{array}{ll}
+            A^2 &:\tau \le (t\mod[T])\le T \\
+            0 & :\mbox{otherwise}
+         \end{array}
+         \right.
+\\
+   \avgRss(\tau) 
+     &=& \left\{
+         \begin{array}{ll}
+            A^2\left( 1- \frac{|\tau|}{T}\right) &:|\tau|\le T \\
+            0 & :|\tau|>T.
+         \end{array}
+         \right.
+\\
+   \avgSxx(f) 
+     &=& A^2 \left[ \frac{\sin\left(\pi fT\right)}{\pi fT}\right]^2.
+\end{eqnarray*}
+\end{theorem}
+
+
+\begin{proof}
+For time intervals $\tau \le (t\mod[T])\le T$, 
+identical portions of $s(t+\tau)$ and $s(t)$
+overlap and the resulting autocorrelation is
+\begin{eqnarray*}
+   \Rss(t+\tau,t) 
+     &=& \Eb{s(t+\tau)s(t)} 
+   \\&=& (-A)(-A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + 
+         (-A)(+A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + \\&&
+         (+A)(-A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + 
+         (+A)(+A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} 
+   \\&=& (-A)(-A)\frac{1}{2} + 
+         (-A)(+A)\cdot 0 +
+         (+A)(-A)\cdot 0 +
+         (+A)(+A)\frac{1}{2} 
+   \\&=& A^2
+\end{eqnarray*}
+
+For all other time intervals, especially $|\tau|>T$,
+$s(t+\tau)$ and $s(t)$ are statistically independent and hence
+ \[ \Rss(\tau) = \Eb{s(t+\tau)s(t)} = \Eb{s(t+\tau)}\Eb{s(t)} = 0\cdot0 = 0.\]
+
+Alternatively,
+\begin{eqnarray*}
+   \Rss(t+\tau,t) 
+     &=& \Eb{s(t+\tau)s(t)} 
+   \\&=& (-A)(-A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + 
+         (-A)(+A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + \\&&
+         (+A)(-A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + 
+         (+A)(+A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} 
+   \\&=& (-A)(-A)\frac{1}{4} + 
+         (-A)(+A)\frac{1}{4} +
+         (+A)(-A)\frac{1}{4} +
+         (+A)(+A)\frac{1}{4} 
+   \\&=& A^2 -A^2 -A^2 + A^2
+   \\&=& 0.
+\end{eqnarray*}
+
+%For the transform needed to compute $\avgSxx(f)$, 
+%see Theorem~\ref{thm:ft_pairs} (page~\pageref{thm:ft_pairs}).
+\end{proof}
+
+
+%---------------------------------------
+\subsection{Detection}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{tabular}{ccc}
+\begin{picture}(360,300)(-100,-150)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0,1){100} }
+  \put(    0 , 100 ){\line(1,0){100} }
+  \put(  100 ,   0 ){\line(0,1){100} }
+  \put(  -10 , -40 ){$0$ }
+  \put(   90 , -40 ){$T$ }
+  \put(  -60 ,  90 ){$\frac{1}{\sqrt{T}}$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}                                   
+&
+\begin{picture}(360,300)(-100,-150)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0,-1){100} }
+  \put(    0 ,-100 ){\line(1, 0){100} }
+  \put(  100 ,   0 ){\line(0,-1){100} }
+  \put(  -10 ,  20 ){$0$ }
+  \put(   90 ,  20 ){$T$ }
+  \put(  -60 ,-100 ){$-A$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}                                   
+&
+\begin{picture}(360,300)(-100,-150)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0,1){100} }
+  \put(    0 , 100 ){\line(1,0){100} }
+  \put(  100 ,   0 ){\line(0,1){100} }
+  \put(  -10 , -40 ){$0$ }
+  \put(   90 , -40 ){$T$ }
+  \put(  -30 ,  90 ){$A$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}
+\\
+$\psi(t)$ & $s(t;a=-1)=-A\psi(t)$ & $s(t;a=+1)=+A\psi(t)$
+\end{tabular}
+\end{fsL}
+\end{center}
+\caption{
+   NRZ critical functions
+   \label{fig:NRZ_psi}
+   }
+\end{figure}
+
+
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:NRZ_basis}
+%---------------------------------------
+The function
+\begin{eqnarray*}
+   \psi(t) 
+     &=& \left\{
+         \begin{tabular}{ll}
+            $\frac{1}{\sqrt{T}}$ & for $0\le t < T$ \\
+            $0$                  & otherwise.
+         \end{tabular}
+         \right.
+\end{eqnarray*}
+forms an {\bf orthonormal basis} for the NRZ signaling waveforms such that
+
+\begin{eqnarray*}
+   s(t;a=-1) &=& -A \psi(t)  \\
+   s(t;a=+1) &=& +A \psi(t) .
+\end{eqnarray*}
+
+\end{proposition}
+
+\begin{proof}
+\begin{eqnarray*}
+   \inprod{\psi(t)}{\psi(t)}
+     &=& \inprod{\frac{1}{\sqrt{T}}} {\frac{1}{\sqrt{T}}}
+   \\&=& \frac{1}{\sqrt{T}} \frac{1}{\sqrt{T}} \inprod{1}{1}
+   \\&=& \frac{1}{T} \int_0^T 1\cdot1 \; dt
+   \\&=& \frac{1}{T} t|_0^T
+   \\&=& \frac{1}{T} (T-0)
+    \\&=& 1
+\end{eqnarray*}
+\end{proof}
+
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(300,200)(-100,-50)
+  %\graphpaper[10](-100,0)(300,150)
+  \thinlines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+
+  \qbezier[20](   0,  0)(   0, 60)(   0,120)
+  \qbezier[20](  50,-50)(  50, -5)(  50, 40)
+  \qbezier[20]( 100,  0)( 100, 20)( 100,120)
+
+  \put(  20 , 130 ){\makebox(0,0)[rb]{$(\dot{r}|a_n=-1)\sim\pN{-A}{\sigma^2}$}}
+  \put(  80 , 130 ){\makebox(0,0)[lb]{$(\dot{r}|a_n=+1)\sim\pN{+A}{\sigma^2}$}}
+
+  \put(   0 , -10 ){\makebox(0,0)[t]{$-A$}}
+  \put(  50 , -10 ){\makebox(0,0)[t]{$0$}}
+  \put( 100 , -10 ){\makebox(0,0)[t]{$+A$}}
+
+  \put(  30 , -30 ){\makebox(0,0)[rt]{$D_0=(-\infty,0]$}}
+  \put(  70 , -30 ){\makebox(0,0)[lt]{$D_1=(0,\infty)$}}
+
+  \qbezier( -40,  60)(   0, 180)(  40,  60)
+  \qbezier(-100,   0)( -60,   0)( -40,  60)
+  \qbezier(  40,  60)(  60,   0)( 100,   0)
+
+  \qbezier(  60,  60)( 100, 180)( 140,  60)
+  \qbezier(   0,   0)(  40,   0)(  60,  60)
+  \qbezier( 140,  60)( 160,   0)( 200,   0)
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+  Decision statistics for NRZ modulation in AWGN channel
+   \label{fig:NRZ_norm}
+   }
+\end{figure}
+
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+Let
+\begin{eqnarray*}
+   \dot{r}(-1) &\eqd& \inprod{r(t)|s(t;a=-1)\mbox{ was transmitted }}{\psi(t)} \\
+   \dot{r}(+1) &\eqd& \inprod{r(t)|s(t;a=+1)\mbox{ was transmitted }}{\psi(t)}.
+\end{eqnarray*}
+
+Then $\dot{r}(-1)$ and $\dot{r}(+1)$ are {\bf independent} random variables
+with marginal distributions
+\begin{eqnarray*}
+  \dot{r}(-1) &\sim&  \pN{-A}{\sigma^2} \\
+  \dot{r}(+1) &\sim&  \pN{+A}{\sigma^2}
+\end{eqnarray*}
+\end{proposition}
+
+\begin{proof}
+This follows directly from 
+Theorem~\ref{thm:ms_stats} (page~\pageref{thm:ms_stats}).
+\end{proof}
+
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+The value
+\[  \dot{r} \eqd \inprod{r(t)}{\psi(t)} \]
+is a sufficient statistic for optimal ML detection of the transmitted 
+symbol $a$.
+
+The optimal estimate $\estML[a]$ of $a$ is
+\[
+   \hat{a} = \left\{
+     \begin{array}{ll}
+        -1 : \dot{r}\le 0 \\
+        +1 : \dot{r}>   0.
+     \end{array}
+     \right.
+\]
+\end{proposition}
+
+\begin{proof}
+   This is a result of Theorem~\ref{thm:ml_est_det} (page~\pageref{thm:ml_est_det}).
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+The probability of detection error in an NRZ modulation system
+   \[ \pP{\mbox{error}} = \Qb{\frac{a}{N_o}}.\]
+\end{proposition}
+
+\begin{proof}
+\begin{eqnarray*}
+   \pP{error}
+     &=& \pP{s_0(t) \mbox{ sent } \land \dot{r}>0 } +
+         \pP{s_1(t) \mbox{ sent } \land \dot{r}<0 } 
+   \\&=& \pP{\dot{r}>0 | s_0(t) \mbox{ sent }}\pP{s_0(t) \mbox{ sent } } +
+         \pP{\dot{r}<0 | s_1(t) \mbox{ sent }}\pP{s_1(t) \mbox{ sent } } 
+   \\&=& 2\pP{\dot{r}>0 | s_0(t) \mbox{ sent }}\frac{1}{2}
+   \\&=& \Qb{ \frac{\E\dot{r}}{\sqrt{\var{\dot{r}}}}}
+   \\&=& \Qb{\frac{a}{N_o}}
+\end{eqnarray*}
+\end{proof}
+
+
+
+
+
+%=======================================
+\section{Return to Zero Modulation (RZ)}
+\label{sec:RZ}
+\index{Return to Zero}
+\index{RZ}
+%=======================================
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(450,200)(-200,-150)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(-200,  10 ){\makebox (  50, 50)[b]{$u_n$}        }
+  \put(-200,   0 ){\vector  (   1,  0)   {50}           }
+  \put(-150, -50 ){\framebox( 100,100)   {$\uparrow2$}  }
+  \put(-150, -40 ){\makebox ( 100, 80)[b]{upsampler}    }
+  \put(- 50,   0 ){\vector  (   1,  0)   {50}           }
+  \put( 200,  10 ){\makebox (  50, 50)[b]{$y_n$}        }
+
+  \put( 200,   0 ){\vector  (   1,  0)   {50}         }
+  \put(   0,-150 ){\dashbox ( 200,200)   {  }           }
+  \put(   0,-140 ){\makebox ( 200,200)[b]{RZ coder}         }
+  \put(   0,-140 ){\makebox ( 200,200)[ ]{
+        \begin{fsK}
+        \begin{math}
+        \begin{array}{c|cc}
+           u_{2n}' & y_n & y_{n+1} \\
+           \hline
+           0 &   0 & 0   \\
+           1 &   1 & 0  
+        \end{array}
+        \end{math}
+        \end{fsK}
+     }}
+
+  \put(- 50,   10 ){\makebox (  50, 50)[b]{$u_n'$}        }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   RZ modulation coder
+   \label{fig:RZ_model}
+   }
+\end{figure}
+
+
+The non-return to zero (RZ) modulation coder is illustrated in Figure~\ref{fig:RZ_model}.
+An example RZ modulated waveform is illustrated in Figure~\ref{fig:RZ_wave}.
+An RZ modulated waveform $s(t)$ can be decomposed into 
+a deterministic periodic waveform $d(t)$ and 
+a random waveform $r(t)$ such that $s(t)=d(t)+r(t)$
+(see \prefp{fig:RZ_decomp}).\footnote{\citer{kao}}
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{picture}(1400,300)(-100,-130)
+  %\graphpaper[10](0,0)(300,300)
+  \thicklines
+  \put        (-100,   0){\line( 1, 0){1400}} 
+
+  \thinlines
+  \put        (   0, 100){\line( 1, 0){  50}}   
+  \put        (   0,   0){\line( 0, 1){ 100}} 
+
+  \put        (  50, 100){\line( 0,-1){ 200}} 
+  \put        (  50,-100){\line( 1, 0){ 250}}   
+  \put        ( 300,-100){\line( 0, 1){ 200}} 
+  \put        ( 300, 100){\line( 1, 0){  50}}   
+  \put        ( 350, 100){\line( 0,-1){ 200}} 
+  \put        ( 350,-100){\line( 1, 0){ 150}} 
+  \put        ( 500,-100){\line( 0, 1){ 200}}
+ 
+  \put        ( 500, 100){\line( 1, 0){  50}} 
+  \put        ( 550, 100){\line( 0,-1){ 200}} 
+  \put        ( 550,-100){\line( 1, 0){  50}} 
+  \put        ( 600,-100){\line( 0, 1){ 200}} 
+
+  \put        ( 600, 100){\line( 1, 0){  50}} 
+  \put        ( 650, 100){\line( 0,-1){ 200}} 
+  \put        ( 650,-100){\line( 1, 0){  50}} 
+  \put        ( 700,-100){\line( 0, 1){ 200}} 
+
+  \put        ( 700, 100){\line( 1, 0){  50}} 
+  \put        ( 750, 100){\line( 0,-1){ 200}} 
+  \put        ( 750,-100){\line( 1, 0){  50}} 
+
+  \put        ( 800,-100){\line( 1, 0){ 300}} 
+  \put        (1100,-100){\line( 0, 1){ 200}} 
+  \put        (1100, 100){\line( 1, 0){  50}} 
+  \put        (1150, 100){\line( 0,-1){ 100}} 
+  \put        (1150,-100){\line( 0, 1){ 200}} 
+  \put        (1150,-100){\line( 1, 0){  50}} 
+
+  %\multiput(0,-10)(100,  0){13}{\line(0,1){20}} 
+  \multiput(0,0)(100,  0){13}{\qbezier[30](  0,-130)(  0,  0)(  0, 160)}
+
+  \put        (   0, 130 ){\makebox (100, 0){1}     }
+  \put        ( 100, 130 ){\makebox (100, 0){0}     }
+  \put        ( 200, 130 ){\makebox (100, 0){0}     }
+  \put        ( 300, 130 ){\makebox (100, 0){1}     }
+  \put        ( 400, 130 ){\makebox (100, 0){0}     }
+  \put        ( 500, 130 ){\makebox (100, 0){1}     }
+  \put        ( 600, 130 ){\makebox (100, 0){1}     }
+  \put        ( 700, 130 ){\makebox (100, 0){1}     }
+  \put        ( 800, 130 ){\makebox (100, 0){0}     }
+  \put        ( 900, 130 ){\makebox (100, 0){0}     }
+  \put        (1000, 130 ){\makebox (100, 0){0}     }
+  \put        (1100, 130 ){\makebox (100, 0){1}     }
+
+  \put        ( -10, 100 ){\makebox (  0, 0)[r]{+A}     }
+  \put        ( -10,-100 ){\makebox (  0, 0)[r]{-A}     }
+  \put        ( -100, 130 ){\makebox (  0, 0)[r]{$u_n:$}     }
+  \put        ( -100,  50 ){\makebox (  0, 0)[r]{$s(t):$}     }
+
+\end{picture}                                   
+\end{fsL}
+\caption{
+  RZ waveform
+   \label{fig:RZ_wave}
+   }
+\end{center}
+\end{figure}
+
+
+
+
+
+
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.075mm}
+\begin{tabular}{c}
+
+\begin{picture}(1400,300)(-100,-130)
+  %\graphpaper[10](0,0)(300,300)
+  \thicklines
+  \put        (-100,   0){\line( 1, 0){1400}} 
+
+  \thinlines
+  \put        (   0, 100){\line( 1, 0){  50}}   
+  \put        (   0,   0){\line( 0, 1){ 100}} 
+
+  \put        (  50, 100){\line( 0,-1){ 200}} 
+  \put        (  50,-100){\line( 1, 0){ 250}}   
+  \put        ( 300,-100){\line( 0, 1){ 200}} 
+  \put        ( 300, 100){\line( 1, 0){  50}}   
+  \put        ( 350, 100){\line( 0,-1){ 200}} 
+  \put        ( 350,-100){\line( 1, 0){ 150}} 
+  \put        ( 500,-100){\line( 0, 1){ 200}}
+ 
+  \put        ( 500, 100){\line( 1, 0){  50}} 
+  \put        ( 550, 100){\line( 0,-1){ 200}} 
+  \put        ( 550,-100){\line( 1, 0){  50}} 
+  \put        ( 600,-100){\line( 0, 1){ 200}} 
+
+  \put        ( 600, 100){\line( 1, 0){  50}} 
+  \put        ( 650, 100){\line( 0,-1){ 200}} 
+  \put        ( 650,-100){\line( 1, 0){  50}} 
+  \put        ( 700,-100){\line( 0, 1){ 200}} 
+
+  \put        ( 700, 100){\line( 1, 0){  50}} 
+  \put        ( 750, 100){\line( 0,-1){ 200}} 
+  \put        ( 750,-100){\line( 1, 0){  50}} 
+
+  \put        ( 800,-100){\line( 1, 0){ 300}} 
+  \put        (1100,-100){\line( 0, 1){ 200}} 
+  \put        (1100, 100){\line( 1, 0){  50}} 
+  \put        (1150, 100){\line( 0,-1){ 100}} 
+  \put        (1150,-100){\line( 0, 1){ 200}} 
+  \put        (1150,-100){\line( 1, 0){  50}} 
+
+  %\multiput(0,-10)(100,  0){13}{\line(0,1){20}} 
+  \multiput(0,0)(100,  0){13}{\qbezier[30](  0,-130)(  0,  0)(  0, 160)}
+
+  \put        (   0, 130 ){\makebox (100, 0){1}     }
+  \put        ( 100, 130 ){\makebox (100, 0){0}     }
+  \put        ( 200, 130 ){\makebox (100, 0){0}     }
+  \put        ( 300, 130 ){\makebox (100, 0){1}     }
+  \put        ( 400, 130 ){\makebox (100, 0){0}     }
+  \put        ( 500, 130 ){\makebox (100, 0){1}     }
+  \put        ( 600, 130 ){\makebox (100, 0){1}     }
+  \put        ( 700, 130 ){\makebox (100, 0){1}     }
+  \put        ( 800, 130 ){\makebox (100, 0){0}     }
+  \put        ( 900, 130 ){\makebox (100, 0){0}     }
+  \put        (1000, 130 ){\makebox (100, 0){0}     }
+  \put        (1100, 130 ){\makebox (100, 0){1}     }
+
+  \put        ( -10, 100 ){\makebox (  0, 0)[r]{+A}     }
+  \put        ( -10,-100 ){\makebox (  0, 0)[r]{-A}     }
+  \put        ( -100, 130 ){\makebox (  0, 0)[r]{$u_n:$}     }
+  \put        ( -100,  50 ){\makebox (  0, 0)[r]{$s(t):$}     }
+
+\end{picture}
+
+\\ = \\
+
+\begin{picture}(1400,300)(-100,-130)
+  %\graphpaper[10](0,0)(300,300)
+  \thicklines
+  %\put        (-100,   0){\line( 1, 0){1400}} 
+
+  \thinlines
+  \multiput(0,0)(100,  0){12}{
+     \put        (   0,-100){\line( 0, 1){ 100}}   
+     \put        (   0,   0){\line( 1, 0){  50}}   
+     \put        (  50,   0){\line( 0,-1){ 100}}   
+     \put        (  50,-100){\line( 1, 0){  50}}   
+}
+  \multiput(0,0)(100,  0){13}{\qbezier[30](  0,-130)(  0,  0)(  0, 160)}
+
+
+  \put        ( -10, 100 ){\makebox (  0, 0)[r]{+A}     }
+  \put        ( -10,-100 ){\makebox (  0, 0)[r]{-A}     }
+  \put        ( -100,  50 ){\makebox (  0, 0)[r]{$d(t):$}     }
+
+\end{picture}
+
+\\ + \\ 
+
+\begin{picture}(1400,300)(-100,-130)
+  %\graphpaper[10](0,0)(300,300)
+  \thicklines
+  %\put        (-100,   0){\line( 1, 0){1400}} 
+
+  \thinlines
+  \put        (   0,   0){\line( 0, 1){ 100}} % 1
+  \put        (   0, 100){\line( 1, 0){  50}}   
+  \put        (  50, 100){\line( 0,-1){ 100}} 
+  \put        (  50,   0){\line( 1, 0){  50}}   
+
+  \put        ( 100,   0){\line( 0,-1){ 100}} % 0
+  \put        ( 100,-100){\line( 1, 0){  50}}   
+  \put        ( 150,-100){\line( 0, 1){ 100}} 
+  \put        ( 150,   0){\line( 1, 0){  50}}   
+
+  \put        ( 200,   0){\line( 0,-1){ 100}} % 0
+  \put        ( 200,-100){\line( 1, 0){  50}}   
+  \put        ( 250,-100){\line( 0, 1){ 100}} 
+  \put        ( 250,   0){\line( 1, 0){  50}}   
+
+  \put        ( 300,   0){\line( 0, 1){ 100}} % 1
+  \put        ( 300, 100){\line( 1, 0){  50}}   
+  \put        ( 350, 100){\line( 0,-1){ 100}} 
+  \put        ( 350,   0){\line( 1, 0){  50}}   
+
+  \put        ( 400,   0){\line( 0,-1){ 100}} % 0
+  \put        ( 400,-100){\line( 1, 0){  50}}   
+  \put        ( 450,-100){\line( 0, 1){ 100}} 
+  \put        ( 450,   0){\line( 1, 0){  50}}   
+
+  \put        ( 500,   0){\line( 0, 1){ 100}} % 1
+  \put        ( 500, 100){\line( 1, 0){  50}}   
+  \put        ( 550, 100){\line( 0,-1){ 100}} 
+  \put        ( 550,   0){\line( 1, 0){  50}}   
+
+  \put        ( 600,   0){\line( 0, 1){ 100}} % 1
+  \put        ( 600, 100){\line( 1, 0){  50}}   
+  \put        ( 650, 100){\line( 0,-1){ 100}} 
+  \put        ( 650,   0){\line( 1, 0){  50}}   
+
+  \put        ( 700,   0){\line( 0, 1){ 100}} % 1
+  \put        ( 700, 100){\line( 1, 0){  50}}   
+  \put        ( 750, 100){\line( 0,-1){ 100}} 
+  \put        ( 750,   0){\line( 1, 0){  50}}   
+
+  \put        ( 800,   0){\line( 0,-1){ 100}} % 0
+  \put        ( 800,-100){\line( 1, 0){  50}}   
+  \put        ( 850,-100){\line( 0, 1){ 100}} 
+  \put        ( 850,   0){\line( 1, 0){  50}}   
+
+  \put        ( 900,   0){\line( 0,-1){ 100}} % 0
+  \put        ( 900,-100){\line( 1, 0){  50}}   
+  \put        ( 950,-100){\line( 0, 1){ 100}} 
+  \put        ( 950,   0){\line( 1, 0){  50}}   
+
+  \put        (1000,   0){\line( 0,-1){ 100}} % 0
+  \put        (1000,-100){\line( 1, 0){  50}}   
+  \put        (1050,-100){\line( 0, 1){ 100}} 
+  \put        (1050,   0){\line( 1, 0){  50}}   
+
+  \put        (1100,   0){\line( 0, 1){ 100}} % 1
+  \put        (1100, 100){\line( 1, 0){  50}}   
+  \put        (1150, 100){\line( 0,-1){ 100}} 
+  \put        (1150,   0){\line( 1, 0){  50}}   
+
+
+  \multiput(0,0)(100,  0){13}{\qbezier[30](  0,-130)(  0,  0)(  0, 160)}
+
+
+  \put        ( -10, 100 ){\makebox (  0, 0)[r]{+A}     }
+  \put        ( -10,-100 ){\makebox (  0, 0)[r]{-A}     }
+  \put        ( -100,  50 ){\makebox (  0, 0)[r]{$r(t):$}     }
+
+\end{picture}
+\end{tabular}
+
+\end{fsL}
+\caption{
+  Decomposition of RZ modulated waveform
+   \label{fig:RZ_decomp}
+   }
+\end{center}
+\end{figure}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:RZ_stat}
+%--------------------------------------
+Let
+\begin{liste}
+   \item $u_n:\Z\to\{0,1\}$ be an IID WSS random process with probabilities 
+         \[ \psp\{u_n=0\}=\psp\{u_n=1\}= \frac{1}{2} \hspace{1cm}\mbox{for all $n$}\]
+   \item $s(t)$ be the waveform RZ modulated by $u_n$
+   \item $d(t)$ be the deterministic periodic waveform illustrated in 
+         Figure~\ref{fig:RZ_decomp}
+   \item $\Rss(t+\tau,t)$ be the autocorrelation of $s(t)$ such that
+         \[ \Rss(t+\tau,t) \eqd \Eb{s(t+\tau)s(t)}\]
+   \item $\avgRss(\tau)$ be the time average of $\Rss(t+\tau,t)$.
+         \[ \avgRss(\tau) \eqd \frac{1}{T}\int_0^T \Rss(t+\tau,t) \dt \]
+   \item $\avgSss(f)$ be the Fourier transform of $\avgRss(\tau)$ such that
+         \[ \avgSss(f) \eqd \int_\tau \avgRss(\tau) e^{-i2\pi f\tau} \dtau.\]
+\end{liste}
+
+Then 
+\begin{eqnarray*}
+   \Rss(t+\tau,t) 
+     &=& 
+         \left\{
+         \begin{array}{ll}
+            A^2 + d(t+\tau)d(t) & :\tau \le (t\;\mod[T])\le \frac{T}{2} \\
+            d(t+\tau)d(t)       & :\mbox{otherwise}
+         \end{array}
+         \right.
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \avgRss(\tau) 
+     &=& \frac{A^2}{2}\left( 1- \frac{2|\tau|}{T}\right) \chi_{[-T/2,T/2]}(\tau) + 
+         \frac{A^2}{2} \sum_n \left( 1 - \frac{2|\tau-nT|}{T} \right)\chi_{[-T/2,T/2]}(\tau-nT)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \avgSxx(f) 
+     &=& \frac{A^2 T}{4} \left[ \frac{\sin\left(\pi f\frac{T}{2}\right)}{\pi f\frac{T}{2}}\right]^2 + 
+         \frac{A^2 T}{4} \sum_k \left[ \frac{\sin\left(\pi k\frac{1}{2}\right)}{\pi k\frac{1}{2}}\right]^2 \delta\left(f-\frac{k}{T}\right) 
+\end{eqnarray*}
+\end{theorem}
+
+
+\begin{proof}
+\begin{eqnarray*}
+   \Rss(t+\tau,t) 
+     &=& \Eb{s(t+\tau)s(t)} 
+   \\&=& \Eb{[d(t+\tau)r(t+\tau)][d(t)+r(t)]} 
+   \\&=& \Eb{d(t+\tau)d(t) + d(t+\tau)r(t) + r(t+\tau)d(t)+ r(t+\tau)r(t)} 
+   \\&=& d(t+\tau)d(t) + d(t+\tau)\Eb{r(t)} + d(t)\Eb{r(t+\tau)}+ \Eb{r(t+\tau)r(t)} 
+   \\&=& \Rxx[rr](t+\tau,t) + d(t+\tau)d(t) + d(t+\tau)\cdot0 + d(t)\cdot0 
+   \\&=& \Rxx[rr](t+\tau,t) + d(t+\tau)d(t) 
+\end{eqnarray*}
+
+For time intervals $\tau \le (t\mod[T])\le T/2$, 
+identical portions of $r(t+\tau)$ and $r(t)$
+overlap and the resulting autocorrelation is
+\begin{eqnarray*}
+   \Rxx[rr](t+\tau,t) 
+     &=& (-A)(-A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + 
+         (-A)(+A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + \\&&
+         (+A)(-A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} + 
+         (+A)(+A)\pP{[s(t+\tau)=-A]\land [s(t)=-A]} 
+   \\&=& (-A)(-A)\frac{1}{2} + 
+         (-A)(+A)\cdot 0 +
+         (+A)(-A)\cdot 0 +
+         (+A)(+A)\frac{1}{2} 
+   \\&=& A^2
+\end{eqnarray*}
+
+For all other time intervals, especially $|\tau|>T$,
+$r(t+\tau)$ and $r(t)$ are statistically independent and hence
+ \[ \Rxx[rr](\tau) = \Eb{r(t+\tau)r(t)} = \Eb{r(t+\tau)}\Eb{r(t)} = 0\cdot0 = 0.\]
+
+%For the transform needed to compute $\avgSss(f)$, 
+%see Theorem~\ref{thm:ft_pairs} page~\pageref{thm:ft_pairs}.
+
+To compute the time average $\avgRss(\tau)$,
+we need to find the average of both $\Rxx[rr](t+\tau,t)$ and $d(t+\tau)d(t)$.
+\begin{eqnarray*}
+   \frac{1}{T}\int_0^T d(t+\tau)d(t) \dt
+     &=& \frac{1}{T} \frac{A^2 T}{2} \sum_n \left( 1 - \frac{|\tau-nT|}{T/2} \right)\chi_{[-T/2,T/2]}(\tau-nT)
+   \\&=& \frac{A^2}{2} \sum_n \left( 1 - \frac{2|\tau-nT|}{T} \right)\chi_{[-T/2,T/2]}(\tau-nT)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \frac{1}{T}\int_0^T  \Rxx[rr](t+\tau,t) \dt
+     &=& \left\{
+         \begin{array}{ll}
+            \frac{A^2}{2}\left( 1- \frac{2|\tau|}{T}\right) &:|\tau|\le \frac{T}{2} \\
+            0 & :|\tau|>\frac{T}{2}.
+         \end{array}
+         \right.
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \avgRss(\tau) 
+     &=& \frac{A^2}{2}\left( 1- \frac{2|\tau|}{T}\right) \chi_{[-T/2,T/2]}(\tau) + 
+         \frac{A^2}{2} \sum_n \left( 1 - \frac{2|\tau-nT|}{T} \right)\chi_{[-T/2,T/2]}(\tau-nT)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \avgSxx(f)
+     &=& \frac{A^2 T}{4} \left[ \frac{\sin\left(\pi f\frac{T}{2}\right)}{\pi f\frac{T}{2}}\right]^2 + 
+         \frac{A^2 T}{4} \sum_k \left[ \frac{\sin\left(\pi \frac{k}{T}\frac{T}{2}\right)}{\pi \frac{k}{T}\frac{T}{2}}\right]^2 \delta\left(f-\frac{k}{T}\right) 
+   \\&=& \frac{A^2 T}{4} \left[ \frac{\sin\left(\pi f\frac{T}{2}\right)}{\pi f\frac{T}{2}}\right]^2 + 
+         \frac{A^2 T}{4} \sum_k \left[ \frac{\sin\left(\pi k\frac{1}{2}\right)}{\pi k\frac{1}{2}}\right]^2 \delta\left(f-\frac{k}{T}\right)
+\end{eqnarray*}
+
+\end{proof}
+
+
+%=======================================
+\section{Manchester Modulation}
+\label{sec:manchester}
+\index{Manchester Modulation}
+%=======================================
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(450,200)(-200,-150)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(-200,  10 ){\makebox (  50, 50)[b]{$u_n$}        }
+  \put(-200,   0 ){\vector  (   1,  0)   {50}           }
+  \put(-150, -50 ){\framebox( 100,100)   {$\uparrow2$}  }
+  \put(-150, -40 ){\makebox ( 100, 80)[b]{upsampler}    }
+  \put(- 50,   0 ){\vector  (   1,  0)   {50}           }
+  \put( 200,  10 ){\makebox (  50, 50)[b]{$y_n$}        }
+
+  \put( 200,   0 ){\vector  (   1,  0)   {50}         }
+  \put(   0,-150 ){\dashbox ( 200,200)   {  }           }
+  \put(   0,-140 ){\makebox ( 200,200)[b]{Manchester coder}         }
+  \put(   0,-140 ){\makebox ( 200,200)[ ]{
+        \begin{fsK}
+        \begin{math}
+        \begin{array}{c|cc}
+           u_{2n}' & y_n & y_{n+1} \\
+           \hline
+           0 &   0 & 1   \\
+           1 &   1 & 0  
+        \end{array}
+        \end{math}
+        \end{fsK}
+     }}
+
+  \put(- 50,   10 ){\makebox (  50, 50)[b]{$u_n'$}        }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Manchester modulation coder
+   \label{fig:manchester_model}
+   }
+\end{figure}
+
+
+The Manchester modulation coder is illustrated in Figure~\ref{fig:manchester_model}.
+An example RZ modulated waveform is illustrated in Figure~\ref{fig:manchester_wave}.
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{picture}(1400,300)(-100,-130)
+  %\graphpaper[10](0,0)(300,300)
+  \thicklines
+  \put        (-100,   0){\line( 1, 0){1400}} 
+
+  \thinlines
+  %\put        (   0,   0){\line( 0, 1){ 100}} 
+  \put        (   0, 100){\line( 1, 0){  50}}   
+  \put        (  50,-100){\line( 0, 1){ 200}} 
+  \put        (  50,-100){\line( 1, 0){ 100}}   
+  \put        ( 150,-100){\line( 0, 1){ 200}} 
+  \put        ( 150, 100){\line( 1, 0){  50}}   
+  \put        ( 200,-100){\line( 0, 1){ 200}} 
+  \put        ( 200,-100){\line( 1, 0){  50}}   
+  \put        ( 250,-100){\line( 0, 1){ 200}} 
+  \put        ( 250, 100){\line( 1, 0){ 100}}   
+  \put        ( 350,-100){\line( 0, 1){ 200}} 
+  \put        ( 350,-100){\line( 1, 0){ 100}}   
+  \put        ( 450,-100){\line( 0, 1){ 200}} 
+  \put        ( 450, 100){\line( 1, 0){ 100}}   
+  \put        ( 550,-100){\line( 0, 1){ 200}} 
+  \put        ( 550,-100){\line( 1, 0){  50}}   
+  \put        ( 600,-100){\line( 0, 1){ 200}} 
+  \put        ( 600, 100){\line( 1, 0){  50}}   
+  \put        ( 650,-100){\line( 0, 1){ 200}} 
+  \put        ( 650,-100){\line( 1, 0){  50}}   
+  \put        ( 700,-100){\line( 0, 1){ 200}} 
+  \put        ( 700, 100){\line( 1, 0){  50}}   
+  \put        ( 750,-100){\line( 0, 1){ 200}} 
+  \put        ( 750,-100){\line( 1, 0){ 100}}   
+  \put        ( 850,-100){\line( 0, 1){ 200}} 
+  \put        ( 850, 100){\line( 1, 0){  50}}   
+  \put        ( 900,-100){\line( 0, 1){ 200}} 
+  \put        ( 900,-100){\line( 1, 0){  50}}   
+  \put        ( 950,-100){\line( 0, 1){ 200}} 
+  \put        ( 950, 100){\line( 1, 0){  50}}   
+  \put        (1000,-100){\line( 0, 1){ 200}} 
+  \put        (1000,-100){\line( 1, 0){  50}}   
+  \put        (1050,-100){\line( 0, 1){ 200}} 
+  \put        (1050, 100){\line( 1, 0){ 100}}   
+  \put        (1150,-100){\line( 0, 1){ 200}} 
+  \put        (1150,-100){\line( 1, 0){  50}}   
+
+  %\multiput(0,-10)(100,  0){13}{\line(0,1){20}} 
+  \multiput(0,0)(100,  0){13}{\qbezier[30](  0,-130)(  0,  0)(  0, 160)}
+
+  \put        (   0, 130 ){\makebox (100,0){1}     }
+  \put        ( 100, 130 ){\makebox (100,0){0}     }
+  \put        ( 200, 130 ){\makebox (100,0){0}     }
+  \put        ( 300, 130 ){\makebox (100,0){1}     }
+  \put        ( 400, 130 ){\makebox (100,0){0}     }
+  \put        ( 500, 130 ){\makebox (100,0){1}     }
+  \put        ( 600, 130 ){\makebox (100,0){1}     }
+  \put        ( 700, 130 ){\makebox (100,0){1}     }
+  \put        ( 800, 130 ){\makebox (100,0){0}     }
+  \put        ( 900, 130 ){\makebox (100,0){0}     }
+  \put        (1000, 130 ){\makebox (100,0){0}     }
+  \put        (1100, 130 ){\makebox (100,0){1}     }
+
+  \put        ( -10, 100 ){\makebox (  0, 0)[r]{$+A$}     }
+  \put        ( -10,-100 ){\makebox (  0, 0)[r]{$-A$}     }
+  \put        ( -100, 130 ){\makebox (  0, 0)[r]{$u_n:$}     }
+  \put        ( -100,  50 ){\makebox (  0, 0)[r]{$s(t):$}     }
+
+\end{picture}                                   
+\end{fsL}
+\caption{
+  Manchester modulated waveform
+   \label{fig:manchester_wave}
+   }
+\end{center}
+\end{figure}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:manchester_stat}
+%--------------------------------------
+Let
+\begin{liste}
+   \item $u_n:\Z\to\{0,1\}$ be an IID WSS random process with probabilities 
+         \[ \psp\{u_n=0\}=\psp\{u_n=1\}= \frac{1}{2} \hspace{1cm}\mbox{for all $n$}\]
+   \item $s(t)$ be the waveform Manchester modulated by $u_n$
+   \item $\Rss(t+\tau,t)$ be the autocorrelation of $s(t)$ such that
+         \[ \Rss(t+\tau,t) \eqd \Eb{s(t+\tau)s(t)}\]
+   \item $\avgRss(\tau)$ be the time average of $\Rss(t+\tau,t)$.
+         \[ \avgRss(\tau) \eqd \frac{1}{T}\int_0^T \Rss(t+\tau,t) \dt \]
+   \item $\avgSss(f)$ be the Fourier transform of $\avgRss(\tau)$ such that
+         \[ \avgSss(f) \eqd \int_\tau \avgRss(\tau) e^{-i2\pi f\tau} \dtau.\]
+\end{liste}
+
+Then 
+\begin{eqnarray*}
+   \Rss(t+\tau,t) 
+     &=& \left\{
+         \begin{array}{rl}
+             0    & : 0 \le (t\;\mod[T]) < \tau \\
+            +A^2  & : \tau \le (t\;\mod[T]) < \frac{T}{2} \\
+            -A^2  & : \frac{T}{2} \le (t\;\mod[T]) < \tau + \frac{T}{2} \\
+            +A^2  & : \tau + \frac{T}{2} \le (t\;\mod[T]) < T
+         \end{array}
+         \right.
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \avgRss(\tau) 
+     &=& \left\{
+         \begin{array}{rl}
+             A^2\left(1 - 3\frac{|\tau|}{T} \right)             & : 0 \le |\tau| < \frac{T}{2} \\
+             -\frac{A^2}{2} \left(1 - \frac{|\tau|}{T} \right)  & : \frac{T}{2} \le |\tau| < T 
+         \end{array}
+         \right.
+\end{eqnarray*}
+\attention
+\begin{eqnarray*}
+   \avgSxx(f) 
+    &\eqq& A^2 T\frac{\sin^4\pi f T/2}{\pi f T/2}
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+\begin{eqnarray*}
+  \avgSss(f)
+    &=& \int_\tau \avgRss(\tau) e^{-i2\pi f\tau}\dtau
+  \\&=& \int_\tau \avgRss(\tau) \cos(2\pi f\tau)\dtau
+       -i\int_\tau \avgRss(\tau) \sin(2\pi f\tau)\dtau
+  \\&=& 2\int_0^T \avgRss(\tau) \cos(2\pi f\tau)\dtau + 0
+  \\&=& 2\int_0^{T/2} A^2\left(1-3\frac{\tau}{T}\right) \cos(2\pi f\tau)\dtau 
+       -2\int_{T/2}^T \frac{A^2}{2}\left(1-\frac{\tau}{T}\right) \cos(2\pi f\tau)\dtau 
+  \\&=& 2A^2\int_0^{T/2} \cos(2\pi f\tau)\dtau 
+       -A^2\int_{T/2}^T  \cos(2\pi f\tau)\dtau 
+       -\frac{6A^2}{T}\int_0^{T/2} \tau \cos(2\pi f\tau)\dtau 
+       +\frac{A^2}{T}\int_{T/2}^T  \tau \cos(2\pi f\tau)\dtau 
+  \\&=& A^2T\left( \frac{\sin\pi fT}{\pi fT}\right)
+       -A^2T\left( \frac{\sin2\pi fT}{2\pi fT}\right)
+       +\frac{A^2T}{2}\left( \frac{\sin\pi fT}{\pi fT}\right)
+       -\frac{6A^2T}{4}\frac{\sin\pi fT}{\pi fT}
+       -\frac{6A^2}{4\pi f}\frac{\cos\pi fT}{\pi fT}
+\\&&
+       + \frac{6A^2}{(2\pi f)^2T}
+       + A^2T\frac{\sin2\pi fT}{2\pi fT} 
+       + \frac{A^2}{2\pi f}\frac{\cos2\pi fT}{2\pi fT}
+       - \frac{A^2T}{4}\frac{\sin\pi fT}{\pi fT}
+       - \frac{T}{4\pi f}\frac{\cos\pi fT}{\pi fT}
+  \\&\eqq& A^2 T \frac{\sin^4\pi f T/2}{\pi f T/2}
+\end{eqnarray*}
+\attention
+I have not been able to solve this well yet.
+The last line is taken from reference
+\cite{kao}.
+\end{proof}
+
+%=======================================
+\section{Non-Return to Zero Modulation Inverted (NRZI)}
+\label{sec:NRZI}
+\index{Non-Return to Zero Inverted}
+\index{NRZI}
+%=======================================
+NRZI is a modulation code, however it is {\em not} a runlength-limited code.
+NRZI has memory and is therefore a kind of state machine.
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.1mm}
+\begin{picture}(1400,300)(-100,-130)
+  %\graphpaper[10](0,0)(300,300)
+  \thicklines
+  \put        (-100,   0){\line( 1, 0){1400}} 
+
+  \thinlines
+  \put        (   0,   0){\line( 0, 1){ 100}} 
+  \put        (   0, 100){\line( 1, 0){ 300}}   
+  \put        ( 300, 100){\line( 0,-1){ 200}}
+  \put        ( 300,-100){\line( 1, 0){ 200}}
+  \put        ( 500,-100){\line( 0, 1){ 200}} 
+  \put        ( 500, 100){\line( 1, 0){ 100}}   
+  \put        ( 600, 100){\line( 0,-1){ 200}}   
+  \put        ( 600,-100){\line( 1, 0){ 100}}   
+  \put        ( 700,-100){\line( 0, 1){ 200}} 
+  \put        ( 700, 100){\line( 1, 0){ 400}}   
+  \put        (1100, 100){\line( 0,-1){ 200}}   
+  \put        (1100,-100){\line( 1, 0){ 100}}
+
+  \multiput(0,0)(100,  0){13}{\qbezier[30](  0,-130)(  0,  0)(  0, 160)}
+
+  \put        (   0, 130 ){\makebox (100,30){1}     }
+  \put        ( 100, 130 ){\makebox (100,30){0}     }
+  \put        ( 200, 130 ){\makebox (100,30){0}     }
+  \put        ( 300, 130 ){\makebox (100,30){1}     }
+  \put        ( 400, 130 ){\makebox (100,30){0}     }
+  \put        ( 500, 130 ){\makebox (100,30){1}     }
+  \put        ( 600, 130 ){\makebox (100,30){1}     }
+  \put        ( 700, 130 ){\makebox (100,30){1}     }
+  \put        ( 800, 130 ){\makebox (100,30){0}     }
+  \put        ( 900, 130 ){\makebox (100,30){0}     }
+  \put        (1000, 130 ){\makebox (100,30){0}     }
+  \put        (1100, 130 ){\makebox (100,30){1}     }
+
+  \put        ( -10, 100 ){\makebox (  0, 0)[r]{+A}     }
+  \put        ( -10,-100 ){\makebox (  0, 0)[r]{-A}     }
+
+\end{picture}                                   
+\end{fsL}
+\caption{
+  NRZI waveform
+   \label{fig:NRZI_wave}
+   }
+\end{center}
+\end{figure}
+
+
+
+
+
+%---------------------------------------
+\begin{definition}
+\label{def:NRZI}
+%---------------------------------------
+{\bf Non-Return to Zero Inverted (NRZI)} is a modulation code
+with input sequence $u_n$ and output sequence $y_n$ such that
+(see Figure~\ref{fig:NRZI_model})
+\[ y_n  = (y_{n-1} + u_n)\mod[2].  \]
+\end{definition}
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(300,200)(-50,-150)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(- 50,   0 ){\vector  (   1,  0)   {90}          }
+  \put(   0,-150 ){\dashbox ( 200,200)   {  }           }
+  \put(   0,-140 ){\makebox ( 200,200)[b]{NRZI modulation coder}     }
+  \put(   0, -50 ){\makebox ( 100,100)   {$+$}          }
+  \put(  50,   0 ){\circle{20}                          }
+  \put(  50,-100 ){\vector  (   0,  1)   { 90}          }
+  \put(  60,   0 ){\line    (   1,  0)   { 10}          }
+  \put(  90,   0 ){\line    (   1,  0)   {110}          }
+  \put(  70, -10 ){\framebox(  20, 20)   {   }          }
+  \put(   0,   0 ){\makebox ( 160, 50)   {$\mod[2]$}    }
+  \put(  80, -70 ){\framebox(  40, 40)   {$z^{-1}$}     }
+  \put( 100,-100 ){\line    (   0,  1)   { 30}          }
+  \put( 100, -30 ){\line    (   0,  1)   { 30}          }
+  \put(  50,-100 ){\line    (   1,  0)   { 50}          }
+  \put( 200,   0 ){\vector  (   1,  0)   { 50}          }
+
+  \put(- 50,   10 ){\makebox (  50, 50)[b]{$u_n$}        }
+  \put( 200,   10 ){\makebox (  50, 50)[b]{$y_n$}        }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   NRZI modulation coder
+   \label{fig:NRZI_model}
+   }
+\end{figure}
+
+
+\paragraph{Detection.}
+Detection in an AWGN channel can be performed using a trellis 
+(see Figure~\ref{fig:NRZI_trellis}) or 
+single statistic decision regions. 
+A very clean decision region approach is the {\em duobinary ISI solution}
+described in Section~\ref{sec:duobinary} (page \pageref{sec:duobinary}).
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.30mm}
+\begin{picture}(400,120)(-100,0)
+  %\graphpaper[10](0,0)(300,300)
+  \put( -80 , 100 ){state 1}
+  \put( -80 ,   0 ){state 0}
+  \thinlines
+  \put(   0 , 100 ){\circle*{10}}
+  \put(   0 ,   0 ){\circle*{10}}
+
+\multiput(0,0)(100,0){3}{
+  \put        (  0,100){\line( 1,-1){100}} % state0 path1
+  \put        (  0,  0){\line( 1, 1){100}} % state1 path1
+  \multiput   (  0,100)(10,0){10}{\line( 1, 0){5}} % state1 path1
+  \multiput   (  0,  0)(10,0){10}{\line( 1, 0){5}} % state0 path1
+  \put( 100 , 100 ){\circle*{10}}
+  \put( 100 ,   0 ){\circle*{10}}
+}
+\end{picture}                                   
+\end{fsL}
+\hspace{1cm}
+\begin{tabular}{cl}
+   $\cdots$ & $y_n=0$ \\
+   ---      & $y_n=1$ 
+\end{tabular}
+\caption{
+  NRZI trellis diagram
+   \label{fig:NRZI_trellis}
+   }
+\end{center}
+\end{figure}
+
+
+
+%=======================================
+\section{Runlength-limited modulation codes}
+\index{Runlength-limited modulation codes}
+%=======================================
+%---------------------------------------
+\subsubsection{Definitions}
+%---------------------------------------
+%---------------------------------------
+\begin{definition}
+\index{(d,k)}
+\index{(d,k;n)}
+%---------------------------------------
+A {\bf $(d,k)$-coded sequence} is any binary sequence such that
+\[
+   d \le \mbox{(the number of 0s between any two consecutive 1s)} \le k. 
+\]
+
+A {\bf $(d,k;n)$-coded sequence} is a $(d,k)$-coded sequence of length $n$.
+\end{definition}
+
+%---------------------------------------
+\begin{definition}{\bf Fixed length code set, $X(d,k;n)$.}\\
+\index{(d,k)!fixed length code set}
+%---------------------------------------
+The set $X(d,k;n)$ is a set of $(d,k;n)$-coded sequences such that
+if
+\[ (a_1,a_2,\ldots,a_n),(b_1,b_2,\ldots,b_n)\in X(d,k;n)\]
+then
+\[ (a_1,a_2,\ldots,a_n,b_1,b_2,\ldots,b_n)\]
+is also a $(d,k)$-coded sequence.
+\end{definition}
+
+%---------------------------------------
+\begin{definition}{\bf Variable length code set, $\bar{X}(d,k;n)$.}\\
+\index{(d,k)!variable length code set}
+%---------------------------------------
+The set $\bar{X}(d,k;n)$ is a set of $(d,k;m)$-coded sequences such that
+$m\le n$ and if
+   \[ (a_1,a_2,\ldots,a_k),(b_1,b_2,\ldots,b_m)\in \bar{X}(d,k;n)\]
+then
+   \[ (a_1,a_2,\ldots,a_k,b_1,b_2,\ldots,b_m)\]
+is also a $(d,k)$-coded sequence.
+\end{definition}
+
+
+\paragraph{State diagram.}
+A $(d,k)$ code can be modeled as a state diagram with $k+1$ states
+such that the output $y_n$ is
+\begin{eqnarray*}
+   y_n &=& \left\{
+              \begin{tabular}{ll}
+                 $1$ & : state$=0$ \\
+                 $0$ & : state$\ne 0$.
+              \end{tabular}
+           \right.
+\end{eqnarray*}
+and transitions between states are as shown in Figure~\ref{fig:(d,k)_sm}.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(960,130)(-30,-100)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   0 ){\makebox (   0,  0)   {$0$}          }
+  \put(   0,   0 ){\circle               { 60}          }
+  \put(   0,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put(  30,   0 ){\vector  (   1,  0)   { 40}          }
+  \put(   0,-100 ){\vector  (   0,  1)   { 70}          }
+
+  \put( 100,   0 ){\makebox (   0,  0)   {$1$}          }
+  \put( 100,   0 ){\circle               { 60}          }
+  \put( 100,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put( 130,   0 ){\vector  (   1,  0)   { 40}          }
+ %\put( 100, -30 ){\vector  (   0, -1)   { 70}          }
+ %\put( 110,-100 ){\makebox (  90,100)[l]{$u_n=1$}          }
+
+  \put( 200,   0 ){\makebox (   0,  0)   {$2$}          }
+  \put( 200,   0 ){\circle               { 60}          }
+  \put( 200,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put( 230,   0 ){\vector  (   1,  0)   { 40}          }
+ %\put( 200, -30 ){\vector  (   0, -1)   { 70}          }
+ %\put( 210,-100 ){\makebox (  90,100)[l]{$u_n=1$}          }
+
+  \put( 300,   0 ){\makebox (   0,  0)   {$\cdots$}     }
+ %\put( 300,   0 ){\circle               { 60}          }
+  \put( 300,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put( 330,   0 ){\vector  (   1,  0)   { 40}          }
+ %\put( 300, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 200,-100 ){\makebox ( 200,100)[ ]{$\cdots$}     }
+
+  \put( 400,   0 ){\makebox (   0,  0)   {$d-1$}        }
+  \put( 400,   0 ){\circle               { 60}          }
+  \put( 400,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put( 430,   0 ){\vector  (   1,  0)   { 40}          }
+ %\put( 400, -30 ){\vector  (   0, -1)   { 70}          }
+ %\put( 410,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 500,   0 ){\makebox (   0,  0)   {$d$}          }
+  \put( 500,   0 ){\circle               { 60}          }
+  \put( 500,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 530,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 500, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 510,-100 ){\makebox (  90,100)[l]{$u_n=1$}          }
+
+  \put( 600,   0 ){\makebox (   0,  0)   {$d+1$}        }
+  \put( 600,   0 ){\circle               { 60}          }
+  \put( 600,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 630,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 600, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 610,-100 ){\makebox (  90,100)[l]{$u_n=1$}          }
+
+  \put( 700,   0 ){\makebox (   0,  0)   {$\cdots$}     }
+ %\put( 700,   0 ){\circle               { 60}          }
+  \put( 700,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 730,   0 ){\vector  (   1,  0)   { 40}          }
+ %\put( 700, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 600,-100 ){\makebox ( 200,100)[ ]{$\cdots$}     }
+
+  \put( 800,   0 ){\makebox (   0,  0)   {$k-1$}        }
+  \put( 800,   0 ){\circle               { 60}          }
+  \put( 800,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 830,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 800, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 810,-100 ){\makebox (  90,100)[l]{$u_n=1$}          }
+
+  \put( 900,   0 ){\makebox (   0,  0)   {$k$}          }
+  \put( 900,   0 ){\circle               { 60}          }
+ %\put( 900,  10 ){\makebox ( 100, 50)[b]{$u_n=0$}          }
+ %\put( 930,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 900, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 910,-100 ){\makebox (  90,100)[l]{$u_n=0,1$}          }
+
+  \put( 900,-100 ){\vector  (  -1,  0)   {900}          }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   $(d,k)$-coded sequence state diagram 
+   \label{fig:(d,k)_sm}
+   }
+\end{figure}
+
+%---------------------------------------
+\begin{definition}
+\index{transition matrix}
+%---------------------------------------
+The {\bf transition matrix} $\opD_0$ is the $N\times N$
+square matrix with elements  $a_{mn}$ such that
+\[
+   a_{mn} =
+      \left\{
+         \begin{tabular}{ll}
+            1 &: coding state changes from $m$ to $n$ when input is $0$.\\
+            0 &: coding state does not change when input is $0$.
+         \end{tabular}
+      \right.
+\]
+
+The {\bf transition matrix} $\opD_1$ is the $N\times N$
+square matrix with elements  $b_{mn}$ such that
+\[
+   b_{mn} =
+      \left\{
+         \begin{tabular}{ll}
+            1 &: coding state changes from $m$ to $n$ when input is $1$.\\
+            0 &: coding state does not change when input is $1$.
+         \end{tabular}
+      \right.
+\]
+
+The {\bf transition matrix} $\opD$ is the $N\times N$
+square matrix with elements  $d_{mn}$ such that
+\[
+   d_{mn} = a_{mn} \lor b_{mn}
+\]
+where $\lor$ is the {\em inclusive-OR operation}.
+\end{definition}
+
+\paragraph{Transition matrices.}
+The transition matrices for a $(d,k)$ code are as follows:
+\begin{fsK}
+\[
+   \opD_0 = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0      & 1 & 0 & 0 & \cdots & 0  \\
+            0      & 0 & 1 & 0 & \cdots & 0  \\
+            0      & 0 & 0 & 1 & \cdots & 0  \\
+            \vdots &   &   &   & \ddots & 0  \\
+            0      & 0 & 0 & 0 & \cdots & 1  \\
+            1      & 0 & 0 & 0 & \cdots & 0  
+         \end{array}
+      \right]
+\hspace{3ex}
+   \opD_1 = 
+      \left[
+         \begin{array}{*{6}{c}}
+                   &   &   &   &        &    \\
+            0      & 1 & 0 & 0 & \cdots & 0  \\
+            0      & 0 & 0 & 0 & \cdots & 0  \\
+            \vdots &   &   &   & \ddots & 0  \\
+            0      & 0 & 0 & 0 & \cdots & 0  \\
+            1      & 0 & 0 & 0 & \cdots & 0  \\
+            1      & 0 & 0 & 0 & \cdots & 0  \\
+            \vdots &   &   &   & \ddots & 0  \\
+            1      & 0 & 0 & 0 & \cdots & 0 
+         \end{array}
+      \right]
+         \begin{array}{l}
+            \mbox{row} \\
+            \hline
+            0          \\
+            1          \\
+            \vdots     \\
+            d-1        \\
+            d          \\
+            d+1        \\
+            \vdots     \\
+            k-1
+         \end{array}
+\hspace{3ex}
+   \opD   = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0      & 1 & 0 & 0 & \cdots & 0  \\
+            1      & 0 & 1 & 0 & \cdots & 0  \\
+            1      & 0 & 0 & 1 & \cdots & 0  \\
+            \vdots &   &   &   & \ddots & 0  \\
+            1      & 0 & 0 & 0 & \cdots & 1  \\
+            1      & 0 & 0 & 0 & \cdots & 0  
+         \end{array}
+      \right]
+\]
+\end{fsK}
+%---------------------------------------
+\subsubsection{Characteristics}
+%---------------------------------------
+\paragraph{Symbol mapping.}
+The symbols to be transmitted are mapped into the elements of 
+$X(d,k;n)$.
+The maximum number of symbols that can be mapped is
+   \[ \floor{\log_2\left| X(d,k;n)\right|}, \]
+where $|\cdot|:X\to\Z$ represents the order of a set X.
+
+%---------------------------------------
+\begin{definition}
+\index{channel capacity}
+%---------------------------------------
+The {\bf capacity} of a $(d,k)$-coded sequence is
+\[
+   C(d,k) \eqd \lim_{n\to\infty}\frac{1}{n}
+               \floor{\log_2\left| X(d,k;n)\right|}.
+\]
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let 
+\begin{liste}
+   \item $\opD$ be the transition matrix of $(d,k)$
+   \item $\lambda_{\mathrm{max}}$ be the largest eigenvalue of $\opD$.
+\end{liste}
+
+Then the capacity $C(d,k)$ is
+\[
+   C(d,k) = \log_2 \lambda_{\mathrm{max}}.
+\]
+\end{theorem}
+
+The capacities for several $X(d,k)$-coded sequences are given in 
+Table~\ref{tbl:C(d,k)}. \citep{proakis}{582}
+
+\begin{table*}[t]
+\begin{fsL}
+\[
+\begin{array}{r|*{7}{l}}
+    k     &    d=0 &    d=1 &    d=2 &    d=3 &    d=4 &    d=5 &    d=6\\
+\hline      
+    2     & 0.8791 & 0.4057  \\ 
+    3     & 0.9468 & 0.5515 & 0.2878 \\
+    4     & 0.9752 & 0.6174 & 0.4057 & 0.2232 \\ 
+    5     & 0.9881 & 0.6509 & 0.4650 & 0.3218 & 0.1823 \\
+    6     & 0.9942 & 0.6690 & 0.4979 & 0.3746 & 0.2669 & 0.1542  \\
+    7     & 0.9971 & 0.6793 & 0.5174 & 0.4057 & 0.3142 & 0.2281 & 0.1335 \\
+    8     & 0.9986 & 0.6853 & 0.5293 & 0.4251 & 0.3432 & 0.2709 & 0.1993 \\
+    9     & 0.9993 & 0.6888 & 0.5369 & 0.4376 & 0.3630 & 0.2979 & 0.2382 \\
+   10     & 0.9996 & 0.6909 & 0.5418 & 0.4460 & 0.3746 & 0.3158 & 0.2633 \\
+   11     & 0.9998 & 0.6922 & 0.5450 & 0.4516 & 0.3833 & 0.3282 & 0.2804 \\
+   12     & 0.9999 & 0.6930 & 0.5471 & 0.4555 & 0.3894 & 0.3369 & 0.2924 \\
+   13     & 0.9999 & 0.6935 & 0.5485 & 0.4583 & 0.3937 & 0.3432 & 0.3011 \\
+   14     & 0.9999 & 0.6938 & 0.5495 & 0.4602 & 0.3968 & 0.3478 & 0.3074 \\
+   15     & 0.9999 & 0.6939 & 0.5501 & 0.4615 & 0.3991 & 0.3513 & 0.3122 \\
+   \infty & 1.0000 & 0.6942 & 0.5515 & 0.4650 & 0.4057 & 0.3620 & 0.3282
+\end{array}
+\]
+\end{fsL}
+\caption{
+   $C(d,k)$: Capacities of $(d,k)$-coded sequences
+   \label{tbl:C(d,k)}
+   }
+\end{table*}
+
+
+%---------------------------------------
+\begin{definition}
+\index{efficiency}
+%---------------------------------------
+The {\bf efficiency} of the $X(d,k;n)$ code set is
+\[
+    \mathrm{efficiency} \eqd \frac{\mbox{code rate of } X(d,k;n)}{C(d,k)}.
+\]
+
+The {\bf efficiency} of the $\bar{X}(d,k;n)$ code set is
+\[
+    \mathrm{efficiency} \eqd \frac{\mbox{average code rate of } X(d,k;n)}{C(d,k)}.
+\]
+\end{definition}
+
+
+%---------------------------------------
+\subsubsection{Examples: fixed-length, no memory}
+%---------------------------------------
+%---------------------------------------
+\begin{example}{\bf Code set $X(1,3;4)$:}\\
+\label{ex:(1,3,4)}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(360,130)(-30,-100)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   0 ){\makebox (   0,  0)   {$0$}          }
+  \put(   0,   0 ){\circle               { 60}          }
+  \put(   0,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put(  30,   0 ){\vector  (   1,  0)   { 40}          }
+  \put(   0,-100 ){\vector  (   0,  1)   { 70}          }
+
+  \put( 100,   0 ){\makebox (   0,  0)   {$1$}          }
+  \put( 100,   0 ){\circle               { 60}          }
+  \put( 100,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 130,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 100, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 110,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 200,   0 ){\makebox (   0,  0)   {$2$}          }
+  \put( 200,   0 ){\circle               { 60}          }
+  \put( 200,  10 ){\makebox ( 100, 50)[b]{$0$}        }
+  \put( 230,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 200, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 210,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 300,   0 ){\makebox (   0,  0)   {$3$}          }
+  \put( 300,   0 ){\circle               { 60}          }
+ %\put( 300,  10 ){\makebox ( 100, 50)[b]{$0,1$}        }
+ %\put( 330,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 300, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 310,-100 ){\makebox (  90,100)[l]{$0,1$}          }
+
+  \put( 300,-100 ){\vector  (  -1,  0)   {300}          }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   $(1,3)$-coded sequence state diagram
+   \label{fig:(1,3)_sm}
+   }
+\end{figure}
+
+Transition matrices:
+\[
+   \opD_0 = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0 & 1 & 0 & 0  \\
+            0 & 0 & 1 & 0  \\
+            0 & 0 & 0 & 1  \\
+            1 & 0 & 0 & 0  
+         \end{array}
+      \right]
+\hfill
+   \opD_1 = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0 & 1 & 0 & 0  \\
+            1 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0  
+         \end{array}
+      \right]
+\hfill
+   \opD   = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0 & 1 & 0 & 0 \\
+            1 & 0 & 1 & 0 \\
+            1 & 0 & 0 & 1 \\
+            1 & 0 & 0 & 0 
+         \end{array}
+      \right]
+\]
+
+Capacity:
+\begin{eqnarray*}
+   |\opD-\lambda \opI | 
+     &=& \left|
+            \begin{array}{*{8}{c}}
+               -\lambda & 1        & 0        & 0 \\
+               1        & -\lambda & 1        & 0 \\
+               1        & 0        & -\lambda & 1 \\
+               1        & 0        & 0        & -\lambda 
+            \end{array}
+         \right|
+   \\&=& -\lambda \left|
+            \begin{array}{*{8}{c}}
+               -\lambda & 1        & 0 \\
+               0        & -\lambda & 1 \\
+               0        & 0        & -\lambda 
+            \end{array}
+         \right|
+        -1\cdot\left|
+            \begin{array}{*{8}{c}}
+               1        & 1        & 0 \\
+               1        & -\lambda & 1 \\
+               1        & 0        & -\lambda 
+            \end{array}
+         \right|
+   \\&=& -\lambda(-\lambda^3) -1(\lambda^2+\lambda+1)
+   \\&=& \lambda^4 - \lambda^2 - \lambda - 1
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   C(d,k) 
+     = \log_2(\lambda_{\mathrm{max}})
+     = \log_2(1.46557123)
+     = 0.551463
+\end{eqnarray*}
+
+There are multiple sets that are $X(1,3;4)$ code sets:
+\[
+\begin{tabular}{c|ccc}
+                 & \mc{3}{c}{$X(1,3;4)$ code sets}  \\
+   $u_n$         & set1 & set2 & set3 \\
+   \hline
+   0 & 0010 & 1000 & 0100 \\
+   1 & 0101 & 1010 & 0101
+\end{tabular}
+\]
+
+The efficiency for each of these sets is
+\[
+    \mathrm{efficiency} 
+    = \frac{\mbox{code rate}}{C(d,k)} 
+    = \frac{1/4}{0.5515} 
+    = 0.4533
+\]
+\end{example}
+
+
+%---------------------------------------
+\begin{example}{\bf Code set $X(2,\infty,4)$:}\\
+%---------------------------------------
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(560,130)(-30,-100)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   0 ){\makebox (   0,  0)   {$0$}          }
+  \put(   0,   0 ){\circle               { 60}          }
+  \put(   0,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put(  30,   0 ){\vector  (   1,  0)   { 40}          }
+  \put(   0,-100 ){\vector  (   0,  1)   { 70}          }
+
+  \put( 100,   0 ){\makebox (   0,  0)   {$1$}          }
+  \put( 100,   0 ){\circle               { 60}          }
+  \put( 100,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put( 130,   0 ){\vector  (   1,  0)   { 40}          }
+ %\put( 100, -30 ){\vector  (   0, -1)   { 70}          }
+ %\put( 110,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 200,   0 ){\makebox (   0,  0)   {$2$}          }
+  \put( 200,   0 ){\circle               { 60}          }
+  \put( 200,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 230,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 200, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 210,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 300,   0 ){\makebox (   0,  0)   {$3$}     }
+  \put( 300,   0 ){\circle               { 60}          }
+  \put( 300,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 330,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 300, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 310,-100 ){\makebox ( 200,100)[l]{$1$}     }
+
+  \put( 400,   0 ){\makebox (   0,  0)   {$4$}        }
+  \put( 400,   0 ){\circle               { 60}          }
+  \put( 400,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 430,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 400, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 410,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 500,   0 ){\makebox (   0,  0)   {$\cdots$}          }
+ %\put( 500,   0 ){\circle               { 60}          }
+ %\put( 500,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+ %\put( 530,   0 ){\vector  (   1,  0)   { 40}          }
+ %\put( 500, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 510,-100 ){\makebox (  90,100)[c]{$\cdots$}          }
+
+  \put( 400,-100 ){\vector  (  -1,  0)   {400}          }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   $(2,\infty)$-coded sequence state diagram
+   \label{fig:(2,inf)_sm}
+   }
+\end{figure}
+
+
+\[
+\begin{array}{c|c}
+   u_n         & \mbox{code} \\
+   \hline
+   0 & 0001 \\
+   1 & 0010
+\end{array}
+\]
+
+
+\[
+    \mathrm{efficiency} 
+    = \frac{\mbox{code rate}}{C(d,k)} 
+    = \frac{1/4}{0.5515} 
+    = 0.4533
+\]
+
+
+\end{example}
+
+
+
+%---------------------------------------
+\begin{example}{\bf Code set $X(0,3,4)$:}\\
+%---------------------------------------
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(430,130)(0,-100)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   0 ){\vector  (   1,  0)   { 70}          }
+ %\put(   0,   0 ){\makebox (   0,  0)   {$0$}          }
+ %\put(   0,   0 ){\circle               { 60}          }
+ %\put(   0,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+ %\put(  30,   0 ){\vector  (   1,  0)   { 40}          }
+  \put(   0,-100 ){\line    (   0,  1)   {100}          }
+
+  \put( 100,   0 ){\makebox (   0,  0)   {$0$}          }
+  \put( 100,   0 ){\circle               { 60}          }
+  \put( 100,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 130,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 100, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 110,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 200,   0 ){\makebox (   0,  0)   {$1$}          }
+  \put( 200,   0 ){\circle               { 60}          }
+  \put( 200,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 230,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 200, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 210,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 300,   0 ){\makebox (   0,  0)   {$2$}     }
+  \put( 300,   0 ){\circle               { 60}          }
+  \put( 300,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+  \put( 330,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 300, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 310,-100 ){\makebox ( 200,100)[l]{$1$}     }
+
+  \put( 400,   0 ){\makebox (   0,  0)   {$3$}        }
+  \put( 400,   0 ){\circle               { 60}          }
+ %\put( 400,  10 ){\makebox ( 100, 50)[b]{$0$}          }
+ %\put( 430,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 400, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 410,-100 ){\makebox (  90,100)[l]{$0,1$}          }
+
+  \put( 400,-100 ){\vector  (  -1,  0)   {400}          }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   $(0,3)$-coded sequence state diagram
+   \label{fig:(0,3)_sm}
+   }
+\end{figure}
+
+The state diagram is shown in Figure~\ref{fig:(0,3)_sm}.
+
+The transition matrices are
+\[
+   \opD_0 = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0 & 1 & 0 & 0  \\
+            0 & 0 & 1 & 0  \\
+            0 & 0 & 0 & 1  \\
+            1 & 0 & 0 & 0  
+         \end{array}
+      \right]
+\hfill
+   \opD_1 = 
+      \left[
+         \begin{array}{*{8}{c}}
+            1 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0  
+         \end{array}
+      \right]
+\hfill
+   \opD   = 
+      \left[
+         \begin{array}{*{8}{c}}
+            1 & 1 & 0 & 0 \\
+            1 & 0 & 1 & 0 \\
+            1 & 0 & 0 & 1 \\
+            1 & 0 & 0 & 0 
+         \end{array}
+      \right]
+\]
+
+To find the channel capacity:
+
+\begin{eqnarray*}
+   |\opD-\lambda \opI | 
+     &=& \left|
+            \begin{array}{*{8}{c}}
+               1-\lambda & 1        & 0        & 0 \\
+               1        & -\lambda & 1        & 0 \\
+               1        & 0        & -\lambda & 1 \\
+               1        & 0        & 0        & -\lambda 
+            \end{array}
+         \right|
+   \\&=& (1-\lambda) \left|
+            \begin{array}{*{8}{c}}
+               -\lambda & 1        & 0 \\
+               0        & -\lambda & 1 \\
+               0        & 0        & -\lambda 
+            \end{array}
+         \right|
+        -1\cdot\left|
+            \begin{array}{*{8}{c}}
+               1        & 1        & 0 \\
+               1        & -\lambda & 1 \\
+               1        & 0        & -\lambda 
+            \end{array}
+         \right|
+   \\&=& (1-\lambda)(-\lambda^3) -1(\lambda^2-(-\lambda-1))
+   \\&=& \lambda^4 - \lambda^3 - \lambda^2 - \lambda - 1
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   C(d,k) 
+     &=& \log_2(\lambda_{\mathrm{max}})
+   \\&=& \log_2(1.927562)
+   \\&=& 0.946777
+\end{eqnarray*}
+
+
+
+\[
+\begin{array}{c|c}
+   u_n & \mbox{code} \\
+   \hline
+   000 & 0100  \\
+   001 & 0101  \\
+   010 & 0110  \\
+   011 & 1001  \\
+   100 & 1010  \\
+   101 & 1011  \\
+   110 & 1100  \\
+   111 & 1101
+\end{array}
+\]
+
+\[
+    \mathrm{efficiency} 
+      = \frac{\mbox{code rate}}{C(d,k)} 
+    = \frac{3/4}{0.9468} 
+    = 0.7921
+\]
+
+
+\end{example}
+
+
+%---------------------------------------
+\subsubsection{Example: fixed-length, with memory}
+%---------------------------------------
+%---------------------------------------
+\begin{example}{\bf Code set $X(1,3;2)$ (Miller code):}\\
+\label{ex:miller}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(450,200)(-200,-150)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(-200,  10 ){\makebox (  50, 50)[b]{$u_n$}        }
+  \put(-200,   0 ){\vector  (   1,  0)   {50}           }
+  \put(-150, -50 ){\framebox( 100,100)   {$\uparrow2$}  }
+  \put(-150, -40 ){\makebox ( 100, 80)[b]{upsampler}    }
+  \put(- 50,   0 ){\vector  (   1,  0)   {50}           }
+  \put( 200,  10 ){\makebox (  50, 50)[b]{$y_n$}        }
+
+  \put( 200,   0 ){\vector  (   1,  0)   {50}         }
+  \put(   0,-150 ){\dashbox ( 200,200)   {  }           }
+  \put(   0,-140 ){\makebox ( 200,200)[b]{Miller coder}         }
+  \put(   0,-140 ){\makebox ( 200,200)[ ]{
+        \begin{fsK}
+        \begin{math}
+        \begin{array}{cc|cc}
+           u_{2n}' & y_{n-1} & y_n & y_{n+1} \\
+           \hline
+           0 & 0 & 1 & 0   \\
+           0 & 1 & 0 & 0   \\
+           1 & 0 & 0 & 1   \\
+           1 & 1 & 0 & 1  
+        \end{array}
+        \end{math}
+        \end{fsK}
+     }}
+
+  \put(- 50,   10 ){\makebox (  50, 50)[b]{$u_n'$}        }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Miller modulation coder
+   \label{fig:Miller_model}
+   }
+\end{figure}
+
+The state diagram, transition matrices, and capacity for 
+$(1,3)$-coded sequences is shown in 
+Example~\ref{ex:(1,3,4)} (page \pageref{ex:(1,3,4)}).
+The operation is illustrated in Figure~\ref{fig:Miller_model} and 
+described in the following table:
+\[
+   \begin{array}{cc|cc}
+      u_{2n}' & y_{n-1} & y_n & y_{n+1} \\
+      \hline
+      0 & 0 & 1 & 0   \\
+      0 & 1 & 0 & 0   \\
+      1 & 0 & 0 & 1   \\
+      1 & 1 & 0 & 1  
+   \end{array}
+\]
+
+\[
+    \mathrm{efficiency} 
+    = \frac{\mbox{code rate}}{C(d,k)} 
+    = \frac{1/2}{0.5515} 
+    = 0.9066
+\]
+\end{example}
+
+Compare this to the memoryless $X(1,3,4)$ code 
+which has efficiency $0.4533$
+(Example~\ref{ex:(1,3,4)} page \pageref{ex:(1,3,4)}).
+In this case, allowing the code to have memory
+has doubled the efficiency.
+
+
+
+%---------------------------------------
+\subsubsection{Example: variable-length, no memory}
+%---------------------------------------
+%---------------------------------------
+\begin{example}{\bf Code set $\bar{X}(2,7)$:}\\
+%---------------------------------------
+This code has both variable length input and variable length output.
+Many disk storage devices designed by IBM use this code.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(760,130)(-30,-100)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(   0,   0 ){\makebox (   0,  0)   {$0$}          }
+  \put(   0,   0 ){\circle               { 60}          }
+  \put(   0,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put(  30,   0 ){\vector  (   1,  0)   { 40}          }
+  \put(   0,-100 ){\vector  (   0,  1)   { 70}          }
+
+  \put( 100,   0 ){\makebox (   0,  0)   {$1$}          }
+  \put( 100,   0 ){\circle               { 60}          }
+  \put( 100,  10 ){\makebox ( 100, 50)[b]{$0,1$}          }
+  \put( 130,   0 ){\vector  (   1,  0)   { 40}          }
+ %\put( 100, -30 ){\vector  (   0, -1)   { 70}          }
+ %\put( 110,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 200,   0 ){\makebox (   0,  0)   {$2$}          }
+  \put( 200,   0 ){\circle               { 60}          }
+  \put( 200,  10 ){\makebox ( 100, 50)[b]{$0$}        }
+  \put( 230,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 200, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 210,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 300,   0 ){\makebox (   0,  0)   {$3$}          }
+  \put( 300,   0 ){\circle               { 60}          }
+  \put( 300,  10 ){\makebox ( 100, 50)[b]{$0$}        }
+  \put( 330,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 300, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 310,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 400,   0 ){\makebox (   0,  0)   {$4$}          }
+  \put( 400,   0 ){\circle               { 60}          }
+  \put( 400,  10 ){\makebox ( 100, 50)[b]{$0$}        }
+  \put( 430,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 400, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 410,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 500,   0 ){\makebox (   0,  0)   {$5$}          }
+  \put( 500,   0 ){\circle               { 60}          }
+  \put( 500,  10 ){\makebox ( 100, 50)[b]{$0$}        }
+  \put( 530,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 500, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 510,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 600,   0 ){\makebox (   0,  0)   {$6$}          }
+  \put( 600,   0 ){\circle               { 60}          }
+  \put( 600,  10 ){\makebox ( 100, 50)[b]{$0$}        }
+  \put( 630,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 600, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 610,-100 ){\makebox (  90,100)[l]{$1$}          }
+
+  \put( 700,   0 ){\makebox (   0,  0)   {$7$}          }
+  \put( 700,   0 ){\circle               { 60}          }
+ %\put( 700,  10 ){\makebox ( 100, 50)[b]{$0,1$}        }
+ %\put( 730,   0 ){\vector  (   1,  0)   { 40}          }
+  \put( 700, -30 ){\vector  (   0, -1)   { 70}          }
+  \put( 710,-100 ){\makebox (  90,100)[l]{$0,1$}          }
+
+  \put( 700,-100 ){\vector  (  -1,  0)   {700}          }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   $(2,7)$-coded sequence state diagram
+   %\label{fig:(2,7)_sm}
+   }
+\end{figure}
+
+\begin{fsK}
+\[
+   \opD_0 = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0 & 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            0 & 0 & 1 & 0 & 0 & 0 & 0 & 0  \\
+            0 & 0 & 0 & 1 & 0 & 0 & 0 & 0  \\
+            0 & 0 & 0 & 0 & 1 & 0 & 0 & 0  \\
+            0 & 0 & 0 & 0 & 0 & 1 & 0 & 0  \\
+            0 & 0 & 0 & 0 & 0 & 0 & 1 & 0  \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 1  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  
+         \end{array}
+      \right]
+\hspace{2ex}
+   \opD_1 = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0 & 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            0 & 0 & 1 & 0 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  
+         \end{array}
+      \right]
+\hspace{2ex}
+   \opD   = 
+      \left[
+         \begin{array}{*{8}{c}}
+            0 & 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            0 & 0 & 1 & 0 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 1 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 1 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 1 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 1 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 1  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  
+         \end{array}
+      \right]
+\]
+\end{fsK}
+
+\begin{eqnarray*}
+   C(d,k) 
+     = \log_2(\lambda_{\mathrm{max}})
+     = \log_2(1.431343)
+     = 0.517370
+\end{eqnarray*}
+
+The code words are \citep{proakis}{584}
+\[
+\begin{array}{l|l}
+   u_n & code \\
+   \hline
+   10   & 1000     \\
+   11   & 0100     \\
+   011  & 00100    \\
+   010  & 001000   \\
+   000  & 100100   \\
+   0011 & 00100100 \\
+   0010 & 00001000.  
+\end{array}
+\]
+
+\[
+    \mathrm{efficiency} 
+    = \frac{\mbox{code rate}}{C(d,k)} 
+    = \frac{1/2}{0.517370} 
+    = 0.9664
+\]
+\end{example}
+
+
+
+
+
+
+\clearpage
+%---------------------------------------
+\section{Miller-NRZI modulation code}
+\index{Miller-NRZI}
+\index{Delay modulation}
+%---------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(750,200)(-200,-150)  
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(-200,  10 ){\makebox (  50, 50)[b]{$u_n$}        }
+  \put(-200,   0 ){\vector  (   1,  0)   {50}           }
+  \put(-150, -50 ){\framebox( 100,100)   {$\uparrow2$}  }
+  \put(-150, -40 ){\makebox ( 100, 80)[b]{upsampler}    }
+  \put(- 50,   0 ){\vector  (   1,  0)   {50}           }
+  \put( 200,  10 ){\makebox ( 100, 50)[b]{$w_n$}        }
+
+  \put( 300,-150 ){\dashbox ( 200,200)   {  }           }
+  \put( 300,-140 ){\makebox ( 200,200)[b]{NRZI coder}   }
+  \put( 300, -50 ){\makebox ( 100,100)   {$+$}          }
+  \put( 350,   0 ){\circle{20}                          }
+  \put( 350,-100 ){\vector  (   0,  1)   { 90}          }
+  \put( 360,   0 ){\line    (   1,  0)   { 10}          }
+  \put( 390,   0 ){\line    (   1,  0)   {110}          }
+  \put( 370, -10 ){\framebox(  20, 20)   {   }          }
+  \put( 300,   0 ){\makebox ( 160, 50)   {$\mod[2]$}    }
+  \put( 380, -70 ){\framebox(  40, 40)   {$z^{-1/2}$}     }
+  \put( 400,-100 ){\line    (   0,  1)   { 30}          }
+  \put( 400, -30 ){\line    (   0,  1)   { 30}          }
+  \put( 350,-100 ){\line    (   1,  0)   { 50}          }
+  \put( 500,   0 ){\vector  (   1,  0)   { 50}          }
+
+  \put( 200,   0 ){\vector  (   1,  0)   {140}         }
+  \put(   0,-150 ){\dashbox ( 200,200)   {  }           }
+  \put(   0,-140 ){\makebox ( 200,200)[b]{Miller coder}         }
+  \put(   0,-140 ){\makebox ( 200,200)[ ]{
+        \begin{fsK}
+        \begin{math}
+        \begin{array}{cc|cc}
+           u_{2n}' & w_{n-1} & w_n & w_{n+1} \\
+           \hline
+           0 & 0 & 1 & 0   \\
+           0 & 1 & 0 & 0   \\
+           1 & 0 & 0 & 1   \\
+           1 & 1 & 0 & 1  
+        \end{array}
+        \end{math}
+        \end{fsK}
+     }}
+
+  \put(- 50,   10 ){\makebox (  50, 50)[b]{$u_n'$}        }
+  \put( 500,   10 ){\makebox (  50, 50)[b]{$y_n$}        }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Miller-NRZI modulation coder
+   \label{fig:Miller-NRZI_model}
+   }
+\end{figure}
+
+
+Miller-NRZI modulation coding is commonly called
+\begin{liste}
+   \item Miller coding
+   \item Miller with precoding
+   \item Delay modulation.
+\end{liste}
+
+Miller-NRZI is a concatenation of a {\em Miller coder}
+(Example~\ref{ex:miller}) and an NRZI coder (Section~\ref{sec:NRZI}).
+Equations governing the operation of the coder include
+\begin{eqnarray*}
+   y_n &=& y_{n-1} \lxor w_n \\
+   y_{n+1} &=& y_n \lxor w_{n+1}.
+\end{eqnarray*}
+
+The composition of the Miller and NRZI operations produces 
+the following state table:
+\[
+\begin{array}{cccc|ccccc}
+   \mbox{input} && \mc{2}{c}{state}& & && \mc{2}{c}{output} \\
+   u_{2n}'      &\vline& w_{n-1} & y_{n-1} & w_n & w_{n+1} &\vline& y_n & y_{n+1} \\
+   \hline
+   \hline
+   0 && 0 & 0    & 1 & 0 && 1 & 1  \\
+   0 && 0 & 1    & 1 & 0 && 0 & 0  \\
+   0 && 1 & 0    & 0 & 0 && 0 & 0  \\
+   0 && 1 & 1    & 0 & 0 && 1 & 1  \\
+   \hline
+   1 && 0 & 0    & 0 & 1 && 0 & 1  \\
+   1 && 0 & 1    & 0 & 1 && 1 & 0  \\
+   1 && 1 & 0    & 0 & 1 && 0 & 1  \\
+   1 && 1 & 1    & 0 & 1 && 1 & 0  
+\end{array}
+\]
+
+For each input bit $u_n$, there are two new output bits $(y_n, y_{n+1})$
+and two new state bits $(w_{n+1}, y_{n+1})$.
+Notice that because  
+\[
+\begin{array}{clrclcl}
+   \mbox{old state}     &\equiv& (w_{n-1}, y_{n-1}) &=& (y_{n-1}\lxor y_{n-2}, y_{n-1}) &\equiv& f(\mbox{old output}) \\
+   \mbox{current state} &\equiv& (w_{n+1}, y_{n+1}) &=& (y_{n+1}\lxor y_n, y_{n+1})     &\equiv& f(\mbox{current output})
+\end{array}
+\]
+the output pair $(y_n, y_{n+1})$ also contains the state information 
+and can therefore also be used as the labels for the state of the system.
+This can be viewed as more convenient because then the output pair and
+the state pair are identical.
+In this case, state diagrams and trellises are easier to 
+illustrate since we only have to label the states, 
+while the outputs do not have to be labeled because the
+output pair $(y_n, y_{n+1})$ is identical to the state pair $(y_n, y_{n+1})$.
+
+Conversion from the state pairs to the equivalent output pairs are as follows:
+\[
+\begin{array}{cc|cc}
+   w_{n+1} & y_{n+1} & y_n & y_{n+1} \\
+   \hline
+   0 & 0 & 0 & 0 \\
+   0 & 1 & 1 & 1 \\
+   1 & 0 & 1 & 0 \\
+   1 & 1 & 0 & 1   
+\end{array}
+\hspace{1cm}
+\begin{array}{cc|cc}
+   w_{n-1} & y_{n-1} & y_{n-2} & y_{n-1} \\
+   \hline
+   0 & 0 & 0 & 0 \\
+   0 & 1 & 1 & 1 \\
+   1 & 0 & 1 & 0 \\
+   1 & 1 & 0 & 1   
+\end{array}
+\]
+
+Using these conversions, a new equivalent state table is as follows:
+
+\[
+\begin{array}{cccc|cccc}
+   \mbox{input} &      & \mc{2}{c}{\mbox{old output}} & \mc{2}{c}{\mbox{new output}} \\
+   u_{2n}'      &\vline& y_{n-2} & y_{n-1}     & y_n & y_{n+1} \\
+   \hline
+   \hline
+   0 && 0 & 0    & 1 & 1  \\
+   0 && 0 & 1    & 1 & 1  \\
+   0 && 1 & 0    & 0 & 0  \\
+   0 && 1 & 1    & 0 & 0  \\
+   \hline
+   1 && 0 & 0    & 0 & 1  \\
+   1 && 0 & 1    & 1 & 0  \\
+   1 && 1 & 0    & 0 & 1  \\
+   1 && 1 & 1    & 1 & 0  
+\end{array}
+\]
+
+
+A trellis diagram equivalent to this state table can be found in 
+Figure~\ref{fig:Miller_trellis}. 
+Notice the symmetry of the trellis.
+In particular, if we flip the trellis about an imaginary center axis
+while leaving the state labels undisturbed,
+the same trellis results.
+
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(550,320)(-100,0)
+  %\graphpaper[10](0,0)(300,300)
+  \put( -10 , 300 ){\makebox(0,0)[r]{state $11$}}
+  \put( -10 , 200 ){\makebox(0,0)[r]{state $10$}}
+  \put( -10 , 100 ){\makebox(0,0)[r]{state $01$}}
+  \put( -10 ,   0 ){\makebox(0,0)[r]{state $00$}}
+
+  \thinlines
+  \put(   0 ,   0 ){\circle*{10}}
+  \put(   0 , 100 ){\circle*{10}}
+  \put(   0 , 200 ){\circle*{10}}
+  \put(   0 , 300 ){\circle*{10}}
+
+\multiput(0,0)(100,0){5}{
+  %\thicklines
+  \linethickness{1mm}
+  \put        (  0,300){\line( 1,-1){100}} % state0 path1
+  \put        (  0,200){\line( 1,-1){100}} % state1 path1
+  \put        (  0,100){\line( 1, 1){100}} % state2 path1
+  \put        (  0,  0){\line( 1, 1){100}} % state3 path1
+  
+  %\thinlines
+  \linethickness{0.1mm}
+  %\put        (  0,300){\line( 1,-3){100}} % state0 path0
+  %\put        (  0,200){\line( 1,-2){100}} % state1 path0
+  %\put        (  0,100){\line( 1, 2){100}} % state2 path0
+  %\put        (  0,  0){\line( 1, 3){100}} % state3 path0
+
+  \qbezier[50](  0,300)(  0,300)(100,  0)  % state0 path0
+  \qbezier[50](  0,200)(  0,200)(100,  0)  % state1 path0
+  \qbezier[50](  0,100)(  0,100)(100,300)  % state2 path0
+  \qbezier[50](  0,  0)(  0,  0)(100,300)  % state3 path0
+
+  \put( 100 ,   0 ){\circle*{10}}
+  \put( 100 , 100 ){\circle*{10}}
+  \put( 100 , 200 ){\circle*{10}}
+  \put( 100 , 300 ){\circle*{10}}
+}
+\end{picture}                                   
+\end{fsL}
+\hspace{1cm}
+\begin{tabular}{cl}
+   $\cdots$ & $y_n=0$ \\
+   ---      & $y_n=1$ 
+\end{tabular}
+\caption{
+  Miller-NRZI trellis diagram
+   \label{fig:Miller_trellis}
+   }
+\end{center}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\if 0
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.1mm}
+\begin{tabular}{cccc}
+ \mc{2}{c}{$\psi_1(t)$} & \mc{2}{c}{$\psi_2(t)$} 
+\\
+\mc{2}{c}{
+\begin{picture}(360,230)(-100,-100)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0,1){100} }
+  \put(    0 , 100 ){\line(1,0){100} }
+  \put(  100 ,   0 ){\line(0,1){100} }
+  \put(  -10 , -40 ){$0$ }
+  \put(   90 , -40 ){$T$ }
+  \put(  -60 ,  90 ){$\frac{1}{\sqrt{T}}$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}                                   
+}
+&
+\mc{2}{c}{
+\begin{picture}(360,230)(-100,-100)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0, 1){100} }
+  \put(    0 , 100 ){\line(1, 0){ 50} }
+  \put(   50 , 100 ){\line(0,-1){200} }
+  \put(   50 ,-100 ){\line(1, 0){ 50} }
+  \put(  100 ,-100 ){\line(0,1){100} }
+  \put(  -10 , -40 ){$0$ }
+  \put(   40 , -40 ){$\frac{T}{2}$ }
+  \put(   90 , -40 ){$T$ }
+  \put(  -60 ,  90 ){$\frac{1}{\sqrt{T}}$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}
+}                                   
+\\
+\\
+\\
+$s(t;u_n=0,y_n=3)$ & 
+$s(t;u_n=0,y_n=0)$ & 
+$s(t;u_n=1,y_n=1)$ & 
+$s(t;u_n=1,y_n=2)$
+\\
+\begin{picture}(360,230)(-100,-100)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0,1){100} }
+  \put(    0 , 100 ){\line(1,0){100} }
+  \put(  100 ,   0 ){\line(0,1){100} }
+  \put(  -10 , -40 ){$0$ }
+  \put(   90 , -40 ){$T$ }
+  \put(  -50 ,  90 ){$A$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}                                   
+&
+\begin{picture}(360,230)(-100,-100)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0,-1){100} }
+  \put(    0 ,-100 ){\line(1, 0){100} }
+  \put(  100 ,   0 ){\line(0,-1){100} }
+  \put(  -10 ,  20 ){$0$ }
+  \put(   90 ,  20 ){$T$ }
+  \put(  -90 ,-100 ){$-A$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}                                   
+&
+\begin{picture}(360,230)(-100,-100)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0, 1){100} }
+  \put(    0 , 100 ){\line(1, 0){ 50} }
+  \put(   50 , 100 ){\line(0,-1){200} }
+  \put(   50 ,-100 ){\line(1, 0){ 50} }
+  \put(  100 ,-100 ){\line(0,1){100} }
+  \put(  -10 , -40 ){$0$ }
+  \put(   40 , -40 ){$\frac{T}{2}$ }
+  \put(   90 , -40 ){$T$ }
+  \put(  -60 ,  90 ){$A$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}                                   
+&
+\begin{picture}(360,230)(-100,-100)
+  %\graphpaper[10](0,0)(300,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line(1,0){300} }
+  \thinlines
+  \put(    0 ,   0 ){\line(0,-1){100} }
+  \put(    0 ,-100 ){\line(1, 0){ 50} }
+  \put(   50 ,-100 ){\line(0, 1){200} }
+  \put(   50 , 100 ){\line(1, 0){ 50} }
+  \put(  100 , 100 ){\line(0,-1){100} }
+  \put(  -10 , -40 ){$0$ }
+  \put(   40 , -40 ){$\frac{T}{2}$ }
+  \put(   90 , -40 ){$T$ }
+  \put(  -60 ,  90 ){$A$ }
+  \put(  210 , -12 ){$t$ }
+\end{picture}                                   
+\end{tabular}
+\end{fsK}
+\end{center}
+\caption{
+   Miller signaling waveforms using rectangular pulse.
+   \label{fig:Miller_signal}
+   }
+\end{figure}
+\fi
+

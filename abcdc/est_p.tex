@@ -1,0 +1,724 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Phase Estimation}
+\index{estimation!phase}
+\index{phase estimation}
+\label{chp:est_p}
+%======================================
+%======================================
+\section{Phase Estimation}
+%======================================
+\begin{figure}[ht] \color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.20mm}                  
+\begin{picture}(700,200)(-100,-50) 
+  \thinlines                                      
+  %\graphpaper[10](0,0)(500,100)                  
+  \put(-100 ,  60 ){\makebox( 100,0)[b]{$\su$} }
+  \put(-100 ,  50 ){\vector(1,0){100} }
+
+  \put(  50 , 125 ){\makebox(0,0)[b]{$\phi_t$}}
+  \put(  50 , 120 ){\vector(0,-1){20}}
+  \put(  00 ,  10 ){\makebox( 100, 80)[t]{transmit} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put(  00 ,  10 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put(  00 ,  00 ){\framebox( 100,100){} }
+
+  \put( 100 ,  60 ){\makebox( 100,0)[b]{$s(t;\phi_t,\vu)$} }
+  \put( 100 ,  50 ){\vector(1,0){100} }
+
+  \put( 250 , 125 ){\makebox(0,0)[b]{$\phi_c$}}
+  \put( 250 , 120 ){\vector(0,-1){20}}
+  \put( 200 ,  10 ){\makebox( 100, 80)[t]{channel} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 200 ,  10 ){\makebox( 100, 80)[b]{$\opC$} }
+  \put( 200 ,  00 ){\framebox(100,100){} }
+
+  \put( 350 , 125 ){\makebox(0,0)[b]{$\phi\eqd \phi_t+\phi_c$}}
+  \put( 300 ,  60 ){\makebox( 100,0)[b]{$r(t;\phi,\vu)$} }
+  \put( 300 ,  50 ){\vector(1,0){100} }
+
+  \put( 400 ,  00 ){\framebox(100,100){} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[t]{receive} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[c]{operation} }
+  \put( 400 ,  10 ){\makebox( 100, 80)[b]{$\opR$} }
+
+  \put( 500 ,  60 ){\makebox( 100,0)[b]{$\sue$} }
+  \put( 500 ,  50 ){\vector(1,0){100} }
+
+  \put(- 90 , -10 ){\makebox( 0, 0)[tl]{$\vu\eqd\su$} }
+  %\put( 110 , -10 ){\makebox( 0, 0)[tl]{$s(t;\vu)=\opT\vu$} }
+  \put( 310 , -10 ){\makebox( 0, 0)[tl]{$r(t;\phi,\vu)=\fs(t;\phi,\vu)+\fn(t)$ } }
+  %\put( 510 , -10 ){\makebox( 0, 0)[tl]{$\sue=\opSys\vu=\opR\opC\opT\vu$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Phase estimation system model
+   \label{fig:est_p_model}
+   }
+\end{figure}
+
+
+
+In a narrowband communication system, the modulation sinusoid 
+used by the transmitter
+generally has a different phase than the demodulation sinusoid used by 
+the receiver. 
+In many systems the receiver must estimate the phase of the received carrier.
+
+\paragraph{Estimation types.}
+The phase estimate may be {\em explicit} or {\em implicit}:
+
+\begin{tabular}{llp{12cm}}
+   \circOne & explicit: & compute an actual value for the phase estimate. \\
+   \circTwo & implicit: & generate a sinusoid with the same estimated phase 
+                    as the carrier.
+\end{tabular}
+
+\paragraph{Algorithm classifications}
+Synchronization algorithms can be classified in two ways.
+In the first, algorithms are classified according to 
+whether the transmitted information is assumed to be 
+known ({\em decision directed}) or
+unknown ({\em non-decision directed}) to the receiver.
+\footnote{
+  {\em Decision/non-decision directed} is the classification used by \\
+  \cite{proakis}.
+}
+
+\begin{tabular}{llp{10cm}}
+   1. & decision directed:     & transmitted information symbols are assumed to be known to the receiver. \\
+   2. & non-decision directed: & compute the expected value of a likelihood function with respect to
+                                 probability distribution of the information symbols.
+\end{tabular}
+
+In the second, algorithms are classified according to whether or 
+not they use feedback.
+\footnote{
+  {\em error tracking/feedforward} is the classification preferred by\\ 
+  \cite{meyr}.
+}
+
+\begin{tabular}{llp{10cm}}
+   \circOne & error tracking:  & with feedback -- resembles the PLL operation \\
+   \circTwo & feedforward:     & no feedback -- uses bandpass filter
+\end{tabular}
+
+
+\paragraph{Hardware implementation.}
+Implicit phase computation can be accomplished by using a 
+\structe{phase-lock loop} (\structe{PLL}).
+Explicit phase computation algorithms often require the computation
+of the $\atan:\R\to\R$ function.
+
+
+%======================================
+\subsection{ML estimate}
+%======================================
+%--------------------------------------
+\begin{theorem}
+\label{thm:estML_QAM}
+%--------------------------------------
+In an AWGN channel with received signal $r(t)=s(t;\phi)+n(t)$
+Let 
+\begin{liste}
+   \item $r(t)=s(t;\phi)+n(t)$ be the received signal in an AWGN channel
+   \item $n(t)$ a Gaussian white noise process
+   \item $s(t;\phi)$ the transmitted signal such that
+       \[s(t;\phi) = \sum_n a_n \sym(t-nT)\cos(2\pi f_ct+\theta_n+\phi).\]
+\end{liste}
+
+Then the optimal ML estimate of $\phi$ is either of the two equivalent 
+expressions
+\thmbox{\begin{array}{rcl}
+   \estML[\phi]
+     &=& \ds-\atan\left[
+         \frac{\sum_n a_n \int_t r(t)\sym(t-nT)\sin(2\pi f_c t+\theta_n)\dt}
+              {\sum_n a_n \int_t r(t)\sym(t-nT)\cos(2\pi f_c t+\theta_n)\dt}
+         \right]
+\\ \\
+     &=& \ds\arg_{\phi}\left( 
+            \sum_n a_n \int_t r(t)\left[\sym(t-nT)\sin(2\pi f_ct+\theta_n+\phi)\right] \dt = 0
+            \right).
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \estML[\phi]
+     &=    \arg_{\phi}\left( 
+           2\int_t r(t)\left[\pderiv{}{\phi}s(t;\phi)\right] \dt =
+           \pderiv{}{\phi}\int_t s^2(t;\phi) \dt
+           \right)
+           \qquad\text{by \prefp{thm:estML_general}}
+   \\&=    \arg_{\phi}\left( 
+           2\int_t r(t)\left[\pderiv{}{\phi}s(t;\phi)\right] \dt =
+           \pderiv{}{\phi}\norm{s(t;\phi)}^2 \dt
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           2\int_t r(t)\left[\pderiv{}{\phi}s(t;\phi)\right] \dt = 0
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           \int_t r(t)\left[\pderiv{}{\phi}\sum_n a_n \sym(t-nT)\cos(2\pi f_ct+\theta_n+\phi)\right] \dt = 0
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           -\sum_n a_n \int_t r(t)\left[\sym(t-nT)\sin(2\pi f_ct+\theta_n+\phi)\right] \dt = 0
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           \sum_n a_n \int_t r(t)\sym(t-nT)\left[
+           \sin(2\pi f_ct+\theta_n)\cos(\phi) +
+           \sin(\phi)\cos(2\pi f_ct+\theta_n) 
+           \right] \dt = 0
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           \sum_n a_n \int_t r(t)\sym(t-nT)
+           \sin(\phi)\cos(2\pi f_ct+\theta_n) \dt
+           = -
+           \sum_n a_n \int_t r(t)\sym(t-nT)
+           \sin(2\pi f_ct+\theta_n)\cos(\phi) \dt
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           \sin(\phi)\sum_n a_n \int_t r(t)\sym(t-nT)
+           \cos(2\pi f_ct+\theta_n) \dt
+           = -
+           \cos(\phi)\sum_n a_n \int_t r(t)\sym(t-nT)
+           \sin(2\pi f_ct+\theta_n) \dt
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           \frac{\sin(\phi)}{\cos(\phi)}
+           =-
+           \frac{\sum_n a_n \int_t r(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+                {\sum_n a_n \int_t r(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           \tan(\phi)
+           =-
+           \frac{\sum_n a_n \int_t r(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+                {\sum_n a_n \int_t r(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+           \right)
+   \\&=    \arg_{\phi}\left( 
+           \phi =-\atan\left(
+           \frac{\sum_n a_n \int_t r(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+                {\sum_n a_n \int_t r(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+           \right)
+           \right)
+   \\&=    -\atan\left(
+           \frac{\sum_n a_n \int_t r(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+                {\sum_n a_n \int_t r(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+           \right)
+\end{align*}
+\end{proof}
+
+%======================================
+\subsection{Decision directed estimate}
+%======================================
+In this architecture (see Figure \ref{fig:est_p_explicit}) 
+the phase estimate $\estML[\phi]$ is 
+explicitly computed in accordance with the equation 
+
+\begin{fsL}
+\begin{align*}
+   \estML[\phi]
+     &= -\atan\left(
+        \frac{\sum_n a_n \int_t r(t)\sym(t-nT)\sin(2\pi f_ct+\theta_n) \dt}
+             {\sum_n a_n \int_t r(t)\sym(t-nT)\cos(2\pi f_ct+\theta_n) \dt}
+        \right)
+        \qquad\text{by \prefp{thm:estML_QAM}}
+   \\&= -\atan\left(
+        \frac{\sum_n a_n \int_t r(t)\sym(t-nT)[\sin(2\pi f_ct)\cos\theta_n + \cos(2\pi f_ct)\sin\theta_n] \dt}
+             {\sum_n a_n \int_t r(t)\sym(t-nT)[\cos(2\pi f_ct)\cos\theta_n - \sin(2\pi f_ct)\sin\theta_n] \dt}
+        \right)
+   \\&= -\atan\left(
+        \frac{\sum_n a_n\cos\theta_n \int_t r(t)\sym(t-nT)\sin(2\pi f_ct) \dt + \sum_n a_n\sin\theta_n \int_t r(t)\sym(t-nT)\cos(2\pi f_ct) \dt}
+             {\sum_n a_n\cos\theta_n \int_t r(t)\sym(t-nT)\cos(2\pi f_ct) \dt - \sum_n a_n\sin\theta_n \int_t r(t)\sym(t-nT)\sin(2\pi f_ct) \dt}
+        \right)
+\end{align*}
+\end{fsL}
+
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(1100,500)(-100,-250)
+  \thinlines                                      
+  %\graphpaper[10](0,-150)(500,300)                  
+
+  \put(-100,  10){\makebox ( 40, 0)[b]{$r(t)$} }
+  \put(-100,   0){\vector(1,0){40} }
+  \put(- 50,   0){\circle{20} }
+  \put(- 50,   0){\makebox (  0,  0)   {$\times$} }
+  \put(- 50, -50){\vector(0,1){40} }
+  \put(-90,-150){\framebox(80,100)   {$\lambda(t-nT)$} }
+
+  \put(- 40,   0){\line    (  1,  0)   { 40}           }
+  \put(   0,-200){\line    (  0,  1)   {400}           }
+  \put(   0, 200){\vector  (  1,  0)   {190}           }
+  \put(   0,-200){\vector  (  1,  0)   {190}           }
+
+  \put(  50, -50){\framebox(100,100)   {$\cos2\pi f_ct$} }
+  \put( 150,   0){\vector  (  1,  0)   { 50}           }
+  \put( 200,-190){\line    (  0,  1)   {380}           }
+  \put( 200,-200){\circle{20} }
+  \put( 200,-200){\makebox (  0,  0)   {$\times$} }
+  \put( 185, -85){\framebox( 30, 30)   {$j$}           }   
+  \put( 200, 200){\circle{20} }
+  \put( 200, 200){\makebox (  0,  0)   {$\times$} }
+
+  \put( 210, 200){\vector  (  1,  0)   { 40}           }
+  \put( 210,-200){\vector  (  1,  0)   { 40}           }
+  \put( 250, 150){\framebox(100,100)   {$\int_t\dt$}   }   
+  \put( 250,-250){\framebox(100,100)   {$\int_t\dt$}   }   
+
+  \put( 350, 200 ){\usebox{\picSampler}}
+  \put( 350,-200 ){\usebox{\picSampler}}
+
+  \put( 500, 200 ){\usebox{\picMultT}  }
+  \put( 500,-200 ){\usebox{\picMultL}  }
+  \put( 550, 200){\vector  (  1,  0)   {100}           }
+  \put( 550,-200){\vector  (  1,  0)   {100}           }
+
+  \put( 350,- 50){\framebox(100,100)   {$a_n$}   }   
+  \put( 450,   0){\line    (  1,  0)   { 50}           }
+  \put( 500,-150){\line    (  0,  1)   {300}           }
+
+  \put( 550,- 50){\framebox(100,100)   {$\theta_n$}} 
+  \put( 650,   0){\line    (  1,  0)   { 50}           }
+  \put( 700,   0){\line    (  0,  1)   { 75}           }
+  \put( 700,   0){\line    (  0, -1)   { 75}           }
+  \put( 650,  75){\framebox(100, 75)   {$\cos$}  }   
+  \put( 650,-150){\framebox(100, 75)   {$\sin$}  }   
+  \put( 700, 200 ){\usebox{\picMultT}  }
+  \put( 700,-200 ){\usebox{\picMultL}  }
+  \put( 750, 200){\line    (  1,  0)   {250}           }
+  \put( 750,-200){\line    (  1,  0)   {250}           }
+  \put(1000, 200){\line    (  0, -1)   {150}           }
+  \put(1000,-200){\line    (  0,  1)   {150}           }
+  \put( 800, 200){\line    (  0, -1)   {150}           }
+  \put( 800,-200){\line    (  0,  1)   {150}           }
+
+
+  \put( 800,   0 ){\usebox{\picAddE}   }
+  \put(1000,   0 ){\usebox{\picAddX}   }
+  \put( 950,   0 ){\usebox{\picMultL}  }
+  \put( 850, -25){\framebox( 50, 50)   {$\frac{1}{x}$}  }   
+  \put( 950,  60){\makebox( 0, 0)[b]   {$\tan\estML[\phi]$}  }   
+  \put( 950,  10){\vector (  0,  1)   { 40}           }
+
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Explicit phase estimation implementation
+   \label{fig:est_p_explicit}
+   }
+\end{figure}
+
+
+
+
+%======================================
+\subsubsection{Decision directed implicit estimation implementation}
+%======================================
+In this architecture (see \prefp{fig:est_p_implicit})  
+the phase estimate $\estML[\phi]$ is 
+not explicitly computed.
+Rather, a sinusoid that has the estimated phase $\estML[\phi]$ is generated
+using a {\em voltage controlled oscillator} (VCO). 
+The entire structure which includes the VCO is called a 
+\hid{phase-lock loop} (\hie{PLL}).
+The PLL operates in accordance with the equation
+\[
+   \sum_n a_n \int_t r(t)\sym(t-nT)\sin(2\pi f_c t+\theta_n+\estML[\phi]) \dt = 0.
+\]
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(600,150)(0,-100)
+  \thinlines                                      
+  %\graphpaper[10](0,-150)(500,300)                  
+
+  \put(   0 ,  10 ){\makebox(100, 33){$r(t)$} }
+  \put(   0 ,   0 ){\vector(1,0){90} }
+  \put( 100 ,   0 ){\circle{20} }
+  \put(  90 , -10 ){\makebox( 20, 20){$\times$} }
+  \put( 100 ,-100 ){\vector(0,1){90} }
+  \put( 110 ,   0 ){\vector(1,0){90} }
+  \put( 200 , -50 ){\framebox(100,100){loop filter} }
+  \put( 300 ,   0 ){\vector(1,0){100} }
+  \put( 400 , -50 ){\framebox(100,100){VCO} }
+  \put( 500 ,   0 ){\vector(1,0){100} }
+  \put( 550 ,-100 ){\line(0,1){100} }
+  \put( 100 ,-100 ){\line(1,0){450} }
+  \put( 500 ,  10 ){\makebox(200, 33){$\sin(2\pi f_c t+\theta_n+\estML)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Implicit phase estimation implementation
+   \label{fig:est_p_implicit}
+   }
+\end{figure}
+
+
+
+
+%======================================
+\subsection{Non-decision directed phase estimation}
+%======================================
+%--------------------------------------
+\begin{definition}
+%--------------------------------------
+\[ \E_m \estML[\phi] = \arg\max_{\phi} \E_m \int_t r(t)s_m(t;\phi) \dt. \]
+\end{definition}
+
+
+\[
+   \sum_{n=0}^{K-1}
+   \int_{nT}^{(n+1)T} r(t)\cos(2\pi f_ct + \estML[\phi]) \dt
+   \int_{nT}^{(n+1)T} r(t)\sin(2\pi f_ct + \estML[\phi]) \dt
+   = 0
+\]
+
+
+
+%======================================
+\section{Phase Lock Loop}
+%======================================
+Reference: \cite{kao}
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(600,150)(0,-100)
+  \thinlines                                      
+  %\graphpaper[10](0,-150)(500,300)                  
+
+  \put(   0 ,  10 ){\makebox(100, 33){$r(t)$} }
+  \put(   0 ,   0 ){\vector(1,0){90} }
+  \put( 100 ,   0 ){\circle{20} }
+  \put(  90 , -10 ){\makebox( 20, 20){$\times$} }
+  \put( 100 ,-100 ){\vector(0,1){90} }
+  \put( 110 ,   0 ){\vector(1,0){90} }
+  \put( 200 , -50 ){\framebox(100,100){} }
+  \put( 200 ,  17 ){\makebox(100,0){loop filter} }
+  \put( 200 , -17 ){\makebox(100,0){$\Lg(s)$} }
+  \put( 300 ,   0 ){\vector(1,0){100} }
+  \put( 400 , -50 ){\framebox(100,100){} }
+  \put( 400 ,  17 ){\makebox(100,0){VCO} }
+  \put( 400 , -17 ){\makebox(100,0){$\ds\frac{1}{s}$} }
+  \put( 500 ,   0 ){\vector(1,0){100} }
+  \put( 550 ,-100 ){\line(0,1){100} }
+  \put( 100 ,-100 ){\line(1,0){450} }
+  \put( 500 ,  10 ){\makebox(200, 33){$\sin(2\pi f_c t+\theta_n+\estML)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Implicit phase estimation implementation
+   \label{fig:est_p_implicit_b}
+   }
+\end{figure}
+
+
+%=======================================
+\subsection{First order response}
+%=======================================
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(600,150)(0,-100)
+  \thinlines                                      
+  %\graphpaper[10](0,-150)(500,300)                  
+
+  \put(   0 ,  10 ){\makebox(100, 33){$r(t)$} }
+  \put(   0 ,   0 ){\vector(1,0){90} }
+  \put( 100 ,   0 ){\circle{20} }
+  \put(  90 , -10 ){\makebox( 20, 20){$+$} }
+  \put( 100 ,-100 ){\vector(0,1){90} }
+  \put( 110 ,   0 ){\vector(1,0){90} }
+  \put( 200 , -50 ){\framebox(100,100){} }
+  \put( 200 ,  17 ){\makebox(100,0){loop filter} }
+  \put( 200 , -17 ){\makebox(100,0){$\Lg(s)=k$} }
+  \put( 300 ,   0 ){\vector(1,0){100} }
+  \put( 400 , -50 ){\framebox(100,100){} }
+  \put( 400 ,  17 ){\makebox(100,0){VCO} }
+  \put( 400 , -17 ){\makebox(100,0){$\ds\frac{1}{s}$} }
+  \put( 500 ,   0 ){\vector(1,0){100} }
+  \put( 550 ,-100 ){\line(0,1){100} }
+  \put( 100 ,-100 ){\line(1,0){450} }
+  \put( 500 ,  10 ){\makebox(200, 33){$\sin(2\pi f_c t+\theta_n+\estML)$} }
+\end{picture}                                   
+\end{fsL}
+\end{center}
+\caption{
+   Implicit phase estimation implementation
+   \label{fig:est_p_implicit_c}
+   }
+\end{figure}
+
+%=======================================
+\subsubsection{Loop response}
+%=======================================
+Eventhough the filter response is zero order ($\Fg(s)=k$),
+the total loop response ($\Lh(s)$) is first order.
+A causal first order filter has an exponential impulse response.
+
+\begin{eqnarray*}
+  \Lh(s)
+    &=& \frac{\Lg(s)\frac{1}{s}}{1 + \Lg(s)\frac{1}{s}}
+     =  \frac{\Lg(s)}{s + \Lg(s)}
+     =  \frac{k}{s + k}
+     =  \frac{1}{1 + \frac{s}{k}}
+\\
+  \left.\Lh(s)\right|_{s=i\omega}
+    &=& \Fh(\omega)
+     =  \frac{1}{1 + i\frac{\omega}{k}}
+\\
+  |\Fh(\omega)|^2
+    &=& \left| \frac{1}{1 + i\frac{\omega}{k}} \right|^2
+     =  \left(\frac{1}{1 + i\frac{\omega}{k}}\right)\left(\frac{1}{1 + i\frac{\omega}{k}}\right)^\ast
+     =  \frac{1}{1 + \left(\frac{\omega}{k}\right)^2}
+\\
+  \left[\opL ae^{-bt}\step(t)\right](s)
+    &=& \int_t a e^{-bt}\step(t) e^{-st} \dt
+  \\&=& \int_0^\infty a e^{-(s+b)t} e^{-st} \dt
+  \\&=& \left. \frac{a}{-(s+b)} e^{-bt}\right|_0^\infty
+  %\\&=& \frac{a}{-(s+b)}\cdot0 - \frac{a}{-(s+b)}\cdot1
+  \\&=& \frac{a}{s+b}
+\\
+  \fh(t) &=& k e^{-kt}\step(t)
+\end{eqnarray*}
+
+\begin{figure}[ht]
+\color{figcolor}
+\begin{footnotesize}
+\setlength{\unitlength}{0.15mm}
+\begin{tabular*}{\textwidth}{*{3}{@{\extracolsep{\fill}}c}@{\extracolsep{\fill}}}
+\begin{picture}(250,250)(-100,-100)
+  \put(-100,   0){\line(1,0){200}}
+  \put(   0,-100){\line(0,1){200}}
+  \put(   0, 105){\makebox(0,0)[b]{$\Imb{s}$}}
+  \put( 105,   0){\makebox(0,0)[l]{$\Reb{s}$}}
+  \put( -50,   0){\makebox(0,0){$\times$}}
+  \put( -50, -10){\makebox(0,0)[t]{$-k$}}
+  \put(  10,  50){\makebox(0,0)[l]{$\Lh(s)=\frac{1}{1+\frac{s}{k}}$}}
+\end{picture}
+&
+\begin{picture}(300,200)(-50,-50)
+  \put( -20,   0){\line( 1, 0){270}}
+  \put(   0, -20){\line( 0, 1){140}}
+  \put(   0, 100){\line( 1, 0){100}}
+  \put( 150,  70){\line( 1,-1){100}}
+  \put( 260,   0){\makebox(0,0)[l]{$\omega$}}
+  \qbezier[24](0,70)(65,70)(150,70)
+  \qbezier[16](150,0)(150,35)(150,70)
+  \qbezier(100,100)(120,100)(150,70)
+  \put( 170,  70){\makebox(0,0)[bl]{$|\Fh(\omega)|$}}
+  \put( 150, -10){\makebox(0,0)[t]{$k$}}
+  \put( -10,  70){\makebox(0,0)[r]{$-3$dB}}
+  \put( -10, 100){\makebox(0,0)[r]{$0$dB}}
+\end{picture}
+&
+\begin{picture}(400,140)(-100,-20)
+  \put(-100,   0){\line(1,0){350}}
+  \put(   0,   0){\line(0,1){140}}
+  \put( -10, 100){\line(1,0){20}}
+  \put( -15, 100){\makebox(0,0)[r]{$k$}}
+  \put( 100,  50){\makebox(0,0)[lb]{$\fh(t)=ke^{-kt}$}}
+  \put( 260,   0){\makebox(0,0)[l]{$t$}}
+  \qbezier(0,100)(100,0)(200,2)
+\end{picture}
+\end{tabular*}
+\end{footnotesize}
+\caption{First Order Loop response
+  \label{fig:loop1_h}
+}
+\end{figure}
+
+%=======================================
+\subsubsection{Phase step response}
+%=======================================
+In Phase Shift Keying (PSK) modulation, the phase of the signal changes
+abruptly. Thus we are interested in the response of the PLL
+to a ``phase step".
+
+\begin{eqnarray*}
+  \theta_{\mathrm{in}} &=& \theta_0 + \Delta\theta\step(t)
+\\
+\\
+  \theta_{\mathrm{vco}}
+    &=& \fh(t) \conv \theta_{\mathrm{in}}
+  \\&=& \fh(t) \conv [\theta_0 + \Delta\theta\step(\tau)]
+  \\&=& \fh(t)\conv\theta_0 + \fh(t)\conv\Delta\theta\step(\tau)
+  \\&=& \int_{\tau}\fh(t-\tau)\theta_0\dtau + \int_{\tau}\fh(t-\tau)\Delta\theta\step(\tau)\dtau
+  \\&=& \theta_0\int_{\tau}\fh(t-\tau)\dtau + \Delta\theta\int_0^\infty\fh(t-\tau)\dtau
+  \\&=& \theta_0\int_{\tau} k e^{-k(t-\tau)}\step(t-\tau)\dtau + 
+        \Delta\theta\int_0^\infty ke^{-k(t-\tau)}\step(t-\tau) \dtau
+  \\&=& \theta_0 k e^{-kt} \int_{\tau} e^{k\tau}\step(t-\tau)\dtau + 
+        \Delta\theta ke^{-kt} \int_0^\infty e^{k\tau}\step(t-\tau) \dtau
+  \\&=& \theta_0 k e^{-kt} \int_{-\infty}^t e^{k\tau}\dtau + 
+        \Delta\theta ke^{-kt} \step(t) \int_0^t e^{k\tau} \dtau
+  \\&=& \theta_0 k e^{-kt} \left. \frac{1}{k} e^{k\tau}\right|_{-\infty}^t + 
+        \Delta\theta ke^{-kt} \step(t)  \left. \frac{1}{k} e^{k\tau}\right|_0^t
+  \\&=& \theta_0 k e^{-kt} \frac{1}{k}(e^{kt}-0) + 
+        \Delta\theta ke^{-kt} \frac{1}{k}(e^{kt}-1) \step(t) 
+  \\&=& \theta_0  + \Delta\theta (1-e^{-kt}) \step(t) 
+\end{eqnarray*}
+
+\begin{figure}[ht]
+\color{figcolor}
+\setlength{\unitlength}{0.2mm}
+\begin{footnotesize}
+\begin{tabular*}{\textwidth}{*{3}{@{\extracolsep{\fill}}c}@{\extracolsep{\fill}}}
+\begin{picture}(250,120)(-100,-20)
+  \put(-100,   0){\line(1,0){200}}
+  \put(   0, -20){\line(0,1){120}}
+  \put( -80,  30){\line(1,0){ 80}}
+  \put(   0,  80){\line(1,0){ 80}}
+  \put( 105,   0){\makebox(0,0)[l]{$t$}}
+  \put(   5,  30){\makebox(0,0)[l]{$\theta_0$}}
+  \put(  -5,  80){\makebox(0,0)[r]{$\theta_0+\Delta\theta$}}
+  %\qbezier[25](0,30)(50,30)(100,30)
+  %\put(  50,  50){\makebox(0,0){$\Delta\theta$}}
+  \put(  50,  50){\makebox(0,0){$\theta_{\mathrm{in}}(t)$}}
+  %\put(  50, 100){\vector(0,-1){20}}
+  %\put(  50,  10){\vector(0, 1){20}}
+\end{picture}
+&
+$\Longrightarrow$
+\fbox{\parbox[c][1cm][c]{1cm}{$\fh(t)$}}
+$\Longrightarrow$
+&
+\begin{picture}(350,120)(-100,-20)
+  \put(-100,   0){\line(1,0){300}}
+  \put(   0, -20){\line(0,1){120}}
+  \put( -80,  30){\line(1,0){ 80}}
+  %\put( 100,  80){\line(1,0){ 80}}
+  \put( 205,   0){\makebox(0,0)[l]{$t$}}
+  \put(  10,  30){\makebox(0,0)[l]{$\theta_0$}}
+  \put(  -5,  80){\makebox(0,0)[r]{$\theta_0+\Delta\theta$}}
+  \qbezier[50](0,80)(100,80)(200,80)
+  \qbezier(0,30)(50,78)(180,78)
+  %\put(  50,  50){\makebox(0,0){$\Delta\theta$}}
+  \put(   90,  50){\makebox(0,0){$\theta_{\mathrm{vco}}(t)$}}
+  %\put(  50, 100){\vector(0,-1){20}}
+  %\put(  50,  10){\vector(0, 1){20}}
+\end{picture}
+\end{tabular*}
+\end{footnotesize}
+\caption{First Order Loop phase step response
+  \label{fig:loop1_step}
+}
+\end{figure}
+
+
+%=======================================
+\subsubsection{Frequency step response}
+%=======================================
+In Frequency Shift Keying (FSK) modulation, the frequency of the signal changes
+abruptly. Thus we are interested in the response of the PLL
+to a ``frequency step".
+The change in frequency will be modelled as part of the phase.
+
+\begin{eqnarray*}
+  \theta_{\mathrm{in}} &=& \theta_0 + \Delta\omega t\step(t)
+\\
+\\
+  \theta_{\mathrm{vco}}
+    &=& \fh(t) \conv \theta_{\mathrm{in}}
+  \\&=& \fh(t) \conv [\theta_0 + \Delta\omega t \step(t)]
+  \\&=& \fh(t)\conv\theta_0 + \fh(t)\conv\Delta\omega t \step(t)
+  \\&=& \int_{\tau}\fh(t-\tau)\theta_0\dtau + 
+        \int_{\tau}\fh(t-\tau) \Delta\omega \tau \step(\tau)\dtau
+  \\&=& \theta_0\int_{\tau}\fh(t-\tau)\dtau + 
+        \Delta\omega \int_0^\infty \fh(t-\tau) \tau \dtau
+  \\&=& \theta_0\int_{\tau} k e^{-k(t-\tau)}\step(t-\tau)\dtau + 
+        \Delta\omega \int_0^\infty ke^{-k(t-\tau)}\step(t-\tau) \tau \dtau
+  \\&=& \theta_0 k e^{-kt} \int_{\tau} e^{k\tau}\step(t-\tau)\dtau + 
+        \Delta\omega ke^{-kt} \int_0^\infty e^{k\tau}\step(t-\tau) \tau \dtau
+  \\&=& \theta_0 k e^{-kt} \int_{-\infty}^t e^{k\tau}\dtau + 
+        \Delta\omega ke^{-kt} \step(t) \int_0^t \tau e^{k\tau} \dtau
+  \\&=& \theta_0 k e^{-kt} \left. \frac{1}{k} e^{k\tau}\right|_{-\infty}^t + 
+        \Delta\omega ke^{-kt} \step(t) 
+        \left[ \left.\tau\frac{1}{k}e^{k\tau}\right|_0^t - \int_0^t \frac{1}{k}e^{k\tau} \dtau \right]
+  \\&=& \theta_0 k e^{-kt} \frac{1}{k}(e^{kt}-0) + 
+        \Delta\omega ke^{-kt} \step(t) 
+        \left[ \frac{1}{k}(te^{kt}-0) - \left.\frac{1}{k^2}e^{k\tau}\right|_0^t \right]
+  \\&=& \theta_0  + 
+        \Delta\omega e^{-kt} \step(t) 
+        \left[ te^{kt} - \frac{1}{k}(e^{kt}-1) \right]
+  \\&=& \theta_0  + 
+        \Delta\omega t \step(t) -
+        \frac{\Delta\omega}{k}(1-e^{-kt})\step(t)
+\end{eqnarray*}
+
+
+\begin{figure}[ht]
+\color{figcolor}
+\setlength{\unitlength}{0.2mm}
+\begin{footnotesize}
+\begin{tabular*}{\textwidth}{*{3}{@{\extracolsep{\fill}}c}@{\extracolsep{\fill}}}
+\begin{picture}(250,120)(-100,-20)
+  \put(-100,   0){\line(1,0){200}}
+  \put(   0, -20){\line(0,1){120}}
+  \put( -80,  30){\line(1,0){ 80}}
+  \put(   0,  30){\line(1,1){ 80}}
+  \put( 105,   0){\makebox(0,0)[l]{$t$}}
+  \put(   5,  30){\makebox(0,0)[l]{$\theta_0$}}
+  %\put(  -5,  80){\makebox(0,0)[r]{$\theta_0+\Delta\theta$}}
+  %\qbezier[25](0,30)(50,30)(100,30)
+  %\put(  50,  50){\makebox(0,0){$\Delta\theta$}}
+  \put(  50,  50){\makebox(0,0){$\theta_{\mathrm{in}}(t)$}}
+  %\put(  50, 100){\vector(0,-1){20}}
+  %\put(  50,  10){\vector(0, 1){20}}
+\end{picture}
+&
+$\Longrightarrow$
+\fbox{\parbox[c][1cm][c]{1cm}{$\fh(t)$}}
+$\Longrightarrow$
+&
+\begin{picture}(350,120)(-100,-20)
+  \put(-100,   0){\line(1,0){300}}
+  \put(   0, -20){\line(0,1){120}}
+  \put( -80,  30){\line(1,0){ 80}}
+  %\put( 100,  80){\line(1,0){ 80}}
+  \put( 205,   0){\makebox(0,0)[l]{$t$}}
+  \put(  10,  30){\makebox(0,0)[l]{$\theta_0$}}
+  %\put(  -5,  80){\makebox(0,0)[r]{$\theta_0+\Delta\theta$}}
+  %\qbezier[50](0,80)(100,80)(200,80)
+  %\qbezier(0,30)(50,78)(180,78)
+  %\put(  50,  50){\makebox(0,0){$\Delta\theta$}}
+  \put(   90,  50){\makebox(0,0){$\theta_{\mathrm{vco}}(t)$}}
+  %\put(  50, 100){\vector(0,-1){20}}
+  %\put(  50,  10){\vector(0, 1){20}}
+\end{picture}
+\end{tabular*}
+\end{footnotesize}
+\caption{First Order Loop phase frequency response
+  \label{fig:loop1_fstep}
+}
+\end{figure}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,623 @@
+%============================================================================
+% NCTU - Hsinchu, Taiwan
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+
+%======================================
+\chapter{Spread Spectrum}
+\label{chp:cdma}
+%======================================
+%--------------------------------------
+\section{Introduction}
+\index{Time Division Multiple Access}     
+\index{Frequency Division Multiple Access}
+\index{Code Division Multiple Access}
+\index{TDMA} 
+\index{FDMA} 
+\index{CDMA} 
+\index{DS}
+\index{FH}
+\index{Direct Sequence}
+\index{Frequency Hopping}    
+%--------------------------------------
+\paragraph{Communication channel multiple access.}
+A communication system provides the ability for 
+a set of information to be 
+sent from a transmitter to a receiver through a physical channel.
+If multiple sets of information need to be sent through the channel,
+then this channel must be shared.
+Multiple access of a channel can be achieved by separating the information sets in
+time, frequency, or code.  
+These three multiple access techniques are referred to as
+
+\begin{tabular}{clll}
+   $\bullet$ & TDMA & Time Division Multiple Access:      & separation in time \\
+   $\bullet$ & FDMA & Frequency Division Multiple Access: & separation in frequency \\
+   $\bullet$ & CDMA & Code Division Multiple Access:      & separation by code 
+\end{tabular}
+
+\paragraph{CDMA Modulation}
+Communication through a channel is typically performed by transmitted information 
+{\em modulating} (affecting some parameter of) a {\em carrier} waveform.
+There are two basic types of CDMA modulation:
+
+\begin{tabular}{clll}
+   $\bullet$ & DS & Direct Sequence   &  \\
+   $\bullet$ & FH & Frequency Hopping &  
+\end{tabular}
+
+In FH-CDMA modulation, an information sequence modulates the frequency 
+of a sinusoidal carrier waveform.  
+FH-CDMA will not be further discussed in this chapter.
+
+\index{pn-sequence}
+\index{pseudo-noise sequence}
+In DS-CDMA modulation, an information sequence modulates a 
+{\em pseudo-noise sequence} (pn-sequence).
+This pn-sequence and the information which modulates it
+are typically both binary sequences.
+The modulation operation itself is a simple {\em modulo 2 addition} operation in mathematics,
+which is equivalent to an {\em exclusive OR} operation in logic,
+which may be implemented with an {\em exclusive OR gate} in hardware.
+
+\paragraph{Types of PN-Sequences}
+Generating good PN-sequences is one of the keys to effective DS-CDMA 
+communication system design.  
+A sequence is simply a function $f$ whose domain is the set of integers
+and range is some set $R$.
+This report is limited to {\em binary} pn-sequences,
+which are functions with range $\{0,1\}$ of the form
+   \[ f:\Z\to\{0,1\}.  \]
+
+\index{m-sequence} \index{Gold sequence}
+The most basic binary pn-sequence is the {\em m-sequence} 
+(maximal length sequence).
+From this basic sequence, other sequences can be constructed 
+such as {\em Gold} sequences.
+
+%--------------------------------------
+\section{Generating m-sequences mathematically}
+\label{sec:math}
+%--------------------------------------
+%--------------------------------------
+\subsection{Definitions}
+\label{sec:def}
+%--------------------------------------
+An m-sequence can be represented as the coefficients of a {\em polynomial} 
+over a {\em finite field}.
+Any {\em field} is defined by the triplet $(S,+,\cdot)$,
+where 
+
+\begin{tabular}{clrlll}
+   $S$:     & a set \\
+   $+$:     & addition   operation in the form       &$+:$     &$S\times S\to S$ \\
+   $\cdot$: & multiplication   operation in the form &$\cdot:$ &$S\times S\to S $
+\end{tabular}
+
+
+%--------------------------------------
+\begin{definition} {\bf Galois Field 2, GF(2)} \\
+\label{def:gf2}
+\index{Galois field}
+\index{GF(2)}
+%--------------------------------------
+GF(2) is the field $(S,+,\cdot)$ with members of the triplet defined as
+
+\begin{tabular}{ccccc}
+\begin{math}
+\begin{array}{ccl}
+   S     &=& \{0,1\}                        \\
+   +     &:& \{0,1\}\times\{0,1\}\to\{0,1\} \\
+   \cdot &:& \{0,1\}\times\{0,1\}\to\{0,1\} 
+\end{array}
+\end{math}
+&
+ such that 
+&
+\begin{math}
+\begin{array}{cc|c}
+   a & b & a+b \\
+   \hline 
+   0 & 0 & 0 \\
+   0 & 1 & 1 \\
+   1 & 0 & 1 \\
+   1 & 1 & 0 \\
+\end{array}
+\end{math}
+&and&
+\begin{math}
+\begin{array}{cc|c}
+   a & b & a\cdot b \\
+   \hline 
+   0 & 0 & 0 \\
+   0 & 1 & 0 \\
+   1 & 0 & 0 \\
+   1 & 1 & 1 \\
+\end{array}
+\end{math}
+\end{tabular}
+
+\end{definition}
+
+\index{GF(2)!polynomials over}
+M-sequences can be generated and represented as 
+{\em polynomials over GF(2)}.
+A polynomial over GF(2) is a polynomial with coefficients selected from GF(2).
+An example of a polynomial over GF(2) is 
+   \[ 1 + x^2 + x^5 + x^6 + x^7 + x^9. \]
+
+The generation of an m-sequence is equivalent to polynomial division,
+which is very similar to integer division.
+
+%--------------------------------------
+\begin{definition} {\bf Polynomial division} \\
+%--------------------------------------
+The quantities of polynomial division are identified as follows:
+
+\begin{center}
+\begin{tabular}{ccc}
+$\ds \frac{d(x)}{p(x)} = q(x) + \frac{r(x)}{p(x)}$
+&where&
+\begin{tabular}{llll}
+   d(x) & is the dividend \\
+   p(x) & is the divisor  \\
+   q(x) & is the quotient \\
+   r(x) & is the remainder.
+\end{tabular}
+\end{tabular}
+\end{center}
+\end{definition}
+
+The ring of integers $\Z$ contains some special elements called {\em primes}
+which can only be divided\footnote{
+   The expression ``$a$ divides $b$" means that $b/a$ has remainder 0.
+}
+ by themselves or 1.
+Rings of polynomials have a similar elements called {\em primitive polynomials}.
+
+%--------------------------------------
+\begin{definition} {\bf Primitive polynomial} \\
+\index{primitive polynomial}
+%--------------------------------------
+A primitive polynomial $p(x)$ of order $n$ has the properties
+\begin{enumerate}
+\setlength{\itemsep}{0ex}
+   \item $p(x)$ cannot be factored
+   \item the smallest order polynomial that $p(x)$ can divide is $x^{2^n-1}+1=0$.
+\end{enumerate}
+\end{definition}
+
+Some examples\citepp{wicker}{465}{475} of primitive polynomials over $GF(2)$ are
+
+\begin{center}
+\begin{tabular}{cl}
+   order & primitive polynomial \\
+   \hline
+    2 & $p(x) = x^2 + x + 1 $ \\
+    3 & $p(x) = x^3 + x + 1 $ \\
+    4 & $p(x) = x^4 + x + 1 $ \\
+    5 & $p(x) = x^5 + x^2 + 1 $ \\
+    5 & $p(x) = x^5 + x^4 + x^2 + x + 1 $ \\
+   16 & $p(x) = x^{16} + x^{15} + x^{13} + x^4 + 1 $\\
+   31 & $p(x) = x^{31} + x^{28} + 1 $
+\end{tabular}
+\end{center}
+
+An m-sequence is the remainder when dividing any non-zero polynomial by a primitive 
+polynomial.  
+We can define an {\em equivalence relation}\footnote{
+   An equivalence relation $\equiv$ must satisfy three properties:
+
+\begin{tabular}{cll}
+   1. & reflexivity:   & $a\equiv a$ \\
+   2. & symmetry:      & if $a\equiv b$ then $b\equiv a$. \\
+   3. & transitivity:  & if $a\equiv b$ and  $b\equiv c$ then $a\equiv c$. 
+\end{tabular}
+
+reference: \cite[p.7]{ab}
+}
+on polynomials which defines two polynomials as
+{\em equivalent with respect to $p(x)$}
+when their remainders are equal.
+
+%--------------------------------------
+\begin{definition} {\bf Equivalence relation $\equiv$} \\
+\label{def:equiv}
+\index{equivalence relation}
+%--------------------------------------
+
+\begin{center}
+Let  \hspace{5mm}
+   $\ds \frac{a_1(x)}{p(x)} = q_1(x) + \frac{r_1(x)}{p(x)}$
+\hspace{5mm} and \hspace{5mm}
+   $\ds \frac{a_2(x)}{p(x)} = q_2(x) + \frac{r_2(x)}{p(x)}$.
+\end{center}
+
+Then $a_1(x)\equiv a_2(x)$ with respect to $p(x)$ if $r_1(x)=r_2(x)$. 
+\end{definition}
+
+Using the equivalence relation of Definition \ref{def:equiv},
+we can develop two very useful equivalent representations of
+polynomials over GF(2).  
+We will call these two representations the {\em exponential} representation
+and the {\em polynomial} representation.
+
+%--------------------------------------
+\begin{example}
+\label{ex:representations}
+%--------------------------------------
+By Definition \ref{def:equiv} and 
+under $p(x)=x^3+x+1$, we have the following equivalent representations:
+
+\begin{center}
+\begin{math}
+\begin{array}{lcrclclclllll}
+   \frac{x^0}{x^3+x+1} &=& 0     &+& \frac{1  }{x^3+x+1}     &\implies& x^0 &\equiv& 1   \\
+   \frac{x^1}{x^3+x+1} &=& 0     &+& \frac{x  }{x^3+x+1}     &\implies& x^1 &\equiv& x   \\
+   \frac{x^2}{x^3+x+1} &=& 0     &+& \frac{x^2}{x^3+x+1}     &\implies& x^2 &\equiv& x^2 \\
+   \frac{x^3}{x^3+x+1} &=& 1     &+& \frac{x+1}{x^3+x+1}     &\implies& x^3 &\equiv& x+1 \\
+   \frac{x^4}{x^3+x+1} &=& x     &+& \frac{x^2+x}{x^3+x+1}   &\implies& x^4 &\equiv& x^2+x \\
+   \frac{x^5}{x^3+x+1} &=& x^2+1 &+& \frac{x^2+x+1}{x^3+x+1} &\implies& x^5 &\equiv& x^2+x+1 \\
+   \frac{x^6}{x^3+x+1} &=& x^3+x+1 &+& \frac{x^2+1}{x^3+x+1} &\implies& x^6 &\equiv& x^2+1 \\
+   \frac{x^7}{x^3+x+1} &=& x^4+x^2+x+1 &+& \frac{1}{x^3+x+1} &\implies& x^7 &\equiv& 1 
+\end{array}
+\end{math}
+\end{center}
+
+\index{cycle}
+Notice that $x^7\equiv x^0$, and so a cycle is formed with 
+$2^3-1=7$ elements in the cycle.
+The monomials to the left of the $\equiv$ are the {\em exponential} 
+representation and the polynomials to the right are the {\em polynomial}
+representation.
+Additionally, the polynomial representation may be put in a vector form giving a 
+{\em vector} representation.
+The vectors may be interpreted as a binary number and represented as a decimal numeral.
+
+\begin{center}
+\begin{math}
+\begin{array}{cccc}
+   \mbox{exponential} & \mbox{polynomial} & vector & decimal \\
+   x^0 & 1       &[001] & 1  \\
+   x^1 & x       &[010] & 2  \\
+   x^2 & x^2     &[100] & 4  \\
+   x^3 & x+1     &[011] & 3  \\
+   x^4 & x^2+x   &[110] & 6  \\
+   x^5 & x^2+x+1 &[111] & 7  \\
+   x^6 & x^2+1   &[101] & 5  
+\end{array}
+\end{math}
+\end{center}
+
+\end{example}
+
+
+%--------------------------------------
+\subsection{Generating m-sequences using polynomial division}
+%--------------------------------------
+An m-sequence is generated by dividing any non-zero polynomial of order less than $m$
+by a primitive polynomial of order $m$.  
+The m-sequence is the coefficients of the resulting polynomial.
+M-sequences will repeat every $2^m-1$ values.
+This is the maximum sequence length possible when the 
+sequence is generated by division in polynomials over GF(2).
+
+%--------------------------------------
+\begin{example}
+\label{ex:1/p(x)}
+%--------------------------------------
+We can generate an m-sequence of length 
+$2^3-1=7$ by dividing 1 by the primitive polynomial $x^3+x+1$.
+
+\begin{fsL}
+\[
+\begin{array}{rrll}
+           &   & x^{-3} + x^{-5} + x^{-6} +& x^{-7} + x^{-10} + x^{-12} + x^{-13} + x^{-14} + x^{-17} + \cdots \\
+   \cline{3-4}
+   x^3+x+1 & \vline & 1 \\
+           &        & 1 + x^{-2} + x^{-3} \\
+   \cline{3-3}
+           &        & x^{-2} + x^{-3} \\
+           &        & x^{-2} + x^{-4} + x^{-5} \\
+   \cline{3-3}
+           &        & x^{-3} + x^{-4} + x^{-5} \\
+           &        & x^{-3} + x^{-5} + x^{-6} \\
+   \cline{3-3}
+           &        & x^{-4} + x^{-6}          \\
+           &        & x^{-4} + x^{-6} + x^{-7} \\
+   \cline{3-3}
+           &        & x^{-7}                   \\
+           &        & x^{-7} + x^{-9} + x^{-10} \\
+   \cline{3-3}
+           &        & x^{-9} + x^{-10}         \\
+           &        & x^{-9} + x^{-11} + x^{-12} \\
+   \cline{3-3}
+           &        & x^{-10} + x^{-11} + x^{-12} \\
+           &        & x^{-10} + x^{-12} + x^{-13} \\
+   \cline{3-3}
+           &        & x^{-11} + x^{-13}          \\
+           &        & x^{-11} + x^{-13} + x^{-14} \\
+   \cline{3-3}
+           &        & x^{-14}           \\
+           &        & \vdots           
+\end{array}
+\]
+\end{fsL}
+The coefficients, starting with the $x^{-1}$ term, 
+of the resulting polynomial form the m-sequence
+\[ 0010111 \; 0010111 \; \cdots \]
+which repeats every $2^3-1=7$ elements.
+\end{example}
+
+
+Note that the division operation in Example \ref{ex:1/p(x)}
+can be performed using vector notation rather than polynomial notation.
+
+%--------------------------------------
+\begin{example}
+%--------------------------------------
+Generate an m-sequence of length $2^3-1=7$ by dividing 1 by the primitive polynomial
+$x^3+x+1$ using vector notation.
+
+\begin{fsL}
+\[
+\begin{array}{rrllllllllllllllllllllllllllllllllllll}
+           &   &   &.&0&0&1&0&1&1&1 &0&0&1&0&1&1&1 &0&\cdots \\
+   \cline{3-20}
+   1011    &\vline   & 1 &.&0&0&0&0&0&0&0 &0&0&0&0&0&0&0 &0 \\
+           &   & 1 & &0&1&1 \\
+   \cline{3-7}
+           &   & 0 & &0&1&1&0 \\
+           &   &   & &0&0&0&0 \\
+   \cline{5-8}
+           &   &   & &0&1&1&0&0 \\
+           &   &   & & &1&0&1&1 \\
+   \cline{6-9}
+           &   &   & & &0&1&1&1&0 \\
+           &   &   & & & &1&0&1&1 \\
+   \cline{7-10}
+           &   &   & & & &0&1&0&1&0 \\
+           &   &   & & & & &1&0&1&1 \\
+   \cline{8-11}
+           &   &   & & & & &0&0&0&1&0 \\
+           &   &   & & & & & &0&0&0&0 \\
+   \cline{9-12}
+           &   &   & & & & & &0&0&1&0&0 \\
+           &   &   & & & & & & &0&0&0&0 \\
+   \cline{10-13}
+           &   &   & & & & & & &0&1&0&0&0 \\
+           &   &   & & & & & & & &1&0&1&1 \\
+   \cline{11-14}
+           &   &   & & & & & & & &0&0&1&1&0 \\
+           &   &   & & & & & & & & &0&0&0&0 \\
+   \cline{12-15}
+           &   &   & & & & & & & & &0&1&1&0&0 \\
+           &   &   & & & & & & & & & &1&0&1&1 \\
+   \cline{13-16}
+           &   &   & & & & & & & & & &0&1&1&1&0 \\
+           &   &   & & & & & & & & & & &0&0&0&0 \\
+           &   &   & & & & & & & & & & & &\vdots& &  \\
+\end{array}
+\]
+\end{fsL}
+
+The coefficients, starting to the right of the binary point, 
+is again the sequence
+\[ 0010111 \; 0010111 \; \cdots. \]
+\end{example}
+
+
+%--------------------------------------
+\subsection{Multiplication modulo a primitive polynomial}
+\label{sec:math-xmod}
+%--------------------------------------
+If $p(x)$ is a primitive polynomial,
+by Definition \ref{def:equiv}
+the product of two polynomials is equivalent (with respect to $p(x)$)
+of the product {\em modulo} $p(x)$.
+The ability to multiplying two polynomials modulo a primitive polynomial
+is very useful for manipulating m-sequences.
+
+In general, the product of two polynomials can be evaluated as follows.
+Let 
+\begin{eqnarray*}
+   a(x) &\eqd& a_mx^m + a_{m-1}x^{m-1} + \cdots + a_2x^2 + a_1x + a_0 \\
+   b(x) &\eqd& b_mx^m + b_{m-1}x^{m-1} + \cdots + b_2x^2 + b_1x + b_0
+\end{eqnarray*}
+
+Then 
+\begin{scriptsize}
+\begin{eqnarray*}
+   a(x)b(x)
+        &=& \left( a_mx^m + a_{m-1}x^{m-1} + \cdots + a_2x^2 + a_1x + a_0 \right)
+            \left( b_mx^m + b_{m-1}x^{m-1} + \cdots + b_2x^2 + b_1x + b_0 \right)\\
+        &=& a_0b_0 + (a_0b_1+a_1b_0)x + (a_0b_2+a_1b_1+a_2b_0)x^2 + \cdots + a_mb_mx^{2m}\\
+        &=& \left( \sum\limits_{i=0}^{m-1}x^i \sum\limits_{j=0}^i a_jb_{i-j} \right) +
+            \left( \sum\limits_{i=m}^{2m}x^i \sum\limits_{j=0}^{2m-i} a_{i-m+j}b_{m-j} \right)
+\end{eqnarray*}
+\end{scriptsize}
+
+The product modulo $p(x)$ is obtained when the terms involving 
+$x^m$, $x^{m+1}$, \ldots, $x^{2m}$ are replaced by their 
+equivalent polynomial representations
+(see Section \ref{sec:def}).
+
+%--------------------------------------
+\begin{example}
+\label{ex:math-xmod}
+%--------------------------------------
+Suppose we want to find $(a_2x^2 + a_1x + a_0)(b_2x^2+b_1x+b_0)$ modulo $x^3+x+1$.
+\begin{scriptsize}
+\begin{eqnarray*}
+   a(x)b(x) &=& (a_2x^2+a_1x+a_0)(b_2x^2+b_1x+b_0)
+      \\&=& a_0b_0 + (a_0b_1 + a_1b_0)x + (a_0b_2 + a_1b_1 + a_2b_0)x^2 + 
+            (a_1b_2 + a_2b_1)x^3 + a_2b_2x^4
+      \\&=& a_0b_0 + (a_0b_1 + a_1b_0)x + (a_0b_2 + a_1b_1 + a_2b_0)x^2 + 
+            (a_1b_2 + a_2b_1)(x+1) + a_2b_2(x^2+x)
+      \\&=& (a_0b_0 + a_1b_2 + a_2b_1) + 
+            (a_0b_1 + a_1b_0 + a_1b_2 + a_2b_1 + a_2b_2)x + 
+            (a_0b_2 + a_1b_1 + a_2b_0 + a_2b_2)x^2 
+\end{eqnarray*}
+\end{scriptsize}
+Notice that if the $a_i$ and $b_i$ coefficients are known, 
+the resulting product has only three terms.
+\end{example}
+
+
+%--------------------------------------
+\section{Generating m-sequences in hardware}
+\label{sec:hw}
+%--------------------------------------
+Section \ref{sec:math} has already demonstrated how to generate m-sequences
+mathematically.
+If we further know how to implement each of those mathematical operations 
+efficiently in hardware, we are done.
+That is what this section is about.
+
+%--------------------------------------
+\subsection{Field operations}
+%--------------------------------------
+The mapping tables for GF(2) addition and multiplication
+given in Definition \ref{def:gf2} (page \pageref{def:gf2})
+are exactly the same as those for the hardware {\em exclusive OR (XOR)} gate
+and the {\em AND} gate, respectively.
+
+%--------------------------------------
+\subsection{Polynomial multiplication and division using DF1}
+\index{direct form 1}
+%--------------------------------------
+Suppose we want to construct a circuit to compute the 
+rational expression $f(x)\frac{b(x)}{a(x)}$.
+This is a common problem in {\em Digital Signal Processing (DSP)};
+we can borrow results from there.
+DSP is generally concerned with polynomials over the field of real or complex numbers.
+However, a field is a field, and all fields (whether, real, complex, or GF(2))
+support both addition and multiplication;\footnote{
+   {\bf Fields:} Roughly speaking, a {\em group} is a set together with an operation 
+   on that set.  
+   An {\em additive group} is a set $S$ 
+   with an addition operation $+:S\times S\to S$.
+   A {\em multiplicative group} is a set $S$ 
+   with a multiplication operation $\cdot:S\times S\to S$.
+   A {\em field} is constructed using two groups: 
+   An addition group and a multiplication group.
+   See Appendix \ref{app:inprod} page \pageref{app:inprod}.\\
+   Reference: \cite[p.123]{durbin}.
+   }
+the rules change somewhat, but the basic structure is the same regardless.
+Alternatively, just as a typical digital filter operates over the real 
+or complex field, 
+{\bf the m-sequence generator} described in this section
+{\bf is a digital filter which operates over the field GF(2)}.
+
+A sequential hardware multiplier-divider for polynomials is simple.
+\begin{liste}
+   \item Each $x$ in $f(x)$, $b(x)$, and $a(x)$ represents a delay of one clock cycle.
+In DSP terminology, a delay of one clock cycle is represented by $z^{-1}$.
+Thus, $x=z^{-1}$.
+   \item Let $f(x)=f_0 + f_1x + f_2x^2 + \cdots$.\\
+         Then let $\dot{f}(n)$ be the sequence $\dot{f}(i)=f_i$, with $i\in\Z$.
+   \item Let $b(x)= b_0 + b_1x + b_2x^2 + \cdots + b_mx^m$.\\
+         Let $\dot{b}(n)$ be the sequence $\dot{b}(i)=b_i$, with $i\in\Z$.
+   \item Let $a(x)=1 + a_1x + a_2x^2 + \cdots + a_mx^m$.\\
+         Let $\dot{a}(n)$ be the sequence $\dot{a}(i)=a_i$, with $i\in\Z$.
+\end{liste}
+Then the multiplier-divider (for any mathematical field) can be implemented as shown
+in Figure \ref{fig:df1}.  
+This structure is called the {\em Direct Form I} implementation\citep{os}{344};
+it implements the rational expression
+\[
+   f(x) \frac{b_mx^m + b_{m-1}x^{m-1} + \cdots + b_2x^2 + b_1x + b_0}
+             {a_mx^m + a_{m-1}x^{m-1} + \cdots + a_2x^2 + a_1x + 1  }
+\]
+
+\begin{figure}[ht]
+\center{\epsfig{file=df1.eps, height=6cm, clip=}}
+%\center{\includegraphics[0,0][4in,4in]{df1.eps}}
+\caption{
+   Direct Form I Implementation for $\ds f(x)\frac{b(x)}{a(x)}$
+   \label{fig:df1}
+   }
+\end{figure}
+
+In GF(2), the blocks in the figure can be implemented very simply:
+\begin{liste}
+   \item Each $x=z^{-1}$ element can be implemented as a simple D flip-flop.
+   \item An $a_i=1$ or $b_i=1$ coefficient is implemented as a wire (closed circuit).
+   \item An $a_i=0$ or $b_i=0$ coefficient is implemented as a no-connect (open circuit).
+\end{liste}
+
+%--------------------------------------
+\begin{example}
+\label{ex:df1}
+%--------------------------------------
+Suppose we want to build a hardware circuit to 
+generate an m-sequence specified by the rational expression
+\[ \frac{x^2+x}{x^3+x+1}. \]
+To do this we can set $f(x)=1$, $b(x)=x^2+x$ and $a(x)=x^3+x+1$.
+The resulting structure is shown in Figure \ref{fig:ex-df1}.
+\begin{figure}[ht]
+\center{\epsfig{file=ex-df1.eps, height=6cm, clip=}}
+\caption{
+   Direct Form I Implementation for Example \ref{ex:df1}
+   \label{fig:ex-df1}
+   }
+\end{figure}
+Notice that the two flip-flops on the left are for initialization 
+only and are not used in the steady state operation of the m-sequence
+generator.
+In fact, they can be eliminated altogether by proper initialization of 
+the flip-flops on the right.
+\end{example}
+
+%--------------------------------------
+\subsection{Polynomial multiplication and division using DF2}
+\label{sec:df2}
+\index{direct form 2}
+%--------------------------------------
+The Direct Form I structure shown in Figure \ref{fig:df1} can be transformed
+to a new structure by transformation rules based on 
+{\em Mason's Gain Formula}.\footnote{
+   The transformation rules are as follows:
+   \begin{enumerate}
+   \setlength{\itemsep}{0ex}
+   \item Reverse the direction of all signal paths.
+   \item Replace all nodes with addition operators.
+   \item Replace all addition operators with nodes.
+   \end{enumerate}
+   \cite[p.363]{os}
+   }
+The resulting structure is known as Direct Form II\citep{os}{347} 
+and is illustrated in 
+Figure \ref{fig:df2}.
+\begin{figure}[ht]
+\center{\epsfig{file=df2.eps, height=6cm, clip=}}
+\caption{
+   Direct Form II Implementation
+   \label{fig:df2}
+   }
+\end{figure}
+Again, when using the DF2 structure for m-sequence generation,
+the $\dot{f}(n)$ sequence can be eliminated by proper initialization of
+the delay elements (flip flops).
+
+%--------------------------------------
+\subsection{Hardware polynomial modulo multiplier}
+\label{sec:hw-xmod}
+%--------------------------------------
+The mathematics of polynomial multiplication modulo a primitive polynomial 
+was already presented in Section \ref{sec:math-xmod}
+and demonstrated in Example \ref{ex:math-xmod} (page \pageref{ex:math-xmod}).
+It is straight forward to implement these equations in hardware:
+\begin{liste}
+   \item every $a_ib_j$ bitwise multiply operation is implemented with an AND gate
+   \item every $+$ between consecutive $a_ib_j$ terms is implemented with an XOR gate
+\end{liste}
+Note that {\bf the hardware modulo multiplier can be implemented 
+using only combinatorial logic}(!);
+No sequential circuitry (such as flip-flops) are needed.
+
+
+

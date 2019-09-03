@@ -1,0 +1,813 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Multipath fading Channel}
+\label{chp:mpath}
+\index{multipath fading channel}
+\index{scintillation}
+\index{multipath}
+\index{fading}
+%======================================
+%======================================
+\section{Channel model}
+\index{Nyquist signaling rate}
+%======================================
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(700,200)(0,-100)
+  \thinlines                                      
+  %\graphpaper[10](0,0)(500,150)
+
+  \put(   0 ,   0 ){\vector(1,0){100} }
+  \put(   0 ,   0 ){\makebox(100,  50)[b]{$a_n$} }
+  \put( 100 ,  80 ){\makebox(0,0)[lb]{signal rate $\ds \frac{1}{T}\le 2W$ (Nyquist signaling rate)} }
+  \put( 150 ,  80 ){\vector(0,-1){30} }
+  \put( 100 , -50 ){\framebox(100,100){transmitter}}
+  \put( 100 , -40 ){\makebox( 100, 80)[b]{$\opT$} }
+  \put( 200 ,   0 ){\vector(1,0){100} }
+  \put( 200 ,   0 ){\makebox(100,  50)[b]{$s(t)$} }
+  \put( 300 , -50 ){\framebox(100,100){}}
+  \put( 300 , -40 ){\makebox( 100, 80)[b]{$\opC$} }
+  \put( 400 ,   0 ){\vector(1,0){100} }
+  \put( 400 ,   0 ){\makebox(100,  50)[b]{$r(t)$} }
+  \put( 500 , -50 ){\framebox(100,100){receiver}}
+  \put( 500 , -40 ){\makebox( 100, 80)[b]{$\opR$} }
+  \put( 600 ,   0 ){\vector(1,0){100} }
+  \put( 600 ,   0 ){\makebox(100,  50)[b]{$r(nT_2)$} }
+
+  %\put( 200 ,-60 ){\makebox(0, 0)[lt]{$\ds s(t)=\sum_n a_n \lambda(t-nT)$} }
+  \put( 400 ,-60 ){\makebox(0, 0)[lt]{$\ds r_r(t)=\sum_n a_n(t) s[t-\tau_n(t)]$} }
+
+  \put( 295 ,-30 ){
+  \setlength{\unitlength}{0.03mm} 
+  \begin{picture}(700,400)(-100,-200) 
+  \thinlines                                      
+  
+  \put(-100,   0){\line    (  1,  0)   {100}                  }
+
+  \put(   0,-150){\line    (  0,  1)   {300}                  }
+  \put(   0,  50){\vector  (  1,  0)   {100}                  }
+  \put(   0, 150){\vector  (  1,  0)   {100}                  }
+  \put(   0,-150){\vector  (  1,  0)   {100}                  }
+
+  \put( 100, 150){\makebox(0,0)[lc] {$\Box$}                  }
+  \put( 100,  50){\makebox(0,0)[lc] {$\Box$}                  }
+  \put( 100,- 25){\makebox(0,0)[lc] {$\;\cdot$}              }
+  \put( 100,- 50){\makebox(0,0)[lc] {$\;\cdot$}              }
+  \put( 100,- 75){\makebox(0,0)[lc] {$\;\cdot$}              }
+  \put( 100,-150){\makebox(0,0)[lc] {$\Box$}                  }
+
+  %\put( 150, 150){\makebox(0,0)[lc] {$\rightarrow$}                  }
+  %\put( 150,  50){\makebox(0,0)[lc] {$\rightarrow$}                  }
+  %\put( 150,-150){\makebox(0,0)[lc] {$\rightarrow$}                  }
+
+  \put( 200, 150){\makebox(0,0)[lc] {$\triangleright$}                  }
+  \put( 200,  50){\makebox(0,0)[lc] {$\triangleright$}                  }
+  \put( 200,-150){\makebox(0,0)[lc] {$\triangleright$}                  }
+
+  \put( 250, 150){\makebox(0,0)[lt] {$\searrow$}                  }
+  \put( 250,  50){\makebox(0,0)[lc] {$\rightarrow$}                  }
+  \put( 250,-150){\makebox(0,0)[lb] {$\nearrow$}                  }
+
+  \put( 345,   0){\makebox (  0,  0)[lc]   {$\oplus$}                  }
+  \put( 407,  -3){\makebox (  0,  0)[lc]   {$\rightarrow$}                  }
+  \end{picture}                                   
+  }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Multipath system model
+   \label{fig:mpath_model}
+   }
+\end{figure}
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(700,400)(-100,-200) 
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(-100,   0){\line    (  1,  0)   {100}                  }
+  \put(-100,   0){\vector  (  1,  0)   { 40}                  }
+  \put(-100,  10){\makebox ( 80, 50)[b]{$s(t)$}               }
+
+  \put(   0,-150){\line    (  0,  1)   {300}                  }
+  \put(   0,  50){\vector  (  1,  0)   {100}                  }
+  \put(   0, 150){\vector  (  1,  0)   {100}                  }
+  \put(   0,-150){\vector  (  1,  0)   {100}                  }
+  \put(   0, 160){\makebox (100, 50)[b]{path 1}               }
+  \put(   0,  60){\makebox (100, 50)[b]{path 2}               }
+  \put(   0,-140){\makebox (100, 50)[b]{path $N$}             }
+
+  \put( 100, 125){\framebox(100, 50)   {delay $\tau_1(t)$}       }
+  \put( 100,  25){\framebox(100, 50)   {delay $\tau_2(t)$}       }
+  \put( 100,- 75){\makebox (100, 50)   {$\vdots$}             }
+  \put( 100,-175){\framebox(100, 50)   {delay $\tau_N(t)$}       }
+  \put( 200,  50){\line    (  1,  0)   { 50}                  }
+  \put( 200, 150){\line    (  1,  0)   { 50}                  }
+  \put( 200,-150){\line    (  1,  0)   { 50}                  }
+
+  \put( 250, 125){\makebox ( 40, 50)   {$\alpha_1(t)$}           }
+  \put( 250, 125){\line    (  0,  1)   { 50}                  }
+  \put( 250, 125){\line    (  2,  1)   { 50}                  }
+  \put( 250, 175){\line    (  2, -1)   { 50}                  }
+
+  \put( 250,  25){\makebox ( 40, 50)   {$\alpha_2(t)$}           }
+  \put( 250,  25){\line    (  0,  1)   { 50}                  }
+  \put( 250,  25){\line    (  2,  1)   { 50}                  }
+  \put( 250,  75){\line    (  2, -1)   { 50}                  }
+
+  \put( 250,-175){\makebox ( 40, 50)   {$\alpha_N(t)$}           }
+  \put( 250,-175){\line    (  0,  1)   { 50}                  }
+  \put( 250,-175){\line    (  2,  1)   { 50}                  }
+  \put( 250,-125){\line    (  2, -1)   { 50}                  }
+
+  \put( 300,  50){\line    (  1,  0)   { 50}                  }
+  \put( 300, 150){\line    (  1,  0)   { 50}                  }
+  \put( 300,-150){\line    (  1,  0)   { 50}                  }
+
+  \put( 350, 150){\vector  (  1, -3)   { 46.8}                  }
+  \put( 350,  50){\vector  (  1, -1)   { 43}                  }
+  \put( 350,-150){\vector  (  1,  3)   { 47}                  }
+
+  \put( 400,   0){\circle              { 20}                  }
+  \put( 400,   0){\makebox (  0,  0)   {$+$}                  }
+  \put( 410,   0){\vector  (  1,  0)   { 90}                  }
+  \put( 440,  10){\makebox ( 90,  0)[bl]{$\ds \fr_r(t)=\sum_n \alpha_n(t)s[t-\tau_n(t)]$}}
+ %\put( 440, -10){\makebox ( 90,  0)[tl]{$\ds \fr(t)=\int_y \alpha(t;y)s[t-\tau(t;y)]\dy$}}
+
+  \put(- 20,-200){\dashbox{5}(450,400)   {}                     }
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Multipath system model
+   \label{fig:mp_model}
+   }
+\end{figure}
+
+\paragraph{Sources of interference.}
+In the multipath-fading channel, there are two sources of interference:
+\hie{multipath} and \hie{fading}.
+These are briefly described next and illustrated in 
+\prefpp{fig:mp_model}.
+\begin{liste}
+  \item \hib{multipath}: 
+  Multipath is a process caused by multiple signal paths in a channel.
+  Each path $n$ is characterized by a scaling coefficient $\alpha_n$
+  and a delay $\tau_n$.  \\
+  These weighted delays create a filter with some frequency response 
+  at time $t$. \\
+  The stochastic bandwidth of this filter is the 
+  \hie{coherence bandwidth} $(\delf)_c$. \\
+  We would like the bandwidth $W$ of the transmitted signal $\fs(t)$ 
+  to fit comfortably within the coherence bandwidth such that 
+  $W\ll(\delf)_c$. 
+  In this case we say that the channel is \hie{frequency non-selective.}
+
+\item \hib{fading}:
+  Fading is a process caused by the values of the scaling coefficients
+  and delays changing with time $t$.
+  When the path $n$ scaling coefficient $\alpha_n$ tends to zero,
+  the signal traversing that path is attenuated and we say that it 
+  ``fades".
+  A measure of how fast paths change is the \hie{coherence time}
+  $(\delt)_c$.
+  We would like the paths to remain stable for at least as long as 
+  a symbol period $T$ such that $T\ll(\delt)_c$.
+  In this case we say that the channel is \hie{slowly fading}.
+\end{liste}
+  
+\paragraph{Channel operator space.}
+Many communication systems can be modeled as illustrated in 
+\prefpp{fig:mp_model}.
+The system may be \hie{discrete} (finite $N$) 
+or \hie{continuous} (infinite $N$);
+The system response may characterized by its
+\hie{real-time response} or by its \hie{instantaneous response}.
+These four possibilities are given in the following table:
+
+\begin{tabular}{| l || l | l |}
+  \hline
+  $\fr(t)$      & discrete & continuous \\
+  \hline
+  \hline
+  real-time     & $\ds \fr_{r}(t)=\sum_n \alpha_n(t)s[t-\tau_n(t)]$
+                & $ \fr_{rc}(t)=\int_y \alpha(t;y)s[t-\tau(t;y)]\dy$ \\
+  \hline
+  instantaneous & $\ds \fr(\tau;t)=\sum_n \alpha_n(t)s[\tau-\tau_n(t)]$     
+                & $ \fr_c(\tau;t)=\int_y \alpha(t;y)s[\tau-\tau(t;y)]\dy$ \\
+  \hline
+\end{tabular}
+
+In the instantaneous response, the values of the system parameters
+$\alpha_n(t)$ and $\tau_n(t)$ are ``frozen" at time instant $t$,
+the system response is then given as a function of $\tau$.
+In this chapter, analysis will be performed using 
+the discrete instantaneous response.
+
+%\begin{defx}
+%this is my definition.
+%\end{defx}
+%--------------------------------------
+\begin{definition}
+\label{def:mpath}
+\index{operator!channel}
+\index{real-time             }
+\index{response-time         }
+\index{reflection coefficient}
+\index{path delay            }
+%--------------------------------------
+Let channel operator $\opC:\{s:\R\to\R\}\to\{r:\R\to\R\}$ 
+be such that 
+  \[ [\opC s](\tau;t) = \sum_n \alpha_n(t) s[\tau-\tau_n(t)] \]
+and under the constraints
+\begin{enume}
+   \item $\alpha_n(t)$ is zero mean
+   \item $\alpha_n(t)$ and $\alpha_m(t)$ are uncorrelated for $n\not=m$.
+   \item $\tau_n(t)$ and $\tau_m(t)$ are uncorrelated for $n\not=m$.
+   \item $\alpha(t)$ and $\tau(t)$ are uncorrelated.
+   \item the impulse response of $\opC$  is WSS with respect to real-time $t$.
+   \item $\tau(t)$ are continuous with respect to real-time $t$.
+\end{enume}
+Let $\fh:\R^2\to\R$ be the impulse response of $\opC$ such that 
+  \[ \fh(\tau;t) = [\opC\delta](\tau;t)
+                 = \sum_n \alpha_n(t) \delta[\tau-\tau_n(t)]. \]
+The following terms apply to the listed quantities:
+
+\begin{tabular}[b]{ll}
+   $t$:        & real-time               \\
+   $\tau$:     & response-time           \\
+   $\alpha_n$: & reflection coefficient  \\
+   $\tau_n$:   & path delay 
+\end{tabular}
+\end{definition}
+
+Justification in real-world environments 
+for the constraints of \prefpp{def:mpath} is as follows:
+\begin{enume}
+  \item This is just for mathematical convenience.
+        We make the DC value equal to ``0".
+  \item The amount of energy reflected from two different surfaces
+        ($\alpha_n$ and $\alpha_m$) are uncorrelated.
+  \item The length of two signal paths ($\tau_n$ and $\tau_m$) 
+        are uncorrelated.
+  \item The amount of energy reflected from a surface ($\alpha(t)$)
+        and the length of the signal path ($\tau(t)$) are 
+        uncorrelated.
+  \item The statistical properties of the channel do not change with time.
+  \item The continuity constraint is especially important in the real-time
+case when $s(t)$ is a very short pulse, or even an impulse $\delta(t)$.
+For example, in the impulse case, $\delta[t-\tau(t)]$ is only non-zero
+when $t=\tau(t)$. But if $\tau(t)$ is not continuous, it may never equal $t$
+and the impulse is completely lost even when $\alpha(t)\ne0$. 
+Having the continuity constraint helps fix the problem.
+  \end{enume}
+
+%======================================
+\section{Receiver statistics}
+%======================================
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\[\Eb{\fr(\tau;t)} = 0 \]
+\end{proposition}
+\begin{proof}
+\begin{eqnarray*}
+   \Eb{\fr(\tau;t)} 
+     &=& \Eb{\sum_n \alpha_n(t)s[\tau-\tau_n(t)]}
+      =  \sum_n \Eb{\alpha_n(t)}s[\tau-\tau_n(t)]
+      =   \sum_n 0\cdot\Eb{s[\tau-\tau_n(t)]}
+      =  0.
+\end{eqnarray*}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:mp_tau}
+%---------------------------------------
+Operation $\opC$ is uncorrelated with respect to $\tau$
+($\opC$ is white with respect to $\tau$).
+\end{proposition}
+\begin{proof}
+By \prefpp{def:mpath}, 
+$\tau_n(t)$ and $\tau_m(t)$ are uncorrelated for $m\not=n$.
+Different values of $\tau$ correspond to different 
+path delays $\tau_n(t),\tau_m(t)$.
+Thus $\opC$ is uncorrelated with respect to $\tau$.
+\end{proof}
+
+Suppose 
+$\Rhh'(\tau_1,\tau_2;t_1,t_2)\eqd\Eb{\fh(\tau_1;t_1)\fh(\tau_2;t_2)}$
+is the autocorrelation function of the impulse response $\fh(\tau;t)$.
+We already have two key characteristics of $\fh(\tau;t)$:
+\begin{enume}
+  \item $\fh(\tau;t)$ is uncorrelated with respect to $\tau$
+        (by Proposition~\ref{prop:mp_tau}).\\
+        So we only care about the case $\tau=\tau_1=\tau_2$.
+  \item $\fh(\tau;t)$ is WSS with respect to $t$
+        (by \prefpp{def:mpath}). \\
+        So we only care about the case $\delt=t_1-t_2$.
+\end{enume}
+Because of these two characteristics, the autocorrelation function
+can be simplified to 
+\[ \Rhh(\tau;\delt)=\Rhh(\tau;t_1-t_2)=\Rhh'(\tau_1,\tau_2;t_1,t_2).\]
+
+%---------------------------------------
+\begin{definition}
+\label{def:mp_Rhh}
+%---------------------------------------
+Let $\Rhh:\R^2\to\R$ be the \hib{autocorrelation} function
+of impulse response $\fh:\R^2\to\R$ such that
+  \[ \Rhh(\tau;\delt)\eqd\Eb{\fh(\tau;t+\delt)\fh^\ast(\tau;t)}. \]
+\end{definition}
+
+%======================================
+\section{Multipath measurement functions}
+%======================================
+The Fourier transform can operate over $\Rhh(\tau;\delt)$
+with respect to $\tau$, $\delt$, or both to generate three
+new functions $\Rft(f)$, $\Rtf(f)$, and $\Rff(f)$.
+This provides a total of four equivalent functions for 
+measuring multipath.
+These four functions are formally defined in 
+\prefpp{def:mp_cf} and illustrated in \prefpp{fig:mp_cf}.
+
+%--------------------------------------
+\begin{definition}
+\label{def:mp_cf}
+\index{measurement functions}
+\index{time correlation                      }
+\index{spaced-frequency spaced-time function }
+\index{scattering function                   }
+\index{Doppler function                      }
+%--------------------------------------
+Let $\Rhh:\R^2\to\R$, $\Rft:\R^2\to\R$, $\Rtf:\R^2\to\R$, and 
+$\Rff:\R^2\to\R$ be defined as\\
+\defboxp{\begin{tabular}[b]{lp{7cm}lcl}
+   1. & autocorrelation function
+      & $\Rtt(\tau;\delt)$ &$\eqd$& $\Eb{\fh(\tau;t+\delt)\fh^\ast(\tau;t)}$
+\\
+   2. & spaced-frequency spaced-time function
+      & $\Rft(\delf;\delt)$ &$\eqd$& $\opFT_\tau \Rtt(\tau;\delt)$
+\\
+   3. & scattering function
+      & $\Rtf(\tau;\lambda)$ &$\eqd$& $\opFT_{\delt} \Rtt(\tau;\delt)$
+\\
+   4. & Doppler function
+      & $\Rff(\delf;\lambda)$ &$\eqd$& $\opFT_\tau\opFT_{\delt} \Rtt(\tau;\delt)$
+\end{tabular}
+
+The arguments of these functions are designated as\\
+\begin{tabular}[b]{ll}
+   $\tau$    & delay                  \\
+   $\delf$   & frequency difference   \\
+   $\delt$   & time difference        \\
+   $\lambda$ & Doppler frequency.
+\end{tabular}}
+\end{definition}
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}                  
+\begin{picture}(400,400)(-200,-200) 
+  \thinlines                                      
+  %\graphpaper[10](0,0)(700,100)                  
+
+  \put(- 50, 100){\framebox(100,100)   {}                     }
+  \put(- 50, 110){\makebox (100, 80)[t]{$\Rtt(\tau;\delt)$}   }
+  \put(- 50, 110){\makebox (100, 80)[c]{autocorrelation}     }
+  \put(- 50, 110){\makebox (100, 80)[b]{function}     }
+
+  \put(- 50,-200){\framebox(100,100)   {}                     }
+  \put(- 50,-190){\makebox (100, 80)[t]{$\Rff(\delf;\lambda)$}   }
+  \put(- 50,-190){\makebox (100, 80)[c]{doppler}     }
+  \put(- 50,-190){\makebox (100, 80)[b]{function}     }
+
+  \put(-200,- 50){\framebox(100,100)   {}                     }
+  \put(-200,- 40){\makebox (100, 80)[t]{$\Rft(\delf;\delt)$}   }
+  \put(-200,- 40){\makebox (100, 80)[c]{spaced-frequency}}
+  \put(-200,- 40){\makebox (100, 80)[b]{spaced-time}}
+
+  \put( 100,- 50){\framebox(100,100)   {}                     }
+  \put( 100,- 40){\makebox (100, 80)[t]{$\Rtf(\tau;\lambda)$}   }
+  \put( 100,- 40){\makebox (100, 80)[c]{scattering}}
+  \put( 100,- 40){\makebox (100, 80)[b]{function}}
+
+  \put(- 60, 150){\vector  ( -1, -1)   {90}                  }
+  \put(  60, 150){\vector  (  1, -1)   {90}                  }
+  \put( 150,- 60){\vector  ( -1, -1)   {90}                  }
+  \put(-150,- 60){\vector  (  1, -1)   {90}                  }
+
+  \put(-110, 110){\makebox (  0,  0)[br]{$\opFT$}}
+  \put( 110, 110){\makebox (  0,  0)[bl]{$\opFT$}}
+  \put(-110,-110){\makebox (  0,  0)[tr]{$\opFT$}}
+  \put( 110,-110){\makebox (  0,  0)[tl]{$\opFT$}}
+
+\end{picture}                                   
+\end{fsK}
+\end{center}
+\caption{
+   Multipath measurement functions
+   \label{fig:mp_cf}
+   }
+\end{figure}
+
+The Fourier transform of a random process (in time) is also 
+a random process (in ``frequency").
+The Fourier transform of the random process $\fh(\tau;t)$
+with respect to $\tau$ is therefore a random process and has 
+an autocorrelation function.
+This autocorrelation function is equivalent to 
+the spaced-frequency-spaced-time function $\Rft(\delf;\delt)$
+as shown next.
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+Let $\Fh:\R^2\to\C$ be the Fourier transform of $\fh:\R^2\to\R$ 
+such that
+  \[ \Fh(f;t) \eqd [\opFT \fh(\tau;t)](f;t) 
+              \eqd \int_\tau \fh(\tau;t) e^{-i2\pi f\tau}\dtau.
+  \]
+Then
+  \[ \Eb{\Fh(f_1;t+\delt)\Fh^\ast(f_2;t)} = \Rft(\delf;\delt). \]
+\end{proposition}
+\begin{proof}
+\if 0
+\begin{eqnarray*}
+   \Rft(\delf;\delt)
+     &=& \opFT_\tau \Rtt(\tau;\delt)
+   \\&=& \int_{\tau}\Rtt(\tau;\delt) e^{-i2\pi \delf \tau} \dtau
+   \\&=& \int_{\tau}\Eb{\fh(\tau;t+\delt) \fh^\ast(\tau;t) }
+              e^{-i2\pi (f_1-f_2)\tau}\dtau
+   \\&=& \int_{\tau_1}\int_{\tau_2}\Eb{
+             \fh(\tau_1;t+\delt) \fh^\ast(\tau_2;t) }
+              e^{-i2\pi f_1\tau_1}e^{i2\pi f_2\tau_2} 
+            \dtau_2 \dtau_1
+   \\&=& \Eb{\int_{\tau_1}\int_{\tau_2}
+             \fh     (\tau_1;t+\delt) e^{-i2\pi f_1\tau_1}
+             \fh^\ast(\tau_2;t      ) e^{i2\pi f_2\tau_2} 
+            \dtau_2 \dtau_1}
+   \\&=& \Eb{      \int_{\tau_1}\fh(\tau_1;t+\delt) e^{-i2\pi f_1\tau_1} \dtau_1
+             \left(\int_{\tau_2}\fh(\tau_2;t      ) e^{-i2\pi f_2\tau_2} \;d\tau_2\right)^\ast
+            }
+   \\&=& \Eb{\Fh(f_1;t+\delt)\Fh^\ast(f_2;t)}
+\end{eqnarray*}
+\fi
+\begin{eqnarray*}
+   \Eb{\Fh(f_1;t+\delt)\Fh^\ast(f_2;t)}
+     &=& \Eb{      \int_{\tau_1}\fh(\tau_1;t+\delt) e^{-i2\pi f_1\tau_1} \dtau_1
+             \left(\int_{\tau_2}\fh(\tau_2;t      ) e^{-i2\pi f_2\tau_2} \;d\tau_2\right)^\ast
+            }
+   \\&=& \Eb{\int_{\tau_1}\int_{\tau_2}
+             \fh     (\tau_1;t+\delt) e^{-i2\pi f_1\tau_1}
+             \fh^\ast(\tau_2;t      ) e^{i2\pi f_2\tau_2} 
+            \dtau_2 \dtau_1}
+   \\&=& \int_{\tau_1}\int_{\tau_2}\Eb{
+             \fh(\tau_1;t+\delt) \fh^\ast(\tau_2;t) }
+              e^{-i2\pi f_1\tau_1}e^{i2\pi f_2\tau_2} 
+            \dtau_2 \dtau_1
+   \\&=& \int_{\tau}\Eb{
+             \fh(\tau;t+\delt) \fh^\ast(\tau;t) }
+              e^{-i2\pi (f_1-f_2)\tau}
+            \dtau
+   \\&=& \int_{\tau}\Rtt(\tau;\delt)
+              e^{-i2\pi \delf \tau}
+            \dtau
+   \\&=& \opFT_\tau \Rtt(\tau;\delt)
+   \\&=& \Rft(\delf;\delt)
+\end{eqnarray*}
+%\\ \\
+The following proof fails (diverges).
+However I still include it here anyway.
+Maybe someone can show me what I did wrong:
+\begin{eqnarray*}
+  \Eb{ \Fh(\tau;\lambda_1) \Fh^\ast(\tau;\lambda_2) }
+    &=& \Eb{ \Fh(\tau;\lambda_1) \Fh^\ast(\tau;\lambda_2) }
+  \\&=& \Eb{   \int_t \fh(\tau;t) e^{-i2\pi\lambda_1 t} \dt
+        \left( \int_u \fh(\tau;u) e^{-i2\pi\lambda_2 u} \du \right)^\ast
+        }
+  \\&=& \Eb{ \int_t \fh     (\tau;t) e^{-i2\pi\lambda_1 t} \dt
+             \int_u \fh^\ast(\tau;u) e^{ i2\pi\lambda_2 u} \du 
+        }
+  \\&=& \int_t \int_u  \Eb{ \fh(\tau;t) \fh^\ast(\tau;u) }
+             e^{-i2\pi\lambda_1t} e^{ i2\pi\lambda_2u} \du \dt 
+  \\&=& \int_t \int_u  \Eb{ \fh(\tau;u+\delt) \fh^\ast(\tau;u) }
+             e^{-i2\pi\lambda_1(u+\delt)} e^{ i2\pi\lambda_2u} \du \dt 
+        \hspace{1cm}\delt=t-u \iff t=u+\delt
+  \\&=& \int_u \int_{\delt}  \Rhh(\tau;\delt)
+             e^{-i2\pi\lambda_1(u+\delt)} e^{ i2\pi\lambda_2u} \ddelt \du 
+  \\&=& \int_u e^{-i2\pi(\lambda_1-\lambda_2)u} \du 
+        \int_{\delt}  \Rhh(\tau;\delt) e^{-i2\pi\lambda_1\delt}  \ddelt 
+  \\&=& \delta(\lambda_1-\lambda_2)\Rtf(\tau;\lambda_1)
+\end{eqnarray*}
+\end{proof}
+%======================================
+\section{Profile functions}
+%======================================
+Setting one of the two inputs in each 
+measurement function of \prefpp{def:mp_cf} to zero
+generates four new ``profile" functions.
+The width of these four profile functions are four critical parameters.
+The four profile functions and four critical parameters are
+defined in \prefpp{def:mp_cp} and 
+illustrated in \prefpp{fig:mp_pf}.
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{tabular}{c|c}
+\hib{Multipath} measures 
+&
+\hib{Fading} measures
+\\
+\hline
+\\
+multipath intensity profile  & spaced-time correlation function
+\\
+\begin{picture}(230,135)(-100,-35)
+  %\graphpaper[10](0,0)(200,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line    (   1,   0){200} }
+  \put(   0 ,- 10 ){\line    (   0,   1){110} }
+  \put( 110 ,   0 ){\makebox (   0,   0)[l]{$\tau$} }
+  \put(  40 ,  40 ){\makebox (   0,   0)[bl]{$\Rtt(\tau;0)$} }
+  \thinlines
+  \qbezier(  0, 80)( 40, 20)( 80,  0)
+ %\qbezier(  0, 80)(-40, 20)(-80,  0)
+
+  %\put(- 80 ,-  5 ){\line    (  0,- 1)   { 30} }
+  %\put(  80 ,-  5 ){\line    (  0,- 1)   { 30} }
+  \put(  80 ,- 15 ){\makebox (  0,  0)[t]{$T_m$} }
+
+ %\put(- 20 ,- 20 ){\vector  ( -1,  0)   { 60} }
+ %\put(  20 ,- 20 ){\vector  (  1,  0)   { 60} }
+\end{picture}
+&
+\begin{picture}(230,135)(-100,-35)
+  %\graphpaper[10](0,0)(200,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line    (   1,   0){200} }
+  \put(   0 ,- 10 ){\line    (   0,   1){110} }
+  \put( 110 ,   0 ){\makebox (   0,   0)[l]{$\delt$} }
+  \put(  40 ,  40 ){\makebox (   0,   0)[bl]{$\Rtt(0;\delt)$} }
+  \thinlines
+  \qbezier(  0, 80)( 40, 20)( 80,  0)
+  \qbezier(  0, 80)(-40, 20)(-80,  0)
+
+  \put(- 80 ,-  5 ){\line    (  0,- 1)   { 30} }
+  \put(  80 ,-  5 ){\line    (  0,- 1)   { 30} }
+  \put(-100 ,- 15 ){\makebox (200,  0)[t]{$(\delt)_c$} }
+
+  \put(- 20 ,- 20 ){\vector  ( -1,  0)   { 60} }
+  \put(  20 ,- 20 ){\vector  (  1,  0)   { 60} }
+\end{picture}
+\\
+multipath spread &  coherence time 
+\\
+$\Bigg\downarrow\opFT$      & $\Bigg\downarrow\opFT$  
+\\
+spaced-frequency correlation function   & Doppler power spectrum
+\\
+\begin{picture}(230,135)(-100,-35)
+  %\graphpaper[10](0,0)(200,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line    (   1,   0){200} }
+  \put(   0 ,- 10 ){\line    (   0,   1){110} }
+  \put( 110 ,   0 ){\makebox (   0,   0)[l]{$\delf$} }
+  \put(  40 ,  40 ){\makebox (   0,   0)[bl]{$\Rft(\delf;0)$} }
+  \thinlines
+  \qbezier( -32,  48)(   0, 144)(  32,  48)
+  \qbezier(- 80,   0)( -48,   0)( -32,  48)
+  \qbezier(  32,  48)(  48,   0)(  80,   0)
+
+  \put(- 80 ,-  5 ){\line    (  0,- 1)   { 30} }
+  \put(  80 ,-  5 ){\line    (  0,- 1)   { 30} }
+  \put(-100 ,- 15 ){\makebox (200,  0)[t]{$(\delf)_c$} }
+
+  \put(- 30 ,- 20 ){\vector  ( -1,  0)   { 50} }
+  \put(  30 ,- 20 ){\vector  (  1,  0)   { 50} }
+\end{picture}
+&
+\begin{picture}(230,135)(-100,-35)
+  %\graphpaper[10](0,0)(200,200)                  
+  \thicklines                                      
+  \put(-100 ,   0 ){\line    (   1,   0){200} }
+  \put(   0 ,- 10 ){\line    (   0,   1){110} }
+  \put( 110 ,   0 ){\makebox (   0,   0)[l]{$\lambda$} }
+  \put(  40 ,  40 ){\makebox (   0,   0)[bl]{$\Rtf(0;\lambda)$} }
+  \thinlines
+  \qbezier( -32,  48)(   0, 144)(  32,  48)
+  \qbezier(- 80,   0)( -48,   0)( -32,  48)
+  \qbezier(  32,  48)(  48,   0)(  80,   0)
+
+  \put(- 80 ,-  5 ){\line    (  0,- 1)   { 30} }
+  \put(  80 ,-  5 ){\line    (  0,- 1)   { 30} }
+  \put(-100 ,- 15 ){\makebox (200,  0)[t]{$B_d$} }
+
+  \put(- 20 ,- 20 ){\vector  ( -1,  0)   { 60} }
+  \put(  20 ,- 20 ){\vector  (  1,  0)   { 60} }
+\end{picture}
+\\
+coherence bandwidth                  & Doppler spread  \\
+$\ds (\delf)_c \eqa \frac{1}{T_m}$   & $\ds (\delt)_c \eqa \frac{1}{B_d}$
+                 
+\end{tabular}                             
+\end{fsL}
+\end{center}
+\caption{
+   Profile functions with critical parameters
+   \label{fig:mp_pf}
+   }
+\end{figure}
+
+%--------------------------------------
+\begin{definition}
+\label{def:mp_pf}
+\index{multipath intensity profile          }
+\index{spaced-time correlation function     }
+\index{Doppler power spectrum               }
+\index{spaced-frequency correlation function}
+\label{def:mp_cp}
+   \index{multipath spread   }
+   \index{coherence time     }
+   \index{Doppler spread     }
+   \index{coherence bandwidth}
+%--------------------------------------
+The following four \hib{profile functions} are defined as \\
+\defboxp{\begin{tabular}[b]{lp{7cm}lcl}
+   1. & multipath intensity profile 
+      & $\Rtt(\tau;0)$ 
+\\
+   2. & spaced-time correlation function
+      & $\Rft(0;\delt)$ 
+\\
+   3. & Doppler power spectrum
+      & $\Rtf(0;\lambda)$ 
+\\
+   4. & spaced-frequency correlation function
+      & $\Rft(\delf;0)$
+\end{tabular}}
+
+The following four \hib{critical parameters} are defined as\\
+\defboxp{\begin{tabular}[b]{llll}
+   1. & multipath spread
+      & $T_m$
+      & is the width of $\Rtt(\tau;0)$
+\\
+   2. & coherence time
+      & $(\delt)_c$
+      & is the width of $\Rft(0;\delt)$ 
+\\
+   3. & Doppler spread
+      & $B_d$
+      & is the width of $\Rtf(0;\lambda)$ 
+\\
+   4. & coherence bandwidth
+      & $(\delf)_c$ 
+      & is the width of $\Rft(\delf;0)$
+\end{tabular}}
+\end{definition}
+
+
+
+
+
+%======================================
+\subsection*{Multipath intensity profile $\Rtt(\tau;0)$}
+%======================================
+\paragraph{Power.}
+The \hie{multipath intensity profile} $\Rtt(\tau;0)$ 
+is a measure of the power (the ``intensity") 
+of a signal as a function of the 
+path delay $\tau$ (each path has a delay $\tau$). 
+This is demonstrated by
+\begin{eqnarray*}
+   \Rtt(\tau;0) 
+     &\eqd& \Eb{\fh(\tau;t+0)\fh^\ast(\tau;t)}
+   \\&=&    \E{|\fh(\tau;t)|^2}
+   \\&=&    \E{|\fh(\tau;0)|^2}
+            \hspace{1cm}\mbox{(because $\fh(\tau;t)$ is WSS with respect to $t$).}
+\end{eqnarray*}
+
+\paragraph{Path correlation.}
+As a signal traverses two paths where one is longer and longer paths relative to the other, 
+the resulting two signals are less and less correlated.
+If they are delayed by more than the \hie{multipath spread} $T_m$,
+then they are uncorrelated.
+
+%======================================
+\subsection*{Spaced-time correlation profile $\Rft(0;\delt)$}
+%======================================
+The \hie{spaced-time correlation profile} $\Rft(0;\delt)$
+measures the time auto-correlation of a signal traveling through a 
+single path.
+A signal is uncorrelated with a delayed version of itself if the delay 
+is greater than the \hie{coherence time} $(\delt)_c$.
+
+%======================================
+\subsection*{Doppler power spectrum $\Rtf(0;\lambda)$}
+%======================================
+The \hie{Doppler power spectrum} $\Rtf(\tau;0)$ 
+is a measure of signal power density as a function of $\lambda$.
+
+
+%======================================
+\subsection*{Spaced-frequency correlation function $\Rft(\delf;0)$}
+%======================================
+The \hie{spaced-frequency correlation function} $\Rft(\delf;0)$
+measures the correlation of two sinusoids. 
+If two sinusoids are separted in fequency by more than the 
+\hie{coherence bandwidth} $(\delf)_c$, then they are uncorrelated.
+
+
+%======================================
+\section{Channel classification}
+%======================================
+
+%--------------------------------------
+\begin{definition}
+\index{frequency non-selective channel }
+\index{frequency selective channel     }
+\index{slowly   fading channel         }
+\index{fast fading channel             }
+\index{underspread channel             }
+\index{overspread channel              }
+\index{Shannon signalling rate}
+%--------------------------------------
+For a signal $s(t)$ in a multipath channel let
+\begin{liste}
+   \item $T$ be the signalling period
+   \item $W$ be the bandwidth.
+\end{liste}
+
+Then $s(t)$ is 
+
+\defboxp{\begin{tabular}[b]{lllllc}
+   frequency non-selective channel & if & $W\ll (\delf)_c$ & or & $W\gg T_m$    &$\star$  \\
+   frequency selective channel     & if & $W\gg (\delf)_c$ & or & $W\ll T_m$     \\
+\\
+   slowly   fading channel         & if & $T\ll (\delt)_c$ & or & $T\gg B_d$  &$\star$   \\
+   fast fading channel             & if & $T\gg (\delt)_c$ & or & $T\ll B_d$.\\
+\\
+   underspread channel             & if & $T_mB_d<1$ \\
+   overspread channel              & if & $T_mB_d>1$
+\end{tabular}}
+\end{definition}
+
+The ``underspead/overspread" definitions are related to the 
+\hie{Nyquist signaling rate}.\footnote{
+  \hie{Nyquist signaling theorem}: 
+  Theorem~\ref{thm:nst} page~\pageref{thm:nst}.
+  }
+The Nyquist signaling theorem states
+the signaling rate $1/T$ is related to 
+the transmitted signal bandwidth $W$ by $1/T \le 2W$.
+So at the maximum rate, $TW=1/2\eqa 1$.
+\[\begin{array}{rcll}
+  TW     &\eqa& 1           & \mbox{(by Nyquist signaling theorem)                      } \\
+  B_d    &\ll&  T           & \mbox{(for slowly fading channel)                         } \\
+  T_m    &\ll&  W           & \mbox{(for frequency non-selective channel)               } \\
+  T_mB_d &<&    TW \eqa 1   & \mbox{(for slowly fading, fequency non-selective channel).}
+\end{array}\]
+
+
+%======================================
+\section{Multipath-fading countermeasures}
+%======================================
+There are two general classes of multipath-fading countermeasures:
+\begin{dingautolist}{"AC}
+  \item diversity techniques 
+  \item Rake receiver. 
+\end{dingautolist}
+
+Diversity techniques for compensating for multipath are\citepp{proakis}{821}{822}
+\begin{enume}
+  \item frequency diversity
+  \item time diversity
+  \item antenna diversity
+  \item path diversity
+  \item angle of arrival diversity
+  \item polarization diversity
+\end{enume}
+
+The rake receiver is a transversal filter with coefficients 
+optimized for channel operation.
+
+
+
+
+

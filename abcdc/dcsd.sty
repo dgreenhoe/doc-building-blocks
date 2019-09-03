@@ -1,0 +1,270 @@
+%============================================================================
+% NCTU - Hsinchu, Taiwan
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+%--------------------------------------
+% Compile control
+%--------------------------------------
+\ProvidesPackage{dcsd}
+
+
+%--------------------------------------
+% Electromagnetics
+%--------------------------------------
+\renewcommand{\H}        [0]{\ensuremath{\mathbf{H}}}
+\newcommand  {\D}        [0]{\ensuremath{\mathbf{D}}}
+%\newcommand  {\B}        [0]{\ensuremath{\mathbf{B}}}
+\newcommand  {\J}        [0]{\ensuremath{\mathbf{J}}}
+\newcommand  {\diver}    [1]{\ensuremath{\mathbf{\nabla\cdot#1}}}
+\newcommand  {\curl}     [1]{\ensuremath{\mathbf{\nabla\times#1}}}
+\newcommand  {\DE}       [0]{\ensuremath{\mathcal{E}}}
+\newcommand  {\BH}       [0]{\ensuremath{\mathcal{U}}}
+\newcommand  {\laplacian}[1]{\ensuremath{\nabla^2 #1}}
+\newcommand  {\unit}     [1]{\ensuremath{\hat{\mathbf{#1}} }}
+
+%--------------------------------------
+% Vector space
+%--------------------------------------
+\newcommand{\mCmm}[0]{\ensuremath{\C^{m\times m}}}
+\newcommand{\mCnn}[0]{\ensuremath{\C^{n\times n}}}
+\newcommand{\mCnm}[0]{\ensuremath{\C^{m\times n}}}
+\newcommand{\mCmn}[0]{\ensuremath{\C^{m\times n}}}
+
+%--------------------------------------
+% Multipath
+%--------------------------------------
+\newcommand{\Rtt} [0] {\mathrm{R}_\mathrm{hh}}        % time correlation
+\newcommand{\Rtf} [0] {\mathrm{R}_\mathrm{hh}^\lhd}   % scattering function
+\newcommand{\Rft} [0] {\mathrm{R}_\mathrm{hh}^\rhd}   % spaced-time spaced-frequency function
+\newcommand{\Rff} [0] {\mathrm{R}_\mathrm{hh}^{\Join}}% doppler function
+
+
+
+%--------------------------------------
+% System parameters
+%--------------------------------------
+\newcommand{\Rrate}[1]{\ensuremath{R_\mathsf{#1}}}  
+\newcommand{\Rratio}[1]{\ensuremath{\bar{R}_\mathsf{#1}}}
+  
+\newcommand{\Rsym}[0]{\Rrate{sig}}   % symbol rate    : symbols/second
+\newcommand{\Rsam}[0]{\Rrate{smp}}   % sampling rate  : samples/second
+\newcommand{\Rdata}[0]{\Rrate{data}} % data rate      : data bits/second
+
+\newcommand{\rcode}[0]{\Rratio{code}}% coding ratio   : information bits/code bits
+\newcommand{\rsym}[0]{\Rratio{sym}}  % symbol ratio   : 1/# signal waveforms
+\newcommand{\rchan}[0]{\Rratio{chan}}  % channel ratio   : information bits/symbol
+
+
+%--------------------------------------
+% Filters
+%--------------------------------------
+\newcommand{\hh}[1][x]{\ensuremath{\mathrm{h}_\mathsf{#1}}}
+\newcommand{\hht}[0]{\hh[t]}
+\newcommand{\hhc}[0]{\hh[c]}
+\newcommand{\hhr}[0]{\hh[r]}
+%\newcommand{\hhcmp}[0]{\ensuremath{\mathrm{h}}}
+%\newcommand{\hhcmpf}[0]{\ft{\hhcmp}}  % composite
+
+%--------------------------------------
+% Functions and vectors
+%--------------------------------------
+ \newcommand{\distsq}[2]{\metricn^2\brp{#1,\,#2}}
+ \newcommand{\FS}  [1]   {\ensuremath{\breve{\mathrm{#1}}}}
+ \newcommand{\delt}[1][t]{{\ensuremath{{\Delta{#1}}}}}
+ \newcommand{\delf}[0]   {\delt[f]}
+ \newcommand{\ue} {\hat{u}}    %
+ \newcommand{\su}   [1][n] {\seq{u}{#1}}    % 
+ \newcommand{\sy}   [1][n] {\seq{y}{#1}}    % 
+ \newcommand{\sa}   [1][n] {\seq{a}{#1}}    % 
+ \newcommand{\sue}  [1][n] {\seq{\hat{u}}{#1}}    % 
+ \newcommand{\sae}  [1][n] {\seq{\hat{a}}{#1}}    % 
+ \newcommand{\fdot}[1]   {\ensuremath{\mathrm{\dot{#1}}}}
+ \newcommand{\fdotr}[0]{\fdot{r}}
+ \newcommand{\fdots}[0]{\fdot{s}}
+ \newcommand{\fdotn}[0]{\fdot{n}}
+ \newcommand{\fdotlam}[0]{\fdot{\lambda}}
+ \newcommand{\fn  }[0]{\fnct{n}}
+% \newcommand{\fz  }[0]{\fnct{z}}
+ \newcommand{\Lg  }[0]{\LT{g}}
+ \newcommand{\step}[0]{\ensuremath{\mu}}
+%        
+%--------------------------------------
+% Functionals
+%--------------------------------------
+ \newcommand{\flE}  [0]{\opX [E]    }
+ \newcommand{\flEb} [1]{\opXb{E}{#1}}
+        
+%--------------------------------------
+% operators
+%--------------------------------------
+ \newcommand{\opXXi}[1]{\opX[#1]^{-1}}
+        
+ \newcommand{\opSmp}  [0]{\ensuremath{\amalg}   } % sampling
+ \newcommand{\opSmpb} [1]{\ensuremath{\Xi\left[#1\right]}}
+ \newcommand{\opSys}  [0]{\opX [S]    } % system
+ \newcommand{\opSysb} [1]{\opXb{S}{#1}}
+%\newcommand{\opT}  [0]{\opX [T]    } % transmit
+ \newcommand{\opTb} [1]{\opXb{T}{#1}}
+% \newcommand{\opTa} [0]{\opXa[T]    } % adjoint
+% \newcommand{\opC}  [0]{\opX [C]    } % channel
+ \newcommand{\opCb} [1]{\opXb{C}{#1}}
+ \newcommand{\opCan}[0]{\opX [C]_{\mathrm{an}}} % additive noise channel
+ \newcommand{\opCagn}[0]{\opX [C]_{\mathrm{agn}}} % additive noise channel
+ \newcommand{\opCawn}[0]{\opX [C]_{\mathrm{awn}}} % additive white noise channel
+ \newcommand{\opCawgn}[0]{\opX [C]_{\mathrm{awgn}}} % additive white Gaussian noise channel
+ \newcommand{\opCi} [0]{\opX [C]^{-1} } % inverse channel operator
+ \newcommand{\opCTi} [0]{(\opC\opT)^{-1} } % inverse operator
+% \newcommand{\opR}  [0]{\opX [R]    } % receive
+ \newcommand{\opRb} [1]{\opXb{R}{#1}}
+
+%--------------------------------------
+% Information Theory
+%--------------------------------------
+\newcommand{\iH}[0] {\ensuremath{\mathrm{H}}} % entropy
+\newcommand{\iD}[2] {\ensuremath{\mathrm{D}\left(\left.#1\right\|#2\right)}} % relative entropy
+\newcommand{\iI}[0] {\ensuremath{\mathrm{I}}} % mutual information
+\newcommand{\iC}[0] {\ensuremath{\mathrm{C}}} % channel capacity
+\newcommand{\iE}[0] {\ensuremath{\mathrm{E}}} % 
+        
+
+%--------------------------------------
+% Picture boxes
+%--------------------------------------
+%\begin{fsK}
+\setlength{\unitlength}{0.15mm}
+
+\newbox{\picSampler}
+\savebox{\picSampler}(0,0){
+\color{figcolor}
+  \put(-110,-110){\makebox ( 220,220){}       }
+  \put(  10,  -50 ){\dashbox{4}( 80,100)   {} }
+  \put(   0,  -40 ){\makebox ( 100,  0)[b]{\scriptsize sampler}      }
+  \put(   0,    0 ){\line    (   1,  0)   { 40}          }
+  \put(  40,    0 ){\line    (   1,  1)   { 25}          }
+  \put(  60,    0 ){\line    (   1,  0)   { 40}          }
+}
+
+\newbox{\picMultT}
+\savebox{\picMultT}(0,0){
+\color{figcolor}
+  \put( -50,   0){\line    (   1,  0)   { 40}          }
+  \put(   0,   0){\circle{20} }
+  \put( -50, -50){\makebox (100,100)   {$\times$} }
+  \put(  10,   0){\line    (   1,  0)   { 40}          }
+  \put(   0, -50){\line    (   0,  1)   { 40}          }
+}
+
+\newbox{\picMultL}
+\savebox{\picMultL}(0,0){
+\color{figcolor}
+  \put( -50,   0){\line    (   1,  0)   { 40}          }
+  \put(   0,   0){\circle{20} }
+  \put( -50, -50){\makebox (100,100)   {$\times$} }
+  \put(  10,   0){\line    (   1,  0)   { 40}          }
+  \put(   0,  50){\line    (   0, -1)   { 40}          }
+}
+
+\newbox{\picAddE}
+\savebox{\picAddE}(0,0){
+\color{figcolor}
+  \put(   0,   0){\circle{20} }
+  \put( -50, -50){\makebox (100,100)   {$+$} }
+  \put(  10,   0){\line    (   1,  0)   { 40}          }
+  \put(   0,  50){\line    (   0, -1)   { 40}          }
+  \put(   0, -50){\line    (   0,  1)   { 40}          }
+}
+
+\newbox{\picAddX}
+\savebox{\picAddX}(0,0){
+\color{figcolor}
+  \put(   0,   0){\circle{20} }
+  \put( -50, -50){\makebox (100,100)   {$+$} }
+  \put( -50,   0){\line    (   1,  0)   { 40}          }
+  \put(   0,  50){\line    (   0, -1)   { 40}          }
+  \put(   0, -50){\line    (   0,  1)   { 40}          }
+}
+
+\newbox{\picAWGN}
+\savebox{\picAWGN}(0,0){
+\color{figcolor}
+  \put(-100,-100){\makebox ( 200,200){}       }
+  \put(   0, -50){\dashbox{4}( 100,100)   {\scriptsize $+$}          }
+  \put(   0, -40){\makebox ( 100,100)[b]{\scriptsize{noise}}      }
+  \put(   0, -50){\makebox ( 100, 95)[t]{\scriptsize $n(t)$}       }
+  \put(  50,   0){\circle{20}                          }
+  \put( -50,   0){\vector  (   1,  0)   {90}           }
+  \put(  60,   0){\vector    (   1,  0)   {90}           }
+  \put(  50,  30){\vector  (   0, -1)   {20}           }
+}
+
+
+
+
+%
+%%--------------------------------------
+%% Picture boxes
+%%--------------------------------------
+%%\begin{fsK}
+%\setlength{\unitlength}{0.15mm}
+%
+%\newbox{\picSampler}
+%\savebox{\picSampler}(0,0){
+%  \put(-110,-110){\makebox ( 220,220){}       }
+%  \put(  10,  -50 ){\dashbox{4}( 80,100)   {} }
+%  \put(   0,  -40 ){\makebox ( 100,  0)[b]{\scriptsize sampler}      }
+%  \put(   0,    0 ){\line    (   1,  0)   { 40}          }
+%  \put(  40,    0 ){\line    (   1,  1)   { 25}          }
+%  \put(  60,    0 ){\line    (   1,  0)   { 40}          }
+%}
+%
+%\newbox{\picMultT}
+%\savebox{\picMultT}(0,0){
+%  \put( -50,   0){\line    (   1,  0)   { 40}          }
+%  \put(   0,   0){\circle{20} }
+%  \put( -50, -50){\makebox (100,100)   {$\times$} }
+%  \put(  10,   0){\line    (   1,  0)   { 40}          }
+%  \put(   0, -50){\line    (   0,  1)   { 40}          }
+%}
+%
+%\newbox{\picMultL}
+%\savebox{\picMultL}(0,0){
+%  \put( -50,   0){\line    (   1,  0)   { 40}          }
+%  \put(   0,   0){\circle{20} }
+%  \put( -50, -50){\makebox (100,100)   {$\times$} }
+%  \put(  10,   0){\line    (   1,  0)   { 40}          }
+%  \put(   0,  50){\line    (   0, -1)   { 40}          }
+%}
+%
+%\newbox{\picAddE}
+%\savebox{\picAddE}(0,0){
+%  \put(   0,   0){\circle{20} }
+%  \put( -50, -50){\makebox (100,100)   {$+$} }
+%  \put(  10,   0){\line    (   1,  0)   { 40}          }
+%  \put(   0,  50){\line    (   0, -1)   { 40}          }
+%  \put(   0, -50){\line    (   0,  1)   { 40}          }
+%}
+%
+%\newbox{\picAddX}
+%\savebox{\picAddX}(0,0){
+%  \put(   0,   0){\circle{20} }
+%  \put( -50, -50){\makebox (100,100)   {$+$} }
+%  \put( -50,   0){\line    (   1,  0)   { 40}          }
+%  \put(   0,  50){\line    (   0, -1)   { 40}          }
+%  \put(   0, -50){\line    (   0,  1)   { 40}          }
+%}
+%
+%\newbox{\picAWGN}
+%\savebox{\picAWGN}(0,0){
+%  \put(-100,-100){\makebox ( 200,200){}       }
+%  \put(   0, -50){\dashbox{4}( 100,100)   {\scriptsize $+$}          }
+%  \put(   0, -40){\makebox ( 100,100)[b]{\scriptsize{noise}}      }
+%  \put(   0, -50){\makebox ( 100, 95)[t]{\scriptsize $n(t)$}       }
+%  \put(  50,   0){\circle{20}                          }
+%  \put( -50,   0){\vector  (   1,  0)   {90}           }
+%  \put(  60,   0){\vector    (   1,  0)   {90}           }
+%  \put(  50,  30){\vector  (   0, -1)   {20}           }
+%}
+%
+%
+%%\end{fsK}

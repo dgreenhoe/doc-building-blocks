@@ -1,0 +1,1926 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Bandlimited Channel (ISI)}
+\index{Intersymbol interference}
+\index{ISI}
+\index{channel!bandlimited}
+\label{chp:isi}
+%======================================
+\begin{figure}[ht]
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.12mm}
+\begin{picture}(1500,250)(-50,-100)%
+  \thicklines%
+  %\graphpaper[10](0,0)(500,100)%
+  \color{blue}%
+    \multiput(-100,0)(200,0){7}{%
+      \put(   0,   0){\vector(1,0){100} }%
+      \put( 100, -50){\framebox(100,100){}}%
+      }%
+    \put(  1300,   0){\vector(1,0){100} }%
+  \color{blue}%
+    \put(-100,10){\makebox(100,0)[b]{$\{u_n\}$}}%
+    \put( 100,10){\makebox(100,0)[b]{$\{y_n\}$}}%
+    \put( 300,10){\makebox(100,0)[b]{$\{a_n\}$}}%
+    \put( 500,10){\makebox(100,0)[b]{$\fs(t;u)$}}%
+    \put(1100,10){\makebox(100,0)[b]{$\fr(t;u)$}}%
+    \put(1300,10){\makebox(100,0)[b]{$\{\hat{u}_n\}$}}%
+  \color{blue}%
+    \put(  00, 0){\makebox(100,0)[c]{precoder}}%
+    \put( 200, 0){\makebox(100,0)[c]{mapper}}%
+    \put( 400, 0){\makebox(100,0)[c]{impulse}}%
+    \put( 600, 0){\makebox(100,0)[c]{$\hht(t)$}}%
+    \put( 800, 0){\makebox(100,0)[c]{$\hhc(t)$}}%
+    \put(1000, 0){\makebox(100,0)[c]{$\hhr(t)$}}%
+    \put(1200, 0){\makebox(100,0)[c]{decoder}}%
+  \color{red}%
+    \put(-20,-100){\dashbox{4}(740,200)[b]{transmitter}}%
+    \put(780,-100){\dashbox{4}(140,200)[b]{channel}}%
+    \put(980,-100){\dashbox{4}(340,200)[b]{receiver}}%
+    \put(580,-150){\dashbox{4}(540,300)[b]{$\hhcmp\eqd\hht\conv\hhc\conv\hhr$}}%
+\end{picture}%
+\end{fsK}
+\end{center}
+\caption{
+   ISI system model
+   \label{fig:isi_model}
+   }
+\end{figure}
+
+
+
+
+\if 0
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(700,250)(0,-100)
+  \thicklines
+  %\graphpaper[10](0,0)(500,100)
+
+  \put(   0 ,   0 ){\vector(1,0){100} }
+  \put(   0 ,   0 ){\makebox(100,  50)[b]{$a_n$} }
+  \put( 100 , -50 ){\framebox(100,100){transmitter}}
+  \put( 100 , -40 ){\makebox( 100, 80)[b]{\opT} }
+  \put( 200 ,   0 ){\vector(1,0){100} }
+  \put( 200 ,   0 ){\makebox(100,  50)[b]{$s(t)$} }
+  \put( 300 , -50 ){\framebox(100,100){}}
+  \put( 300 , -40 ){\makebox( 100, 80)[b]{\opC} }
+  \put( 400 ,   0 ){\vector(1,0){100} }
+  \put( 400 ,   0 ){\makebox(100,  50)[b]{$r(t)$} }
+  \put( 500 , -50 ){\framebox(100,100){receiver}}
+  \put( 500 , -40 ){\makebox( 100, 80)[b]{\opR} }
+  \put( 600 ,   0 ){\vector(1,0){100} }
+  \put( 600 ,   0 ){\makebox(100,  50)[b]{$r(nT_2)$} }
+
+  \put( 150 ,  80 ){\vector(0,-1){30} }
+  \put( 100 ,  80 ){\makebox(100, 50)[b]{signal rate $\ds \frac{1}{T_1}\le 2W$} }
+  \put( 550 ,  80 ){\vector(0,-1){30} }
+  \put( 500 ,  80 ){\makebox(100, 50)[b]{sampling rate $\ds \frac{1}{T_2}\ge 2W$} }
+
+  \put( 300 ,-25 ){
+  \setlength{\unitlength}{0.08mm}
+  \begin{picture}(200,170)(-100,-50)
+  \put(-80 ,  0 ){\line(1,0){160} }
+  \put(  0 ,-10 ){\line(0,1){130} }
+  \put(-50 ,  0 ){\line(0,1){100} }
+  \put(-50 ,100 ){\line(1,0){100} }
+  \put( 50 ,  0 ){\line(0,1){100} }
+  \put(-50 ,-10 ){\makebox(0,0)[t]{$-W$} }
+  \put( 50 ,-10 ){\makebox(0,0)[t]{$+W$} }
+  \end{picture}
+  }
+
+  \put( 200 ,-60 ){\makebox(0, 0)[lt]{$\ds s(t)=\sum_n a_n \hhcmp(t-nT)$} }
+  \put( 400 ,-60 ){\makebox(0, 0)[lt]{$\ds r(t)=\sum_n a_n \hhcmp'(t-nT)$} }
+\end{picture}
+\end{fsK}
+\end{center}
+\caption{
+   ISI system model
+%   \label{fig:isi_model}
+   }
+\end{figure}
+
+\fi
+
+%--------------------------------------
+%\section{Introduction}
+%\label{sec:intro}
+%--------------------------------------
+\paragraph{System disturbances.}
+There are two fundamental disturbances in any communication system
+which increase the probability of communication error:
+\begin{dingautolist}{"AC}
+   \item noise
+   \item intersymbol interference (ISI)
+\end{dingautolist}
+Noise is produced by a number of sources;
+one of them being {\em thermal noise} and therefore can
+never be eliminated in any system which operates
+above $-273^\circ$ C (absolute zero).
+ISI is produced as a result of band-limited communication channels.
+Unlike noise, it is possible to completely eliminate ISI
+by the proper selection of the symbol waveform used to
+carry information through the channel.
+
+This chapter describes the cause of ISI in a communication system
+and discusses techniques of designing signaling waveforms
+with no ISI.
+Three solutions are presented and are summarized in the following table:
+
+\setlength{\unitlength}{0.1mm}
+\begin{fsL}\color{figcolor}
+\begin{tabular}{|c|c|c|}
+\hline
+  zero ISI solution & duobinary solution & modified duobinary solution \\
+\hline
+   $\hhcmp(nT) =
+   \left\{
+      \begin{array}{rcl}
+          1 & : & n = 0 \\
+          0 & : & \mbox{otherwise}
+      \end{array}
+   \right.$
+&
+   $\hhcmp(nT) =
+   \left\{
+      \begin{array}{rcl}
+          1 & : & n = 0,1 \\
+          0 & : & \mbox{otherwise}
+      \end{array}
+   \right.$
+&
+   $\hhcmp(nT) =
+   \left\{
+      \begin{array}{rcl}
+           1 & : & n = -1 \\
+          -1 & : & n = +1 \\
+           0 & : & \mbox{otherwise}
+      \end{array}
+   \right.$
+\\
+\begin{picture}(400,200)(-200,-100) \color{figcolor}
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-150 ,   0 ){\line(1,0){300} }
+  \put( 160 ,   0 ){\makebox(0,0)[l]{$n$}}
+  \put(-100 , -10 ){\makebox(0,0)[t]{$-1$}}
+  \put(   0 , -10 ){\makebox(0,0)[t]{$0$}}
+  \put( 100 , -10 ){\makebox(0,0)[t]{$+1$}}
+  \color{red}
+    \put(   0 ,   0 ){\line(0,1){ 50} }
+    \put(   0 ,  50 ){\circle*{10}}
+\end{picture}
+&
+\begin{picture}(400,200)(-200,-100) \color{figcolor}
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-150 ,   0 ){\line(1,0){300} }
+  \put( 160 ,   0 ){\makebox(0,0)[l]{$n$}}
+  \put(-100 , -10 ){\makebox(0,0)[t]{$-1$}}
+  \put(   0 , -10 ){\makebox(0,0)[t]{$0$}}
+  \put( 100 , -10 ){\makebox(0,0)[t]{$+1$}}
+  \color{red}
+    \put(   0 ,   0 ){\line(0,1){ 50} } \put(   0 ,  50 ){\circle*{10}}
+    \put( 100 ,   0 ){\line(0,1){ 50} } \put( 100 ,  50 ){\circle*{10}}
+\end{picture}
+&
+\begin{picture}(400,200)(-200,-100) \color{figcolor}
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-150 ,   0 ){\line(1,0){300} }
+  \put( 160 ,   0 ){\makebox(0,0)[l]{$n$}}
+  \put(-100 , -10 ){\makebox(0,0)[t]{$-1$}}
+  \put(   0 , -10 ){\makebox(0,0)[t]{$0$}}
+  \put( 100 , -10 ){\makebox(0,0)[t]{$+1$}}
+  \color{red}
+    \put(-100 ,   0 ){\line(0, 1){ 50} } \put(-100 ,  50 ){\circle*{10}}
+    \put( 100 ,   0 ){\line(0,-1){ 50} } \put( 100 , -50 ){\circle*{10}}
+\end{picture}
+\\
+   $\bigg\Updownarrow$ & $\bigg\Updownarrow$ & $\bigg\Updownarrow$
+\\
+   $\frac{1}{T}\sum_n \ft{\hhcmp}\left(f+ \frac{n}{T} \right) = 1$
+&
+   $\frac{1}{T}\sum_n \ft{\hhcmp}\left(f+ \frac{n}{T} \right)
+   = 2 e^{-i\pi fT} \cos(\pi fT)$
+&
+   $\frac{1}{T}\sum_n \ft{\hhcmp}\left(f+ \frac{n}{T} \right)
+   = i2 \sin( 2\pi fT )$
+\\
+\begin{picture}(400,150)(-200,-50) \color{figcolor}
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-150 ,   0 ){\line(1,0){300} }
+  \put(   0 , -20 ){\line(0,1){100} }
+  \put( 160 ,   0 ){$f$}
+  \put( -20 ,  60 ){$1$}
+  \put(-100 , -10 ){\makebox(0,0)[t]{$-W=-\frac{1}{2T}$}}
+  \put( 100 , -10 ){\makebox(0,0)[t]{$W=\frac{1}{2T}$}}
+  \color{red}
+    \put(-100 ,   0 ){\line(0,1){ 50} }
+    \put(-100 ,  50 ){\line(1,0){200} }
+    \put( 100 ,   0 ){\line(0,1){ 50} }
+\end{picture}
+&
+\begin{picture}(400,150)(-200,-50) \color{figcolor}
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-150 ,   0 ){\line(1,0){300} }
+  \put(   0 , -20 ){\line(0,1){100} }
+  \put( 160 ,   0 ){$f$}
+  %\put(  20 ,  60 ){$\ds|\ft{\hhcmp}(f)|=\frac{1}{W}\cos\left(\frac{\pi}{2W}f\right)\chi_B(f)$}
+  \put( -20 ,  60 ){$2$}
+  \put(-200 , -50 ){\makebox(200,40)[t]{$-W=-\frac{1}{2T}$}}
+  \put(   0 , -50 ){\makebox(200,40)[t]{$W=\frac{1}{2T}$}}
+  \color{red}
+    \qbezier(-100,   0)(   0, 100)( 100,   0)
+\end{picture}
+&
+\begin{picture}(400,150)(-200,-50) \color{figcolor}
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-150 ,   0 ){\line(1,0){300} }
+  \put(   0 , -20 ){\line(0,1){100} }
+  \put( 160 ,   0 ){$f$}
+  %\put(  20 ,  60 ){$\ds -i\ft{\hhcmp}(f)=\frac{1}{W}\sin\left(\frac{\pi}{W}f\right)\chi_B(f)$}
+  \put( -20 ,  60 ){$2$}
+  \put(-200 , -50 ){\makebox(200,40)[t]{$-W=-\frac{1}{2T}$}}
+  \put(   0 , -50 ){\makebox(200,40)[t]{$W=\frac{1}{2T}$}}
+  \color{red}
+    \qbezier(-100,   0)( -50, 100)(   0,   0)
+    \qbezier(   0,   0)(  50, 100)( 100,   0)
+\end{picture}\\
+\hline
+Section~\ref{sec:isi_zero} page~\pageref{sec:isi_zero} &
+Section~\ref{sec:isi_duo}  page~\pageref{sec:isi_duo}  &
+Section~\ref{sec:isi_mduo} page~\pageref{sec:isi_mduo}
+\\
+\hline
+\end{tabular}
+\end{fsL}
+
+%=======================================
+\section{Description of ISI}
+\label{sec:chan-model}
+%=======================================
+The channel model is illustrated in \prefpp{fig:isi_model}.
+The signal received at the decoder is
+\[ \fr(t;u) = \sum_n a_n \hhcmp(t-nT). \]
+We arbitrarily scale $\hhcmp(t)$ such that
+\[ \hhcmp(0)=1. \]
+If this signal is sampled at intervals $T$, we have
+\begin{align*}
+  \fr(nT)
+    &= \left.\fr(t)\right|_{t=nT}
+  \\&= \left. \sum_m a_m \hhcmp(t-mT) \right|_{t=nT}
+  \\&= \sum_m a_m \hhcmp(nT-mT)
+  \\&= a_n \hhcmp(0) + \sum_{m\not=n} a_m \hhcmp(nT-mT)
+  \\&= \mcom{a_n}{desired} + \mcom{\sum_{m\not=n} a_m \hhcmp(nT-mT)}{ISI (not wanted)}
+\end{align*}
+At the sampling intervals, we only want $a_n$, not the other terms.
+These other terms are referred to as {\em Intersymbol Interference} (ISI).
+
+%--------------------------------------
+\begin{definition}
+\index{Intersymbol Interference}
+\index{ISI}
+%--------------------------------------
+{\bf Intersymbol interference} (ISI) is a communication system characteristic
+such that
+a received signal sample $\fr(nT)$ is a function
+of one or more information values $a_m, m\ne n$.
+If $\fr(nT)$ is a function of $a_n$ alone,
+then we say the system has {\bf zero ISI}.
+\end{definition}
+
+If $\hhcmp(t)$ is properly designed,
+the communication system will have zero ISI.
+
+
+%=======================================
+\section{Zero-ISI solution}
+\label{sec:isi_zero}
+%=======================================
+%=======================================
+\subsection{Constraints}
+%=======================================
+Previously we stated that for zero ISI,
+  \[\mcom{a_n}{desired} + \mcom{\sum_{m\not=n} a_m \hhcmp(nT-mT)}{ISI (not wanted)}\]
+This equation is satisfied if and only if
+\[
+   \hhcmp(nT) =
+   \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
+     1 &   n=    0 \\
+     0 &   n\neq 0
+   \end{array}\right.
+\]
+Also, the channel imposes a band-width constraint $W$.
+These considerations can be combined into two fundamental constraints
+on the signaling pulse $\hhcmp(t)$:
+\[
+\begin{array}{llrcl}
+   \circOne & \text{\hib{sampling constraint}:}
+      & \hhcmp(nT) &=&
+          \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
+            1 &   n=    0 \\
+            0 &   n\neq 0
+          \end{array}\right.
+\\
+   \circTwo & \text{\hib{bandwidth constraint}:}
+      & [\opFT{\hhcmp}](f) &=& 0 \mbox{ for } |f|\ge W.
+\end{array}
+\]
+These two constraints are in conflict with each other.
+The sampling constraint is quite easy to satisfy by
+designing $\hhcmp$ with support (region on $t$ where $\hhcmp(t)\neq0$)
+only within $[0, T)$.
+However, giving $\hhcmp$ small support makes $\ft{\hhcmp}$ have large
+bandwidth, violating the bandwidth constraint.
+However, \pref{thm:unity} (next) gives a criterion which allows
+both constraints to be satisfied simultaneously.
+
+%--------------------------------------
+\begin{theorem}[Partition of unity criterion]
+\citep{proakis}{557}
+\label{thm:unity}
+\index{partition of unity criterion}
+%--------------------------------------
+Let $\ft{\hhcmp}(f)$ be the Fourier Transform of a function
+$\hhcmp(t)$ and $T\in\R$ a constant.
+Then
+\formbox{
+  \left[
+  \hhcmp(nT) =
+  \left\{
+     \begin{tabular}{lcl}
+        1 & : & $n=0$ \\
+        0 & : & $n\neq 0$
+     \end{tabular}
+  \right.
+  \right]
+  \qquad\iff\qquad
+  \left[
+    \frac{1}{T}\sum_n \ft{\hhcmp}\left(f+ \frac{n}{T} \right) = 1.
+  \right]
+  }
+\end{theorem}
+\begin{proof}
+This theorem is easily proven using the
+\hie{Inverse Poisson's Summation Formula} (\hie{IPSF})
+(\prefp{thm:ipsf})
+which states
+\begin{eqnarray*}
+   \sum_n \ft{\hhcmp}\left( f+ \frac{n}{T} \right)
+       &=& T
+           \sum_n \hhcmp(nT)
+           e^{-i2\pi fnT}
+\end{eqnarray*}
+
+\begin{enumerate}
+\item Prove ``only if" case ($\implies$):
+
+\begin{align*}
+  \frac{1}{T}\sum_n \ft{\hhcmp}\left( f + \frac{n}{T} \right)
+     &= \sum_n \hhcmp(nT) e^{-i2\pi fnT}
+     && \text{by IPSF}
+   \\&= \hhcmp(0) + \sum_{n\ne0} \hhcmp(nT) e^{-i2\pi fnT}
+   \\&= 1
+     && \text{by left hypothesis}
+\end{align*}
+
+
+\item Prove ``if" case ($\impliedby$):
+
+\begin{align*}
+   1
+     &= \frac{1}{T}\sum_n \ft{\hhcmp}\left( f+\frac{n}{T} \right)
+     && \text{by right hypothesis}
+   \\&= \sum_n \hhcmp(nT) e^{-i2\pi fnT}
+     && \text{by IPSF}
+   \\&= \hhcmp(0) + \sum_{n\ne 0} \hhcmp(nT) e^{-i2\pi fnT}
+   \\&= \hhcmp(0) + \sum_{n\ne 0} \hhcmp(nT) \cos(2\pi fnT)
+                     - i\sum_{n\ne 0} \hhcmp(nT) \sin(2\pi fnT)
+   \\ \implies
+   \hhcmp(nT)
+       &= \left\{
+        \begin{tabular}{lcl}
+           1 & : & $n=0$    \\
+           0 & : & $n\neq0$
+        \end{tabular}
+        \right.
+       && \text{because ``1" is real for all $f$}
+%     \\\implies \mbox{Equation (\ref{eq:I}) }
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+%=======================================
+\subsection{Signaling rate limits}
+%=======================================
+%--------------------------------------
+\begin{definition}
+\label{def:chi}
+\index{$\chi$ function}
+%--------------------------------------
+The {\bf characteristic function} $\chi_A:X\to\{0,1\}$ of set $A$ is defined as
+\citep{ab}{126}
+\defbox{
+  \chi_A(x) \eqd
+  \left\{
+  \begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
+     1 & x\in A\subseteq X    \\
+     0 & x\notin A\subseteq X
+  \end{array}
+  \right.
+}
+\end{definition}
+
+Next are two complimentary theorems;
+both of which are closely related to the partition of unity criterion:
+
+\begin{tabular}{lllp{6cm}}
+   1. & Nyquist signaling theorem & (\prefpp{thm:nst}) &
+   A signal may be transmitted with zero-ISI if the
+   signaling rate is less than or equal to $2W$.
+\\
+   2. & Shannon sampling theorem & (\prefpp{thm:sst}) &
+   Perfect reconstruction of a sampled signal is
+   possible if the sampling rate is greater than or equal to $2W$.
+\end{tabular}
+
+%--------------------------------------
+\begin{theorem}[Nyquist signaling theorem]
+\citep{proakis}{13}
+\index{Nyquist signaling theorem}
+\label{thm:nst}
+%--------------------------------------
+\attention
+Let $s(t)$ be a signal of the form
+   \[ s(t) = \sum_n a_n \hhcmp(t-nT_1) \]
+and with bandwidth
+  \[ [\opFT s](f) = 0 \mbox{ for } |f|\ge W.  \]
+
+Then there exists $\hhcmp(t)$ such that if
+   \[  \frac{1}{T_1} \le 2W \]
+then
+   \[ s(t) = \sum_n s(nT_1) \hhcmp(t-nT_1). \]
+
+Furthermore, if
+   \[  \frac{1}{T_1} = 2W \]
+then
+   \[
+      s(t) = \sum_n s(nT_1) \frac{\sin\left[ \frac{\pi}{T_1}(t-nT_1) \right]}
+                                 {           \frac{\pi}{T_1}(t-nT_1)}.
+   \]
+\end{theorem}
+
+
+\begin{proof}
+The upper signaling rate bound (equality) is proven by the
+partition of unity criterion.
+Given a signaling rate $1/T$, the pulse shape with the smallest
+bandwidth that forms a partition of unity in the frequency domain
+is the sync function in the time domain,
+which is a rectangular pulse in frequency domain given by
+\[ \frac{1}{2W} \chi_{[-W,+W]}(f). \]
+\end{proof}
+
+%--------------------------------------
+\begin{theorem}[Shannon sampling theorem]
+\citep{proakis}{13}
+\index{Shannon sampling theorem}
+\label{thm:sst}
+%--------------------------------------
+Let $r(t)$ be a signal with bandwidth
+         \[ [\opFT r](f) = 0 \mbox{ for } |f|\ge W  \]
+and sampled at time intervals $T_2$.
+
+Then there exists $\hhcmp(t)$ such that if
+   \[  \frac{1}{T_2} \ge 2W \]
+then
+   \[ s(t) = \sum_n s(nT_2) \hhcmp(t-nT_2). \]
+
+Furthermore, if
+   \[  \frac{1}{T_2} = 2W \]
+then
+   \[
+      s(t) = \sum_n s(nT_2) \frac{\sin\left[ \frac{\pi}{T_2}(t-nT_2) \right]}
+                               {           \frac{\pi}{T_2}(t-nT_2)}.
+   \]
+\end{theorem}
+
+
+%=======================================
+\subsection{Zero-ISI system impulse responses}
+%=======================================
+Using Partition of Unity Theorem \ref{thm:unity},
+we can design ISI waveforms in the frequency domain and thus
+easily satisfy both the constraints given in Section \ref{sec:isi_zero}.
+
+%--------------------------------------
+\subsubsection{Nyquist Rate zero-ISI waveform}
+\index{Nyquist rate}
+%--------------------------------------
+The maximum signaling rate is $1/T=2W$ (Nyquist Signaling Theorem).
+If we signal at this maximum rate, there is only one waveform $\hhcmpf$
+which satisfies the partition of unity condition:
+$\hhcmpf(f) = \chi_{[-1/2T,1/2T)}(f)$.
+In the time domain this is the sinc function
+\[
+   \hhcmp(t)=\frac{1}{T} \frac{\sin\left(\frac{\pi}{T}t\right)}{\frac{\pi}{T}t}
+\]
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{tabular}{ccc}
+   \epsfig{file=sinc.eps,    height=4cm, width=4.5cm}  &
+   \epsfig{file=pulse.eps,   height=4cm, width=4.5cm}  &
+   \epsfig{file=pulse_ss.eps,height=4cm, width=4.5cm}
+\\
+   $\hhcmp(t)=\frac{1}{T} \frac{\sin\left(\frac{\pi}{T}t\right)}{\frac{\pi}{T}t}$ &
+   $\hhcmpf(f)=\chi_{[-1/2T,1/2T)}(f)$ &
+   $\sum_n \hhcmpf\left( f-\frac{n}{T} \right)$
+\end{tabular}
+\end{center}
+\caption{
+  Nyquist rate zero-ISI signaling waveform
+  \label{fig:pulse}
+}
+\end{figure}
+
+
+
+
+%--------------------------------------
+\subsubsection{Raised cosine zero-ISI waveforms}
+\index{raised cosine}
+%--------------------------------------
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{tabular}{cc}
+   \epsfig{file=rcos3d.eps,   height=6cm, width=7cm} &
+   \epsfig{file=ift_rcos.eps, height=6cm, width=7cm} \\
+   $\ft{\hhcmp}(f)$ & $\hhcmp(t)$
+\end{tabular}
+\caption{
+  Raised cosine for various roll-off factors $\beta$
+  \label{fig:rcos3d}
+}
+\end{center}
+\end{figure}
+
+\begin{figure}[ht]\color{figcolor}
+\setlength{\unitlength}{\tw/600}
+\begin{footnotesize}
+\begin{center}
+\begin{picture}(500,140)(-250,-20)
+  %{\color{clr:graphpaper}\graphpaper[10](-250,0)(500,150)}
+  \thicklines
+  \put(-200,   0){\line(1,0){400} }
+  \put(   0, -20){\line(0,1){150} }
+  \put( 210,   0){\makebox(0,0)[l]{$f$}}
+
+  {\color{red}
+    \put(-50, 100){\line(1,0){100} }
+    \qbezier(50,100)(80,100)(100,50)
+    \qbezier(100,50)(120,0)(150,0)
+    \qbezier(-50,100)(-80,100)(-100,50)
+    \qbezier(-100,50)(-120,0)(-150,0)
+  }
+
+  \put(  50, -10){\makebox(0,0)[t]{$\frac{1-\beta}{2T}$}}
+  \put( 100, -10){\makebox(0,0)[t]{$\frac{1}{2T}$}}
+  \put( 150, -10){\makebox(0,0)[t]{$\frac{1+\beta}{2T}$}}
+  \put(- 50, -10){\makebox(0,0)[t]{$\frac{1-\beta}{-2T}$}}
+  \put(-100, -10){\makebox(0,0)[t]{$\frac{1}{-2T}$}}
+  \put(-150, -10){\makebox(0,0)[t]{$\frac{1+\beta}{-2T}$}}
+
+  \put( 5,  50){\makebox(0,0)[l]{$\frac{T}{2}$}}
+  \put( 5, 105){\makebox(0,0)[lb]{$T$}}
+
+  %\put( 50, 110){\makebox(0,0)[b]{$\longleftarrow T \longrightarrow$}}
+  \put(100, 115){\makebox(0,0)[b]{half cycle}}
+  \put(100, 110){\makebox(0,0)[t]{raised cosine}}
+  %\put(230, 110){\makebox(0,0)[b]{$\longleftarrow 0 \longrightarrow$}}
+
+  %\put(- 50, 110){\makebox(0,0)[b]{$\longleftarrow T \longrightarrow$}}
+  \put(-100, 115){\makebox(0,0)[b]{half cycle}}
+  \put(-100, 110){\makebox(0,0)[t]{raised cosine}}
+  %\put(-230, 110){\makebox(0,0)[b]{$\longleftarrow 0 \longrightarrow$}}
+
+  \put(-150, -5){\line(0,1){10} }
+  \put(-100, -5){\line(0,1){10} }
+  \put(- 50, -5){\line(0,1){10} }
+  \put( 150, -5){\line(0,1){10} }
+  \put( 100, -5){\line(0,1){10} }
+  \put(  50, -5){\line(0,1){10} }
+
+  \qbezier[32](- 50,0)(- 50,65)(- 50,130)
+  \qbezier[16](-100,0)(-100,25)(-100,50)
+  \qbezier[32](-150,0)(-150,65)(-150,130)
+  \qbezier[32]( 50,0)( 50,65)( 50,130)
+  \qbezier[16](100,0)(100,25)(100,50)
+  \qbezier[32](150,0)(150,65)(150,130)
+  \qbezier[60](-100,50)(0,50)(100,50)
+\end{picture}
+\caption{
+  Raised cosine
+  \label{fig:rcos}
+}
+\end{center}
+\end{footnotesize}
+\end{figure}
+
+
+\begin{figure}[ht]\color{figcolor}
+\setlength{\unitlength}{\tw/600}
+\begin{footnotesize}
+\begin{center}
+\begin{picture}(500,140)(-250,-20)
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-250,   0){\line(1,0){500} }
+  \put(   0, -20){\line(0,1){150} }
+  \put( 260,   0){\makebox(0,0)[l]{$f$}}
+
+  \put(  50, -10){\makebox(0,0)[t]{$\frac{1}{4T}$}}
+  \put( 100, -10){\makebox(0,0)[t]{$\frac{1}{2T}$}}
+  \put( 150, -10){\makebox(0,0)[t]{$\frac{3}{4T}$}}
+  \put( 200, -10){\makebox(0,0)[t]{$\frac{1}{T}$}}
+
+  \put(- 50, -10){\makebox(0,0)[t]{$\frac{-1}{4T}$}}
+  \put(-100, -10){\makebox(0,0)[t]{$\frac{-1}{2T}$}}
+  \put(-150, -10){\makebox(0,0)[t]{$\frac{-3}{4T}$}}
+  \put(-200, -10){\makebox(0,0)[t]{$\frac{-1}{T}$}}
+
+  \put( 5,  50){\makebox(0,0)[l]{$\frac{T}{2}$}}
+  \put( 5, 105){\makebox(0,0)[lb]{$T$}}
+
+
+  \put(-200, -5){\line(0,1){10} }
+  \put(-150, -5){\line(0,1){10} }
+  \put(-100, -5){\line(0,1){10} }
+  \put(- 50, -5){\line(0,1){10} }
+  \put( 200, -5){\line(0,1){10} }
+  \put( 150, -5){\line(0,1){10} }
+  \put( 100, -5){\line(0,1){10} }
+  \put(  50, -5){\line(0,1){10} }
+
+  \qbezier[60](-100,50)(0,50)(100,50)
+
+  \color[rgb]{0,0,1}
+    \put(-100, 100){\line(1,0){200} }
+    \put(-100,   0){\line(0,1){100} }
+    \put(100,    0){\line(0,1){100} }
+    \put(140,   90){\vector(-1,0){40} }
+    \put(150,   90){\makebox(0,0)[l]{$\beta=0$}}
+  \color{red}
+    \put(-50, 100){\line(1,0){100} }
+    \qbezier(50,100)(80,100)(100,50)
+    \qbezier(100,50)(120,0)(150,0)
+    \qbezier(-50,100)(-80,100)(-100,50)
+    \qbezier(-100,50)(-120,0)(-150,0)
+    \put(140,   70){\vector(-1,0){49} }
+    \put(150,   70){\makebox(0,0)[l]{$\beta=\frac{1}{2}$}}
+  \color[rgb]{0,0.5,0}
+    \qbezier(0,100)(60,100)(100,50)
+    \qbezier(100,50)(140,0)(200,0)
+    \qbezier(0,100)(-60,100)(-100,50)
+    \qbezier(-100,50)(-140,0)(-200,0)
+    \put(140,   30){\vector(-1,0){20} }
+    \put(150,   30){\makebox(0,0)[l]{$\beta=1$}}
+\end{picture}
+\caption{
+  Raised cosine for various $\beta$ values
+  %\label{fig:rcos}
+}
+\end{center}
+\end{footnotesize}
+\end{figure}
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\setlength{\unitlength}{0.1mm}
+\begin{footnotesize}
+\begin{center}
+\begin{picture}(550,200)(-250,-50)
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-620,   0){\line(1,0){1240} }
+  \put(   0, -20){\line(0,1){150} }
+  \put( 640,   0){\makebox(0,0)[l]{$f$}}
+
+  \put( 100, -10){\makebox(0,0)[t]{$\frac{1}{2T}$}}
+  \put( 200, -10){\makebox(0,0)[t]{$\frac{1}{T}$}}
+  \put( 300, -10){\makebox(0,0)[t]{$\frac{3}{2T}$}}
+  \put( 400, -10){\makebox(0,0)[t]{$\frac{2}{ T}$}}
+  \put( 500, -10){\makebox(0,0)[t]{$\frac{5}{2T}$}}
+  \put( 600, -10){\makebox(0,0)[t]{$\frac{3}{ T}$}}
+
+  \put(-100, -10){\makebox(0,0)[t]{$\frac{-1}{2T}$}}
+  \put(-200, -10){\makebox(0,0)[t]{$\frac{-1}{T}$}}
+  \put(-300, -10){\makebox(0,0)[t]{$\frac{-3}{2T}$}}
+  \put(-400, -10){\makebox(0,0)[t]{$\frac{-2}{ T}$}}
+  \put(-500, -10){\makebox(0,0)[t]{$\frac{-5}{2T}$}}
+  \put(-600, -10){\makebox(0,0)[t]{$\frac{-3}{ T}$}}
+
+  \put( 5, 105){\makebox(0,0)[lb]{$T$}}
+
+  \multiput(-600,0)(100,0){13}{\put(0, -5){\line(0,1){10} }}
+
+  \qbezier[140](-600,100)(0,100)(600,100)
+  \put(550, 50){\makebox(0,0)[t]{sum of shifted raised cosines}}
+  \put(550, 60){\vector(0,1){40}}
+
+  \color{red}
+
+  \multiput(-400,0)(200,0){5}
+  {
+    \put(-50, 100){\line(1,0){100} }
+    \qbezier(50,100)(80,100)(100,50)
+    \qbezier(100,50)(120,0)(150,0)
+    \qbezier(-50,100)(-80,100)(-100,50)
+    \qbezier(-100,50)(-120,0)(-150,0)
+  }
+
+\end{picture}
+\caption{
+  Sum of shifted raised cosines
+  %\label{fig:rcos}
+}
+\end{center}
+\end{footnotesize}
+\end{figure}
+
+
+
+
+
+The {\bf Raised Cosine} is the Fourier Transform of
+one of the most widely used signaling waveforms.\footnote{
+  Note: The raised cosine is similar to the {\em Meyer wavelet}.
+  ref: \cite[page 65]{vidakovic}
+  }
+In the frequency domain it has the form\citep{proakis}{560}
+\[
+   \hhcmpf(f) =
+   \left\{
+      \begin{array}{lclcccl}
+         T
+         &:&
+          0 &\le& |f| &\le& \frac{1-\beta}{2T}
+         \\
+         \ds \frac{T}{2}
+           \left[ 1 + \cos\left(
+               \frac{\pi T}{\beta}\left[ |f|-\frac{1-\beta}{2T}\right]
+             \right)
+           \right]
+         &:&
+         \frac{1-\beta}{2T} &\le& |f| &\le& \frac{1+\beta}{2T}
+         \\
+         0
+         &:&
+          && |f| &>& \frac{1+\beta}{2T}
+      \end{array}
+   \right.
+\]
+
+The value $\beta\in[0,1]$ is the {\em roll-off factor}.
+The raised cosine for various roll-off factors $\beta$ is
+illustrated in Figure \ref{fig:rcos3d}.
+
+Shifted versions of $\hhcmpf(f)$ sum to unity because the
+cosine regions sum to unity:
+\begin{eqnarray*}
+  \frac{1}{2}[1 + \cos(\theta)] + \frac{1}{2}[1 + \cos(\theta+\pi)]
+    &=& \frac{1}{2}[1 + \cos(\theta)] + \frac{1}{2}[1 - \cos(\theta)]
+     = 1
+\end{eqnarray*}
+
+The inverse Fourier transform of the raised cosine filter is
+illustrated in Figure \ref{fig:rcos3d}.
+These waveforms are the signaling waveforms $\hhcmp$.
+Notice how they becoming smoother in frequency
+but wider in time with increasing $\beta$;
+
+
+
+
+
+%--------------------------------------
+\subsubsection{B-Spline zero-ISI waveforms}
+\index{B-splines}
+%--------------------------------------
+B-Splines are formed by repeatedly convolving the $\chi$ function with itself.
+%--------------------------------------
+\begin{definition}
+\label{def:Bspline}
+%--------------------------------------
+A {\bf B-spline} $\beta_m(f)$ of order $m$ is the
+characteristic function $\theta=\chi(f)_{[-1/2T,1/2T)}$
+convolved with itself $m$ times.
+That is, if $\ast$ is the convolution operation, then
+\begin{align*}
+   \beta_0 &\eqd \theta  \\
+   \beta_1 &\eqd \theta\ast\theta           &=& \beta_0\ast\theta\\
+   \beta_2 &\eqd \theta\ast\theta\ast\theta &=& \beta_1\ast\theta \\
+   \beta_3 &\eqd \theta\ast\theta\ast\theta\ast\theta &=& \beta_2\ast\theta \\
+           & \vdots
+\end{align*}
+\end{definition}
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{tabular}{ccccccccc}
+   \epsfig{file=sp_0_s.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sp_1_s.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sp_2_s.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sp_3_s.eps,    height=3cm, width=3cm}
+\\
+   $\beta_0$ &
+   $\beta_1$ &
+   $\beta_2$ &
+   $\beta_3$
+\end{tabular}
+\end{center}
+\caption{
+  B-Splines of order 0,1,2,3
+  \label{fig:Bspline}
+}
+\end{figure}
+
+All B-Splines form a partition of unity.\citep{goswami}{46}
+and their inverse Fourier Transforms may therefore be used
+as signaling waveforms $\hhcmp(t)$.
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+All B-Splines $\beta_m$ of order $m\in\{0,1,2,\ldots\}$
+form a partition of unity.
+\end{theorem}
+\begin{proof}
+\begin{enume}
+   \item A B-Spline $\ft{\beta}_m$ of order $m$
+         is the $\chi$ function convolved with itself $m$ times.
+   \item This implies that the inverse Fourier Transform $\beta_m$ is
+         \[ \beta_m(t) =
+             \left[
+             \frac{2}{T}
+             \frac{\sin\left(\frac{2\pi}{T}t\right)}{\frac{2\pi}{T}t}
+             \right]^{m+1}
+         \]
+   \item This equation satisfies the Partition of Unity criterion (Theorem \ref{thm:unity}).
+         \[ \beta_m(nT) =
+             \left[
+             \frac{2}{T}
+             \frac{\sin\left(2\pi n\right)}{2\pi n}
+             \right]^{m+1}
+             = \left\{
+                  \begin{tabular}{lcl}
+                     $(2/T)^m$ & : & $n=0$ \\
+                     $0$       & : & $n\neq0$
+                  \end{tabular}
+               \right.
+         \]
+   \item Therefore, $\beta_m$ forms a partition of unity for all $m=0,1,2,\ldots$.
+\end{enume}
+\end{proof}
+
+Because $\beta_m$ form a partition of unity,
+we can use their inverse Fourier transforms as signaling waveforms $\hhcmp_m$.
+That is, if $\hhcmpf_m=\beta_m$ then
+\[ \hhcmp_m \eqd \opFTi{\hhcmpf_m} \eqd \opFTi{\beta_m} =
+             \left[
+             \frac{2}{T}
+             \frac{\sin\left(\frac{2\pi}{T}t\right)}{\frac{2\pi}{T}t}
+             \right]^{m+1}
+\]
+are valid signaling waveforms.
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{tabular}{ccccccccc}
+   \epsfig{file=sp_0_s.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sp_1_s.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sp_2_s.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sp_3_s.eps,    height=3cm, width=3cm}
+\\
+   $\hhcmpf_0=\beta_0$ &
+   $\hhcmpf_1=\beta_1$ &
+   $\hhcmpf_2=\beta_2$ &
+   $\hhcmpf_3=\beta_3$
+\\
+   \epsfig{file=sinc_p1.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sinc_p2.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sinc_p3.eps,    height=3cm, width=3cm}  &
+   \epsfig{file=sinc_p4.eps,    height=3cm, width=3cm}  &
+\\
+   $\hhcmp_0$ &
+   $\hhcmp_1$ &
+   $\hhcmp_2$ &
+   $\hhcmp_3$
+\end{tabular}
+\end{center}
+\caption{
+  B-Splines signaling waveforms in frequency and time domains
+  \label{fig:Bspline_ft}
+}
+\end{figure}
+
+%--------------------------------------
+\subsubsection{Wavelet scaling function zero-ISI waveforms}
+\index{wavelets}
+\index{wavelets!scaling functions}
+%--------------------------------------
+Wavelets consists of two families of functions:
+the \hie{scaling functions} $\phi_{m,n}(t)$ and
+the \hie{wavelet functions} $\psi_{m,n}(t)$.
+Each member of the family may be scaled by $2^m$
+and translated by $n$.
+There are many scaling and wavelet functions available.
+Most scaling functions $\phi$ satisfy
+the partition of unity criterion\citep{jawerth}{8} (???).  \attention
+The inverse Fourier Transform of scaling functions may therefore
+be used as signaling waveforms.
+Some Daubechies scaling functions are shown in \prefpp{fig:dau}.
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{tabular}{ccccccccc}
+   %20171226%\epsfig{file=../common/20090604/common/wavelets/d1sc_x3125.eps,    height=3cm, width=3cm}  &
+   %20171226%\epsfig{file=../common/20090604/common/wavelets/d2sc_x3125.eps,    height=3cm, width=3cm}  &
+   %20171226%\epsfig{file=../common/20090604/common/wavelets/d3sc_x3125.eps,    height=3cm, width=3cm}  &
+   %20171226%\epsfig{file=../common/20090604/common/wavelets/d4sc_x3125.eps,    height=3cm, width=3cm}
+\\
+   Daubechies-2  &
+   Daubechies-4  &
+   Daubechies-8  &
+   Daubechies-16
+\end{tabular}
+\end{center}
+\caption{
+  Daubechies wavelets
+  \label{fig:dau}
+}
+\end{figure}
+
+
+One advantage of using wavelet zero-ISI waveforms is that a {\em fast wavelet transform}
+(FWT) is available requiring only order $\log n$ operations,
+even faster than the fast fourier transform's $n\log n$ operations.
+The availability of the FWT in addition to the wavelet's natural
+signal analysis capability, may allow the system to make further use of the
+incoming waveforms for channel estimation, channel equalization, and
+symbol detection.
+
+
+
+
+
+
+
+
+%=======================================
+\section{Duobinary ISI solution}
+\index{duobinary}
+\label{sec:isi_duo}
+\label{sec:duobinary}
+%=======================================
+%--------------------------------------
+\subsection{Constraints}
+%--------------------------------------
+The received waveform $r(t)$ is of the form
+\begin{eqnarray*}
+   r(t) &=& \sum_m a_m \hhcmp(t-mT).
+\end{eqnarray*}
+
+At sampling instants $t=nT$, $r(t)$ has the form
+
+\begin{eqnarray*}
+   r(nT)
+     &=& \left. r(t)                               \right|_{t=nT}
+   \\&=& \sum_m a_m \hhcmp(nT-mT)
+   \\&=& \left. a_m\hhcmp(nT-mT)\right|_{m=n}     +
+         \left. a_m\hhcmp(nT-mT)\right|_{m=n-1}   +
+         \sum_{m\ne n,n-1} a_m \hhcmp(nT-mT)
+   \\&=& a_n\hhcmp(nT-nT) + a_{n-1}\hhcmp(nT-(n-1)T) + \sum_{m\ne n,n-1} a_m \hhcmp(nT-mT)
+   \\&=& a_n\hhcmp(0) +
+         a_{n-1}\hhcmp(T) +
+         \sum_{m\ne n,n-1} a_m \hhcmp(nT-mT)
+\end{eqnarray*}
+
+We place the following constraints on the signaling waveform $\hhcmp(t)$:
+\[
+\begin{array}{llrcl}
+   \circOne & \mbox{\bf sampling constraint:}
+      & \hhcmp(nT) &=&
+          \left\{\begin{array}{l@{\hspace{4ex}}l}
+            1 &   \mbox{for } n=0,1 \\
+            0 &   \mbox{otherwise}
+          \end{array}\right.
+\\
+   \circTwo & \mbox{\bf bandwidth constraint:}
+      & [\opFT{\hhcmp}](f) &=& 0 \mbox{ for } |f|\ge W.
+\end{array}
+\]
+
+These two constraints are in conflict with each other.
+However, they are both satisfied if the criterion
+in \prefpp{thm:db_zeroISI} is met.
+
+%--------------------------------------
+\subsection{Criterion}
+%--------------------------------------
+%--------------------------------------
+\begin{theorem}
+\label{thm:db_zeroISI}
+%--------------------------------------
+Let $\ft{\hhcmp}(f)$ be the Fourier Transform of a function
+$\hhcmp(t)$ and $T\in\R$ a constant.
+Then
+\thmbox{
+   \bs{
+   \hhcmp(nT) =
+   \left\{
+      \begin{tabular}{lcl}
+         1 & : & $n=0,1$ \\
+         0 & : & otherwise
+      \end{tabular}
+   \right.
+   }
+\iff
+   \bs{
+   \frac{1}{T}\sum_n \ft{\hhcmp}\left(f+ \frac{n}{T} \right)
+     = 2e^{-i\pi fT}\cos\left(\pi fT\right).
+   }
+}
+
+\end{theorem}
+\begin{proof}
+This theorem is easily proven using the
+{\em Inverse Poisson's Summation Formula}(IPSF)
+(\prefp{thm:ipsf})
+which states
+\begin{eqnarray*}
+   \sum_n \ft{\hhcmp}\left( f+ \frac{n}{T} \right)
+      &=& T \sum_n \hhcmp(nT) e^{-i2\pi fnT}
+\end{eqnarray*}
+
+\begin{enumerate}
+\item Prove ``only if" case ($\implies$):
+
+\begin{align*}
+  \sum_n \ft{\hhcmp}\left( f + \frac{n}{T} \right)
+    &= T\sum_n \hhcmp(nT) e^{-i2\pi fnT}
+    && \text{by IPSF}
+  \\&= T\left[1 + e^{-i2\pi fT}\right]
+    && \text{by left hypothesis}
+  \\&= 2Te^{-i\pi fT}\left( \frac{1}{2}e^{i\pi fT} + \frac{1}{2}e^{-i\pi fT}  \right)
+  \\&= 2Te^{-i\pi fT}\cos\left(\pi fT\right)
+    && \text{by trig. identity (see Appendix \ref{app:trig})}
+\end{align*}
+
+
+\item Prove ``if" case ($\impliedby$):
+
+\begin{align*}
+     2e^{-i\pi fT}\cos\left(\pi fT\right)
+       &=  \frac{1}{T}\sum_n \ft{\hhcmp}\left( f+\frac{n}{T} \right)
+       && \text{by right hypothesis}
+     \\&= \frac{1}{T}T \sum_n \hhcmp(nT) e^{-i2\pi fnT}
+       && \text{by IPSF}
+     \\&= 2e^{-i\pi fT} \sum_n \hhcmp(nT) \frac{1}{2}e^{i\pi fT}e^{-i2\pi fnT}
+     \\&= 2e^{-i\pi fT} \sum_n \hhcmp(nT) \frac{1}{2}e^{-i\pi fT(2n-1)}
+     \\&= 2e^{-i\pi fT}
+             \left[
+               \hhcmp(0) \frac{1}{2}e^{i\pi fT} +
+               \hhcmp(T) \frac{1}{2}e^{-i\pi fT} +
+               \sum_{n\ne 0,1} \hhcmp(nT) \frac{1}{2}e^{-i\pi fT(2n-1)}
+             \right]
+     \\&\implies
+\\
+   \hhcmp(nT)
+     &= \left\{\begin{array}{lcl}
+           1 & : & n=0,1    \\
+           0 & : & \text{otherwise}
+        \end{array}\right.
+       && \text{because $\cos(\pi fT)$ has no imaginary part}
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\subsection{Signaling waveform}
+%--------------------------------------
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(400,120)(-200,-50)
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-150 ,   0 ){\line(1,0){300} }
+  \put(   0 , -20 ){\line(0,1){100} }
+  \put( 160 ,   0 ){$f$}
+  \put(  20 ,  60 ){$\ds|\ft{\hhcmp}(f)|=\frac{1}{W}\cos\left(\frac{\pi}{2W}f\right)\chi_B(f)$}
+  \put( -20 ,  60 ){$\frac{1}{W}$}
+  \put(-200 , -50 ){\makebox(200,40)[t]{$-W=-\frac{1}{2T}$}}
+  \put(   0 , -50 ){\makebox(200,40)[t]{$W=\frac{1}{2T}$}}
+  \color{red}
+    \qbezier(-100,   0)(   0, 100)( 100,   0)
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+  Duobinary waveform $\ft{\hhcmp}(f)$ at Nyquist rate
+   \label{fig:db_zeroISI}
+   }
+\end{figure}
+
+
+
+The next theorem specifies a signaling waveform which satisfies the
+criterion at the Nyquist rate
+\[ W  = \frac{1}{2T}. \]
+Unlike the zero-ISI Nyquist rate signaling waveform
+(\prefpp{fig:pulse}),
+the duobinary Nyquist rate signaling waveform
+(\prefpp{fig:db_zeroISI})
+can be easily approximated in real systems.
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+The waveform $\hhcmp(t)$ with Fourier transform $\ft{\hhcmp}(f)$
+(see \prefpp{fig:db_zeroISI})
+satisfies the criterion stated in \prefpp{thm:db_zeroISI},
+where
+
+\begin{eqnarray*}
+   \ft{\hhcmp}(f) &=& \left\{
+   \begin{tabular}{ll}
+      $\ds 2Te^{-i\pi Tf}\cos(\pi Tf)$ & : $\frac{-1}{2T} \le f < \frac{1}{2T}$ \\
+      $\ds 0$ & : otherwise
+   \end{tabular}
+   \right.
+\end{eqnarray*}
+
+\begin{eqnarray*}
+   \hhcmp(t)
+     &=&    \frac{\sin\left[\frac{\pi}{T}t\right]}{\frac{\pi}{T}t} +
+            \frac{\sin\left[\frac{\pi}{T}(t-T)\right]}{\frac{\pi}{T}(t-T)}
+   \\&\eqd& \sinc{\frac{\pi}{T}t} + \sinc{\frac{\pi}{T}(t-T)}
+\end{eqnarray*}
+\end{theorem}
+
+\begin{proof}
+Let $B=[-1/2T, +1/2T)$ such that
+\[
+\chi_B(f) \eqd
+\left\{
+\begin{tabular}{llll}
+   1 & : $f\in [-1/2T, +1/2T)$ \\
+   0 & : otherwise.
+\end{tabular}
+\right.
+\]
+
+Then
+First, observe that $\ft{\hhcmp}(f)$ satisfies
+the criterion of \prefpp{thm:db_zeroISI}:
+
+\begin{eqnarray*}
+   \sum_n \ft{\hhcmp}\left( f + \frac{n}{T} \right)
+     &=& \sum_n 2T e^{-i\pi T\left(f+\frac{n}{T}\right)}
+         \cos\left[\pi T(f+\frac{n}{T})\right]
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& 2T \sum_n
+         e^{-i\pi Tf}
+         e^{-i\pi n }
+         \left[\cos(\pi Tf)\cos(\pi n)-\sin(\pi Tf)\sin(\pi n) \right]
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& 2T e^{-i\pi Tf} \sum_n
+         (-1)^n
+         \left[\cos(\pi Tf)(-1)^n -\sin(\pi Tf)\cdot0 \right]
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& 2T e^{-i\pi Tf} \sum_n
+         \cos(\pi Tf)
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& 2T e^{-i\pi Tf} \cos(\pi Tf) \sum_n
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& 2T e^{-i\pi Tf} \cos(\pi Tf)
+   %\\&\iff& Equation~\ref{eq:db_II}.
+\end{eqnarray*}
+
+The signaling waveform $\hhcmp(t)$ can be found by taking
+the inverse Fourier Transform of $\ft{\hhcmp}(f)$:
+
+\begin{eqnarray*}
+   \hhcmp(t)
+     &=& [\opFTi\ft{\hhcmp}](t)
+   \\&=& \int_f \hhcmp(f) e^{i2\pi ft} \df
+   \\&=& \int_\frac{-1}{2T}^\frac{1}{2T}
+         2T e^{-i\pi Tf} \cos(\pi Tf) e^{i2\pi ft} \df
+   \\&=& 2T\int_\frac{-1}{2T}^\frac{1}{2T}
+         e^{-i\pi Tf}
+         \frac{1}{2}\left[ e^{i\pi Tf} + e^{-i\pi Tf}  \right]
+         e^{i2\pi ft} \df
+   \\&=& T\int_\frac{-1}{2T}^\frac{1}{2T}
+         \left[ 1 + e^{-i2\pi Tf}  \right]
+         e^{i2\pi ft} \df
+   \\&=& T\int_\frac{-1}{2T}^\frac{1}{2T}
+         e^{i2\pi ft} + e^{i2\pi(t-T)f} \df
+   \\&=& \left. T\frac{e^{i2\pi ft    }}{i2\pi t    } \right|_\frac{-1}{2T}^\frac{1}{2T}  +
+         \left. T\frac{e^{i2\pi f(t-T)}}{i2\pi (t-T)} \right|_\frac{-1}{2T}^\frac{1}{2T}
+   \\&=& \frac{e^{i\frac{\pi}{T}t    }-e^{-i\frac{\pi}{T}t    }}{i2\frac{\pi}{T} t    }   +
+         \frac{e^{i\frac{\pi}{T}(t-T)}-e^{-i\frac{\pi}{T}(t-T)}}{i2\frac{\pi}{T} (t-T)}
+   \\&=& \frac{\sin[\frac{\pi}{T}t]    }{\frac{\pi}{T} t    }   +
+         \frac{\sin[\frac{\pi}{T}(t-T)]}{\frac{\pi}{T} (t-T)}
+\end{eqnarray*}
+\end{proof}
+
+
+%--------------------------------------
+\subsection{Detection}
+%--------------------------------------
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsK}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(750,200)(-50,-150)
+  \thicklines
+  %\graphpaper[10](0,0)(700,100)
+
+  \put(-50,   0 ){\vector  (   1,  0)   {90}          }
+  \put(   0,-150 ){\dashbox{4}( 200,200)   {  }           }
+  \put(   0,-140 ){\makebox ( 200,200)[b]{precoder}     }
+  \put(   0, -50 ){\makebox ( 100,100)   {$+$}          }
+  \put(   0,   5 ){\makebox (  50,  0)[b]{$+$}          }
+  \put(   0, -50 ){\makebox (  45, 40)[r]{$-$}          }
+  \put(  50,   0 ){\circle{20}                          }
+  \put(  50,-100 ){\vector  (   0,  1)   { 90}          }
+  \put(  60,   0 ){\line    (   1,  0)   { 10}          }
+  \put(  90,   0 ){\line    (   1,  0)   {110}          }
+  \put(  70, -10 ){\framebox(  20, 20)   {   }          }
+  \put(   0,   0 ){\makebox ( 160, 50)   {mod M}        }
+  \put(  80, -70 ){\framebox(  40, 40)   {$z^{-1}$}     }
+  \put( 100,-100 ){\line    (   0,  1)   { 30}          }
+  \put( 100, -30 ){\line    (   0,  1)   { 30}          }
+  \put(  50,-100 ){\line    (   1,  0)   { 50}          }
+
+  \put( 200,    0 ){\vector  (   1,  0)   {50}           }
+  \put( 250,  -50 ){\framebox( 100,100)   {mapping}      }
+  \put( 350,    0 ){\vector  (   1,  0)   {50}           }
+  \put( 400,  -50 ){\framebox( 100,100)   {modulator}    }
+
+  \put( 550,    0){\usebox{\picAWGN}}
+
+  \put(- 50,   10 ){\makebox (  50, 50)[b]{$u_n$}        }
+  \put( 200,   10 ){\makebox (  50, 50)[b]{$y_n$}        }
+  \put( 350,   10 ){\makebox (  50, 50)[b]{$a_n$}        }
+  \put( 500,   10 ){\makebox (  50, 50)[b]{$s(t)$}       }
+  \put( 650,   10 ){\makebox (  50, 50)[b]{$r(t)$}       }
+\end{picture}
+\end{fsK}
+\end{center}
+\caption{
+   Duobinary Detection Model
+   \label{fig:db_detect}
+   }
+\end{figure}
+
+Detection of a received signal using duobinary modulation
+presents a special problem because each received
+symbol at time period $n$
+is a function of both the time $n$ and $n-1$ transmitted symbols
+(has single symbol ISI).
+In this case and if channel noise is zero,
+detection can still be performed without error using
+the algorithm described below and illustrated in
+\prefpp{fig:db_detect}.
+
+%---------------------------------------
+\begin{lemma}
+%---------------------------------------
+\formbox{ (a+b)\mod = (a\mod + b\mod)\mod.}
+\end{lemma}
+\begin{proof}
+\[
+\begin{array}{rclcrcl}
+  a       &=& Mq_1 + r_1   &\iff& a        \mod &=& r_1   \\
+  b       &=& Mq_2 + r_2   &\iff& b        \mod &=& r_2   \\
+  a+b     &=& Mq_3 + r_3   &\iff& (a+b)    \mod &=& r_3   \\
+  r_1+r_2 &=& Mq_4 + r_4   &\iff& (r_1+r_2)\mod &=& r_4
+\end{array}
+\]
+\begin{eqnarray*}
+%  (a+b) \mod
+%    &=& (Mq_1+r_1 + Mq_2 + r_2)\mod
+%  \\&=& [M(q_1+q_2) +r_1 + r_2]\mod
+%  \\&=& [M(q_1+q_2) +Mq_4+r_4]\mod
+%  \\&=& [M(q_1+q_2+q_4) +r_4]\mod
+%  \\&=& r_4
+%  \\&=& (r_1 + r_2)\mod
+%  \\&=& (a\mod + b\mod)\mod
+\end{eqnarray*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $u_n\in\{0,1,\ldots,M-1\}$ be the data transmitted
+using {\em duobinary} symbol signaling.
+Let
+\begin{eqnarray*}
+   \fr(t)&\eqd& \fs(t;u) + \fn(t)               \\
+   r_n &\eqd& \left. r(t)\right|_{t=nT} = r(nT) \\
+   y_n &\eqd& (u_n - y_{n-1})\mod               \\
+   a_n &\eqd& 2y_n -M + 1                       \\
+   n_n &\eqd& \left. n(t)\right|_{t=nT} = n(nT) \\
+   S_n   &\eqd& \sum_{k=-\infty}^n (-1)^{n-k} u_k.
+\end{eqnarray*}
+Then
+\formbox{
+  r_n|u_n,S_{n-1} =
+  2\Big[ [u_n\mod + (- S_{n-1})\mod]\mod + S_{n-1}\mod - (M - 1) \Big] + n_n
+  }
+
+If $\fn(t)$ is a white Gaussian random process, then
+\formbox{
+  r_n \sim \pN
+    {2\Big[ [u_n\mod + (- S_{n-1})\mod]\mod + S_{n-1}\mod - (M - 1) \Big]}
+    {\sigma^2}
+  }
+\end{theorem}
+\begin{proof}
+
+The sequence $\{y_n\}$ is the precoded sequence:
+\begin{eqnarray*}
+   y_n
+     &=& \left( u_n - y_{n-1} \right)\mod
+   \\&=& \left[ u_n - (u_{n-1}-y_{n-2}) \right]\mod
+   \\&=& \left( u_n - u_{n-1} + u_{n-2}-y_{n-3} \right)\mod
+   \\&=& \left( u_n - u_{n-1} + u_{n-2}-u_{n-3}+y_{n-4} \right)\mod
+   \\&=& \left( \sum_{k=-\infty}^n (-1)^{n-k} u_k \right)\mod
+   \\&=& S_n \mod
+\end{eqnarray*}
+
+A mapping is performed on each $y_n$ to produce $a_n$:
+\[ a_n = 2y_n - M + 1.\]
+
+The modulator uses the duobinary signaling waveform $\hhcmp(t)$
+and $a_n$ to produce the transmitted signal $s(t)$ at signaling
+rate $1/T$:
+\[ s(t) = \sum_n a_n \hhcmp(t-nT). \]
+
+
+Before going further, here is a useful relation:
+\begin{eqnarray*}
+  S_n
+    &\eqd& \sum_{k=-\infty}^{n} (-1)^{n-k} u_k
+  \\&=&    u_n + \sum_{k=-\infty}^{n-1} (-1)^{n-k} u_k
+  \\&=&    u_n - \sum_{k=-\infty}^{n-1} (-1)(-1)^{n-k} u_k
+  \\&=&    u_n - \sum_{k=-\infty}^{n-1} (-1)^{-1}(-1)^{n-k} u_k
+  \\&=&    u_n - \sum_{k=-\infty}^{n-1} (-1)^{n-1-k} u_k
+  \\&\eqd& u_n - S_{n-1}
+\end{eqnarray*}
+
+
+The received signal samples $\fr_n$ are as follows:
+\begin{eqnarray*}
+   \fr_n
+     &=& \left. \fr(t) \right|_{t=nT}
+   \\&=& \left[ \fs(t) + n(t) \right]_{t=nT}
+   \\&=& \left[ \sum_m a_n \hhcmp(t-mT) + n(t) \right]_{t=nT}
+   \\&=& \sum_m a_m \hhcmp(nT-mT) + n(nT)
+   \\&=& a_n\hhcmp(0) + a_{n-1}\hhcmp(T) + n_n
+   \\&=& a_n + a_{n-1} + n_n
+   \\&=& \left( 2y_n - M + 1 \right) + \left(2y_{n-1} - M + 1 \right) + n_n
+   \\&=& 2\left( y_n + y_{n-1} - M + 1 \right) + n_n
+   \\&=& 2\left[
+           \left( \sum_{k=-\infty}^n (-1)^{n-k} u_k \right)\mod +
+           \left( \sum_{k=-\infty}^{n-1} (-1)^{n-1-k} u_k \right)\mod
+           - M + 1 \right] + n_n
+   \\&=& 2\Big[ S_n\mod + S_{n-1}\mod - M + 1 \Big] + n_n
+   \\&=& 2\Big[ (u_n - S_{n-1})\mod + S_{n-1}\mod - (M - 1) \Big] + n_n
+   \\&=& 2\Big[ [u_n\mod + (- S_{n-1})\mod]\mod + S_{n-1}\mod - (M - 1) \Big] + n_n
+\end{eqnarray*}
+
+Thus, $(r_n|u_n,S_{n-1})$ have Gaussian distribution with means
+\[ \Eb{r_n|u_n,S_n} =  2\left[
+           \left( u_n + S_{n-1} \right)\mod + \left( M   - S_{n-1}\right)\mod
+           - (M - 1) \right]. \]
+\end{proof}
+
+That is the good news.
+The bad news is that in general we don't know $S_n$.
+However, the additional good news is that it doesn't matter what
+$S_{n-1}$ is because the values $\Eb{r_n|u_n}$ are
+always distinct from the values $\Eb{r_m|v_m}$
+if $u_n\ne v_n$.
+That is
+\begin{eqnarray*}
+   && (u_n\ne v_n)\implies
+ \\&&
+   \Eb{r_n|u_n,S_{n-1}} \ne \Eb{r_n|v_n,S_{n-1}}
+   \hspace{3ex}\forall S_{n-1}
+\end{eqnarray*}
+
+For ML optimization, we are interested in the distributions
+$\pp(r_n|u_n)$.
+However, what we conveniently have is $\pp(r_n|u_n,S_{n-1})$.
+If we assume that all values of $S_{n-1}\in\{0,1,\ldots,M-1\}$
+are equally likely, we can convert from the latter to the
+former by the relation:
+
+\begin{eqnarray*}
+   \pp(r_n|u_n)
+      &=& \frac{\pp(r_n,u_n)}{\pp(u_n)}
+    \\&=& \frac{\pp(u_n|r_n)\pp(r_n)}
+               {\pp(u_n)}
+    \\&=& \frac{\pp(u_n|r_n)\pp(r_n)}
+               {\pp(u_n)}
+    \\&=& \frac{\sum_{s=0}^{M-1}\pp(u_n,S_{n-1}=s|r_n)\pp(r_n)}
+               {\pp(u_n)}
+    \\&=& \frac{\sum_{s=0}^{M-1}\pp(r_n|u_n,S_{n-1}=s)\pp(r_n)\pp(u_n,S_{n-1})}
+               {\pp(u_n)\pp(r_n)}
+    \\&=& \frac{\sum_{s=0}^{M-1}\pp(r_n|u_n,S_{n-1}=s)\pp(u_n)\pp(S_{n-1})}
+               {\pp(u_n)}
+    \\&=& \sum_{m=0}^{M-1}\pp(r_n|u_n,S_{n-1}=m)\pp(S_{n-1})
+    \\&=& \frac{1}{M}\sum_{m=0}^{M-1}\pp(r_n|u_n,S_{n-1}=m)
+\end{eqnarray*}
+
+
+%--------------------------------------
+\subsubsection{Detection in the case $M=2$}
+%--------------------------------------
+For the case $M=2$, we have the following mean values:
+\[
+\begin{array}{cc|rrr}
+   u_n & S_{n-1}\mod[2] & \mc{3}{c}{\Eb{r_n|u_n,S_{n-1}}} \\
+   \hline
+   \hline
+   0 & 0 && -2 \\
+   0 & 1 &&  2 \\
+   1 & 0 &&  0 \\
+   1 & 1 &&  0
+\end{array}
+\]
+
+This gives distributions  (see \prefpp{fig:db_pdf_M=2})
+\begin{eqnarray*}
+   (r_n|u_n=0) &\sim& \frac{1}{2}\pN{-2}{\sigma^2}+
+                      \frac{1}{2}\pN{ 2}{\sigma^2} \\
+   (r_n|u_n=1) &\sim&            \pN{ 0}{\sigma^2}.
+\end{eqnarray*}
+
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(440,160)(-200,-30)
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put( 220 ,   0 ){$r_n$}
+  \put(-200 ,   0 ){\line(1,0){400} }
+  \put(   0 , -10 ){\line(0,1){150} }
+
+  \put( -50 , -10 ){\line(0,-1){40} }
+  \put(  50 , -10 ){\line(0,-1){40} }
+
+  \put(-100 , -30 ){$D_0$ }
+  \put( 100 , -30 ){$D_0$ }
+  \put(   0 , -30 ){$D_1$ }
+
+  %\qbezier[12]( 60,  0)( 60, 30)( 60, 60)
+  %\qbezier[12](  0, 60)( 30, 60)( 60, 60)
+
+  \color{red}
+
+  \qbezier(-200,   0)(-160,   0)(-140,  30)  % left   side
+  \qbezier(-140,  30)(-100,  90)( -60,  30)  % center at -100
+  \qbezier( -60,  30)( -40,   0)(   0,   0)  % right  side
+
+  \qbezier(-100,   0)( -60,   0)( -40,  60)  % left   side
+  \qbezier( -40,  60)(   0, 180)(  40,  60)  % center at    0
+  \qbezier(  40,  60)(  60,   0)( 100,   0)  % right  side
+
+  \qbezier(  00,   0)(  40,   0)(  60,  30)  % left   side
+  \qbezier(  60,  30)( 100,  90)( 140,  30)  % center at  100
+  \qbezier( 140,  30)( 160,   0)( 200,   0)  % right  side
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+  Duobinary receiver distributions for $M=2$
+   \label{fig:db_pdf_M=2}
+   }
+\end{figure}
+
+
+
+%--------------------------------------
+\subsubsection{Detection in the case $M=4$}
+%--------------------------------------
+For the case $M=4$, we have the following mean values:
+\[
+\begin{array}{cc|rrr}
+   u_n & S_{n-1}\mod[4] & \mc{3}{c}{\Eb{r_n|u_n,S_{n-1}}} \\
+   \hline
+   \hline
+   0 & 0 && -6 \\
+   0 & 1 &&  2 \\
+   0 & 2 &&  2 \\
+   0 & 3 &&  2 \\
+\hline
+   1 & 0 && -4 \\
+   1 & 1 && -4 \\
+   1 & 2 &&  4 \\
+   1 & 3 &&  4 \\
+\hline
+   2 & 0 && -2 \\
+   2 & 1 && -2 \\
+   2 & 2 && -2 \\
+   2 & 3 &&  6 \\
+\hline
+   3 & 0 &&  0 \\
+   3 & 1 &&  0 \\
+   3 & 2 &&  0 \\
+   3 & 3 &&  0
+\end{array}
+\]
+
+This gives distributions (see \prefpp{fig:db_pdf_M=4})
+\begin{eqnarray*}
+   (r_n|u_n=0) &\sim& \frac{1}{4}\pN{-6}{\sigma^2}+\frac{3}{4}\pN{2}{\sigma^2} \\
+   (r_n|u_n=1) &\sim& \frac{1}{2}\pN{-4}{\sigma^2}+\frac{1}{2}\pN{4}{\sigma^2} \\
+   (r_n|u_n=2) &\sim& \frac{1}{4}\pN{ 6}{\sigma^2}+\frac{3}{4}\pN{-2}{\sigma^2} \\
+   (r_n|u_n=3) &\sim& \pN{ 0}{\sigma^2}.
+\end{eqnarray*}
+
+
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.15mm}
+\begin{picture}(840,160)(-400,-30)
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put( 420 ,   0 ){$r_n$}
+  \put(-400 ,   0 ){\line(1,0){800} }
+  \put(   0 , -10 ){\line(0,1){150} }
+
+  \put(-250 , -10 ){\line(0,-1){40} }
+  \put(-150 , -10 ){\line(0,-1){40} }
+  \put( -50 , -10 ){\line(0,-1){40} }
+  \put(  50 , -10 ){\line(0,-1){40} }
+  \put( 150 , -10 ){\line(0,-1){40} }
+  \put( 250 , -10 ){\line(0,-1){40} }
+
+  \put(-300 , -30 ){$D_0$ }
+  \put(-200 , -30 ){$D_1$ }
+  \put(-100 , -30 ){$D_2$ }
+  \put(   0 , -30 ){$D_3$ }
+  \put( 100 , -30 ){$D_0$ }
+  \put( 200 , -30 ){$D_1$ }
+  \put( 300 , -30 ){$D_2$ }
+
+  \color{red}
+
+  %\qbezier[12]( 60,  0)( 60, 30)( 60, 60)
+  %\qbezier[12](  0, 60)( 30, 60)( 60, 60)
+
+  \qbezier(-400,   0)(-360,   0)(-340,  15)  % left   side
+  \qbezier(-340,  15)(-300,  45)(-260,  15)  % center at -300
+  \qbezier(-260,  15)(-240,   0)(-200,   0)  % right  side
+
+  \qbezier(-300,   0)(-260,   0)(-240,  15)  % left   side
+  \qbezier(-240,  15)(-200,  45)(-160,  15)  % center at -200
+  \qbezier(-160,  15)(-140,   0)(-100,   0)  % right  side
+
+  \qbezier(-200,   0)(-160,   0)(-140,  45)  % left   side
+  \qbezier(-140,  45)(-100, 135)( -60,  45)  % center at -100
+  \qbezier( -60,  45)( -40,   0)(   0,   0)  % right  side
+
+  \qbezier(-100,   0)( -60,   0)( -40,  60)  % left   side
+  \qbezier( -40,  60)(   0, 180)(  40,  60)  % center at    0
+  \qbezier(  40,  60)(  60,   0)( 100,   0)  % right  side
+
+  \qbezier(   0,   0)(  40,   0)(  60,  45)  % left   side
+  \qbezier(  60,  45)( 100, 135)( 140,  45)  % center at  100
+  \qbezier( 140,  45)( 160,   0)( 200,   0)  % right  side
+
+  \qbezier( 100,   0)( 140,   0)( 160,  45)  % left   side
+  \qbezier( 160,  45)( 200, 135)( 240,  45)  % center at  200
+  \qbezier( 240,  45)( 260,   0)( 300,   0)  % right  side
+
+  \qbezier( 200,   0)( 240,   0)( 260,  15)  % left   side
+  \qbezier( 260,  15)( 300,  45)( 340,  15)  % center at  300
+  \qbezier( 340,  15)( 360,   0)( 400,   0)  % right  side
+
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+  Duobinary receiver distributions for $M=4$
+   \label{fig:db_pdf_M=4}
+   }
+\end{figure}
+
+
+
+
+
+%=======================================
+\section{Modified Duobinary ISI solution}
+\index{modified duobinary}
+\label{sec:isi_mduo}
+%=======================================
+%--------------------------------------
+\subsection{Constraints}
+%--------------------------------------
+The received waveform $r(t)$ is of the form
+\begin{eqnarray*}
+   r(t) &=& \sum_m a_m \hhcmp(t-mT).
+\end{eqnarray*}
+
+At sampling instants $t=nT$, $r(t)$ has the form
+
+\begin{eqnarray*}
+   r(nT)
+     &=& \left. r(t)                               \right|_{t=nT}
+   \\&=& \sum_m a_m \hhcmp(nT-mT)
+   \\&=& \left. a_m\hhcmp(nT-mT)\right|_{m=n}     +
+         \left. a_m\hhcmp(nT-mT)\right|_{m=n-1}   +
+         \sum_{m\ne n-1,n+1} a_m \hhcmp(nT-mT)
+   \\&=& a_{n-1}\hhcmp(nT-(n-1)T) +
+         a_{n+1}\hhcmp(nT-(n+1)T) +
+         \sum_{m\ne n-1,n,n+1} a_m \hhcmp(nT-mT)
+   \\&=& a_{n+1}\hhcmp(-T) +
+         a_{n-1}\hhcmp(T) +
+         \sum_{m\ne n-1,n+1} a_m \hhcmp(nT-mT)
+\end{eqnarray*}
+
+We place the following constraints on the signaling waveform $\hhcmp(t)$:
+
+We place the following constraints on the signaling waveform $\hhcmp(t)$:
+\[
+\begin{array}{llrcl}
+   1. & \mbox{\bf sampling constraint:}
+      & \hhcmp(nT) &=&
+          \left\{\begin{array}{l@{\hspace{4ex}}l}
+            +1 &   \mbox{for } n=-1 \\
+            -1 &   \mbox{for } n=+1 \\
+             0 &   \mbox{otherwise}
+          \end{array}\right.
+\\
+   2. & \mbox{\bf bandwidth constraint:}
+      & [\opFT{\hhcmp}](f) &=& 0 \mbox{ for } |f|\ge W.
+\end{array}
+\]
+These two constraints are in conflict with each other.
+However, they are both satisfied if the criterion
+in \prefpp{thm:mdb_zeroISI} is met.
+
+%--------------------------------------
+\subsection{Criterion}
+%--------------------------------------
+%--------------------------------------
+\begin{theorem}
+\label{thm:mdb_zeroISI}
+%--------------------------------------
+Let $\ft{\hhcmp}(f)$ be the Fourier Transform of a function
+$\hhcmp(t)$ and $T\in\R$ a constant.
+Then
+
+
+\formbox{
+   \bs{
+   \hhcmp(nT) =
+   \left\{
+      \begin{array}{lcl}
+         +1 & : & n=-1 \\
+         -1 & : & n=+1 \\
+          0 & : & \mbox{otherwise}
+      \end{array}
+   \right.
+   }
+\iff
+   \bs{
+   \frac{1}{T}\sum_n \ft{\hhcmp}\left(f+ \frac{n}{T} \right)
+     = i2\sin(2\pi fT).
+   }
+}
+\end{theorem}
+\begin{proof}
+This theorem is easily proven using the
+{\em Inverse Poisson's Summation Formula}(IPSF)
+(\prefpp{thm:ipsf} page~\pageref{thm:ipsf})
+which states
+\begin{eqnarray*}
+   \sum_n \ft{\hhcmp}\left( f+ \frac{n}{T} \right)
+      &=& T \sum_n \hhcmp(nT) e^{-i2\pi fnT}
+\end{eqnarray*}
+
+\begin{enumerate}
+  \item ``Only if" case ($\implies$):
+\begin{align*}
+   \sum_n \ft{\hhcmp}\left( f + \frac{n}{T} \right)
+       &= T\sum_n \hhcmp(nT) e^{-i2\pi fnT}
+       && \text{by IPSF}
+     \\&= T\left[
+                  \hhcmp(-1T) e^{-i2\pi f(-1)T} +
+                  \hhcmp(1T) e^{-i2\pi f1T} +
+                  \sum_{n\ne n-1,n+1} \hhcmp(nT) e^{-i2\pi fnT}
+               \right]
+     \\&= T\left[
+                  (1)  e^{-i2\pi f(-1)T}
+                  (-1) e^{-i2\pi f1T}
+               \right]
+       && \text{by left hypothesis}
+     \\&= T\left[e^{i2\pi fT} -e^{-i2\pi fT} \right]
+     \\&= i2T \sin( 2\pi fT )
+       && \text{by trig. identity (see Appendix \ref{app:trig})}
+\end{align*}
+
+\item ``If" case ($\impliedby$):
+\begin{align*}
+   i2T \sin( 2\pi fT )
+       &= \sum_n \ft{\hhcmp}\left( f+\frac{n}{T} \right)
+       && \text{by right hypothesis}
+     \\&= T \sum_n \hhcmp(nT) e^{-i2\pi fnT}
+       && \text{by IPSF}
+     \\&= i2T \sum_n \hhcmp(nT) \frac{1}{2i}e^{-i2\pi fnT}
+     \\&= i2T \left[
+                 \frac{\hhcmp(-T)e^{i2\pi fT} + \hhcmp( T)e^{-i2\pi fT}}
+                      {2i}
+                 + \sum_{n\ne-1,1} \hhcmp(nT) \frac{1}{2i}e^{-i2\pi fnT}
+              \right]
+     \\ \implies
+\\
+   \hhcmp(nT)
+   &= \left\{
+      \begin{array}{rcccr}
+          1 & : & n &=&   -1 \\
+         -1 & : & n &=&    1 \\
+          0 & : & \mc{3}{l}{\mbox{otherwise}}
+      \end{array} \right.
+       && \text{because $\sin(2\pi fT)$ has no imaginary part}
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\subsection{Signaling waveform}
+%--------------------------------------
+\begin{figure}[ht]\color{figcolor}
+\begin{center}
+\begin{fsL}
+\setlength{\unitlength}{0.2mm}
+\begin{picture}(400,120)(-200,-50)
+  %\graphpaper[10](-100,0)(500,150)
+  \thicklines
+  \put(-150 ,   0 ){\line(1,0){300} }
+  \put(   0 , -80 ){\line(0,1){160} }
+  \put( 160 ,   0 ){$f$}
+  \put(  20 ,  60 ){$\ds -i\ft{\hhcmp}(f)=\frac{1}{W}\sin\left(\frac{\pi}{W}f\right)\chi_B(f)$}
+  \put( -20 ,  60 ){$\frac{1}{W}$}
+  \put(-200 , -50 ){\makebox(200,40)[t]{$-W=-\frac{1}{2T}$}}
+  \put(   0 , -50 ){\makebox(200,40)[t]{$W=\frac{1}{2T}$}}
+
+  \color{red}
+  \qbezier(-100,   0)( -50,-100)(   0,   0)
+  \qbezier(   0,   0)(  50, 100)( 100,   0)
+\end{picture}
+\end{fsL}
+\end{center}
+\caption{
+  Modified duobinary waveform $\ft{\hhcmp}(f)$ at Nyquist rate
+   \label{fig:mdb_zeroISI}
+   }
+\end{figure}
+
+
+
+The next theorem specifies a signaling waveform which satisfies the
+criterion at the Nyquist rate
+\[ W  = \frac{1}{2T}. \]
+Like the duobinary Nyquist rate signaling waveform
+(\prefpp{fig:db_zeroISI}),
+the modified duobinary Nyquist rate signaling waveform
+(\prefpp{fig:mdb_zeroISI})
+can be easily approximated in real systems.
+Unlike the duobinary Nyquist rate signaling waveform,
+the modified duobinary Nyquist rate signaling waveform
+has no DC component making it a better candidate
+for channels that attenuate DC
+(for example, capacitively coupled channels).
+
+%--------------------------------------
+\begin{theorem}
+%--------------------------------------
+The waveform $\hhcmp(t)$ with Fourier transform $\ft{\hhcmp}(f)$
+(see \prefpp{fig:mdb_zeroISI})
+satisfies the criterion stated in \prefpp{thm:mdb_zeroISI},
+where
+
+\formbox{\begin{array}{rcl}
+   \ft{\hhcmp}(f) &=& \left\{
+   \begin{array}{ll}
+      \ds i2T\sin(2\pi fT) & : \frac{-1}{2T} \le f < \frac{1}{2T} \\
+      \ds 0                & : \mbox{ otherwise}.
+   \end{array}
+   \right.
+\\ \\ \ds
+   \hhcmp(t)
+     &=& \frac{\sin[\frac{\pi}{T}(t+T)]} {\frac{\pi}{T} (t+T)}   -
+         \frac{\sin[\frac{\pi}{T}(t-T)]} {\frac{\pi}{T} (t-T)}
+\\
+   \\&=& \sinc{\frac{\pi}{T}(t+T)}   -
+         \sinc{\frac{\pi}{T}(t-T)}
+\end{array}
+}
+\end{theorem}
+\begin{proof}
+Let $B=[-1/2T, +1/2T)$ such that
+\[
+\chi_B(f) \eqd
+\left\{
+\begin{tabular}{llll}
+   1 & : $f\in [-1/2T, +1/2T)$ \\
+   0 & : otherwise.
+\end{tabular}
+\right.
+\]
+
+Then
+First, observe that $\ft{\hhcmp}(f)$ satisfies
+the criterion of \prefpp{thm:mdb_zeroISI}:
+
+\begin{eqnarray*}
+   \sum_n \ft{\hhcmp}\left( f + \frac{n}{T} \right)
+     &=& \sum_n i2T
+         \sin[2\pi (f+\frac{n}{T})T]
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& i2T  \sum_n
+         \sin(2\pi fT + 2\pi n)
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& i2T  \sum_n \left[
+         \sin(2\pi fT)\cos(2\pi n) + \cos(2\pi fT)\sin(2\pi n)
+         \right]
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& i2T  \sum_n \left[
+         \sin(2\pi fT)\cdot1 + \cos(2\pi fT)\cdot0
+         \right]
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& i2T  \sum_n \sin(2\pi fT)
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& i2T \sin(2\pi fT) \sum_n
+         \chi_B\left(f+\frac{n}{T}\right)
+   \\&=& i2T \sin(2\pi fT)
+%   \\&\iff& Equation~\ref{eq:mdb_II}.
+\end{eqnarray*}
+
+The signaling waveform $\hhcmp(t)$ can be found by taking
+the inverse Fourier Transform of $\ft{\hhcmp}(f)$:
+
+\begin{align*}
+   \hhcmp(t)
+     &= [\opFTi\ft{\hhcmp}](t)
+   \\&= \int_f \hhcmp(f) e^{i2\pi ft} \df
+   \\&= \int_\frac{-1}{2T}^\frac{1}{2T}
+        i2T \sin(2\pi Tf) e^{i2\pi ft} \df
+   \\&= i2T\int_\frac{-1}{2T}^\frac{1}{2T}
+        \frac{1}{2i}\left[ e^{i2\pi Tf} - e^{-i2\pi Tf}  \right]
+        e^{i2\pi ft} \df
+   \\&= T\int_\frac{-1}{2T}^\frac{1}{2T}
+        \left[ e^{i2\pi Tf} - e^{-i2\pi Tf}  \right]
+        e^{i2\pi ft} \df
+   \\&= T\int_\frac{-1}{2T}^\frac{1}{2T}
+        \left[ e^{i2\pi f(t+T)} - e^{i2\pi f(t-T)}  \right]
+        \df
+   \\&= \left. T\frac{e^{i2\pi f(t+T)}}{i2\pi (t+T)} \right|_\frac{-1}{2T}^\frac{1}{2T}  -
+        \left. T\frac{e^{i2\pi f(t-T)}}{i2\pi (t-T)} \right|_\frac{-1}{2T}^\frac{1}{2T}
+   \\&= \frac{e^{i\frac{\pi}{T} (t+T)} - e^{-i\frac{\pi}{T} (t+T)}}{2i\frac{\pi}{T} (t+T)}   -
+        \frac{e^{i\frac{\pi}{T} (t-T)} - e^{-i\frac{\pi}{T} (t-T)}}{2i\frac{\pi}{T} (t-T)}
+   \\&= \frac{2i\sin[\frac{\pi}{T}(t+T)]} {2i\frac{\pi}{T} (t+T)}   -
+        \frac{2i\sin[\frac{\pi}{T}(t-T)]} {2i\frac{\pi}{T} (t-T)}
+   \\&= \frac{\sin[\frac{\pi}{T}(t+T)]} {\frac{\pi}{T} (t+T)}   -
+        \frac{\sin[\frac{\pi}{T}(t-T)]} {\frac{\pi}{T} (t-T)}
+\end{align*}
+\end{proof}
+
+
