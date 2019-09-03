@@ -11,22 +11,21 @@ TARGET = abcdc
 #--------------------------------------
 # Files
 #--------------------------------------
-FILE_SRC  = main.tex     \
-            symbols.tex \
-            front.tex    \
-            frontcover.tex \
-            mathtbls.tex \
-            awgn.tex     \
-            cdma.tex     \
-            est_p.tex    \
-            equalize.tex \
-            isi.tex      \
-            mpath.tex    \
-            modcode.tex  \
-            ../common/com_channel.tex  \
-            ../common/mod_sin.tex      \
-            ../common/narrowband.tex   \
-            ../common/em.tex           
+FILE_SRC  = main.tex                          \
+            symbols.tex                       \
+            front.tex                         \
+            frontcover.tex                    \
+            mathtbls.tex                      \
+            ../common/cdma.tex                \
+            ../common/estimate_phase.tex      \
+            ../common/distorted_frequency.tex \
+            ../common/isi.tex                 \
+            ../common/multipath.tex           \
+            ../common/modulation_coding.tex   \
+            ../common/com_channel.tex         \
+            ../common/mod_sin.tex             \
+            ../common/narrowband.tex          \
+            ../common/em.tex
 
 FILE_APP  = ../common/archive.tex      \
             ../common/estimate.tex     \
@@ -48,7 +47,7 @@ FILE_BIB  = ../common/bib/algebra.bib  \
             ../common/bib/found.bib    \
             ../common/bib/mathhist.bib \
             ../common/bib/mathmisc.bib \
-            ../common/bib/digcom.bib 
+            ../common/bib/digcom.bib
 
 #--------------------------------------
 # Tools
@@ -99,6 +98,7 @@ mainx.tex: main.tex
 #--------------------------------------
 clean:
    -del mainx.*
+   -del *.idx
    -del *.aux
 
 new:
