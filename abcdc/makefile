@@ -12,43 +12,43 @@ TARGET = abcdc
 # Files
 #--------------------------------------
 FILE_SRC  = main.tex     \
+            symbols.tex \
             front.tex    \
             frontcover.tex \
+            mathtbls.tex \
             awgn.tex     \
             cdma.tex     \
-            em.tex       \
             est_p.tex    \
             equalize.tex \
-            graph.tex    \
             isi.tex      \
             mpath.tex    \
-            mathtbls.tex \
-            mod_sin.tex  \
             modcode.tex  \
-            symbols.tex \
-            comsys.tex   \
-            struct.tex   \
+            ../common/com_channel.tex  \
+            ../common/mod_sin.tex      \
+            ../common/narrowband.tex   \
+            ../common/em.tex           
 
-FILE_APP  = ..\common\archive.tex  \
-            ..\common\estimate.tex \
-            ..\common\harmonic.tex \
-            ..\common\info.tex     \
-            ..\common\operator.tex \
-            ..\common\mat_calc.tex
+FILE_APP  = ../common/archive.tex      \
+            ../common/estimate.tex     \
+            ../common/harmonic.tex     \
+            ../common/info.tex         \
+            ../common/operator.tex     \
+            ../common/mat_calc.tex
 
-FILE_STY  = dcsd.sty                   \
-            ..\common\sty\dan.sty      \
-            ..\common\sty\packages.sty \
-            ..\common\sty\math.sty     \
-            ..\common\sty\wavelets.sty \
-            ..\common\sty\language.sty
+FILE_STY  =                            \
+            ../common/sty/dan.sty      \
+            ../common/sty/packages.sty \
+            ../common/sty/math.sty     \
+            ../common/sty/physics.sty  \
+            ../common/sty/wavelets.sty \
+            ../common/sty/language.sty
 
-FILE_BIB  = ..\common\bib\algebra.bib  \
-            ..\common\bib\analysis.bib \
-            ..\common\bib\found.bib    \
-            ..\common\bib\mathhist.bib \
-            ..\common\bib\mathmisc.bib \
-            ..\common\bib\digcom.bib 
+FILE_BIB  = ../common/bib/algebra.bib  \
+            ../common/bib/analysis.bib \
+            ../common/bib/found.bib    \
+            ../common/bib/mathhist.bib \
+            ../common/bib/mathmisc.bib \
+            ../common/bib/digcom.bib 
 
 #--------------------------------------
 # Tools

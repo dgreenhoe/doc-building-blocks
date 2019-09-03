@@ -15,14 +15,14 @@
 # Commands
 #--------------------------------------
 all:
-  cd abcstat
+  cd abcdc
+    make
+  cd ..\abcstat
     make
   cd ..\probability
     make
   cd ..\abcssp
     make
-  #cd ..\dcsd
-  #  make
   cd ..\bsplines
     make
   cd ..\trigsys
