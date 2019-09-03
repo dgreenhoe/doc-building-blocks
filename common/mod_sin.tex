@@ -55,7 +55,7 @@ $\sue$ of the sent information sequence $\su$ from the received signal $r(t)$.
 
   \put( 300,  00 ){\framebox(100,100){} }
   \put( 300,  10 ){\makebox(100, 90)[b]{channel} }
-  \put( 210,  60 ){\makebox( 90, 50)[b]{$s(t;\theta)$} }
+  \put( 210,  60 ){\makebox( 90, 50)[b]{$\fs(t;\theta)$} }
   \put( 400,  60 ){\makebox( 80, 50)[b]{$r(t;\theta)$} }
 
   \put( 400,  50 ){\vector(1,0){100} }
@@ -99,7 +99,7 @@ Let
   \item $S$ be a set of modulation waveforms
     \defbox{
       S \eqd \left\{
-        \fs(t;u_n)=
+        \f\fs(t;u_n)=
         \left[a_n - a_{\mathsf{offset}}\left] \sqrt{\frac{2E}{T}} 
         \cos\left[2\pi\left[f_c+F f_n- f_{\mathsf{offset}}\left]t +
         \left[\theta_n \frac{2\pi}{N}-\theta_{\mathsf{offset}} \right]
@@ -126,26 +126,26 @@ Then
 \begin{theorem}
 %---------------------------------------
 Let $(\fg,S)$ be an MDMSC.
-The energy $\opE \fs(t;n)$ of $\fs(t;n)\in S$ is
-\formbox{ \opE s_n \eqa a_n^2 E. }
+The energy $\opE \f\fs(t;n)$ of $\f\fs(t;n)\in S$ is
+\thmbox{ \opE s_n \eqa a_n^2 E }
 \end{theorem}
 \begin{proof}
-\begin{eqnarray*}
-  \opE \fs(t;n)
-    &\eqd& \norm{a_n \sqrt{\frac{2E}{T}} \cos(2\pi(f_c+\Delta f f_n)t+\theta_n)}^2
-  \\&=& a_n^2 \frac{2E}{T}
-        \norm{ \cos(2\pi(f_c+\Delta f f_n)t+\theta_n)}^2
-  \\&=& a_n^2 \frac{2E}{T}
-        \int_0^T \cos^2(2\pi(f_c+\Delta f f_n)t+\theta_n) \dt
-  \\&=& a_n^2 \frac{2E}{T}\frac{1}{2}
-        \int_0^T 1 + \cos(4\pi(f_c+\Delta f f_n)t+4\theta_n) \dt
-  \\&=& a_n^2 \frac{E}{T}\left[
-        \int_0^T 1  \dt +
-        \int_0^T \cos(4\pi(f_c+\Delta f f_n)t+4\theta_n) \dt
-        \right]
-  \\&\eqa& a_n^2 \frac{E}{T}  \int_0^T 1  \dt
-  \\&=&    a_n^2 E
-\end{eqnarray*}
+\begin{align*}
+  \opE \f\fs(t;n)
+    &\eqd \norm{a_n \sqrt{\frac{2E}{T}} \cos(2\pi(f_c+\Delta f f_n)t+\theta_n)}^2
+  \\&= a_n^2 \frac{2E}{T}
+       \norm{ \cos(2\pi(f_c+\Delta f f_n)t+\theta_n)}^2
+  \\&= a_n^2 \frac{2E}{T}
+       \int_0^T \cos^2(2\pi(f_c+\Delta f f_n)t+\theta_n) \dt
+  \\&= a_n^2 \frac{2E}{T}\frac{1}{2}
+       \int_0^T 1 + \cos(4\pi(f_c+\Delta f f_n)t+4\theta_n) \dt
+  \\&= a_n^2 \frac{E}{T}\left[
+       \int_0^T 1  \dt +
+       \int_0^T \cos(4\pi(f_c+\Delta f f_n)t+4\theta_n) \dt
+       \right]
+  \\&\eqa a_n^2 \frac{E}{T}  \int_0^T 1  \dt
+  \\&=    a_n^2 E
+\end{align*}
 \end{proof}
 
 %======================================
@@ -156,95 +156,88 @@ The energy $\opE \fs(t;n)$ of $\fs(t;n)\in S$ is
 \begin{proposition}
 \label{lem:pam_basis}
 %---------------------------------------
-Let $(V, \inprod{\cdot}{\cdot}, S)$ be a PAM modulation space and 
-$s(t;m)\in S$.
-Then the set
-\[
-   \Psi \eqd \left\{ 
+Let $(V, \inprodn, S)$ be a modulation space and $\fs(t;m)\in S$.
+\propbox{
+  \brb{\text{$\otriple{V}{\inprodn}{S}$ is \prope{PAM}}}
+  \implies
+  \brb{\begin{array}{lM}
+    \Psi \eqd \left\{ 
       \psi(t) = \frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)
       \right\}
-\]
-
-is an orthonormal basis for $S$.
+    & is an orthonormal basis for $S$.
+  \end{array}}
+  }
 \end{proposition}
-
 \begin{proof}
+\begin{enumerate}
+  \item  Proof that $\Psi$ spans $S$:
+    \begin{align*}
+       \fs(t;m) 
+         &\eqd a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) 
+       \\&=    a_m\psi(t)
+    \end{align*}
 
-1. $\Psi$ spans $S$:
-\begin{eqnarray*}
-   s(t;m) 
-     &\eqd& a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) 
-   \\&=&    a_m\psi(t)
-\end{eqnarray*}
-
-2. $\Psi$ is orthonormal with respect to $\inprod{\cdot}{\cdot}$.
-
-\begin{eqnarray*}
+  \item Proof that $\Psi$ is orthonormal with respect to $\inprodn$.
+  \begin{align*}
    \inprod{\psi_c(t)}{\psi_c(t)}
-      &=& \inprod{\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
-                 {\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
-    \\&=& \frac{\sqrt{2}}{\norm{\sym}}\frac{\sqrt{2}}{\norm{\sym}}
-          \inprod{ \sym(t) \cos(2\pi f_c t)}
-                 { \sym(t) \cos(2\pi f_c t)}
-    \\&=& \frac{2}{\norm{\sym}^2}
-          \opL
-          \int_0^T \sym^2(t) \cos^2(2\pi f_c t) \; dt
-    \\&=& \frac{2}{\norm{\sym}^2}
-          \opL
-          \int_0^T \sym^2(t)\frac{1}{2}\left[1+ \cos(4\pi f_c t)\right] \; dt
-    \\&=& \frac{2}{\norm{\sym}^2}\frac{1}{2}
-          \int_0^T \sym^2(t)\left[ 1 \right] \; dt
-    \\&=& \frac{1}{\norm{\sym}^2}
-          \inprod{\sym(t)}{\sym(t)}
-    \\&=& \frac{1}{\norm{\sym}^2}
-          \norm{\sym(t)}^2
-    \\&=& 1
-\end{eqnarray*}
+      &= \inprod{\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
+                {\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
+    \\&= \frac{\sqrt{2}}{\norm{\sym}}\frac{\sqrt{2}}{\norm{\sym}}
+         \inprod{ \sym(t) \cos(2\pi f_c t)}
+                { \sym(t) \cos(2\pi f_c t)}
+    \\&= \frac{2}{\norm{\sym}^2}
+         \opL
+         \int_0^T \sym^2(t) \cos^2(2\pi f_c t) \; dt
+    \\&= \frac{2}{\norm{\sym}^2}
+         \opL
+         \int_0^T \sym^2(t)\frac{1}{2}\left[1+ \cos(4\pi f_c t)\right] \; dt
+    \\&= \frac{2}{\norm{\sym}^2}\frac{1}{2}
+         \int_0^T \sym^2(t)\left[ 1 \right] \; dt
+    \\&= \frac{1}{\norm{\sym}^2}
+         \inprod{\sym(t)}{\sym(t)}
+    \\&= \frac{1}{\norm{\sym}^2}
+         \norm{\sym(t)}^2
+    \\&= 1
+\end{align*}
+\end{enumerate}
 \end{proof}
-
-
-
 
 %---------------------------------------
 \begin{proposition}
 \label{lem:psk_basis}
 %---------------------------------------
-Let $(V, \inprod{\cdot}{\cdot}, S)$ be a PSK modulation space and 
-$s(t;\theta_m)\in S$.
-Then the set
-\[
+Let $(V, \inprodn, S)$ be a modulation space and $\fs(t;m)\in S$.
+\propbox{
+  \brb{\text{$\otriple{V}{\inprodn}{S}$ is \prope{PSK}}}
+  \implies
+  \brb{\begin{array}{lM}
    \Psi \eqd \left\{ \begin{array}{rcl}
       \psi_c(t) &=& \frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t), \\
-      \psi_s(t) &=& -\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)
+      \psi_\fs(t) &=& -\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)
       \end{array}\right\}
-\]
-
-is an orthonormal basis for $S$.
+    & is an orthonormal basis for $S$.
+  \end{array}}
+  }
 \end{proposition}
-
 \begin{proof}
+\begin{enumerate}
+  \item  $\Psi$ spans $S$:
+    \begin{align*}
+       \fs(t;a_m,b_m) 
+         &\eqd r\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t + \theta_m)
+       \\&=    r\frac{\sqrt{2}}{\norm{\sym}} \sym(t) 
+               \left[ \cos\theta_m\cos(2\pi f_ct)-\sin\theta_m\sin(2\pi f_ct)\right]  
+       \\&=    r\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\cos\theta_m\cos(2\pi f_ct) - 
+               r\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\sin\theta_m\sin(2\pi f_ct)
+       \\&=    r\cos\theta_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\cos(2\pi f_ct) - 
+               r\sin\theta_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\sin(2\pi f_ct)
+       \\&=    r\cos\theta_m \psi_c(t) + r_m\sin\theta_m \psi_\fs(t)
+    \end{align*}
 
-1. $\Psi$ spans $S$:
-\begin{eqnarray*}
-   s(t;a_m,b_m) 
-     &\eqd& r\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t + \theta_m)
-   \\&=&    r\frac{\sqrt{2}}{\norm{\sym}} \sym(t) 
-            \left[ \cos\theta_m\cos(2\pi f_ct)-\sin\theta_m\sin(2\pi f_ct)\right]  
-   \\&=&    r\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\cos\theta_m\cos(2\pi f_ct) - 
-            r\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\sin\theta_m\sin(2\pi f_ct)
-   \\&=&    r\cos\theta_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\cos(2\pi f_ct) - 
-            r\sin\theta_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t)\sin(2\pi f_ct)
-   \\&=&    r\cos\theta_m \psi_c(t) + r_m\sin\theta_m \psi_s(t)
-\end{eqnarray*}
-
-2. $\Psi$ is orthonormal with respect to $\inprod{\cdot}{\cdot}$.
-
-See proof of Proposition~\ref{lem:QAM_basis} \prefpo{lem:QAM_basis}.
-
+\item Proof that $\Psi$ is orthonormal with respect to $\inprodn$:
+  See proof of \prefpp{lem:QAM_basis}.
+\end{enumerate}
 \end{proof}
-
-
-
 
 \begin{figure}[ht]\color{figcolor}
 \begin{center}
@@ -314,51 +307,50 @@ Let $(g,S)$ be an FSK modulation.
 
 \begin{enumerate}
   \item Proof for identical phases:
-\begin{eqnarray*}
+\begin{align*}
    \inprod{\psi_m(t)}{\psi_n(t)}
-     &=&   \inprod{\sqrt{\frac{2}{T}}\cos[2\pi (f_c+mf_d)t]}
-                  {\sqrt{\frac{2}{T}}\cos[2\pi (f_c+nf_d)t]}
-   \\&=&   \frac{2}{T}\inprod{\cos[2\pi (f_c+mf_d)t]}{\cos[2\pi (f_c+nf_d)t]}
-   \\&=&   \frac{2}{T}\int_0^T \cos[2\pi (f_c+mf_d)t] \cos[2\pi (f_c+nf_d)t] \; dt
-   \\&=&   \frac{1}{2}\frac{2}{T}\int_0^T \cos[2\pi(f_c+mf_d)t-2\pi(f_c+nf_d)t]+  \cos[2\pi(f_c+mf_d)t+2\pi(f_c+nf_d)t] \; dt
-   \\&=&   \frac{1}{T}\int_0^T \cos[2\pi(m-n)f_dt] + \cos[4\pi(f_ct+2\pi(m+n)f_dt] \; dt
-   \\&\eqa& \frac{1}{T}\int_0^T \cos[2\pi(m-n)f_dt]  \; dt
-   \\&=&   \left.\frac{1}{T} \frac{1}{2\pi(m-n)f_d} \sin[2\pi(m-n)f_dt] \right|_0^T
-   \\&=&   \frac{\sin[2\pi(m-n)f_dT]}{2\pi(m-n)f_d T} 
-   \\&=&   \left\{
-           \begin{tabular}{ll}
-              $1$                                           & for $m=n$ \\
-              $\frac{\sin[2\pi(m-n)f_dT]}{2\pi(m-n)f_d T}$  & for $m\ne n$.
-           \end{tabular}
-           \right.
-   \\&=&   \left\{
-           \begin{tabular}{ll}
-              $1$                                           & for $m=n$ \\
-              $0$  &       for $m\ne n$ and $f_d=\frac{k}{2T}$, $k=1,2,3,\ldots$.
-           \end{tabular}
-           \right.
-\end{eqnarray*}
+     &=   \inprod{\sqrt{\frac{2}{T}}\cos[2\pi (f_c+mf_d)t]}
+                 {\sqrt{\frac{2}{T}}\cos[2\pi (f_c+nf_d)t]}
+   \\&=   \frac{2}{T}\inprod{\cos[2\pi (f_c+mf_d)t]}{\cos[2\pi (f_c+nf_d)t]}
+   \\&=   \frac{2}{T}\int_0^T \cos[2\pi (f_c+mf_d)t] \cos[2\pi (f_c+nf_d)t] \; dt
+   \\&=   \frac{1}{2}\frac{2}{T}\int_0^T \cos[2\pi(f_c+mf_d)t-2\pi(f_c+nf_d)t]+  \cos[2\pi(f_c+mf_d)t+2\pi(f_c+nf_d)t] \; dt
+   \\&=   \frac{1}{T}\int_0^T \cos[2\pi(m-n)f_dt] + \cos[4\pi(f_ct+2\pi(m+n)f_dt] \; dt
+   \\&\eqa \frac{1}{T}\int_0^T \cos[2\pi(m-n)f_dt]  \; dt
+   \\&=   \left.\frac{1}{T} \frac{1}{2\pi(m-n)f_d} \sin[2\pi(m-n)f_dt] \right|_0^T
+   \\&=   \frac{\sin[2\pi(m-n)f_dT]}{2\pi(m-n)f_d T} 
+   \\&=   \left\{
+          \begin{tabular}{ll}
+             $1$                                           & for $m=n$ \\
+             $\frac{\sin[2\pi(m-n)f_dT]}{2\pi(m-n)f_d T}$  & for $m\ne n$.
+          \end{tabular}
+          \right.
+   \\&=   \left\{
+          \begin{tabular}{ll}
+             $1$                                           & for $m=n$ \\
+             $0$  &       for $m\ne n$ and $f_d=\frac{k}{2T}$, $k=1,2,3,\ldots$.
+          \end{tabular}
+          \right.
+\end{align*}
 
 \item Proof for different phase:
-\begin{eqnarray*}
-   \inprod{\psi_m(t;\phi)}{\psi_n(t)}
-      &=& \opL \inprod{\cos(2\pi f_m t + \phi)}{\cos(2\pi f_n t)}
-    \\&=& \opL \int_t^{t+T} \cos(2\pi f_m t + \phi) \cos(2\pi f_n t) \; dt
-    \\&=& \int_t^{t+T} \cos\left[2\pi (f_m-f_n) t + \phi\right] \dt
-    \\&=& \left.\frac{\sin[2\pi (f_m-f_n) t + \phi]}
-                     {2\pi(f_m-f_n)}
-          \right|_t^{t+T}
-    \\&=& \frac{\sin[2\pi (f_m-f_n)(t+T) + \phi]-\sin[2\pi (f_m-f_n)t + \phi]}{2\pi(f_m-f_n)}
-\end{eqnarray*}
+  \begin{align*}
+     \inprod{\psi_m(t;\phi)}{\psi_n(t)}
+        &= \opL \inprod{\cos(2\pi f_m t + \phi)}{\cos(2\pi f_n t)}
+      \\&= \opL \int_t^{t+T} \cos(2\pi f_m t + \phi) \cos(2\pi f_n t) \; dt
+      \\&= \int_t^{t+T} \cos\left[2\pi (f_m-f_n) t + \phi\right] \dt
+      \\&= \left.\frac{\sin[2\pi (f_m-f_n) t + \phi]}
+                      {2\pi(f_m-f_n)}
+           \right|_t^{t+T}
+      \\&= \frac{\sin[2\pi (f_m-f_n)(t+T) + \phi]-\sin[2\pi (f_m-f_n)t + \phi]}{2\pi(f_m-f_n)}
+  \end{align*}
 
-For orthogonality, this implies
-
-\begin{eqnarray*}
-   2\pi (f_m-f_n)(t+T) + \phi &=& 2\pi (f_m-f_n)t + \phi + k2\pi, k=1,2,3,\ldots \\
-   2\pi (f_m-f_n)T  &=& k2\pi \\
-   (f_m-f_n)T  &=& k \\
-   f_m-f_n  &=& \frac{k}{T} \\
-\end{eqnarray*}
+\item For orthogonality, this implies
+  \begin{align*}
+     2\pi (f_m-f_n)(t+T) + \phi &= 2\pi (f_m-f_n)t + \phi + k2\pi, k=1,2,3,\ldots \\
+     2\pi (f_m-f_n)T  &= k2\pi \\
+     (f_m-f_n)T  &= k \\
+     f_m-f_n  &= \frac{k}{T} \\
+  \end{align*}
 \end{enumerate}
 \end{proof}
 
@@ -366,13 +358,13 @@ For orthogonality, this implies
 \begin{proposition}
 \label{lem:QAM_basis}
 %---------------------------------------
-Let $(V, \inprod{\cdot}{\cdot}, S)$ be a QAM modulation space and 
-$s(t;a_m,b_m)\in S$.
+Let $(V, \inprodn, S)$ be a QAM modulation space and 
+$\fs(t;a_m,b_m)\in S$.
 Then the set
 \[
    \Psi \eqd \left\{ \begin{array}{rcl}
       \psi_c(t) &=& \frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t), \\
-      \psi_s(t) &=& -\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)
+      \psi_\fs(t) &=& -\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)
       \end{array}\right\}
 \]
 
@@ -383,13 +375,13 @@ is an orthonormal basis for $S$.
 
 1. $\Psi$ spans $S$:
 \begin{eqnarray*}
-   s(t;a_m,b_m) 
+   \fs(t;a_m,b_m) 
      &\eqd& a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
             b_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)
-   \\&=&    a_m\psi_c(t) + b_m\psi_s(t)
+   \\&=&    a_m\psi_c(t) + b_m\psi_\fs(t)
 \end{eqnarray*}
 
-2. $\Psi$ is orthonormal with respect to $\inprod{\cdot}{\cdot}$.
+2. $\Psi$ is orthonormal with respect to $\inprodn$.
 
 \begin{eqnarray*}
    \inprod{\psi_c(t)}{\psi_c(t)}
@@ -412,7 +404,7 @@ is an orthonormal basis for $S$.
           \norm{\sym(t)}^2
     \\&=& 1
 \\ \\
-   \inprod{\psi_s(t)}{\psi_s(t)}
+   \inprod{\psi_\fs(t)}{\psi_\fs(t)}
       &=& \inprod{\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)}
                  {\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)}
     \\&=& \frac{\sqrt{2}}{\norm{\sym}}\frac{\sqrt{2}}{\norm{\sym}}
@@ -432,8 +424,8 @@ is an orthonormal basis for $S$.
           \norm{\sym(t)}^2
     \\&=& 1
 \\ \\
-   \inprod{\psi_s(t)}{\psi_c(t)}
-      &=& \inprod{\psi_c(t)}{\psi_s(t)}
+   \inprod{\psi_\fs(t)}{\psi_c(t)}
+      &=& \inprod{\psi_c(t)}{\psi_\fs(t)}
     \\&=& \inprod{\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)}
                  {\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)}
     \\&=& \frac{\sqrt{2}}{\norm{\sym}}\frac{\sqrt{2}}{\norm{\sym}}
@@ -462,8 +454,8 @@ $(a_m,b_m)$.
 The elements of $S$ can also be represented in polar form
 $(r_m,\theta_m)$ as shown below.
 \begin{eqnarray*}
-   s(t;m) 
-     &=& \dot{s}_c(a_m) \psi_c(t) + \dot{s}_c(b_m) \psi_s(t)
+   \fs(t;m) 
+     &=& \dot{s}_c(a_m) \psi_c(t) + \dot{s}_c(b_m) \psi_\fs(t)
    \\&=& r_m \frac{\sqrt{2}}{\norm{\sym}} \sym(t) 
          \left[
             a_m \cos(2\pi f_c t) -b_m \sin(2\pi f_c t)
@@ -499,7 +491,7 @@ $(r_m,\theta_m)$ as shown below.
   \put(  10 ,  34 ){$r_m$} 
   \put(  20 ,   5 ){$\theta_m$} 
   \put( 110 ,  -5 ){$\psi_c(t)=\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t)$}
-  \put(   0 , 110 ){$\psi_s(t)=-\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)$}
+  \put(   0 , 110 ){$\psi_\fs(t)=-\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t)$}
 
   \put(  60 ,  60 ){\circle*{10}}
   \put( -60 ,  60 ){\circle*{10}}
@@ -526,13 +518,14 @@ $(r_m,\theta_m)$ as shown below.
 \index{energy!Pulse Amplitude Modulation}
 \index{distance!Pulse Amplitude Modulation}
 %---------------------------------------
-The PAM modulation space has {\bf energy} and {\bf distance} measures
-\begin{eqnarray*}
-   \flE{s(t;m)}          &=& a_m^2                \\
-   \metric{s(t;m)}{s(t;n)} &=& |a_m - a_n|.
-\end{eqnarray*}
+\thmboxt{
+  The PAM modulation space has {\bf energy} and {\bf distance} measures
+  \\\indentx$\begin{array}{rcl}
+   \opE{\fs(t;m)}              &=& a_m^2                \\
+   \metric{\fs(t;m)}{\fs(t;n)} &=& |a_m - a_n|.
+  \end{array}$
+  }
 \end{theorem}
-
 \begin{proof}
 Because PAM is a modulation space,
 \begin{liste}
@@ -548,23 +541,23 @@ Because PAM is a modulation space,
 %---------------------------------------
 Let
 \begin{liste}
-   \item $(V, \inprod{\cdot}{\cdot}, S)$ be a modulation space and $s(t)\in S$
+   \item $(V, \inprodn, S)$ be a modulation space and $\fs(t)\in S$
    \item $\Psi\eqd\{ \psi_n(t): n=1,2,\ldots,N\}$ 
          be a set of orthonormal functions that span $S$
-   \item $\dot{s}_n\eqd\inprod{s(t)}{\psi_n(t)}$
+   \item $\dot{s}_n\eqd\inprod{\fs(t)}{\psi_n(t)}$
 \end{liste}
-
-Then the {\bf energy} in $s(t)$ is
-\[ \flE s(t) = \sum_{n=1}^N |\dot{s}_n|^2. \]
+\propboxt{
+  The {\bf energy} in $\fs(t)$ is
+  \\\indentx$\ds\opE \fs(t) = \sum_{n=1}^N \abs{\dot{s}_n}^2$
+  }
 \end{proposition}
-
 \begin{proof}
 \begin{align*}
-   \flE s(t)
-     &\eqd \norm{s(t)}^2      
+   \opE \fs(t)
+     &\eqd \norm{\fs(t)}^2      
    \\&=    \norm{\sum_{n=1}^N \dot{s}_n \psi_n(t)}^2  
    \\&=    \sum_{n=1}^N |\dot{s}_n|^2   
-     &&    \text{by \prefp{thm:ortho_norm} (\prefpo{thm:ortho_norm}) }
+     %&&    \text{by \prefp{thm:ortho_norm} (\prefpo{thm:ortho_norm}) }
 \end{align*}
 \end{proof}
 
@@ -575,99 +568,92 @@ Then the {\bf energy} in $s(t)$ is
 %---------------------------------------
 Let 
 \begin{liste}
-   \item $(V, \inprod{\cdot}{\cdot}, S)$ be a modulation space and $s(t;m)\in S$
+   \item $(V, \inprodn, S)$ be a modulation space and $\fs(t;m)\in S$
    \item $\Psi\eqd\{ \psi_n(t): n=1,2,\ldots,N\}$ 
          be a set of orthonormal functions that span $S$
-   \item $\dot{s}_n(m)\eqd\inprod{s(t;m)}{\psi_n(t)}$
+   \item $\dot{s}_n(m)\eqd\inprod{\fs(t;m)}{\psi_n(t)}$
 \end{liste}
-
-Then the {\bf distance} between waveforms $s(t;m)$ and $s(t;k)$ is
-\[ \metric{s(t;m)}{s(t;k)} \eqd \sqrt{\sum_{n=1}^N |\dot{s}_n(m)-\dot{s}_n(k)|^2}. \]
+\propboxt{
+  The {\bf distance} between waveforms $\fs(t;m)$ and $\fs(t;k)$ is
+  \\\indentx$\ds\metric{\fs(t;m)}{\fs(t;k)} \eqd \sqrt{\sum_{n=1}^N |\dot{s}_n(m)-\dot{s}_n(k)|^2}$
+  }
 \end{proposition}
-
 \begin{proof}
-\begin{eqnarray*}
-   \distsq{s(t;m)}{s(t;k)}
-     &\eqd& \norm{ s(t;m)-s(t;k)}^2 
-   \\&=&    \sum_{n=1}^N |\dot{s}_n(m)-\dot{s}_n(k)|^2 
-        \hspace{1cm}\mbox{ by \prefp{thm:ortho_dist} (\prefpo{thm:ortho_dist})} 
-\end{eqnarray*}
+\begin{align*}
+   \distsq{\fs(t;m)}{\fs(t;k)}
+     &\eqd \norm{ \fs(t;m)-\fs(t;k)}^2 
+   \\&=    \sum_{n=1}^N |\dot{s}_n(m)-\dot{s}_n(k)|^2 
+     && \text{by \prefp{thm:ortho_dist} (\prefpo{thm:ortho_dist})} 
+\end{align*}
 \end{proof}
-
 
 %---------------------------------------
 \begin{theorem}
 \index{energy!Phase Shift Keying}
 \index{distance!Phase Shift Keying}
 %---------------------------------------
-The PSK modulation space has {\bf energy} and {\bf distance} measures
-\begin{eqnarray*}
-   \flE{s(t;m)}  &=& \ds r^2              
-\\
-   \metric{s(t;m)}{s(t;n)} 
-     &=& r \sqrt{ 2 - 2\cos\left( \theta_m - \theta_n \right)}.
-\end{eqnarray*}
+\thmboxt{
+  The PSK modulation space has {\bf energy} and {\bf distance} measures
+  \\\indentx$\begin{array}{rcl}
+     \opE{\fs(t;m)}               &=& \ds r^2              
+   \\\metric{\fs(t;m)}{\fs(t;n)}  &=& r \sqrt{ 2 - 2\cos\left( \theta_m - \theta_n \right)}.
+  \end{array}$
+  }
 \end{theorem}
-
 \begin{proof}
 \begin{align*}
-   \flE{s(t;m)} 
-     &\eqd \norm{s(t;m)}^2
+   \opE{\fs(t;m)} 
+     &\eqd \norm{\fs(t;m)}^2
    \\&=    \norm{\dot{s}_c(m)\psi_1(t) + \dot{s}_s(m)\psi_2(t)}^2
    \\&=    \dot{s}_c^2(m) + \dot{s}_s^2(m)  
-     &&    \text{by \prefp{thm:ortho_norm} }
+     %&&    \text{by \prefp{thm:ortho_norm} }
    \\&=    \left( r \cos\theta_m \right)^2 +
            \left( r \sin\theta_m \right)^2 
    \\&=    r^2 \left( \cos^2\theta_m + \sin^2\theta_m \right)
    \\&=    r^2
 \end{align*}
 
-
-\begin{eqnarray*}
-   \distsq{s(t;m)}{s(t;n)}
-     &=& \norm{s(t;m)-s(t;n)}^2
-   \\&=& \norm{ [\dot{s}_c(m)\psi_1(t)+\dot{s}_s(m)\psi_2(t)]-   
-                [\dot{s}_c(n)\psi_1(t)+\dot{s}_s(n)\psi_2(t)]
-              }^2
-   \\&=& \norm{ [\dot{s}_c(m)-\dot{s}_c(n)]\psi_1(t) +
-                [\dot{s}_s(m)-\dot{s}_s(n)]\psi_2(t)
-              }^2
-   \\&=& [\dot{s}_c(m)-\dot{s}_c(n)]^2 + [\dot{s}_s(m)-\dot{s}_s(n)]^2
-         \hspace{3ex} \mbox{ by \prefp{thm:ortho_dist} }
-   \\&=& [r\cos \theta_m - r\cos \theta_n]^2 + [r\sin \theta_m + r\sin \theta_n ]^2
-   \\&=& r^2\left( [\cos \theta_m - \cos \theta_n]^2 + [\sin \theta_m + \sin \theta_n ]^2 \right)
-   \\&=& r^2\left( [\cos^2\theta_m -2\cos \theta_m\cos \theta_n + \cos^2 \theta_n] + 
-                   [\sin^2\theta_m -2\sin \theta_m\sin \theta_n + \sin^2 \theta_n]\right)
-   \\&=& r^2\left( [\cos^2\theta_m + \sin^2 \theta_m] +
-                   [\cos^2\theta_n + \cos^2 \theta_n] -
-                   2[\cos \theta_m\cos \theta_n + \sin \theta_m \sin \theta_n ] 
-            \right)
-   \\&=& r^2[ 1 + 1 - 2\cos(\theta_m-\theta_n) ]
-   \\&=& 2r^2[ 1 - \cos(\theta_m-\theta_n) ]
-\end{eqnarray*}
+\begin{align*}
+   \distsq{\fs(t;m)}{\fs(t;n)}
+     &= \norm{\fs(t;m)-\fs(t;n)}^2
+   \\&= \norm{ [\dot{s}_c(m)\psi_1(t)+\dot{s}_s(m)\psi_2(t)]-   
+               [\dot{s}_c(n)\psi_1(t)+\dot{s}_s(n)\psi_2(t)]
+             }^2
+   \\&= \norm{ [\dot{s}_c(m)-\dot{s}_c(n)]\psi_1(t) +
+               [\dot{s}_s(m)-\dot{s}_s(n)]\psi_2(t)
+             }^2
+   \\&= [\dot{s}_c(m)-\dot{s}_c(n)]^2 + [\dot{s}_s(m)-\dot{s}_s(n)]^2
+        \hspace{3ex} \mbox{ by \prefp{thm:ortho_dist} }
+   \\&= [r\cos \theta_m - r\cos \theta_n]^2 + [r\sin \theta_m + r\sin \theta_n ]^2
+   \\&= r^2\left( [\cos \theta_m - \cos \theta_n]^2 + [\sin \theta_m + \sin \theta_n ]^2 \right)
+   \\&= r^2\left( [\cos^2\theta_m -2\cos \theta_m\cos \theta_n + \cos^2 \theta_n] + 
+                  [\sin^2\theta_m -2\sin \theta_m\sin \theta_n + \sin^2 \theta_n]\right)
+   \\&= r^2\left( [\cos^2\theta_m + \sin^2 \theta_m] +
+                  [\cos^2\theta_n + \cos^2 \theta_n] -
+                  2[\cos \theta_m\cos \theta_n + \sin \theta_m \sin \theta_n ] 
+           \right)
+   \\&= r^2[ 1 + 1 - 2\cos(\theta_m-\theta_n) ]
+   \\&= 2r^2[ 1 - \cos(\theta_m-\theta_n) ]
+\end{align*}
 \end{proof}
-
-
-
 
 %---------------------------------------
 \begin{theorem}
 \index{energy!Frequency Shift Keying}
 \index{distance!Frequency Shift Keying}
 %---------------------------------------
-The FSK modulation space has {\bf energy} and {\bf distance} measures
-equivalent to
-\begin{eqnarray*}
-   \flE{s(t;m)}          &=& \dot{s}^2            \\
-   \metric{s(t;m)}{s(t;n)} &=& \sqrt{2}\;\dot{s}.
-\end{eqnarray*}
+\thmboxt{
+  The FSK modulation space has {\bf energy} and {\bf distance} measures equivalent to
+  \\\indentx$\begin{array}{rcl}
+     \opE{\fs(t;m)}              &=& \dot{s}^2            \\
+     \metric{\fs(t;m)}{\fs(t;n)} &=& \sqrt{2}\;\dot{s}
+\end{array}$}
 \end{theorem}
-
 \begin{proof}
 The energy measure is a result of \prefp{thm:ms_energy} (\prefpo{thm:ms_energy}).\\
 For distance,
 \begin{align*}
-   \distsq{s(t;m)}{s(t;n)}
+   \distsq{\fs(t;m)}{\fs(t;n)}
      &= \sum_{k=1}^N |\dot{s}_k(m)-\dot{s}_{nk}|^2 
      && \text{\prefp{thm:ms_dist}}
    \\&= \sum_{k=1}^N |\dot{s}_k(m)-\dot{s}_{nk}|^2 
@@ -681,33 +667,31 @@ For distance,
 \index{energy!Quadrature Amplitude Modulation}
 \index{distance!Quadrature Amplitude Modulation}
 %---------------------------------------
-The QAM modulation space has {\bf energy} and {\bf distance} measures
-equivalent to
-\begin{align*}
-  \flE{s(t;m)}    &= a_m^2 + b_m^2  &=& r_m^2 
-  \\
-  \metric{s(t;m)}{s(t;n)} 
-    &= \sqrt{(a_m-a_n)^2 + (b_m-b_n)^2}.
-\end{align*}
+\thmboxt{
+  The QAM modulation space has {\bf energy} and {\bf distance} measures equivalent to
+  \\\indentx$\begin{array}{rclcl}
+    \opE{\fs(t;m)}    &=& a_m^2 + b_m^2  &=& r_m^2 
+  \\\metric{\fs(t;m)}{\fs(t;n)} &= \sqrt{(a_m-a_n)^2 + (b_m-b_n)^2}
+  \end{array}$}
 \end{theorem}
 \begin{proof}
-\begin{eqnarray*}
-   \flE{s(t;m)} 
-     &\eqd& \norm{s(t;m)}^2 
-   \\&=&    \norm{
-            a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
-            b_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t) 
-            }^2
-   \\&=&    \norm{ a_m \psi_c(t) + b_m \psi_s(t) }^2
-   \\&=&    a_m^2 + b_m^2  \hspace{1cm}\mbox{ by \prefp{thm:ortho_norm} \prefpo{thm:ortho_norm} }
-   \\&=&    ( r_m \cos\theta_m )^2 + ( r_m \sin\theta_m )^2 
-   \\&=&    r_m^2 \left( \cos^2\theta_m + \sin^2\theta_m \right)
-   \\&=&    r_m^2
-\end{eqnarray*}
+\begin{align*}
+   \opE{\fs(t;m)} 
+     &\eqd \norm{\fs(t;m)}^2 
+   \\&=    \norm{
+           a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
+           b_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t) 
+           }^2
+   \\&=    \norm{ a_m \psi_c(t) + b_m \psi_\fs(t) }^2
+   \\&=    a_m^2 + b_m^2  
+    %&& \text{by \prefp{thm:ortho_norm} \prefpo{thm:ortho_norm}}
+   \\&=    ( r_m \cos\theta_m )^2 + ( r_m \sin\theta_m )^2 
+   \\&=    r_m^2 \left( \cos^2\theta_m + \sin^2\theta_m \right)
+   \\&=    r_m^2
+\end{align*}
 
-\begin{eqnarray*}
-   \distsq{s(t;m)}{s(t;n)}
-     &\eqd& \norm{s(t;m) - s(t;n) }^2
+\begin{align*}
+   \distsq{\fs(t;m)}{\fs(t;n)} &\eqd \norm{\fs(t;m) - \fs(t;n) }^2
    %\\&=& \norm{\left(
    %         a_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
    %         b_m\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t) 
@@ -715,16 +699,13 @@ equivalent to
    %         a_n\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \cos(2\pi f_c t) + 
    %         b_n\frac{\sqrt{2}}{\norm{\sym}} \sym(t) \sin(2\pi f_c t) 
    %      \right) }^2
-   \\&=& \norm{\left(a_m \psi_c(t) + b_m\psi_s(t)\right) - 
-               \left(a_n \psi_c(t) + b_n\psi_s(t)\right) }^2
-   \\&=& |a_m-a_n|^2 + |b_m-b_n|^2
-         \hspace{1cm}\mbox{by \prefp{thm:ortho_dist} \prefpo{thm:ortho_dist}}
-\end{eqnarray*}
+   \\&= \norm{\left(a_m \psi_c(t) + b_m\psi_\fs(t)\right) - 
+              \left(a_n \psi_c(t) + b_n\psi_\fs(t)\right) }^2
+   \\&= |a_m-a_n|^2 + |b_m-b_n|^2
+     && \text{by \prefp{thm:ortho_dist} \prefpo{thm:ortho_dist}}
+\end{align*}
 \end{proof}
 
-
-
-\clearpage
 %======================================
 \section{Continuous Phase Modulation (CPM)}
 \index{Continuous Phase Modulation}
@@ -752,7 +733,7 @@ equivalent to
 
   \put( 300,  00 ){\framebox(100,100){} }
   \put( 300,  10 ){\makebox(100, 80)[c]{channel} }
-  \put( 210,  60 ){\makebox( 90, 50)[b]{$\fs(t;\{u_n\})$} }
+  \put( 210,  60 ){\makebox( 90, 50)[b]{$\f\fs(t;\{u_n\})$} }
   \put( 400,  60 ){\makebox( 80, 50)[b]{$\fr(t;\{u_n\})$} }
 
   \put( 400,  50 ){\vector(1,0){100} }
@@ -775,9 +756,6 @@ equivalent to
    \label{fig:cpm_model}
    }
 \end{figure}
-
-
-
 
 \begin{figure}[ht] \color{figcolor}
 \begin{center}
@@ -828,10 +806,9 @@ equivalent to
    }
 \end{figure}
 
-
 Continuous modulation can be realized using {\em phase pulses}
-which are illustrated in Figure~\ref{fig:CPM_pp} and defined in 
-Definition~\ref{def:CPM_pp} (next).
+which are illustrated in \prefpp{fig:CPM_pp} and defined in 
+\pref{def:CPM_pp} (next).
 %---------------------------------------
 \begin{definition}
 \label{def:CPM_pp}
@@ -860,7 +837,7 @@ Let
 Then
 {\bf Continuous Phase Modulation} (CPM) signalling waveforms are
 \begin{eqnarray*}
-   \fs(t;\ldots,u_{n-1},u_n)
+   \f\fs(t;\ldots,u_{n-1},u_n)
      &=& a \frac{2}{\sqrt{T}} 
            \cos\left[ 
               2\pi f_ct + 
@@ -938,15 +915,6 @@ Then
 \end{align*}
 \end{fsL}
 
-
-
-
-
-
-
-
-
-
 %---------------------------------------
 \subsection{Special Cases}
 %---------------------------------------
@@ -961,7 +929,7 @@ Then
 
 In the case of Full Response CPM, the signalling waveform simplifies to
 \begin{align*}
-   \fs(t;\ldots,u_{n-1},u_n)
+   \f\fs(t;\ldots,u_{n-1},u_n)
      &= a \frac{2}{\sqrt{T}} 
           \cos\left(
              2\pi f_ct + 
@@ -982,20 +950,19 @@ In the case of Full Response CPM, the signalling waveform simplifies to
              }
 \end{align*}
 
-
 %---------------------------------------
 \begin{definition}
 \index{Continuous Phase Frequency Shift Keying}
 \index{CPFSK}
 %---------------------------------------
-{\bf Continuous Phase Frequency Shift Keying} (CPFSK)
+\opd{Continuous Phase Frequency Shift Keying} (CPFSK)
 is full response CPM ($L=1$) with $h_n=h$ is constant
 and LREC phase pulse.
 \end{definition}
 
 In CPFSK, the signalling waveform is
 \begin{align*}
-   \fs(t;\ldots,u_{n-1},u_n)
+   \f\fs(t;\ldots,u_{n-1},u_n)
      &=& a \frac{2}{\sqrt{T}} 
            \cos\left(
               2\pi f_ct + 
@@ -1024,14 +991,14 @@ The waveforms of CPFSK are therefore orthogonal if $h=m\frac{1}{2}$.
 \begin{definition}
 \index{Orthogonal Continuous Phase Frequency Shift Keying}
 %---------------------------------------
-{\bf Orthogonal Continuous Phase Frequency Shift Keying}
+\opd{Orthogonal Continuous Phase Frequency Shift Keying}
 is full response CPM ($L=1$) with $h_n\in\set{m\frac{1}{2}}{m\in\Z}$
 and LREC phase pulse.
 \end{definition}
 
 For $m\in\Zp$, orthogonal CPFSK signalling waveforms are
 \begin{align*}
-   \fs(t;\ldots,u_{n-1},u_n)
+   \f\fs(t;\ldots,u_{n-1},u_n)
      &= a \frac{2}{\sqrt{T}} 
           \cos\left(
              2\pi f_ct + 
@@ -1060,14 +1027,14 @@ the orthogonal CPFSK is also called {\em Minimum Shift Keying}.
 \index{Minimum Shift Keying}
 \index{MSK}
 %---------------------------------------
-{\bf Minimum Phase Shift Keying} (MSK) is 
+\opd{Minimum Phase Shift Keying} (MSK) is 
 is full response CPM ($L=1$) with $h_n=\frac{1}{2}$
 and LREC phase pulse.
 \end{definition}
 
 In MSK, the signalling waveform is
 \begin{eqnarray*}
-   \fs(t;\ldots,u_{n-1},u_n)
+   \f\fs(t;\ldots,u_{n-1},u_n)
      &=& a \frac{2}{\sqrt{T}} 
            \cos\left( 
               2\pi f_ct + 
@@ -1098,18 +1065,12 @@ In summary:
    Minimum Shift Keying (MSK)                      & LREC & $1$  & $\frac{1}{2}$ 
 \end{tabular}
 
-
-
-
-
 %---------------------------------------
 \subsection{Detection}
 \index{trellis}
 %---------------------------------------
 The state of the signalling waveforms at intervals $nT$ can be
 described by trellis diagrams.
-
-
 
 \begin{figure}[ht]\color{figcolor}
 \begin{center}
@@ -1153,10 +1114,6 @@ described by trellis diagrams.
    }
 \end{center}
 \end{figure}
-
-
-
-
 
 \begin{figure}[ht]\color{figcolor}
 \begin{center}
@@ -1203,6 +1160,3 @@ described by trellis diagrams.
    }
 \end{center}
 \end{figure}
-
-
-
