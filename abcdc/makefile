@@ -25,6 +25,7 @@ FILE_SRC  = main.tex                          \
             ../common/com_channel.tex         \
             ../common/mod_sin.tex             \
             ../common/narrowband.tex          \
+            ../common/projection_statistics.tex \
             ../common/em.tex
 
 FILE_APP  = ../common/archive.tex      \

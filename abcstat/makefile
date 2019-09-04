@@ -22,12 +22,12 @@ FILE_SRC  =                       \
   ../common/com_channel.tex       \
   ../common/dtft.tex              \
   ../common/expectation.tex       \
-  ../common/kl_basis.tex          \
   ../common/moment_estimation.tex \
   ../common/norm_minimization.tex \
   ../common/operator.tex          \
   ../common/pdfcdf.tex            \
   ../common/probspace.tex         \
+  ../common/projection_statistics.tex \
   ../common/matched_filter.tex    \
   ../common/spline.tex            \
   ../common/randprocess.tex       \
