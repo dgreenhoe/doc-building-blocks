@@ -34,10 +34,9 @@
    }
 \end{figure}
 
-Communication systems are often assumed to be {\em narrowband} meaning
+Communication systems are often assumed to be \prope{narrowband} (next definition) meaning
 the bandwidth of the information carrying signal is ``small" compared
-to the carrier frequency
-(see \prefpp{fig:narrowband}).
+to the carrier frequency \xref{fig:narrowband}.
 
 %---------------------------------------
 \begin{definition}
@@ -47,14 +46,14 @@ to the carrier frequency
 Let $\fx:\R\to\R$ be an information carrying waveform,
 $\Fx(f)=[\opFT\fx](f)$ and $\f_c\in\R$.
 \defboxt{
-  $\fx(t)$ is a {\bf narrowband signal} if
+  The signal $\fx(t)$ is \propd{narrowband} if
   \\\indentx$\begin{array}{FMD}
      (1).& The energy of $\Fx(f)$ is located in the vicinity of frequency $\pm f_c$ & and\\
      (2).& the bandwidth of $\Fx(f)$ is ``small" compared to $f_c$.
   \end{array}$\\
   If $\fx(t)$ is the transmitted signal in a communication system
-  $\opSys=\opR\opC\opT$ such that $\fx(t) = \opT\vu$,\\ then
-$\opSys$ is a {\bf narrowband system}.
+  $\opSys=\opR\opC\opT$ such that $\fx(t) = \opT\vu$,\\ and $\fx(t)$ is \prope{narrowband}, then
+  $\opSys$ is a \structd{narrowband system}.
   }
 \end{definition}
 
@@ -83,7 +82,7 @@ $\opSys$ is a {\bf narrowband system}.
     \put( 80,-10){\makebox(0,0)[t ]{$\fp(t)$}}
     \put(-10, 80){\makebox(0,0)[r ]{$\fq(t)$}}
     \put( 40, 40){\makebox(0,0)[br]{$\fa(t)$}}
-    \put( 30,  5){\makebox(0,0)[bl]{$\theta(t)$} }
+    \put( 30,  5){\makebox(0,0)[bl]{$\phi(t)$} }
     \put( 85,85){\makebox(0,0)[bl]{$\fx_l(t) = \fp(t) + i\fq(t)$} }
   \end{picture}
   \end{fsL}
@@ -103,73 +102,90 @@ $\opSys$ is a {\bf narrowband system}.
 
 %---------------------------------------
 \begin{definition}
+\label{def:narrowband_quad}
+%---------------------------------------
+Let $\fx(t)$ be a \structe{narrowband signal} \xref{def:narrowband}.
+\defboxt{
+  Let $\fx(t) \eqd \fa(t)\cos\brs{2\pi f_c t + \phi(t) }$. Then
+  \\\indentx$\begin{array}{lMMrcl}
+      \fa(t)  & is the \fnctd{amplitude}            & of $\fx(t)$
+    \\\phi(t) & is the \fnctd{phase}                & of $\fx(t)$
+    \\\fp(t)  & is the \fnctd{quadrature component} & of $\fx(t)$ where & \fp(t)   &\eqd& \fa(t)\cos\brs{\phi(t)}
+    \\\fq(t)  & is the \fnctd{inphase component}    & of $\fx(t)$ where & \fq(t)   &\eqd& \fa(t)\sin\brs{\phi(t)}
+    \\\fx_l(t)& is the \fnctd{complex envelope}     & of $\fx(t)$ where & \fx_l(t) &\eqd& \fp(t) + i\fq(t)
+  \end{array}$
+}
+\end{definition}
+
+A narrowband signal $\fx:\R\to\R$ can be represented
+by any of the following three \textbf{equivalent canonical forms}:
+%---------------------------------------
+\begin{proposition}
+\label{prop:canforms}
+%---------------------------------------
+Let $\fx(t)$ be defined as in \pref{def:cenv}.
+\propbox{\begin{array}{rc>{\ds}lM}
+   \fx(t) &\eqd& \fa(t)\cos\brs{2\pi f_c t + \phi(t)}            & (\structe{amplitude and phase form})
+        \\&=&    \fp(t)\cos(2\pi f_c t) - \fq(t)\sin(2\pi f_c t) & (\structe{quadrature form})
+        \\&=&    \Reb{\fx_l(t)e^{i2\pi f_c t}}                   & (\structe{complex envelope form})
+\end{array}}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+    &\mcom{\boxed{\fa(t)\cos\brs{2\pi f_c t + \phi(t)}}}{amplitude-phase form}
+    && \text{amplitude and phase form}
+    && \text{\xref{def:cenv}}
+  \\&= \mcom{\fa(t)\cos[\phi(t)]}{$\fp(t)$} \cos[2\pi f_c t]
+      -\mcom{\fa(t)\sin[\phi(t)]}{$\fq(t)$} \sin[2\pi f_c t]
+    && \text{by \thme{double angle formulas}}
+    && \text{\xref{thm:trig_double}}
+  \\&= \mbox{\boxed{\fp(t)\cos[2\pi f_c t] -\fq(t)\sin[2\pi f_c t]}}{quadrature form}
+    && \text{quadrature form}
+    && \text{\xref{def:cenv}}
+  \\&= \Real\brp{[\fp(t)+i\fq(t)][\cos(2\pi f_c t) + i\sin(2\pi f_c t)]}
+    && \text{by definitions of $\Real$}
+    && \text{\xref{def:Re}}
+  \\&= \mcom{\boxed{\Reb{\fx_l(t)e^{i2\pi f_c t}}}}{complex envelope form}
+    && \text{complex envelope form}
+    && \text{\xref{def:cenv}}
+\end{align*}
+\end{proof}
+
+The three canonical forms in \prefpp{prop:canforms} are now designated formally:
+%---------------------------------------
+\begin{definition}
 \label{def:canforms}
 \label{def:cenv}
 %---------------------------------------
-Let the following quantities be defined as
-\defbox{
-\begin{array}{l@{\hspace{1cm}}l @{\hspace{2cm}} l@{\hspace{1cm}}l }
-  \fa:     \R\to\R & \text{amplitude}            &
-  \theta:  \R\to\R & \text{phase}                \\
-  \fp:     \R\to\R & \text{quadrature component} &
-  \fq:     \R\to\R & \text{inphase component}    \\
-  \fx_l:   \R\to\C & \text{complex envelope}.
-\end{array}
+Let $\fx(t)$ be defined as in \pref{def:cenv}.
+\defbox{\begin{array}{>{\ds}lMM}
+     \fa(t)\cos\brs{2\pi f_c t + \phi(t)}            & is the \structd{amplitude and phase form})     & of $\fx(t)$
+   \\\fp(t)\cos(2\pi f_c t) - \fq(t)\sin(2\pi f_c t) & is the \structd{quadrature form})\footnotemark & of $\fx(t)$
+   \\\Reb{\fx_l(t)e^{i2\pi f_c t}}                   & is the \structd{complex envelope form})        & of $\fx(t)$
+\end{array}}
+\footnotetext{
+$\fx(t) = \fp(t)\cos(2\pi f_c t) - \fq(t)\sin(2\pi f_c t) $
+is also known as \structe{Rice's representation}. \\
+Reference: \citerp{srv}{23}
 }
-\\
-A narrowband signal $\fx:\R\to\R$ can be represented
-by any of the following three {\bf canonical forms}:
-\defbox{
-\begin{array}{FMl}
-   1. & \fnctd{amplitude and phase}:     & \fx(t) = \fa(t)\cos\left[ 2\pi f_c t + \theta(t) \right]    \\
-   2. & \fnctd{quadrature}:\footnotemark & \fx(t) = \fp(t)\cos(2\pi f_c t) - \fq(t)\sin(2\pi f_c t)    \\
-   3. & \fnctd{complex envelope}:        & \fx(t) = \Reb{\fx_l(t)e^{i2\pi f_c t}}.
-\end{array}
-}
-   \footnotetext{
-   $\fx(t) = \fp(t)\cos(2\pi f_c t) - \fq(t)\sin(2\pi f_c t) $
-   is also known as {\em Rice's representation}. \\
-   Reference: \cite[page 23]{srv}
-   }
 \end{definition}
 
+\prefpp{prop:canforms} gave the three canonical forms \xref{def:canforms} in terms of a
+modulated narrowband signal $\fx(t)$ and some quadrature components defined in \prefpp{def:narrowband_quad}.
+\pref{prop:canforms_quad} (next) gives some relationships between these components.
 %---------------------------------------
 \begin{proposition}
+\label{prop:canforms_quad}
 %---------------------------------------
-Under the relations
-\[ \fx_l(t) = \fp(t) + i\fq(t) = \fa(t)e^{i\theta(t)}, \]
-the three forms given in \prefpp{def:canforms} are equivalent and
-%(see \prefpp{fig:PQ})
-\propbox{
-  \begin{array}{lll@{\hspace{1cm}}lll}
-    \fa(t)      &=& \sqrt{\fp^2(t) + \fq^2(t)} &
-    \theta(t)   &=& \arctan\frac{\fq(t)}{\fp(t)} \\
-    \fp(t)      &=& \fa(t)\cos\theta  &
-    \fq(t)      &=& \fa(t)\sin\theta \\
-    \fp(t)      &=& \Reb{\fx_l(t)} &
-    \fq(t)      &=& \Imb{\fx_l(t)}
-  \end{array}
-  }
+\propbox{\begin{array}{rc>{\ds}l | rc>{\ds}l}
+    \fx_l(t) &=& \fa(t)e^{i\phi(t)}
+  \\\fa(t)   &=& \sqrt{\fp^2(t) + \fq^2(t)} & \phi(t) &=& \arctan\frac{\fq(t)}{\fp(t)}
+  \\\fp(t)   &=& \fa(t)\cos\phi             & \fq(t)  &=& \fa(t)\sin\phi
+  \\\fp(t)   &=& \Reb{\fx_l(t)}             & \fq(t)  &=& \Imb{\fx_l(t)}
+\end{array}}
 \end{proposition}
-
 \begin{proof}
-
-\begin{align*}
-  \intertext{Proof that $(1) \iff (2)$: }
-   \fx(t)
-     &= \fa(t)\cos\left[ 2\pi f_c t + \theta(t) \right]
-   \\&= \fa(t)\cos[\theta(t)]\cos[2\pi f_c t] -\fa(t)\sin[\theta(t)]\sin[2\pi f_c t]
-   \\&= \fp(t)\cos[2\pi f_c t] -\fq(t)\sin[2\pi f_c t]
-  \\
-  \intertext{Proof that $(2) \iff (3)$: }
-  \fx(t)
-    &= \fp(t)\cos[2\pi f_c t] -\fq(t)\sin[2\pi f_c t]
-  \\&= \Real\left( [\fp(t)+i\fq(t)][\cos(2\pi f_c t) + i\sin(2\pi f_c t)]\right)
-  \\&= \Reb{s_l(t)e^{i2\pi f_c t}}.
-\end{align*}
-
-Component relations:
-\[\begin{array}{*{12}{l}}
+$\begin{array}{*{12}{l}}
    \fp
      &=& \Reb{\fp + i\fq}
      &=& \Reb{\fx_l}
@@ -180,39 +196,35 @@ Component relations:
 \\ \\
    \fp
      &=& \Reb{\fp + i\fq}
-     &=& \Reb{\fa e^{i\theta}}
-     &=& \Reb{\fa\cos\theta + i\fa\sin\theta}
-     &=& \fa\cos\theta
+     &=& \Reb{\fa e^{i\phi}}
+     &=& \Reb{\fa\cos\phi + i\fa\sin\phi}
+     &=& \fa\cos\phi
 \\
    \fq
      &=& \Imb{\fp + i\fq}
-     &=& \Imb{\fa e^{i\theta}}
-     &=& \Imb{\fa\cos\theta + i\fa\sin\theta}
-     &=& \fa\sin\theta
-\end{array}\]
-\[\begin{array}{*{12}{l}}
+     &=& \Imb{\fa e^{i\phi}}
+     &=& \Imb{\fa\cos\phi + i\fa\sin\phi}
+     &=& \fa\sin\phi
+\\
    \fa^2
-     &=& \fa^2 (\cos^2\theta + \sin^2\theta)
-     &=& (\fa \cos\theta)^2 + (\fa\sin\theta)^2
+     &=& \fa^2 (\cos^2\phi + \sin^2\phi)
+     &=& (\fa \cos\phi)^2 + (\fa\sin\phi)^2
      &=& \fp^2 + \fq^2
 \\
-   \tan\theta
-     &=& \frac{\sin\theta}{\cos\theta}
-     &=& \frac{\fa\sin\theta}{\fa\cos\theta}
+   \tan\phi
+     &=& \frac{\sin\phi}{\cos\phi}
+     &=& \frac{\fa\sin\phi}{\fa\cos\phi}
      &=& \frac{\fq}{\fp}
-\end{array}\]
-
+\end{array}$
 \end{proof}
-
 
 %======================================
 \section{Frequency Representation}
 \index{narrowband!frequency representation}
 %======================================
-Any real-valued time signal $\fx:\R\to\R$
-is always {\em hermitian symmetric} in frequency
-such that (see \prefpp{fig:freq_rep})
-$\Fx(f) =  \Fx^\ast(-f)$.
+Any \prope{real-valued} time signal $\fx:\R\to\R$
+is always \prope{hermitian symmetric} in frequency
+such that $\Fx(f) =  \Fx^\ast(-f)$ \xref{fig:freq_rep}.
 
 \begin{figure}[ht] \color{figcolor}
 \begin{center}
@@ -380,7 +392,7 @@ and $\fx_l:\R\to\C$ the complex envelope of $\fx(t)$ \xref{def:cenv}.
            && \text{by definition of \fncte{complex envelope} $\fx_l(t)$}
          \\&=    \inprod{\frac{1}{2}\left[ \fx_l(t)e^{j2\pi f_ct} + \fx_l^\ast(t)e^{-j2\pi f_ct}   \right]}
                               {e^{j2\pi ft}}
-            && \text{by \thme{Euler formulas} 
+            && \text{by \thme{Euler formulas}
                      \xref{cor:eform}}
          \\&=    \frac{1}{2} \inprod{\fx_l(t)     e^{ j2\pi f_ct}}{ e^{j2\pi ft}}
                + \frac{1}{2} \inprod{\fx_l^\ast(t)e^{-j2\pi f_ct}}{ e^{j2\pi ft}}
@@ -393,7 +405,7 @@ and $\fx_l:\R\to\C$ the complex envelope of $\fx(t)$ \xref{def:cenv}.
            && \text{by definition of \ope{Fourier Transform}}
     \end{align*}
 
-  \item 
+  \item
     \begin{align*}
        \Reb{\Fx(f)}
          &= \Reb{\frac{1}{2}\Fx_l(f-f_c) + \frac{1}{2}\Fx_l^\ast(-f-f_c)}
@@ -534,7 +546,7 @@ three canonical forms presented in \prefpp{def:canforms}
 (\prefpo{def:canforms}):
 \begin{align*}
    \fn(t)
-     &= \fa(t)\cos[2\pi f_ct + \theta(t)]
+     &= \fa(t)\cos[2\pi f_ct + \phi(t)]
      && \text{(amplitude and phase)}
    \\&= \fp(t)\cos(2\pi f_ct) - \fq(t) \sin(2\pi f_c t)
      && \text{(quadrature)}
@@ -616,7 +628,7 @@ three canonical forms presented in \prefpp{def:canforms}
 %    \put( 80,-10){\makebox(0,0)[t ]{$\Rpp(\tau)$}}
 %    \put(-10, 80){\makebox(0,0)[r ]{$\Rpq(\tau)$}}
 %    \put( 40, 40){\makebox(0,0)[br]{$\Rxx[nn](\tau)$}}
-%    %\put( 30,  5){\makebox(0,0)[bl]{$\theta(t)$} }
+%    %\put( 30,  5){\makebox(0,0)[bl]{$\phi(t)$} }
 %    \put( 85,85){\makebox(0,0)[lb]{$\Rzz(\tau)=2\Rpp(\tau)-2i\Rpq(\tau)$}}
 %  \end{picture}
 %  }
