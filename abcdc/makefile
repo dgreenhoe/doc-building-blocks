@@ -45,6 +45,7 @@ FILE_STY  =                            \
 
 FILE_BIB  = ../common/bib/algebra.bib  \
             ../common/bib/analysis.bib \
+            ../common/bib/em.bib       \
             ../common/bib/found.bib    \
             ../common/bib/mathhist.bib \
             ../common/bib/mathmisc.bib \

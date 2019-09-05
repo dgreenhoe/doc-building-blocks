@@ -198,6 +198,11 @@ $\pmeanx(n)$, $\pvarx(n)$, $\Rxx(n,m)$, and $\Rxy(n,m)$ \xref{def:Rxynm}.
 
 %---------------------------------------
 \begin{remark}
+\footnote{
+  \citerppgc{marple1987}{51}{53}{9780132141499}{{\scshape``Appendix 2.A Source of Complex-Valued Signals"}},
+  \citerppgc{marple2019}{48}{50}{9780486780528}{\textsection ``2.12 Extra: Source of Complex-Valued Signals"},
+  \citerc{greenhoe_abcdc}{Chapter 2: Narrowband Signals}
+  }
 %---------------------------------------
 The definition for $\Rxy(m)$ can be defined with the conjugate $\ast$ 
 on either $\rvx$ or $\rvy$, or on neither or both; and moreover $\rvx$ may either lead or lag $\rvy$.
@@ -205,16 +210,49 @@ In total, there are $2\times2\times2=8$ different ways to define $\Rxy(m)$.\foot
 and $\Rxx(m)$ involve complex numbers. 
 This may seem curious when typical ADCs provide real-valued sequences.
 Note however that complex-valued sequences often come up in signal processing due to 
-some common system architectures:\footnote{
-  \citerppgc{marple1987}{51}{53}{9780132141499}{{\scshape``Appendix 2.A Source of Complex-Valued Signals"}},
-  \citerppgc{marple2019}{48}{50}{9780486780528}{\textsection ``2.12 Extra: Source of Complex-Valued Signals"},
-  \citerc{greenhoe_abcdc}{Chapter 2: Narrowband Signals}
-  }
+some common system architectures:
 \begin{enume}
   \item The presence of an \ope{FFT} operator in the signal processing path
   \item The \fncte{complex envelope} $\fx_l(t)$ of a modulated \prope{narrowband} communications signal $\fx(t)$.
   \item Communications channel processing involving phase discrimination (e.g. PSK and QAM).
 \end{enume}
+
+In the case of a narrowband signal $\fx(t)$ modulated by a sinusoid at center frequence $f_c$, 
+we have three canonical forms. These can be shown to be equivalent:
+\begin{align*}
+  \fx(t)
+    &\eqd \mcom{\boxed{\fa(t)\cos\brs{2\pi f_c t + \phi(t)}}}{amplitude-phase form}
+    && \text{amplitude and phase form}
+    %&& \text{\xref{def:cenv}}
+  \\&= \mcom{\fa(t)\cos[\phi(t)]}{$\fp(t)$} \cos[2\pi f_c t]
+      -\mcom{\fa(t)\sin[\phi(t)]}{$\fq(t)$} \sin[2\pi f_c t]
+    && \text{by \thme{double angle formulas}}
+    && \text{\ifxref{harTrig}{thm:trig_double}}
+  \\&= \mcom{\boxed{\fp(t)\cos[2\pi f_c t] -\fq(t)\sin[2\pi f_c t]}}{quadrature form}
+    && \text{quadrature form}
+    %&& \text{\xref{def:cenv}}
+  \\&= \Real\brp{[\fp(t)+i\fq(t)][\cos(2\pi f_c t) + i\sin(2\pi f_c t)]}
+    && \text{by definitions of $\Real$}
+    %&& \text{\xref{def:Re}}
+  \\&= \mcom{\boxed{\Reb{\fx_l(t)e^{i2\pi f_c t}}}}{complex envelope form}
+    && \text{by \thme{Euler's identity}}
+    && \text{\ifxref{harTrig}{thm:eid}}
+    %&& \text{complex envelope form}
+    %&& \text{\xref{def:cenv}}
+\end{align*}
+Note that in these equivalent forms, the \fncte{complex envelope} $\fx_l(t)$ is conveniently represented
+as a \prope{complex-valued} function in terms of the \fncte{quadrature component} $\fp(t)$ and the 
+\fncte{inphase component} $\fq(t)$ such that $\fx_l(t)=\fp(t)+i\fq(t)$.
+
+\begin{minipage}{\tw-60mm}
+In practice (with real hardware), you will likely first have access to
+the quadrature components $\fp(t)$ and $\fq(t)$.
+Take for example the \hie{Analog Devices ADL5387 Quadrature Demodulator} and
+evaluation board, as illustrated to the right.\footnotemark
+Note that \fncte{quadrature component} $\fp(t)$ is available at connector ``Q OUTPUT"
+     and  \fncte{inphase component}    $\fq(t)$ is available at connector ``I OUTPUT".
+\end{minipage}\hfill\tbox{\includegraphics[width=55mm]{../common/ic/ADL5387.jpg}}
+\footnotetext{diagram copied from \citeP{ADL5387}}
 \end{remark}
 
 %---------------------------------------
