@@ -20,6 +20,7 @@ FILE_SRC  =                       \
   ../common/binomial.tex          \
   ../common/calculus.tex          \
   ../common/com_channel.tex       \
+  ../common/correlation_estimation.tex \
   ../common/dtft.tex              \
   ../common/expectation.tex       \
   ../common/moment_estimation.tex \
