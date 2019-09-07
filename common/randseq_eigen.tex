@@ -16,10 +16,14 @@
 \begin{definition}
 \label{def:opR}
 %---------------------------------------
-Let $\rvx(t)$ be random processes with \fncte{auto-correlation} function \xref{def:Rxx} $\Rxx(t,u)$.
+Let $\rvx(t)$ be random processes 
+with continuous \fncte{auto-correlation} $\Rxx(t,u)$ \xref{def:Rxx}
+or   discrete   \fncte{auto-correlation} $\Rxx(n,m)$ \xref{def:Rxxnm}.
 \defboxt{
   The \opd{auto-correlation operator} $\opR$ of $\rvx(t)$ is defined as
-  \\\indentx$\opR\ff  \eqd \int_{u\in\R}\Rxx(t,u)\ff(u) \du$
+  \\\indentx$\ds\mcom{\opR\ff  \eqd \int_{u\in\R}\Rxx(t,u)\ff(u) \du}{(continuous case)}$
+  \qquad\text{or}\qquad
+            $\ds\mcom{\opR\ff \eqd \sum_{n\in\Z} \Rxx(n,m) \ff(m)}{(discrete case)}$
   }
 \end{definition}
 
@@ -34,7 +38,7 @@ Let $\rvx(t)$ be a \fncte{random process} with \fncte{auto-correlation} $\Rxx(\t
 \end{definition}
 
 If a random process $\rvx(t)$ is \prope{white} \xref{def:white}
-and the set $\Psi=\setn{\fpsi_1(t),\fpsi_2(t),\ldots,\fpsi_N(t)\}}$
+and the set $\Psi=\setn{\fpsi_1(t),\fpsi_2(t),\ldots,\fpsi_\xN(t)\}}$
 is \textbf{any} set of orthonormal basis functions, then the innerproducts
 $\inprod{n(t)}{\fpsi_n(t)}$ and $\inprod{n(t)}{\fpsi_m(t)}$ are \prope{uncorrelated}
 for $m\ne  n$.
@@ -47,23 +51,34 @@ the innerproducts \textbf{are} \prope{uncorrelated} even though $\rvx(t)$ is
 not white.
 This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(t)$.
 
+%=======================================
+\section{Properties}
+%=======================================
 %---------------------------------------
 \begin{theorem}
 \label{thm:opR}
 %---------------------------------------
 Let $\opR$ be an \ope{auto-correlation} operator.
-\thmbox{\begin{array}{lll}
-  \inprod{\opR \rvx}{\rvx} \ge 0
-    & \forall \rvx\in\spX
-    & \text{(\prope{non-negative})}  \\
-  \inprod{\opR \rvx}{\fy} = \inprod{\rvx}{\opR \fy}
-    & \forall \rvx,\fy\in\spX
-    & \text{(\prope{self-adjoint})}
-\end{array}}
+\thmbox{
+  \brb{\begin{array}{Frl>{\ds}lD}
+    (A). & \inprod{\rvx}{\rvy} &\eqd& \int_{t\in\R} \rvx(t) \rvy^\ast(t) \dt & OR \\
+    (B). & \inprod{\rvx}{\rvy} &\eqd& \sum_{n\in\Z} \rvx(n) \rvy^\ast(n)     &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FlDD}
+    (1). & \inprod{\opR \rvx}{\rvx} \ge 0
+         & \text{(\prope{non-negative})}
+         & and
+        \\
+    (2)  & \inprod{\opR \rvx}{\fy} = \inprod{\rvx}{\opR \fy}
+         & \text{(\prope{self-adjoint})}
+         &
+  \end{array}}
+  }
 \end{theorem}
 \begin{proof}
 \begin{align*}
-\intertext{1. Proof that $\opR$ is \prope{non-negative}:}
+\intertext{1. Proof that $\opR$ is \prope{non-negative} under hypothesis (A):}
    \inprod{\opR \fy}{\fy}
      &= \inprod{\int_{u\in\R}\Rxx(t,u) \fy(u) \du}{\fy(t)}
      && \text{by definition of $\opR$}
@@ -79,7 +94,6 @@ Let $\opR$ be an \ope{auto-correlation} operator.
      && \text{\ifsxref{vsinprod}{def:inprod}}
    \\&= \pE\brs{\inprod{\fy(u)}{\rvx(u)} \inprod{\rvx(t) }{\fy(t)}}
      && \text{by local definition of $\inprodn$}
-     && \text{\ifsxref{vsinprod}{def:inprod}}
    \\&= \pE\brs{\inprod{\rvx(u)}{\fy(u)}^\ast \inprod{\rvx(t) }{\fy(t)}}
      && \text{by \prope{conjugate symmetry} prop.}
      && \text{\ifsxref{vsinprod}{def:inprod}}
@@ -87,7 +101,9 @@ Let $\opR$ be an \ope{auto-correlation} operator.
      && \text{by definition of $\absn$}
      && \text{\xref{def:abs}}
    \\&\ge 0
-\intertext{2. Proof that $\opR$ is self-adjoint:}
+     && \text{by \prope{strictly positive} property of norms}
+     && \text{\ifxref{vsnorm}{def:norm}}
+\intertext{2. Proof that $\opR$ is \prope{self-adjoint} under hypothesis (A):}
    \inprod{\brs{\opR \rvx}(t)}{\fy}
      &= \inprod{\int_{u\in\R}\Rxx(t,u) \rvx(u) \du}{\fy(t)}
      && \text{by definition of $\opR$}
@@ -100,9 +116,7 @@ Let $\opR$ be an \ope{auto-correlation} operator.
      && \text{\ifsxref{vsinprod}{def:inprod}}
    \\&= \inprod{ \rvx(u) }{\inprod{\fy(t)}{\Rxx(t,u)} }
      && \text{by local definition of $\inprodn$}
-     && \text{\ifsxref{vsinprod}{def:inprod}}
    \\&= \inprod{ \rvx(u) }{\int_{t\in\R}\fy(t) \Rxx^\ast(t,u)\dt }
-     && \text{by local definition of $\inprodn$}
      && \text{\ifsxref{vsinprod}{def:inprod}}
    \\&= \inprod{ \rvx(u) }{\int_{t\in\R}\fy(t) \Rxx(u,t)\dt }
      && \text{by property of $\Rxx$}
@@ -110,13 +124,16 @@ Let $\opR$ be an \ope{auto-correlation} operator.
    \\&= \inprod{ \rvx(u) }{\mcom{\opR}{$\opRa$} \fy }
      && \text{by definition of $\opR$}
      && \text{\xref{def:opR}}
-   \\\implies&\qquad \opR=\opRa \qquad\implies \text{$\opR$ is \prope{self adjoint}}
+   \\\implies& \opR=\opRa
+     && \text{by definition of \ope{adjoint} $\opRa$}
+     && \text{\ifxref{operator}{def:adjoint}}
+   \\\implies& \text{$\opR$ is \prope{self-adjoint}}
+     && \text{by definition of \prope{self-adjoint}}
+     && \text{\ifxref{operator}{def:op_selfadj}}
+\intertext{3. Proofs under hypothesis (B): substitute $\sum_{n\in\Z}$ operator for $\int_{t\in\R}\dt$ operator in above proofs.}
 \end{align*}
 \end{proof}
 
-%=======================================
-\section{Properties}
-%=======================================
 %---------------------------------------
 \begin{theorem}
 \footnote{
@@ -128,52 +145,53 @@ Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues and
     $\seq{\fpsi_n}{n\in\Z}$ be the eigenfunctions of
     operator $\opR$ such that
     $\opR \fpsi_n = \lambda_n \fpsi_n$.
-\thmbox{\begin{array}{rlp{7cm}}
-  1. & \lambda_n \in \R
-     & (eigenvalues of $\opR$ are \prope{real})
-     \\
-  2. & \lambda_n\ne \lambda_m \implies \inprod{\fpsi_n}{\fpsi_m}=0
-     & (eigenfunctions associated with distinct eigenvalues are \prope{orthogonal})
-     \\
-  3. & \norm{\fpsi_n(t)}^2>0 \implies \lambda_n\ge0
-     & (eigenvalues are \prope{non-negative})
-     \\
-  4. & \norm{\fpsi_n(t)}^2>0, \inprod{\opR\ff}{\ff} > 0 \implies \lambda_n>0
-     & (if $\opR$ is \prope{positive definite}, then eigenvalues are \prope{positive})
+\thmbox{\begin{array}{FlM}
+  (1). & \lambda_n \in \R
+       & (\prope{real-valued})
+       \\
+  (2). & \lambda_n\ne \lambda_m \implies \inprod{\fpsi_n}{\fpsi_m}=0
+       & (\prope{orthogonal})
+       \\
+  (3). & \norm{\fpsi_n(t)}^2>0 \implies \lambda_n\ge0
+       & (\prope{non-negative})
+       \\
+  (4). & \norm{\fpsi_n(t)}^2>0, \inprod{\opR\ff}{\ff} > 0 \implies \lambda_n>0
+       & ($\opR$ \prope{positive definite} $\implies$ $\lambda_n$ \prope{positive})
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{enumerate}
 \item Proof that eigenvalues are \prope{real-valued}:
-Because $\opR$ is self-adjoint, its eigenvalues are real\ifsxref{operator}{thm:self_adjoint}.
+Because $\opR$ is \prope{self-adjoint}, its eigenvalues are real\ifsxref{operator}{thm:self_adjoint}.
 
-\item eigenfunctions associated with distinct eigenvalues are orthogonal:
-Because $\opR$ is self-adjoint, this property follows\ifsxref{operator}{thm:self_adjoint}.
+\item Proof that eigenfunctions associated with distinct eigenvalues are orthogonal:
+Because $\opR$ is \prope{self-adjoint}, this property follows\ifsxref{operator}{thm:self_adjoint}.
 
 \item Proof that eigenvalues are \prope{non-negative}:
-\begin{align*}
-   0 &\ge \inprod{\opR \fpsi_n}{\fpsi_n}
-     &&   \text{by definition of non-negative definite}
-   \\&=   \inprod{\lambda_n \fpsi_n}{\fpsi_n}
-     &&   \text{by hypothesis}
-   \\&=   \lambda_n \inprod{\fpsi_n}{\fpsi_n}
-     &&   \text{by definition of inner-products}
-   \\&=   \lambda_n \norm{\fpsi_n}^2
-     &&   \text{by definition of norm induced by inner-product}
-\end{align*}
+      \begin{align*}
+         0 &\le \inprod{\opR \fpsi_n}{\fpsi_n}
+           &&   \text{by definition of \prope{non-negative definite}}
+         \\&=   \inprod{\lambda_n \fpsi_n}{\fpsi_n}
+           &&   \text{by hypothesis}
+         \\&=   \lambda_n \inprod{\fpsi_n}{\fpsi_n}
+           &&   \text{by definition of inner-products}
+         \\&=   \lambda_n \norm{\fpsi_n}^2
+           &&   \text{by definition of norm induced by inner-product}
+      \end{align*}
 
-\item Eigenvalues are \prope{positive} if $\opR$ is \prope{positive definite}:
-\begin{align*}
-   0 &> \inprod{\opR \fpsi_n}{\fpsi_n}
-     && \text{by definition of \prope{positive definite}}
-   \\&= \inprod{\lambda_n \fpsi_n}{\fpsi_n}
-     && \text{by hypothesis}
-   \\&= \lambda_n \inprod{\fpsi_n}{\fpsi_n}
-     && \text{by definition of inner-products}
-   \\&= \lambda_n \norm{\fpsi_n}^2
-     && \text{by definition of norm induced by inner-product}
-\end{align*}
-
+\item Proof that eigenvalues are \prope{positive} if $\opR$ is \prope{positive definite}:
+      \begin{align*}
+         0 &< \inprod{\opR \fpsi_n}{\fpsi_n}
+           && \text{by definition of \prope{positive definite}}
+         \\&= \inprod{\lambda_n \fpsi_n}{\fpsi_n}
+           && \text{by hypothesis}
+         \\&= \lambda_n \inprod{\fpsi_n}{\fpsi_n}
+           && \text{by \prope{homogeneous} property of $\inprodn$}
+           && \text{\ifxref{vsinprod}{def:inprod}}
+         \\&= \lambda_n \norm{\fpsi_n}^2
+           && \text{by \thme{induced norm} theorem}
+           && \text{\ifxref{vsinprod}{thm:norm=inprod}}
+      \end{align*}
 \end{enumerate}
 \end{proof}
 
@@ -288,11 +306,35 @@ and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
 \end{enumerate}
 \end{proof}
 
+%=======================================
+\section{Quasi-basis}
+%=======================================
+The \ope{auto-correlation operator} $\opR$ \xref{def:opR} in the discrete case can be approximated using 
+a \ope{correlation matrix}. In the \prope{zero-mean} case, this becomes
+\\\indentx$\ds\opR\eqd
+\brs{\begin{array}{cccc}
+  \pE[\rvy_1 \rvy_1] & \pE[\rvy_1 \rvy_2] & \cdots & \pE[\rvy_1 \rvy_n]\\
+  \pE[\rvy_2 \rvy_1] & \pE[\rvy_2 \rvy_2] &        & \pE[\rvy_2 \rvy_n]\\
+  \vdots             & \vdots             & \ddots & \vdots            \\
+  \pE[\rvy_n \rvy_1] & \pE[\rvy_n \rvy_2] & \cdots & \pE[\rvy_n \rvy_n]
+\end{array}}
+$
+
+The eigen-vectors (and hence a quasi-basis) for $\opR$ can be found using a 
+\ope{Cholesky Decomposition}.
+
+%---------------------------------------
+\begin{proposition}
+%---------------------------------------
+\propboxt{
+  The \ope{auto-correlation matrix} $\opR$ is \propb{Toeplitz}.
+  }
+\end{proposition}
+
 %---------------------------------------
 \begin{remark}
 %---------------------------------------
-The \ope{matrix} $\opR$ is \propb{Toeplitz}. 
-For more information about the properties of \prope{Toeplitz} matrices, see
+For more information about the properties of \opb{Toeplitz matrices}, see
 \citer{grenander1958}, 
 \citer{widom1965},
 \citeP{gray1971},
@@ -300,6 +342,8 @@ For more information about the properties of \prope{Toeplitz} matrices, see
 \citer{grenander1984}, 
 \citer{haykin1979},
 \citer{haykin1983},
+\citerppgc{marple1987}{80}{92}{9780132141499}{\textsection {\scshape``3.8 The Toeplitz Matrix"}},
 \citerg{bottcher1999}{9780387985701},
-\citeP{gray2006}.
+\citeP{gray2006},
+\citerppgc{marple2019}{80}{93}{9780486780528}{\textsection {\scshape``3.8 The Toeplitz Matrix"}}.
 \end{remark}
