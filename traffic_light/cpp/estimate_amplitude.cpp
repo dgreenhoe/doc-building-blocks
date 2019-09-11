@@ -19,14 +19,14 @@
 //!     |Cortex-|   | DAC   |   |low    |   |follower|      R          L
 //!     |M4F    |=>=|periph.|->-|pass   |->-|/ ampli-|---^v^v^v-----OOOOOOO--
 //!     |       |   |(12bit)|   |filter |   |  fier  |                       |
-//!     |_______|   |_______|   |_______|   |________|                       |
-//!        ||                                                 Gaussian       |
-//!        ||        _______     _______     ________          noise         |
-//!       /||\      |       |   |analog |   |voltage |          v(t)         |
-//!        ||       | ADC   |   |low    |   |follower|           |           |
-//!        ||===<===|periph.|---|pass   |-<-|(high   |-----<----(+)----<-----
-//!                 |(12bit)|   |filter |   |imped.) | y(t)            x(t)
-//!                 |_______|   |_______|   |________|
+//!     |_______|   |_______|   |_______|   |________|                   x(t)|
+//!        ||                                            Gaussian            |
+//!        ||        _______     _______     ________     noise    ________  |
+//!       /||\      |       |   |analog |   |voltage |     v(t)   |        | |
+//!        ||       | ADC   |   |low    |   |follower|      |     |squaring| |
+//!        ||===<===|periph.|---|pass   |-<-|(high   |--<--(+)--<-|circuit |-
+//!                 |(12bit)|   |filter |   |imped.) | y(t)       |        |
+//!                 |_______|   |_______|   |________|            |________|
 //! \endcode
 //!
 //! \see
@@ -54,10 +54,9 @@
 //!       A Book Concerning Statistical Signal Processing
 //!       https://github.com/dgreenhoe/pdfs/blob/master/abcstat.pdf
 //=============================================================================
-
-
+#include "estimate_amplitude.h"
 //-----------------------------------------------------------------------------
-//! \brief   Estimate amplitude A of sinusoid x(t)=Asin(2pi ft) in AWGN
+//! \brief   Estimate amplitude A of sinusoid x(t)=A sin(2pi ft) in AWGN
 //! \details By the "Sufficient Statistic Theorem" (Fisher 1922),
 //!          a sufficient statistic for the ML-estimate Aest of A is the projection 
 //!          of the received signal y(t) onto a basis for x(t), where
@@ -83,7 +82,12 @@
 //!
 //! \endcode
 //-----------------------------------------------------------------------------
-estimate_amplitude(
-  std::vect
-
+double estimate_amplitude( //! \return estimated amplitude
+  const std::vector<double> &y   //! \param[in] y: input data
   )
+  {
+    const double sum  = std::inner_product( y.begin(), y.end(), y.begin(), 0.0 );
+    const long   N    = y.size();
+    const double Aest = sqrt(sum/(double)N);
+    return Aest;
+  }
