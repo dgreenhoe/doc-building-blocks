@@ -43,7 +43,7 @@
 //! \details By default, a traffic light face is initialized to <red>.
 //-----------------------------------------------------------------------------
 trafficFace:: trafficFace(faceState initialState){ state = initialState; }
-trafficFace:: trafficFace(void)                  { trafficFace(red);     }
+trafficFace:: trafficFace(void)                  { trafficFace(red1);    }
 trafficFace::~trafficFace(void)                  {                       }
 
 //-----------------------------------------------------------------------------
@@ -58,11 +58,13 @@ char* trafficFace::getStr(char *buf)
 {
   switch(state)
   {
-    case green  : strcpy( buf, "green"  ); break;
-    case yellow : strcpy( buf, "yellow" ); break;
-    case red    : strcpy( buf, "red"    ); break;
-    case arrow  : strcpy( buf, "arrow"  ); break;
-    default     : strcpy( buf, "ERROR"  ); break;
+    case green   : strcpy( buf, "green"  ); break;
+    case yellow1 : strcpy( buf, "yellow" ); break;
+    case yellow2 : strcpy( buf, "yellow" ); break;
+    case red1    : strcpy( buf, "red"    ); break;
+    case red2    : strcpy( buf, "red"    ); break;
+    case arrow   : strcpy( buf, "arrow"  ); break;
+    default      : strcpy( buf, "ERROR"  ); break;
   }
   return buf;
 }
@@ -76,12 +78,14 @@ void trafficFace::step(void)
   faceState nextState;
   switch(state)
   {
-    case green  : nextState = yellow; break;
-    case yellow : nextState = red   ; break;
-    case red    : nextState = arrow ; break;
-    case arrow  : nextState = green ; break;
-    default     : nextState = red   ; break;
-  }
+    case green   : nextState = yellow1; break;
+    case yellow1 : nextState = red1   ; break;
+    case red1    : nextState = arrow  ; break;
+    case arrow   : nextState = yellow2; break;
+    case yellow2 : nextState = red2   ; break;
+    case red2    : nextState = green  ; break;
+    default      : nextState = red1   ; break; // Naive error handling 
+  }                                           // (should throw exception)
   state = nextState;
 }
 

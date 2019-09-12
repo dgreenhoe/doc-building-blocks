@@ -3,7 +3,7 @@
 //============================================================================
 #include <cmath>
 
-enum faceState { red, yellow, green, arrow };
+enum faceState { green, yellow1, red1, arrow, yellow2, red2 };
 
 //-----------------------------------------------------------------------------
 //! \brief A single traffic light face consisting of four lights of 
