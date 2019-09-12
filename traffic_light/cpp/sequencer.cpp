@@ -49,7 +49,7 @@ trafficFace::~trafficFace(void)                  {                       }
 //-----------------------------------------------------------------------------
 //! \brief Get current state in integer representation
 //-----------------------------------------------------------------------------
-int trafficFace::getInt(void){ return state; }
+faceState trafficFace::get(void){ return state; }
 
 //-----------------------------------------------------------------------------
 //! \brief Get current state in null-terminated string representation
@@ -92,6 +92,12 @@ void trafficFace::step(void)
 //-----------------------------------------------------------------------------
 //! \brief   Step operator ++ for traffic light master face.
 //! \details Note that an alternative is the function step();
+//! \cite    https://docs.microsoft.com/en-us/cpp/cpp/increment-and-decrement-operator-overloading-cpp
 //-----------------------------------------------------------------------------
-void trafficFace::operator++(void){ step(); }
+void trafficFace::operator++(int){ step(); }
+
+//-----------------------------------------------------------------------------
+//! \brief Get current state of MASTER face in integer representation
+//-----------------------------------------------------------------------------
+faceState trafficLight::getM(void){ return get(); }
 
