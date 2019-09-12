@@ -38,28 +38,26 @@
 //=============================================================================
 #include "sequencer.h"
 //-----------------------------------------------------------------------------
-//! \brief Step master light state variable
+//! \brief trafficFace initializers and destructor
+//! \details By default, a traffic light face is initialized to <red>.
 //-----------------------------------------------------------------------------
-faceState step_masterLight(
-  faceState state  //! \param[in] state: current state of master light
-  )
-  {
-  faceState next;
-  switch(state)
-  {
-    case green  : next = yellow; break;
-    case yellow : next = red   ; break;
-    case red    : next = arrow ; break;
-    case arrow  : next = green ; break;
-    default     : next = red   ; break;
-  }
-  return next;
-  }
+trafficFace:: trafficFace(faceState initialState){ state = initialState; }
+trafficFace:: trafficFace(void)                  { trafficFace(red);     }
+trafficFace::~trafficFace(void)                  {                       }
 
 //-----------------------------------------------------------------------------
 //! \brief Step master light state variable
 //-----------------------------------------------------------------------------
-faceState step_masterLight(
-  faceState state  //! \param[in] state: current state of master light
-  )
+void trafficFace::step(void)
+{
+  faceState nextState;
+  switch(state)
   {
+    case green  : nextState = yellow; break;
+    case yellow : nextState = red   ; break;
+    case red    : nextState = arrow ; break;
+    case arrow  : nextState = green ; break;
+    default     : nextState = red   ; break;
+  }
+  state = nextState;
+}
