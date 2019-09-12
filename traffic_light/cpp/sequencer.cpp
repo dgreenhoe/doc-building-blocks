@@ -70,11 +70,11 @@ char* trafficFace::getStr(faceState fs, char *buf)
 }
 
 //-----------------------------------------------------------------------------
-//! \brief   Step traffic light master face state.
-//! \details Note that an alternative is the overloaded ++ operator.
+//  \brief   Step traffic light master face state.
+//! \cite    https://docs.microsoft.com/en-us/cpp/cpp/increment-and-decrement-operator-overloading-cpp
 //-----------------------------------------------------------------------------
-void trafficFace::step(void)
-{
+void trafficFace::operator++(int){ step(); } //! \brief Step master state using ++
+void trafficFace::step(void)     {           //! \brief Step master state
   faceState nextState;
   switch(state)
   {
@@ -85,34 +85,19 @@ void trafficFace::step(void)
     case yellow2 : nextState = red2   ; break;
     case red2    : nextState = green  ; break;
     default      : nextState = red    ; break; // Naive error handling 
-  }                                           // (should throw exception)
+  }
   state = nextState;
 }
 
 //-----------------------------------------------------------------------------
-//! \brief   Step operator ++ for traffic light master face.
-//! \details Note that an alternative is the function step();
-//! \cite    https://docs.microsoft.com/en-us/cpp/cpp/increment-and-decrement-operator-overloading-cpp
+// Get current states of faces
 //-----------------------------------------------------------------------------
-void trafficFace::operator++(int){ step(); }
-
-//-----------------------------------------------------------------------------
-//! \brief Get current state of MASTER face
-//-----------------------------------------------------------------------------
-faceState trafficLight::getM   (void)     { return get();                }
-
-//-----------------------------------------------------------------------------
-//! \brief Get current state of BACK face
-//-----------------------------------------------------------------------------
-faceState trafficLight::getB(void){ return getM(); } // same as master face
-
-//-----------------------------------------------------------------------------
-//! \brief Get current state of LEFT face
-//-----------------------------------------------------------------------------
-faceState trafficLight::getL(void)
-{
-  const faceState masterState = get(); // get master state
-  faceState leftState;
+faceState trafficLight::getM(void){ return get (); } //!\brief get MASTER face state
+faceState trafficLight::getB(void){ return getM(); } //!\brief get BACK   face state
+faceState trafficLight::getR(void){ return getL(); } //!\brief get RIGHT  face state
+faceState trafficLight::getL(void){                  //!\brief get LEFT   face state
+  const faceState masterState = get();
+  faceState       leftState;
   switch(masterState)
   {
     case green   : leftState = yellow ; break;
@@ -125,11 +110,6 @@ faceState trafficLight::getL(void)
   }
   return leftState;
 }
-
-//-----------------------------------------------------------------------------
-//! \brief Get current state of RIGHT face
-//-----------------------------------------------------------------------------
-faceState trafficLight::getR(void){ return getL(); } // same as left face
 
 //-----------------------------------------------------------------------------
 //! \brief Get current state of faces as strings
