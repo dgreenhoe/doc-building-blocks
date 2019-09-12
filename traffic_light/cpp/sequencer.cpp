@@ -36,6 +36,7 @@
 //!
 //! \endcode
 //=============================================================================
+#include <string.h>
 #include "sequencer.h"
 //-----------------------------------------------------------------------------
 //! \brief trafficFace initializers and destructor
@@ -46,7 +47,29 @@ trafficFace:: trafficFace(void)                  { trafficFace(red);     }
 trafficFace::~trafficFace(void)                  {                       }
 
 //-----------------------------------------------------------------------------
-//! \brief Step master light state variable
+//! \brief Get current state in integer representation
+//-----------------------------------------------------------------------------
+int trafficFace::getInt(void){ return state; }
+
+//-----------------------------------------------------------------------------
+//! \brief Get current state in null-terminated string representation
+//-----------------------------------------------------------------------------
+char* trafficFace::getStr(char *buf)
+{
+  switch(state)
+  {
+    case green  : strcpy( buf, "green"  ); break;
+    case yellow : strcpy( buf, "yellow" ); break;
+    case red    : strcpy( buf, "red"    ); break;
+    case arrow  : strcpy( buf, "arrow"  ); break;
+    default     : strcpy( buf, "ERROR"  ); break;
+  }
+  return buf;
+}
+
+//-----------------------------------------------------------------------------
+//! \brief   Step traffic light master face state.
+//! \details Note that an alternative is the overloaded ++ operator.
 //-----------------------------------------------------------------------------
 void trafficFace::step(void)
 {
@@ -61,3 +84,10 @@ void trafficFace::step(void)
   }
   state = nextState;
 }
+
+//-----------------------------------------------------------------------------
+//! \brief   Step operator ++ for traffic light master face.
+//! \details Note that an alternative is the function step();
+//-----------------------------------------------------------------------------
+void trafficFace::operator++(void){ step(); }
+
