@@ -1,13 +1,9 @@
 //============================================================================
 //! \author  Daniel J. Greenhoe
 //! \class   Induction-Estimation
-//! \brief   Perform ML-estimation of induction L (Henrys) in an AWGN system
-//=============================================================================
-#include "estimate_induction.h"
-//-----------------------------------------------------------------------------
-//! \brief   Estimate induction L from estimated amplitude Aest
-//!
-//! 
+//! \brief    Estimate induction L from estimated amplitude Aest
+//! \details  Use a sinusoidal signal to measure the value of L.
+//! \code{.markdown} 
 //!     v(t) = i(t) x impedance = 
 //!             d                                       V(s)
 //!   v(t) = L ---- i(t)   V(s) = sL I(s)   impedance = ---- = sL
@@ -54,7 +50,17 @@
 //!          2      g^2 R^2               |    |2
 //!         L   = ------------  where g = |G(w)|  
 //!                (1-g^2) w^2            |    | 
-//-----------------------------------------------------------------------------
+//! \endcode
+//! \see
+//! \cite<Knowlton1949>
+//!      Archer Eben Knowlton (editor) (1949)
+//!      Standard Handbook for Electrical Engineers
+//!      See page 180. "239. Methods".
+//!      McGraw-Hill, McGraw-Hill Handbooks. Edition 8, 2311 pages
+//!      https://books.google.com/books?id=W1xAAQAAIAAJ
+//=============================================================================
+#include <cmath>
+#include<cstdio>
 double estimate_induction(//! \return estimated induction L
   const double A,         //! \param[in] A:    input amplitude as in A_in sin(2pi ft)
   const double Aest,      //! \param[in] Aest: estimated/measured amplitude
@@ -65,7 +71,7 @@ double estimate_induction(//! \return estimated induction L
     const double gain        = Aest / A;        // gain
     const double w           = 2 * M_PI * f;    // frequency in radians per second
     const double Lsq         = (gain * gain * R * R ) / (w*w * (1 - gain*gain));
-    const double induction_L = sqrt(Lsq);
+    const double induction_L = sqrt(fabs(Lsq));
     return induction_L;
   }
 
