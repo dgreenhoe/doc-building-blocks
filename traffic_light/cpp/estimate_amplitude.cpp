@@ -1,6 +1,6 @@
 //============================================================================
 //! \author  Daniel J. Greenhoe
-//! \class   Induction
+//! \class   Induction-Estimation
 //! \brief   Perform ML-estimation of induction L (Henrys) in an AWGN system
 //! \details An estimate of L can be used in a metal detector and/or in 
 //!          an induction loop for vehicle detection at a traffic intersection.

@@ -1,6 +1,6 @@
 //============================================================================
 //! \author  Daniel J. Greenhoe
-//! \class   Induction
+//! \class   Induction-Estimation
 //! \brief   Perform ML-estimation of induction L (Henrys) in an AWGN system
 //=============================================================================
 #include "estimate_induction.h"
