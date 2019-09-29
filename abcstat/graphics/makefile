@@ -95,6 +95,7 @@ GRP_MATH = \
 
 GRP_PROB =                     \
   latestimation.pdf            \
+  estimation_techniques.pdf    \
   lat3_L3_1x0_-0-x-1_prob.pdf  \
   lat4_m2_psE_coin.pdf         \
   lat4_m2_boa_prob.pdf         \
