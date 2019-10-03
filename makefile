@@ -15,9 +15,11 @@
 # Commands
 #--------------------------------------
 all:
-  cd abcdc
+  cd abcstat
     make
-  cd ..\abcstat
+  cd ..\bayesnets
+    make
+  cd ..\abcdc
     make
   cd ..\probability
     make
