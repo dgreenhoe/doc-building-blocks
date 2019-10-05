@@ -9,20 +9,6 @@
 \label{chp:est}
 %======================================
 %======================================
-\section{General approaches to estimation}
-%======================================
-There are several general approaches to estimation:\footnote{
-  \citerppgc{vaseghi2000}{4}{5}{9780471626923}{\textsection ``1.2 Signal Processing Methods"},
-  \citerc{candy2005}{James V. Candy: Champion of Model-based processing},
-  \citer{candy2009}
-  }
-\begin{enumerate}
-  \item Model-based signal processing \xref{sec:model-based}
-  \item Bayesian signal processing
-  \item Neural Networks
-\end{enumerate}
-
-%======================================
 \section{Model-based estimation}
 \label{sec:model-based}
 %======================================
@@ -61,8 +47,31 @@ to estimation. This approach partitions the task of estimation into three parts:
 %=======================================
 \subsection{Estimation models}
 %=======================================
-Let $\rvx(t;\theta)$ be a waveform with parameter $\theta$.
-There are three basic types of estimation of $\rvx$:
+\begin{figure}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+     \tboxc{\includegraphics{graphics/sys_xvy.pdf}}
+    &\tboxc{\includegraphics{graphics/sysH_cnoise.pdf}}
+    &\tboxc{\includegraphics{graphics/sysH_mnoise.pdf}}
+    \\
+      \structe{additive noise model}
+    & \structe{communication system model}
+    & \structe{measurement noise model}
+    \\\hline
+  \end{tabular}
+  \caption{Some estimation models \label{fig:estmodels}}
+\end{figure}
+Estimation modeling includes several sub-models:
+\begin{enumerate}
+  \item The signal model (parametric, nonparametric)---more on this below.
+  \item The noise model---this can be assumed (Guassian is a common choice) or estimated \xref{chp:pdfest}.
+  \item The model architecture \xref{fig:estmodels}---additive noise model is a common choice, with justification from \thme{Wold's Theorem}.
+\end{enumerate}
+
+As for the the signal model,
+let $\rvx(t;\theta)$ be a signal with parameter $\theta$.
+There are three basic types of signal models, leading to three fundamental types of estimation:
 
 \begin{enume}
    \item \ope{detection}:
@@ -94,30 +103,37 @@ There are three basic types of estimation of $\rvx$:
 \includegraphics{graphics/estimation_techniques.pdf}
 \caption{Estimation Algorithms\label{fig:est-tech}}
 \end{figure}
-Estimation techniques can be classified into
-five groups \xref{fig:est-tech}:\footnote{%
+Estimation algorithms include the following \xref{fig:est-tech}:\footnote{%
   \citerpgc{nelles2001}{26}{3540673695}{``Fig 2.2 Overview of linear and nonlinear optimization techniques"},
   \citerpgc{nelles2001}{33}{3540673695}{``Fig 2.5 The Bayes method is the most general approach but\ldots"},
   \citerpgc{nelles2001}{63}{3540673695}{``Table 3.3 Relationship between linear recursive and nonlinear optimization techniques"},
   \citerpg{nelles2001}{66}{3540673695},
-  \citerpgc{clarkson1993}{276}{0849386098}{``Figure 6.1.1 Options for the adaptive algorithm design."}
+  \citerpgc{clarkson1993}{276}{0849386098}{``Figure 6.1.1 Options for the adaptive algorithm design."},
+  \citerppgc{vaseghi2000}{4}{5}{9780471626923}{\textsection ``1.2 Signal Processing Methods"}
   }
 \begin{enume}
-   \item sequential decoding
-   \item norm minimization
-   \item gradient search
-   \item inner product analysis
-   \item direct search
+   \item Bayesian Networks \xref{chp:bayesnets}
+   \item Gradient Search
+   \item Bayesian signal processing
+   \item Neural Networks
+   \item Direct search
 \end{enume}
 
-Sequential decoding is a non-linear estimation family.
-Perhaps the most famous of these is the Veterbi algorithm which
-uses a trellis to calculate the estimate.
-The Verterbi algorithm has been shown to yield an optimal estimate
-in the maximal likelihood (ML) sense.
-Norm minimization and gradient search algorithms are all linear algorithms.
-While this restriction to linear operations often simplifies calculations,
-it often yields an estimate that is not optimal in the ML sense.
+Bayesian signal processing involves estimating the joint-pdf of a process \xref{chp:pdfest},
+and then integrating over a portion of the this (possibly high dimensional) pdf to find an MAP estimate.
+The integration itself may be estimated using \ope{Monte Carlo Integration}.\footnote{
+  \citerppgc{candy2009}{4}{7}{9780470430576}{\textsection {\scshape``1.3 Simulation-based approach to Bayesian Processing"}},
+  \citerpgc{liu2013}{1}{9780387763712}{\textsection 1.1 The Need of Monte Carlo Techniques}
+  }
+
+%20191005%Sequential decoding is a non-linear estimation family.
+%20191005%Perhaps the most famous of these is the Veterbi algorithm which
+%20191005%uses a trellis to calculate the estimate.
+%20191005%The Verterbi algorithm has been shown to yield an optimal estimate
+%20191005%in the maximal likelihood (ML) sense.
+%20191005%Norm minimization and gradient search algorithms are all linear algorithms.
+%20191005%While this restriction to linear operations often simplifies calculations,
+%20191005%it often yields an estimate that is not optimal in the ML sense.
 
 %=======================================
 \subsection{Estimation criterion function}
@@ -209,6 +225,16 @@ Let $\rvx(t;\theta)$ be a random process with unknown parameter $\theta$.
      &&  \text{\xref{def:estML}}
 \end{align*}
 \end{proof}
+
+%=======================================
+\section{Estimation applications}
+%=======================================
+Applications of estimation include the following:
+\begin{enumerate}
+  \item \opb{prediction}---for speech processing, financial markets, etc.
+  \item \opb{deconvolution}---estimate a system transfer function $\estH(z)$ and calculate it's inverse $\estH^{-1}(z)$.
+  \item \opb{de-noising}---estimate a signal $\fx(t)$ that is buried in noise $\fv(t)$.
+\end{enumerate}
 
 %=======================================
 \section{Measures of estimator quality}
