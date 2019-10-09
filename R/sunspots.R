@@ -4,7 +4,7 @@
 # setwd("c:/dan/r/R");
 # setwd("c:/dan/doc-building-blocks/R");
 # dir()
-# source("sunspots.R")
+# source("sunspots.R");
 #============================================================================
 #---------------------------------------
 # install packages (perform once)

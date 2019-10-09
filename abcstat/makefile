@@ -21,6 +21,7 @@ FILE_SRC  =                            \
   ../common/calculus.tex               \
   ../common/com_channel.tex            \
   ../common/correlation_estimation.tex \
+  ../common/density_estimation.tex     \
   ../common/dtft.tex                   \
   ../common/expectation.tex            \
   ../common/moment_estimation.tex      \
