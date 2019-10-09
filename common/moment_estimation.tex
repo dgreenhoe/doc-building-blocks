@@ -4,7 +4,25 @@
 %============================================================================
 %=======================================
 \chapter{Moment Estimation}
+\label{chp:moment_estimation}
 %=======================================
+%=======================================
+\section{Motivation}
+%=======================================
+Moment estimation is extremely useful for model-building
+when a \emph{type} of parameterized
+\fncte{probability density function} \fncte{pdf} $\ppx(x)$ \xref{def:pdf}
+is known or more likely \emph{assumed}, 
+but the \emph{parameters} themselves are \emph{not}.
+Examples of parameterized pdfs include the following:
+\\\begin{tabular}{clll}
+    \imark & The \fncte{Uniform Distribution}    & with parameter mean $\pmean$                        & \xref{def:uniform}.
+  \\\imark & The \fncte{Gamma Distribution}      & with parameter $b$                                  & \xref{def:gamma}.
+  \\\imark & The \fncte{Chi-square Distribution} & with parameter variance $\pvar$                     & \xref{def:chisq}.
+  \\\imark & The \fncte{Gaussian Distribution}   & with parameters mean $\pmean$ and variance $\pvar$  & \xref{def:normal}.
+  \\\imark & The \fncte{Rayleigh Distribution}   & with parameters radius $r$ and variance $\pvar$     & \xref{def:rayleigh}.
+\end{tabular}
+
 %=======================================
 \section{Mean Estimation}
 %=======================================
@@ -255,7 +273,7 @@ Alternatively, the results follow from \prefpp{thm:estML_amplitude}.
 \end{proof}
 
 %---------------------------------------
-\begin{minipage}{\tw-55mm}
+\begin{minipage}{\tw-115mm}
 \begin{example}
 %---------------------------------------
 The R code to the right 
@@ -264,15 +282,15 @@ from 1749 to current times.
 \end{example}
 \end{minipage}
 \hfill
-\begin{minipage}{50mm}
+\begin{minipage}{110mm}
 \begin{lstlisting}[language=R]
 data(sunspots);     
 x   = sunspot.month;
 N   = length(x);    
 avg = sum(x) / N;
-plot(x, col="blue");
-lines(c(start(x)[1],end(x)[1]), c(avg,avg), col="red")
 print(avg);
+plot (x, col="blue");
+lines(c(start(x)[1],end(x)[1]), c(avg,avg), col="red");
 \end{lstlisting}
 \end{minipage}
 
@@ -552,16 +570,17 @@ In software/firmware implementations, recursive forms are very useful and effici
   \citerppgc{candy2009}{11}{12}{9780470430576}{Example 1.3},
   \citerppgc{candy2016}{12}{13}{9781119125457}{Example 1.3}
   }
+\label{prop:average_recursive}
 %---------------------------------------
 \propbox{
   \mcom{\meanest_{\xN}}{new}
     = \mcom{\meanest_{\xN-1}}{previous} 
-      \mcomr{\frac{1}{\xN}}{weight}\mcom{\brs{\rvy(\xN) - \meanest_{\xN-1}}}{error}
+      + \mcomr{\frac{1}{\xN}}{weight}\mcom{\brs{\rvx_{\xN} - \meanest_{\xN-1}}}{error}
   }
 \end{proposition}
 \begin{proof}
 \begin{align*}
-  \mcom{\meanest_{\xN}}{new}
+  \meanest_{\xN}
     &\eqd \frac{1}{\xN} \sum_{n=1}^{\xN} \rvx_n
     && \text{by definition of \fncte{average}}
     && \text{\xref{def:average}}
@@ -571,7 +590,30 @@ In software/firmware implementations, recursive forms are very useful and effici
     && \text{by definition of \fncte{average}}
     && \text{\xref{def:average}}
   \\&= \frac{1}{\xN}\rvx_{\xN} + \meanest_{\xN-1} - \frac{1}{\xN}\meanest_{\xN-1}
-  \\&= \mcom{\meanest_{\xN-1}}{previous} 
-      \mcomr{\frac{1}{\xN}}{weight}\mcom{\brs{\rvy(\xN) - \meanest_{\xN-1}}}{error}
+  \\&= \meanest_{\xN-1}
+     + \frac{1}{\xN} \brs{\rvx_{\xN} - \meanest_{\xN-1}}
 \end{align*}
 \end{proof}
+
+%---------------------------------------
+\begin{minipage}{\tw-115mm}
+\begin{example}
+%---------------------------------------
+The R code to the right 
+\propb{recursively} calculates the \fncte{average}
+\xref{prop:average_recursive} number of sunspots
+from 1749 to current times.
+\end{example}
+\end{minipage}
+\hfill
+\begin{minipage}{110mm}
+\begin{lstlisting}[language=R]
+data(sunspots);     
+x   = sunspot.month;
+N   = length(x);    
+avg = sum(x) / N;
+print(avg);
+plot(x, col="blue");
+lines(c(start(x)[1],end(x)[1]), c(avg,avg), col="red")
+\end{lstlisting}
+\end{minipage}
