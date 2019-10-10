@@ -15,11 +15,13 @@
 #---------------------------------------
  require(stats);
  require(graphics);
+ require(datasets);
  require(bspec);    # https://www.rdocumentation.org/packages/bspec/
- data(sunspots);
+ data(sunspots, package="datasets");
 #---------------------------------------
 # load data
 #---------------------------------------
+ rm(list=objects());
  x = sunspot.month;
 #---------------------------------------
 # calculate average
