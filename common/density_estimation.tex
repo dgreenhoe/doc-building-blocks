@@ -3,20 +3,101 @@
 % Daniel J. Greenhoe
 %============================================================================
 %=======================================
-\chapter{Nonparametric Density Estimation}
+\chapter{Density Estimation}
 \label{chp:pdfest}
 %=======================================
-In model-building, if a \emph{type} of parameterized
+%=======================================
+\section{Introduction}
+%=======================================
+Moment estimation is extremely useful for model-building
+when a \emph{type} of parameterized
 \fncte{probability density function} (\fncte{pdf}) $\ppx(x)$ \xref{def:pdf}
-is known or more likely \emph{assumed}, 
-then all we need to do is estimate the parameters of these functions \xref{chp:moment_estimation}.
-This is called \opd{parametric density estimation}.\footnote{
+is known or more likely \emph{assumed},
+but the \emph{parameters} themselves are \emph{not known}.
+Examples of parameterized pdfs include the following:
+\\\begin{tabular}{clll}
+    \imark & The \fncte{Uniform Distribution}    & with parameter mean $\pmean$                        & \xref{def:uniform}.
+  \\\imark & The \fncte{Gamma Distribution}      & with parameter $b$                                  & \xref{def:gamma}.
+  \\\imark & The \fncte{Chi-square Distribution} & with parameter variance $\pvar$                     & \xref{def:chisq}.
+  \\\imark & The \fncte{Gaussian Distribution}   & with parameters mean $\pmean$ and variance $\pvar$  & \xref{def:normal}.
+  \\\imark & The \fncte{Rayleigh Distribution}   & with parameters radius $r$ and variance $\pvar$     & \xref{def:rayleigh}.
+\end{tabular}
+
+In the case of distributions with mean and/or variance parameters,
+these parameters can be estimated using the techniques in this chapter,
+and the technique of estimating the pdf in this manner is called
+\opd{parametric density estimation}.\footnote{
   \citerpgc{gramacki2017}{2}{9783319716886}{\textsection ``1.1 Background"}
   }
-However, if the density type is \emph{not} known or assumed, then we need to estimate 
-the entire function.
-This is called \opd{nonparametric density estimation}.
+If a distribution type is not known and not assumed, then
+the distribution itself must be estimated
+using \opd{nonparametric density estimation} \xref{chp:pdfest}
 
+%=======================================
+\section{Parametric density estimation}
+%=======================================
+%---------------------------------------
+\begin{corollary}
+\label{cor:mean_white_gaussian}
+%---------------------------------------
+\corbox{
+  \brb{\begin{array}{FMD}
+      (A). & $\seqn{\rvx_n}$ is \prope{uncorrelated} & and
+    \\(B). & $\rvx_n$ is \prope{Gaussian}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FMD}
+      (1). & $\ds\estML[\mu] = \frac{1}{\xN}\sum_{n=1}^{\xN} \rvx_n$ & and
+    \\(2). & $\estML[\mu]$ is \prope{consistent}              & and
+    \\(3). & $\estML[\mu]$ is \prope{efficient}               &
+  \end{array}}
+  }
+\end{corollary}
+\begin{proof}
+This result follows directly from \prefpp{thm:estML-CR} with
+\\\indentx$\begin{array}{rc>{\ds}lM}
+   \rvy(t)          &\eqd& \rvx(t;\theta) + \fv(t) & where $\fv(t)$ is a \prope{zero-mean} white Gaussian noise process
+   \\\rvx(t;\theta) &\eqd& \fg(\theta)
+   \\               &\eqd& \theta
+   \\               &\eqd& \mu
+   \\\rvx_n         &\eqd& \fdoty_n
+   \\               &\eqd& \inprod{\fy(t)}{\fpsi_n(t)}
+   \\               &\eqd& \inprod{\fy(t)}{\delta(t-n\tau)}
+   \\               &\eqd& \int_{t\in\R} \fy(t) \delta(t-n\tau) \dt
+   \\               &=&    \fy(n\tau)
+\end{array}$
+
+Alternatively, the results follow from \prefpp{thm:estML_amplitude}.
+\end{proof}
+
+%---------------------------------------
+\begin{minipage}{\tw-115mm}
+\begin{example}
+%---------------------------------------
+The R code to the right
+calculates the \fncte{average} \xref{def:average} number of sunspots
+from 1749 to current times.
+\end{example}
+\end{minipage}
+\hfill
+\begin{minipage}{110mm}
+\begin{lstlisting}[language=R]
+require(stats);
+N        = 50;
+mean     = 3;
+stddev   = 10;
+x        = stats::rnorm(N, mean, stddev);
+estimate = sum(x) / N;
+print(estimate);
+plot (x, col="blue", type="l");
+lines(c(start(x)[1],end(x)[1]), c(mean,mean), col="green");
+lines(c(start(x)[1],end(x)[1]), c(estimate,estimate), col="red");
+\end{lstlisting}
+\end{minipage}
+
+%=======================================
+\section{Nonparametric density estimation}
+%=======================================
 Some techniques of \ope{nonparametric density estimation} include\footnote{
   \citerg{silverman1986}{9780412246203},
   \citerppgc{tsybakov2008}{1}{27}{9780387790527}{\textsection1.1--\textsection1.3},
@@ -26,22 +107,20 @@ Some techniques of \ope{nonparametric density estimation} include\footnote{
 \begin{listi}
   \item Histogram %/ Smoothed Histograms
   \item Average Shifted Histogram
-  \item \ope{Kernel Density Estimation} (\ope{KDE})---good for 6 dimensions or less
-        (the ``curse of dimensionality"\footnotemark)
-        \footnotetext{ 
-        \citerp{bellman1954}{206},
-        \citerpc{bellman1961}{94}{\textsection ``5.16 The Curse of Dimensionality"},
-        \citerp{bellman1971}{44},
-        \citerpgc{gramacki2017}{59}{9783319716886}{\textsection ``The Curse of Dimensionality"}
-        }
+  \item \ope{Kernel Density Estimation} (\ope{KDE})
   \item Fourier-based
   \item Wavelet-based
   \item Fast Gauss Transform
 \end{listi}
 
-One difficulty (possibly a very computationally demanding one) 
-of the KDE techniques is finding a proper \vale{bandwidth}.
-%\footnote{
-%  \citerg{tsybakov2008}{9780387790527},
-%  }
+KDE's are conceptually quite simple, but do have some difficulties:
+\begin{listi}
+  \item KDEs are good for 6 dimensions or less---the ``curse of dimensionality"\footnote{
+        \citerp{bellman1954}{206},
+        \citerpc{bellman1961}{94}{\textsection ``5.16 The Curse of Dimensionality"},
+        \citerp{bellman1971}{44},
+        \citerpgc{gramacki2017}{59}{9783319716886}{\textsection ``The Curse of Dimensionality"}
+        }
+  \item KDEs have a \vale{bandwidth} parameter and the computation of this parameter can be quite demanding.
+\end{listi}
 
