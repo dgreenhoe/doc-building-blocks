@@ -27,7 +27,8 @@ PATHWAVE     = ../../common/wavelets/graphics/
 GRP_DATA = \
   dji30_20171006-20181004.pdf  \
   earthquake_kapi_20180928.pdf \
-  sunspots_1749-2004.pdf
+  sunspots_1749-2004.pdf       \
+  sunspots_welchPSD_4segs.pdf
 
 GRP_DSP  =                     \
   sinc.pdf                     \

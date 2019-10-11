@@ -37,14 +37,15 @@ mydata = function(x)
 #=======================================
 # function: PSD
 #=======================================
-mypsd = function(x, numSegments=4, window="hamming", dataDump=FALSE, dataPlot=TRUE, dataFile="mypsd.dat") 
+mypsd = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFile="mypsd.dat") 
   {
   xts       = as.ts(as.vector(x)); # year indices seems to confuse welchPSD
   N         = length(xts);         # length of time series
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
   segLength = N / numSegments;     # segment length
-  xpsd = bspec::welchPSD(xts - estMean, seglength = segLength); # estimate PSD
+  xpsd = bspec::welchPSD(xts - estMean, seglength = segLength);
+  psdMax = max(xpsd$power);
   binMax = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
   freqMax = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
   periodT = 1 / freqMax;           # estimated period
@@ -57,11 +58,12 @@ mypsd = function(x, numSegments=4, window="hamming", dataDump=FALSE, dataPlot=TR
     print(sprintf("%% Daniel J. Greenhoe "                                                         ));
     print(sprintf("%% PSD data file suitable for use by LaTeX PStricks"                            ));
     print(sprintf("%% number of segments = %f", numSegments                                        ));
-    print(sprintf("%% smoothing window   = %s", window                                             ));
     print(sprintf("%% estimated period   = %12.6f", periodT                                        ));
     print(sprintf("%%============================================================================="));
+    print(sprintf("["                                                                              ));
     for(i in 1:length(xpsd$power)) 
-      print(sprintf("(%3.0f, %16.6f)  %% frequency = %9.6f", i-1, xpsd$power[i], xpsd$frequency[i]));
+      print(sprintf("(%10.6f, %10.6f)", xpsd$frequency[i], xpsd$power[i]/psdMax               ));
+    print(sprintf("]"                                                                              ));
     sink();
     }
   periodT;                         # return estimated period
@@ -92,7 +94,7 @@ pdfr = function(x)
 # plot data
 #---------------------------------------
  mydata(x);
- estT = mypsd(x, numSegments=2, dataDump=TRUE);
+ estT = mypsd(x, numSegments=3, dataDump=FALSE);
  print(sprintf("estimated period = %.16f years", estT));
 
 

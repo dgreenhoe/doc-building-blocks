@@ -17,7 +17,7 @@ Quality of spectral estimators\footnote{
   \citerp{abdaheer2009}{204}
   }
 
-\thmbox{\begin{array}{|Mrcl|}
+\thmbox{\begin{array}{Mrcl}
     \ope{Periodogram}:               & Q &=& 1
   \\\ope{Welch Method 0\% overlap}:  & Q &=& 0.78\xN\Delta f
   \\\ope{Welch Method 50\% overlap}: & Q &=& 1.39\xN\Delta f
@@ -30,3 +30,52 @@ BT-product references:
 \citerppgc{haykin2014}{25}{28}{9781118476772}{\textsection ``2.4 The Inverse Relationship between Time-Domain and Frequency-Domain Representations"},
 \citerppgc{marple1987}{144}{146}{9780132141499}{{\textsection ``\scshape5.4 Resolution and the Stability-Time-Bandwidth Product"}}
 
+\begin{figure}
+  \centering
+  \begin{tabular}{l}
+    \includegraphics{graphics/sunspots_1749-2004.pdf}\\
+    \includegraphics{graphics/sunspots_welchPSD_4segs}
+  \end{tabular}
+  \caption{Estimation of sunspot periodicity using Welch PSD estimation\label{fig:sunspot_welch}}
+\end{figure}
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Using the PSD, we can estimate the periodicity of sunspots \xref{fig:sunspot_welch} as
+\exbox{\begin{array}{M|M}
+    number of segments = 2 & estimated periodicty = 11.0277777777777786 years
+  \\number of segments = 3 & estimated periodicty = 11.0208333333333321 years
+  \\number of segments = 4 & estimated periodicty = 11.0277777777777786 years
+  \\number of segments = 8 & estimated periodicty = 11.0000000000000000 years
+\end{array}}
+\\
+That is, period = $\frac{1}{f}=\frac{1}{0.007557\times12}\eqa11.0273$ years.
+Here is some R code that you can experiment with:
+\begin{lstlisting}[language=R]
+require(stats);
+require(graphics);
+require(datasets);
+require(ramify);
+require(bspec);
+data(sunspots, package="datasets");
+
+mypsd = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFile="mypsd.dat") 
+  {
+  xts       = as.ts(as.vector(x)); # year indices seems to confuse welchPSD
+  N         = length(xts);         # length of time series
+  Fs        = 12;                  # sample rate = 12 samples per year
+  estMean   = mean(xts);           # estimated mean
+  segLength = N / numSegments;     # segment length
+  xpsd = bspec::welchPSD(xts - estMean, seglength = segLength);
+  psdMax = max(xpsd$power);
+  binMax = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
+  freqMax = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
+  periodT = 1 / freqMax;           # estimated period
+  plot(xpsd$power, type="b", xlim=c(1,50), ylim=c(0,max(xpsd$power)), col="blue");
+  periodT;                         # return estimated period
+  }
+
+ estT = mypsd(x, numSegments=4);
+ print(sprintf("estimated period = %.16f years", estT));
+\end{lstlisting}
+\end{example}
