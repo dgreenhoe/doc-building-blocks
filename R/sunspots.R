@@ -10,6 +10,7 @@
 # install packages (perform once)
 #---------------------------------------
 #install.packages("bspec");
+#install.packages("ramify");
 #---------------------------------------
 # load add-on packages
 #---------------------------------------
@@ -17,6 +18,7 @@
  require(stats);
  require(graphics);
  require(datasets);
+ require(ramify);
  require(bspec);    # https://www.rdocumentation.org/packages/bspec/
  data(sunspots, package="datasets");
 #=======================================
@@ -35,11 +37,34 @@ mydata = function(x)
 #=======================================
 # function: PSD
 #=======================================
-mypsd = function(x) 
+mypsd = function(x, numSegments=4, window="hamming", dataDump=FALSE, dataPlot=TRUE, dataFile="mypsd.dat") 
   {
- class(x); # make sure x is of type time-series ("ts")
- #x_psd = bspec::welchPSD(x, length(x)/4);
-#plot(x_psd$power, type="l", xlim=c(1850,2019), ylim=c(0,100), col="red")
+  xts       = as.ts(as.vector(x)); # year indices seems to confuse welchPSD
+  N         = length(xts);         # length of time series
+  Fs        = 12;                  # sample rate = 12 samples per year
+  estMean   = mean(xts);           # estimated mean
+  segLength = N / numSegments;     # segment length
+  xpsd = bspec::welchPSD(xts - estMean, seglength = segLength); # estimate PSD
+  binMax = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
+  freqMax = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
+  periodT = 1 / freqMax;           # estimated period
+  if(dataPlot){ 
+    plot(xpsd$power, type="b", xlim=c(1,50), ylim=c(0,max(xpsd$power)), col="blue");
+    }
+  if(dataDump){
+    sink(dataFile);
+    print(sprintf("%%============================================================================="));
+    print(sprintf("%% Daniel J. Greenhoe "                                                         ));
+    print(sprintf("%% PSD data file suitable for use by LaTeX PStricks"                            ));
+    print(sprintf("%% number of segments = %f", numSegments                                        ));
+    print(sprintf("%% smoothing window   = %s", window                                             ));
+    print(sprintf("%% estimated period   = %12.6f", periodT                                        ));
+    print(sprintf("%%============================================================================="));
+    for(i in 1:length(xpsd$power)) 
+      print(sprintf("(%3.0f, %16.6f)  %% frequency = %9.6f", i-1, xpsd$power[i], xpsd$frequency[i]));
+    sink();
+    }
+  periodT;                         # return estimated period
   }
 #=======================================
 # function: pdf
@@ -67,7 +92,10 @@ pdfr = function(x)
 # plot data
 #---------------------------------------
  mydata(x);
-#mypsd(x);
+ estT = mypsd(x, numSegments=2, dataDump=TRUE);
+ print(sprintf("estimated period = %.16f years", estT));
+
+
 #mypdf(x);
 #pdfr(x);
 #---------------------------------------
