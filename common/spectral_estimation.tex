@@ -5,7 +5,19 @@
 %=======================================
 \chapter{Spectral Estimation}
 %=======================================
-
+\qboxnq{Helen Steiner Rice (1900--1981); from \emph{A Bend in the Road}\footnotemark}{\centering
+    Sometimes we come to life's crossroads
+  \\and view what we think is the end.
+  \\But God has a much wider vision
+  \\and He knows that it's only a bend.\ldots
+  }
+\footnotetext{
+  \citerpgc{rice2012}{116}{9781620294345}{Note: not sure about page number}.
+  Many many thanks to Mary L. Greenhoe for bringing this poem to the author's attention.
+  }
+%=======================================
+\section{Nonparametric spectral estimation}
+%=======================================
 Quality of spectral estimators\footnote{
   \citerppgc{proakis2002}{452}{457}{9780130622198}{\textsection ``8.2.4 Performance Characteristics of Nonparametric Power Spectrum Estimators"},
   \citerppgc{proakis1996}{916}{919}{9780133737622}{\textsection ``12.2.4 Performance Characteristics of Nonparametric Power Spectrum Estimators"},
@@ -26,20 +38,21 @@ Quality of spectral estimators\footnote{
 \end{array}}
 
 
-BT-product references:
-\citerppgc{haykin2014}{25}{28}{9781118476772}{\textsection ``2.4 The Inverse Relationship between Time-Domain and Frequency-Domain Representations"},
-\citerppgc{marple1987}{144}{146}{9780132141499}{{\textsection ``\scshape5.4 Resolution and the Stability-Time-Bandwidth Product"}}
-
 \begin{figure}
   \centering
   \begin{tabular}{l}
-    \includegraphics{graphics/sunspots_1749-2004.pdf}\\
+   %\includegraphics{graphics/sunspots_1749-2004.pdf}\\
+    \includegraphics{graphics/sunspots.pdf}\\
     \includegraphics{graphics/sunspots_welchPSD_4segs}
   \end{tabular}
   \caption{Estimation of sunspot periodicity using Welch PSD estimation\label{fig:sunspot_welch}}
 \end{figure}
 %---------------------------------------
 \begin{example}
+\footnote{
+  \citeDc{wdcsilo_sunspot}{\url{http://www.sidc.be/silso/DATA/SN_m_tot_V2.0.txt}},
+  \citeD{rdocumentation_sunspotmonth}
+  }
 %---------------------------------------
 Using the PSD, we can estimate the periodicity of sunspots \xref{fig:sunspot_welch} as
 \exbox{\begin{array}{M|M}
@@ -50,7 +63,7 @@ Using the PSD, we can estimate the periodicity of sunspots \xref{fig:sunspot_wel
 \end{array}}
 \\
 That is, period = $\frac{1}{f}=\frac{1}{0.007557\times12}\eqa11.0273$ years.
-Here is some R code that you can experiment with:
+Here is some R code that can be used to experiment with:
 \begin{lstlisting}[language=R]
 require(stats);
 require(graphics);
@@ -58,24 +71,32 @@ require(datasets);
 require(ramify);
 require(bspec);
 data(sunspots, package="datasets");
-
-mypsd = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFile="mypsd.dat") 
+mypsd = function(x, numSegments=4) 
   {
   xts       = as.ts(as.vector(x)); # year indices seems to confuse welchPSD
   N         = length(xts);         # length of time series
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
   segLength = N / numSegments;     # segment length
-  xpsd = bspec::welchPSD(xts - estMean, seglength = segLength);
-  psdMax = max(xpsd$power);
-  binMax = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
-  freqMax = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
-  periodT = 1 / freqMax;           # estimated period
-  plot(xpsd$power, type="b", xlim=c(1,50), ylim=c(0,max(xpsd$power)), col="blue");
+  xpsd      = bspec::welchPSD(xts - estMean, seglength = segLength);
+  psdMax    = max(xpsd$power);     # maximum PSD value
+  binMax    = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
+  freqMax   = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
+  periodT   = 1 / freqMax;         # estimated period
+  plot(xpsd$power, type="b", xlim=c(1,50), ylim=c(0,psdMax), col="blue");
   periodT;                         # return estimated period
   }
-
  estT = mypsd(x, numSegments=4);
  print(sprintf("estimated period = %.16f years", estT));
 \end{lstlisting}
 \end{example}
+
+%=======================================
+\section{Bandwidth-Time Product}
+%=======================================
+BT-product references:
+\begin{enume}
+  \item \citerppgc{haykin2014}{25}{28}{9781118476772}{\textsection ``2.4 The Inverse Relationship between Time-Domain and Frequency-Domain Representations"},
+  \item \citerppgc{marple1987}{144}{146}{9780132141499}{{\textsection ``\scshape5.4 Resolution and the Stability-Time-Bandwidth Product"}}
+\end{enume}
+
