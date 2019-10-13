@@ -162,5 +162,8 @@ c=coefs(3)
 d=coefs(4)
 bestFit = d*X.^3 + c*X.^2 + b*X + a;
 plot(bestFit)
-
+x = 2030;
+predict2030 = d*(x-1880)^3 + c*(x-1880)^2 + b*(x-1880) + a
+x = 1870;
+predict1870 = d*(x-1880)^3 + c*(x-1880)^2 + b*(x-1880) + a
 
