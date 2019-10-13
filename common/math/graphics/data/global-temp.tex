@@ -1,0 +1,61 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% Symmlet-p16 wavlet function and coefficients
+% nominal xunit = 10mm
+% nominal yunit = 10mm
+% nominal font size = \scriptsize
+%============================================================================
+\psset{xunit=0.10\psxunit}%
+\psset{yunit=1.75\psyunit}%
+\begin{pspicture}(1860,-1)(2025,1.45)%
+  %-------------------------------------
+  % grid
+  %-------------------------------------
+  \rput(1870,0){%
+    \psset{linecolor=grid,linewidth=0.5pt}%
+    \multirput{0}(0, -0.4)(0,0.2){9}{\psline[linestyle=dashed](0,0)(150,0)}% horizontal
+    \multirput{0}(10,-0.6)(10,0){14}{\psline[linestyle=dotted](0,0)( 0,2)}% vertical
+    \psline(0,0)(150,0)% horizontal x axis
+  }%
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  {%
+    \psset{gridcolor=grid, subgridcolor=subgrid,subgriddiv=0}%
+    \psset{linecolor=axis,linewidth=0.75pt}%
+    \psset{showorigin=true,axesstyle=frame,tickstyle=top}%
+    \psset{ticks=all, labels=y,   Dx=10,Dy=0.2}%
+         %       |           |    |     |________ y-labels increment
+         %       |           |    |______________ x-labels increment
+         %       |           |___________________ ticks  x/y/all/none
+         %       |_______________________________ labels x/y/all/none
+   %\psgrid(0,0)(1870,-0.6)(2020,1.4)%
+    \psaxes[yAxis=false](0,-0.6)(1870,-0.6)(2020,1.4)% x-axis
+    \psaxes[xAxis=false](1870,0)(1870,-0.6)(2020,1.4)% y-axis
+  }%                             |_ shift right by 1870 years
+  \multido{\n=1870+10}{16}{\rput[t](\n,-0.7){\n}}% x-axis labels
+         %       |  |   |               |________ vertical placement
+         %       |  |   |________________________ number of labels
+         %       |  |____________________________ step size
+         %       |_______________________________ starting value
+  %-------------------------------------
+  % annotation
+  % R lubridate::decimal_date(lubridate::ymd("1956-10-17", tz="UTC"))=1956.792
+  %-------------------------------------
+  {%
+  \psset{linewidth=1pt, linestyle=dashed, linecolor=red, showpoints=true, dotstyle=triangle}%
+  \psline(1870,-0.6)(1870,0.2)%
+  \rput[bl](1870,0.3){Second Industrial Revolution}%
+  \psline(1956.792,-0.6)(1956.792,1.1)%
+  \rput[bl](1956.792,1.1){First ``full scale" nuclear power station}%
+  }%
+  %-------------------------------------
+  % plot data
+  %-------------------------------------
+  \psset{linewidth=0.75pt, dotstyle=diamond, showpoints=true}%
+  \readdata{\mydata}{../../common/math/graphics/data/global-temp.dat}%
+  \dataplot{\mydata}%
+ %\listplot{\mydata}%
+ %\fileplot{../../common/math/graphics/data/global-temp.dat}%
+\end{pspicture}%
