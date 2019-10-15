@@ -7,9 +7,7 @@
 %     "Land-Ocean Temperature Index (C"
 %     https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt
 %
-% The command \fileplot{<filename>.dat} may be used in a LaTeX environment for plotting data.
-% \fileplot is available in the LaTeX PSTricks package.
-% Reference: http://www.ctan.org/pkg/pstricks
+% cd "c:/dan/r/common/math/graphics/data"
 %========================================================================
 Y = [ 
  -0.17
@@ -152,7 +150,8 @@ Y = [
   0.93
   0.85
 ];
-
+pkg load signal;
+N = length(Y);
 X = [0:2018-1880]';   % years-1880
 U = [ones(1,N) ; X', ; X'.^2, ; X'.^3];
 coefs = inv(U*U')*(U*Y)
@@ -166,4 +165,7 @@ x = 2030;
 predict2030 = d*(x-1880)^3 + c*(x-1880)^2 + b*(x-1880) + a
 x = 1870;
 predict1870 = d*(x-1880)^3 + c*(x-1880)^2 + b*(x-1880) + a
+pkg load signal
+[mag,freq] = pwelch(Y-bestFit, Nfft=4, overlap=0.5)%
 
+plot(freq,mag);
