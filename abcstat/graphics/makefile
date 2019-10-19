@@ -25,7 +25,9 @@ PATHWAVE     = ../../common/wavelets/graphics/
 # Files
 #--------------------------------------
 GRP_DATA = \
+  cagefree-ratios.pdf          \
   dji30_20171006-20181004.pdf  \
+  egg-production.pdf           \
   earthquake_kapi_20180928.pdf \
   global-temp.pdf              \
   sunspots.pdf                 \

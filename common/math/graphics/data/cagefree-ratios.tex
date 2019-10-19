@@ -1,0 +1,92 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+% Symmlet-p16 wavlet function and coefficients
+% nominal xunit = 10mm
+% nominal yunit = 10mm
+% nominal font size = \scriptsize
+%============================================================================
+\psset{xunit=1.00\psxunit}%
+\psset{yunit=0.20\psyunit}%
+\begin{pspicture}(6.1,0)(22.5,33)%
+  %-------------------------------------
+  % grid
+  %-------------------------------------
+  %\rput(0,20){%
+  %  \psset{linecolor=grid,linewidth=0.5pt}%
+  %  \multirput{0}(0,0)(0,1){6}{\psline[linestyle=dashed](0,0)(10,0)}% horizontal
+  %  \multirput{0}(1,0)(1,0){20}{\psline[linestyle=dotted](0,0)( 0,5)}% vertical
+  %  \psline(0,0)(20,0)% horizontal x axis
+  %}%
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  {%
+    \psset{gridcolor=grid, subgridcolor=subgrid,subgriddiv=2,subgriddots=10}%
+    \psset{linecolor=axis,linewidth=0.75pt}%
+    \psset{showorigin=true,axesstyle=frame,tickstyle=top}%
+    \psset{ticks=y,   labels=y,   Dx=1,Dy=5}%
+         %       |           |    |     |________ y-labels increment
+         %       |           |    |______________ x-labels increment
+         %       |           |___________________ ticks  x/y/all/none
+         %       |_______________________________ labels x/y/all/none
+    \psgrid(0,0)(7,2)(22,32)%
+    %\psaxes[yAxis=false](0,0)(0,21)(4,25)% x-axis
+    %\psaxes[xAxis=false](0,0)(0,21)(4,25)% y-axis
+  }%                        |_ shift right by 20xx years
+  \multido{\n=2+2}{17}{\rput[r](6.9,\n){\n\%}}% y-axis labels
+         %       |  |   |               |________ vertical placement
+         %       |  |   |________________________ number of labels
+         %       |  |____________________________ step size
+         %       |_______________________________ starting value
+  \rput(0,1.8){%
+    \rput[t](07,0){2007}%
+    \rput[t](08,0){2008}%
+    \rput[t](09,0){2009}%
+    \rput[t](10,0){2010}%
+    \rput[t](11,0){2011}%
+    \rput[t](12,0){2012}%
+    \rput[t](13,0){2013}%
+    \rput[t](14,0){2014}%
+    \rput[t](15,0){2015}%
+    \rput[t](16,0){2016}%
+    \rput[t](16,0){2016}%
+    \rput[t](17,0){2017}%
+    \rput[t](18,0){2018}%
+    \rput[t](19,0){2019}%
+    \rput[t](20,0){2020}%
+    \rput[t](21,0){2021}%
+    \rput[t](22,0){2022}%
+    }%
+%-------------------------------------
+% plot data
+%-------------------------------------
+{
+ \psset{linewidth=0.75pt, dotstyle=diamond, showpoints=true}%
+ \readdata{\mydata}{../../common/math/graphics/data/cagefree-ratios.dat}%
+ \dataplot{\mydata}%
+}
+%-------------------------------------
+% plot best fit polynomial
+%a = 5.81193754740525
+%b = 0.006042176391929388
+%c = -0.08688113717835222
+%d = 0.006402613585009931
+% Octave using matrix operations
+%-------------------------------------
+ \psset{linewidth=0.75pt, plotpoints=64, showpoints=false, linecolor=red}%
+ \psplot{7}{22}{0.006402613585009931 x 3 exp mul
+               -0.08688113717835222  x 2 exp mul add
+                0.006042176391929388 x       mul add
+                5.81193754740525                 add
+               }%
+  \rput[tl](7,30){$\begin{array}{Mrc>{\ds}lD}
+    Regression: & \fp(x) &=& d(x-2000)^3 + c(x-2000)^2 + b(x-2000) + a   & where
+              \\& a      &=& +5.81193754740525
+              \\& b      &=& +0.006042176391929388
+              \\& c      &=& -0.08688113717835222
+              \\& d      &=& +0.006402613585009931
+    \\\\
+    Prediction for 2022: & \fp(2022-2000)      &=& 32.06942448689097\%
+    \end{array}$}
+\end{pspicture}%
