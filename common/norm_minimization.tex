@@ -99,11 +99,11 @@ Solutions to both are given in terms of two matrices:
 Let the following vectors, matrices, and functions
 be defined as follows:
 \defbox{\begin{array}{lclM | lclM}
-     \vx    &\in& \vCm         & \fncte{data vector}                      & U      &\in& \mCmn        & \ope{regression matrix}         
-   \\\vy    &\in& \vCn         & \fncte{processed data vector}            & R      &\in& \mCmm        & \ope{autocorrelation matrix}    
+     \vx    &\in& \vCm         & \fncte{data vector}                      & U      &\in& \mCmn        & \ope{regression matrix}
+   \\\vy    &\in& \vCn         & \fncte{processed data vector}            & R      &\in& \mCmm        & \ope{autocorrelation matrix}
    \\\vye   &\in& \vCn         & \fncte{processed data estimate vector}   & W      &\in& \vCm         & \fncte{cross-correlation vector}
-   \\\ve    &\in& \vCn         & \fncte{error vector}                     & \fCost &:  & \vRm\to\Rnn  & \fncte{cost function}           
-   \\\vtheta    &\in& \vRm         & \fncte{parameter vector}                 & 
+   \\\ve    &\in& \vCn         & \fncte{error vector}                     & \fCost &:  & \vRm\to\Rnn  & \fncte{cost function}
+   \\\vtheta    &\in& \vRm         & \fncte{parameter vector}                 &
 \end{array}}
 \end{definition}
 
@@ -150,12 +150,12 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
        \\&\eqd \pE\brs{\brp{\opU^H\vtheta-\vy}^H\brp{\opU^H\vtheta-\vy}}
          && \text{by definition of estimate $\vye$}
        \\&=\mathrlap{\pE\brs{\brp{\vtheta^H\opU-\vy^H}\brp{\opU^H\vtheta-\vy}}
-            \text{by \prope{distributive} prop. of \structe{*-algebra}s 
+            \text{by \prope{distributive} prop. of \structe{*-algebra}s
                   \xref{def:staralg}}}
        \\&=    \pE\brs{ \vtheta^H\opU\opU^H\vtheta - \vtheta^H\opU\vy -\vy^H\opU^H\vtheta + \vy^H\vy }
          && \text{by \structe{matrix algebra} ring property}
        \\&=    \vtheta^H\pE\brs{\opU\opU^H}\vtheta - \vtheta^H\pE\brs{\opU\vy} -\pE\brs{\vy^H\opU^H}\vtheta + \pE{\vy^H\vy}
-         && \text{by \prope{linearity} $\pE$ 
+         && \text{by \prope{linearity} $\pE$
                   \xref{thm:pE_linop}}
        \\&=    \vtheta^H\pE\brs{\opU\opU^H}\vtheta - (\pE\brs{\opU\vy}^H\vtheta)^H -\pE\brs{\opU\vy}^H\vtheta + \pE{\vy^H\vy}
        \\&\eqd \vtheta^H \opR \vtheta - (\opW^H\vtheta)^H -\opW^H\vtheta + \pE{\vy^H\vy}
@@ -194,9 +194,9 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
       \fCost(\vthetao)
         &=    \vthetao^H \opR \vthetao - 2\Real\brs{\opW^H}\vthetao + \pE{\vy^H\vy}
         &&    \text{by \pref{item:est_mms_cost}}
-      \\&=    \brs{(\Real{\setY})^{-1}(\Real{\opW})}^H 
-              \opR\brs{(\Real{\setY})^{-1}(\Real{\opW})} 
-            - 2\Real\brs{\opW^H}\brs{(\Real{\setY})^{-1}(\Real{\opW})} 
+      \\&=    \brs{(\Real{\setY})^{-1}(\Real{\opW})}^H
+              \opR\brs{(\Real{\setY})^{-1}(\Real{\opW})}
+            - 2\Real\brs{\opW^H}\brs{(\Real{\setY})^{-1}(\Real{\opW})}
             + \pE{\vy^H\vy}
         &&    \text{by \pref{item:est_mms_vpo}}
       \\&=    (\Real{\opW^H})(\Real{\setY})^{-H} \opR (\Real{\setY})^{-1}(\Real{\opW}) - 2\Real\brs{\opW^H}(\Real{\setY})^{-1}(\Real{\opW}) + \pE{\vy^H\vy}
@@ -290,23 +290,21 @@ As a result,
 $\vy$, $\vye$, and $\ve$ are simply scalar quantities (not vectors).
 In this special case, we have the following results
 \xref{fig:est_adapt}:
-
-\begin{align*}
-   \hat{y}(\vtheta)   &\eqd \vx^T \vtheta    \\
-   e(\vtheta)    &\eqd \hat{y}-y \\
-   \fCost(\vtheta) &\eqd \E\norm{\ve}^2 \eqd \pE\brs{e^2} \\
-   \estMS      &\eqd \argmin_\vtheta \fCost(\vtheta)  \\
-   R           &\eqd \pE\brs{\vx\vx^T}   \\
-   W           &\eqd \pE\brs{ \vx y }    \\
-    \fCost(\vtheta)                     &= \vtheta^T R \vtheta -2W^T\vtheta  + \pE\brs{\vy^T\vy} \\
-    \grad_\vtheta \fCost(\vtheta)           &= 2R\vtheta - 2W  \\
-    \fCost(\estMS)|_{R\mbox{ real}} &=    \pE{\vy^T\vy} - W^T R^{-1}W.
-\end{align*}
+\\\indentx$\begin{array}{rcl@{\qquad\qquad}rcl}
+      \hat{y}(\vtheta) &\eqd& \vx^T \vtheta                    & R                               &\eqd& \pE\brs{\vx\vx^T}                                    
+    \\ e(\vtheta)      &\eqd& \hat{y}-y                        & W                               &\eqd& \pE\brs{ \vx y }                                     
+    \\ \fCost(\vtheta) &\eqd& \E\norm{\ve}^2 \eqd \pE\brs{e^2} & \fCost(\vtheta)                 &=&    \vtheta^T R \vtheta -2W^T\vtheta  + \pE\brs{\vy^T\vy}
+    \\ \estMS          &\eqd& \argmin_\vtheta \fCost(\vtheta)  & \grad_\vtheta \fCost(\vtheta)   &=&     2R\vtheta - 2W                                      
+    \\                 &    &                                  & \fCost(\estMS)|_{R\mbox{ real}} &=&     \pE{\vy^T\vy} - W^T R^{-1}W                         
+\end{array}$
 \end{proof}
 
 %======================================
 \section{Least squares}
 \label{sec:ls}
+%======================================
+%======================================
+\subsection{General results}
 %======================================
 %--------------------------------------
 \begin{theorem}[\thmd{Least squares}]
@@ -314,15 +312,12 @@ In this special case, we have the following results
 \index{least squares}
 %--------------------------------------
 Let
-\begin{align*}
-   \vye(\vtheta)   &\eqd U^H\vtheta                      \\
-   \ve(\vtheta)    &\eqd \vye-\vy                    \\
-   \fCost(\vtheta) &\eqd \norm{\ve}^2 \eqd \ve^H\ve  \\
-   \estLS      &\eqd \argmin_\vtheta \fCost(\vtheta)    \\
-   R           &\eqd UU^H                        \\
-   W           &\eqd U\vy.
-\end{align*}
-
+$\begin{array}[t]{rcl@{\qquad\qquad}rcl}
+     \vye(\vtheta)   &\eqd& U^H\vtheta                  &  \estLS      &\eqd& \argmin_\vtheta \fCost(\vtheta) 
+   \\\ve(\vtheta)    &\eqd& \vye-\vy                    &  R           &\eqd& UU^H                            
+   \\\fCost(\vtheta) &\eqd& \norm{\ve}^2 \eqd \ve^H\ve  &  W           &\eqd& U\vy.                           
+\end{array}$
+\indentx
 Then
 \thmbox{\begin{array}{rcl}
    \estLS                          &=& (\Real{\setY})^{-1}(\Real{W})  \\
@@ -379,7 +374,9 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
 \end{align*}
 \end{proof}
 
-
+%======================================
+\subsection{Examples using polynomial modeling}
+%======================================
 %---------------------------------------
 \begin{example}[Polynomial approximation]
 \index{polynomial approximation}
@@ -387,10 +384,13 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
 \index{Vandermonde matrix}
 %---------------------------------------
 \mbox{}\\
+\begin{minipage}{\tw-80mm}
 Suppose we {\bf know} the locations
 $\set{(x_n,y_n)}{n=1,2,3,4,5}$ of 5 data points.
 Let $\vx$ and $\vy$ represent the locations of these points such that
-\[
+\end{minipage}
+\qquad
+\tboxc{$
    \vx \eqd
    \left[\begin{array}{l}
       x_1  \\
@@ -399,7 +399,7 @@ Let $\vx$ and $\vy$ represent the locations of these points such that
       x_4  \\
       x_5
    \end{array}\right]
-   \qquad\qquad
+   \qquad
    \vy \eqd
    \left[\begin{array}{l}
       y_1  \\
@@ -408,14 +408,19 @@ Let $\vx$ and $\vy$ represent the locations of these points such that
       y_4  \\
       y_5
    \end{array}\right]
-\]
+$}
+\\
+\begin{minipage}{\tw-80mm}
 Suppose we want to find a second order polynomial
-  \[ c x^2 + bx + a \]
+  $c x^2 + bx + a$
 that best approximates
 these 5 points in the least squares sense.
 We define the matrix $U$ (known) and vector $\estn$ (to be computed)
-as follows:
-\[
+as follows:\footnotemark
+\end{minipage}
+\footnotetext{\citer{horn}{29}}
+\qquad
+\tboxc{$
    U^H \eqd
    \mcom{
    \left[\begin{array}{lll}
@@ -425,62 +430,58 @@ as follows:
       1  & x_4 & x_4^2  \\
       1  & x_5 & x_5^2
    \end{array}\right]
-   }{Vandermonde matrix \footnotemark}
-   \addtocounter{footnote}{-1}\footnote{\citer{horn}{29}}
-   \qquad\qquad
+   }{Vandermonde matrix}
+   \qquad
    \estn \eqd
    \left[\begin{array}{l}
       a  \\
       b  \\
       c  \\
    \end{array}\right]
-\]
+$}
+\\
 Then, using \prefpp{thm:ls}, the best coefficients $\estn$
 for the polynomial are
-\begin{align*}
+\\\indentx$
   \estn
-    &= \left[\begin{array}{l}
+     = \left[\begin{array}{l}
           a  \\
           b  \\
           c  \\
        \end{array}\right]
-  \\&= R^{-1}W
-  \\&= (UU^H)^{-1}\; (U\vy)
-  \\&= \left(
-       \left[\begin{array}{lll}
+     = \mcom{(UU^H)^{-1}}{$R^{-1}$} \; \mcom{(U\vy)}{$W$}
+     = \brp{\brs{\begin{array}{lll}
           1  & x_1 & x_1^2  \\
           1  & x_2 & x_2^2  \\
           1  & x_3 & x_3^2  \\
           1  & x_4 & x_4^2  \\
           1  & x_5 & x_5^2
-       \end{array}\right]^H
-       \left[\begin{array}{lll}
+       \end{array}}^H
+       \brs{\begin{array}{lll}
           1  & x_1 & x_1^2  \\
           1  & x_2 & x_2^2  \\
           1  & x_3 & x_3^2  \\
           1  & x_4 & x_4^2  \\
           1  & x_5 & x_5^2
-       \end{array}\right]
-       \right)^{-1}
-       \left(
-       \left[\begin{array}{lll}
+       \end{array}}}^{-1}
+       \brp{
+       \brs{\begin{array}{lll}
           1  & x_1 & x_1^2  \\
           1  & x_2 & x_2^2  \\
           1  & x_3 & x_3^2  \\
           1  & x_4 & x_4^2  \\
           1  & x_5 & x_5^2
-       \end{array}\right]^H
-       \left[\begin{array}{l}
+       \end{array}}^H
+       \brs{\begin{array}{l}
           y_1  \\
           y_2  \\
           y_3  \\
           y_4  \\
           y_5
-       \end{array}\right]
-       \right)
-\end{align*}
+       \end{array}}
+       }
+$
 \end{example}
-
 
 %---------------------------------------
 \begin{figure}
@@ -497,38 +498,38 @@ for the polynomial are
   }
 \label{ex:global-temp}
 %---------------------------------------
-Find the best fit 3rd order polynomial 
+Find the best fit 3rd order polynomial
 $\fp(x) = dx^3 + cx^2 + bx + a$
 for the climate measurements illustrated in \prefpp{fig:global-temp}.
 {\footnotesize\begin{align*}
-  \estn 
+  \estn
     &= \brs{\begin{array}{c}
          a\\b\\c\\d
        \end{array}}
      = \brp{\opU\opU^H}^{-1}\brp{\opU\vy}
      = \brp{\brs{\begin{array}{rrrr}
-                  1 & 0      & 0^2    & 0^3    
-         \\       1 & 1      & 1^2    & 1^3    
-         \\   \vdots& \vdots & \vdots & \vdots 
-         \\       1 & 138    & 138^2  & 138^3  
+                  1 & 0      & 0^2    & 0^3
+         \\       1 & 1      & 1^2    & 1^3
+         \\   \vdots& \vdots & \vdots & \vdots
+         \\       1 & 138    & 138^2  & 138^3
        \end{array}}^H
        \brs{\begin{array}{rrrr}
-                  1 & 0      & 0^2    & 0^3    
-         \\       1 & 1      & 1^2    & 1^3    
-         \\   \vdots& \vdots & \vdots & \vdots 
-         \\       1 & 138    & 138^2  & 138^3  
+                  1 & 0      & 0^2    & 0^3
+         \\       1 & 1      & 1^2    & 1^3
+         \\   \vdots& \vdots & \vdots & \vdots
+         \\       1 & 138    & 138^2  & 138^3
        \end{array}}}^{-1}
        \brp{
        \brs{\begin{array}{rrrr}
-                  1 & 0      & 0^2    & 0^3    
-         \\       1 & 1      & 1^2    & 1^3    
-         \\   \vdots& \vdots & \vdots & \vdots 
-         \\       1 & 138    & 138^2  & 138^3  
+                  1 & 0      & 0^2    & 0^3
+         \\       1 & 1      & 1^2    & 1^3
+         \\   \vdots& \vdots & \vdots & \vdots
+         \\       1 & 138    & 138^2  & 138^3
        \end{array}}^H
        \brs{\begin{array}{l}
-            y_0      
-         \\ y_1      
-         \\ \vdots 
+            y_0
+         \\ y_1
+         \\ \vdots
          \\ y_{138}
        \end{array}}
        }
@@ -540,15 +541,15 @@ for the climate measurements illustrated in \prefpp{fig:global-temp}.
        \end{array}}^{-1}
        \brp{
        \brs{\begin{array}{rrrr}
-                  1 & 0      & 0^2    & 0^3    
-         \\       1 & 1      & 1^2    & 1^3    
-         \\   \vdots& \vdots & \vdots & \vdots 
-         \\       1 & 138    & 138^2  & 138^3  
+                  1 & 0      & 0^2    & 0^3
+         \\       1 & 1      & 1^2    & 1^3
+         \\   \vdots& \vdots & \vdots & \vdots
+         \\       1 & 138    & 138^2  & 138^3
        \end{array}}^H
        \brs{\begin{array}{l}
-            y_0      
-         \\ y_1      
-         \\ \vdots 
+            y_0
+         \\ y_1
+         \\ \vdots
          \\ y_{138}
        \end{array}}
        }
@@ -560,11 +561,11 @@ for the climate measurements illustrated in \prefpp{fig:global-temp}.
        0.00000034336
     \end{array}}
 \end{align*}}
-Using this polynomial, we could ``predict"/estimate (not necessarily a very good prediction/estimate)
+Using this polynomial, we could ``predict"/estimate (not necessarily a very well)
 what the temperature deviation will be
 in 2030 (+1.1710) and was in 1870 (-0.23711).
 \begin{lstlisting}[language=matlab]
-Y = [ 
+Y = [
  -0.17
  -0.08
  -0.11
@@ -588,6 +589,110 @@ x = 1870;
 predict1870 = d*(x-1880)^3 + c*(x-1880)^2 + b*(x-1880) + a
 \end{lstlisting}
 \end{example}
+
+%---------------------------------------
+\begin{figure}
+%---------------------------------------
+  \centering
+  \includegraphics{graphics/cagefree-ratios.pdf}
+  \caption{Ratio of cagefree chickens in U.S. \xref{ex:cagefree}\label{fig:cagefree}}
+\end{figure}
+%---------------------------------------
+\begin{minipage}{\tw-95mm}
+\begin{example}
+\footnotemark
+\label{ex:cagefree}
+%---------------------------------------
+Using a 3rd order polynomial fitting \xref{fig:cagefree},
+we can predict that the number of cagefree chickens
+in the U.S. will reach 32.07\% in 2022.
+Note that this is also an example of \opb{non-uniform sampling}.
+That is, there is only one sample per year before 2016, but multiple samples per year
+from 2016 onward.
+This is no problem for the LS algorithm. Simply use the data points that are available 
+and ignore the ones that are not:
+\end{example}
+\end{minipage}
+\footnotetext{%
+  \citeP{mendez2019}
+  }%
+\hfill\tboxc{$\ds
+  \opU^H = 
+  \brs{\begin{array}{llll}
+      1      & 07.997260 & 07.997260^2 & 07.997260^3
+    \\1      & 08.997268 & 08.997268^2 & 08.997268^3
+    \\1      & 09.997260 & 09.997260^2 & 09.997260^3
+    \\\vdots & \vdots    & \vdots      & \vdots
+    \\1      & 15.997260 & 15.997260^2 & 15.997260^3
+    \\1      & 16.581967 & 16.581967^2 & 16.581967^3
+    \\1      & 16.666667 & 16.666667^2 & 16.666667^3
+    \\1      & 16.748634 & 16.748634^2 & 16.748634^3
+    \\1      & 16.833333 & 16.833333^2 & 16.833333^3
+   %\\1      & 16.915301 & 16.915301^2 & 16.915301^3
+    \\\vdots & \vdots    & \vdots      & \vdots
+  \end{array}}
+$}
+\\
+\begin{lstlisting}[language=matlab]
+% years - 2000
+X = [ 
+  07.997260  % 2007-12-31 decimal form
+  08.997268  % 2008-12-31 decimal form
+  09.997260  % 2009-12-31 decimal form
+  10.997260  % 2010-12-31 decimal form
+  11.997260  % 2011-12-31 decimal form
+  12.997268  % 2012-12-31 decimal form
+  13.997260  % 2013-12-31 decimal form
+  14.997260  % 2014-12-31 decimal form
+  15.997260  % 2015-12-31 decimal form
+  16.581967  % 2016-08-01 decimal form
+  16.666667  % 2016-09-01 decimal form
+  16.748634  % 2016-10-01 decimal form
+  16.833333  % 2016-11-01 decimal form
+  16.915301  % 2016-12-01 decimal form
+  ...
+];
+Y = [
+  03.2000    % data for 2007-12-31
+  03.5000    % data for 2008-12-31
+  03.6000    % data for 2009-12-31
+  04.4000    % data for 2010-12-31
+  05.4000    % data for 2011-12-31
+  06.0000    % data for 2012-12-31
+  05.9000    % data for 2013-12-31
+  05.7000    % data for 2014-12-31
+  08.6000    % data for 2015-12-31
+  10.1357    % data for 2016-08-01
+  10.0570    % data for 2016-09-01
+  12.2935    % data for 2016-10-01
+  12.1006    % data for 2016-11-01
+  11.7935    % data for 2016-12-01
+  ...
+];
+format long g
+pkg load signal;
+N = length(Y);
+U = [ones(1,N) ; X', ; X'.^2, ; X'.^3];
+coefs = inv(U*U')*(U*Y)
+a=coefs(1)
+b=coefs(2)
+c=coefs(3)
+d=coefs(4)
+bestFit = d*X.^3 + c*X.^2 + b*X + a;
+plot(bestFit)
+x = 2022;
+predict2022 = d*(x-2000)^3 + c*(x-2000)^2 + b*(x-2000) + a
+\end{lstlisting}
+You can convert a date in the yyyy-mm-dd form such as 2007-12-31 to its decimal form 07.997260
+using R with the \lstinline[language=R]{lubridate} package like this:
+\begin{lstlisting}[language=R]
+ install.packages("lubridate");
+ require(lubridate);
+ x     = read.csv("../common/datasets/cagefree-ratios_osf-6hty8.csv", comment.char = "#");
+ ratio = x$ratio_hens;
+ year  = lubridate::decimal_date(lubridate::ymd(x$observed_month));
+ plot( year, ratio, col="blue", type='o' );
+\end{lstlisting}
 
 %======================================
 %\section{Gradient search techniques}
