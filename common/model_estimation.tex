@@ -1,0 +1,61 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%=======================================
+\chapter{Model Estimation}
+\label{chp:model_estimation}
+%=======================================
+A key point in model building is choosing what to model.
+Defining a model with too many system properties (too many dimensions) can quickly lead to 
+an intractable solution computationally and require more data than is available
+(the ``curse of dimensionality").
+
+For modeling real-world random processes above the quantum level, here are some possibly useful parameters to estimate and use:
+\begin{enumerate}
+  \item Derivatives $0,1,\ldots n$, where $n$ may be 2 or 3.
+        Brook Taylor showed that for analytic functions (functions for which all their derivatives exist),
+        knowledge of the derivatives of a function 
+        %\\\indentx$\seqn{\ff(a),\, \frac{1}{1!}\ff'(a),\,  \frac{1}{2!}\ff''(a),\,  \frac{1}{3!}\ff'''(a),\cdots}$\\
+        %of the Taylor polynomial at the point $x=a$ 
+        allows you to determine (predict) arbitrarily closely all the points in the vicinity of $x=a$:\footnote{
+        \citePp{robinson1982}{886}
+        }
+        \\\indentx$\ds\ff(x) = \ff(a) + \frac{1}{1!}\ff'  (a)\brs{x-a}
+                                      + \frac{1}{2!}\ff'' (x)\brs{x-a}^2
+                                      + \frac{1}{3!}\ff'''(x)\brs{x-a}^3
+                                      + \cdots
+                  $\\
+        For linear or quasi-linear systems, $n=2$ may be sufficient. 
+        For example, the classical ``vibrating string" vertical displacement $\fu(x,t)$ wave equation can be described as
+        \\\indentx$\ppderiv{u}{x^2} - \frac{1}{c^2}\ppderiv{u}{t^2} = 0$\\
+        Also note that all solutions of homogeneous second order differential equations
+        are linear combinations of sine and cosine\ifsxref{harTrig}{thm:D2f_cos_sin}:
+        \\\indentx$\ds  \brb{\opDiff\ff + \ff=0}
+  %     {\fncte{2nd order homogeneous differential equation}}
+  \quad\iff\quad
+  \brb{\ff(x) = \ff(0)\,\cos(x) + \ff^\prime(0)\,\sin(x)}
+  \qquad\msizes\forall\ff\in\spC,\,\forall x\in\R
+$
+
+  \item The \ope{Fourier Transform} is a kind of counter-part of the Taylor expansion demonstrated above:\footnote{
+        \citePp{robinson1982}{886}
+        }
+        %\begin{tabular}{|@{2}{p{\tw/2-5mm}|}}
+        \\\begin{tabular}{|l|l|}
+            \hline
+              \mc{1}{|c|}{Taylor coefficients} & \mc{1}{c|}{Fourier coefficients}
+            \\\hline
+              Depend on derivatives $\ds\dndxn\ff(x)$
+             &Depend on integrals   $\ds\int_{x\in\R} \ff(x)e^{-i\omega x} \dx$
+            \\Behavior in the vicinity of a point.
+             &Behavior over the entire function.
+            \\Demonstrate trends locally.
+             &Demonstrate trends globally, such as oscillations.
+            \\For \prope{analytic} functions only---must be \prope{continuous}.
+             &Admits \prope{non-analytic} functions as well.
+            \\\hline
+        \end{tabular}
+\end{enumerate}
+
+

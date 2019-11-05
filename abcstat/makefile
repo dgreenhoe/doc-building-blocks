@@ -26,6 +26,7 @@ FILE_SRC  =                            \
   ../common/dtft.tex                   \
   ../common/expectation.tex            \
   ../common/moment_estimation.tex      \
+  ../common/model_estimation.tex       \
   ../common/norm_minimization.tex      \
   ../common/operator.tex               \
   ../common/pdfcdf.tex                 \
