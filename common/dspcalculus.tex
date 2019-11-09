@@ -7,19 +7,86 @@
 %=======================================
 
 %=======================================
+\section{Why it's important}
+%=======================================
+For modeling real-world processes above the quantum level, measurements are \prope{continuous} in time---that is,
+the first derivative of a function over time representing the measurement \prope{exists}.
+
+But even for ``simple" physical systems, it is not just the first derivative that matters.
+For example, the classical ``vibrating string" vertical displacement $\fu(x,t)$ wave equation can be described as
+        \\\indentx$\ppderiv{u}{x^2} - \frac{1}{c^2}\ppderiv{u}{t^2} = 0$\\
+
+\begin{figure}
+  \centering
+  \begin{tabular}{c}
+    \includegraphics[width=\tw-10mm]{graphics/sunspots.pdf}\\
+    \includegraphics[width=\tw-10mm,height=50mm]{graphics/earthquake_kapi_20180928.pdf}
+  \end{tabular}
+  \caption{Sunspot and earthquake measurements\label{fig:sunspot}}
+\end{figure}
+Not only do physical systems demonstrate heavy dependence on the derivatives of their measurement functions,
+but also commonly exhibit \prope{oscillation}, as demonstrated by sunspot activity over the last 300 years or
+earthquake activity \xref{fig:sunspot}.
+
+In fact, derivatives and oscillations are fundamentally linked
+as demonstrated by the fact that 
+all solutions of homogeneous second order differential equations
+        are linear combinations of sine and cosine functions\ifsxref{harTrig}{thm:D2f_cos_sin}:
+        \\\indentx$\ds  \brb{\opDiff\ff + \ff=0}
+  %     {\fncte{2nd order homogeneous differential equation}}
+  \quad\iff\quad
+  \brb{\ff(x) = \ff(0)\,\cos(x) + \ff^\prime(0)\,\sin(x)}
+  \qquad\msizes\forall\ff\in\spC,\,\forall x\in\R$
+
+Derivatives are calculated \prope{locally} about a point.
+Oscillations are observed \prope{globally} over a range,
+and analyzed (decomposed) by projecting the function onto a sequence of basis functions---sinusoids 
+in the case of Fourier Transform family.
+Projection is accomplished using inner products, and often these are calculated using \ope{integration}.
+Note that derivatives and integrals are also fundamentally linked as demonstrated by the
+\thme{Fundamental Theorem of Calculus}\ldots which shows that integration 
+can be calculated using anti-differentiation:
+\\\indentx$\ds\int_a^b \ff(x)\dx = \fF(b) - \fF(a)$\qquad where $\fF(x)$ is the \fncte{antiderivative} of $\ff(x)$.
+
+%In nature, take displacement, velocity, and acceleration for example:
+%\\\indentx$\begin{array}{rc>{\ds}l}
+%  \fx(t) &=& \int_{u=0}^t \fv(u) \du + \mcom{\fx(0)}{initial condition}
+%  \\
+%  \fv(t) &=& \int_{u=0}^t \fa(u) \du + \mcom{\fv(0)}{initial condition}
+%\end{array}$
+
+Brook Taylor showed that for \prope{analytic} functions (functions for which all their derivatives exist),
+knowledge of the derivatives of a function 
+%\\\indentx$\seqn{\ff(a),\, \frac{1}{1!}\ff'(a),\,  \frac{1}{2!}\ff''(a),\,  \frac{1}{3!}\ff'''(a),\cdots}$\\
+%of the Taylor polynomial at the point $x=a$ 
+allows you to determine (predict) arbitrarily closely all the points in the vicinity of $x=a$:\footnote{
+\citePp{robinson1982}{886}
+}
+\\\indentx$\ds\ff(x) = \ff(a) + \frac{1}{1!}\ff'  (a)\brs{x-a}
+                              + \frac{1}{2!}\ff'' (x)\brs{x-a}^2
+                              + \frac{1}{3!}\ff'''(x)\brs{x-a}^3
+                              + \cdots
+                  $
+
+On the other hand, the \ope{Fourier Transform} is a kind of counter-part of the Taylor expansion demonstrated above:\footnote{
+        \citePp{robinson1982}{886}
+        }
+        %\begin{tabular}{|@{2}{p{\tw/2-5mm}|}}
+        \\\begin{tabular}{|c|l|l|}
+            \hline
+              & \mc{1}{|c|}{Taylor coefficients} & \mc{1}{c|}{Fourier coefficients}
+            \\\hline
+              \imark&Depend on derivatives $\ds\dndxn\ff(x)$        &Depend on integrals   $\ds\int_{x\in\R} \ff(x)e^{-i\omega x} \dx$
+            \\\imark&Behavior in the vicinity of a point.           &Behavior over the entire function.
+            \\\imark&Demonstrate trends locally.                    &Demonstrate trends globally, such as oscillations.
+            \\\imark&Admits \prope{analytic} functions only---      &Admits \prope{non-analytic} functions as well.
+            \\\imark&must be \prope{continuous}.                            &
+            \\\hline
+        \end{tabular}
+
+%=======================================
 \section{Fourier Transform calculus}
 %=======================================
-
-\thmbox{\begin{array}{rc>{\ds}l}
-  \fx(t) &=& \int_{u=0}^t \fv(u) \du + \mcom{\fx(0)}{initial condition}
-  \\
-  \fv(t) &=& \int_{u=0}^t \fa(u) \du + \mcom{\fv(0)}{initial condition}
-\end{array}}
-\\
-\begin{proof}
-\thme{Fundamental Theorem of Calculus}
-\end{proof}
-
 %---------------------------------------
 \begin{proposition}
 %---------------------------------------
@@ -103,9 +170,15 @@ Digital Differentiation Method \#1: \ope{Difference}\footnote{\citerpgc{williams
  
 \begin{figure}[h]
   \centering
-  \includegraphics{graphics/diff.pdf}
+  \begin{tabular}{|c|c|}
+      \hline
+      \includegraphics{graphics/diff.pdf} & \includegraphics{graphics/cendiff.pdf}
+    \\Difference method & Central Difference method
+    \\\hline
+  \end{tabular}
   \caption{Digital differentiation methods\label{fig:differentiation}}
 \end{figure}
+
 Is digital differentiation equivalent to continuous differentiation?\footnote{\citerpgc{williams1986}{70}{9780132018562}{Figure 2.14(a)}}
  
 \begin{align*}
@@ -142,11 +215,6 @@ Is digital differentiation equivalent to continuous differentiation?\footnote{\c
 \end{align*}
 
 
-\begin{figure}
-  \centering 
-  \includegraphics{graphics/cendiff.pdf}
-  \caption{Central difference}
-\end{figure}
 Central Difference = Continuous Differentiation?\footnote{\citerpgc{williams1986}{70}{9780132018562}{Figure 2.14(b)}}
  
 \begin{align*}
