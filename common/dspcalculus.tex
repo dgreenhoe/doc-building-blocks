@@ -14,7 +14,7 @@ the first derivative of a function over time representing the measurement \prope
 
 But even for ``simple" physical systems, it is not just the first derivative that matters.
 For example, the classical ``vibrating string" vertical displacement $\fu(x,t)$ wave equation can be described as
-        \\\indentx$\ppderiv{u}{x^2} - \frac{1}{c^2}\ppderiv{u}{t^2} = 0$\\
+        \\\indentx$\ds\ppderiv{u}{x^2} - \frac{1}{c^2}\ppderiv{u}{t^2} = 0$
 
 \begin{figure}
   \centering
@@ -55,11 +55,12 @@ can be calculated using anti-differentiation:
 %  \fv(t) &=& \int_{u=0}^t \fa(u) \du + \mcom{\fv(0)}{initial condition}
 %\end{array}$
 
-Brook Taylor showed that for \prope{analytic} functions (functions for which all their derivatives exist),
-knowledge of the derivatives of a function 
+Brook Taylor showed that for \prope{analytic} functions,\footnote{
+  \prope{analytic} functions: Functions for which all their derivatives exist.}
+knowledge of the derivatives of a function at a location $x=a$
 %\\\indentx$\seqn{\ff(a),\, \frac{1}{1!}\ff'(a),\,  \frac{1}{2!}\ff''(a),\,  \frac{1}{3!}\ff'''(a),\cdots}$\\
 %of the Taylor polynomial at the point $x=a$ 
-allows you to determine (predict) arbitrarily closely all the points in the vicinity of $x=a$:\footnote{
+allows you to determine (predict) arbitrarily closely all the points $\ff(x)$ in the vicinity of $x=a$:\footnote{
 \citePp{robinson1982}{886}
 }
 \\\indentx$\ds\ff(x) = \ff(a) + \frac{1}{1!}\ff'  (a)\brs{x-a}
@@ -68,7 +69,7 @@ allows you to determine (predict) arbitrarily closely all the points in the vici
                               + \cdots
                   $
 
-On the other hand, the \ope{Fourier Transform} is a kind of counter-part of the Taylor expansion demonstrated above:\footnote{
+On the other hand, the \ope{Fourier Transform} is a kind of counter-part of the Taylor expansion:\footnote{
         \citePp{robinson1982}{886}
         }
         %\begin{tabular}{|@{2}{p{\tw/2-5mm}|}}
@@ -79,8 +80,8 @@ On the other hand, the \ope{Fourier Transform} is a kind of counter-part of the 
               \imark&Depend on derivatives $\ds\dndxn\ff(x)$        &Depend on integrals   $\ds\int_{x\in\R} \ff(x)e^{-i\omega x} \dx$
             \\\imark&Behavior in the vicinity of a point.           &Behavior over the entire function.
             \\\imark&Demonstrate trends locally.                    &Demonstrate trends globally, such as oscillations.
-            \\\imark&Admits \prope{analytic} functions only---      &Admits \prope{non-analytic} functions as well.
-            \\\imark&must be \prope{continuous}.                            &
+            \\\imark&Admits \prope{analytic} functions only.        &Admits \prope{non-analytic} functions as well.
+            \\\imark&Function must be \prope{continuous}.           &Function can be \prope{discontinuous}.
             \\\hline
         \end{tabular}
 
@@ -88,54 +89,117 @@ On the other hand, the \ope{Fourier Transform} is a kind of counter-part of the 
 \section{Fourier Transform calculus}
 %=======================================
 %---------------------------------------
-\begin{proposition}
+\begin{theorem}
+\label{thm:opLT_diff}
 %---------------------------------------
+Let $\opLT$ be the \ope{Laplace Transform} operator.
 \mbox{}\\
-\propboxt{
-  The \ope{Fourier Transform} of the \ope{differential operator} is
-  \\\indentx$\ds
-    \opFT \brs{\ddt \fx(t)} = i\omega \FX(\omega)
-  $}
-\end{proposition}
+\thmbox{
+    \brb{\lim_{t\to-\infty}\fx(t)=0}
+    \qquad\implies\qquad
+    \brb{\opLT \brs{\ddt \fx(t)} = s \brs{\opLT\fx}(s)}
+  }
+\end{theorem}
 \begin{proof}
 \begin{align*}
-  \boxed{\opFT \brs{\ddt \fx(t)}} 
-    &\eqd \int_{t=-\infty}^{t=+\infty} \mcom{\brs{\ddt \fx(t)}}{$\dv$} \mcom{e^{-i\omega t}}{$u$} \dt
-  \\&= \brlr{\mcom{e^{-i\omega t}}{$u$} \mcom{\fx(t)}{$v$}}_{t=-\infty}^{t=+\infty}
-      -\int_{t=-\infty}^{t=+\infty} \mcom{\fx(t)}{$v$} \mcom{(-i\omega)e^{-i\omega t}}{$\du$} \dt
+  \boxed{\opLT \brs{\ddt \fx(t)}} 
+    &\eqd \int_{t\in\R} \mcom{\brs{\ddt \fx(t)}}{$\dv$} \mcom{e^{-st}}{$u$} \dt
+    && \text{by definition of $\opLT$}
+  \\&= \brlr{\mcom{e^{-st}}{$u$} \mcom{\fx(t)}{$v$}}_{t=-\infty}^{t=+\infty}
+      -\int_{t\in\R} \mcom{\fx(t)}{$v$} \mcom{(-s)e^{-s t}}{$\du$} \dt
     && \text{by \thme{Integration by Parts}}
-  \\&= \cancelto{0}{e^{-i\omega \infty}}\fx(\infty) - e^{-i\omega \infty}\cancelto{0}{\fx(-\infty)} 
-      -(-i\omega)\mcom{\int_{t=-\infty}^{t=+\infty} \fx(t) e^{-i\omega t} \dt}{\ope{Fourier Transform} of $\fx(t)$}
-    && \text{assuming $\fx(t)$ started at $0$}
-  \\&= \boxed{i\omega X(\omega)}
+  \\&= \cancelto{0}{e^{-s \infty}}\fx(\infty) - e^{s \infty}\cancelto{0}{\fx(-\infty)} 
+      -(-s)\mcom{\int_{t\in\R} \fx(t) e^{-st} \dt}{\ope{Laplace Transform} of $\fx(t)$}
+    && \text{by left hypothesis}
+  \\&= \boxed{s \brs{\opLT\fx}(s)}
 \end{align*}
 \end{proof}
 
 %---------------------------------------
-\begin{proposition}
+\begin{corollary}
 %---------------------------------------
-\mbox{}\\
-\propboxt{
-  The \ope{Fourier Transform} of the \ope{integration operator} is
-  \\\indentx$\ds
-    \opFT \int_{u=-\infty}^{u=t} \fx(u) \du = \frac{1}{i\omega} \FX(\omega)
-  $}
-\end{proposition}
+Let $\opFT$ be the \ope{Fourier Transform} operator.
+\corbox{
+    \brb{\lim_{t\to-\infty}\fx(t)=0}
+    \qquad\implies\qquad
+    \brb{\opFT \brs{\ddt \fx(t)} = i\omega \brs{\opFT\fx}(\omega)}
+  }
+\end{corollary}
 \begin{proof}
 \begin{align*}
-  \boxed{\opFT \int_{u=-\infty}^{u=t} \fx(u) \du}
-    &\eqd \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=t} \fx(u) \du} e^{-i\omega t} \dt
-  \\&= \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fx(u) \fh(t-u) \du} e^{-i\omega t} \dt
-    && \brp{\begin{array}{M}where $\fh(t)$ is the\\\fncte{Heaviside function}\end{array}}
-  \\&= \int_{v=-\infty}^{v=+\infty} \int_{u=-\infty}^{u=+\infty} \fx(u) \fh(v)  e^{-i\omega (u+v)} \du \dv
-    && \brp{\begin{array}{Mrcl}
-         where      & v&=&t-u\\ 
-         $\implies$ & t&=&u+v
-       \end{array}}
-  \\&= \brs{\int_{v=-\infty}^{v=+\infty} \fh(v) e^{-i\omega v} \dv} \mcom{\brs{\int_{u=-\infty}^{u=+\infty} \fx(u)   e^{-i\omega u} \du }}{\ope{Fourier Transform} $X(\omega)$ of $\fx(t)$}
-  \\&= \brs{\int_{v=0}^{v=+\infty} e^{-i\omega v} \dv} X(\omega)
-  \\&= \brlr{\frac{1}{-i\omega}e^{-i\omega v}}_{v=0}^{v=+\infty} X(\omega)
-     \quad=\quad \boxed{\frac{1}{i\omega} X(\omega)}
+  \opFT \brs{\ddt \fx(t)}
+    &\eqd \brlr{\opLT\brs{\ddt \fx(t)}(s)}_{s=i\omega}
+    && \text{by definitions of $\opLT$ and $\opFT$}
+  \\&= \brlr{s \brs{\opLT\fx(t)}(s)}_{s=i\omega}
+    && \text{by \prefp{thm:opLT_diff}}
+  \\&= i\omega \brs{\opFT\fx}(\omega)
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:opLT_int}
+%---------------------------------------
+Let $\opLT$ be the \ope{Laplace Transform} operator.
+\thmbox{
+    %\brb{\lim_{t\to-\infty}\fx(t)=0}
+    %\qquad\implies\qquad
+    \opLT \int_{u=-\infty}^{u=t} \fx(u) \du = \frac{1}{s} \brs{\opLT\fx}(s)
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Define the \fncte{Heaviside function} $\fh(t)$ as\qquad \label{idef:heaviside}
+    $\ds \fh(t)\eqd\brbl{\begin{array}{lM}
+                           1 & for $t\ge0$
+                         \\0 & otherwise
+                         \end{array}}$
+
+  \item Remainder of proof\ldots
+    \begin{align*}
+      \boxed{\opLT \int_{u=-\infty}^{u=t} \fx(u) \du}
+        &\eqd \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=t} \fx(u) \du} e^{-s t} \dt
+        && \text{by definition of $\opLT$}
+      \\&= \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fx(u) \fh(t-u) \du} e^{-s t} \dt
+        && \brp{\begin{array}{M}
+             by definition of \fncte{Heaviside function}\\
+             \pref{idef:heaviside}
+           \end{array}}
+      \\&= \int_{v=-\infty}^{v=+\infty} \int_{u=-\infty}^{u=+\infty} \fx(u) \fh(v)  e^{-s (u+v)} \du \dv
+        && \brp{\begin{array}{Mr@{\hspace{2pt}}c@{\hspace{2pt}}l}
+             where      & v&\eqd&t-u\\ 
+             $\implies$ & t&=&u+v
+           \end{array}}
+      \\&= \brs{\int_{v=-\infty}^{v=+\infty} \fh(v) e^{-s v} \dv} 
+            \mcom{\brs{\int_{u=-\infty}^{u=+\infty} \fx(u)   e^{-s u} \du }}
+                 {\ope{Laplace Transform} of $\fx(t)$}
+      \\&= \brs{\int_{v=0}^{v=\infty} e^{-s v} \dv} \brs{\opLT\fx}(s)
+        && \brp{\begin{array}{M}
+             by definition of \fncte{Heaviside function}\\
+             \pref{idef:heaviside}
+           \end{array}}
+      \\&= \brlr{\frac{1}{-s}e^{-s v}}_{v=0}^{v=\infty} \brs{\opLT\fx}(s)
+        && \text{by \thme{Fundamental Theorem of Calculus}}
+      \\&= \boxed{\frac{1}{s} \brs{\opLT\fx}(s)}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+%---------------------------------------
+Let $\opFT$ be the \ope{Fourier Transform} operator.
+\corbox{
+    \opFT \int_{u=-\infty}^{u=t} \fx(u) \du = \frac{1}{i\omega} \brs{\opFT\fx}(\omega)
+  }
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \opFT \int_{u=-\infty}^{u=t} \fx(u) \du
+    &\eqd \brlr{\opLT \int_{u=-\infty}^{u=t} \fx(u) \du}_{s=i\omega}
+  \\&=    \brlr{\frac{1}{s} \brs{\opLT\fx(t)}(s)}_{s=i\omega}
+    && \text{by \prefp{thm:opLT_int}}
+  \\&=    \frac{1}{i\omega} \brs{\opFT\fx(t)}(\omega)
 \end{align*}
 \end{proof}
 
