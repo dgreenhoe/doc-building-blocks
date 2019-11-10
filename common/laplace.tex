@@ -124,3 +124,77 @@ Let $\opFT$ be the \ope{Fourier Transform} operator.
 \end{align*}
 \end{proof}
 
+%======================================
+%\section{Convolution}
+%\label{sec:conv}
+%\index{convolution}
+%======================================
+%--------------------------------------
+\begin{definition}
+\label{def:conv}
+\footnote{
+  \citerp{bachman1964}{6},
+  \citerpgc{bracewell1978}{108}{007007013X}{Convolution theorem}
+  }
+%--------------------------------------
+\defbox{\indxs{\conv}\begin{array}{M}
+  The \opd{convolution operation} is defined as % $\conv\in\clF{\R^2}{\R}$ is defined as
+  \\\indentx$\ds
+    \brs{\ff\conv\fg}(x) 
+    \eqd \ff(x)\conv \fg(x)
+    \eqd \int_{u\in\R} \ff(u)\fg(x-u) \du
+    \qquad\scy\forall\ff,\fg\in\spLLRBu
+  $
+\end{array}}
+\end{definition}
+
+%\pref{thm:conv} (next) demonstrates that multiplication in the ``time domain"
+%is equivalent to convolution in the ``frequency domain" and
+%vice-versa.
+%--------------------------------------
+\begin{theorem}[\thmd{convolution theorem}]
+%\footnote{
+%  \citerpg{bracewell1978}{110}{007007013X}
+%  }
+\label{thm:opLT_conv}
+%--------------------------------------
+Let $\opLT$ be the \ope{Laplace Transform} operator
+and $\conv$ the convolution operator.
+\thmbox{
+\begin{array}{rcl@{\qquad}C}
+  \mcom{\opLT\brs{\ff(x)\conv\fg(x)}(\omega)}{convolution    in ``time domain"} 
+       &=& \mcom{\sqrt{2\pi}\brs{\opLT\ff}(s)\, \brs{\opLT\fg}(s)}  {multiplication in ``s domain"} 
+       & \forall\ff,\fg\in\spLLRBu\\
+  \mcom{\opLT\brs{\ff(x) \fg(x)}(\omega)} {multiplication in ``time domain"} 
+       &=& \mcom{\frac{1}{\sqrt{2\pi}}\brs{\opLT\ff}(s) \conv \brs{\opLT\fg}(\omega)}{convolution    in ``s domain"} 
+       & \forall\ff,\fg\in\spLLRBu.
+\end{array}
+}
+\end{theorem}
+
+\begin{proof}
+\begin{align*}
+   \opLT \brs{\ff(x)\conv\fg(x)}(s)
+     &= \opLT \brs{ \int_{u\in\R} \ff(u)\fg(x-u) \du }(s)
+     && \text{by definition of $\conv$ \xref{def:conv}}
+   \\&=  \int_{u\in\R} \ff(u)\brs{\opLT \fg(x-u)}(s) \du 
+   \\&=  \int_{u\in\R} \ff(u) e^{-su} \; \brs{\opLT\fg(x)}(s) \du 
+     && \text{by \prefp{thm:ft_shift}}
+   \\&= \sqrt{2\pi}\mcom{\brp{\frac{1}{\sqrt{2\pi}}\int_{u\in\R} \ff(u) e^{-su} \du}}
+             {$\brs{\opLT\ff}(s)$} \; 
+        \brs{\opLT\fg}(s)
+   \\&= \sqrt{2\pi}\brs{\opLT\ff}(s)\;  \brs{\opLT\fg}(s)
+     && \text{by definition of $\opLT$ \xref{def:opFT}}
+   \\
+   \opLT[\ff(x)\fg(x)](s)
+     &= \opLT\brs{\brp{\opLT^{-1}\opLT\ff(x)}\;\fg(x)}(s)
+     && \text{by definition of operator inverse \ifxref{operator}{def:op_inv}}
+   \\&= \opLT\brs{\brp{ \fscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) e^{sxv} \dv }\;\fg(x)}(s)
+     && \text{by \prefp{thm:opFTi}}
+   \\&= \fscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\brp{e^{sxv} \;\fg(x)}}(s,v) \dv 
+   \\&= \fscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\fg(x)}(s-v) \dv 
+     && \text{by \prefp{thm:ft_shift}}
+   \\&= \fscalei\brs{\opLT\ff}(s)\conv \brs{\opLT\fg}(s)
+     && \text{by definition of $\conv$ \xref{def:conv}}
+\end{align*}
+\end{proof}
