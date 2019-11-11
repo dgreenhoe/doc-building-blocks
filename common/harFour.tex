@@ -292,46 +292,38 @@ is \prop{unitary} (\prefp{cor:ft_unitary}) and from
 the properties of \prop{unitary} operators\ifdochas{operator}{ (\prefp{thm:unitary_prop})}.
 \end{proof}
 
-
-
+%======================================
+\section{Shift relations}
+%======================================
 %--------------------------------------
 \begin{theorem}[Shift relations]
 \label{thm:ft_shift}
 %--------------------------------------
-Let $\opFT$ be the Fourier transform operator.
-\renewcommand{\arraystretch}{1.25}
+Let $\opFT$ be the Fourier Transform operator \xref{def:opFT}.
 \thmbox{\begin{array}{>{\ds}rc>{\ds}l}
-  \opFT \brs{\ff(x-u)}(\omega)                  &=& \fkernea{u}{\omega} \;\brs{\opFT \ff(x)}(\omega) \\
-  \brs{\opFT\brp{\fkerne{x}{v} \fg(x)}}(\omega) &=& \brs{\opFT\fg(x)}(\omega-v)
+  \opFT \brs{\ff(x-y)}(\omega)            &=& e^{-i\omega y} \;\brs{\opFT \ff(x)}(\omega) \\
+  \brs{\opFT\brp{e^{irx} \fg(x)}}(\omega) &=& \brs{\opFT\fg(x)}(\omega-r)
 \end{array}}
-\renewcommand{\arraystretch}{1}
 \end{theorem}
 \begin{proof}
 \begin{align*}
-  \opFT \brs{\ff(x-u)}(\omega)
-    &= \fscale \int_\R \ff(x-u) \fkernea{x}{\omega} \dx
-    && \text{by definition of $\opFT$}
-    && \text{\xref{def:opFT})}
-  \\&= \fscale \int_{v\in\R} \ff(v) \fkernea{(u+v)}{\omega} \dv
-    && \text{where $v\eqd x-u$ $\implies$ $t=u+v$}
-  \\&= \fkernea{u}{\omega} \;\fscale \int_{v\in\R} \ff(v)  \fkernea{v}{\omega} \dv
-  \\&= \fkernea{u}{\omega} \;\fscale \int_\R \ff(x)  \fkernea{x}{\omega} \dx
-    && \text{by change of variable $t=v$}
-  \\&= \fkernea{u}{\omega} \;\brs{\opFT \ff(x)}(\omega)
-    && \text{by definition of $\opFT$}
-    && \text{\xref{def:opFT})}
+  \opFT \brs{\ff(x-y)}(\omega)
+    &= \brlr{\opLT \brs{\ff(x-y)}(s)}_{s=i\omega}
+    && \text{by definition of $\opLT$}         && \text{\xref{def:opLT}}
+  \\&= \brlr{e^{-sy} \;\brs{\opLT \ff(x)}(s)}_{s=i\omega}
+    && \text{by \thme{Laplace shift relation}} && \text{\xref{thm:opLT_shift}}
+  \\&= e^{-i\omega y} \;\brs{\opFT \ff(x)}(\omega)
+    && \text{by definition of $\opFT$}         && \text{\xref{def:opFT}}
   \\
-  \brs{\opFT\brp{\fkerne{x}{v} \fg(x)}}(\omega)
-    &= \fscale \int_\R \fkerne{x}{v} \fg(x) \fkernea{x}{\omega} \dx
-    && \text{by definition of $\opFT$}
-    && \text{\xref{def:opFT})}
-  \\&= \fscale \int_\R \fg(x) \fkernea{x}{(\omega-v)} \dx
-  \\&= \brs{\opFT\fg(x)}(\omega-v)
-    && \text{by definition of $\opFT$}
-    && \text{\xref{def:opFT})}
+  \brs{\opFT\brp{e^{irx} \fg(x)}}(\omega)
+    &= \brlr{\brs{\opLT\brp{e^{irx} \fg(x)}}(s)}_{s=i\omega}
+    && \text{by definition of $\opLT$}         && \text{\xref{def:opLT}}
+  \\&= \brlr{\brs{\brs{\opLT\fg(x)}(s-r)}}_{s=i\omega}
+    && \text{by \thme{Laplace shift relation}} && \text{\xref{thm:opLT_shift}}
+  \\&= \brs{\opFT\fg(x)}(\omega-r)
+    && \text{by definition of $\opFT$}         && \text{\xref{def:opFT}}
 \end{align*}
 \end{proof}
-
 
 %--------------------------------------
 \begin{theorem}[Complex conjugate]
@@ -410,8 +402,8 @@ vice-versa.
   }
 \label{thm:conv}
 %--------------------------------------
-Let $\opFT$ be the Fourier Transform operator
-and $\conv$ the convolution operator.
+Let $\opFT$ be the Fourier Transform operator \xref{def:opFT}
+and $\conv$ the convolution operator \xref{def:conv}.
 \thmbox{
 \begin{array}{rcl@{\qquad}C}
   \mcom{\opFT\brs{\ff(x)\conv\fg(x)}(\omega)}{convolution    in ``time domain"} &=& \mcom{\sqrt{2\pi}\brs{\opFT\ff}(\omega)\, \brs{\opFT\fg}(\omega)}    {multiplication in ``frequency domain"} & \forall\ff,\fg\in\spLLRBu\\
@@ -447,8 +439,49 @@ and $\conv$ the convolution operator.
 \end{align*}
 \end{proof}
 
-%\ifexclude{wsd}
-{
+%======================================
+\section{Calculus relations}
+%======================================
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $\opFT$ be the \ope{Fourier Transform} operator \xref{def:opFT}.
+\thmbox{
+    \brb{\lim_{t\to-\infty}\fx(t)=0}
+    \qquad\implies\qquad
+    \brb{\opFT \brs{\ddt \fx(t)} = i\omega \brs{\opFT\fx}(\omega)}
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opFT \brs{\ddt \fx(t)}
+    &\eqd \brlr{\opLT\brs{\ddt \fx(t)}(s)}_{s=i\omega}
+    && \text{by definitions of $\opLT$ and $\opFT$}    && \text{\xref{def:opLT}}
+  \\&= \brlr{s \brs{\opLT\fx(t)}(s)}_{s=i\omega}
+    && \text{by \prefp{thm:opLT_diff}}
+  \\&= i\omega \brs{\opFT\fx}(\omega)
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+%---------------------------------------
+Let $\opFT$ be the \ope{Fourier Transform} operator \xref{def:opFT}.
+\thmbox{
+    \opFT \int_{u=-\infty}^{u=t} \fx(u) \du = \frac{1}{i\omega} \brs{\opFT\fx}(\omega)
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opFT \int_{u=-\infty}^{u=t} \fx(u) \du
+    &\eqd \brlr{\opLT \int_{u=-\infty}^{u=t} \fx(u) \du}_{s=i\omega}
+  \\&=    \brlr{\frac{1}{s} \brs{\opLT\fx(t)}(s)}_{s=i\omega}
+    && \text{by \prefp{thm:opLT_int}}
+  \\&=    \frac{1}{i\omega} \brs{\opFT\fx(t)}(\omega)
+\end{align*}
+\end{proof}
+
+
 %======================================
 \section{Real valued functions}
 %======================================
@@ -526,7 +559,7 @@ the \ope{Fourier Transform} of $\ff(x)$.
     $\ff(x)$ is \prope{real-valued}\\
     ($\ff\in\clFrr$)
   \end{array}}
-  \quad\implies\quad
+  \implies
   \brb{\begin{array}{rclM}
     \Ff(\omega)       &=& \Ff^\ast(-\omega)    & (\prope{Hermitian symmetric}) \\
     \Reb{\Ff(\omega)} &=& \Reb{\Ff(-\omega)}   & (\prope{symmetric}) \\
@@ -561,8 +594,6 @@ the \ope{Fourier Transform} of $\ff(x)$.
      &=& -\angle\Ff(-\omega)
 \end{array}\]
 \end{proof}
-
-} % end exclude
 
 %======================================
 \section{Moment properties}
