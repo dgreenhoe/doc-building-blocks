@@ -262,7 +262,6 @@ Let $X(z)\eqd\opZ\fx[n]$ be the \ope{z-transform} of $\fx[n]$.
 \label{thm:conv}
 %--------------------------------------
 Let $\convd$ be the convolution operator \xref{def:dsp_conv}.
-%$\seq{x_n}{n\in\Z}$ and $\seq{y_n}{n\in\Z}$ be sequences in the space $\spllR$. %be sequences over a ring $\ring$.
 \thmbox{
   \opZ\mcom{\brp{\seqn{x_n}\convd\seqn{y_n}}}{sequence convolution} = \mcom{\brp{\opZ\seqn{x_n}}\;\brp{\opZ\seqn{y_n}}}{series multiplication}
   \qquad{\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllR}
@@ -270,19 +269,15 @@ Let $\convd$ be the convolution operator \xref{def:dsp_conv}.
 \end{theorem}
 \begin{proof}
 \begin{align*}
-  [\opZ(x\convd y)](z)
-    &\eqd \opZ {\left(\sum_{m\in\Z} x_m y_{n-m}\right)}
-    &&    \text{by \prefp{def:dsp_conv}}
-  \\&\eqd \sum_{n\in\Z} \sum_{m\in\Z} x_m y_{n-m} z^{-n}
-    &&    \text{by \prefp{def:opZ}}
+  \brs{\opZ(x\convd y)}(z)
+    &\eqd \opZ {\left(\sum_{m\in\Z} x_m y_{n-m}\right)}    && \text{by definition of $\convd$} && \text{\xref{def:dsp_conv}}
+  \\&\eqd \sum_{n\in\Z} \sum_{m\in\Z} x_m y_{n-m} z^{-n}   && \text{by definition of $\opZ$}   && \text{\xref{def:opZ}}
   \\&=    \sum_{n\in\Z} \sum_{m\in\Z} x_m y_{n-m} z^{-n}
-  \\&=    \sum_{m\in\Z} \sum_{n\in\Z} x_m y_{n-m} z^{-n}
-  \\&=    \sum_{m\in\Z} \sum_{k\in\Z} x_m y_k z^{-(m+k)}
-    &&    \text{where $k=n-m \iff n=m+k$}
-  \\&=    {\left[\sum_{m\in\Z} x_m z^{-m}\right]}
-          {\left[\sum_{k\in\Z} y_k z^{-k}\right]}
-  \\&\eqd \brp{\opZ\seqn{x_n}}\;\brp{\opZ\seqn{y_n}}
-    &&    \text{by \prefp{def:opZ}}
+   &&=    \sum_{m\in\Z} \sum_{n\in\Z} x_m y_{n-m} z^{-n}
+  \\&=    \sum_{m\in\Z} \sum_{k\in\Z} x_m y_k z^{-(m+k)}   && \text{where $k\eqd n-m$}         && \text{$\iff$ $n=m+k$}
+  \\&=    \brs{\sum_{m\in\Z} x_m z^{-m}}
+          \brs{\sum_{k\in\Z} y_k z^{-k}}
+  \\&\eqd \brs{\opZ\seqn{x_n}}\;\brs{\opZ\seqn{y_n}}       && \text{by definition of $\opZ$}   && \text{\xref{def:opZ}}
 \end{align*}
 \end{proof}
 
@@ -462,10 +457,12 @@ A causal LTI filter is \propb{stable} if all of its poles are \propb{inside} the
 
 \begin{figure}[ht]
   \centering%
-  \begin{tabular}{c@{\hspace{1cm}}c}
+  \begin{tabular}{|c|c|}
+     \hline
      \includegraphics{graphics/pz_stable.pdf}
     &\includegraphics{graphics/pz_unstable.pdf}
     \\stable & unstable
+    \\\hline
 \end{tabular}
   \caption{
      Pole-zero plot stable/unstable causal LTI filters \xref{ex:pz_unstable}
@@ -482,21 +479,28 @@ Stable/unstable filters are illustrated in \prefpp{fig:pz_unstable}.
 %---------------------------------------
 %\section{The Reappearing Roots: Now you don't see them, now you do}
 %---------------------------------------
-
+\begin{figure}
+  \centering
+  \begin{tabular}{|c|c|}
+      \hline
+    \\\includegraphics{graphics/dfI_order2_fir.pdf}
+     &\includegraphics{graphics/pz_pole00.pdf}
+    \\\hline
+  \end{tabular}
+  \caption{FIR filters \label{fig:fir}}
+\end{figure}
 True or False? This filter has no poles:
 
   $\ds H(z)= b_0 + b_1 z^{-1} + b_2 z^{-2}$
 
-\includegraphics{graphics/dfI_order2_fir.pdf}
 
 \begin{align*}
-  H(z)
+  \fH(z)
     &= b_0 + b_1 z^{-1} + b_2 z^{-2}
      = \frac{z^2}{z^2} \times \frac{b_0 + b_1 z^{-1} + b_2 z^{-2}}{1}
      = \frac{b_0 z^2 + b_1 z^{1} + b_2 }{z^2}
 \end{align*}
 
-\includegraphics{graphics/pz_pole00.pdf}
 
 %---------------------------------------
 \section{Mirroring for real coefficients}
