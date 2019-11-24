@@ -15,9 +15,11 @@
 # Commands
 #--------------------------------------
 all:
-  cd abcstat
+  cd abctran
     make
-  cd ..\bayesnets
+  cd ..\xframes
+    make
+  cd ..\abcstat
     make
   cd ..\abcdc
     make
