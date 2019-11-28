@@ -1,0 +1,681 @@
+#-----------------------------------------------------------------------------
+# Project Makefile
+# Daniel J. Greenhoe
+#-----------------------------------------------------------------------------
+#--------------------------------------
+# TARGET
+#--------------------------------------
+#.RECIPEPREFIX=>
+#--------------------------------------
+# Paths
+#--------------------------------------
+
+PATHDATA     = ../data/
+PATHDSP      = ../dsp/
+PATHFRAME    = ../frames/
+PATHMATH     = ../
+PATHBSPLINES = ../bsplines/
+PATHPROB     = ../prob/
+PATHVENN     = ../venn/
+PATHSETSTR   = ../setstr/
+PATHSYSTEM   = ../system/
+PATHWAVE     = ../wavelets/
+PATHCC       = ../../common/graphics/cc/
+PATHOSETU    = ../osetu/
+PATHLAT      = ../lat/
+PATHLATU     = ../latu/
+PATHLATOC    = ../latoc/
+PATHNEG      = ../neg/
+PATHOSET     = ../oset
+PATHLOGIC    = ../
+PATHFUZZY    = ../fuzzy/
+PATHSETOPS   = ../setops/
+
+#--------------------------------------
+# Files
+#--------------------------------------
+FILE_GRP  =             \
+  baslat_cheby.pdf      \
+  baslat_cose.pdf       \
+  baslat_cosh.pdf       \
+  baslat_haar.pdf       \
+  baslat_h3.pdf         \
+  baslat_d1.pdf         \
+  baslat_d2.pdf         \
+  baslat_d1_yellow.pdf   \
+  baslat_d2_yellow.pdf   \
+  baslat_h3_yellow.pdf   \
+  baslat_cheby_yellow.pdf\
+  baslat_cose_yellow.pdf \
+  baslat_cosh_yellow.pdf \
+  dirichlet1.pdf        \
+  dirichlet5.pdf        \
+  dirichlet10.pdf       \
+  dirichlet20.pdf       \
+  fstep.pdf             \
+  opTrn.pdf             \
+  opDil.pdf             \
+  latmn.pdf             \
+  latmra.pdf            \
+  latp_1235711.pdf      \
+  latp_VW.pdf           \
+  latp_hg.pdf           \
+  latp_pp.pdf           \
+  pulse.pdf             \
+  pulse2.pdf            \
+  sin_pi_t.pdf          \
+  hn1.pdf               \
+  lat6_plat_xyzv10.pdf  \
+  cencubs.pdf           \
+  cencubs_pun.pdf       \
+  coscos11.pdf          \
+  coscos11ft.pdf        \
+  pounityz.pdf          \
+  pulse03.pdf           \
+  pulse_pun.pdf         \
+  Fpulse.pdf            \
+  pulseabc.pdf          \
+  pulseabcft.pdf        \
+  pz_minphase.pdf       \
+  pz_realcoefs.pdf      \
+  pz_stable.pdf         \
+  pz_unstable.pdf       \
+  rcos.pdf              \
+  rcos_pun.pdf          \
+  rsin.pdf              \
+  rsin_pun.pdf          \
+  rsin02hn.pdf          \
+  sinsin02.pdf          \
+  sinsin02_pun.pdf      \
+  sinsin02hn.pdf        \
+  tentfx.pdf            \
+  tent_pun.pdf          \
+  tent012.pdf           \
+  Ftent012.pdf          \
+  FN2.pdf               \
+  DT_tentfx.pdf         \
+  TD_tentfx.pdf         \
+  triangleabc.pdf       \
+  triangleabcft.pdf     \
+  unitcircle.pdf        \
+  vecres.pdf            \
+  Fhw.pdf
+
+GRP_DATA = \
+  cagefree-ratios.pdf          \
+  dji30_20171006-20181004.pdf  \
+  egg-production.pdf           \
+  earthquake_kapi_20180928.pdf \
+  global-temp.pdf              \
+  sunspots.pdf                 \
+  sunspots_1749-2004.pdf       \
+  sunspots_welchPSD_4segs.pdf
+
+GRP_DSP  =                     \
+  sinc.pdf                     \
+  sinsin02.pdf                 \
+  sinsin02hn.pdf               \
+  sinsin02_pun.pdf             \
+  sin_pi_t.pdf                 \
+  haar0_sin_a.pdf              \
+  haar0_sin_t.pdf              \
+  haar1_sin_a.pdf              \
+  haar1_sin_t.pdf              \
+  haar2_sin_a.pdf              \
+  haar2_sin_t.pdf              \
+  dfI_order1_abc.pdf           \
+  dfI_order1_lpf2pi3.pdf       \
+  dfI_order2_156.pdf           \
+  dfI_order2_fir.pdf           \
+  dfI_order2_156.pdf           \
+  dfII_order1_abc.pdf          \
+  D4_pz.pdf                    \
+  S4_pz.pdf                    \
+  d4_phi_h.pdf                 \
+  s4_phi_h.pdf                 \
+  hanninglp50.pdf              \
+  hpfwc.pdf                    \
+  lpfwc.pdf                    \
+  iir2n.pdf                    \
+  iir2rphi.pdf                 \
+  iir1pole.pdf                 \
+  pz_allpass.pdf               \
+  pz_minphase.pdf              \
+  pz_minphase_inv.pdf          \
+  pz_stable.pdf                \
+  pz_pole00.pdf                \
+  pz_realcoefs.pdf             \
+  pz_realcoefs_11.pdf          \
+  pz_unstable.pdf              \
+  pz_unstable2.pdf             \
+  pz_unall.pdf                 \
+  rectangular_1N.pdf           \
+  samplat.pdf                  \
+  sin_pi_t_sampled.pdf         \
+  sinclat.pdf                  \
+  unitcircle.pdf               \
+  vecres.pdf
+
+GRP_FRAMES  =                  \
+  frameR2N.pdf                 \
+  frameR2pq.pdf                \
+  mframe.pdf                   \
+  mframe01.pdf                 \
+  mframer01.pdf                \
+  mframepm.pdf
+
+GRP_MATH = \
+  r3subspaces_xyzxcyczc.pdf    \
+  ballinball.pdf               \
+  m2tol4.pdf                   \
+  m3ton5.pdf                   \
+  n5ton5.pdf                   \
+  r3subspaces_xy.pdf           \
+  orderingsxyz.pdf             \
+  pulseabc.pdf                 \
+  pulseabcft.pdf               \
+  triangleabc.pdf              \
+  triangleabcft.pdf            \
+  lat2xyz_antichains.pdf       \
+  m3m3_antichain_abcpqr.pdf
+
+GRP_PROB =                     \
+  latestimation.pdf            \
+  estimation_techniques.pdf    \
+  lat3_L3_1x0_-0-x-1_prob.pdf  \
+  lat4_m2_psE_coin.pdf         \
+  lat4_m2_boa_prob.pdf         \
+  lat4_m2_prob_die.pdf         \
+  lat6_o6_prob_10adbc.pdf      \
+  lat8_l2e3_prob_coin.pdf      \
+  lat8_l2e3_prob_die.pdf       \
+  pdf_dicesum_bluered.pdf      \
+  pdf_fairdie_blue.pdf         \
+  pdf_fairdie_red.pdf
+
+
+GRP_LATU = \
+  lat1.pdf                        \
+  lat2_l2.pdf                     \
+  lat3_l3.pdf                     \
+  lat4_l4.pdf                     \
+  lat4_m2.pdf                     \
+  lat5_l5.pdf                     \
+  lat5_m3.pdf                     \
+  lat5_n5.pdf                     \
+  lat5_l2onm2.pdf                 \
+  lat5_m2onl2.pdf                 \
+  lat6_m4.pdf                     \
+  lat6_l4inm2.pdf                 \
+  lat6_p3.pdf                     \
+  lat6_p3_dual.pdf                \
+  lat6_o6.pdf                     \
+  lat6_o6slash.pdf                \
+  lat6_n6.pdf                     \
+  lat6_o6bslash.pdf               \
+  lat6_l3onm2.pdf                 \
+  lat6_m2onl3.pdf                 \
+  lat6_l2onm2onl2.pdf             \
+  lat6_l2onn5.pdf                 \
+  lat6_n5onl2.pdf                 \
+  lat6_l2onm3.pdf                 \
+  lat6_m3onl2.pdf                 \
+  lat6_l6.pdf                     \
+  lat6_m2m2.pdf                   \
+  lat7_m2onm2.pdf                 \
+  lat7_l2ono6slash.pdf            \
+  lat7_o6slashonl2.pdf            \
+  lat7_l4onm2.pdf                 \
+  lat7_l3onm2onl2.pdf             \
+  lat7_l2onm2onl3.pdf             \
+  lat7_m2onl4.pdf                 \
+  lat7_l7.pdf                     \
+  lat7_m5.pdf                     \
+  lat7_m3m2.pdf                   \
+  lat7_m2m3.pdf                   \
+  lat7_l2onm4.pdf                 \
+  lat7_m4onl2.pdf                 \
+  lat7_l3onm3.pdf                 \
+  lat7_m3onl3.pdf                 \
+  lat7_l2onm3onl2.pdf             \
+  lat7_o7slash.pdf                \
+  lat7_m2inn5.pdf                 \
+  lat7_l3ino6.pdf                 \
+  lat7_l3ino6slash.pdf            \
+  lat7_o7.pdf                     \
+  lat7_l4l5l4.pdf                 \
+  lat7_l3l5l5.pdf                 \
+  lat7_l5inm2.pdf                 \
+  lat7_l2onn5onl2.pdf             \
+  lat7_l2onm3onl2.pdf             \
+  lat7_l6l3.pdf                   \
+  lat7_n7.pdf                     \
+  lat7_l7.pdf                     \
+  \
+  lat7_m3n5.pdf                   \
+  lat7_m2inm2.pdf                 \
+  lat7_m2inm2_alt.pdf             \
+  lat7_m2m2m2.pdf                 \
+  lat7_m3m2.pdf                   \
+  lat7_m2o6.pdf                   \
+  lat7_n5m2.pdf                   \
+  lat7_n6m2.pdf                   \
+  lat7_n6n5.pdf                   \
+  lat7_l2onp3.pdf                 \
+  lat7_l2onp3dual.pdf             \
+  lat7_l3onn5.pdf                 \
+  lat7_l2ono6.pdf                 \
+  lat7_l2onl4inm2.pdf             \
+  lat7_l2onn6.pdf                 \
+  \
+  lat8_l2e3.pdf                   \
+  lat12_mo2x2.pdf
+
+GRP_LAT = \
+  lat4_l4_1234.pdf                \
+  lat4_m2_1xy0.pdf                \
+  lat4_m2_topxy.pdf               \
+  lat5_n5_0abp1.pdf               \
+  lat5_n5_xyz.pdf                 \
+  lat5_n5_abz.pdf                 \
+  lat5_pentbslash_1xyz0.pdf       \
+  lat5_l2onm2_1xyz0.pdf           \
+  lat5_m3_pqr.pdf                 \
+  lat5_m3_xyz.pdf                 \
+  lat6_o6slash_123.pdf            \
+  lat6_l4inm2_xyab01.pdf          \
+  lat6_primo_xyza01.pdf           \
+  lat6_primo_dual_xyza01.pdf      \
+  lat6_o6_10xy-x.pdf              \
+  lat6_o6_dslash_1abxy0.pdf       \
+  lat6_o6bslash_xyab01.pdf        \
+  lat6_o6_xyab01.pdf              \
+  lat6_plat_P12345.pdf            \
+  lat6_plat_V12345.pdf            \
+  lat6_o6_pqab01.pdf              \
+  lat6_primo_pqra01.pdf           \
+  lat6_primo_ss_xyz.pdf           \
+  lat7_veeino6_xyzab01.pdf        \
+  lat7_wedgeino6_xyabc01.pdf      \
+  lat8_2e3_setxyz.pdf             \
+  lat8_2e3_setxyzd.pdf            \
+  lat8_2e3_set235.pdf             \
+  lat8_l2e3_abc_h.pdf             \
+  lat6_o6_acpr_h.pdf
+
+GRP_BOOLEAN = \
+  lat2_l2_setx.pdf         \
+  lat4_l2e2_setxy.pdf      \
+  lat4_m2_setxy.pdf        \
+  lat8_2e3_setxyz.pdf
+
+GRP_LOGIC = \
+  logic_BN4_tbnf.pdf              \
+  logic_L2_tf.pdf                 \
+  logic_L3_tnf.pdf                \
+  logic_L3_tnf_fft.pdf            \
+  logic_L5_tpnmf.pdf              \
+  logic_M2_tmnf.pdf               \
+  logic_O6slash_tpqmnf.pdf        \
+  lat6_o6_negor.pdf
+
+GRP_NEG = \
+  lat2_L2_10_-0-1.pdf                          \
+  lat3_L3_1-1_x-x_0-0.pdf                      \
+  lat3_L3_1-0_x-1_0-x.pdf                      \
+  lat3_L3_1-x_x-0_0-1.pdf                      \
+  lat3_L3_1_a-0_0-1-a.pdf                      \
+  lat6_o6_1-0_a-b_b-a_c-d_d-c_0-1.pdf          \
+  lat3_L3_1x0_-0-1-x.pdf                       \
+  lat3_L3_1x0_-1x0.pdf                         \
+  lat3_L3_1-0-a_a_0-1.pdf                      \
+  lat3_L3_1-a-0_a-1_0.pdf                      \
+  lat3_L3_1x0_-0-x-1.pdf                       \
+  lat3_L3_1-0_a_0-1-x.pdf                      \
+  lat4_m2_1-0_a_b-b_0-1-a.pdf                  \
+  lat4_m2_a-b_b-a.pdf                          \
+  lat4_bn4_a-a_b-b.pdf                         \
+  lat4_m2_1-0_a_b-b_0-1-a.pdf                  \
+  lat3_L3_1-0_a_0-1-x.pdf                      \
+  lat3_L3_1x0_-0-x-1.pdf                       \
+  lat6_n6_0abcp1.pdf                           \
+  lat5_n5_0acp1.pdf                            \
+  lat6_o6_negor.pdf                            \
+  lat5_m3_negdm.pdf                            \
+  lat5_m3_negkl.pdf                            \
+  lat6_o6_negdm.pdf                            \
+  lat6_o6_negor.pdf                            \
+  lat6_o6slash_nonantitone.pdf                 \
+  lat6_o6slash_kleene.pdf                      \
+  lat8_l2e3_abc_dm.pdf                         \
+  lat8_l2e3_abc_ortho.pdf
+
+GRP_LATOC = \
+  lat6_o6_latoc_pq.pdf                          \
+  lat6_o6_xy.pdf                                \
+  lat6_m4_wxyz.pdf                              \
+  lat6_mo2_xy.pdf                               \
+  lat6_o6_center.pdf                            \
+  lat8_o8_xyp.pdf                               \
+  lat8_2e3m2_xyzoc.pdf                          \
+  lat8_l3l4l4l3_xypoc.pdf                       \
+  latoc2xyz_center.pdf                          \
+  lat10_n5n5oc_xyp.pdf                          \
+  lat10_m4m4oc_wxyz.pdf                         \
+  lat10_o8m2_xypqoc.pdf                         \
+  lat10_hsum_pxyz.pdf                           \
+  latocdil7_abxyzcd.pdf                         \
+  lat8_m6_xyzoc.pdf                             \
+  lat1_01.pdf                                   \
+  lat2_l2_01.pdf                                \
+  lat4_m2_latoc_p.pdf                           \
+  lat8_l2e3_latoc_pqr.pdf                       \
+  lat10_n5n5oc_xyzp_center.pdf                  \
+  lat10_o8m2_center_xypqoc.pdf                  \
+  lat16_l2e4_latoc_pqrs.pdf                     \
+  lat32_l2e5_latoc_pqrst.pdf
+
+GRP_OSET =                     \
+  oset3_wedge_ab1.pdf          \
+  oset6_o6x_abcd01.pdf         \
+  oset3_wedge.pdf              \
+  oset4_Nref.pdf               \
+  oset7_wedge_oplus_Nref.pdf   \
+  oset12_wedge_times_Nref.pdf  \
+  oset12_wedge_otimes_Nref.pdf
+
+GRP_POUNITY =                \
+  coscos11.pdf               \
+  sinsin02_pun.pdf           \
+  coscos11ft.pdf             \
+  rcos.pdf                   \
+  rcos_pun.pdf               \
+  pounityz.pdf               \
+  Fhw.pdf                    \
+  d1_phi_h.pdf               \
+  d1_psi_g.pdf               \
+  tent_phi_h.pdf             \
+  tent_psi_g.pdf             \
+  bspline_phi_h.pdf          \
+  bspline_psi_g.pdf          \
+  Snn_bspline.pdf            \
+  sinsin02.pdf               \
+  sinsin02_pun.pdf           \
+  sinsin02hn.pdf             \
+  rsin.pdf                   \
+  rsin_pun.pdf               \
+  rsin02hn.pdf
+
+GRP_SETOPS =                 \
+  latsetops.pdf              \
+  setop_0000.pdf             \
+  setop_0001.pdf             \
+  setop_0010.pdf             \
+  setop_0011.pdf             \
+  setop_0100.pdf             \
+  setop_0101.pdf             \
+  setop_0110.pdf             \
+  setop_0111.pdf             \
+  setop_1000.pdf             \
+  setop_1001.pdf             \
+  setop_1010.pdf             \
+  setop_1011.pdf             \
+  setop_1100.pdf             \
+  setop_1101.pdf             \
+  setop_1110.pdf             \
+  setop_1111.pdf
+
+#  standardsetops.pdf       
+
+GRP_SETSTR =                 \
+  latlatalgwxyz.pdf          \
+  latlatringxyz.pdf          \
+  latlatpartitionsxyz.pdf    \
+  latlatringxy.pdf           \
+  latlatalgxyz.pdf           \
+  latlatpartwxyz.pdf         \
+  latlattopxyz_covers.pdf
+
+GRP_SPLINE =                 \
+  fstep.pdf                  \
+  tent_pun.pdf               \
+  n0.pdf                     \
+  n1.pdf                     \
+  n2.pdf                     \
+  n3.pdf                     \
+  n3x.pdf                    \
+  n4.pdf                     \
+  n5.pdf                     \
+  n6.pdf                     \
+  n7.pdf                     \
+  b0_g.pdf                   \
+  b1_g.pdf                   \
+  b2_g.pdf                   \
+  n0_h.pdf                   \
+  n1_h.pdf                   \
+  n2_h.pdf                   \
+  n3_h.pdf                   \
+  n4_h.pdf                   \
+  n0punity.pdf               \
+  n1punity.pdf               \
+  n2punity.pdf               \
+  n0dyadic.pdf               \
+  n1dyadic.pdf               \
+  n2dyadic.pdf               \
+  pulse_pun.pdf              \
+  Fpulse.pdf                 \
+  tent012.pdf                \
+  tent_pun.pdf               \
+  Ftent012.pdf               \
+  FN2.pdf                    \
+  cencubs.pdf                \
+  cencubs_pun.pdf
+
+GRP_SYSTEM =                 \
+  sysH_xy.pdf                \
+  sysHw_xy.pdf               \
+  sysHz_xy.pdf               \
+  sysH_cnoise.pdf            \
+  sysH_xy0v-q.pdf            \
+  sysH_xyuv--.pdf            \
+  sysH_xy0v--.pdf            \
+  sysH_xyu0--.pdf            \
+  sysH_xyvq.pdf              \
+  sysH_xyup.pdf              \
+  sysH_xypw.pdf              \
+  sysH_estH.pdf              \
+  sysT_xyvq.pdf              \
+  sysT_xyup.pdf              \
+  sysT_xypw.pdf              \
+  sys_xvy.pdf                \
+  transferHs_p.pdf           \
+  transferHs_ddp.pdf         \
+  xGy_xHw.pdf                \
+  xGy_xHw_addnoise.pdf       \
+  xTy_xHw.pdf                \
+  opH_cnoise.pdf             \
+  opH_mnoise.pdf             \
+  opT_cnoise.pdf             \
+  opT_mnoise.pdf             \
+  opT_opH_cnoise.pdf         \
+  opT_opH_mnoise.pdf         \
+  opT_estH_cnoise.pdf        \
+  opT_estH_mnoise.pdf        \
+  opT_estG_estH_mnoise.pdf   \
+  opT_estG_estH_cnoise.pdf   \
+  dual_addnoise.pdf          \
+  sysH_mnoise.pdf
+
+GRP_TOPOLOGY =               \
+  lat5_m3_nontop.pdf         \
+  lat5_m3_ss_xyz.pdf         \
+  lat5_n5_nontop.pdf         \
+  lat5_l2onm2_top.pdf        \
+  lat5_m2onl2_top.pdf        \
+  lat5_l5_top.pdf            \
+  latwavxyz.pdf              \
+  lattopxy.pdf               \
+  latlattopxyz.pdf           \
+  lat2xyzdotted.pdf          \
+  lattopxyz.pdf              \
+  butterfly_setA.pdf         \
+  butterfly_clsA.pdf         \
+  butterfly_intA.pdf         \
+  butterfly_bndA.pdf         \
+  butterfly_drvA.pdf         \
+  cont_yx.pdf                \
+  cont_yfy.pdf               \
+  cont_ydy.pdf
+
+GRP_VENN =                   \
+  venn_emptyset.pdf          \
+  venn_cmpA.pdf              \
+  venn_setdiff.pdf           \
+  venn_cmpB.pdf              \
+  venn_symdiff.pdf           \
+  venn_intersect.pdf         \
+  venn_union.pdf             \
+  venn_universal.pdf
+
+#  venn_ABc.pdf               \
+#  venn_AB.pdf                \
+#  venn_AcB.pdf
+#  venn_AcBc.pdf
+
+FILE_STY  = ../../common/sty/wavelets.sty \
+            ../../common/sty/math.sty     \
+            ../../common/sty/dan.sty      \
+            ../../common/sty/defaults.sty \
+            ../../common/sty/fonts.sty    \
+            ../../common/sty/packages.sty \
+            ../../common/sty/xsd.sty      \
+            ../../common/sty/language.sty
+
+#--------------------------------------
+# Programs
+#--------------------------------------
+PRG_TYPESET = xelatex.exe
+#PRG_XDV2PDF = xdvipdfmx.exe
+
+#--------------------------------------
+# master build control
+#--------------------------------------
+top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN)
+	@echo Done ... graphics pdfs are ready!
+
+#--------------------------------------
+# implicit build control
+#--------------------------------------
+{$(PATHMATH)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHFRAME)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHDATA)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHDSP)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHBSPLINES)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+%.pdf : shell_%.tex
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHPROB)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHVENN)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHSYSTEM)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHWAVE)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHCC)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHLAT)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHLATU)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHLATOC)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHNEG)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHLOGIC)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHFUZZY)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHSETOPS)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHSETSTR)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHOSETU)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHOSET)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+#--------------------------------------
+# commands
+#--------------------------------------
+clean:
+  del *.aux
+  del *.log
+  del *.out
+
