@@ -34,6 +34,11 @@ PATHSETOPS   = ../setops/
 #--------------------------------------
 # Files
 #--------------------------------------
+FILE_CC
+  ccby40djg.pdf         \
+  ccbyncnd40djg.pdf     \
+  ccby40.pdf
+
 FILE_GRP  =             \
   baslat_cheby.pdf      \
   baslat_cose.pdf       \
@@ -537,6 +542,71 @@ GRP_VENN =                   \
   venn_union.pdf             \
   venn_universal.pdf
 
+FILE_WAV =              \
+  bspline_pz.pdf        \
+  D1_pz.pdf             \
+  D2_pz.pdf             \
+  D3_pz.pdf             \
+  D4_pz.pdf             \
+  D8_pz.pdf             \
+  D12_pz.pdf            \
+  D16_pz.pdf            \
+  S4_pz.pdf             \
+  S5_pz.pdf             \
+  S6_pz.pdf             \
+  S7_pz.pdf             \
+  S8_pz.pdf             \
+  S9_pz.pdf             \
+  S10_pz.pdf            \
+  S11_pz.pdf            \
+  S12_pz.pdf            \
+  S13_pz.pdf            \
+  S14_pz.pdf            \
+  S15_pz.pdf            \
+  S16_pz.pdf            \
+  S17_pz.pdf            \
+  d1_g.pdf              \
+  d1_h.pdf              \
+  d1_phi.pdf            \
+  d1_psi.pdf            \
+  d1_phi_h.pdf          \
+  d1_psi_g.pdf          \
+  d2_phi_h.pdf          \
+  d2_psi_g.pdf          \
+  d3_phi_h.pdf          \
+  d3_psi_g.pdf          \
+  d4_phi_h.pdf          \
+  d4_psi_g.pdf          \
+  d5_phi_h.pdf          \
+  d5_psi_g.pdf          \
+  d6_phi_h.pdf          \
+  d6_psi_g.pdf          \
+  d7_phi_h.pdf          \
+  d7_psi_g.pdf          \
+  d8_phi_h.pdf          \
+  d8_psi_g.pdf          \
+  d9_phi_h.pdf          \
+  d9_psi_g.pdf          \
+  d10_phi_h.pdf         \
+  d10_psi_g.pdf         \
+  d11_phi_h.pdf         \
+  d11_psi_g.pdf         \
+  d12_phi_h.pdf         \
+  d12_psi_g.pdf         \
+  d16_phi_h.pdf         \
+  d16_psi_g.pdf         \
+  Dp_pz.pdf             \
+  latwav.pdf            \
+  mexhatwavelet.pdf     \
+  morletwavelet.pdf     \
+  s4_psi_g.pdf          \
+  s8_phi_h.pdf          \
+  s8_psi_g.pdf          \
+  s12_phi_h.pdf         \
+  s12_psi_g.pdf         \
+  s16_phi_h.pdf         \
+  s16_psi_g.pdf         \
+
 #  venn_ABc.pdf               \
 #  venn_AB.pdf                \
 #  venn_AcB.pdf
@@ -560,7 +630,7 @@ PRG_TYPESET = xelatex.exe
 #--------------------------------------
 # master build control
 #--------------------------------------
-top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN)
+top: $(FILE_GRP) $(GRP_BOOLEAN) $(FILE_CC) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
 	@echo Done ... graphics pdfs are ready!
 
 #--------------------------------------
