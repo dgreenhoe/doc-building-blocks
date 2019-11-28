@@ -86,9 +86,6 @@ mainx.pdf: mainx.xdv
   $(PRG_XDV2PDF) $(OPT_XDV2PDF) -o mainx.pdf mainx.xdv
 
 mainx.xdv: mainx.tex $(FILE_SRC) $(FILE_APP) $(FILE_STY) $(FILE_BIB)
-   cd graphics
-   make
-   cd ..
    echo "\indexentry{{dummy index entry}}{1}" > mainx.idx # erase and/or initalize index file
    echo "\indexentry{{dummy index entry}}{1}" > xref.idx  # erase and/or initalize index file
    echo "\indexentry{{dummy index entry}}{1}" > xsym.idx  # erase and/or initalize index file
