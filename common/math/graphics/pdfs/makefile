@@ -9,11 +9,13 @@
 #--------------------------------------
 # Paths
 #--------------------------------------
+PATHBALLS    = ../balls/
 PATHDATA     = ../data/
 PATHDSP      = ../dsp/
 PATHFRAME    = ../frames/
 PATHMATH     = ../
 PATHBSPLINES = ../bsplines/
+PATHMETRIC   = ../metric/
 PATHPROB     = ../prob/
 PATHVENN     = ../venn/
 PATHSETSTR   = ../setstr/
@@ -117,27 +119,46 @@ GRP_DATA =                     \
   sunspots_1749-2004.pdf       \
   sunspots_welchPSD_4segs.pdf
 
-#  dna_51_seq.tex               \
+GRP_DICE =                                     \
+	fdie_5eed_16000_auto.pdf                   \
+	fdie_5eed_16000_histo.pdf                  \
+	fdie_5eed_16002_auto.pdf                   \
+	fdie_5eed_16002_histo.pdf                  \
+	fdie_5eed_16ones_R1_histo.pdf              \
+	fdie_5eed_16ones_r6ae.pdf                  \
+	fdie_5eed_16ones_R6_histo.pdf              \
+	fdie_5eed_51_seq.pdf                       \
+	rdie_16hp.pdf                              \
+	rdie_16ones.pdf                            \
+	rdie_3d_larcball.pdf                       \
+	rdie_50hp.pdf                              \
+	rdie_5eed_16000_16ones_auto.pdf            \
+	rdie_5eed_16000_16ones_R3_auto.pdf         \
+	rdie_5eed_16000_auto.pdf                   \
+	rdie_5eed_16000_histo.pdf                  \
+	rdie_5eed_16002_auto.pdf                   \
+	rdie_5eed_16002_histo.pdf                  \
+	rdie_5eed_16002_R1_rect_auto.pdf           \
+	rdie_5eed_16002_R1_rect_histo.pdf          \
+	rdie_5eed_16002_R3_rect_larc_auto.pdf      \
+	rdie_5eed_16002_R3_rect_larc_histo.pdf     \
+	rdie_5eed_16ones.pdf                       \
+	rdie_5eed_16ones_histo.pdf                 \
+	rdie_5eed_16ones_histo_euclid.pdf          \
+	rdie_5eed_16ones_histo_larc.pdf            \
+	rdie_5eed_16ones_histo_R1.pdf              \
+	rdie_5eed_16ones_r3euclid.pdf              \
+	rdie_5eed_16ones_r3larc.pdf                \
+	rdie_r3met.pdf                             \
+	rdie_wxyz.pdf
+
+# rdie_larcball.pdf                          \
+# dna_51_seq.tex               \
+# dna_5eed_16002_auto.pdf      \
 
 GRP_DNA =                      \
   dna_5eed_16000_histo.pdf     \
   dna_5eed_51_seq.pdf          \
-  dna_ebola.pdf                \
-  dna_ebola_51_seq.pdf         \
-  dna_ebola_auto.pdf           \
-  dna_ebola_histo.pdf          \
-  dna_mpbacterium_51_seq.pdf   \
-  dna_mpbacterium_histo.pdf    \
-  dna_papaya1446_51_seq.pdf    \
-  dna_papaya1446_histo.pdf     \
-  dna_sars.pdf                 \
-  dna_sars_51_seq.pdf          \
-  dna_sars_auto.pdf            \
-  dna_sars_histo.pdf           \
-  dna_51_seq.pdf               \
-  dna_5eed_16000_auto.pdf      \
-  dna_5eed_16000_histo.pdf     \
-  dna_5eed_16002_auto.pdf      \
   dna_ebola.pdf                \
   dna_ebola_51_seq.pdf         \
   dna_ebola_auto.pdf           \
@@ -152,6 +173,7 @@ GRP_DNA =                      \
   dna_sars_51_seq.pdf          \
   dna_sars_auto.pdf            \
   dna_sars_histo.pdf           \
+  dna_5eed_16000_auto.pdf      \
   dna.pdf                      \
   dnatoc.pdf                   \
   dnatol4.pdf                  \
@@ -226,6 +248,21 @@ GRP_MATH = \
   lat2xyz_antichains.pdf       \
   m3m3_antichain_abcpqr.pdf
 
+GRP_PDS =                      \
+	ballinopen.pdf             \
+	mpf_ascaled.pdf            \
+	mpf_bounded.pdf            \
+	mpf_discrete.pdf           \
+	mpf_snowflake.pdf          \
+	mpf_truncated.pdf          \
+	mpf_x1x2.pdf               \
+	mpf_0121.pdf               \
+	mpf_11x1.pdf               \
+	mpf_x11x1.pdf              \
+	trirel_sigmap.pdf
+
+# atanmet.pdf
+
 GRP_PROB =                     \
   latestimation.pdf            \
   estimation_techniques.pdf    \
@@ -298,7 +335,6 @@ GRP_LATU = \
   lat7_l6l3.pdf                   \
   lat7_n7.pdf                     \
   lat7_l7.pdf                     \
-  \
   lat7_m3n5.pdf                   \
   lat7_m2inm2.pdf                 \
   lat7_m2inm2_alt.pdf             \
@@ -314,7 +350,6 @@ GRP_LATU = \
   lat7_l2ono6.pdf                 \
   lat7_l2onl4inm2.pdf             \
   lat7_l2onn6.pdf                 \
-  \
   lat8_l2e3.pdf                   \
   lat12_mo2x2.pdf
 
@@ -398,28 +433,28 @@ GRP_NEG = \
   lat8_l2e3_abc_ortho.pdf
 
 GRP_LATOC = \
-  lat6_o6_latoc_pq.pdf                          \
-  lat6_o6_xy.pdf                                \
-  lat6_m4_wxyz.pdf                              \
-  lat6_mo2_xy.pdf                               \
-  lat6_o6_center.pdf                            \
-  lat8_o8_xyp.pdf                               \
-  lat8_2e3m2_xyzoc.pdf                          \
-  lat8_l3l4l4l3_xypoc.pdf                       \
-  latoc2xyz_center.pdf                          \
-  lat10_n5n5oc_xyp.pdf                          \
-  lat10_m4m4oc_wxyz.pdf                         \
-  lat10_o8m2_xypqoc.pdf                         \
-  lat10_hsum_pxyz.pdf                           \
-  latocdil7_abxyzcd.pdf                         \
-  lat8_m6_xyzoc.pdf                             \
-  lat1_01.pdf                                   \
-  lat2_l2_01.pdf                                \
-  lat4_m2_latoc_p.pdf                           \
-  lat8_l2e3_latoc_pqr.pdf                       \
-  lat10_n5n5oc_xyzp_center.pdf                  \
-  lat10_o8m2_center_xypqoc.pdf                  \
-  lat16_l2e4_latoc_pqrs.pdf                     \
+  lat6_o6_latoc_pq.pdf         \
+  lat6_o6_xy.pdf               \
+  lat6_m4_wxyz.pdf             \
+  lat6_mo2_xy.pdf              \
+  lat6_o6_center.pdf           \
+  lat8_o8_xyp.pdf              \
+  lat8_2e3m2_xyzoc.pdf         \
+  lat8_l3l4l4l3_xypoc.pdf      \
+  latoc2xyz_center.pdf         \
+  lat10_n5n5oc_xyp.pdf         \
+  lat10_m4m4oc_wxyz.pdf        \
+  lat10_o8m2_xypqoc.pdf        \
+  lat10_hsum_pxyz.pdf          \
+  latocdil7_abxyzcd.pdf        \
+  lat8_m6_xyzoc.pdf            \
+  lat1_01.pdf                  \
+  lat2_l2_01.pdf               \
+  lat4_m2_latoc_p.pdf          \
+  lat8_l2e3_latoc_pqr.pdf      \
+  lat10_n5n5oc_xyzp_center.pdf \
+  lat10_o8m2_center_xypqoc.pdf \
+  lat16_l2e4_latoc_pqrs.pdf    \
   lat32_l2e5_latoc_pqrst.pdf
 
 GRP_OSET =                     \
@@ -553,26 +588,26 @@ GRP_SYSTEM =                 \
   dual_addnoise.pdf          \
   sysH_mnoise.pdf
 
-GRP_TOPOLOGY =               \
-  lat5_m3_nontop.pdf         \
-  lat5_m3_ss_xyz.pdf         \
-  lat5_n5_nontop.pdf         \
-  lat5_l2onm2_top.pdf        \
-  lat5_m2onl2_top.pdf        \
-  lat5_l5_top.pdf            \
-  latwavxyz.pdf              \
-  lattopxy.pdf               \
-  latlattopxyz.pdf           \
-  lat2xyzdotted.pdf          \
-  lattopxyz.pdf              \
-  butterfly_setA.pdf         \
-  butterfly_clsA.pdf         \
-  butterfly_intA.pdf         \
-  butterfly_bndA.pdf         \
-  butterfly_drvA.pdf         \
-  cont_yx.pdf                \
-  cont_yfy.pdf               \
-  cont_ydy.pdf
+GRP_TOPOLOGY =                 \
+	cont_ydy.pdf               \
+	cont_yfy.pdf               \
+	cont_yx.pdf                \
+	lat5_m3_nontop.pdf         \
+	lat5_m3_ss_xyz.pdf         \
+	lat5_n5_nontop.pdf         \
+	lat5_l2onm2_top.pdf        \
+	lat5_m2onl2_top.pdf        \
+	lat5_l5_top.pdf            \
+	latwavxyz.pdf              \
+	lattopxy.pdf               \
+	latlattopxyz.pdf           \
+	lat2xyzdotted.pdf          \
+	lattopxyz.pdf              \
+	butterfly_setA.pdf         \
+	butterfly_clsA.pdf         \
+	butterfly_intA.pdf         \
+	butterfly_bndA.pdf         \
+	butterfly_drvA.pdf
 
 GRP_VENN =                   \
   venn_emptyset.pdf          \
@@ -674,7 +709,7 @@ PRG_TYPESET = xelatex.exe
 #--------------------------------------
 # master build control $(FILE_CC)
 #--------------------------------------
-top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_DNA) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
+top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_PDS) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_DNA) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
 	@echo Done ... graphics pdfs are ready!
 
 #--------------------------------------
@@ -685,7 +720,7 @@ top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES)
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
 
-{$(PATHFRAME)}.tex.pdf:
+{$(PATHBALLS)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
@@ -706,6 +741,11 @@ top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES)
 	del shell_$&.pdf
 
 %.pdf : shell_%.tex
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHFRAME)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
@@ -746,6 +786,11 @@ top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES)
 	del shell_$&.pdf
 
 {$(PATHLATOC)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHMETRIC)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
