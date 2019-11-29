@@ -29,7 +29,9 @@ PATHLAT      = ../lat/
 PATHLATU     = ../latu/
 PATHLATOC    = ../latoc/
 PATHNEG      = ../neg/
-PATHOSET     = ../oset
+PATHOCS      = ../ocs/
+PATHOCSRV    = ../ocsrv/
+PATHOSET     = ../oset/
 PATHLOGIC    = ../
 PATHFUZZY    = ../fuzzy/
 PATHSETOPS   = ../setops/
@@ -79,6 +81,9 @@ FILE_GRP  =              \
   dirichlet5.pdf        \
   dirichlet10.pdf       \
   dirichlet20.pdf       \
+  fnct123ab.pdf         \
+  fnct123ab123.pdf      \
+  fnct123le123.pdf      \
   fstep.pdf             \
   opTrn.pdf             \
   opDil.pdf             \
@@ -143,25 +148,24 @@ GRP_DICE =                                     \
 	fairdieXO6.pdf                             \
 	fairdieXO6c.pdf                            \
 	fairdieXRYZ.pdf                            \
-	ocsrv_spinner_xy.pdf
-	ocs_dna.pdf
-	ocs_dnan.pdf
-	ocs_fdie.pdf
-	ocs_rdie.pdf
-	ocs_spinner.pdf
-	ocs_wdie.pdf
-	ocs_wrdie.pdf
-	ocs_wrdie_e75.pdf
-	seq_12000_2428.pdf
-	seq_hprect16.pdf
-	seq_lprect16.pdf
-	seq_shaar16.pdf
-	seq_shaar8.pdf
-	seq_whaar16.pdf
-	seq_whaar8.pdf
-	seq_whaar9.pdf
-	Zline.pdf
-
+	ocsrv_spinner_xy.pdf                       \
+	ocs_dna.pdf                                \
+	ocs_dnan.pdf                               \
+	ocs_fdie.pdf                               \
+	ocs_rdie.pdf                               \
+	ocs_spinner.pdf                            \
+	ocs_wdie.pdf                               \
+	ocs_wrdie.pdf                              \
+	ocs_wrdie_e75.pdf                          \
+	seq_12000_2428.pdf                         \
+	seq_hprect16.pdf                           \
+	seq_lprect16.pdf                           \
+	seq_shaar16.pdf                            \
+	seq_shaar8.pdf                             \
+	seq_whaar16.pdf                            \
+	seq_whaar8.pdf                             \
+	seq_whaar9.pdf                             \
+	Zline.pdf                                  \
 	fspin_5eed_16002_histo.pdf                 \
 	fdie_5eed_16000_auto.pdf                   \
 	fdie_5eed_16000_histo.pdf                  \
@@ -908,6 +912,16 @@ top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $
 	del shell_$&.pdf
 
 {$(PATHNEG)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHOCS)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHOCSRV)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
