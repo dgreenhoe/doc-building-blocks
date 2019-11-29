@@ -9,7 +9,6 @@
 #--------------------------------------
 # Paths
 #--------------------------------------
-
 PATHDATA     = ../data/
 PATHDSP      = ../dsp/
 PATHFRAME    = ../frames/
@@ -30,6 +29,8 @@ PATHOSET     = ../oset
 PATHLOGIC    = ../
 PATHFUZZY    = ../fuzzy/
 PATHSETOPS   = ../setops/
+PATHSTO      = ../sto/
+PATHSYMSEQ   = ../symseq/
 
 #--------------------------------------
 # Files
@@ -106,7 +107,7 @@ FILE_GRP  =              \
   vecres.pdf            \
   Fhw.pdf
 
-GRP_DATA = \
+GRP_DATA =                     \
   cagefree-ratios.pdf          \
   dji30_20171006-20181004.pdf  \
   egg-production.pdf           \
@@ -115,6 +116,47 @@ GRP_DATA = \
   sunspots.pdf                 \
   sunspots_1749-2004.pdf       \
   sunspots_welchPSD_4segs.pdf
+
+#  dna_51_seq.tex               \
+
+GRP_DNA =                      \
+  dna_5eed_16000_histo.pdf     \
+  dna_5eed_51_seq.pdf          \
+  dna_ebola.pdf                \
+  dna_ebola_51_seq.pdf         \
+  dna_ebola_auto.pdf           \
+  dna_ebola_histo.pdf          \
+  dna_mpbacterium_51_seq.pdf   \
+  dna_mpbacterium_histo.pdf    \
+  dna_papaya1446_51_seq.pdf    \
+  dna_papaya1446_histo.pdf     \
+  dna_sars.pdf                 \
+  dna_sars_51_seq.pdf          \
+  dna_sars_auto.pdf            \
+  dna_sars_histo.pdf           \
+  dna_51_seq.pdf               \
+  dna_5eed_16000_auto.pdf      \
+  dna_5eed_16000_histo.pdf     \
+  dna_5eed_16002_auto.pdf      \
+  dna_ebola.pdf                \
+  dna_ebola_51_seq.pdf         \
+  dna_ebola_auto.pdf           \
+  dna_ebola_histo.pdf          \
+  dna_mpbacterium_51_seq.pdf   \
+  dna_mpbacterium_auto.pdf     \
+  dna_mpbacterium_histo.pdf    \
+  dna_papaya1446_51_seq.pdf    \
+  dna_papaya1446_auto.pdf      \
+  dna_papaya1446_histo.pdf     \
+  dna_sars.pdf                 \
+  dna_sars_51_seq.pdf          \
+  dna_sars_auto.pdf            \
+  dna_sars_histo.pdf           \
+  dna.pdf                      \
+  dnatoc.pdf                   \
+  dnatol4.pdf                  \
+  dnaXO4c.pdf                  \
+  dna_Rmax.pdf
 
 GRP_DSP  =                     \
   sinc.pdf                     \
@@ -632,7 +674,7 @@ PRG_TYPESET = xelatex.exe
 #--------------------------------------
 # master build control $(FILE_CC)
 #--------------------------------------
-top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
+top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_DNA) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
 	@echo Done ... graphics pdfs are ready!
 
 #--------------------------------------
@@ -739,6 +781,16 @@ top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES)
 	del shell_$&.pdf
 
 {$(PATHOSET)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHSTO)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHSYMSEQ)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
