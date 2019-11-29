@@ -34,19 +34,19 @@ PATHSETOPS   = ../setops/
 #--------------------------------------
 # Files
 #--------------------------------------
-FILE_CC
-  ccby40djg.pdf         \
-  ccbyncnd40djg.pdf     \
+FILE_CC =                \
+  ccby40djg.pdf          \
+  ccbyncnd40djg.pdf      \
   ccby40.pdf
 
-FILE_GRP  =             \
-  baslat_cheby.pdf      \
-  baslat_cose.pdf       \
-  baslat_cosh.pdf       \
-  baslat_haar.pdf       \
-  baslat_h3.pdf         \
-  baslat_d1.pdf         \
-  baslat_d2.pdf         \
+FILE_GRP  =              \
+  baslat_cheby.pdf       \
+  baslat_cose.pdf        \
+  baslat_cosh.pdf        \
+  baslat_haar.pdf        \
+  baslat_h3.pdf          \
+  baslat_d1.pdf          \
+  baslat_d2.pdf          \
   baslat_d1_yellow.pdf   \
   baslat_d2_yellow.pdf   \
   baslat_h3_yellow.pdf   \
@@ -542,6 +542,8 @@ GRP_VENN =                   \
   venn_union.pdf             \
   venn_universal.pdf
 
+#  2p2roots.pdf          \
+
 FILE_WAV =              \
   bspline_pz.pdf        \
   D1_pz.pdf             \
@@ -628,9 +630,9 @@ PRG_TYPESET = xelatex.exe
 #PRG_XDV2PDF = xdvipdfmx.exe
 
 #--------------------------------------
-# master build control
+# master build control $(FILE_CC)
 #--------------------------------------
-top: $(FILE_GRP) $(GRP_BOOLEAN) $(FILE_CC) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
+top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DSP) $(GRP_FRAMES) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) $(GRP_OSET) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
 	@echo Done ... graphics pdfs are ready!
 
 #--------------------------------------
