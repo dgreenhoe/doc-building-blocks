@@ -9,6 +9,7 @@
 #--------------------------------------
 # Paths
 #--------------------------------------
+PATHARGMIN   = ../argmin/
 PATHBALLS    = ../balls/
 PATHDATA     = ../data/
 PATHDSP      = ../dsp/
@@ -16,6 +17,7 @@ PATHFRAME    = ../frames/
 PATHMATH     = ../
 PATHBSPLINES = ../bsplines/
 PATHMETRIC   = ../metric/
+PATHOMS      = ../oms/
 PATHPROB     = ../prob/
 PATHVENN     = ../venn/
 PATHSETSTR   = ../setstr/
@@ -42,7 +44,24 @@ FILE_CC =                \
   ccbyncnd40djg.pdf      \
   ccby40.pdf
 
+#  12000_2428.pdf         \
+
+
 FILE_GRP  =              \
+  argmin_xx-2x2.pdf      \
+  bijective_x4y4.pdf     \
+  dmetricdnatoc.pdf      \
+  earc_def.pdf           \
+  function_x4y4.pdf      \
+  gspRZ.pdf              \
+  hanninghp50.pdf        \
+  hanninglp16.pdf        \
+  hanninglp50.pdf        \
+  injective_x4y4.pdf     \
+  2xyfnct1.pdf           \
+  2xyfnct2.pdf           \
+  2xynotfnct1.pdf        \
+  2xynotfnct2.pdf        \
   baslat_cheby.pdf       \
   baslat_cose.pdf        \
   baslat_cosh.pdf        \
@@ -96,6 +115,7 @@ FILE_GRP  =              \
   sinsin02.pdf          \
   sinsin02_pun.pdf      \
   sinsin02hn.pdf        \
+  spaces.pdf            \
   tentfx.pdf            \
   tent_pun.pdf          \
   tent012.pdf           \
@@ -120,6 +140,29 @@ GRP_DATA =                     \
   sunspots_welchPSD_4segs.pdf
 
 GRP_DICE =                                     \
+	fairdieXO6.pdf                             \
+	fairdieXO6c.pdf                            \
+	fairdieXRYZ.pdf                            \
+	ocsrv_spinner_xy.pdf
+	ocs_dna.pdf
+	ocs_dnan.pdf
+	ocs_fdie.pdf
+	ocs_rdie.pdf
+	ocs_spinner.pdf
+	ocs_wdie.pdf
+	ocs_wrdie.pdf
+	ocs_wrdie_e75.pdf
+	seq_12000_2428.pdf
+	seq_hprect16.pdf
+	seq_lprect16.pdf
+	seq_shaar16.pdf
+	seq_shaar8.pdf
+	seq_whaar16.pdf
+	seq_whaar8.pdf
+	seq_whaar9.pdf
+	Zline.pdf
+
+	fspin_5eed_16002_histo.pdf                 \
 	fdie_5eed_16000_auto.pdf                   \
 	fdie_5eed_16000_histo.pdf                  \
 	fdie_5eed_16002_auto.pdf                   \
@@ -150,11 +193,55 @@ GRP_DICE =                                     \
 	rdie_5eed_16ones_r3euclid.pdf              \
 	rdie_5eed_16ones_r3larc.pdf                \
 	rdie_r3met.pdf                             \
-	rdie_wxyz.pdf
+	rdie_wxyz.pdf                                      \
+	wdie_5eed_160000_down50_histo.pdf                  \
+	wdie_5eed_160000_hanning_down50_R1_histo.pdf       \
+	wdie_5eed_160000_hanning_down50_R3larc_histo.pdf   \
+	wdie_5eed_160000_recthp_down50_R3larc_histo.pdf    \
+	wdie_5eed_16000_auto.pdf                           \
+	wdie_5eed_16000_histo.pdf                          \
+	wdie_5eed_16002_auto.pdf                           \
+	wdie_5eed_16002_histo.pdf                          \
+	wdie_5eed_5555_75_5_16hp.pdf                       \
+	wdie_5eed_5555_75_5_16hp_r3larc.pdf                \
+	wdie_5eed_5555_75_5_16hp_r3larc_16down.pdf         \
+	wdie_5eed_hanninghp_R1.pdf                         \
+	wdie_5eed_hanninghp_R1_histo.pdf                   \
+	wdie_5eed_hanninghp_R3_euclid.pdf                  \
+	wdie_5eed_hanninghp_R3_euclid_histo.pdf            \
+	wdie_5eed_hanninghp_R3_larc.pdf                    \
+	wdie_5eed_hanninghp_R3_larc_histo.pdf              \
+	wdie_5eed_recthp_R1.pdf                            \
+	wdie_5eed_recthp_R1_histo.pdf                      \
+	wdie_5eed_recthp_R3_euclid.pdf                     \
+	wdie_5eed_recthp_R3_euclid_histo.pdf               \
+	wdie_5eed_recthp_R3_larc.pdf                       \
+	wdie_5eed_recthp_R3_larc_histo.pdf                 \
+	spinner_5eed.pdf                                   \
+	spinner_5eed_16ones.pdf                            \
+	spinner_r2.pdf                                     \
+	spin_5eed.pdf                                      \
+	spin_5eed_16000_auto.pdf                           \
+	spin_5eed_16000_histo.pdf                          \
+	spin_5eed_16002_auto.pdf                           \
+	spin_5eed_16002_histo.pdf                          \
+	spin_5eed_16ones_histo_larc.pdf                    \
+	spin_5eed_16ones_histo_R1.pdf                      \
+	spin_5eed_16ones_r2larc.pdf                        \
+	surjective_x4y4.pdf                                \
+	wring5short.pdf                                    \
+	wring5shortd.pdf                                   \
+	wspin_5eed_16000_auto.pdf                          \
+	wspin_5eed_16000_histo.pdf                         \
+	wspin_5eed_16002_auto.pdf                          \
+	wspin_5eed_16002_histo.pdf                         \
+	wspin_5eed_5555_75_5.pdf
 
 # rdie_larcball.pdf                          \
 # dna_51_seq.tex               \
 # dna_5eed_16002_auto.pdf      \
+# spinner_5eed_16000_auto.pdf                        \
+# spinner_5eed_16002_auto.pdf                        \
 
 GRP_DNA =                      \
   dna_5eed_16000_histo.pdf     \
@@ -249,7 +336,19 @@ GRP_MATH = \
   m3m3_antichain_abcpqr.pdf
 
 GRP_PDS =                      \
+	ae_ball(00_00_05).pdf      \
 	ballinopen.pdf             \
+	larc_ball(00_00_05).pdf    \
+	larc_def.pdf               \
+	larc_earc_compare.pdf      \
+	larc_euclid_compare.pdf    \
+	larc_hmg.pdf               \
+	larc_metex.pdf             \
+	larc_pq.pdf                \
+	larc_R2_balls.pdf          \
+	larc_ti.pdf                \
+	larc_trieq.pdf             \
+	mca_R2_balls.pdf           \
 	mpf_ascaled.pdf            \
 	mpf_bounded.pdf            \
 	mpf_discrete.pdf           \
@@ -351,6 +450,9 @@ GRP_LATU = \
   lat7_l2onl4inm2.pdf             \
   lat7_l2onn6.pdf                 \
   lat8_l2e3.pdf                   \
+  lat8_l2e3_psetx.pdf             \
+  lat8_l2e3_setind.pdf            \
+  lat8_l2e3_fuzzylat_msf.pdf      \
   lat12_mo2x2.pdf
 
 GRP_LAT = \
@@ -720,6 +822,11 @@ top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
 
+{$(PATHARGMIN)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
 {$(PATHBALLS)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
@@ -746,6 +853,11 @@ top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $
 	del shell_$&.pdf
 
 {$(PATHFRAME)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHOMS)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf
