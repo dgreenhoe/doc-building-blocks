@@ -341,6 +341,18 @@ GRP_FUZZY =                             \
 	lat6_o6_fuzzylat_msf.pdf            \
 	lat8_l2e3_fuzzylat_msf.pdf          \
 	lat6_o6_10xy-x.pdf
+ 
+GRP_LARC =                              \
+	larc_ball(0_0_-1).pdf               \
+	larc_ball(0_0_-10).pdf              \
+	larc_ball(0_0_-2).pdf               \
+	larc_ball(0_0_-3).pdf               \
+	larc_ball(0_0_-5).pdf               \
+	larc_ball(0_0_0).pdf                \
+	larc_ball(0_0_1).pdf                \
+	larc_ball(1_1_1).pdf                \
+	limrp0.pdf                          \
+	limrp0Rpq.pdf
 
 GRP_MATH = \
   r3subspaces_xyzxcyczc.pdf    \
@@ -844,7 +856,7 @@ PRG_TYPESET = xelatex.exe
 # master build control $(FILE_CC)
 #--------------------------------------
 top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $(GRP_FRAMES) \
-	$(GRP_FUZZY) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) \
+	$(GRP_FUZZY) $(GRP_LARC) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) \
 	$(GRP_NIL) $(GRP_OSET) $(GRP_PDS) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) \
 	$(GRP_DNA) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
 	@echo Done ... graphics pdfs are ready!
