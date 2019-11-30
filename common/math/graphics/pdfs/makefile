@@ -48,12 +48,15 @@ FILE_CC =                \
 
 #  12000_2428.pdf         \
 
-
 FILE_GRP  =              \
+  latnegations.pdf       \
   argmin_xx-2x2.pdf      \
   bijective_x4y4.pdf     \
   dmetricdnatoc.pdf      \
   earc_def.pdf           \
+  ellipse12.pdf          \
+  ellipse21.pdf          \
+  ex_convex.pdf          \
   function_x4y4.pdf      \
   gspRZ.pdf              \
   hanninghp50.pdf        \
@@ -460,6 +463,7 @@ GRP_LATU = \
   lat12_mo2x2.pdf
 
 GRP_LAT = \
+  123le12.pdf                     \
   lat4_l4_1234.pdf                \
   lat4_m2_1xy0.pdf                \
   lat4_m2_topxy.pdf               \
@@ -482,7 +486,6 @@ GRP_LAT = \
   lat6_plat_V12345.pdf            \
   lat6_o6_pqab01.pdf              \
   lat6_primo_pqra01.pdf           \
-  lat6_primo_ss_xyz.pdf           \
   lat7_veeino6_xyzab01.pdf        \
   lat7_wedgeino6_xyabc01.pdf      \
   lat8_2e3_setxyz.pdf             \
@@ -613,16 +616,21 @@ GRP_SETOPS =                 \
   setop_1110.pdf             \
   setop_1111.pdf
 
-#  standardsetops.pdf       
+#  standardsetops.pdf
 
 GRP_SETSTR =                 \
-  latlatalgwxyz.pdf          \
-  latlatringxyz.pdf          \
-  latlatpartitionsxyz.pdf    \
-  latlatringxy.pdf           \
-  latlatalgxyz.pdf           \
-  latlatpartwxyz.pdf         \
-  latlattopxyz_covers.pdf
+	lat6_primo_ss_xyz.pdf    \
+	lat5_m3_ss_xyz.pdf       \
+	latwavxyz.pdf            \
+	latlattopxyz.pdf         \
+	lattopxy.pdf             \
+	latlatalgwxyz.pdf        \
+	latlatringxyz.pdf        \
+	latlatpartitionsxyz.pdf  \
+	latlatringxy.pdf         \
+	latlatalgxyz.pdf         \
+	latlatpartwxyz.pdf       \
+	latlattopxyz_covers.pdf
 
 GRP_SPLINE =                 \
   fstep.pdf                  \
@@ -699,14 +707,10 @@ GRP_TOPOLOGY =                 \
 	cont_yfy.pdf               \
 	cont_yx.pdf                \
 	lat5_m3_nontop.pdf         \
-	lat5_m3_ss_xyz.pdf         \
 	lat5_n5_nontop.pdf         \
 	lat5_l2onm2_top.pdf        \
 	lat5_m2onl2_top.pdf        \
 	lat5_l5_top.pdf            \
-	latwavxyz.pdf              \
-	lattopxy.pdf               \
-	latlattopxyz.pdf           \
 	lat2xyzdotted.pdf          \
 	lattopxyz.pdf              \
 	butterfly_setA.pdf         \
@@ -810,7 +814,6 @@ FILE_STY  = ../../common/sty/wavelets.sty \
 # Programs
 #--------------------------------------
 PRG_TYPESET = xelatex.exe
-#PRG_XDV2PDF = xdvipdfmx.exe
 
 #--------------------------------------
 # master build control $(FILE_CC)
