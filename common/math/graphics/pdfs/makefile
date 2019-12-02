@@ -67,19 +67,6 @@ FILE_GRP  =              \
   2xyfnct2.pdf           \
   2xynotfnct1.pdf        \
   2xynotfnct2.pdf        \
-  baslat_cheby.pdf       \
-  baslat_cose.pdf        \
-  baslat_cosh.pdf        \
-  baslat_haar.pdf        \
-  baslat_h3.pdf          \
-  baslat_d1.pdf          \
-  baslat_d2.pdf          \
-  baslat_d1_yellow.pdf   \
-  baslat_d2_yellow.pdf   \
-  baslat_h3_yellow.pdf   \
-  baslat_cheby_yellow.pdf\
-  baslat_cose_yellow.pdf \
-  baslat_cosh_yellow.pdf \
   dirichlet1.pdf        \
   dirichlet5.pdf        \
   dirichlet10.pdf       \
@@ -88,17 +75,8 @@ FILE_GRP  =              \
   fnct123ab123.pdf      \
   fnct123le123.pdf      \
   fstep.pdf             \
-  opTrn.pdf             \
-  opDil.pdf             \
-  latmn.pdf             \
-  latmra.pdf            \
-  latp_1235711.pdf      \
-  latp_VW.pdf           \
-  latp_hg.pdf           \
-  latp_pp.pdf           \
   pulse.pdf             \
   pulse2.pdf            \
-  sin_pi_t.pdf          \
   hn1.pdf               \
   lat6_plat_xyzv10.pdf  \
   cencubs.pdf           \
@@ -136,6 +114,34 @@ FILE_GRP  =              \
   unitcircle.pdf        \
   vecres.pdf            \
   Fhw.pdf
+
+GRP_BASIS = \
+	baslat_cosh.pdf                        \
+	baslat_cose.pdf                        \
+	baslat_cheby.pdf                       \
+	baslat_d1.pdf                          \
+	baslat_d2.pdf                          \
+	baslat_h3.pdf                          \
+	baslat_haar.pdf                        \
+	baslat_h3.pdf                          \
+	baslat_d1_yellow.pdf                   \
+	baslat_d2_yellow.pdf                   \
+	baslat_h3_yellow.pdf                   \
+	baslat_cheby_yellow.pdf                \
+	baslat_cose_yellow.pdf                 \
+	baslat_cosh_yellow.pdf                 \
+	haar0_sin_t.pdf                        \
+	haar0_sin_a.pdf                        \
+	haar1_sin_t.pdf                        \
+	haar1_sin_a.pdf                        \
+	haar2_sin_t.pdf                        \
+	haar2_sin_a.pdf                        \
+	latmn.pdf                              \
+	latmra.pdf                             \
+	latwav.pdf                             \
+	opTrn.pdf                              \
+	opDil.pdf
+
 
 GRP_DATA =                     \
   cagefree-ratios.pdf          \
@@ -280,12 +286,6 @@ GRP_DSP  =                     \
   sinsin02hn.pdf               \
   sinsin02_pun.pdf             \
   sin_pi_t.pdf                 \
-  haar0_sin_a.pdf              \
-  haar0_sin_t.pdf              \
-  haar1_sin_a.pdf              \
-  haar1_sin_t.pdf              \
-  haar2_sin_a.pdf              \
-  haar2_sin_t.pdf              \
   dfI_order1_abc.pdf           \
   dfI_order1_lpf2pi3.pdf       \
   dfI_order2_156.pdf           \
@@ -341,7 +341,7 @@ GRP_FUZZY =                             \
 	lat6_o6_fuzzylat_msf.pdf            \
 	lat8_l2e3_fuzzylat_msf.pdf          \
 	lat6_o6_10xy-x.pdf
- 
+
 GRP_LARC =                              \
 	larc_ball(0_0_-1).pdf               \
 	larc_ball(0_0_-10).pdf              \
@@ -410,6 +410,46 @@ GRP_PROB =                     \
   pdf_fairdie_blue.pdf         \
   pdf_fairdie_red.pdf
 
+GRP_LATP =                                 \
+	latp.pdf                               \
+	latp_1235711.pdf                       \
+	latp_VW.pdf                            \
+	latp_hg.pdf                            \
+	latp_pp.pdf                            \
+	latp_bortho_L5.pdf                     \
+	latp_cosets5Z.pdf                      \
+	latp_fuzzy.pdf                         \
+	latp_gsp_AorT.pdf                      \
+	latp_gsp_atcgx.pdf                     \
+	latp_prob.pdf                          \
+	lat4_m2_latoc_r.pdf                    \
+	lat4_m2_qb.pdf                         \
+	lat6_p3.pdf                            \
+	lat6_o6_pq.pdf                         \
+	lat6_o6_prab.pdf                       \
+	lat6_p3_dual.pdf                       \
+	lat6_p3_xyzv01.pdf                     \
+	lat7_m2m2l.pdf                         \
+	lat7_m2m2l_dual.pdf                    \
+	lat7_m2inm2_dual.pdf                   \
+	lat8_l2e3_latoc_paq.pdf                \
+	lat8_l2e3_latoc_pbr.pdf                \
+	lat8_l2e3_latoc_pcs.pdf                \
+	lat8_l2e3_latoc_pqs.pdf                \
+	lat8_l2e3_latoc_prs.pdf                \
+	lat8_l2e3_latoc_qbs.pdf                \
+	lat8_l2e3_latoc_qcr.pdf                \
+	lat8_l2e3_latoc_qrs.pdf                \
+	lat8_l2e3_latoc_ras.pdf                \
+	lat8_l2e3_pqrabc.pdf                   \
+	lat16_l2e4_latoc_pqrs_fec.pdf          \
+	lat16_l2e4_latoc_pqsi.pdf              \
+	lat16_l2e4_latoc_pqtf.pdf              \
+	lat16_l2e4_latoc_qrst.pdf              
+
+#	lat6_o6_1=-0_a=-d_b=-c_c=-b_d=-a_0=-1_prob.pdf \
+#	lat7_m2inm2l.pdf                       
+
 
 GRP_LATU = \
   lat1.pdf                        \
@@ -424,8 +464,6 @@ GRP_LATU = \
   lat5_m2onl2.pdf                 \
   lat6_m4.pdf                     \
   lat6_l4inm2.pdf                 \
-  lat6_p3.pdf                     \
-  lat6_p3_dual.pdf                \
   lat6_o6.pdf                     \
   lat6_o6slash.pdf                \
   lat6_n6.pdf                     \
@@ -568,12 +606,17 @@ GRP_NEG =                               \
 	lat8_l2e3_abc_ortho.pdf
 
 GRP_LATOC =                             \
+	lat1_01.pdf                         \
+	lat2_l2_01.pdf                      \
+	lat4_m2_latoc_p.pdf                 \
+	lat4_m2_latoc_q.pdf                 \
 	lat6_o6_latoc_pq.pdf                \
 	lat6_o6_xy.pdf                      \
 	lat6_m4_wxyz.pdf                    \
 	lat6_mo2_xy.pdf                     \
 	lat6_o6_center.pdf                  \
 	lat8_o8_xyp.pdf                     \
+	lat8_2e3m2_bwaoc.pdf                \
 	lat8_2e3m2_xyzoc.pdf                \
 	lat8_l3l4l4l3_xypoc.pdf             \
 	latoc2xyz_center.pdf                \
@@ -583,9 +626,6 @@ GRP_LATOC =                             \
 	lat10_hsum_pxyz.pdf                 \
 	latocdil7_abxyzcd.pdf               \
 	lat8_m6_xyzoc.pdf                   \
-	lat1_01.pdf                         \
-	lat2_l2_01.pdf                      \
-	lat4_m2_latoc_p.pdf                 \
 	lat8_l2e3_latoc_pqr.pdf             \
 	lat10_n5n5oc_xyzp_center.pdf        \
 	lat10_o8m2_center_xypqoc.pdf        \
@@ -821,7 +861,6 @@ FILE_WAV =                              \
 	d16_phi_h.pdf                       \
 	d16_psi_g.pdf                       \
 	Dp_pz.pdf                           \
-	latwav.pdf                          \
 	mexhatwavelet.pdf                   \
 	morletwavelet.pdf                   \
 	s4_psi_g.pdf                        \
@@ -855,8 +894,8 @@ PRG_TYPESET = xelatex.exe
 #--------------------------------------
 # master build control $(FILE_CC)
 #--------------------------------------
-top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $(GRP_FRAMES) \
-	$(GRP_FUZZY) $(GRP_LARC) $(GRP_LAT) $(GRP_LATU) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) \
+top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_BASIS) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $(GRP_FRAMES) \
+	$(GRP_FUZZY) $(GRP_LARC) $(GRP_LAT) $(GRP_LATU) $(GRP_LATP) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) \
 	$(GRP_NIL) $(GRP_OSET) $(GRP_PDS) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) \
 	$(GRP_DNA) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
 	@echo Done ... graphics pdfs are ready!

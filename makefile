@@ -23,7 +23,7 @@ all:
     make
   cd ..\abcdc
     make
-  cd ..\probability
+  cd ..\xpsd
     make
   cd ..\abcssp
     make
