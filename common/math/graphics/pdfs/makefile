@@ -93,6 +93,7 @@ FILE_GRP  =              \
   pz_realcoefs.pdf      \
   pz_stable.pdf         \
   pz_unstable.pdf       \
+  r3_projection.pdf     \
   rcos.pdf              \
   rcos_pun.pdf          \
   rsin.pdf              \
@@ -429,6 +430,8 @@ GRP_LATP =                                 \
 	lat6_o6_prab.pdf                       \
 	lat6_p3_dual.pdf                       \
 	lat6_p3_xyzv01.pdf                     \
+	lat7_l4m3.pdf                          \
+	lat7_l3ino6l.pdf                       \
 	lat7_m2m2l.pdf                         \
 	lat7_m2m2l_dual.pdf                    \
 	lat7_m2inm2_dual.pdf                   \
@@ -452,126 +455,126 @@ GRP_LATP =                                 \
 
 
 GRP_LATU = \
-  lat1.pdf                        \
-  lat2_l2.pdf                     \
-  lat3_l3.pdf                     \
-  lat4_l4.pdf                     \
-  lat4_m2.pdf                     \
-  lat5_l5.pdf                     \
-  lat5_m3.pdf                     \
-  lat5_n5.pdf                     \
-  lat5_l2onm2.pdf                 \
-  lat5_m2onl2.pdf                 \
-  lat6_m4.pdf                     \
-  lat6_l4inm2.pdf                 \
-  lat6_o6.pdf                     \
-  lat6_o6slash.pdf                \
-  lat6_n6.pdf                     \
-  lat6_o6bslash.pdf               \
-  lat6_l3onm2.pdf                 \
-  lat6_m2onl3.pdf                 \
-  lat6_l2onm2onl2.pdf             \
-  lat6_l2onn5.pdf                 \
-  lat6_n5onl2.pdf                 \
-  lat6_l2onm3.pdf                 \
-  lat6_m3onl2.pdf                 \
-  lat6_l6.pdf                     \
-  lat6_m2m2.pdf                   \
-  lat7_m2onm2.pdf                 \
-  lat7_l2ono6slash.pdf            \
-  lat7_o6slashonl2.pdf            \
-  lat7_l4onm2.pdf                 \
-  lat7_l3onm2onl2.pdf             \
-  lat7_l2onm2onl3.pdf             \
-  lat7_m2onl4.pdf                 \
-  lat7_l7.pdf                     \
-  lat7_m5.pdf                     \
-  lat7_m3m2.pdf                   \
-  lat7_m2m3.pdf                   \
-  lat7_l2onm4.pdf                 \
-  lat7_m4onl2.pdf                 \
-  lat7_l3onm3.pdf                 \
-  lat7_m3onl3.pdf                 \
-  lat7_l2onm3onl2.pdf             \
-  lat7_o7slash.pdf                \
-  lat7_m2inn5.pdf                 \
-  lat7_l3ino6.pdf                 \
-  lat7_l3ino6slash.pdf            \
-  lat7_o7.pdf                     \
-  lat7_l4l5l4.pdf                 \
-  lat7_l3l5l5.pdf                 \
-  lat7_l5inm2.pdf                 \
-  lat7_l2onn5onl2.pdf             \
-  lat7_l2onm3onl2.pdf             \
-  lat7_l6l3.pdf                   \
-  lat7_n7.pdf                     \
-  lat7_l7.pdf                     \
-  lat7_m3n5.pdf                   \
-  lat7_m2inm2.pdf                 \
-  lat7_m2inm2_alt.pdf             \
-  lat7_m2m2m2.pdf                 \
-  lat7_m3m2.pdf                   \
-  lat7_m2o6.pdf                   \
-  lat7_n5m2.pdf                   \
-  lat7_n6m2.pdf                   \
-  lat7_n6n5.pdf                   \
-  lat7_l2onp3.pdf                 \
-  lat7_l2onp3dual.pdf             \
-  lat7_l3onn5.pdf                 \
-  lat7_l2ono6.pdf                 \
-  lat7_l2onl4inm2.pdf             \
-  lat7_l2onn6.pdf                 \
-  lat8_l2e3.pdf                   \
-  lat8_l2e3_psetx.pdf             \
-  lat8_l2e3_fuzzylat_msf.pdf      \
-  lat12_mo2x2.pdf
+	lat1.pdf                               \
+	lat2_l2.pdf                            \
+	lat3_l3.pdf                            \
+	lat4_l4.pdf                            \
+	lat4_m2.pdf                            \
+	lat5_l5.pdf                            \
+	lat5_m3.pdf                            \
+	lat5_n5.pdf                            \
+	lat5_l2onm2.pdf                        \
+	lat5_m2onl2.pdf                        \
+	lat6_m4.pdf                            \
+	lat6_l4inm2.pdf                        \
+	lat6_o6.pdf                            \
+	lat6_o6slash.pdf                       \
+	lat6_n6.pdf                            \
+	lat6_o6bslash.pdf                      \
+	lat6_l3onm2.pdf                        \
+	lat6_m2onl3.pdf                        \
+	lat6_l2onm2onl2.pdf                    \
+	lat6_l2onn5.pdf                        \
+	lat6_n5onl2.pdf                        \
+	lat6_l2onm3.pdf                        \
+	lat6_m3onl2.pdf                        \
+	lat6_l6.pdf                            \
+	lat6_m2m2.pdf                          \
+	lat7_m2onm2.pdf                        \
+	lat7_l2ono6slash.pdf                   \
+	lat7_o6slashonl2.pdf                   \
+	lat7_l4onm2.pdf                        \
+	lat7_l3onm2onl2.pdf                    \
+	lat7_l2onm2onl3.pdf                    \
+	lat7_m2onl4.pdf                        \
+	lat7_l7.pdf                            \
+	lat7_m5.pdf                            \
+	lat7_m3m2.pdf                          \
+	lat7_m2m3.pdf                          \
+	lat7_l2onm4.pdf                        \
+	lat7_m4onl2.pdf                        \
+	lat7_l3onm3.pdf                        \
+	lat7_m3onl3.pdf                        \
+	lat7_l2onm3onl2.pdf                    \
+	lat7_o7slash.pdf                       \
+	lat7_m2inn5.pdf                        \
+	lat7_l3ino6.pdf                        \
+	lat7_l3ino6slash.pdf                   \
+	lat7_o7.pdf                            \
+	lat7_l4l5l4.pdf                        \
+	lat7_l3l5l5.pdf                        \
+	lat7_l5inm2.pdf                        \
+	lat7_l2onn5onl2.pdf                    \
+	lat7_l2onm3onl2.pdf                    \
+	lat7_l6l3.pdf                          \
+	lat7_n7.pdf                            \
+	lat7_l7.pdf                            \
+	lat7_m3n5.pdf                          \
+	lat7_m2inm2.pdf                        \
+	lat7_m2inm2_alt.pdf                    \
+	lat7_m2m2m2.pdf                        \
+	lat7_m3m2.pdf                          \
+	lat7_m2o6.pdf                          \
+	lat7_n5m2.pdf                          \
+	lat7_n6m2.pdf                          \
+	lat7_n6n5.pdf                          \
+	lat7_l2onp3.pdf                        \
+	lat7_l2onp3dual.pdf                    \
+	lat7_l3onn5.pdf                        \
+	lat7_l2ono6.pdf                        \
+	lat7_l2onl4inm2.pdf                    \
+	lat7_l2onn6.pdf                        \
+	lat8_l2e3.pdf                          \
+	lat8_l2e3_psetx.pdf                    \
+	lat8_l2e3_fuzzylat_msf.pdf             \
+	lat12_mo2x2.pdf
 
-GRP_LAT =                         \
-	123le12.pdf                   \
-	lat4_l4_1234.pdf              \
-	lat4_m2_1xy0.pdf              \
-	lat4_m2_topxy.pdf             \
-	lat5_n5_0abp1.pdf             \
-	lat5_n5_xyz.pdf               \
-	lat5_n5_abz.pdf               \
-	lat5_pentbslash_1xyz0.pdf     \
-	lat5_l2onm2_1xyz0.pdf         \
-	lat5_m3_pqr.pdf               \
-	lat5_m3_xyz.pdf               \
-	lat6_o6slash_123.pdf          \
-	lat6_l4inm2_xyab01.pdf        \
-	lat6_primo_xyza01.pdf         \
-	lat6_primo_dual_xyza01.pdf    \
-	lat6_o6_10xy-x.pdf            \
-	lat6_o6_dslash_1abxy0.pdf     \
-	lat6_o6bslash_xyab01.pdf      \
-	lat6_o6_xyab01.pdf            \
-	lat6_plat_P12345.pdf          \
-	lat6_plat_V12345.pdf          \
-	lat6_o6_pqab01.pdf            \
-	lat6_primo_pqra01.pdf         \
-	lat7_veeino6_xyzab01.pdf      \
-	lat7_wedgeino6_xyabc01.pdf    \
-	lat8_2e3_setxyz.pdf           \
-	lat8_2e3_setxyzd.pdf          \
-	lat8_2e3_set235.pdf           \
-	lat8_l2e3_abc_h.pdf           \
-	lat6_o6_acpr_h.pdf
-
-GRP_BOOLEAN =                     \
-	lat2_l2_setx.pdf              \
-	lat4_l2e2_setxy.pdf           \
-	lat4_m2_setxy.pdf             \
-	lat8_2e3_setxyz.pdf
-
-GRP_LOGIC = \
-  logic_BN4_tbnf.pdf              \
-  logic_L2_tf.pdf                 \
-  logic_L3_tnf.pdf                \
-  logic_L3_tnf_fft.pdf            \
-  logic_L5_tpnmf.pdf              \
-  logic_M2_tmnf.pdf               \
-  logic_O6slash_tpqmnf.pdf        \
+GRP_LAT =                               \
+	123le12.pdf                         \
+	lat4_l4_1234.pdf                    \
+	lat4_m2_1xy0.pdf                    \
+	lat4_m2_topxy.pdf                   \
+	lat5_n5_0abp1.pdf                   \
+	lat5_n5_xyz.pdf                     \
+	lat5_n5_abz.pdf                     \
+	lat5_pentbslash_1xyz0.pdf           \
+	lat5_l2onm2_1xyz0.pdf               \
+	lat5_m3_pqr.pdf                     \
+	lat5_m3_xyz.pdf                     \
+	lat6_o6slash_123.pdf                \
+	lat6_l4inm2_xyab01.pdf              \
+	lat6_primo_xyza01.pdf               \
+	lat6_primo_dual_xyza01.pdf          \
+	lat6_o6_10xy-x.pdf                  \
+	lat6_o6_dslash_1abxy0.pdf           \
+	lat6_o6bslash_xyab01.pdf            \
+	lat6_o6_xyab01.pdf                  \
+	lat6_plat_P12345.pdf                \
+	lat6_plat_V12345.pdf                \
+	lat6_o6_pqab01.pdf                  \
+	lat6_primo_pqra01.pdf               \
+	lat7_veeino6_xyzab01.pdf            \
+	lat7_wedgeino6_xyabc01.pdf          \
+	lat8_2e3_setxyz.pdf                 \
+	lat8_2e3_setxyzd.pdf                \
+	lat8_2e3_set235.pdf                 \
+	lat8_l2e3_abc_h.pdf                 \
+	lat6_o6_acpr_h.pdf                  
+                                        
+GRP_BOOLEAN =                           \
+	lat2_l2_setx.pdf                    \
+	lat4_l2e2_setxy.pdf                 \
+	lat4_m2_setxy.pdf                   \
+	lat8_2e3_setxyz.pdf                 
+                                        
+GRP_LOGIC = \                           
+  logic_BN4_tbnf.pdf                    \
+  logic_L2_tf.pdf                       \
+  logic_L3_tnf.pdf                      \
+  logic_L3_tnf_fft.pdf                  \
+  logic_L5_tpnmf.pdf                    \
+  logic_M2_tmnf.pdf                     \
+  logic_O6slash_tpqmnf.pdf              \
   lat6_o6_negor.pdf
 
 GRP_NEG =                               \
@@ -1055,4 +1058,6 @@ clean:
   del *.aux
   del *.log
   del *.out
+
+#\hfill\tbox{r3_projection.pdf}
 
