@@ -158,15 +158,7 @@ GRP_DICE =                                     \
 	fairdieXO6.pdf                             \
 	fairdieXO6c.pdf                            \
 	fairdieXRYZ.pdf                            \
-	ocsrv_spinner_xy.pdf                       \
-	ocs_dna.pdf                                \
-	ocs_dnan.pdf                               \
-	ocs_fdie.pdf                               \
-	ocs_rdie.pdf                               \
-	ocs_spinner.pdf                            \
-	ocs_wdie.pdf                               \
-	ocs_wrdie.pdf                              \
-	ocs_wrdie_e75.pdf                          \
+	m2tol4phi.pdf                              \
 	seq_12000_2428.pdf                         \
 	seq_hprect16.pdf                           \
 	seq_lprect16.pdf                           \
@@ -243,8 +235,6 @@ GRP_DICE =                                     \
 	spin_5eed_16ones_histo_R1.pdf                      \
 	spin_5eed_16ones_r2larc.pdf                        \
 	surjective_x4y4.pdf                                \
-	wring5short.pdf                                    \
-	wring5shortd.pdf                                   \
 	wspin_5eed_16000_auto.pdf                          \
 	wspin_5eed_16000_histo.pdf                         \
 	wspin_5eed_16002_auto.pdf                          \
@@ -369,6 +359,55 @@ GRP_MATH = \
   triangleabcft.pdf            \
   lat2xyz_antichains.pdf       \
   m3m3_antichain_abcpqr.pdf
+
+OCS = \
+	latlatringsxyz.pdf                     \
+	wring5.pdf                             \
+	dartstarget.pdf                        \
+	ocsdarts.pdf                           \
+	pspinner.pdf                           \
+	pspinner_xy.pdf                        \
+	spinner6tol6.pdf                       \
+	spinnerXO6c.pdf                        \
+	spinnerXO6Ycircle.pdf                  \
+	spinner_x2x.pdf                        \
+	wspinner.pdf                           \
+	wspinnermax.pdf                        \
+	wspinner_Rmax.pdf                      \
+	ocsarchery.pdf                         \
+	ocsdarts.pdf                           \
+	ocsrv_spinner_xy.pdf                   \
+	ocs_dna.pdf                            \
+	ocs_dnan.pdf                           \
+	ocs_fdie.pdf                           \
+	ocs_rdie.pdf                           \
+	ocs_spinner.pdf                        \
+	ocs_spinner_121141.pdf                 \
+	ocs_wagon.pdf                          \
+	ocs_wagon_121141.pdf                   \
+	ocs_wdie.pdf                           \
+	ocs_wdie_121141.pdf                    \
+	ocs_wrdie.pdf                          \
+	ocs_wrdie_e75.pdf                      \
+	pEocsE_max.pdf
+
+#	ocsrv_xy.pdf                           \
+
+OMS = \
+	oms_dna.pdf                            \
+	oms_fdie.pdf                           \
+	oms_l2e3_235.pdf                       \
+	oms_rdie.pdf                           \
+	oms_spinner.pdf                        \
+	oms_wring5shortd.pdf                   \
+	wring5shortd.pdf                       \
+	wring5short.pdf                        \
+	archerytarget.pdf                      \
+	ring6.pdf                              \
+	discretemetric6.pdf                    \
+	Zline.pdf                              \
+	realline.pdf                           \
+	Cplane.pdf
 
 GRP_PDS =                      \
 	ae_ball(00_00_05).pdf      \
@@ -899,7 +938,7 @@ PRG_TYPESET = xelatex.exe
 #--------------------------------------
 top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_BASIS) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $(GRP_FRAMES) \
 	$(GRP_FUZZY) $(GRP_LARC) $(GRP_LAT) $(GRP_LATU) $(GRP_LATP) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) \
-	$(GRP_NIL) $(GRP_OSET) $(GRP_PDS) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) \
+	$(GRP_NIL) $(OCS) $(OMS) $(GRP_OSET) $(GRP_PDS) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) \
 	$(GRP_DNA) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
 	@echo Done ... graphics pdfs are ready!
 
