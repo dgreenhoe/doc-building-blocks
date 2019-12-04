@@ -524,6 +524,7 @@ GRP_LATU = \
 	lat5_n5.pdf                            \
 	lat5_l2onm2.pdf                        \
 	lat5_m2onl2.pdf                        \
+	lat5_m3_tall.pdf                       \
 	lat6_m4.pdf                            \
 	lat6_l4inm2.pdf                        \
 	lat6_o6.pdf                            \
