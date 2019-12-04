@@ -199,7 +199,11 @@ GRP_DICE =                                     \
 	rdie_5eed_16ones_r3euclid.pdf              \
 	rdie_5eed_16ones_r3larc.pdf                \
 	rdie_r3met.pdf                             \
-	rdie_wxyz.pdf                                      \
+	rdie_wxyz.pdf                              \
+	wdietoO6c.pdf                              \
+	wdieXO6YO6c.pdf                            \
+	wdieXR.pdf                                 \
+	wdie_max.pdf                               \
 	wdie_5eed_160000_down50_histo.pdf                  \
 	wdie_5eed_160000_hanning_down50_R1_histo.pdf       \
 	wdie_5eed_160000_hanning_down50_R3larc_histo.pdf   \
@@ -360,7 +364,20 @@ GRP_MATH = \
   lat2xyz_antichains.pdf       \
   m3m3_antichain_abcpqr.pdf
 
+#gsizewdie_max.pdf
+
+
 OCS = \
+	gsp_markov2.pdf                        \
+	rline_argminmax_11312.pdf              \
+	rline_argminmax_11312a.pdf             \
+	wdie_xy.pdf                            \
+	lcg7x1m9_XYZ.pdf                       \
+	lcg7x1m9_max.pdf                       \
+	lcg7x1m9_seqorder.pdf                  \
+	lcg7x1m9_dgraph.pdf                    \
+	dqpsk.pdf                              \
+	network.pdf                            \
 	latlatringsxyz.pdf                     \
 	wring5.pdf                             \
 	dartstarget.pdf                        \
@@ -375,7 +392,6 @@ OCS = \
 	wspinnermax.pdf                        \
 	wspinner_Rmax.pdf                      \
 	ocsarchery.pdf                         \
-	ocsdarts.pdf                           \
 	ocsrv_spinner_xy.pdf                   \
 	ocs_dna.pdf                            \
 	ocs_dnan.pdf                           \
@@ -487,10 +503,10 @@ GRP_LATP =                                 \
 	lat16_l2e4_latoc_pqrs_fec.pdf          \
 	lat16_l2e4_latoc_pqsi.pdf              \
 	lat16_l2e4_latoc_pqtf.pdf              \
-	lat16_l2e4_latoc_qrst.pdf              
+	lat16_l2e4_latoc_qrst.pdf
 
 #	lat6_o6_1=-0_a=-d_b=-c_c=-b_d=-a_0=-1_prob.pdf \
-#	lat7_m2inm2l.pdf                       
+#	lat7_m2inm2l.pdf
 
 
 GRP_LATU = \
@@ -598,15 +614,15 @@ GRP_LAT =                               \
 	lat8_2e3_setxyzd.pdf                \
 	lat8_2e3_set235.pdf                 \
 	lat8_l2e3_abc_h.pdf                 \
-	lat6_o6_acpr_h.pdf                  
-                                        
+	lat6_o6_acpr_h.pdf
+
 GRP_BOOLEAN =                           \
 	lat2_l2_setx.pdf                    \
 	lat4_l2e2_setxy.pdf                 \
 	lat4_m2_setxy.pdf                   \
-	lat8_2e3_setxyz.pdf                 
-                                        
-GRP_LOGIC = \                           
+	lat8_2e3_setxyz.pdf
+
+GRP_LOGIC = \
   logic_BN4_tbnf.pdf                    \
   logic_L2_tf.pdf                       \
   logic_L3_tnf.pdf                      \
