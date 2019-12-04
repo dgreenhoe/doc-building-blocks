@@ -155,6 +155,10 @@ GRP_DATA =                     \
   sunspots_welchPSD_4segs.pdf
 
 GRP_DICE =                                     \
+	pdice_xy.pdf                               \
+	dicetol6.pdf                               \
+	pairdice.pdf                               \
+	udicetol6.pdf                              \
 	fairdieXO6.pdf                             \
 	fairdieXO6c.pdf                            \
 	fairdieXRYZ.pdf                            \
