@@ -172,6 +172,7 @@ GRP_DICE =                                     \
 	seq_whaar8.pdf                             \
 	seq_whaar9.pdf                             \
 	Zline.pdf                                  \
+	die_realline.pdf                           \
 	fspin_5eed_16002_histo.pdf                 \
 	fdie_5eed_16000_auto.pdf                   \
 	fdie_5eed_16000_histo.pdf                  \
