@@ -117,10 +117,7 @@ mainx.pdf: mainx.xdv
 	$(PRG_XDV2PDF) $(OPT_XDV2PDF) -o mainx.pdf mainx.xdv
 	@time /T
 
-mainx.xdv: mainx.tex $(FILE_SRC) $(FILE_APP) $(FILE_STY) $(FILE_BIB) $(FILE_GRP)
-   cd basis/graphics/
-   make
-   cd ../..
+mainx.xdv: mainx.tex $(FILE_SRC) $(FILE_APP) $(FILE_STY) $(FILE_BIB)
    echo "\indexentry{{dummy index entry}}{1}" > mainx.idx # erase and/or initalize index file
    echo "\indexentry{{dummy index entry}}{1}" > xref.idx  # erase and/or initalize index file
    echo "\indexentry{{dummy index entry}}{1}" > xsym.idx  # erase and/or initalize index file

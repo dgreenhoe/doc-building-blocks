@@ -31,15 +31,15 @@ all:
     make
   cd ..\trigsys
     make
+  cd ..\xsro
+    make
   cd ..\xsams
     make
   cd ..\xwsd
     make
-  cd ..\xsro
+  cd ..\xnil
     make
   cd ..\2019xcordef
-    make
-  cd ..\estimation
     make
   cd ..\A290826
     make
@@ -50,8 +50,6 @@ all:
   cd ..\2015ssp
     make
   cd ..\2016apcssp
-    make
-  cd ..\nil
     make
   cd ..\2015larc
     make
@@ -66,6 +64,8 @@ all:
   cd ..\2014td
     make
   cd ..\2014plat
+   make
+  cd ..\2016nil
    make
   cd ..\abcdsp
     make
