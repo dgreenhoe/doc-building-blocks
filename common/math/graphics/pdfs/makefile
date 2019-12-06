@@ -143,6 +143,12 @@ GRP_BASIS = \
 	opTrn.pdf                              \
 	opDil.pdf
 
+BSPLINES = \
+	b0_g.pdf                               \
+	b1_g.pdf                               \
+	b2_g.pdf                               \
+	b3_g.pdf                               \
+	b4_g.pdf
 
 GRP_DATA =                     \
   cagefree-ratios.pdf          \
@@ -958,7 +964,7 @@ PRG_TYPESET = xelatex.exe
 #--------------------------------------
 # master build control $(FILE_CC)
 #--------------------------------------
-top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_BASIS) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $(GRP_FRAMES) \
+top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_BASIS) $(BSPLINES) $(GRP_MATH) $(GRP_DATA) $(GRP_DICE) $(GRP_DSP) $(GRP_FRAMES) \
 	$(GRP_FUZZY) $(GRP_LARC) $(GRP_LAT) $(GRP_LATU) $(GRP_LATP) $(GRP_LATOC) $(GRP_LOGIC) $(GRP_NEG) \
 	$(GRP_NIL) $(OCS) $(OMS) $(GRP_OSET) $(GRP_PDS) $(GRP_POUNITY) $(GRP_PROB) $(GRP_SETOPS) $(GRP_SETSTR) $(GRP_SPLINE) \
 	$(GRP_DNA) $(GRP_SYSTEM) $(GRP_TOPOLOGY) $(GRP_VENN) $(FILE_WAV)
