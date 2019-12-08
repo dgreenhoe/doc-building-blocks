@@ -17,13 +17,13 @@
 all:
   cd abctran
     make
-  cd ..\xframes
+  cd ..\msdframes
     make
   cd ..\abcstat
     make
   cd ..\abcdc
     make
-  cd ..\xpsd
+  cd ..\msdprob
     make
   cd ..\abcssp
     make
@@ -31,13 +31,13 @@ all:
     make
   cd ..\trigsys
     make
-  cd ..\xsro
+  cd ..\msdsro
     make
-  cd ..\xsams
+  cd ..\msdsams
     make
-  cd ..\xwsd
+  cd ..\msdwsd
     make
-  cd ..\xnil
+  cd ..\msdnil
     make
   cd ..\2019xcordef
     make

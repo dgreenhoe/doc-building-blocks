@@ -62,12 +62,12 @@ mainx.xdv: mainx.tex $(FILE_SRC) $(FILE_STY) $(FILE_BIB)
    $(PRG_INDEX) -q -o mainx.ind mainx.idx
    $(PRG_INDEX) -q -o  xref.ind  xref.idx
    $(PRG_INDEX) -q -o  xsym.ind  xsym.idx
-  #$(PRG_TYPESET)  -no-pdf mainx
+   $(PRG_TYPESET)  -no-pdf mainx
   #$(PRG_BIB)      mainx
   #$(PRG_INDEX) -q -o mainx.ind mainx.idx
   #$(PRG_INDEX) -q -o  xref.ind  xref.idx
   #$(PRG_INDEX) -q -o  xsym.ind  xsym.idx
-  #$(PRG_TYPESET)  -no-pdf mainx
+   $(PRG_TYPESET)  -no-pdf mainx
    $(PRG_TYPESET)  -no-pdf mainx
 
 fast: 
