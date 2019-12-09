@@ -286,94 +286,95 @@ GRP_DNA =                      \
   dnaXO4c.pdf                  \
   dna_Rmax.pdf
 
-GRP_DSP  =                     \
-  sinc.pdf                     \
-  sinsin02.pdf                 \
-  sinsin02hn.pdf               \
-  sinsin02_pun.pdf             \
-  sin_pi_t.pdf                 \
-  dfI_order1_abc.pdf           \
-  dfI_order1_lpf2pi3.pdf       \
-  dfI_order2_156.pdf           \
-  dfI_order2_fir.pdf           \
-  dfI_order2_156.pdf           \
-  dfII_order1_abc.pdf          \
-  D4_pz.pdf                    \
-  S4_pz.pdf                    \
-  d4_phi_h.pdf                 \
-  s4_phi_h.pdf                 \
-  hanninglp50.pdf              \
-  hpfwc.pdf                    \
-  lpfwc.pdf                    \
-  iir2n.pdf                    \
-  iir2rphi.pdf                 \
-  iir1pole.pdf                 \
-  pz_allpass.pdf               \
-  pz_minphase.pdf              \
-  pz_minphase_inv.pdf          \
-  pz_stable.pdf                \
-  pz_pole00.pdf                \
-  pz_realcoefs.pdf             \
-  pz_realcoefs_11.pdf          \
-  pz_unstable.pdf              \
-  pz_unstable2.pdf             \
-  pz_unall.pdf                 \
-  rectangular_1N.pdf           \
-  samplat.pdf                  \
-  sin_pi_t_sampled.pdf         \
-  sinclat.pdf                  \
-  unitcircle.pdf               \
-  vecres.pdf
+GRP_DSP  = \
+	sinc.pdf                               \
+	sinsin02.pdf                           \
+	sinsin02hn.pdf                         \
+	sinsin02_pun.pdf                       \
+	sin_pi_t.pdf                           \
+	dfI_order1_abc.pdf                     \
+	dfI_order1_lpf2pi3.pdf                 \
+	dfI_order2_156.pdf                     \
+	dfI_order2_fir.pdf                     \
+	dfI_order2_156.pdf                     \
+	dfII_order1_abc.pdf                    \
+	D4_pz.pdf                              \
+	S4_pz.pdf                              \
+	d4_phi_h.pdf                           \
+	s4_phi_h.pdf                           \
+	hanninglp50.pdf                        \
+	hpfwc.pdf                              \
+	lpfwc.pdf                              \
+	iir2n.pdf                              \
+	iir2rphi.pdf                           \
+	iir1pole.pdf                           \
+	pz_allpass.pdf                         \
+	pz_minphase.pdf                        \
+	pz_minphase_inv.pdf                    \
+	pz_stable.pdf                          \
+	pz_pole00.pdf                          \
+	pz_realcoefs.pdf                       \
+	pz_realcoefs_11.pdf                    \
+	pz_unstable.pdf                        \
+	pz_unstable2.pdf                       \
+	pz_unall.pdf                           \
+	rectangular_1N.pdf                     \
+	samplat.pdf                            \
+	sin_pi_t_sampled.pdf                   \
+	sinclat.pdf                            \
+	unitcircle.pdf                         \
+	vecres.pdf                             \
+	ziir2.pdf
 
-GRP_FRAMES  =                  \
-  frameR2N.pdf                 \
-  frameR2pq.pdf                \
-  mframe.pdf                   \
-  mframe01.pdf                 \
-  mframer01.pdf                \
-  mframepm.pdf
-
-GRP_FUZZY =                             \
-	young.pdf                           \
-	lat2_L2_fuzzy_msf.pdf               \
-	lat3_L3_fuzzy_msf2.pdf              \
-	lat3_L3_fuzzy_heyting3_msf.pdf      \
-	lat4_m2_minmax_msf.pdf              \
-	lat4_m2_lukas_msf.pdf               \
-	lat6_o6_minmax_msf.pdf              \
-	lat6_o6_lukas_msf.pdf               \
-	lat12_l2e3x_minmax_msf.pdf          \
-	lat4_m2_fuzzylat_msf.pdf            \
-	lat6_o6_fuzzylat_msf.pdf            \
-	lat8_l2e3_fuzzylat_msf.pdf          \
-	lat6_o6_10xy-x.pdf
-
-GRP_LARC =                              \
-	larc_ball(0_0_-1).pdf               \
-	larc_ball(0_0_-10).pdf              \
-	larc_ball(0_0_-2).pdf               \
-	larc_ball(0_0_-3).pdf               \
-	larc_ball(0_0_-5).pdf               \
-	larc_ball(0_0_0).pdf                \
-	larc_ball(0_0_1).pdf                \
-	larc_ball(1_1_1).pdf                \
-	limrp0.pdf                          \
-	limrp0Rpq.pdf
-
-GRP_MATH = \
-  r3subspaces_xyzxcyczc.pdf    \
-  ballinball.pdf               \
-  m2tol4.pdf                   \
-  m3ton5.pdf                   \
-  n5ton5.pdf                   \
-  r3subspaces_xy.pdf           \
-  orderingsxyz.pdf             \
-  pulseabc.pdf                 \
-  pulseabcft.pdf               \
-  triangleabc.pdf              \
-  triangleabcft.pdf            \
-  lat2xyz_antichains.pdf       \
-  m3m3_antichain_abcpqr.pdf
+GRP_FRAMES  = \
+	frameR2N.pdf                           \
+	frameR2pq.pdf                          \
+	mframe.pdf                             \
+	mframe01.pdf                           \
+	mframer01.pdf                          \
+	mframepm.pdf                           
+                                           
+GRP_FUZZY =                                \
+	young.pdf                              \
+	lat2_L2_fuzzy_msf.pdf                  \
+	lat3_L3_fuzzy_msf2.pdf                 \
+	lat3_L3_fuzzy_heyting3_msf.pdf         \
+	lat4_m2_minmax_msf.pdf                 \
+	lat4_m2_lukas_msf.pdf                  \
+	lat6_o6_minmax_msf.pdf                 \
+	lat6_o6_lukas_msf.pdf                  \
+	lat12_l2e3x_minmax_msf.pdf             \
+	lat4_m2_fuzzylat_msf.pdf               \
+	lat6_o6_fuzzylat_msf.pdf               \
+	lat8_l2e3_fuzzylat_msf.pdf             \
+	lat6_o6_10xy-x.pdf                     
+                                           
+GRP_LARC =                                 \
+	larc_ball(0_0_-1).pdf                  \
+	larc_ball(0_0_-10).pdf                 \
+	larc_ball(0_0_-2).pdf                  \
+	larc_ball(0_0_-3).pdf                  \
+	larc_ball(0_0_-5).pdf                  \
+	larc_ball(0_0_0).pdf                   \
+	larc_ball(0_0_1).pdf                   \
+	larc_ball(1_1_1).pdf                   \
+	limrp0.pdf                             \
+	limrp0Rpq.pdf                          
+                                           
+GRP_MATH = \                               
+	r3subspaces_xyzxcyczc.pdf              \
+	ballinball.pdf                         \
+	m2tol4.pdf                             \
+	m3ton5.pdf                             \
+	n5ton5.pdf                             \
+	r3subspaces_xy.pdf                     \
+	orderingsxyz.pdf                       \
+	pulseabc.pdf                           \
+	pulseabcft.pdf                         \
+	triangleabc.pdf                        \
+	triangleabcft.pdf                      \
+	lat2xyz_antichains.pdf                 \
+	m3m3_antichain_abcpqr.pdf
 
 #gsizewdie_max.pdf
 
@@ -436,46 +437,46 @@ OMS = \
 	realline.pdf                           \
 	Cplane.pdf
 
-GRP_PDS =                      \
-	ae_ball(00_00_05).pdf      \
-	ballinopen.pdf             \
-	larc_ball(00_00_05).pdf    \
-	larc_def.pdf               \
-	larc_earc_compare.pdf      \
-	larc_euclid_compare.pdf    \
-	larc_hmg.pdf               \
-	larc_metex.pdf             \
-	larc_pq.pdf                \
-	larc_R2_balls.pdf          \
-	larc_ti.pdf                \
-	larc_trieq.pdf             \
-	mca_R2_balls.pdf           \
-	mpf_ascaled.pdf            \
-	mpf_bounded.pdf            \
-	mpf_discrete.pdf           \
-	mpf_snowflake.pdf          \
-	mpf_truncated.pdf          \
-	mpf_x1x2.pdf               \
-	mpf_0121.pdf               \
-	mpf_11x1.pdf               \
-	mpf_x11x1.pdf              \
+GRP_PDS = \
+	ae_ball(00_00_05).pdf                  \
+	ballinopen.pdf                         \
+	larc_ball(00_00_05).pdf                \
+	larc_def.pdf                           \
+	larc_earc_compare.pdf                  \
+	larc_euclid_compare.pdf                \
+	larc_hmg.pdf                           \
+	larc_metex.pdf                         \
+	larc_pq.pdf                            \
+	larc_R2_balls.pdf                      \
+	larc_ti.pdf                            \
+	larc_trieq.pdf                         \
+	mca_R2_balls.pdf                       \
+	mpf_ascaled.pdf                        \
+	mpf_bounded.pdf                        \
+	mpf_discrete.pdf                       \
+	mpf_snowflake.pdf                      \
+	mpf_truncated.pdf                      \
+	mpf_x1x2.pdf                           \
+	mpf_0121.pdf                           \
+	mpf_11x1.pdf                           \
+	mpf_x11x1.pdf                          \
 	trirel_sigmap.pdf
 
 # atanmet.pdf
 
-GRP_PROB =                     \
-  latestimation.pdf            \
-  estimation_techniques.pdf    \
-  lat3_L3_1x0_-0-x-1_prob.pdf  \
-  lat4_m2_psE_coin.pdf         \
-  lat4_m2_boa_prob.pdf         \
-  lat4_m2_prob_die.pdf         \
-  lat6_o6_prob_10adbc.pdf      \
-  lat8_l2e3_prob_coin.pdf      \
-  lat8_l2e3_prob_die.pdf       \
-  pdf_dicesum_bluered.pdf      \
-  pdf_fairdie_blue.pdf         \
-  pdf_fairdie_red.pdf
+GRP_PROB = \
+	latestimation.pdf                      \
+	estimation_techniques.pdf              \
+	lat3_L3_1x0_-0-x-1_prob.pdf            \
+	lat4_m2_psE_coin.pdf                   \
+	lat4_m2_boa_prob.pdf                   \
+	lat4_m2_prob_die.pdf                   \
+	lat6_o6_prob_10adbc.pdf                \
+	lat8_l2e3_prob_coin.pdf                \
+	lat8_l2e3_prob_die.pdf                 \
+	pdf_dicesum_bluered.pdf                \
+	pdf_fairdie_blue.pdf                   \
+	pdf_fairdie_red.pdf
 
 GRP_LATP =                                 \
 	latp.pdf                               \

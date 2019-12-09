@@ -47,10 +47,10 @@ FILE_SRC  =                                 \
             pds/distance.tex                \
             pds/ptspace.tex                 \
             sto/chp_sto.tex                 \
-            sto/ocs.tex                     \
-            sto/ocsrv.tex                   \
-            sto/ocsop.tex                   \
-            sto/oms.tex                     \
+            ../common/ocs.tex               \
+            ../common/ocsrv.tex             \
+            ../common/ocsop.tex             \
+            ../common/oms.tex               \
             ssp/chp_ssp.tex                 
 
 FILE_GRP  = ../common/graphics/watercraft/ghind_djg_blue.eps  \
