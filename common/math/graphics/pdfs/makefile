@@ -287,6 +287,10 @@ GRP_DNA =                      \
   dna_Rmax.pdf
 
 GRP_DSP  = \
+	cendiff.pdf                            \
+	diff.pdf                               \
+	IntSum.pdf                             \
+	IntTrap.pdf                            \
 	sinc.pdf                               \
 	sinsin02.pdf                           \
 	sinsin02hn.pdf                         \
