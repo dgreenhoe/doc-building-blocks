@@ -15,11 +15,13 @@
 # Commands
 #--------------------------------------
 all:
-  cd abctran
+  cd msdframes
     make
-  cd ..\msdframes
+  cd ..\msdnil
     make
   cd ..\abcstat
+    make
+  cd ..\abctran
     make
   cd ..\abcdc
     make
@@ -36,8 +38,6 @@ all:
   cd ..\msdsams
     make
   cd ..\msdwsd
-    make
-  cd ..\msdnil
     make
   cd ..\2019xcordef
     make
