@@ -15,17 +15,20 @@
 //-----------------------------------------------------------------------------
 //! \brief   command processor
 //! \details processes commands from command line or script file
+//! \see http://www.cplusplus.com/doc/tutorial/pointers/
 //-----------------------------------------------------------------------------
 int command(const int argc, const char *argv[])
 {
   int numArgs = argc - 1;
   char **strArgs=(char**)argv;
+  int (*fnctToCall)(const char *str);
   strArgs++;
   while(numArgs > 0){
     if(strcmp(strArgs[0],"help")==0)
     {
       printf("\nHelp is on the way!");
-      help(NULL);
+      fnctToCall = help;
+      fnctToCall(NULL);
       numArgs--;
       strArgs++;
     }
