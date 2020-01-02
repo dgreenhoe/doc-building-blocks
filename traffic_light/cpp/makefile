@@ -5,13 +5,13 @@
 #--------------------------------------
 # TARGET
 #--------------------------------------
-TARGET = traffic_light
+TARGET = tl
 
 #--------------------------------------
 # Files
 #--------------------------------------
-FILES_OBJ = main.o estimate_amplitude.o estimate_induction.o sequencer.o traffic.o
-FILES_H   = main.h estimate_amplitude.h estimate_induction.h sequencer.h traffic.h
+FILES_OBJ = main.o command.o estimate_amplitude.o estimate_induction.o help.o sequencer.o traffic.o
+FILES_H   = main.h command.h estimate_amplitude.h estimate_induction.h help.h sequencer.h traffic.h
 
 #--------------------------------------
 # directories

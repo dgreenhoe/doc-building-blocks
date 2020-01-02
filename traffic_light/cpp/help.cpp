@@ -4,22 +4,18 @@
 //! \brief   main execution handler
 //=============================================================================
 #include <cstdio>
-#include <cstring>
-#include "main.h"
 #include "help.h"
-#include "command.h"
 
 //-----------------------------------------------------------------------------
-//! \brief   main execution handler
-//! \details entry point for executable code
-//! \see
-//!   https://www.tutorialspoint.com/cprogramming/c_command_line_arguments.htm
+//! \brief   help
+//! \details help accessable from command line
 //-----------------------------------------------------------------------------
-int main(int argc, char *argv[])
+int help(int argc, char *argv[])
 {
-  command(argc, argv);
-  if(argc<2) help(argc, argv);
-  if(argc>20) defaultx(argc, argv);
+  printf("\n-----------------------------------------------------------------------------");
+  printf("\n|  Usage:");
+  printf("\n|  %s command1 [arg1a] [arg1b] [...] [command2] [arg2a] ...", argv[0]);
+  printf("\n-----------------------------------------------------------------------------");
   return 0;
 }
 
