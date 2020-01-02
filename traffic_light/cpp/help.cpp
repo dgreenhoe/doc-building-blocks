@@ -10,11 +10,11 @@
 //! \brief   help
 //! \details help accessable from command line
 //-----------------------------------------------------------------------------
-int help(int argc, char *argv[])
+int help(const char *cmdStr)
 {
   printf("\n-----------------------------------------------------------------------------");
   printf("\n|  Usage:");
-  printf("\n|  %s command1 [arg1a] [arg1b] [...] [command2] [arg2a] ...", argv[0]);
+  printf("\n|  tl.exe command1 [arg1a] [arg1b] [...] [command2] [arg2a] ...");
   printf("\n-----------------------------------------------------------------------------");
   return 0;
 }

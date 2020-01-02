@@ -15,11 +15,11 @@
 //! \see
 //!   https://www.tutorialspoint.com/cprogramming/c_command_line_arguments.htm
 //-----------------------------------------------------------------------------
-int main(int argc, char *argv[])
+int main(const int argc, const char *argv[])
 {
   command(argc, argv);
-  if(argc<2) help(argc, argv);
-  if(argc>20) defaultx(argc, argv);
+  if(argc<2) help(NULL);
+  if(argc>10) defaultx(argc, argv);
   return 0;
 }
 

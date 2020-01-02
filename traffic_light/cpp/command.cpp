@@ -16,12 +16,24 @@
 //! \brief   command processor
 //! \details processes commands from command line or script file
 //-----------------------------------------------------------------------------
-int command(int argc, char *argv[])
+int command(const int argc, const char *argv[])
 {
-  if(strcmp(argv[1],"help")==0)
-  { 
-    printf("\nHelp is on the way!");
-    help(argc, argv);
+  int numArgs = argc - 1;
+  char **strArgs=(char**)argv;
+  strArgs++;
+  while(numArgs > 0){
+    if(strcmp(strArgs[0],"help")==0)
+    {
+      printf("\nHelp is on the way!");
+      help(NULL);
+      numArgs--;
+      strArgs++;
+    }
+    else
+    {
+      numArgs--;
+      strArgs++;
+    }
   }
   return 0;
 }
@@ -29,7 +41,7 @@ int command(int argc, char *argv[])
 //-----------------------------------------------------------------------------
 //! \brief   default
 //-----------------------------------------------------------------------------
-int defaultx(int argc, char *argv[])
+int defaultx(const int argc, const char *argv[])
 {
   const long N = 1000;
   const long Nsamples = N*100;
