@@ -136,5 +136,5 @@ pdf:
   make
 
 print:
-  xdvipdfmx  -s 107,456 -p a4 -q -o popper.pdf mainx
+  xdvipdfmx  -s 91-100 -p a4 -q -o mmse.pdf mainx
 

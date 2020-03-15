@@ -11,6 +11,7 @@
 #---------------------------------------
 #install.packages("bspec");
 #install.packages("ramify");
+install.packages("chron");
 #---------------------------------------
 # load add-on packages
 #---------------------------------------
@@ -21,6 +22,7 @@
  require(ramify);
  require(bspec);     # https://www.rdocumentation.org/packages/bspec/
  require(lubridate); # https://www.rdocumentation.org/packages/lubridate/
+ require(chron);
 #---------------------------------------
 # load data
 #---------------------------------------

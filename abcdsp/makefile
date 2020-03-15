@@ -172,6 +172,7 @@ spine203x254:
   rgbcheck.bat spine203x254
 
 print:
+  xdvipdfmx  -s 49-50 -p a4 -q -o upsampling.pdf mainx
   #xdvipdfmx  -s 11-20 -p a4 -q -o complete_closed.pdf mainx
   #xdvipdfmx  -s 1,5,19-22,34,38-39 -p a4 -q -o boxbug.pdf mainx
   #xdvipdfmx  -s 1-2,18-26,29-61 -p a4 -q -o bases.pdf mainx
