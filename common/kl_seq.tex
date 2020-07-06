@@ -4,7 +4,7 @@
 %============================================================================
 
 %======================================
-\chapter{KL Expansion}
+\chapter{KL Expansion (Transform)}
 %======================================
 %=======================================
 \section{Definitions}
@@ -12,40 +12,40 @@
 %=======================================
 %---------------------------------------
 \begin{definition}
-\label{def:opR}
+\label{def:opRnm}
 %---------------------------------------
-Let $\rvx(t)$ be a \fncte{random process}
-with continuous \fncte{auto-correlation} $\Rxx(t,u)$ \xref{def:Rxx}.
+Let $\rvx(m)$ be a \fncte{random process} 
+discrete \fncte{auto-correlation} $\Rxx(n,m)$ \xref{def:Rxxnm}.
 \defboxt{
   The \opd{auto-correlation operator} $\opR$ of $\rvx(t)$ is defined as
-  \\\indentx$\ds\mcom{\opR\ff  \eqd \int_{u\in\R}\Rxx(t,u)\ff(u) \du}{(continuous case)}$
+  \\\indentx$\ds\mcom{\opR\ff \eqd \sum_{n\in\Z} \Rxx(n,m) \ff(m)}{(discrete case)}$
   }
 \end{definition}
 
 %---------------------------------------
 \begin{definition}
-\label{def:white}
+\label{def:white_seq}
 %---------------------------------------
-Let $\rvx(t)$ be a \fncte{random process} with \fncte{auto-correlation} $\Rxx(\tau)$ \xref{def:Rxx}.
+Let $\rvx(m)$ be a \fncte{random process} with \fncte{auto-correlation} $\Rxx(m)$ \xref{def:Rxxnm}.
 \defboxt{
-  A \fncte{random process} $\rvx(t)$ is \propd{white} if
-  \\\indentx$\Rxx(\tau)=\delta(\tau)$
+  A \fncte{random process} $\rvx(n)$ is \propd{white} if 
+  \\\indentx$\Rxx(m)=K\kdelta(m)$\quad for some $K>0$.
   }
 \end{definition}
 
-If a random process $\rvx(t)$ is \prope{white} \xref{def:white}
-and the set $\Psi=\setn{\fpsi_1(t),\fpsi_2(t),\ldots,\fpsi_\xN(t)\}}$
-is \textbf{any} set of orthonormal basis functions, then the innerproducts
-$\inprod{n(t)}{\fpsi_n(t)}$ and $\inprod{n(t)}{\fpsi_m(t)}$ are \prope{uncorrelated}
-for $m\ne  n$.
-However, if $\rvx(t)$ is \propb{colored} (not white), then the innerproducts are not
-in general uncorrelated.
-But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opR$ such
-that $\ds\opR \fpsi_n = \lambda_n \fpsi_n$,
-then by \prefpp{thm:Rxx_prop}, the set $\setn{\fpsi_n(t)}$ are \prope{orthogonal} and
-the innerproducts \textbf{are} \prope{uncorrelated} even though $\rvx(t)$ is
-not white.
-This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(t)$.
+%If a random process $\rvx(m)$ is \prope{white} \xref{def:white_seq}
+%and the set $\Psi=\setn{\fpsi_1(t),\fpsi_2(t),\ldots,\fpsi_\xN(t)\}}$
+%is \textbf{any} set of orthonormal basis functions, then the innerproducts
+%$\inprod{n(t)}{\fpsi_n(t)}$ and $\inprod{n(t)}{\fpsi_m(t)}$ are \prope{uncorrelated}
+%for $m\ne  n$.
+%However, if $\rvx(t)$ is \propb{colored} (not white), then the innerproducts are not
+%in general uncorrelated.
+%But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opR$ such
+%that $\ds\opR \fpsi_n = \lambda_n \fpsi_n$,
+%then by \prefpp{thm:Rxx_prop}, the set $\setn{\fpsi_n(t)}$ are \prope{orthogonal} and
+%the innerproducts \textbf{are} \prope{uncorrelated} even though $\rvx(t)$ is
+%not white.
+%This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(t)$.
 
 %=======================================
 \section{Properties}
@@ -56,8 +56,8 @@ This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(t)$.
 %---------------------------------------
 Let $\opR$ be an \ope{auto-correlation} operator.
 \thmbox{
-  \brb{\begin{array}{rl>{\ds}l}
-    \inprod{\rvx}{\rvy} &\eqd& \int_{t\in\R} \rvx(t) \rvy^\ast(t) \dt \\
+  \brb{\begin{array}{rl>{\ds}lD}
+     \inprod{\rvx}{\rvy} &\eqd& \sum_{n\in\Z} \rvx(n) \rvy^\ast(n)     &
   \end{array}}
   \implies
   \brb{\begin{array}{FlDD}
@@ -75,48 +75,48 @@ Let $\opR$ be an \ope{auto-correlation} operator.
 \begin{align*}
 \intertext{1. Proof that $\opR$ is \prope{non-negative} under hypothesis (A):}
    \inprod{\opR \fy}{\fy}
-     &= \inprod{\int_{u\in\R}\Rxx(t,u) \fy(u) \du}{\fy(t)}
+     &= \inprod{\sum_{m\in\Z}\Rxx(n,m) \fy(m) }{\fy(n)}
      && \text{by definition of $\opR$}
      && \text{\xref{def:opR}}
-   \\&= \inprod{\int_{u\in\R}\pE\brs{\rvx(t)\rvx^\ast(u)} \fy(u) \du}{\fy(t)}
-     && \text{by definition of $\Rxx(t,u)$}
+   \\&= \inprod{\sum_{m\in\Z}\pE\brs{\rvx(n)\rvx^\ast(m)} \fy(m) }{\fy(n)}
+     && \text{by definition of $\Rxx(n,m)$}
      && \text{\xref{def:Rxx}}
-   \\&= \pE\brs{\inprod{\int_{u\in\R}\rvx(t)\rvx^\ast(u) \fy(u) \du}{\fy(t)}}
-     && \text{by \prope{linearity} of $\inprodn$ and $\int$}
+   \\&= \pE\brs{\inprod{\sum_{m\in\Z}\rvx(n)\rvx^\ast(m) \fy(m) }{\fy(n)}}
+     && \text{by \prope{linearity} of $\inprodn$ and $\sum$}
      && \text{\ifsxref{vsinprod}{def:inprod}}
-   \\&= \pE\brs{\int_{u\in\R}\rvx^\ast(u) \fy(u) \du \inprod{\rvx(t)}{\fy(t)}}
+   \\&= \pE\brs{\sum_{m\in\Z}\rvx^\ast(m) \fy(m)  \inprod{\rvx(n)}{\fy(n)}}
      && \text{by \prope{additivity} property of $\inprodn$}
      && \text{\ifsxref{vsinprod}{def:inprod}}
-   \\&= \pE\brs{\inprod{\fy(u)}{\rvx(u)} \inprod{\rvx(t) }{\fy(t)}}
+   \\&= \pE\brs{\inprod{\fy(m)}{\rvx(m)} \inprod{\rvx(n) }{\fy(n)}}
      && \text{by local definition of $\inprodn$}
-   \\&= \pE\brs{\inprod{\rvx(u)}{\fy(u)}^\ast \inprod{\rvx(t) }{\fy(t)}}
+   \\&= \pE\brs{\inprod{\rvx(m)}{\fy(m)}^\ast \inprod{\rvx(n) }{\fy(n)}}
      && \text{by \prope{conjugate symmetry} prop.}
      && \text{\ifsxref{vsinprod}{def:inprod}}
-   \\&= \pE{\abs{\inprod{\rvx(t) }{\fy(t)}}^2}
+   \\&= \pE{\abs{\inprod{\rvx(n) }{\fy(n)}}^2}
      && \text{by definition of $\absn$}
      && \text{\xref{def:abs}}
    \\&\ge 0
      && \text{by \prope{strictly positive} property of norms}
      && \text{\ifxref{vsnorm}{def:norm}}
 \intertext{2. Proof that $\opR$ is \prope{self-adjoint} under hypothesis (A):}
-   \inprod{\brs{\opR \rvx}(t)}{\fy}
-     &= \inprod{\int_{u\in\R}\Rxx(t,u) \rvx(u) \du}{\fy(t)}
+   \inprod{\brs{\opR \rvx}(n)}{\fy}
+     &= \inprod{\sum_{m\in\Z}\Rxx(n,m) \rvx(m) }{\fy(n)}
      && \text{by definition of $\opR$}
      && \text{\xref{def:opR}}
-   \\&= \int_{u\in\R}\rvx(u) \inprod{\Rxx(t,u)  }{\fy(t)} \du
+   \\&= \sum_{m\in\Z}\rvx(m) \inprod{\Rxx(n,m)  }{\fy(n)} 
      && \text{by \prope{additive} property of $\inprodn$}
      && \text{\ifsxref{vsinprod}{def:inprod}}
-   \\&= \int_{u\in\R}\rvx(u) \inprod{\fy(t)}{\Rxx(t,u)}^\ast \du
+   \\&= \sum_{m\in\Z}\rvx(m) \inprod{\fy(n)}{\Rxx(n,m)}^\ast 
      && \text{by \prope{conjugate symmetry} prop.}
      && \text{\ifsxref{vsinprod}{def:inprod}}
-   \\&= \inprod{ \rvx(u) }{\inprod{\fy(t)}{\Rxx(t,u)} }
+   \\&= \inprod{ \rvx(m) }{\inprod{\fy(n)}{\Rxx(n,m)} }
      && \text{by local definition of $\inprodn$}
-   \\&= \inprod{ \rvx(u) }{\int_{t\in\R}\fy(t) \Rxx^\ast(t,u)\dt }
+   \\&= \inprod{ \rvx(m) }{\sum_{n\in\Z}\fy(n) \Rxx^\ast(n,m)  }
      && \text{\ifsxref{vsinprod}{def:inprod}}
-   \\&= \inprod{ \rvx(u) }{\int_{t\in\R}\fy(t) \Rxx(u,t)\dt }
+   \\&= \inprod{ \rvx(m) }{\sum_{n\in\Z}\fy(n) \Rxx(u,t)  }
      && \text{by property of $\Rxx$}
      && \text{\xref{thm:Rxx_prop}}
-   \\&= \inprod{ \rvx(u) }{\mcom{\opR}{$\opRa$} \fy }
+   \\&= \inprod{ \rvx(m) }{\mcom{\opR}{$\opRa$} \fy }
      && \text{by definition of $\opR$}
      && \text{\xref{def:opR}}
    \\\implies& \opR=\opRa
@@ -125,16 +125,16 @@ Let $\opR$ be an \ope{auto-correlation} operator.
    \\\implies& \text{$\opR$ is \prope{self-adjoint}}
      && \text{by definition of \prope{self-adjoint}}
      && \text{\ifxref{operator}{def:op_selfadj}}
-\intertext{3. Proofs under hypothesis (B): substitute $\sum_{n\in\Z}$ operator for $\int_{t\in\R}\dt$ operator in above proofs.}
+\intertext{3. Proofs under hypothesis (B): substitute $\sum_{n\in\Z}$ operator for $\sum_{n\in\Z} $ operator in above proofs.}
 \end{align*}
 \end{proof}
 
 %---------------------------------------
 \begin{theorem}
-\footnote{
-  \citerpp{keener}{114}{119}
-  }
-\label{thm:opR_eigen}
+%\footnote{
+%  \citerpp{keener}{114}{119}
+%  }
+\label{thm:opR_eigen_seq}
 %---------------------------------------
 Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues and
     $\seq{\fpsi_n}{n\in\Z}$ be the eigenfunctions of
@@ -203,7 +203,7 @@ Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues of $\opR$
 and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
     $\opR \fpsi_n = \lambda_n \fpsi_n$.
 \thmbox{
-  \mcom{\norm{\fpsi_n(t)}=1}
+  \mcom{\norm{\fpsi_n}=1}
        {$\setn{\fpsi_n(t)}$ are \prope{normalized}}
   \implies
   \mcom{\pE\brp{\abs{\rvx(t)-\sum_{n\in\Z}\inprod{\rvx(t)}{\fpsi_n(t)} \fpsi_n(t) }^2} = 0}
