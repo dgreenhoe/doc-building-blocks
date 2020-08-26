@@ -10,68 +10,69 @@ TARGET = abcstat
 #--------------------------------------
 # Files
 #--------------------------------------
-FILE_SRC  =                            \
-  front.tex                            \
-  frontcover.tex                       \
-  main.tex                             \
-  src_code.tex                         \
-  ../common/xsdfront.tex               \
-  ../common/quotepagepair.tex          \
-  ../common/binomial.tex               \
-  ../common/calculus.tex               \
-  ../common/com_channel.tex            \
-  ../common/correlation_estimation.tex \
-  ../common/density_estimation.tex     \
-  ../common/dimensionality_reduction.tex\
-  ../common/dtft.tex                   \
-  ../common/expectation.tex            \
-  ../common/moment_estimation.tex      \
-  ../common/model_estimation.tex       \
-  ../common/norm_minimization.tex      \
-  ../common/operator.tex               \
-  ../common/pdfcdf.tex                 \
-  ../common/probspace.tex              \
-  ../common/projection_statistics.tex  \
-  ../common/matched_filter.tex         \
-  ../common/spline.tex                 \
-  ../common/randprocess.tex            \
-  ../common/randseq.tex                \
-  ../common/randseq_addnoise.tex       \
-  ../common/randseq_dsp.tex            \
-  ../common/randseq_eigen.tex          \
-  ../common/randvar.tex                \
-  ../common/info.tex                   \
-  ../common/estimate.tex               \
-  ../common/netdet.tex                 \
-  ../common/setstrct.tex               \
-  ../common/spectral.tex               \
-  ../common/spectral_estimation.tex    \
-  ../common/sums.tex                   \
-  ../common/measure.tex                \
-  ../common/integrat.tex               \
-  ../common/ortholat.tex               \
-  ../common/mat_calc.tex               \
-  ../common/subspace.tex               \
-  ../common/pnseq.tex                  \
-  ../common/problatn.tex               \
-  ../common/problatoc.tex              \
-  ../common/symbols.tex                \
-  ../common/systemid.tex               \
+FILE_SRC  =                               \
+  front.tex                               \
+  frontcover.tex                          \
+  main.tex                                \
+  src_code.tex                            \
+  ../common/xsdfront.tex                  \
+  ../common/quotepagepair.tex             \
+  ../common/binomial.tex                  \
+  ../common/calculus.tex                  \
+  ../common/com_channel.tex               \
+  ../common/correlation_estimation.tex    \
+  ../common/density_estimation.tex        \
+  ../common/dimensionality_reduction.tex  \
+  ../common/dtft.tex                      \
+  ../common/expectation.tex               \
+  ../common/kl_seq.tex                    \
+  ../common/moment_estimation.tex         \
+  ../common/model_estimation.tex          \
+  ../common/norm_minimization.tex         \
+  ../common/operator.tex                  \
+  ../common/pdfcdf.tex                    \
+  ../common/probspace.tex                 \
+  ../common/projection_statistics.tex     \
+  ../common/matched_filter.tex            \
+  ../common/spline.tex                    \
+  ../common/randprocess.tex               \
+  ../common/randseq.tex                   \
+  ../common/randseq_addnoise.tex          \
+  ../common/randseq_dsp.tex               \
+  ../common/randseq_eigen.tex             \
+  ../common/randvar.tex                   \
+  ../common/info.tex                      \
+  ../common/estimate.tex                  \
+  ../common/netdet.tex                    \
+  ../common/setstrct.tex                  \
+  ../common/spectral.tex                  \
+  ../common/spectral_estimation.tex       \
+  ../common/sums.tex                      \
+  ../common/measure.tex                   \
+  ../common/integrat.tex                  \
+  ../common/ortholat.tex                  \
+  ../common/mat_calc.tex                  \
+  ../common/subspace.tex                  \
+  ../common/pnseq.tex                     \
+  ../common/problatn.tex                  \
+  ../common/problatoc.tex                 \
+  ../common/symbols.tex                   \
+  ../common/systemid.tex                  \
   ../common/backmat.tex
 
-FILE_BIB  = ../common/bib/analysis.bib  \
-            ../common/bib/algebra.bib   \
-            ../common/bib/approx.bib    \
-            ../common/bib/mathmisc.bib  \
-            ../common/bib/probstat.bib  \
+FILE_BIB  = ../common/bib/analysis.bib    \
+            ../common/bib/algebra.bib     \
+            ../common/bib/approx.bib      \
+            ../common/bib/mathmisc.bib    \
+            ../common/bib/probstat.bib    \
             ../common/bib/wavelets.bib
 
-FILE_STY  = ../common/sty/wavelets.sty   \
-            ../common/sty/colors_rgb.sty \
-            ../common/sty/math.sty       \
-            ../common/sty/dan.sty        \
-            ../common/sty/fonts.sty      \
-            ../common/sty/packages.sty   \
+FILE_STY  = ../common/sty/wavelets.sty    \
+            ../common/sty/colors_rgb.sty  \
+            ../common/sty/math.sty        \
+            ../common/sty/dan.sty         \
+            ../common/sty/fonts.sty       \
+            ../common/sty/packages.sty    \
             ../common/sty/xsd.sty
 
 #--------------------------------------
