@@ -19,7 +19,7 @@
 ::-------------------------------------
   %CMAKE_EXE% -G "MinGW Makefiles" ..
 ::-------------------------------------
-::
+:: Build Executable
 ::-------------------------------------
   %MAKE_EXE%
   copy /y/v traffic_light.exe tl.exe

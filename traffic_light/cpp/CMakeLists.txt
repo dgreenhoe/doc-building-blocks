@@ -7,6 +7,14 @@
 # Build Environment Setup
 #--------------------------------------
  cmake_minimum_required( VERSION 3.17 )
+ set( CMAKE_VERBOSE_MAKEFILE   $<BOOL:true>                )
+ set( CMAKE_C_COMPILER_WORKS   $<BOOL:true>                )
+ set( CMAKE_CXX_COMPILER_WORKS $<BOOL:true>                )
+ set( CMAKE_SYSTEM_NAME        CMAKE_HOST_SYSTEM_NAME      )
+ set( CMAKE_SYSTEM_PROCESSOR   CMAKE_HOST_SYSTEM_PROCESSOR )
+ set( CMAKE_CROSSCOMPILING     $<BOOL:false>               )
+ set( CMAKE_C_STANDARD         99                          )
+ set( CMAKE_CXX_STANDARD       11                          )
 
 #--------------------------------------
 # Project
@@ -32,11 +40,11 @@
 # Set Flags
 #--------------------------------------
  set( FLAGS_COMPILE
-      -c
+      #-v
     )
 
  set( FLAGS_LINK
-
+      #-v
     )
 
 #--------------------------------------
