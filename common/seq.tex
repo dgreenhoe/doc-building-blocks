@@ -283,7 +283,7 @@ Let $\clsA$ be the \structe{closure} \xref{def:clsA} of $\setA$ in $\topspaceX$.
 \section{Sequences in metric spaces}
 %======================================
 One of the most important applications of \structe{metric space}s\ifsxref{metric}{def:metric} in analysis is the concept 
-of \hie{convergence}.
+of \prope{convergence}.
 Loosely speaking, a sequence that converges somehow implies that its elements are ``getting closer and closer" to some value.
 In a metric space, there are two standard types of sequences often used to describe this:
 %We say that a sequence $\seqn{x_n}$ \hie{converges} to a value $x$ in a 
@@ -321,7 +321,7 @@ then that metric space is said to be \prope{complete} \xref{def:ms_complete}.
 %---------------------------------------
 \defbox{\begin{array}{l>{\ds}l}
   \mc{2}{l}{\text{A sequence $\seqxZ{x_n\in\setX}$
-                  is a \hid{Cauchy sequence} in the metric space $\metspaceX$ if}} 
+                  is a \structd{Cauchy sequence} in the metric space $\metspaceX$ if}} 
   \\&  \mcom{\text{for every } \varepsilon\in\Rp,\; \exists\xN\in\Z \st \forall n,m>\xN,\; \metric{x_n}{x_m}<\varepsilon}{\prope{Cauchy condition}}.
 \end{array}}
 \end{definition}
@@ -1030,6 +1030,79 @@ Let the metric $\metricn$ be defined as $\metric{\vx}{\vy}\eqd\norm{\vx-\vy}$.
 %we can use the norm to generate the metric. % \xrefP{def:d=norm}.
 %If the norm space is complete, then it is called a \hie{Banach space}.
 %Banach spaces are one of the most fundamental and important structures in mathematics.
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppgc{ponnusamy2002}{94}{96}{0849317177}{``2.59. Proposition."; in the context of \structe{metric space}s;
+  includes the ``{\scs\thme{inverse image characterization of continuity}}"
+  and ``{\scs\thme{sequential characterization of continuity}}" terminology; this terminology does not seem to be widely 
+  used in the literature in general, but has been adopted for use in this text}
+  }
+\label{thm:limcont}
+%---------------------------------------
+Let $\topspaceX$ and $\topspaceYS$ be a \structe{topological space}s.
+Let $\ff$ be a function in $\clF{\topspaceX}{\topspaceYS}$.
+\thmbox{
+  \mcom{\brb{\begin{tabstr}{0.75}\begin{array}{N}
+    $\ff$ is \prope{continuous}  in $\clF{\topspaceX}{\topspaceYS}$\\
+    \xref{def:continuous}
+  \end{array}\end{tabstr}}}{\thme{inverse image characterization of continuity}}
+  \quad\iff\quad
+  \mcom{\brb{\begin{tabstr}{0.75}\begin{array}{N}
+    $\seqn{x_n}\to x \implies \ff(\seqn{x_n})\to \ff(x)$\\
+    \xref{def:converge}
+  \end{array}\end{tabstr}}}{\thme{sequential characterization of continuity}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for the $\implies$ case (proof by contradiction):
+    \begin{enumerate}
+      \item Let $\setU$ be an \structe{open set} in $\topspaceY$ that contains $\ff(x)$ but for which 
+            there exists no $\xN$ such that $\ff(x_n)\in\setU$ for all $n>\xN$.
+      \item Note that the set $\ffi(\setU)$ is also \structe{open} by the \prope{continuity} hypothesis.
+      \item If $\seqn{x_n}\to x$, then
+      \begin{align*}
+        &\ff(\seqn{x_n})\notto \ff(x)
+        \\&\implies \text{there exists no $\xN$ such that $\ff(x_n)\in\setU$ for all $n>\xN$}
+          &&\text{by \prefpp{def:converge}}
+         %&&\text{by definition of \prope{convergence} \xref{def:converge}}
+        \\&\implies \text{there exists no $\xM$ such that $x_n\in\ffi(\setU)$ for all $n>\xM$}
+          &&\text{by definition of $\ffi$}
+        \\&\mathrlap{\implies \seqn{x_n}\notto x 
+          \qquad\text{by \prope{continuity} hypothesis and def. of \prope{convergence} \xref{def:converge}}}
+        \\&\implies \text{contradiction of $\seqn{x_n}\to x$ hypothesis}
+        \\&\implies \ff(\seqn{x_n})\to \ff(x)
+      \end{align*}
+    \end{enumerate}
+
+  \item Proof for the $\impliedby$ case (proof by contradiction):
+    \begin{enumerate}
+      \item Let $\setD$ be a \prope{closed} set in $\topspaceYS$.
+      \item Suppose $\ffi(\setD)$ is \prope{not closed}\ldots \label{item:limcont_suppose}
+      \item then by the \thme{closed set theorem} \xref{thm:cst}, there must exist 
+            a \prope{convergent} sequence $\seqn{x_n}$ in $\topspaceX$, 
+            but with limit $x$ \emph{not} in $\ffi(\setD)$. \label{item:limcont_x}
+          %\\&\implies \text{there exists convergent $\seqn{x_n}$ in $\topspaceX$ with limit $x$, \emph{but} $x\notin\ffi(\setD)$}
+      \item Note that $\ff(x)$ must be in $\setD$. Proof:
+        \begin{enumerate}
+          \item by definition of $\setD$ and $\ff$, $\ff(\seqn{x_n})$ is in $\setD$
+          \item by left hypothesis, the sequence $\ff(\seqn{x_n})$ is \prope{convergent} with limit $\ff(x)$
+          \item by \thme{closed set theorem} \xref{thm:cst}, $\ff(x)$ must be in $\setD$.
+        \end{enumerate}
+      \item Because $\ff(x)\in\setD$, it must be true that $x\in\ffi(\setD)$.
+      \item But this is a contradiction to \prefpp{item:limcont_x}, 
+            and so \prefpp{item:limcont_suppose} must be wrong, and $\ffi(\setD)$ must be \prope{closed}.
+      \item And so by \prefpp{thm:continuous}, $\ff$ is \prope{continuous}.
+    \end{enumerate}
+  \end{enumerate}
+\end{proof}
+
+
+
+
+
 %---------------------------------------
 \begin{definition}
 \footnote{

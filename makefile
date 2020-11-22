@@ -15,9 +15,7 @@
 # Commands
 #--------------------------------------
 all:
-  cd msdframes
-    make
-  cd ..\msdnil
+  cd msdnil
     make
   cd ..\abcstat
     make
@@ -38,6 +36,8 @@ all:
   cd ..\msdsams
     make
   cd ..\msdwsd
+    make
+  cd ..\msdframes
     make
   cd ..\2019xcordef
     make
