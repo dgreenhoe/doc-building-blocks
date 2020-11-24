@@ -88,7 +88,7 @@ However in a topological space, a convergent sequence may converge to more than 
 Let $\topspaceX$ be a \structe{topological space} \xref{def:topology}.
 %Let $\intA$ be the \structe{interior} of a set $\setA$ \xrefP{def:intA}.
 \defboxp{%\begin{array}{M}
-  A sequence $\seqxZ{x_n}$ \hid{converges} to a point $x$ if 
+  A sequence $\seqxZ{x_n}$ \propd{converges} to a point $x$ if 
   for each \structe{open set} \xref{def:openset}
   $\setU$ of $x$ there exists $\xN\in\Zp$ such that 
   \\\indentx
@@ -278,37 +278,847 @@ Let $\clsA$ be the \structe{closure} \xref{def:clsA} of $\setA$ in $\topspaceX$.
 \end{enumerate}
 \end{proof}
 
+%=======================================
+\section{Sequences in distance spaces}
+\label{sec:seq_distance}
+%=======================================
+One of the most important applications of \structe{metric space} \xref{def:metric} analysis, 
+and more generally in \structe{distance space} analysis as well, is the concept of \prope{convergence}.
+Loosely speaking, a sequence that converges somehow implies that its elements are ``getting closer and closer" to some value.
+In a distance space (of which the metric space is a special case), 
+there are two standard types of sequences often used to describe this:
+\\\begin{tabular}{@{\quad}lll}
+  \circOne & \prope{convergent} sequence\,: & The elements of the sequence approach a fixed value $x$ 
+  \\       &                            & \xrefP{def:dspace_converge}
+  \\
+  \circTwo & \prope{Cauchy} sequence\,:     & The elements of the sequence approach each other        
+  \\       &                            & \xref{def:cauchy}
+\end{tabular}
+\\
+In a \structe{metric space}, it follows from the \prope{triangle inequality} that 
+the \prope{convergent} condition is ``stronger" than the \prope{Cauchy} condition
+in the sense that all convergent sequences are Cauchy
+but not all Cauchy sequences are convergent \xref{thm:convergent==>cauchy}.
+This is \emph{not} the case for all \structe{distance space}s (where the triangle inequality does not hold).
+%If however all the Cauchy sequences in a metric space are also convergent sequences
+%(each sequence converges to a specific point) {\em and}
+%each of those convergent points is {\em inside} the metric space,
+%then that metric space is said to be \prope{complete} \xref{def:ms_complete}.
+
+%=======================================
+\subsection{Definitions}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  in \structe{metric space}:
+  \citerpg{rosenlicht}{45}{0486650383},
+  \citerpgc{giles1987}{37}{0521359287}{3.2 Definition},
+  \citerpgc{khamsi2001}{13}{0471418250}{Definition 2.1}
+  %\citerpgc{thomson2008}{30}{143484367X}{Definition 2.1}
+  %\citor{cauchy1821}
+  ``$\to$" symbol: \citorpc{leathem1905}{13}{section III.11}  % referenced by bromwich1955 page 3
+  }
+\label{def:dspace_converge}
+\label{def:dspace_limit}
+%---------------------------------------
+%Let $\topspaceX$ be the \structe{topological space} induced by a \structe{distance space} $\dspaceX$ \xref{def:dspace}.
+Let $\seqxZ{x_n\in\setX}$ be a  \fncte{sequence} in a \structe{distance space} $\dspaceX$. % \xref{def:dspace}.
+\defboxp{
+  The sequence $\seqn{x_n}$ \propd{converge}s to a \propd{limit} $x$ if
+    for any $\varepsilon\in\Rp$, there exists $\xN\in\Z$
+    such that for all $n>\xN$,
+    $\distance{x_n}{x}<\varepsilon$.
+  \\This condition can be expressed in any of the following forms:
+  \\$\indentx\begin{array}{>{\scy}rM@{\qquad}>{\scy}rM}
+      1. & The \opd{limit} of the sequence $\seqn{x_n}$ is $x$.             & 3. & $\ds\lim_{n\to\infty} \seqn{x_n} = x$.
+    \\2. & The sequence $\seqn{x_n}$ is \propd{convergent} with limit $x$.    & 4. & $\ds\seqn{x_n} \to x$.                
+  \end{array}$
+  \\A \fncte{sequence} that converges is \propd{convergent}.
+    %a \fncte{sequence} that does not converge is said to \propd{diverge}, or is \propd{divergent}.
+    %An element $x\in\setA$ is a \vald{limit point} of $\setA$ if it is the limit of some $\setA$-valued sequence $\seqn{x_n\in\setA}$.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  in \structe{metric space}:
+  \citerpgc{apostol1975}{73}{0201002884}{4.7},
+  \citerpg{rosenlicht}{51}{0486650383}
+  }
+\label{def:cauchy}
+\index{Cauchy sequences}
+\index{sequences!Cauchy}
+%---------------------------------------
+Let $\seqxZ{x_n\in\setX}$ be a \fncte{sequence} in a \structe{distance space} $\dspaceX$. % \xref{def:distance}.
+\\\defboxp{
+  The sequence $\seqn{x_n}$ is a \structd{Cauchy sequence} in $\dspaceX$ if
+  \\\indentx for every $\varepsilon\in\Rp$, there exists $\xN\in\Z$ such that $\forall n,m>\xN,\; \distance{x_n}{x_m}<\varepsilon$\qquad{\scs(\prope{Cauchy condition})}.
+  }
+\end{definition}
+
+
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpgc{blumenthal1953}{9}{0828402426}{{\scshape Definition 6.3}}
+%  %\citerpgc{berberian1961}{27}{0821819127}{Theorem~II.4.1}
+%  %\citerp{pedersen2000}{4}
+%  }
+%\label{def:dspace_continuous}
+%%---------------------------------------
+%%Let $\omsR$ be an \prope{ordered distance space} \xref{def:ods}
+%%on the \structe{set of real numbers} $\R$ with the \fncte{usual metric} $\distancea{x}{y}\eqd\abs{x-y}$.
+%Let $\dspaceX$ be a \structe{distance space} \xref{def:dspace}.
+%\\\defboxp{
+%  The \fncte{distance function} $\distancen$ is \propd{continuous} at $\opair{x}{y}$ if
+%  \\\indentx$
+%  \mcom{\seqn{x_n} \to x \text{ and } \seqn{y_n} \to y}{convergence in $\dspaceX$}
+%  \quad \implies \quad
+%  \mcom{\seqn{\distance{x_n}{y_n}} \to \distance{x}{y}}{convergence in $\opair{\R}{\distancean}$}
+%  $\\
+%  The \fncte{distance function} $\distancen$ is \propd{continuous} if $\distancen$ is \prope{continuous} at each $\opair{x}{y}$ in $\setX^2$.
+%  }
+%\end{definition}
+
+
+A \fncte{sequence} is said to be \prope{complete} in a \structe{distance space} $\dspaceX$
+if every \prope{Cauchy sequence} in $\dspaceX$ \prope{converges} to a \struct{limit} in $\dspaceX$ (next definition).
+%---------------------------------------
+\begin{definition}
+\footnote{
+  in \structe{metric space}:
+  \citerpg{rosenlicht}{52}{0486650383}
+  }
+\label{def:complete}
+%---------------------------------------
+Let $\seqxZ{x_n\in\setX}$ be a \fncte{sequence} in a \structe{distance space} $\dspaceX$.
+\\\defboxt{
+  The sequence $\seqxZ{x_n\in\setX}$ is \propd{complete} in $\dspaceX$ if
+  \\\indentx$\text{$\seqn{x_n}$ is \prope{Cauchy} in $\dspaceX$}
+    \quad \implies \quad
+    \text{$\seqn{x_n}$ is \prope{convergent} in $\dspaceX$.}$
+  }
+\end{definition}
+
+
+%=======================================
+\subsection{Properties}
+%=======================================
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  in \structe{metric space}:
+  \citerpgc{giles1987}{49}{0521359287}{Theorem 3.30}
+  }
+\label{prop:cauchy==>bounded}
+%---------------------------------------
+Let $\seqxZ{x_n\in\setX}$ be a \fncte{sequence} in a \structe{distance space} $\dspaceX$. % \xref{def:dspace}.
+\propbox{
+  \brb{\begin{array}{M}
+    $\seqn{x_n}$ is \prope{Cauchy} 
+    in $\dspaceX$
+  \end{array}}
+  \qquad\implies\qquad
+  \brb{\begin{array}{M}
+    $\seqn{x_n}$ is \prope{bounded} 
+    in $\dspaceX$
+  \end{array}}
+}
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \text{$\seqn{x_n}$ is \prope{Cauchy}}
+    &\implies \text{for every $\varepsilon\in\Rp$},\; \exists\xN\in\Z \st \forall n,m>\xN,\; \distance{x_n}{x_m}<\varepsilon
+    \quad \text{(by \pref{def:cauchy})}
+  \\&\implies \exists\xN\in\Z \st \forall n,m>\xN,\; \distance{x_n}{x_m}<1
+    \qquad \text{(arbitrarily choose $\varepsilon\eqd1$)}
+  \\&\implies \exists\xN\in\Z \st \forall n,m\in\Z,\; \distance{x_n}{x_{m+1}}<\max\setn{\setn{1}\setu\set{\distance{x_p}{x_q}}{p,q\ngtr N}}
+  \\&\implies \text{$\seqn{x_n}$ is \prope{bounded}}
+    \qquad \text{(by \prefp{def:bounded})}
+\end{align*}
+\end{proof}
+
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  in \structe{metric space}:
+  \citerpg{rosenlicht}{52}{0486650383}
+  }
+\label{prop:cauchy_subseq}
+%---------------------------------------
+Let $\seqxZ{x_n\in\setX}$ be a \fncte{sequence} in a \structe{distance space} $\dspaceX$. % \xref{def:dspace}.
+Let $\ff\in\clFzz$\ifsxref{relation}{def:clFxy} be a \prope{strictly monotone} function such that $\ff(n)<\ff(n+1)$.
+\propbox{
+  \mcom{\text{$\seq{x_n}{n\in\Z}$ is \prope{Cauchy}}}{sequence is \prope{Cauchy}}
+  \qquad\implies\qquad
+  \mcom{\text{$\seq{x_{\ff(n)}}{n\in\Z}$ is \prope{Cauchy}}}{subsequence is also \prope{Cauchy}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  &\text{$\seq{x_n}{n\in\Z}$ is \prope{Cauchy}}
+  \\&\implies \text{for any given } \varepsilon>0,\; \exists\xN \st \forall n,m>\xN,\; \distance{x_n}{x_m}<\varepsilon
+    &&        \text{by \prefp{def:cauchy}}
+  \\&\implies \text{for any given } \varepsilon>0,\; \exists\xN' \st \forall \ff(n),\ff(m)>\xN',\; \distance{x_{\ff(n)}}{x_{\ff(m)}}<\varepsilon
+  \\&\implies \seq{x_{\ff(n)}}{n\in\Z} \text{ is \prope{Cauchy}}
+    &&        \text{by \prefp{def:cauchy}}
+\end{align*}
+\end{proof}
+
+
+
+%%---------------------------------------
+%\begin{proposition}
+%\footnote{
+%  \citerppg{deza2014}{6}{7}{3662443422}
+%  }
+%%---------------------------------------
+%\propboxt{
+%  If $\fq$ is a \fncte{quasi-metric} \xref{def:qmetric}, then 
+%  \\\indentx$\begin{array}{rcl MD}
+%    \distancen_1(x,y) &\eqd& \min\setn{\fq(x,y),\fq(y,x)}                    & is a \fncte{metric} & (\fncte{bi-distance}).\\
+%    \distancen_2(x,y) &\eqd& \brp{\fq^r(x,y),\fq^r(y,x)}^\frac{1}{r},\,r\ge1 & is a \fncte{metric}.
+%  \end{array}$
+%  }
+%\end{proposition}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  in \structe{metric space}:
+  \citerpgc{kubrusly2001}{128}{0817641742}{Theorem 3.40},
+  \citerpgc{haaser1991}{75}{0486665097}{6$\cdot$10, 6$\cdot$11 Propositions},
+  \citerpgc{bryant1985}{40}{0521318971}{Theorem 3.6, 3.7},
+  \citerppg{sutherland1975}{123}{124}{0198531613} %{Proposition 9.23}
+  %\citerpgc{rosenlicht}{52}{0486650383}{Proposition}\\
+  }
+\label{thm:comcls}
+%\label{prop:comcls_com}
+%---------------------------------------
+%Let $\dspaceX$ be a \structe{metric space}.
+%Let $\dspaceA$ be a \structe{subspace} of a \structe{distance space} $\dspaceX$ \xref{def:dspace}.
+Let $\dspaceX$ be a \structe{distance space}. % \xref{def:dspace}.
+%Let $\setA$ be a subset of $\setX$.
+Let $\clsA$ be the \structe{closure} \xref{def:clsA} of a $\setA$ in a 
+\structe{topological space induced by $\dspaceX$}. % \xref{def:dspacetop}.
+\thmbox{
+  \brb{\begin{array}{FMMD}
+    1. & \vale{limit}s are \prope{unique} in $\dspaceX$ & \xref{def:dspace_converge} & and\\
+    2. & $\dspaceA$ is \prope{complete} in $\dspaceX$ & \xref{def:complete}        &
+  \end{array}}
+  \quad\implies\quad
+  \mcom{\text{$\setA$ is \prope{closed} in $\dspaceX$}}{$\setA=\clsA$}
+  %\\
+  %\brb{\begin{array}{FMD}
+  %  1. & $\dspaceX$ is \prope{complete} in $\dspaceX$ &  and \\
+  %  2. &  $\setA$ is \prope{closed} in $\dspaceX$       &($\setA=\clsA$)
+  %\end{array}}
+  %&\implies&
+  %\brb{\text{$\dspaceA$ is \prope{complete} in $\dspaceX$}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\setA\subseteq\clsA$: by \prefp{lem:intAAclsA}
+  \item Proof that $\clsA\subseteq\setA$ (proof that $x\in\clsA$ $\implies$ $x\in\setA$):
+    \begin{enumerate}
+      \item Let $x$ be a point in $\clsA$ ($x\in\clsA$).
+      \item Define a \fncte{sequence} of open balls $\seqn{\ball{x}{\frac{1}{1}},\,\ball{x}{\frac{1}{2}},\,\ball{x}{\frac{1}{3}},\,\ldots}$.
+      \item Define a \fncte{sequence} of points $\seqn{x_1,\,x_2,\,x_3,\,\ldots}$ such that $x_n\in\ball{x_n}{\frac{1}{n}}\seti\setA$.
+      \item Then $\seqn{x_n}$ is \prope{convergent} in $\setX$ with limit $x$ by \prefp{def:dspace_converge}
+      \item and  $\seqn{x_n}$ is \prope{Cauchy} in $\setA$ by \prefp{def:cauchy}.
+      %\item By the left hypothesis ($\dspaceA$ is \prope{complete}), $\seqn{x_n}$ is therefore also \prope{convergent} in $\setA$.\\
+      \item By the hypothesis 2, $\seqn{x_n}$ is therefore also \prope{convergent} in $\setA$.\\
+            Let this limit be $y$. Note that $y\in\setA$.\label{item:com_cls_yY}
+      %\item By \prefp{prop:xn_to_xy}, limits are \prope{unique}, so $y=x$. \label{item:com_cls_yx}
+      \item By hypothesis 1, limits are \prope{unique}, so $y=x$. \label{item:com_cls_yx}
+      \item Because $y\in\setA$ (\pref{item:com_cls_yY}) and $y=x$ (\pref{item:com_cls_yx}), so $x\in\setA$.
+      \item Therefore, $x\in\clsA\implies x\in\setA$ and $\clsA\subseteq\setA$.
+    \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{proposition}
+\footnote{
+  in \structe{metric space}:
+  \citerpg{rosenlicht}{46}{0486650383}
+  }
+%---------------------------------------
+Let $\seq{x_n}{n\in\Z}$ be a sequence in a \structe{distance space} $\dspaceX$.
+Let $\ff:\Z\to\Z$ be a strictly increasing function such that $\ff(n)<\ff(n+1)$.
+\propbox{
+  \mcomr{\seq{x_n}{n\in\Z} \to x}{sequence converges to limit $x$}
+  \qquad\implies\qquad
+  \mcoml{\seq{x_{\ff(n)}}{n\in\Z} \to x}{subsequence converges to the same limit $x$}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \seq{x_n}{n\in\Z} \to x
+    &\implies \forall \varepsilon>0,\; \exists\xN \st \forall n>\xN,\; \distance{x_n}{x}<\varepsilon
+    &&        \text{by \prefp{thm:ms_converge}}
+  \\&\implies \forall \varepsilon>0,\; \exists \ff(N) \st \forall \ff(n)>\ff(N),\; \distance{x_{\ff(n)}}{x}<\varepsilon
+  \\&\implies \seq{x_{\ff(n)}}{n\in\Z} \to x
+    &&        \text{by \prefp{thm:ms_converge}}
+\end{align*}
+\end{proof}
+
+
+
+%%---------------------------------------
+%\begin{theorem}
+%\footnote{
+%  \citerpgc{kubrusly2001}{128}{0817641742}{Corollary 3.41}
+%  }
+%\label{thm:comcomcls}
+%%---------------------------------------
+%%Let $\dspaceA$ be a \structe{subspace} of a metric space $\dspaceX$ ($\setA\subseteq\setX$).
+%Let $\dspaceX$ be a \structe{metric space} \xref{def:metric}.
+%Let $\setA$ be a subset of $\setX$.
+%Let $\clsA$ be the \structe{closure} \xref{def:clsA} of $\setA$ in $\dspaceX$.
+%\thmboxp{
+%If $\dspaceX$ is \prope{complete} \xref{def:complete}, then
+%  \\\indentx$
+%  \brb{\text{$\dspaceA$ is \prope{complete}}}
+%  \qquad\iff\qquad
+%  \mcom{\text{$\setA$ is \prope{closed} in $\dspaceX$}}{$\setA=\clsA$}
+%  $
+%  }
+%\end{theorem}
+%\begin{proof}
+%Note that in this corollary, the metric space $\dspaceX$ is assumed to be \prope{complete}.
+%\begin{enumerate}
+%  \item Proof that \prope{complete} $\implies$ \prope{closed}: by \pref{thm:comcls} (1).
+%  \item Proof that \prope{complete} $\impliedby$ \prope{closed}: by \prope{complete} hypothesis and \pref{thm:comcls} (2).
+%    \begin{enumerate}
+%      \item By left hypothesis 2, $\setA$ is closed in $\dspaceX$.
+%      \item By \prefpp{thm:insubset_closed} and because $\setA$ is closed in $\dspaceX$,
+%            sequences converge in $\setA$.
+%      \item Therefore by \prefpp{def:complete}, $\dspaceA$ is complete.
+%    \end{enumerate}
+%\end{enumerate}
+%\end{proof}
+
+%%---------------------------------------
+%\begin{example}
+%%---------------------------------------
+%Let $\Q$ be the set of \sete{rational numbers}.
+%\exbox{%\begin{array}{ll}
+%  \text{The metric space $(\Q,\distance{x}{y}=\abs{x-y})$ is {\em not} \prope{complete}.}
+%  %2. & \text{The metric space $(\R,\distance{x}{y}=\abs{x-y})$ {\em is} complete.    }\\
+%}%\end{array}}
+%\end{example}
+%\begin{proofns}
+%Let $\seq{x_n}{n\in\Znn}$ be the sequence of values approximating $\pi$ truncated to $n$
+%decimal points:
+%  \[ \seq{x_n}{n\in\Znn} \eqd \seqn{3,\, 3.1,\, 3.14,\, 3.141,\, 3.1415,\, 3.14159,\, 3.141592,\,\ldots} \]
+%This is a Cauchy sequence.
+%However, this sequence (and all sequences converging to an irrational number)
+%does not converge to a rational number ($\Q$) and thus is not in
+%the metric space $(\Q,\distancen)$ and thus $(\Q,\distancen)$ is {\em not complete}.
+%%But of course this sequence (and all other like sequences) do converge to real numbers and thus
+%%$(\R,\distancen)$ is a complete metric space.
+%\end{proofns}
+
+%%---------------------------------------
+%\begin{example}[\exmd{Cauchy's convergence criterion}/\exmd{Cauchy's criterion}]
+%\footnote{
+%  \citerpgc{sohrab2003}{54}{0817642110}{Theorem 2.2.5}
+%  }
+%%---------------------------------------
+%Let $\seqxZ{r_n\in\R}$ be a \textbf{real} sequence.
+%\exboxp{
+%  The metric space $\opair{\seq{r_n}}{\abs{r_n-r_m}}$ is \prope{complete}.
+%  }
+%\end{example}
+
+%---------------------------------------
+\begin{theorem}[\thmd{Cantor intersection theorem}]
+\footnote{
+  in \structe{metric space}:
+  \citerp{davis2005}{28},
+  \citerp{hausdorff1937e}{150}
+  }
+\label{thm:cantor_int}
+\label{thm:cit}
+\index{Cantor intersection theorem}
+\index{theorems!Cantor intersection}
+%---------------------------------------
+Let $\dspaceX$ be a \prope{distance space} \xref{def:dspace},
+$\seqnZ{\setA_n}$ a \fncte{sequence} with each $\setA_n\in\psetX$, and $\seto{\setA}$ the number of elements in $\setA$.
+\thmbox{
+  \brb{\begin{array}{FMCMD}
+    1. & $\dspaceX$ is \prope{complete}                &                 & \xref{def:complete}       & and \\
+    2. & $\setA_n$ is \prope{closed}                     & \forall n\in\Zp & \xref{def:closedset}    & and \\
+    3. & $\diam \setA_{n} \ge \diam \setA_{n+1}$         & \forall n\in\Zp & \xref{def:diam}         & and \\
+    4. & $\diam \seqxZ{\setA_n} \to 0$                   &                 & \xref{def:dspace_limit}
+  \end{array}}
+  \qquad\implies\qquad
+  \brb{\seto{\ds\setopi_{n\in\Zp} \setA_n } = 1}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+\item Proof that $\seto{\setopi_{n\in\Z} \setA_n}<2$:
+  \begin{enumerate}
+    \item Let $\setA\eqd\seti \setA_n$.
+    \item $x\ne y$ and $\{x,y\}\in \setA \implies \distance{x}{y}>0$ and $\{x,y\}\subseteq \setA_n \forall n$
+    \item $\exists n \st \diam \setA_n < \distance{x}{y}$ by left hypothesis 4
+    \item $\implies \exists n \st \sup\set{\distance{x}{y}}{x,y\in \setA_n}<\distance{x}{y}$
+    \item This is a contradiction, so $\{x,y\}\notin \setA$ and $\seto{\setopi \setA_n}<2$.
+  \end{enumerate}
+                                                 
+\item Proof that $\seto{\seti \setA_n}\ge1$:
+  \begin{enumerate}
+    \item Let $x_n\in \setA_n$ and $x_m\in \setA_m$
+    \item $\forall \varepsilon,\; \exists\xN\in\Zp \st \setA_N < \varepsilon$
+    \item $\forall m,n>\xN,\; x_n\in \setA_n\subseteq \setA_N$ and $x_m\in \setA_m\subseteq \setA_N$
+    \item $\distance{x_n}{x_m}\le\diam \setA_N < \varepsilon \implies \{x_n\}$ is a Cauchy sequence
+    \item Because $\{x_n\}$ is complete, $x_n\to x$.
+    \item $\implies x\in \cls{\brp{\setA_n}} = \setA_n$
+    \item $\implies \seto{\setA_n}\ge1$
+  \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{blumenthal1953}{9}{0828402426}{{\scshape Definition 6.3}}
+  }
+\label{def:dspace_cont}
+%---------------------------------------
+Let $\dspaceX$ be a \structe{distance space}.
+Let $\setC$ be the set of all \prope{convergent} sequences in $\dspaceX$.
+\thmboxp{
+  The \fncte{distance function} $\distancen$ is \propd{continuous} in $\dspaceX$ if
+  \\\indentx$\ds
+    \seqn{x_n},\seqn{y_n}\in\setC
+    \quad\implies\quad
+    \lim_{n\to\infty}\seqn{\distance{x_n}{y_n}}=\distance{\lim_{n\to\infty}\seqn{x_n}}{\lim_{n\to\infty}\seqn{y_n}}
+    $.\\
+  A \fncte{distance function} is \propd{discontinuous} if it is not \prope{continuous}.
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+Rather than defining \prope{continuity} of a \structe{distance function} in terms of 
+the \thme{sequential characterization of continuity} \xref{def:dspace_cont},
+we could define continuity using an \thme{inverse image characterization of continuity}" \xref{def:dspacetop}.
+Assuming an equivalent \structe{topological space} is used for both characterizations, the 
+two characterizations are equivalent \xref{thm:limcont}.
+In fact, one could construct an equivalence such as the following:
+%%---------------------------------------
+%\begin{corollary}
+%\label{cor:limcont}
+%%---------------------------------------
+%Let $\dspaceX$ be a \structe{distance space}.
+%Let $\topspaceX$ be the \structe{topological space induced by $\dspaceX$} \xref{def:dspacetop}.
+%Let $\topspace{\R}{\topS}$ be the \structe{usual topological space over $\R$}.
+%Let $\setC$ be the set of all \prope{convergent} sequences in $\dspaceX$.
+\rembox{
+  \brb{\begin{tabstr}{0.75}\begin{array}{M}
+    \\
+    $\distancen$ is \prope{continuous}  in $\clF{\setX^2}{\R}$\\
+    \xref{def:continuous}\\
+    {\scs(\thme{inverse image characterization of continuity})}
+  \end{array}\end{tabstr}}
+  \quad\iff\quad
+  \brb{\begin{tabstr}{0.75}\begin{array}{M}
+    $\ds\seqn{x_n},\seqn{y_n}\in\setC\quad\implies$\\
+    $\ds\lim_{n\to\infty}\seqn{\distance{x_n}{y_n}}=\distance{\lim_{n\to\infty}\seqn{x_n}}{\lim_{n\to\infty}\seqn{y_n}}$\\
+    \xref{def:converge}\\
+    {\scs(\thme{sequential characterization of continuity})}
+  \end{array}\end{tabstr}}
+  }\\
+%\end{corollary}
+%\begin{proof}
+Note that just as $\seqn{x_n}$ is a sequence in $\setX$, so the ordered pair $\opair{\seqn{x_n}}{\seqn{y_n}}$
+is a sequence in $\setX^2$.
+The remainder %of this proof 
+follows from \prefpp{thm:limcont}.
+%\end{proof}
+However, use of the \thme{inverse image characterization} is somewhat troublesome
+because we would need a topology on $\setX^2$, and we don't immediately have one defined and ready to use.
+In fact, we don't even immediately have a distance space on $\setX^2$ defined or even open balls in such a distance space.
+The result is, for the scope of this chapter, it is arguably not worthwhile constructing the extra structure, 
+but rather this chapter instead
+uses the \thme{sequential characterization} as a definition \xref{def:dspace_cont}.
+\end{remark}
+
+%=======================================
+\subsection{Examples}
+%=======================================
+Similar distance functions and several of the observations for the examples 
+in this section can be found in \citerppg{blumenthal1953}{8}{13}{0828402426}.
+
+In a \structe{metric space}, all \structe{open ball}s are \prope{open},
+the \structe{open ball}s form a \structe{base} for a \structe{topology}, 
+the limits of \prope{convergent} sequences are \prope{unique}, 
+and the \fncte{metric function} is \prope{continuous}.
+In the \structe{distance space} of the next example, none of these properties hold.
+%---------------------------------------
+\begin{example}
+\footnote{
+  A similar distance function $\distancen$ and \prefp{item:dspace_01} 
+  can in essence be found in \citerpg{blumenthal1953}{8}{0828402426}.
+  %Definitions for \pref{ex:dspace_01}:
+  %$\opair{x}{y}$: \prefpp{def:opair};
+  %$\intoo{a}{b}$ and $\intoc{a}{b}$: \prefpp{def:intxx};
+  %$\abs{x}$: \prefpp{def:abs};
+  %$\clF{\R\times\R}{\R}$: \prefpp{def:clFxy};
+  %\fncte{distance}: \prefpp{def:distance};
+  %\structe{open ball}: \prefpp{def:ball};
+  %\prope{open}: \prefpp{def:dspace_open};
+  %\structe{base}: \prefpp{def:base};
+  %\structe{topology}: \prefpp{def:topology};
+  %\structe{open set}: \prefpp{def:dspace_open};
+  %\structe{topological space induced by $\dspaceRd$}: \prefpp{def:dspacetop};
+  %\prope{discontinuous}: \prefpp{def:dspace_cont};
+  }
+\label{ex:dspace_01}
+%---------------------------------------
+%Let $\setX\eqd\R$.
+Let $\opair{x}{y}$ be an \structe{ordered pair} in $\R^2$.
+Let $\intoo{a}{b}$ be an \structe{open interval} and $\intoc{a}{b}$ a \structe{half-open interval} in $\R$.
+Let $\abs{x}$ be the \fncte{absolute value} of $x\in\R$.
+The function $\distance{x}{y}\in\clF{\R\times\R}{\R}$ such that
+\\\indentx$\distance{x}{y} \eqd \brb{\begin{array}{lMD}
+      y         & $\forall \opair{x}{y}\in\setn{4}\times\intoc{0}{2}$ & (\structe{vertical half-open interval})\\
+      x         & $\forall \opair{x}{y}\in\intoc{0}{2}\times\setn{4}$ & (\structe{horizontal half-open interval})\\
+      \abs{x-y} & otherwise                                           & (\prope{Euclidean})
+    \end{array}}$\quad is a \fncte{distance} on $\R$.
+\\
+Note some characteristics of the \structe{distance space} $\dspaceRd$:
+\begin{enumerate}
+  \item $\dspaceRd$ is not a \structe{metric space} because $\distancen$ does not satisfy the \prope{triangle inequality}:
+    \\\indentx$\distance{0}{4}
+        \eqd \abs{0-4} = 4
+        \nleq 2
+        = \abs{0-1}     + 1
+        \eqd \distance{0}{1} + \distance{1}{4}
+       $
+
+  \item Not every \structe{open ball} in $\dspaceRd$ is \prope{open}.\label{item:dspace_01_oballo}\\
+        For example, the \structe{open ball} $\ball{3}{2}$ is \prope{not open} 
+        because $4\in\ball{3}{2}$ \emph{but} for all $0<\varepsilon<1$
+        \\\indentx$\ball{4}{\varepsilon}=\intoo{4-\varepsilon}{4+\varepsilon}\setu\intoo{0}{\varepsilon}
+           \nsubseteq\intoo{1}{5}
+           = \ball{3}{2}$
+
+  \item The \structe{open balls} of $\dspaceRd$ do not form a \structe{base} for a \structe{topology} on $\R$.\\
+        This follows directly from \pref{item:dspace_01_oballo} and \prefpp{thm:baseoball}.
+
+  \item In the \structe{distance space} $\dspaceRd$, limits are \prope{not unique};\\
+        For example, the sequence $\seqn{\sfrac{1}{n}}_1^\infty$ converges both to the limit $0$ and the limit $4$ in $\dspaceRd$:
+        \label{item:dspace_01}
+    \\\indentx$\begin{array}{*{5}{>{\ds}l}}
+      \lim_{n\to\infty}\distance{x_n}{0} 
+        &\eqd \lim_{n\to\infty}\distance{\sfrac{1}{n}}{0}
+        &\eqd \lim_{n\to\infty}\abs{\sfrac{1}{n}-0}
+        &= 0
+       %&\implies \lim_{n\to\infty}\seqn{\sfrac{1}{n}}=0
+        &\quad\implies\quad \seqn{\sfrac{1}{n}}\to0
+        \\
+      \lim_{n\to\infty}\distance{x_n}{4} 
+        &\eqd \lim_{n\to\infty}\distance{\sfrac{1}{n}}{4}
+        &\eqd \lim_{n\to\infty}\seqn{\sfrac{1}{n}}
+        &= 0
+       %&\implies \lim_{n\to\infty}\seqn{\sfrac{1}{n}}=4
+        &\quad\implies\quad \seqn{\sfrac{1}{n}}\to4
+    \end{array}$
+
+  \item The \structe{topological space $\topspaceX$ induced by $\dspaceRd$} also 
+        yields limits of $0$ and $4$ for the sequence $\seqn{\sfrac{1}{n}}_1^\infty$, just 
+        as it does in \pref{item:dspace_01}.
+        This is largely due to the fact that, for small $\varepsilon$, 
+        the open balls $\ball{0}{\varepsilon}$ and $\ball{4}{\varepsilon}$ are \prope{open}.
+    \begin{align*}
+        \text{$\ball{0}{\varepsilon}$ is \prope{open}}
+          &\implies \text{for each $\setU\in\topT$ that contains $0$, $\exists\xN\in\Zp \st \sfrac{1}{n}\in\setU\quad\forall n>\xN$}
+        \\&\iff \seqn{\sfrac{1}{n}}\to0
+          \qquad\text{by definition of \prope{convergence} \xref{def:converge}}
+        \\
+        \text{$\ball{4}{\varepsilon}$ is \prope{open}}
+          &\implies \text{for each $\setU\in\topT$ that contains $4$, $\exists\xN\in\Zp \st \sfrac{1}{n}\in\setU\quad\forall n>\xN$}
+        \\&\iff \seqn{\sfrac{1}{n}}\to4
+          \qquad\text{by definition of \prope{convergence} \xref{def:converge}}
+    \end{align*}  
+
+  %\item The distance function $\distancen\in\clF{\R\times\R}{\R}$ is \prope{discontinuous} \label{item:dspace_01_discon}
+  %      with respect to the \structe{Euclidean topologies of $\R$ and $\R^2$}.
+  %      Consider the following: 
+  %      Let $\opair{x}{y}\in\R^2$ be an \structe{ordered pair}.
+  %      Let $\ball{\opair{x}{y}}{\varepsilon}$ be an \structe{open ball} in the \structe{Euclidean metric space}
+  %      $\metspace{\R^2}{\metrican}$ where
+  %      \\$\metrica{\opair{x_1}{x_2}}{\opair{y_1}{y_2}}\eqd\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}$\qquad%
+  %        ${\scy\forall \opair{x_1}{x_2},\opair{y_1}{y_2}\in\R^2}$.\footnote{
+  %      Note that $\C\eqd\R^2$, where $\C$ is the set of \structe{complex numbers}, and thus $\dspaceRd$ 
+  %      can be viewed as a \structe{distance space} over $\C$ and the  
+  %      \fncte{distance function} $\metrican$ somewhat like a \fncte{projection} 
+  %      from $\C^2=\R^4$ onto a ``real axis" $\R$ in $\C$.
+  %      It is like a \fncte{projection} in the sense that it maps from $\C^2=\R^4$ to $\R$ and also because 
+  %      it has a property similar to the \prope{idempotent} property in the sense that 
+  %      \\\indentx$\metrica{\opair{\metrica{\opair{x_1}{x_2}}{\opair{y_1}{y_2}}}{0}}{\opair{0}{0}}=
+  %      \metrica{\opair{x_1}{x_2}}{\opair{y_1}{y_2}}$ .
+  %      } 
+  %      \qquad Then
+  %      \begin{align*}
+  %        \distancen^{-1}\brs{\intoo{0}{2}}
+  %          &\supseteq \setn{4}\times\intoo{0}{2}
+  %          && \text{by definition of \fncte{distance} $\distancen$}
+  %        \\&\nsupseteq\ball{\opair{4}{1}}{\varepsilon}\quad\forall \varepsilon>0
+  %          && \text{by definition of \structe{open ball} $\balln$}
+  %        \\&\implies \text{$\distancen^{-1}\brs{\intoo{0}{2}}$ is \prope{not open}}
+  %          &&\text{by \prefpp{def:dspace_open}}
+  %        \\&\implies \text{$\distancen$ is \prope{discontinuous}}
+  %          &&\text{by \prefpp{def:continuous}}
+  %      \end{align*}
+
+  \item The distance function $\distancen$ is \prope{discontinuous} \xref{def:dspace_cont}:
+  %\item As an alternative to the \pref{item:dspace_01_discon} method of using \structe{open set}s to prove that $\distancen$ is \prope{discontinuous}, we could use convergent sequences to prove the same:
+    \begin{align*}
+      \lim_{n\to\infty}\seqn{\distance{1-\sfrac{1}{n}}{4-\sfrac{1}{n}}}
+        &=\lim_{n\to\infty}\seqn{\abs{\brp{1-\sfrac{1}{n}}-\brp{4-\sfrac{1}{n}}}}
+         = \abs{1-4} = 3 \neq 4 = \distance{0}{4}
+      \\&= \distance{\lim_{n\to\infty}\seqn{1-\sfrac{1}{n}}}{\lim_{n\to\infty}\seqn{4-\sfrac{1}{n}}}
+    \end{align*}
+   %which by \prefpp{cor:limcont} implies that $\distancen$ is \prope{discontinuous}.
+   %   \item Therefore, by \prefpp{cor:limcont}, $\distancen$ is \prope{discontinuous}.
+   % \end{enumerate}
+\end{enumerate}
+\end{example}
+
+In a \structe{metric space}, all \prope{convergent} sequences are also \prope{Cauchy}.
+However, this is not the case for all \structe{distance space}s, as demonstrated next:
+%---------------------------------------
+\begin{example}
+\footnote{
+  The distance function $\distancen$ and \prefp{item:dspace_1n_cauchy} 
+  can in essence be found in \citerpg{blumenthal1953}{9}{0828402426}
+  }
+\label{ex:dspace_1n}
+%---------------------------------------
+%Let $\setX\eqd\set{\frac{1}{n}}{n=1,2,3,\ldots}\setu\setn{0}$ be a \structe{set}.
+%The function $\distance{x}{y}\in\clF{\setX^2}{\R}$ such that
+The function $\distance{x}{y}\in\clF{\R\times\R}{\R}$ such that
+\\\indentx$\distance{x}{y} \eqd \brb{\begin{array}{lMD}
+      \abs{x-y} & for $x=0$ or $y=0$ or $x=y$ & (\prope{Euclidean})\\
+      1         & otherwise                   & (\prope{discrete})
+    \end{array}}$\quad is a \fncte{distance} on $\R$. 
+\\
+Note some characteristics of the \structe{distance space} $\dspaceRd$:
+\begin{enumerate}
+  \item $\dspaceX$ is not a \structe{metric space} because the \prope{triangle inequality} does not hold:
+      \\\indentx
+        $\distance{\frac{1}{4}}{\frac{1}{2}}
+        = 1
+        \nleq \frac{3}{4}
+        = \abs{\frac{1}{4}-0}     + \abs{0-\frac{1}{2}}
+        = \distance{\frac{1}{4}}{0} + \distance{0}{\frac{1}{2}}
+        $
+
+  \item The \structe{open ball} $\ball{\frac{1}{4}}{\frac{1}{2}}$ is \prope{not open}
+        because for any $\varepsilon\in\Rp$, no matter how small,  \label{item:dspace_1n_oballo}
+        \\\indentx
+         $\ball{0}{\varepsilon} = \intoo{-\varepsilon}{+\varepsilon}
+            \nsubseteq \setn{0,\,\frac{1}{4}}
+            =\set{x\in\setX}{\distance{\frac{1}{4}}{x}<\frac{1}{2}}
+            \eqd\ball{\frac{1}{4}}{\frac{1}{2}}$
+  
+  \item Even though not all the \structe{open ball}s are \prope{open}, 
+        it is still possible to have an \structe{open set} in $\dspaceX$. 
+        For example, the set $\setU\eqd\setn{1,\,2}$ is \prope{open}:
+        \\\indentx$\begin{array}{rclclclcl}
+            \ball{1}{1}
+            &\eqd& \set{x\in\setX}{\distance{1}{x}<1}
+            &=& \setn{1}
+            &\subseteq& \setn{1,\,2}
+            &\eqd& \setU
+            \\
+            \ball{2}{1}
+            &\eqd& \set{x\in\setX}{\distance{2}{x}<1}
+            &=& \setn{2}
+            &\subseteq& \setn{1,\,2}
+            &\eqd& \setU
+          \end{array}$
+
+  \item By \pref{item:dspace_1n_oballo} and \prefpp{thm:baseoball}, 
+        the \structe{open ball}s of $\dspaceRd$ do not form a \structe{base} for a \structe{topology} on $\R$.
+
+  \item Even though the open balls in $\dspaceRd$ do not induce a topology on $\setX$, it is still possible to 
+        find a set of \structe{open set}s in $\dspaceX$ that \emph{is} a topology. 
+        For example, the set
+          $\setn{\emptyset,\,\setn{1,2},\,\R}$
+        is a topology on $\R$.
+
+  \item In $\dspaceRd$, limits of \prope{convergent} sequences are \prope{unique}:
+    \\\indentx$\ds
+      \seqn{x_n}\to x \quad\implies\quad
+      \lim_{n\to\infty}\distance{x_n}{x}=\brb{\begin{array}{rclMD}
+        \lim\abs{x_n-0} &=& 0 & for $x=0$ & OR\\
+            \abs{x-x}   &=& 0 & for constant $\seqn{x_n}$ for $n>\xN$ & OR\\
+                    1   &\neq& 0 & otherwise
+      \end{array}}$\\
+     which says that there are only two ways for a sequence to converge: either $x=0$ or the sequence eventually becomes constant
+     (or both). Any other sequence will \prope{diverge}. Therefore we can say the following:
+    \begin{enumerate}
+      \item If $x=0$ and the sequence is not constant, then the limit is \prope{unique} and $0$.
+      \item If $x=0$ and the sequence is constant, then the limit is \prope{unique} and $0$.
+      \item If $x\neq0$ and the sequence is constant, then the limit is \prope{unique} and $x$.
+      \item If $x\neq0$ and the sequence is not constant, then the sequence diverges and there is no limit.
+    \end{enumerate}
+
+  \item In $\dspaceRd$, a \prope{convergent} sequence is not necessarily \prope{Cauchy}.\label{item:dspace_1n_cauchy}
+    For example,
+    \begin{enumerate}
+      \item the sequence $\seqnZp{\sfrac{1}{n}}$ is \prope{convergent} with limit $0$:
+       $\ds\lim_{n\to\infty}\distance{\sfrac{1}{n}}{0}
+        = \lim_{n\to\infty}\sfrac{1}{n}
+        = 0$
+      \item However, even though $\seqn{\sfrac{1}{n}}$ is \prope{convergent}, it is \prope{not Cauchy}:
+       $\ds\lim_{n,m\to\infty}\distance{\sfrac{1}{n}}{\sfrac{1}{m}}
+       = 1
+       \neq 0
+      $
+    \end{enumerate}
+
+  \item The \fncte{distance function} $\distancen$ is \prope{discontinuous} in $\dspaceX$:
+    \begin{align*}
+        \lim_{n\to\infty}\seqn{\distance{\sfrac{1}{n}}{2-\sfrac{1}{n}}} 
+        &= 1 
+      \\&\neq 2 = \distance{0}{2} = \distance{\lim_{n\to\infty}\seqn{\sfrac{1}{n}}}{\lim_{n\to\infty}\seqn{2-\sfrac{1}{n}}}
+    \end{align*}
+    %which by \prefpp{cor:limcont} implies that $\distancen$ is \prope{discontinuous}.
+\end{enumerate}
+\end{example}
+
+%In any \structe{distance space} in which the \prope{triangle inequality} holds 
+%(a \structe{metric space}),
+%the \fncte{distance} function is always \prope{continuous}. % \xref{prop:metric_continuous}.
+%This is even true in the case of the \fncte{discrete metric} % \xref{ex:dmetric}
+%which is induced from any other metric using the \prope{non-continuous} 
+%\fncte{discrete metric preserving function}. % \xref{ex:mpf_discrete}.
+%However, distance functions are not all \prope{continuous}, as demonstrated next.
+%---------------------------------------
+\begin{example}
+\footnote{
+  The distance function $\distancen$ and \prefp{item:dspace_21_cont}
+  can in essence be found in \citerpg{blumenthal1953}{9}{0828402426}
+  }
+\label{ex:dspace_21}
+%---------------------------------------
+%Let $\setX\eqd\set{\frac{1}{n}}{n=1,2,3,\ldots}\setu\setn{0}$ be a \structe{set}.
+The function $\distance{x}{y}\in\clF{\R\times\R}{\R}$ such that
+\\\indentx$\distance{x}{y} \eqd \brb{\begin{array}{rMD}
+      2\abs{x-y} & $\forall \opair{x}{y}\in\setn{\opair{0}{1},\,\opair{1}{0}}$ & (\prope{dilated Euclidean})\\
+       \abs{x-y} & otherwise                                                   & (\prope{Euclidean})
+    \end{array}}$\quad is a \fncte{distance} on $\R$.
+\\
+Note some characteristics of the \structe{distance space} $\dspaceRd$:
+\begin{enumerate}
+  \item $\dspaceRd$ is \emph{not} a \structe{metric space} because $\distancen$ does \emph{not} 
+        satisfy the \prope{triangle inequality}:
+      \\\indentx$\ds\distance{0}{1}
+        \eqd 2\abs{0-1}
+        = 2
+        \nleq 1
+        = \abs{0-\sfrac{1}{2}}  + \abs{\sfrac{1}{2}-1}
+        \eqd \distance{0}{\sfrac{1}{2}} + \distance{\sfrac{1}{2}}{1}
+        $
+
+  \item The function $\distancen$ is \prope{discontinuous}: \label{item:dspace_21_cont}
+        %In particular, it is \prope{not continous} at the point $\opair{\lim\seqn{1-\frac{1}{n}}}{\lim\seqn{\frac{1}{n}}}$.
+    \begin{align*}
+      &\lim_{n\to\infty}\seqn{\distance{1-\sfrac{1}{n}}{\sfrac{1}{n}}}
+        \eqd\lim_{n\to\infty}\seqn{\abs{1-\sfrac{1}{n}-\sfrac{1}{n}}}
+        =1
+      \\&\qquad\neq 2 
+        =2\abs{0-1}
+        \eqd\distance{0}{1}
+        =\distance{\lim_{n\to\infty}\seqn{1-\sfrac{1}{n}}}{\lim_{n\to\infty}\seqn{\sfrac{1}{n}}}
+    \end{align*}
+    %which by \prefpp{cor:limcont} implies that $\distancen$ is \prope{discontinuous}.
+
+  \item In $\dspaceX$, \structe{open ball}s are \prope{open}: \label{item:dspace_21_oballo}
+    \begin{enumerate}
+      \item $\metrica{x}{y}\eqd\abs{x-y}$ is a \fncte{metric} and thus all open balls in that do not contain both $0$ and $1$ are \prope{open}.
+      \item By \prefpp{ex:mpf_ascaled}, $\metricb{x}{y}\eqd2\abs{x-y}$ is also a \fncte{metric} and thus all open balls containing $0$ and $1$ only are \prope{open}.
+      \item The only question remaining is with regards to open balls that contain $0$, $1$ and some other element(s) in $\R$.
+            But even in this case, open balls are still open. For example:
+        \\\indentx$\ball{-1}{2} = \intoo{-1}{2} = \intoo{-1}{1}\setu\intoo{1}{2}$\\
+        Note that both $\intoo{-1}{1}$ and $\intoo{1}{2}$ are \prope{open}, and thus by \prefpp{thm:dspace_open},
+        $\ball{-1}{2}$ is \prope{open} as well.
+    \end{enumerate}
+
+  \item By \pref{item:dspace_21_oballo} and \prefpp{thm:baseoball}, 
+        the \structe{open ball}s of $\dspaceRd$ \emph{do} form a \structe{base} for a \structe{topology} on $\R$.
+
+  \item In $\dspaceX$, the limits of \prope{convergent} sequences are \prope{unique}.
+        This is demonstrated in \prefpp{ex:pdspace_21} using additional structure developed in \pref{chp:pdspace}.
+
+  \item In $\dspaceX$, \prope{convergent} sequences are \prope{Cauchy}.\\
+        This is also demonstrated in \prefpp{ex:pdspace_21}.
+
+\end{enumerate}
+\end{example}
+
+The \fncte{distance function}s in \prefpp{ex:dspace_01}--\prefpp{ex:dspace_21} were all \prope{discontinuous}.
+In the absence of the \prope{triangle inequality} and in light of these examples, 
+one might try replacing the \prope{triangle inequality} with the weaker requirement of \prope{continuity}.
+However, as demonstrated by the next example, this also leads to an arguably disastrous result.
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerppg{blumenthal1953}{12}{13}{0828402426},
+  \citerppg{laos1998}{118}{119}{9810231806}
+  }
+\label{ex:dspace_xy2}
+%---------------------------------------
+The function $\distancen\in\clF{\R\times\R}{\R}$ such that $\distance{x}{y}\eqd(x-y)^2$ is a \fncte{distance} on $\R$.
+\\Note some characteristics of the \structe{distance space} $\dspaceRd$:
+\begin{enumerate}
+  \item $\dspaceRd$ is \emph{not} a \structe{metric space} because the \prope{triangle inequality} does not hold:
+    \\\indentx$\ds\distance{0}{2} \eqd \brp{0-2}^2 = 4 \nleq 2 = \brp{0-1}^2 + \brp{1-2}^2 \eqd \distance{0}{1} + \distance{1}{2} $
+
+  \item The \fncte{distance function} $\distancen$ is \prope{continuous} in $\dspaceX$.
+        This is demonstrated in the more general setting of \pref{chp:pdspace} in \prefpp{ex:pdspace_xy2}.
+
+  \item Calculating the length of curves in $\dspaceX$ leads to a paradox:\footnote{
+        This is the method of ``inscribed polygons" for calculating the length of a curve and goes back to Archimedes:
+        \citerpg{brunschwig2003}{26}{0674021568},
+        \citerpc{walmsley1920}{200}{\textsection158},
+        }
+    \begin{enumerate}
+      \item Partition $\intcc{0}{1}$ into $2^\xN$ consecutive line segments connected at the points 
+            \\\indentx$\seqn{0,\,\frac{1}{2^\xN},\,\frac{2}{2^\xN},\,\frac{3}{2^\xN},\,\ldots,\,\frac{2^{\xN-1}1}{2^\xN},\,1}$
+      \item Then the distance, as measured by $\distancen$, between any two consecutive points is
+            \\\indentx$\distance{p_n}{p_{n+1}}\eqd\brp{p_n-p_{n+1}}^2=\brp{\frac{1}{2^\xN}}^2=\frac{1}{2^{2\xN}}$
+      \item But this leads to the paradox that the total length of $\intcc{0}{1}$ is 0:
+            \\\indentx$\ds %1=\brp{0-1}^2\eqd\distance{0}{1}
+              \lim_{\xN\to\infty}\sum_{n=0}^{2^{\xN}-1}\frac{1}{2^{2\xN}}
+              =\lim_{\xN\to\infty}\frac{2^\xN}{2^{2\xN}}
+              =\lim_{\xN\to\infty}\frac{1}{2^{\xN}}
+              =0
+             $
+    \end{enumerate}
+\end{enumerate}
+\end{example}
 
 %======================================
 \section{Sequences in metric spaces}
 %======================================
-One of the most important applications of \structe{metric space}s\ifsxref{metric}{def:metric} in analysis is the concept 
-of \prope{convergence}.
-Loosely speaking, a sequence that converges somehow implies that its elements are ``getting closer and closer" to some value.
-In a metric space, there are two standard types of sequences often used to describe this:
-%We say that a sequence $\seqn{x_n}$ \hie{converges} to a value $x$ in a 
-%metric space $\opair{\spX}{\metricn}$
-%when the distance $\metric{x_n}{x}$ between $x$ and $x_n$ approaches $0$ as $n$ approaces infinity.
-%There are two basic kinds of sequences that ``converge":\\
-\\\begin{tabular}{@{\quad}lll}
-  \circOne & \prope{convergent} sequence\,: & The elements of the sequence approach a fixed value $x$ 
-  \\       &                            & \xrefP{thm:ms_converge}
-  \\
-  \circTwo & \prope{Cauchy} sequence\,:     & The elements of the sequence approach each other        
-  \\       &                            & \xrefP{def:cauchy}
-\end{tabular}
-\\
-The \prope{convergent} condition is ``stronger" than the \prope{Cauchy} condition
-in the sense that all convergent sequences are Cauchy
-but not all Cauchy sequences are convergent \xref{thm:convergent==>cauchy}.
-If however all the Cauchy sequences in a metric space are also convergent sequences
-(each sequence converges to a specific point) {\em and}
-each of those convergent points is {\em inside} the metric space,
-then that metric space is said to be \prope{complete} \xref{def:ms_complete}.
 
 %=======================================
 \subsection{Cauchy sequences}
 %=======================================
+\ifdochasnot{distance}{
 %---------------------------------------
 \begin{definition}
 \footnote{
@@ -325,6 +1135,7 @@ then that metric space is said to be \prope{complete} \xref{def:ms_complete}.
   \\&  \mcom{\text{for every } \varepsilon\in\Rp,\; \exists\xN\in\Z \st \forall n,m>\xN,\; \metric{x_n}{x_m}<\varepsilon}{\prope{Cauchy condition}}.
 \end{array}}
 \end{definition}
+}
 
 %---------------------------------------
 \begin{lemma}
@@ -336,7 +1147,7 @@ then that metric space is said to be \prope{complete} \xref{def:ms_complete}.
 Let $\seqxZ{x_n\in\setX}$ be a sequence in the metric space $\metspaceX$.
 \lembox{
   \brb{\begin{array}{M}
-    $\seqn{x_n}$ is \prope{Cauchy}\\ 
+    $\seqn{x_n}$ is \prope{Cauchy} \xref{def:cauchy}\\ 
     in $\metspaceX$
   \end{array}}
   \qquad\implies\qquad
@@ -358,10 +1169,6 @@ Let $\seqxZ{x_n\in\setX}$ be a sequence in the metric space $\metspaceX$.
     \qquad \text{(by definition of \prope{bounded}\ifsxref{latb}{def:bounded})}
 \end{align*}
 \end{proof}
-
-
-
-
 
 %---------------------------------------
 \begin{proposition}
@@ -387,9 +1194,6 @@ Let $\ff:\Z\to\Z$ be a strictly increasing function such that $\ff(n)<\ff(n+1)$.
     &&        \text{by \prefp{def:cauchy}}
 \end{align*}
 \end{proof}
-
-
-
 
 %=======================================
 \subsection{Convergence in Metric Space}
@@ -440,7 +1244,6 @@ Let $\seqxZ{x_n\in\setX}$ be a  sequence in $\metspaceX$.
 %    \end{align*}
 %\end{enumerate}
 \end{proof}
-
 
 A sequence that is \prope{convergent} is always \prope{Cauchy} (next theorem).
 However, in a metric space, the converse is not true---a sequence that is \prope{convergent} is not in general \prope{Cauchy}.
@@ -521,9 +1324,6 @@ Let $\ff:\Z\to\Z$ be a strictly increasing function such that $\ff(n)<\ff(n+1)$.
   \\\implies& \seqn{x_n} \text{ is convergent.}
 \end{align*}
 \end{proof}
-
-
-
 
 %---------------------------------------
 \begin{proposition}
@@ -635,19 +1435,19 @@ Let $\ff:\Z\to\Z$ be a strictly increasing function such that $\ff(n)<\ff(n+1)$.
 %=======================================
 \subsection{Complete metric spaces}
 %=======================================
-%Even though a convergent sequence is always Cauchy,
-%not all Cauchy sequences are convergent.
-%That is, the points of a sequence may diverge less and less from each other
-%as $n\to\infty$ (Cauchy sequence),
-%they still may not converge to a single point
-%(which if they did they would be a convergent sequence).
-%However, if all the Cauchy sequences in a \prope{metric space}\index{space!metric} do converge,
-%and they all converge to points inside the metric space,
-%then that \prope{metric space}\index{space!metric} is called a {\em complete} \prope{metric space}\index{space!metric}.
+Even though a convergent sequence is always Cauchy,
+not all Cauchy sequences are convergent.
+That is, the points of a sequence may diverge less and less from each other
+as $n\to\infty$ (Cauchy sequence),
+they still may not converge to a single point
+(which if they did they would be a convergent sequence).
+However, if all the Cauchy sequences in a \prope{metric space}\index{space!metric} do converge,
+and they all converge to points inside the metric space,
+then that \prope{metric space}\index{space!metric} is called a {\em complete} \prope{metric space}\index{space!metric}.
 %---------------------------------------
 \begin{definition}
 \label{def:ms_complete}
-\label{def:complete}
+%\label{def:complete}
 \footnote{
   \citerpg{rosenlicht}{52}{0486650383}
   }
@@ -666,8 +1466,6 @@ Let $\metspaceX$ be a \structe{metric space}\ifsxref{metric}{def:metric}.
   }{every \prope{Cauchy sequence} in $\metspaceX$ \prope{converges} to a \struct{limit} in $\metspaceX$}
 \end{array}}
 \end{definition}
-
-
 
 %---------------------------------------
 \begin{theorem}
