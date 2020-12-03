@@ -6,6 +6,8 @@
 %======================================
 \chapter{Distance Spaces}
 \label{chp:dspace}
+\label{app:distance}
+\label{app:dspace}
 %======================================
 
 A \structe{distance space} \xref{def:dspace} can be defined as a \structe{metric space} \xref{def:metric}
@@ -17,7 +19,156 @@ to demonstrate ``how far we can go", and can't go,
 without the \prope{triangle inequality}.
 
 %======================================
+\section{Introduction}
+%======================================
+\structe{Metric space}s \xref{chp:metric} provide a framework for analysis and have several very useful properties.
+Many of these properties follow in part from the \rele{triangle inequality} \xref{def:metric}.
+However, there are several applications\footnote{references for applications in which the \rele{triangle inequality} may not hold:
+  \citePpc{maligranda1987}{54}{``pseudonorm"},
+  \citePc{lin1998}{``similarity measures", Table 6},
+  \citePc{veltkamp2000}{``shape similarity measures"},
+  \citePc{veltkamp2001}{``shape matching"},
+  \citePc{costa2003}{``network distance estimation"},
+  \citePpgc{burstein2005}{287}{3540258663}{distance matrices for ``genome phylogenies"},
+  \citerpgc{jimenez2006}{224}{0387233946}{``statistical distances"},
+  \citePpc{szirmai2007}{388}{``geodesic ball"},
+  \citePpc{crammer2007}{326}{``decision-theoretic learning"},
+  \citePpc{crammer2008}{1758}{``\emph{approximate} triangle inequality"},
+  \citePpc{vitanyi2011}{2455}{``information distance"}
+  }
+in which the triangle inequality does not hold but in which we would still like to perform analysis.
+So the questions that natually follow are:
+\\\indentx$\begin{array}{FM}
+    Q1. & What happens if we remove the \prope{triangle inequality} all together?
+  \\Q2. & What happens if we replace the \prope{triangle inequality} with a generalized relation?
+\end{array}$
+
+A \structe{distance space} is a \structe{metric space} without the \structe{triangle inequality} constraint.
+\pref{sec:dspace} introduces \structe{distance space}s and demonstrates that some properties 
+commonly associated with \structe{metric space}s also hold in any \structe{distance space}:
+%For example, the following are not only true in \structe{metric space}s, but in any \structe{distance space} $\dpspaceX$ as well:
+\\\indentx$\begin{array}{FMM}
+      D1. & $\emptyset$ and $\setX$ are \prope{open}                                          & \xref{thm:dspace_open}
+    \\D2. & the intersection of a finite number of open sets is \prope{open}                  & \xref{thm:dspace_open}
+    \\D3. & the union of an arbitrary    number of open sets is \prope{open}                  & \xref{thm:dspace_open}
+    \\D4. & every \prop{Cauchy} sequence is \prope{bounded}                                   & \xref{prop:cauchy==>bounded}
+    \\D5. & any subsequence of a \prope{Cauchy} sequence is also \prope{Cauchy}               & \xref{prop:cauchy_subseq}
+    \\D6. & the \thme{Cantor Intersection Theorem} holds                                      & \xref{thm:cit}
+\end{array}$
+
+The following five properties (M1--M5) \emph{do} hold in any \structe{metric space}.
+However, the examples from \pref{sec:dspace} listed below demonstrate that the five properties do \emph{not} 
+hold in all \structe{distance spaces}: %\footnote{The examples referred to for M1--M5 can all in essense be found in \citerppgc{blumenthal1953}{8}{12}{0828402426}{6. Topology of semimetric spaces}}
+\\\indentx$\begin{array}{FMDM}
+      M1. & the \fncte{metric function} is \prope{continuous}                  &fails to hold in&\pref{ex:dspace_01}--\pref{ex:dspace_21}
+    \\M2. & \structe{open ball}s are \prope{open}                              &fails to hold in&\pref{ex:dspace_01} and \pref{ex:dspace_1n}
+    \\M3. & the \structe{open ball}s form a \structe{base} for a topology      &fails to hold in&\pref{ex:dspace_01} and \pref{ex:dspace_1n}
+    \\M4. & the limits of \structe{convergent sequence}s are \prope{unique}    &fails to hold in&\pref{ex:dspace_01}
+    \\M5. & \prope{convergent} sequences are \prope{Cauchy}                    &fails to hold in&\pref{ex:dspace_1n}
+\end{array}$
+\\
+Hence, \pref{sec:dspace} answers question Q1.
+
+\pref{app:trirel} begins to answer question Q2 by first introducing a new function, 
+called the \fncte{power triangle function}
+%\footnote{
+%  A different but similar definition can be found in \citePp{bessenyei2014}{2}
+%  where it is a special case of a function that the author calls a ``\fncte{triangle function}".
+%  }
+in a \structe{distance space} $\dspaceX$, as 
+\quad$\ptfD\eqd 2\sigma\brs{\frac{1}{2}\distancen^p(x,z) + \frac{1}{2}\distancen^p(z,y)}^\frac{1}{p}$\quad
+for some $\opair{p}{\sigma}\in\Rx\times\R$.
+%\footnote{%
+%  where $\Rx$ is the \structe{set of extended real numbers} and $\Rp$ is the 
+%  \structe{set of positive real numbers} \xref{def:Rx}
+%  }
+\pref{app:trirel} then goes on to use this function to define a new relation, called the 
+\rele{power triangle inequality} in $\dspaceX$, and defined as 
+\\\indentx$\trirelD\eqd\set{\otriple{x}{y}{z}\in\setX^3}{\distance{x}{y}\le\ptfD}$.
+
+The \rele{power triangle inequality} \xref{def:trirel} is a generalized form of the 
+\prope{triangle inequality} in the sense that 
+the two inequalities coincide at $\opair{p}{\sigma}=\opair{1}{1}$.
+Other special values include $\opair{1}{\sigma}$ yielding the \rele{relaxed triangle inequality} 
+(and its associated \structe{near metric space})
+and $\opair{\infty}{\sigma}$ yielding the \rele{\txsigma-inframetric inequality} 
+(and its associated \structe{\txsigma-inframetric space}).
+Collectively, a distance space with a power triangle inequality is herein called a \structe{power distance space}
+and denoted $\pdspaceX$.\footnote{
+  \structe{power triangle inequality}: \prefp{def:trirels};
+  \structe{power distance space}: \prefp{def:pdspace};
+  examples of \structe{power distance space}: \prefp{def:pdspace_spaces};
+  }
+
+The \fncte{power triangle function}, at $\sigma=\frac{1}{2}$, is a special case of the \fncte{power mean} with $\xN=2$ 
+and $\lambda_1=\lambda_2=\frac{1}{2}$.
+\fncte{Power mean}s have the elegant properties of being \prope{continuous} and \prope{monontone} with respect
+to a free parameter $p$.
+From this it is easy to show that the \fncte{power triangle function} is also 
+\prope{continuous} and \prope{monontone} with respect to both $p$ and $\sigma$.
+Special values of $p$ yield operators coinciding with \ope{maximum}, \ope{minimum}, \ope{mean square}, \ope{arithmetic mean},
+\ope{geometric mean}, and \ope{harmonic mean}.
+\fncte{Power mean}s are briefly described in \pref{app:pmean}.\footnote{
+  \fncte{power triangle function}: \prefpp{def:ptf};
+  \fncte{power mean}: \prefpp{def:pmean};
+  power mean is \prope{continuous} and \prope{monontone}: \prefpp{thm:pmean_continuous};
+  power triangle function is \prope{continuous} and \prope{monontone}: \prefpp{cor:tri_mono};
+  Special values of $p$: \prefpp{cor:ftri_means}, \prefpp{cor:means}
+  }
+
+\pref{sec:pdspace_prop} investigates the properties of \structe{power distance spaces}.
+In particular, it shows for what values of $\opair{p}{\sigma}$ the properties M1--M5 hold. % in these spaces.
+Here is a summary of the results
+%for what values of $\opair{p}{\sigma}$ in $\Rx\times\Rp$
+%the five basic properties listed earlier for metric spaces also hold 
+in a \structe{power distance space} $\pdspaceX$, for all $x,y,z\in\setX$:
+\\\indentx$\begin{array}{FMMM}
+    (M1) & holds for any $\opair{p}{\sigma}\in(\Rx\setd\setn{0})\times\Rp$ such that $2\sigma =   2^{\frac{1}{p}}$ & \xref{thm:pdspace_continuous}
+  \\(M2) & holds for any $\opair{p}{\sigma}\in(\Rx\setd\setn{0})\times\Rp$ such that $2\sigma \le 2^{\frac{1}{p}}$ & \xref{cor:oball_open}
+  \\(M3) & holds for any $\opair{p}{\sigma}\in(\Rx\setd\setn{0})\times\Rp$ such that $2\sigma \le 2^{\frac{1}{p}}$ & \xref{cor:tspace_base}
+  \\(M4) & holds for any $\opair{p}{\sigma}\in\Rx\times\Rp$                                                        & \xref{thm:xn_to_xy}
+  \\(M5) & holds for any $\opair{p}{\sigma}\in\Rx\times\Rp$                                                        & \xref{thm:convergent==>cauchy}
+\end{array}$
+
+\pref{app:topology} briefly introduces \structe{topological space}s.
+The \structe{open ball}s of any \structe{metric space} form a \structe{base} for a \structe{topology}.
+This is largely due to the fact that in a metric space, open balls are \prope{open}.
+Because of this, in metric spaces it is convenient to use topological structure to define and exploit
+analytic concepts such as \prope{continuity}, \prope{convergence}, \structe{closed set}s, 
+\structe{closure}, \structe{interior}, and \structe{accumulation point}. %, \structe{boundary}.
+For example, in a metric space, the traditional definition of defining continuity using open balls
+and the topological definition using open sets, coincide with each other.
+Again, this is largely because the open balls of a metric space are open.\footnote{
+  \structe{open ball}: \prefp{def:ball}; 
+  \structe{metric space}: \prefp{def:mspace};
+  \structe{base}: \prefp{def:base};
+  \structe{topology}: \prefp{def:topology};
+  \structe{open}: \prefp{def:dspace_open};
+  %\prope{continuity} in \structe{distance space}: \prefp{def:dspace_continuous};
+  \prope{continuity} in \structe{topological space}: \prefp{def:continuous};
+  \prope{convergence} in \structe{distance space}: \prefp{def:dspace_converge};
+  \prope{convergence} in \structe{topological space}: \prefp{def:converge};
+  \prope{closed set}: \prefp{def:closedset};
+  \structe{closure}, \structe{interior}, \structe{accumulation point}: \prefp{def:clsA};
+ %\structe{boundary}: \prefp{def:bndA};
+  coincidence in all \structe{metric space}s and some \structe{power distance space}s: \prefp{thm:ms_converge};
+  }
+
+However, this is not the case for all \structe{distance space}s. 
+In general, the open balls of a distance space are not open, and they are not a base for a topology.
+In fact, the open balls of a distance space are a base for a topology if and only if the open balls are open.
+While the open sets in a distance space do 
+induce a topology, it's open balls may not.%
+%\ldots and distance space definitions using open balls and topological definitions using open sets may not coincide.
+\footnote{
+  %\structe{distance space}: \prefp{def:dspace};
+  \emph{if and only if} statement: \prefp{thm:baseoball};
+  open sets of a distance space induce a topology: \prefp{cor:dspace_open};
+  }
+
+%======================================
 \section{Fundamental structure of distance spaces}
+\label{sec:dspace}
 %======================================
 %======================================
 %\subsection{Definitions}

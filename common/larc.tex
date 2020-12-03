@@ -1,10 +1,308 @@
 %============================================================================
 % Daniel J. Greenhoe
-% LaTeX file
 %============================================================================
+
 %=======================================
-%\section{Lagrange arc distance}
+\chapter{Lagrange arc distance}
+\label{app:larc}
 %=======================================
+\qboxnpqt
+  { \href{http://en.wikipedia.org/wiki/Joseph_Louis_Lagrange}{Joseph-Louis Lagrange}
+    (\href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineD.html}{1736--1813},
+     \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Italy.html}{Italian-French mathematician and astronomer}
+    \index{Langrange, Joseph-Louis}
+    \index{quotes!Langrange, Joseph-Louis}
+    \footnotemark
+  }
+  {../common/people/small/lagrange.jpg}
+  {Tant que l'Alg\`ebre et la G\'eom\'etrie ont \'et\'e s\'epar\'ees,
+   leurs progr\`es ont \'et\'e lents et leurs usages born\'es;
+   mais lorsque ces deux sciences se sont r\'eunies, elles vers la perfection.}
+  {As long as algebra and geometry have been separated,
+   their progress have been slow and their uses limited;
+   but when these two sciences have been united, they have lent each other mutual forces,
+   and have marched together with a rapid step towards perfection.
+  }
+  \citetblt{
+    quote:       & \citerp{lagrange1795}{271} \\
+    translation: & \citerpg{grattan1990}{254}{3764322373} \\
+%                 & \url{http://www-groups.dcs.st-and.ac.uk/~history/Quotations/Lagrange.html} \\
+    image:       & \url{http://en.wikipedia.org/wiki/Joseph_Louis_Lagrange}
+    }
+%\qboxnps
+%  {
+%    Freeman Dyson (1923--), physicist and mathematician  %(January 1994)
+%    \index{Dyson, Freeman}
+%    \index{quotes!Dyson, Freeman}
+%    \footnotemark
+%  }
+%  {../common/people/small/dyson.jpg}
+%  {The bottom line for mathematicians is that the architecture has to be right.
+%    In all the mathematics that I did, the essential point was to find
+%    the right architecture.
+%    It's like building a bridge.
+%    Once the main lines of the structure are right,
+%    then the details miraculously fit.
+%    The problem is the overall design.}
+%  \citetblt{
+%    quote: & \citerp{dyson1994}{20}  \\
+%    image: & \url{http://en.wikipedia.org/wiki/Image:FreemanDysonOSCON2004.jpg}
+%    }
+
+%=======================================
+\section{Introduction}
+%=======================================
+%=======================================
+\subsection{The spherical metric}
+%=======================================
+The \fncte{spherical metric}, or \fncte{great circle metric},\footnote{
+%    \\\citer{blumenthal1970}
+%    \\\citer{busemann1955}
+%    \\\indentdr\citer{busemann1955r}
+  \citerppgc{ratcliffe2013}{37}{38}{1475740131}{The Spherical Metric},
+  \citerpgc{deza2014}{123}{3662443422}{6.4 Non-Euclidean Geometry},
+  \citerpgc{deza2006}{73}{0080465544}{\scshape 6.4 Non-Euclidean Geometry},
+  \citePp{silver2007}{9}
+  }
+$\metrican_r$ operates on the \structe{surface of a sphere with radius $r$}
+centered at the origin $\origin$ in a linear space $\R^\xN$,
+where ``\structe{surface of a sphere\ldots}" is defined as all the points 
+in $\R^\xN$ that are a distance $r$ from $\origin$ with respect to the 
+\fncte{Euclidean metric} \xref{def:emetric}.
+Thus, for any pair of points $\opair{p}{q}$ \emph{on the surface} of this sphere,
+$\opair{p}{q}$ is in the \structe{domain} of $\metrican_r$ and 
+$\metrican_r\opair{p}{q}$ is the ``distance" between those points.
+However, if $p$ and $q$ \emph{are} both in $\R^\xN$ but are \emph{not} on the surface of a    % ~57 words
+common sphere centered at the origin, then $\opair{p}{q}$ is \emph{not} in the domain
+of $\metrican_r$ and $\metrican_r(p,q)$ is simply \emph{undefined}.                             % ~73
+
+In certain applications, however, it would be useful to have an \prope{extension} $\metricn$
+of the spherical metric $\metrican$ to the entire space $\R^\xN$ (rather than just on a surface in $\R^\xN$).  % ~101
+For example, for the points $p\eqd\opair{0}{1}$ and $q\eqd\opair{1}{0}$
+(which are both on the surface of a common sphere in $\R^2$),
+we would like $\metricn$ to be compatible with $\metrican$ such that $\metric{p}{q}=\metrica{p}{q}$.
+If $r\eqd\opair{2}{0}$, then the pair $\opair{p}{r}$ is \emph{not} in the domain of $\metrican$,
+but we still would like it to be in the domain of $\metricn$ such that $\metric{p}{r}$ is defined---and 
+in this way $\metricn$ would be an \structe{extension} of $\metrican$.                                                                        % ~160
+
+%Real world applications for such an extended metric include calculations involving 
+%natural and man-made objects entering/exiting the earth's atmosphere \xref{sec:space}
+%\\\indentx\begin{tabular}{cll}
+%  \imark & natural and man-made objects entering/exiting the earth's atmosphere & \prefpp{sec:space} \\
+%  \imark & 
+%and for certain distance spaces useful in symbolic sequence processing \xref{sec:ocsseq}.
+In this text, the \fncte{Langrange arc distance} is used in
+\\\indentx\begin{tabular}{cl@{\hspace{1ex}}ll>{\scs}l}
+      \imark & the \ope{low pass filtering}  & of a \structe{real die sequence}          & \xref{ex:rdie_lp}  & and 
+    \\\imark & the \ope{low pass filtering}  & of a \structe{spinner sequence}           & \xref{ex:spin_lp}  & and 
+    \\\imark & the \ope{high pass filtering} & of a \structe{weighted real die sequence} & \xref{ex:wrdie_hp} & and 
+    \\\imark & the \ope{high pass filtering} & of a \structe{weighted spinner sequence}  & \xref{ex:spin_rhp}.& 
+\end{tabular}
+
+%=======================================
+\subsection{Linear interpolation}
+%=======================================
+This chapter introduces an extension to the \fncte{spherical metric} based on a polar form of \ope{linear interpolation}.
+%\fncte{Lagrange polynomial} interpolation.
+\ope{Interpolation} %and its special case of \ope{linear interpolation} 
+has a very long history 
+with evidence suggesting that it extends possibly all the way back to 
+the Babylonians living around 300BC.\footnote{\citePp{meijering2002}{320}}
+
+Linear interpolation 
+between two points $p\eqd\opair{x_1}{y_1}$ and $q\eqd\opair{x_2}{y_2}$ in $\R^2$ 
+is conveniently and intuitively
+expressed in a \structe{Cartesian coordinate system}
+using what is commonly known as \ope{Lagrange interpolation} \xref{def:lagpoly} in the form 
+  \\\indentx$\ds y = y_1\brp{\frac{x-x_2}{x_1-x_2}} + y_2\brp{\frac{x-x_1}{x_2-x_1}}$.\\
+
+\ope{Newton interpolation} \xref{def:newpoly} yields the same expression, 
+but generally requires more ``effort" (back substitution or matrix algebra):
+\begin{align*}
+  y   &\eqd%\mathrlap{ 
+        \mcom{\sum_{k=1}^2\alpha_k\sum_{m=1}^k(x-x_m)}{\fncte{Newton polynomial} \xrefr{def:newpoly}}
+        %&& \text{by definition of \fncte{Newton polynomial} \xref{def:newpoly}}
+        %\\&=\mathrlap
+          = \alpha_1\brs{x-x_1} + \alpha_2\brs{(x-x_1)+(x-x_2)}
+          = (\alpha_1+\alpha_2)(x-x_1) + \alpha_2(x-x_2)
+          %}
+    \\
+  y_1 &= \alpha_1\brs{x_1-x_1} + \alpha_2\brs{(x_1-x_1)+(x_1-x_2)}
+       \implies \alpha_2 = \frac{y_1}{x_1-x_2}
+    \\
+  y_2 &= \alpha_1\brs{x_2-x_1} + \alpha_2\brs{(x_2-x_1)+(x_2-x_2)}
+       \implies \alpha_1 = \frac{y_1+y_2}{x_2-x_1}
+    \\
+  y   &= %\mathrlap{
+           \brs{\frac{y_1+y_2}{x_2-x_1}+\frac{y_1}{x_1-x_2}}(x-x_1) + \brs{\frac{y_1}{x_1-x_2}}(x-x_2)
+           = y_1\brp{\frac{x-x_2}{x_1-x_2}} + y_2\brp{\frac{x-x_1}{x_2-x_1}} 
+          % }
+\end{align*}
+
+Of course the 2-point \ope{Lagrange interpolation}/\ope{Newton interpolation} polynomial can 
+also be written in the familiar \fncte{slope-intercept} $y=mx+b$ form as
+\begin{align*}
+  y   
+    &= y_1\brp{\frac{x-x_2}{x_1-x_2}} + y_2\brp{\frac{x-x_1}{x_2-x_1}} 
+     = y_2\brp{\frac{x-x_1}{x_2-x_1}} - y_1\brp{\frac{x-x_2}{x_2-x_1}} 
+     = \frac{y_2\brp{x-x_1} - y_1\brp{x-x_2}}{x_2-x_1}
+  \\&= \mcom{\brp{\frac{y_2-y_1}{x_2-x_1}}}{slope}\,x + \mcom{\brp{\frac{x_2y_1-x_1y_2}{x_2-x_1}}}{$y$-intercept}
+\end{align*}
+
+%=======================================
+\subsection{Polar linear interpolation}
+%=======================================
+Linear interpolation is often illustrated in terms of cartesian coordinates $\opair{x}{y}$.
+But there is no reason why the same principles cannot be used in terms of polar coordinates $\opair{\fr(\theta)}{\theta}$.
+However care does need to be taken where $\theta$ may be interpreted to ``jump" from $2\pi$ to $0$ 
+or from $-\pi$ to $\pi$.
+%When neither $p$ nor $q$ is located at the origin or when the angle $\phi$ between
+%the vectors extending to $p$ and $q$ is $0$,
+%then the \fncte{Lagrange arc distance} $\metric{p}{q}$
+%is simply the \fncte{Euclidean metric} \xref{def:emetric} scaled by $\frac{1}{\pi}$.
+%Otherwise, the origin, $p$ and $q$ define some plane $P$.
+%The \fncte{Lagrange arc distance} first draws an arc between 
+%$p$ and $q$ in $P$ using a polar form of \fncte{Lagrange interpolation} \xref{def:laginterp}.
+%In particular, if $p$ is at polar location $\opair{\theta_p}{r_p}$ in $P$,
+%               $q$ is at $\opair{\theta_q}{r_q}$ in $P$, and 
+%if the arc connecting $p$ and $q$ is (in polar form) $\opair{\theta}{\fr(\theta)}$ then
+
+Here is an expression for 2-point \ope{Lagrange interpolation}/\ope{Newton interpolation} in \structe{polar form}:
+\\\indentx$\begin{array}{rc>{\ds}lll} 
+  \fr(\theta) &\eqd& r_p\brs{\frac{\theta-\theta_q}{\theta_p-\theta_q}} 
+                   + r_q\brs{\frac{\theta-\theta_p}{\theta_q-\theta_p}}
+              & \forall \theta\in\intcc{\theta_p}{\theta_q}
+\end{array}$\hspace{15mm}
+\begin{tabular}{c}%
+ %\includegraphics{../common/math/graphics/pdfs/larc_def.pdf}%
+  \includegraphics{../common/math/graphics/pdfs/larc_pq.pdf}%
+\end{tabular}%
+
+Note the following:
+  \begin{enumerate}
+    \item \label{item:larcR_P}
+          The orientation of the axes in plane $P$ is arbitrary, 
+          and that without loss of generality we can orient the axes 
+          such that $p$ or $q$ is on the positive $x$-axis
+          and that the other point has a non-negative $y$ value. 
+    \item This means that the length of the arc between $p$ at $\opair{r_p}{\theta_p}$
+          and $q$ at $\opair{r_q}{\theta_q}$ under the original orientation is equal to the length of the arc between 
+          the points $\opair{r_p}{0}$ and $\opair{r_q}{\abs{\theta_p-\theta_q}}$ in the new orientation.
+    \item One important reason for the geometrical acrobatics here is that we don't want to have to calculate
+          the values for $\theta_p$ and $\theta_q$ in a plane $P$ 
+          (which we don't even immediately have an algebraic expression for anyways).
+          But calculating the value $\phi\eqd\abs{\theta_p-\theta_q}$ is quite straightforward
+          because the ``\ope{dot product}" $\inprod{p}{q}$ of $p$ and $q$ (which is very easy to calculate) in $\R^\xN$ 
+          equals $r_pr_q\cos\phi$ (and so $\phi=\arccos\brp{{\frac{1}{r_pr_q}}{\inprod{p}{q}}}$).
+
+    \item Actually, $\ds \phi = \abs{\theta_q-\theta_p}$, as demonstrated below:
+      \begin{align*}
+             \phi&\eqd \arccos\brp{\frac{1}{r_pr_q}\sum_{n=1}^\xN x_n y_n}
+                 &&    \text{by definition of $\phi$}
+               \\&\eqd \arccos\brp{\frac{1}{r_pr_q}\inprod{p}{q}}
+                 &&    \text{a standard definition from the field of ``linear algebra"}
+               \\&=    \arccos\brp{\frac{1}{r_pr_q}\brs{r_pr_q\cos\abs{\theta_q-\theta_p}}}
+                 &&    \text{a standard result from the field of ``linear algebra"}
+               \\&=    \setn{\abs{\theta_q-\theta_p},\,2\pi-\abs{\theta_q-\theta_p}}
+                 &&    \text{by definition of $\arccos(x)$ and $\cos(x)$}
+               \\&=    \abs{\theta_q-\theta_p}
+                 &&    \text{by \pref{item:larcR_P}}
+      \end{align*}
+
+    \item Setting $\theta_p=0$ and $\theta_q=\phi$ yields the following:
+      \begin{align*}
+        \fr(\theta) 
+          &= r_p\brs{\frac{\theta-\theta_q}{\theta_p-\theta_q}} + r_q\brs{\frac{\theta-\theta_p}{\theta_q-\theta_p}}
+          && \text{Langrange form \xref{def:lagpoly}}
+        \\&= r_p\brs{\frac{\theta-\phi}{0-\phi}} + r_q\brs{\frac{\theta-0}{\phi-0}}
+           = \frac{-r_p\theta + r_p\phi + r_q\theta}{\phi}
+        \\&= \brp{\frac{r_q-r_p}{\phi}}\theta + r_p
+          && \text{polar slope-intercept form}
+      \end{align*}
+
+%  \item Although \fncte{Langrange polynomial} provides an intuitive motivation for the \fncte{Lagrange arc distance},
+%        the \fncte{Newton polynomial} \xref{def:newpoly} yields an equivalent interpolation.
+%        For more comments about this, see \prefpp{rem:lagnew}.
+%        %This is not surprising since there is only one way to interpolate linearly between two points.
+
+\end{enumerate}
+
+
+
+%=======================================
+\subsection{Distance in terms of polar linear interpolation arcs}
+%=======================================
+%%---------------------------------------
+%\begin{definition}
+%\label{def:mdo}
+%\label{def:diff}
+%%---------------------------------------
+%Let the \fnctd{real modulo} function $\mdo{q}{x}\in\clFrr$ be defined as 
+%\\\indentx$ \mdo{q}{x} \eqd r$ such that $x=qn + r$ 
+%for some $n\in\Z$ and $r\in\intco{0}{q}$.
+%\\
+%Let the \fnctd{real modulo difference} function $\dmdo{q}{x}{y}\in\clFrr$ be defined as 
+%\\\indentx$\dmdo{q}{x}{y} \eqd \min\brs{\mdo{q}{x-y},\mdo{q}{y-x}}$.
+%\end{definition}
+This paper introduces a new function herein called, for better or for worse,\footnote{
+  ``for better or for worse": 
+  As already pointed out, \ope{Newton interpolation} or simply the
+  slope-intercept form $y=mx+b$ of the line equation can with a little bit of effort
+  give you the same equation as the 2-point \ope{Lagrange interpolation}.
+  So why not name the function $\distance{p}{q}$ of \pref{def:larc} 
+  ``Newton arc distance"? Actually Newton published
+  his interpolation method 
+  (for example in his 1711 "Methodus differentialis" \citeP{newton1711}) 
+  long before Lagrange (\citeP{lagrange1877}). 
+  But besides that, Lagrange was not really the first to discover 
+  what is commonly called ``Lagrange interpolation". 
+  The same result was actually published about 98 years earlier by
+  Edward Waring (\citeP{waring1779}). 
+  But in the end, the choice to use the name ``Lagrange arc distance" has some justification 
+  in that it's form arguably comes more readily using Lagrange interpolation than it does from
+  \ope{Newton interpolation} (which requires back substitution); 
+  and even though ``Lagrange interpolation" probably should be called "Waring interpolation", the
+  fact is that it's normally called ``Lagrange interpolation".
+  So there is some motivation for the choice of the name.
+  And ``for better or for worse", the function $\distance{p}{q}$ is herein called
+  the ``Lagrange arc distance". \ldots
+  One last note: for a much fuller historical background of interpolation, see \citeP{meijering2002}.
+  } 
+the \fncte{Lagrange arc distance} \xref{def:larc} $\distance{p}{q}$.
+It's domain is the entire space $\R^\xN$.
+%This function has been found useful in \ope{symbolic sequence processing} \xref{sec:ocsseq}.
+It is an extension of the \fncte{spherical metric},
+which only has as domain the surface of a sphere in $\R^\xN$.  % or \fncte{great circle metric}.\footnote{
+%  \citerppgc{Ratcliffe2013}{37}{38}{1475740131}{The Spherical Metric},
+%  \citerpgc{deza2014}{123}{3662443422}{6.4 Non-Euclidean geometry},
+%  \citerpgc{deza2006}{73}{0080465544}{6.4 Non-Euclidean geometry}
+%  }
+%The \fncte{spherical metric} has domain on the surface of a sphere in $\R^\xN$.
+%The \fncte{Lagrange arc distance} extends this concept to all of $\R^\xN$ (not just the surface of the sphere).
+
+When $p$ or $q$ is at the origin, or when the polar angle $\phi$ between $p$ and $q$ is $0$, 
+then the \fncte{Lagrange arc distance} $\distance{p}{q}$ is simply a $\frac{1}{\pi}$ scaled \fncte{Euclidean metric} 
+\xref{def:emetric}.
+In all other cases, $\distance{p}{q}$ is the $\frac{1}{\pi}$ scaled length of the 
+\ope{Lagrange interpolation} arc extending from $p$ to $q$.
+
+An equation for the length of an arc in polar coordinates is\footnote{
+    \citerpgc{stewart2012}{533}{1133112765}{Section 9.4 Areas and lengths in polar coordinates}
+    }
+    \\\indentx$\ds\fR(p,q) = \int_{\theta_p}^{\theta_q} \sqrt{r^2(\theta) + \brp{\frac{\dr}{\dth}}^2}\dth $
+
+This integral may look intimidating.
+Later however, \prefpp{thm:Rpq} demonstrates that it has an ``easily" computable and straightforward solution 
+only involving \ope{arithmatic operator}s ($+$, $-$,\ldots), 
+        the \fncte{absolute value} function $\abs{x}$, 
+        the \fncte{square root} function $\sqrt{x}$, and
+        the \fncte{natural log} function $\ln(x)$.
+
+Finally, note that the extension does come at a cost---the \fncte{Lagrange arc distance} is not a \fncte{metric} \xref{def:metric}, 
+        but rather only a \fncte{distance} \xxref{def:dspace}{thm:larc}.
+        For more details about the impact of this cost, see \prefpp{thm:dspacecost}.
+
+
 %=======================================
 \section{Definition}
 %=======================================
@@ -1400,7 +1698,6 @@ Some unit balls in $\R^2$ in with respect to the \fncte{Lagrange arc distance} a
 Some unit balls in $\R^3$ with respect to the \fncte{Lagrange arc distance} are illustrated in \prefpp{fig:larcR3}.
 \end{example}
 
-
-
-
+  %\input{larc/ocsseq.tex}
+  %\input{larc/space.tex}
 
