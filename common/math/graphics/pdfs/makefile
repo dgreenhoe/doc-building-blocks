@@ -23,6 +23,7 @@ PATHVENN     = ../venn/
 PATHSETSTR   = ../setstr/
 PATHSYSTEM   = ../system/
 PATHWAVE     = ../wavelets/
+PATHHISTORY  = ../history/
 PATHCC       = ../../common/graphics/cc/
 PATHOSETU    = ../osetu/
 PATHLAT      = ../lat/
@@ -83,6 +84,7 @@ FILE_GRP  =              \
   cencubs_pun.pdf       \
   coscos11.pdf          \
   coscos11ft.pdf        \
+  notablemath.pdf       \
   pounityz.pdf          \
   pulse03.pdf           \
   pulse_pun.pdf         \
@@ -269,6 +271,7 @@ GRP_DNA =                      \
   dna_ebola_51_seq.pdf         \
   dna_ebola_auto.pdf           \
   dna_ebola_histo.pdf          \
+  dna_SARSCoV2_51_seq.pdf      \
   dna_mpbacterium_51_seq.pdf   \
   dna_mpbacterium_auto.pdf     \
   dna_mpbacterium_histo.pdf    \
@@ -1119,6 +1122,11 @@ top: $(FILE_GRP) $(GRP_BOOLEAN) $(GRP_BASIS) $(BSPLINES) $(GRP_MATH) $(GRP_DATA)
 	del shell_$&.pdf
 
 {$(PATHSYMSEQ)}.tex.pdf:
+	$(PRG_TYPESET) shell_$&.tex
+	copy /V/Y shell_$&.pdf $&.pdf
+	del shell_$&.pdf
+
+{$(PATHHISTORY)}.tex.pdf:
 	$(PRG_TYPESET) shell_$&.tex
 	copy /V/Y shell_$&.pdf $&.pdf
 	del shell_$&.pdf

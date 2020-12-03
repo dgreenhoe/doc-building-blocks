@@ -24,8 +24,6 @@ FILE_SRC  =                                 \
             front/preface.tex               \
             front/quotepagepair.tex         \
             front/symbols.tex               \
-            analysis/mpf.tex                \
-            analysis/sums.tex               \
             srccode.tex                     \
             intro/chp_intro.tex             \
             intro/dft.tex                   \
@@ -38,27 +36,20 @@ FILE_SRC  =                                 \
             intro/sequences.tex             \
             intro/stats.tex                 \
             intro/probability.tex           \
-            larc/chp_larc.tex               \
-            larc/interpo.tex                \
-            larc/intro.tex                  \
-            larc/larc.tex                   \
-            pds/chp_pds.tex                 \
-            pds/intro.tex                   \
-            pds/distance.tex                \
-            pds/ptspace.tex                 \
-            sto/chp_sto.tex                 \
+            chp_sto.tex                     \
             ../common/ocs.tex               \
             ../common/ocsrv.tex             \
             ../common/ocsop.tex             \
             ../common/oms.tex               \
-            ssp/chp_ssp.tex                 
+            ssp/ocsseq.tex                  \
+            ssp/chp_ssp.tex
 
 FILE_GRP  = ../common/graphics/watercraft/ghind_djg_blue.eps  \
             ../common/graphics/cc/ccbyncnd40djg.pdf           \
             ../common/wavelets/graphics/morletwavelet.tex
 
 #FILE_GRP  =   \
-#            sto/graphics/rdie_wxyz.pdf   
+#            sto/graphics/rdie_wxyz.pdf
 
 FILE_APP  =  \
             ../common/binomial.tex  \
@@ -70,15 +61,16 @@ FILE_APP  =  \
             ../common/spline.tex    \
             ../common/harTrig.tex   \
             ../common/harPoly.tex   \
-            ../common/harFour.tex  
+            ../common/harFour.tex
 
 FILE_BIB  = ../common/bib/analysis.bib  \
             ../common/bib/approx.bib    \
             ../common/bib/algebra.bib   \
+            ../common/bib/biology.bib   \
             ../common/bib/mathhist.bib  \
             ../common/bib/mathmisc.bib  \
             ../common/bib/order.bib     \
-            ../common/bib/wavelets.bib  
+            ../common/bib/wavelets.bib
 
 FILE_STY  = ../common/sty/wavelets.sty \
             ../common/sty/math.sty     \
@@ -143,6 +135,9 @@ clean:
 	-del *.aux
 	-del ..\common\*.aux
 	-del ..\common\wavelets\*.aux
+	-del *.ilg
+	-del *.idx
+	-del *.ind
 
 new:
 	make clean
@@ -164,7 +159,7 @@ covers470x305:
 	xelatex covers470x305
 	rgbcheck.bat covers470x305
 	#grep -i rgb covers470x305.ps
- 
+
 covers470x318:
 	xelatex covers470x318
 	rgbcheck.bat covers470x318
@@ -172,7 +167,7 @@ covers470x318:
 
 covers533x305:
 	xelatex covers533x305
-	rgbcheck.bat covers533x305 
+	rgbcheck.bat covers533x305
 	#grep -i rgb covers533x305.ps
 
 frontcover203x254:
