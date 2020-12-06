@@ -42,6 +42,7 @@ FILE_SRC  =                                 \
             ../common/ocsop.tex             \
             ../common/oms.tex               \
             ssp/ocsseq.tex                  \
+            ssp/sspdft.tex                  \
             ssp/chp_ssp.tex
 
 FILE_GRP  = ../common/graphics/watercraft/ghind_djg_blue.eps  \
