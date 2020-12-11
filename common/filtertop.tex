@@ -1,0 +1,138 @@
+%============================================================================
+% LaTeX File
+% Daniel Greenhoe
+%============================================================================
+
+%======================================
+\chapter{Filter Topologies}
+\label{chp:filtertop}
+%======================================
+Suppose we want to construct a circuit to compute the 
+rational expression $f(x)\frac{b(x)}{a(x)}$.
+This is a common problem in {\em Digital Signal Processing (DSP)};
+we can borrow results from there.
+DSP is generally concerned with polynomials over the field of real or complex numbers.
+However, a field is a field, and all fields (whether, real, complex, or GF(2))
+support both addition and multiplication;\footnote{
+   {\bf Fields:} Roughly speaking, a {\em group} is a set together with an operation 
+   on that set.  
+   An {\em additive group} is a set $S$ 
+   with an addition operation $+:S\times S\to S$.
+   A {\em multiplicative group} is a set $S$ 
+   with a multiplication operation $\cdot:S\times S\to S$.
+   A {\em field} is constructed using two groups: 
+   An addition group and a multiplication group.
+   See Appendix \ref{app:inprod} page \pageref{app:inprod}.\\
+   Reference: \cite[p.123]{durbin}.
+   }
+the rules change somewhat, but the basic structure is the same regardless.
+Alternatively, just as a typical digital filter operates over the real 
+or complex field, 
+{\bf the m-sequence generator} described in this section
+{\bf is a digital filter which operates over the field GF(2)}.
+
+A sequential hardware multiplier-divider for polynomials is simple.
+\begin{liste}
+   \item Each $x$ in $f(x)$, $b(x)$, and $a(x)$ represents a delay of one clock cycle.
+In DSP terminology, a delay of one clock cycle is represented by $z^{-1}$.
+Thus, $x=z^{-1}$.
+   \item Let $f(x)=f_0 + f_1x + f_2x^2 + \cdots$.\\
+         Then let $\dot{f}(n)$ be the sequence $\dot{f}(i)=f_i$, with $i\in\Z$.
+   \item Let $b(x)= b_0 + b_1x + b_2x^2 + \cdots + b_mx^m$.\\
+         Let $\dot{b}(n)$ be the sequence $\dot{b}(i)=b_i$, with $i\in\Z$.
+   \item Let $a(x)=1 + a_1x + a_2x^2 + \cdots + a_mx^m$.\\
+         Let $\dot{a}(n)$ be the sequence $\dot{a}(i)=a_i$, with $i\in\Z$.
+\end{liste}
+Then the multiplier-divider (for any mathematical field) can be implemented as shown
+in \prefp{fig:df1}.  
+This structure is called the \structe{Direct Form I} implementation;\footnote{
+  \citerp{oppenheim1999}{344},
+  \citerppgc{schlichtharle2000}{96}{98}{9783540668411}{5.3.2 Direct Form Filters},
+  \citerppgc{schlichtharle2011}{147}{150}{9783642143250}{5.3.2 Direct Form Filters}
+  }
+it implements the rational expression
+\[
+   f(x) \frac{b_mx^m + b_{m-1}x^{m-1} + \cdots + b_2x^2 + b_1x + b_0}
+             {a_mx^m + a_{m-1}x^{m-1} + \cdots + a_2x^2 + a_1x + 1  }
+\]
+
+\begin{figure}[ht]
+\center{\epsfig{file=df1.eps, height=6cm, clip=}}
+%\center{\includegraphics[0,0][4in,4in]{df1.eps}}
+\caption{
+   Direct Form I Implementation for $\ds f(x)\frac{b(x)}{a(x)}$
+   \label{fig:df1}
+   }
+\end{figure}
+
+In GF(2), the blocks in the figure can be implemented very simply:
+\begin{liste}
+   \item Each $x=z^{-1}$ element can be implemented as a simple D flip-flop.
+   \item An $a_i=1$ or $b_i=1$ coefficient is implemented as a wire (closed circuit).
+   \item An $a_i=0$ or $b_i=0$ coefficient is implemented as a no-connect (open circuit).
+\end{liste}
+
+%--------------------------------------
+\begin{example}
+\label{ex:df1}
+%--------------------------------------
+Suppose we want to build a hardware circuit to 
+generate an m-sequence specified by the rational expression
+\[ \frac{x^2+x}{x^3+x+1}. \]
+To do this we can set $f(x)=1$, $b(x)=x^2+x$ and $a(x)=x^3+x+1$.
+The resulting structure is shown in Figure \ref{fig:ex-df1}.
+\begin{figure}[ht]
+\center{\epsfig{file=ex-df1.eps, height=6cm, clip=}}
+\caption{
+   Direct Form I Implementation for Example \ref{ex:df1}
+   \label{fig:ex-df1}
+   }
+\end{figure}
+Notice that the two flip-flops on the left are for initialization 
+only and are not used in the steady state operation of the m-sequence
+generator.
+In fact, they can be eliminated altogether by proper initialization of 
+the flip-flops on the right.
+\end{example}
+
+%--------------------------------------
+%\subsection{Polynomial multiplication and division using DF2}
+%\label{sec:df2}
+%\index{direct form 2}
+%--------------------------------------
+The Direct Form I structure shown in Figure \ref{fig:df1} can be transformed
+\footnote{
+  \citerpgc{oppenheim1999}{347}{9780137549207}{Figure 6.5 Combination of Delays in Figure 6.4}
+  }
+to a new structure by transformation rules based on 
+\ope{Mason's Gain Formula}.\footnote{
+   The transformation rules are as follows:
+   \begin{enumerate}
+   \setlength{\itemsep}{0ex}
+   \item Reverse the direction of all signal paths.
+   \item Replace all nodes with addition operators.
+   \item Replace all addition operators with nodes.
+   \end{enumerate}
+   References:
+   \citer{mason1951},
+   \citer{mason1953},
+   \citer{mason1953p},
+   \citer{mason1955},
+   \citer{mason1956},
+   \citer{mason1960},
+   \citer{chow1962},
+   \citer{phillips1995},
+   \citerpgc{oppenheim1999}{363}{9780137549207}{footnote 2}
+   }
+The resulting structure is known as \structe{Direct Form II}
+and is illustrated in \prefp{fig:df2}.
+\begin{figure}[ht]
+\center{\epsfig{file=df2.eps, height=6cm, clip=}}
+\caption{
+   Direct Form II Implementation
+   \label{fig:df2}
+   }
+\end{figure}
+Again, when using the DF2 structure for m-sequence generation,
+the $\dot{f}(n)$ sequence can be eliminated by proper initialization of
+the delay elements (flip flops).

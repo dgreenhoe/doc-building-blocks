@@ -19,6 +19,7 @@ FILE_SRC  =                                 \
             ../common/calculus.tex          \
             ../common/dsp.tex               \
             ../common/dspcalculus.tex       \
+            ../common/filtertop.tex         \
             ../common/laplace.tex           \
             ../common/pwspace.tex           \
             ../common/pwrspec.tex           \
