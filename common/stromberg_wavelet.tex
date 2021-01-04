@@ -2,64 +2,134 @@
 % LaTeX File
 % Daniel Greenhoe
 %============================================================================
+%=======================================
 \chapter{Stromberg Wavelets}
-\[\lambda_{\sigma}(t) \eqd \brbl{\begin{array}{ll} 
-      1             & \text{if $t=\sigma$}
-    \\0             & \text{if $t\in A_0$ and $t\neq\sigma$}
-    \\\text{linear} & \text{otherwise}
-\end{array}}\] 
+%=======================================
+%--------------------------------------
+\begin{definition}
+\label{def:A0A1}
+%--------------------------------------
+\defbox{
+  \begin{array}{lcl D}
+    \setA_0 &\eqd& \setn{\cdots,-\frac{3}{2},-1,-\frac{1}{2},0,1,2,3,\cdots}& and\\
+    \setA_1 &\eqd& \setA_0 \setu \setn{\frac{1}{2}}
+  \end{array}
+  }
+\end{definition}
 
-\[\begin{array}{lcll}
-  A_0 &\eqd& \setn{\cdots,-\frac{3}{2},-1,-\frac{1}{2},0,1,2,3,\cdots}&\text{and moreover}\\
-  A_1 &\eqd& A_0 \setu \frac{1}{2}
-\end{array}\]
-
-\[0 = \inprod{S}{\lambda_{\sigma }} = 
-  \brbl{\begin{array}{l ll}
-    S\brp{\sigma -1}+ 4S\brp{\sigma}+S\brp{\sigma +1}
-    &   \text{for $\sigma\in\setn{2,3,4,\ldots}$} 
-    &   \text{(1.10)}
-    \\
-    S\brp{\sigma-\frac{1}{2}}+ 4S\brp{\sigma}+S\brp{\sigma+\frac{1}{2}}
-    &   \text{for $\sigma\in\setn{-\frac{1}{2},-1,-\frac{3}{2},-2,\ldots}$} 
-    &   \text{(1.11)}
-    \\
-    2S\brp{-\frac{1}{2}} + 9S\brp{0} + 6S\brp{\frac{1}{2}} + S\brp{1}
-    &   \text{for $\sigma=0$}
-    &  \text{(1.12)}
-    \\
-    S\brp{0} + 6S\brp{\frac{1}{2}} + 13S\brp{1} + 4S\brp{2}
-    &   \text{for $\sigma=1$}
-    &  \text{(1.13)}
-\end{array}}\]
-
-
-
-\[\lambda_{\sigma}(t) = \brbl{\begin{array}{ll} 
-      +t-\sigma+1    & \text{for $\sigma-1\leq t\leq\sigma$}
-    \\-t+\sigma+1   & \text{for $\sigma\leq t\leq\sigma+1$}
+%--------------------------------------
+\begin{definition}
+\label{def:simple_tent}
+%--------------------------------------
+The \fnctd{simple tent function} $\fLambda_{\sigma}$ for $\sigma\in\setA_0$ is defined as
+\defbox{
+  \fLambda_{\sigma}(x) \eqd \brbl{\begin{array}{ll} 
+      1-\sigma+x    & \text{for $x\in\intcc{\sigma-1}{\sigma  }$}
+    \\1+\sigma-x    & \text{for $x\in\intcc{\sigma  }{\sigma+1}$}
     \\0             & \text{otherwise}
-\end{array}}\] 
-and
-\[S(t) = \brbl{\begin{array}{ll} 
-      \frac{S(\sigma)-S(\sigma-1)}{1}\brp{t-\sigma}+S(\sigma) & \text{for $\sigma-1\leq t\leq\sigma$}
-    \\\frac{S(\sigma+1)-S(\sigma)}{1}\brp{t-\sigma}+S(\sigma) & \text{for $\sigma\leq t\leq\sigma+1$}
-\end{array}}\] 
-Then 
-\begin{align*}
-  \inprod{S(t)}{\lambda_\sigma(t)}
-    &= \int_{t\in\mathbb{R}}S(t)\lambda_\sigma(t)dt
-    && \text{by definition of $\inprod{x}{y}$}
-  \\&= \int_{t=\sigma-1}^{t=\sigma+1}S(t)\lambda_\sigma(t)dt
-    && \text{because support of $\lambda_\sigma$ is $\intcc{\sigma-1}{\sigma+1}$}
-  \\&= \int_{t=\sigma-1}^{t=\sigma}S(t)\lambda_\sigma(t)dt
-     + \int_{t=\sigma}^{t=\sigma+1}S(t)\lambda_\sigma(t)dt
-\end{align*}
+  \end{array}}
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{stromberg1983}{479}{9780534980412}{4. Explicit Description of $\tau$ and $\rho$, $m=0$}
+  }
+%--------------------------------------
+\defbox{
+  S(x) \eqd \brbl{\begin{array}{ll} 
+        \brs{S(\sigma)-S(\sigma-1)}\brp{x-\sigma}+S(\sigma) & \text{for $x\in\intcc{\sigma-1}{\sigma  }$}
+      \\\brs{S(\sigma+1)-S(\sigma)}\brp{x-\sigma}+S(\sigma) & \text{for $x\in\intcc{\sigma  }{\sigma+1}$}
+  \end{array}}
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+\label{thm:strom_ortho}
+\footnote{
+  \citeP{stromberg1983},
+  \citer{wojtaszczyk1997},
+  \citerppgc{jaffard2001}{23}{24}{9780898718119}{{\textsection} 2.5 New Directions of the 1930s: The Franklin System}
+  \citer{greenhoe_3964474}
+  }
+%--------------------------------------
+\thmbox{
+  0 = \inprod{S(x)}{\fLambda_{\sigma }(x)} = 
+    \brbl{\begin{array}{l ll}
+      S\brp{\sigma -1}+ 4S\brp{\sigma}+S\brp{\sigma +1}
+      &   \text{for $\sigma\in\setn{2,3,4,\ldots}$} 
+      \\
+      S\brp{0} + 6S\brp{\frac{1}{2}} + 13S\brp{1} + 4S\brp{2}
+      &   \text{for $\sigma=1$}
+      \\
+      2S\brp{-\frac{1}{2}} + 9S\brp{0} + 6S\brp{\frac{1}{2}} + S\brp{1}
+      &   \text{for $\sigma=0$}
+      \\
+      S\brp{\sigma-\frac{1}{2}}+ 4S\brp{\sigma}+S\brp{\sigma+\frac{1}{2}}
+      &   \text{for $\sigma\in\setn{\ldots, -\frac{5}{2}, -2, -\frac{3}{2},-1,-\frac{1}{2}}$} 
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item lemma: \label{ilem:stromberg_AB} 
+    \begin{align*}
+        &\int_{x=\sigma-1}^{x=\sigma}   \brs{ (A-B)(x-\sigma)+A           } (1-\sigma+x)    \dx
+    \\&= \int_{x=\sigma-1}^{x=\sigma}   \brs{ A(1-\sigma+x) + B(\sigma-x) } (1-\sigma+x)    \dx
+    \\&= \int_{x=\sigma-1}^{x=\sigma}  A\brs{ x^2 + 2x(1-\sigma)        + (1-\sigma)^2    } 
+                                     + B\brs{-x^2 +  x(\sigma+\sigma-1) + \sigma(1-\sigma)} \dx
+    \\&= \brs{ A\brs{ \frac{1}{3}x^3 +             x^2(1-\sigma ) + x(1-\sigma)^2    } 
+             + B\brs{-\frac{1}{3}x^3 + \frac{1}{2} x^2(2\sigma-1) + x\sigma(1-\sigma)}
+             }_{x=\sigma-1}^{x=\sigma}
+    \\&= A\brs{ \frac{1}{3}\brp{\sigma^3-\brp{\sigma^3-3\sigma^2+3\sigma-1}} +            \brp{\sigma^2-\brp{\sigma^2-2\sigma+1}}(1-\sigma ) + (1-\sigma)^2\brp{\sigma-(\sigma-1)} } 
+    \\&+ B\brs{-\frac{1}{3}\brp{\sigma^3-\brp{\sigma^3-3\sigma^2+3\sigma-1}} + \frac{1}{2}\brp{\sigma^2-\brp{\sigma^2-2\sigma+1}}(2\sigma-1) + \sigma(1-\sigma)                    }
+    \\&= A\brs{ \brp{\sigma^2 - \sigma + \frac{1}{3} } +            (2\sigma-1)(1-\sigma ) + (-\sigma+1)^2     }
+       + B\brs{-\brp{\sigma^2 - \sigma + \frac{1}{3} } + \frac{1}{2}(2\sigma-1)(2\sigma-1) + \sigma(-\sigma+1) }
+    \\&= A\brs{\sigma^2( 1-2+1) + \sigma(-1+2+1-2) + \brp{ \frac{1}{3}-1+1}}
+       + B\brs{\sigma^2(-1+2-1) + \sigma( 1-1-1+1) + \brp{-\frac{1}{3}+\frac{1}{2}}}
+    \\&= \boxed{\frac{1}{3}A + \frac{1}{6}B}
+    \end{align*}
+
+  \item lemma: \label{ilem:stromberg_CA} 
+    \begin{align*}
+        &\int_{x=\sigma}^{x=\sigma+1}   \brs{ (C-A)(x-\sigma)+C           } (1+\sigma-x)    \dx
+    \\&= \int_{x=\sigma}^{x=\sigma+1}   \brs{ C(1-\sigma+x) + A(\sigma-x) } (1+\sigma-x)    \dx
+    \\&= \int_{x=\sigma}^{x=\sigma+1}  C\brs{-x^2 +  x(\sigma+\sigma+1) + \sigma(-\sigma-1)    } 
+                                     + A\brs{ x^2 +  x(-\sigma-1-1-\sigma) + (1+\sigma)^2} \dx
+    \\&= \brs{ C\brs{-\frac{1}{3}x^3 + \frac{1}{2} x^2(2\sigma+1) - x\sigma(\sigma+1)}
+              +A\brs{ \frac{1}{3}x^3 -             x^2( \sigma+1) + x(\sigma+1)^2    } 
+             }_{x=\sigma}^{x=\sigma+1}
+    \\&= C\brs{-\frac{1}{3}\brp{\brp{\sigma^3+3\sigma^2+3\sigma+1}-\sigma^3} + \frac{1}{2}\brp{\brp{\sigma^2+2\sigma+1}-\sigma^2}(2\sigma+1) - \sigma(\sigma+1) }
+    \\&+ A\brs{ \frac{1}{3}\brp{\brp{\sigma^3+3\sigma^2+3\sigma+1}-\sigma^3} -            \brp{\brp{\sigma^2+2\sigma+1}-\sigma^2}( \sigma+1) + (\sigma+1)^2     } 
+    \\&= C\brs{-\sigma^2 + \sigma - \frac{1}{3} + \frac{1}{2}(2\sigma+1)(2\sigma+1) - \sigma^2 -\sigma }
+       + A\brs{ \sigma^2 + \sigma + \frac{1}{3} - (2\sigma+1)( \sigma+1) + \sigma^2 + 2\sigma + 1      }
+    \\&= C\brs{\sigma^2(-1+2-1) + \sigma(-1+1+1-1) + \brp{-\frac{1}{3}+\frac{1}{2}}}
+       + A\brs{\sigma^2( 1-2+1) + \sigma( 1-2-1+2) + \brp{ \frac{1}{3}-1+1}}
+    \\&= \boxed{\frac{1}{6}C + \frac{1}{3}A}
+    \end{align*}
+
+  \item definitions: Let $A\eqd S(\sigma)$, $B\eqd S(\sigma-1)$, and $C\eqd S(\sigma+1)$. \label{idef:stromberg_ABC}
+  \item Finish proof\ldots
+    \begin{align*}
+      \inprod{S(x)}{\fLambda_\sigma(x)}
+        &= \int_{x\in\mathbb{R}}S(x)\fLambda_\sigma(x)\dx
+        && \text{by definition of $\inprod{x}{y}$}
+      \\&= \int_{x=\sigma-1}^{x=\sigma+1}S(x)\fLambda_\sigma(x)\dx
+        && \text{because support of $\fLambda_\sigma$ is $\intcc{\sigma-1}{\sigma+1}$}
+      \\&= \int_{x=\sigma-1}^{x=\sigma}S(x)\fLambda_\sigma(x)\dx
+         + \int_{x=\sigma}^{x=\sigma+1}S(x)\fLambda_\sigma(x)\dx
+      \\&\eqd \int_{x=\sigma-1}^{x=\sigma  } \brs{ (A-B)(x-\sigma)+A } (1-\sigma+x) \dx
+         + \int_{x=\sigma  }^{x=\sigma+1} \brs{ (C-A)(x-\sigma)+C } (1+\sigma-x) \dx
+        && \text{by \pref{idef:stromberg_ABC}}
+      \\&= \frac{1}{3}A + \frac{1}{6}B + \frac{1}{6}C + \frac{1}{3}A
+        && \text{by \pref{ilem:stromberg_AB} and \pref{ilem:stromberg_CA}}
+      \\&= \frac{1}{6}\brs{B + 4A + C}
+      \\&\eqd \boxed{\frac{1}{6}\brs{S(\sigma-1) + 4S(\sigma) + S(\sigma+1)}}
+        && \text{by \pref{idef:stromberg_ABC}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
 
 
-
-References:
-\citeP{stromberg1983},
-\citer{wojtaszczyk1997},
-\citerppgc{jaffard2001}{23}{24}{9780898718119}{{\textsection} 2.5 New Directions of the 1930s: The Franklin System}
-\citer{greenhoe_3964474}
