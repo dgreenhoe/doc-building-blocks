@@ -544,42 +544,10 @@ Then, using \thme{Least squares}\ifsxref{estimate}{thm:ls}, the best coefficient
 \end{align*}
 \end{proof}
 
-
-
-
-
-
-
 %=======================================
 \section{Hermite interpolation}
 \label{sec:interpo_hermite}
 %=======================================
-
-\begin{table}
-\footnotesize
-\exbox{
-  \renewcommand{\arraystretch}{1}
-  \renewcommand{\arraycolsep}{0.4ex}
-  \begin{array}{r|@{\qquad}*{13}{r}}
-     p & \mc{13}{l}{\ds(1-y)^p\fP_m(y)= (1-y)^p \sum_{k=0}^{p-1} {p-1+k\choose k} y^k}
-  %    p & \mc{20}{l}{(1-y)^p\fP_m(y)}
-  \\ \hline
-     1 & 1 &-&   y
-  \\ 2 & 1 &-&  3y^2 &+&  2y^3
-  \\ 3 & 1 &-& 10y^3 &+&  15y^4 &-&   6y^5
-  \\ 4 & 1 &-&  35y^4 &+&  84y^5 &-&   70y^6  &+&    20y^7
-  \\ 5 & 1 &-& 126y^5 &+&  420y^6 &-&  540y^7 &+&   315y^8 &-&    70y^9
-  \\ 6 & 1 &-& 462y^6 &+& 1980y^7 &-& 3465y^8 &+&  3080y^9 &-&  1386y^{10} &+& 252y^{11}
-  \end{array}}
-\caption{
-  Low-pass term $(1-y)^p\fP_m(y)$
-  \label{tbl:P_lp}
-  }
-\end{table}
-
-
-
-
 \begin{figure}[h]
 \begin{scriptsize}
 \begin{center}
@@ -623,45 +591,114 @@ Then, using \thme{Least squares}\ifsxref{estimate}{thm:ls}, the best coefficient
   \label{fig:lphp}
   }
 \end{figure}
-The  quadrature condition can be expressed as a polynomial
-in $y=\sin^2\frac{\omega}{2}$\ifsxref{compactp}{lem:quadcon_y}.
-The first term in this polynomial quadrature condition is a
-low-pass response and the second term is a high pass;
-and they meet in the middle at $\omega=\frac{\pi}{2}$.
-    \[
-      \mcom{(1-y)^p \fP(y)}{low-pass} + \mcom{y^p \fP(1-y)}{high-pass} = 1
-    \]
-The low-pass and high-pass terms are especially smooth at
-$\omega=0$ ($y=0$) and $\omega=\pi$ ($y=1$)
-in that the first $p-1$ derivatives at both points are zero
-for both terms.
-This is illustrated in \prefpp{fig:lphp}.
+
+%---------------------------------------
+\begin{definition}
+\label{def:minpoly}
+%---------------------------------------
+\defboxt{
+  The \fnctd{minimal polynomial} $\fP_m(x)$ is defined as
+  \\\indentx$\ds\fP_m(x)= \sum_{k=0}^{p-1} \bcoef{p-1+k}{k} x^k$
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{definition}
+\label{def:minpoly}
+%---------------------------------------
+\defbox{\begin{array}{Mrcl}
+  The low pass Hermite interpolation function is defined as  &\ds\fh_l &\eqd&\ds (1-x)^p \sum_{k=0}^{p-1}\bcoef{p+k-1}{k} x^k\\
+  The high pass Hermite interpolation function is defined as &\ds\fh_h &\eqd&\ds     x^p \sum_{k=0}^{p-1}\bcoef{p+k-1}{k} (1-x)^k 
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{example}
+\footnote{
+  \citerpg{pinsky2002}{333}{9780534376604},
+  \citerpgc{pinsky2008}{333}{9780534376604}{Exercise 6.5.11: $P_1(y)$, $P_2(y)$, \ldots, $P_6(y)$},
+  \citeO{oeisA000580}{A000580} %{a(n) = binomial coefficient C(n,7)}
+  }
+\label{ex:min_poly}
+%---------------------------------------
+Here are some examples of the minimal polynomial $\fP_m(x)$ for varying number
+of vanishing moments $p$:
+\footnotesize
+\exbox{
+\renewcommand{\arraystretch}{1}
+\renewcommand{\arraycolsep}{0.4ex}
+\begin{array}{r|@{\hs{2ex}}*{20}{r}}
+   p & \mc{19}{l}{\fP_m(x)= \sum_{k=0}^{p-1} \bcoef{p-1+k}{k} x^k}
+\\ \hline
+   1 & 1
+\\ 2 & 1 &+&  2x
+\\ 3 & 1 &+&  3x &+&  6x^2
+\\ 4 & 1 &+&  4x &+& 10x^2 &+& 20x^3
+\\ 5 & 1 &+&  5x &+& 15x^2 &+& 35x^3 &+&  70x^4
+\\ 6 & 1 &+&  6x &+& 21x^2 &+& 56x^3 &+& 126x^4 &+& 252x^5
+\\ 7 & 1 &+&  7x &+& 28x^2 &+& 84x^3 &+& 210x^4 &+& 462x^5 &+&  924x^6
+\\ 8 & 1 &+&  8x &+& 36x^2 &+&120x^3 &+& 330x^4 &+& 792x^5 &+& 1716x^6 &+& 3432x^7
+\\ 9 & 1 &+&  9x &+& 45x^2 &+&165x^3 &+& 495x^4 &+&1287x^5 &+& 3003x^6 &+& 6435x^7 &+& 12870x^8
+\\10 & 1 &+& 10x &+& 55x^2 &+&220x^3 &+& 715x^4 &+&2002x^5 &+& 5005x^6 &+&11440x^7 &+& 24310x^8 &+& 48620x^9
+\end{array}}
+\end{example}
+
+
+
+%--------------------------------------
+\begin{example}
+%\label{tbl:P_lp}
+\footnote{
+  \citerpgc{ebert2003}{347}{9781558608481}{$3t^2 - 2t^3$ and $6t^5 - 15t^4 + 10t^3$},
+  \citePc{perlin2002}{$3t^2 - 2t^3$ and $6t^5 - 15t^4 + 10t^3$},
+  \citeO{oeisA091811}{A091811} %{Array read by rows: T(n,k) = binomial(n+k-2,k-1)*binomial(2*n-1,n-k)},
+  \citeO{oeisA327809}{A327809} %{Regular triangle, coefficients of the polynomial P(n)(x) = (-1)^(n+1)*(2*n+1)*binomial(2*n, n)*Sum_{i=0..n} x^i*binomial(n, i)/(n+i+1)}
+  }
+%--------------------------------------
+Low-pass term $(1-y)^p\fP_m(y)$:
+{\footnotesize
+\exbox{
+  \renewcommand{\arraystretch}{1}
+  \renewcommand{\arraycolsep}{0.4ex}
+  \begin{array}{r|@{\qquad}*{13}{r}}
+     p & \mc{13}{l}{\ds(1-x)^p\fP_m(x)= (1-x)^p \sum_{k=0}^{p-1} {p-1+k\choose k} x^k}
+  \\ \hline
+     1 & 1 &-&    x
+  \\ 2 & 1 &-&   3x^2 &+&    2x^3
+  \\ 3 & 1 &-&  10x^3 &+&   15x^4 &-&    6x^5
+  \\ 4 & 1 &-&  35x^4 &+&   84x^5 &-&   70x^6 &+&    20x^7
+  \\ 5 & 1 &-& 126x^5 &+&  420x^6 &-&  540x^7 &+&   315x^8 &-&    70x^9
+  \\ 6 & 1 &-& 462x^6 &+& 1980x^7 &-& 3465x^8 &+&  3080x^9 &-&  1386x^{10} &+& 252x^{11}
+  \end{array}}
+}
+\end{example}
+
 %--------------------------------------
 \begin{theorem}[\thme{Hermite Interpolation}]
 \label{thm:interpo_hermite}
 %--------------------------------------
 \thmbox{\begin{array}{*{3}{>{\ds}l}D}
-  \left.\deriv{^n}{y^n} \brs{
-        (1-y)^p \sum_{k=0}^{p-1}{p+k-1\choose k} y^k
-        }\right|_{y=0}
+  \left.\deriv{^n}{x^n} \brs{
+        (1-x)^p \sum_{k=0}^{p-1}{p+k-1\choose k} x^k
+        }\right|_{x=0}
     &=& \kdelta_n
     &   for $n=0,1,2,\ldots,p-1$
   \\
-  \left.\deriv{^n}{y^n} \brs{
-        (1-y)^p \sum_{k=0}^{p-1} {p+k-1\choose k} y^k
-        }\right|_{y=1}
+  \left.\deriv{^n}{x^n} \brs{
+        (1-x)^p \sum_{k=0}^{p-1} {p+k-1\choose k} x^k
+        }\right|_{x=1}
     &=& 0
     &   for $n=0,1,2,\ldots,p-1$
   \\
-  \left.\deriv{^n}{y^n} \brs{
-        y^p \sum_{k=0}^{p-1}{p+k-1\choose k} (1-y)^k
-        }\right|_{y=0}
+  \left.\deriv{^n}{x^n} \brs{
+        x^p \sum_{k=0}^{p-1}{p+k-1\choose k} (1-x)^k
+        }\right|_{x=0}
     &=& 0
     &   for $n=0,1,2,\ldots,p-1$
   \\
-  \left.\deriv{^n}{y^n} \brs{
-        y^p \sum_{k=0}^{p-1} {p+k-1\choose k} (1-y)^k
-        }\right|_{y=1}
+  \left.\deriv{^n}{x^n} \brs{
+        x^p \sum_{k=0}^{p-1} {p+k-1\choose k} (1-x)^k
+        }\right|_{x=1}
     &=& \kdelta_n
     &   for $n=0,1,2,\ldots,p-1$
   \end{array}}
@@ -669,8 +706,8 @@ This is illustrated in \prefpp{fig:lphp}.
 \begin{proof}
 Let
 \begin{align*}
-  \ff(y) &\eqd (1-y)^p \sum_{n=0}^{p-1} {p-1+n \choose n} y^n      \\
-  \fg(y) &\eqd y^p     \sum_{n=0}^{p-1} {p-1+n \choose n} (1-y)^n  \\
+  \ff(x) &\eqd (1-x)^p \sum_{n=0}^{p-1} {p-1+n \choose n} x^n      \\
+  \fg(x) &\eqd x^p     \sum_{n=0}^{p-1} {p-1+n \choose n} (1-x)^n  \\
   q      &\eqd p-1
 \end{align*}
 %\begin{enumerate}
@@ -679,45 +716,45 @@ Let
   \item Proof that $\ff(0)=1$:
   \begin{align*}
   \ff(0)
-    &= \left.(1-y)^p \sum_{m=0}^{p-1} {p-1+m\choose m} y^m \right|_{y=0}
-  \\&= \left.(1-y)^p \brs{{p-1 \choose 0} + \sum_{m=1}^{p-1} {p-1+m\choose m} y^m}\right|_{y=0}
+    &= \left.(1-x)^p \sum_{m=0}^{p-1} {p-1+m\choose m} x^m \right|_{x=0}
+  \\&= \left.(1-x)^p \brs{{p-1 \choose 0} + \sum_{m=1}^{p-1} {p-1+m\choose m} x^m}\right|_{x=0}
   \\&= 1
   \end{align*}
 
   \item Proof that
-      $\ds\ff(y)=
+      $\ds\ff(x)=
        p \sum_{n=0}^{2p-1}
        \brs{\sum_{k=\max(0,n-q)}^{\min(n,p)} (-1)^k \frac{(p+n-k-1)!}{(p-k)!(n-k)!\,k!}}
-       y^n$:
+       x^n$:
   \begin{align*}
-  (1-y)^p \fP_m(y)
-    &= \sum_{n=0}^p     {p\choose n} (-1)^n y^n
-       \sum_{m=0}^{p-1} {p-1+m\choose m} y^m
+  (1-x)^p \fP_m(x)
+    &= \sum_{n=0}^p     {p\choose n} (-1)^n x^n
+       \sum_{m=0}^{p-1} {p-1+m\choose m} x^m
   \\&= \sum_{n=0}^{2p-1} \sum_{k=\max(0,n-q)}^{\min(n,p)}
-       {p\choose k} (-1)^k {p-1+n-k\choose n-k} y^n
+       {p\choose k} (-1)^k {p-1+n-k\choose n-k} x^n
     && \text{by \prefp{thm:polymult}}
   \\&= \sum_{n=0}^{2p-1} \sum_{k=\max(0,n-q)}^{\min(n,p)}
-       (-1)^k \frac{p!}{(p-k)!k!} \frac{(p-1+n-k)!}{(p-1)!(n-k)!} y^n
+       (-1)^k \frac{p!}{(p-k)!k!} \frac{(p-1+n-k)!}{(p-1)!(n-k)!} x^n
   \\&= p \sum_{n=0}^{2p-1}
        \brs{\sum_{k=\max(0,n-q)}^{\min(n,p)} (-1)^k \frac{(p+n-k-1)!}{(p-k)!(n-k)!\,k!}}
-       y^n
+       x^n
   \end{align*}
 
   \item Proof that $\ff^{(n)}(0)=\kdelta_n$ for $n=0,1,2,\ldots,p-1$:
   \begin{align*}
-  \left.\deriv{^n}{y^n}\brs{ (1-y)^p \fP_m(y) }\right|_{y=0}
+  \left.\deriv{^n}{x^n}\brs{ (1-x)^p \fP_m(x) }\right|_{x=0}
     &= \left.
-       \deriv{^n}{y^n}\brs{
+       \deriv{^n}{x^n}\brs{
          p \sum_{m=0}^{2p-1}
          \brs{\sum_{k=\max(0,m-q)}^{\min(m,p)} (-1)^k \frac{(p+m-k-1)!}{(p-k)!(m-k)!\,k!}}
-         y^m
+         x^m
        }
-       \right|_{y=0}
+       \right|_{x=0}
     && \text{by 1.}
   \\&= \left. p
        \sum_{m=n}^{2p-1} \sum_{k=\max(0,m-q)}^{\min(m,p)}
-       (-1)^k \frac{(p-1+m-k)!}{(p-k)!(m-k)!k!} \frac{m!}{(m-n)!}y^{m-n}
-       \right|_{y=0}
+       (-1)^k \frac{(p-1+m-k)!}{(p-k)!(m-k)!k!} \frac{m!}{(m-n)!}x^{m-n}
+       \right|_{x=0}
   \\&= p \sum_{k=\max(0,n-q)}^{\min(n,p)}
        (-1)^k \frac{(p-1+n-k)!}{(p-k)!} \frac{n!}{(n-k)!k!}
   \\&= p \sum_{k=0}^n
@@ -727,24 +764,24 @@ Let
 
   \item Proof that $\ff^{(n)}(0)=\kdelta_n$ for $n=0,1,2,\ldots,p-1$:
   \begin{align*}
-  &\left.\deriv{^n}{y^n}\brs{ (1-y)^p \fP_m(y) }\right|_{y=0}
+  &\left.\deriv{^n}{x^n}\brs{ (1-x)^p \fP_m(x) }\right|_{x=0}
   \\&= \left.
        \sum_{k=0}^n {n\choose k}
-       \brs{\deriv{^{n-k}}{y^{n-k}} (1-y)^p }
-       \brs{\deriv{^k}{y^k}\fP_m(y) }
-       \right|_{y=0}
+       \brs{\deriv{^{n-k}}{x^{n-k}} (1-x)^p }
+       \brs{\deriv{^k}{x^k}\fP_m(x) }
+       \right|_{x=0}
     \qquad\text{by \pref{lem:LGPR} (Leibnitz rule)}
   \\&= \left.
        \sum_{k=0}^n {n\choose k}
-       \brs{\deriv{^{n-k}}{y^{n-k}} (1-y)^p }
-       \brs{\deriv{^k}{y^k} \sum_{m=0}^{p-1}{p-1+m \choose m} y^m }
-       \right|_{y=0}
-    \quad\text{by definition of $\fP_m(y)$}
+       \brs{\deriv{^{n-k}}{x^{n-k}} (1-x)^p }
+       \brs{\deriv{^k}{x^k} \sum_{m=0}^{p-1}{p-1+m \choose m} x^m }
+       \right|_{x=0}
+    \quad\text{by definition of $\fP_m(x)$}
   \\&= \left.
        \sum_{k=0}^n {n\choose k}
-       \brs{(-1)^{n-k}\frac{p!}{(p-n+k)!} (1-y)^{(p-n+k)} }
-       \brs{\sum_{m=k}^{p-1}{p-1+m \choose m} \frac{m!}{(m-k)!}y^{m-k} }
-       \right|_{y=0}
+       \brs{(-1)^{n-k}\frac{p!}{(p-n+k)!} (1-x)^{(p-n+k)} }
+       \brs{\sum_{m=k}^{p-1}{p-1+m \choose m} \frac{m!}{(m-k)!}x^{m-k} }
+       \right|_{x=0}
   \\&= \sum_{k=0}^n {n\choose k}
        \brs{(-1)^{n-k}\frac{p!}{(p-n+k)!}}
        \brs{{p-1+k \choose k} k! }
@@ -759,22 +796,22 @@ Let
 
   \item Proof that $\ff^{(n)}(1)=0$ for $n=0,1,2,\ldots,p-1$:
   \begin{align*}
-  \left.\deriv{^n}{y^n}\brs{ (1-y)^p \fP_m(y) }\right|_{y=1}
+  \left.\deriv{^n}{x^n}\brs{ (1-x)^p \fP_m(x) }\right|_{x=1}
     &= \left.
        \sum_{k=0}^n {n\choose k}
-       \brs{\deriv{^k}{y^k} (1-y)^p }
-       \fP_m^{(n-k)}(y)
-       \right|_{y=1}
+       \brs{\deriv{^k}{x^k} (1-x)^p }
+       \fP_m^{(n-k)}(x)
+       \right|_{x=1}
     && \text{by \pref{lem:LGPR} (Leibnitz rule)}
   \\&= \left.
        \sum_{k=0}^n {n\choose k}
-       \brs{(-1)^k\frac{p!}{(p-k)!} (1-y)^{p-k} }
-       \fP_m^{(n-k)}(y)
-       \right|_{y=1}
+       \brs{(-1)^k\frac{p!}{(p-k)!} (1-x)^{p-k} }
+       \fP_m^{(n-k)}(x)
+       \right|_{x=1}
   \\&= \left.
        \sum_{k=0}^n {n\choose k} \; 0\cdot
-       \fP_m^{(n-k)}(y)
-       \right|_{y=1}
+       \fP_m^{(n-k)}(x)
+       \right|_{x=1}
     && \text{by \pref{lem:LGPR}}
   \\&= 0 \qquad \text{for } k=0,1,2,\ldots,p-1
   \end{align*}

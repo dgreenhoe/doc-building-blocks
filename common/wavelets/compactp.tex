@@ -34,13 +34,13 @@
 %=======================================
 \section{General structure}
 %=======================================
-This chapter introduces a wavelet design technique that represents the 
+This chapter introduces a wavelet design technique that represents the
 orthogonal quadrature condition in terms of a polynomial in $z$.
 It is the technique that was used by Ingrid Daubechies in her celebrated
 \hie{Daubechies-$p$} class of wavelets (see \prefp{sec:dau-p}).
 The technique can be summarized as follows:
 \begin{dingautolist}{"AC}
-  \item \textbf{Design requirements.} 
+  \item \textbf{Design requirements.}
         Let $\wavsys$ be a wavelet system. %n \hib{orthonormal} wavelet system.
         We want to design this system to have two properties:
     \begin{dingautolist}{"B6}
@@ -49,25 +49,25 @@ The technique can be summarized as follows:
       \item The wavelet function $\fpsi$ has $p$ \prope{vanishing moments} \xref{def:vanish}.
     \end{dingautolist}
 
-  \item \textbf{Form of solution.} 
-        \prefpp{lem:van_factor} demonstrates that the presence of the 
-        factor $\brp{\frac{1+z^{-1}}{2}}^p$ 
+  \item \textbf{Form of solution.}
+        \prefpp{lem:van_factor} demonstrates that the presence of the
+        factor $\brp{\frac{1+z^{-1}}{2}}^p$
         in the z transform $\Zh(z)$ of the scaling coefficient sequence $\seqn{h_n}$
         is a sufficient condition for $\fpsi$ to have $p$ vanishing moments.
         Therefore, we constrain $\Zh(z)$ to be of the following form:
         \[
-          \Zh(z) = 
+          \Zh(z) =
           \sqrt{2}\mcom{\left(\frac{1+z^{-1}}{2}\right)^p}
                        {$\begin{array}{M}
-                           provides $p$\\ 
+                           provides $p$\\
                            vanishing moments\\
                            \xref{lem:van_factor}
                          \end{array}$}
           \mcoml{\fQ(z)}{provides orthogonality}
         \]
 
-        So we need to compute the factor $\fQ(z)$. 
-        Once we have $\fQ(z)$, we can multiply the two factors, 
+        So we need to compute the factor $\fQ(z)$.
+        Once we have $\fQ(z)$, we can multiply the two factors,
         and the scaling coefficient sequence $\seqn{h_n}$ will simply be the coefficients
         of the polynomial $\Zh(z)$:
         \[ \Zh(z) = h_0 + h_1 z^{-1} + h_2 z^{-2} + h_3 z^{-3} + \cdots + h_{2p-1}z^{-2p+1}\]
@@ -79,75 +79,89 @@ The technique can be summarized as follows:
       %      \begin{align*}
       %        2
       %          &= \abs{\Fh(\omega)}^2  + \abs{\Fh(\omega+\pi)}^2
-      %        \\&= \abs{\sum_n h_n e^{-i\omega n}}^2  + \abs{\sum_n h_n e^{-i(\omega+\pi)n}}^2 
-      %        \\&= \brs{\abs{\sum_n h_n z^{-n}}^2  + \abs{\sum_n h_n z^{-n}}^2}_{z\eqd e^{i\omega}} 
-      %        
+      %        \\&= \abs{\sum_n h_n e^{-i\omega n}}^2  + \abs{\sum_n h_n e^{-i(\omega+\pi)n}}^2
+      %        \\&= \brs{\abs{\sum_n h_n z^{-n}}^2  + \abs{\sum_n h_n z^{-n}}^2}_{z\eqd e^{i\omega}}
+      %
       %      \end{align*}
 
-      \item The frequency representation of the orthogonal quadrature condition 
-            $\abs{\Fh(\omega)}^2  + \abs{\Fh(\omega+\pi)}^2 = 2$ 
-            \xref{lem:oms_quadcon} is \prope{periodic} in $\omega$ with 
+      \item The frequency representation of the orthogonal quadrature condition
+            $\abs{\Fh(\omega)}^2  + \abs{\Fh(\omega+\pi)}^2 = 2$
+            \xref{lem:oms_quadcon} is \prope{periodic} in $\omega$ with
             period $2\pi$ and is even about $0$.
             Because it's \prope{periodic}, the quadrature condition can be expressed
             as a \ope{Fourier Series} \xref{def:fs}.
-            Because it's \prope{even}, the quadrature condition can be expressed 
+            Because it's \prope{even}, the quadrature condition can be expressed
             using only cosine terms.
-      
-      \item Any \emph{harmonic} cosine representation of a function may alternatively be 
-            expressed as a \thme{trigonometric expansion} 
+
+      \item Any \emph{harmonic} cosine representation of a function may alternatively be
+            expressed as a \thme{trigonometric expansion}
             (\prefp{thm:cosnx} with examples in \prefp{ex:cos5} and \prefp{ex:cosn}).
-            Therefore, the frequency orthogonal quadrature condition can be represented 
+            Therefore, the frequency orthogonal quadrature condition can be represented
             as a polynomial in $\cos\omega$.
-      
-      \item As indicated by the trigonometric identity 
+
+      \item As indicated by the trigonometric identity
             $\sin^2\theta\equiv\frac{1}{2}\brp{1-\cos2\theta}$
             \ifdochas{harTrig}{\xref{thm:trig_sq}},
-            any polynomial in $\cos\omega$ can alternatively be represented as 
+            any polynomial in $\cos\omega$ can alternatively be represented as
             a polynomial in $\sin^2\frac{\omega}{2}$.
-            Therefore, the frequency orthogonal quadrature condition can be represented 
+            Therefore, the frequency orthogonal quadrature condition can be represented
             as a polynomial in $\sin^2\frac{\omega}{2}$.
-      
+
       \item With $y$ defined as $y\eqd\sin^2\frac{\omega}{2}$,
             the orthogonal quadrature condition together with the $p$ vanishing moments
             constraint can be represented as \xref{lem:quadcon_y}
-            \[(1-y)^p P(y) + y^p P(1-y) = 1 \quad \text{for some polynomial $P(y)$}.\]
-            
+            \[(1-y)^p P(y) + y^p P(1-y) = 1 \quad \text{for some polynomial $\fP(y)$}.\]
+
       \item The forms $(1-y)^p P(y)$ and $y^p P(1-y)$ are also used in \ope{Hermite interpolation} \xref{sec:interpo_hermite}
             with the result of the endpoints at $y=0$ and $y=1$ being increasingly ``flatter" with increasing $p$.
             In particular, the first $p-1$ derivatives at the endpoints are $0$ \xref{thm:interpo_hermite}.
-      
+
       \item There are an infinite number of solutions for $\fP(y)$.
             These solutions are of the form \xref{lem:gcd_yp}
-        \[  \fP(y) \eqd \ds \fP_m(y) + y^p \fR\brp{\frac{1}{2}-y}
+        \[  \fP(y) \eqd \ds \fP_p(y) + y^p \fR\brp{\frac{1}{2}-y}
             \quad\text{where}\quad
             \brb{\begin{array}{>{\ds}lM}
-              \fP_m(y)     \eqd \sum_{k=0}^{p-1} {p-1+k \choose k} y^k & and
+              \fP_p(y)     \eqd \sum_{k=0}^{p-1} {p-1+k \choose k} y^k & and
               \\
               \mcom{\fR(y) =    -\fR(-y)}{$\fR$ is any \prope{odd} polynomial}
             \end{array}}
         \]
         Furthermore, $\fP(y)$ has minimum order when $\fR(y)=0$.
 
-      \item Examples of \structe{odd polynomials} include the 
+      \item Examples of \structe{odd polynomials} include the
             \fncte{Chebyshev polynomials} \xref{def:Tn} $\fT_n(x)$ with $n$ \prope{odd} \xref{thm:chebyshev_evenodd}.
-      
+
       \item \textbf{Spectral factorization.}
             The quantity $y$ can be expressed in terms of $z$ as \xref{lem:sfact_yz}
             \[ y=\brp{\frac{1-z}{2}}\,\brp{\frac{1-z^{-1}}{2}}.\]
             This implies that for each root of a polynomial in $y$,
-            there are two roots in the equivalent polynomial in $z$, 
-            and that these roots occur 
+            there are two roots in the equivalent polynomial in $z$,
+            and that these roots occur
             in recipricol pairs (if $z$ is a root, then $z^{-1}$ is also a root).
             Therefore, any polynomial $\fP(y)$ in $y$ can be factored into two factors
             in $z$ such that $\fP(y)=\fQ(z)\fQ(z^{-1})$.
             Once $\fP(y)$ has been computed, we can then proceed to compute $\fQ(z)$
             %and factored into $\fQ(z)$ and $\fQ(z^{-1})$,
             %we can then compute the factor $\fQ(z)$.
-            %To compute $\fQ(z)$, we can factor $\fP(y)$ into $\fQ(z)\fQ(z^{-1})$ 
-            %(there are in general many ways to do this) and keep the factor $\fQ(z)$ 
+            %To compute $\fQ(z)$, we can factor $\fP(y)$ into $\fQ(z)\fQ(z^{-1})$
+            %(there are in general many ways to do this) and keep the factor $\fQ(z)$
             with help from \prefpp{thm:cs_bezout_prop}.
   \end{dingautolist}
 \end{dingautolist}
+
+The  quadrature condition can be expressed as a polynomial
+in $y=\sin^2\frac{\omega}{2}$\ifsxref{compactp}{lem:quadcon_y}.
+The first term in this polynomial quadrature condition is a
+low-pass response and the second term is a high pass;
+and they meet in the middle at $\omega=\frac{\pi}{2}$.
+    \[
+      \mcom{(1-y)^p \fP(y)}{low-pass} + \mcom{y^p \fP(1-y)}{high-pass} = 1
+    \]
+The low-pass and high-pass terms are especially smooth at
+$\omega=0$ ($y=0$) and $\omega=\pi$ ($y=1$)
+in that the first $p-1$ derivatives at both points are zero
+for both terms.
+This is illustrated in \prefpp{fig:lphp}.
 
 %=======================================
 %\section {Structure}
@@ -238,10 +252,10 @@ as a polynomial in $y$ where $y=\sin^2\frac{\omega}{2}$.
 \label{lem:quadcon_y}
 %--------------------------------------
 Let $\wavsys$ be a wavelet system.
-Let $y\eqd\sin^2\brp{\frac{\omega}{2}}$ and $P(y)$ a polynomial in $y$.
+Let $y\eqd\sin^2\brp{\frac{\omega}{2}}$ and $\fP(y)$ a polynomial in $y$.
 \lembox{
   \brb{\begin{array}{FlD}
-    1. & \mcom{\abs{\Fh(\omega)}^2 + \abs{\Fh(\omega+\pi)}^2 = 2} 
+    1. & \mcom{\abs{\Fh(\omega)}^2 + \abs{\Fh(\omega+\pi)}^2 = 2}
               {\prope{quadrature condition} in ``frequency"}
        & and
        \\
@@ -249,8 +263,8 @@ Let $y\eqd\sin^2\brp{\frac{\omega}{2}}$ and $P(y)$ a polynomial in $y$.
   \end{array}}
   \iff
   \brb{\begin{array}{FlD}
-    1. & \text{there exists $P(y)$ such that}\\
-       & \abs{\Fh(\omega)}^2 = 2\brp{1-y}^p P(y) 
+    1. & \text{there exists $\fP(y)$ such that}\\
+       & \abs{\Fh(\omega)}^2 = 2\brp{1-y}^p P(y)
        & and
     \\
     2. & \mcom{(1-y)^p P(y) + y^p P(1-y) = 1}
@@ -324,9 +338,8 @@ Let $y\eqd\sin^2\brp{\frac{\omega}{2}}$ and $P(y)$ a polynomial in $y$.
 \end{enumerate}
 \end{proof}
 
-
 In the polynomial quadrature condition,
-what are the possible solutions of $P(y)$?
+what are the possible solutions of $\fP(y)$?
 \pref{lem:gcd_yp} (next) answers this question.
 %--------------------------------------
 \begin{lemma}
@@ -336,7 +349,8 @@ what are the possible solutions of $P(y)$?
 \index{Binomial Theorem}
 \footnote{
   \citerp{dau}{171},
-  \citerpp{pinsky2002}{331}{333},
+  \citerppg{pinsky2002}{331}{333}{9780534376604},
+  \citerppgc{pinsky2008}{331}{333}{9780534376604}{6.5.2.1 Daubechies recipe},
   \citerpp{chui}{175}{176}
   }
 %--------------------------------------
@@ -348,8 +362,8 @@ Let $\fP$, $\fQ$, and $\fR$ be polynomials over $\R$.
          {quadrature condition as polynomial in $y$}
   \quad\iff\quad
   \left\{\begin{array}{FlD}
-    1. & \fP(y) \eqd \ds \fP_m(y) + y^p \fR\brp{\frac{1}{2}-y} & where  \\
-       & \fP_m(y) \eqd \ds \sum_{k=0}^{p-1} {p-1+k \choose k} y^k & and \\
+    1. & \fP(y) \eqd \ds \fP_p(y) + y^p \fR\brp{\frac{1}{2}-y} & where  \\
+       & \fP_p(y) \eqd \ds \sum_{k=0}^{p-1} {p-1+k \choose k} y^k & and \\
     2. & \mcom{\fR(y) = -\fR(-y)}
               {$\fR$ is any {\bf odd} polynomial.}
   \end{array}\right.
@@ -359,10 +373,10 @@ Let $\fP$, $\fQ$, and $\fR$ be polynomials over $\R$.
 \end{lemma}
 \begin{proof}
   \begin{enumerate}
-    \item Proof that 
-      $(1-y)^p \fP(y) + y^p \fP(1-y) = 1 \implies \fP(y)=\fP_m(y) + y^p \fR\brp{\frac{1}{2}-y}$:
+    \item Proof that
+      $(1-y)^p \fP(y) + y^p \fP(1-y) = 1 \implies \fP(y)=\fP_p(y) + y^p \fR\brp{\frac{1}{2}-y}$:
       \begin{enumerate}
-        \item lemma: proof that 
+        \item lemma: proof that
           $\frac{1}{(1-y)^p}=\sum_{k=0}^{\infty} {p-1+k \choose k} y^k$:
           \label{item:gcd_yp_1yp}
           \begin{align*}
@@ -387,118 +401,118 @@ Let $\fP$, $\fQ$, and $\fR$ be polynomials over $\R$.
                  (p)(p+1)(p+2)\cdots(p+k-2)(p+k-1) \; y^k
             \\&= \sum_{k=0}^{\infty} \frac{(p+k-1)!}{k!(p-1)!} \; y^k
             \\&= \sum_{k=0}^{\infty} \frac{(p+k-1)!}{k!(p+k-1-k)!} \; y^k
-            \\&= \sum_{k=0}^{\infty} {p+k-1 \choose k} \; y^k
+            \\&= \sum_{k=0}^{\infty} \bcoef{p+k-1}{k} \; y^k
                  \qquad\text{by definition of ${n \choose k}$ \xref{def:bcoef}}
           \end{align*}
 
-        \item There are an infinite number of solutions for $\fP(y)$. 
+        \item There are an infinite number of solutions for $\fP(y)$.
               These solutions are here expressed as
-              \[ \fP(y) 
-                   \eqd \mcom{\fP_m(y)}{order $p-1$} 
+              \[ \fP(y)
+                   \eqd \mcom{\fP_p(y)}{order $p-1$}
                    +    \mcom{y^p \fR\brp{\frac{1}{2}-y}}{order $\ge p$}
               \]
-           
+
         \item \label{ilem:gcd_yp}
               Note that $(1-y)^p$ and $y^p$ are \hie{relatively prime} and are both of order $p$.
               Therefore by \thme{B\'ezout's Theorem} \xref{thm:bezout},
               there exists a unique solution for $\fP(y)$ of order $p-1$.
-              This unique solution is here labeled $\fP_m(y)$.
+              This unique solution is here labeled $\fP_p(y)$.
               The more general solution (of order $\ge p$) is here expressed as
-              $\fP_m(y) + y^p\fR\brp{\frac{1}{2}-y}$.
-              \[ \mcom{(1-y)^p}{order $p$} 
-                 \mcom{\fP_m(y)}{order $p-1$} + 
-                 \mcom{y^p}{order $p$} 
-                 \mcom{\fP_m(1-y)}{order $p-1$} 
+              $\fP_p(y) + y^p\fR\brp{\frac{1}{2}-y}$.
+              \[ \mcom{(1-y)^p}{order $p$}
+                 \mcom{\fP_p(y)}{order $p-1$} +
+                 \mcom{y^p}{order $p$}
+                 \mcom{\fP_p(1-y)}{order $p-1$}
                  = 1
               \]
 
-        \item We can compute the unique order $p-1$ solution $\fP_m(y)$ of $\fP(y)$ by using 
-              a Maclaurin expansion of $\fP(y)$. 
-              Let $\opT\fP(y)$ represent a polynomial $\fP(y)$ with all terms of 
+        \item We can compute the unique order $p-1$ solution $\fP_p(y)$ of $\fP(y)$ by using
+              a Maclaurin expansion of $\fP(y)$.
+              Let $\opT\fP(y)$ represent a polynomial $\fP(y)$ with all terms of
               order $\ge p$ truncated.
           \begin{align*}
-            \mcom{\fP_m(y)}{order $p-1$}
-              &= \frac{1}{(1-y)^p} - \frac{y^p \fP_m(1-y)}{(1-y)^p}
-              %&& \text{by $(1-y)^p \fP_m(y) + y^p \fP_m(1-y) = 1$}
+            \mcom{\fP_p(y)}{order $p-1$}
+              &= \frac{1}{(1-y)^p} - \frac{y^p \fP_p(1-y)}{(1-y)^p}
+              %&& \text{by $(1-y)^p \fP_p(y) + y^p \fP_p(1-y) = 1$}
               && \text{by \pref{ilem:gcd_yp}}
             \\&= \opT\brb{
                    \frac{1}{(1-y)^p} -
-                   \mcoml{\cancelto{0}{\frac{y^p \fP_m(1-y)}{(1-y)^p}}}{all terms order $\ge p$}
+                   \mcoml{\cancelto{0}{\frac{y^p \fP_p(1-y)}{(1-y)^p}}}{all terms order $\ge p$}
                    }
               && \text{by \thme{B\'ezout's Theorem}}
               && \text{\xref{thm:bezout}}
             \\&= \opT\brb{\frac{1}{(1-y)^p}}
               && \text{by definition of $\opTrn$}
               && \text{\xref{def:opT}}
-            \\&= \opT\brb{\sum_{k=0}^{\infty} {p+k-1 \choose k} \; y^k}
+            \\&= \opT\brb{\sum_{k=0}^{\infty} \bcoef{p+k-1}{k} \; y^k}
               && \text{by \prefp{item:gcd_yp_1yp}}
-            \\&= \sum_{k=0}^{p-1} {p+k-1 \choose k} \; y^k
+            \\&= \sum_{k=0}^{p-1} \bcoef{p+k-1}{k} \; y^k
               && \text{by definition of $\opTrn$}
               && \text{\xref{def:opT}}
           \end{align*}
-    
-        \item Alternatively, specific cases of $\fP_m(y)$ can also be calculated 
+
+        \item Alternatively, specific cases of $\fP_p(y)$ can also be calculated
               using the \hie{Extended Euclid's Algorithm}:
           \begin{dingautolist}{"AC}
             \item $p=2$ case:  See \prefpp{ex:eea_n=2}.
             \item $p=3$ case:  See \prefpp{ex:eea_n=3}.
             \item $p=4$ case:  See \prefpp{ex:eea_n=4}.
           \end{dingautolist}
-    
+
         \item Proof that $\fR(y)$ must be an odd polynomial:
           \begin{align*}
             &(1-y)^p \fP(y) + y^p \fP(1-y)
-            \\&= (1-y)^p \left[ \fP_m(y)   + y^p     \fR\brp{\frac{1}{2}-y} \right] +
-                     y^p \left[ \fP_m(1-y) + (1-y)^p \fR\brp{\frac{1}{2}-[1-y]} \right]
-            \\&= (1-y)^p \fP_m(y)   + (1-y)^p y^p \fR\brp{\frac{1}{2}-y} +
-                     y^p \fP_m(1-y) + y^p (1-y)^p \fR\brp{-\frac{1}{2}+y}
-            \\&= \mcom{\Bigg[(1-y)^p \fP_m(y) + y^p \fP_m(1-y) \Bigg]}{$1$}  +
+            \\&= (1-y)^p \left[ \fP_p(y)   + y^p     \fR\brp{\frac{1}{2}-y} \right] +
+                     y^p \left[ \fP_p(1-y) + (1-y)^p \fR\brp{\frac{1}{2}-[1-y]} \right]
+            \\&= (1-y)^p \fP_p(y)   + (1-y)^p y^p \fR\brp{\frac{1}{2}-y} +
+                     y^p \fP_p(1-y) + y^p (1-y)^p \fR\brp{-\frac{1}{2}+y}
+            \\&= \mcom{\Bigg[(1-y)^p \fP_p(y) + y^p \fP_p(1-y) \Bigg]}{$1$}  +
                  \Bigg[(1-y)^p y^p \fR\brp{\frac{1}{2}-y} +
                         y^p (1-y)^p \fR\brp{y-\frac{1}{2}}
                  \Bigg]
             \\&= 1+ (1-y)^p y^p \brs{\fR\brp{\frac{1}{2}-y} + \fR\brp{y-\frac{1}{2}}}
-            \\&= 1 
-            \\&\iff \brs{\fR\brp{\frac{1}{2}-y} +\fR\brp{y-\frac{1}{2}}=0} 
+            \\&= 1
+            \\&\iff \brs{\fR\brp{\frac{1}{2}-y} +\fR\brp{y-\frac{1}{2}}=0}
             \\&\iff \fR(y)=-\fR(-y) \qquad\text{($\fR(y)$ is odd)}
           \end{align*}
     \end{enumerate}
 
-    \item Proof that 
-        $(1-y)^p \fP(y) + y^p \fP(1-y) = 1 \impliedby \fP(y)=\fP_m(y) + y^p \fR\brp{\frac{1}{2}-y}$:
+    \item Proof that
+        $(1-y)^p \fP(y) + y^p \fP(1-y) = 1 \impliedby \fP(y)=\fP_p(y) + y^p \fR\brp{\frac{1}{2}-y}$:
       \begin{enumerate}
         \item Examples of specific cases with $\fR(y)=0$:
           \begin{align*}
             \intertext{$p=1$ case:}
-              &(1-y)^1\fP_m(y) + y^1\fP_m(1-y)
-              \\&\quad= (1-y)^1\sum_{k=0}^{k=1-1}{1+k-1\choose k} y^k  + y^1\sum_{k=0}^{k=1-1}{1+k-1\choose k} (1-y)^k 
+              &(1-y)^1\fP_p(y) + y^1\fP_p(1-y)
+              \\&\quad= (1-y)^1\sum_{k=0}^{k=1-1}{1+k-1\choose k} y^k  + y^1\sum_{k=0}^{k=1-1}{1+k-1\choose k} (1-y)^k
               \\&\quad= (1-y)^1(1) + y^1(1)
               \\&\quad= 1
             \intertext{$p=2$ case:}
-              &(1-y)^2\fP_m(y) + y^2\fP_m(1-y)
-              \\&\quad= (1-y)^2\sum_{k=0}^{k=2-1}{2+k-1\choose k} y^k  + y^2\sum_{k=0}^{k=2-1}{2+k-1\choose k} (1-y)^k 
+              &(1-y)^2\fP_p(y) + y^2\fP_p(1-y)
+              \\&\quad= (1-y)^2\sum_{k=0}^{k=2-1}{2+k-1\choose k} y^k  + y^2\sum_{k=0}^{k=2-1}{2+k-1\choose k} (1-y)^k
               \\&\quad= (1-y)^2(1+2y) + y^2\brs{1+2(1-y)}
               \\&\quad= (1-2y+y^2)(1+2y) + y^2(3-2y)
-              \\&\quad= \mcom{1-2y+y^2+2y-4y^2+2y^3}{$(1-y)^p\fP_m(y)$} 
-                      + \mcom{3y^2-2y^3}            {$y^p\fP_m(1-y)  $}
-              \\&\quad= \mcom{1+0y-3y^2+2y^3}       {$(1-y)^p\fP_m(y)$} 
-                      + \mcom{3y^2-2y^3}            {$y^p\fP_m(1-y)  $}
+              \\&\quad= \mcom{1-2y+y^2+2y-4y^2+2y^3}{$(1-y)^p\fP_p(y)$}
+                      + \mcom{3y^2-2y^3}            {$y^p\fP_p(1-y)  $}
+              \\&\quad= \mcom{1+0y-3y^2+2y^3}       {$(1-y)^p\fP_p(y)$}
+                      + \mcom{3y^2-2y^3}            {$y^p\fP_p(1-y)  $}
               \\&\quad= 1
             \intertext{$p=3$ case:}
-              &(1-y)^3\fP_m(y) + y^3\fP_m(1-y)
-              \\&\quad= (1-y)^3\sum_{k=0}^{k=3-1}{3+k-1\choose k} y^k  + y^3\sum_{k=0}^{k=3-1}{3+k-1\choose k} (1-y)^k 
+              &(1-y)^3\fP_p(y) + y^3\fP_p(1-y)
+              \\&\quad= (1-y)^3\sum_{k=0}^{k=3-1}{3+k-1\choose k} y^k  + y^3\sum_{k=0}^{k=3-1}{3+k-1\choose k} (1-y)^k
               \\&\quad= (1-y)^3(1+3y+6y^2) + y^3\brs{1+3(1-y)+6(1-y)^2}
-              \\&\quad= \mcom{(1-3y+3y^2-y^3)(1+3y+6y^2)}{$(1-y)^p\fP_m(y)$} 
-                      + \mcom{y^3\brs{4-3y+6(1-2y+y^2)}} {$y^p\fP_m(1-y)$}
-              \\&\quad= \mcom{1-3y+3y^2-y^3 + 3y-9y^2+9y^3-3y^4 + 6y^2-18y^3+18y^4-6y^5}{$(1-y)^p\fP_m(y)$}
-                      \\&\qquad+ \mcom{y^3\brs{10-15y+6y^2}}      {$y^p\fP_m(1-y)$}
-              \\&\quad= \mcom{1 + 0y + 0y^2 -10y^3 + 15y^4 - 6y^5}{$(1-y)^p\fP_m(y)$}
-                      + \mcom{10y^3 - 15y^4 + 6y^5}      {$y^p\fP_m(1-y)$}
+              \\&\quad= \mcom{(1-3y+3y^2-y^3)(1+3y+6y^2)}{$(1-y)^p\fP_p(y)$}
+                      + \mcom{y^3\brs{4-3y+6(1-2y+y^2)}} {$y^p\fP_p(1-y)$}
+              \\&\quad= \mcom{1-3y+3y^2-y^3 + 3y-9y^2+9y^3-3y^4 + 6y^2-18y^3+18y^4-6y^5}{$(1-y)^p\fP_p(y)$}
+                      \\&\qquad+ \mcom{y^3\brs{10-15y+6y^2}}      {$y^p\fP_p(1-y)$}
+              \\&\quad= \mcom{1 + 0y + 0y^2 -10y^3 + 15y^4 - 6y^5}{$(1-y)^p\fP_p(y)$}
+                      + \mcom{10y^3 - 15y^4 + 6y^5}      {$y^p\fP_p(1-y)$}
               \\&\quad= 1
           \end{align*}
 
         \item Proof for $\fR(y)=0$ case (using induction):\label{item:gcd_yp_induction}
               \footnote{Many thanks to Chip Eastham
-		      %\href{http://groups.google.com/groups/profile?enc_user=93XVtBIAAAAXdlHgIIrPQxc2rOftKaPs8rhlH0Pnl47z4AZhN98BFg}{Chip Eastham} 
+		      %\href{http://groups.google.com/groups/profile?enc_user=93XVtBIAAAAXdlHgIIrPQxc2rOftKaPs8rhlH0Pnl47z4AZhN98BFg}{Chip Eastham}
               for his extremely valuable help with this proof.
               %\url{http://groups.google.com/group/sci.math/browse_thread/thread/2547e294b7e300de}
               }
@@ -509,20 +523,20 @@ Let $\fP$, $\fQ$, and $\fR$ be polynomials over $\R$.
               \begin{align*}
                 &(1-y)\fP_p(y)
                 \\&= \fP_p(y) - y\fP_p(y)
-                \\&= \sum_{k=0}^{p} {p+k \choose k} \; y^k 
+                \\&= \sum_{k=0}^{p} {p+k \choose k} \; y^k
                    - \sum_{k=0}^{p} {p+k \choose k} \; y^{k+1}
                 \\&= \mcom{1+\sum_{k=1}^{p} {p+k \choose k} \; y^k}
                           {$\sum_{k=0}^{p} {p+k \choose k} \; y^k $}
                    \mcom{- \sum_{k=1}^{p} {p+k-1 \choose k-1} \; y^{k} -{2p\choose p}y^p}
-                        {$- \sum_{k=0}^{p} {p+k \choose k} \; y^{k+1}$} 
+                        {$- \sum_{k=0}^{p} {p+k \choose k} \; y^{k+1}$}
                 \\&= 1+\sum_{k=1}^{p} \brs{{p+k \choose k}-{p+k-1 \choose k-1}} \; y^k
                    - {2p\choose p}y^{p+1}
-                \\&= 1+\sum_{k=1}^{p} \brs{\mcom{{p+k-1 \choose k}+{p+k-1 \choose k-1}}{${p+k \choose k}$}-{p+k-1 \choose k-1}} \; y^k
+                \\&= 1+\sum_{k=1}^{p} \brs{\mcom{\bcoef{p+k-1}{k}+{p+k-1 \choose k-1}}{${p+k \choose k}$}-{p+k-1 \choose k-1}} \; y^k
                    - {2p\choose p}y^{p+1}
                   \\&\qquad \text{by Pascal's Rule \prefpo{thm:Pascals_Rule}}
-                \\&= 1+\sum_{k=1}^{p} {p+k-1 \choose k} \; y^k - {2p\choose p}y^{p+1}
-                \\&= \sum_{k=0}^{p} {p+k-1 \choose k} \; y^k - {2p\choose p}y^{p+1}
-                \\&= \sum_{k=0}^{p-1} {p+k-1 \choose k} \; y^k 
+                \\&= 1+\sum_{k=1}^{p} \bcoef{p+k-1}{k} \; y^k - {2p\choose p}y^{p+1}
+                \\&= \sum_{k=0}^{p} \bcoef{p+k-1}{k} \; y^k - {2p\choose p}y^{p+1}
+                \\&= \sum_{k=0}^{p-1} \bcoef{p+k-1}{k} \; y^k
                    + {2p-1\choose p}y^p- {2p\choose p}y^{p+1}
                 \\&= \fP_{p-1}(y) + {2p-1\choose p}y^p - \frac{(2p)!}{p!p!} y^{p+1}
                   \qquad\text{by definition of $\fP_p(y)$}
@@ -546,7 +560,7 @@ Let $\fP$, $\fQ$, and $\fR$ be polynomials over $\R$.
               \begin{align*}
                 &(1-y)^{p+1} \fP_{p}(y) + y^{p+1} \fP_{p}(1-y)
                 \\&= (1-y)^{p}(1-y) \fP_{p}(y) + y^{p}y \fP_{p}(1-y)
-                \\&= (1-y)^{p}\mcom{\brs{\fP_{p-1}(y) + {2p-1 \choose p}y^p(1-2y)}}{by \prefp{item:gcd_yp_1-y}} 
+                \\&= (1-y)^{p}\mcom{\brs{\fP_{p-1}(y) + {2p-1 \choose p}y^p(1-2y)}}{by \prefp{item:gcd_yp_1-y}}
                    +  y^{p}   \mcom{\brs{\fP_{p-1}(1-y) - {2p-1 \choose p}(1-y)^p(1-2y)}}{by \prefp{item:gcd_yp_y}}
                   %&& \text{by previous two lemmas}
                 \\&= \mcom{(1-y)^{p}\fP_{p-1}(y)+y^{p}\fP_{p-1}(1-y)}{$1$}
@@ -555,7 +569,7 @@ Let $\fP$, $\fQ$, and $\fR$ be polynomials over $\R$.
                   \qquad \text{by induction hypothesis}
               \end{align*}
 
-            \item Therefore by induction, 
+            \item Therefore by induction,
                   $(1-y)^{p} \fP_{p-1}(y) + y^{p} \fP_{p-1}(1-y)=1$
                   is true for all $p\in\Zp$.
           \end{enumerate}
@@ -578,27 +592,25 @@ Let $\fP$, $\fQ$, and $\fR$ be polynomials over $\R$.
           \end{align*}
     \end{enumerate}
   \end{enumerate}
-
 \end{proof}
-
-
-
 
 %---------------------------------------
 \begin{example}
 \footnote{
-  \citerp{pinsky2002}{333}
+  \citerpg{pinsky2002}{333}{9780534376604},
+  \citerpgc{pinsky2008}{333}{9780534376604}{Exercise 6.5.11: $\fP_1(y)$, $\fP_2(y)$, \ldots, $\fP_6(y)$},
+  \citeO{oeisA000580}{A000580} %{a(n) = binomial coefficient C(n,7)}
   }
-\label{tbl:Pm(y)}
+\label{ex:Pm(y)}
 %---------------------------------------
-Here are some examples of the minimal polynomial $\fP_m(y)$ for varying number 
+Here are some examples of the minimal polynomial $\fP_p(y)$ for varying number
 of vanishing moments $p$:
 \footnotesize
 \exbox{
 \renewcommand{\arraystretch}{1}
 \renewcommand{\arraycolsep}{0.4ex}
 \begin{array}{r|@{\hs{2ex}}*{20}{r}}
-   p & \mc{19}{l}{\fP_m(y)= \sum_{k=0}^{p-1} {p-1+k\choose k} y^k}
+   p & \mc{19}{l}{\fP_p(y)= \sum_{k=0}^{p-1} {p-1+k\choose k} y^k}
 \\ \hline
    1 & 1
 \\ 2 & 1 &+&  2y
@@ -617,10 +629,10 @@ of vanishing moments $p$:
 \begin{example}
 \label{tbl:Pyz}
 %---------------------------------------
-Here are some examples of the minimal polynomial $\fP_m(y)$ evaluated at
+Here are some examples of the minimal polynomial $\fP_p(y)$ evaluated at
 $y=[(-z+2-1/z)/4]$:
 \exbox{\begin{array}{l|l}
-   p & \fP_m\left(\frac{z-2+z^{-1}}{-4}\right)
+   p & \fP_p\left(\frac{z-2+z^{-1}}{-4}\right)
 \\ \hline
    1 & 1
 \\ 2 & \frac{ z^2 - 4z - 1}{ -2z}
@@ -778,7 +790,7 @@ Let $Q(z)$ be a polynomial with real coefficients and
   \\
   \dot{Q}
   &\eqd \set{Q(z)}{ Q(z)Q(z^{-1})=P\left( \frac{2-z-z^{-1}}{4}} \right)
-  &&    \text{(\thme{Fej\'er-Riesz spectral factorization}s of $P$)}
+  &&    \text{(\thme{Fej\'er-Riesz spectral factorization}s of $\fP$)}
   \\
   \opR Q
   &\eqd \set{z_n}{\text{$z_n$ is a zero of $Q(z)$}}
@@ -789,7 +801,7 @@ Let $Q(z)$ be a polynomial with real coefficients and
   \\\indentx$\begin{array}{FMD}
     1. & $\ds\Zh(z) = \sqrt{2}\brp{\frac{1+z^{-1}}{2}}^p Q(z)$ & and
     \\
-    2. & $Q(z)$ is the polynomial in $\dot{Q}$ $\st$ $\forall z_n\in\opR Q,\; |z_n|<1$ & and 
+    2. & $Q(z)$ is the polynomial in $\dot{Q}$ $\st$ $\forall z_n\in\opR Q,\; |z_n|<1$ & and
     \\
     3. & $g_n  = (-1)^n h_{2p-1-n}$
   \end{array}$
@@ -801,24 +813,24 @@ Let $Q(z)$ be a polynomial with real coefficients and
 
 \setlength{\unitlength}{0.10mm}
 The Daubechies-$p$ wavelets of \prefp{def:Dp} can be calculated
-\footnote{For an actual implementation using \hie{Octave}, 
+\footnote{For an actual implementation using \hie{Octave},
   see \prefpp{sec:src_Ry}.}
 by the following steps:
 \begin{enumerate}
-  \item Compute the polynomial $P(y)$. This polynomial has $p-1$ roots in $y$.
+  \item Compute the polynomial $\fP(y)$. This polynomial has $p-1$ roots in $y$.
         \[
           P(y) \eqd \sum\limits_{k=0}^{p-1} {{p-1+k}\choose{k}} y^k
          \hspace{3em}\mbox{where }
          {{n}\choose{k}}\eqd\frac{n!}{k!(n-k)!}
         \]
 
-  \item Compute $P\left(\frac{2-z-z^{-1}}{4}\right)$.
+  \item Compute $\fP\left(\frac{2-z-z^{-1}}{4}\right)$.
         This polynomial has $2p-2$ roots in $z$.
         \input{../common/math/graphics/wavelets/2p2roots.tex}
 
   \begin{enumerate}
     \item Because the coefficients of
-          $P\brp{\frac{2-z-z^{-1}}{4}}$
+          $\fP\brp{\frac{2-z-z^{-1}}{4}}$
           are real, all of its roots occur in \hie{complex conjugate pairs}:
           \[ \text{root at } z_1=re^{i\theta}
              \iff
@@ -831,7 +843,7 @@ by the following steps:
           \setlength{\unitlength}{0.15mm}
           \begin{picture}(300,300)(-130,-130)
             \thicklines
-            \color{axis}%  
+            \color{axis}%
               \put(-130,   0){\line(1,0){260} }%
               \put(   0,-130){\line(0,1){260} }%
               \put( 140,   0){\makebox(0,0)[l]{$\Reb{z}$}}%
@@ -852,7 +864,7 @@ by the following steps:
           \end{picture}%
           \end{center}
 
-    \item All of the roots of $P\left(\frac{2-z-z^{-1}}{4}\right)$
+    \item All of the roots of $\fP\left(\frac{2-z-z^{-1}}{4}\right)$
           occur in \hie{conjugate reciprocal pairs}:
           \begin{multline*}
              P\left(\frac{2-z-z^{-1}}{4}\right)
@@ -867,7 +879,7 @@ by the following steps:
       \setlength{\unitlength}{0.15mm}
       \begin{picture}(300,300)(-130,-130)
         \thicklines
-        \color{axis}%  
+        \color{axis}%
           \put(-130,   0){\line(1,0){260} }%
           \put(   0,-130){\line(0,1){260} }%
           \put( 140,   0){\makebox(0,0)[l]{$\Reb{z}$}}%
@@ -894,7 +906,7 @@ by the following steps:
           \footnote{
           \thme{Fej\'er-Riesz spectral factorization} \xref{thm:Fejer-Riesz}
           }
-        $P\left(\frac{2-z-z^{-1}}{4}\right)$ can be factored in the form
+        $\fP\left(\frac{2-z-z^{-1}}{4}\right)$ can be factored in the form
         \[ P\left(\frac{2-z-z^{-1}}{4}\right) = Q(z)Q(z^{-1}). \]
 
   \item Form $Q(z)$ from the $p-1$ zeros {\em inside} the unit circle.
@@ -902,7 +914,7 @@ by the following steps:
   \item The scaling coefficients $\seq{h_n}{}$ are the coefficients of
         the polynomial
         \[ \Zh(z) = \sqrt{2}\mcom{\mcom{\brp{\frac{1+z^{-1}}{2}}^p}{order $p$} \mcom{Q(z)}{order $p-1$}}
-                         {order $2p-1$ ($2p$ coefficients)} 
+                         {order $2p-1$ ($2p$ coefficients)}
         \]
 \end{enumerate}
 
@@ -938,7 +950,7 @@ Let $\spO\eqd\wavsys$.
 \lemboxp{
   $\spO$ is a \structe{Daubechies-$p$ wavelet system} \xref{def:Dp} $\implies$\\
   with increasing vanishing moments parameter $p$,
-  the zeros of $Q(z)Q(z^{-1})$ asymptotically approach the area of the complex plain enclosed by the arcs  
+  the zeros of $Q(z)Q(z^{-1})$ asymptotically approach the area of the complex plain enclosed by the arcs
   \\\indentx$\abs{z-1}=\sqrt{2} \qquad\text{and}\qquad \abs{z+1}=\sqrt{2}$\\
   }
 \end{lemma}
@@ -951,7 +963,7 @@ Let $\support\seqnZ{x_n}$ be defined as in \prefp{def:support}.
 \thmboxt{
   $\brb{\text{$\spO$ is a \structe{Daubechies-$p$ wavelet system} \xref{def:Dp}}}$\qquad$\implies$
   %$\brb{\begin{array}{M}
-  %  $\spO$ is a\\ 
+  %  $\spO$ is a\\
   %  \structe{Daubechies-$p$ wavelet system}
   %\end{array}}$
   %$\implies$
@@ -1015,7 +1027,7 @@ Let $\support\seqnZ{x_n}$ be defined as in \prefp{def:support}.
             && \text{by \prefp{thm:vanish_continuous}}
       \end{align*}
 
-    \item Proof that $\ds\inf_{\omega\in\intcc{-\pi/2}{\pi/2}}\abs{\Dh(\omega)}>0$:\\ 
+    \item Proof that $\ds\inf_{\omega\in\intcc{-\pi/2}{\pi/2}}\abs{\Dh(\omega)}>0$:\\
           by \prefp{lem:QzQz_zeros}---note that the zeros are never on the unit circle in the range $\intcc{-\pi/2}{\pi/2}$.
   \end{enumerate}
 
@@ -1045,10 +1057,10 @@ The \structb{Daubechies-$1$} wavelet system yields the following results.
 \exboxt{\begin{tabular}{cccc}
    $\begin{array}{|l|r|r|}
     \hline
-    n & h_n  & g_n  
+    n & h_n  & g_n
     \\\hline
     0  & \ds \cwt   & \ds \cwt   \\
-    1  & \ds \cwt   & \ds -\cwt 
+    1  & \ds \cwt   & \ds -\cwt
     \\\hline
   \end{array}$
   &\tbox{\includegraphics{../common/math/graphics/pdfs/D1_pz.pdf}}%
@@ -1364,7 +1376,7 @@ The \structd{Daubechies-$4$ wavelet system} yields the results illustrated in \p
       14 &  0.0006754494  &  0.3128715909 \\
       15 & -0.0001174768  & -0.0544158422 \\
       \hline
-    \end{array}$&\tbox{\includegraphics{../common/math/graphics/pdfs/D8_pz.pdf}}\\  
+    \end{array}$&\tbox{\includegraphics{../common/math/graphics/pdfs/D8_pz.pdf}}\\
     \includegraphics{../common/math/graphics/pdfs/d8_phi_h.pdf}&\includegraphics{../common/math/graphics/pdfs/d8_psi_g.pdf}
   \end{tabular}}
   \caption{\structe{Daubechies-$8$ wavelet system} \xref{ex:dau-p8} \label{fig:dau-p8}}
@@ -1393,7 +1405,7 @@ The \structd{Daubechies-$8$ wavelet system} yields the results illustrated in \p
 \end{align*}
 {\footnotesize$\begin{array}{|lcrr|lcrr|}
     \hline
-     r_{ 1} &=&  +0.3654035130742002 &                          &  r_{ 8} &=&  +2.7367005631344137  &                      
+     r_{ 1} &=&  +0.3654035130742002 &                          &  r_{ 8} &=&  +2.7367005631344137  &
   \\ r_{ 2} &=&  +0.3577427639711839 &  +0.1159310245530727 i   &  r_{ 9} &=&  +1.0379714430713773  & +1.7304352168829922 i
   \\ r_{ 3} &=&  +0.3577427639711839 &  -0.1159310245530727 i   &  r_{10} &=&  +1.0379714430713773  & -1.7304352168829922 i
   \\ r_{ 4} &=&  +0.3298169959381100 &  +0.2476497421117944 i   &  r_{11} &=&  +1.9388494686323963  & +1.4558242201373777 i
