@@ -2,64 +2,107 @@
 # Daniel J. Greenhoe
 # R script file
 # setwd("c:/dan/personal/r/R");
-# dir()
 # source("plantGrowth.R");
 # Reference: https://math.stackexchange.com/questions/3990086/
 #============================================================================
 #---------------------------------------
-# install packages (perform once)
+# packages
 #---------------------------------------
-#install.packages("bspec");
-#install.packages("ramify");
-#---------------------------------------
-# load add-on packages
-#---------------------------------------
- rm(list=objects());
+#install.packages("stats");
+#install.packages("R.utils");
+#install.packages("rootSolve");
  require(stats);
-# require(graphics);
-# require(datasets);
-#---------------------------------------
-# load add-on packages
-#---------------------------------------
+ require(R.utils);
+ require(rootSolve);
+ rm(list=objects());
 
 #---------------------------------------
 # Data
 #---------------------------------------
-t  = seq( from=0, to=10, length=100 )
-tn = c(0:10)
-yn = c(18,33,56,90,130,170,203,225,239,247,251)
+ tdata = c(0:10)
+ ydata = c(18,33,56,90,130,170,203,225,239,247,251)
+ t     = seq( from=min(tdata), to=max(tdata), length=1000 )
 
 #---------------------------------------
-# Estimate N(t) of Data
+# Estimate Function N(t)
 #---------------------------------------
-N0=18
-Nh=252
-N = function(t,a) Nh / (1 + (Nh/N0-1)*exp(-a*t))
-#g = function(x,n) 1 + 13*exp(-x*n)
-#N = function(x,xn,yn) n * exp(-x*xn) / (1 + 13*exp(-x*xn))(yn-1)
+ N0 = ydata[1]
+ N = function(t,N0,Nh,a0) 
+ {
+   result = Nh / ( 1 + (Nh/N0-1)*exp(-a0*t) )
+ }
 
 #---------------------------------------
 # Cost Function
 #---------------------------------------
-#cost = function(a0) sum((N(tn,a0)-yn)^2)
-cost = function(a0) (N(tn[1],a0)-yn[1])^2 +(N(tn[2],a0)-yn[2])^2 +(N(tn[3],a0)-yn[3])^2 +(N(tn[4],a0)-yn[4])^2 +(N(tn[5],a0)-yn[5])^2 +(N(tn[6],a0)-yn[6])^2 +(N(tn[7],a0)-yn[7])^2 +(N(tn[8],a0)-yn[8])^2 +(N(tn[9],a0)-yn[9])^2 +(N(tn[10],a0)-yn[10])^2 +(N(tn[11],a0)-yn[11])^2
-a0=seq(from=0.1, to=3.0, length=1000)
-#plot(a0,cost(a0), col="blue", lwd=2, type='l')
+ cost = function(N0,Nh,a0) 
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   { 
+     summ = summ + ( N(tdata[i],N0,Nh,a0) - ydata[i] )^2
+   }
+   result = summ
+ }
 
 #---------------------------------------
-# Optimal a0 that minimizes Cost Function
+# Partial derivative with respect to a0 of Cost Function
 #---------------------------------------
-x=seq(from=0.3, to=0.9, length=1000)
-Dcost = function(x) (N(tn[ 1],x))^2*(N(tn[ 1],x)-yn[ 1])*tn[1]*exp(-x*tn[ 1])+ (N(tn[ 2],x))^2*(N(tn[ 2],x)-yn[ 2])*tn[ 2]*exp(-x*tn[ 2])+ (N(tn[ 3],x))^2*(N(tn[ 3],x)-yn[ 3])*tn[ 3]*exp(-x*tn[ 3])+ (N(tn[ 4],x))^2*(N(tn[ 4],x)-yn[ 4])*tn[ 4]*exp(-x*tn[ 4])+ (N(tn[ 5],x))^2*(N(tn[ 5],x)-yn[ 5])*tn[5]*exp(-x*tn[ 5])+ (N(tn[ 6],x))^2*(N(tn[ 6],x)-yn[ 6])*tn[6]*exp(-x*tn[ 6])+ (N(tn[ 7],x))^2*(N(tn[ 7],x)-yn[ 7])*tn[7]*exp(-x*tn[ 7])+ (N(tn[ 8],x))^2*(N(tn[ 8],x)-yn[ 8])*tn[8]*exp(-x*tn[ 8])+ (N(tn[ 9],x))^2*(N(tn[ 9],x)-yn[ 9])*tn[9]*exp(-x*tn[ 9])+ (N(tn[10],x))^2*(N(tn[10],x)-yn[10])*tn[10]*exp(-x*tn[10])+ (N(tn[11],x))^2*(N(tn[11],x)-yn[11])*tn[11]*exp(-x*tn[11])
-plot(x, Dcost(x), col="blue", lwd=2, type='l')
-aOpt = uniroot( Dcost, c(0.3, 0.9) )
-a0fixed=0.6631183
+ Pcosta0 = function(N0, Nh, a0) 
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   { 
+     summ = summ + ( N(tdata[i],N0,Nh,a0) )^2 * 
+                   ( N(tdata[i],N0,Nh,a0) - ydata[i] ) *
+                   ( tdata[i] * exp(-a0*tdata[i]) )
+   }
+   result = summ
+ }
+
 #---------------------------------------
-# Graphics
+# Partial derivative with respect to Nh of Cost Function
 #---------------------------------------
-plot( t,  N(t,a0fixed), col="red" , lwd=2, type='l', xlab="t", ylab="y" ) 
-lines(  tn, yn     , col="blue", lwd=3, type='p' )
-#legend("topleft", legend=c("N(t)", "data"), col=c(3,4))
-legend("topleft", legend=c("N(t)", "data"), col=c("red", "blue"), lwd=3, lty=1:1)
-#legend("topleft", legend=c("N(t)", "data"))
-grid()
+ PcostNh = function(N0, Nh, a0) 
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   { 
+     summ = summ + ( 1 - exp(-a0*tdata[i]) ) * 
+                   ( N(tdata[i],N0, Nh, a0) )^2 * 
+                   ( N(tdata[i],N0, Nh, a0)-ydata[i] )
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative vector of cost
+#---------------------------------------
+Pcost = function(x)
+{
+   N0 = 18
+   Nh = x[1]
+   a0 = x[2]
+   F1 = Pcosta0( N0, Nh, a0 );
+   F2 = PcostNh( N0, Nh, a0 );
+   result = c(F1, F2);
+}
+
+#---------------------------------------
+# Calculate roots
+#---------------------------------------
+ Roots = multiroot( f=Pcost, start=c(ydata[11-1],0.4) );
+ Nh = Roots$root[1]
+ a0 = Roots$root[2]
+
+#---------------------------------------
+# Display
+#---------------------------------------
+ printf("(N0, Nh, a0) = (%.2f, %.10f, %.10f) with estim.precis=%.2e\n", N0, Nh, a0, Roots$estim.precis )
+ colors = c( "red" , "blue" );
+ traces = c( "N(t)", "data" ); 
+ plot ( t , N(t, N0, Nh, a0), col=colors[1], lwd=2, type='l', xlab="t", ylab="y", ylim=c(0,max(ydata)+10) ) 
+ lines( tdata, ydata        , col=colors[2], lwd=5, type='p' )
+ legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
+ grid()
+
