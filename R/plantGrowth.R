@@ -27,7 +27,7 @@
 # Estimate Function N(t)
 #---------------------------------------
  N0 = ydata[1]
- N = function(t,N0,Nh,a0) 
+ N = function(t,N0,Nh,a0)
  {
    result = Nh / ( 1 + (Nh/N0-1)*exp(-a0*t) )
  }
@@ -35,11 +35,11 @@
 #---------------------------------------
 # Cost Function
 #---------------------------------------
- cost = function(N0,Nh,a0) 
+ cost = function(N0,Nh,a0)
  {
    summ = 0;
    for (i in c(1:length(tdata)))
-   { 
+   {
      summ = summ + ( N(tdata[i],N0,Nh,a0) - ydata[i] )^2
    }
    result = summ
@@ -48,12 +48,12 @@
 #---------------------------------------
 # Partial derivative with respect to a0 of Cost Function
 #---------------------------------------
- Pcosta0 = function(N0, Nh, a0) 
+ Pcosta0 = function(N0, Nh, a0)
  {
    summ = 0;
    for (i in c(1:length(tdata)))
-   { 
-     summ = summ + ( N(tdata[i],N0,Nh,a0) )^2 * 
+   {
+     summ = summ + ( N(tdata[i],N0,Nh,a0) )^2 *
                    ( N(tdata[i],N0,Nh,a0) - ydata[i] ) *
                    ( tdata[i] * exp(-a0*tdata[i]) )
    }
@@ -63,14 +63,29 @@
 #---------------------------------------
 # Partial derivative with respect to Nh of Cost Function
 #---------------------------------------
- PcostNh = function(N0, Nh, a0) 
+ PcostNh = function(N0, Nh, a0)
  {
    summ = 0;
    for (i in c(1:length(tdata)))
-   { 
-     summ = summ + ( 1 - exp(-a0*tdata[i]) ) * 
-                   ( N(tdata[i],N0, Nh, a0) )^2 * 
-                   ( N(tdata[i],N0, Nh, a0)-ydata[i] )
+   {
+     summ = summ + ( 1 - exp(-a0*tdata[i]) ) *
+                   ( N(tdata[i],N0, Nh, a0) )^2 *
+                   ( N(tdata[i],N0, Nh, a0) - ydata[i] )
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative with respect to Nh of Cost Function
+#---------------------------------------
+ PcostN0 = function(N0, Nh, a0)
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   {
+     summ = summ + ( exp(-a0*tdata[i]) ) *
+                   ( N(tdata[i],N0, Nh, a0) )^2 *
+                   ( N(tdata[i],N0, Nh, a0) - ydata[i] )
    }
    result = summ
  }
@@ -80,28 +95,30 @@
 #---------------------------------------
 Pcost = function(x)
 {
-   N0 = 18
-   Nh = x[1]
-   a0 = x[2]
+   N0 = x[1]
+   Nh = x[2]
+   a0 = x[3]
    F1 = Pcosta0( N0, Nh, a0 );
    F2 = PcostNh( N0, Nh, a0 );
-   result = c(F1, F2);
+   F3 = PcostN0( N0, Nh, a0 );
+   result = c(F1, F2, F3);
 }
 
 #---------------------------------------
 # Calculate roots
 #---------------------------------------
- Roots = multiroot( f=Pcost, start=c(ydata[11-1],0.4) );
- Nh = Roots$root[1]
- a0 = Roots$root[2]
+ Roots = multiroot( f=Pcost, start=c(ydata[1], ydata[11], 0.6) );
+ N0 = Roots$root[1]
+ Nh = Roots$root[2]
+ a0 = Roots$root[3]
 
 #---------------------------------------
 # Display
 #---------------------------------------
- printf("(N0, Nh, a0) = (%.2f, %.10f, %.10f) with estim.precis=%.2e\n", N0, Nh, a0, Roots$estim.precis )
+ printf("(N0, Nh, a0) = (%.10f, %.10f, %.10f) with estim.precis=%.2e\n", N0, Nh, a0, Roots$estim.precis )
  colors = c( "red" , "blue" );
- traces = c( "N(t)", "data" ); 
- plot ( t , N(t, N0, Nh, a0), col=colors[1], lwd=2, type='l', xlab="t", ylab="y", ylim=c(0,max(ydata)+10) ) 
+ traces = c( "N(t)", "data" );
+ plot ( t , N(t, N0, Nh, a0), col=colors[1], lwd=2, type='l', xlab="t", ylab="y", ylim=c(0,max(ydata)+10) )
  lines( tdata, ydata        , col=colors[2], lwd=5, type='p' )
  legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
  grid()
