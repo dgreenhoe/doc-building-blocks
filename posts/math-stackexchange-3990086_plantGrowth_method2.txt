@@ -1,0 +1,166 @@
+$ Daniel J. Greenhoe
+$ https://math.stackexchange.com/questions/3990086/
+$-----------------------------
+
+Method 2: Two degrees of freedom
+--------------------------------
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}$
+$\newcommand{\pderiv}[2]{{\frac{\partial#1}{\partial#2} }}$
+$\newcommand{\opair}[2]{\left( #1,#2\right)}$
+$\newcommand{\R}{\Bbb{R}}$
+
+Method 1 gave an expression for $\pderiv{}{a_0}N(t)$; here is a similar lemma for $\pderiv{}{N_*}N(t)$:
+$$\begin{align*}
+  \boxed{\pderiv{}{N_*}N(t)}
+    &\eqd \pderiv{}{N_* }\brs{\frac{N_*}{1+\brp{\frac{N_*}{N_0}-1}e^{-a_0 t}}}
+    && \text{by definition of $N(t)$}
+  \\&= \frac{\brs{1+\brp{\frac{N_*}{N_0}-1}e^{-a_0 t}} - N_*\brs{\frac{1}{N_0}}e^{-a_0 t}}
+            {\brp{1+\brs{\frac{N_*}{N_0}-1}e^{-a_0 t}}^2}
+    && \text{by Quotient Rule}
+  \\&= \frac{1 - e^{-a_0 t}}
+            {\brp{1 + \brs{\frac{N_*}{N_0}-1}e^{-a_0 t}}^2}
+  \\&= \brs{\frac{1 - e^{-a_0 t}} {N_*^2}}
+       \brs{\frac{N_*}                 {1 + \brs{\frac{N_*}{N_0}-1}e^{-a_0 t}}}^2
+  \\&\eqd \boxed{\brs{\frac{1 - e^{-a_0 t}}{N_*^2}} N^2(t)}
+    && \text{by definition of $N(t)$}
+\end{align*}
+$$
+Then$\ldots$
+$$\begin{align*}
+  \boxed{0}
+    &= \frac{N_*^2}{2}\cdot0
+  \\&=\frac{N_*^2}{2}
+       \pderiv{}{N_*}\norm{e}^2
+  \\&\eqd \frac{N_*^2}{2}
+       \pderiv{}{N_*}\sum_{n=0}^{n=10}e^2(t_n)
+    && \text{by definition of $\norm{\cdot}$}
+  \\&\eqd \frac{N_*^2}{2}
+       \pderiv{}{N_*}\sum_{n=0}^{n=10}\brs{N(t_n)-y_n}^2
+    && \text{by definition of $e$}
+  \\&= \frac{N_*^2}{2}
+       \sum_{n=0}^{n=10}2\brs{N(t_n)-y_n}\pderiv{}{N_h}N(t_n)
+    && \text{by Chain Rule}
+  \\&= N_*^2
+       \sum_{n=0}^{n=10}  \brs{N(t_n)-y_n}
+                          \brs{\frac{1 - e^{-a_0 t_n}}{N_h^2}} N^2(t_n)
+    && \text{by lemma}
+  \\&= \boxed{\sum_{n=0}^{n=10} N^2(t_n) \brs{N(t_n)-y_n} \brs{1 - e^{-a_0 t_n} }}
+\end{align*}$$
+
+So now we have two equations in two unknowns ($N_*$ and $a_0$): $\pderiv{}{N_h}\norm{e}^2=0$ and $\pderiv{}{a_0}\norm{e}^2=0$ (from Method 1).
+You can use a multi-root solver to find the solution $\opair{N_*}{a_0}$ to the equation pair
+$\opair{\pderiv{}{N_h}\norm{e}^2=0}{\pderiv{}{a_0}\norm{e}^2=0}$.
+The result using [multiroot](https://www.rdocumentation.org/packages/rootSolve/versions/1.8.2.1/topics/multiroot)
+from the R package [rootSolve](https://cran.r-project.org/web/packages/rootSolve/rootSolve.pdf)
+is $\opair{N_*}{a_0}=\opair{255.8436595023}{0.6539203544}$.
+This solution is "better" than Method 1 solution in the sense that it results in a lower _cost_:
+$$\begin{array}{|c|rcl|}
+  \text{Method} & cost(N_0,N_*,a_0)
+\\\hline
+\\1             & cost(18,252,0.6631183) &=& 31.32307
+\\2             & cost(18,255.8436595023,0.6539203544) &=& 0.7140973
+\end{array}$$
+
+
+
+Some R code supporting [Reproducible Research](https://ropensci.github.io/reproducibility-guide/sections/introduction/):
+````R
+ require(stats);
+ require(R.utils);
+ require(rootSolve);
+ rm(list=objects());
+
+#---------------------------------------
+# Data
+#---------------------------------------
+ tdata = c(0:10)
+ ydata = c(18,33,56,90,130,170,203,225,239,247,251)
+ t     = seq( from=min(tdata), to=max(tdata), length=1000 )
+
+#---------------------------------------
+# Estimate Function N(t)
+#---------------------------------------
+ N0 = ydata[1]
+ N = function(t,N0,Nh,a0)
+ {
+   result = Nh / ( 1 + (Nh/N0-1)*exp(-a0*t) )
+ }
+
+#---------------------------------------
+# Cost Function
+#---------------------------------------
+ cost = function(N0,Nh,a0)
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   {
+     summ = summ + ( N(tdata[i],N0,Nh,a0) - ydata[i] )^2
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative with respect to a0 of Cost Function
+#---------------------------------------
+ Pcosta0 = function(N0, Nh, a0)
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   {
+     summ = summ + ( N(tdata[i],N0,Nh,a0) )^2 *
+                   ( N(tdata[i],N0,Nh,a0) - ydata[i] ) *
+                   ( tdata[i] * exp(-a0*tdata[i]) )
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative with respect to Nh of Cost Function
+#---------------------------------------
+ PcostNh = function(N0, Nh, a0)
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   {
+     summ = summ + ( 1 - exp(-a0*tdata[i]) ) *
+                   ( N(tdata[i],N0, Nh, a0) )^2 *
+                   ( N(tdata[i],N0, Nh, a0)-ydata[i] )
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative vector of cost
+#---------------------------------------
+Pcost = function(x)
+{
+   N0 = 18
+   Nh = x[1]
+   a0 = x[2]
+   F1 = Pcosta0( N0, Nh, a0 );
+   F2 = PcostNh( N0, Nh, a0 );
+   result = c(F1, F2);
+}
+
+#---------------------------------------
+# Calculate roots
+#---------------------------------------
+ Roots = multiroot( f=Pcost, start=c(ydata[11-1],0.4) );
+ Nh = Roots$root[1]
+ a0 = Roots$root[2]
+
+#---------------------------------------
+# Display
+#---------------------------------------
+ printf("(N0, Nh, a0) = (%.2f, %.10f, %.10f) with estim.precis=%.2e\n", N0, Nh, a0, Roots$estim.precis )
+ colors = c( "red" , "blue" );
+ traces = c( "N(t)", "data" );
+ plot ( t , N(t, N0, Nh, a0), col=colors[1], lwd=2, type='l', xlab="t", ylab="y", ylim=c(0,max(ydata)+10) )
+ lines( tdata, ydata        , col=colors[2], lwd=5, type='p' )
+ legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
+ grid()
+````
+

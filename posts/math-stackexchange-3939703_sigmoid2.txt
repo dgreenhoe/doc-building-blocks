@@ -1,0 +1,127 @@
+Daniel J. Greenhoe
+https://math.stackexchange.com/questions/3939703/
+
+Alternate Answer: Change the Question
+-------------------------------------
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\eqa}{\approx}$
+$\newcommand{\abs}[1]{{\left\lvert #1 \right\rvert}}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\brlr}[1]{\left.#1\right|}$
+$\newcommand{\deriv} [2]   {{\frac{\mathrm{d}#1}{\mathrm{d}#2} }}$
+$\newcommand{\R}{\Bbb{R}}$
+$\newcommand{\intcc} [2]  {{\left[#1:#2\right]}}$
+$\newcommand{\intoo} [2]  {{\left(#1:#2\right)}}$
+$\newcommand{\intoc} [2]  {{\left(#1:#2\right]}}$
+$\newcommand{\intco} [2]  {{\left[#1:#2\right)}}$
+$\newcommand{\ff}{\mathrm{f}}$
+$\newcommand{\fg}{\mathrm{g}}$
+$\newcommand{\fphi}{\mathrm{\phi}}$
+$\newcommand{\dx}{\mathrm{dx}}$
+$\newcommand{\du}{\mathrm{du}}$
+$\newcommand{\dv}{\mathrm{dv}}$
+
+The original question was in essence how to modify the function $y\eqd\frac{1}{1+e^{-4mx}}$ such that it's slope $m$ about $x=0$ was approximately maintained for a greater interval $x\in\intcc{-a}{a}$. Previously it was shown that this game is not winnable under the rules of the game specified by the equation. So, given that there is no solution, of course one solution is to change the question.
+
+To find a function $\ff(x)$ that more or less satisfies the original requirements, we could start by listing what the requirements are and/or think they should be and/or what would help make life interesting:
+$$\begin{align*}
+    \lim_{x\to-\infty}\ff(x) &= 0 
+       && \text{(constraint 1)}
+  \\\lim_{x\to+\infty}\ff(x) &= 1
+       && \text{(constraint 2)}
+  \\\ff(0) &= \frac{1}{2}
+       && \text{(constraint 3)}
+   \\\forall x\in\R\,,\ff(x) &> 0
+       &&  \text{(constraint 4)}
+       && \text{(positive)}
+   \\\forall x\in\R\,,\ff(x) &< 1
+       &&  \text{(constraint 5)}
+       && \text{(bounded)}
+   \\x_1<x_2\implies \ff(x_1)&<\ff(x_2)
+       && \text{(constraint 6)}
+       && \text{(strictly monotonically increasing)}
+   \\\forall \abs{x}<0.45\,,\deriv{}{x}\ff(x) &\eqa 1
+       &&  \text{(constraint 7)}
+   \\\forall |x|>0.55\,,\deriv{}{x}\ff(x) &\text{ is "very small"}
+       &&  \text{(constraint 8)}
+   \\\ff(x)&\in C^{\infty}
+       &&  \text{(constraint 9)}
+       && \text{(Smooth---continuous in all derivatives)}
+\end{align*}$$
+Since so much of what we want in $\ff(x)$ is constrained by the derivative 
+$\fphi(x)\eqd\deriv{}{x}\ff(x)$, we could start by defining $\fphi(x)$ and then integrating $\fphi(x)$ to recover $\ff(x)$, 
+as in $\ff(x)=\int_{-\infty}^x\fphi(u)\du$. 
+To do this, we can look at the constraints and see what that implies ($\implies$) about $\fphi(x)$:
+\begin{align*}
+    \text{(constraint 7)} &\implies &\fphi(x) &= 1    && \text{for $\abs{x}<0.45$}
+  \\\text{(constraint 8)} &\implies &\fphi(x) &\eqa 0 && \text{for $\abs{x}>0.55$}
+  \\\text{(constraints 2, 5)} &\implies &\int_{-\infty}^{\infty}\fphi(x)\dx &=1
+  \\\text{(constraints 4, 6)} &\implies &\fphi(x) &> 0 && \forall x\in\R
+  \\\text{(constraint 1)} &\implies &\lim_{x\to-\infty}\fphi(x) &=0 
+  \\\text{(constraint 3)} &\implies &\fphi(-x)&=\fphi(+x) && \text{(symmetric about $x=0$)}
+\end{align*}
+
+The (constraint 9) should fall out naturally from the method, using integration, 
+which tends to smooth out discontinuous functions into smooth ones 
+(as reflected in the legacy of the Fourier Expansion 
+[in some ways trumping](http://www.archive.ece.cmu.edu/~ece792/handouts/Robinson82.pdf) the Taylor Expansion).
+
+Finding such a $\fphi(x)$ is a challenge in and of itself. 
+But in looking for a sigmoid function $\ff(x)$, we may want to start with a $\fphi(x)$ that is itself a function of a sigmoid,
+but with perhaps better promise of finding its anti-derivative in the literature (with, say, a $\tanh$ function or something). 
+One sigmoid function that is similar to $\sigma(x)=\frac{1}{1+e^{-4mx}}=\frac{e^{4mx}}{1+e^{4mx}}$ 
+[is](https://stats.stackexchange.com/questions/101560/tanh-activation-function-vs-sigmoid-activation-function) 
+\begin{align*}
+  \fg(x) &= \frac{1}{2} \brs{ 1+\tanh(bx) }
+          = \frac{1}{2} \brs{ 1+\frac{e^{bx}-e^{-bx}}{e^{bx}+e^{-bx}} }
+          = \frac{1}{2} \brs{ 1+\frac{1-e^{-2bx}}{1+e^{-2bx}} }
+          = \frac{1}{2} \brs{ 1+\frac{2-1-e^{-2bx}}{1+e^{-2bx}} }
+       \\&= \frac{1}{2} \brs{ 1+2\frac{1}{1+e^{-2bx}} - \frac{1+e^{-2bx}}{1+e^{-2bx}} }
+          = \frac{1}{2} \brs{ 1+2\sigma(2bx) - 1 }
+          = \sigma(2bx)
+\end{align*}
+[![enter image description here][1]][1]
+
+Well, that certainly doesn't look like the $\phi$ we are desperately looking for; _but_, 
+we _could_ use the old trick of forming a polynomial, not of $x$, but of the function $\fg(x)$. 
+Say, let $y\eqd\fg(x)$ and let $\phi(x)\eqd y^3$ for example.
+This is an ``old" trick because polynomials of cosines for approximation was used by 
+Chebyshev ([Chebyshev Polynomials](https://archive.org/details/in.ernet.dli.2015.141087/page/n11/mode/2up)
+where the harmonic form [can be converted](http://oeis.org/A028297) to polynomial form)
+and in the computation of Daubechies-$p$ scaling functions (in wavelet theory).
+
+You can experiment around with the function $\fphi(x)\eqd 1-\tanh^p(bx)$ to find values of $b$ and $p$ that give you a $\phi(x)$ 
+that is close to the requirements listed above (welcome to use the [R](https://www.r-project.org/) code below). 
+If you happen to pick $b=10$ and $p=6180$, then you just so happen to have picked the same one I did (amazing!):
+
+[![enter image description here][2]][2]
+ 
+To get $\ff(x)$ from this $\phi(x)$, simply integrate from $-\infty$ to $x$:
+$$\ff(x)\eqd \int_{-\infty}^x \phi(u)\du = \int_{-\infty}^x \brs{1 - (\tanh(b*u))^p}\du$$
+I say "simply" in the sense that a mathematician might say it---which means it's not really that simple.
+But with a little help from [I.S. Gradshteyn and I.M. Ryzhik](https://ia800806.us.archive.org/7/items/GradshteinI.S.RyzhikI.M.TablesOfIntegralsSeriesAndProducts/Gradshtein_I.S.%2C_Ryzhik_I.M.-Tables_of_integrals%2C_series_and_products.pdf),
+the integral can be solved (but maybe not how you might like it to be solved):
+\begin{align}
+  \boxed{\ff(x)}
+    &\eqd \int_{u=-\infty}^{u=x} \phi(u)\du 
+  \\&\eqd \int_{u=-\infty}^{u=x} \brs{1 - \tanh^p(b*u)}\du
+  \\&= \int_{u=-\infty}^{u=x}1\du - \int_{u=-\infty}^{u=x} \tanh^p(b*u)\du
+  \\&= \int_{u=-\infty}^{u=x}1\du - \int_{u=-\infty}^{v/b=x} \tanh^p(v)\frac{1}{b}\dv
+    && \text{where $v\eqd bu$ $\implies$ $\du = \frac{1}{b}\dv$}
+  \\&= \int_{u=-\infty}^{u=x}1\du - \frac{1}{b}\int_{u=-\infty}^{v=bx} \tanh^{2n}(v) \dv
+    && \text{where $n\eqd p/2$}
+  \\&= \brlr{u}_{u=-\infty}^{u=x} 
+     - \frac{1}{b}\brlr{v}_{v=-\infty}^{v=bx} 
+     + \brlr{\frac{1}{b}\sum_{k=1}^n \frac{\tanh^{2n-2k+1}(v)}{2n-2k+1}}_{v=-\infty}^{v=bx}
+    && \text{by Gradshteyn and Ryzhik page 119}
+  \\&= \boxed{\frac{1}{b}\sum_{k=1}^n \frac{\tanh^{2n-2k+1}(bx)}{2n-2k+1}
+     - \frac{1}{b}\sum_{k=1}^n \frac{(-1)}{2n-2k+1}}
+\end{align}
+And so now we should have something close to what was originally asked for:
+
+[![enter image description here][3]][3]
+
+  [1]: https://i.stack.imgur.com/8uHon.png
+  [2]: https://i.stack.imgur.com/5VsuY.png
+  [3]: https://i.stack.imgur.com/gxMGX.png

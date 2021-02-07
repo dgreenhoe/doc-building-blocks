@@ -1,0 +1,199 @@
+$ Daniel J. Greenhoe
+$ https://math.stackexchange.com/questions/3990086/
+$-----------------------------
+
+Method 3: Three degrees of freedom
+----------------------------------
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}$
+$\newcommand{\pderiv}[2]{{\frac{\partial#1}{\partial#2} }}$
+$\newcommand{\opair}[2]{\left( #1,#2\right)}$
+$\newcommand{\otriple}[3]{\left( #1,#2,#3\right)}$
+$\newcommand{\R}{\Bbb{R}}$
+$\newcommand{\esth}{N}$
+
+**Method 1** optimized with respect to $a_0$ and
+**Method 2** with respect to $\opair{N_*}{a_0}$.
+Both methods assume $N_0\eqd y_n[0] \eqd 18$.
+However, often in data modeling, it is assumed that
+measured data is the actual true value being measured plus some
+[_measurement noise_](https://books.google.com/books?vid=ISBN1118210824).
+As such, it is highly unlikely that the true height of the plant at time $t=0$
+is exactly $y_n[0]=18.000\ldots$, but rather $18+n(0)$, where $n(0)$ is
+a random noise variable at time $t=0$.
+
+Method 1 gave a lemma for $\pderiv{}{a_0}N(t)$ and
+Method 2 for $\pderiv{}{N_*}N(t)$;
+here is a similar lemma for $\pderiv{}{N_0}N(t)$:
+$$\begin{align*}
+      \boxed{\pderiv{}{N_0}\esth(t)}
+        &\eqd \pderiv{}{N_0 }\brs{\frac{N_*}{1+\brp{\frac{N_*}{N_0}-1}e^{-a_0 t}}}
+        && \text{by definition of $\esth(t)$}
+      \\&= \frac{ - N_*\brp{\frac{-1}{N_0^2}}e^{-a_0 t}}
+                {\brs{1+\brp{\frac{N_*}{N_0}-1}e^{-a_0 t}}^2}
+        && \text{by Quotient Rule}
+      \\&= \brs{ \frac{e^{-a_0 t}}{N_*N_0^2}}
+           \brs{\frac{N_*}{1+\brs{\frac{N_*}{N_0}-1}e^{-a_0 t}}}^2
+      \\&= \brs{ \frac{e^{-a_0 t}}{N_*N_0^2}}
+           \esth^2(t)
+        && \text{by definition of $\esth(t)$}
+    \end{align*}$$
+
+$$\begin{align*}
+    \boxed{0}
+      &= \frac{N_*N_0^2}{2}\cdot0
+    \\&=\frac{N_*N_0^2}{2}
+         \pderiv{}{N_0}\norm{e}^2
+    \\&\eqd \frac{N_*N_0^2}{2}
+         \pderiv{}{N_0}\sum_{n=0}^{n=10}e^2(t_n)
+      && \text{by definition of $\norm{\cdot}$}
+    \\&\eqd \frac{N_*N_0^2}{2}
+         \pderiv{}{N_0}\sum_{n=0}^{n=10}\brs{\esth(t_n)-y_n}^2
+      && \text{by definition of $e$}
+    \\&= \frac{N_*N_0^2}{2}
+         \sum_{n=0}^{n=10}2\brs{\esth(t_n)-y_n} \pderiv{}{N_0}\esth(t_n)
+      && \text{by Chain Rule}
+    \\&= \frac{N_*N_0^2}{2}
+         \sum_{n=0}^{n=10}2\brs{\esth(t_n)-y_n} \brs{ \frac{e^{-a_0 t_n}}{N_*N_0^2}}\esth^2(t_n)
+      && \text{by lemma}
+    \\&= \boxed{\sum_{n=0}^{n=10} \esth^2(t_n)\brs{\esth(t_n)-y_n} e^{-a_0 t_n} }
+    \end{align*}$$
+
+So now we have a three equation triple
+$\otriple{\pderiv{}{N_h}\norm{e}^2=0}{\pderiv{}{N_0}\norm{e}^2=0}{\pderiv{}{a_0}\norm{e}^2=0}$
+in a three variable triple $\otriple{N_*}{N_0}{a_0}$.
+The result using [multiroot](https://www.rdocumentation.org/packages/rootSolve/versions/1.8.2.1/topics/multiroot)
+from the R package [rootSolve](https://cran.r-project.org/web/packages/rootSolve/rootSolve.pdf) is
+$\otriple{N_0}{N_*}{a_0}=\otriple{18.1994673377}{256.0554740324}{0.6508899900}$.
+This solution is "better" than both Methods 1 and 2 in the sense that it results in a lower _cost_:
+$$\begin{array}{|c|rcl|}
+  \text{Method} & cost(N_0,N_*,a_0)
+\\\hline
+\\1             & cost(18,252,0.6631183) &=& 31.32307
+\\2             & cost(18,255.8436595023,0.6539203544) &=& 0.7140973
+\\3             & cost(18.1994673377, 256.0554740324, 0.6508899900) &=& 0.4533383
+\end{array}$$
+
+Some R code supporting [Reproducible Research](https://ropensci.github.io/reproducibility-guide/sections/introduction/):
+````R
+#---------------------------------------
+# packages
+#---------------------------------------
+#install.packages("stats");
+#install.packages("R.utils");
+#install.packages("rootSolve");
+ require(stats);
+ require(R.utils);
+ require(rootSolve);
+ rm(list=objects());
+
+#---------------------------------------
+# Data
+#---------------------------------------
+ tdata = c(0:10)
+ ydata = c(18,33,56,90,130,170,203,225,239,247,251)
+ t     = seq( from=min(tdata), to=max(tdata), length=1000 )
+
+#---------------------------------------
+# Estimate Function N(t)
+#---------------------------------------
+ N0 = ydata[1]
+ N = function(t,N0,Nh,a0)
+ {
+   result = Nh / ( 1 + (Nh/N0-1)*exp(-a0*t) )
+ }
+
+#---------------------------------------
+# Cost Function
+#---------------------------------------
+ cost = function(N0,Nh,a0)
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   {
+     summ = summ + ( N(tdata[i],N0,Nh,a0) - ydata[i] )^2
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative with respect to a0 of Cost Function
+#---------------------------------------
+ Pcosta0 = function(N0, Nh, a0)
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   {
+     summ = summ + ( N(tdata[i],N0,Nh,a0) )^2 *
+                   ( N(tdata[i],N0,Nh,a0) - ydata[i] ) *
+                   ( tdata[i] * exp(-a0*tdata[i]) )
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative with respect to Nh of Cost Function
+#---------------------------------------
+ PcostNh = function(N0, Nh, a0)
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   {
+     summ = summ + ( 1 - exp(-a0*tdata[i]) ) *
+                   ( N(tdata[i],N0, Nh, a0) )^2 *
+                   ( N(tdata[i],N0, Nh, a0) - ydata[i] )
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative with respect to Nh of Cost Function
+#---------------------------------------
+ PcostN0 = function(N0, Nh, a0)
+ {
+   summ = 0;
+   for (i in c(1:length(tdata)))
+   {
+     summ = summ + ( exp(-a0*tdata[i]) ) *
+                   ( N(tdata[i],N0, Nh, a0) )^2 *
+                   ( N(tdata[i],N0, Nh, a0) - ydata[i] )
+   }
+   result = summ
+ }
+
+#---------------------------------------
+# Partial derivative vector of cost
+#---------------------------------------
+Pcost = function(x)
+{
+   N0 = x[1]
+   Nh = x[2]
+   a0 = x[3]
+   F1 = Pcosta0( N0, Nh, a0 );
+   F2 = PcostNh( N0, Nh, a0 );
+   F3 = PcostN0( N0, Nh, a0 );
+   result = c(F1, F2, F3);
+}
+
+#---------------------------------------
+# Calculate roots
+#---------------------------------------
+ Roots = multiroot( f=Pcost, start=c(ydata[1], ydata[11], 0.6) );
+ N0 = Roots$root[1]
+ Nh = Roots$root[2]
+ a0 = Roots$root[3]
+
+#---------------------------------------
+# Display
+#---------------------------------------
+ printf("(N0, Nh, a0) = (%.10f, %.10f, %.10f) with estim.precis=%.2e\n", N0, Nh, a0, Roots$estim.precis )
+ colors = c( "red" , "blue" );
+ traces = c( "N(t)", "data" );
+ plot ( t , N(t, N0, Nh, a0), col=colors[1], lwd=2, type='l', xlab="t", ylab="y", ylim=c(0,max(ydata)+10) )
+ lines( tdata, ydata        , col=colors[2], lwd=5, type='p' )
+ legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
+ grid()
+````
+

@@ -1,0 +1,53 @@
+$ Daniel J. Greenhoe 
+$ https://math.stackexchange.com/questions/3990086/
+$-----------------------------
+
+Method 1: One degree of freedom
+-------------------------------
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}$
+$\newcommand{\pderiv}[2]{{\frac{\partial#1}{\partial#2} }}$
+Have you considered using the _Method of Least Squares_ to find $a_0$? For that method you can define an _error function_ $$e(t_n)\eqd N(t_n)-y_n\eqd \frac{N_{*}}{1+\brs{N_{*}/N_0-1}e^{-a_0t_n}}-y_n$$ and a _cost function_ (the error cost) as the _norm_ squared of $e(t_n)$ as $$cost(a_0)\eqd\norm{e}^2\eqd\sum_{n=0}^{n=10}e^2(t_n)$$ You want to find the $a_0$ that minimizes that cost; that is, you want to find where (with respect to $a_0$) the cost function "goes to the lowest point". Suppose you set $N_0\eqd N(0)=18$ and $N_*\eqd252$ $\ldots$[![enter image description here][1]][1]From the plot, it appears that $cost(a_0)$ is minimized around $a_0=0.65$.
+
+To get a more accurate optimal $a_0$, we can differentiate $cost(a_0)$ with respect to $a_0$ and set the expression to $0$. To do that, this (lemma) may come in handy:
+$$\begin{align}
+\boxed{N'(t)}
+  &\eqd \pderiv{}{a_0}N(t)
+\\&\eqd \pderiv{}{a_0}\brs{\frac{N_{*}}{1+\brp{\frac{N_*}{N_0}-1}e^{-a_0t}}}
+  && \text{by definition of $N(t)$}
+\\&= \frac{0-N_*\brs{\frac{N_*}{N_0}-1}e^{-a_0t}(-t)}{\brp{1+\brs{\frac{N_*}{N_0}-1}e^{-a_0t}}^2}
+  && \text{by Quotient Rule}
+\\&= \frac{N_*^2}{\brp{1+\brs{\frac{N_*}{N_0}-1}e^{-a_0t}}^2}
+\brs{\frac{1}{N_0}-\frac{1}{N_*}}te^{-a_0t}
+\\&\eqd \boxed{\brs{\frac{1}{N_0}-\frac{1}{N_*}}N^2(t)te^{-a_0t}}
+&& \text{by definition of $N(t)$}
+\end{align}$$
+Then$\ldots$
+$$\begin{align}
+\boxed{0}&= \frac{1}{2\brp{\frac{1}{N_0}-\frac{1}{N_*}}}\cdot0
+\\&=\frac{1}{2\brp{\frac{1}{N_0}-\frac{1}{N_*}}}\pderiv{}{a_0}\norm{e}^2
+\\&\eqd \frac{1}{2\brp{\frac{1}{N_0}-\frac{1}{N_*}}}\pderiv{}{a_0}\sum_{n=0}^{n=10}e^2(t_n)
+  && \text{by definition of $\norm{\cdot}$}
+\\&\eqd \frac{1}{2\brp{\frac{1}{N_0}-\frac{1}{N_*}}}\pderiv{}{a_0}\sum_{n=0}^{n=10}\brs{N(t_n)-y_n}^2
+  && \text{by definition of $e$}
+\\&= \frac{1}{2\brp{\frac{1}{N_0}-\frac{1}{N_*}}}\sum_{n=0}^{n=10}2\brs{N(t_n)-y_n}N'(t_n)
+  && \text{by Chain Rule}
+\\&= \frac{1}{2\brp{\frac{1}{N_0}-\frac{1}{N_*}}}\sum_{n=0}^{n=10}2\brs{N(t_n)-y_n}\brs{\frac{1}{N_0}-\frac{1}{N_*}}N^2(t_n)te^{-a_0t_n}
+  && \text{by (lemma)}
+\\&= \boxed{\sum_{n=0}^{n=10}N^2(t_n)\brs{N(t_n)-y_n}t_ne^{-a_0t_n}}
+\\&\eqd Dcost(a_0) 
+  && \text{(call the sum $Dcost(a_0)$)}
+\end{align}$$
+Plotting $Dcost$ with respect to $a_0$, it appears that $Dcost(a_0)$ crosses $0$ at around $a_0=0.66$:[![enter image description here][2]][2]
+
+The [uniroot](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/uniroot) function from the R [stats](https://www.rdocumentation.org/packages/stats/versions/3.6.2) package indicates that $Dcost(a_0)$ crosses $0$ at $a_0=0.6631183$ with estim.prec=6.103516e-05.
+
+Using $N_0\eqd18$, $N_*\eqd252$, and $a_0\eqd0.6631183$, $N(t)$ seems to fit the 11 data points fairly well ($cost(0.6631183)=31.32307$) $\ldots$
+[![enter image description here][3]][3]
+
+
+  [1]: https://i.stack.imgur.com/xI0E8.png
+  [2]: https://i.stack.imgur.com/Blg3S.png
+  [3]: https://i.stack.imgur.com/VPg5A.png
