@@ -204,7 +204,7 @@ and $\abs{\cdot}\in\clFcr$ an \fncte{absolute value} function\ifsxref{algebra}{d
 Let $\normn$ be a function in $\clFfr$ such that $\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$.\footnote{
 The function $\normn$ is a \structe{norm} \xrefP{thm:norm=inprod}
 and is called the \structe{norm induced by the inner product $\inprodn$} \xref{def:innorm}.}
-\thmbox{\begin{array}{rclcl@{\qquad}C}
+\thmbox{\begin{array}{rclclC}
   \abs{\inprod{\vx}{\vy}}^2 &\le& \inprod{\vx}{\vx} \; \inprod{\vy}{\vy}
     &&
     & \forall \vx,\vy\in\setX
@@ -460,7 +460,8 @@ and is called the \structe{norm induced by the inner product $\inprodn$} \xref{d
 \begin{corollary}
 \footnote{
   \citerpg{bollobas1999}{132}{0521655773},
-  \citerpgc{ab}{279}{0120502577}{Lemma 32.4} 
+  \citerpgc{ab}{279}{0120502577}{Lemma 32.4},
+  \citerpg{haaser1991}{278}{0486665097}
   }
 %--------------------------------------
 Let $\inprodspaceX$ be an \structe{inner product space}.
@@ -469,68 +470,49 @@ Let $\inprodspaceX$ be an \structe{inner product space}.
   }
 \end{corollary}
 \begin{proof}
-Let $\norm{\vx} \eqd \sqrt{\inprod{\vx}{\vx}}$.
-\begin{align*}
-  \abs{\inprod{\vx+\vepsilon}{\vy} - \inprod{\vx}{\vy}}^2
-    &= \abs{\inprod{\vx+\vepsilon-\vx}{\vy}}^2
-    && \text{by \prope{additivity} of $\inprodn$}&&\text{\xref{def:inprod}}
-  \\&= \abs{\inprod{\vepsilon}{\vy}}^2
-  \\&\le \norm{\vepsilon}^2\norm{\vy}    
-    && \text{by \ineqe{Cauchy-Schwarz Inequality}}&&\text{\xref{thm:cs}}
-\end{align*}
+  \begin{enumerate}
+    \item Let $\norm{\vx} \eqd \sqrt{\inprod{\vx}{\vx}}$.
+    \item Proof:
+      \begin{align*}
+        \abs{\inprod{\vx+\vepsilon}{\vy} - \inprod{\vx}{\vy}}^2
+          &= \abs{\inprod{\vx+\vepsilon-\vx}{\vy}}^2
+          && \text{by \prope{additivity} of $\inprodn$}&&\text{\xref{def:inprod}}
+        \\&= \abs{\inprod{\vepsilon}{\vy}}^2
+        \\&\le \norm{\vepsilon}^2\norm{\vy}    
+          && \text{by \ineqe{Cauchy-Schwarz Inequality}}&&\text{\xref{thm:cs}}
+      \end{align*}
+    \item Alternate proof (see \citerpg{haaser1991}{278}{0486665097})
+      \begin{align*}
+        \abs{\inprod{\vx}{\vy}-\inprod{\vx_0}{\vy_0}}
+          &= \abs{\inprod{\vx-\vx_0}{\vy-\vy_0}
+                  \mcom{-\inprod{\vx_0}{\vy_0}+\inprod{\vx}{\vy_0}}{$\inprod{\vx-\vx_0}{\vy_0}$}
+                  \mcom{+\inprod{\vx_0}{\vy}-\inprod{\vx_0}{\vy_0}}{$\inprod{\vx_0}{\vy-\vy_0}$}
+                 }
+        \\&= \abs{\inprod{\vx-\vx_0}{\vy-\vy_0} +\inprod{\vx-\vx_0}{\vy_0} +\inprod{\vx_0}{\vy-\vy_0}}
+        \\&\le \abs{\inprod{\vx-\vx_0}{\vy-\vy_0}} 
+             + \abs{\inprod{\vx-\vx_0}{\vy_0}} 
+             + \abs{\inprod{\vx_0}{\vy-\vy_0}}
+        \\&\le \norm{\vx-\vx_0} \; \norm{\vy-\vy_0} 
+             + \norm{\vx-\vx_0} \; \norm{\vy_0} 
+             + \norm{\vx_0} \; \norm{\vy-\vy_0}
+          \quad \text{by Cauchy-Swartz ineq. \prefpo{thm:cs}}
+        \\&\le \brp{\max\setn{\norm{\vx-\vx_0},\, \norm{\vy-\vy_0}}}^2
+             + \brp{\norm{\vx_0}+\norm{\vy_0}}\max\setn{\norm{\vx-\vx_0},\,\norm{\vy-\vy_0}}
+        \\&=   \max\setn{\norm{\vx-\vx_0},\, \norm{\vy-\vy_0}}
+               \brp{1 + \max\setn{\norm{\vx-\vx_0},\,\norm{\vy-\vy_0}} }
+        \\&=   \metric{\opair{\vx}{\vy}}{\opair{\vx_0}{\vy_0}}
+               \brs{1 + \metric{\opair{\vx}{\vy}}{\opair{\vx_0}{\vy_0}} }
+        \\&\implies \inprod{\vx}{\vy}\to\inprod{\vx_0}{\vy_0} \text{ as } \opair{\vx}{\vy}\to\opair{\vx_0}{\vy_0}
+      \end{align*}
+  \end{enumerate}
 \end{proof}
-
-
-%%--------------------------------------
-%\begin{proposition}
-%\footnote{
-%  \citerpg{haaser1991}{278}{0486665097}
-%  }
-%%--------------------------------------
-%Let $\spO\eqd\inprodspaceX$ be a linear space with inner product
-%$\inprodn:\setX^2\to\C$.
-%Let $\metric{\vx}{\vy}\eqd\norm{\vx-\vy}\eqd\sqrt{\inprod{\vx-\vy}{\vx-\vy}}$ 
-%be the metric induced by $\inprodn$.
-%\formboxp{
-%  $\inprodspaceX$ is an inner product space
-%  $\implies$
-%  $\inprodn$ is {\bf continuous} on $\setX^2$ with respect to $\metricn$
-%  }
-%\end{proposition}
-%\begin{proof}
-%\begin{align*}
-%  \abs{\inprod{\vx}{\vy}-\inprod{\vx_0}{\vy_0}}
-%    &= \abs{\inprod{\vx-\vx_0}{\vy-\vy_0}
-%            \mcom{-\inprod{\vx_0}{\vy_0}+\inprod{\vx}{\vy_0}}{$\inprod{\vx-\vx_0}{\vy_0}$}
-%            \mcom{+\inprod{\vx_0}{\vy}-\inprod{\vx_0}{\vy_0}}{$\inprod{\vx_0}{\vy-\vy_0}$}
-%           }
-%  \\&= \abs{\inprod{\vx-\vx_0}{\vy-\vy_0} +\inprod{\vx-\vx_0}{\vy_0} +\inprod{\vx_0}{\vy-\vy_0}}
-%  \\&\le \abs{\inprod{\vx-\vx_0}{\vy-\vy_0}} 
-%       + \abs{\inprod{\vx-\vx_0}{\vy_0}} 
-%       + \abs{\inprod{\vx_0}{\vy-\vy_0}}
-%  \\&\le \norm{\vx-\vx_0} \; \norm{\vy-\vy_0} 
-%       + \norm{\vx-\vx_0} \; \norm{\vy_0} 
-%       + \norm{\vx_0} \; \norm{\vy-\vy_0}
-%    \quad \text{by Cauchy-Swartz ineq. \prefpo{thm:cs}}
-%  \\&\le \brp{\max\setn{\norm{\vx-\vx_0},\, \norm{\vy-\vy_0}}}^2
-%       + \brp{\norm{\vx_0}+\norm{\vy_0}}\max\setn{\norm{\vx-\vx_0},\,\norm{\vy-\vy_0}}
-%  \\&=   \max\setn{\norm{\vx-\vx_0},\, \norm{\vy-\vy_0}}
-%         \brp{1 + \max\setn{\norm{\vx-\vx_0},\,\norm{\vy-\vy_0}} }
-%  \\&=   \metric{\opair{\vx}{\vy}}{\opair{\vx_0}{\vy_0}}
-%         \brs{1 + \metric{\opair{\vx}{\vy}}{\opair{\vx_0}{\vy_0}} }
-%  \\&\implies \inprod{\vx}{\vy}\to\inprod{\vx_0}{\vy_0} \text{ as } \opair{\vx}{\vy}\to\opair{\vx_0}{\vy_0}
-%\end{align*}
-%\end{proof}
-
 
 %======================================
 \section{Relationship between norms and inner products}
 %======================================
-\ifexclude{wsd}{
 %======================================
 \subsection{Norms induced by inner products}
 %======================================
-} % end wsd exclude
 %--------------------------------------
 \begin{lemma}[\thmd{Polar Identity}]
 \footnote{
@@ -607,11 +589,9 @@ The function $\normn$ is a \structe{norm} \xrefP{thm:norm=inprod} and is called 
   \end{align*}
 \end{proof}
 
-%\ifexclude{wsd}{
 %======================================
 \subsection{Inner products induced by norms}
 %======================================
-
 %--------------------------------------
 \begin{theorem}[\thmd{induced norm}]
 \footnote{
@@ -797,10 +777,6 @@ Let $\normspaceX$ be a \structe{normed linear space} \xref{def:norm}.
 
 \end{proof}
 
-
-
-
-
 %--------------------------------------
 \begin{theorem}[\thm{Polarization Identities}]
 \label{thm:polar_id}
@@ -867,11 +843,6 @@ $\inprodn\in\clFxxf$ a function, and $\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$.
 \end{align*}
 \end{enumerate}
 \end{proof}
-
-
-
-
-
 
 \begin{minipage}{\tw/3}%
   \color{figcolor}
@@ -1158,8 +1129,6 @@ Under this new definition, an inner product \emph{exists} if the \prop{parallelo
 and is \emph{specified}, in terms of the norm, by the \prop{Polarization Identity}.
 \end{remark}
 
-
-\ifexclude{wsd}{
 Of the uncountably infinite number of $\splpF$ norms, only the norm for $p=2$ induces an inner product
 (\pref{prop:lp_norm2ip}, next).
 %--------------------------------------
@@ -1277,79 +1246,75 @@ Let $\norm{\seqxZ{x_n}}_p$ be the $\splpF$ norm\ifsxref{seq}{def:lp_norm} of the
 \end{enumerate}
 \end{proof}
 
-} % end wsd exclude
-
-%%--------------------------------------
-%\begin{example}
-%\footnote{
-%  \citerpg{bachman2000}{23}{0387988998}
-%  }
-%\index{norm!$l_1$}  \index{norm!taxi cab}
-%\index{norm!$l_2$}  \index{norm!Euclidean}
-%\index{norm!$l_\infty$} \index{norm:sup}
-%%--------------------------------------
-%\exbox{\begin{array}{>{\text{The norm}}ll>{$\bf}l<{$}l<{\text{induce an innerproduct.}}}
-%    & \mcom{\norm{\vx} \eqd \sum_{i=1}^n \abs{x_i}                        }{\prop{$l_1$-norm} or \prop{taxi cab norm} } & does not &
-%  \\& \mcom{\norm{\vx} \eqd \left(\sum_{i=1}^n \abs{x_i}^2\right)^\frac{1}{2} }{\prop{$l_2$-norm} or \prop{Euclidean norm}} & does     &
-%  \\& \mcom{\norm{\vx} \eqd \max\set{\abs{x_i}}{\scriptstyle i=1,\dots,n} }{\prop{$l_\infty$-norm} or \prop{sup norm} } & does not &
-%\end{array}}
-%\end{example}
-%\begin{proof}
-%\begin{align*}
-%  \intertext{1. Taxi-cab norm case (counter-example): $\vx=[1,\,1],\;\vy=[1,\,-1]$}
-%  \norm{\vx+\vy}^2 + \norm{\vx-\vy}^2
-%    &= \norm{[1,\,1]+[1,\,-1]}^2 + \norm{[1,\,1]-[1,\,-1]}^2
-%    && \text{by definition of $\vx$ and $\vy$}
-%  \\&= \norm{[2,\,0]}^2 + \norm{[0,\,2]}^2
-%  \\&= (\abs{2}+\abs{0})^2 + (\abs{0}+\abs{2})^2
-%    && \text{by definition of $\normn$}
-%  \\&= 8
-%  \\&\ne  16
-%  \\&= 8 + 8
-%  \\&= 2(\abs{1}+\abs{1})^2 + 2(\abs{1}+\abs{-1})^2
-%  \\&= 2\norm{[1,\,1]}^2 + 2\norm{[1,\,-1]}^2
-%    && \text{by definition of $\normn$}
-%  \\&= 2\norm{\vx}^2 + 2\norm{\vy}^2
-%    && \text{by definition of $\vx$ and $\vy$}
-%  \\
-%  \intertext{2. Euclidean norm case:}
-%  \norm{\vx+\vy}^2 + \norm{\vx-\vy}^2
-%    &= \left(\sum_{i=1}^n \abs{x_i + y_i}^2 \right) +
-%       \left(\sum_{i=1}^n \abs{x_i - y_i}^2 \right)
-%    && \text{by definition of $\normn$}
-%  \\&= \sum_{i=1}^n \Big( \abs{x_i + y_i}^2 + \abs{x_i - y_i}^2 \Big)
-%  \\&= \sum_{i=1}^n \Big[ (x_i + y_i)(x_i + y_i)^\ast + (x_i - y_i)(x_i - y_i)^\ast \Big]
-%    && \ifdochas{numsys}{\text{by \prefp{thm:C_abs}}}
-%  \\&= \sum_{i=1}^n \Big[ (x_ix_i^\ast + y_iy_i^\ast + x_iy_i^\ast + x_i^\ast y_i)
-%     +                    (x_ix_i^\ast + y_iy_i^\ast - x_iy_i^\ast - x_i^\ast y_i) \Big]
-%  \\&= \sum_{i=1}^n \Big[ 2\abs{x_i}^2 + 2\abs{y_i}^2 \Big]
-%  \\&= 2\sum_{i=1}^n \abs{x_i}^2 + 2 \sum_{i=1}^n \abs{y_i}^2
-%    && \ifdochas{numsys}{\text{by \prefp{thm:C_abs}}}
-%  \\&= 2\norm{\vx}^2 + 2\norm{\vy}^2
-%    && \text{by definition of $\normn$}
-%  \\
-%  \intertext{3. Sup norm case(counter-example): $\vx=[1,\,1],\;\vy=[1,\,-1]$}
-%  \norm{\vx+\vy}^2 + \norm{\vx-\vy}^2
-%    &= \norm{[1,\,1]+[1,\,-1]}^2 + \norm{[1,\,1]-[1,\,-1]}^2
-%    && \text{by definition of $\vx$ and $\vy$}
-%  \\&= \norm{[2,\,0]}^2 + \norm{[0,\,2]}^2
-%  \\&= \left(\max\setn{\abs{2},\,\abs{0}}\right)^2 +
-%       \left(\max\setn{\abs{0},\,\abs{2}}\right)^2
-%    && \text{by definition of $\normn$}
-%  \\&= 2^2 + 2^2
-%  \\&= 8
-%  \\&\ne  4
-%  \\&= 2\cdot 1^2 + 2\cdot 1^2
-%  \\&= 2\left(\max\setn{\abs{1},\,\abs{1}}\right)^2
-%     + 2\left(\max\setn{\abs{1},\,\abs{-1}}\right)^2
-%  \\&= 2\norm{[1,\,1]}^2 + 2\norm{[1,\,-1]}^2
-%    && \text{by definition of $\normn$}
-%  \\&= 2\norm{\vx}^2 + 2\norm{\vy}^2
-%    && \text{by definition of $\vx$ and $\vy$}
-%\end{align*}
-%\end{proof}
-
-%} % end wsd exclude
+%--------------------------------------
+\begin{example}
+\footnote{
+  \citerpg{bachman2000}{23}{0387988998}
+  }
+\index{norm!$l_1$}  \index{norm!taxi cab}
+\index{norm!$l_2$}  \index{norm!Euclidean}
+\index{norm!$l_\infty$} \index{norm:sup}
+%--------------------------------------
+\exbox{\begin{array}{>{\text{The norm}}ll>{$\bf}l<{$}l<{\text{induce an innerproduct.}}}
+    & \mcom{\norm{\vx} \eqd \sum_{i=1}^n \abs{x_i}                        }{\prop{$l_1$-norm} or \prop{taxi cab norm} } & does not &
+  \\& \mcom{\norm{\vx} \eqd \left(\sum_{i=1}^n \abs{x_i}^2\right)^\frac{1}{2} }{\prop{$l_2$-norm} or \prop{Euclidean norm}} & does     &
+  \\& \mcom{\norm{\vx} \eqd \max\set{\abs{x_i}}{\scriptstyle i=1,\dots,n} }{\prop{$l_\infty$-norm} or \prop{sup norm} } & does not &
+\end{array}}
+\end{example}
+\begin{proof}
+\begin{align*}
+  \intertext{1. Taxi-cab norm case (counter-example): $\vx=[1,\,1],\;\vy=[1,\,-1]$}
+  \norm{\vx+\vy}^2 + \norm{\vx-\vy}^2
+    &= \norm{[1,\,1]+[1,\,-1]}^2 + \norm{[1,\,1]-[1,\,-1]}^2
+    && \text{by definition of $\vx$ and $\vy$}
+  \\&= \norm{[2,\,0]}^2 + \norm{[0,\,2]}^2
+  \\&= (\abs{2}+\abs{0})^2 + (\abs{0}+\abs{2})^2
+    && \text{by definition of $\normn$}
+  \\&= 8
+  \\&\ne  16
+  \\&= 8 + 8
+  \\&= 2(\abs{1}+\abs{1})^2 + 2(\abs{1}+\abs{-1})^2
+  \\&= 2\norm{[1,\,1]}^2 + 2\norm{[1,\,-1]}^2
+    && \text{by definition of $\normn$}
+  \\&= 2\norm{\vx}^2 + 2\norm{\vy}^2
+    && \text{by definition of $\vx$ and $\vy$}
+  \\
+  \intertext{2. Euclidean norm case:}
+  \norm{\vx+\vy}^2 + \norm{\vx-\vy}^2
+    &= \left(\sum_{i=1}^n \abs{x_i + y_i}^2 \right) +
+       \left(\sum_{i=1}^n \abs{x_i - y_i}^2 \right)
+    && \text{by definition of $\normn$}
+  \\&= \sum_{i=1}^n \Big( \abs{x_i + y_i}^2 + \abs{x_i - y_i}^2 \Big)
+  \\&= \sum_{i=1}^n \Big[ (x_i + y_i)(x_i + y_i)^\ast + (x_i - y_i)(x_i - y_i)^\ast \Big]
+    && \ifdochas{numsys}{\text{by \prefp{thm:C_abs}}}
+  \\&= \sum_{i=1}^n \Big[ (x_ix_i^\ast + y_iy_i^\ast + x_iy_i^\ast + x_i^\ast y_i)
+     +                    (x_ix_i^\ast + y_iy_i^\ast - x_iy_i^\ast - x_i^\ast y_i) \Big]
+  \\&= \sum_{i=1}^n \Big[ 2\abs{x_i}^2 + 2\abs{y_i}^2 \Big]
+  \\&= 2\sum_{i=1}^n \abs{x_i}^2 + 2 \sum_{i=1}^n \abs{y_i}^2
+    && \ifdochas{numsys}{\text{by \prefp{thm:C_abs}}}
+  \\&= 2\norm{\vx}^2 + 2\norm{\vy}^2
+    && \text{by definition of $\normn$}
+  \\
+  \intertext{3. Sup norm case(counter-example): $\vx=[1,\,1],\;\vy=[1,\,-1]$}
+  \norm{\vx+\vy}^2 + \norm{\vx-\vy}^2
+    &= \norm{[1,\,1]+[1,\,-1]}^2 + \norm{[1,\,1]-[1,\,-1]}^2
+    && \text{by definition of $\vx$ and $\vy$}
+  \\&= \norm{[2,\,0]}^2 + \norm{[0,\,2]}^2
+  \\&= \left(\max\setn{\abs{2},\,\abs{0}}\right)^2 +
+       \left(\max\setn{\abs{0},\,\abs{2}}\right)^2
+    && \text{by definition of $\normn$}
+  \\&= 2^2 + 2^2
+  \\&= 8
+  \\&\ne  4
+  \\&= 2\cdot 1^2 + 2\cdot 1^2
+  \\&= 2\left(\max\setn{\abs{1},\,\abs{1}}\right)^2
+     + 2\left(\max\setn{\abs{1},\,\abs{-1}}\right)^2
+  \\&= 2\norm{[1,\,1]}^2 + 2\norm{[1,\,-1]}^2
+    && \text{by definition of $\normn$}
+  \\&= 2\norm{\vx}^2 + 2\norm{\vy}^2
+    && \text{by definition of $\vx$ and $\vy$}
+\end{align*}
+\end{proof}
 
 %=======================================
 \section{Orthogonality}
@@ -1364,7 +1329,7 @@ The \fnctd{Kronecker delta function} $\hxs{\kdelta_n}$ is defined as
   $\ds\kdelta_n\eqd
     \brbl{\begin{array}{cMD}
       1 & for $n=0$ & and \\
-      0 & for $n\ne 0$\..
+      0 & otherwise
     \end{array}}
   \qquad\scy
   \forall n\in\Z$
@@ -1565,27 +1530,24 @@ $\norm{\vx}\eqd\sqrt{\inprod{\vx}{\vx}}$\ifsxref{vsinprod}{def:innorm}.
     \end{align*}
 \end{proof}
 
-%%=======================================
-%\section{Literature}
-%%=======================================
-%\begin{survey}
-%\begin{enumerate}
-%  \item Inner product spaces:
-%    \\\citer{istratescu1987}
-%
-%  \item Characterizations of inner product spaces
-%    \begin{enumerate}
-%      \item specific characterizations:
-%        \\\citer{jordan1935}
-%        \\\citer{james1947bams}
-%
-%      \item surveys:
-%        \\\citer{day1947}
-%        \\\citer{amir1986}
-%        \\\citer{mendoza2003}
-%
-%    \end{enumerate}
-%
-%\end{enumerate}
-%\end{survey}
+%=======================================
+\section{Literature}
+%=======================================
+\begin{survey}
+\begin{enumerate}
+  \item Inner product spaces: \citer{istratescu1987}
+
+  \item Characterizations of inner product spaces
+    \begin{enumerate}
+      \item specific characterizations:
+        \citer{jordan1935},
+        \citer{james1947bams}
+
+      \item surveys:
+        \citer{day1947},
+        \citer{amir1986},
+        \citer{mendoza2003}
+    \end{enumerate}
+\end{enumerate}
+\end{survey}
 
