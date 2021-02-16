@@ -36,14 +36,14 @@ $\fG(\omega)\eqd \int_{-\infty}^{\infty}\fg(\tau)e^{-j\omega\tau}\dtau$,
 we can check the relation as follows:
 \begin{align}
   \opFT\brs{e^{-\alpha\abs{\tau}}}
-    &\eqd \int_{-\infty}^{\infty}\fg(\tau)e^{-j\omega\tau}\dtau
-    && \text{by definition Fourier Transform}
-  \\&\eqd \int_{-\infty}^{\infty} e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
-    && \text{by definition of $\fg(\tau)$}
+    &\eqd \int_{-\infty}^{\infty} e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+    && \text{by local definition Fourier Transform}
   \\&= \int_{-\infty}^{0} e^{-\alpha(-\tau)} e^{-j\omega\tau}\dtau
      + \int_{0}^{\infty} e^{-\alpha(\tau)} e^{-j\omega\tau}\dtau
+    && \text{by definition of $\abs{\tau}$}
   \\&= \int_{-\infty}^{0} e^{\tau(\alpha-j\omega)}\dtau
      + \int_{0}^{\infty} e^{\tau(-\alpha-j\omega)}\dtau
+    && \text{by Distributive Property}
   \\&= \brlr{\frac{e^{\tau(\alpha-j\omega)}}{\alpha-j\omega}}_{-\infty}^{0}
      + \brlr{\frac{e^{\tau(-\alpha-j\omega)}}{-\alpha-j\omega}}_{0}^{\infty}
     && \text{by Fundamental Theorem of Calculus}
@@ -72,7 +72,7 @@ Part 2: $\opIFT\brs{\frac{\alpha}{\alpha^2-\omega^2}} = \brs{\cos(\omega)\cosh(\
 -------------------------------------------------------------------------------
 
 To prove that, first we need a couple lemmas.
-And before the keenly anticipated lemmas, a couple definitions:
+And before the keenly anticipated lemmas, a couple [definitions](http://books.google.com/books?vid=ISBN9789383746460&pg=PA81):
 $$\begin{array}{rc>{\ds}ll}
   \cosh(x) &\eqd& \frac{e^{x}+e^{-x}}{2} & \text{(hyperbolic cosine)}\\
   \sinh(x) &\eqd& \frac{e^{x}-e^{-x}}{2} & \text{(hyperbolic sine)}
@@ -85,11 +85,15 @@ lemma 1:
     && \text{by double angle formulas}
   \\&= \cos(x)\brs{\frac{e^{jjy}+e^{-jjy}}{2}} - \sin(x)\brs{\frac{e^{jjy}-e^{-jjy}}{2j}}
     &&  \text{by Euler's identity}
-  \\&= \cos(x)\brs{\frac{e^{-y}+e^{y}}{2}} - \sin(x)\brs{\frac{e^{-y}-e^{y}}{2j}}
-  \\&= \cos(x)\brs{\frac{e^{y}+e^{-y}}{2}} + \sin(x)\brs{\frac{e^{y}-e^{-y}}{2j}}\frac{j}{j}
+  \\&= \cos(x)\brs{\frac{e^{-y}+e^{y}}{2}} -  \sin(x)\brs{\frac{e^{-y}-e^{y}}{2j}}
+  \\&= \cos(x)\brs{\frac{e^{-y}+e^{y}}{2}} +  \sin(x)\brs{\frac{e^{y}-e^{-y}}{2j}}\frac{j}{j}
+  \\&= \cos(x)\brs{\frac{e^{y}+e^{-y}}{2}} - j\sin(x)\brs{\frac{e^{y}-e^{-y}}{2}}
   \\&\eqd \boxed{\cos(x)\cosh(y) - j\sin(x)\sinh(y)}
     && \text{by definitions of $\cosh$ and $\sinh$}
 \end{align*}
+References: 
+  [Saxelby(1920)](https://archive.org/details/courseinpractica00saxerich/page/416/),
+  [ProofWiki](https://proofwiki.org/wiki/Cosine_of_Complex_Number)
 
 lemma 2:
 \begin{align*}
@@ -108,8 +112,22 @@ lemma 2:
      + \frac{1}{2} \brs{\frac{e^{-\alpha\tau} e^{j\tau(\beta-\omega)}}{-\alpha +j(\beta-\omega)} + \frac{e^{-\alpha\tau} e^{-j\tau(\beta-\omega)}}{-\alpha -j(\beta-\omega)}}_{0}^{\infty} 
   \\&= \frac{1}{2} \brs{\frac{1}{ \alpha +j(\beta-\omega)} + \frac{1}{ \alpha -j(\beta-\omega)} - (0+0)}
      + \frac{1}{2} \brs{(0+0)-\brp{\frac{1}{-\alpha +j(\beta-\omega)} + \frac{1}{-\alpha -j(\beta-\omega)}}}
-  \\&= \frac{1}{ \alpha +j(\beta-\omega)} + \frac{1}{ \alpha -j(\beta-\omega)}
-  \\&= \frac{\brs{\alpha -j(\beta-\omega)} + \brs{\alpha +j(\beta-\omega)}}
-            {\brs{\alpha +j(\beta-\omega)}\brs{\alpha -j(\beta-\omega)}}
-  \\&= \brs{\frac{2\alpha}{\alpha^2+(\beta-\omega)^2}}
+  \\&= \brs{\frac{1}{ \alpha +j(\beta-\omega)}} 
+     + \brs{\frac{1}{ \alpha -j(\beta-\omega)}} 
+  \\&= \brs{\frac{1}{ \alpha +j(\beta-\omega)}} \brs{\frac{ \alpha -j(\beta-\omega)}{ \alpha -j(\beta-\omega)}}
+     + \brs{\frac{1}{ \alpha -j(\beta-\omega)}} \brs{\frac{ \alpha +j(\beta-\omega)}{ \alpha +j(\beta-\omega)}}
+    && \text{(Rationalizing the Denominator)}
+  \\&= \frac{2\alpha}{\alpha^2+(\beta-\omega)^2}
 \end{align*}
+
+Then we can use the above 2 lemmas to finish the proof...
+\begin{align*}
+\opFT\brs{\brp{\cos(\omega)\cosh(\omega)-j\sin(\omega)\sinh(\omega)}e^{-\alpha\abs{\tau}}}
+  &= \opFT\brs{\cos(\omega+j\omega) e^{-\alpha\abs{\tau}}}
+  && \text{by lemma 1}
+  \\&= \frac{2\alpha}{\alpha^2+([\omega+j\omega]-\omega)^2}
+  && \text{by lemma 2}
+  \\&= \frac{2\alpha}{\alpha^2-\omega^2}
+\end{align*}
+And so, the Inverse Fourier Transform of $\frac{\alpha}{\alpha^2-\omega^2}$ is (? or maybe not ?)
+$$\brs{\cos(\omega)\cosh(\omega)-j\sin(\omega)\sinh(\omega)}e^{-\alpha\abs{\tau}}$$
