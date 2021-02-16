@@ -1,0 +1,319 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+%======================================
+\chapter[Least Squares Algorithms]
+        {Least Squares Algorithms when Model is Unknown}
+%======================================
+%=======================================
+\section{Introduction}
+%=======================================
+There are two basic ``delta functions".
+But the two functions are just that---two distinct functions:
+\begin{enumerate}
+  \item One is the real-valued \fncte{Kronecker delta} function $\kdelta:\Z\to\R$ \xref{def:kdelta}
+  \item The other is the \fncte{Dirac delta} $\delta:\R\to\Rx$, which is not a real-valued function at all.
+\end{enumerate}
+Not being real-valued is not really a problem in and of itself 
+(functions can be mappings to real numbers, complex numbers, colors, faces of a die, ...)
+but in the case of $\delta$, it maps not into a well behaved set like the real numbers $\R$, 
+but rather into the set of 
+extended real numbers $\Rx\eqd\R\setu\setn{-\infty,+\infty}$. 
+The set $\Rx$ is an Alice-in-Wonderland type world and when working therein requires great care
+and proper safety equipment. 
+In $\Rx$ crazy things can happen like $\infty+\infty=\infty$.
+
+Because $\delta(x)$ maps to $\Rx$, many would not call it a function at all, but rather an
+extended function, or a distribution.
+\footnote{
+  See for example \citergc{mallat}{9780124666061}{Appendix A.7}
+  } 
+A distribution may be something of a loose cannon when left to its own devices,
+but when constrained to the inside of an integral
+(or more generally inside an inner product)
+it becomes quite well-behaved, predictable, and useful.
+
+%---------------------------------------
+\begin{definition}
+\label{def:kdelta}
+%---------------------------------------
+\defbox{
+  \kdelta(n)\eqd\brbl{\begin{array}{cl}
+    1 & \text{if $n=0$}\\
+    0 & \text{otherwise}
+  \end{array}}}
+\end{definition}
+
+
+The Dirac Delta distribution can be defined \xref{def:dirac}, together with $\int\dx$, as an 
+operator\footnote{\url{https://math.stackexchange.com/questions/4023679/}} 
+from one linear space to another/same linear space.
+%$$\inprod{\ff(x)}{\delta(x)} \eqd \int_{\R}\ff(x)\delta(x)\dx \eqd \ff(0)$$
+
+%======================================
+\section{Tempered Distributions}
+%\label{sec:dirac}
+%======================================
+\qboxnps
+  {\href{http://en.wikipedia.org/wiki/Giuseppe_Peano}{Giuseppe Peano}
+   \href{http://www-history.mcs.st-andrews.ac.uk/Timelines/TimelineF.html}{(1858--1932)},
+   \href{http://www-history.mcs.st-andrews.ac.uk/BirthplaceMaps/Places/Italy.html}{Italian} mathematician\footnotemark}
+  {../common/people/PeanoGiuseppe_wkp_pdomain.jpg}
+  {I am sure that something must be found.
+   There must exist a notion of generalized functions which are to functions what the real numbers
+   are to the rationals.}
+  \citetblt{
+    quote: & \citerpg{duistermaat2010}{ix}{0817646728} \\
+    image  & \scs\url{http://en.wikipedia.org/wiki/File:Giuseppe_Peano.jpg}, public domain
+    }
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{vretblad2003}{200}{0387008365}
+  }
+\label{def:test_function}
+\label{def:schwartzclass}
+%--------------------------------------
+\defboxp{ %\begin{array}{M}
+  A \hid{test function} is any function $\fphi$ that satisfies
+  \\\indentx\begin{tabular}{>{\scs}rl}
+      1. & $\fphi\in\clFrc$ 
+    \\2. & $\fphi$ is \prope{infinitely differentiable}.
+  \end{tabular}
+  \\
+  The set of all test functions is denoted $\clFtestf$.
+  A test function $\fphi$ belongs to the \hid{Schwartz class} $\setS$ if, for some set of constants 
+  $\set{C_{n,k}}{n,k\in\Znn}$, 
+  \\\indentx$\ds (1+\abs{x})^n\abs{\fphi^{(k)}} \le C_{n,k} \qquad \forall n,k\in\Znn,\,\forall x\in\R$
+  }
+%\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\index{distributions}
+\footnote{
+  \citerppgc{vretblad2003}{203}{204}{0387008365}{Definition 8.3}
+  }
+%--------------------------------------
+Let $\setS$ be the \hie{Schwartz class} of functions (\pref{def:schwartzclass}).
+\defbox{\begin{array}{M}
+  $\fd[\cdot]$ is a \hid{tempered distribution} if
+  \\\indentx$\ds\begin{array}{F>{\ds}lCDD}
+      1. &\fd\brs{\alpha_1\fphi_1 + \alpha_2\fphi_2} = \fd\brs{\alpha_1\fphi_1} + \fd\brs{\alpha_2\fphi_2} 
+         & \forall \fphi_1,\fphi_2\in\setS,\, \alpha_1,\alpha_2\in\R 
+         & (\prope{linear})
+         & and
+    \\2. &\lim_{n\to\infty}\fphi_n=\fphi \quad\implies\quad\lim_{n\to\infty}\fd\brs{\fphi_n}=\fd\brs{\fphi}
+         & \forall \fphi_1,\fphi_2\in\setS
+         & (\prope{continuous})
+         & 
+  \end{array}$
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpg{vretblad2003}{206}{0387008365}
+  %\citerpp{mallat}{601}{602}\\
+  %\citerpgc{friedlander1998}{7}{0521649714}{Theorem 1.3.1}\\
+  }
+%--------------------------------------
+Let $\setS$ be the \hie{Schwartz class} of functions (\pref{def:schwartzclass}).
+\defbox{\begin{array}{M}
+  Two tempered distributions $\fd_1$ and $\fd_2$ are \hid{equal} if
+  \\\indentx $\ds \fd\brs{\fphi_1}=\fd\brs{\fphi_2} \qquad \forall \fphi_1,\fphi_2\in\setS$
+\end{array}}
+\end{definition}
+
+\pref{thm:tdist_cf} (next) demonstrates that all continuous and what we might call ``well behaved" 
+functions generate a tempered distribution.
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpg{vretblad2003}{204}{0387008365}
+  }
+\label{thm:tdist_cf}
+%--------------------------------------
+Let $\ff$ be a function in $\clFrc$.
+Let $\fT_\ff$ be defined as
+\\\indentx$\ds\fT_\ff\brs{\fphi} \eqd \int_\R \ff(x)\fphi(x)\dx$.
+\thmbox{
+  \brbr{\begin{array}{D>{\ds}lC}
+    1. & \text{$\ff$ is \prope{continuous}} & $and$\\
+    2. & \exists n,M \st \abs{\ff(x)}\le M\brp{1+\abs{x}}^n & \forall x\in\R
+  \end{array}}
+  \implies
+  \fT_\ff\brs{\fphi}\text{ is a tempered distribution.}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that $\fT_\ff$ is \prope{linear}:
+    \begin{align*}
+      \fT_\ff\brs{\fphi_1+\fphi_2}
+        &= \int_\R \ff(x)\brp{\fphi_1(x)+\fphi_2(x)}\dx
+        && \text{by definition of $\fT_\ff$}
+      \\&= \int_\R \ff(x)\fphi_1(x)\dx + \int_\R \ff(x)\fphi_2(x)\dx
+        && \text{by linearity of $\int$}
+      \\&= \fT_\ff\brs{\fphi_1}+\fT_\ff\brs{\fphi_2}
+        && \text{by definition of $\fT_\ff$}
+    \end{align*}
+
+  \item Proof that $\fT_\ff$ is \prope{cotinuous}:
+    \begin{align*}
+      \lim_{n\to\infty}\abs{\fT_\ff\brs{\fphi_n}-\fT_\ff\brs{\fphi}}
+        &= \lim_{n\to\infty}\abs{\int_\R \ff(x)\fphi_n(x)\dx-\int_\R \ff(x)\fphi(x)\dx}
+        && \text{by definition of $\fT_\ff$}
+      \\&= \lim_{n\to\infty}\abs{\int_\R \ff(x)\brp{\fphi_n(x)-\fphi(x)\dx}} 
+        && \text{by linearity of $\int$}
+      \\&\le \lim_{n\to\infty}\int_\R M\brp{1+\abs{x}}^m \abs{\fphi_n(x)-\fphi(x)}\dx
+      \\&= \int_\R M\brp{1+\abs{x}}^{m+2} \abs{\fphi_n(x)-\fphi(x)}\frac{1}{\brp{1+\abs{x}}^2}\dx
+      \\&\le \lim_{n\to\infty}\max_x\brb{ M\brp{1+\abs{x}}^{m+2} \abs{\fphi_n(x)-\fphi(x)}}\int_\R \frac{1}{\brp{1+\abs{x}}^2}\dx
+      \\&= 0
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{definition}
+\index{Dirac delta distribution}
+\footnote{
+  \citerpgc{vretblad2003}{205}{0387008365}{Example 8.13},
+  \citerpg{friedlander1998}{8}{0521649714}
+  }
+\label{def:dirac}
+%--------------------------------------
+\defbox{\begin{array}{M}\indxs{\delta}
+  The \hib{Dirac delta distribution} $\delta\in\clFrc$ is defined as
+  \\\indentx$\ds\delta\brs{\fphi} \eqd \fphi(0)$
+\end{array}}
+\end{definition}
+
+One could argue that a tempered distribution $\fd$ behaves \emph{as if} it satisfies the following relation:
+  \\\indentx$\ds\fd\brs{\fphi}\Bumpeq\int_\R \fd(x) \fphi(x) \dx$.\\
+This is not technically correct because in general $\fd$ is not a function that can be evaluated at a given point $x$
+(and hence the here undefined relation ``$\Bumpeq$").
+But despite this failure, the notation is still very useful in that 
+distributions do behave ``as if" they are defined by the above integral relation.
+
+Using this notation, the Dirac delta distribution looks likes this:
+  \\\indentx$\ds\delta\brs{\fphi}\eqd\fphi(0) \Bumpeq \int_\R \delta(x)\fphi(x)\dx$\\
+
+We could also define another ``scaled" and ``translated" distribution $\delta_{ab}$ such that
+  \\\indentx$\ds\delta_{ab}\brs{\fphi}\eqd b\fphi(ab) \Bumpeq \int_\R \delta\brp{\frac{x}{b}-a}\fphi(x)\dx$\\
+because
+\begin{align*}
+   \int_\R \delta\brp{\frac{x}{b}-a}\fphi(x)\dx
+     &= \int_\R \delta\brp{u-a}\fphi(ub)b\du
+     && \text{where $u=\frac{x}{b}$}
+   \\&= b\int_\R \delta\brp{u-a}\fphi(ub)\du
+   \\&= b\fphi(ab)
+\end{align*}
+
+%=======================================
+\section{Comparison}
+%=======================================
+So the Dirac Delta distribution $\delta(x)$ and the Kronecker delta function are distinctly different.
+But that being said (that they are very different in form), they are very similar in function.
+In particular, note the following:
+\begin{enumerate}
+  \item Both "sum" to 1:
+\begin{align*}
+  \boxed{\int_{\R} \delta(x)\dx}
+    &= \int_{\R} 1\cdot\delta(x)\dx
+  \\&\eqd \boxed{1}
+    && \text{by definition of $\delta$}
+  \\
+  \\
+  \boxed{\sum_{n\in\Z}\kdelta(n)}
+    &= \kdelta(0)
+    && \text{by definition of $\kdelta$}
+  \\&= \boxed{1}
+\end{align*}
+
+  \item  Both have a similar time-shift property:
+    \begin{align*}
+       \boxed{\int_{\R} \delta\brp{x-a}\ff(x)\dx}
+         &= \int_\R \delta\brp{u}\ff(u+a)\du
+         && \text{where $u=x-a$ $\implies$ $\dx=\du$}
+       \\&= \boxed{\ff(a)}
+      \\
+      \\
+      \boxed{\sum_{n\in\Z}\kdelta(n-k)y(n)}
+        &= \sum_{n\in\Z}\kdelta(m)y(m+k)
+        && \text{where $m=n-k$ $\implies$ $n=m+k$}
+      \\&= \kdelta(0)y(0+k)
+        && \text{by definition of $\kdelta$}
+      \\&= \boxed{y(k)}
+    \end{align*}
+
+  \item Both induce a projection operator \xref{def:opP}.
+    \begin{align*}
+      \boxed{\opP^2}\ff(x)
+        &= \opP\opP\ff(x)
+      \\&\eqd \opP\int_\R \delta(x)\ff(x) \dx
+        && \text{where here $\opP$ is the Dirac Delta operator}
+      \\&\eqd \opP\ff(0)
+        && \text{by definition of $\delta$}
+      \\&\eqd \int_\R \delta(x)\ff(0)\dx
+        && \text{where here $\opP$ is the Dirac Delta operator}
+      \\&= \ff(0) \int_\R \delta(x)\dx
+        && \text{by linearity of the integral operator}
+      \\&= \ff(0)
+        && \text{because $\int_{\R} \delta(x)\dx=1$}
+      \\&= \int_\R\delta(x)\ff(x)\dx
+        && \text{by definition of $\delta$}
+      \\&= \boxed{\opP}\ff(x)
+        && \text{where here $\opP$ is the Dirac Delta operator}
+      \\
+      \\
+      \boxed{\opP^2}\fy(n)
+        &= \opP\opP\fy(n)
+      \\&\eqd \opP\sum_{n\in\Z} \kdelta(n)\fy(n) 
+        && \text{where here $\opP$ is the Kronecker Delta operator}
+      \\&\eqd \opP\fy(0)
+        && \text{by definition of $\kdelta$}
+      \\&\eqd \sum_{n\in\Z} \kdelta(n)\fy(0)
+        && \text{where here $\opP$ is the Kronecker Delta operator}
+      \\&= \fy(0) \sum_{n\in\Z} \kdelta(n)
+        && \text{by linearity of the summation operator}
+      \\&= \fy(0)
+        && \text{because $\sum_{n\in\Z} \kdelta(n)=1$}
+      \\&= \sum_{n\in\Z}\kdelta(n)\fy(n)
+        && \text{by definition of $\kdelta$}
+      \\&= \boxed{\opP}\fy(n)
+        && \text{where here $\opP$ is the Kronecker Delta operator}
+    \end{align*} 
+
+  \item Both can be used for sampling.
+The Dirac can be used—inside an integral—as an projection operator to map
+a function $\ff(t)$ to a single point $\ff(a)$ for some value $t=a$.
+That is, it can be used to sample $\ff(t)$ at a given time $t=a$.
+In the field of Digital Signal Processing
+(DSP) a continuous time function $\ff(t)$ can be transformed (mapped) to a  
+sequence 
+$\seqn{\ldots, x_{n-1}, x_n, x_{n+1}, \ldots}$,
+where each element $x_k$ of this sequence is
+$x_k \eqd \int_\R \ff(t)\delta(t-kT)\dt = \ff(kT)$
+Likewise, the Kronecker delta can be used to sample, in some sense,
+a sequence $\seqn{\ldots, x_{n-1}, x_n, x_{n+1}, \ldots}$
+in the sense
+\[y(n)= \cdots + x_{-2}\kdelta(n+2) + x_{-1}\kdelta(n+1) + x_0\kdelta(n) + x_1\kdelta(n-1) + x_2\kdelta(n-2) + \cdots\]
+\end{enumerate}
+
+%=======================================
+\section{Literature}
+%=======================================
+\begin{survey}
+\begin{enumerate}
+
+  \item Theory of Distributions
+    \\\citer{vretblad2003}
+    \\\citerc{hormander2003}{Referenced by Vretblad(2003) as a standard work.}
+    \\\citer{knappa2005}
+\end{enumerate}
+\end{survey}
