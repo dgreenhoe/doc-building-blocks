@@ -1,0 +1,157 @@
+Daniel J. Greenhoe
+https://math.stackexchange.com/questions/4023679/
+
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\eqa}{\approx}$
+$\newcommand{\abs}[1]{{\left\lvert #1 \right\rvert}}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\brlr}[1]{\left.#1\right|}$
+$\newcommand{\brbl}[1]{\left\{#1\right.}$
+$\newcommand{\deriv} [2]   {{\frac{\mathrm{d}#1}{\mathrm{d}#2} }}$
+$\newcommand{\R}{\Bbb{R}}$
+$\newcommand{\Z}{\Bbb{Z}}$
+$\newcommand{\Rx} {{\R^\ast}}$
+$\newcommand{\intcc} [2]  {{\left[#1:#2\right]}}$
+$\newcommand{\intoo} [2]  {{\left(#1:#2\right)}}$
+$\newcommand{\intoc} [2]  {{\left(#1:#2\right]}}$
+$\newcommand{\intco} [2]  {{\left[#1:#2\right)}}$
+$\newcommand{\ff}{\mathrm{f}}$
+$\newcommand{\fy}{\mathrm{y}}$
+$\newcommand{\fF}{\mathrm{F}}$
+$\newcommand{\fG}{\mathrm{G}}$
+$\newcommand{\fg}{\mathrm{g}}$
+$\newcommand{\fphi}{\mathrm{\phi}}$
+$\newcommand{\dx}{\mathrm{dx}}$
+$\newcommand{\du}{\mathrm{du}}$
+$\newcommand{\dv}{\mathrm{dv}}$
+$\newcommand{\dt}{\mathrm{dt}}$
+$\newcommand{\dtau}{\mathrm{d\tau}}$
+$\newcommand{\kdelta}{\bar{\delta}}$
+$\newcommand{\setu}{\cup}$
+$\newcommand{\setn}[1]{{\left\{{#1}\right\}}}$
+$\newcommand{\seqn}[1]{{\left[{#1}\right]}}$
+$\newcommand{\inprod}[2]{\left\langle{#1}\,|\,{#2}\right\rangle}$
+
+Building on what others have already said, the two functions are just thattwo distinct functions. 
+One is the real-valued _Kronecker Delta_ function $\kdelta:\Z\to\R$ defined as 
+$$\kdelta(n)\eqd\brbl{\begin{array}{cl}
+  1 & \text{if $n=0$}\\
+  0 & \text{otherwise}
+\end{array}}$$
+and the other is the _Dirac Delta_ $\delta:\R\to\Rx$, which obviously is _not_ a real-valued function at all.
+This is not so much a problem in and of itself 
+(functions can be mappings to real numbers, complex numbers, colors, faces of a die, ...)
+but in the case of $\delta$, it maps not into a well behaved set like the real numbers $\R$, 
+but rather into the set of 
+[extended real numbers](https://books.google.com/books?vid=ISBN0792336585&pg=PA8)
+$\Rx\eqd\R\setu\setn{-\infty,+\infty}$. 
+The set $\Rx$ is an Alice-in-Wonderland type world and when working therein requires great care
+and proper safety equipment. 
+In $\Rx$ crazy things can happen like $\infty+\infty=\infty$.
+
+Because $\delta(x)$ maps to $\Rx$, many would not call it a _function_ at all, but rather an
+_extended function_, or a distribution 
+(see for example [Mallat](https://books.google.com/books?id=hbVOfWQNtB8C) Appendix A.7).
+A distribution may be something of a loose cannon when left to its own devices,
+but when constrained to the inside of an integral
+(or more generally inside an inner product)
+it becomes quite well-behaved, predictable, and useful.
+
+Building on what @Anixx and @Thomas-Andrews have already pointed out, 
+the Dirac Delta distribution can be defined, together with $\int\dx$, as an 
+_operator_ (a [mapping](https://books.google.com/books?vid=ISBN0817646868&pg=PA42) from one 
+[linear space](https://books.google.com/books?vid=ISBN0817641742) to another/same linear space)
+with the following [definition](https://books.google.com/books?vid=ISBN0521649714):
+$$\inprod{\ff(x)}{\delta(x)} \eqd \int_{\R}\ff(x)\delta(x)\dx \eqd \ff(0)$$
+
+So the Dirac Delta distribution $\delta(x)$ and the Kronecker delta function are distinctly different.
+But that being said (that they are very different in form), they are very similar in function.
+In particular, note the following:
+
+(1) Both "sum" to 1:
+\begin{align*}
+  \boxed{\int_{\R} \delta(x)\dx}
+    &= \int_{\R} 1\cdot\delta(x)\dx
+  \\&\eqd \boxed{1}
+    && \text{by definition of $\delta$}
+  \\
+  \\
+  \boxed{\sum_{n\in\Z}\kdelta(n)}
+    &= \kdelta(0)
+    && \text{by definition of $\kdelta$}
+  \\&= \boxed{1}
+\end{align*}
+
+(2) Both have a similar time-shift property:
+\begin{align*}
+   \boxed{\int_{\R} \delta\brp{x-a}\ff(x)\dx}
+     &= \int_\R \delta\brp{u}\ff(u+a)\du
+     && \text{where $u=x-a$ $\implies$ $\dx=\du$}
+   \\&= \boxed{\ff(a)}
+  \\
+  \\
+  \boxed{\sum_{n\in\Z}\kdelta(n-k)y(n)}
+    &= \sum_{n\in\Z}\kdelta(m)y(m+k)
+    && \text{where $m=n-k$ $\implies$ $n=m+k$}
+  \\&= \kdelta(0)y(0+k)
+    && \text{by definition of $\kdelta$}
+  \\&= \boxed{y(k)}
+\end{align*}
+
+(3) Both induce a projection operator.
+A projection operator $P$ is a linear operator [such that](https://books.google.com/books?id=yzr0BwAAQBAJ&pg=PA73)
+$P^2=P$:
+\begin{align*}
+  \boxed{P^2}\ff(x)
+    &= PP\ff(x)
+  \\&\eqd P\int_\R \delta(x)\ff(x) \dx
+    && \text{where here $P$ is the Dirac Delta operator}
+  \\&\eqd P\ff(0)
+    && \text{by definition of $\delta$}
+  \\&\eqd \int_\R \delta(x)\ff(0)\dx
+    && \text{where here $P$ is the Dirac Delta operator}
+  \\&= \ff(0) \int_\R \delta(x)\dx
+    && \text{by linearity of the integral operator}
+  \\&= \ff(0)
+    && \text{because $\int_{\R} \delta(x)\dx=1$}
+  \\&= \int_\R\delta(x)\ff(x)\dx
+    && \text{by definition of $\delta$}
+  \\&= \boxed{P}\ff(x)
+    && \text{where here $P$ is the Dirac Delta operator}
+  \\
+  \\
+  \boxed{P^2}\fy(n)
+    &= PP\fy(n)
+  \\&\eqd P\sum_{n\in\Z} \kdelta(n)\fy(n) 
+    && \text{where here $P$ is the Kronecker Delta operator}
+  \\&\eqd P\fy(0)
+    && \text{by definition of $\kdelta$}
+  \\&\eqd \sum_{n\in\Z} \kdelta(n)\fy(0)
+    && \text{where here $P$ is the Kronecker Delta operator}
+  \\&= \fy(0) \sum_{n\in\Z} \kdelta(n)
+    && \text{by linearity of the summation operator}
+  \\&= \fy(0)
+    && \text{because $\sum_{n\in\Z} \kdelta(n)=1$}
+  \\&= \sum_{n\in\Z}\kdelta(n)\fy(n)
+    && \text{by definition of $\kdelta$}
+  \\&= \boxed{P}\fy(n)
+    && \text{where here $P$ is the Kronecker Delta operator}
+\end{align*} 
+
+(4) Both can be used for sampling.
+The Dirac can be used—inside an integral—as an projection operator to map
+a function $\ff(t)$ to a single point $\ff(a)$ for some value $t=a$.
+That is, it can be used to _sample_ $\ff(t)$ at a given time $t=a$.
+In the field of Digital Signal Processing
+(DSP) a continuous time function $\ff(t)$ can be transformed (mapped) to a  
+sequence 
+([a function with domain $\Z$](https://books.google.com/books?vid=ISBN8122408265&pg=PA31))
+$\seqn{\ldots, x_{n-1}, x_n, x_{n+1}, \ldots}$,
+where each element $x_k$ of this sequence is
+$$x_k \eqd \int_\R \ff(t)\delta(t-kT)\dt = \ff(kT)$$
+Likewise, the Kronecker delta can be used to sample (OK, maybe a bit of a stretch here?) 
+a sequence $\seqn{\ldots, x_{n-1}, x_n, x_{n+1}, \ldots}$
+in the sense
+$$y(n)= \cdots + x_{-2}\kdelta(n+2) + x_{-1}\kdelta(n+1) + x_0\kdelta(n) + x_1\kdelta(n-1) + x_2\kdelta(n-2) + \cdots$$
+

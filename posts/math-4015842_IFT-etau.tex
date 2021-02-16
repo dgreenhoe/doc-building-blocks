@@ -1,0 +1,103 @@
+Daniel J. Greenhoe
+https://math.stackexchange.com/questions/4015842/
+
+
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\eqa}{\approx}$
+$\newcommand{\abs}[1]{{\left\lvert #1 \right\rvert}}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\brlr}[1]{\left.#1\right|}$
+$\newcommand{\deriv} [2]   {{\frac{\mathrm{d}#1}{\mathrm{d}#2} }}$
+$\newcommand{\R}{\Bbb{R}}$
+$\newcommand{\intcc} [2]  {{\left[#1:#2\right]}}$
+$\newcommand{\intoo} [2]  {{\left(#1:#2\right)}}$
+$\newcommand{\intoc} [2]  {{\left(#1:#2\right]}}$
+$\newcommand{\intco} [2]  {{\left[#1:#2\right)}}$
+$\newcommand{\ff}{\mathrm{f}}$
+$\newcommand{\fF}{\mathrm{F}}$
+$\newcommand{\fG}{\mathrm{G}}$
+$\newcommand{\fg}{\mathrm{g}}$
+$\newcommand{\fphi}{\mathrm{\phi}}$
+$\newcommand{\dx}{\mathrm{dx}}$
+$\newcommand{\dtau}{\mathrm{d\tau}}$
+$\newcommand{\du}{\mathrm{du}}$
+$\newcommand{\dv}{\mathrm{dv}}$
+$\newcommand{\thme}[1]{#1}$
+$\newcommand{\opFT}{\mathrm{FT}}$
+$\newcommand{\opIFT}{\mathrm{IFT}}$
+
+Part 1: $\opIFT\brs{\frac{2\alpha}{\alpha^2+\omega^2}} = e^{-\alpha\abs{\tau}}$
+-------------------------------------------------------------------------------
+Assuming the definition of the Fourier Transform used is 
+$\fG(\omega)\eqd \int_{-\infty}^{\infty}\fg(\tau)e^{-j\omega\tau}\dtau$,
+we can check the relation as follows:
+\begin{align}
+  \opFT\brs{e^{-\alpha\abs{\tau}}}
+    &\eqd \int_{-\infty}^{\infty}\fg(\tau)e^{-j\omega\tau}\dtau
+    && \text{by definition Fourier Transform}
+  \\&\eqd \int_{-\infty}^{\infty} e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+    && \text{by definition of $\fg(\tau)$}
+  \\&= \int_{-\infty}^{0} e^{-\alpha(-\tau)} e^{-j\omega\tau}\dtau
+     + \int_{0}^{\infty} e^{-\alpha(\tau)} e^{-j\omega\tau}\dtau
+  \\&= \int_{-\infty}^{0} e^{\tau(\alpha-j\omega)}\dtau
+     + \int_{0}^{\infty} e^{\tau(-\alpha-j\omega)}\dtau
+  \\&= \brlr{\frac{e^{\tau(\alpha-j\omega)}}{\alpha-j\omega}}_{-\infty}^{0} 
+     + \brlr{\frac{e^{\tau(-\alpha-j\omega)}}{-\alpha-j\omega}}_{0}^{\infty} 
+    && \text{by Fundamental Theorem of Calculus}
+  \\&= \brs{\frac{1}{\alpha-j\omega} - 0}
+     + \brs{0- \frac{1}{-\alpha-j\omega}}
+  \\&= \brs{\frac{1}{\alpha-j\omega}}\brs{\frac{\alpha-j\omega}{\alpha-j\omega}}
+     + \brs{\frac{1}{\alpha+j\omega}}\brs{\frac{\alpha+j\omega}{\alpha+j\omega}}
+  \\&= \frac{\alpha-j\omega}{\alpha^2+\omega^2}
+     + \frac{\alpha+j\omega}{\alpha^2+\omega^2}
+  \\&= \boxed{\frac{2\alpha}{\alpha^2+\omega^2}}
+\end{align}
+
+And so the Inverse Fourier Transform (IFT) of $\frac{2\alpha}{\alpha^2+\omega^2}$
+is $e^{-\alpha\abs{\tau}}$.
+
+Part 2: $\opIFT\brs{\frac{\alpha}{\alpha^2-\omega^2}} = \cos\brs{(\omega + i\omega)\tau}e^{-\alpha\abs{\tau}}$
+-------------------------------------------------------------------------------
+
+However, your question does not ask for the IFT of 
+$\frac{2\alpha}{\alpha^2+\omega^2}=\frac{2\alpha}{\alpha^2+(2\pi f)^2}$,
+but rather for the IFT of 
+$$
+  \frac{2\alpha}{\alpha^2+(j2\pi f)^2}
+    = \frac{2\alpha}{\alpha^2+(j\omega)^2}
+    =\frac{2\alpha}{\alpha^2-\omega^2}
+$$
+
+
+[WolframAlpha](https://www.wolframalpha.com/input/?i=Fourier+transform+calculator&assumption=%7B%22F%22%2C+%22FourierTransformCalculator%22%2C+%22transformfunction%22%7D+-%3E%224%2F%284-w%5E2%29%22&assumption=%7B%22F%22%2C+%22FourierTransformCalculator%22%2C+%22variable1%22%7D+-%3E%22w%22&assumption=%7B%22F%22%2C+%22FourierTransformCalculator%22%2C+%22variable2%22%7D+-%3E%22t%22) has something interesting to say. In essence ...
+$$\frac{1}{2\pi}\int_{-\infty}^{\infty}\frac{4}{4-\omega^2}e^{i\tau\omega}d\omega 
+= -\frac{i}{2}e^{-2i\tau}(-1+e^{4i\tau})sgn(\tau)
+$$
+
+\begin{align}
+  \frac{1}{2\pi}\int_{-\infty}^{\infty}\frac{4}{4-\omega^2}e^{i\tau\omega}d\omega 
+    &= -\frac{i}{2}e^{-2i\tau}(-1+e^{4i\tau})sgn(\tau)
+  \\&= -\frac{i}{2}(-e^{-2i\tau}+e^{2i\tau})sgn(\tau)
+  \\&= -\frac{i}{2}[2i\sin(2\tau)]sgn(\tau)
+    && \text{by Euler's Identity}
+  \\&= \sin(2\tau)sgn(\tau)
+\end{align}
+
+_Conjecture_: IFT of $\frac{2\alpha}{\alpha^2-\omega^2}$ is $\sin(2\tau)\mathrm{sgn}(\tau)$
+$\ldots$ but I'm not sure at this point $\ldots$
+
+Doesn't seem to work out... $$\int_{-\infty}^\infty\sin(\alpha t)\mathrm{sgn}(t)\mathrm{dt} =(?) \frac{2\alpha}{\alpha^2-\omega^2} -2 \lim_{t\to\infty}( \frac{\cos[t(\alpha-\omega)]}{\alpha-\omega} + \frac{\cos[t(\alpha+\omega)]}{\alpha+\omega})$$
+
+
+\begin{align*}
+  \sqrt{2\pi}\opFT\brs{\cos(\beta\tau)e^{-\alpha\abs{\tau}}}
+    &\eqd \brs{\sqrt{2\pi}}\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \cos(\beta x)e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+    && \text{by definition Fourier Transform}
+  \\&= \int_{-\infty}^{\infty} \brs{\frac{e^{i\beta\tau}+e^{-i\beta\tau}}{2}} e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+    &&  \text{by \thme{Euler's identity}}
+  \\&= \frac{1}{2}\int_{-\infty}^{\infty} \brs{e^{-\alpha\abs{\tau}i\beta\tau-j\omega\tau}+e^{-\alpha\abs{\tau}-i\beta\tau-j\omega\tau}} \dtau
+  \\
+  \\
+  \\&= \frac{1}{\sqrt{2\pi}}\brs{\frac{\alpha}{\alpha^2+(\beta-\omega)^2}}
+\end{align*}

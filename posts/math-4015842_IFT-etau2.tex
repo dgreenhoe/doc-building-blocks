@@ -1,0 +1,115 @@
+Daniel J. Greenhoe
+https://math.stackexchange.com/questions/4015842/
+
+
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\eqa}{\approx}$
+$\newcommand{\abs}[1]{{\left\lvert #1 \right\rvert}}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\brlr}[1]{\left.#1\right|}$
+$\newcommand{\deriv} [2]   {{\frac{\mathrm{d}#1}{\mathrm{d}#2} }}$
+$\newcommand{\R}{\Bbb{R}}$
+$\newcommand{\intcc} [2]  {{\left[#1:#2\right]}}$
+$\newcommand{\intoo} [2]  {{\left(#1:#2\right)}}$
+$\newcommand{\intoc} [2]  {{\left(#1:#2\right]}}$
+$\newcommand{\intco} [2]  {{\left[#1:#2\right)}}$
+$\newcommand{\ff}{\mathrm{f}}$
+$\newcommand{\fF}{\mathrm{F}}$
+$\newcommand{\fG}{\mathrm{G}}$
+$\newcommand{\fg}{\mathrm{g}}$
+$\newcommand{\fphi}{\mathrm{\phi}}$
+$\newcommand{\dx}{\mathrm{dx}}$
+$\newcommand{\dtau}{\mathrm{d\tau}}$
+$\newcommand{\du}{\mathrm{du}}$
+$\newcommand{\dv}{\mathrm{dv}}$
+$\newcommand{\ds}{\displaystyle}$
+$\newcommand{\thme}[1]{#1}$
+$\newcommand{\opFT}{\mathrm{FT}}$
+$\newcommand{\opIFT}{\mathrm{IFT}}$
+$\newcommand{\thme}[1]{#1}$
+
+Part 1: $\opIFT\brs{\frac{2\alpha}{\alpha^2+\omega^2}} = e^{-\alpha\abs{\tau}}$
+-------------------------------------------------------------------------------
+Assuming the definition of the Fourier Transform used is
+$\fG(\omega)\eqd \int_{-\infty}^{\infty}\fg(\tau)e^{-j\omega\tau}\dtau$,
+we can check the relation as follows:
+\begin{align}
+  \opFT\brs{e^{-\alpha\abs{\tau}}}
+    &\eqd \int_{-\infty}^{\infty}\fg(\tau)e^{-j\omega\tau}\dtau
+    && \text{by definition Fourier Transform}
+  \\&\eqd \int_{-\infty}^{\infty} e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+    && \text{by definition of $\fg(\tau)$}
+  \\&= \int_{-\infty}^{0} e^{-\alpha(-\tau)} e^{-j\omega\tau}\dtau
+     + \int_{0}^{\infty} e^{-\alpha(\tau)} e^{-j\omega\tau}\dtau
+  \\&= \int_{-\infty}^{0} e^{\tau(\alpha-j\omega)}\dtau
+     + \int_{0}^{\infty} e^{\tau(-\alpha-j\omega)}\dtau
+  \\&= \brlr{\frac{e^{\tau(\alpha-j\omega)}}{\alpha-j\omega}}_{-\infty}^{0}
+     + \brlr{\frac{e^{\tau(-\alpha-j\omega)}}{-\alpha-j\omega}}_{0}^{\infty}
+    && \text{by Fundamental Theorem of Calculus}
+  \\&= \brs{\frac{1}{\alpha-j\omega} - 0}
+     + \brs{0- \frac{1}{-\alpha-j\omega}}
+  \\&= \brs{\frac{1}{\alpha-j\omega}}\brs{\frac{\alpha-j\omega}{\alpha-j\omega}}
+     + \brs{\frac{1}{\alpha+j\omega}}\brs{\frac{\alpha+j\omega}{\alpha+j\omega}}
+  \\&= \frac{\alpha-j\omega}{\alpha^2+\omega^2}
+     + \frac{\alpha+j\omega}{\alpha^2+\omega^2}
+  \\&= \boxed{\frac{2\alpha}{\alpha^2+\omega^2}}
+\end{align}
+
+And so the Inverse Fourier Transform (IFT) of $\frac{2\alpha}{\alpha^2+\omega^2}$
+is $e^{-\alpha\abs{\tau}}$.
+
+However, your question does not ask for the IFT of
+$\frac{2\alpha}{\alpha^2+\omega^2}=\frac{2\alpha}{\alpha^2+(2\pi f)^2}$,
+but rather for the IFT of
+$$
+  \frac{2\alpha}{\alpha^2+(j2\pi f)^2}
+    = \frac{2\alpha}{\alpha^2+(j\omega)^2}
+    =\frac{2\alpha}{\alpha^2-\omega^2}
+$$
+
+Part 2: $\opIFT\brs{\frac{\alpha}{\alpha^2-\omega^2}} = \brs{\cos(\omega)\cosh(\omega)-j\sin(\omega)\sinh(\omega)}e^{-\alpha\abs{\tau}}$
+-------------------------------------------------------------------------------
+
+To prove that, first we need a couple lemmas.
+And before the keenly anticipated lemmas, a couple definitions:
+$$\begin{array}{rc>{\ds}ll}
+  \cosh(x) &\eqd& \frac{e^{x}+e^{-x}}{2} & \text{(hyperbolic cosine)}\\
+  \sinh(x) &\eqd& \frac{e^{x}-e^{-x}}{2} & \text{(hyperbolic sine)}
+\end{array}$$
+
+lemma 1:
+\begin{align*}
+  \boxed{\cos(x+jy)}
+    &= \cos(x)\cos(jy) - \sin(x)\sin(jy)
+    && \text{by double angle formulas}
+  \\&= \cos(x)\brs{\frac{e^{jjy}+e^{-jjy}}{2}} - \sin(x)\brs{\frac{e^{jjy}-e^{-jjy}}{2j}}
+    &&  \text{by Euler's identity}
+  \\&= \cos(x)\brs{\frac{e^{-y}+e^{y}}{2}} - \sin(x)\brs{\frac{e^{-y}-e^{y}}{2j}}
+  \\&= \cos(x)\brs{\frac{e^{y}+e^{-y}}{2}} + \sin(x)\brs{\frac{e^{y}-e^{-y}}{2j}}\frac{j}{j}
+  \\&\eqd \boxed{\cos(x)\cosh(y) - j\sin(x)\sinh(y)}
+    && \text{by definitions of $\cosh$ and $\sinh$}
+\end{align*}
+
+lemma 2:
+\begin{align*}
+  \opFT\brs{\cos(\beta\tau)e^{-\alpha\abs{\tau}}}
+    &\eqd \int_{-\infty}^{\infty} \cos(\beta x)e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+    && \text{by definition Fourier Transform}
+  \\&= \int_{-\infty}^{\infty} \brs{\frac{e^{j\beta\tau}+e^{-j\beta\tau}}{2}} e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+    &&  \text{by Euler's identity}
+  \\&= \frac{1}{2}\int_{-\infty}^{\infty} \brs{e^{-\alpha\abs{\tau}+j\beta\tau-j\omega\tau}+e^{-\alpha\abs{\tau}-j\beta\tau-j\omega\tau}} \dtau
+  \\&= \frac{1}{2}\int_{-\infty}^{0} \brs{e^{ \alpha\tau +j\beta\tau-j\omega\tau}+e^{ \alpha\tau -j\beta\tau-j\omega\tau}} \dtau
+     + \frac{1}{2}\int_{0}^{\infty}  \brs{e^{-\alpha\tau +j\beta\tau-j\omega\tau}+e^{-\alpha\tau -j\beta\tau-j\omega\tau}} \dtau
+  \\&= \frac{1}{2} \brs{\frac{e^{ \alpha\tau +j\tau(\beta-\omega)}}{ \alpha +j(\beta-\omega)} + \frac{e^{ \alpha\tau -j\tau(\beta-\omega)}}{ \alpha -j(\beta-\omega}}_{-\infty}^{0}
+     + \frac{1}{2} \brs{\frac{e^{-\alpha\tau +j\tau(\beta-\omega)}}{-\alpha +j(\beta-\omega)} + \frac{e^{-\alpha\tau -j\tau(\beta-\omega)}}{-\alpha -j(\beta-\omega}}_{0}^{\infty} 
+    && \text{by Fundamental Theorem of Calculus}
+  \\&= \frac{1}{2} \brs{\frac{e^{ \alpha\tau} e^{j\tau(\beta-\omega)}}{ \alpha +j(\beta-\omega)} + \frac{e^{ \alpha\tau} e^{-j\tau(\beta-\omega)}}{ \alpha -j(\beta-\omega)}}_{-\infty}^{0}
+     + \frac{1}{2} \brs{\frac{e^{-\alpha\tau} e^{j\tau(\beta-\omega)}}{-\alpha +j(\beta-\omega)} + \frac{e^{-\alpha\tau} e^{-j\tau(\beta-\omega)}}{-\alpha -j(\beta-\omega)}}_{0}^{\infty} 
+  \\&= \frac{1}{2} \brs{\frac{1}{ \alpha +j(\beta-\omega)} + \frac{1}{ \alpha -j(\beta-\omega)} - (0+0)}
+     + \frac{1}{2} \brs{(0+0)-\brp{\frac{1}{-\alpha +j(\beta-\omega)} + \frac{1}{-\alpha -j(\beta-\omega)}}}
+  \\&= \frac{1}{ \alpha +j(\beta-\omega)} + \frac{1}{ \alpha -j(\beta-\omega)}
+  \\&= \frac{\brs{\alpha -j(\beta-\omega)} + \brs{\alpha +j(\beta-\omega)}}
+            {\brs{\alpha +j(\beta-\omega)}\brs{\alpha -j(\beta-\omega)}}
+  \\&= \brs{\frac{2\alpha}{\alpha^2+(\beta-\omega)^2}}
+\end{align*}
