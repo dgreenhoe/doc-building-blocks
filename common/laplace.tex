@@ -214,53 +214,78 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
 %=======================================
 %-------------------------------------
 \begin{example}
-\label{ex:coseatau}
+\label{ex:opLT_cosexp}
 %-------------------------------------
+Let $\omega\eqd\Imag(s)$ 
+(let $\omega$ be the \fncte{imaginary part} of the complex variable $s$).
 \exbox{
-  \opFT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
-    = \frac{1}{\sqrt{2\pi}}\brs{\frac{2\alpha}{\alpha^2+(\beta-\omega)^2}}
+  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
+    = \brbl{\begin{array}{>{\ds}lMD}
+        \frac{2\alpha}{\alpha^2+(\beta-\omega)^2} & for $s=i\omega$ & ($s$ has no real part)\\
+        \infty                                    & otherwise       & (\prope{divergent})
+      \end{array}}
  }
 \end{example}
 \begin{proof}
-\begin{align*}
-  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
-    &\eqd \int_{\R} \cos(\beta x)e^{-\alpha\abs{x}} e^{-s x}\dx
-    && \text{by definition of $\opLT$}
-    && \text{\xref{def:opLT}}
-  \\&= \int_{\R} \brs{\frac{e^{i\beta x}+e^{-i\beta x}}{2}} e^{-\alpha\abs{x}} e^{-s x}\dx
-    &&  \text{by Euler's identity}
-  \\&= \frac{1}{2}\int_{\R} \brs{e^{-\alpha\abs{x}+i\beta x-s x}+e^{-\alpha\abs{x}-i\beta x-s x}} \dx
-  \\&= \mathrlap{
-       \frac{1}{2}\int_{-\infty}^{0} \brs{e^{ \alpha x-sx +i\beta x}+e^{ \alpha x-s x -i\beta x}} \dx
-     + \frac{1}{2}\int_{0}^{\infty}  \brs{e^{-\alpha x-sx +i\beta x}+e^{-\alpha x-s x -i\beta x}} \dx
-       }
-  \\&= \mathrlap{
-       \frac{1}{2} \brs{\frac{e^{ \alpha x -s +ix\beta}}{ \alpha -s +i\beta} + \frac{e^{ \alpha x +s -ix\beta}}{ \alpha +s -i\beta}}_{-\infty}^{0}
-     + \frac{1}{2} \brs{\frac{e^{-\alpha x -s +ix\beta}}{-\alpha -s +i\beta} + \frac{e^{-\alpha x +s -ix\beta}}{-\alpha +s -i\beta}}_{0}^{\infty}
-       }
-   %&& \text{by Fundamental Theorem of Calculus}
-  \\&= \mathrlap{
-       \frac{1}{2} \brs{\frac{e^{ \alpha x} e^{-s + ix\beta}}{ \alpha -s +i\beta} + \frac{e^{ \alpha x} e^{s -ix\beta}}{ \alpha +s -i\beta}}_{-\infty}^{0}
-     + \frac{1}{2} \brs{\frac{e^{-\alpha x} e^{-s + ix\beta}}{-\alpha -s +i\beta} + \frac{e^{-\alpha x} e^{s -ix\beta}}{-\alpha +s -i\beta}}_{0}^{\infty}
-       }
-  \\&= \mathrlap{
-       \frac{1}{2} \brs{\frac{1}{ \alpha -s +i\beta} + \frac{1}{ \alpha+s -i\beta} - (0+0)}
-     + \frac{1}{2} \brs{(0+0)-\brp{\frac{1}{-\alpha -s +i\beta} + \frac{1}{-\alpha +s -i\beta}}}
-       }
-  \\&= \brs{\frac{1}{ \alpha -s +i\beta}}
-     + \brs{\frac{1}{ \alpha +s -i\beta}}
-  %\\&= \mathrlap{
-  %     \brs{\frac{1}{ \alpha -s +i\beta}} \brs{\frac{ \alpha -s -i\beta}
-  %                                                  { \alpha -s -i\beta}}
-  %   + \brs{\frac{1}{ \alpha +s -i\beta}} \brs{\frac{ \alpha +s +i\beta}
-  %                                                  { \alpha +s +i\beta}}
-  %     }
-  %\\&= \frac{-s + \alpha -i\beta}{(s - \alpha)^2 + \beta^2}
-  %   + \frac{ s + \alpha +i\beta}{(s + \alpha)^2 + \beta^2}
-  %\\&= \frac{(-s + \alpha -i\beta)[(s + \alpha)^2 + \beta^2] + (s + \alpha +i\beta)[(s - \alpha)^2 + \beta^2]}
-  %          {[(s + \alpha)^2 + \beta^2][(s - \alpha)^2 + \beta^2]}
-   %&& \text{(Rationalizing the Denominator)}
-\end{align*}
+\begin{enumerate}
+  \item lemma: \label{ilem:opLT_cosexp}
+    \\$\begin{array}{>{\ds}rclM}
+         \lim_{x\to-\infty}\brs{e^{ \alpha x} e^{(-s + i\beta)x} + e^{ \alpha x} e^{(s -i\beta)x}}
+           &=& \brbl{\begin{array}{lMM}
+                 0 & if $s=i\omega$ & (if $\Real(s)=0$)\\
+                 \infty & (diverges) otherwise
+               \end{array}}
+         \\
+         \lim_{x\to\infty}\brs{e^{-\alpha x} e^{(-s + i\beta)x} + e^{-\alpha x} e^{(s -i\beta)x}}
+           &=& \brbl{\begin{array}{lMM}
+                 0 & if $s=i\omega$ & (if $\Real(s)=0$)\\
+                 \infty & (diverges) otherwise
+               \end{array}}
+       \end{array}$ 
+
+  \item Main proof:
+    \begin{align*}
+      \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
+        &\eqd \int_{\R} \cos(\beta x)e^{-\alpha\abs{x}} e^{-s x}\dx
+        && \text{by def. of $\opLT$}&& \text{\xref{def:opLT}}
+      \\&= \int_{\R} \brs{\frac{e^{i\beta x}+e^{-i\beta x}}{2}} e^{-\alpha\abs{x}} e^{-s x}\dx
+        &&  \text{by \thme{Euler's Identity}}&&\text{\xref{thm:eid}}
+      \\&= \frac{1}{2}\int_{\R} \brs{e^{-\alpha\abs{x}+i\beta x -sx}+e^{-\alpha\abs{x}-i\beta x-sx}} \dx
+      \\&= \mathrlap{
+           \frac{1}{2}\int_{-\infty}^{0} \brs{e^{(-s + \alpha +i\beta)x} + e^{-s + \alpha -i\beta)x}} \dx
+         + \frac{1}{2}\int_{0}^{\infty}  \brs{e^{(-s - \alpha +i\beta)x} + e^{-s - \alpha -i\beta)x}} \dx
+           }
+      \\&= \mathrlap{
+           \frac{1}{2} \brs{\frac{e^{(-s + \alpha +i\beta)x}}{-s +\alpha +i\beta} + \frac{e^{(s +\alpha - i\beta)x}}{s + \alpha -i\beta}}_{-\infty}^{0}
+         + \frac{1}{2} \brs{\frac{e^{(-s - \alpha +i\beta)x}}{-s -\alpha +i\beta} + \frac{e^{(s -\alpha - i\beta)x}}{s - \alpha -i\beta}}_{0}^{\infty}
+           }
+       %&& \text{by Fundamental Theorem of Calculus}
+      \\&= \mathrlap{
+           \frac{1}{2} \brs{\frac{e^{ \alpha x} e^{(-s + i\beta)x}}{-s +\alpha +i\beta} + \frac{e^{ \alpha x} e^{(s -i\beta)}}{ s +\alpha -i\beta}}_{-\infty}^{0}
+         + \frac{1}{2} \brs{\frac{e^{-\alpha x} e^{(-s + i\beta)x}}{-s -\alpha +i\beta} + \frac{e^{-\alpha x} e^{(s -i\beta)}}{ s -\alpha -i\beta}}_{0}^{\infty}
+           }
+      \\&= \mathrlap{
+           \frac{1}{2} \brs{\frac{1}{-s + \alpha +i\beta} + \frac{1}{ s+ \alpha -i\beta} - (0+0)}
+         + \frac{1}{2} \brs{(0+0)-\brp{\frac{1}{-s -\alpha +i\beta} + \frac{1}{s -\alpha -i\beta}}}
+           \qquad\text{by \pref{ilem:opLT_cosexp}}}
+      \\&= \brs{\frac{-1}{s -( \alpha + i\beta)}}
+         + \brs{\frac{1}{ s -(-\alpha + i\beta)}}
+      \\&= \frac{-[s -(-\alpha + i\beta)] + [s -( \alpha + i\beta)]}
+                { [s -( \alpha + i\beta)]   [s -(-\alpha + i\beta)]}
+      \\&= \frac{-2\alpha}
+                { s^2 -2i s\beta + ( \alpha + i\beta)(-\alpha + i\beta)}
+      \\&= \frac{-2\alpha}
+                { s^2 -2i s\beta + -(\alpha^2-\beta^2)}
+      \\&= \frac{-2\alpha}
+                { (s -i\beta)^2 -\alpha^2}
+      \\&= \frac{ 2\alpha}
+                {- (s -i\beta)^2+ \alpha^2 }
+      \\&= \frac{ 2\alpha}
+                {-(i\omega -i\beta)^2 + \alpha^2}
+      \\&= \frac{ 2\alpha}
+                { (\omega -\beta)^2 + \alpha^2}
+    \end{align*}
+\end{enumerate}
 \end{proof}
 
 
