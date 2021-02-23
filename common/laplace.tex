@@ -11,6 +11,9 @@
 %=======================================
 %--------------------------------------
 \begin{definition}
+\footnote{
+  \citerpgc{bracewell1978}{219}{007007013X}{Chapter 11 The Laplace transform}
+  }
 \label{def:opLT}
 %--------------------------------------
 Let $\spLLRBu$ be the space of all
@@ -19,7 +22,7 @@ Let $\spLLRBu$ be the space of all
   The \opd{Laplace Transform} operator $\opLT$ is here defined as
   \\\indentx$\ds
     \brs{\hxs{\opLT} \ff}(\omega)
-    \eqd \fscale
+    \eqd \Lscale
     \int_{x\in\R} \ff(x) e^{-sx} \dx
     \qquad\scy\forall \ff\in\spLLRBu
   $
@@ -27,37 +30,63 @@ Let $\spLLRBu$ be the space of all
   }
 \end{definition}
 
-In \pref{def:opLT}, the scaling factor $\fscale$ is not normally found
-in most definitions of the Laplace Transform.
-However it is included here to make the operator $\opLT$ more directly compatible
-with the \ope{Unitary Fourier Transform} operator $\opFT$\ifsxref{harFour}{def:opFT}.
+%In \pref{def:opLT}, the scaling factor $\Lscale$ is not normally found
+%in most definitions of the Laplace Transform.
+%However it is included here to make the operator $\opLT$ more directly compatible
+%with the \ope{Unitary Fourier Transform} operator $\opFT$\ifsxref{harFour}{def:opFT}.
 
 %=======================================
 \section{Shift relations}
 %=======================================
 %--------------------------------------
 \begin{theorem}[Shift relations]
+\footnote{
+  \citerpgc{bracewell1978}{234}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
+  }
 \label{thm:opLT_shift}
+\label{thm:opLT_dilation}
 %--------------------------------------
 Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
-\thmbox{\begin{array}{>{\ds}rc>{\ds}l}
-  \opLT \brs{\ff(x-y)}(s)           &=& e^{-sy} \;\brs{\opLT \ff(x)}(s) \\
-  \brs{\opLT\brp{e^{rx} \fg(x)}}(s) &=& \brs{\opLT\fg(x)}(s-r)
+Let $\fF(s)\eqd \brs{\opLT\ff(x)}(s)$ 
+and $\fG(s)\eqd \brs{\opLT\fg(x)}(s)$.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}lM}
+  \opLT \brs{\fg(x-\alpha)}(s)             &=& e^{-\alpha s} \;\fG(s)         & (translation)\\
+  \brs{\opLT\brp{e^{-\alpha x} \fg(x)}}(s) &=& \fG(s+\alpha)                  & (modulation)\\
+  \brs{\opLT\brp{\fg(\alpha x)}}(s)        &=& \frac{1}{\abs{\alpha}}\fG\brp{\frac{s}{\alpha}} & (dilation)  \\
+  \brs{\opLT\brp{\ff(x)+\fg(x)}}(s)        &=& \fF(s) + \fG(s)                & (\prope{additive})     \\
+  \brs{\opLT\brp{\alpha\fg(x)}}(s)         &=& \alpha\fG(s)                   & (\prope{homogeneous})
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
-  \opLT \brs{\ff(x-y)}(s)
-    &= \fscale \int_{x\in\R} \ff(x-y) e^{-sx} \dx         && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
-  \\&= \fscale \int_{u\in\R} \ff(u) e^{-s(y+u)} \du       && \text{where $u\eqd x-y$}        && \text{$\implies$ $x=y+u$}
-  \\&= e^{-sy} \;\fscale \int_{u\in\R} \ff(u) e^{-su} \du && \text{by property of exponents} && \text{$a^{x+y}=a^xa^y$}
-  \\&= e^{-sy} \;\fscale \int_{x\in\R} \ff(x) e^{-sx} \du && \text{by change of variable}    && \text{$u\to x$}
-  \\&= e^{-sy} \;\brs{\opLT \ff(x)}(s)                    && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \opLT \brs{\fg(x-y)}(s)
+    &\eqd \Lscale \int_{x\in\R} \fg(x-\alpha) e^{-sx} \dx          && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \\&=    \Lscale \int_{u\in\R} \fg(u) e^{-s(\alpha+u)} \du        && \text{where $u\eqd x-\alpha$}   && \text{$\implies$ $x=\alpha+u$}
+  \\&=    e^{-\alpha s} \;\Lscale \int_{u\in\R} \fg(u) e^{-su} \du && \text{by property of exponents} && \text{$b^{x+\alpha}=b^xb^\alpha$}
+  \\&=    e^{-\alpha s} \;\Lscale \int_{x\in\R} \fg(x) e^{-sx} \du && \text{by change of variable}    && \text{$u\to x$}
+  \\&=    e^{-\alpha s} \;\brs{\opLT \fg(x)}(s)                    && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
   \\
-  \brs{\opLT\brp{e^{rx} \fg(x)}}(s)
-    &= \fscale \int_{x\in\R} e^{rx} \fg(x) e^{-sx} \dx    && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
-  \\&= \fscale \int_{x\in\R} \fg(x) e^{-(s-r)x} \dx       && \text{by property of exponents} && \text{$a^{x+y} = a^x a^y$}
-  \\&= \brs{\opLT\fg(x)}(s-r)                             && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \brs{\opLT\brp{e^{-\alpha x} \fg(x)}}(s)
+    &\eqd \Lscale \int_{x\in\R} e^{-\alpha x} \fg(x) e^{-sx} \dx   && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \\&=    \Lscale \int_{x\in\R} \fg(x) e^{-(s+\alpha)x} \dx        && \text{by property of exponents} && \text{$b^{x+y} = b^x b^y$}
+  \\&=    \brs{\opLT\fg(x)}(s+\alpha)                              && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \\
+  \opLT \brs{\fg(\alpha x)}(s)
+    &= \Lscale \int_{x=-\infty}^{x=\infty} \fg(\alpha x) e^{-sx} \dx                   && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \\&= \Lscale \int_{u/\alpha=-\infty}^{u/\alpha=\infty} \fg(u) e^{-s(u/\alpha)} \frac{1}{\alpha}\du && \text{where $u\eqd \alpha x$}   && \text{$\implies$ $x=\frac{u}{\alpha}$}
+  \\&= \Lscale \frac{1}{\alpha}\int_{u/\alpha=-\infty}^{u/\alpha=\infty} \fg(u) e^{-(s/\alpha)u} \du 
+  \\&= \brbl{\begin{array}{>{\ds}rM}
+         \Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & if $\alpha\ge0$
+       \\[2ex]
+         \Lscale \frac{1}{\alpha}\int_{u=\infty}^{u=-\infty} \fg(u) e^{-(s/\alpha)u} \du & otherwise
+       \end{array}}
+  \\&= \brbl{\begin{array}{>{\ds}rM}
+          \Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & if $\alpha\ge0$
+       \\[2ex]
+         -\Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & otherwise
+       \end{array}}
+  \\&= \frac{1}{\abs{\alpha}} \Lscale \int_{x\in\R} \fg(x) e^{-(s/\alpha)x} \dx   && \text{by change of variable}    && \text{$u\to x$}
+  \\&= \frac{1}{\abs{\alpha}}\brs{\opLT \fg(x)}\brp{\frac{s}{\alpha}}             && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
 \end{align*}
 \end{proof}
 
@@ -98,7 +127,7 @@ and $\conv$ the convolution operator \xref{def:conv}.
        &=& \mcom{\sqrt{2\pi}\brs{\opLT\ff}(s)\, \brs{\opLT\fg}(s)}  {multiplication in ``s domain"}
        & \forall\ff,\fg\in\spLLRBu\\
   \mcom{\opLT\brs{\ff(x) \fg(x)}(\omega)} {multiplication in ``time domain"}
-       &=& \mcom{\fscale\brs{\opLT\ff}(s) \conv \brs{\opLT\fg}(s)}{convolution    in ``s domain"}
+       &=& \mcom{\Lscale\brs{\opLT\ff}(s) \conv \brs{\opLT\fg}(s)}{convolution    in ``s domain"}
        & \forall\ff,\fg\in\spLLRBu.
 \end{array}
 }
@@ -111,7 +140,7 @@ and $\conv$ the convolution operator \xref{def:conv}.
    \\&=  \int_{u\in\R} \ff(u)\brs{\opLT \fg(x-u)}(s) \du
    \\&=  \int_{u\in\R} \ff(u) e^{-su} \; \brs{\opLT\fg(x)}(s) \du
      && \text{by \thme{Fourier shift theorem}} &&\text{\xref{thm:ft_shift}}
-   \\&= \sqrt{2\pi}\mcom{\brp{\fscale\int_{u\in\R} \ff(u) e^{-su} \du}}
+   \\&= \sqrt{2\pi}\mcom{\brp{\Lscale\int_{u\in\R} \ff(u) e^{-su} \du}}
              {$\brs{\opLT\ff}(s)$} \;
         \brs{\opLT\fg}(s)
    \\&= \sqrt{2\pi}\brs{\opLT\ff}(s)\;  \brs{\opLT\fg}(s)
@@ -120,12 +149,12 @@ and $\conv$ the convolution operator \xref{def:conv}.
    \opLT[\ff(x)\fg(x)](s)
      &= \opLT\brs{\brp{\opLT^{-1}\opLT\ff(x)}\;\fg(x)}(s)
      && \text{by def. of operator inverse} &&\text{\ifxref{operator}{def:op_inv}}
-   \\&= \opLT\brs{\brp{ \fscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) e^{sxv} \dv }\;\fg(x)}(s)
+   \\&= \opLT\brs{\brp{ \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) e^{sxv} \dv }\;\fg(x)}(s)
      && \text{by \prefp{thm:opFTi}}
-   \\&= \fscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\brp{e^{sxv} \;\fg(x)}}(s,v) \dv
-   \\&= \fscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\fg(x)}(s-v) \dv
+   \\&= \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\brp{e^{sxv} \;\fg(x)}}(s,v) \dv
+   \\&= \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\fg(x)}(s-v) \dv
      && \text{by \prefp{thm:ft_shift}}
-   \\&= \fscalei\brs{\opLT\ff}(s)\conv \brs{\opLT\fg}(s)
+   \\&= \Lscalei\brs{\opLT\ff}(s)\conv \brs{\opLT\fg}(s)
      && \text{by definition of $\conv$} &&\text{\xref{def:conv}}
 \end{align*}
 \end{proof}
@@ -214,26 +243,108 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
 %=======================================
 %-------------------------------------
 \begin{example}
+\footnote{
+  \citerpu{levy1958}{19}{https://archive.org/details/c_cowles_ieee_Levy/page/n21/} %{with $\psi=0$, $\alpha_0=\alpha$, and $\alpha_1=1$},
+  \url{http://ece-research.unm.edu/bsanthan/ece541/table_ME.pdf},
+  %\url{https://ethz.ch/content/dam/ethz/special-interest/baug/ibk/structural-mechanics-dam/education/identmeth/fourier.pdf}
+  }
 \label{ex:opLT_cosexp}
 %-------------------------------------
 Let $\omega\eqd\Imag(s)$
 (let $\omega$ be the \fncte{imaginary part} of the complex variable $s$).
-\exbox{
-  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
-    = \brbl{\begin{array}{>{\ds}lMD}
-                \frac{-2\alpha}{[s -( \alpha + i\beta)][s -(-\alpha + i\beta)]}
-              = \frac{-2\alpha}{ (s -i\beta)^2 -\alpha^2}
-              & for $\Real(s)\in\intoo{-\alpha}{\alpha}$
-              &%(radius of convergence)
-              \\
-              \text{$\infty$ (\prope{divergent})}
-              & otherwise
-              &
-            \end{array}}
- }
+\exbox{\begin{array}{>{\ds}rc>{\ds}lM}
+  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(x)}
+    &=& \frac{s+\alpha}{(s+\alpha)^2 + \beta^2}
+      & for $\Real(s)>-\alpha$
+  \\
+  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(-x)}
+    &=& \frac{-s+\alpha}{(s-\alpha)^2 + \beta^2}
+      & for $\Real(s)<\alpha$
+\end{array}}
 \end{example}
 \begin{proof}
 \begin{enumerate}
+  \item lemma: \label{ilem:opLT_cosexpstep}
+    \\$\begin{array}{>{\ds}rclM}
+         \lim_{x\to\infty}\brs{\frac{e^{(-s -\alpha \pm i\beta)x}}{-s -\alpha \pm i\beta}}
+           &=& \brbl{\begin{array}{lMM}
+                 0      & if $\Real(s)>-\alpha$ \\
+                 \infty & otherwise  & (diverges)
+               \end{array}}
+         \\
+         \lim_{x\to-\infty}\brs{\frac{e^{(-s +\alpha \pm i\beta)x}}{-s +\alpha \pm i\beta}}
+           &=& \brbl{\begin{array}{lMM}
+                 0      & if $\Real(s)<\alpha$ \\
+                 \infty & otherwise  & (diverges)
+               \end{array}}
+       \end{array}$
+
+  \item 
+    \begin{align*}
+      &\boxed{\opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(x)}}
+      \\&\eqd \int_{\R} \cos(\beta x)e^{-\alpha\abs{x}} e^{-s x} \step(x)\dx
+        && \text{by def. of $\opLT$}&& \text{\xref{def:opLT}}
+      \\&= \int_{\R} \brs{\frac{e^{i\beta x}+e^{-i\beta x}}{2}} e^{-\alpha\abs{x}} e^{-s x} \step(x)\dx
+        &&  \text{by \thme{Euler's Identity}}&&\text{\xref{thm:eid}}
+      \\&= \frac{1}{2}\int_{\R} \brs{e^{-\alpha\abs{x}+i\beta x -sx}+e^{-\alpha\abs{x}-i\beta x-sx}} \step(x)\dx
+      \\&= \frac{1}{2}\int_{0}^{\infty}  \brs{e^{(-s - \alpha +i\beta)x} + e^{(-s - \alpha -i\beta)x}} \dx
+        && \text{by definition of $\step(x)$}
+      \\&= \frac{1}{2} \brs{\frac{e^{(-s - \alpha +i\beta)x}}{-s -\alpha +i\beta} + \frac{e^{(-s -\alpha - i\beta)x}}{-s - \alpha -i\beta}}_{0}^{\infty}
+       %&& \text{by Fundamental Theorem of Calculus}
+      \\&= \frac{1}{2} \brs{(0+0)-\brp{\frac{1}{-s -\alpha +i\beta} + \frac{1}{-s -\alpha -i\beta}}}
+        && \Real(s)>-\alpha
+        && \text{by \pref{ilem:opLT_cosexpstep}}
+      \\&= \mathrlap{
+           \frac{1}{2}\brs{\frac{1}{s +\alpha -i\beta}} \brs{\frac{s +\alpha +i\beta}{s +\alpha +i\beta}} + 
+           \frac{1}{2}\brs{\frac{1}{s +\alpha +i\beta}} \brs{\frac{s +\alpha -i\beta}{s +\alpha -i\beta}} 
+           \qquad\Real(s)>-\alpha
+           }
+      \\&= \frac{1}{2}\brs{\frac{(s +\alpha +i\beta) + (s +\alpha -i\beta)}{(s +\alpha +i\beta)(s +\alpha -i\beta)}}
+        && \Real(s)>-\alpha
+      \\&= \boxed{\frac{s +\alpha}{(s +\alpha +i\beta)(s +\alpha -i\beta)}}
+        && \Real(s)>-\alpha
+      \\&= \boxed{\frac{s +\alpha}{(s +\alpha)^2 + \beta^2}}
+        && \Real(s)>-\alpha
+    \end{align*}
+
+  \item 
+    \begin{align*}
+      \boxed{\opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(-x)}}
+        &= \opLT\brs{\cos(-\beta x)e^{-\alpha\abs{-x}}\step(-x)}
+      \\&= \frac{1}{\abs{-1}}\brs{\frac{s/(-1) +\alpha}{(s/(-1) +\alpha)^2 + \beta^2}}
+        && \text{by \prefp{thm:opLT_dilation}}
+      \\&= \boxed{\frac{-s +\alpha}{(s -\alpha)^2 + \beta^2}}
+        && \Real(s)<\alpha
+    \end{align*}
+
+  %see previous item\item 
+  %see previous item  \begin{align*}
+  %see previous item    &\boxed{\opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(-x)}}
+  %see previous item    \\&\eqd \int_{\R} \cos(\beta x)e^{-\alpha\abs{x}} e^{-s x} \step(-x)\dx
+  %see previous item      && \text{by def. of $\opLT$}&& \text{\xref{def:opLT}}
+  %see previous item    \\&= \int_{\R} \brs{\frac{e^{i\beta x}+e^{-i\beta x}}{2}} e^{-\alpha\abs{x}} e^{-s x} \step(-x)\dx
+  %see previous item      &&  \text{by \thme{Euler's Identity}}&&\text{\xref{thm:eid}}
+  %see previous item    \\&= \frac{1}{2}\int_{\R} \brs{e^{-\alpha\abs{x}+i\beta x -sx}+e^{-\alpha\abs{x}-i\beta x-sx}} \step(-x)\dx
+  %see previous item    \\&= \frac{1}{2}\int_{-\infty}^{0}  \brs{e^{(-s + \alpha +i\beta)x} + e^{(-s + \alpha -i\beta)x}} \dx
+  %see previous item      && \text{by definition of $\step(x)$}
+  %see previous item    \\&= \frac{1}{2} \brs{\frac{e^{(-s + \alpha +i\beta)x}}{-s +\alpha +i\beta} + \frac{e^{(-s +\alpha - i\beta)x}}{-s + \alpha -i\beta}}_{-\infty}^{0}
+  %see previous item     %&& \text{by Fundamental Theorem of Calculus}
+  %see previous item    \\&= \frac{1}{2} \brs{\brp{\frac{1}{-s +\alpha +i\beta} + \frac{1}{-s +\alpha -i\beta}-(0+0)}}
+  %see previous item      && \Real(s)<\alpha
+  %see previous item      && \text{by \pref{ilem:opLT_cosexpstep}}
+  %see previous item    \\&= \mathrlap{
+  %see previous item         \frac{1}{2}\brs{\frac{-1}{s -\alpha -i\beta}} \brs{\frac{s -\alpha +i\beta}{s -\alpha +i\beta}} + 
+  %see previous item         \frac{1}{2}\brs{\frac{-1}{s -\alpha +i\beta}} \brs{\frac{s -\alpha -i\beta}{s -\alpha -i\beta}} 
+  %see previous item         \qquad\Real(s)<\alpha
+  %see previous item         }
+  %see previous item    \\&= \frac{1}{2}\brs{\frac{-(s -\alpha +i\beta) -(s -\alpha -i\beta)}{(s -\alpha +i\beta)(s -\alpha -i\beta)}}
+  %see previous item      && \Real(s)<\alpha
+  %see previous item    \\&= \boxed{\frac{-s +\alpha}{(s -\alpha +i\beta)(s -\alpha -i\beta)}}
+  %see previous item      && \Real(s)<\alpha
+  %see previous item    \\&= \boxed{\frac{-s +\alpha}{(s -\alpha)^2 + \beta^2}}
+  %see previous item      && \Real(s)<\alpha
+  %see previous item  \end{align*}
+
   \item lemma: \label{ilem:opLT_cosexp}
     \\$\begin{array}{>{\ds}rclM}
          \lim_{x\to-\infty}\brs{e^{(-s + \alpha + i\beta)x} + e^{(s + \alpha -i\beta)x}}
@@ -258,21 +369,21 @@ Let $\omega\eqd\Imag(s)$
         &&  \text{by \thme{Euler's Identity}}&&\text{\xref{thm:eid}}
       \\&= \frac{1}{2}\int_{\R} \brs{e^{-\alpha\abs{x}+i\beta x -sx}+e^{-\alpha\abs{x}-i\beta x-sx}} \dx
       \\&= \mathrlap{
-           \frac{1}{2}\int_{-\infty}^{0} \brs{e^{(-s + \alpha +i\beta)x} + e^{-s + \alpha -i\beta)x}} \dx
-         + \frac{1}{2}\int_{0}^{\infty}  \brs{e^{(-s - \alpha +i\beta)x} + e^{-s - \alpha -i\beta)x}} \dx
+           \frac{1}{2}\int_{-\infty}^{0} \brs{e^{(-s + \alpha +i\beta)x} + e^{(-s + \alpha -i\beta)x}} \dx
+         + \frac{1}{2}\int_{0}^{\infty}  \brs{e^{(-s - \alpha +i\beta)x} + e^{(-s - \alpha -i\beta)x}} \dx
            }
       \\&= \mathrlap{
-           \frac{1}{2} \brs{\frac{e^{(-s + \alpha +i\beta)x}}{-s +\alpha +i\beta} + \frac{e^{(s +\alpha - i\beta)x}}{s + \alpha -i\beta}}_{-\infty}^{0}
-         + \frac{1}{2} \brs{\frac{e^{(-s - \alpha +i\beta)x}}{-s -\alpha +i\beta} + \frac{e^{(s -\alpha - i\beta)x}}{s - \alpha -i\beta}}_{0}^{\infty}
+           \frac{1}{2} \brs{\frac{e^{(-s + \alpha +i\beta)x}}{-s +\alpha +i\beta} + \frac{e^{(-s +\alpha - i\beta)x}}{-s + \alpha -i\beta}}_{-\infty}^{0}
+         + \frac{1}{2} \brs{\frac{e^{(-s - \alpha +i\beta)x}}{-s -\alpha +i\beta} + \frac{e^{(-s -\alpha - i\beta)x}}{-s - \alpha -i\beta}}_{0}^{\infty}
            }
        %&& \text{by Fundamental Theorem of Calculus}
       \\&= \mathrlap{
-           \frac{1}{2} \brs{\frac{1}{-s + \alpha +i\beta} + \frac{1}{ s+ \alpha -i\beta} - (0+0)}
-         + \frac{1}{2} \brs{(0+0)-\brp{\frac{1}{-s -\alpha +i\beta} + \frac{1}{s -\alpha -i\beta}}}
+           \frac{1}{2} \brs{\frac{1}{-s + \alpha +i\beta} + \frac{1}{ -s+ \alpha -i\beta} - (0+0)}
+         + \frac{1}{2} \brs{(0+0)-\brp{\frac{1}{-s -\alpha +i\beta} + \frac{1}{-s -\alpha -i\beta}}}
            }
       \\&\indentx\text{by \pref{ilem:opLT_cosexp}}
       \\&= \brs{\frac{-1}{s -( \alpha + i\beta)}}
-         + \brs{\frac{1}{ s -(-\alpha + i\beta)}}
+         + \brs{\frac{1}{-s -(-\alpha + i\beta)}}
       \\&= \frac{-[s -(-\alpha + i\beta)] + [s -( \alpha + i\beta)]}
                 { [s -( \alpha + i\beta)]   [s -(-\alpha + i\beta)]}
       \\&= \boxed{
@@ -333,8 +444,8 @@ Let $\omega\eqd\Imag(s)$
         &&  \text{by \thme{Euler's Identity}}&&\text{\xref{thm:eid}}
       \\&= \frac{1}{2i}\int_{\R} \brs{e^{-\alpha\abs{x}+i\beta x -sx}-e^{-\alpha\abs{x}-i\beta x-sx}} \dx
       \\&= \mathrlap{
-           \frac{1}{2i}\int_{-\infty}^{0} \brs{e^{(-s + \alpha +i\beta)x} - e^{-s + \alpha -i\beta)x}} \dx
-         + \frac{1}{2i}\int_{0}^{\infty}  \brs{e^{(-s - \alpha +i\beta)x} - e^{-s - \alpha -i\beta)x}} \dx
+           \frac{1}{2i}\int_{-\infty}^{0} \brs{e^{(-s + \alpha +i\beta)x} - e^{(-s + \alpha -i\beta)x}} \dx
+         + \frac{1}{2i}\int_{0}^{\infty}  \brs{e^{(-s - \alpha +i\beta)x} - e^{(-s - \alpha -i\beta)x}} \dx
            }
       \\&= \mathrlap{
            \frac{1}{2i} \brs{\frac{e^{(-s + \alpha +i\beta)x}}{-s +\alpha +i\beta} - \frac{e^{(s +\alpha - i\beta)x}}{s + \alpha -i\beta}}_{-\infty}^{0}
