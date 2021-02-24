@@ -47,46 +47,55 @@ Let $\spLLRBu$ be the space of all
 \label{thm:opLT_dilation}
 %--------------------------------------
 Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
-Let $\fF(s)\eqd \brs{\opLT\ff(x)}(s)$ 
-and $\fG(s)\eqd \brs{\opLT\fg(x)}(s)$.
-\thmbox{\begin{array}{>{\ds}rc>{\ds}lM}
-  \opLT \brs{\fg(x-\alpha)}(s)             &=& e^{-\alpha s} \;\fG(s)         & (translation)\\
-  \brs{\opLT\brp{e^{-\alpha x} \fg(x)}}(s) &=& \fG(s+\alpha)                  & (modulation)\\
-  \brs{\opLT\brp{\fg(\alpha x)}}(s)        &=& \frac{1}{\abs{\alpha}}\fG\brp{\frac{s}{\alpha}} & (dilation)  \\
-  \brs{\opLT\brp{\ff(x)+\fg(x)}}(s)        &=& \fF(s) + \fG(s)                & (\prope{additive})     \\
-  \brs{\opLT\brp{\alpha\fg(x)}}(s)         &=& \alpha\fG(s)                   & (\prope{homogeneous})
+Let $\fG(s)\eqd \brs{\opLT\fg(x)}$
+and $\fF(s)\eqd \brs{\opLT\ff(x)}$. 
+Let the \structe{radius of convergence} of $\fG(s)$ be $A\leq\Real(s)\leq B$
+and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
+\thmbox{\begin{array}{>{\ds}lc>{\ds}llclCD}
+    \mc{3}{N}{Transform}                                                                & \mc{3}{|N}{Radius of Convergence}                                     & \mc{1}{|N}{Domain}    & \mc{1}{|N}{Property}
+  \\\hline
+  \\\opLT\brs{\fg(x-\alpha)}        &=& e^{-\alpha s} \;\fG(s)                          & A              &\leq\Real(s)\leq                    & B               & \forall x,\alpha\in\C & (translation)
+  \\\opLT\brs{e^{-\alpha x} \fg(x)} &=& \fG(s+\alpha)                                   & A-\Real(\alpha)&\leq\Real(s)\leq                    & B-\Real(\alpha) & \forall x,\alpha\in\C & (modulation)
+  \\\opLT\brs{\fg(\alpha x)}        &=& \frac{1}{\abs{\alpha}}\fG\brp{\frac{s}{\alpha}} & A              &\leq\Real\brp{\frac{s}{\alpha}}\leq & B               & \forall x,\alpha\in\C & (dilation)  
+  \\\opLT\brs{\ff(x)+\fg(x)}        &=& \fF(s) + \fG(s)                                 & \max(A,B)      &\leq\Real(s)\leq                    & \min(A,B)       & \forall x,\alpha\in\C & (\prope{additive})
+  \\\opLT\brs{\alpha\fg(x)}         &=& \alpha\fG(s)                                    & A              &\leq\Real(s)\leq                    & B               & \forall x,\alpha\in\C & (\prope{homogeneous})
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
-  \opLT \brs{\fg(x-y)}(s)
-    &\eqd \Lscale \int_{x\in\R} \fg(x-\alpha) e^{-sx} \dx          && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
-  \\&=    \Lscale \int_{u\in\R} \fg(u) e^{-s(\alpha+u)} \du        && \text{where $u\eqd x-\alpha$}   && \text{$\implies$ $x=\alpha+u$}
-  \\&=    e^{-\alpha s} \;\Lscale \int_{u\in\R} \fg(u) e^{-su} \du && \text{by property of exponents} && \text{$b^{x+\alpha}=b^xb^\alpha$}
-  \\&=    e^{-\alpha s} \;\Lscale \int_{x\in\R} \fg(x) e^{-sx} \du && \text{by change of variable}    && \text{$u\to x$}
-  \\&=    e^{-\alpha s} \;\brs{\opLT \fg(x)}(s)                    && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \opLT\brs{\fg(x-\alpha)}
+    &\eqd \Lscale \int_{x\in\R} \fg(x-\alpha) e^{-sx} \dx                               && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \\&=    \Lscale \int_{u+\alpha=-\infty}^{u+\alpha=\infty} \fg(u) e^{-s(\alpha+u)} \du && \text{where $u\eqd x-\alpha$}   && \text{$\implies$ $x=\alpha+u$}
+  \\&=    e^{-\alpha s} \;\Lscale \int_{u=-\infty}^{u=\infty} \fg(u) e^{-su} \du        && \text{by property of exponents} && \text{$b^{x+\alpha}=b^xb^\alpha$}
+  \\&=    e^{-\alpha s} \;\Lscale \int_{x=-\infty}^{x=\infty} \fg(x) e^{-sx} \dx        && \text{by change of variable}    && \text{$u\to x$}
+  \\&\eqd e^{-\alpha s} \;\brs{\opLT \fg(x)}                                            && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \\&\eqd e^{-\alpha s} \;\fG(s)                                                        && \forall \Real(s)\in\intcc{A}{B} && \text{by definition of $\fG(s)$}
   \\
-  \brs{\opLT\brp{e^{-\alpha x} \fg(x)}}(s)
-    &\eqd \Lscale \int_{x\in\R} e^{-\alpha x} \fg(x) e^{-sx} \dx   && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
-  \\&=    \Lscale \int_{x\in\R} \fg(x) e^{-(s+\alpha)x} \dx        && \text{by property of exponents} && \text{$b^{x+y} = b^x b^y$}
-  \\&=    \brs{\opLT\fg(x)}(s+\alpha)                              && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \opLT\brs{e^{-\alpha x} \fg(x)}
+    &\eqd \Lscale \int_{x\in\R} e^{-\alpha x} \fg(x) e^{-sx} \dx   && \text{by definition of $\opLT$}                 && \text{\xref{def:opLT}}
+  \\&=    \Lscale \int_{x\in\R} \fg(x) e^{-(s+\alpha)x} \dx        && A\leq\Real(s+\alpha)\leq B                      && \text{$b^{x+y} = b^x b^y$}
+  \\&\eqd \brs{\opLT\fg(x)}(s+\alpha)                              && A-\Real(\alpha)\leq\Real(s)\leq B-\Real(\alpha) && \text{\xref{def:opLT}}
+  \\&\eqd \fG(s+\alpha)                                            && A-\Real(\alpha)\leq\Real(s)\leq B-\Real(\alpha) && \text{by definition of $\fG(s)$}
   \\
-  \opLT \brs{\fg(\alpha x)}(s)
-    &= \Lscale \int_{x=-\infty}^{x=\infty} \fg(\alpha x) e^{-sx} \dx                   && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
-  \\&= \Lscale \int_{u/\alpha=-\infty}^{u/\alpha=\infty} \fg(u) e^{-s(u/\alpha)} \frac{1}{\alpha}\du && \text{where $u\eqd \alpha x$}   && \text{$\implies$ $x=\frac{u}{\alpha}$}
-  \\&= \Lscale \frac{1}{\alpha}\int_{u/\alpha=-\infty}^{u/\alpha=\infty} \fg(u) e^{-(s/\alpha)u} \du 
-  \\&= \brbl{\begin{array}{>{\ds}rM}
-         \Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & if $\alpha\ge0$
-       \\[2ex]
-         \Lscale \frac{1}{\alpha}\int_{u=\infty}^{u=-\infty} \fg(u) e^{-(s/\alpha)u} \du & otherwise
-       \end{array}}
-  \\&= \brbl{\begin{array}{>{\ds}rM}
-          \Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & if $\alpha\ge0$
-       \\[2ex]
-         -\Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & otherwise
-       \end{array}}
-  \\&= \frac{1}{\abs{\alpha}} \Lscale \int_{x\in\R} \fg(x) e^{-(s/\alpha)x} \dx   && \text{by change of variable}    && \text{$u\to x$}
-  \\&= \frac{1}{\abs{\alpha}}\brs{\opLT \fg(x)}\brp{\frac{s}{\alpha}}             && \text{by definition of $\opLT$} && \text{\xref{def:opLT}}
+  \opLT\brs{\fg(\alpha x)}
+    &\eqd \Lscale \int_{x=-\infty}^{x=\infty} \fg(\alpha x) e^{-sx} \dx             
+    && \text{by definition of $\opLT$} 
+    && \text{\xref{def:opLT}}
+  \\&=    \Lscale \int_{u/\alpha=-\infty}^{u/\alpha=\infty} \fg(u) e^{-s(u/\alpha)} \frac{1}{\alpha}\du && \text{where $u\eqd \alpha x$}   && \text{$\implies$ $x=\frac{u}{\alpha}$}
+  \\&=    \Lscale \frac{1}{\alpha}\int_{u/\alpha=-\infty}^{u/\alpha=\infty} \fg(u) e^{-(s/\alpha)u} \du 
+  \\&=    \brbl{\begin{array}{>{\ds}rM}
+            \Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & if $\alpha\ge0$
+          \\[2ex]
+            \Lscale \frac{1}{\alpha}\int_{u=\infty}^{u=-\infty} \fg(u) e^{-(s/\alpha)u} \du & otherwise
+          \end{array}}
+  \\&=    \brbl{\begin{array}{>{\ds}rM}
+             \Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & if $\alpha\ge0$
+          \\[2ex]
+            -\Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & otherwise
+          \end{array}}
+  \\&=    \frac{1}{\abs{\alpha}} \Lscale \int_{x\in\R} \fg(x) e^{-(s/\alpha)x} \dx   && A \leq\Real\brp{\frac{s}{\alpha}}\leq B && \text{by change of variable $u\to x$}
+  \\&\eqd \frac{1}{\abs{\alpha}}\brs{\opLT \fg(x)}\brp{\frac{s}{\alpha}}             && A \leq\Real\brp{\frac{s}{\alpha}}\leq B && \text{by definition of $\opLT$ \xref{def:opLT}}
+  \\&\eqd \frac{1}{\abs{\alpha}}\fG\brp{\frac{s}{\alpha}}                            && A \leq\Real\brp{\frac{s}{\alpha}}\leq B && \text{by definition of $\fG(s)$}
 \end{align*}
 \end{proof}
 
