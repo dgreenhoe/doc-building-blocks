@@ -165,7 +165,7 @@ is the \structe{radius of convergence} of $\opLT\brs{\fg_n(x)}$.
 %--------------------------------------
 \begin{theorem}
 \footnote{
-  \citerpgc{bracewell1978}{234}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
+  \citerpgc{bracewell1978}{224}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
   }
 \label{thm:opLT_mod}
 %--------------------------------------
@@ -174,19 +174,63 @@ Let $\fG(s)\eqd \brs{\opLT\fg(x)}$
 and $\fF(s)\eqd \brs{\opLT\ff(x)}$.
 Let the \structe{radius of convergence} of $\fG(s)$ be $A\leq\Real(s)\leq B$
 and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
-\thmbox{\begin{array}{>{\ds}l        c>{\ds}l                                             D     l              @{\hspace{2pt}}l                                             C                       D}
-    \mc{3}{N}{Transform}                                                                & \mc{3}{|N}{Radius of Convergence}                                               & \mc{1}{|N}{Domain}    & \mc{1}{|N}{Property}
+\thmbox{\begin{array}{>{\ds}l        c>{\ds}l           D     l        @{\hspace{2pt}}l                                C }
+    \mc{3}{N}{Transform}                              & \mc{3}{|N}{Radius of Convergence}                            & \mc{1}{|N}{Domain}    %& \mc{1}{|N}{Property}
   \\\hline
-    \opLT\brs{e^{-\alpha x} \fg(x)} &=& \fG(s+\alpha)                                   & for & \Real(s)                    & \in\intcc{A-\Real(\alpha)}{B-\Real(\alpha)} & \forall x,\alpha\in\C & (\ope{modulation})
+    \opLT\brs{e^{-\alpha x} \fg(x)} &=& \fG(s+\alpha) & for & \Real(s) & \in\intcc{A-\Real(\alpha)}{B-\Real(\alpha)} & \forall x,\alpha\in\C %& (\ope{modulation})
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
   \opLT\brs{e^{-\alpha x} \fg(x)}
-    &\eqd \Lscale \int_{x\in\R} e^{-\alpha x} \fg(x) e^{-sx} \dx   && \text{by definition of $\opLT$}                 && \text{\xref{def:opLT}}
+    &\eqd \Lscale \int_{x\in\R} e^{-\alpha x} \fg(x) e^{-sx} \dx   
+          %&& \forall \Real(s)\in\intcc{A-\Real(\alpha)}{B-\Real(\alpha)}
+          && \text{by definition of $\opLT$}                 
+          && \text{\xref{def:opLT}}
   \\&=    \Lscale \int_{x\in\R} \fg(x) e^{-(s+\alpha)x} \dx        && A\leq\Real(s+\alpha)\leq B                      && \text{$b^{x+y} = b^x b^y$}
   \\&\eqd \brs{\opLT\fg(x)}(s+\alpha)                              && A-\Real(\alpha)\leq\Real(s)\leq B-\Real(\alpha) && \text{\xref{def:opLT}}
   \\&\eqd \fG(s+\alpha)                                            && A-\Real(\alpha)\leq\Real(s)\leq B-\Real(\alpha) && \text{by definition of $\fG(s)$}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{corollary}
+\footnote{
+  \citerpgc{bracewell1978}{224}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
+  }
+\label{cor:opLT_mod}
+%--------------------------------------
+Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
+Let $\fG(s)\eqd \brs{\opLT\fg(x)}$
+and $\fF(s)\eqd \brs{\opLT\ff(x)}$.
+Let the \structe{radius of convergence} of $\fG(s)$ be $A\leq\Real(s)\leq B$
+and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
+\corbox{\begin{array}{>{\ds}l               c>{\ds}r                                                       D     l        @{\hspace{2pt}}l   C }
+    \mc{3}{N}{Transform}                                                                                 & \mc{3}{|N}{Radius of Convergence}                                               & \mc{1}{|N}{Domain}    %& \mc{1}{|N}{Property}
+  \\\hline
+    \opLT\brs{\cos\brp{\omega_o x} \fg(x)} &=&  \frac{1}{2}\fG(s-i\omega_o) + \frac{1}{2}\fG(s+i\omega_o) & for & \Real(s) & \in\intcc{A}{B} & \forall x,\alpha\in\C %& (\ope{modulation})
+  \\\opLT\brs{\sin\brp{\omega_o x} \fg(x)} &=& -\frac{i}{2}\fG(s-i\omega_o) + \frac{i}{2}\fG(s+i\omega_o) & for & \Real(s) & \in\intcc{A}{B} & \forall x,\alpha\in\C %& (\ope{modulation})
+\end{array}}
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \opLT\brs{\cos\brp{\omega_o x} \fg(x)}
+    &=     \opLT\brs{\brp{\frac{e^{i\omega_o x} + e^{-i\omega_o x}}{2}} \fg(x)}  
+        && \forall \Real(s)\in\intcc{A-\Real(-i\omega_o)}{B-\Real(i\omega_o)}
+  \\&=     \frac{1}{2}\opLT\brs{e^{ i\omega_o x} \fg(x)}
+         + \frac{1}{2}\opLT\brs{e^{-i\omega_o x} \fg(x)}
+        && \forall \Real(s)\in\intcc{A-0}{B-0}
+  \\&=   \frac{1}{2}\fG(s-i\omega_o) + \frac{1}{2}\fG(s+i\omega_o)
+        && \forall \Real(s)\in\intcc{A}{B}
+  \\
+  \opLT\brs{\sin\brp{\omega_o x} \fg(x)}
+    &=     \opLT\brs{\brp{\frac{e^{i\omega_o x} - e^{-i\omega_o x}}{2i}} \fg(x)}  
+        && \forall \Real(s)\in\intcc{A-\Real(-i\omega_o)}{B-\Real(i\omega_o)}
+  \\&=     \frac{1}{2i}\opLT\brs{e^{ i\omega_o x} \fg(x)}
+         - \frac{1}{2i}\opLT\brs{e^{-i\omega_o x} \fg(x)}
+        && \forall \Real(s)\in\intcc{A-0}{B-0}
+  \\&=   -\frac{i}{2}\fG(s-i\omega_o) + \frac{i}{2}\fG(s+i\omega_o)
+        && \forall \Real(s)\in\intcc{A}{B}
 \end{align*}
 \end{proof}
 
@@ -462,16 +506,19 @@ and $\conv$ the convolution operator \xref{def:conv}.
 %---------------------------------------
 \begin{theorem}
 \label{thm:opLT_diff}
+\label{thm:opLT_int}
 %---------------------------------------
 Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
-\mbox{}\\
-\thmbox{
-    \brb{\lim_{t\to-\infty}\fx(t)=0}
-    \qquad\implies\qquad
-    \brb{\opLT \brs{\ddt \fx(t)} = s \brs{\opLT\fx}(s)}
-  }
+\thmbox{\begin{array}{>{\ds}r c >{\ds}rc>{\ds}l}
+  \brb{\lim_{t\to-\infty}\fx(t)=0} &\implies&
+     \brb{\opLT \brs{\ddt \fx(t)}} &=& s \brs{\opLT\fx}(s)
+    \\&&
+    \opLT \int_{u=-\infty}^{u=t} \fx(u) \du &=& \frac{1}{s} \brs{\opLT\fx}(s)
+\end{array}}
 \end{theorem}
 \begin{proof}
+\begin{enumerate}
+  \item
 \begin{align*}
   \boxed{\opLT \brs{\ddt \fx(t)}}
     &\eqd \int_{t\in\R} \mcom{\brs{\ddt \fx(t)}}{$\dv$} \mcom{e^{-st}}{$u$} \dt
@@ -484,20 +531,8 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
     && \text{by left hypothesis}
   \\&= \boxed{s \brs{\opLT\fx}(s)}
 \end{align*}
-\end{proof}
 
-%---------------------------------------
-\begin{theorem}
-\label{thm:opLT_int}
-%---------------------------------------
-Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
-\thmbox{
-    %\brb{\lim_{t\to-\infty}\fx(t)=0}
-    %\qquad\implies\qquad
-    \opLT \int_{u=-\infty}^{u=t} \fx(u) \du = \frac{1}{s} \brs{\opLT\fx}(s)
-  }
-\end{theorem}
-\begin{proof}
+  \item 
 \begin{enumerate}
   \item Define the \fncte{Heaviside function} $\fh(t)$ as\qquad \label{idef:heaviside}
     $\ds \fh(t)\eqd\brbl{\begin{array}{lM}
@@ -532,6 +567,7 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
         && \text{by \thme{Fundamental Theorem of Calculus}}
       \\&= \boxed{\frac{1}{s} \brs{\opLT\fx}(s)}
     \end{align*}
+\end{enumerate}
 \end{enumerate}
 \end{proof}
 
