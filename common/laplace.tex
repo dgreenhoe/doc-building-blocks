@@ -57,8 +57,9 @@ Let $\spLLRBu$ be the space of all
 %--------------------------------------
 \begin{theorem}
 \footnote{
-  \citerpgc{bracewell1978}{234}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
+  \citerpgc{bracewell1978}{224}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
   }
+\label{thm:opLT_transversal}
 \label{thm:opLT_shift}
 \label{thm:opLT_dilation}
 %--------------------------------------
@@ -90,16 +91,20 @@ and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
     && \text{\xref{def:opLT}}
   \\&=    \Lscale \int_{u/\alpha=-\infty}^{u/\alpha=\infty} \fg(u) e^{-s(u/\alpha)} \frac{1}{\alpha}\du && \text{where $u\eqd \alpha x$}   && \text{$\implies$ $x=\frac{u}{\alpha}$}
   \\&=    \Lscale \frac{1}{\alpha}\int_{u/\alpha=-\infty}^{u/\alpha=\infty} \fg(u) e^{-(s/\alpha)u} \du
-  \\&=    \brbl{\begin{array}{>{\ds}rM}
+  \\&=\mathrlap{
+          \brbl{\begin{array}{>{\ds}rM}
             \Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & if $\alpha\ge0$
           \\[2ex]
             \Lscale \frac{1}{\alpha}\int_{u=\infty}^{u=-\infty} \fg(u) e^{-(s/\alpha)u} \du & otherwise
           \end{array}}
-  \\&=    \brbl{\begin{array}{>{\ds}rM}
+          }
+  \\&=\mathrlap{
+          \brbl{\begin{array}{>{\ds}rM}
              \Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & if $\alpha\ge0$
           \\[2ex]
             -\Lscale \frac{1}{\alpha}\int_{u=-\infty}^{u=\infty} \fg(u) e^{-(s/\alpha)u} \du & otherwise
           \end{array}}
+          }
   \\&=    \frac{1}{\abs{\alpha}} \Lscale \int_{x\in\R} \fg(x) e^{-(s/\alpha)x} \dx   && A \leq\Real\brp{\frac{s}{\alpha}}\leq B && \text{by change of variable $u\to x$}
   \\&\eqd \frac{1}{\abs{\alpha}}\brs{\opLT \fg(x)}\brp{\frac{s}{\alpha}}             && A \leq\Real\brp{\frac{s}{\alpha}}\leq B && \text{by definition of $\opLT$ \xref{def:opLT}}
   \\&\eqd \frac{1}{\abs{\alpha}}\fG\brp{\frac{s}{\alpha}}                            && A \leq\Real\brp{\frac{s}{\alpha}}\leq B && \text{by definition of $\fG(s)$}
@@ -109,31 +114,29 @@ and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
 %--------------------------------------
 \begin{corollary}
 \footnote{
-  \citerpgc{bracewell1978}{234}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
+  \citerpgc{bracewell1978}{224}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
   }
 \label{cor:opLT_transversal}
 %--------------------------------------
-Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
-Let $\fG(s)\eqd \brs{\opLT\fg(x)}$
-and $\fF(s)\eqd \brs{\opLT\ff(x)}$.
-Let the \structe{radius of convergence} of $\fG(s)$ be $A\leq\Real(s)\leq B$
-and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
-\corbox{\begin{array}{>{\ds}l        c>{\ds}l                   D     l              @{\hspace{2pt}}l    C                        D}
-    \mc{3}{N}{Transform}                                      & \mc{3}{|N}{Radius of Convergence}       & \mc{1}{|N}{Domain}    & \mc{1}{|N}{Property}
-  \\\hline
-    \opLT\brs{\fg(-x)}  &=& \frac{1}{\abs{\alpha}}\fG\brp{-s} & for & \Real\brp{s} & \in\intcc{-B}{-A}  & \forall x,\alpha\in\C & (\ope{reversal})
+Let $\opLT$, $\fG(s)$, $A$, and $B$ be defined as in \prefpp{thm:opLT_transversal}.
+\corbox{\begin{array}{>{\ds}lc>{\ds}l   D       l              @{\hspace{2pt}}l     C                       D}
+    \mc{3}{N}{Transform}                & \mc{3}{|N}{Radius of Convergence}       & \mc{1}{|N}{Domain}    & \mc{1}{|N}{Property}
+  \\\hline%                             &     &              &                    &                       &
+    \opLT\brs{\fg(-x)}  &=& \fG\brp{-s} & for & \Real\brp{s} & \in\intcc{-B}{-A}  & \forall x,\alpha\in\C & (\ope{reversal})
 \end{array}}
 \end{corollary}
 \begin{proof}
 \begin{align*}
   \opLT\brs{\fg(-x)}  
     &= \opLT\brs{\fg([-1]x)}  
+    && \Real\brp{s}\in\intcc{A}{B} 
+    && \text{by definition of unary operator $-$}
   \\&= \opLT\brs{\frac{1}{\abs{-1}}\fg\brp{\frac{x}{-1}}}
-    && \text{by \prefp{thm:opLT_dilation}}
     && \Real\brp{\frac{s}{-1}} \in\intcc{A}{B} 
-  \\&= \opLT\brs{\fG\brp{-s}}
-    &&
+    && \text{by \prope{dilation} property \xref{thm:opLT_dilation}}
+  \\&= \fG\brp{-s}
     && \Real\brp{s} \in\intcc{-B}{-A} 
+    &&
 \end{align*}
 \end{proof}
 
@@ -143,7 +146,7 @@ and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
 %--------------------------------------
 \begin{theorem}
 \footnote{
-  \citerpgc{bracewell1978}{234}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
+  \citerpgc{bracewell1978}{224}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
   }
 \label{thm:opLT_linear}
 %--------------------------------------
@@ -158,7 +161,6 @@ and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
     \opLT\brs{\ff(x)+\fg(x)}        &=& \fF(s) + \fG(s)                                 & for & \Real(s)                    & \in\intcc{A}{B}\seti\intcc{C}{D}            & \forall x,\alpha\in\C & (\prope{additive})
   \\\opLT\brs{\alpha\fg(x)}         &=& \alpha\fG(s)                                    & for & \Real(s)                    & \in\intcc{A}{B}                             & \forall x,\alpha\in\C & (\prope{homogeneous})
 \end{array}}
-
 \end{theorem}
 
 %--------------------------------------
@@ -240,7 +242,8 @@ and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
     \mc{3}{N}{Transform}                                                                                 & \mc{3}{|N}{Radius of Convergence}                                               & \mc{1}{|N}{Domain}    %& \mc{1}{|N}{Property}
   \\\hline
     \opLT\brs{\cos\brp{\omega_o x} \fg(x)} &=&  \frac{1}{2}\fG(s-i\omega_o) + \frac{1}{2}\fG(s+i\omega_o) & for & \Real(s) & \in\intcc{A}{B} & \forall x,\alpha\in\C %& (\ope{modulation})
-  \\\opLT\brs{\sin\brp{\omega_o x} \fg(x)} &=& -\frac{i}{2}\fG(s-i\omega_o) + \frac{i}{2}\fG(s+i\omega_o) & for & \Real(s) & \in\intcc{A}{B} & \forall x,\alpha\in\C %& (\ope{modulation})
+  \\[2ex]
+    \opLT\brs{\sin\brp{\omega_o x} \fg(x)} &=& -\frac{i}{2}\fG(s-i\omega_o) + \frac{i}{2}\fG(s+i\omega_o) & for & \Real(s) & \in\intcc{A}{B} & \forall x,\alpha\in\C %& (\ope{modulation})
 \end{array}}
 \end{corollary}
 \begin{proof}
@@ -463,14 +466,14 @@ Let $\omega\eqd\Imag(s)$
 \end{proof}
 
 %======================================
-\section{Convolution properties}
+\section{Product properties}
 %======================================
 %--------------------------------------
 \begin{definition}
 \label{def:conv}
 \footnote{
   \citerp{bachman1964}{6},
-  \citerpgc{bracewell1978}{108}{007007013X}{Convolution theorem}
+  \citerpgc{bracewell1978}{224}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
   }
 %--------------------------------------
 \defbox{\indxs{\conv}\begin{array}{M}
@@ -495,10 +498,10 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
 and $\conv$ the convolution operator \xref{def:conv}.
 \thmbox{
 \begin{array}{rcl@{\qquad}C}
-  \mcom{\opLT\brs{\ff(x)\conv\fg(x)}(\omega)}{convolution    in ``time domain"}
+  \mcom{\opLT\brs{\ff(x)\conv\fg(x)}(s)}{convolution    in ``time domain"}
        &=& \mcom{\sqrt{2\pi}\brs{\opLT\ff}(s)\, \brs{\opLT\fg}(s)}  {multiplication in ``s domain"}
        & \forall\ff,\fg\in\spLLRBu\\
-  \mcom{\opLT\brs{\ff(x) \fg(x)}(\omega)} {multiplication in ``time domain"}
+  \mcom{\opLT\brs{\ff(x) \fg(x)}(s)} {multiplication in ``time domain"}
        &=& \mcom{\Lscale\brs{\opLT\ff}(s) \conv \brs{\opLT\fg}(s)}{convolution    in ``s domain"}
        & \forall\ff,\fg\in\spLLRBu.
 \end{array}
@@ -511,12 +514,13 @@ and $\conv$ the convolution operator \xref{def:conv}.
      && \text{by definition of $\conv$} &&\text{\xref{def:conv}}
    \\&=  \int_{u\in\R} \ff(u)\brs{\opLT \fg(x-u)}(s) \du
    \\&=  \int_{u\in\R} \ff(u) e^{-su} \; \brs{\opLT\fg(x)}(s) \du
-     && \text{by \thme{Fourier shift theorem}} &&\text{\xref{thm:ft_shift}}
-   \\&= \sqrt{2\pi}\mcom{\brp{\Lscale\int_{u\in\R} \ff(u) e^{-su} \du}}
-             {$\brs{\opLT\ff}(s)$} \;
+     && \text{by \prope{translation} property} 
+     && \text{\xref{thm:opLT_shift}}
+   \\&= \mcom{\brp{\Lscale\int_{u\in\R} \ff(u) e^{-su} \du}}
+             {$\brs{\opLT\ff}(s)$                          } \;
         \brs{\opLT\fg}(s)
-   \\&= \sqrt{2\pi}\brs{\opLT\ff}(s)\;  \brs{\opLT\fg}(s)
-     && \text{by definition of $\opLT$} &&\text{\xref{def:opFT}}
+   \\&= \brs{\opLT\ff}(s)\;  \brs{\opLT\fg}(s)
+     && \text{by definition of $\opLT$} &&\text{\xref{def:opLT}}
    \\
    \opLT[\ff(x)\fg(x)](s)
      &= \opLT\brs{\brp{\opLT^{-1}\opLT\ff(x)}\;\fg(x)}(s)
