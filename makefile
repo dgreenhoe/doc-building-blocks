@@ -15,7 +15,9 @@
 # Commands
 #--------------------------------------
 all:
-  cd msdsams
+  cd trigsys
+    make
+  cd ..\msdsams
     make
   cd ..\msdnil
     make
@@ -30,8 +32,6 @@ all:
   cd ..\abcssp
     make
   cd ..\bsplines
-    make
-  cd ..\trigsys
     make
   cd ..\msdsro
     make
