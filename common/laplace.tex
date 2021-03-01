@@ -468,9 +468,60 @@ Let $\omega\eqd\Imag(s)$
 %======================================
 \section{Product properties}
 %======================================
-%\pref{thm:opLT_conv} (next) demonstrates that multiplication in the ``time domain"
-%is equivalent to convolution in the ``s domain" and
-%vice-versa.
+\pref{thm:opLT_conv} (next) demonstrates that multiplication in the ``time domain"
+is equivalent to convolution in the ``s domain" and
+vice-versa.
+
+%--------------------------------------
+\begin{theorem}[\thmd{convolution theorem}]
+\footnote{
+  \citerppg{bachman2002}{268}{270}{9780387988993},
+  \citerpg{bachman1964}{8}{9781483267562}
+  }
+\label{thm:opLT_conv}
+%--------------------------------------
+Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
+and $\conv$ the convolution operator \xref{def:conv}.
+Let $A$, $B$, $C$, and $D$ be defined as in \prefpp{cor:opLT_linear}.
+\thmbox{
+\begin{array}{rclC}
+  \opLT\brs{\ff(x)\conv\fg(x)}(s)
+    &=& \sqrt{2\pi}\brs{\opLT\ff}(s)\, \brs{\opLT\fg}(s)
+    & \forall\ff,\fg\in\spLLRBu\\
+  %\mcom{\opLT\brs{\ff(x) \fg(x)}(s)} {multiplication in ``time domain"}
+  %     &=& \mcom{\Lscale\brs{\opLT\ff}(s) \conv \brs{\opLT\fg}(s)}{convolution    in ``s domain"}
+  %     & \forall\ff,\fg\in\spLLRBu.
+\end{array}
+}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+   \opLT \brs{\ff(x)\conv\fg(x)}(s)
+     &= \opLT \brs{ \int_{u\in\R} \ff(u)\fg(x-u) \du }(s)
+     && \text{by definition of $\conv$} &&\text{\xref{def:conv}}
+   \\&=  \int_{u\in\R} \ff(u)\brs{\opLT \fg(x-u)}(s) \du
+   \\&=  \int_{u\in\R} \ff(u) e^{-su} \; \brs{\opLT\fg(x)}(s) \du
+     && \text{by \prope{translation} property} 
+     && \text{\xref{thm:opLT_shift}}
+   \\&= \mcom{\brp{\Lscale\int_{u\in\R} \ff(u) e^{-su} \du}}
+             {$\brs{\opLT\ff}(s)$                          } \;
+        \brs{\opLT\fg}(s)
+   \\&= \brs{\opLT\ff}(s)\;  \brs{\opLT\fg}(s)
+     && \Real(s)\in\intcc{A}{B}\seti\intcc{C}{D}
+     && \text{by definition of $\opLT$ \xref{def:opLT}}
+   %\\
+   %\opLT[\ff(x)\fg(x)](s)
+   %  &= \opLT\brs{\brp{\opLT^{-1}\opLT\ff(x)}\;\fg(x)}(s)
+   %  && \text{by def. of operator inverse} &&\text{\ifxref{operator}{def:op_inv}}
+   %\\&= \opLT\brs{\brp{ \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) e^{sxv} \dv }\;\fg(x)}(s)
+   %  && \text{by \prefp{thm:opFTi}}
+   %\\&= \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\brp{e^{sxv} \;\fg(x)}}(s,v) \dv
+   %\\&= \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\fg(x)}(s-v) \dv
+   %  && \text{by \prefp{thm:opLT_shift}}
+   %\\&= \Lscalei\brs{\opLT\ff}(s)\conv \brs{\opLT\fg}(s)
+   %  && \text{by definition of $\conv$} &&\text{\xref{def:conv}}
+\end{align*}
+\end{proof}
 
 %=======================================
 \section{Calculus properties}
