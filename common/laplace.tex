@@ -21,7 +21,7 @@ its notations, especially when they are necessary and happily imagined, are the 
   \url{https://translate.google.com/},
   }
 %=======================================
-\section{Definition}
+\section{Operator Definition}
 %=======================================
 %--------------------------------------
 \begin{definition}
@@ -46,10 +46,34 @@ Let $\spLLRBu$ be the space of all
   }
 \end{definition}
 
-%In \pref{def:opLT}, the scaling factor $\Lscale$ is not normally found
-%in most definitions of the Laplace Transform.
-%However it is included here to make the operator $\opLT$ more directly compatible
-%with the \ope{Unitary Fourier Transform} operator $\opFT$\ifsxref{harFour}{def:opFT}.
+%--------------------------------------
+\begin{remark}
+%--------------------------------------
+The scaling factor $\frac{1}{\sqrt{2\pi}}$ is not typically found references offering 
+definitions of the Laplace Transform, and is not included here either.
+That is not to say, however, that it's not a good idea.
+Including it would make the operator $\opLT$ more directly compatible
+with the \ope{Unitary Fourier Transform} operator $\opFT$\ifsxref{harFour}{def:opFT}.
+Note also that a $\frac{1}{2\pi}$ scaling factor is included in 
+[\citerpg{bachman2002}{268}{9780387988993}] in their definition of \ope{convolution} 
+\xxref{def:conv}{sec:opLT_conv}.
+\end{remark}
+
+%=======================================
+\section{Operator Inverse}
+%=======================================
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{bracewell1978}{220}{007007013X}{Chapter 11 The Laplace transform}
+  }
+\label{thm:opLTi}
+%--------------------------------------
+\thmbox{\begin{array}{rc>{\ds}lM}
+  \fg(x) &=& \opLTi[\fG(s)] \eqd \frac{1}{2\pi i}\int_{c-i\infty}^{c+i\infty} \fG(s) e^{sx} ds 
+           & for some $c\in\Rp$
+\end{array}}
+\end{theorem}
 
 %=======================================
 \section{Transversal properties}
@@ -467,6 +491,7 @@ Let $\omega\eqd\Imag(s)$
 
 %======================================
 \section{Product properties}
+\label{sec:opLT_conv}
 %======================================
 \pref{thm:opLT_conv} (next) demonstrates that multiplication in the ``time domain"
 is equivalent to convolution in the ``s domain" and
@@ -475,6 +500,7 @@ vice-versa.
 %--------------------------------------
 \begin{theorem}[\thmd{convolution theorem}]
 \footnote{
+  \citerpg{bracewell1978}{224}{007007013X},
   \citerppg{bachman2002}{268}{270}{9780387988993},
   \citerpg{bachman1964}{8}{9781483267562}
   }
@@ -484,15 +510,17 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
 and $\conv$ the convolution operator \xref{def:conv}.
 Let $A$, $B$, $C$, and $D$ be defined as in \prefpp{cor:opLT_linear}.
 \thmbox{
-\begin{array}{rclC}
+\begin{array}{rcllC}
   \opLT\brs{\ff(x)\conv\fg(x)}(s)
-    &=& \sqrt{2\pi}\brs{\opLT\ff}(s)\, \brs{\opLT\fg}(s)
-    & \forall\ff,\fg\in\spLLRBu\\
-  %\mcom{\opLT\brs{\ff(x) \fg(x)}(s)} {multiplication in ``time domain"}
-  %     &=& \mcom{\Lscale\brs{\opLT\ff}(s) \conv \brs{\opLT\fg}(s)}{convolution    in ``s domain"}
-  %     & \forall\ff,\fg\in\spLLRBu.
-\end{array}
-}
+    &=& \brs{\opLT\ff}(s)\, \brs{\opLT\fg}(s)
+    & \forall \Real(s)\in\intcc{A}{B}\seti\intcc{C}{D}
+    & \forall\ff,\fg\in\spLLRBu
+  \\
+  \opLT\brs{\ff(x) \fg(x)}(s)
+    &=& \Lscale\brs{\opLT\ff}(s) \conv \brs{\opLT\fg}(s)
+    & \forall \Real(s)\in\intcc{A+C}{B+D},\,c\in\intoo{A}{B}
+    & \forall\ff,\fg\in\spLLRBu.
+\end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
@@ -509,17 +537,17 @@ Let $A$, $B$, $C$, and $D$ be defined as in \prefpp{cor:opLT_linear}.
    \\&= \brs{\opLT\ff}(s)\;  \brs{\opLT\fg}(s)
      && \Real(s)\in\intcc{A}{B}\seti\intcc{C}{D}
      && \text{by definition of $\opLT$ \xref{def:opLT}}
-   %\\
-   %\opLT[\ff(x)\fg(x)](s)
-   %  &= \opLT\brs{\brp{\opLT^{-1}\opLT\ff(x)}\;\fg(x)}(s)
-   %  && \text{by def. of operator inverse} &&\text{\ifxref{operator}{def:op_inv}}
-   %\\&= \opLT\brs{\brp{ \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) e^{sxv} \dv }\;\fg(x)}(s)
-   %  && \text{by \prefp{thm:opFTi}}
-   %\\&= \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\brp{e^{sxv} \;\fg(x)}}(s,v) \dv
-   %\\&= \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\fg(x)}(s-v) \dv
-   %  && \text{by \prefp{thm:opLT_shift}}
-   %\\&= \Lscalei\brs{\opLT\ff}(s)\conv \brs{\opLT\fg}(s)
-   %  && \text{by definition of $\conv$} &&\text{\xref{def:conv}}
+   \\
+   \opLT[\ff(x)\fg(x)](s)
+     &= \opLT\brs{\brp{\opLT^{-1}\opLT\ff(x)}\;\fg(x)}(s)
+     && \text{by def. of operator inverse} &&\text{\ifxref{operator}{def:op_inv}}
+   \\&= \opLT\brs{\brp{ \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) e^{sxv} \dv }\;\fg(x)}(s)
+     && \text{by \prefp{thm:opLTi}}
+   \\&= \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\brp{e^{sxv} \;\fg(x)}}(s,v) \dv
+   \\&= \Lscalei \int_{v\in\R} \brs{\opLT\ff(x)}(v) \brs{\opLT\fg(x)}(s-v) \dv
+     && \text{by \prefp{thm:opLT_shift}}
+   \\&= \Lscalei\brs{\opLT\ff}(s)\conv \brs{\opLT\fg}(s)
+     && \text{by definition of $\conv$} &&\text{\xref{def:conv}}
 \end{align*}
 \end{proof}
 
