@@ -28,7 +28,8 @@ its notations, especially when they are necessary and happily imagined, are the 
 \footnote{
   \citerpgc{bracewell1978}{219}{007007013X}{Chapter 11 The Laplace transform},
   \citerpuc{vanderpol1959}{13}{https://archive.org/details/in.ernet.dli.2015.141269/page/n23/mode/2up}{5. Strip of convergence of the Laplace integral},
-  \citerpuc{levy1958}{2}{https://archive.org/details/c_cowles_ieee_Levy/page/n5/mode/2up}{``two-sided transformation"}
+  \citerpuc{levy1958}{2}{https://archive.org/details/c_cowles_ieee_Levy/page/n5/mode/2up}{``two-sided transformation"},
+  \citerpuc{betten2008L}{295}{https://link.springer.com/content/pdf/bbm:978-3-540-85051-9/1.pdf}{(B.1)}
   }
 \label{def:opLT}
 %--------------------------------------
@@ -170,7 +171,8 @@ Let $\opLT$, $\fG(s)$, $A$, and $B$ be defined as in \prefpp{thm:opLT_transversa
 %--------------------------------------
 \begin{theorem}
 \footnote{
-  \citerpgc{bracewell1978}{224}{007007013X}{Table 11.1 Theorems for the Laplace Transform}
+  \citerpgc{bracewell1978}{224}{007007013X}{Table 11.1 Theorems for the Laplace Transform},
+  \citerpuc{betten2008H}{296}{https://link.springer.com/content/pdf/bbm:978-3-540-85051-9/1.pdf}{(B.6)}
   }
 \label{thm:opLT_linear}
 %--------------------------------------
@@ -489,6 +491,119 @@ Let $\omega\eqd\Imag(s)$
 \end{enumerate}
 \end{proof}
 
+%=======================================
+\section{Unit step properties}
+%=======================================
+%---------------------------------------
+\begin{definition}
+\footnote{
+  \citerpu{betten2008H}{285}{https://link.springer.com/content/pdf/bbm:978-3-540-85051-9/1.pdf}
+  }
+\label{def:step}
+%---------------------------------------
+The \fnctd{Heaviside step function} $\step(x)$ or \fnctd{unit step function} is defined as
+\defbox{
+  \step(x) \eqd \brbl{\begin{array}{cM}
+    1 & $\forall x\ge0$\\
+    0 & otherwise
+  \end{array}}
+  }
+\end{definition}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citerpgc{bracewell1978}{227}{007007013X}{Table 11.2 Some Laplace transforms}
+  %\citerpuc{vanderpol1959}{13}{https://archive.org/details/in.ernet.dli.2015.141269/page/n23/mode/2up}{5. Strip of convergence of the Laplace integral},
+  %\citerpuc{levy1958}{2}{https://archive.org/details/c_cowles_ieee_Levy/page/n5/mode/2up}{``two-sided transformation"}
+  }
+\label{thm:opLT_step}
+%---------------------------------------
+Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
+and $\step(x)$ the \fncte{unit step} function.
+\thmbox{\begin{array}{>{\ds}lc>{\ds}l         Dl                                   C                 }
+    \mc{3}{N}{Transform}                    & \mc{2}{|N}{Radius of Convergence} & \mc{1}{|N}{Domain}
+  \\\hline
+    \opLT\brs{\step(x)}     &=& \frac{1}{s} & for & \Real(s) > 0                      & \forall x\in\R
+\end{array}}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \opLT\brs{\step(x)} 
+    &\eqd \int_\R \step(x) e^{-sx}\dx
+    && \text{by definition of $\opLT$}
+    && \text{\xref{def:opLT}}
+  \\&= \int_0^{\infty}  e^{-sx}\dx
+    && \text{by definition of $\step(x)$}
+    && \text{\xref{def:step}}
+  \\&= \brlr{\frac{e^{-sx}}{-s}}_0^{\infty}
+    && \text{by \thme{Fundamental Theorem of Calculus}}
+  \\&= \lim_{x\to\infty}\brs{\frac{e^{-sx}}{-s}} - \brp{\frac{e^0}{-s}}
+  \\&= 0 + \frac{1}{s}
+    && \forall\Real(s) > 0
+  \\&= \frac{1}{s} 
+    && \forall\Real(s) > 0
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\footnote{
+  \citerpgc{bracewell1978}{227}{007007013X}{Table 11.2 Some Laplace transforms}
+  %\citerpuc{vanderpol1959}{13}{https://archive.org/details/in.ernet.dli.2015.141269/page/n23/mode/2up}{5. Strip of convergence of the Laplace integral},
+  %\citerpuc{levy1958}{2}{https://archive.org/details/c_cowles_ieee_Levy/page/n5/mode/2up}{``two-sided transformation"}
+  }
+\label{cor:opLT_step}
+%---------------------------------------
+Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
+and $\step(x)$ the \fncte{unit step} function.
+\corbox{\begin{array}{>{\ds}lc>{\ds}c     D     l                             C }
+    \mc{3}{N}{Transform}                & \mc{2}{|N}{Radius of Convergence} & \mc{1}{|N}{Domain}
+  \\\hline
+    \opLT\brs{\step(x)\cos(\omega_o x)}  &=& \frac{s}{s^2+\omega_o^2}         & for & \Real(s) > 0 & x,\omega_o\in\R
+  \\\opLT\brs{\step(x)\sin(\omega_o x)}  &=& \frac{\omega_o}{s^2+\omega_o^2}  & for & \Real(s) > 0 & x,\omega_o\in\R
+  \\\opLT\brs{\step(-x)}                 &=& \frac{-1}{s}                     & for & \Real(s) < 0 & x\in\R
+  \\\opLT\brs{\step(-x)\cos(\omega_o x)} &=& \frac{-s}{s^2+\omega_o^2}        & for & \Real(s) < 0 & x,\omega_o\in\R
+  \\\opLT\brs{\step(-x)\sin(\omega_o x)} &=& \frac{-\omega_o}{s^2+\omega_o^2} & for & \Real(s) < 0 & x,\omega_o\in\R
+\end{array}}
+\end{corollary}
+\begin{proof}
+\begin{align*}
+  \opLT\brs{\step(x)\cos(\omega_o x)} 
+    &= \frac{1}{2}\brs{\frac{1}{s-i\omega_o}} + \frac{1}{2}\brs{\frac{1}{s+i\omega_o}}
+    && \Real(s) > 0
+    && \text{by \prefp{cor:opLT_mod}, \pref{thm:opLT_step}}
+  \\&= \frac{s}{s^2+\omega_o^2}
+    && \Real(s) > 0
+  \\
+  \opLT\brs{\step(x)\sin(\omega_o x)} 
+    &= -\frac{i}{2}\brs{\frac{1}{s-i\omega_o}} + \frac{i}{2}\brs{\frac{1}{s+i\omega_o}}
+    && \Real(s) > 0
+    && \text{by \prefp{cor:opLT_mod}, \pref{thm:opLT_step}}
+  \\&= \frac{\omega_o}{s^2+\omega_o^2}
+    && \Real(s) > 0
+  \\
+  \opLT\brs{\step(-x)} 
+    &= \frac{-1}{s}
+    && \Real(s) < 0
+    && \text{by \ope{reversal} property \xref{cor:opLT_transversal} and \pref{thm:opLT_step}}
+  \\
+  \opLT\brs{\step(-x)\cos(\omega_o x)} 
+    &= \frac{1}{2}\brs{\frac{-1}{s-i\omega_o}} + \frac{1}{2}\brs{\frac{-1}{s+i\omega_o}}
+    && \Real(s) < 0
+    && \text{by \prefp{cor:opLT_mod}}
+  \\&= \frac{-s}{s^2+\omega_o^2}
+    && \Real(s) < 0
+  \\
+  \opLT\brs{\step(x)\sin(\omega_o x)} 
+    &= -\frac{i}{2}\brs{\frac{-1}{s-i\omega_o}} + \frac{i}{2}\brs{\frac{-1}{s+i\omega_o}}
+    && \Real(s) < 0
+    && \text{by \prefp{cor:opLT_mod}}
+  \\&= \frac{-\omega_o}{s^2+\omega_o^2}
+    && \Real(s) < 0
+\end{align*}
+\end{proof}
+
 %======================================
 \section{Product properties}
 \label{sec:opLT_conv}
@@ -556,6 +671,9 @@ Let $A$, $B$, $C$, and $D$ be defined as in \prefpp{cor:opLT_linear}.
 %=======================================
 %---------------------------------------
 \begin{theorem}
+\footnote{
+  \citerpuc{betten2008L}{301}{https://link.springer.com/content/pdf/bbm:978-3-540-85051-9/1.pdf}{(B.27)}
+  }
 \label{thm:opLT_diff}
 \label{thm:opLT_int}
 %---------------------------------------
@@ -621,5 +739,4 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
 \end{enumerate}
 \end{enumerate}
 \end{proof}
-
 
