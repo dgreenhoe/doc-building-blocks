@@ -299,7 +299,7 @@ and the \structe{radius of convergence} of $\fF(s)$ be $C\leq\Real(s)\leq D$.
 \end{proof}
 
 %=======================================
-\section{Windowing properties}
+\section{Causality properties}
 %=======================================
 %---------------------------------------
 \begin{definition}
@@ -511,25 +511,32 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
 \end{align*}
 \end{proof}
 
+%=======================================
+\section{Exponential decay properties}
+%=======================================
 %---------------------------------------
 \begin{corollary}
 \footnote{
-  \citerpgc{bracewell1978}{227}{007007013X}{Table 11.2 Some Laplace transforms}
+  \citerpgc{bracewell1978}{227}{007007013X}{Table 11.2 Some Laplace transforms},
+  \citerpcu{levy1958}{19}{with $\psi=0$, $\alpha_0=\alpha$, and $\alpha_1=1$}{https://archive.org/details/c_cowles_ieee_Levy/page/n21/},
+  \url{http://ece-research.unm.edu/bsanthan/ece541/table_ME.pdf}
+  %\url{https://ethz.ch/content/dam/ethz/special-interest/baug/ibk/structural-mechanics-dam/education/identmeth/fourier.pdf}
   }
 \label{cor:opLT_expabs}
 %---------------------------------------
 Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
 and $\step(x)$ the \fncte{unit step} function.
-\corbox{\begin{array}{>{\ds}lc>{\ds}l                                    D     l                                                    C }
-    \mc{3}{N}{Transform}                                               & \mc{2}{|N}{Radius of Convergence}                        & \mc{1}{|N}{Domain}
+\corbox{\begin{array}{F>{\ds}lc>{\ds}l                                    D     l                                                    C }
+    &\mc{3}{N}{Transform}                                               & \mc{2}{|N}{Radius of Convergence}                        & \mc{1}{|N}{Domain}
   \\\hline
-    \opLT\brs{e^{-\alpha\abs{x}}}  &=& \frac{2\alpha}{\alpha^2 - s^2}  & for & \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)} & x,\alpha\in\R
-  \\
-    \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}}  &=& \frac{s+\alpha}{(s+\alpha)^2 + \omega_o^2} +  \frac{-s+\alpha}{(s-\alpha)^2 + \omega_o^2}  & for & \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)} & x,\alpha\in\R
+    (1).& \opLT\brs{e^{-\alpha\abs{x}}}  &=& \frac{2\alpha}{\alpha^2 - s^2}  & for & \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)} & x,\alpha\in\R
+  \\(2).& \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}\step( x)}  &=& \frac{ s+\alpha}{(s+\alpha)^2 + \omega_o^2}  & for & \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)} & x,\alpha\in\R
+  \\(3).& \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}\step(-x)}  &=& \frac{-s+\alpha}{(s-\alpha)^2 + \omega_o^2}  & for & \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)} & x,\alpha\in\R
+  \\(4).& \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}         }  &=& \frac{ s+\alpha}{(s+\alpha)^2 + \omega_o^2} +  \frac{-s+\alpha}{(s-\alpha)^2 + \omega_o^2}  & for & \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)} & x,\alpha\in\R
 \end{array}}
 \end{corollary}
 \begin{proof}
-{\begin{align*}
+\begin{align*}
   \opLT\brs{e^{-\alpha\abs{x}}}
     &\eqd \int_\R e^{-\alpha\abs{x}} e^{-sx} \dx
     && \text{by definition of $\opLT$}
@@ -541,18 +548,40 @@ and $\step(x)$ the \fncte{unit step} function.
   \\&= \mathrlap{
        \mcom{\opLT\brs{\step( x) e^{-\alpha x}}}{$\forall\Real(s)\in\intoo{0-\Real(\alpha)}{\infty-\Real(\alpha)}$}
      + \mcom{\opLT\brs{\step(-x) e^{ \alpha x}}}{$\forall\Real(s)\in\intoo{\Real(\alpha)-\infty}{\Real(\alpha)-0}$}
+       \qquad\begin{array}{MM}
+         by&\prefp{thm:opLT_mod} and\\
+           &\prefp{thm:opLT_step}
+       \end{array}
        }
    %&& \forall\Real(s)\in\intoo{0-\Real(\alpha)}{\infty-\Real(\alpha)}\seti\intoo{\Real(\alpha)-\infty}{\Real(\alpha)-0}
    %&& \text{by definition of $\opLT$}
    %&& \text{\xref{def:opLT}}
   \\&= \brs{\frac{1}{s+\alpha}} + \brs{\frac{-1}{s-\alpha}}
     && \forall\Real(s)\in\intoo{-\Real(\alpha)}{\Real(\alpha)}
-    && \text{by \prefp{thm:opLT_step} and \prefp{thm:opLT_mod}}
+    && \text{by \pref{thm:opLT_step} and \pref{thm:opLT_mod}}
   \\&= \frac{(s-\alpha)-(s+\alpha)}{(s+\alpha)(s-\alpha)}
     && \forall\Real(s)\in\intoo{-\Real(\alpha)}{\Real(\alpha)}
   \\&= \frac{2\alpha}{\alpha^2 - s^2}
     && \forall\Real(s)\in\intoo{-\Real(\alpha)}{\Real(\alpha)}
+  \end{align*}
+
+  \begin{align*}
+    \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}\step(x)}
+      &= \opLT\brs{\cos( \omega_o x)e^{-\alpha x}\step( x)}
+      && \text{by definition of $\step(x)$}
+      && \text{\xref{def:step}}
+    \\&= \frac{s+\alpha}{(s+\alpha)^2 + \omega_o^2}
+      && \forall \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)}
+      && \text{by \prefp{cor:opLT_step} and \prefp{thm:opLT_mod}}
   \\\\
+    \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}\step(-x)}
+      &= \opLT\brs{\cos(-\omega_o x)e^{ \alpha x}\step(-x)}
+    \\&= \frac{-s+\alpha}{(s-\alpha)^2 + \omega_o^2}
+      && \forall \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)}
+      && \text{by \prefp{cor:opLT_step} and \prefp{thm:opLT_mod}}
+\end{align*}
+
+\begin{align*}
     \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}}
       &= \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}\step(x)}
        + \opLT\brs{\cos(\omega_o x)e^{-\alpha\abs{x}}\step(-x)}
@@ -560,48 +589,48 @@ and $\step(x)$ the \fncte{unit step} function.
        + \opLT\brs{\cos(-\omega_o x)e^{ \alpha x}\step(-x)}
     \\&= \frac{s+\alpha}{(s+\alpha)^2 + \omega_o^2} +  \frac{-s+\alpha}{(s-\alpha)^2 + \omega_o^2}
       && \forall \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)}
-\end{align*}}
-\end{proof}
+\end{align*}
+%\end{proof}
 
-%-------------------------------------
-\begin{example}
-\footnote{
-  \citerpcu{levy1958}{19}{with $\psi=0$, $\alpha_0=\alpha$, and $\alpha_1=1$}{https://archive.org/details/c_cowles_ieee_Levy/page/n21/},
-  \url{http://ece-research.unm.edu/bsanthan/ece541/table_ME.pdf},
-  %\url{https://ethz.ch/content/dam/ethz/special-interest/baug/ibk/structural-mechanics-dam/education/identmeth/fourier.pdf}
-  }
-\label{ex:opLT_cosexp}
-%-------------------------------------
-Let $\omega\eqd\Imag(s)$
-(let $\omega$ be the \fncte{imaginary part} of the complex variable $s$).
-\exbox{\begin{array}{>{\ds}rc>{\ds}lM}
-  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(x)}
-    &=& \frac{s+\alpha}{(s+\alpha)^2 + \beta^2}
-      & for $\Real(s)>-\alpha$
-  \\
-  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(-x)}
-    &=& \frac{-s+\alpha}{(s-\alpha)^2 + \beta^2}
-      & for $\Real(s)<\alpha$
-\end{array}}
-\end{example}
-\begin{proof}
+%%-------------------------------------
+%\begin{example}
+%\footnote{
+%  \citerpcu{levy1958}{19}{with $\psi=0$, $\alpha_0=\alpha$, and $\alpha_1=1$}{https://archive.org/details/c_cowles_ieee_Levy/page/n21/},
+%  \url{http://ece-research.unm.edu/bsanthan/ece541/table_ME.pdf},
+%  %\url{https://ethz.ch/content/dam/ethz/special-interest/baug/ibk/structural-mechanics-dam/education/identmeth/fourier.pdf}
+%  }
+%\label{ex:opLT_cosexp}
+%%-------------------------------------
+%Let $\omega\eqd\Imag(s)$
+%(let $\omega$ be the \fncte{imaginary part} of the complex variable $s$).
+%\exbox{\begin{array}{>{\ds}rc>{\ds}lM}
+%  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(x)}
+%    &=& \frac{s+\alpha}{(s+\alpha)^2 + \beta^2}
+%      & for $\Real(s)>-\alpha$
+%  \\
+%  \opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(-x)}
+%    &=& \frac{-s+\alpha}{(s-\alpha)^2 + \beta^2}
+%      & for $\Real(s)<\alpha$
+%\end{array}}
+%\end{example}
+%\begin{proof}
 \begin{enumerate}
-  \item lemma: \label{ilem:opLT_cosexpstep}
-    \\$\begin{array}{>{\ds}rclM}
-         \lim_{x\to\infty}\brs{\frac{e^{(-s -\alpha \pm i\beta)x}}{-s -\alpha \pm i\beta}}
-           &=& \brbl{\begin{array}{lMM}
-                 0      & if $\Real(s)>-\alpha$ \\
-                 \infty & otherwise  & (diverges)
-               \end{array}}
-         \\
-         \lim_{x\to-\infty}\brs{\frac{e^{(-s +\alpha \pm i\beta)x}}{-s +\alpha \pm i\beta}}
-           &=& \brbl{\begin{array}{lMM}
-                 0      & if $\Real(s)<\alpha$ \\
-                 \infty & otherwise  & (diverges)
-               \end{array}}
-       \end{array}$
+%  \item lemma: \label{ilem:opLT_cosexpstep}
+%    \\$\begin{array}{>{\ds}rclM}
+%         \lim_{x\to\infty}\brs{\frac{e^{(-s -\alpha \pm i\beta)x}}{-s -\alpha \pm i\beta}}
+%           &=& \brbl{\begin{array}{lMM}
+%                 0      & if $\Real(s)>-\alpha$ \\
+%                 \infty & otherwise  & (diverges)
+%               \end{array}}
+%         \\
+%         \lim_{x\to-\infty}\brs{\frac{e^{(-s +\alpha \pm i\beta)x}}{-s +\alpha \pm i\beta}}
+%           &=& \brbl{\begin{array}{lMM}
+%                 0      & if $\Real(s)<\alpha$ \\
+%                 \infty & otherwise  & (diverges)
+%               \end{array}}
+%       \end{array}$
 
-  \item
+  \item Alternate proof (more direct):
     \begin{align*}
       &\boxed{\opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(x)}}
       \\&\eqd \int_{\R} \cos(\beta x)e^{-\alpha\abs{x}} e^{-s x} \step(x)\dx
@@ -629,7 +658,7 @@ Let $\omega\eqd\Imag(s)$
         && \Real(s)>-\alpha
     \end{align*}
 
-  \item
+  \item  Alternate proof:
     \begin{align*}
       \boxed{\opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}\step(-x)}}
         &= \opLT\brs{\cos(-\beta x)e^{-\alpha\abs{-x}}\step(-x)}
@@ -654,7 +683,7 @@ Let $\omega\eqd\Imag(s)$
                \end{array}}
        \end{array}$
 
-  \item Main proof:
+  \item Alternate proof:
     \begin{align*}
       \boxed{\opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}}
         &\eqd \int_{\R} \cos(\beta x)e^{-\alpha\abs{x}} e^{-s x}\dx
@@ -694,71 +723,71 @@ Let $\omega\eqd\Imag(s)$
 \end{enumerate}
 \end{proof}
 
-%-------------------------------------
-\begin{example}
-\label{ex:opLT_sinexp}
-%-------------------------------------
-Let $\omega\eqd\Imag(s)$
-(let $\omega$ be the \fncte{imaginary part} of the complex variable $s$).
-\exbox{
-  \opLT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}
-    = \brbl{\begin{array}{>{\ds}lMD}
-                0 & for $\Real(s)\in\intoo{-\alpha}{\alpha}$
-              &%(radius of convergence)
-              \\
-              \text{$\pm\infty$ (\prope{divergent})}
-              & otherwise
-              &
-            \end{array}}
- }
-\end{example}
-\begin{proof}
-\begin{enumerate}
-  \item lemma: \label{ilem:opLT_sinexp}
-    \\$\begin{array}{>{\ds}rclM}
-         \lim_{x\to-\infty}\brs{e^{(-s + \alpha + i\beta)x} - e^{(s + \alpha -i\beta)x}}
-           &=& \brbl{\begin{array}{lMD}
-                 0      & if $v\eqd\Real(s)\in\intoo{-\alpha}{\alpha}$ & (radius of convergence is $\intoo{-\alpha}{\alpha}$)\\
-                 \pm\infty & otherwise                                    & (diverges)
-               \end{array}}
-         \\
-         \lim_{x\to\infty}\brs{e^{(-s -\alpha + i\beta)x} - e^{(s -\alpha -i\beta)x}}
-           &=& \brbl{\begin{array}{lMD}
-                 0      & if $v\eqd\Real(s)\in\intoo{-\alpha}{\alpha}$ & (radius of convergence is $\intoo{-\alpha}{\alpha}$)\\
-                 \pm\infty & otherwise                                    & (diverges)
-               \end{array}}
-       \end{array}$
-
-  \item Main proof:
-    \begin{align*}
-      \boxed{\opLT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}}
-        &\eqd \int_{\R} \sin(\beta x)e^{-\alpha\abs{x}} e^{-s x}\dx
-        && \text{by def. of $\opLT$}&& \text{\xref{def:opLT}}
-      \\&= \int_{\R} \brs{\frac{e^{i\beta x}-e^{-i\beta x}}{2i}} e^{-\alpha\abs{x}} e^{-s x}\dx
-        &&  \text{by \thme{Euler's Identity}}&&\text{\xref{thm:eid}}
-      \\&= \frac{1}{2i}\int_{\R} \brs{e^{-\alpha\abs{x}+i\beta x -sx}-e^{-\alpha\abs{x}-i\beta x-sx}} \dx
-      \\&= \mathrlap{
-           \frac{1}{2i}\int_{-\infty}^{0} \brs{e^{(-s + \alpha +i\beta)x} - e^{(-s + \alpha -i\beta)x}} \dx
-         + \frac{1}{2i}\int_{0}^{\infty}  \brs{e^{(-s - \alpha +i\beta)x} - e^{(-s - \alpha -i\beta)x}} \dx
-           }
-      \\&= \mathrlap{
-           \frac{1}{2i} \brs{\frac{e^{(-s + \alpha +i\beta)x}}{-s +\alpha +i\beta} - \frac{e^{(s +\alpha - i\beta)x}}{s + \alpha -i\beta}}_{-\infty}^{0}
-         + \frac{1}{2i} \brs{\frac{e^{(-s - \alpha +i\beta)x}}{-s -\alpha +i\beta} - \frac{e^{(s -\alpha - i\beta)x}}{s - \alpha -i\beta}}_{0}^{\infty}
-           }
-       %&& \text{by Fundamental Theorem of Calculus}
-      \\&= \mathrlap{
-           \frac{1}{2i} \brs{           \frac{1}{-s + \alpha +i\beta} - \frac{1}{ s+ \alpha -i\beta} - (0+0)}
-         + \frac{1}{2i} \brs{(0+0)-\brp{\frac{1}{-s - \alpha +i\beta} - \frac{1}{ s -\alpha -i\beta}}       }
-           }
-      \\&\indentx\text{by \pref{ilem:opLT_sinexp}}
-      \\&= \mathrlap{
-           \frac{1}{2i} \brs{ \frac{1}{-s + \alpha +i\beta} + \frac{ 1}{ s -\alpha -i\beta}  }
-         + \frac{1}{2i} \brs{\frac{-1}{ s + \alpha -i\beta} + \frac{-1}{-s- \alpha +i\beta}  }
-           }
-      \\&= 0
-    \end{align*}
-\end{enumerate}
-\end{proof}
+%%-------------------------------------
+%\begin{example}
+%\label{ex:opLT_sinexp}
+%%-------------------------------------
+%Let $\omega\eqd\Imag(s)$
+%(let $\omega$ be the \fncte{imaginary part} of the complex variable $s$).
+%\exbox{
+%  \opLT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}
+%    = \brbl{\begin{array}{>{\ds}lMD}
+%                0 & for $\Real(s)\in\intoo{-\alpha}{\alpha}$
+%              &%(radius of convergence)
+%              \\
+%              \text{$\pm\infty$ (\prope{divergent})}
+%              & otherwise
+%              &
+%            \end{array}}
+% }
+%\end{example}
+%\begin{proof}
+%\begin{enumerate}
+%  \item lemma: \label{ilem:opLT_sinexp}
+%    \\$\begin{array}{>{\ds}rclM}
+%         \lim_{x\to-\infty}\brs{e^{(-s + \alpha + i\beta)x} - e^{(s + \alpha -i\beta)x}}
+%           &=& \brbl{\begin{array}{lMD}
+%                 0      & if $v\eqd\Real(s)\in\intoo{-\alpha}{\alpha}$ & (radius of convergence is $\intoo{-\alpha}{\alpha}$)\\
+%                 \pm\infty & otherwise                                    & (diverges)
+%               \end{array}}
+%         \\
+%         \lim_{x\to\infty}\brs{e^{(-s -\alpha + i\beta)x} - e^{(s -\alpha -i\beta)x}}
+%           &=& \brbl{\begin{array}{lMD}
+%                 0      & if $v\eqd\Real(s)\in\intoo{-\alpha}{\alpha}$ & (radius of convergence is $\intoo{-\alpha}{\alpha}$)\\
+%                 \pm\infty & otherwise                                    & (diverges)
+%               \end{array}}
+%       \end{array}$
+%
+%  \item Main proof:
+%    \begin{align*}
+%      \boxed{\opLT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}}
+%        &\eqd \int_{\R} \sin(\beta x)e^{-\alpha\abs{x}} e^{-s x}\dx
+%        && \text{by def. of $\opLT$}&& \text{\xref{def:opLT}}
+%      \\&= \int_{\R} \brs{\frac{e^{i\beta x}-e^{-i\beta x}}{2i}} e^{-\alpha\abs{x}} e^{-s x}\dx
+%        &&  \text{by \thme{Euler's Identity}}&&\text{\xref{thm:eid}}
+%      \\&= \frac{1}{2i}\int_{\R} \brs{e^{-\alpha\abs{x}+i\beta x -sx}-e^{-\alpha\abs{x}-i\beta x-sx}} \dx
+%      \\&= \mathrlap{
+%           \frac{1}{2i}\int_{-\infty}^{0} \brs{e^{(-s + \alpha +i\beta)x} - e^{(-s + \alpha -i\beta)x}} \dx
+%         + \frac{1}{2i}\int_{0}^{\infty}  \brs{e^{(-s - \alpha +i\beta)x} - e^{(-s - \alpha -i\beta)x}} \dx
+%           }
+%      \\&= \mathrlap{
+%           \frac{1}{2i} \brs{\frac{e^{(-s + \alpha +i\beta)x}}{-s +\alpha +i\beta} - \frac{e^{(s +\alpha - i\beta)x}}{s + \alpha -i\beta}}_{-\infty}^{0}
+%         + \frac{1}{2i} \brs{\frac{e^{(-s - \alpha +i\beta)x}}{-s -\alpha +i\beta} - \frac{e^{(s -\alpha - i\beta)x}}{s - \alpha -i\beta}}_{0}^{\infty}
+%           }
+%       %&& \text{by Fundamental Theorem of Calculus}
+%      \\&= \mathrlap{
+%           \frac{1}{2i} \brs{           \frac{1}{-s + \alpha +i\beta} - \frac{1}{ s+ \alpha -i\beta} - (0+0)}
+%         + \frac{1}{2i} \brs{(0+0)-\brp{\frac{1}{-s - \alpha +i\beta} - \frac{1}{ s -\alpha -i\beta}}       }
+%           }
+%      \\&\indentx\text{by \pref{ilem:opLT_sinexp}}
+%      \\&= \mathrlap{
+%           \frac{1}{2i} \brs{ \frac{1}{-s + \alpha +i\beta} + \frac{ 1}{ s -\alpha -i\beta}  }
+%         + \frac{1}{2i} \brs{\frac{-1}{ s + \alpha -i\beta} + \frac{-1}{-s- \alpha +i\beta}  }
+%           }
+%      \\&= 0
+%    \end{align*}
+%\end{enumerate}
+%\end{proof}
 
 %======================================
 \section{Product properties}
