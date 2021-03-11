@@ -1314,7 +1314,8 @@ Let $A$, $B$, $C$, and $D$ be defined as in \prefpp{cor:opLT_linear}.
         \brs{\opLT\fg}(s)
    \\&= \brs{\opLT\ff}(s)\;  \brs{\opLT\fg}(s)
      && \Real(s)\in\intcc{A}{B}\seti\intcc{C}{D}
-     && \text{by definition of $\opLT$ \xref{def:opLT}}
+     && \text{by definition of $\opLT$}
+   \\
    \\
    \opLT[\ff(x)\fg(x)](s)
      &= \opLT\brs{\brp{\opLT^{-1}\opLT\ff(x)}\;\fg(x)}(s)
@@ -1343,64 +1344,47 @@ Let $A$, $B$, $C$, and $D$ be defined as in \prefpp{cor:opLT_linear}.
 %---------------------------------------
 Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
 \thmbox{\begin{array}{>{\ds}r c >{\ds}rc>{\ds}l}
-  \brb{\lim_{t\to-\infty}\fx(t)=0} &\implies&
-     \brb{\opLT \brs{\ddt \fx(t)}} &=& s \brs{\opLT\fx}(s)
+  \brb{\lim_{x\to-\infty}\fg(x)=0} &\implies&
+     \brb{\opLT \brs{\ddt \fg(x)}} &=& s \brs{\opLT\fg}(s)
     \\&&
-    \opLT \int_{u=-\infty}^{u=t} \fx(u) \du &=& \frac{1}{s} \brs{\opLT\fx}(s)
+    \opLT \int_{u=-\infty}^{u=x} \fg(u) \du &=& \frac{1}{s} \brs{\opLT\fg}(s)
 \end{array}}
 \end{theorem}
 \begin{proof}
-\begin{enumerate}
-  \item
-\begin{align*}
-  \boxed{\opLT \brs{\ddt \fx(t)}}
-    &\eqd \int_{t\in\R} \mcom{\brs{\ddt \fx(t)}}{$\dv$} \mcom{e^{-st}}{$u$} \dt
-    && \text{by definition of $\opLT$}
-  \\&= \brlr{\mcom{e^{-st}}{$u$} \mcom{\fx(t)}{$v$}}_{t=-\infty}^{t=+\infty}
-      -\int_{t\in\R} \mcom{\fx(t)}{$v$} \mcom{(-s)e^{-s t}}{$\du$} \dt
-    && \text{by \thme{Integration by Parts}}
-  \\&= \cancelto{0}{e^{-s \infty}}\fx(\infty) - e^{s \infty}\cancelto{0}{\fx(-\infty)}
-      -(-s)\mcom{\int_{t\in\R} \fx(t) e^{-st} \dt}{\ope{Laplace Transform} of $\fx(t)$}
-    && \text{by left hypothesis}
-  \\&= \boxed{s \brs{\opLT\fx}(s)}
-\end{align*}
+  \begin{align*}
+    \opLT \brs{\ddx \fg(x)}
+      &\eqd \int_{x\in\R} \mcom{\brs{\ddx \fg(x)}}{$\dv$} \mcom{e^{-sx}}{$u$} \dx
+      && \text{by definition of $\opLT$}
+    \\&= \brlr{\mcom{e^{-sx}}{$u$} \mcom{\fg(x)}{$v$}}_{x=-\infty}^{x=+\infty}
+        -\int_{x\in\R} \mcom{\fg(x)}{$v$} \mcom{(-s)e^{-s x}}{$\du$} \dx
+      && \text{by \thme{Integration by Parts}}
+    \\&= \cancelto{0}{e^{-s \infty}}\fg(\infty) - e^{s \infty}\cancelto{0}{\fg(-\infty)}
+        -(-s)\int_{x\in\R} \fg(x) e^{-sx} \dx
+      && \text{by left hypothesis}
+    \\&\eqd s \brs{\opLT\fg}(s)
+      && \text{by definition of $\opLT$}
+      && \text{\xref{def:opLT}}
+  \end{align*}
 
-  \item
-\begin{enumerate}
-  \item Define the \fncte{Heaviside function} $\fh(t)$ as\qquad \label{idef:heaviside}
-    $\ds \fh(t)\eqd\brbl{\begin{array}{lM}
-                           1 & for $t\ge0$
-                         \\0 & otherwise
-                         \end{array}}$
-
-  \item Remainder of proof\ldots
-    \begin{align*}
-      \boxed{\opLT \int_{u=-\infty}^{u=t} \fx(u) \du}
-        &\eqd \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=t} \fx(u) \du} e^{-s t} \dt
-        && \text{by definition of $\opLT$}
-      \\&= \int_{t=-\infty}^{t=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fx(u) \fh(t-u) \du} e^{-s t} \dt
-        && \brp{\begin{array}{M}
-             by definition of \fncte{Heaviside function}\\
-             \pref{idef:heaviside}
-           \end{array}}
-      \\&= \int_{v=-\infty}^{v=+\infty} \int_{u=-\infty}^{u=+\infty} \fx(u) \fh(v)  e^{-s (u+v)} \du \dv
-        && \brp{\begin{array}{Mr@{\hspace{2pt}}c@{\hspace{2pt}}l}
-             where      & v&\eqd&t-u\\
-             $\implies$ & t&=&u+v
-           \end{array}}
-      \\&= \brs{\int_{v=-\infty}^{v=+\infty} \fh(v) e^{-s v} \dv}
-            \mcom{\brs{\int_{u=-\infty}^{u=+\infty} \fx(u)   e^{-s u} \du }}
-                 {\ope{Laplace Transform} of $\fx(t)$}
-      \\&= \brs{\int_{v=0}^{v=\infty} e^{-s v} \dv} \brs{\opLT\fx}(s)
-        && \brp{\begin{array}{M}
-             by definition of \fncte{Heaviside function}\\
-             \pref{idef:heaviside}
-           \end{array}}
-      \\&= \brlr{\frac{1}{-s}e^{-s v}}_{v=0}^{v=\infty} \brs{\opLT\fx}(s)
-        && \text{by \thme{Fundamental Theorem of Calculus}}
-      \\&= \boxed{\frac{1}{s} \brs{\opLT\fx}(s)}
-    \end{align*}
-\end{enumerate}
-\end{enumerate}
+  \begin{align*}
+    \opLT \int_{u=-\infty}^{u=x} \fg(u) \du
+      &\eqd \int_{x=-\infty}^{x=+\infty} \brs{\int_{u=-\infty}^{u=x} \fg(u) \du} e^{-s x} \dx
+      && \text{by definition of $\opLT$}
+    \\&= \int_{x=-\infty}^{x=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fg(u) \step(x-u) \du} e^{-s x} \dx
+    \\&= \int_{v=-\infty}^{v=+\infty} \int_{u=-\infty}^{u=+\infty} \fg(u) \fh(v)  e^{-s (u+v)} \du \dv
+      && \brp{\begin{array}{Mr@{\hspace{2pt}}c@{\hspace{2pt}}l}
+           where      & v&\eqd&x-u\\
+           $\implies$ & x&=&u+v
+         \end{array}}
+    \\&= \brs{\int_{v=-\infty}^{v=+\infty} \step(v) e^{-s v} \dv}
+          \mcom{\brs{\int_{u=-\infty}^{u=+\infty} \fg(u)   e^{-s u} \du }}
+               {\ope{Laplace Transform} of $\fg(x)$}
+    \\&= \brs{\int_{v=0}^{v=\infty} e^{-s v} \dv} \brs{\opLT\fg}(s)
+    \\&= \brlr{\frac{1}{-s}e^{-s v}}_{v=0}^{v=\infty} \brs{\opLT\fg}(s)
+      && \mathrlap{\text{by \thme{Fundamental Theorem of Calculus}}}
+    \\&= \frac{1}{s} \brs{\opLT\fg}(s)
+      && \text{by definition of $\opLT$}
+      && \text{\xref{def:opLT}}
+  \end{align*}
 \end{proof}
 
