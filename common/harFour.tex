@@ -55,11 +55,12 @@
 \section{Introduction}
 %======================================
 Historically, before the Fourier Transform was the Taylor Expansion (transform).
-The Taylor Expansion demonstrates that for \propb{analytic} functions
+The Taylor Expansion demonstrates that for \propb{analytic} functions,
 knowledge of the derivatives of a function at a location $x=a$
-allows you to determine (predict) arbitrarily closely all the points $\ff(x)$ in the vicinity of $x=a$ \xref{chp:taylor}.
+allows you to determine (predict) arbitrarily closely all the points $\ff(x)$
+in the vicinity of $x=a$\ifsxref{taylor}{chp:taylor}.
 But analytic functions are by definition functions for which all their derivatives exist.
-Thus, if a function is \prope{discontinuous}, it is simply not a candidate for a Taylor Expansion.
+Thus, if a function is \prope{discontinuous}, it is simply not a candidate for the Taylor Expansion.
 And some 300 years ago, mathematician giants of the day were fairly content with this.
 
 But then in came an engineer named Joseph Fourier whose day job was working as a governor of lower Egypt under Napolean.
@@ -89,7 +90,7 @@ But over time (on the order of 200 or so years), the Fourier Transform has in ma
 This chapter deals with the \ope{Fourier Transform} in the space of
 \structe{Lebesgue square-integrable functions} $\spLLRBu$,
 where $\R$ is the set of real numbers, $\borel$ is the set of \structe{Borel sets} on $\R$,
-$\msm$ is the standard \fncte{Borel measure} on $\B$, and
+$\msm$ is the standard \fncte{Borel measure} on $\borel$, and
 \\\indentx$\ds\spLLRBu\eqd\set{\ff\in\clFrr}{\int_\R \abs{\ff}^2 \dmu < \infty}$.\\
 Furthermore, $\inprodn$ is the \fncte{inner product} induced by the operator $\int_\R\dmu$ such that
 \\\indentx$\ds\inprod{\ff}{\fg} \eqd \int_{\R}\ff(x)\fg^\ast(x)\dx$,\\
@@ -329,9 +330,9 @@ is \prop{unitary} (\prefp{cor:ft_unitary}) and from
 the properties of \prop{unitary} operators\ifdochas{operator}{ (\prefp{thm:unitary_prop})}.
 \end{proof}
 
-%======================================
-\section{Shift relations}
-%======================================
+%=======================================
+\section{Transversal properties}
+%=======================================
 %--------------------------------------
 \begin{theorem}[Shift relations]
 \label{thm:ft_shift}
@@ -347,19 +348,25 @@ Let $\opLT$ be the \ope{Laplace Transform} operator\ifsxref{laplace}{def:opLT}.
 \begin{align*}
   \opFT \brs{\ff(x-y)}(\omega)
     &= \brlr{\opLT \brs{\ff(x-y)}(s)}_{s=i\omega}
-    && \text{by definition of $\opLT$}         && \text{\ifxref{laplace}{def:opLT}}
+    && \text{by definition of $\opLT$}
+    && \text{\ifxref{laplace}{def:opLT}}
   \\&= \brlr{e^{-sy} \;\brs{\opLT \ff(x)}(s)}_{s=i\omega}
-    && \text{by \thme{Laplace shift relation}} && \text{\ifxref{laplace}{thm:opLT_shift}}
+    && \text{by Laplace \prope{translation} property}
+    && \text{\ifxref{laplace}{thm:opLT_shift}}
   \\&= e^{-i\omega y} \;\brs{\opFT \ff(x)}(\omega)
-    && \text{by definition of $\opFT$}         && \text{\xref{def:opFT}}
+    && \text{by definition of $\opFT$}
+    && \text{\xref{def:opFT}}
   \\
   \brs{\opFT\brp{e^{irx} \fg(x)}}(\omega)
     &= \brlr{\brs{\opLT\brp{e^{irx} \fg(x)}}(s)}_{s=i\omega}
-    && \text{by definition of $\opLT$}         && \text{\ifxref{laplace}{def:opLT}}
+    && \text{by definition of $\opLT$}
+    && \text{\ifxref{laplace}{def:opLT}}
   \\&= \brlr{\brs{\brs{\opLT\fg(x)}(s-r)}}_{s=i\omega}
-    && \text{by \thme{Laplace shift relation}} && \text{\ifxref{laplace}{thm:opLT_shift}}
+    && \text{by Laplace \prope{dilation} property}
+    && \text{\ifxref{laplace}{thm:opLT_shift}}
   \\&= \brs{\opFT\fg(x)}(\omega-r)
-    && \text{by definition of $\opFT$}         && \text{\xref{def:opFT}}
+    && \text{by definition of $\opFT$}
+    && \text{\xref{def:opFT}}
 \end{align*}
 \end{proof}
 
@@ -372,7 +379,6 @@ Let $\opFT$ be the Fourier Transform operator and $\ast$ represent the complex c
 complex numbers.
 \thmbox{\begin{array}{rclCD}
   \opFT\ff^\ast(-x)                        &=& -\brs{\opFT\ff(x)}^\ast  & \forall\ff\in\spLLRBu\\
-  \text{$\ff$ is real}\implies\Ff(-\omega) &=& \brs{\Ff(\omega)}^\ast  & \forall \omega\in\R   & \prope{reality condition}
 \end{array}}
 \end{theorem}
 \begin{proof}
@@ -385,17 +391,6 @@ complex numbers.
      &&    \text{where $u\eqd-x\implies\dx=-\du$}
    \\&=    -\brs{\frac{1}{\sqrt{2\pi}}\:\int \ff(u) e^{-i\omega u}\du}^\ast
    \\&\eqd -\brs{\opFT\ff(x)}^\ast
-     &&    \text{by definition of $\opFT$}
-     &&    \text{\xref{def:opFT}}
-   \\
-   \Ff(-\omega)
-     &\eqd \frac{1}{\sqrt{2\pi}}\:\int \ff(x) \fkernea{x}{(-\omega)}\dx
-     &&    \text{by definition of $\opFT$}
-     &&    \text{\xref{def:opFT}}
-   \\&=    \brs{\frac{1}{\sqrt{2\pi}}\:\int \ff^\ast(x) \fkernea{x}{\omega}\dx}^\ast
-   \\&=    \brs{\frac{1}{\sqrt{2\pi}}\:\int \ff     (x) \fkernea{x}{\omega}\dx}^\ast
-     &&    \text{by $\ff$ is real hypothesis}
-   \\&\eqd \Ff^\ast(\omega)
      &&    \text{by definition of $\opFT$}
      &&    \text{\xref{def:opFT}}
 \end{align*}
@@ -634,8 +629,8 @@ the \ope{Fourier Transform} of $\ff(x)$.
 Let $\fM_n$ be the \fncte{$n$th moment} \xref{def:Mn_ft} and
 $\Ff(\omega)\eqd\brs{\opFT\ff}(\omega)$ the \fncte{Fourier transform} \xref{def:opFT} of a function $\ff(x)$ in $\spLLR$ \xref{def:spLLR}.
 \lembox{\begin{array}{>{\ds}rc>{\ds}l@{\qquad}C}
-  \fM_n  &=&  \brlr{\sqrt{2\pi}(i)^{n}\opddwn  \Ff(\omega)}_{\omega=0} & \forall n\in\Znn,\,\ff\in\spLLR\\
-  \brlr{\opddwn  \Ff(\omega)}_{\omega=0}  &=& \cft(-i)^n \fM_n         & \forall n\in\Znn,\,\ff\in\spLLR
+  \fM_n  \eqd \int_{\R} x^n \ff(x) \dx &=&  \brlr{\sqrt{2\pi}(i)^{n}\opddwn  \Ff(\omega)}_{\omega=0} & \forall n\in\Znn,\,\ff\in\spLLR\\
+ %\brlr{\opddwn  \Ff(\omega)}_{\omega=0}  &=& \cft(-i)^n \fM_n         & \forall n\in\Znn,\,\ff\in\spLLR
 \end{array}}
 \end{lemma}
 \begin{proof}
@@ -647,7 +642,7 @@ $\Ff(\omega)\eqd\brs{\opFT\ff}(\omega)$ the \fncte{Fourier transform} \xref{def:
     \\&= \left.(i)^n\int_\R \ff(x) \brs{\opddwn    \fkernea{x}{\omega}}\dx\right|_{\omega=0}
     \\&= \left.(i)^n\int_\R \ff(x) \brs{(-i)^n x^n \fkernea{x}{\omega}}\dx\right|_{\omega=0}
     \\&= (-i^2)^n \int_\R \ff(x) x^n \dx
-    \\&= \int_\R \ff(x) x^n \dx
+    \\&= \int_\R x^n \ff(x) \dx
     \\&\eqd \fM_n
       && \text{by definition of $\fM_n$}
       && \text{\xref{def:Mn_ft}}
@@ -1150,77 +1145,99 @@ Let $\setind_\setA(x)$ be the \fncte{set indicator function} \xref{def:setind} o
 \end{array}}
 \end{example}
 \begin{proof}
-\begin{align*}
-  \sqrt{2\pi}\opFT\brs{e^{-\alpha\abs{x}}}
-    &\eqd \brs{\sqrt{2\pi}}\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
-    && \text{by definition Fourier Transform}
-  \\&= \int_{-\infty}^{0} e^{-\alpha(-\tau)} e^{-j\omega\tau}\dtau
-     + \int_{0}^{\infty} e^{-\alpha(\tau)} e^{-j\omega\tau}\dtau
-  \\&= \int_{-\infty}^{0} e^{\tau(\alpha-j\omega)}\dtau
-     + \int_{0}^{\infty} e^{\tau(-\alpha-j\omega)}\dtau
-  \\&= \brlr{\frac{e^{\tau(\alpha-j\omega)}}{\alpha-j\omega}}_{-\infty}^{0}
-     + \brlr{\frac{e^{\tau(-\alpha-j\omega)}}{-\alpha-j\omega}}_{0}^{\infty}
-    && \text{by Fundamental Theorem of Calculus}
-  \\&= \brs{\frac{1}{\alpha-j\omega} - 0}
-     + \brs{0- \frac{1}{-\alpha-j\omega}}
-  \\&= \brs{\frac{1}{\alpha-j\omega}}\brs{\frac{\alpha-j\omega}{\alpha-j\omega}}
-     + \brs{\frac{1}{\alpha+j\omega}}\brs{\frac{\alpha+j\omega}{\alpha+j\omega}}
-  \\&= \frac{\alpha-j\omega}{\alpha^2+\omega^2}
-     + \frac{\alpha+j\omega}{\alpha^2+\omega^2}
-  \\&= \brs{\frac{2\alpha}{\alpha^2+\omega^2}}
-\end{align*}
+\begin{enumerate}
+  \item Proof using \ope{Laplace Transform}:
+    \begin{align*}
+      \sqrt{2\pi}\opFT\brs{e^{-\alpha\abs{x}}}
+        &\eqd \brs{\sqrt{2\pi}}\frac{1}{\sqrt{2\pi}}\int_\R e^{-\alpha\abs{ x}} e^{-i\omega x}\dx
+        && \text{by definition of $\opFT$}
+        && \text{\xref{def:opFT}}
+      \\&= \brs{\int_\R e^{-\alpha\abs{ x}} e^{-s x} \dx}_{s=i\omega}
+      \\&= \brs{\frac{2\alpha}{\alpha^2 - s^2}}_{s=i\omega}
+        && \forall\Real(s) \in \intoo{-\alpha}{\alpha}
+        && \text{by \prefp{cor:opLT_expabs}}
+      \\&= \frac{2\alpha}{\alpha^2 + \omega^2}
+        && \text{because $s=i\omega$ is in $\intoo{-\alpha}{\alpha}$}
+    \end{align*}
+
+  \item Alternate proof:
+    \begin{align*}
+      \sqrt{2\pi}\opFT\brs{e^{-\alpha\abs{x}}}
+        &\eqd \brs{\sqrt{2\pi}}\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} e^{-\alpha\abs{ x}} e^{-i\omega x}\dx
+        && \text{by definition of $\opFT$}
+        && \text{\xref{def:opFT}}
+      \\&= \int_{-\infty}^{0} e^{-\alpha(- x)} e^{-i\omega x}\dx
+         + \int_{0}^{\infty} e^{-\alpha( x)} e^{-i\omega x}\dx
+      \\&= \int_{-\infty}^{0} e^{ x(\alpha-i\omega)}\dx
+         + \int_{0}^{\infty} e^{ x(-\alpha-i\omega)}\dx
+      \\&= \brlr{\frac{e^{ x(\alpha-i\omega)}}{\alpha-i\omega}}_{-\infty}^{0}
+         + \brlr{\frac{e^{ x(-\alpha-i\omega)}}{-\alpha-i\omega}}_{0}^{\infty}
+        && \mathrlap{\text{by Fundamental Theorem of Calculus}}
+      \\&= \brs{\frac{1}{\alpha-i\omega} - 0}
+         + \brs{0- \frac{1}{-\alpha-i\omega}}
+      \\&= \brs{\frac{1}{\alpha-i\omega}}\brs{\frac{\alpha-i\omega}{\alpha-i\omega}}
+         + \brs{\frac{1}{\alpha+i\omega}}\brs{\frac{\alpha+i\omega}{\alpha+i\omega}}
+      \\&= \frac{\alpha-i\omega}{\alpha^2+\omega^2}
+         + \frac{\alpha+i\omega}{\alpha^2+\omega^2}
+      \\&= \brs{\frac{2\alpha}{\alpha^2+\omega^2}}
+    \end{align*}
+  \end{enumerate}
 \end{proof}
 
-%-------------------------------------
-\begin{example}
-\label{ex:coseatau}
-%-------------------------------------
-\exbox{
-  \opFT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
-    = \frac{1}{\sqrt{2\pi}}\brs{\frac{2\alpha}{(\omega-\beta)^2 + \alpha^2}}
-    = \frac{1}{\sqrt{2\pi}}
-       \brs{\frac{2\alpha}
-           {\omega^2 -2\beta\omega + (\alpha^2 + \beta^2)}}
- }
-\end{example}
-\begin{proof}
-\begin{align*}
-  \opFT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
-    &\eqd \frac{1}{\sqrt{2\pi}}\brlr{\opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}}_{s=i\omega}
-    && \text{by definition Fourier Transform}
-    && \text{\xref{def:opFT}}
-  \\&= \frac{1}{\sqrt{2\pi}}\brs{\frac{-2\alpha}{ (s -i\beta)^2 -\alpha^2}}_{s=i\omega}
-    && \text{by \prefp{ex:opLT_cosexp}}
-  \\&= \frac{1}{\sqrt{2\pi}}\brs{\frac{-2\alpha}{ (i\omega -i\beta)^2 -\alpha^2}}
-    && \text{by $s=i\omega\in\intoo{-\alpha}{\alpha}$}
-  \\&= \frac{1}{\sqrt{2\pi}}
-       \brs{\frac{2\alpha}
-                 {(\omega - \beta)^2 + \alpha^2}}
-  \\&= \frac{1}{\sqrt{2\pi}}
-       \brs{\frac{2\alpha}
-                 {\omega^2 -2\beta\omega + (\alpha^2 + \beta^2)}}
-\end{align*}
-\end{proof}
-
-%-------------------------------------
-\begin{example}
-\label{ex:sineatau}
-%-------------------------------------
-\exbox{
-  \opFT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}
-    = 0
- }
-\end{example}
-\begin{proof}
-\begin{align*}
-  \opFT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}
-    &\eqd \frac{1}{\sqrt{2\pi}}\brlr{\opLT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}}_{s=i\omega}
-    && \text{by definition Fourier Transform}
-    && \text{\xref{def:opFT}}
-  \\&= 0
-    && \text{by \prefp{ex:opLT_cosexp}}
-\end{align*}
-\end{proof}
+%%-------------------------------------
+%\begin{example}
+%\label{ex:coseatau}
+%%-------------------------------------
+%\exbox{
+%  \opFT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
+%    = \frac{1}{\sqrt{2\pi}}\brs{\frac{2\alpha}{(\omega-\beta)^2 + \alpha^2}}
+%    = \frac{1}{\sqrt{2\pi}}
+%       \brs{\frac{2\alpha}
+%           {\omega^2 -2\beta\omega + (\alpha^2 + \beta^2)}}
+% }
+%\end{example}
+%\begin{proof}
+%\begin{align*}
+%  \sqrt{2\pi}\opFT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}
+%    &\eqd \sqrt{2\pi}\brs{\frac{1}{\sqrt{2\pi}}}
+%          \brlr{\opLT\brs{\cos(\beta x)e^{-\alpha\abs{x}}}}_{s=i\omega}
+%    && \text{by definition Fourier Transform}
+%    && \text{\xref{def:opFT}}
+%  \\&= \brs{\frac{-2\alpha}{ (s -i\beta)^2 -\alpha^2}}_{s=i\omega}
+%    && \text{by \prefp{cor:opLT_cosabs}}
+%  \\&= \brs{\frac{-2\alpha}{ (i\omega -i\beta)^2 -\alpha^2}}
+%    && \text{by $s=i\omega\in\intoo{-\alpha}{\alpha}$}
+%  \\&= \brs{\frac{2\alpha}{(\omega - \beta)^2 + \alpha^2}}
+%  \\&= \brs{\frac{2\alpha}
+%                 {\omega^2 -2\beta\omega + (\alpha^2 + \beta^2)}}
+%\end{align*}
+%\end{proof}
+%
+%%-------------------------------------
+%\begin{example}
+%\label{ex:sineatau}
+%%-------------------------------------
+%\exbox{
+%  \opFT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}
+%    = 0
+% }
+%\end{example}
+%\begin{proof}
+%\begin{align*}
+%  \sqrt{2\pi}\opFT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}
+%    &\eqd \sqrt{2\pi}\brs{\frac{1}{\sqrt{2\pi}}}
+%          \brlr{\opLT\brs{\sin(\beta x)e^{-\alpha\abs{x}}}}_{s=i\omega}
+%    && \text{by definition Fourier Transform}
+%    && \text{\xref{def:opFT}}
+%  \\&= \brs{\frac{-2\alpha}{ (s -i\beta)^2 -\alpha^2}}_{s=i\omega}
+%    && \text{by \prefp{cor:opLT_cosabs}}
+%  \\&= \brs{\frac{-2\alpha}{ (i\omega -i\beta)^2 -\alpha^2}}
+%    && \text{by $s=i\omega\in\intoo{-\alpha}{\alpha}$}
+%  \\&= \brs{\frac{2\alpha}{(\omega - \beta)^2 + \alpha^2}}
+%  \\&= \brs{\frac{2\alpha}
+%                 {\omega^2 -2\beta\omega + (\alpha^2 + \beta^2)}}
+%\end{align*}
+%\end{proof}
 
 %%-------------------------------------
 %\begin{example}
@@ -1237,11 +1254,11 @@ Let $\setind_\setA(x)$ be the \fncte{set indicator function} \xref{def:setind} o
 %\begin{proof}
 %\begin{align*}
 %  \sqrt{2\pi}\opFT\brs{\cos(\beta\tau)e^{-\alpha\abs{\tau}}}
-%    &\eqd \brs{\sqrt{2\pi}}\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \cos(\beta x)e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+%    &\eqd \brs{\sqrt{2\pi}}\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \cos(\beta x)e^{-\alpha\abs{\tau}} e^{-i\omega\tau}\dtau
 %    && \text{by definition Fourier Transform}
-%  \\&= \int_{-\infty}^{\infty} \brs{\frac{e^{i\beta\tau}+e^{-i\beta\tau}}{2}} e^{-\alpha\abs{\tau}} e^{-j\omega\tau}\dtau
+%  \\&= \int_{-\infty}^{\infty} \brs{\frac{e^{i\beta\tau}+e^{-i\beta\tau}}{2}} e^{-\alpha\abs{\tau}} e^{-i\omega\tau}\dtau
 %    &&  \text{by \thme{Euler's identity}}&&\text{\xref{thm:eid}}
-%  \\&= \frac{1}{2}\int_{-\infty}^{\infty} \brs{e^{-\alpha\abs{\tau}i\beta\tau-j\omega\tau}+e^{-\alpha\abs{\tau}-i\beta\tau-j\omega\tau}} \dtau
+%  \\&= \frac{1}{2}\int_{-\infty}^{\infty} \brs{e^{-\alpha\abs{\tau}i\beta\tau-i\omega\tau}+e^{-\alpha\abs{\tau}-i\beta\tau-i\omega\tau}} \dtau
 %  \\
 %  \\
 %  \\&= \frac{1}{\sqrt{2\pi}}\brs{\frac{\alpha}{\alpha^2+(\beta-\omega)^2}}
