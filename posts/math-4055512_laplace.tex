@@ -1,0 +1,100 @@
+Daniel J. Greenhoe
+https://math.stackexchange.com/questions/4055512/
+
+
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\eqa}{\approx}$
+$\newcommand{\abs}[1]{{\left\lvert #1 \right\rvert}}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\brbl}[1]{{\left\{#1\right.}}$
+$\newcommand{\brlr}[1]{\left.#1\right|}$
+$\newcommand{\deriv} [2]   {{\frac{\mathrm{d}#1}{\mathrm{d}#2} }}$
+$\newcommand{\ddx}  [0]  {\frac{\mathrm{d}}{\dx}}$
+$\newcommand{\dndxn}  [0]  {\frac{\mathrm{d^n}}{{\dx}^n}}$
+$\newcommand{\ddt}{\frac{\mathrm{d}}{dt}}$
+$\newcommand{\dddt}{\frac{\mathrm{d^2}}{dt^2}}$
+$\newcommand{\R}{\Bbb{R}}$
+$\newcommand{\intcc} [2]  {{\left[#1:#2\right]}}$
+$\newcommand{\intoo} [2]  {{\left(#1:#2\right)}}$
+$\newcommand{\intoc} [2]  {{\left(#1:#2\right]}}$
+$\newcommand{\intco} [2]  {{\left[#1:#2\right)}}$
+$\newcommand{\opLT}{\mathrm{L}}$
+$\newcommand{\opFT}{\mathrm{F}}$
+$\newcommand{\ff}{\mathrm{f}}$
+$\newcommand{\fF}{\mathrm{F}}$
+$\newcommand{\fG}{\mathrm{G}}$
+$\newcommand{\fg}{\mathrm{g}}$
+$\newcommand{\fphi}{\mathrm{\phi}}$
+$\newcommand{\dx}{\mathrm{dx}}$
+$\newcommand{\dS}{\mathrm{ds}}$
+$\newcommand{\dtau}{\mathrm{d\tau}}$
+$\newcommand{\du}{\mathrm{du}}$
+$\newcommand{\dv}{\mathrm{dv}}$
+$\newcommand{\step}{\mu}$
+$\newcommand{\ds}{\displaystyle}$
+$\newcommand{\thme}[1]{#1}$
+$\newcommand{\opFT}{\mathrm{F}}$
+$\newcommand{\opFT}{\mathrm{L}}$
+$\newcommand{\opIFT}{\mathrm{IFT}}$
+$\newcommand{\thme}[1]{#1}$
+$\newcommand{\Real}{\mathrm{Re}}$
+$\newcommand{\mcom}[2]{{\displaystyle\underbrace{\displaystyle#1}_{\text{#2}}}}$
+
+
+Transforms are used in analysis (analysis: ?v???s??, [meaning](https://www.amazon.com/dp/0943575338) “dissolution”, or separation into components) to separate functions into components. 
+https://www.etymonline.com/word/analysis
+Before Fourier, this separation was performed using the differential operator $\ddx$ and the result was the Taylor Expansion or Taylor Polynomial (or we could even call it the Taylor Transform). This worked well for analytic functions---e.g., as long as the function was continuous. But then [along came Fourier](https://course.ece.cmu.edu/~ece792/handouts/Robinson82.pdf) and showed that there was another way: instead of analyzing (decomposing) a function $\ff(x)$ using rates of change calculated by the derivative operator $\ddx$, analysis could instead be performed by projection using the integration operator $\int\ddx$.
+
+The Fourier Transform projects onto the sinusoidal basis $e^{-i\omega x}=cos(\omega x) - i\sin(\omega x)$. This is generalized by Laplace by projecting onto $e^{-sx}$. Just as transforms break functions into components, transforms can themselves be broken into components. One way to do this with the Laplace Transform $\opL$ is to simply let $s\eqd\alpha + i\omega$, then
+\begin{align*}
+  \opLT[\ff(x)] 
+    &\eqd \int_\R \ff(x) e^{-sx}\dx 
+  \\&\eqd \int_\R \ff(x) e^{-(\alpha+i\omega)x}\dx 
+  \\&= \mcom{\int_\R \ff(x) e^{-\alpha x}\dx}{decay transform} 
+      +\mcom{\int_\R \ff(x) e^{-i\omega x}\dx}{Fourier Transform}
+\end{align*}
+...and the Laplace Transform $\opLT$ is decomposed into a Fourier Transform and a kind of "decay transform".
+
+The Fourier Transform demonstrates the amount of harmonic "energy" at a given location ("frequency") $\omega$. Here the "decay transform" demonstrates rate of decay of a function. 
+For example, let 
+$$\begin{align*}
+  \ff(x) 
+    &\eqd \brbl{\begin{array}{ll}
+            1 & \text{for $0\leq x<1$}\\
+            0 & \text{otherwise}
+          \end{array}}
+    &&\text{and}&
+  \fg(x) 
+    &\eqd \brbl{\begin{array}{ll}
+            1 & \text{for $0\leq x<2$}\\
+            0 & \text{otherwise}
+          \end{array}}
+\end{align*}$$
+Note that $\ff(x)$ has faster decay than does $\fg(x)$. 
+Now take the Laplace Transform of both:
+\begin{align*}
+  \opLT\brs{\ff(x)}(s) 
+    &\eqd \int_\R\ff(x) e^{-sx}\dx
+  \\&\eqd \int_\R\brs{\step(x)-\step(x-1)} e^{-sx}\dx
+  \\&= \frac{1}{s} - e^{-s}\frac{1}{s}
+  \\&= \frac{1-e^{-s}}{s}
+  \\
+  \opLT\brs{\fg(x)}(s) 
+    &\eqd \int_\R\brs{\step(x)-\step(x-2)} e^{-sx}\dx
+  \\&= \frac{1-e^{-2s}}{s}
+\end{align*}
+
+
+I think this question and the struggle to answer it is similar to the question of what imaginary numbers are (see Euler quote below). In the case of imaginary numbers—they are useful because the roots of polynomials, even those with real coefficients, don't always have solutions in the set of real numbers...but *do* always have solutions in the set of complex numbers. In fact, those roots are always either *on* the real axis, or occur in complex conjugate pairs mirrored across the real axis.
+
+But first, why use Laplace at all? A big motivation is that real-world physical systems involving things like electric fields (e.g. capacitors), magnetic fields (e.g. inductors), 4-dimensional state information (e.g. position, velocity, acceleration) are described in terms of first and second order differential equations (e.g. $i(t)=C\deriv{v}{t}$). In fact, in the physical world, it's just very hard to get away from the differential operators $\ddt$ and $\dddt$ because the *only* solutions (the only possible $\ff(t)$) for the second order differential equation $\dddt\ff+\ff=0$ **[must](https://books.google.com/books?vid=ISBN0486650383&pg=PA157)** be of the form $\ff(t)=\alpha\cos(t) + \beta\sin(t)$; at the same time $\sin(t)$ and $\cos(t)$ are hard to get away from because they [are eigenvectors](https://books.google.com/books?id=Nfk59L8L5hcC&pg=PA34) for any linear time-invariant (LTI) system. And it turns out that Laplace allows handling differential equations with the quasi-greatest of ease---turning differential equations into algebraic ones (e.g. differentiation becomes multiplication by $s$ and integration division by $s$).
+
+So there you are, working away solving complex system differential equations transformed to algebraic ones with help from Laplace, just as complex geometric shapes involving arcs and curves and what-not can be [transformed to polynomials in the Cartesian plane](https://wild.maths.org/ren%C3%A9-descartes-and-fly-ceiling). All your Laplace equations are easy to write down---they even all have real coefficients. But here it comes again---the problem of roots---and once again they are not in general all real-valued. But because $s$ is complex-valued, you are still OK with that.
+
+But why care about roots at all? We care because special things happen when we get anywhere near a root. If the root is in the numerator (a "zero"), the system responds with a decrease in magnitude (decrease in voltage, current, velocity, what-have-you); if the root is in the denominator (a "pole"), the system responds with an increase.
+
+These pole/zero locations have direct impact on the both time and frequency response of a system. The frequency response is calculated as you move up and down on the imaginary axis (because $s=i\omega$ to get a Fourier Transform). Even if there is no pole or zero directly *on* this imaginary axis, when the value of $\omega$ is such that $i\omega$ is close to a pole, the frequency response magnitude (at that value of $\omega$) will tend to increase; and when $i\omega$ is close to a zero, it tends to decrease. The closer the pole or zero is to the imaginary axis, the more dramatic the effect.
+
+Likewise, a zero close to the real axis in the complex $s$-plane will have a *damping* effect, and a pole an excitation effect. Note that the Laplace Transform of $e^{-\alpha t}\mu(t)$, where $\mu(t)$ is the step function and a real-valued $\alpha$ is a damping parameter, [is](https://archive.org/details/in.ernet.dli.2015.141269/page/n31/) $\frac{1}{s+\alpha}$. For real-valued $\alpha$, this means that as $\alpha$ gets larger, the location of the pole moves farther and farther away on the negative real axis...making it's influence less and less...which corresponds to less and less damping from the $e^{-\alpha t}$ term.
+
