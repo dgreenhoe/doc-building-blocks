@@ -115,6 +115,11 @@ FILE_GRP  =              \
   triangleabc.pdf       \
   triangleabcft.pdf     \
   unitcircle.pdf        \
+  unitcircle_roots1.pdf \
+  unitcircle_roots2.pdf \
+  unitcircle_roots3.pdf \
+  unitcircle_roots4.pdf \
+  unitcircle_roots5.pdf \
   vecres.pdf            \
   Fhw.pdf
 
