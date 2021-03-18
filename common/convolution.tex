@@ -43,8 +43,8 @@ Let $\conv$ be the \ope{convolution} operatation \xref{def:conv}.
 Let $\spLLRBu$ be the space of all \structe{Lebesgue square-integrable functions}.
 \thmbox{\begin{array}{>{\ds}rc>{\ds}l CD}
     \ff\conv\fg               &=& \fg\conv\ff                                       & \forall \ff,\fg\in\spLLRBu               & (\prope{commutative})
-  \\\ff\conv\brp{\fg\conv\fh} &=& \brp{\ff\conv\fg}\conv\fh                         & \forall \ff,\fg\fh\in\spLLRBu            & (\prope{associateve})
-  \\\brp{\alpha\ff}\conv\fg   &=& \alpha\brp{\ff\conv\fg} = \ff\conv\brp{\alpha\fg} & \forall \ff,\fg\in\spLLRBu,\,\alpha\in\C &
+  \\\ff\conv\brp{\fg\conv\fh} &=& \brp{\ff\conv\fg}\conv\fh                         & \forall \ff,\fg\fh\in\spLLRBu            & (\prope{associative})
+  \\\brp{\alpha\ff}\conv\fg   &=& \alpha\brp{\ff\conv\fg} = \ff\conv\brp{\alpha\fg} & \forall \ff,\fg\in\spLLRBu,\,\alpha\in\C & (\prope{homogeneous})
   \\\ff\conv\brp{\fg+\fh}     &=& \brp{\ff\conv\fg} + \brp{\ff\conv\fh}             & \forall \ff,\fg,\fh\in\spLLRBu           & (\prope{distributive})
 \end{array}}
 \end{theorem}
@@ -63,26 +63,58 @@ Let $\spLLRBu$ be the space of all \structe{Lebesgue square-integrable functions
   \\&\eqd \fg\conv\ff
     && \text{by definition of $\conv$}
     && \text{\xref{def:conv}}
-  %\\
-  %\\
-  %\ff\conv\brp{\fg\conv\fh}
-  %  &\eqd \ff\conv\int_{u\in\R} \fg(u)\fh(x-u) \du
-  %  && \text{by definition of $\conv$}
-  %  && \text{\xref{def:conv}}
-  %\\&\eqd \int_{v\in\R} \ff(v)\int_{u\in\R} \fg(u)\fh(x-v-u) \du\dv
-  %  && \text{by definition of $\conv$}
-  %  && \text{\xref{def:conv}}
-  %\\
-  %\\&= \int_{v\in\R} \ff(v)\int_{u\in\R} \fg(x-w)\fh(w-v) \du\dv
-  %  && \text{where $w\eqd x-u$}
-  %  && \text{$\implies$ $u=x-w$}
-  %\\
-  %\\&= \int_{v\in\R} \ff(v)\int_{u\in\R} \fg(x-w)\fh(w-v) \du\dv
-  %  && \text{where $w\eqd x-u$}
-  %  && \text{$\implies$ $u=x-w$}
-  %\\&\eqd \brp{\ff\conv\fg}\conv\fh
-  %  && \text{by definition of $\conv$}
-  %  && \text{\xref{def:conv}}
+  \\
+  \\
+  \ff\conv\brp{\fg\conv\fh}
+    &\eqd \ff\conv\int_{u\in\R} \fg(u)\fh(x-u) \du
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\&\eqd \int_{v\in\R} \ff(v)\int_{u\in\R} \fg(u)\fh(x-v-u) \du\dv
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\&= \int_{v\in\R} \int_{(w-v)\in\R} \ff(v)\fg(w-v)\fh(x-w) \dw\dv
+    && \text{where $w\eqd u+v$}
+    && \text{$\implies$ $u=w-v$}
+  \\&= \int_{w\in\R} 
+       \mcom{\brs{\int_{v\in\R} \ff(v)\fg(w-v)\dv}}{function of $w$} 
+       \fh(x-w)\dw
+  \\&\eqd \brs{\int_{v\in\R} \ff(v)\fg(w-v)\dv} \conv\fh
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\&\eqd \brs{\ff\conv\fg} \conv\fh
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\
+  \\
+  \brs{\alpha\ff}\conv\fg
+    &\eqd \int_\R \brs{\alpha\ff(u)}\fg(x-u) \du
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\&= \alpha\int_\R \brs{\alpha\ff(u)}\fg(x-u) \du
+    && \mathrlap{\text{by \prope{homogeneous} property of $\int\dt$ operator}}
+  \\&= \boxed{\alpha\brs{\ff\conv\fg}}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\&\eqd \alpha\brs{\int_\R \ff(u)\fg(x-u) \du}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\&\eqd \int_\R \ff(u) \brs{\alpha\fg(x-u)} \du
+    && \mathrlap{\text{by \prope{homogeneous} property of $\int\dt$ operator}}
+  \\&\eqd \boxed{\ff\conv\brs{\alpha\fg}}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\
+  \\
+  \ff\conv\brp{\fg+\fh}
+    &\eqd \int_{u\in\R} \ff(u)\brs{\fg(x-u)+\fh(x-u)} \du
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
+  \\&= \int_{u\in\R} \ff(u)\fg(x-u)\du
+     + \int_{u\in\R} \fh(u)\fg(x-u)\du
+    && \mathrlap{\text{by \prope{additive} property of $\int\dt$ operator}}
+  \\&= \brp{\ff\conv\fg} + \brp{\ff\conv\fh}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:conv}}
 \end{align*}
 \end{proof}
 
