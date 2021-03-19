@@ -1343,10 +1343,9 @@ Let $A$, $B$, $C$, and $D$ be defined as in \prefpp{cor:opLT_linear}.
 \label{thm:opLT_int}
 %---------------------------------------
 Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
-\thmbox{\begin{array}{>{\ds}r c >{\ds}rc>{\ds}l}
-  \brb{\lim_{x\to-\infty}\fg(x)=0} &\implies&
-     \brb{\opLT \brs{\ddt \fg(x)}} &=& s \brs{\opLT\fg}(s)
-    \\&&
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l}
+     \brb{\opLT \brs{\ddt \fg(x)}} &=& s \brs{\opLT\fg}(s)+ \lim_{x\to\infty}\brs{e^{-sx}\fg(x) -  e^{sx}\fg(-x)}
+    \\
     \opLT \int_{u=-\infty}^{u=x} \fg(u) \du &=& \frac{1}{s} \brs{\opLT\fg}(s)
 \end{array}}
 \end{theorem}
@@ -1355,13 +1354,15 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
     \opLT \brs{\ddx \fg(x)}
       &\eqd \int_{x\in\R} \mcom{\brs{\ddx \fg(x)}}{$\dv$} \mcom{e^{-sx}}{$u$} \dx
       && \text{by definition of $\opLT$}
-    \\&= \brlr{\mcom{e^{-sx}}{$u$} \mcom{\fg(x)}{$v$}}_{x=-\infty}^{x=+\infty}
-        -\int_{x\in\R} \mcom{\fg(x)}{$v$} \mcom{(-s)e^{-s x}}{$\du$} \dx
+      && \text{\xref{def:opLT}}
+    \\&= \brs{\mcom{e^{-sx}}{$u$} \mcom{\fg(x)}{$v$}}_{x=-\infty}^{x=+\infty}
+        -\brs{\int_{x\in\R} \mcom{\fg(x)}{$v$} \mcom{(-s)e^{-s x}}{$\du$} \dx}
       && \text{by \thme{Integration by Parts}}
-    \\&= \cancelto{0}{e^{-s \infty}}\fg(\infty) - e^{s \infty}\cancelto{0}{\fg(-\infty)}
-        -(-s)\int_{x\in\R} \fg(x) e^{-sx} \dx
-      && \text{by left hypothesis}
-    \\&\eqd s \brs{\opLT\fg}(s)
+    \\&= \mathrlap{ \lim_{x\to\infty}\brs{e^{-sx}\fg(x)}
+        - \lim_{x\to-\infty}\brs{e^{-sx}\fg(-\infty)}
+        + s\int_{x\in\R} \fg(x) e^{-sx} \dx}
+    \\&=  s \brs{\opLT\fg}(s)
+        + \lim_{x\to\infty}\brs{e^{-sx}\fg(x) - e^{sx}\fg(-x)}
       && \text{by definition of $\opLT$}
       && \text{\xref{def:opLT}}
   \end{align*}
@@ -1370,6 +1371,7 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
     \opLT \int_{u=-\infty}^{u=x} \fg(u) \du
       &\eqd \int_{x=-\infty}^{x=+\infty} \brs{\int_{u=-\infty}^{u=x} \fg(u) \du} e^{-s x} \dx
       && \text{by definition of $\opLT$}
+      && \text{\xref{def:opLT}}
     \\&= \int_{x=-\infty}^{x=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fg(u) \step(x-u) \du} e^{-s x} \dx
     \\&= \int_{v=-\infty}^{v=+\infty} \int_{u=-\infty}^{u=+\infty} \fg(u) \fh(v)  e^{-s (u+v)} \du \dv
       && \brp{\begin{array}{Mr@{\hspace{2pt}}c@{\hspace{2pt}}l}
