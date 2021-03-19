@@ -421,19 +421,15 @@ The \fnctd{Heaviside step function} $\step(x)$ or \fnctd{unit step function} is 
 \begin{theorem}
 \footnote{
   \citerpgc{bracewell1978}{227}{007007013X}{Table 11.2 Some Laplace transforms}
-  %\citerpcu{vanderpol1959}{13}{5. Strip of convergence of the Laplace integral}{https://archive.org/details/in.ernet.dli.2015.141269/page/n23/},
-  %\citerpcu{levy1958}{2}{``two-sided transformation"}{https://archive.org/details/c_cowles_ieee_Levy/page/n5/mode/2up}
   }
 \label{thm:opLT_step}
 %---------------------------------------
 Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
 and $\step(x)$ the \fncte{unit step} function \xref{def:step}.
-\thmbox{\begin{array}{F >{\ds}lc>{\ds}r Dl C                 }
-         & \mc{3}{H}{Mapping}                    & \mc{2}{|H}{Region of Convergence} & \mc{1}{|H}{Domain}
+\thmbox{\begin{array}{>{\ds}lc>{\ds}r Dl C                 }
+         \mc{3}{H}{Mapping}                    & \mc{2}{|H}{Region of Convergence} & \mc{1}{|H}{Domain}
   \\\hline
-    (1). & \opLT\brs{\step(x)}  &=&  \frac{1}{s} & for & \Real(s) > 0 & \forall x\in\R
-  \\[2ex]
-    (2). & \opLT\brs{\step(-x)} &=& -\frac{1}{s} & for & \Real(s) < 0 & \forall x\in\R
+    \opLT\brs{\step(x)}  &=&  \frac{1}{s} & for & \Real(s) > 0 & \forall x\in\R
 \end{array}}
 \end{theorem}
 \begin{proof}
@@ -455,7 +451,25 @@ and $\step(x)$ the \fncte{unit step} function \xref{def:step}.
     && \forall\Real(s) > 0
   \\&= \frac{1}{s}
     && \forall\Real(s) > 0
-  \\\\
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:opLT_step}
+%---------------------------------------
+Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
+and $\step(x)$ the \fncte{unit step} function \xref{def:step}.
+\thmbox{\begin{array}{F >{\ds}lc>{\ds}r Dl C                 }
+         & \mc{3}{H}{Mapping}                    & \mc{2}{|H}{Region of Convergence} & \mc{1}{|H}{Domain}
+  \\\hline
+    (1). & \opLT\brs{\step(-x) } &=& -\frac{1}{s}      & for & \Real(s) < 0 & \forall x\in\R
+  \\(2). & \opLT\brs{\step(x-a)} &=& \frac{e^{-as}}{s} & for & \Real(s) < 0 & \forall a,x\in\R
+  \\(2). & \opLT\brs{\step(a-x)} &=& -\frac{e^{as}}{s}  & for & \Real(s) > 0 & \forall a,x\in\R
+\end{array}}
+\end{corollary}
+\begin{proof}
+\begin{align*}
   \opLT\brs{\step(-x)}
     &= \opLT\brs{\step(x)}(-s)
     && \Real(s) < 0
@@ -463,9 +477,27 @@ and $\step(x)$ the \fncte{unit step} function \xref{def:step}.
     && \text{\xref{cor:opLT_reversal}}
   \\&= \frac{-1}{s}
     && \Real(s) < 0
-   %&& \text{by \ope{reversal} property \xref{cor:opLT_reversal} and \pref{thm:opLT_step}}
-    && \text{by (1)}
-    &&
+    && \text{by \prope{step} property}
+    && \text{by \xref{thm:opLT_step}}
+  \\\\
+  \opLT\brs{\step(x-a)}
+    &= e^{-as}\opLT\brs{\step(x)}
+    && \Real(s) < 0
+    && \text{by \prope{translation} property}
+    && \text{\xref{thm:opLT_transversal}}
+  \\&= \frac{e^{-as}}{s}
+    && \Real(s) < 0
+    && \text{by \prope{step} property}
+    && \text{by \xref{thm:opLT_step}}
+  \\\\
+  \opLT\brs{\step(a-x)}
+    &= e^{as}\opLT\brs{\step(-x)}
+    && \Real(s) > 0
+    && \text{by \prope{translation} property}
+    && \text{\xref{thm:opLT_transversal}}
+  \\&= -\frac{e^{as}}{s}
+    && \Real(s) > 0
+    && \text{by previous result}
 \end{align*}
 \end{proof}
 
@@ -509,13 +541,13 @@ and $\step(x)$ the \fncte{unit step} function.
     && \text{by \prope{modulation}}
     && \text{\xref{thm:opLT_mod}}
   \\&= \frac{-1}{s+\alpha}
-    && \mathrlap{\text{$\forall\Real(s) \in \intoo{-\infty-\Real(\alpha)}{0-(-\Real(\alpha))}$ by \prefp{thm:opLT_step}}}
+    && \mathrlap{\text{$\forall\Real(s) \in \intoo{-\infty-\Real(\alpha)}{0-(-\Real(\alpha))}$ by \prefp{cor:opLT_step}}}
    %&& \text{by \prope{anti-causality}}
    %&& \text{\xref{thm:opLT_step}}
   \\&= \frac{-1}{s+\alpha}
     && \forall\Real(s) < \Real(\alpha)
     && \text{by \prope{anti-causality}}
-    && \text{\xref{thm:opLT_step}}
+    && \text{\xref{cor:opLT_step}}
 \end{align*}
 \end{proof}
 
@@ -525,7 +557,7 @@ and $\step(x)$ the \fncte{unit step} function.
   \citerpgc{bracewell1978}{227}{007007013X}{Table 11.2 Some Laplace transforms},
   \citerpgc{shafii2015}{3}{9780738672458}{Table 1, using One-Sided Laplace Transform}
   }
-\label{cor:opLT_step}
+\label{cor:opLT_stepcos}
 %---------------------------------------
 Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}
 and $\step(x)$ the \fncte{unit step} function.
@@ -722,7 +754,7 @@ and $\step(x)$ the \fncte{unit step} function.
         &= \intcc{A+\abs{\Real(\omega_o)}}{B-\abs{\Real(\omega_o)}}
         && \text{by \prefp{cor:opLT_mod}}
       \\&= \intoo{-\infty+\abs{\Real(\omega_o)}}{0-\abs{\Real(\omega_o)}}
-        && \text{by \prefp{thm:opLT_step}}
+        && \text{by \prefp{cor:opLT_step}}
       \\&= \intoo{-\infty}{\abs{\Real(\omega_o)}}
       \\&\implies \opROC\opLT\brs{\cosh(\omega_o x)\step(-x)} < \abs{\Real(\omega_o)}
     \end{align*}
@@ -737,7 +769,7 @@ and $\step(x)$ the \fncte{unit step} function.
 %    && \text{\xref{thm:opLT_dilation}}
 %  \\&= (-i^2)\brs{\frac{1}{1}}\brs{\frac{s/i}{(s/i)^2+\omega_o^2}}
 %    && \Real(s) > 0
-%    && \text{by \pref{cor:opLT_step}}
+%    && \text{by \pref{cor:opLT_stepcos}}
 %  \\&= -i\brs{\frac{s}{-s^2+\omega_o^2}}
 %    && \Real(s) > 0
 %  \\&= i\brs{\frac{s}{s^2-\omega_o^2}}
@@ -830,7 +862,7 @@ and $\step(x)$ the \fncte{unit step} function.
     && \text{\xref{thm:opLT_mod}}
   \\&= \frac{s+\alpha}{(s+\alpha)^2+\omega_o^2}
     && \forall\Real(s) \in\intoo{0-\Real(\alpha)}{\infty-\Real(\alpha)}
-    && \text{by \pref{cor:opLT_step}}
+    && \text{by \pref{cor:opLT_stepcos}}
   \\&= \frac{s+\alpha}{(s+\alpha)^2+\omega_o^2}
     && \forall\Real(s) > -\Real(\alpha)
   \\
@@ -840,7 +872,7 @@ and $\step(x)$ the \fncte{unit step} function.
     && \text{\xref{thm:opLT_mod}}
   \\&= \frac{\omega_o}{(s+\alpha)^2+\omega_o^2}
     && \forall\Real(s) \in\intoo{0-\Real(\alpha)}{\infty-\Real(\alpha)}
-    && \text{by \pref{cor:opLT_step}}
+    && \text{by \pref{cor:opLT_stepcos}}
   \\&= \frac{\omega_o}{(s+\alpha)^2+\omega_o^2}
     && \forall\Real(s) > -\Real(\alpha)
   \\
@@ -850,7 +882,7 @@ and $\step(x)$ the \fncte{unit step} function.
     && \text{\xref{thm:opLT_mod}}
   \\&= \frac{-(s-\alpha)}{(s-\alpha)^2+\omega_o^2}
     && \forall\Real(s) \in\intoo{0-\Real(\alpha)}{\infty-\Real(\alpha)}
-    && \text{by \pref{cor:opLT_step}}
+    && \text{by \pref{cor:opLT_stepcos}}
   \\&= \frac{-s+\alpha}{(s-\alpha)^2+\omega_o^2}
     && \forall\Real(s) > -\Real(\alpha)
   \\
@@ -867,7 +899,7 @@ and $\step(x)$ the \fncte{unit step} function.
     && \text{\xref{thm:opLT_mod}}
   \\&= \frac{-\omega_o}{(s-\alpha)^2+\omega_o^2}
     && \forall\Real(s) \in\intoo{0-\Real(\alpha)}{\infty-\Real(\alpha)}
-    && \text{by \pref{cor:opLT_step}}
+    && \text{by \pref{cor:opLT_stepcos}}
   \\&= \frac{-\omega_o}{(s-\alpha)^2+\omega_o^2}
     && \forall\Real(s) > -\Real(\alpha)
   \\
@@ -899,10 +931,10 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
   \opLT\brs{\cos(\omega_o x)}
     &= \mcom{\opLT\brs{\step( x)\cos(\omega_o x)}}{$\forall \Real(s)>0$}
      + \mcom{\opLT\brs{\step(-x)\cos(\omega_o x)}}{$\forall \Real(s)<0$}
-    && \text{by \prefp{cor:opLT_step}}
+    && \text{by \prefp{cor:opLT_stepcos}}
   \\&= \mcom{\frac{s}{s^2+\omega_o^2}}{$\forall \Real(s)>0$}
      + \mcom{\frac{-s}{s^2+\omega_o^2}}{$\forall \Real(s)<0$}
-    && \text{by \prefp{cor:opLT_step}}
+    && \text{by \prefp{cor:opLT_stepcos}}
   \\&= \brbl{\begin{array}{cl}
          0      & \forall\Real(s)\in\intoo{-\infty}{0}\seti\intoo{0}{\infty}=\emptyset\\
          \infty & \forall s\in\C
@@ -912,10 +944,10 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
   \opLT\brs{\sin(\omega_o x)}
     &= \mcom{\opLT\brs{\step( x)\sin(\omega_o x)}}{$\forall \Real(s)>0$}
      + \mcom{\opLT\brs{\step(-x)\sin(\omega_o x)}}{$\forall \Real(s)<0$}
-    && \text{by \prefp{cor:opLT_step}}
+    && \text{by \prefp{cor:opLT_stepcos}}
   \\&= \mcom{\frac{\omega_o}{s^2+\omega_o^2}}{$\forall \Real(s)>0$}
      + \mcom{\frac{-\omega_o}{s^2+\omega_o^2}}{$\forall \Real(s)<0$}
-    && \text{by \prefp{cor:opLT_step}}
+    && \text{by \prefp{cor:opLT_stepcos}}
   \\&= \brbl{\begin{array}{cl}
          0      & \forall\Real(s)\in\intoo{-\infty}{0}\seti\intoo{0}{\infty}=\emptyset\\
          \infty & \forall s\in\C
@@ -1004,7 +1036,7 @@ Let $A\eqd\Real(\alpha)$.
         && \text{\xref{thm:opLT_mod}}
       \\&= \frac{s+\alpha}{(s+\alpha)^2 + \omega_o^2}
         && \forall \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)}
-        && \mathrlap{\text{by \prefp{cor:opLT_step}}}
+        && \mathrlap{\text{by \prefp{cor:opLT_stepcos}}}
     \end{align*}
 
   \item Proof for (2):
@@ -1026,7 +1058,7 @@ Let $A\eqd\Real(\alpha)$.
       \\&= \mathrlap{
            \frac{-s+\alpha}{(s-\alpha)^2 + \omega_o^2}
            \quad\forall \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)}
-           \quad\text{by \pref{cor:opLT_step} and \prefp{thm:opLT_mod}}}
+           \quad\text{by \pref{cor:opLT_stepcos} and \prefp{thm:opLT_mod}}}
     \end{align*}
 
   \item Proof for (3):
@@ -1169,7 +1201,7 @@ Let $A\eqd\Real(\alpha)$.
         && \text{\xref{def:step}}
       \\&= \frac{s+\alpha}{(\omega_o)^2 + \omega_o^2}
         && \forall \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)}
-        && \text{by \prefp{cor:opLT_step} and \prefp{thm:opLT_mod}}
+        && \text{by \prefp{cor:opLT_stepcos} and \prefp{thm:opLT_mod}}
     \end{align*}
 
   \item Proof for (2):
@@ -1186,7 +1218,7 @@ Let $A\eqd\Real(\alpha)$.
         && \text{\xref{thm:opLT_linear}}
       \\&= \frac{-\omega_o}{(s-\alpha)^2 + \omega_o^2}
         && \forall \Real(s) \in \intoo{-\Real(\alpha)}{\Real(\alpha)}
-        && \text{by \prefp{thm:opLT_mod} and \pref{cor:opLT_step}}
+        && \text{by \prefp{thm:opLT_mod} and \pref{cor:opLT_stepcos}}
     \end{align*}
 
   \item Proof for (3):
@@ -1368,23 +1400,23 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
   \end{align*}
 
   \begin{align*}
-    \opLT \int_{u=-\infty}^{u=x} \fg(u) \du
-      &\eqd \int_{x=-\infty}^{x=+\infty} \brs{\int_{u=-\infty}^{u=x} \fg(u) \du} e^{-s x} \dx
+    \opLT \int_{v=-\infty}^{v=x} \fg(v) \dv
+      &\eqd \int_{x=-\infty}^{x=+\infty} \brs{\int_{v=-\infty}^{v=x} \fg(v) \dv} e^{-s x} \dx
       && \text{by definition of $\opLT$}
       && \text{\xref{def:opLT}}
-    \\&= \int_{x=-\infty}^{x=+\infty} \brs{\int_{u=-\infty}^{u=+\infty} \fg(u) \step(x-u) \du} e^{-s x} \dx
-    \\&= \int_{v=-\infty}^{v=+\infty} \int_{u=-\infty}^{u=+\infty} \fg(u) \fh(v)  e^{-s (u+v)} \du \dv
-      && \brp{\begin{array}{Mr@{\hspace{2pt}}c@{\hspace{2pt}}l}
-           where      & v&\eqd&x-u\\
-           $\implies$ & x&=&u+v
-         \end{array}}
-    \\&= \brs{\int_{v=-\infty}^{v=+\infty} \step(v) e^{-s v} \dv}
-          \mcom{\brs{\int_{u=-\infty}^{u=+\infty} \fg(u)   e^{-s u} \du }}
-               {\ope{Laplace Transform} of $\fg(x)$}
-    \\&= \brs{\int_{v=0}^{v=\infty} e^{-s v} \dv} \brs{\opLT\fg}(s)
-    \\&= \brlr{\frac{1}{-s}e^{-s v}}_{v=0}^{v=\infty} \brs{\opLT\fg}(s)
-      && \mathrlap{\text{by \thme{Fundamental Theorem of Calculus}}}
-    \\&= \frac{1}{s} \brs{\opLT\fg}(s)
+    \\&= \int_{x=-\infty}^{x=+\infty} 
+         \brs{\int_{v=-\infty}^{v=+\infty} \fg(v) \step(x-v) \dv} 
+          e^{-s x} \dx
+      && \text{by definition of $\step(x)$}
+      && \text{\xref{def:step}}
+    \\&= \int_{v\in\R} \fg(v) \brs{\int_{x\in\R} \step(x-v) e^{-s x} \dx} \dv
+    \\&= \int_{v\in\R} \fg(v) \brs{e^{-vs}\frac{1}{s}} \dv
+      && \forall \Real(s)<0
+      && \text{by \prefp{cor:opLT_step}}
+    \\&= \frac{1}{s}\int_{v\in\R} \fg(v) e^{-vs} \dv
+      && \forall \Real(s)<0
+      && \text{by \prefp{cor:opLT_step}}
+    \\&\eqd \frac{1}{s} \brs{\opLT\fg}(s)
       && \text{by definition of $\opLT$}
       && \text{\xref{def:opLT}}
   \end{align*}
