@@ -1422,3 +1422,92 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
   \end{align*}
 \end{proof}
 
+%======================================
+\section{Moment properties}
+%======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citePpp{jawerth}{16}{17},
+  \citePp{sweldens93}{2},
+  \citerpg{vidakovic}{83}{9780471293651}
+  %\citerp{goswami}{102}    \\
+  %\citerpp{mallat}{241}{243}
+  }
+\label{def:moment}
+%--------------------------------------
+\defboxt{
+  The quantity $\fM_n$ is the \vald{$n$th moment} of a function $\ff(x)\in\spLLR$ if
+  \\\indentx$\ds \fM_n \eqd \int_{\R} x^n \ff(x) \dx \qquad \text{for }n\in\Znn$.
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{theorem}
+\footnote{
+  \citerppg{goswami}{38}{39}{9780471197485}
+  }
+\label{thm:opLT_moment}
+%--------------------------------------
+Let $\fM_n$ be the \fncte{$n$th moment} \xref{def:moment} of a function $\ff(x)\in\spLLR$.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l@{\qquad}C}
+  \fM_n  \eqd \int_\R x^n \ff(x) \dx &=&  \brs{(-1)^{n}\brs{\opddsn\opLT\ff}(s)}_{s=0} & \forall n\in\Znn,\,\ff\in\spLLR\\
+\end{array}}
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    (-1)^n\brs{\opddsn \opLT\ff}(s)_{s=0}
+      &= (-1)^n\brs{\opddsn \int_\R \ff(x) e^{-sx} \dx}_{s=0}
+      && \text{by definition of $\opLT$}
+      && \text{\xref{def:opLT}}
+    \\&= (-1)^n\brs{\int_\R \ff(x) \brs{\opddsn e^{-sx}}\dx}_{s=0}
+    \\&= (-1)^n\brs{\int_\R \ff(x) (-x)^n e^{-sx}\dx}_{s=0}
+    \\&= (-1)^n\int_\R \ff(x) (-x)^n \dx
+    \\&= (-1)^{2n}\int_\R \ff(x) x^n \dx
+    \\&\eqd \fM_n
+      && \text{by definition of $\fM_n$}
+      && \text{\xref{def:Mn_ft}}
+  \end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{corollary}
+\footnote{
+  \citerppg{vidakovic}{82}{83}{9780471293651},
+  \citerpp{mallat}{241}{242}
+  }
+%--------------------------------------
+Let $\fM_n$ be the \fncte{$n$th moment} \xref{def:moment} of a function $\ff(x)$ in $\spLLR$.
+\corbox{
+  \fM_n=0
+  \qquad\iff\qquad
+  \brs{\opddsn\opLT\ff}_{s=0} =0
+  \qquad\scy\forall n\in\Znn
+  }
+\end{corollary}
+\begin{proof}
+\begin{enumerate}
+  \item Proof for $(\implies)$ case:
+    \begin{align*}
+      0 &= \fM_n
+        && \text{by left hypothesis}
+      \\&= \int_\R x^n \ff(x) \dx
+      \\&= \brs{(-1)^n \opddsn\opLT\ff}_{s=0}
+        && \text{by \prefp{thm:opLT_moment}}
+      \\&\implies \brs{\opddsn\opLT\ff}_{s=0} =0
+    \end{align*}
+
+  \item Proof for $(\impliedby)$ case:
+    \begin{align*}
+      0 &= \brs{\opddsn\opLT\ff}_{s=0}
+        && \text{by right hypothesis}
+      \\&= \brs{\opddsn\int_\R \ff(x) e^{-sx}\dx}_{s=0}
+        && \text{by definition of $\opLT$}
+        && \text{\xref{def:opLT}}
+      \\&= \brs{\int_\R \ff(x) \opddsn e^{-sx}\dx}_{s=0}
+      \\&= \brs{\int_\R \ff(x) \brs{(-1)^n x^n e^{-sx}}\dx}_{s=0}
+      \\&= (-1)^n \int_\R \ff(x) x^n \dx
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
