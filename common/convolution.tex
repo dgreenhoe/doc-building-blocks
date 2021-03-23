@@ -79,8 +79,8 @@ Let $\spLLRBu$ be the space of all \structe{Lebesgue square-integrable functions
   \\&= \int_{v\in\R} \int_{(w-v)\in\R} \ff(v)\fg(w-v)\fh(x-w) \dw\dv
     && \text{where $w\eqd u+v$}
     && \text{$\implies$ $u=w-v$}
-  \\&= \int_{w\in\R} 
-       \mcom{\brs{\int_{v\in\R} \ff(v)\fg(w-v)\dv}}{function of $w$} 
+  \\&= \int_{w\in\R}
+       \mcom{\brs{\int_{v\in\R} \ff(v)\fg(w-v)\dv}}{function of $w$}
        \fh(x-w)\dw
   \\&\eqd \brs{\int_{v\in\R} \ff(v)\fg(w-v)\dv} \conv\fh
     && \text{by definition of $\conv$}
@@ -174,41 +174,94 @@ For example, $\spllR$ is isomorphic to $\spLLR$, the \structe{space of all absol
 \begin{definition}
 \label{def:dsp_conv}
 \label{def:convd}
-\index{convolution}
 %--------------------------------------
-%Let $\seq{x_n}{n\in\Z}$ and $\seq{y_n}{n\in\Z}$ be sequences \xref{def:seq} in the space $\spllR$ \xref{def:spllR}.
-\defbox{\begin{array}{M}
-  The \opd{convolution} operation $\hxs{\convd}$ is defined as
+Let $\seq{x_n}{n\in\Z}$ and $\seq{y_n}{n\in\Z}$ be sequences \xref{def:seq} in the space $\spllR$ \xref{def:spllR}.
+\defboxt{
+  The \opd{convolution} $\hxs{\convd}$ of sequences $\seqn{x_n}$ and $\seqn{y_n}$ is defined as
   \\\indentx
-  $\ds{\seqn{x_n}\convd\seqn{y_n}} \eqd \seq{\sum_{m\in\Z} x_{m} y_{n-m}}{n\in\Z}\qquad\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllR$
-\end{array}}
+  $\ds\seqmZ{\seqn{x_n}\convd\seqn{y_n}} \eqd \seqmZ{\sum_{n\in\Z} x_n y_{m-n}}\qquad\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllR$
+  }
 \end{definition}
 
 %--------------------------------------
-\begin{proposition}
+\begin{theorem}
+\label{thm:convd_algebra}
 %--------------------------------------
-Let $\convd$ be the \structe{convolution operator} \xref{def:dsp_conv}.
-\propbox{
-  \seqn{x_n}\convd\seqn{y_n} = \seqn{y_n}\convd\seqn{x_n}
-  \qquad{\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllR}
-  \qquad\text{($\convd$ is \prope{commutative})}
-  }
-\end{proposition}
+Let $\conv$ be the discrete \ope{convolution} operatation \xref{def:convd}.
+\thmbox{\begin{array}{>{\ds}rc>{\ds}l CD}
+    \seqn{x_n}\conv\seqn{y_n}                      &=& \seqn{y_n}\conv\seqn{x_n}                                                     & \forall \seqn{x_n},\seqn{y_n}    \in\spllR               & (\prope{commutative})
+  \\\seqn{x_n}\conv\brs{\seqn{y_n}\conv\seqn{z_n}} &=& \brs{\seqn{x_n}\conv\seqn{y_n}}\conv\seqn{z_n}                                & \forall \seqn{x_n},\seqn{y_n}\seqn{z_n} \in\spllR               & (\prope{associative})
+  \\\brs{\alpha\seqn{x_n}}\conv\seqn{y_n}          &=& \alpha\brs{\seqn{x_n}\conv\seqn{y_n}} = \seqn{x_n}\conv\brs{\alpha\seqn{y_n}} & \forall \seqn{x_n},\seqn{y_n}    \in\spllR,\,\alpha\in\C & (\prope{homogeneous})
+  \\\seqn{x_n}\conv\brs{\seqn{y_n}+\seqn{z_n}}     &=& \brs{\seqn{x_n}\conv\seqn{y_n}} + \brs{\seqn{x_n}\conv\seqn{z_n}}             & \forall \seqn{x_n},\seqn{y_n},\seqn{z_n}\in\spllR               & (\prope{distributive})
+\end{array}}
+\end{theorem}
 \begin{proof}
 \begin{align*}
-  [x\convd y](n)
-    &\eqd \sum_{m\in\Z} x_m y_{n-m}
-    &&    \text{by \prefp{def:dsp_conv}}
-  \\&=    \sum_{k\in\Z} x_{n-k} y(k)
-    &&    \text{where $k\eqd n-m$ $\implies$ $m=n-k$}
-  \\&=    \sum_{k\in\Z} x_{n-k} y(k)
-    &&    \text{by \prope{commutativity} of addition}
-  \\&=    \sum_{m\in\Z} x_{n-m} y_m
-    &&    \text{by change of variables}
-  \\&=    \sum_{m\in\Z} y_m x_{n-m}
-    &&    \text{by \prop{commutative} property of the field over $\C$}
-  \\&\eqd \brp{y\convd x}_n
-    &&    \text{by \prefp{def:dsp_conv}}
+  \seqmZ{\seqn{x_n}\conv\seqn{y_n}}
+    &\eqd \seqmZ{\sum_{n=-\infty}^{n=\infty} \seqn{x_n}\seqn{y_{m-n}}}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\&\eqd \seqmZ{\sum_{m-k=-\infty}^{m-k=\infty} \seqn{x_{m-k}}\seqn{y_k}}
+    && \text{where $k\eqd m-n$}
+    && \text{$\implies$ $n=m-k$}
+  \\&= \seqmZ{\sum_{-k=-\infty}^{-k=\infty}\seqn{y_k} \seqn{x_{m-k}}}
+  \\&= \seqmZ{\sum_{k=-\infty}^{k=\infty}\seqn{y_k} \seqn{x_{m-k}}}
+  \\&\eqd \seqmZ{\brs{\seqn{y_n}\conv\seqn{x_n}}}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+\end{align*}
+
+\begin{align*}
+  \seqn{x_n}\conv\brp{\seqn{y_n}\conv\seqn{z_n}}
+    &\eqd \seqn{x_n}\conv\sum_{n\in\Z} \seqn{y_n}(n)\seqn{z_n}(x-n)
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\&\eqd \sum_{m\in\Z} \seqn{x_n}(m)\sum_{n\in\Z} \seqn{y_n}(n)\seqn{z_n}(x-m-n)
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\&= \sum_{m\in\Z} \sum_{(k-m)\in\Z} \seqn{x_n}(m)\seqn{y_n}(k-m)\seqn{z_n}(x-w)
+    && \text{where $w\eqd u+v$}
+    && \text{$\implies$ $n=w-m$}
+  \\&= \sum_{w\in\Z}
+       \mcom{\brs{\sum_{m\in\Z} \seqn{x_n}(m)\seqn{y_n}(k-m) }}{function of $w$}
+       \seqn{z_n}(x-w)
+  \\&\eqd \brs{\sum_{m\in\Z} \seqn{x_n}(m)\seqn{y_n}(k-m) } \conv\seqn{z_n}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\&\eqd \brs{\seqn{x_n}\conv\seqn{y_n}} \conv\seqn{z_n}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\
+  \\
+  \brs{\alpha\seqn{x_n}}\conv\seqn{y_n}
+    &\eqd \sum_\Z \brs{\alpha\seqn{x_n}(n)}\seqn{y_n}(x-n)
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\&= \alpha\sum_\Z \brs{\alpha\seqn{x_n}(n)}\seqn{y_n}(x-n)
+    && \mathrlap{\text{by \prope{homogeneous} property of $\sum\dt$ operator}}
+  \\&= \boxed{\alpha\brs{\seqn{x_n}\conv\seqn{y_n}}}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\&\eqd \alpha\brs{\sum_\Z \seqn{x_n}(n)\seqn{y_n}(x-n)  }
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\&\eqd \sum_\Z \seqn{x_n}(n) \brs{\alpha\seqn{y_n}(x-n)}
+    && \mathrlap{\text{by \prope{homogeneous} property of $\sum\dt$ operator}}
+  \\&\eqd \boxed{\seqn{x_n}\conv\brs{\alpha\seqn{y_n}}}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\
+  \\
+  \seqn{x_n}\conv\brp{\seqn{y_n}+\seqn{z_n}}
+    &\eqd \sum_{n\in\Z} \seqn{x_n}(n)\brs{\seqn{y_n}(x-n)+\seqn{z_n}(x-n)}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
+  \\&= \sum_{n\in\Z} \seqn{x_n}(n)\seqn{y_n}(x-n)
+     + \sum_{n\in\Z} \seqn{z_n}(n)\seqn{y_n}(x-n)
+    && \mathrlap{\text{by \prope{additive} property of $\sum\dt$ operator}}
+  \\&= \brp{\seqn{x_n}\conv\seqn{y_n}} + \brp{\seqn{x_n}\conv\seqn{z_n}}
+    && \text{by definition of $\conv$}
+    && \text{\xref{def:convd}}
 \end{align*}
 \end{proof}
 
