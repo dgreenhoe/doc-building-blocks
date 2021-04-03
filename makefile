@@ -15,15 +15,15 @@
 # Commands
 #--------------------------------------
 all:
-  cd trigsys
+  cd abctran
+    make
+  cd ..\trigsys
     make
   cd ..\msdsams
     make
   cd ..\msdnil
     make
   cd ..\abcstat
-    make
-  cd ..\abctran
     make
   cd ..\abcdc
     make
