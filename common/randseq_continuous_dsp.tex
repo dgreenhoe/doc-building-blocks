@@ -46,15 +46,15 @@ Then
 \mc{5}{l}{\mbox{\bf Correlation functions}} \\
    \Rxy(t,u)
      &=&    \Rxx(t,u) \conv h^\ast(u)
-     &\eqd& \int_v \fh^\ast(v)  \Rxx(t,u-v)  \dv
+     &\eqd& \int_{v\in\R}\fh^\ast(v)  \Rxx(t,u-v)  \dv
 \\
    \Ryy(t,u)
      &=&    \Rxy(t,u) \conv \fh(t)
-     &\eqd& \int_v \fh(v) \Rxy(t-v,u) \dv
+     &\eqd& \int_{v\in\R}\fh(v) \Rxy(t-v,u) \dv
 \\
    \Ryy(t,u)
      &=&    \Rxx(t,u) \conv \fh(t) \conv \fh^\ast(u)
-     &\eqd& \int_w \fh^\ast(w) \int_v \fh(v) \Rxx(t-v,u-w) \dv\dw
+     &\eqd& \int_{w\in\R}\fh^\ast(w) \int_{v\in\R}\fh(v) \Rxx(t-v,u-w) \dv\dw
 \\ \\
 \mc{5}{l}{\mbox{\bf Laplace power spectral density functions}} \\
    \LSxy(s,r) &=& \LSxx(s,r) \Lh^\ast(r^\ast)         \\
@@ -68,72 +68,103 @@ Then
 \end{array}}
 \end{theorem}
 \begin{proof}
-\begin{eqnarray*}
+\begin{align*}
    \Rxy(t,u)
-     &\eqd& \pE\brs{\rvx(t) \rvy^\ast(u) }
-   \\&=&    \pE\brs{\rvx(t) \brp{ \int_v \fh(v) \rvx(u-v)  \dv }^\ast }
-   \\&=&    \pE\brs{\rvx(t) \int_v \fh^\ast(v) \rvx^\ast(u-v)  \dv }
-   \\&=&    \int_v \fh^\ast(v)  \pE\brs{\rvx(t)\rvx^\ast(u-v)} \dv
-   \\&=&    \int_v \fh^\ast(v)  \Rxx(t,u-v)  \dv
-   \\&\eqd& \Rxx(t,u) \conv h^\ast(u)
+     &\eqd \pE\brs{\rvx(t) \rvy^\ast(u) }
+     && \text{by definition of $\Rxy(t,u)$}
+     && \text{\xref{def:Rxy}}
+   \\&\eqd \pE\brs{\rvx(t) \brp{\fh(t)\conv\rvx(t)}}
+     && \text{by definition of $\rvy(t)$}
+   \\&=    \pE\brs{\rvx(t) \brp{ \int_{v\in\R}\fh(v) \rvx(u-v)  \dv }^\ast }
+     && \text{by definition of $\conv$}
+     && \text{\xref{def:conv}}
+   \\&=    \pE\brs{\rvx(t) \int_{v\in\R} \fh^\ast(v) \rvx^\ast(u-v)  \dv }
+   \\&=    \int_{v\in\R}\fh^\ast(v)  \pE\brs{\rvx(t)\rvx^\ast(u-v)} \dv
+     && \text{by \prope{linear} property of $\pE$}
+     && \text{\xref{thm:pE_linop}}
+   \\&=    \int_{v\in\R}\fh^\ast(v)  \Rxx(t,u-v)  \dv
+     && \text{by definition of $\Rxy(t,u)$}
+     && \text{\xref{def:Rxy}}
+   \\&\eqd \Rxx(t,u) \conv h^\ast(u)
+     && \text{by definition of $\conv$}
+     && \text{\xref{def:conv}}
 \\ \\
    \Ryy(t,u)
-     &\eqd& \pE\brs{\rvy(t) \rvy^\ast(u) }
-   \\&=&    \pE\brs{\brp{\int_v \fh(v) \fx(t-v)\dv}  \rvy^\ast(u) }
-   \\&=&    \int_v \fh(v) \pE\brs{\fx(t-v)\rvy^\ast(u)} \dv
-   \\&=&    \int_v \fh(v) \Rxy(t-v,u) \dv
-   \\&\eqd& \Rxy(t,u) \conv \fh(t)
+     &\eqd \pE\brs{\rvy(t) \rvy^\ast(u) }
+     && \text{by definition of $\Rxy(t,u)$}
+     && \text{\xref{def:Rxy}}
+   \\&=    \pE\brs{\brp{\int_{v\in\R}\fh(v) \fx(t-v)\dv}  \rvy^\ast(u) }
+     && \text{by definition of $\conv$}
+     && \text{\xref{def:conv}}
+   \\&=    \int_{v\in\R}\fh(v) \pE\brs{\fx(t-v)\rvy^\ast(u)} \dv
+     && \text{by \prope{linear} property of $\pE$}
+     && \text{\xref{thm:pE_linop}}
+   \\&=    \int_{v\in\R}\fh(v) \Rxy(t-v,u) \dv
+     && \text{by definition of $\Rxy(t,u)$}
+     && \text{\xref{def:Rxy}}
+   \\&\eqd \Rxy(t,u) \conv \fh(t)
+     && \text{by definition of $\conv$}
+     && \text{\xref{def:conv}}
 \\ \\
    \Ryy(t,u)
-     &\eqd& \pE\brs{\rvy(t) \rvy^\ast(u) }
-   \\&=&    \pE\brs{\brp{\int_v \fh(v) \fx(t-v)\dv}
-                    \brp{\int_w \fh(w) \fx(u-w)\dw}^\ast
-              }
-   \\&=&    \int_w \fh^\ast(w) \int_v \fh(v)
-                   \pE\brs{\fx(t-v)\fx^\ast(u-w)} \dv\dw
-   \\&=&    \int_w \fh^\ast(w) \int_v \fh(v)
-                   \Rxx(t-v,u-w) \dv\dw
-   \\&=&    \int_w \fh^\ast(w) \brs{\Rxx(t,u-w)\conv\fh(t)}\dw
-   \\&\eqd& \Rxx(t,u) \conv \fh(t) \conv \fh^\ast(u)
+     &\eqd \pE\brs{\rvy(t) \rvy^\ast(u) }
+   \\&=    \pE\brs{\brp{\int_{v\in\R}\fh(v) \fx(t-v)\dv}
+                   \brp{\int_{w\in\R}\fh(w) \fx(u-w)\dw}^\ast
+             }
+     && \text{by definition of $\conv$}
+     && \text{\xref{def:conv}}
+   \\&=    \int_{w\in\R}\fh^\ast(w) \int_{v\in\R}\fh(v)
+                  \pE\brs{\fx(t-v)\fx^\ast(u-w)} \dv\dw
+     && \text{by \prope{linear} property of $\pE$}
+     && \text{\xref{thm:pE_linop}}
+   \\&=    \int_{w\in\R}\fh^\ast(w) \int_{v\in\R}\fh(v)
+                  \Rxx(t-v,u-w) \dv\dw
+     && \text{by definition of $\Rxx(t,u)$}
+     && \text{\xref{def:Rxx}}
+   \\&=    \int_{w\in\R}\fh^\ast(w) \brs{\Rxx(t,u-w)\conv\fh(t)}\dw
+     && \text{by definition of $\conv$}
+     && \text{\xref{def:conv}}
+   \\&\eqd \Rxx(t,u) \conv \fh(t) \conv \fh^\ast(u)
+     && \text{by definition of $\conv$}
+     && \text{\xref{def:conv}}
 \\ \\
    \LSxy(s,r)
-     &\eqd& \opL\Rxy(t,u)
-   \\&=&    \opL[\Rxx(t,u) \conv \fh^\ast(u)]
-   \\&=&    \opL[\Rxx(t,u)]\opL[\fh^\ast(u)]
-   \\&=&    \LSxx(s,r)  \int_{u\in\R}\fh^\ast(u) e^{-ru}\du
-   \\&=&    \LSxx(s,r)  \brs{\int_{u\in\R}\fh(u) e^{-r^\ast u}\du }^\ast
-   \\&=&    \LSxx(s,r) \Lh^\ast(r^\ast)
+     &\eqd \opLT\Rxy(t,u)
+   \\&=    \opLT[\Rxx(t,u) \conv \fh^\ast(u)]
+   \\&=    \opLT[\Rxx(t,u)]\opLT[\fh^\ast(u)]
+   \\&=    \LSxx(s,r)  \int_{u\in\R}\fh^\ast(u) e^{-ru}\du
+   \\&=    \LSxx(s,r)  \brs{\int_{u\in\R}\fh(u) e^{-r^\ast u}\du }^\ast
+   \\&=    \LSxx(s,r) \Lh^\ast(r^\ast)
 \\ \\
    \LSyy(s,r)
-     &\eqd& \opL\Ryy(t,u)
-   \\&=&    \opL[\Rxy(t,u) \conv \fh(t)]
-   \\&=&    \opL[\Rxy(t,u)]\opL[\fh(t)]
-   \\&=&    \LSxy(s,r) \Lh(s)
+     &\eqd \opLT\Ryy(t,u)
+   \\&=    \opLT[\Rxy(t,u) \conv \fh(t)]
+   \\&=    \opLT[\Rxy(t,u)]\opLT[\fh(t)]
+   \\&=    \LSxy(s,r) \Lh(s)
 \\
-   \\&=&    \LSxy(s,r) \Lh(s)
-   \\&=&    \LSxx(s,r) \Lh^\ast(r^\ast)\Lh(s)
-   \\&=&    \LSxx(s,r) \Lh(s) \Lh^\ast(r^\ast)
+   \\&=    \LSxy(s,r) \Lh(s)
+   \\&=    \LSxx(s,r) \Lh^\ast(r^\ast)\Lh(s)
+   \\&=    \LSxx(s,r) \Lh(s) \Lh^\ast(r^\ast)
 \\ \\
    \Sxy(f,g)
-     &\eqd& \opFT\Rxy(t,u)
-   \\&=&    \opFT[\Rxx(t,u) \conv \fh^\ast(u)]
-   \\&=&    \opFT[\Rxx(t,u)]\opFT[\fh^\ast(u)]
-   \\&=&    \Sxx(f,g) \int_{u\in\R}\fh^\ast(u) e^{-i2\pi g u} \du
-   \\&=&    \Sxx(f,g) \brs{\int_{u\in\R}\fh(u) e^{i2\pi g u} \du }^\ast
-   \\&=&    \Sxx(f,g) \brs{\int_{u\in\R}\fh(u) e^{-i2\pi(-g)u} \du }^\ast
-   \\&=&    \Sxx(f,g) \Fh^\ast(-g)
+     &\eqd \opFT\Rxy(t,u)
+   \\&=    \opFT[\Rxx(t,u) \conv \fh^\ast(u)]
+   \\&=    \opFT[\Rxx(t,u)]\opFT[\fh^\ast(u)]
+   \\&=    \Sxx(f,g) \int_{u\in\R}\fh^\ast(u) e^{-i2\pi g u} \du
+   \\&=    \Sxx(f,g) \brs{\int_{u\in\R}\fh(u) e^{i2\pi g u} \du }^\ast
+   \\&=    \Sxx(f,g) \brs{\int_{u\in\R}\fh(u) e^{-i2\pi(-g)u} \du }^\ast
+   \\&=    \Sxx(f,g) \Fh^\ast(-g)
 \\ \\
    \Syy(f,g)
-     &\eqd& \opFT\Ryy(t,u)
-   \\&=&    \opFT[\Rxy(t,u) \conv \fh(t)]
-   \\&=&    \opFT[\Rxy(t,u)]\opFT[\fh(t)]
-   \\&=&    \Sxy(f,g) \Fh(\omega)
+     &\eqd \opFT\Ryy(t,u)
+   \\&=    \opFT[\Rxy(t,u) \conv \fh(t)]
+   \\&=    \opFT[\Rxy(t,u)]\opFT[\fh(t)]
+   \\&=    \Sxy(f,g) \Fh(\omega)
 \\
-   \\&=&    \Sxy(f,g) \Fh(\omega)
-   \\&=&    \Sxx(f,g) \Fh^\ast(-g) \Fh(\omega)
-\end{eqnarray*}
+   \\&=    \Sxy(f,g) \Fh(\omega)
+   \\&=    \Sxx(f,g) \Fh^\ast(-g) \Fh(\omega)
+\end{align*}
 \end{proof}
-
 
 %=======================================
 \section{LTI Operations on WSS random processes}
@@ -167,12 +198,12 @@ then their cross-correlation is commonly written $\Rxy(\tau)$.
 \label{def:LSyx}
 %---------------------------------------
 Let $\rvx(t)$ and $\rvy(t)$ be WSS random processes.
-%Then the \textbf{power spectral density} of $\rvx(t)$ and $\rvy(t)$ are defined as
+Let $\opLT$ be the \ope{Laplace Transform} operator.
 \defbox{\begin{array}{rclcl}
-     \LSxx(s) &\eqd& \opL{\Rxx(\tau)} &\eqd& \ds \int_{\tau\in\R}\Rxx(\tau) e^{-s\tau} \dtau
-   \\\LSyy(s) &\eqd& \opL{\Ryy(\tau)} &\eqd& \ds \int_{\tau\in\R}\Ryy(\tau) e^{-s\tau} \dtau
-   \\\LSxy(s) &\eqd& \opL{\Rxy(\tau)} &\eqd& \ds \int_{\tau\in\R}\Rxy(\tau) e^{-s\tau} \dtau
-   \\\LSyx(s) &\eqd& \opL{\Ryx(\tau)} &\eqd& \ds \int_{\tau\in\R}\Ryx(\tau) e^{-s\tau} \dtau
+     \LSxx(s) &\eqd& \opLT{\Rxx(\tau)} &\eqd& \ds \int_{\tau\in\R}\Rxx(\tau) e^{-s\tau} \dtau
+   \\\LSyy(s) &\eqd& \opLT{\Ryy(\tau)} &\eqd& \ds \int_{\tau\in\R}\Ryy(\tau) e^{-s\tau} \dtau
+   \\\LSxy(s) &\eqd& \opLT{\Rxy(\tau)} &\eqd& \ds \int_{\tau\in\R}\Rxy(\tau) e^{-s\tau} \dtau
+   \\\LSyx(s) &\eqd& \opLT{\Ryx(\tau)} &\eqd& \ds \int_{\tau\in\R}\Ryx(\tau) e^{-s\tau} \dtau
 \end{array}}
 \end{definition}
 
@@ -184,7 +215,6 @@ Let $\rvx(t)$ and $\rvy(t)$ be WSS random processes.
 \label{def:Swyx}
 %---------------------------------------
 Let $\rvx(t)$ and $\rvy(t)$ be WSS random processes.
-%Then the \textbf{power spectral density} of $\rvx(t)$ and $\rvy(t)$ are defined as
 \defbox{\begin{array}{rc>{\ds}lc>{\ds}l}
      \Swxx(\omega) &\eqd& [\opFT{\Rxx(\tau)}](\omega) &\eqd& \ds \int_{\tau\in\R} \Rxx(\tau) e^{-i\omega\tau} \dtau
    \\\Swyy(\omega) &\eqd& [\opFT{\Ryy(\tau)}](\omega) &\eqd& \ds \int_{\tau\in\R} \Ryy(\tau) e^{-i\omega\tau} \dtau
@@ -370,7 +400,7 @@ Then
    \Ryy(\tau) &=&    \Rxy(\tau)\conv h(\tau)
               &\eqd& \int_{u\in\R}h(u) \Rxy(\tau-u)\du \\
    \Ryy(\tau) &=&    \Rxx(\tau)\conv h(\tau)\conv h^\ast(-\tau)
-              &\eqd& \int_v \int_{u\in\R}h(u-v)h^\ast(-v) \Rxx(\tau-u-v)\du\dv  \\
+              &\eqd& \int_{v\in\R}\int_{u\in\R}h(u-v)h^\ast(-v) \Rxx(\tau-u-v)\du\dv  \\
 \\
    \Sxy(s)    &=&    \Sxx(s) \hat{h}^\ast(-s^\ast)             \\
    \Syy(s)    &=&    \Sxy(s) \hat{h}(s)                        \\
@@ -409,22 +439,22 @@ Then
 \\
 \\
   \Sxy(s)
-     &\eqd \opL \Rxy(\tau)
+     &\eqd \opLT \Rxy(\tau)
    \\&\eqd \int_{\tau\in\R}\Rxy(\tau) e^{-s\tau} \; d\tau
    \\&=    \int_{\tau\in\R}\brs{ \Rxx(\tau) \conv h^\ast(-\tau) } e^{-s\tau} \; d\tau
    \\&=    \int_{\tau\in\R}\brs{ \int_{u\in\R}h^\ast(-u) \Rxx(\tau-u)\du } e^{-s\tau} \; d\tau
    \\&=    \int_{u\in\R}h^\ast(-u) \int_{\tau\in\R}\Rxx(\tau-u)e^{-s\tau} \; d\tau\du
-   \\&=    \int_{u\in\R}h^\ast(-u) \int_v \Rxx(v)e^{-s(v+u)} \dv \du
+   \\&=    \int_{u\in\R}h^\ast(-u) \int_{v\in\R}\Rxx(v)e^{-s(v+u)} \dv \du
      && \text{where $v=\tau-u\iff \tau=v+u$}
-   \\&=    \int_{u\in\R}h^\ast(-u) e^{-su} \du \int_v \Rxx(v)e^{-sv} \dv
-   \\&=    \int_{u\in\R}h^\ast(u) e^{-s(-u)} \du \int_v \Rxx(v)e^{-sv} \dv
+   \\&=    \int_{u\in\R}h^\ast(-u) e^{-su} \du \int_{v\in\R}\Rxx(v)e^{-sv} \dv
+   \\&=    \int_{u\in\R}h^\ast(u) e^{-s(-u)} \du \int_{v\in\R}\Rxx(v)e^{-sv} \dv
    \\&=    \brp{\int_{u\in\R}h(u) e^{-(-s^\ast)u} \du }^\ast
-           \int_v \Rxx(v)e^{-sv} \dv
+           \int_{v\in\R}\Rxx(v)e^{-sv} \dv
    \\&\eqd \hat{h}^\ast(-s^\ast) \Sxx(s)
 \\
 \\
    \Syy(s)
-     &\eqd \opL \Ryy(\tau)
+     &\eqd \opLT \Ryy(\tau)
    \\&\eqd \int_{\tau\in\R}\Ryy(\tau) e^{-s\tau} \; d\tau
    \\&=    \int_{\tau\in\R}\brs{ \Rxy(\tau) \conv h(\tau) } e^{-s\tau} \; d\tau
    \\&=    \int_{\tau\in\R}\brs{ \int_{u\in\R}h(u) \Rxy(\tau-u)\du } e^{-s\tau} \; d\tau
@@ -445,12 +475,12 @@ Then
    \\&=    \left. \hat{h}^\ast(-s^\ast) \Sxx(s)\right|_{s=j\omega}
    \\&=    \left.
            \brp{\int_{u\in\R}h(u) e^{-(-s^\ast)u} \du }^\ast
-           \int_v \Rxx(v)e^{-sv} \dv
+           \int_{v\in\R}\Rxx(v)e^{-sv} \dv
            \right|_{s=j\omega}
    \\&=    \brp{\int_{u\in\R}h(u) e^{-(-j\omega)^\ast u} \du }^\ast
-           \int_v \Rxx(v)e^{-j\omega v} \dv
+           \int_{v\in\R}\Rxx(v)e^{-j\omega v} \dv
    \\&=    \brp{\int_{u\in\R}h(u) e^{-j\omega u} \du }^\ast
-           \int_v \Rxx(v)e^{-j\omega v} \dv
+           \int_{v\in\R}\Rxx(v)e^{-j\omega v} \dv
    \\&\eqd \Fh^\ast(\omega) \Swxx(\omega)
 \\
 \\

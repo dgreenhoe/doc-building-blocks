@@ -38,6 +38,7 @@ FILE_SRC  =                               \
   ../common/randprocess.tex               \
   ../common/randseq.tex                   \
   ../common/randseq_addnoise.tex          \
+  ../common/randseq_continuous_dsp.tex    \
   ../common/randseq_dsp.tex               \
   ../common/randseq_eigen.tex             \
   ../common/randvar.tex                   \
