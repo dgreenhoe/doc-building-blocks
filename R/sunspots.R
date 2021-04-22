@@ -3,7 +3,7 @@
 # R script file
 # setwd("c:/dan/r/R");
 # setwd("c:/dan/doc-building-blocks/R");
-# dir()
+# setwd("c:/dan/personal/r/R");
 # source("sunspots.R");
 #============================================================================
 #---------------------------------------
@@ -11,6 +11,8 @@
 #---------------------------------------
 #install.packages("bspec");
 #install.packages("ramify");
+#install.packages("freqdom");
+#install.packages("matlib");
 #---------------------------------------
 # load add-on packages
 #---------------------------------------
@@ -19,7 +21,9 @@
  require(graphics);
  require(datasets);
  require(ramify);
+ require(freqdom);
  require(bspec);    # https://www.rdocumentation.org/packages/bspec/
+ require(matlib);
  data(sunspots, package="datasets");
 #=======================================
 # function: data
@@ -50,7 +54,7 @@ mypsd = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFile="myps
   freqMax = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
   periodT = 1 / freqMax;           # estimated period
   if(dataPlot){ 
-    plot(xpsd$power, type="b", xlim=c(1,50), ylim=c(0,max(xpsd$power)), col="blue");
+    plot(xpsd$frequency*Fs, sqrt(xpsd$power/N), xlim=c(0,1), type="h", col="blue", xlab="samples/year");
     }
   if(dataDump){
     sink(dataFile);
@@ -94,12 +98,38 @@ pdfr = function(x)
 # plot data
 #---------------------------------------
  mydata(x);
- estT = mypsd(x, numSegments=3, dataDump=FALSE);
- print(sprintf("estimated period = %.16f years", estT));
+ #estT = mypsd(x, numSegments=8, dataDump=FALSE);
+# print(sprintf("estimated period = %.16f years", estT));
 
 
 #mypdf(x);
 #pdfr(x);
 #---------------------------------------
-# process data
+# PCA
+# https://cran.r-project.org/web/packages/matlib/vignettes/inv-ex1.html
+# https://cran.r-project.org/web/packages/matlib/vignettes/inv-ex1.html
+# https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
+# https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #---------------------------------------
+
+numSegments=4
+dataDump=FALSE
+dataPlot=TRUE
+dataFile="mypsd.dat" 
+  xts       = as.ts(as.vector(x)); # year indices seems to confuse welchPSD
+  N         = length(xts);         # length of time series
+  Fs        = 12;                  # sample rate = 12 samples per year
+  estMean   = mean(xts);           # estimated mean
+  segLength = N / numSegments;     # segment length
+  a = acf(xts - estMean, type="correlation", lag=2000)
+  avect = as.vector(a$acf)
+  A = stats::toeplitz(avect)
+  Q = eigen(A, symmetric=TRUE, only.values=FALSE)
+  V = Q$vectors
+  L = Q$values
+  D = diag(L)
+  plot( L[1] * Q$vectors[,1], type='o', col="blue")
+  lines(L[2] * Q$vectors[,2], type='o', col="red")
+  lines(L[3] * Q$vectors[,3], type='o', col="orange")
+  lines(L[4] * Q$vectors[,4], type='o', col="brown")
+  lines(L[5] * Q$vectors[,5], type='o', col="black")
