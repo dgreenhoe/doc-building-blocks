@@ -105,11 +105,13 @@ pdfr = function(x)
 # \brief Estimate sunspot period using PCA and Welch Estimate of PSD of PCA
 # PCA
 # https://cran.r-project.org/web/packages/matlib/vignettes/inv-ex1.html
-# https://cran.r-project.org/web/packages/matlib/vignettes/inv-ex1.html
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
 # https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #------------------------------------------------------------------------------
-sunspots_PCA_PSD = function(x, numSegments=4)
+x = sunspot.month;
+numSegments=4
+nLag = 2000
+#sunspots_PCA_PSD = function(x, numSegments=4)
 {
   numSegments=4
   xts       = as.ts(as.vector(x)); # year indices seems to confuse welchPSD
@@ -117,41 +119,65 @@ sunspots_PCA_PSD = function(x, numSegments=4)
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
   segLength = N / numSegments;     # segment length
-  a = acf(xts - estMean, type="correlation", lag=2000)
+  a = acf(xts - estMean, type="correlation", lag=nLag)
   avect = as.vector(a$acf)
-  A = stats::toeplitz(avect)
-  Q = eigen(A, symmetric=TRUE, only.values=FALSE)
-  V = Q$vectors
-  L = Q$values
-  D = diag(L)
+  A     = stats::toeplitz(avect)
+  Q     = eigen(A, symmetric=TRUE, only.values=FALSE)
+  V     = Q$vectors
+  L     = Q$values
+  D     = diag(L)
 
   colors = c("blue", "red", "orange", "green", "purple", "brown", "black");
-  plot( L[1] * Q$vectors[,1], type='o', col=colors[1])
-  for( n in 2:5 )
+  traces = colors[1:5]
+  for( n in 1:length(traces))
   {
-    lines(L[n] * Q$vectors[,n], type='o', col=colors[n])
+    if(n==1) plot( L[n] * Q$vectors[,n], type='l', lwd=3, col=colors[n])
+    else     lines(L[n] * Q$vectors[,n], type='l', lwd=3, col=colors[n])
+    traces[n] = sprintf("Eigen Vector %2d", n)
   }
-
-  printf("sunspots_PCA_PSD(x):\n");
+  legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
+ 
+  printf("sunspots_PCA_PSD(x) using Welch PSD:\n");
   for( n in 1:10 )
   {
-    xpsd = bspec::welchPSD(x=as.ts(L[n] * Q$vectors[,n]), seglength = segLength);
-    psdMax = max(xpsd$power);
-    binMax = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
+    xpsd    = bspec::welchPSD(x=as.ts(L[n] * Q$vectors[,n]), seglength = segLength);
+    psdMax  = max(xpsd$power);
+    binMax  = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
     freqMax = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
-    periodT = 1 / freqMax;           # estimated period
+    periodT = 1 / freqMax;                 # estimated period
     printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years\n", n, L[n], freqMax, periodT);
   }
+
+  printf("sunspots_PCA_PSD(x) using DFT:\n");
+  for( n in 1:20 )
+  {
+    x=as.ts(L[n] * Q$vectors[,n])
+    xfft    = fft(x, inverse=FALSE);
+    fftMax  = abs(xfft);
+    binMax  = ramify::argmax(as.matrix(fftMax), rows = FALSE);
+    freqMax = (binMax-1) * Fs / length(xfft);
+    periodT = 1 / freqMax;                 # estimated period
+    phase   = Arg(xfft[binMax]);
+    degrees = phase / pi * 180
+    printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years phase=%9.6f(%9.6f)\n", n, L[n], freqMax, periodT, phase, degrees);
+  }
 }
+
+#  A = matrix( c(1, 2, 3, 
+#                2, 5, 6,    
+#                3, 6, 9 ), nrow=3 );
+#  Q     = eigen(A, symmetric=TRUE, only.values=FALSE)
+#  V     = Q$vectors
+#  L     = Q$values
+#  D     = diag(L)
+#  B = V %*% D %*% inv(V)
+#  C = B - A
 
 #---------------------------------------
 # load data
 #---------------------------------------
- x = sunspot.month;
-#---------------------------------------
-# plot data
-#---------------------------------------
- mydata(x);
- sunspots_PSD(x)
- sunspots_PCA_PSD(x)
+# x = sunspot.month;
+# mydata(x);
+# sunspots_PSD(x)
+# sunspots_PCA_PSD(x)
 
