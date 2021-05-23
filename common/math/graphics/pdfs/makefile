@@ -165,6 +165,7 @@ GRP_DATA =                     \
   earthquake_kapi_20180928.pdf \
   global-temp.pdf              \
   sunspots.pdf                 \
+  sunspots_acf.pdf             \
   sunspots_1749-2004.pdf       \
   sunspots_welchPSD_4segs.pdf
 

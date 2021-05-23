@@ -119,13 +119,15 @@ nLag = 2000
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
   segLength = N / numSegments;     # segment length
-  a = acf(xts - estMean, type="correlation", lag=nLag)
-  avect = as.vector(a$acf)
-  A     = stats::toeplitz(avect)
-  Q     = eigen(A, symmetric=TRUE, only.values=FALSE)
-  V     = Q$vectors
-  L     = Q$values
-  D     = diag(L)
+  a         = acf(xts - estMean, type="correlation", lag=nLag)
+  avect     = as.vector(a$acf)
+  lvect     = as.vector(a$lag)
+  al        = cbind(lvect,avect)
+  A         = stats::toeplitz(avect)
+  Q         = eigen(A, symmetric=TRUE, only.values=FALSE)
+  V         = Q$vectors
+  L         = Q$values
+  D         = diag(L)
 
   colors = c("blue", "red", "orange", "green", "purple", "brown", "black");
   traces = colors[1:5]
