@@ -26,7 +26,7 @@
  require(bspec);    # https://www.rdocumentation.org/packages/bspec/
  require(matlib);
  require(R.utils);
- data(sunspots, package="datasets");
+#data(sunspots, package="datasets");
 
 #------------------------------------------------------------------------------
 # \brief Plot data
@@ -63,7 +63,8 @@ sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFil
   if(dataPlot){
     plot(xpsd$frequency*Fs, sqrt(xpsd$power/N), xlim=c(0,1), type="h", col="blue", xlab="samples/year");
     }
-  if(dataDump){
+  if(dataDump)
+  {
     sink(dataFile);
     print(sprintf("%%============================================================================="));
     print(sprintf("%% Daniel J. Greenhoe "                                                         ));
@@ -76,7 +77,7 @@ sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFil
       print(sprintf("(%10.6f, %10.6f)", xpsd$frequency[i], xpsd$power[i]/psdMax               ));
     print(sprintf("]"                                                                              ));
     sink();
-    }
+  }
   periodT;                         # return estimated period
 }
 
@@ -108,20 +109,22 @@ pdfr = function(x)
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
 # https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #------------------------------------------------------------------------------
-x = sunspot.month;
+#x = sunspot.month;
+x = read.csv(file='data/sunspots_silso_20210522.csv', header=TRUE,sep=",", comment.char="#", strip.white=TRUE)
 numSegments=4
 nLag = 2000
+dataDump = TRUE
 #sunspots_PCA_PSD = function(x, numSegments=4)
-{
+#{
   numSegments=4
-  xts       = as.ts(as.vector(x)); # year indices seems to confuse welchPSD
+  xts       = as.ts(as.vector(x$count)); # year indices seems to confuse welchPSD
   N         = length(xts);         # length of time series
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
   segLength = N / numSegments;     # segment length
   a         = acf(xts - estMean, type="correlation", lag=nLag)
   avect     = as.vector(a$acf)
-  lvect     = as.vector(a$lag)
+  lvect     = as.vector(a$lag)/12
   al        = cbind(lvect,avect)
   A         = stats::toeplitz(avect)
   Q         = eigen(A, symmetric=TRUE, only.values=FALSE)
@@ -163,7 +166,25 @@ nLag = 2000
     degrees = phase / pi * 180
     printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years phase=%9.6f(%9.6f)\n", n, L[n], freqMax, periodT, phase, degrees);
   }
-}
+
+  dataFile = "tex/sunspots_acf.dat"
+  if(dataDump)
+  {
+    sink(dataFile);
+    printf("%%=============================================================================\n"  );
+    printf("%% Daniel J. Greenhoe \n"                                                           );
+    printf("%% Sunspot auto-correlation function (ACF) data file suitable for use with LaTeX PStricks\n" );
+    printf("%% For an example, see \"sunspots_acf.tex\"\n"                                      );
+    printf("%% This file auto-generated using \"sunspots.R\" --- hand-editing not recommended\n");
+    printf("%%=============================================================================\n"  );
+    printf("[\n"                                                                                );
+    for(i in 1:length(avect))                                                                   
+      printf("  (%12.8f, %12.8f)\n", lvect[i], avect[i]                                         );
+    printf("]\n"                                                                                );
+    sink();
+  }
+
+#}
 
 #  A = matrix( c(1, 2, 3, 
 #                2, 5, 6,    
@@ -182,4 +203,5 @@ nLag = 2000
 # mydata(x);
 # sunspots_PSD(x)
 # sunspots_PCA_PSD(x)
+
 
