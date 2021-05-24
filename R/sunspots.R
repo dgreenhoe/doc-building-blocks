@@ -88,10 +88,9 @@ sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFil
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
 # https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #------------------------------------------------------------------------------
-#sunspots_PCA_PSD = function(x, numSegments=4)
-#{
-#x = sunspot.month;
-#  x = read.csv(file='data/sunspots_silso_20210522.csv', header=TRUE,sep=",", comment.char="#", strip.white=TRUE)
+sunspots_PCA_PSD = function(x, numSegments=4)
+{
+  #x = read.csv(file='data/sunspots_silso_20210522.csv', header=TRUE,sep=",", comment.char="#", strip.white=TRUE)
   x = read.csv(file='../data/silso_SN_m_tot_V2.0_20210524.csv', header=TRUE,sep=";", comment.char="#", strip.white=TRUE)
   numSegments=4
   nLag = 2000
@@ -121,7 +120,7 @@ sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFil
     traces[n] = sprintf("Eigen Vector %2d", n)
   }
   legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
- 
+
   printf("sunspots_PCA_PSD(x) using Welch PSD:\n");
   for( n in 1:10 )
   {
@@ -158,16 +157,89 @@ sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFil
     printf("%% This file auto-generated using \"sunspots.R\" --- hand-editing not recommended\n");
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
-    for(i in 1:length(avect))                                                                   
+    for(i in 1:length(avect))
       printf("  (%12.8f, %12.8f)\n", lvect[i], avect[i]                                         );
     printf("]\n"                                                                                );
     sink();
   }
+}
 
-#}
+#------------------------------------------------------------------------------
+# \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
+# \returns ACF data table
+#------------------------------------------------------------------------------
+sunspots_getData = function( dataDump    = FALSE,
+                             dataPlot    = TRUE, 
+                             dataFileIn  = "../data/silso_SN_m_tot_V2.0_20210524.csv", 
+                             dataFileOut = "tex/sunspots.dat"
+                           )
+{
+  x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
+  xts     = as.ts(as.vector(x$count));
+  dvect   = as.vector(x$date)
+  cvect   = as.vector(x$count)
+  if(dataPlot)
+  {
+    plot(dvect, cvect, lwd=2, col="blue", type='l');
+  }
+  if(dataDump)
+  {
+    sink(dataFileOut);
+    printf("%%=============================================================================\n"  );
+    printf("%% Daniel J. Greenhoe \n"                                                           );
+    printf("%% Sunspot monthly mean data file suitable for use with LaTeX PStricks\n"           );
+    printf("%% For an example, see \"sunspots.tex\"\n"                                          );
+    printf("%% This file auto-generated with \"sunspots.R\"\n"                                  );
+    printf("%% using data from \"%s\"\n", dataFileIn                                            );
+    printf("%% Hand-editing not recommended\n"                                                  );
+    printf("%%=============================================================================\n"  );
+    printf("[\n"                                                                                );
+    for(i in 1:length(dvect))
+      printf("  (%12.8f, %12.8f)\n", dvect[i], cvect[i]                                         );
+    printf("]\n"                                                                                );
+    sink();
+  }
+  return(x);
+}
 
-#  A = matrix( c(1, 2, 3, 
-#                2, 5, 6,    
+#------------------------------------------------------------------------------
+# \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
+# \returns ACF data table
+#------------------------------------------------------------------------------
+sunspots_ACF = function( dataDump    = FALSE,
+                         dataPlot    = TRUE, 
+                         nLag        = 2000, 
+                         dataFileIn  = "../data/silso_SN_m_tot_V2.0_20210524.csv", 
+                         dataFileOut = "tex/sunspots_acf.dat"
+                       )
+{
+  x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
+  xts     = as.ts(as.vector(x$count));
+  estMean = mean(xts);
+  a       = stats::acf(xts - estMean, type="correlation", lag.max=nLag, plot=acfPlot)
+  avect   = as.vector(a$acf)
+  lvect   = as.vector(a$lag)/12
+
+  if(dataDump)
+  {
+    sink(dataFileOut);
+    printf("%%=============================================================================\n"  );
+    printf("%% Daniel J. Greenhoe \n"                                                           );
+    printf("%% Sunspot auto-correlation function (ACF) data file suitable for use with LaTeX PStricks\n" );
+    printf("%% For an example, see \"sunspots_acf.tex\"\n"                                      );
+    printf("%% This file auto-generated using \"sunspots.R\" --- hand-editing not recommended\n");
+    printf("%%=============================================================================\n"  );
+    printf("[\n"                                                                                );
+    for(i in 1:length(avect))
+      printf("  (%12.8f, %12.8f)\n", lvect[i], avect[i]                                         );
+    printf("]\n"                                                                                );
+    sink();
+  }
+  return(a);
+}
+
+#  A = matrix( c(1, 2, 3,
+#                2, 5, 6,
 #                3, 6, 9 ), nrow=3 );
 #  Q     = eigen(A, symmetric=TRUE, only.values=FALSE)
 #  V     = Q$vectors
@@ -181,6 +253,8 @@ sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFil
 #---------------------------------------
 # x = sunspot.month;
 # mydata(x);
+spotData = sunspots_getData(dataDump=TRUE, dataPlot=TRUE);
+#acfData  = sunspots_ACF(    dataDump=FALSE, dataPlot=TRUE);
 # sunspots_PSD(x)
 # sunspots_PCA_PSD(x)
 
