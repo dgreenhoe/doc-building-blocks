@@ -253,7 +253,7 @@ sunspots_ACF = function( dataDump    = FALSE,
 #---------------------------------------
 # x = sunspot.month;
 # mydata(x);
-spotData = sunspots_getData(dataDump=TRUE, dataPlot=TRUE);
+spotData = sunspots_getData(dataDump=FALSE, dataPlot=TRUE);
 #acfData  = sunspots_ACF(    dataDump=FALSE, dataPlot=TRUE);
 # sunspots_PSD(x)
 # sunspots_PCA_PSD(x)
