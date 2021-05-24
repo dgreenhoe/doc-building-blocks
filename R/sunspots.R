@@ -26,7 +26,7 @@
  require(bspec);    # https://www.rdocumentation.org/packages/bspec/
  require(matlib);
  require(R.utils);
-#data(sunspots, package="datasets");
+#data(sunspots, package="datasets"); # deprecated in favor of Silso data
 
 #------------------------------------------------------------------------------
 # \brief Plot data
@@ -82,40 +82,20 @@ sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFil
 }
 
 #------------------------------------------------------------------------------
-# function: pdf
-#------------------------------------------------------------------------------
-mypdf = function(x)
-{
-  plot(density(x, bw="SJ"))
-}
-
-#------------------------------------------------------------------------------
-# function: pdf recursive
-#------------------------------------------------------------------------------
-pdfr = function(x)
-{
-  N = length(x);
-  muhat = seq(from=0, to=0, length=N);
-  muhat[1] = x[1];
-  w = seq(from=2, to=N, length=N-1);
-  muhat[2:N] = muhat[1:N-1] + (x[2:N] - muhat[1:N-1]) / w[1:N-1];
-  print(muhat[1:10]);
-}
-
-#------------------------------------------------------------------------------
 # \brief Estimate sunspot period using PCA and Welch Estimate of PSD of PCA
 # PCA
 # https://cran.r-project.org/web/packages/matlib/vignettes/inv-ex1.html
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
 # https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #------------------------------------------------------------------------------
-#x = sunspot.month;
-x = read.csv(file='data/sunspots_silso_20210522.csv', header=TRUE,sep=",", comment.char="#", strip.white=TRUE)
-numSegments=4
-nLag = 2000
-dataDump = TRUE
 #sunspots_PCA_PSD = function(x, numSegments=4)
 #{
+#x = sunspot.month;
+#  x = read.csv(file='data/sunspots_silso_20210522.csv', header=TRUE,sep=",", comment.char="#", strip.white=TRUE)
+  x = read.csv(file='../data/silso_SN_m_tot_V2.0_20210524.csv', header=TRUE,sep=";", comment.char="#", strip.white=TRUE)
+  numSegments=4
+  nLag = 2000
+  dataDump = TRUE
   numSegments=4
   xts       = as.ts(as.vector(x$count)); # year indices seems to confuse welchPSD
   N         = length(xts);         # length of time series
