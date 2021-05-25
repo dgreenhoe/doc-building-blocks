@@ -174,6 +174,7 @@ sunspots_getData = function( dataDump    = FALSE,
                              dataFileOut = "tex/sunspots.dat"
                            )
 {
+ #x = sunspot.month;
   x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
   xts     = as.ts(as.vector(x$count));
   dvect   = as.vector(x$date)
@@ -209,14 +210,15 @@ sunspots_getData = function( dataDump    = FALSE,
 sunspots_ACF = function( dataDump    = FALSE,
                          dataPlot    = TRUE, 
                          nLag        = 2000, 
-                         dataFileIn  = "../data/silso_SN_m_tot_V2.0_20210524.csv", 
+                         dataIn, 
                          dataFileOut = "tex/sunspots_acf.dat"
                        )
 {
-  x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
+ #x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
+  x       = dataIn;
   xts     = as.ts(as.vector(x$count));
   estMean = mean(xts);
-  a       = stats::acf(xts - estMean, type="correlation", lag.max=nLag, plot=acfPlot)
+  a       = stats::acf(xts - estMean, type="correlation", lag.max=nLag, plot=dataPlot)
   avect   = as.vector(a$acf)
   lvect   = as.vector(a$lag)/12
 
@@ -251,10 +253,8 @@ sunspots_ACF = function( dataDump    = FALSE,
 #---------------------------------------
 # load data
 #---------------------------------------
-# x = sunspot.month;
-# mydata(x);
-spotData = sunspots_getData(dataDump=FALSE, dataPlot=TRUE);
-#acfData  = sunspots_ACF(    dataDump=FALSE, dataPlot=TRUE);
+ spotData = sunspots_getData(dataDump=FALSE, dataPlot=TRUE);
+ acfData  = sunspots_ACF(    dataDump=FALSE, dataPlot=TRUE, dataIn=spotData);
 # sunspots_PSD(x)
 # sunspots_PCA_PSD(x)
 
