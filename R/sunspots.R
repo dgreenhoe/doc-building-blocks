@@ -18,28 +18,97 @@
 # load add-on packages
 #---------------------------------------
  rm(list=objects());
- require(stats);
- require(graphics);
- require(datasets);
- require(ramify);
- require(freqdom);
- require(bspec);    # https://www.rdocumentation.org/packages/bspec/
- require(matlib);
- require(R.utils);
+# require(stats);
+# require(graphics);
+# require(ramify);
+# require(freqdom);
+# require(bspec);    # https://www.rdocumentation.org/packages/bspec/
+# require(matlib);
+# require(R.utils);
 #data(sunspots, package="datasets"); # deprecated in favor of Silso data
 
 #------------------------------------------------------------------------------
-# \brief Plot data
+# \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
+# \returns data table
 #------------------------------------------------------------------------------
-mydata = function(x)
+sunspots_getData = function( dataDump    = FALSE,
+                             dataPlot    = TRUE, 
+                             dataFileIn  = "../data/silso_SN_m_tot_V2.0_20210524.csv", 
+                             dataFileOut = "tex/sunspots.dat"
+                           )
 {
-  N = length(x);
-  avg = sum(x) / N;
-  print(avg);
-  plot(x, col="blue", type="l");
-  lines(c(start(x)[1],end(x)[1]), c(avg,avg), col="red", type="l");
-  x_smooth = smooth(x, kind="3R");
-  lines(x_smooth, col="green", type="l");
+ #x = sunspot.month;
+  x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
+  xts     = as.ts(as.vector(x$count));
+  dvect   = as.vector(x$date)
+  cvect   = as.vector(x$count)
+  if(dataPlot)
+  {
+    plot(x=dvect, y=cvect, lwd=2, type='l', main="Sunspot Estimation", col="blue", xlab="year", ylab="count");
+    abline(h=seq(from=0,   to= 400, by=100), lty='dashed', col = "green")
+    abline(v=seq(from=1750,to=2020, by= 10), lty='dashed', col = "green")
+  }
+  if(dataDump)
+  {
+    sink(dataFileOut);
+    printf("%%=============================================================================\n"  );
+    printf("%% Daniel J. Greenhoe \n"                                                           );
+    printf("%% Sunspot monthly mean data file suitable for use with LaTeX PStricks\n"           );
+    printf("%% For an example, see \"sunspots.tex\"\n"                                          );
+    printf("%% This file auto-generated with \"sunspots.R\"\n"                                  );
+    printf("%% using data from \"%s\"\n", dataFileIn                                            );
+    printf("%% Hand-editing not recommended\n"                                                  );
+    printf("%%=============================================================================\n"  );
+    printf("[\n"                                                                                );
+    for(i in 1:length(dvect))
+      printf("  (%12.8f, %12.8f)\n", dvect[i], cvect[i]                                         );
+    printf("]\n"                                                                                );
+    sink();
+  }
+  return(x);
+}
+
+#------------------------------------------------------------------------------
+# \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
+# \returns ACF data table
+#------------------------------------------------------------------------------
+sunspots_ACF = function( dataDump    = FALSE,
+                         dataPlot    = TRUE, 
+                         nLag        = 2000, 
+                         dataIn, 
+                         dataFileOut = "tex/sunspots_acf.dat"
+                       )
+{
+ #x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
+  x       = dataIn;
+  xts     = as.ts(as.vector(x$count));
+  estMean = mean(xts);
+  a       = stats::acf(xts - estMean, type="correlation", lag.max=nLag, plot=FALSE)
+  avect   = as.vector(a$acf)
+  lvect   = as.vector(a$lag)/12
+
+  if(dataPlot)
+  {
+    plot(x=lvect, y=avect, lwd=2, type='l', xaxp=c(0,160,16), yaxp=c(-0.4,1.0,14), main="Sunspot Auto-Correlation Estimation", xlab="lag in years", ylab="magnitude", col="blue");
+    abline(h=seq(from=0, to=1.0, by= 0.1), lty='dashed', col = "green")
+    abline(v=seq(from=0, to=160, by=10.0), lty='dashed', col = "green")
+  }
+  if(dataDump)
+  {
+    sink(dataFileOut);
+    printf("%%=============================================================================\n"  );
+    printf("%% Daniel J. Greenhoe \n"                                                           );
+    printf("%% Sunspot auto-correlation function (ACF) data file suitable for use with LaTeX PStricks\n" );
+    printf("%% For an example, see \"sunspots_acf.tex\"\n"                                      );
+    printf("%% This file auto-generated using \"sunspots.R\" --- hand-editing not recommended\n");
+    printf("%%=============================================================================\n"  );
+    printf("[\n"                                                                                );
+    for(i in 1:length(avect))
+      printf("  (%12.8f, %12.8f)\n", lvect[i], avect[i]                                         );
+    printf("]\n"                                                                                );
+    sink();
+  }
+  return(a);
 }
 
 #------------------------------------------------------------------------------
@@ -165,80 +234,8 @@ sunspots_PCA_PSD = function(x, numSegments=4)
 }
 
 #------------------------------------------------------------------------------
-# \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
-# \returns ACF data table
+# Main Processing
 #------------------------------------------------------------------------------
-sunspots_getData = function( dataDump    = FALSE,
-                             dataPlot    = TRUE, 
-                             dataFileIn  = "../data/silso_SN_m_tot_V2.0_20210524.csv", 
-                             dataFileOut = "tex/sunspots.dat"
-                           )
-{
- #x = sunspot.month;
-  x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
-  xts     = as.ts(as.vector(x$count));
-  dvect   = as.vector(x$date)
-  cvect   = as.vector(x$count)
-  if(dataPlot)
-  {
-    plot(dvect, cvect, lwd=2, col="blue", type='l');
-  }
-  if(dataDump)
-  {
-    sink(dataFileOut);
-    printf("%%=============================================================================\n"  );
-    printf("%% Daniel J. Greenhoe \n"                                                           );
-    printf("%% Sunspot monthly mean data file suitable for use with LaTeX PStricks\n"           );
-    printf("%% For an example, see \"sunspots.tex\"\n"                                          );
-    printf("%% This file auto-generated with \"sunspots.R\"\n"                                  );
-    printf("%% using data from \"%s\"\n", dataFileIn                                            );
-    printf("%% Hand-editing not recommended\n"                                                  );
-    printf("%%=============================================================================\n"  );
-    printf("[\n"                                                                                );
-    for(i in 1:length(dvect))
-      printf("  (%12.8f, %12.8f)\n", dvect[i], cvect[i]                                         );
-    printf("]\n"                                                                                );
-    sink();
-  }
-  return(x);
-}
-
-#------------------------------------------------------------------------------
-# \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
-# \returns ACF data table
-#------------------------------------------------------------------------------
-sunspots_ACF = function( dataDump    = FALSE,
-                         dataPlot    = TRUE, 
-                         nLag        = 2000, 
-                         dataIn, 
-                         dataFileOut = "tex/sunspots_acf.dat"
-                       )
-{
- #x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
-  x       = dataIn;
-  xts     = as.ts(as.vector(x$count));
-  estMean = mean(xts);
-  a       = stats::acf(xts - estMean, type="correlation", lag.max=nLag, plot=dataPlot)
-  avect   = as.vector(a$acf)
-  lvect   = as.vector(a$lag)/12
-
-  if(dataDump)
-  {
-    sink(dataFileOut);
-    printf("%%=============================================================================\n"  );
-    printf("%% Daniel J. Greenhoe \n"                                                           );
-    printf("%% Sunspot auto-correlation function (ACF) data file suitable for use with LaTeX PStricks\n" );
-    printf("%% For an example, see \"sunspots_acf.tex\"\n"                                      );
-    printf("%% This file auto-generated using \"sunspots.R\" --- hand-editing not recommended\n");
-    printf("%%=============================================================================\n"  );
-    printf("[\n"                                                                                );
-    for(i in 1:length(avect))
-      printf("  (%12.8f, %12.8f)\n", lvect[i], avect[i]                                         );
-    printf("]\n"                                                                                );
-    sink();
-  }
-  return(a);
-}
 
 #  A = matrix( c(1, 2, 3,
 #                2, 5, 6,
@@ -250,11 +247,8 @@ sunspots_ACF = function( dataDump    = FALSE,
 #  B = V %*% D %*% inv(V)
 #  C = B - A
 
-#---------------------------------------
-# load data
-#---------------------------------------
  spotData = sunspots_getData(dataDump=FALSE, dataPlot=TRUE);
- acfData  = sunspots_ACF(    dataDump=FALSE, dataPlot=TRUE, dataIn=spotData);
+ acfData  = sunspots_ACF(    dataDump=FALSE, dataPlot=TRUE, dataIn=spotData );
 # sunspots_PSD(x)
 # sunspots_PCA_PSD(x)
 
