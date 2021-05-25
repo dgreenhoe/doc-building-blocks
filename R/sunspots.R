@@ -22,11 +22,14 @@
 # require(graphics);
 # require(ramify);
 # require(freqdom);
-# require(bspec);    # https://www.rdocumentation.org/packages/bspec/
+  require(bspec);    # welchPSD
 # require(matlib);
 # require(R.utils);
 #data(sunspots, package="datasets"); # deprecated in favor of Silso data
-
+#---------------------------------------
+# Global parameters
+#---------------------------------------
+ author = "Daniel J. Greenhoe"
 #------------------------------------------------------------------------------
 # \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
 # \returns data table
@@ -89,7 +92,8 @@ sunspots_ACF = function( dataDump    = FALSE,
 
   if(dataPlot)
   {
-    plot(x=lvect, y=avect, lwd=2, type='l', xaxp=c(0,160,16), yaxp=c(-0.4,1.0,14), main="Sunspot Auto-Correlation Estimation", xlab="lag in years", ylab="magnitude", col="blue");
+    plot(x=lvect, y=avect, lwd=2, type='l', xaxp=c(0,160,16), yaxp=c(-0.4,1.0,14), col="blue",
+         main="Sunspot Auto-Correlation Estimation", xlab="lag in years", ylab="magnitude");
     abline(h=seq(from=0, to=1.0, by= 0.1), lty='dashed', col = "green")
     abline(v=seq(from=0, to=160, by=10.0), lty='dashed', col = "green")
   }
@@ -112,11 +116,17 @@ sunspots_ACF = function( dataDump    = FALSE,
 }
 
 #------------------------------------------------------------------------------
-# \brief Estimate sunspot period using Welch Estimate of PSD
+# \brief   Estimate sunspot period using Welch Estimate of PSD
+# \returns Estimated period
 #------------------------------------------------------------------------------
-sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFile="mypsd.dat")
+sunspots_PSD = function( dataDump    = FALSE,
+                         dataPlot    = TRUE, 
+                         numSegments = 4, 
+                         dataIn, 
+                         dataFileOut = "tex/sunspots_psd.dat"
+                       )
 {
-  xts       = as.ts(as.vector(x)); # year indices seems to confuse welchPSD
+  xts       = as.ts(as.vector(dataIn$count));
   N         = length(xts);         # length of time series
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
@@ -127,27 +137,36 @@ sunspots_PSD = function(x, numSegments=4, dataDump=FALSE, dataPlot=TRUE, dataFil
   freqMax = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
   periodT = 1 / freqMax;           # estimated period
   printf("sunspots_PSD(x):\n");
-  printf("f=%8.6f samples/year period=%9.6f years\n", freqMax, periodT);
+  resultStr = sprintf("numSegments = %d\nf = %12.8f samples/year\nperiod = %12.8f years\n", numSegments, freqMax, periodT);
+  printf("%s\n", resultStr);
 
-  if(dataPlot){
-    plot(xpsd$frequency*Fs, sqrt(xpsd$power/N), xlim=c(0,1), type="h", col="blue", xlab="samples/year");
-    }
+  if(dataPlot)
+  {
+    titleStr = sprintf("0-average Sunspot Power Spectral Density (PSD) Estimate using welchPSD with numSegments=%d",numSegments);
+    plot(x=xpsd$frequency*Fs, y=sqrt(xpsd$power/N), type="h", lwd=3, col="blue", xaxp=c(0,Fs/2,60), yaxp=c(0,20,5), xlab="", ylab="", main="", sub="");
+    title(main=titleStr, xlab="samples/year (max=Fs/2=6 samples/year)", ylab="Gain (sqrt of power)");
+    title(main=resultStr, line=-10);
+    abline(v=seq(from=0, to=Fs/2, by=0.1), lty="dotted", col="green")
+    abline(v=seq(from=0, to=Fs/2, by=1.0), lty="solid",  col="green")
+    abline(h=seq(from=0, to=20.0, by=4.0), lty="dashed", col="green")
+  }
   if(dataDump)
   {
-    sink(dataFile);
-    print(sprintf("%%============================================================================="));
-    print(sprintf("%% Daniel J. Greenhoe "                                                         ));
-    print(sprintf("%% PSD data file suitable for use by LaTeX PStricks"                            ));
-    print(sprintf("%% number of segments = %f", numSegments                                        ));
-    print(sprintf("%% estimated period   = %12.6f", periodT                                        ));
-    print(sprintf("%%============================================================================="));
-    print(sprintf("["                                                                              ));
+    sink(dataFileOut);
+    printf("%%=============================================================================\n");
+    printf("%% %s \n", author                                                                 );
+    printf("%% PSD data file suitable for use by LaTeX PStricks\n"                            );
+    printf("%% number of segments          = %d\n",                  numSegments              );
+    printf("%% estimated maximum frequency = %12.6f samples/year\n", freqMax                  );
+    printf("%% estimated period            = %12.6f years\n",        periodT                  );
+    printf("%%=============================================================================\n");
+    printf("[\n"                                                                              );
     for(i in 1:length(xpsd$power))
-      print(sprintf("(%10.6f, %10.6f)", xpsd$frequency[i], xpsd$power[i]/psdMax               ));
-    print(sprintf("]"                                                                              ));
+      printf("  (%12.8f, %12.8f)\n", xpsd$frequency[i]*Fs, xpsd$power[i]/psdMax               );
+    printf("]\n"                                                                              );
     sink();
   }
-  periodT;                         # return estimated period
+  return(periodT);
 }
 
 #------------------------------------------------------------------------------
@@ -249,7 +268,7 @@ sunspots_PCA_PSD = function(x, numSegments=4)
 
  spotData = sunspots_getData(dataDump=FALSE, dataPlot=TRUE);
  acfData  = sunspots_ACF(    dataDump=FALSE, dataPlot=TRUE, dataIn=spotData );
-# sunspots_PSD(x)
+ psdData  = sunspots_PSD(    dataDump=TRUE, dataPlot=TRUE, dataIn=spotData );
 # sunspots_PCA_PSD(x)
 
 
