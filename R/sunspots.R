@@ -24,12 +24,14 @@
 # require(freqdom);
   require(bspec);    # welchPSD
 # require(matlib);
-# require(R.utils);
+  require(R.utils);  # printf
 #data(sunspots, package="datasets"); # deprecated in favor of Silso data
 #---------------------------------------
 # Global parameters
 #---------------------------------------
- author = "Daniel J. Greenhoe"
+ author   = "Daniel J. Greenhoe"
+ thisfile = "sunspots.R"
+ baseName = "sunspots"
 #------------------------------------------------------------------------------
 # \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
 # \returns data table
@@ -55,10 +57,10 @@ sunspots_getData = function( dataDump    = FALSE,
   {
     sink(dataFileOut);
     printf("%%=============================================================================\n"  );
-    printf("%% Daniel J. Greenhoe \n"                                                           );
+    printf("%% %s \n", author                                                                   );
     printf("%% Sunspot monthly mean data file suitable for use with LaTeX PStricks\n"           );
-    printf("%% For an example, see \"sunspots.tex\"\n"                                          );
-    printf("%% This file auto-generated with \"sunspots.R\"\n"                                  );
+    printf("%% For an example, see \"%s.tex\"\n", baseName                                      );
+    printf("%% This file auto-generated with \"%s\"\n", thisfile                                );
     printf("%% using data from \"%s\"\n", dataFileIn                                            );
     printf("%% Hand-editing not recommended\n"                                                  );
     printf("%%=============================================================================\n"  );
@@ -101,10 +103,10 @@ sunspots_ACF = function( dataDump    = FALSE,
   {
     sink(dataFileOut);
     printf("%%=============================================================================\n"  );
-    printf("%% Daniel J. Greenhoe \n"                                                           );
+    printf("%% %s \n", author                                                                   );
     printf("%% Sunspot auto-correlation function (ACF) data file suitable for use with LaTeX PStricks\n" );
-    printf("%% For an example, see \"sunspots_acf.tex\"\n"                                      );
-    printf("%% This file auto-generated using \"sunspots.R\" --- hand-editing not recommended\n");
+    printf("%% For an example, see \"%_acf.tex\"\n", baseName                                   );
+    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
     for(i in 1:length(avect))
@@ -159,6 +161,7 @@ sunspots_PSD = function( dataDump    = FALSE,
     printf("%% number of segments          = %d\n",                  numSegments              );
     printf("%% estimated maximum frequency = %12.6f samples/year\n", freqMax                  );
     printf("%% estimated period            = %12.6f years\n",        periodT                  );
+    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
     printf("%%=============================================================================\n");
     printf("[\n"                                                                              );
     for(i in 1:length(xpsd$power))
@@ -239,10 +242,10 @@ sunspots_PCA_PSD = function(x, numSegments=4)
   {
     sink(dataFile);
     printf("%%=============================================================================\n"  );
-    printf("%% Daniel J. Greenhoe \n"                                                           );
+    printf("%% %s \n", author                                                                   );
     printf("%% Sunspot auto-correlation function (ACF) data file suitable for use with LaTeX PStricks\n" );
-    printf("%% For an example, see \"sunspots_acf.tex\"\n"                                      );
-    printf("%% This file auto-generated using \"sunspots.R\" --- hand-editing not recommended\n");
+    printf("%% For an example, see \"%s_acf.tex\"\n", baseName                                  );
+    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
     for(i in 1:length(avect))
@@ -266,9 +269,18 @@ sunspots_PCA_PSD = function(x, numSegments=4)
 #  B = V %*% D %*% inv(V)
 #  C = B - A
 
- spotData = sunspots_getData(dataDump=FALSE, dataPlot=TRUE);
- acfData  = sunspots_ACF(    dataDump=FALSE, dataPlot=TRUE, dataIn=spotData );
- psdData  = sunspots_PSD(    dataDump=TRUE, dataPlot=TRUE, dataIn=spotData );
+ spotData = sunspots_getData( dataDump=FALSE, dataPlot=TRUE                  );
+ acfData  = sunspots_ACF(     dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=1 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=2 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=3 );
+ psdData  = sunspots_PSD(     dataDump=TRUE,  dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=5 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=6 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=7 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=8 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
 # sunspots_PCA_PSD(x)
 
 

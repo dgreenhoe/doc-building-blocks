@@ -166,6 +166,7 @@ GRP_DATA =                     \
   global-temp.pdf              \
   sunspots.pdf                 \
   sunspots_acf.pdf             \
+  sunspots_psd.pdf             \
   sunspots_1749-2004.pdf       \
   sunspots_welchPSD_4segs.pdf
 
