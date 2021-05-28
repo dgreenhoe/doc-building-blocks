@@ -119,7 +119,7 @@ sunspots_ACF = function( dataDump    = FALSE,
 
 #------------------------------------------------------------------------------
 # \brief   Estimate sunspot period using Welch Estimate of PSD
-# \returns Estimated period
+# \returns Estimated PSD
 #------------------------------------------------------------------------------
 sunspots_PSD = function( dataDump    = FALSE,
                          dataPlot    = TRUE, 
@@ -133,14 +133,13 @@ sunspots_PSD = function( dataDump    = FALSE,
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
   segLength = N / numSegments;     # segment length
-  xpsd = bspec::welchPSD(xts - estMean, seglength = segLength);
-  psdMax = max(xpsd$power);
-  binMax = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
-  freqMax = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
-  periodT = 1 / freqMax;           # estimated period
-  printf("sunspots_PSD(x):\n");
+  xpsd      = bspec::welchPSD(xts - estMean, seglength = segLength);
+  psdMax    = max(xpsd$power);
+  binMax    = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
+  freqMax   = xpsd$frequency[binMax] * Fs; # dominate non-DC frequency
+  periodT   = 1 / freqMax;           # estimated period
   resultStr = sprintf("numSegments = %d\nf = %12.8f samples/year\nperiod = %12.8f years\n", numSegments, freqMax, periodT);
-  printf("%s\n", resultStr);
+  printf("sunspots_PSD(x): %s\n", resultStr);
 
   if(dataPlot)
   {
@@ -163,56 +162,68 @@ sunspots_PSD = function( dataDump    = FALSE,
     printf("%% estimated period            = %12.6f years\n",        periodT                  );
     printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
     printf("%%=============================================================================\n");
-    printf("[\n"                                                                              );
-    for(i in 1:length(xpsd$power))
-      printf("  (%12.8f, %12.8f)\n", xpsd$frequency[i]*Fs, xpsd$power[i]/psdMax               );
-    printf("]\n"                                                                              );
+    printf("[\n");
+    scaledFreq = xpsd$frequency*Fs;
+    scaledGain = sqrt(xpsd$power)/sqrt(psdMax);
+    for(i in 1:length(scaledFreq))
+      printf("  (%12.8f, %12.8f)\n", scaledFreq[i], scaledGain[i]);
+    printf("]\n");
     sink();
   }
-  return(periodT);
+  return(xpsd);
 }
 
 #------------------------------------------------------------------------------
 # \brief Estimate sunspot period using PCA and Welch Estimate of PSD of PCA
-# PCA
 # https://cran.r-project.org/web/packages/matlib/vignettes/inv-ex1.html
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
 # https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #------------------------------------------------------------------------------
-sunspots_PCA_PSD = function(x, numSegments=4)
+#dataDump    = FALSE 
+#                             dataPlot    = TRUE  
+#                             Fs          = 12 
+#                             numSegments = 4 
+#                             nLag        = 200
+#                             dataIn=spotData
+#                             dataFileOut = "tex/sunspots_pca_psd.dat"
+sunspots_PCA_PSD = function( dataDump    = FALSE,
+                             dataPlot    = TRUE, 
+                             Fs          = 12,
+                             numSegments = 4,
+                             nLag        = 2000, 
+                             dataIn, 
+                             dataFileOutBase = "tex/sunspots_eigen"
+                           )
 {
-  #x = read.csv(file='data/sunspots_silso_20210522.csv', header=TRUE,sep=",", comment.char="#", strip.white=TRUE)
-  x = read.csv(file='../data/silso_SN_m_tot_V2.0_20210524.csv', header=TRUE,sep=";", comment.char="#", strip.white=TRUE)
-  numSegments=4
-  nLag = 2000
-  dataDump = TRUE
-  numSegments=4
-  xts       = as.ts(as.vector(x$count)); # year indices seems to confuse welchPSD
-  N         = length(xts);         # length of time series
-  Fs        = 12;                  # sample rate = 12 samples per year
-  estMean   = mean(xts);           # estimated mean
-  segLength = N / numSegments;     # segment length
-  a         = acf(xts - estMean, type="correlation", lag=nLag)
-  avect     = as.vector(a$acf)
-  lvect     = as.vector(a$lag)/12
-  al        = cbind(lvect,avect)
-  A         = stats::toeplitz(avect)
-  Q         = eigen(A, symmetric=TRUE, only.values=FALSE)
-  V         = Q$vectors
-  L         = Q$values
-  D         = diag(L)
+  x           = dataIn;
+  xts         = as.ts(as.vector(x$count));
+  N           = length(xts);
+  estMean     = mean(xts);
+  segLength   = N / numSegments;
+  a           = acf(xts - estMean, type="correlation", lag=nLag)
+  avect       = as.vector(a$acf)
+  lvect       = as.vector(a$lag)/12
+  A           = stats::toeplitz(avect)
+  Q           = eigen(A, symmetric=TRUE, only.values=FALSE)
+  V           = Q$vectors
+  L           = Q$values
+  D           = diag(L)
 
-  colors = c("blue", "red", "orange", "green", "purple", "brown", "black");
-  traces = colors[1:5]
-  for( n in 1:length(traces))
+  if(dataPlot)
   {
-    if(n==1) plot( L[n] * Q$vectors[,n], type='l', lwd=3, col=colors[n])
-    else     lines(L[n] * Q$vectors[,n], type='l', lwd=3, col=colors[n])
-    traces[n] = sprintf("Eigen Vector %2d", n)
+    colors = c("blue", "red", "orange", "green", "purple", "brown", "black");
+    traces = colors[1:5]
+    for( n in 1:length(traces))
+    {
+      if(n==1) plot( L[n] * V[,n], type='l', lwd=3, col=colors[n])
+      else     lines(L[n] * V[,n], type='l', lwd=3, col=colors[n])
+      traces[n] = sprintf("Eigen Vector %2d", n)
+    }
+    legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
   }
-  legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
 
   printf("sunspots_PCA_PSD(x) using Welch PSD:\n");
+  segLength   = nLag / numSegments
   for( n in 1:10 )
   {
     xpsd    = bspec::welchPSD(x=as.ts(L[n] * Q$vectors[,n]), seglength = segLength);
@@ -236,28 +247,44 @@ sunspots_PCA_PSD = function(x, numSegments=4)
     degrees = phase / pi * 180
     printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years phase=%9.6f(%9.6f)\n", n, L[n], freqMax, periodT, phase, degrees);
   }
-
-  dataFile = "tex/sunspots_acf.dat"
+n=1
   if(dataDump)
   {
-    sink(dataFile);
-    printf("%%=============================================================================\n"  );
-    printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot auto-correlation function (ACF) data file suitable for use with LaTeX PStricks\n" );
-    printf("%% For an example, see \"%s_acf.tex\"\n", baseName                                  );
-    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
-    printf("%%=============================================================================\n"  );
-    printf("[\n"                                                                                );
-    for(i in 1:length(avect))
-      printf("  (%12.8f, %12.8f)\n", lvect[i], avect[i]                                         );
-    printf("]\n"                                                                                );
-    sink();
+    for(n in 1:8)
+    {
+      sink(sprintf("%s_%d.dat",dataFileOutBase,n));
+      printf("%%=============================================================================\n"  );
+      printf("%% %s \n", author                                                                   );
+      printf("%% Sunspot eigen vector %d data file suitable for use with LaTeX PStricks\n",n      );
+      printf("%% For an example, see \"%s_eigen.tex\"\n", baseName                                );
+      printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
+      printf("%%=============================================================================\n"  );
+      printf("[\n"                                                                                );
+      vect = L[n] * V[,n]
+      for(i in 1:length(vect))
+        printf("  (%12.8f, %12.8f)\n", i/12, vect[i]                                              );
+      printf("]\n"                                                                                );
+      sink();
+    }
   }
+  return(Q);
 }
 
 #------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
+ spotData = sunspots_getData( dataDump=FALSE, dataPlot=TRUE                  );
+ acfData  = sunspots_ACF(     dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=2 );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=3 );
+ psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=5 );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=6 );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=7 );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=8 );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
+#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
+ pcaData  = sunspots_PCA_PSD( dataDump=TRUE,  dataPlot=TRUE,  dataIn=spotData, nLag=2000);
 
 #  A = matrix( c(1, 2, 3,
 #                2, 5, 6,
@@ -268,19 +295,3 @@ sunspots_PCA_PSD = function(x, numSegments=4)
 #  D     = diag(L)
 #  B = V %*% D %*% inv(V)
 #  C = B - A
-
- spotData = sunspots_getData( dataDump=FALSE, dataPlot=TRUE                  );
- acfData  = sunspots_ACF(     dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=1 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=2 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=3 );
- psdData  = sunspots_PSD(     dataDump=TRUE,  dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=5 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=6 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=7 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=8 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
-# sunspots_PCA_PSD(x)
-
-
