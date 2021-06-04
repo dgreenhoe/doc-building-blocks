@@ -234,8 +234,10 @@ sunspots_PCA_PSD = function( dataDump    = FALSE,
     printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years\n", n, L[n], freqMax, periodT);
   }
 
+sum1 = 0;
+sum2 = sum(L[1:6])
   printf("sunspots_PCA_PSD(x) using DFT:\n");
-  for( n in 1:20 )
+  for( n in 1:6 )
   {
     x=as.ts(L[n] * Q$vectors[,n])
     xfft    = fft(x, inverse=FALSE);
@@ -246,7 +248,9 @@ sunspots_PCA_PSD = function( dataDump    = FALSE,
     phase   = Arg(xfft[binMax]);
     degrees = phase / pi * 180
     printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years phase=%9.6f(%9.6f)\n", n, L[n], freqMax, periodT, phase, degrees);
+    sum1 = sum1 + periodT*L[n]/sum2
   }
+printf("weighted periodT = %12.8f %12.8f\n",sum1, sum2);
 n=1
   if(dataDump)
   {
@@ -285,6 +289,9 @@ n=1
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
  pcaData  = sunspots_PCA_PSD( dataDump=TRUE,  dataPlot=TRUE,  dataIn=spotData, nLag=2000);
+Q = pcaData
+  V           = Q$vectors
+  L           = Q$values
 
 #  A = matrix( c(1, 2, 3,
 #                2, 5, 6,
