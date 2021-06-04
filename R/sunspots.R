@@ -174,18 +174,11 @@ sunspots_PSD = function( dataDump    = FALSE,
 }
 
 #------------------------------------------------------------------------------
-# \brief Estimate sunspot period using PCA and Welch Estimate of PSD of PCA
+# \brief Estimate sunspot period using Primary Component Analysis (PCA)
 # https://cran.r-project.org/web/packages/matlib/vignettes/inv-ex1.html
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
 # https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #------------------------------------------------------------------------------
-#dataDump    = FALSE 
-#                             dataPlot    = TRUE  
-#                             Fs          = 12 
-#                             numSegments = 4 
-#                             nLag        = 200
-#                             dataIn=spotData
-#                             dataFileOut = "tex/sunspots_pca_psd.dat"
 sunspots_PCA_PSD = function( dataDump    = FALSE,
                              dataPlot    = TRUE, 
                              Fs          = 12,
@@ -234,24 +227,27 @@ sunspots_PCA_PSD = function( dataDump    = FALSE,
     printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years\n", n, L[n], freqMax, periodT);
   }
 
-sum1 = 0;
-sum2 = sum(L[1:6])
-  printf("sunspots_PCA_PSD(x) using DFT:\n");
-  for( n in 1:6 )
+  for( numYears in 1:12 )
   {
-    x=as.ts(L[n] * Q$vectors[,n])
-    xfft    = fft(x, inverse=FALSE);
-    fftMax  = abs(xfft);
-    binMax  = ramify::argmax(as.matrix(fftMax), rows = FALSE);
-    freqMax = (binMax-1) * Fs / length(xfft);
-    periodT = 1 / freqMax;                 # estimated period
-    phase   = Arg(xfft[binMax]);
-    degrees = phase / pi * 180
-    printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years phase=%9.6f(%9.6f)\n", n, L[n], freqMax, periodT, phase, degrees);
-    sum1 = sum1 + periodT*L[n]/sum2
+    sum1 = 0;
+    sumLambda = sum(L[1:numYears])
+    printf("sunspots_PCA_PSD(x) using DFT:\n");
+    for( n in 1:numYears )
+    {
+      x=as.ts(L[n] * Q$vectors[,n])
+      xfft    = fft(x, inverse=FALSE);
+      fftMax  = abs(xfft);
+      binMax  = ramify::argmax(as.matrix(fftMax), rows = FALSE);
+      freqMax = (binMax-1) * Fs / length(xfft);
+      periodT = 1 / freqMax;                 # estimated period
+      phase   = Arg(xfft[binMax]);
+      degrees = phase / pi * 180
+      printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years phase=%9.6f(%9.6f)\n", n, L[n], freqMax, periodT, phase, degrees);
+      sum1 = sum1 + periodT*L[n]
+    }
+    printf("weighted periodT over %02d years: %12.8f\n",numYears, sum1/sumLambda);
   }
-printf("weighted periodT = %12.8f %12.8f\n",sum1, sum2);
-n=1
+
   if(dataDump)
   {
     for(n in 1:8)
@@ -288,7 +284,7 @@ n=1
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=8 );
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
- pcaData  = sunspots_PCA_PSD( dataDump=TRUE,  dataPlot=TRUE,  dataIn=spotData, nLag=2000);
+ pcaData  = sunspots_PCA_PSD( dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000);
 Q = pcaData
   V           = Q$vectors
   L           = Q$values
