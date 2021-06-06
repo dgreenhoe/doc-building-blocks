@@ -23,7 +23,7 @@
 # require(ramify);
 # require(freqdom);
   require(bspec);    # welchPSD
-# require(matlib);
+  require(matlib);   # inv
   require(R.utils);  # printf
 #data(sunspots, package="datasets"); # deprecated in favor of Silso data
 #---------------------------------------
@@ -179,14 +179,14 @@ sunspots_PSD = function( dataDump    = FALSE,
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
 # https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #------------------------------------------------------------------------------
-sunspots_PCA_PSD = function( dataDump    = FALSE,
-                             dataPlot    = TRUE, 
-                             Fs          = 12,
-                             numSegments = 4,
-                             nLag        = 2000, 
-                             dataIn, 
-                             dataFileOutBase = "tex/sunspots_eigen"
-                           )
+sunspots_PCA_eigen = function( dataDump    = FALSE,
+                               dataPlot    = TRUE, 
+                               Fs          = 12,
+                               numSegments = 4,
+                               nLag        = 2000, 
+                               dataIn, 
+                               dataFileOutBase = "tex/sunspots_eigen"
+                             )
 {
   x           = dataIn;
   xts         = as.ts(as.vector(x$count));
@@ -215,7 +215,7 @@ sunspots_PCA_PSD = function( dataDump    = FALSE,
     legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
   }
 
-  printf("sunspots_PCA_PSD(x) using Welch PSD:\n");
+  printf("sunspots_PCA_eigen(x) using Welch PSD:\n");
   segLength   = nLag / numSegments
   for( n in 1:10 )
   {
@@ -227,11 +227,25 @@ sunspots_PCA_PSD = function( dataDump    = FALSE,
     printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years\n", n, L[n], freqMax, periodT);
   }
 
+  numYears = 12
+  printf("sunspots_PCA_eigen(x) using DFT:\n");
+  for( n in 1:numYears )
+  {
+    x=as.ts(L[n] * Q$vectors[,n])
+    xfft    = fft(x, inverse=FALSE);
+    fftMax  = abs(xfft);
+    binMax  = ramify::argmax(as.matrix(fftMax), rows = FALSE);
+    freqMax = (binMax-1) * Fs / length(xfft);
+    periodT = 1 / freqMax;                 # estimated period
+    phase   = Arg(xfft[binMax]);
+    degrees = phase / pi * 180
+    printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years phase=%9.6f(%9.6f)\n", n, L[n], freqMax, periodT, phase, degrees);
+  }
+
   for( numYears in 1:12 )
   {
     sum1 = 0;
     sumLambda = sum(L[1:numYears])
-    printf("sunspots_PCA_PSD(x) using DFT:\n");
     for( n in 1:numYears )
     {
       x=as.ts(L[n] * Q$vectors[,n])
@@ -242,7 +256,6 @@ sunspots_PCA_PSD = function( dataDump    = FALSE,
       periodT = 1 / freqMax;                 # estimated period
       phase   = Arg(xfft[binMax]);
       degrees = phase / pi * 180
-      printf("Vector %2d (lambda=%10.6f) f=%8.6f samples/year period=%9.6f years phase=%9.6f(%9.6f)\n", n, L[n], freqMax, periodT, phase, degrees);
       sum1 = sum1 + periodT*L[n]
     }
     printf("weighted periodT over %02d years: %12.8f\n",numYears, sum1/sumLambda);
@@ -284,17 +297,55 @@ sunspots_PCA_PSD = function( dataDump    = FALSE,
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=8 );
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
- pcaData  = sunspots_PCA_PSD( dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000);
+ pcaData  = sunspots_PCA_eigen( dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000);
+
+
+#------------------------------------------------------------------------------
+# \brief Data synthesis using eigen vector quasi basis
+#------------------------------------------------------------------------------
 Q = pcaData
   V           = Q$vectors
   L           = Q$values
 
-#  A = matrix( c(1, 2, 3,
-#                2, 5, 6,
-#                3, 6, 9 ), nrow=3 );
+  A = matrix( c(1, 2, 3,
+                2, 5, 6,
+                3, 6, 1 ), nrow=3 );
+
+dataDump    = FALSE
+dataPlot    = TRUE 
+Fs          = 12
+numSegments = 4
+nLag        = 2000
+dataIn = spotData
+dataFileOutBase = "tex/sunspots_eigen_synthesis"
 #  Q     = eigen(A, symmetric=TRUE, only.values=FALSE)
 #  V     = Q$vectors
 #  L     = Q$values
-#  D     = diag(L)
-#  B = V %*% D %*% inv(V)
+  D     = diag(L)
+#  B = V %*% D
+#  B2 = V %*% D %*% inv(V)
 #  C = B - A
+
+x  = spotData$count
+a  = x[1:2001]
+
+b1 = V[,1]
+c1 = a%*%b1
+cc1=c1[,1]
+
+b2 = V[,2]
+c2 = a%*%b2
+cc2=c2[,1]
+
+plot(cc1*b1)
+plot(a,      col="blue", type='l')
+lines(cc1*b1, col="green", type='l')
+lines(cc2*b2, col="purple", type='l')
+lines(cc1*b1+cc2*b2, col="red", type='l')
+
+
+
+
+
+
+
