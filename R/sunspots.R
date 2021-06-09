@@ -32,6 +32,7 @@
  author   = "Daniel J. Greenhoe"
  thisfile = "sunspots.R"
  baseName = "sunspots"
+ colors = c("blue", "red", "orange", "green", "purple", "brown", "black");
 #------------------------------------------------------------------------------
 # \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
 # \returns data table
@@ -328,20 +329,37 @@ dataFileOutBase = "tex/sunspots_eigen_synthesis"
 
 x  = spotData$count
 a  = x[1:2001]
+atime = spotData$date[1:2001]
 
 b1 = V[,1]
-c1 = a%*%b1
-cc1=c1[,1]
-
+c1 = as.numeric(a%*%b1)
 b2 = V[,2]
-c2 = a%*%b2
-cc2=c2[,1]
+c2 = as.numeric(a%*%b2)
+b3 = V[,3]
+c3 = as.numeric(a%*%b3)
+b4 = V[,4]
+c4 = as.numeric(a%*%b4)
+b5 = V[,5]
+c5 = as.numeric(a%*%b5)
+b6 = V[,6]
+c6 = as.numeric(a%*%b6)
+b7 = V[,7]
+c7 = as.numeric(a%*%b7)
+b8 = V[,8]
+c8 = as.numeric(a%*%b8)
+b9 = V[,9]
+c9 = as.numeric(a%*%b9)
+b10 = V[,10]
+c10 = as.numeric(a%*%b10)
 
-plot(cc1*b1)
-plot(a,      col="blue", type='l')
-lines(cc1*b1, col="green", type='l')
-lines(cc2*b2, col="purple", type='l')
-lines(cc1*b1+cc2*b2, col="red", type='l')
+G = sqrt(as.numeric(a%*%a))
+
+plot( atime, a,      col=colors[1], type='l')
+lines(atime, G*(c1*b1)/sqrt(c1^2) + mean(a), col=colors[3], type='l')
+lines(atime, G*(c1*b1 + c2*b2)/sqrt(c1^2 + c2^2) + mean(a), col=colors[4], type='l')
+#lines(atime, c2*b2, col=colors[4], type='l')
+#lines(atime, c1*b1 + c2*b2 + c3*b3 + c4*b4 + c5*b5 + c6*b6 + c7*b7 + c8*b8 + c9*b9 + c10*b10 + mean(a), col=colors[2], type='l', lwd=3)
+#lines(atime, c1*b1 + mean(a), col=colors[2], type='l', lwd=3)
 
 
 
