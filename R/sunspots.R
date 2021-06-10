@@ -285,6 +285,46 @@ sunspots_PCA_eigen = function( dataDump    = FALSE,
 }
 
 #------------------------------------------------------------------------------
+# \brief Data synthesis using eigen vector quasi basis
+ #A  = matrix( c(1, 2, 3, 2, 5, 6, 3, 6, 1 ), nrow=3 );
+ #B  = V %*% D
+ #B2 = V %*% D %*% inv(V)
+ #C  = B - A
+#------------------------------------------------------------------------------
+sunspots_eigen_syn = function( dataDump    = FALSE,
+                               dataPlot    = TRUE,
+                               numCoefs    = 5, 
+                               dataSpots   = spotData, 
+                               dataEigen,
+                               dataFileOutBase = "tex/sunspots_eigen_syn"
+                             )
+{
+  V     = dataEigen$vectors # eigen-vectors
+  L     = dataEigen$values  # eigen-values
+  D     = diag(L)           # diagonal matrix of eigen-values
+  N     = length(L);        # number of eigen-pairs
+  spots = dataSpots$count[1:N]
+  stime = spotData$date[1:N]
+  coefs = 0 * c(1:N)
+  fsyn  = 0 * c(1:N)
+  for( n in 1:N )
+  {
+    coefs[n] = as.numeric( spots %*% V[,n] );  # projection coefficient of spots onto eigen-vector n
+  }
+  G = sqrt(as.numeric(spots%*%spots)) # estimated energy of sunspot waveform
+  g = 0;
+  for( n in 1:numCoefs )
+  {
+    fsyn = fsyn + coefs[n] * V[,n]
+    g = g + (coefs[n])^2 # energy of scaled eigen-vectors
+  }
+  fsyn = (G/sqrt(g)) * fsyn + 0*mean(spots)
+  plot( stime, spots, col=colors[1], type='l')
+  lines(stime, fsyn,  col=colors[2], type='l', lwd=3)
+  return(alpha)
+}
+
+#------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
  spotData = sunspots_getData( dataDump=FALSE, dataPlot=TRUE                  );
@@ -299,70 +339,7 @@ sunspots_PCA_eigen = function( dataDump    = FALSE,
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
  pcaData  = sunspots_PCA_eigen( dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000);
-
-
-#------------------------------------------------------------------------------
-# \brief Data synthesis using eigen vector quasi basis
-#------------------------------------------------------------------------------
-Q = pcaData
-  V           = Q$vectors
-  L           = Q$values
-
-  A = matrix( c(1, 2, 3,
-                2, 5, 6,
-                3, 6, 1 ), nrow=3 );
-
-dataDump    = FALSE
-dataPlot    = TRUE 
-Fs          = 12
-numSegments = 4
-nLag        = 2000
-dataIn = spotData
-dataFileOutBase = "tex/sunspots_eigen_synthesis"
-#  Q     = eigen(A, symmetric=TRUE, only.values=FALSE)
-#  V     = Q$vectors
-#  L     = Q$values
-  D     = diag(L)
-#  B = V %*% D
-#  B2 = V %*% D %*% inv(V)
-#  C = B - A
-
-x  = spotData$count
-a  = x[1:2001]
-atime = spotData$date[1:2001]
-
-b1 = V[,1]
-c1 = as.numeric(a%*%b1)
-b2 = V[,2]
-c2 = as.numeric(a%*%b2)
-b3 = V[,3]
-c3 = as.numeric(a%*%b3)
-b4 = V[,4]
-c4 = as.numeric(a%*%b4)
-b5 = V[,5]
-c5 = as.numeric(a%*%b5)
-b6 = V[,6]
-c6 = as.numeric(a%*%b6)
-b7 = V[,7]
-c7 = as.numeric(a%*%b7)
-b8 = V[,8]
-c8 = as.numeric(a%*%b8)
-b9 = V[,9]
-c9 = as.numeric(a%*%b9)
-b10 = V[,10]
-c10 = as.numeric(a%*%b10)
-
-G = sqrt(as.numeric(a%*%a))
-
-plot( atime, a,      col=colors[1], type='l')
-lines(atime, G*(c1*b1)/sqrt(c1^2) + mean(a), col=colors[3], type='l')
-lines(atime, G*(c1*b1 + c2*b2)/sqrt(c1^2 + c2^2) + mean(a), col=colors[4], type='l', lwd=3)
-lines(atime, G*(c1*b1 + c2*b2 + c3*b3)/sqrt(c1^2 + c2^2 + c3^2) + mean(a), col=colors[5], type='l', lwd=3)
-lines(atime, G*(c1*b1 + c2*b2 + c3*b3 + c4*b4)/sqrt(c1^2 + c2^2 + c3^2 + c4^2) + mean(a), col=colors[2], type='l', lwd=3)
-lines(atime, G*(c1*b1 + c2*b2 + c3*b3 + c4*b4 + c5*b5)/sqrt(c1^2 + c2^2 + c3^2 + c4^2 + c5^2) + mean(a), col=colors[7], type='l', lwd=3)
-#lines(atime, c2*b2, col=colors[4], type='l')
-#lines(atime, c1*b1 + c2*b2 + c3*b3 + c4*b4 + c5*b5 + c6*b6 + c7*b7 + c8*b8 + c9*b9 + c10*b10 + mean(a), col=colors[2], type='l', lwd=3)
-#lines(atime, c1*b1 + mean(a), col=colors[2], type='l', lwd=3)
+ alpha    = sunspots_eigen_syn( dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=50 );
 
 
 
