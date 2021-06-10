@@ -304,24 +304,27 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
   D     = diag(L)           # diagonal matrix of eigen-values
   N     = length(L);        # number of eigen-pairs
   spots = dataSpots$count[1:N]
+  spotsZeroMean = spots - mean(spots)
   stime = spotData$date[1:N]
   coefs = 0 * c(1:N)
   fsyn  = 0 * c(1:N)
   for( n in 1:N )
   {
-    coefs[n] = as.numeric( spots %*% V[,n] );  # projection coefficient of spots onto eigen-vector n
+    coefs[n] = as.numeric( spotsZeroMean %*% V[,n] );  # projection coefficient of spots onto eigen-vector n
   }
-  G = sqrt(as.numeric(spots%*%spots)) # estimated energy of sunspot waveform
+  G = sqrt(as.numeric(spotsZeroMean%*%spotsZeroMean)) # estimated energy of sunspot waveform
   g = 0;
   for( n in 1:numCoefs )
   {
     fsyn = fsyn + coefs[n] * V[,n]
     g = g + (coefs[n])^2 # energy of scaled eigen-vectors
   }
-  fsyn = (G/sqrt(g)) * fsyn + 0*mean(spots)
+  fsyn = ((G/sqrt(g)) * fsyn) + mean(spots)
+  errorVect = fsyn - spots
+  printf("Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, sqrt( (errorVect %*% errorVect))/N );
   plot( stime, spots, col=colors[1], type='l')
   lines(stime, fsyn,  col=colors[2], type='l', lwd=3)
-  return(alpha)
+  return(coefs)
 }
 
 #------------------------------------------------------------------------------
@@ -339,7 +342,7 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
  pcaData  = sunspots_PCA_eigen( dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000);
- alpha    = sunspots_eigen_syn( dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=50 );
+ coefs    = sunspots_eigen_syn( dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=10 );
 
 
 
