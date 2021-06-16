@@ -205,8 +205,8 @@ sunspots_PCA_eigen = function( dataDump    = FALSE,
 
   if(dataPlot)
   {
-    colors = c("blue", "red", "orange", "green", "purple", "brown", "black");
-    traces = colors[1:5]
+    colors = c("blue", "red", "orange", "green", "purple", "black","brown");
+    traces = colors[1:6]
     for( n in 1:length(traces))
     {
       if(n==1) plot( L[n] * V[,n], type='l', lwd=3, col=colors[n])
@@ -314,7 +314,8 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
   }
   G = sqrt(as.numeric(spotsZeroMean%*%spotsZeroMean)) # estimated energy of sunspot waveform
   g = 0;
-  for( n in 1:numCoefs )
+#  for( n in 1:numCoefs )
+  for( n in 1:2 )
   {
     fsyn = fsyn + coefs[n] * V[,n]
     g = g + (coefs[n])^2 # energy of scaled eigen-vectors
@@ -342,7 +343,7 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
 #psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
  pcaData  = sunspots_PCA_eigen( dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000);
- coefs    = sunspots_eigen_syn( dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=10 );
+ coefs    = sunspots_eigen_syn( dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=6 );
 
 
 
