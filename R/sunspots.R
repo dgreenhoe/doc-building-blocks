@@ -303,9 +303,10 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
   L     = dataEigen$values  # eigen-values
   D     = diag(L)           # diagonal matrix of eigen-values
   N     = length(L);        # number of eigen-pairs
-  spots = dataSpots$count[1:N]
+  M     = length(dataSpots$count)
+  spots = dataSpots$count[(M-N+1):M]
   spotsZeroMean = spots - mean(spots)
-  stime = spotData$date[1:N]
+  stime = spotData$date[(M-N+1):M]
   coefs = 0 * c(1:N)
   fsyn  = 0 * c(1:N)
   for( n in 1:N )
@@ -314,8 +315,7 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
   }
   G = sqrt(as.numeric(spotsZeroMean%*%spotsZeroMean)) # estimated energy of sunspot waveform
   g = 0;
-#  for( n in 1:numCoefs )
-  for( n in 1:2 )
+  for( n in 1:numCoefs )
   {
     fsyn = fsyn + coefs[n] * V[,n]
     g = g + (coefs[n])^2 # energy of scaled eigen-vectors
@@ -331,23 +331,9 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
 #------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
- spotData = sunspots_getData( dataDump=FALSE, dataPlot=TRUE                  );
- acfData  = sunspots_ACF(     dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=2 );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=3 );
- psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=5 );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=6 );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=7 );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=8 );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=9 );
-#psdData  = sunspots_PSD(     dataDump=FALSE, dataPlot=FALSE, dataIn=spotData, numSegments=10);
- pcaData  = sunspots_PCA_eigen( dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000);
- coefs    = sunspots_eigen_syn( dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=6 );
-
-
-
-
-
-
+ spotData = sunspots_getData(   dataDump=FALSE, dataPlot=TRUE                                 );
+ acfData  = sunspots_ACF(       dataDump=FALSE, dataPlot=TRUE, dataIn=spotData                );
+ psdData  = sunspots_PSD(       dataDump=FALSE, dataPlot=TRUE, dataIn=spotData, numSegments=4 );
+ pcaData  = sunspots_PCA_eigen( dataDump=FALSE, dataPlot=TRUE, dataIn=spotData, nLag=2000     );
+ coefs    = sunspots_eigen_syn( dataDump=FALSE, dataPlot=TRUE, dataSpots=spotData, dataEigen=pcaData, numCoefs=6 );
 
