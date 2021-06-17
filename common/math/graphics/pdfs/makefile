@@ -167,6 +167,7 @@ GRP_DATA =                     \
   sunspots.pdf                 \
   sunspots_acf.pdf             \
   sunspots_eigen.pdf           \
+  sunspots_eigen_syn.pdf       \
   sunspots_psd.pdf             \
   sunspots_1749-2004.pdf       \
   sunspots_welchPSD_4segs.pdf
