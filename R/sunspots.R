@@ -366,9 +366,8 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
 #------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
- spotData = sunspots_getData(   dataDump=FALSE, dataPlot=TRUE                                 );
- acfData  = sunspots_ACF(       dataDump=FALSE, dataPlot=TRUE, dataIn=spotData                );
- psdData  = sunspots_PSD(       dataDump=FALSE, dataPlot=TRUE, dataIn=spotData, numSegments=4 );
- pcaData  = sunspots_PCA_eigen( dataDump=FALSE, dataPlot=TRUE, dataIn=spotData, nLag=2000     );
- coefs    = sunspots_eigen_syn( dataDump=TRUE,  dataPlot=TRUE, dataSpots=spotData, dataEigen=pcaData, numCoefs=6 );
-
+ spotData = sunspots_getData(     dataDump=FALSE, dataPlot=TRUE                                 );
+ acfData  = sunspots_ACF(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData                );
+ psdData  = sunspots_PSD(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
+ pcaData  = sunspots_PCA_eigen(   dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000     );
+ coefs    = sunspots_eigen_syn(   dataDump=FALSE, dataPlot=FALSE, dataSpots=spotData, dataEigen=pcaData, numCoefs=105 );

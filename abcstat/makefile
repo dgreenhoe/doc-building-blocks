@@ -138,5 +138,5 @@ pdf:
   make
 
 print:
-  xdvipdfmx  -s 91-100 -p a4 -q -o mmse.pdf mainx
+  xdvipdfmx  -s 49-51 -p a4 -q -o sunspots.pdf mainx
 
