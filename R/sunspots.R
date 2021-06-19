@@ -291,6 +291,69 @@ sunspots_PCA_eigen = function( dataDump    = FALSE,
  #B2 = V %*% D %*% inv(V)
  #C  = B - A
 #------------------------------------------------------------------------------
+sunspots_eigen_coefs = function( dataDump    = FALSE,
+                               dataPlot    = TRUE,
+                               numCoefs    = 5,
+                               dataSpots   = spotData,
+                               dataEigen,
+                               dataFileOutBase = "tex/sunspots_eigen_coefs"
+                             )
+{
+  V     = dataEigen$vectors # eigen-vectors
+  L     = dataEigen$values  # eigen-values
+  D     = diag(L)           # diagonal matrix of eigen-values
+  N     = length(L);        # number of eigen-pairs
+  M     = length(dataSpots$count)
+  spots = dataSpots$count[(M-N+1):M]
+  spotsZeroMean = spots - mean(spots)
+  stime = spotData$date[(M-N+1):M]
+  coefs = 0 * c(1:N)
+  fsyn  = 0 * c(1:N)
+  for( n in 1:N )
+  {
+    coefs[n] = as.numeric( spotsZeroMean %*% V[,n] );  # projection coefficient of spots onto eigen-vector n
+  }
+  #G = sqrt(as.numeric(spotsZeroMean%*%spotsZeroMean)) # estimated energy of sunspot waveform
+  #g = 0;
+  #for( n in 1:numCoefs )
+  #{
+  #  fsyn = fsyn + coefs[n] * V[,n]
+  #  g = g + (coefs[n])^2 # energy of scaled eigen-vectors
+  #}
+  #fsyn = ((G/sqrt(g)) * fsyn) + mean(spots)
+  #errorVect = fsyn - spots
+  #printf("Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, sqrt( (errorVect %*% errorVect))/N );
+  if( dataPlot )
+  {
+    plot(  coefs[1:numCoefs], col=colors[1], type='h', lwd=5)
+    lines( coefs[1:numCoefs], col=colors[1], type='p', lwd=3)
+  }
+  if( dataDump )
+  {
+    sink(sprintf("%s.dat",dataFileOutBase));
+    printf("%%=============================================================================\n"  );
+    printf("%% %s \n", author                                                                   );
+    printf("%% Sunspot eigen coefficient data (%d coefficients)\n", numCoefs           );
+    printf("%% File suitable for use with LaTeX PStricks\n"                                     );
+    printf("%% For an example, see \"%s.tex\"\n", baseName                                      );
+    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
+    printf("%%=============================================================================\n"  );
+    printf("[\n"                                                                                );
+    for(i in 1:numCoefs)
+      printf("  (%12.8f, %12.8f)\n", i, coefs[i]                                          );
+    printf("]\n"                                                                                );
+    sink();
+  }
+  return(coefs)
+}
+
+#------------------------------------------------------------------------------
+# \brief Data synthesis using eigen vector quasi basis
+ #A  = matrix( c(1, 2, 3, 2, 5, 6, 3, 6, 1 ), nrow=3 );
+ #B  = V %*% D
+ #B2 = V %*% D %*% inv(V)
+ #C  = B - A
+#------------------------------------------------------------------------------
 sunspots_eigen_syn = function( dataDump    = FALSE,
                                dataPlot    = TRUE,
                                numCoefs    = 5,
@@ -333,8 +396,8 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
     sink(sprintf("%s_sunSpots.dat",dataFileOutBase));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot vector data file suitable for use with LaTeX PStricks\n" );
-    printf("%% For an example, see \"%s_eigen_syn.tex\"\n", baseName                            );
+    printf("%% Sunspot vector data file suitable for use with LaTeX PStricks\n"                 );
+    printf("%% For an example, see \"%s.tex\"\n", baseName                                      );
     printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
@@ -370,4 +433,5 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
  acfData  = sunspots_ACF(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData                );
  psdData  = sunspots_PSD(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
  pcaData  = sunspots_PCA_eigen(   dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000     );
+ coefs    = sunspots_eigen_coefs( dataDump=TRUE,  dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=105 );
  coefs    = sunspots_eigen_syn(   dataDump=FALSE, dataPlot=FALSE, dataSpots=spotData, dataEigen=pcaData, numCoefs=105 );
