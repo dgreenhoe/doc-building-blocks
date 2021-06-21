@@ -333,14 +333,14 @@ sunspots_eigen_coefs = function( dataDump    = FALSE,
     sink(sprintf("%s.dat",dataFileOutBase));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot eigen coefficient data (%d coefficients)\n", numCoefs           );
+    printf("%% Sunspot eigen coefficient data (%d coefficients)\n", numCoefs                    );
     printf("%% File suitable for use with LaTeX PStricks\n"                                     );
     printf("%% For an example, see \"%s.tex\"\n", baseName                                      );
     printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
     for(i in 1:numCoefs)
-      printf("  (%12.8f, %12.8f)\n", i, coefs[i]                                          );
+      printf("  (%3d, %14.8f)\n", i-1, coefs[i]                                                 );
     printf("]\n"                                                                                );
     sink();
   }
