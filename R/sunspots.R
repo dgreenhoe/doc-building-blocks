@@ -33,6 +33,8 @@
  thisfile = "sunspots.R"
  baseName = "sunspots"
  colors = c("blue", "red", "orange", "green", "purple", "brown", "black");
+ LaTeXstr = "Sunspot data file suitable for use with LaTeX PStricks / pst-plot"
+ AutoGenStr = sprintf("This file auto-generated using \"%s\" --- hand-editing not recommended", thisfile);
 #------------------------------------------------------------------------------
 # \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
 # \returns data table
@@ -59,7 +61,7 @@ sunspots_getData = function( dataDump    = FALSE,
     sink(dataFileOut);
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot monthly mean data file suitable for use with LaTeX PStricks\n"           );
+    printf("%% %s\n", LaTeXstr );
     printf("%% For an example, see \"%s.tex\"\n", baseName                                      );
     printf("%% This file auto-generated with \"%s\"\n", thisfile                                );
     printf("%% using data from \"%s\"\n", dataFileIn                                            );
@@ -82,10 +84,9 @@ sunspots_ACF = function( dataDump    = FALSE,
                          dataPlot    = TRUE,
                          nLag        = 2000,
                          dataIn,
-                         dataFileOut = "tex/sunspots_acf.dat"
+                         dataFileBase = "sunspots_acf.dat"
                        )
 {
- #x       = read.csv(file=dataFileIn, header=TRUE,sep=";", comment.char="#", strip.white=TRUE);
   x       = dataIn;
   xts     = as.ts(as.vector(x$count));
   estMean = mean(xts);
@@ -102,12 +103,12 @@ sunspots_ACF = function( dataDump    = FALSE,
   }
   if(dataDump)
   {
-    sink(dataFileOut);
+    sink(sprintf("tex/%s.dat", dataFileBase));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot auto-correlation function (ACF) data file suitable for use with LaTeX PStricks\n" );
-    printf("%% For an example, see \"%_acf.tex\"\n", baseName                                   );
-    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
+    printf("%% %s\n", LaTeXstr );
+    printf("%% For an example, see \"%.tex\"\n", dataFileBase                                   );
+    printf("%% %s\n", AutoGenStr);
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
     for(i in 1:length(avect))
@@ -126,7 +127,7 @@ sunspots_PSD = function( dataDump    = FALSE,
                          dataPlot    = TRUE,
                          numSegments = 4,
                          dataIn,
-                         dataFileOut = "tex/sunspots_psd.dat"
+                         dataFileBase = "sunspots_psd"
                        )
 {
   xts       = as.ts(as.vector(dataIn$count));
@@ -154,14 +155,15 @@ sunspots_PSD = function( dataDump    = FALSE,
   }
   if(dataDump)
   {
-    sink(dataFileOut);
+    sink(sprintf("tex/%s.dat",dataFileBase));
     printf("%%=============================================================================\n");
     printf("%% %s \n", author                                                                 );
-    printf("%% PSD data file suitable for use by LaTeX PStricks\n"                            );
+    printf("%% %s\n", LaTeXstr );
+    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
     printf("%% number of segments          = %d\n",                  numSegments              );
     printf("%% estimated maximum frequency = %12.6f samples/year\n", freqMax                  );
     printf("%% estimated period            = %12.6f years\n",        periodT                  );
-    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
+    printf("%% %s\n", AutoGenStr);
     printf("%%=============================================================================\n");
     printf("[\n");
     scaledFreq = xpsd$frequency*Fs;
@@ -186,7 +188,7 @@ sunspots_PCA_eigen = function( dataDump    = FALSE,
                                numSegments = 4,
                                nLag        = 2000,
                                dataIn,
-                               dataFileOutBase = "tex/sunspots_eigen"
+                               dataFileBase = "sunspots_eigen"
                              )
 {
   x           = dataIn;
@@ -266,12 +268,12 @@ sunspots_PCA_eigen = function( dataDump    = FALSE,
   {
     for(n in 1:8)
     {
-      sink(sprintf("%s_%d.dat",dataFileOutBase,n));
+      sink(sprintf("tex/%s_%d.dat",dataFileBase,n));
       printf("%%=============================================================================\n"  );
       printf("%% %s \n", author                                                                   );
-      printf("%% Sunspot eigen vector %d data file suitable for use with LaTeX PStricks\n",n      );
-      printf("%% For an example, see \"%s_eigen.tex\"\n", baseName                                );
-      printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
+      printf("%% %s\n", LaTeXstr );
+      printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
+      printf("%% %s\n", AutoGenStr);
       printf("%%=============================================================================\n"  );
       printf("[\n"                                                                                );
       vect = L[n] * V[,n]
@@ -296,7 +298,7 @@ sunspots_eigen_coefs = function( dataDump    = FALSE,
                                numCoefs    = 5,
                                dataSpots   = spotData,
                                dataEigen,
-                               dataFileOutBase = "tex/sunspots_eigen_coefs"
+                               dataFileBase = "sunspots_eigen_coefs"
                              )
 {
   V     = dataEigen$vectors # eigen-vectors
@@ -330,13 +332,13 @@ sunspots_eigen_coefs = function( dataDump    = FALSE,
   }
   if( dataDump )
   {
-    sink(sprintf("%s.dat",dataFileOutBase));
+    sink(sprintf("tex/%s.dat",dataFileBase));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
     printf("%% Sunspot eigen coefficient data (%d coefficients)\n", numCoefs                    );
-    printf("%% File suitable for use with LaTeX PStricks\n"                                     );
-    printf("%% For an example, see \"%s.tex\"\n", baseName                                      );
-    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
+    printf("%% %s\n", LaTeXstr );
+    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
+    printf("%% %s\n", AutoGenStr);
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
     for(i in 1:numCoefs)
@@ -359,7 +361,7 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
                                numCoefs    = 5,
                                dataSpots   = spotData,
                                dataEigen,
-                               dataFileOutBase = "tex/sunspots_eigen_syn"
+                               dataFileBase = "sunspots_eigen_syn"
                              )
 {
   V     = dataEigen$vectors # eigen-vectors
@@ -393,12 +395,12 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
   }
   if( dataDump )
   {
-    sink(sprintf("%s_sunSpots.dat",dataFileOutBase));
+    sink(sprintf("tex/%s_sunSpots.dat",dataFileBase));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot vector data file suitable for use with LaTeX PStricks\n"                 );
-    printf("%% For an example, see \"%s.tex\"\n", baseName                                      );
-    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
+    printf("%% %s\n", LaTeXstr );
+    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                               );
+    printf("%% %s\n", AutoGenStr);
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
     for(i in 1:length(fsyn))
@@ -408,13 +410,13 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
   }
   if( dataDump )
   {
-    sink(sprintf("%s_numCoefs%d.dat",dataFileOutBase,numCoefs));
+    sink(sprintf("tex/%s_numCoefs%d.dat",dataFileBase,numCoefs));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
     printf("%% Sunspot eigen synthesis vector data using %d coefficients\n", numCoefs           );
-    printf("%% File suitable for use with LaTeX PStricks\n" );
+    printf("%% %s\n", LaTeXstr );
     printf("%% For an example, see \"%s_eigen_syn.tex\"\n", baseName                            );
-    printf("%% This file auto-generated using \"%s\" --- hand-editing not recommended\n", thisfile);
+    printf("%% %s\n", AutoGenStr);
     printf("%% Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, sqrt( (errorVect %*% errorVect))/N );
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
@@ -423,15 +425,52 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
     printf("]\n"                                                                                );
     sink();
   }
-  return(coefs)
+  return(fsyn)
+}
+
+#------------------------------------------------------------------------------
+# \brief ACF of coefficient
+#------------------------------------------------------------------------------
+sunspots_coefs_acf = function( dataDump    = FALSE,
+                               dataPlot    = TRUE,
+                               Length      = 100,
+                               dataCoefs   = coefs,
+                               dataFileBase = "sunspots_coefs_acf"
+                             )
+{
+  a       = stats::acf(dataCoefs, type="correlation", lag.max=(length(dataCoefs)-1), plot=FALSE)
+  avect   = as.vector(a$acf)
+  lvect   = as.vector(a$lag)
+  if( dataPlot )
+  {
+    plot( lvect[1:Length], avect[1:Length], col=colors[1], type='h', lwd=3 );
+    lines(lvect[1:Length], avect[1:Length], col=colors[1], type='p', lwd=3 );
+  }
+  if( dataDump )
+  {
+    sink(sprintf("tex/%s.dat",dataFileBase));
+    printf("%%=============================================================================\n"  );
+    printf("%% %s \n", author                                                                   );
+    printf("%% %s\n", LaTeXstr );
+    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
+    printf("%% %s\n", AutoGenStr);
+    printf("%%=============================================================================\n"  );
+    printf("[\n"                                                                                );
+    for(i in 1:Length)
+      printf("  (%12.8f, %12.8f)\n", lvect[i], avect[i]                                         );
+    printf("]\n"                                                                                );
+    sink();
+  }
+  return(avect)
 }
 
 #------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
- spotData = sunspots_getData(     dataDump=FALSE, dataPlot=TRUE                                 );
- acfData  = sunspots_ACF(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData                );
- psdData  = sunspots_PSD(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
- pcaData  = sunspots_PCA_eigen(   dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000     );
- coefs    = sunspots_eigen_coefs( dataDump=TRUE,  dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=105 );
- coefs    = sunspots_eigen_syn(   dataDump=FALSE, dataPlot=FALSE, dataSpots=spotData, dataEigen=pcaData, numCoefs=105 );
+ spotData  = sunspots_getData(     dataDump=FALSE, dataPlot=TRUE                                 );
+ acfData   = sunspots_ACF(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData                );
+ psdData   = sunspots_PSD(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
+ pcaData   = sunspots_PCA_eigen(   dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000     );
+ coefs     = sunspots_eigen_coefs( dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=105 );
+ fsyn      = sunspots_eigen_syn(   dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=6   );
+ coefsACF  = sunspots_coefs_acf(   dataDump=TRUE,  dataPlot=TRUE,  dataCoefs=coefs, Length=100 );

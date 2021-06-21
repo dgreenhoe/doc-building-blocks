@@ -166,6 +166,7 @@ GRP_DATA =                     \
   global-temp.pdf              \
   sunspots.pdf                 \
   sunspots_acf.pdf             \
+  sunspots_coefs_acf.pdf       \
   sunspots_eigen.pdf           \
   sunspots_eigen_coefs.pdf     \
   sunspots_eigen_syn.pdf       \
