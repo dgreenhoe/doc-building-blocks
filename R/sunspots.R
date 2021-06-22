@@ -83,11 +83,11 @@ sunspots_getData = function( dataDump    = FALSE,
 sunspots_ACF = function( dataDump    = FALSE,
                          dataPlot    = TRUE,
                          nLag        = 2000,
-                         dataIn,
+                         dataSpots,
                          dataFileBase = "sunspots_acf.dat"
                        )
 {
-  x       = dataIn;
+  x       = dataSpots;
   xts     = as.ts(as.vector(x$count));
   estMean = mean(xts);
   a       = stats::acf(xts - estMean, type="correlation", lag.max=nLag, plot=FALSE)
@@ -126,11 +126,11 @@ sunspots_ACF = function( dataDump    = FALSE,
 sunspots_PSD = function( dataDump    = FALSE,
                          dataPlot    = TRUE,
                          numSegments = 4,
-                         dataIn,
+                         dataSpots,
                          dataFileBase = "sunspots_psd"
                        )
 {
-  xts       = as.ts(as.vector(dataIn$count));
+  xts       = as.ts(as.vector(dataSpots$count));
   N         = length(xts);         # length of time series
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
@@ -187,11 +187,11 @@ sunspots_PCA_eigen = function( dataDump    = FALSE,
                                Fs          = 12,
                                numSegments = 4,
                                nLag        = 2000,
-                               dataIn,
+                               dataSpots,
                                dataFileBase = "sunspots_eigen"
                              )
 {
-  x           = dataIn;
+  x           = dataSpots;
   xts         = as.ts(as.vector(x$count));
   N           = length(xts);
   estMean     = mean(xts);
@@ -288,61 +288,41 @@ sunspots_PCA_eigen = function( dataDump    = FALSE,
 
 #------------------------------------------------------------------------------
 # \brief Data synthesis using eigen vector quasi basis
- #A  = matrix( c(1, 2, 3, 2, 5, 6, 3, 6, 1 ), nrow=3 );
- #B  = V %*% D
- #B2 = V %*% D %*% inv(V)
- #C  = B - A
 #------------------------------------------------------------------------------
-sunspots_eigen_coefs = function( dataDump    = FALSE,
-                               dataPlot    = TRUE,
-                               numCoefs    = 5,
-                               dataSpots   = spotData,
-                               dataEigen,
-                               dataFileBase = "sunspots_eigen_coefs"
-                             )
-{
-  V     = dataEigen$vectors # eigen-vectors
-  L     = dataEigen$values  # eigen-values
-  D     = diag(L)           # diagonal matrix of eigen-values
-  N     = length(L);        # number of eigen-pairs
-  M     = length(dataSpots$count)
-  spots = dataSpots$count[(M-N+1):M]
-  spotsZeroMean = spots - mean(spots)
-  stime = spotData$date[(M-N+1):M]
-  coefs = 0 * c(1:N)
-  fsyn  = 0 * c(1:N)
-  for( n in 1:N )
-  {
-    coefs[n] = as.numeric( spotsZeroMean %*% V[,n] );  # projection coefficient of spots onto eigen-vector n
-  }
-  #G = sqrt(as.numeric(spotsZeroMean%*%spotsZeroMean)) # estimated energy of sunspot waveform
-  #g = 0;
-  #for( n in 1:numCoefs )
-  #{
-  #  fsyn = fsyn + coefs[n] * V[,n]
-  #  g = g + (coefs[n])^2 # energy of scaled eigen-vectors
-  #}
-  #fsyn = ((G/sqrt(g)) * fsyn) + mean(spots)
-  #errorVect = fsyn - spots
-  #printf("Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, sqrt( (errorVect %*% errorVect))/N );
+sunspots_eigen_coefs = function(
+  dataDump     = FALSE,                    # dump data to file
+  dataPlot     = TRUE,                     # plot data
+  Length       = 105,                      # number of coefficients to dump/plot
+  dataSpots    = spotData,                 # sunspot data
+  dataEigen,                               # eigen-pair data
+  dataFileBase = "sunspots_eigen_coefs"    # file base name
+){
+  V        = dataEigen$vectors             # V = eigen-vectors
+  L        = dataEigen$values              # L = eigen-values
+  D        = diag(L)                       # D = diagonal matrix of eigen-values
+  N        = length(L);                    # N = number of eigen-pairs
+  M        = length(dataSpots$count)       # M = number of sunspot values
+  spots    = dataSpots$count[(M-N+1):M]    # N most recent sunspot values
+  zeroMean = spots - mean(spots)           # zero-mean sunspot data
+  stime    = spotData$date[(M-N+1):M]      # N most recent time values
+  coefs    = as.numeric( zeroMean %*% V ); # coef[n] = projection of data onto eigen-vector n
   if( dataPlot )
   {
-    plot(  coefs[1:numCoefs], col=colors[1], type='h', lwd=5)
-    lines( coefs[1:numCoefs], col=colors[1], type='p', lwd=3)
+    plot(  coefs[1:Length], col=colors[1], type='h', lwd=5)
+    lines( coefs[1:Length], col=colors[1], type='p', lwd=3)
   }
   if( dataDump )
   {
     sink(sprintf("tex/%s.dat",dataFileBase));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot eigen coefficient data (%d coefficients)\n", numCoefs                    );
+    printf("%% Sunspot eigen coefficient data (%d coefficients)\n", Length                      );
     printf("%% %s\n", LaTeXstr );
     printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
     printf("%% %s\n", AutoGenStr);
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
-    for(i in 1:numCoefs)
-      printf("  (%3d, %14.8f)\n", i-1, coefs[i]                                                 );
+    for(n in 1:Length) printf("  (%3d, %14.8f)\n", n-1, coefs[n]                                );
     printf("]\n"                                                                                );
     sink();
   }
@@ -457,7 +437,7 @@ sunspots_coefs_acf = function( dataDump    = FALSE,
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
     for(i in 1:Length)
-      printf("  (%12.8f, %12.8f)\n", lvect[i], avect[i]                                         );
+      printf("  (%3d, %12.8f)\n", lvect[i], avect[i]                                            );
     printf("]\n"                                                                                );
     sink();
   }
@@ -467,10 +447,12 @@ sunspots_coefs_acf = function( dataDump    = FALSE,
 #------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
- spotData  = sunspots_getData(     dataDump=FALSE, dataPlot=TRUE                                 );
- acfData   = sunspots_ACF(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData                );
- psdData   = sunspots_PSD(         dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, numSegments=4 );
- pcaData   = sunspots_PCA_eigen(   dataDump=FALSE, dataPlot=TRUE,  dataIn=spotData, nLag=2000     );
- coefs     = sunspots_eigen_coefs( dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=105 );
- fsyn      = sunspots_eigen_syn(   dataDump=FALSE, dataPlot=TRUE,  dataSpots=spotData, dataEigen=pcaData, numCoefs=6   );
- coefsACF  = sunspots_coefs_acf(   dataDump=TRUE,  dataPlot=TRUE,  dataCoefs=coefs, Length=100 );
+ T = TRUE
+ F = FALSE
+ spotData  = sunspots_getData(     dataDump=F, dataPlot=T,                                   );
+ acfData   = sunspots_ACF(         dataDump=F, dataPlot=T, dataSpots=spotData                );
+ psdData   = sunspots_PSD(         dataDump=F, dataPlot=T, dataSpots=spotData, numSegments=4 );
+ pcaData   = sunspots_PCA_eigen(   dataDump=F, dataPlot=T, dataSpots=spotData, nLag=2000     );
+ coefs     = sunspots_eigen_coefs( dataDump=T, dataPlot=T, dataSpots=spotData, dataEigen=pcaData, Length=105 );
+ fsyn      = sunspots_eigen_syn(   dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=pcaData, numCoefs=6   );
+ coefsACF  = sunspots_coefs_acf(   dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
