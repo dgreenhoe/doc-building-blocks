@@ -336,38 +336,37 @@ sunspots_eigen_coefs = function(
  #B2 = V %*% D %*% inv(V)
  #C  = B - A
 #------------------------------------------------------------------------------
-sunspots_eigen_syn = function( dataDump    = FALSE,
-                               dataPlot    = TRUE,
-                               numCoefs    = 5,
-                               dataSpots   = spotData,
-                               dataEigen,
-                               dataFileBase = "sunspots_eigen_syn"
-                             )
-{
-  V     = dataEigen$vectors # eigen-vectors
-  L     = dataEigen$values  # eigen-values
-  D     = diag(L)           # diagonal matrix of eigen-values
-  N     = length(L);        # number of eigen-pairs
-  M     = length(dataSpots$count)
-  spots = dataSpots$count[(M-N+1):M]
-  spotsZeroMean = spots - mean(spots)
-  stime = spotData$date[(M-N+1):M]
-  coefs = 0 * c(1:N)
-  fsyn  = 0 * c(1:N)
-  for( n in 1:N )
-  {
-    coefs[n] = as.numeric( spotsZeroMean %*% V[,n] );  # projection coefficient of spots onto eigen-vector n
-  }
-  G = sqrt(as.numeric(spotsZeroMean%*%spotsZeroMean)) # estimated energy of sunspot waveform
+sunspots_eigen_syn = function(
+  dataDump     = FALSE,                     # dump data to file
+  dataPlot     = TRUE,                      # plot data
+  numCoefs     = 6,                         # number of coefficients to synthesis with
+  dataSpots    = spotData,                  # sunspot data
+  dataEigen,                                # eigen-pair data
+  dataFileBase = "sunspots_eigen_syn"       # file base name
+){
+  V        = dataEigen$vectors              # eigen-vectors
+  L        = dataEigen$values               # eigen-values
+  D        = diag(L)                        # diagonal matrix of eigen-values
+  N        = length(L);                     # number of eigen-pairs
+  M        = length(dataSpots$count)        # number of sunspot data values
+  spots    = dataSpots$count[(M-N+1):M]     # last N sunspot data values
+  zeroMean = spots - mean(spots)            # zero-mean data
+  stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
+  coefs    = as.numeric( zeroMean %*% V );  # projection coefficient of spots onto eigen-vector n
+  G = sqrt(as.numeric(zeroMean%*%zeroMean)) # estimated energy of sunspot waveform
+ #fsyn = coefs %*% V[,1:numCoefs]           # partially-synthesized vector
+  fsyn     = 0 * c(1:N)
   g = 0;
   for( n in 1:numCoefs )
   {
-    fsyn = fsyn + coefs[n] * V[,n]
-    g = g + (coefs[n])^2 # energy of scaled eigen-vectors
+    fsyn = fsyn + coefs[n] * V[,n]          # partially-synthesized vector
+    g = g + (coefs[n])^2                    # energy of scaled eigen-vectors
   }
-  fsyn = ((G/sqrt(g)) * fsyn) + mean(spots)
-  errorVect = fsyn - spots
-  printf("Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, sqrt( (errorVect %*% errorVect))/N );
+  fsyn      = ((G/sqrt(g)) * fsyn)          # scale vector to match energy of original data
+  fsyn      = fsyn + mean(spots)            # restore mean
+  errorVect = fsyn - spots                  # calculate error vector
+  rmsError  = sqrt( (errorVect %*% errorVect))/N # RMS error
+  printf("Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, rmsError );
   if( dataPlot )
   {
     plot( stime, spots, col=colors[1], type='l')
@@ -394,14 +393,13 @@ sunspots_eigen_syn = function( dataDump    = FALSE,
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
     printf("%% Sunspot eigen synthesis vector data using %d coefficients\n", numCoefs           );
-    printf("%% %s\n", LaTeXstr );
+    printf("%% %s\n", LaTeXstr                                                                  );
     printf("%% For an example, see \"%s_eigen_syn.tex\"\n", baseName                            );
-    printf("%% %s\n", AutoGenStr);
-    printf("%% Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, sqrt( (errorVect %*% errorVect))/N );
+    printf("%% %s\n", AutoGenStr                                                                );
+    printf("%% Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, rmsError  );
     printf("%%=============================================================================\n"  );
     printf("[\n"                                                                                );
-    for(i in 1:length(fsyn))
-      printf("  (%12.8f, %12.8f)\n", stime[i], fsyn[i]                                          );
+    for(n in 1:length(fsyn)) printf("  (%12.8f, %12.8f)\n", stime[n], fsyn[n]                   );
     printf("]\n"                                                                                );
     sink();
   }
@@ -453,6 +451,6 @@ sunspots_coefs_acf = function( dataDump    = FALSE,
  acfData   = sunspots_ACF(         dataDump=F, dataPlot=T, dataSpots=spotData                );
  psdData   = sunspots_PSD(         dataDump=F, dataPlot=T, dataSpots=spotData, numSegments=4 );
  pcaData   = sunspots_PCA_eigen(   dataDump=F, dataPlot=T, dataSpots=spotData, nLag=2000     );
- coefs     = sunspots_eigen_coefs( dataDump=T, dataPlot=T, dataSpots=spotData, dataEigen=pcaData, Length=105 );
- fsyn      = sunspots_eigen_syn(   dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=pcaData, numCoefs=6   );
+ coefs     = sunspots_eigen_coefs( dataDump=F, dataPlot=T, dataSpots=spotData, dataEigen=pcaData, Length=105 );
+ fsyn      = sunspots_eigen_syn(   dataDump=T, dataPlot=T, dataSpots=spotData, dataEigen=pcaData, numCoefs=105   );
  coefsACF  = sunspots_coefs_acf(   dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
