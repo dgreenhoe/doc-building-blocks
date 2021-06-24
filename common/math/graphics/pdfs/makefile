@@ -167,6 +167,8 @@ GRP_DATA =                     \
   sunspots.pdf                 \
   sunspots_acf.pdf             \
   sunspots_coefs_acf.pdf       \
+  sunspots_dft_coefs_Real.pdf  \
+  sunspots_dft_coefs_Imag.pdf  \
   sunspots_eigen.pdf           \
   sunspots_eigen_coefs.pdf     \
   sunspots_eigen_syn.pdf       \

@@ -409,7 +409,7 @@ sunspots_eigen_syn = function(
 #------------------------------------------------------------------------------
 # \brief ACF of coefficient
 #------------------------------------------------------------------------------
-sunspots_coefs_acf = function(
+sunspots_eigen_acf = function(
   dataDump     = FALSE,                    # dump data to file
   dataPlot     = TRUE,                     # plot data
   Length       = 100,                      # number of ACF elements to dump/plot
@@ -445,30 +445,32 @@ sunspots_coefs_acf = function(
 #------------------------------------------------------------------------------
 # \brief ACF of DFT coefficients
 #------------------------------------------------------------------------------
-sunspots_dft_acf = function(
+sunspots_dft_coefs = function(
   dataDump     = FALSE,                    # dump data to file
   dataPlot     = TRUE,                     # plot data
-  evalLength   = 2000,                     # number of sunspot data elements to evaluate
-  plotLength   = 105,                      # number of ACF elements to dump/plot
+  plotLength   = 1000,                     # number of coefficients to dump/plot
+  evalLength   = 2000,                     # number of elements to evaluate
   dataSpots    = spotData,                 # sunspot data
-  dataFileBase = "sunspots_dft_acf"        # file base name
+  dataFileBase = "sunspots_dft_coefs",     # file base name
+  Fs           = 12                        # sample rate in samples per year
 ){
-  M        = length(dataSpots$count)        # number of sunspot data values
-  N       =  evalLength
+  M        = length(dataSpots$count)        # number of data values
+  N       =  evalLength                     # number data values to evaluate
   spots    = dataSpots$count[(M-N+1):M]     # last N sunspot data values
-  zeroMean = spots - mean(spots)            # zero-mean data
+  zeroMean = (spots - mean(spots))/N        # scaled zero-mean data
   stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
   Xfft     = fft(zeroMean)
-  nLag = evalLength
-  a        = stats::acf(abs(Xfft), type="correlation", lag.max=nLag, plot=FALSE)
-  avect    = as.vector(a$acf)
-  lvect    = as.vector(a$lag)
+  #nLag = evalLength
+  #a        = stats::acf(abs(Xfft), type="correlation", lag.max=nLag, plot=FALSE)
+  #avect    = as.vector(a$acf)
+  #lvect    = as.vector(a$lag)
+  f = Fs * c(0:(plotLength-1)) / N
   if( dataPlot )
   {
-    plot( Re(Xfft[1:plotLength]), col=colors[1], type='h', lwd=3 );
-    lines(Re(Xfft[1:plotLength]), col=colors[1], type='p', lwd=3 );
-    lines(Im(Xfft[1:plotLength]), col=colors[2], type='h', lwd=3 );
-    lines(Im(Xfft[1:plotLength]), col=colors[2], type='p', lwd=3 );
+    plot(  f, Re(Xfft[1:plotLength]), col=colors[1], type='h', lwd=3, xlab="frequency (samples/year)" );
+    lines( f, Re(Xfft[1:plotLength]), col=colors[1], type='p', lwd=3 );
+    lines( f, Im(Xfft[1:plotLength]), col=colors[2], type='h', lwd=3 );
+    lines( f, Im(Xfft[1:plotLength]), col=colors[2], type='p', lwd=3 );
   }
   if( dataDump )
   {
@@ -480,7 +482,7 @@ sunspots_dft_acf = function(
     printf("%% %s\n", AutoGenStr                                                              );
     printf("%%=============================================================================\n");
     printf("[\n"                                                                              );
-    for(n in 1:plotLength) printf("  (%3d, %12.8f)\n", n-1, Re(Xfft[n])                       );
+    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], Re(Xfft[n])                   );
     printf("]\n"                                                                              );
     sink();
   }
@@ -494,24 +496,24 @@ sunspots_dft_acf = function(
     printf("%% %s\n", AutoGenStr                                                              );
     printf("%%=============================================================================\n");
     printf("[\n"                                                                              );
-    for(n in 1:plotLength) printf("  (%3d, %12.8f)\n", n-1, Im(Xfft[n])                       );
+    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], Im(Xfft[n])                   );
     printf("]\n"                                                                              );
     sink();
   }
-  if( dataDump )
-  {
-    sink(sprintf("tex/%s_acf.dat",dataFileBase));
-    printf("%%=============================================================================\n");
-    printf("%% %s \n", author                                                                 );
-    printf("%% %s\n", LaTeXstr                                                                );
-    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
-    printf("%% %s\n", AutoGenStr                                                              );
-    printf("%%=============================================================================\n");
-    printf("[\n"                                                                              );
-    for(n in 1:plotLength) printf("  (%12.8f, %12.8f)\n", lvect[n], avect[n]                  );
-    printf("]\n"                                                                              );
-    sink();
-  }
+  #if( dataDump )
+  #{
+  #  sink(sprintf("tex/%s_acf.dat",dataFileBase));
+  #  printf("%%=============================================================================\n");
+  #  printf("%% %s \n", author                                                                 );
+  #  printf("%% %s\n", LaTeXstr                                                                );
+  #  printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
+  #  printf("%% %s\n", AutoGenStr                                                              );
+  #  printf("%%=============================================================================\n");
+  #  printf("[\n"                                                                              );
+  #  for(n in 1:Length) printf("  (%12.8f, %12.8f)\n", lvect[n], avect[n]                      );
+  #  printf("]\n"                                                                              );
+  #  sink();
+  #}
   return(Xfft)
 }
 
@@ -526,5 +528,5 @@ sunspots_dft_acf = function(
  pcaData   = sunspots_PCA_eigen(   dataDump=F, dataPlot=T, dataSpots=spotData, nLag=2000     );
  coefs     = sunspots_eigen_coefs( dataDump=F, dataPlot=T, dataSpots=spotData, dataEigen=pcaData, Length=105 );
  fsyn      = sunspots_eigen_syn(   dataDump=F, dataPlot=T, dataSpots=spotData, dataEigen=pcaData, numCoefs=105   );
- coefsACF  = sunspots_coefs_acf(   dataDump=F, dataPlot=T, dataCoefs=coefs,    Length=100 );
- dftACF    = sunspots_dft_acf(     dataDump=T, dataPlot=T, dataSpots=spotData, evalLength=2000, plotLength=105 );
+ coefsACF  = sunspots_eigen_acf(   dataDump=F, dataPlot=T, dataCoefs=coefs,    Length=100 );
+ coefsDFT  = sunspots_dft_coefs(   dataDump=T, dataPlot=T, dataSpots=spotData, evalLength=2000, plotLength=1001 );
