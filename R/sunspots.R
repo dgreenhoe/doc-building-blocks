@@ -187,10 +187,11 @@ sunspots_eigen_basis = function(
   dataPlot     = TRUE,
   Fs           = 12,
   numSegments  = 4,
-  nLag         = 2000,
+  evalLength   = 2001,
   dataSpots,
   dataFileBase = "sunspots_eigen"
 ){
+  nLag        = evalLength - 1;
   x           = dataSpots;
   xts         = as.ts(as.vector(x$count));
   N           = length(xts);
@@ -207,7 +208,6 @@ sunspots_eigen_basis = function(
 
   if(dataPlot)
   {
-    colors = c("blue", "red", "orange", "green", "purple", "black","brown");
     traces = colors[1:6]
     for( n in 1:length(traces))
     {
@@ -443,6 +443,77 @@ sunspots_eigen_acf = function(
 }
 
 #------------------------------------------------------------------------------
+# \brief Calculate Fourier basis for sunspots 
+#------------------------------------------------------------------------------
+sunspots_dft_basis = function( 
+  dataDump     = FALSE,
+  dataPlot     = TRUE,
+  Fs           = 12,
+  numVectors  = 5,
+  evalLength   = 2001,
+  numVect = 5,
+  dataSpots,
+  dataFileBase = "sunspots_dft_basis"
+){
+  nLag        = evalLength - 1;
+  x           = dataSpots;
+  xts         = as.ts(as.vector(x$count));
+  N           = length(xts);
+  estMean     = mean(xts);
+  a           = acf(xts - estMean, type="correlation", lag=nLag)
+  avect       = as.vector(a$acf)
+  lvect       = as.vector(a$lag)/12
+  A           = stats::toeplitz(avect)
+  Q           = eigen(A, symmetric=TRUE, only.values=FALSE)
+  V           = Q$vectors
+  L           = Q$values
+  D           = diag(L)
+N = evalLength
+#ff = matrix(seq(from=0, to=Fs/2, length=N));
+#tt = matrix(seq(from=0, by=1/Fs, length=N));
+n = matrix(seq(from=0, by=1, length=N));
+k = matrix(seq(from=0, by=1, length=N));
+f = k/N*Fs/2
+#AA = cos(2*pi*(tt %*% t(ff)));
+V = (1/sqrt(N/2))*cos(2*pi*(n %*% t(k))/N);
+
+  if(dataPlot)
+  {
+    traces = colors[1:6]
+    for( n in 1:length(traces))
+    {
+      if(n==1) plot( f, V[,n], type='o', lwd=3, col=colors[n], ylim=c(-1.1,1.1)/sqrt(N/2))
+      else     lines(f, V[,n], type='o', lwd=3, col=colors[n])
+      traces[n] = sprintf("DFT basis vector k=%2d", n-1)
+    }
+    legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
+  }
+
+  if(dataDump)
+  {
+    for(n in 1:8)
+    {
+      vect = sqrt(N/2)*V[,n]
+      sink(sprintf("tex/%s_%d.dat",dataFileBase,n-1));
+      printf("%%=============================================================================\n");
+      printf("%% %s \n", author                                                                 );
+      printf("%% %s\n", LaTeXstr                                                                );
+      printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
+      printf("%% Note: These vectors are orthnormal vectors scaled by sqrt(N/2)=sqrt(%d/2)=%12.8f\n", N, sqrt(N/2));
+      printf("%%       That is, to make orthonormal, multiply each element by 1/sqrt(N/2)=%12.8f\n", 1/sqrt(N/2));
+      printf("%% %s\n", AutoGenStr                                                              );
+      printf("%%=============================================================================\n");
+      printf("[\n"                                                                              );
+      for(i in 1:length(vect))
+        printf("  (%12.8f, %12.8f)\n", f[i], vect[i]                                            );
+      printf("]\n"                                                                              );
+      sink();
+    }
+  }
+  return(V);
+}
+
+#------------------------------------------------------------------------------
 # \brief Project data sequence onto sinusoidal basis vectors yielding 
 #        a sequence of DFT coefficients
 #------------------------------------------------------------------------------
@@ -601,9 +672,10 @@ sunspots_dft_syn = function(
  F = FALSE
  spotData  = sunspots_tseries_data( dataDump=F, dataPlot=T                                    );
  acfData   = sunspots_tseries_acf(  dataDump=F, dataPlot=T, dataSpots=spotData                );
- psdCoefs  = sunspots_psd_coefs(    dataDump=F, dataPlot=T, dataSpots=spotData, numSegments=4 );
- eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=T, dataSpots=spotData, nLag=2000     );
- coefs     = sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
- fsyn      = sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=105   );
- eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
- dftACF    = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2000, plotLength=1001 );
+ #psdCoefs  = sunspots_psd_coefs(    dataDump=F, dataPlot=T, dataSpots=spotData, numSegments=4 );
+ #eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=T, dataSpots=spotData, evalLength=2001     );
+ #coefs     = sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
+ #fsyn      = sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=105   );
+ #eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
+ AA  = sunspots_dft_basis(    dataDump=T, dataPlot=T, dataSpots=spotData, evalLength=100, numVectors=5     );
+ dftACF    = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001, plotLength=1001 );
