@@ -669,6 +669,57 @@ sunspots_dft_syn = function(
 }
 
 #------------------------------------------------------------------------------
+# \brief ACF of coefficient
+#------------------------------------------------------------------------------
+sunspots_dft_acf = function(
+  dataDump     = FALSE,                    # dump data to file
+  dataPlot     = TRUE,                     # plot data
+  Length       = 100,                      # number of ACF elements to dump/plot
+  dataCoefs    = dftCoefs,                 # coefficient data
+  dataFileBase = "sunspots_dft_acf"        # file base name
+){
+  N       = length(dataCoefs);             # number of coefficients provided
+#N=Length
+  x = Re(dataCoefs);
+  y = Im(dataCoefs);
+  A       = stats::ccf(x, x, type="correlation", lag.max=(N-1), plot=FALSE)
+  B       = stats::ccf(y, y, type="correlation", lag.max=(N-1), plot=FALSE)
+  C       = stats::ccf(x, y, type="correlation", lag.max=(N-1), plot=FALSE)
+  D       = stats::ccf(y, x, type="correlation", lag.max=(N-1), plot=FALSE)
+#print(names(A))
+  a = A$acf[N:(2*N-1)];               # acf value vector
+  b = B$acf[N:(2*N-1)];               # acf value vector
+  c = C$acf[N:(2*N-1)];               # acf value vector
+  d = D$acf[N:(2*N-1)];               # acf value vector
+  acfReal = a + b;
+  acfImag = d - c;
+  acfMag = 0.5*sqrt(acfReal^2 + acfImag^2)
+  avect   = A$acf[N:(2*N-1)];               # acf value vector
+  lvect   = A$lag[N:(2*N-1)];               # acf lag vector
+  if( dataPlot )
+  {
+    plot( lvect[1:Length], acfMag[1:Length], col=colors[1], type='h', lwd=3 );
+    lines(lvect[1:Length], acfMag[1:Length], col=colors[1], type='p', lwd=3 );
+  }
+  if( dataDump )
+  {
+    sink(sprintf("tex/%s.dat",dataFileBase));
+    printf("%%=============================================================================\n");
+    printf("%% %s \n", author                                                                 );
+    printf("%% %s\n", LaTeXstr                                                                );
+    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
+    printf("%% %s\n", AutoGenStr                                                              );
+    printf("%%=============================================================================\n");
+    printf("[\n"                                                                              );
+    for(n in 1:Length) printf("  (%3d, %12.8f)\n", lvect[n], acfMag[n]                        );
+    printf("]\n"                                                                              );
+    sink();
+  }
+  return(list(N=N, a=a, b=b, c=c, d=d, mag=acfMag, lag=lvect))
+#  return(acfMag)
+}
+
+#------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
  T = TRUE
@@ -680,5 +731,7 @@ sunspots_dft_syn = function(
 #coefs     = sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
 #fsyn      = sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=105   );
 #eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
- dftBasis  = sunspots_dft_basis(    dataDump=T, dataPlot=T, evalLength=100, numVectors=5     );
- dftACF    = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001, plotLength=1001 );
+ dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=T, evalLength=100, numVectors=5 );
+ dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=T, dataSpots=spotData, evalLength=2001, plotLength=1001 );
+ A    = sunspots_dft_acf(      dataDump=T, dataPlot=T, dataCoefs=dftCoefs,    Length=100 );
+

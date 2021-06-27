@@ -15,7 +15,7 @@
 # Commands
 #--------------------------------------
 all:
-  cd abctran
+  cd abcstat
     make
   cd ..\trigsys
     make
@@ -23,7 +23,7 @@ all:
     make
   cd ..\msdnil
     make
-  cd ..\abcstat
+  cd ..\abctran
     make
   cd ..\abcdc
     make
