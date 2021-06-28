@@ -671,22 +671,15 @@ sunspots_dft_syn = function(
 #------------------------------------------------------------------------------
 # \brief ACF of coefficient
 #------------------------------------------------------------------------------
-sunspots_dft_acf = function(
-  dataDump     = FALSE,                    # dump data to file
-  dataPlot     = TRUE,                     # plot data
-  Length       = 100,                      # number of ACF elements to dump/plot
-  dataCoefs    = dftCoefs,                 # coefficient data
-  dataFileBase = "sunspots_dft_acf"        # file base name
-){
-  N       = length(dataCoefs);             # number of coefficients provided
-#N=Length
-  x = Re(dataCoefs);
-  y = Im(dataCoefs);
+acfComplex = function(z, dataPlot=FALSE)
+{
+  N       = length(z);
+  x = Re(z);
+  y = Im(z);
   A       = stats::ccf(x, x, type="correlation", lag.max=(N-1), plot=FALSE)
   B       = stats::ccf(y, y, type="correlation", lag.max=(N-1), plot=FALSE)
   C       = stats::ccf(x, y, type="correlation", lag.max=(N-1), plot=FALSE)
   D       = stats::ccf(y, x, type="correlation", lag.max=(N-1), plot=FALSE)
-#print(names(A))
   a = A$acf[N:(2*N-1)];               # acf value vector
   b = B$acf[N:(2*N-1)];               # acf value vector
   c = C$acf[N:(2*N-1)];               # acf value vector
@@ -696,6 +689,28 @@ sunspots_dft_acf = function(
   acfMag = 0.5*sqrt(acfReal^2 + acfImag^2)
   avect   = A$acf[N:(2*N-1)];               # acf value vector
   lvect   = A$lag[N:(2*N-1)];               # acf lag vector
+  if( dataPlot )
+  {
+    plot( lvect[1:Length], acfMag[1:Length], col=colors[1], type='h', lwd=3 );
+    lines(lvect[1:Length], acfMag[1:Length], col=colors[1], type='p', lwd=3 );
+  }
+  return(list(N=N, a=a, b=b, c=c, d=d, mag=acfMag, lag=lvect))
+}
+
+#------------------------------------------------------------------------------
+# \brief ACF of coefficient
+#------------------------------------------------------------------------------
+sunspots_dft_acf = function(
+  dataDump     = FALSE,                    # dump data to file
+  dataPlot     = TRUE,                     # plot data
+  Length       = 100,                      # number of ACF elements to dump/plot
+  dataCoefs    = dftCoefs,                 # coefficient data
+  dataFileBase = "sunspots_dft_acf"        # file base name
+){
+  N       = length(dataCoefs);             # number of coefficients provided
+  acfData = acfComplex(dataCoefs);
+  acfMag  = acfData$mag;
+  lvect   = acfData$lag;
   if( dataPlot )
   {
     plot( lvect[1:Length], acfMag[1:Length], col=colors[1], type='h', lwd=3 );
@@ -715,8 +730,7 @@ sunspots_dft_acf = function(
     printf("]\n"                                                                              );
     sink();
   }
-  return(list(N=N, a=a, b=b, c=c, d=d, mag=acfMag, lag=lvect))
-#  return(acfMag)
+  return(acfMag)
 }
 
 #------------------------------------------------------------------------------
