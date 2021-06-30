@@ -342,7 +342,7 @@ sunspots_eigen_synth = function(
   numCoefs     = 6,                         # number of coefficients to synthesis with
   dataSpots    = spotData,                  # sunspot data
   dataEigen,                                # eigen-pair data
-  dataFileBase = "sunspots_eigen_syn"       # file base name
+  dataFileBase = "sunspots_eigen_synth"     # file base name
 ){
   V        = dataEigen$vectors              # eigen-vectors
   L        = dataEigen$values               # eigen-values
@@ -394,7 +394,7 @@ sunspots_eigen_synth = function(
     printf("%% %s \n", author                                                                   );
     printf("%% Sunspot eigen synthesis vector data using %d coefficients\n", numCoefs           );
     printf("%% %s\n", LaTeXstr                                                                  );
-    printf("%% For an example, see \"%s_eigen_syn.tex\"\n", baseName                            );
+    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
     printf("%% %s\n", AutoGenStr                                                                );
     printf("%% Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, rmsError  );
     printf("%%=============================================================================\n"  );
@@ -595,77 +595,86 @@ sunspots_dft_coefs = function(
 #------------------------------------------------------------------------------
 # \brief Data synthesis using DFT basis
 #------------------------------------------------------------------------------
-sunspots_dft_syn = function(
+sunspots_dft_synth = function(
   dataDump     = FALSE,                     # dump data to file
   dataPlot     = TRUE,                      # plot data
   numCoefs     = 6,                         # number of coefficients to synthesis with
   dataSpots    = spotData,                  # sunspot data
-  dataDFT,                                  # DFT coefficients
+  dftBasis,                                 # DFT coefficients
   plotLength   = 1000,                      # number of coefficients to dump/plot
   evalLength   = 2000,                      # number of elements to evaluate
   Fs           = 12,                        # sample rate in samples per year
-  dataFileBase = "sunspots_dft_syn"         # file base name
+  dataFileBase = "sunspots_dft_synth"       # file base name
 ){
-  V = cos(2*pi*c(0:(numCoefs-1)));
-  V        = dataEigen$vectors              # eigen-vectors
-  L        = dataEigen$values               # eigen-values
-  D        = diag(L)                        # diagonal matrix of eigen-values
-  N        = length(L);                     # number of eigen-pairs
+  N        = length(dftBasis$f);            # number of eigen-pairs
   M        = length(dataSpots$count)        # number of sunspot data values
+  V        = dftBasis$V / sqrt(N/2)
+  W        = dftBasis$W / sqrt(N/2)
+V[,1] = V[,1]/sqrt(2)
   spots    = dataSpots$count[(M-N+1):M]     # last N sunspot data values
-  zeroMean = spots - mean(spots)            # zero-mean data
+  avg      = mean(spots)
+  zeroMean = spots - avg                    # zero-mean data
   stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
-  coefs    = as.numeric( zeroMean %*% V );  # projection coefficient of spots onto eigen-vector n
+  coefsV   = as.numeric( zeroMean %*% V );  # projection coefficient of spots onto real basis
+  coefsW   = as.numeric( zeroMean %*% W );  # projection coefficient of spots onto imag basis
   G = sqrt(as.numeric(zeroMean%*%zeroMean)) # estimated energy of sunspot waveform
+  f1       = 0 * c(1:N)
+  f2       = 0 * c(1:N)
   fsyn     = 0 * c(1:N)
-  g = 0;
+  g        = 0;
   for( n in 1:numCoefs )
   {
-    fsyn = fsyn + coefs[n] * V[,n]          # partially-synthesized vector
-    g = g + (coefs[n])^2                    # energy of scaled eigen-vectors
+    f1 = f1 + (coefsV[n] * V[,n])
+    f2 = f2 + coefsW[n] * W[,n]
+    g = g + (coefsV[n]^2)                # energy of scaled eigen-vectors
+    #g = g + abs(coefsW[n])^2                # energy of scaled eigen-vectors
   }
+#    f1 = coefsV[3] * V[,3]
+#  fsyn = sqrt(f1^2 + f2^2)
+fsyn=f1
   fsyn      = ((G/sqrt(g)) * fsyn)          # scale vector to match energy of original data
-  fsyn      = fsyn + mean(spots)            # restore mean
+#  fsyn = fsyn/ sqrt(N/2)
+  fsyn      = fsyn + avg            # restore mean
   errorVect = fsyn - spots                  # calculate error vector
   rmsError  = sqrt( (errorVect %*% errorVect))/N # RMS error
-  printf("Total RMS synthesis error using %d eigen coefficients = %12.8f\n", numCoefs, rmsError );
+  printf("Total RMS synthesis error using %d dft coefficient pairs = %12.8f\n", numCoefs, rmsError );
   if( dataPlot )
   {
     plot( stime, spots, col=colors[1], type='l')
     lines(stime, fsyn,  col=colors[2], type='l', lwd=3)
   }
-  if( dataDump )
-  {
-    sink(sprintf("tex/%s_sunSpots.dat",dataFileBase));
-    printf("%%=============================================================================\n"  );
-    printf("%% %s \n", author                                                                   );
-    printf("%% %s\n", LaTeXstr );
-    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                               );
-    printf("%% %s\n", AutoGenStr);
-    printf("%%=============================================================================\n"  );
-    printf("[\n"                                                                                );
-    for(i in 1:length(fsyn))
-      printf("  (%12.8f, %12.8f)\n", stime[i], spots[i]                                          );
-    printf("]\n"                                                                                );
-    sink();
-  }
-  if( dataDump )
-  {
-    sink(sprintf("tex/%s_numCoefs%d.dat",dataFileBase,numCoefs));
-    printf("%%=============================================================================\n"  );
-    printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot eigen synthesis vector data using %d coefficients\n", numCoefs           );
-    printf("%% %s\n", LaTeXstr                                                                  );
-    printf("%% For an example, see \"%s_eigen_syn.tex\"\n", baseName                            );
-    printf("%% %s\n", AutoGenStr                                                                );
-    printf("%% Total RMS synthesis error using %d coefficients = %12.8f\n", numCoefs, rmsError  );
-    printf("%%=============================================================================\n"  );
-    printf("[\n"                                                                                );
-    for(n in 1:length(fsyn)) printf("  (%12.8f, %12.8f)\n", stime[n], fsyn[n]                   );
-    printf("]\n"                                                                                );
-    sink();
-  }
-  return(fsyn)
+#  if( dataDump )
+#  {
+#    sink(sprintf("tex/%s_sunSpots.dat",dataFileBase));
+#    printf("%%=============================================================================\n");
+#    printf("%% %s \n", author                                                                 );
+#    printf("%% %s\n", LaTeXstr                                                                );
+#    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
+#    printf("%% %s\n", AutoGenStr                                                              );
+#    printf("%%=============================================================================\n");
+#    printf("[\n"                                                                              );
+#    for(i in 1:length(fsyn))
+#      printf("  (%12.8f, %12.8f)\n", stime[i], spots[i]                                       );
+#    printf("]\n"                                                                              );
+#    sink();
+#  }
+#  if( dataDump )
+#  {
+#    sink(sprintf("tex/%s_numCoefs%d.dat",dataFileBase,numCoefs));
+#    printf("%%=============================================================================\n"  );
+#    printf("%% %s \n", author                                                                   );
+#    printf("%% Sunspot DFT synthesis vector data using %d coefficients\n", numCoefs             );
+#    printf("%% %s\n", LaTeXstr                                                                  );
+#    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
+#    printf("%% %s\n", AutoGenStr                                                                );
+#    printf("%% Total RMS synthesis error using %d coefficient pairs = %12.8f\n", numCoefs, rmsError);
+#    printf("%%=============================================================================\n"  );
+#    printf("[\n"                                                                                );
+#    for(n in 1:length(fsyn)) printf("  (%12.8f, %12.8f)\n", stime[n], fsyn[n]                   );
+#    printf("]\n"                                                                                );
+#    sink();
+#  }
+  return(list(N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, avg=avg, G=G, g=g))
 }
 
 #------------------------------------------------------------------------------
@@ -745,7 +754,12 @@ sunspots_dft_acf = function(
 #coefs     = sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
 #fsyn      = sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=105   );
 #eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
- dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=T, evalLength=100, numVectors=5 );
+ dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=T, evalLength=2001, numVectors=5 );
  dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=T, dataSpots=spotData, evalLength=2001, plotLength=1001 );
- A    = sunspots_dft_acf(      dataDump=T, dataPlot=T, dataCoefs=dftCoefs,    Length=100 );
+ A    = sunspots_dft_synth(    dataDump=F, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=500   );
+V = A$V
+W = A$W
+G = A$G
+g = A$g
+#dftACF    = sunspots_dft_acf(      dataDump=T, dataPlot=T, dataCoefs=dftCoefs,    Length=100 );
 
