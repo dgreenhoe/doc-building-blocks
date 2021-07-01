@@ -50,7 +50,7 @@ sunspots_tseries_data = function(
   xts     = as.ts(as.vector(x$count));
   dvect   = as.vector(x$date)
   cvect   = as.vector(x$count)
-  if(dataPlot)
+  if( dataPlot )
   {
     plot(x=dvect, y=cvect, lwd=2, type='l', main="Sunspot Estimation", col="blue", xlab="year", ylab="count");
     abline(h=seq(from=0,   to= 400, by=100), lty='dashed', col = "green")
@@ -77,6 +77,18 @@ sunspots_tseries_data = function(
 }
 
 #------------------------------------------------------------------------------
+# \brief   Grid
+#------------------------------------------------------------------------------
+abgrid = function(xmin, xmax, ymin, ymax, xstep, ystep)
+{
+  y = seq( from=ymin, to=ymax, by=ystep );
+  x = seq( from=xmin, to=xmax, by=xstep );
+  abline( h=y, lty='dashed', col = "green");
+  abline( v=x, lty='dashed', col = "green");
+  return( list(x=x, y=y) )
+}
+
+#------------------------------------------------------------------------------
 # \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
 # \returns ACF data table
 #------------------------------------------------------------------------------
@@ -94,12 +106,11 @@ sunspots_tseries_acf = function(
   avect   = as.vector(a$acf)
   lvect   = as.vector(a$lag)/12
 
-  if(dataPlot)
+  if( dataPlot )
   {
     plot(x=lvect, y=avect, lwd=2, type='l', xaxp=c(0,160,16), yaxp=c(-0.4,1.0,14), col="blue",
          main="Sunspot Auto-Correlation Estimation", xlab="lag in years", ylab="magnitude");
-    abline(h=seq(from=0, to=1.0, by= 0.1), lty='dashed', col = "green")
-    abline(v=seq(from=0, to=160, by=10.0), lty='dashed', col = "green")
+    abgrid( xmin=0, xmax=170, ymin=-0.4, ymax=1.0, xstep=10, ystep=0.1 );
   }
   if(dataDump)
   {
@@ -143,15 +154,13 @@ sunspots_psd_coefs = function(
   resultStr = sprintf("numSegments = %d\nf = %12.8f samples/year\nperiod = %12.8f years\n", numSegments, freqMax, periodT);
   printf("sunspots_PSD(x): %s\n", resultStr);
 
-  if(dataPlot)
+  if( dataPlot )
   {
     titleStr = sprintf("0-average Sunspot Power Spectral Density (PSD) Estimate using welchPSD with numSegments=%d",numSegments);
     plot(x=xpsd$frequency*Fs, y=sqrt(xpsd$power/N), type="h", lwd=3, col="blue", xaxp=c(0,Fs/2,60), yaxp=c(0,20,5), xlab="", ylab="", main="", sub="");
     title(main=titleStr, xlab="samples/year (max=Fs/2=6 samples/year)", ylab="Gain (sqrt of power)");
     title(main=resultStr, line=-10);
-    abline(v=seq(from=0, to=Fs/2, by=0.1), lty="dotted", col="green")
-    abline(v=seq(from=0, to=Fs/2, by=1.0), lty="solid",  col="green")
-    abline(h=seq(from=0, to=20.0, by=4.0), lty="dashed", col="green")
+    abgrid( xmin=0, xmax=Fs/2, xstep=0.1, ymin=0, ymax=20, ystep=2 );
   }
   if(dataDump)
   {
@@ -197,7 +206,7 @@ sunspots_eigen_basis = function(
   N           = length(xts);
   estMean     = mean(xts);
   segLength   = N / numSegments;
-  a           = acf(xts - estMean, type="correlation", lag=nLag)
+  a           = stats::acf(xts - estMean, type="correlation", lag=nLag, plot=FALSE)
   avect       = as.vector(a$acf)
   lvect       = as.vector(a$lag)/12
   A           = stats::toeplitz(avect)
@@ -206,7 +215,7 @@ sunspots_eigen_basis = function(
   L           = Q$values
   D           = diag(L)
 
-  if(dataPlot)
+  if( dataPlot )
   {
     traces = colors[1:6]
     for( n in 1:length(traces))
@@ -216,6 +225,7 @@ sunspots_eigen_basis = function(
       traces[n] = sprintf("Eigen Vector %2d", n)
     }
     legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
+    abgrid( xmin=0, xmax=nLag, xstep=100, ymin=-8, ymax=8, ystep=2 );
   }
 
   printf("sunspots_eigen_basis(x) using Welch PSD:\n");
@@ -310,6 +320,7 @@ sunspots_eigen_coefs = function(
   {
     plot(  coefs[1:Length], col=colors[1], type='h', lwd=5)
     lines( coefs[1:Length], col=colors[1], type='p', lwd=3)
+    abgrid( xmin=0, xmax=120, xstep=5, ymin=-700, ymax=2000, ystep=100 );
   }
   if( dataDump )
   {
@@ -371,6 +382,7 @@ sunspots_eigen_synth = function(
   {
     plot( stime, spots, col=colors[1], type='l')
     lines(stime, fsyn,  col=colors[2], type='l', lwd=3)
+    abgrid( xmin=1850, xmax=2020, xstep=10, ymin=0, ymax=350, ystep=50 );
   }
   if( dataDump )
   {
@@ -424,6 +436,7 @@ sunspots_eigen_acf = function(
   {
     plot( lvect[1:Length], avect[1:Length], col=colors[1], type='h', lwd=3 );
     lines(lvect[1:Length], avect[1:Length], col=colors[1], type='p', lwd=3 );
+    abgrid( xmin=0, xmax=Length, xstep=Length/10, ymin=-0.2, ymax=1, ystep=0.1 );
   }
   if( dataDump )
   {
@@ -461,15 +474,16 @@ sunspots_dft_basis = function(
   V = cos(2*pi*(n %*% t(k))/N);
   W = sin(2*pi*(n %*% t(k))/N);
 
-  if(dataPlot)
+  if( dataPlot )
   {
     traces = colors[1:numVectors]
     for( n in 1:length(traces))
     {
-      if(n==1) plot( f, V[,n], type='o', lwd=3, col=colors[n], ylim=c(-1.2,1.2))
-      else     lines(f, V[,n], type='o', lwd=3, col=colors[n])
+      if(n==1) plot( f, V[,n], type='o', lwd=2, col=colors[n], ylim=c(-1.2,1.2))
+      else     lines(f, V[,n], type='o', lwd=2, col=colors[n])
       traces[n] = sprintf("DFT basis vector k=%2d", n-1)
     }
+    abgrid( xmin=0, xmax=Fs/2, xstep=0.2, ymin=-1, ymax=1, ystep=0.2 );
     legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
   }
 
@@ -546,6 +560,7 @@ sunspots_dft_coefs = function(
     lines( f, Re(Xfft[1:plotLength]), col=colors[1], type='p', lwd=3 );
     lines( f, Im(Xfft[1:plotLength]), col=colors[2], type='h', lwd=3 );
     lines( f, Im(Xfft[1:plotLength]), col=colors[2], type='p', lwd=3 );
+    abgrid( xmin=0, xmax=Fs/2, xstep=0.1, ymin=-25, ymax=25, ystep=5 );
   }
   if( dataDump )
   {
@@ -640,6 +655,7 @@ sunspots_dft_synth = function(
   {
     plot( stime, spots, col=colors[1], type='l')
     lines(stime, fsyn,  col=colors[2], type='l', lwd=3)
+    abgrid( xmin=1850, xmax=2020, xstep=10, ymin=0, ymax=350, ystep=50 );
   }
   if( dataDump )
   {
@@ -700,6 +716,7 @@ acfComplex = function(z, dataPlot=FALSE)
   {
     plot( lvect[1:Length], acfMag[1:Length], col=colors[1], type='h', lwd=3 );
     lines(lvect[1:Length], acfMag[1:Length], col=colors[1], type='p', lwd=3 );
+   #abgrid( xmin=0, xmax=Fs/2, xstep=0.1, ymin=-25, ymax=25, ystep=5 );
   }
   return(list(N=N, a=a, b=b, c=c, d=d, mag=acfMag, lag=lvect))
 }
@@ -722,6 +739,7 @@ sunspots_dft_acf = function(
   {
     plot( lvect[1:Length], acfMag[1:Length], col=colors[1], type='h', lwd=3 );
     lines(lvect[1:Length], acfMag[1:Length], col=colors[1], type='p', lwd=3 );
+    abgrid( xmin=0, xmax=Length, xstep=Length/10, ymin=0, ymax=1, ystep=0.1 );
   }
   if( dataDump )
   {
@@ -746,17 +764,17 @@ sunspots_dft_acf = function(
  T = TRUE
  F = FALSE
 
- spotData  = sunspots_tseries_data( dataDump=F, dataPlot=T                                    );
- acfData   = sunspots_tseries_acf(  dataDump=F, dataPlot=T, dataSpots=spotData                );
- psdCoefs  = sunspots_psd_coefs(    dataDump=F, dataPlot=T, dataSpots=spotData, numSegments=4 );
- eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=T, dataSpots=spotData, evalLength=2001     );
+ spotData  = sunspots_tseries_data( dataDump=F, dataPlot=F                                    );
+ acfData   = sunspots_tseries_acf(  dataDump=F, dataPlot=F, dataSpots=spotData                );
+ psdCoefs  = sunspots_psd_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, numSegments=4 );
+ eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001     );
  coefs     = sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
  fsyn      = sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=105   );
  eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
- dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=T, evalLength=2001,    numVectors=5 );
- dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=T, dataSpots=spotData, evalLength=2001, plotLength=1001 );
- dftSynth  = sunspots_dft_synth(    dataDump=T, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=63  );
- dftACF    = sunspots_dft_acf(      dataDump=F, dataPlot=F, dataCoefs=dftCoefs, Length=100 );
+ dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=F, evalLength=2001,    numVectors=5 );
+ dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001, plotLength=1001 );
+ dftSynth  = sunspots_dft_synth(    dataDump=T, dataPlot=F, dataSpots=spotData, dftBasis=dftBasis, numCoefs=63  );
+ dftACF    = sunspots_dft_acf(      dataDump=F, dataPlot=T, dataCoefs=dftCoefs, Length=100 );
 
  V = dftSynth$V
  W = dftSynth$W
