@@ -378,6 +378,9 @@ sunspots_eigen_synth = function(
   errorVect = fsyn - spots                  # calculate error vector
   rmsError  = sqrt( (errorVect %*% errorVect))/N # RMS error
   printf("Total RMS synthesis error using %d eigen coefficients = %12.8f\n", numCoefs, rmsError );
+  printf("Energy of zero mean vector         G = %12.8f\n", G)
+  printf("Energy of synthesized vector sqrt(g) = %12.8f\n", sqrt(g))
+  printf("Energy ratio G/sqrt(g)               = %12.8f\n", G/sqrt(g))
   if( dataPlot )
   {
     plot( stime, spots, col=colors[1], type='l')
@@ -645,12 +648,17 @@ sunspots_dft_synth = function(
     g1 = g1 + (coefsV[n]^2)                 # energy of scaled V vectors
     g2 = g2 + (coefsW[n]^2)                 # energy of scaled W vectors
   }
+  g=g1+g2
   fsyn      = f1 + f2                       # add synthesis due to cos and sin bases
-  fsyn      = ((G/sqrt(g1+g2)) * fsyn)      # scale vector to match energy of original data
+  if(g>1e-9) fsyn      = ((G/sqrt(g)) * fsyn)      # scale vector to match energy of original data
+#fsyn = fsyn/sqrt(2)
   fsyn      = fsyn + estMean                # restore mean
   errorVect = fsyn - spots                  # calculate error vector
   rmsError  = sqrt( (errorVect %*% errorVect))/N # RMS error
   printf("Total RMS synthesis error using 2 x %d = %d dft coefficients = %12.8f\n", numCoefs, 2*numCoefs, rmsError );
+  printf("Energy of zero mean vector         G = %12.8f\n", G)
+  printf("Energy of synthesized vector sqrt(g) = %12.8f\n", sqrt(g))
+  printf("Energy ratio G/sqrt(g)               = %12.8f\n", G/sqrt(g))
   if( dataPlot )
   {
     plot( stime, spots, col=colors[1], type='l')
@@ -688,7 +696,7 @@ sunspots_dft_synth = function(
     printf("]\n"                                                                                );
     sink();
   }
-  return(list(N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, estMean=estMean, G=G, g=(g1+g2)))
+  return(list(N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, estMean=estMean, G=G, g=g, g1=g1, g2=g2))
 }
 
 #------------------------------------------------------------------------------
@@ -767,16 +775,26 @@ sunspots_dft_acf = function(
  spotData  = sunspots_tseries_data( dataDump=F, dataPlot=F                                    );
  acfData   = sunspots_tseries_acf(  dataDump=F, dataPlot=F, dataSpots=spotData                );
  psdCoefs  = sunspots_psd_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, numSegments=4 );
- eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001     );
- coefs     = sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
- fsyn      = sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=105   );
- eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
+# eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001     );
+# coefs     = sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
+# fsyn      = sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=2000   );
+# eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
  dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=F, evalLength=2001,    numVectors=5 );
  dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001, plotLength=1001 );
- dftSynth  = sunspots_dft_synth(    dataDump=T, dataPlot=F, dataSpots=spotData, dftBasis=dftBasis, numCoefs=63  );
- dftACF    = sunspots_dft_acf(      dataDump=F, dataPlot=T, dataCoefs=dftCoefs, Length=100 );
+ dftSynth  = sunspots_dft_synth(    dataDump=T, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=1001  );
+ dftACF    = sunspots_dft_acf(      dataDump=F, dataPlot=F, dataCoefs=dftCoefs, Length=100 );
 
  V = dftSynth$V
  W = dftSynth$W
  G = dftSynth$G
  g = dftSynth$g
+ g1 = dftSynth$g1
+ g2 = dftSynth$g2
+ a = dftSynth$coefsV
+ b = dftSynth$coefsW
+ fsyn = dftSynth$fsyn
+ z = dftSynth$z
+ estMean = dftSynth$estMean
+
+
+#  return(list(N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, estMean=estMean, G=G, g=(g1+g2)))
