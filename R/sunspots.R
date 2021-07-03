@@ -662,10 +662,10 @@ sunspots_dft_synth = function(
   }
   if( dataDump )
   {
-    sink(sprintf("tex/%s_numCoefs%d.dat",dataFileBase,numCoefs));
+    sink(sprintf("tex/%s_numCoefs%d.dat",dataFileBase,2*numCoefs));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot DFT synthesis vector data using %d coefficients\n", numCoefs             );
+    printf("%% Sunspot DFT synthesis vector data using 2 x %d = %d coefficients\n", numCoefs, 2*numCoefs);
     printf("%% %s\n", LaTeXstr                                                                  );
     printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
     printf("%% %s\n", AutoGenStr                                                                );
@@ -755,10 +755,10 @@ sunspots_dft_acf = function(
  spotData  = sunspots_tseries_data( dataDump=F, dataPlot=F                                    );
  acfData   = sunspots_tseries_acf(  dataDump=F, dataPlot=F, dataSpots=spotData                );
  psdCoefs  = sunspots_psd_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, numSegments=4 );
- eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001     );
- eigenCoefs= sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
- eigenSynth= sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=6   );
- eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=eigenCoefs,Length=100 );
+#eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001     );
+#eigenCoefs= sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
+#eigenSynth= sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=6   );
+#eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=eigenCoefs,Length=100 );
  dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=F, evalLength=2001,    numVectors=5 );
  dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001, plotLength=1001 );
  dftSynth  = sunspots_dft_synth(    dataDump=T, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=17  );
