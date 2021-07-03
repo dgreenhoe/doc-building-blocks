@@ -471,8 +471,9 @@ sunspots_dft_basis = function(
   dataFileBase = "sunspots_dft_basis"
 ){
   N = evalLength
+  M = N/2  #(N-1)/2
   n = matrix(seq(from=0, by=1, length=N));
-  k = matrix(seq(from=0, by=1, length=N));
+  k = matrix(seq(from=0, by=1, length=M));
   f = k/N*Fs/2
   V = cos(2*pi*(n %*% t(k))/N);
   W = sin(2*pi*(n %*% t(k))/N);
@@ -552,10 +553,6 @@ sunspots_dft_coefs = function(
   zeroMean = (spots - mean(spots))/N        # scaled zero-mean data
   stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
   Xfft     = fft(zeroMean)
-  #nLag = evalLength
-  #a        = stats::acf(abs(Xfft), type="correlation", lag.max=nLag, plot=FALSE)
-  #avect    = as.vector(a$acf)
-  #lvect    = as.vector(a$lag)
   f = Fs * c(0:(plotLength-1)) / N
   if( dataPlot )
   {
@@ -593,20 +590,6 @@ sunspots_dft_coefs = function(
     printf("]\n"                                                                              );
     sink();
   }
-  #if( dataDump )
-  #{
-  #  sink(sprintf("tex/%s_acf.dat",dataFileBase));
-  #  printf("%%=============================================================================\n");
-  #  printf("%% %s \n", author                                                                 );
-  #  printf("%% %s\n", LaTeXstr                                                                );
-  #  printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
-  #  printf("%% %s\n", AutoGenStr                                                              );
-  #  printf("%%=============================================================================\n");
-  #  printf("[\n"                                                                              );
-  #  for(n in 1:Length) printf("  (%12.8f, %12.8f)\n", lvect[n], avect[n]                      );
-  #  printf("]\n"                                                                              );
-  #  sink();
-  #}
   return(Xfft)
 }
 
@@ -616,15 +599,13 @@ sunspots_dft_coefs = function(
 sunspots_dft_synth = function(
   dataDump     = FALSE,                     # dump data to file
   dataPlot     = TRUE,                      # plot data
-  numCoefs     = 6,                         # number of coefficients to synthesis with
+  numCoefs     = 17,                        # number of coefficient pairs to synthesize with
   dataSpots    = spotData,                  # sunspot data
   dftBasis,                                 # DFT coefficients
-  plotLength   = 1000,                      # number of coefficients to dump/plot
-  evalLength   = 2000,                      # number of elements to evaluate
-  Fs           = 12,                        # sample rate in samples per year
   dataFileBase = "sunspots_dft_synth"       # file base name
 ){
-  N        = length(dftBasis$f);            # number of eigen-pairs
+  Fs       = round(length(spotData$year)/(max(spotData$year)-min(spotData$year)+1)) # sample rate in samples/year
+  N        = length(dftBasis$V[,1])         # N = length of single basis vector
   M        = length(dataSpots$count)        # number of sunspot data values
   V        = dftBasis$V / sqrt(N/2)         # normalize V basis vectors such that ||V[,n]||=1
   W        = dftBasis$W / sqrt(N/2)         # normalize W basis vectors such that ||W[,n]||=1
@@ -651,7 +632,6 @@ sunspots_dft_synth = function(
   g=g1+g2
   fsyn      = f1 + f2                       # add synthesis due to cos and sin bases
   if(g>1e-9) fsyn      = ((G/sqrt(g)) * fsyn)      # scale vector to match energy of original data
-#fsyn = fsyn/sqrt(2)
   fsyn      = fsyn + estMean                # restore mean
   errorVect = fsyn - spots                  # calculate error vector
   rmsError  = sqrt( (errorVect %*% errorVect))/N # RMS error
@@ -704,13 +684,13 @@ sunspots_dft_synth = function(
 #------------------------------------------------------------------------------
 acfComplex = function(z, dataPlot=FALSE)
 {
-  N       = length(z);
+  N = length(z);
   x = Re(z);
   y = Im(z);
-  A       = stats::ccf(x, x, type="correlation", lag.max=(N-1), plot=FALSE)
-  B       = stats::ccf(y, y, type="correlation", lag.max=(N-1), plot=FALSE)
-  C       = stats::ccf(x, y, type="correlation", lag.max=(N-1), plot=FALSE)
-  D       = stats::ccf(y, x, type="correlation", lag.max=(N-1), plot=FALSE)
+  A = stats::ccf(x, x, type="correlation", lag.max=(N-1), plot=FALSE)
+  B = stats::ccf(y, y, type="correlation", lag.max=(N-1), plot=FALSE)
+  C = stats::ccf(x, y, type="correlation", lag.max=(N-1), plot=FALSE)
+  D = stats::ccf(y, x, type="correlation", lag.max=(N-1), plot=FALSE)
   a = A$acf[N:(2*N-1)];               # acf value vector
   b = B$acf[N:(2*N-1)];               # acf value vector
   c = C$acf[N:(2*N-1)];               # acf value vector
@@ -775,13 +755,13 @@ sunspots_dft_acf = function(
  spotData  = sunspots_tseries_data( dataDump=F, dataPlot=F                                    );
  acfData   = sunspots_tseries_acf(  dataDump=F, dataPlot=F, dataSpots=spotData                );
  psdCoefs  = sunspots_psd_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, numSegments=4 );
-# eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001     );
-# coefs     = sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
-# fsyn      = sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=2000   );
-# eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=coefs,    Length=100 );
+ eigenPairs= sunspots_eigen_basis(  dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001     );
+ eigenCoefs= sunspots_eigen_coefs(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, Length=105 );
+ eigenSynth= sunspots_eigen_synth(  dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenPairs, numCoefs=6   );
+ eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=eigenCoefs,Length=100 );
  dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=F, evalLength=2001,    numVectors=5 );
  dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001, plotLength=1001 );
- dftSynth  = sunspots_dft_synth(    dataDump=T, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=1001  );
+ dftSynth  = sunspots_dft_synth(    dataDump=T, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=17  );
  dftACF    = sunspots_dft_acf(      dataDump=F, dataPlot=F, dataCoefs=dftCoefs, Length=100 );
 
  V = dftSynth$V
