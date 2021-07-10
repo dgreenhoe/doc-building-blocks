@@ -821,6 +821,63 @@ Walsh_seq_Matrix = function( ncols )
 }
 
 #------------------------------------------------------------------------------
+# \brief Calculate Walsh basis
+#------------------------------------------------------------------------------
+sunspots_walsh_basis = function( 
+  dataDump     = FALSE,
+  dataPlot     = TRUE,
+  Fs           = 12,
+  numVectors   = 5,
+  evalLength   = 8,
+  dataSpots,
+  dataFileBase = "sunspots_walsh_basis"
+){
+  N = evalLength
+#  M = N/2  #(N-1)/2
+#  n = matrix(seq(from=0, by=1, length=N));
+#  k = matrix(seq(from=0, by=1, length=M));
+  f = seq(from=0, by=(1/Fs), length=N)
+  W = Walsh_seq_Matrix( N )
+
+  if( dataPlot )
+  {
+    traces = colors[1:numVectors]
+    for( n in 1:length(traces))
+    {
+      if(n==1) plot(  f, W[,n], type='o', lwd=2, col=colors[n], ylim=c(-1.2,1.2))
+      else     lines( f, W[,n], type='o', lwd=2, col=colors[n])
+      traces[n] = sprintf("Walsh basis vector k=%2d", n-1)
+    }
+    abgrid( xmin=0, xmax=Fs/2, xstep=0.2, ymin=-1, ymax=1, ystep=0.2 );
+    legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
+  }
+
+  if(dataDump)
+  {
+    for(n in 1:numVectors)
+    {
+      vect = W[,n]
+      sink(sprintf("tex/%s_%d.dat",dataFileBase,n-1));
+      printf("%%=============================================================================\n");
+      printf("%% %s \n", author                                                                 );
+      printf("%% %s\n", LaTeXstr                                                                );
+      printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
+     #printf("%% Note: The Euclidean norm of this vector is sqrt(N/2)=sqrt(%d/2)=%.8f\n", N, sqrt(N/2) );
+     #printf("%%       To normalize, scale by 1/sqrt(N/2)=%.8f\n", 1/sqrt(N/2)                  );
+      printf("%% %s\n", AutoGenStr                                                              );
+      printf("%%=============================================================================\n");
+      printf("[\n"                                                                              );
+      for(i in 1:length(vect))
+        printf("  (%12.8f, %12.8f)\n", f[i], vect[i]                                            );
+      printf("]\n"                                                                              );
+      sink();
+    }
+  }
+  L = list(f=f, W=W)
+  return(L);
+}
+
+#------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
  T = TRUE
@@ -835,32 +892,8 @@ Walsh_seq_Matrix = function( ncols )
 #eigenACF  = sunspots_eigen_acf(    dataDump=F, dataPlot=F, dataCoefs=eigenCoefs,Length=100 );
  dftBasis  = sunspots_dft_basis(    dataDump=F, dataPlot=F, evalLength=2001,    numVectors=5 );
  dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001, plotLength=1001 );
- dftSynth  = sunspots_dft_synth(    dataDump=T, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=17  );
+ dftSynth  = sunspots_dft_synth(    dataDump=F, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=17  );
  dftACF    = sunspots_dft_acf(      dataDump=F, dataPlot=F, dataCoefs=dftCoefs, Length=100 );
-
- V = dftSynth$V
- W = dftSynth$W
- G = dftSynth$G
- g = dftSynth$g
- g1 = dftSynth$g1
- g2 = dftSynth$g2
- a = dftSynth$coefsV
- b = dftSynth$coefsW
- fsyn = dftSynth$fsyn
- z = dftSynth$z
- estMean = dftSynth$estMean
-
-#  return(list(N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, estMean=estMean, G=G, g=(g1+g2)))
-
-ncols = 8
-H = hadamard(ncols)
-n = 3
-a = 3
-b = bitrev(a,n)
-printf("a=%x  b=%x   n=%d\n",a,b,n)
-B = bitReverseMatrix( ncols )
-print(B)
-G = grayCodeMatrix( ncols )
-print(G)
-W = Walsh_seq_Matrix( ncols )
-print(W)
+ Walsh     = sunspots_walsh_basis(  dataDump=T, dataPlot=T, evalLength=256,    numVectors=5 );
+ W = Walsh$W
+ f = Walsh$f
