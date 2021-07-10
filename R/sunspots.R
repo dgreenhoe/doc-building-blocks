@@ -775,6 +775,21 @@ bitrev = function( a, nBits )
 }
 
 #------------------------------------------------------------------------------
+# \brief Bit Reverse
+#------------------------------------------------------------------------------
+bitReverseMatrix = function( ncols )
+{
+  B = matrix( seq(from=0, to=0, length=ncols^2), ncol=ncols );
+  numbits = log(ncols)/log(2)
+  for( n in 1:ncols )
+  {
+    m = bitrev(n-1, numbits) + 1
+    B[m,n] = 1
+  }
+  return(B)
+}
+
+#------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
  T = TRUE
@@ -806,9 +821,12 @@ bitrev = function( a, nBits )
 
 #  return(list(N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, estMean=estMean, G=G, g=(g1+g2)))
 
-H = hadamard(8)
+ncols = 8
+H = hadamard(ncols)
 
 n = 3
 a = 3
 b = bitrev(a,n)
 printf("a=%x  b=%x   n=%d\n",a,b,n)
+B = bitReverseMatrix( ncols )
+print(B)
