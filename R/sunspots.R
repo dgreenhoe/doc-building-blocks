@@ -854,7 +854,8 @@ sunspots_walsh_basis = function(
 
   if(dataDump)
   {
-    for(n in 1:numVectors)
+#    for(n in 1:numVectors)
+    for(n in 2046:2048)
     {
       vect = W[,n]
       sink(sprintf("tex/%s_%d.dat",dataFileBase,n-1));
@@ -894,6 +895,6 @@ sunspots_walsh_basis = function(
  dftCoefs  = sunspots_dft_coefs(    dataDump=F, dataPlot=F, dataSpots=spotData, evalLength=2001, plotLength=1001 );
  dftSynth  = sunspots_dft_synth(    dataDump=F, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=17  );
  dftACF    = sunspots_dft_acf(      dataDump=F, dataPlot=F, dataCoefs=dftCoefs, Length=100 );
- Walsh     = sunspots_walsh_basis(  dataDump=T, dataPlot=T, evalLength=256,    numVectors=5 );
+ Walsh     = sunspots_walsh_basis(  dataDump=T, dataPlot=T, evalLength=2048,    numVectors=5 );
  W = Walsh$W
  f = Walsh$f
