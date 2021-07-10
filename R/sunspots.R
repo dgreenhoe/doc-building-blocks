@@ -14,6 +14,12 @@
 #install.packages("freqdom");
 #install.packages("matlib");
 #install.packages("R.utils");
+#install.packages("Hadamard.R")
+#install.packages("pracma")
+#install.packages("timma") 
+#install.packages('bit')
+#install.packages('bitops')
+
 #---------------------------------------
 # load add-on packages
 #---------------------------------------
@@ -25,7 +31,11 @@
   require(bspec);    # welchPSD
   require(matlib);   # inv
   require(R.utils);  # printf
-#data(sunspots, package="datasets"); # deprecated in favor of Silso data
+  require(HadamardR)
+  require(pracma)
+  require(timma)   # grays(n): Generate gray code vector of length 2^n
+  require(bitops)  # bitAnd, bitOr, bitXor, bitFlip, bitShiftL
+
 #---------------------------------------
 # Global parameters
 #---------------------------------------
@@ -36,8 +46,9 @@
  LaTeXstr = "Sunspot data file suitable for use with LaTeX PStricks / pst-plot"
  AutoGenStr = sprintf("This file auto-generated using \"%s\" --- hand-editing not recommended", thisfile);
 #------------------------------------------------------------------------------
-# \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
-# \returns data table
+# \brief   Get sunspot data
+# \returns sunspot data
+# data(sunspots, package="datasets"); # deprecated in favor of Silso data
 #------------------------------------------------------------------------------
 sunspots_tseries_data = function( 
   dataDump    = FALSE,
@@ -747,6 +758,23 @@ sunspots_dft_acf = function(
 }
 
 #------------------------------------------------------------------------------
+# \brief Bit Reverse
+#------------------------------------------------------------------------------
+bitrev = function( a, nBits )
+{
+  b = 0
+  maska = 1
+  maskb = bitwShiftL( 1, nBits-1 )
+  for( i in 1:nBits )
+  {
+    if( bitwAnd( a, maska ) ) { b = bitwOr( b, maskb ) }
+    maska = bitwShiftL( maska, 1 );
+    maskb = bitwShiftR( maskb, 1 );
+  } 
+  return( b )
+}
+
+#------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
  T = TRUE
@@ -776,5 +804,11 @@ sunspots_dft_acf = function(
  z = dftSynth$z
  estMean = dftSynth$estMean
 
-
 #  return(list(N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, estMean=estMean, G=G, g=(g1+g2)))
+
+H = hadamard(8)
+
+n = 3
+a = 3
+b = bitrev(a,n)
+printf("a=%x  b=%x   n=%d\n",a,b,n)
