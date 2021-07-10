@@ -775,7 +775,7 @@ bitrev = function( a, nBits )
 }
 
 #------------------------------------------------------------------------------
-# \brief Bit Reverse
+# \brief Generate ncols x ncols Bit-Reversal Matrix
 #------------------------------------------------------------------------------
 bitReverseMatrix = function( ncols )
 {
@@ -787,6 +787,22 @@ bitReverseMatrix = function( ncols )
     B[m,n] = 1
   }
   return(B)
+}
+
+#------------------------------------------------------------------------------
+# \brief Generate ncols x ncols Gray-Code Matrix
+#------------------------------------------------------------------------------
+grayCodeMatrix = function( ncols )
+{
+  G = matrix( seq(from=0, to=0, length=ncols^2), ncol=ncols );
+  numbits = log(ncols)/log(2)
+  grayCodes = grays( numbits )
+  for( n in 1:ncols )
+  {
+    m = grayCodes[n] + 1
+    G[m,n] = 1
+  }
+  return(G)
 }
 
 #------------------------------------------------------------------------------
@@ -830,3 +846,5 @@ b = bitrev(a,n)
 printf("a=%x  b=%x   n=%d\n",a,b,n)
 B = bitReverseMatrix( ncols )
 print(B)
+G = grayCodeMatrix( ncols )
+print(G)
