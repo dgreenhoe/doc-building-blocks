@@ -806,6 +806,21 @@ grayCodeMatrix = function( ncols )
 }
 
 #------------------------------------------------------------------------------
+# \brief Generate ncols x ncols Walsh Matrix in sequency ordering
+# https://en.wikipedia.org/wiki/Walsh_matrix#Sequency_ordering
+# Tam and Goulet (1992) "On Arithmetical Shift for Walsh Functions"
+#   https://ieeexplore.ieee.org/document/1672117
+#------------------------------------------------------------------------------
+Walsh_seq_Matrix = function( ncols )
+{
+  H = hadamard(ncols)            # generate Hadamard matrix
+  B = bitReverseMatrix( ncols )  # generate bit-reversal matrix
+  G = grayCodeMatrix( ncols )    # generate Gray-Code matrix
+  W = (H %*% B) %*% G            # generate Walsh matrix
+  return(W)
+}
+
+#------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
  T = TRUE
@@ -839,7 +854,6 @@ grayCodeMatrix = function( ncols )
 
 ncols = 8
 H = hadamard(ncols)
-
 n = 3
 a = 3
 b = bitrev(a,n)
@@ -848,3 +862,5 @@ B = bitReverseMatrix( ncols )
 print(B)
 G = grayCodeMatrix( ncols )
 print(G)
+W = Walsh_seq_Matrix( ncols )
+print(W)
