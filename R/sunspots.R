@@ -16,7 +16,7 @@
 #install.packages("R.utils");
 #install.packages("Hadamard.R")
 #install.packages("pracma")
-#install.packages("timma") 
+#install.packages("timma")
 #install.packages('bit')
 #install.packages('bitops')
 
@@ -104,15 +104,15 @@ abgrid = function(xmin, xmax, ymin, ymax, xstep, ystep)
 # \brief   Estimate Auto-Correlation Function (ACF) of sunspot data minus estimated mean
 # \returns ACF data table
 #------------------------------------------------------------------------------
-sunspots_tseries_acf = function( 
+sunspots_tseries_acf = function(
   verbose      = TRUE,
   dataDump     = FALSE,
   dataPlot     = TRUE,
   nLag         = 2000,
-  dataSpots,
+  dataIn       = spotData,                 # sunspot data
   dataFileBase = "sunspots_tseries_acf.dat"
 ){
-  x       = dataSpots;
+  x       = dataIn;
   xts     = as.ts(as.vector(x$count));
   estMean = mean(xts);
   a       = stats::acf(xts - estMean, type="correlation", lag.max=nLag, plot=FALSE)
@@ -147,15 +147,15 @@ sunspots_tseries_acf = function(
 # \brief   Estimate sunspot period using Welch Estimate of PSD
 # \returns Estimated PSD
 #------------------------------------------------------------------------------
-sunspots_psd_coefs = function( 
+sunspots_psd_coefs = function(
   verbose      = TRUE,
   dataDump     = FALSE,
   dataPlot     = TRUE,
   numSegments  = 4,
-  dataSpots,
+  dataIn       = spotData,
   dataFileBase = "sunspots_psd"
 ){
-  xts       = as.ts(as.vector(dataSpots$count));
+  xts       = as.ts(as.vector(dataIn$count));
   N         = length(xts);         # length of time series
   Fs        = 12;                  # sample rate = 12 samples per year
   estMean   = mean(xts);           # estimated mean
@@ -207,18 +207,18 @@ sunspots_psd_coefs = function(
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/eigen.html
 # https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix
 #------------------------------------------------------------------------------
-sunspots_eigen_basis = function( 
+sunspots_eigen_basis = function(
   verbose      = TRUE,
   dataDump     = FALSE,
   dataPlot     = TRUE,
   Fs           = 12,
   numSegments  = 4,
-  windowLength   = 2001,
-  dataSpots,
+  windowLength = 2048,
+  dataIn       = spotData,
   dataFileBase = "sunspots_eigen"
 ){
   nLag        = windowLength - 1;
-  x           = dataSpots;
+  x           = dataIn;
   xts         = as.ts(as.vector(x$count));
   N           = length(xts);
   estMean     = mean(xts);
@@ -321,7 +321,7 @@ sunspots_eigen_coefs = function(
   dataDump     = FALSE,                    # dump data to file
   dataPlot     = TRUE,                     # plot data
   Length       = 105,                      # number of coefficients to dump/plot
-  dataSpots    = spotData,                 # sunspot data
+  dataIn       = spotData,                 # sunspot data
   dataEigen,                               # eigen-pair data
   dataFileBase = "sunspots_eigen_coefs"    # file base name
 ){
@@ -329,8 +329,8 @@ sunspots_eigen_coefs = function(
   L        = dataEigen$values              # L = eigen-values
   D        = diag(L)                       # D = diagonal matrix of eigen-values
   N        = length(L);                    # N = number of eigen-pairs
-  M        = length(dataSpots$count)       # M = number of sunspot values
-  spots    = dataSpots$count[(M-N+1):M]    # N most recent sunspot values
+  M        = length(dataIn$count)          # M = number of sunspot values
+  spots    = dataIn$count[(M-N+1):M]       # N most recent sunspot values
   zeroMean = spots - mean(spots)           # zero-mean sunspot data
   stime    = spotData$date[(M-N+1):M]      # N most recent time values
   coefs    = as.numeric( zeroMean %*% V ); # coef[n] = projection of data onto eigen-vector n
@@ -370,7 +370,7 @@ sunspots_eigen_synth = function(
   dataDump     = FALSE,                     # dump data to file
   dataPlot     = TRUE,                      # plot data
   numCoefs     = 6,                         # number of coefficients to synthesis with
-  dataSpots    = spotData,                  # sunspot data
+  dataIn       = spotData,                  # sunspot data
   dataEigen,                                # eigen-pair data
   dataFileBase = "sunspots_eigen_synth"     # file base name
 ){
@@ -378,8 +378,8 @@ sunspots_eigen_synth = function(
   L        = dataEigen$values               # eigen-values
   D        = diag(L)                        # diagonal matrix of eigen-values
   N        = length(L);                     # number of eigen-pairs
-  M        = length(dataSpots$count)        # number of sunspot data values
-  spots    = dataSpots$count[(M-N+1):M]     # last N sunspot data values
+  M        = length(dataIn$count)           # number of sunspot data values
+  spots    = dataIn$count[(M-N+1):M]        # last N sunspot data values
   zeroMean = spots - mean(spots)            # zero-mean data
   stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
   coefs    = as.numeric( zeroMean %*% V );  # projection coefficient of spots onto eigen-vector n
@@ -482,16 +482,16 @@ sunspots_eigen_acf = function(
 }
 
 #------------------------------------------------------------------------------
-# \brief Calculate Fourier basis for sunspots 
+# \brief Calculate Fourier basis for sunspots
 #------------------------------------------------------------------------------
-sunspots_dft_basis = function( 
+sunspots_dft_basis = function(
   verbose      = TRUE,
   dataDump     = FALSE,
   dataPlot     = TRUE,
   Fs           = 12,
+  windowLength = 2048,
   numVectors   = 5,
-  windowLength   = 2001,
-  dataSpots,
+  dataIn       = spotData,                 # sunspot data
   dataFileBase = "sunspots_dft_basis"
 ){
   N = windowLength
@@ -514,7 +514,6 @@ sunspots_dft_basis = function(
     abgrid( xmin=0, xmax=Fs/2, xstep=0.2, ymin=-1, ymax=1, ystep=0.2 );
     legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
   }
-
   if(dataDump)
   {
     for(n in 1:numVectors)
@@ -559,26 +558,36 @@ sunspots_dft_basis = function(
 }
 
 #------------------------------------------------------------------------------
-# \brief Project data sequence onto sinusoidal basis vectors yielding 
+# \brief Project data sequence onto sinusoidal basis vectors yielding
 #        a sequence of DFT coefficients
 #------------------------------------------------------------------------------
 sunspots_dft_coefs = function(
   verbose      = TRUE,
   dataDump     = FALSE,                    # dump data to file
   dataPlot     = TRUE,                     # plot data
-  plotLength   = 1000,                     # number of coefficients to dump/plot
-  windowLength   = 2000,                     # number of elements to evaluate
-  dataSpots    = spotData,                 # sunspot data
+  basis        = dftBasis,                 # basis vectors
+  plotLength   = 1024,                     # number of coefficients to dump/plot
+  dataIn       = spotData,                 # sunspot data
   dataFileBase = "sunspots_dft_coefs",     # file base name
   Fs           = 12                        # sample rate in samples per year
 ){
-  M        = length(dataSpots$count)        # number of data values
-  N       =  windowLength                     # number data values to evaluate
-  spots    = dataSpots$count[(M-N+1):M]     # last N sunspot data values
-  zeroMean = (spots - mean(spots))/N        # scaled zero-mean data
-  stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
+  N        = length(basis$V[,1])
+  M        = length(dataIn$count)          # number of data values
+  spots    = dataIn$count[(M-N+1):M]       # last N sunspot data values
+  zeroMean = (spots - mean(spots))/N       # scaled zero-mean data
+  stime    = spotData$date[(M-N+1):M]      # last N sunspot time values
+  V = basis$V
+  W = basis$W
   Xfft     = fft(zeroMean)
+  coefsV   = as.numeric( zeroMean %*% V ); # coef[n] = projection of data onto eigen-vector n
+  coefsW   = as.numeric( zeroMean %*% (-W) ); # coef[n] = projection of data onto eigen-vector n
   f = Fs * c(0:(plotLength-1)) / N
+  if( verbose )
+  {
+    printf("DFT Coefficients\n");
+    printf("  Window Length = %d\n", N);
+    printf("  Number of Coefficients = %d\n", plotLength);
+  }
   if( dataPlot )
   {
     plot(  f, Re(Xfft[1:plotLength]), col=colors[1], type='h', lwd=3, xlab="frequency (samples/year)" );
@@ -597,7 +606,7 @@ sunspots_dft_coefs = function(
     printf("%% %s\n", AutoGenStr                                                              );
     printf("%%=============================================================================\n");
     printf("[\n"                                                                              );
-    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], Re(Xfft[n])                   );
+    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], coefsV[n]                   );
     printf("]\n"                                                                              );
     sink();
   }
@@ -611,7 +620,7 @@ sunspots_dft_coefs = function(
     printf("%% %s\n", AutoGenStr                                                              );
     printf("%%=============================================================================\n");
     printf("[\n"                                                                              );
-    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], Im(Xfft[n])                   );
+    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], coefsW[n]                   );
     printf("]\n"                                                                              );
     sink();
   }
@@ -626,17 +635,17 @@ sunspots_dft_synth = function(
   dataDump     = FALSE,                     # dump data to file
   dataPlot     = TRUE,                      # plot data
   numCoefs     = 17,                        # number of coefficient pairs to synthesize with
-  dataSpots    = spotData,                  # sunspot data
+  dataIn       = spotData,                  # sunspot data
   dftBasis,                                 # DFT coefficients
   dataFileBase = "sunspots_dft_synth"       # file base name
 ){
   Fs       = round(length(spotData$year)/(max(spotData$year)-min(spotData$year)+1)) # sample rate in samples/year
   N        = length(dftBasis$V[,1])         # N = length of single basis vector
-  M        = length(dataSpots$count)        # number of sunspot data values
+  M        = length(dataIn$count)        # number of sunspot data values
   V        = dftBasis$V / sqrt(N/2)         # normalize V basis vectors such that ||V[,n]||=1
   W        = dftBasis$W / sqrt(N/2)         # normalize W basis vectors such that ||W[,n]||=1
   V[,1]    = V[,1]/sqrt(2)                  # special case V[,1]: make ||V[,1]||=1
-  spots    = dataSpots$count[(M-N+1):M]     # last N sunspot data values
+  spots    = dataIn$count[(M-N+1):M]     # last N sunspot data values
   estMean  = mean(spots)                    # estimated mean
   zeroMean = spots - estMean                # zero-mean data
   stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
@@ -789,7 +798,7 @@ bitrev = function( a, nBits )
     if( bitwAnd( a, maska ) ) { b = bitwOr( b, maskb ) }
     maska = bitwShiftL( maska, 1 );
     maskb = bitwShiftR( maskb, 1 );
-  } 
+  }
   return( b )
 }
 
@@ -842,14 +851,14 @@ Walsh_seq_Matrix = function( ncols )
 #------------------------------------------------------------------------------
 # \brief Calculate Walsh basis
 #------------------------------------------------------------------------------
-sunspots_walsh_basis = function( 
+sunspots_walsh_basis = function(
   verbose      = TRUE,
   dataDump     = FALSE,
   dataPlot     = TRUE,
   Fs           = 12,
   numVectors   = 5,
-  windowLength   = 8,
-  dataSpots,
+  windowLength = 8,
+  dataIn       = spotData,                 # sunspot data
   dataFileBase = "sunspots_walsh_basis"
 ){
   N = windowLength
@@ -883,8 +892,6 @@ sunspots_walsh_basis = function(
       printf("%% %s \n", author                                                                 );
       printf("%% %s\n", LaTeXstr                                                                );
       printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                );
-     #printf("%% Note: The Euclidean norm of this vector is sqrt(N/2)=sqrt(%d/2)=%.8f\n", N, sqrt(N/2) );
-     #printf("%%       To normalize, scale by 1/sqrt(N/2)=%.8f\n", 1/sqrt(N/2)                  );
       printf("%% %s\n", AutoGenStr                                                              );
       printf("%%=============================================================================\n");
       printf("[\n"                                                                              );
@@ -905,17 +912,17 @@ sunspots_walsh_basis = function(
  F = FALSE
 
  spotData  = sunspots_tseries_data( verbose=F, dataDump=F, dataPlot=F                                    );
- acfData   = sunspots_tseries_acf(  verbose=F, dataDump=F, dataPlot=F, dataSpots=spotData                );
- psdCoefs  = sunspots_psd_coefs(    verbose=F, dataDump=F, dataPlot=F, dataSpots=spotData, numSegments=4 );
-#eigenBasis= sunspots_eigen_basis(  verbose=F, dataDump=F, dataPlot=F, dataSpots=spotData, windowLength=2001     );
-#eigenCoefs= sunspots_eigen_coefs(  verbose=F, dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenBasis, Length=105 );
-#eigenSynth= sunspots_eigen_synth(  verbose=F, dataDump=F, dataPlot=F, dataSpots=spotData, dataEigen=eigenBasis, numCoefs=6   );
+ acfData   = sunspots_tseries_acf(  verbose=F, dataDump=F, dataPlot=F,            );
+ psdCoefs  = sunspots_psd_coefs(    verbose=F, dataDump=F, dataPlot=F, numSegments=4 );
+#eigenBasis= sunspots_eigen_basis(  verbose=F, dataDump=F, dataPlot=F, windowLength=2001     );
+#eigenCoefs= sunspots_eigen_coefs(  verbose=F, dataDump=F, dataPlot=F, dataEigen=eigenBasis, Length=105 );
+#eigenSynth= sunspots_eigen_synth(  verbose=F, dataDump=F, dataPlot=F, dataEigen=eigenBasis, numCoefs=6   );
 #eigenACF  = sunspots_eigen_acf(    verbose=F, dataDump=F, dataPlot=F, dataCoefs=eigenCoefs,Length=100 );
- dftBasis  = sunspots_dft_basis(    verbose=F, dataDump=F, dataPlot=F, windowLength=2048,  numVectors=5 );
- dftCoefs  = sunspots_dft_coefs(    verbose=F, dataDump=F, dataPlot=F, dataSpots=spotData, windowLength=2001, plotLength=1001 );
- dftSynth  = sunspots_dft_synth(    verbose=F, dataDump=F, dataPlot=T, dataSpots=spotData, dftBasis=dftBasis, numCoefs=17  );
+ dftBasis  = sunspots_dft_basis(    verbose=F, dataDump=F, dataPlot=F, windowLength=2001,  numVectors=5 );
+ dftCoefs  = sunspots_dft_coefs(    verbose=T, dataDump=T, dataPlot=T, basis=dftBasis, plotLength=1001 );
+ dftSynth  = sunspots_dft_synth(    verbose=F, dataDump=F, dataPlot=F, dftBasis=dftBasis, numCoefs=17  );
  dftACF    = sunspots_dft_acf(      verbose=F, dataDump=F, dataPlot=F, dataCoefs=dftCoefs, Length=100 );
-#walshBasis= sunspots_walsh_basis(  verbose=F, dataDump=F, dataPlot=T, windowLength=2048,  numVectors=5 );
-#walshCoefs= sunspots_walsh_coefs(  verbose=F, dataDump=F, dataPlot=T, dataSpots=spotData, windowLength=2048, plotLength=1001 );
+# walshBasis= sunspots_walsh_basis(  verbose=F, dataDump=F, dataPlot=F, windowLength=2048,  numVectors=5 );
+#walshCoefs= sunspots_walsh_coefs(  verbose=F, dataDump=F, dataPlot=T, dataIn=spotData, windowLength=2048, plotLength=1001 );
 # W = Walsh$W
 # f = Walsh$f
