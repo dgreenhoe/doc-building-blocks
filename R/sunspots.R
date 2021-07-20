@@ -62,15 +62,20 @@ sunspots_tseries_data = function(
   xts     = as.ts(as.vector(x$count));
   dvect   = as.vector(x$date)
   cvect   = as.vector(x$count)
+  if( verbose )
+  {
+    printf("%s(...)\n", dataFileBase );
+    printf("  Data from \"%s\"\n", dataFileIn );
+  }
   if( dataPlot )
   {
     plot(x=dvect, y=cvect, lwd=2, type='l', main="Sunspot Estimation", col="blue", xlab="year", ylab="count");
     abline(h=seq(from=0,   to= 400, by=100), lty='dashed', col = "green")
     abline(v=seq(from=1750,to=2020, by= 10), lty='dashed', col = "green")
   }
-  if(dataDump)
+  if( dataDump )
   {
-    sink(sprintf("tex/%s.dat", dataFileBase));
+    sink(sprintf("tex/%s.dat", dataFileBase ));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
     printf("%% %s\n", LaTeXstr );
@@ -97,7 +102,8 @@ abgrid = function(xmin, xmax, ymin, ymax, xstep, ystep)
   x = seq( from=xmin, to=xmax, by=xstep );
   abline( h=y, lty='dashed', col = "green");
   abline( v=x, lty='dashed', col = "green");
-  return( list(x=x, y=y) )
+  L = list(x=x, y=y);
+  return( L );
 }
 
 #------------------------------------------------------------------------------
@@ -110,7 +116,7 @@ sunspots_tseries_acf = function(
   dataPlot     = TRUE,
   nLag         = 2000,
   dataIn       = spotData,                 # sunspot data
-  dataFileBase = "sunspots_tseries_acf.dat"
+  dataFileBase = "sunspots_tseries_acf"
 ){
   x       = dataIn;
   xts     = as.ts(as.vector(x$count));
@@ -119,15 +125,19 @@ sunspots_tseries_acf = function(
   avect   = as.vector(a$acf)
   lvect   = as.vector(a$lag)/12
 
+  if( verbose )
+  {
+    printf("%s(...)\n", dataFileBase );
+  }
   if( dataPlot )
   {
     plot(x=lvect, y=avect, lwd=2, type='l', xaxp=c(0,160,16), yaxp=c(-0.4,1.0,14), col="blue",
          main="Sunspot Auto-Correlation Estimation", xlab="lag in years", ylab="magnitude");
     abgrid( xmin=0, xmax=170, ymin=-0.4, ymax=1.0, xstep=10, ystep=0.1 );
   }
-  if(dataDump)
+  if( dataDump )
   {
-    sink(sprintf("tex/%s.dat", dataFileBase));
+    sink(sprintf("tex/%s.dat", dataFileBase ));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
     printf("%% %s\n", LaTeXstr );
@@ -168,7 +178,7 @@ sunspots_psd_coefs = function(
   resultStr = sprintf("numSegments = %d\nf = %12.8f samples/year\nperiod = %12.8f years\n", numSegments, freqMax, periodT);
   if( verbose )
   {
-    printf("sunspots_PSD(x): %s\n", resultStr);
+    printf("%s(...)\n", dataFileBase );
   }
   if( dataPlot )
   {
@@ -178,7 +188,7 @@ sunspots_psd_coefs = function(
     title(main=resultStr, line=-10);
     abgrid( xmin=0, xmax=Fs/2, xstep=0.1, ymin=0, ymax=20, ystep=2 );
   }
-  if(dataDump)
+  if( dataDump )
   {
     sink(sprintf("tex/%s.dat",dataFileBase));
     printf("%%=============================================================================\n");
@@ -232,6 +242,10 @@ sunspots_eigen_basis = function(
   L           = Q$values
   D           = diag(L)
 
+  if( verbose )
+  {
+    printf("%s(...)\n", dataFileBase );
+  }
   if( dataPlot )
   {
     traces = colors[1:6]
@@ -291,7 +305,7 @@ sunspots_eigen_basis = function(
     printf("weighted periodT over %02d years: %12.8f\n",numYears, sum1/sumLambda);
   }
 
-  if(dataDump)
+  if( dataDump )
   {
     for(n in 1:8)
     {
@@ -322,11 +336,11 @@ sunspots_eigen_coefs = function(
   dataPlot     = TRUE,                     # plot data
   Length       = 105,                      # number of coefficients to dump/plot
   dataIn       = spotData,                 # sunspot data
-  dataEigen,                               # eigen-pair data
+  basis,                                   # eigen-pair data
   dataFileBase = "sunspots_eigen_coefs"    # file base name
 ){
-  V        = dataEigen$vectors             # V = eigen-vectors
-  L        = dataEigen$values              # L = eigen-values
+  V        = basis$vectors                 # V = eigen-vectors
+  L        = basis$values                  # L = eigen-values
   D        = diag(L)                       # D = diagonal matrix of eigen-values
   N        = length(L);                    # N = number of eigen-pairs
   M        = length(dataIn$count)          # M = number of sunspot values
@@ -334,6 +348,10 @@ sunspots_eigen_coefs = function(
   zeroMean = spots - mean(spots)           # zero-mean sunspot data
   stime    = spotData$date[(M-N+1):M]      # N most recent time values
   coefs    = as.numeric( zeroMean %*% V ); # coef[n] = projection of data onto eigen-vector n
+  if( verbose )
+  {
+    printf("%s(...)\n", dataFileBase );
+  }
   if( dataPlot )
   {
     plot(  coefs[1:Length], col=colors[1], type='h', lwd=5)
@@ -371,11 +389,11 @@ sunspots_eigen_synth = function(
   dataPlot     = TRUE,                      # plot data
   numCoefs     = 6,                         # number of coefficients to synthesis with
   dataIn       = spotData,                  # sunspot data
-  dataEigen,                                # eigen-pair data
+  basis,                                    # eigen-pair data
   dataFileBase = "sunspots_eigen_synth"     # file base name
 ){
-  V        = dataEigen$vectors              # eigen-vectors
-  L        = dataEigen$values               # eigen-values
+  V        = basis$vectors                  # eigen-vectors
+  L        = basis$values                   # eigen-values
   D        = diag(L)                        # diagonal matrix of eigen-values
   N        = length(L);                     # number of eigen-pairs
   M        = length(dataIn$count)           # number of sunspot data values
@@ -398,10 +416,11 @@ sunspots_eigen_synth = function(
   rmsError  = sqrt( (errorVect %*% errorVect))/N # RMS error
   if( verbose )
   {
-    printf("Total RMS synthesis error using %d eigen coefficients = %12.8f\n", numCoefs, rmsError );
-    printf("Energy of zero mean vector         G = %12.8f\n", G)
-    printf("Energy of synthesized vector sqrt(g) = %12.8f\n", sqrt(g))
-    printf("Energy ratio G/sqrt(g)               = %12.8f\n", G/sqrt(g))
+    printf("%s(...)\n", dataFileBase );
+    printf("  Total RMS synthesis error using %d eigen coefficients = %12.8f\n", numCoefs, rmsError );
+    printf("  Energy of zero mean vector         G = %12.8f\n", G)
+    printf("  Energy of synthesized vector sqrt(g) = %12.8f\n", sqrt(g))
+    printf("  Energy ratio G/sqrt(g)               = %12.8f\n", G/sqrt(g))
   }
   if( dataPlot )
   {
@@ -451,11 +470,11 @@ sunspots_eigen_acf = function(
   dataDump     = FALSE,                    # dump data to file
   dataPlot     = TRUE,                     # plot data
   Length       = 100,                      # number of ACF elements to dump/plot
-  dataCoefs    = coefs,                    # coefficient data
+  coefs        = coefs,                    # coefficient data
   dataFileBase = "sunspots_coefs_acf"      # file base name
 ){
-  N       = length(dataCoefs);             # number of coefficients provided
-  a       = stats::acf(dataCoefs, type="correlation", lag.max=(N-1), plot=FALSE)
+  N       = length(coefs);                 # number of coefficients provided
+  a       = stats::acf(coefs, type="correlation", lag.max=(N-1), plot=FALSE)
   avect   = as.vector(a$acf)               # acf value vector
   lvect   = as.vector(a$lag)               # acf lag vector
   if( dataPlot )
@@ -514,7 +533,7 @@ sunspots_dft_basis = function(
     abgrid( xmin=0, xmax=Fs/2, xstep=0.2, ymin=-1, ymax=1, ystep=0.2 );
     legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
   }
-  if(dataDump)
+  if( dataDump )
   {
     for(n in 1:numVectors)
     {
@@ -553,8 +572,8 @@ sunspots_dft_basis = function(
       sink();
     }
   }
-  A = list(f=f, V=V, W=W)
-  return(A);
+  L = list(f=f, V=V, W=W);
+  return( L );
 }
 
 #------------------------------------------------------------------------------
@@ -574,26 +593,26 @@ sunspots_dft_coefs = function(
   N        = length(basis$V[,1])
   M        = length(dataIn$count)          # number of data values
   spots    = dataIn$count[(M-N+1):M]       # last N sunspot data values
-  zeroMean = (spots - mean(spots))/N       # scaled zero-mean data
+  estMean  = mean(spots)                   # estimated mean
+  zeroMean = (spots - estMean)/N           # scaled zero-mean data
   stime    = spotData$date[(M-N+1):M]      # last N sunspot time values
-  V = basis$V
-  W = basis$W
-  Xfft     = fft(zeroMean)
+  V        = basis$V
+  W        = basis$W
   coefsV   = as.numeric( zeroMean %*% V ); # coef[n] = projection of data onto eigen-vector n
   coefsW   = as.numeric( zeroMean %*% (-W) ); # coef[n] = projection of data onto eigen-vector n
   f = Fs * c(0:(plotLength-1)) / N
   if( verbose )
   {
-    printf("DFT Coefficients\n");
+    printf("%s(...)\n", dataFileBase );
     printf("  Window Length = %d\n", N);
     printf("  Number of Coefficients = %d\n", plotLength);
   }
   if( dataPlot )
   {
-    plot(  f, Re(Xfft[1:plotLength]), col=colors[1], type='h', lwd=3, xlab="frequency (samples/year)" );
-    lines( f, Re(Xfft[1:plotLength]), col=colors[1], type='p', lwd=3 );
-    lines( f, Im(Xfft[1:plotLength]), col=colors[2], type='h', lwd=3 );
-    lines( f, Im(Xfft[1:plotLength]), col=colors[2], type='p', lwd=3 );
+    plot(  f, coefsV, col=colors[1], type='h', lwd=3, xlab="frequency (samples/year)" );
+    lines( f, coefsV, col=colors[1], type='p', lwd=3 );
+    lines( f, coefsW, col=colors[2], type='h', lwd=3 );
+    lines( f, coefsW, col=colors[2], type='p', lwd=3 );
     abgrid( xmin=0, xmax=Fs/2, xstep=0.1, ymin=-25, ymax=25, ystep=5 );
   }
   if( dataDump )
@@ -606,7 +625,7 @@ sunspots_dft_coefs = function(
     printf("%% %s\n", AutoGenStr                                                              );
     printf("%%=============================================================================\n");
     printf("[\n"                                                                              );
-    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], coefsV[n]                   );
+    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], coefsV[n]                     );
     printf("]\n"                                                                              );
     sink();
   }
@@ -620,11 +639,12 @@ sunspots_dft_coefs = function(
     printf("%% %s\n", AutoGenStr                                                              );
     printf("%%=============================================================================\n");
     printf("[\n"                                                                              );
-    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], coefsW[n]                   );
+    for(n in 1:plotLength) printf("  (%12.8f, %15.8f)\n", f[n], coefsW[n]                     );
     printf("]\n"                                                                              );
     sink();
   }
-  return(Xfft)
+  L = list( f=f, V=coefsV, W=coefsW );
+  return( L );
 }
 
 #------------------------------------------------------------------------------
@@ -636,14 +656,14 @@ sunspots_dft_synth = function(
   dataPlot     = TRUE,                      # plot data
   numCoefs     = 17,                        # number of coefficient pairs to synthesize with
   dataIn       = spotData,                  # sunspot data
-  dftBasis,                                 # DFT coefficients
+  basis,                                    # DFT coefficients
   dataFileBase = "sunspots_dft_synth"       # file base name
 ){
   Fs       = round(length(spotData$year)/(max(spotData$year)-min(spotData$year)+1)) # sample rate in samples/year
-  N        = length(dftBasis$V[,1])         # N = length of single basis vector
+  N        = length(basis$V[,1])         # N = length of single basis vector
   M        = length(dataIn$count)        # number of sunspot data values
-  V        = dftBasis$V / sqrt(N/2)         # normalize V basis vectors such that ||V[,n]||=1
-  W        = dftBasis$W / sqrt(N/2)         # normalize W basis vectors such that ||W[,n]||=1
+  V        = basis$V / sqrt(N/2)         # normalize V basis vectors such that ||V[,n]||=1
+  W        = basis$W / sqrt(N/2)         # normalize W basis vectors such that ||W[,n]||=1
   V[,1]    = V[,1]/sqrt(2)                  # special case V[,1]: make ||V[,1]||=1
   spots    = dataIn$count[(M-N+1):M]     # last N sunspot data values
   estMean  = mean(spots)                    # estimated mean
@@ -672,10 +692,11 @@ sunspots_dft_synth = function(
   rmsError  = sqrt( (errorVect %*% errorVect))/N # RMS error
   if( verbose )
   {
-    printf("Total RMS synthesis error using 2 x %d = %d dft coefficients = %12.8f\n", numCoefs, 2*numCoefs, rmsError );
-    printf("Energy of zero mean vector         G = %12.8f\n", G)
-    printf("Energy of synthesized vector sqrt(g) = %12.8f\n", sqrt(g))
-    printf("Energy ratio G/sqrt(g)               = %12.8f\n", G/sqrt(g))
+    printf("%s(...)\n", dataFileBase );
+    printf("  Total RMS synthesis error using 2 x %d = %d dft coefficients = %12.8f\n", numCoefs, 2*numCoefs, rmsError );
+    printf("  Energy of zero mean vector         G = %12.8f\n", G)
+    printf("  Energy of synthesized vector sqrt(g) = %12.8f\n", sqrt(g))
+    printf("  Energy ratio G/sqrt(g)               = %12.8f\n", G/sqrt(g))
   }
   if( dataPlot )
   {
@@ -714,7 +735,8 @@ sunspots_dft_synth = function(
     printf("]\n"                                                                                );
     sink();
   }
-  return(list(N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, estMean=estMean, G=G, g=g, g1=g1, g2=g2))
+  L = list( N=N, M=M, coefsV=coefsV, coefsW=coefsW, V=V, W=W, fsyn=fsyn, z=zeroMean, estMean=estMean, G=G, g=g, g1=g1, g2=g2 );
+  return( L );
 }
 
 #------------------------------------------------------------------------------
@@ -744,7 +766,8 @@ acfComplex = function(z, dataPlot=FALSE)
     lines(lvect[1:Length], acfMag[1:Length], col=colors[1], type='p', lwd=3 );
    #abgrid( xmin=0, xmax=Fs/2, xstep=0.1, ymin=-25, ymax=25, ystep=5 );
   }
-  return(list(N=N, a=a, b=b, c=c, d=d, mag=acfMag, lag=lvect))
+  L = list(N=N, a=a, b=b, c=c, d=d, mag=acfMag, lag=lvect);
+  return( L );
 }
 
 #------------------------------------------------------------------------------
@@ -755,13 +778,21 @@ sunspots_dft_acf = function(
   dataDump     = FALSE,                    # dump data to file
   dataPlot     = TRUE,                     # plot data
   Length       = 100,                      # number of ACF elements to dump/plot
-  dataCoefs    = dftCoefs,                 # coefficient data
+  coefs        = dftCoefs,                 # coefficient data
   dataFileBase = "sunspots_dft_acf"        # file base name
 ){
-  N       = length(dataCoefs);             # number of coefficients provided
-  acfData = acfComplex(dataCoefs);
+  V = coefs$V
+  W = coefs$W
+  dataComplex = complex( real=V, imaginary=W )
+  N       = length(dataComplex);             # number of coefficients provided
+  acfData = acfComplex(dataComplex);
   acfMag  = acfData$mag;
   lvect   = acfData$lag;
+  if( verbose )
+  {
+    printf("%s(...)\n", dataFileBase );
+    printf("  Number of coefficient pairs = %d\n", N);
+  }
   if( dataPlot )
   {
     plot( lvect[1:Length], acfMag[1:Length], col=colors[1], type='h', lwd=3 );
@@ -782,28 +813,54 @@ sunspots_dft_acf = function(
     printf("]\n"                                                                              );
     sink();
   }
-  return(acfMag)
+  L = list( lvect=lvect, acfMag=acfMag );
+  return( acfMag );
 }
 
 #------------------------------------------------------------------------------
-# \brief Bit Reverse
+# \brief Bit reverse n-bit binary number |b_{n-1}|b_{n-2}|...|b_1|b_0|
+# \returns binary number |b_0|b_1|...|b_{n-2}|b_{n-1}|
+# \example: ncols=3
+#   bitrev( c(0:7), 3 ) = [ 0 4 2 6 1 5 3 7 ]
 #------------------------------------------------------------------------------
 bitrev = function( a, nBits )
 {
+  N = length( a );
+  bb = 0 * c(1:N)
+  for( n in 1:N )
+  {
+  aa = a[n]
   b = 0
   maska = 1
   maskb = bitwShiftL( 1, nBits-1 )
   for( i in 1:nBits )
   {
-    if( bitwAnd( a, maska ) ) { b = bitwOr( b, maskb ) }
+    if( bitwAnd( aa, maska ) ) { b = bitwOr( b, maskb ) }
     maska = bitwShiftL( maska, 1 );
     maskb = bitwShiftR( maskb, 1 );
   }
-  return( b )
+  bb[n] = b
+  }
+  return( bb )
 }
 
 #------------------------------------------------------------------------------
-# \brief Generate ncols x ncols Bit-Reversal Matrix
+# \brief Generate ncols x ncols Bit-Reversal Matrix in which each column n
+#        has row=bitrev(n-1,ncols)+1 set equal to 1 
+#        and all other row positions set equal to 0.
+# \example ncols=3
+#   B = bitReverseMatrix(8)
+#        _                                             _
+#       |      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]  |
+#       | [1,]    1    0    0    0    0    0    0    0  |
+#       | [2,]    0    0    0    0    1    0    0    0  |
+#       | [3,]    0    0    1    0    0    0    0    0  |
+#   B = | [4,]    0    0    0    0    0    0    1    0  |
+#       | [5,]    0    1    0    0    0    0    0    0  |
+#       | [6,]    0    0    0    0    0    1    0    0  |
+#       | [7,]    0    0    0    1    0    0    0    0  |
+#       |_[8,]    0    0    0    0    0    0    0    1 _|
+#
 #------------------------------------------------------------------------------
 bitReverseMatrix = function( ncols )
 {
@@ -814,11 +871,28 @@ bitReverseMatrix = function( ncols )
     m = bitrev(n-1, numbits) + 1
     B[m,n] = 1
   }
-  return(B)
+  return( B )
 }
 
 #------------------------------------------------------------------------------
-# \brief Generate ncols x ncols Gray-Code Matrix
+# \brief Generate ncols x ncols Gray-Code Matrix in which each column n
+#        has row=grays(ncols)[n]+1 set equal to 1 
+#        and all other row positions set equal to 0.
+# \example ncols=3
+#   grays( ncols )     = [ 0 1 3 2 6 7 5 4 ]
+#   grays( ncols ) + 1 = [ 1 2 4 3 7 8 6 5 ]
+#   G = grayCodeMatrix(8)
+#        _                                              _
+#       |       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]  |
+#       |  [1,]    1    0    0    0    0    0    0    0  |
+#       |  [2,]    0    1    0    0    0    0    0    0  |
+#       |  [3,]    0    0    0    1    0    0    0    0  |
+#   G = |  [4,]    0    0    1    0    0    0    0    0  |
+#       |  [5,]    0    0    0    0    0    0    0    1  |
+#       |  [6,]    0    0    0    0    0    0    1    0  |
+#       |  [7,]    0    0    0    0    1    0    0    0  |
+#       |_ [8,]    0    0    0    0    0    1    0    0 _|
+# 
 #------------------------------------------------------------------------------
 grayCodeMatrix = function( ncols )
 {
@@ -830,7 +904,7 @@ grayCodeMatrix = function( ncols )
     m = grayCodes[n] + 1
     G[m,n] = 1
   }
-  return(G)
+  return( G )
 }
 
 #------------------------------------------------------------------------------
@@ -881,7 +955,7 @@ sunspots_walsh_basis = function(
     legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
   }
 
-  if(dataDump)
+  if( dataDump )
   {
 #    for(n in 1:numVectors)
     for(n in 2046:2048)
@@ -902,7 +976,7 @@ sunspots_walsh_basis = function(
     }
   }
   L = list(f=f, W=W)
-  return(L);
+  return( L );
 }
 
 #------------------------------------------------------------------------------
@@ -915,14 +989,17 @@ sunspots_walsh_basis = function(
  acfData   = sunspots_tseries_acf(  verbose=F, dataDump=F, dataPlot=F,            );
  psdCoefs  = sunspots_psd_coefs(    verbose=F, dataDump=F, dataPlot=F, numSegments=4 );
 #eigenBasis= sunspots_eigen_basis(  verbose=F, dataDump=F, dataPlot=F, windowLength=2001     );
-#eigenCoefs= sunspots_eigen_coefs(  verbose=F, dataDump=F, dataPlot=F, dataEigen=eigenBasis, Length=105 );
-#eigenSynth= sunspots_eigen_synth(  verbose=F, dataDump=F, dataPlot=F, dataEigen=eigenBasis, numCoefs=6   );
-#eigenACF  = sunspots_eigen_acf(    verbose=F, dataDump=F, dataPlot=F, dataCoefs=eigenCoefs,Length=100 );
- dftBasis  = sunspots_dft_basis(    verbose=F, dataDump=F, dataPlot=F, windowLength=2001,  numVectors=5 );
- dftCoefs  = sunspots_dft_coefs(    verbose=T, dataDump=T, dataPlot=T, basis=dftBasis, plotLength=1001 );
- dftSynth  = sunspots_dft_synth(    verbose=F, dataDump=F, dataPlot=F, dftBasis=dftBasis, numCoefs=17  );
- dftACF    = sunspots_dft_acf(      verbose=F, dataDump=F, dataPlot=F, dataCoefs=dftCoefs, Length=100 );
-# walshBasis= sunspots_walsh_basis(  verbose=F, dataDump=F, dataPlot=F, windowLength=2048,  numVectors=5 );
+#eigenCoefs= sunspots_eigen_coefs(  verbose=F, dataDump=F, dataPlot=F, basis=eigenBasis, Length=105 );
+#eigenSynth= sunspots_eigen_synth(  verbose=F, dataDump=F, dataPlot=F, basis=eigenBasis, numCoefs=6   );
+#eigenACF  = sunspots_eigen_acf(    verbose=F, dataDump=F, dataPlot=F, coefs=eigenCoefs,Length=100 );
+ dftBasis  = sunspots_dft_basis(    verbose=T, dataDump=F, dataPlot=F, windowLength=2001,  numVectors=5 );
+ dftCoefs  = sunspots_dft_coefs(    verbose=T, dataDump=F, dataPlot=F, basis=dftBasis, plotLength=1001 );
+ dftSynth  = sunspots_dft_synth(    verbose=T, dataDump=F, dataPlot=T, basis=dftBasis, numCoefs=17  );
+ dftACF    = sunspots_dft_acf(      verbose=T, dataDump=F, dataPlot=F, coefs=dftCoefs, Length=100 );
+ walshBasis= sunspots_walsh_basis(  verbose=T, dataDump=F, dataPlot=F, windowLength=8,  numVectors=5 );
 #walshCoefs= sunspots_walsh_coefs(  verbose=F, dataDump=F, dataPlot=T, dataIn=spotData, windowLength=2048, plotLength=1001 );
 # W = Walsh$W
 # f = Walsh$f
+V = dftCoefs$V
+W = dftCoefs$W
+z = complex( real=V, imaginary=W )
