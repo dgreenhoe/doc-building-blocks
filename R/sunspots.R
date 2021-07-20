@@ -402,7 +402,6 @@ sunspots_eigen_synth = function(
   stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
   coefs    = as.numeric( zeroMean %*% V );  # projection coefficient of spots onto eigen-vector n
   G = sqrt(as.numeric(zeroMean%*%zeroMean)) # estimated energy of sunspot waveform
- #fsyn = coefs %*% V[,1:numCoefs]           # partially-synthesized vector
   fsyn     = 0 * c(1:N)
   g = 0;
   for( n in 1:numCoefs )
@@ -598,8 +597,8 @@ sunspots_dft_coefs = function(
   stime    = spotData$date[(M-N+1):M]      # last N sunspot time values
   V        = basis$V
   W        = basis$W
-  coefsV   = as.numeric( zeroMean %*% V ); # coef[n] = projection of data onto eigen-vector n
-  coefsW   = as.numeric( zeroMean %*% (-W) ); # coef[n] = projection of data onto eigen-vector n
+  coefsV   = as.numeric( zeroMean %*% V );    # coef[n] = projection of data onto basis-vector n
+  coefsW   = as.numeric( zeroMean %*% (-W) ); # coef[n] = projection of data onto basis-vector n
   f = Fs * c(0:(plotLength-1)) / N
   if( verbose )
   {
@@ -823,25 +822,25 @@ sunspots_dft_acf = function(
 # \example: ncols=3
 #   bitrev( c(0:7), 3 ) = [ 0 4 2 6 1 5 3 7 ]
 #------------------------------------------------------------------------------
-bitrev = function( a, nBits )
+bitrev = function( avect, nBits )
 {
-  N = length( a );
-  bb = 0 * c(1:N)
+  N = length( avect );
+  bvect = 0 * c(1:N)
   for( n in 1:N )
   {
-  aa = a[n]
-  b = 0
-  maska = 1
-  maskb = bitwShiftL( 1, nBits-1 )
-  for( i in 1:nBits )
-  {
-    if( bitwAnd( aa, maska ) ) { b = bitwOr( b, maskb ) }
-    maska = bitwShiftL( maska, 1 );
-    maskb = bitwShiftR( maskb, 1 );
+    a = avect[n]
+    b = 0
+    maska = 1
+    maskb = bitwShiftL( 1, nBits-1 )
+    for( i in 1:nBits )
+    {
+      if( bitwAnd( a, maska ) ) { b = bitwOr( b, maskb ) }
+      maska = bitwShiftL( maska, 1 );
+      maskb = bitwShiftR( maskb, 1 );
+    }
+    bvect[n] = b;
   }
-  bb[n] = b
-  }
-  return( bb )
+  return( bvect )
 }
 
 #------------------------------------------------------------------------------
@@ -850,16 +849,15 @@ bitrev = function( a, nBits )
 #        and all other row positions set equal to 0.
 # \example ncols=3
 #   B = bitReverseMatrix(8)
-#        _                                             _
-#       |      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]  |
-#       | [1,]    1    0    0    0    0    0    0    0  |
-#       | [2,]    0    0    0    0    1    0    0    0  |
-#       | [3,]    0    0    1    0    0    0    0    0  |
-#   B = | [4,]    0    0    0    0    0    0    1    0  |
-#       | [5,]    0    1    0    0    0    0    0    0  |
-#       | [6,]    0    0    0    0    0    1    0    0  |
-#       | [7,]    0    0    0    1    0    0    0    0  |
-#       |_[8,]    0    0    0    0    0    0    0    1 _|
+#        _ col1 col2 col3 col4 col5 col6 col7 col8 _
+#       |    1    0    0    0    0    0    0    0   | row1
+#       |    0    0    0    0    1    0    0    0   | row2
+#       |    0    0    1    0    0    0    0    0   | row3
+#   B = |    0    0    0    0    0    0    1    0   | row4
+#       |    0    1    0    0    0    0    0    0   | row5
+#       |    0    0    0    0    0    1    0    0   | row6
+#       |    0    0    0    1    0    0    0    0   | row7
+#       |_   0    0    0    0    0    0    0    1  _| row8
 #
 #------------------------------------------------------------------------------
 bitReverseMatrix = function( ncols )
@@ -882,17 +880,15 @@ bitReverseMatrix = function( ncols )
 #   grays( ncols )     = [ 0 1 3 2 6 7 5 4 ]
 #   grays( ncols ) + 1 = [ 1 2 4 3 7 8 6 5 ]
 #   G = grayCodeMatrix(8)
-#        _                                              _
-#       |       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]  |
-#       |  [1,]    1    0    0    0    0    0    0    0  |
-#       |  [2,]    0    1    0    0    0    0    0    0  |
-#       |  [3,]    0    0    0    1    0    0    0    0  |
-#   G = |  [4,]    0    0    1    0    0    0    0    0  |
-#       |  [5,]    0    0    0    0    0    0    0    1  |
-#       |  [6,]    0    0    0    0    0    0    1    0  |
-#       |  [7,]    0    0    0    0    1    0    0    0  |
-#       |_ [8,]    0    0    0    0    0    1    0    0 _|
-# 
+#        _ col1 col2 col3 col4 col5 col6 col7 col8 _
+#       |    1    0    0    0    0    0    0    0   | row1
+#       |    0    1    0    0    0    0    0    0   | row2
+#       |    0    0    0    1    0    0    0    0   | row3
+#   G = |    0    0    1    0    0    0    0    0   | row4
+#       |    0    0    0    0    0    0    0    1   | row5
+#       |    0    0    0    0    0    0    1    0   | row6
+#       |    0    0    0    0    1    0    0    0   | row7
+#       |_   0    0    0    0    0    1    0    0  _| row8
 #------------------------------------------------------------------------------
 grayCodeMatrix = function( ncols )
 {
@@ -914,15 +910,15 @@ grayCodeMatrix = function( ncols )
 #   https://ieeexplore.ieee.org/document/1672117
 # \example
 #   W =  Walsh_seq_Matrix( 8 )
-#       _                                      _
-#      |  1    1    1    1    1    1    1    1  |
-#      |  1    1    1    1   -1   -1   -1   -1  |
-#      |  1    1   -1   -1   -1   -1    1    1  |
-#   W= |  1    1   -1   -1    1    1   -1   -1  |
-#      |  1   -1   -1    1    1   -1   -1    1  |
-#      |  1   -1   -1    1   -1    1    1   -1  |
-#      |  1   -1    1   -1   -1    1   -1    1  |
-#      |_ 1   -1    1   -1    1   -1    1   -1 _|
+#       _ col1 col2 col3 col4 col5 col6 col7 col8 _
+#      |    1    1    1    1    1    1    1    1   | row1
+#      |    1    1    1    1   -1   -1   -1   -1   | row2
+#      |    1    1   -1   -1   -1   -1    1    1   | row3
+#   W= |    1    1   -1   -1    1    1   -1   -1   | row4
+#      |    1   -1   -1    1    1   -1   -1    1   | row5
+#      |    1   -1   -1    1   -1    1    1   -1   | row6
+#      |    1   -1    1   -1   -1    1   -1    1   | row7
+#      |_   1   -1    1   -1    1   -1    1   -1  _| row8
 #       --> increasing number of sign changes -->
 #------------------------------------------------------------------------------
 Walsh_seq_Matrix = function( ncols )
@@ -991,6 +987,54 @@ sunspots_walsh_basis = function(
 }
 
 #------------------------------------------------------------------------------
+# \brief Data synthesis using eigen vector quasi basis
+#------------------------------------------------------------------------------
+sunspots_walsh_coefs = function(
+  verbose      = TRUE,
+  dataDump     = FALSE,                    # dump data to file
+  dataPlot     = TRUE,                     # plot data
+  plotLength   = 105,                      # number of coefficients to plot
+  dataIn       = spotData,                 # sunspot data
+  basis,                                   # basis data
+  dataFileBase = "sunspots_walsh_coefs"    # file base name
+){
+  V        = basis$W                       # V = eigen-vectors
+  N        = length(V[,1]);                # N = length of each basis vector
+  M        = length(dataIn$count)          # M = number of sunspot values
+  spots    = dataIn$count[(M-N+1):M]       # N most recent sunspot values
+  zeroMean = spots - mean(spots)           # zero-mean sunspot data
+  stime    = spotData$date[(M-N+1):M]      # N most recent time values
+  coefs    = as.numeric( zeroMean %*% V ); # coef[n] = projection of data onto eigen-vector n
+  if( verbose )
+  {
+    printf("%s(...)\n", dataFileBase );
+  }
+  if( dataPlot )
+  {
+    plot(  c(0:(plotLength-1)), coefs[1:plotLength], col=colors[1], type='h', lwd=3)
+    lines( c(0:(plotLength-1)), coefs[1:plotLength], col=colors[1], type='p', lwd=2)
+   #abgrid( xmin=0, xmax=120, xstep=5, ymin=-700, ymax=2000, ystep=100 );
+  }
+  if( dataDump )
+  {
+    sink(sprintf("tex/%s.dat",dataFileBase));
+    printf("%%=============================================================================\n"  );
+    printf("%% %s \n", author                                                                   );
+    printf("%% Sunspot eigen coefficient data (%d coefficients)\n", Length                      );
+    printf("%% %s\n", LaTeXstr );
+    printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
+    printf("%% %s\n", AutoGenStr);
+    printf("%%=============================================================================\n"  );
+    printf("[\n"                                                                                );
+    for(n in 1:plotLength) printf("  (%3d, %14.8f)\n", n-1, coefs[n]                            );
+    printf("]\n"                                                                                );
+    sink();
+  }
+  L = list( coefs=coefs, V=V, z=zeroMean )
+  return(L)
+}
+
+#------------------------------------------------------------------------------
 # Main Processing
 #------------------------------------------------------------------------------
  T = TRUE
@@ -1000,17 +1044,19 @@ sunspots_walsh_basis = function(
  acfData   = sunspots_tseries_acf(  verbose=F, dataDump=F, dataPlot=F,            );
  psdCoefs  = sunspots_psd_coefs(    verbose=F, dataDump=F, dataPlot=F, numSegments=4 );
 #eigenBasis= sunspots_eigen_basis(  verbose=F, dataDump=F, dataPlot=F, windowLength=2001     );
-#eigenCoefs= sunspots_eigen_coefs(  verbose=F, dataDump=F, dataPlot=F, basis=eigenBasis, Length=105 );
+#eigenCoefs= sunspots_eigen_coefs(  verbose=F, dataDump=F, dataPlot=F, basis=eigenBasis, dataIn=spotData, Length=105 );
 #eigenSynth= sunspots_eigen_synth(  verbose=F, dataDump=F, dataPlot=F, basis=eigenBasis, numCoefs=6   );
 #eigenACF  = sunspots_eigen_acf(    verbose=F, dataDump=F, dataPlot=F, coefs=eigenCoefs,Length=100 );
  dftBasis  = sunspots_dft_basis(    verbose=T, dataDump=F, dataPlot=F, windowLength=2001,  numVectors=5 );
- dftCoefs  = sunspots_dft_coefs(    verbose=T, dataDump=F, dataPlot=F, basis=dftBasis, plotLength=1001 );
+ dftCoefs  = sunspots_dft_coefs(    verbose=T, dataDump=F, dataPlot=F, basis=dftBasis, dataIn=spotData, plotLength=1001 );
  dftSynth  = sunspots_dft_synth(    verbose=T, dataDump=F, dataPlot=T, basis=dftBasis, numCoefs=17  );
  dftACF    = sunspots_dft_acf(      verbose=T, dataDump=F, dataPlot=F, coefs=dftCoefs, Length=100 );
- walshBasis= sunspots_walsh_basis(  verbose=T, dataDump=F, dataPlot=F, windowLength=8,  numVectors=5 );
-#walshCoefs= sunspots_walsh_coefs(  verbose=F, dataDump=F, dataPlot=T, dataIn=spotData, windowLength=2048, plotLength=1001 );
+ walshBasis= sunspots_walsh_basis(  verbose=T, dataDump=F, dataPlot=F, windowLength=2048,  numVectors=5 );
+ walshCoefs= sunspots_walsh_coefs(  verbose=T, dataDump=F, dataPlot=T, basis=walshBasis, dataIn=spotData, plotLength=2048 );
 #V = dftCoefs$V
 #W = dftCoefs$W
 #z = complex( real=V, imaginary=W )
- W = walshBasis$W
- f = walshBasis$f
+# W = walshBasis$W
+# f = walshBasis$f
+ z = walshCoefs$z
+ V = walshCoefs$V
