@@ -660,12 +660,12 @@ sunspots_dft_synth = function(
   dataFileBase = "sunspots_dft_synth"       # file base name
 ){
   Fs       = round(length(spotData$year)/(max(spotData$year)-min(spotData$year)+1)) # sample rate in samples/year
-  N        = length(basis$V[,1])         # N = length of single basis vector
-  M        = length(dataIn$count)        # number of sunspot data values
-  V        = basis$V / sqrt(N/2)         # normalize V basis vectors such that ||V[,n]||=1
-  W        = basis$W / sqrt(N/2)         # normalize W basis vectors such that ||W[,n]||=1
+  N        = length(basis$V[,1])            # N = length of single basis vector
+  M        = length(dataIn$count)           # number of sunspot data values
+  V        = basis$V / sqrt(N/2)            # normalize V basis vectors such that ||V[,n]||=1
+  W        = basis$W / sqrt(N/2)            # normalize W basis vectors such that ||W[,n]||=1
   V[,1]    = V[,1]/sqrt(2)                  # special case V[,1]: make ||V[,1]||=1
-  spots    = dataIn$count[(M-N+1):M]     # last N sunspot data values
+  spots    = dataIn$count[(M-N+1):M]        # last N sunspot data values
   estMean  = mean(spots)                    # estimated mean
   zeroMean = spots - estMean                # zero-mean data
   stime    = spotData$date[(M-N+1):M]       # last N sunspot time values
@@ -681,14 +681,14 @@ sunspots_dft_synth = function(
   {
     f1 = f1 + (coefsV[n] * V[,n])
     f2 = f2 + (coefsW[n] * W[,n])
-    g1 = g1 + (coefsV[n]^2)                 # energy of scaled V vectors
-    g2 = g2 + (coefsW[n]^2)                 # energy of scaled W vectors
+    g1 = g1 + (coefsV[n]^2)                   # energy of scaled V vectors
+    g2 = g2 + (coefsW[n]^2)                   # energy of scaled W vectors
   }
   g=g1+g2
-  fsyn      = f1 + f2                       # add synthesis due to cos and sin bases
-  if(g>1e-9) fsyn      = ((G/sqrt(g)) * fsyn)      # scale vector to match energy of original data
-  fsyn      = fsyn + estMean                # restore mean
-  errorVect = fsyn - spots                  # calculate error vector
+  fsyn      = f1 + f2                         # add synthesis due to cos and sin bases
+  if(g>1e-9) fsyn      = ((G/sqrt(g)) * fsyn) # scale vector to match energy of original data
+  fsyn      = fsyn + estMean                  # restore mean
+  errorVect = fsyn - spots                    # calculate error vector
   rmsError  = sqrt( (errorVect %*% errorVect))/N # RMS error
   if( verbose )
   {
@@ -912,6 +912,18 @@ grayCodeMatrix = function( ncols )
 # https://en.wikipedia.org/wiki/Walsh_matrix#Sequency_ordering
 # Tam and Goulet (1992) "On Arithmetical Shift for Walsh Functions"
 #   https://ieeexplore.ieee.org/document/1672117
+# \example
+#   W =  Walsh_seq_Matrix( 8 )
+#       _                                      _
+#      |  1    1    1    1    1    1    1    1  |
+#      |  1    1    1    1   -1   -1   -1   -1  |
+#      |  1    1   -1   -1   -1   -1    1    1  |
+#   W= |  1    1   -1   -1    1    1   -1   -1  |
+#      |  1   -1   -1    1    1   -1   -1    1  |
+#      |  1   -1   -1    1   -1    1    1   -1  |
+#      |  1   -1    1   -1   -1    1   -1    1  |
+#      |_ 1   -1    1   -1    1   -1    1   -1 _|
+#       --> increasing number of sign changes -->
 #------------------------------------------------------------------------------
 Walsh_seq_Matrix = function( ncols )
 {
@@ -936,12 +948,13 @@ sunspots_walsh_basis = function(
   dataFileBase = "sunspots_walsh_basis"
 ){
   N = windowLength
-#  M = N/2  #(N-1)/2
-#  n = matrix(seq(from=0, by=1, length=N));
-#  k = matrix(seq(from=0, by=1, length=M));
   f = seq(from=0, by=(1/Fs), length=N)
   W = Walsh_seq_Matrix( N )
 
+  if( verbose )
+  {
+    printf("%s(...)\n", dataFileBase );
+  }
   if( dataPlot )
   {
     traces = colors[1:numVectors]
@@ -954,11 +967,9 @@ sunspots_walsh_basis = function(
     abgrid( xmin=0, xmax=Fs/2, xstep=0.2, ymin=-1, ymax=1, ystep=0.2 );
     legend("topleft", legend=traces, col=colors, lwd=3, lty=1:1)
   }
-
   if( dataDump )
   {
-#    for(n in 1:numVectors)
-    for(n in 2046:2048)
+    for(n in 1:numVectors)
     {
       vect = W[,n]
       sink(sprintf("tex/%s_%d.dat",dataFileBase,n-1));
@@ -998,8 +1009,8 @@ sunspots_walsh_basis = function(
  dftACF    = sunspots_dft_acf(      verbose=T, dataDump=F, dataPlot=F, coefs=dftCoefs, Length=100 );
  walshBasis= sunspots_walsh_basis(  verbose=T, dataDump=F, dataPlot=F, windowLength=8,  numVectors=5 );
 #walshCoefs= sunspots_walsh_coefs(  verbose=F, dataDump=F, dataPlot=T, dataIn=spotData, windowLength=2048, plotLength=1001 );
-# W = Walsh$W
-# f = Walsh$f
-V = dftCoefs$V
-W = dftCoefs$W
-z = complex( real=V, imaginary=W )
+#V = dftCoefs$V
+#W = dftCoefs$W
+#z = complex( real=V, imaginary=W )
+ W = walshBasis$W
+ f = walshBasis$f
