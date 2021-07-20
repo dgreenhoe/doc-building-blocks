@@ -182,6 +182,7 @@ GRP_DATA =                     \
   sunspots_walsh_3.pdf         \
   sunspots_walsh_4.pdf         \
   sunspots_walsh_2047.pdf      \
+  sunspots_walsh_coefs.pdf     \
   sunspots_1749-2004.pdf       \
   sunspots_welchPSD_4segs.pdf
 

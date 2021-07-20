@@ -1020,7 +1020,7 @@ sunspots_walsh_coefs = function(
     sink(sprintf("tex/%s.dat",dataFileBase));
     printf("%%=============================================================================\n"  );
     printf("%% %s \n", author                                                                   );
-    printf("%% Sunspot eigen coefficient data (%d coefficients)\n", Length                      );
+    printf("%% Sunspot Walsh coefficient data (%d coefficients)\n", plotLength                  );
     printf("%% %s\n", LaTeXstr );
     printf("%% For an example, see \"%s.tex\"\n", dataFileBase                                  );
     printf("%% %s\n", AutoGenStr);
@@ -1051,8 +1051,8 @@ sunspots_walsh_coefs = function(
  dftCoefs  = sunspots_dft_coefs(    verbose=T, dataDump=F, dataPlot=F, basis=dftBasis, dataIn=spotData, plotLength=1001 );
  dftSynth  = sunspots_dft_synth(    verbose=T, dataDump=F, dataPlot=T, basis=dftBasis, numCoefs=17  );
  dftACF    = sunspots_dft_acf(      verbose=T, dataDump=F, dataPlot=F, coefs=dftCoefs, Length=100 );
- walshBasis= sunspots_walsh_basis(  verbose=T, dataDump=F, dataPlot=F, windowLength=2048,  numVectors=5 );
- walshCoefs= sunspots_walsh_coefs(  verbose=T, dataDump=F, dataPlot=T, basis=walshBasis, dataIn=spotData, plotLength=2048 );
+ walshBasis= sunspots_walsh_basis(  verbose=T, dataDump=F, dataPlot=F, windowLength=256,  numVectors=5 );
+ walshCoefs= sunspots_walsh_coefs(  verbose=T, dataDump=T, dataPlot=T, basis=walshBasis, dataIn=spotData, plotLength=105 );
 #V = dftCoefs$V
 #W = dftCoefs$W
 #z = complex( real=V, imaginary=W )
