@@ -94,6 +94,30 @@ sunspots_tseries_data = function(
 }
 
 #------------------------------------------------------------------------------
+# \brief Calculate sunspot sample rate in samples/year
+#------------------------------------------------------------------------------
+calc_Fs = function( 
+  verbose = FALSE, 
+  dataIn = spotData 
+){
+  numSamples = length(spotData$year);
+  numYears   = max(spotData$year)-min(spotData$year)+1;
+  sampleRate = numSamples / numYears;
+  Fs         = round( sampleRate );
+  error      = (Fs - sampleRate) / sampleRate;
+  if( verbose )
+  {
+    printf("calc_Fs(...)\n");
+    printf("  numPoints  = %d\n"  , numSamples );
+    printf("  numYears   = %d\n"  , numYears   );
+    printf("  sampleRate = %f\n"  , sampleRate );
+    printf("  Fs         = %d\n"  , Fs         );
+    printf("  error      = %f%%\n", error*100  );
+  }
+  return( Fs )
+}
+
+#------------------------------------------------------------------------------
 # \brief   Grid
 #------------------------------------------------------------------------------
 abgrid = function(xmin, xmax, ymin, ymax, xstep, ystep)
@@ -165,11 +189,11 @@ sunspots_psd_coefs = function(
   dataIn       = spotData,
   dataFileBase = "sunspots_psd"
 ){
-  xts       = as.ts(as.vector(dataIn$count));
-  N         = length(xts);         # length of time series
-  Fs        = 12;                  # sample rate = 12 samples per year
-  estMean   = mean(xts);           # estimated mean
-  segLength = N / numSegments;     # segment length
+  Fs        = calc_Fs( dataIn = spotData);    # sample rate in samples/year
+  xts       = as.ts(as.vector(dataIn$count)); #
+  N         = length(xts);                    # length of time series
+  estMean   = mean(xts);                      # estimated mean
+  segLength = N / numSegments;                # segment length
   xpsd      = bspec::welchPSD(xts - estMean, seglength = segLength);
   psdMax    = max(xpsd$power);
   binMax    = ramify::argmax(as.matrix(xpsd$power), rows = FALSE);
@@ -221,12 +245,12 @@ sunspots_eigen_basis = function(
   verbose      = TRUE,
   dataDump     = FALSE,
   dataPlot     = TRUE,
-  Fs           = 12,
   numSegments  = 4,
   windowLength = 2048,
   dataIn       = spotData,
   dataFileBase = "sunspots_eigen"
 ){
+  Fs          = calc_Fs( dataIn = spotData);
   nLag        = windowLength - 1;
   x           = dataIn;
   xts         = as.ts(as.vector(x$count));
@@ -500,33 +524,34 @@ sunspots_eigen_acf = function(
 }
 
 #------------------------------------------------------------------------------
-# \brief Calculate Fourier basis for sunspots
+# \brief Calculate Discrete Fourier basis
 #------------------------------------------------------------------------------
 sunspots_dft_basis = function(
-  verbose      = TRUE,
-  dataDump     = FALSE,
-  dataPlot     = TRUE,
-  Fs           = 12,
-  windowLength = 2048,
-  numVectors   = 5,
-  dataIn       = spotData,                 # sunspot data
-  dataFileBase = "sunspots_dft_basis"
-){
-  N = windowLength
-  M = N/2  #(N-1)/2
-  n = matrix(seq(from=0, by=1, length=N));
-  k = matrix(seq(from=0, by=1, length=M));
-  f = k/N*Fs/2
-  V = cos(2*pi*(n %*% t(k))/N);
-  W = sin(2*pi*(n %*% t(k))/N);
+  verbose      = TRUE,                    # verbose
+  dataDump     = FALSE,                   # dump data to file
+  dataPlot     = TRUE,                    # plot 
+  Fs           = 12,                      # samples / year
+  windowLength = 2048,                    # evaluation window length
+  numVectors   = 5,                       # plot vectors 0 -- (numVectors-1)
+  dataIn       = spotData,                # sunspot data
+  dataFileBase = "sunspots_dft_basis"     # base file name
+){                                        #
+  N = windowLength                        # N = length of data/basis vectors
+  M = ceiling(N/2)  #(N-1)/2              # M = number of basis vectors
+  n = matrix(seq(from=0, by=1, length=N));# 
+  k = matrix(seq(from=0, by=1, length=M));# 
+  f = k/N*Fs                              # 
+  V = cos(2*pi*(n %*% t(k))/N);           # 
+  W = sin(2*pi*(n %*% t(k))/N);           # 
 
   if( dataPlot )
   {
     traces = colors[1:numVectors]
     for( n in 1:length(traces))
     {
-      if(n==1) plot( f, V[,n], type='o', lwd=2, col=colors[n], ylim=c(-1.2,1.2))
-      else     lines(f, V[,n], type='o', lwd=2, col=colors[n])
+      v = V[c(1:M), n]
+      if(n==1) plot( f, v, type='p', lwd=2, col=colors[n], ylim=c(-1.2,1.2))
+      else     lines(f, v, type='p', lwd=2, col=colors[n])
       traces[n] = sprintf("DFT basis vector k=%2d", n-1)
     }
     abgrid( xmin=0, xmax=Fs/2, xstep=0.2, ymin=-1, ymax=1, ystep=0.2 );
@@ -571,7 +596,7 @@ sunspots_dft_basis = function(
       sink();
     }
   }
-  L = list(f=f, V=V, W=W);
+  L = list( f=f, V=V, W=W, N=N, M=M );
   return( L );
 }
 
@@ -589,6 +614,7 @@ sunspots_dft_coefs = function(
   dataFileBase = "sunspots_dft_coefs",     # file base name
   Fs           = 12                        # sample rate in samples per year
 ){
+  Fs       = calc_Fs( dataIn = spotData);  # sample rate in samples/year
   N        = length(basis$V[,1])
   M        = length(dataIn$count)          # number of data values
   spots    = dataIn$count[(M-N+1):M]       # last N sunspot data values
@@ -658,7 +684,7 @@ sunspots_dft_synth = function(
   basis,                                    # DFT coefficients
   dataFileBase = "sunspots_dft_synth"       # file base name
 ){
-  Fs       = round(length(spotData$year)/(max(spotData$year)-min(spotData$year)+1)) # sample rate in samples/year
+  Fs       = calc_Fs( dataIn = spotData);   # sample rate in samples/year
   N        = length(basis$V[,1])            # N = length of single basis vector
   M        = length(dataIn$count)           # number of sunspot data values
   V        = basis$V / sqrt(N/2)            # normalize V basis vectors such that ||V[,n]||=1
@@ -937,15 +963,15 @@ sunspots_walsh_basis = function(
   verbose      = TRUE,
   dataDump     = FALSE,
   dataPlot     = TRUE,
-  Fs           = 12,
   numVectors   = 5,
   windowLength = 8,
   dataIn       = spotData,                 # sunspot data
   dataFileBase = "sunspots_walsh_basis"
 ){
-  N = windowLength
-  f = seq(from=0, by=(1/Fs), length=N)
-  W = Walsh_seq_Matrix( N )
+  Fs = calc_Fs( dataIn = spotData);   # sample rate in samples/year
+  N  = windowLength
+  f  = seq(from=0, by=(1/Fs), length=N)
+  W  = Walsh_seq_Matrix( N )
 
   if( verbose )
   {
@@ -1040,23 +1066,26 @@ sunspots_walsh_coefs = function(
  T = TRUE
  F = FALSE
 
- spotData  = sunspots_tseries_data( verbose=F, dataDump=F, dataPlot=F                                    );
- acfData   = sunspots_tseries_acf(  verbose=F, dataDump=F, dataPlot=F,            );
- psdCoefs  = sunspots_psd_coefs(    verbose=F, dataDump=F, dataPlot=F, numSegments=4 );
-#eigenBasis= sunspots_eigen_basis(  verbose=F, dataDump=F, dataPlot=F, windowLength=2001     );
-#eigenCoefs= sunspots_eigen_coefs(  verbose=F, dataDump=F, dataPlot=F, basis=eigenBasis, dataIn=spotData, Length=105 );
-#eigenSynth= sunspots_eigen_synth(  verbose=F, dataDump=F, dataPlot=F, basis=eigenBasis, numCoefs=6   );
-#eigenACF  = sunspots_eigen_acf(    verbose=F, dataDump=F, dataPlot=F, coefs=eigenCoefs,Length=100 );
- dftBasis  = sunspots_dft_basis(    verbose=T, dataDump=F, dataPlot=F, windowLength=2001,  numVectors=5 );
- dftCoefs  = sunspots_dft_coefs(    verbose=T, dataDump=F, dataPlot=F, basis=dftBasis, dataIn=spotData, plotLength=1001 );
+ spotData  = sunspots_tseries_data( verbose=F, dataDump=F, dataPlot=T                                    );
+ acfData   = sunspots_tseries_acf(  verbose=F, dataDump=F, dataPlot=T,            );
+ psdCoefs  = sunspots_psd_coefs(    verbose=F, dataDump=F, dataPlot=T, numSegments=4 );
+#eigenBasis= sunspots_eigen_basis(  verbose=F, dataDump=F, dataPlot=T, windowLength=2001     );
+#eigenCoefs= sunspots_eigen_coefs(  verbose=F, dataDump=F, dataPlot=T, basis=eigenBasis, dataIn=spotData, Length=105 );
+#eigenSynth= sunspots_eigen_synth(  verbose=F, dataDump=F, dataPlot=T, basis=eigenBasis, numCoefs=6   );
+#eigenACF  = sunspots_eigen_acf(    verbose=F, dataDump=F, dataPlot=T, coefs=eigenCoefs,Length=100 );
+ dftBasis  = sunspots_dft_basis(    verbose=T, dataDump=F, dataPlot=T, windowLength=2001,  numVectors=5 );
+ dftCoefs  = sunspots_dft_coefs(    verbose=T, dataDump=F, dataPlot=T, basis=dftBasis, dataIn=spotData, plotLength=1001 );
  dftSynth  = sunspots_dft_synth(    verbose=T, dataDump=F, dataPlot=T, basis=dftBasis, numCoefs=17  );
- dftACF    = sunspots_dft_acf(      verbose=T, dataDump=F, dataPlot=F, coefs=dftCoefs, Length=100 );
- walshBasis= sunspots_walsh_basis(  verbose=T, dataDump=F, dataPlot=F, windowLength=256,  numVectors=5 );
- walshCoefs= sunspots_walsh_coefs(  verbose=T, dataDump=T, dataPlot=T, basis=walshBasis, dataIn=spotData, plotLength=105 );
-#V = dftCoefs$V
-#W = dftCoefs$W
+ dftACF    = sunspots_dft_acf(      verbose=T, dataDump=F, dataPlot=T, coefs=dftCoefs, Length=100 );
+ walshBasis= sunspots_walsh_basis(  verbose=T, dataDump=F, dataPlot=T, windowLength=256,  numVectors=5 );
+ walshCoefs= sunspots_walsh_coefs(  verbose=T, dataDump=F, dataPlot=T, basis=walshBasis, dataIn=spotData, plotLength=105 );
+f = dftBasis$f
+V = dftBasis$V
+W = dftBasis$W
+N = dftBasis$N
+M = dftBasis$M
 #z = complex( real=V, imaginary=W )
 # W = walshBasis$W
 # f = walshBasis$f
- z = walshCoefs$z
- V = walshCoefs$V
+# z = walshCoefs$z
+# V = walshCoefs$V
