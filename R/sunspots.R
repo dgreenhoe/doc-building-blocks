@@ -17,7 +17,7 @@
 #install.packages("timma")
 #install.packages('bit')
 #install.packages('bitops')
-
+#install.packages('wavelets')
 #---------------------------------------
 # load add-on packages
 #---------------------------------------
@@ -33,7 +33,7 @@
   require(pracma)
   require(timma)   # grays(n): Generate gray code vector of length 2^n
   require(bitops)  # bitAnd, bitOr, bitXor, bitFlip, bitShiftL
-
+  require(wavelets)
 #---------------------------------------
 # Global parameters
 #---------------------------------------
@@ -1159,19 +1159,6 @@ sunspots_walsh_synth = function(
  dftCoefs  = sunspots_dft_coefs(    verbose=F, dataDump=F, dataPlot=T, basis=dftBasis, dataIn=spotData, plotLength=1001 );
  dftSynth  = sunspots_dft_synth(    verbose=F, dataDump=F, dataPlot=T, basis=dftBasis, numCoefs=17  );
  dftACF    = sunspots_dft_acf(      verbose=F, dataDump=F, dataPlot=T, coefs=dftCoefs, Length=100 );
- walshBasis= sunspots_walsh_basis(  verbose=F, dataDump=F, dataPlot=T, windowLength=2048,  numVectors=5 );
- walshCoefs= sunspots_walsh_coefs(  verbose=F, dataDump=F, dataPlot=T, basis=walshBasis, dataIn=spotData, plotLength=2048 );
- walshSynth= sunspots_walsh_synth(  verbose=T, dataDump=T, dataPlot=T, basis=walshBasis, dataIn=spotData, numCoefs=35  );
-#f = dftBasis$f
-#V = dftBasis$V
-#W = dftBasis$W
-#N = dftBasis$N
-#M = dftBasis$M
-#z = complex( real=V, imaginary=W )
- W = walshBasis$W
- f = walshBasis$f
-N = walshSynth$N
-M = walshSynth$M
-z = walshSynth$z
-V = walshSynth$V
-
+#walshBasis= sunspots_walsh_basis(  verbose=F, dataDump=F, dataPlot=T, windowLength=2048,  numVectors=5 );
+#walshCoefs= sunspots_walsh_coefs(  verbose=F, dataDump=F, dataPlot=T, basis=walshBasis, dataIn=spotData, plotLength=2048 );
+#walshSynth= sunspots_walsh_synth(  verbose=T, dataDump=F, dataPlot=T, basis=walshBasis, dataIn=spotData, numCoefs=35  );
