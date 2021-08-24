@@ -1,0 +1,64 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+% Daubechies-2 Pole Zero plot
+% nominal font size = \gsize
+% nominal unit = 10mm
+%============================================================================
+\begin{pspicture}(-2.5,-1.75)(3.5,1.75)%
+  %-------------------------------------
+  % settings
+  %-------------------------------------
+  \psset{radius=1mm,linewidth=0.75pt}%
+  %-------------------------------------
+  % nodes
+  %-------------------------------------
+  \pnode(0,0){origin}%          z-plane origin
+  \pnode(-1,0){pzeroes}%        p zeroes location
+  \pnode(0,0){poles}%           2p-1 poles location
+  %-------------------------------------
+  % asymptotic regions
+  %   |z-1| = sqrt(2) (arc with radius sqrt(2) centered at z=1)
+  %   |z+1| = sqrt(2) (arc with radius sqrt(2) centered at z=-1)
+  % sqrt(2) ~= 1.4142135623730950488016887242097
+  %-------------------------------------
+  \pscustom[fillstyle=solid,fillcolor=pzasymshade,linestyle=solid,linecolor=pzasym]{%
+    \psarc(-1,0){1.414214}{-45}{45}%
+    \psarcn( 1,0){1.414214}{135}{-135}% 
+    }%
+  %-------------------------------------
+  % axes
+  %-------------------------------------
+  \psaxes[linecolor=axis,labels=none]{<->}(0,0)(-2.5,-1.5)(2.75,1.5)%
+  \uput{1pt}[0](2.75,0){\color{axis}$\scy\Reb{z}$}%
+  \uput{2pt}[155](0,1.5){\color{axis}$\scy\Imb{z}$}%
+  %-------------------------------------
+  % unit circle
+  %-------------------------------------
+  \pscircle[linecolor=unitcircle](origin){1}%
+  \rput[bl](-1.45,-1.5){\rnode[b]{circleL}{$\scy\abs{z}=1$}}%
+  \pnode(-0.707,-0.707){circleP}% circle point
+  \ncline[linecolor=unitcircle,linestyle=dotted,nodesepA=0pt]{->}{circleL}{circleP}% circle pointer
+  %-------------------------------------
+  % B-spline zeroes (at z=-1)
+  %-------------------------------------
+  \Cnode[linewidth=1pt](-1,0){zp}%
+  \Cnode[linewidth=1pt](-0.0078125,0){zp}%
+  %\rput[bl](-1.45,-1.9){\rnode[t]{zpL}{$p$}$=1$ zeroes}%
+  %\ncline[linestyle=dotted,linecolor=zero,nodesepA=1pt]{->}{zpL}{zp}%
+  %\uput{1mm}[30](-1,0){\color{zero}$\scy3$}%
+  %-------------------------------------
+  % radial lines
+  %-------------------------------------
+  \ncline[linestyle=dashed]{origin}{z2}%
+  %-------------------------------------
+  % poles
+  %-------------------------------------
+  \rput(poles){%
+    \psline[linecolor=pole,linewidth=1pt](-0.1,+0.1)(+0.1,-0.1)%
+    \psline[linecolor=pole,linewidth=1pt](-0.1,-0.1)(+0.1,+0.1)%
+    }%
+  \rput[bl](-1.45,1){\rnode[br]{polesL}{$2$} poles}%
+  \ncline[linestyle=dotted,linecolor=pole,nodesepA=0pt,nodesepB=5pt]{->}{polesL}{poles}%
+  \uput{1mm}[30](0,0){\color{pole}$\scy2$}%
+\end{pspicture}%
