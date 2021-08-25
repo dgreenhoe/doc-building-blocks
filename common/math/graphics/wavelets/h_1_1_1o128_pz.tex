@@ -14,8 +14,6 @@
   % nodes
   %-------------------------------------
   \pnode(0,0){origin}%          z-plane origin
-  \pnode(-1,0){pzeroes}%        p zeroes location
-  \pnode(0,0){poles}%           2p-1 poles location
   %-------------------------------------
   % asymptotic regions
   %   |z-1| = sqrt(2) (arc with radius sqrt(2) centered at z=1)
@@ -24,7 +22,7 @@
   %-------------------------------------
   \pscustom[fillstyle=solid,fillcolor=pzasymshade,linestyle=solid,linecolor=pzasym]{%
     \psarc(-1,0){1.414214}{-45}{45}%
-    \psarcn( 1,0){1.414214}{135}{-135}% 
+    \psarcn( 1,0){1.414214}{135}{-135}%
     }%
   %-------------------------------------
   % axes
@@ -36,29 +34,33 @@
   % unit circle
   %-------------------------------------
   \pscircle[linecolor=unitcircle](origin){1}%
-  \rput[bl](-1.45,-1.5){\rnode[b]{circleL}{$\scy\abs{z}=1$}}%
+  \rput[bl](-1.5,-1.5){\rnode[t]{circleL}{$\scy\abs{z}=1$}}%
   \pnode(-0.707,-0.707){circleP}% circle point
   \ncline[linecolor=unitcircle,linestyle=dotted,nodesepA=0pt]{->}{circleL}{circleP}% circle pointer
   %-------------------------------------
-  % B-spline zeroes (at z=-1)
+  % zero at z = z1 = -1
   %-------------------------------------
-  \Cnode[linewidth=1pt](-1,0){zp}%
-  \Cnode[linewidth=1pt](-0.0078125,0){zp}%
-  %\rput[bl](-1.45,-1.9){\rnode[t]{zpL}{$p$}$=1$ zeroes}%
-  %\ncline[linestyle=dotted,linecolor=zero,nodesepA=1pt]{->}{zpL}{zp}%
-  %\uput{1mm}[30](-1,0){\color{zero}$\scy3$}%
+  \pnode(-1,0){z1}%
+  \Cnode[linewidth=1pt](z1){z1node}%
+  \rput[l](-2.5,-0.5){\rnode[t]{z1label}{$\scy{z=-1}$}}%
+  \ncline[linestyle=dotted,linecolor=zero,nodesepA=1pt]{->}{z1label}{z1node}%
   %-------------------------------------
-  % radial lines
+  % zero at z = z2
   %-------------------------------------
-  \ncline[linestyle=dashed]{origin}{z2}%
+  \pnode(-0.0078125,0){z2}%
+  \Cnode[linewidth=1pt](z2){z2node}%
+  \rput[bl](-2.5,-1.1){\rnode[r]{z2label}{$\scy{z=-\frac{1}{128}}$}}%
+  \ncline[linestyle=dotted,linecolor=zero,nodesepA=1pt]{->}{z2label}{z2node}%
+ %\ncline[linestyle=dashed]{origin}{z2}%
   %-------------------------------------
   % poles
   %-------------------------------------
+  \pnode(0,0){poles}%
   \rput(poles){%
     \psline[linecolor=pole,linewidth=1pt](-0.1,+0.1)(+0.1,-0.1)%
     \psline[linecolor=pole,linewidth=1pt](-0.1,-0.1)(+0.1,+0.1)%
     }%
-  \rput[bl](-1.45,1){\rnode[br]{polesL}{$2$} poles}%
+  \rput[b](-1,1){\rnode[b]{polesL}{\scs$2$ poles at $z=0$}}%
   \ncline[linestyle=dotted,linecolor=pole,nodesepA=0pt,nodesepB=5pt]{->}{polesL}{poles}%
-  \uput{1mm}[30](0,0){\color{pole}$\scy2$}%
+  \uput{1mm}[30](poles){\color{pole}$\scy2$}%
 \end{pspicture}%
