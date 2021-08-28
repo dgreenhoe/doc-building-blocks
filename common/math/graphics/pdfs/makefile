@@ -933,6 +933,9 @@ FILE_WAV =                              \
 	h_1_129_128_pz.pdf                  \
 	h_1_129_128_phi_h.pdf               \
 	h_1_129_128_psi_g.pdf               \
+	h_1_2_2_1_pz.pdf                    \
+	h_1_2_2_1_phi_h.pdf                 \
+	h_1_2_2_1_psi_g.pdf                 \
 	S4_pz.pdf                           \
 	S5_pz.pdf                           \
 	S6_pz.pdf                           \
