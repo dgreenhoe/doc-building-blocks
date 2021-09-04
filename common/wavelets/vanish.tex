@@ -84,15 +84,13 @@ number of Fourier coefficients.
   }
 \end{theorem}
 \begin{proof}
-\begin{eqnarray*}
+\begin{align*}
   \inprodr{\ff(x)}{\sum_{n=0}^{p-1}a_n x^n}
-    &=& \sum_{n=0}^{p-1}a_n^\ast \inprod{\ff(x)}{x^n}
-     =  \sum_{n=0}^{p-1}a_n^\ast \cdot 0
-     =  0
-\end{eqnarray*}
+    &= \sum_{n=0}^{p-1}a_n^\ast \inprod{\ff(x)}{x^n}
+     = \sum_{n=0}^{p-1}a_n^\ast \cdot 0
+     = 0
+\end{align*}
 \end{proof}
-
-
 
 %=======================================
 \section {Vanishing moments and the wavelet function}
@@ -258,11 +256,6 @@ Let $\wavsys$ be a wavelet system and $M_n$ the \hie{$n$th moment} \xref{def:Mn}
 \end{enumerate}
 \end{proof}
 
-
-
-
-
-
 %\prefpp{thm:vanish} gives alternative forms for expressing
 %the property of vanishing moments of a wavelet.
 %The \structe{CQF} \xref{def:cqf} constraint on the \structe{wavelet coefficients} \xref{def:gn}
@@ -303,7 +296,6 @@ Let $\Dh(\omega)$ and $\Dg(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of $\seqn
 \begin{proof}
 \begin{enumerate}
   \item Proof that $(1)\iff (2)$: by \prefpp{thm:vanish}
-
 
   \item Proof that $(2) \iff (3)$: by \prefp{thm:cqf_ddw}
 
@@ -353,7 +345,6 @@ Let $\Dh(\omega)$ and $\Dg(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of $\seqn
   %  \implies & \Dh^{(n)}(\pi) &=& 0 & \text{for $n=0,1,2,\ldots$}
   %\end{array}\]
 
-
   %\item Proof that (2)$\impliedby$(3):
   %      \begin{align*}
   %          0
@@ -398,7 +389,6 @@ Let $\Dh(\omega)$ and $\Dg(\omega)$ be the \ope{DTFT}s \xref{def:dtft} of $\seqn
   %      \vdots   & \mc{1}{c}{\vdots}    \\
   %      \implies & \Dg^{(n)}(0) &=& 0
   %    \end{array}\]
-
 
 \item Proof that (3)$\iff$(4): by \prefp{thm:dtft_ddw}
 \item Proof that (2)$\iff$(5): by \prefp{thm:dtft_ddw}; see also \prefp{thm:vanish}.
@@ -1011,9 +1001,124 @@ Let $\seqnZ{q_n}$ be a sequence with \ope{z-transform} \xref{def:opZ} $\Zq(z)$.
 
 
 
-%%=======================================
-%\section{Examples}
-%%=======================================
+%=======================================
+\section{Examples}
+%=======================================
+%--------------------------------------
+\begin{example}[\exmd{order 1 B-spline wavelet system}]
+\label{ex:pun_n=3}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system}.
+\exbox{
+  \brb{\begin{array}{FMMD}
+      1. & $\support\fphi(x)=\intcc{0}{2}$ & \xref{thm:mra_support}  & and
+    \\2. & \prope{admissibility condition} & \xref{thm:admiss}       & and
+    \\3. & \prope{partition of unity}      & \xref{thm:pun_zero}     & and
+    \\4. & \prope{1 vanishing moment}      & \xref{thm:gh_cqf}       &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{r|>{\ds}l}
+      n            & \fh_{n}
+    \\\hline
+      0            & \frac{\sqrt{2}}{4}\cdot1
+    \\1            & \frac{\sqrt{2}}{4}\cdot2
+    \\2            & \frac{\sqrt{2}}{4}\cdot1
+    \\\text{other} & 0 
+  \end{array}}
+  }
+\\\indentx\tbox{\includegraphics{../common/math/graphics/pdfs/n1_pz.pdf}}
+  \indentx\tbox{\includegraphics{../common/math/graphics/pdfs/n1_h.pdf}}
+  \indentx\tbox{\includegraphics{../common/math/graphics/pdfs/b1_g.pdf}}
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1) $\implies$ that only $h_0$, $h_1$, and $h_2$ are non-zero: by \prefp{thm:mra_support}.
+
+  \item System of Equations:
+        \\\indentx$\ds\begin{array}{rcl MM}
+           \fh_0 +\fh_1 +  \fh_2 &=& \sqrt{2} & (\prope{admissibility}        & \xref{thm:admiss}   
+        \\ \fh_0 -\fh_1 +  \fh_2 &=& 0        & (\prope{partition of unity}   & \xref{thm:pun_zero} 
+        \\0\fh_0 -\fh_1 + 2\fh_2 &=& 0        & (\prope{1st vanishing moment} & \xref{thm:gh_cqf} 
+        \end{array}$
+
+  \item System of Equations in Matrix Algebra form:
+    \begin{align*}
+      \brs{\begin{array}{rrc}
+        \\  1 &  1 &  1
+        \\  1 & -1 &  1
+        \\  0 & -1 &  2
+      \end{array}}
+      \brs{\begin{array}{l}
+           h_0
+        \\ h_1
+        \\ h_2
+      \end{array}}
+      &= \brs{\begin{array}{l}
+              \sqrt{2}
+           \\ 0
+           \\ 0
+         \end{array}}
+    \end{align*}
+  
+  \item Solution for $\brs{\begin{array}{ccc} h_0 & h_1 & h_2\end{array}}^T$:
+    \begin{align*}
+      \brs{\begin{array}{rrc|l}
+            1 &  1 &  1 & \sqrt{2}
+        \\  1 & -1 &  1 & 0
+        \\  0 & -1 &  2 & 0
+      \end{array}}
+      &\rightarrow
+      \brs{\begin{array}{rrc|l}
+            0 &  2 &  0 & \sqrt{2}
+        \\  1 & -1 &  1 & 0
+        \\  0 & -1 &  2 & 0
+      \end{array}}
+      &&\rightarrow
+      \brs{\begin{array}{rrc|l}
+            0 &  0 &  4 & \sqrt{2}
+        \\  1 & -1 &  1 & 0
+        \\  0 &  1 & -2 & 0
+      \end{array}}
+      &&\rightarrow
+      \brs{\begin{array}{rrc|l}
+            0 &  0 &  1 & \sqrt{2}/4
+        \\  1 &  0 & -1 & 0
+        \\  0 &  1 & -2 & 0
+      \end{array}}
+      \\&\rightarrow
+      \brs{\begin{array}{rrc|l}
+            0 &  0 &  1 & 1\cdot\sqrt{2}/4
+        \\  1 &  0 &  0 & 1\cdot\sqrt{2}/4
+        \\  0 &  1 &  0 & 2\cdot\sqrt{2}/4
+      \end{array}}
+      &&\rightarrow
+      \brs{\begin{array}{rrc|l}
+            1 &  0 &  0 & 1\cdot\sqrt{2}/4
+        \\  0 &  1 &  0 & 2\cdot\sqrt{2}/4
+        \\  0 &  0 &  1 & 1\cdot\sqrt{2}/4
+      \end{array}}
+      &&\implies
+      \brs{\begin{array}{l}
+           h_0
+        \\ h_1
+        \\ h_2
+      \end{array}}
+      = 
+      \frac{\sqrt{2}}{4}\brs{\begin{array}{l}
+              1
+           \\ 2
+           \\ 1
+      \end{array}}
+    \end{align*}
+
+  \item Note: $h_0$, $h_1$, $h_2$ can also be produced using other systems of equations including the following:
+    \begin{dingautolist}{"AC}
+      %\item \prope{admissibility condition} and \prope{orthonormality} \xref{ex:ortho_n=3}
+      \item \fncte{Daubechies-$p2$} wavelets computed using spectral techniques\ifsxref{compactp}{ex:dau-p2}
+    \end{dingautolist}
+\end{enumerate}
+\end{proof}
+
 %Examples of wavelets with $p$ vanishing moments include the B-spline wavelets and the Daubechies-$p$ wavelets.
 %
 %\begin{tabular}{|>{\scs}rlcll|}
@@ -1199,9 +1304,6 @@ Let $\seqnZ{q_n}$ be a sequence with \ope{z-transform} \xref{def:opZ} $\Zq(z)$.
 %\end{align*}
 %\end{proof}
 
-%=======================================
-\section{Examples}
-%=======================================
 \begin{figure}
   \centering%
   $\begin{array}{|*{3}{>{\ds}c|}}
