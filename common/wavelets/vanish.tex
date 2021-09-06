@@ -1005,7 +1005,7 @@ Let $\seqnZ{q_n}$ be a sequence with \ope{z-transform} \xref{def:opZ} $\Zq(z)$.
 \section{Examples}
 %=======================================
 %--------------------------------------
-\begin{example}[\exmd{order 1 B-spline wavelet system}]
+\begin{example}[\exmd{3 coefficients and 2 vanishing moments}]
 %\label{ex:pun_n=3}
 %--------------------------------------
 Let $\wavsys$ be a \structe{wavelet system}.
@@ -1033,7 +1033,7 @@ Let $\wavsys$ be a \structe{wavelet system}.
 \end{example}
 \begin{proof}
 \begin{enumerate}
-  \item Proof that (1) $\implies$ that only $h_0$, $h_1$, and $h_2$ are non-zero: by \prefp{thm:mra_support}.
+  \item Proof that (1) $\implies$ that only $\fh_0$, $\fh_1$, and $\fh_2$ are non-zero: by \prefp{thm:mra_support}.
   \item Proof solving a system of equations:
     \begin{enumerate}
       \item System of Equations:
@@ -1121,6 +1121,143 @@ Let $\wavsys$ be a \structe{wavelet system}.
            = \frac{\sqrt{2}}{4} \brs{\frac{ z^2 + 2z + 1 }
                                           { z^2          }}
            = \frac{\sqrt{2}}{4} \brs{ 1 + 2z^{-1} + z^{-2} }
+      \end{align*}
+  \end{enumerate}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{example}[\exmd{4 coefficients and 3 vanishing moments}]
+%\label{ex:pun_n=3}
+%--------------------------------------
+Let $\wavsys$ be a \structe{wavelet system}.
+\exbox{
+  \brb{\begin{array}{FMMD}
+      (1). & $\support\fphi(x)=\intcc{0}{3}$     & \xref{thm:mra_support}  & and
+    \\(2). & \prope{admissibility condition}     & \xref{thm:admiss}       & and
+    \\(3). & \prope{partition of unity} /        & \xref{thm:pun_zero}     & and
+    \\(4). & \prope{vanishing 1st moment}        & \xref{thm:gh_cqf}       & and
+    \\(4). & \prope{vanishing 2nd moment}        & \xref{thm:gh_cqf}       &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{c|r}
+      n            & \fh_{n}
+    \\\hline
+      0            & \frac{\sqrt{2}}{8}\cdot1
+    \\1            & \frac{\sqrt{2}}{8}\cdot3
+    \\2            & \frac{\sqrt{2}}{8}\cdot3
+    \\3            & \frac{\sqrt{2}}{8}\cdot1
+    \\\text{other} & 0
+  \end{array}}
+  }
+\\\tbox{\includegraphics{../common/math/graphics/pdfs/n2_pz.pdf}}
+  \tbox{\includegraphics{../common/math/graphics/pdfs/n2_h.pdf}}
+  \tbox{\includegraphics{../common/math/graphics/pdfs/b2_g.pdf}}
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item Proof that (1) $\implies$ that only $\fh_0$, $\fh_1$, $\fh_2$, and $\fh_3$ are non-zero: by \prefp{thm:mra_support}.
+  \item Proof solving a system of equations:
+    \begin{enumerate}
+      \item System of Equations:
+            \\\indentx$\ds\begin{array}{rcl MM}
+               \fh_0 +\fh_1 +  \fh_2 +  \fh_3 &=& \sqrt{2} & (\prope{admissibility})        & \xref{thm:admiss}
+            \\ \fh_0 -\fh_1 +  \fh_2 -  \fh_3 &=& 0        & (\prope{partition of unity})   & \xref{thm:pun_zero}
+            \\0\fh_0 -\fh_1 + 2\fh_2 - 3\fh_3 &=& 0        & (\prope{vanishing 1st moment}) & \xref{thm:gh_cqf}
+            \\0\fh_0 -\fh_1 + 4\fh_2 - 9\fh_3 &=& 0        & (\prope{vanishing 2nd moment}) & \xref{thm:gh_cqf}
+            \end{array}$
+
+      \item System of Equations in Linear/Matrix Algebra form:
+        \begin{align*}
+          \brs{\begin{array}{rrrr}
+                1 &  1 &  1  &  1
+            \\  1 & -1 &  1  & -1
+            \\  0 & -1 &  2  & -3
+            \\  0 & -1 &  4  & -9
+          \end{array}}
+          \brs{\begin{array}{l}
+               \fh_0
+            \\ \fh_1
+            \\ \fh_2
+            \\ \fh_3
+          \end{array}}
+          &= \brs{\begin{array}{l}
+                  \sqrt{2}
+               \\ 0
+               \\ 0
+               \\ 0
+             \end{array}}
+        \end{align*}
+
+      \item Solution for $\brs{\begin{array}{cccc} \fh_0 & \fh_1 & \fh_2 & \fh_3\end{array}}^T$:
+        \begin{align*}
+          \brs{\begin{array}{rrrr|l}
+                1 &  1 &  1  &  1 & \sqrt{2}
+            \\  1 & -1 &  1  & -1 & 0
+            \\  0 & -1 &  2  & -3 & 0
+            \\  0 & -1 &  4  & -9 & 0
+          \end{array}}
+          &\rightarrow
+          \brs{\begin{array}{rrrr|l}
+                1 &  0 &  3  & -2 & \sqrt{2}
+            \\  1 &  0 & -1  &  2 & 0
+            \\  0 &  1 & -2  &  3 & 0
+            \\  0 &  0 &  2  & -6 & 0
+          \end{array}}
+          &&\rightarrow
+          \brs{\begin{array}{rrrr|l}
+                0 &  0 &  4  & -4 & \sqrt{2}
+            \\  1 &  0 & -1  &  2 & 0
+            \\  0 &  1 & -2  &  3 & 0
+            \\  0 &  0 &  1  & -3 & 0
+          \end{array}}
+          &&\rightarrow
+          \\
+          \brs{\begin{array}{rrrr|l}
+                0 &  0 &  0  &  8 & \sqrt{2}
+            \\  1 &  0 &  0  & -1 & 0
+            \\  0 &  1 &  0  & -3 & 0
+            \\  0 &  0 &  1  & -3 & 0
+          \end{array}}
+          &\rightarrow
+          \brs{\begin{array}{rrrr|l}
+                0 &  0 &  0  &  1 & \frac{\sqrt{2}}{8}
+            \\  1 &  0 &  0  & -1 & 0
+            \\  0 &  1 &  0  & -3 & 0
+            \\  0 &  0 &  1  & -3 & 0
+          \end{array}}
+          &&\rightarrow
+          \brs{\begin{array}{rrrr|l}
+                0 &  0 &  0  &  1 & \frac{\sqrt{2}}{8}
+            \\  1 &  0 &  0  &  0 & \frac{\sqrt{2}}{8}
+            \\  0 &  1 &  0  &  0 & \frac{\sqrt{2}}{8}\cdot3
+            \\  0 &  0 &  1  &  0 & \frac{\sqrt{2}}{8}\cdot3
+          \end{array}}
+          \\
+          \implies&
+          \brs{\begin{array}{l}
+               h_0
+            \\ h_1
+            \\ h_2
+            \\ h_3
+          \end{array}}
+          =
+          \frac{\sqrt{2}}{8}\brs{\begin{array}{l}
+                  1
+               \\ 3
+               \\ 3
+               \\ 1
+          \end{array}}
+        \end{align*}
+
+    \item Proof using \prefpp{lem:van_factor} (and placing three zeros at $z=-1$):
+      \begin{align*}
+        \Zh(z)
+          &= \sqrt{2} \brs{\frac{ \brp{z+1}^3 }
+                                { \brp{1+1}^3 z^3 }}
+           = \frac{\sqrt{2}}{8} \brs{\frac{ z^3 + 3z^2 + 3z + 1 }
+                                          { z^3          }}
+           = \frac{\sqrt{2}}{8} \brs{ 1 + 3z^{-1} + 3z^{-2} + z^{-3} }
       \end{align*}
   \end{enumerate}
 \end{enumerate}

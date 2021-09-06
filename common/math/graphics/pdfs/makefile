@@ -839,6 +839,7 @@ GRP_SPLINE =                            \
 	n2dyadic.pdf                        \
 	n0_pz.pdf                           \
 	n1_pz.pdf                           \
+	n2_pz.pdf                           \
 	n3_pz.pdf                           \
 	pulse_pun.pdf                       \
 	Fpulse.pdf                          \
