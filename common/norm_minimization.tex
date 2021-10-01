@@ -140,31 +140,56 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
 \begin{enumerate}
   \item Proof that cost $\fCost(\vtheta)=\vtheta^H R \vtheta - (W^H)^\ast\vtheta -W^H\vtheta + \pE{\vy^H\vy}$: \label{item:est_mms_cost}
     \begin{align*}
-       \boxed{\fCost(\vtheta)}
+       \fCost(\vtheta)
          &\eqd \pE\norm{\ve}^2
          && \text{by definition of \fncte{cost function} $\fCost$}
-       \\&\eqd \pE\brs{\ve^H\ve}
-         && \text{by definition of \fncte{norm} $\normn$}
-       \\&\eqd \pE\brs{\brp{\vye-\vy}^H\brp{\vye-\vy}}
+       \\&\eqd \pE\norm{\brp{\vye-\vy}^H}^2
          && \text{by definition of \fncte{error vector} $\ve$}
-       \\&\eqd \pE\brs{\brp{\opU^H\vtheta-\vy}^H\brp{\opU^H\vtheta-\vy}}
-         && \text{by definition of estimate $\vye$}
-       \\&=\mathrlap{\pE\brs{\brp{\vtheta^H\opU-\vy^H}\brp{\opU^H\vtheta-\vy}}
-            \text{by \prope{distributive} prop. of \structe{*-algebra}s
-                  \xref{def:staralg}}}
-       \\&=    \pE\brs{ \vtheta^H\opU\opU^H\vtheta - \vtheta^H\opU\vy -\vy^H\opU^H\vtheta + \vy^H\vy }
-         && \text{by \structe{matrix algebra} ring property}
-       \\&=    \vtheta^H\pE\brs{\opU\opU^H}\vtheta - \vtheta^H\pE\brs{\opU\vy} -\pE\brs{\vy^H\opU^H}\vtheta + \pE{\vy^H\vy}
+       \\&= \pE\brs{\norm{\vye}^2 -2\Real\inprod{\vye}{\vy} + \norm{\vy}^2 }
+         && \text{by \thme{Polar Identity}
+                  \xref{lem:polarid}}
+       \\&= \pE\brs{\inprod{\vye}{\vye} -2\Real\inprod{\vye}{\vy} + \inprod{\vy}{\vy}}
+         && \text{by definition of $\norm{\cdot}$}
+       \\&= \pE\brs{\inprod{\opU^H\vtheta}{\opU^H\vtheta} -2\Real\inprod{\opU^H\vtheta}{\vy} + \inprod{\vy}{\vy}}
+         && \text{by definition of $\vye$}
+       \\&= \pE\brs{\brp{\opU^H\vtheta}^H\brp{\opU^H\vtheta} -2\Real\inprod{\opU^H\vtheta}{\vy} + \inprod{\vy}{\vy}}
+         && \text{by definition of $\vye$}
+       \\&= \pE\brs{\vtheta^H\opU\opU^H\vtheta -2\Real\vy^H\opU^H\vtheta + \vy^H\vy}
+         && \text{by definition of $\inprodn$ in matrix algebra}
+       \\&= \pE\brs{\vtheta^H\opU\opU^H\vtheta} -2\Real\pE\brs{\vy^H\opU^H\vtheta} + \pE\brs{\vy^H\vy}
          && \text{by \prope{linearity} $\pE$
                   \xref{thm:pE_linop}}
-       \\&=    \vtheta^H\pE\brs{\opU\opU^H}\vtheta - (\pE\brs{\opU\vy}^H\vtheta)^H -\pE\brs{\opU\vy}^H\vtheta + \pE{\vy^H\vy}
-       \\&\eqd \vtheta^H \opR \vtheta - (\opW^H\vtheta)^H -\opW^H\vtheta + \pE{\vy^H\vy}
+       \\&= \vtheta^H\pE\brs{\opU\opU^H}\vtheta -2\Real\pE\brs{\opU\vy}^H\vtheta + \pE\brs{\vy^H\vy}
+       \\&= \vtheta^H\opR\vtheta -2\Real\opW^H\vtheta + \pE\brs{\vy^H\vy}
          && \text{by definitions of $\opR$ and $\opW$}
-       \\&=    \vtheta^H \opR \vtheta - (\opW^H\vtheta)^\ast -\opW^H\vtheta + \pE{\vy^H\vy}
-         && \text{because $\opW^H\vtheta$ is a \prope{scalar}}
-       \\&=    \boxed{\vtheta^H \opR \vtheta - (\opW^H)^\ast\vtheta -\opW^H\vtheta + \pE{\vy^H\vy}}
-       \\&=    \vtheta^H \opR \vtheta - 2\Real\brs{\opW^H}\vtheta + \pE{\vy^H\vy}
     \end{align*}
+
+    %\begin{align*}
+    %   \boxed{\fCost(\vtheta)}
+    %     &\eqd \pE\norm{\ve}^2
+    %     && \text{by definition of \fncte{cost function} $\fCost$}
+    %   \\&\eqd \pE\brs{\ve^H\ve}
+    %     && \text{by definition of \fncte{norm} $\normn$}
+    %   \\&\eqd \pE\brs{\brp{\vye-\vy}^H\brp{\vye-\vy}}
+    %     && \text{by definition of \fncte{error vector} $\ve$}
+    %   \\&\eqd \pE\brs{\brp{\opU^H\vtheta-\vy}^H\brp{\opU^H\vtheta-\vy}}
+    %     && \text{by definition of estimate $\vye$}
+    %   \\&=\mathrlap{\pE\brs{\brp{\vtheta^H\opU-\vy^H}\brp{\opU^H\vtheta-\vy}}
+    %        \text{by \prope{distributive} prop. of \structe{*-algebra}s
+    %              \xref{def:staralg}}}
+    %   \\&=    \pE\brs{ \vtheta^H\opU\opU^H\vtheta - \vtheta^H\opU\vy -\vy^H\opU^H\vtheta + \vy^H\vy }
+    %     && \text{by \structe{matrix algebra} ring property}
+    %   \\&=    \vtheta^H\pE\brs{\opU\opU^H}\vtheta - \vtheta^H\pE\brs{\opU\vy} -\pE\brs{\vy^H\opU^H}\vtheta + \pE{\vy^H\vy}
+    %     && \text{by \prope{linearity} $\pE$
+    %              \xref{thm:pE_linop}}
+    %   \\&=    \vtheta^H\pE\brs{\opU\opU^H}\vtheta - (\pE\brs{\opU\vy}^H\vtheta)^H -\pE\brs{\opU\vy}^H\vtheta + \pE{\vy^H\vy}
+    %   \\&\eqd \vtheta^H \opR \vtheta - (\opW^H\vtheta)^H -\opW^H\vtheta + \pE{\vy^H\vy}
+    %     && \text{by definitions of $\opR$ and $\opW$}
+    %   \\&=    \vtheta^H \opR \vtheta - (\opW^H\vtheta)^\ast -\opW^H\vtheta + \pE{\vy^H\vy}
+    %     && \text{because $\opW^H\vtheta$ is a \prope{scalar}}
+    %   \\&=    \boxed{\vtheta^H \opR \vtheta - (\opW^H)^\ast\vtheta -\opW^H\vtheta + \pE{\vy^H\vy}}
+    %   \\&=    \vtheta^H \opR \vtheta - 2\Real\brs{\opW^H}\vtheta + \pE{\vy^H\vy}
+    %\end{align*}
 
   \item Proof that optimal $\vthetao=(\Real{\setY})^{-1}(\Real{W})$: \label{item:est_mms_vpo}
     \begin{align*}
