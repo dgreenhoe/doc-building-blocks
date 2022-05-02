@@ -111,22 +111,19 @@ be defined as follows:
 \begin{theorem}[\thmd{Minimum mean square estimation}]
 \label{thm:est_mms}
 %--------------------------------------
-Let
-\begin{array}[t]{|rcl|}
+\mbox{}\\Let
+$\begin{array}{|rcl|rcl|}
    \hline
-     \vye(\vtheta)   &\eqd& \opU^H\vtheta
-   \\\ve(\vtheta)    &\eqd& \vye-\vy
-   \\\fCost(\vtheta) &\eqd& \pE\norm{\ve}^2 \eqd \pE\brs{\ve^H\ve}
-   \\\estMS      &\eqd& \argmin_\vtheta \fCost(\vtheta)
-   \\R           &\eqd& \pE\brs{\opU\opU^H}
-   \\W           &\eqd& \pE\brs{\opU\vy}
+     \vye(\vtheta)   &\eqd& \opU^H\vtheta                          & \estMS          &\eqd& \argmin_\vtheta \fCost(\vtheta)
+   \\\ve(\vtheta)    &\eqd& \vye-\vy                               & \opR            &\eqd& \pE\brs{\opU\opU^H}            
+   \\\fCost(\vtheta) &\eqd& \pE\norm{\ve}^2 \eqd \pE\brs{\ve^H\ve} & \opW            &\eqd& \pE\brs{\opU\vy}               
    \\\hline
-\end{array}
-Then
+\end{array}$,
+then
 \thmbox{\begin{array}{rcl}
      \estMS                          &=& (\Real{\setY})^{-1}(\Real{W})
-   \\\fCost(\vtheta)                     &=& \vtheta^H R \vtheta - (W^H\vtheta)^\ast -W^H\vtheta + \pE{\vy^H\vy}
-   \\\grad_\vtheta \fCost(\vtheta)           &=& 2\Real\brs{\setY}\vtheta - 2\Real{W}
+   \\\fCost(\vtheta)                 &=& \vtheta^H\opR\vtheta -2\Real\opW^H\vtheta + \pE\brs{\vy^H\vy}
+   \\\grad_\vtheta \fCost(\vtheta)   &=& 2\Real\brs{\setY}\vtheta - 2\Real{W}
    \\\fCost(\estMS)                  &=&
      \brbl{\begin{array}{>{\ds}lM}
          \mc{2}{>{\ds}l}{\pE{\vy^H\vy} + (\Real{W^H})(\Real{\setY})^{-1} R (\Real{\setY})^{-1}(\Real{W}) - 2(\Real{W^H})(\Real{\setY})^{-1}(\Real{W})}
@@ -138,12 +135,12 @@ Then
 See \prefpp{app:mc} for a Matrix Calculus reference.
 
 \begin{enumerate}
-  \item Proof that cost $\fCost(\vtheta)=\vtheta^H R \vtheta - (W^H)^\ast\vtheta -W^H\vtheta + \pE{\vy^H\vy}$: \label{item:est_mms_cost}
+  \item Proof that cost $\fCost(\vtheta)=\vtheta^H\opR\vtheta -2\Real\opW^H\vtheta + \pE\brs{\vy^H\vy}$: \label{item:est_mms_cost}
     \begin{align*}
        \fCost(\vtheta)
          &\eqd \pE\norm{\ve}^2
          && \text{by definition of \fncte{cost function} $\fCost$}
-       \\&\eqd \pE\norm{\brp{\vye-\vy}^H}^2
+       \\&\eqd \pE\norm{\vye-\vy}^2
          && \text{by definition of \fncte{error vector} $\ve$}
        \\&= \pE\brs{\norm{\vye}^2 -2\Real\inprod{\vye}{\vy} + \norm{\vy}^2 }
          && \text{by \thme{Polar Identity}
@@ -152,12 +149,10 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
          && \text{by definition of $\norm{\cdot}$}
        \\&= \pE\brs{\inprod{\opU^H\vtheta}{\opU^H\vtheta} -2\Real\inprod{\opU^H\vtheta}{\vy} + \inprod{\vy}{\vy}}
          && \text{by definition of $\vye$}
-       \\&= \pE\brs{\brp{\opU^H\vtheta}^H\brp{\opU^H\vtheta} -2\Real\inprod{\opU^H\vtheta}{\vy} + \inprod{\vy}{\vy}}
-         && \text{by definition of $\vye$}
-       \\&= \pE\brs{\vtheta^H\opU\opU^H\vtheta -2\Real\vy^H\opU^H\vtheta + \vy^H\vy}
+       \\&= \pE\brs{\brp{\opU^H\vtheta}^H\brp{\opU^H\vtheta} -2\Real\brs{\vy^H\opU^H\vtheta} + \vy^H\vy}
          && \text{by definition of $\inprodn$ in matrix algebra}
        \\&= \pE\brs{\vtheta^H\opU\opU^H\vtheta} -2\Real\pE\brs{\vy^H\opU^H\vtheta} + \pE\brs{\vy^H\vy}
-         && \text{by \prope{linearity} $\pE$
+         && \text{by \prope{linearity} of $\pE$
                   \xref{thm:pE_linop}}
        \\&= \vtheta^H\pE\brs{\opU\opU^H}\vtheta -2\Real\pE\brs{\opU\vy}^H\vtheta + \pE\brs{\vy^H\vy}
        \\&= \vtheta^H\opR\vtheta -2\Real\opW^H\vtheta + \pE\brs{\vy^H\vy}
@@ -194,17 +189,19 @@ See \prefpp{app:mc} for a Matrix Calculus reference.
   \item Proof that optimal $\vthetao=(\Real{\setY})^{-1}(\Real{W})$: \label{item:est_mms_vpo}
     \begin{align*}
       \grad_\vtheta \fCost(\vtheta)
-        &= \grad_\vtheta \brs{\vtheta^H \opR \vtheta - (\opW^H)^\ast\vtheta -\opW^H\vtheta + \pE{\vy^H\vy} }
+        &= \grad_\vtheta \brs{\vtheta^H\opR\vtheta -2\Real\opW^H\vtheta + \pE\brs{\vy^H\vy}}
         && \text{by \pref{item:est_mms_cost}}
+      \\&= \grad_\vtheta \brs{\vtheta^H \opR \vtheta - (\opW^H)^\ast\vtheta -\opW^H\vtheta + \pE{\vy^H\vy} }
+         && \text{by definition of $\Real$ \xref{def:Re}}
       \\&= \opR\vtheta + \opR^T\vtheta - \grad_{\vtheta}\brs{(\opW^H)^\ast\vtheta + \opW^H\vtheta} + 0
         && \text{by \thme{quadratic form} result \xref{thm:mc_xAx}}
       \\&= \opR\vtheta + \opR^T\vtheta - [(\opW^H)^\ast]^T - [\opW^H]^T
         && \text{by \thme{affine equations} result \xref{thm:mc_Ax}}
-      \\&= \opR\vtheta + (R^H)^\ast\vtheta - \opW - \opW^\ast
+      \\&= \opR\vtheta + (\opR^H)^\ast\vtheta - \opW - \opW^\ast
         && \text{by definition of \ope{Hermitian Transpose} $^H$}
       \\&= \opR\vtheta + \opR^\ast\vtheta - \opW - \opW^\ast
-        && \text{because $R$ is \prope{Hermitian symmetric}}
-      \\&= (R + \opR^\ast)\vtheta - (\opW + \opW^\ast)
+        && \text{because $\opR$ is \prope{Hermitian symmetric}}
+      \\&= (\opR + \opR^\ast)\vtheta - (\opW + \opW^\ast)
         && \text{by \prope{ring} property}
       \\&= 2(\Real{\setY})\vtheta - 2\Real{\opW}
         && \text{by definition of $\Real$ \xref{def:Re}}
