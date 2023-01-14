@@ -1403,8 +1403,8 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
       &\eqd \int_{x=-\infty}^{x=+\infty} \brs{\int_{v=-\infty}^{v=x} \fg(v) \dv} e^{-s x} \dx
       && \text{by definition of $\opLT$}
       && \text{\xref{def:opLT}}
-    \\&= \int_{x=-\infty}^{x=+\infty} 
-         \brs{\int_{v=-\infty}^{v=+\infty} \fg(v) \step(x-v) \dv} 
+    \\&= \int_{x=-\infty}^{x=+\infty}
+         \brs{\int_{v=-\infty}^{v=+\infty} \fg(v) \step(x-v) \dv}
           e^{-s x} \dx
       && \text{by definition of $\step(x)$}
       && \text{\xref{def:step}}
@@ -1426,17 +1426,17 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
 \label{ex:opLT_capZ}
 %--------------------------------------
 \exboxt{
-  The \ope{Laplace Transform} of the \prope{impedance} $Z(s)$ of an ideal capacitor with \prope{capacitance} C,
-  \\ initial voltage $\fv(-\infty)=0$, and finite total energy stored over all time, is
+  The \ope{Laplace Transform} of the \prope{impedance} $Z(s)$ of an ideal capacitor with \prope{capacitance} $C$,
+  \\ initial voltage $\fv(t)=0$ for $t<0$, and finite voltage over all time, is
   \\\indentx$\ds Z(s) = \frac{1}{sC}$.
   }
 \end{example}
 \begin{proof}
 \begin{enumerate}
   \item An ideal capacitor is modeled with the equation $\ds\fnct{i}(t) = C\ddt\fv(t)$.
-  \item lemma: Because initial voltage is $0$, $\ds\lim_{t\to\infty}\brs{e^{st}\fv(-t)}=0$. \label{ilem:opLT_capZ1}
-  \item lemma: Because the capacitor has finite energy, $\ds\lim_{t\to\infty}\brs{e^{-st}\fv(t)}=0$. \label{ilem:opLT_capZ2}
-  \item
+  \item lemma: Because $\fv(t)=0$ for $t<0$, then $\ds\lim_{t\to\infty}\brs{e^{st}\fv(-t)}=0$. \label{ilem:opLT_capZ1}
+  \item lemma: Because voltage $\fv(t)$ is finite, $\ds\lim_{t\to\infty}\brs{e^{-st}\fv(t)}=0$. \label{ilem:opLT_capZ2}
+  \item Then the impedance $\fZ(s)$ of the capacitor is \ldots
     \begin{align*}
       \fZ(s)
         &  \eqd \frac{\fV(s)}
@@ -1458,9 +1458,53 @@ Let $\opLT$ be the \ope{Laplace Transform} operator \xref{def:opLT}.
                      {\ds Cs\opLT \brs{ \fv(t)}}
         && \text{by \pref{ilem:opLT_capZ1} and \pref{ilem:opLT_capZ2}}
       \\&  \eqd \frac{\fV(s)}
-                     {\ds Cs\opLT \fV(s)}
+                     {\ds sC\fV(s)}
         && \text{by definition of $\fV(s)$}
       \\&  = \frac{1}{sC}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%--------------------------------------
+\begin{example}
+\label{ex:opLT_indZ}
+%--------------------------------------
+\exboxt{
+  The \ope{Laplace Transform} of the \prope{impedance} $Z(s)$ of an ideal inductor with \prope{inductance} $L$,
+  \\ initial current $\fnct{i}(t)=0$ for $t<0$, and finite current over all time, is
+  \\\indentx$\ds Z(s) = sL$.
+  }
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item An ideal inductor is modeled with the equation $\ds\fv(t) = L\ddt\fnct{i}(t)$.
+  \item lemma: Because $\fnct{i}(t)=0$ for $t<0$, then $\ds\lim_{t\to\infty}\brs{e^{st}\fnct{i}(-t)}=0$. \label{ilem:opLT_indZ1}
+  \item lemma: Because $\fnct{i}(t)$ is finite, $\ds\lim_{t\to\infty}\brs{e^{-st}\fnct{i}(t)}=0$. \label{ilem:opLT_indZ2}
+  \item Then the impedance $\fZ(s)$ of the inductor is \ldots
+    \begin{align*}
+      \fZ(s)
+        &  \eqd \frac{\fV(s)}
+                     {\fI(s)}
+        && \text{by definition of \prope{impedance} $\fZ(s)$}
+      \\&  \eqd \frac{\ds\opLT \brs{\fv(t)} }
+                     {\fI(s)}
+        && \text{by definition of \ope{Laplace Transform} $\fI(s)$ of $\fnct{i}(t)$}
+      \\&  \eqd \frac{\ds\opLT \brs{ L \ddt\fnct{i}(t)} }
+                     {\fI(s)}
+        && \text{by definition of \ope{ideal inductor} with \prope{inductance} $L$}
+      \\&  =    \frac{\ds L\opLT \brs{ \ddt\fnct{i}(t)} }
+                     {\fI(s)}
+        && \text{by \prope{homogeneous} property of $\opLT$ \prefpp{thm:opLT_linear}}
+      \\&  =    \frac{\ds Ls\brp{\opLT \brs{\fnct{i}(t)} + \lim_{t\to\infty}\brs{e^{-st}\fnct{i}(t) + e^{st}\fnct{i}(-t)} }}
+                     {\fI(s)}
+        && \text{by \prefp{thm:opLT_diff}}
+      \\&  =    \frac{\ds Ls\opLT \brs{\fnct{i}(t)}}
+                     {\fI(s)}
+        && \text{by \pref{ilem:opLT_indZ1} and \pref{ilem:opLT_indZ2}}
+      \\&  \eqd \frac{\ds sL\fI(s)}
+                     {\fI(s)}
+        && \text{by definition of $\fI(s)$}
+      \\&  = sL
     \end{align*}
 \end{enumerate}
 \end{proof}
