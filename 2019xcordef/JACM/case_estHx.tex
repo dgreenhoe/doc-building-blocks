@@ -1,0 +1,278 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%============================================================================
+\subsection{Case study: Linear system identification}
+%============================================================================
+%=======================================
+%\subsection{Least squares estimates of linear systems}
+%=======================================
+\begin{figure}
+  \centering
+  \tbox{\includegraphics{graphics/opH_mnoise.pdf}}
+  \caption{Additive noise linear system for \pref{sec:case_estHx} Case study (System identification)\label{fig:addnoise_LTI}}
+\end{figure}
+
+% ___________________________________________________________________________________
+%| |                                   ____________________________________________  |
+%|D|                               \  /[                   ]2          |        |2   |
+%|E|          Syy(w) - k(w)Sxx(w) + \/ [Syy(w) - k(w)Sxx(w)]   + 4 k(w)| Sxy(w) |    |
+%|F| Hk(w) = --------------------------------------- ----------------- ------------- |
+%| |                                       2 Sxy(w)                                  |
+%|_|_________________________________________________________________________________|
+\begin{definition}                                                                   %
+\footnote{                                                                           %
+  \citePpc{white2006}{679}{(6)},                                                     %
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},                                      %
+  \citePpc{wicks1986}{898}{has additional $s$ in denominator}
+  }                                                                                  %
+\label{def:Hkp}                                                                      %
+%------------------------------------------------------------------------------------%
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
+\defbox{\begin{array}{l>{\ds}rc>{\ds}lC}
+  \mc{5}{M}{
+  The \fnctd{transfer function estimate $\estHkp(\omega; \kappa)$}
+  with \vald{scaling function} $\kappa(\omega)$ is defined as
+  }
+  \\&
+  \estHkp(\omega; \kappa) &\eqd&
+      \frac{\Swyy(\omega)-\kappa(\omega)\Swxx(\omega) +
+            \sqrt{\brs{\Swyy(\omega) - \kappa(\omega)\Swxx(\omega)}^2 +
+                  4\kappa(\omega)\abs{\Swxy(\omega)}^2}
+           }
+           {2\Swxy(\omega)}
+    & \forall \omega,\kappa(\omega)\in\R
+  \\
+  \mc{5}{M}{The \fnctd{transfer function estimate $\estHs(\omega; s)$}
+  with \vald{scaling constant} $s$ is defined as}
+  \\&
+  \estHs(\omega; s) &\eqd& \brlr{\estHkp(\omega; \kappa)}_{\kappa=s^2}
+    & \forall \omega,s\in\R
+\end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:estHk_Suu}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
+\lemboxt{
+  $\brb{\begin{array}{M}
+           There exists $\kappa(\omega)$ such that
+         $\Swvv(\omega)=\kappa(\omega)\Swuu(\omega)$
+  \end{array}}$
+  \\\indentx$\implies
+  \brb{\begin{array}{>{\ds}rc>{\ds}l}
+    \Swuu(\omega) = \frac{\abs{\estH(\omega)}^2\Swxx(\omega) - \estH(\omega)\Swxy(\omega) - \estH^\ast(\omega)\Swxy^\ast(\omega) + \Swyy(\omega)}
+                         {\kappa(\omega)+\abs{\estH(\omega)}^2}
+  \end{array}}$
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+     (1).\quad \Swuu(\omega) &= \Swxx(\omega) - \Swpp(\omega) &&=\ocom{\Swxx(\omega) - \frac{\Swpq(\omega)}{\estH^\ast( \omega)}}{by \pref{cor:RxySwxy}} &&= \ocom{\Swxx(\omega) - \frac{\Swxy(\omega)}{\estH^\ast( \omega)}}{by \prope{uncorrelated} hypothesis}
+  %\\(2).\quad \Swuu(\omega) &= \Swxx(\omega) - \Swpp(\omega) &&= \Swxx(\omega) - \ffrac{\Swpq(\omega)}{\estH     ( \omega)} &&= \Swxx(\omega) - \ffrac{\Swxy(\omega)}{\estH     ( \omega)}
+  %\\(3).\quad \Swuu(\omega) &= \Swxx(\omega) - \Swpp(\omega) &&= \Swxx(\omega) - \ffrac{\Swpq(\omega)}{\estH^\ast(-\omega)} &&= \Swxx(\omega) - \ffrac{\Swxy(\omega)}{\estH^\ast(-\omega)}
+  %\\(4).\quad \Swuu(\omega) &= \Swxx(\omega) - \Swpp(\omega) &&= \Swxx(\omega) - \ffrac{\Swpq(\omega)}{\estH     (-\omega)} &&= \Swxx(\omega) - \ffrac{\Swxy(\omega)}{\estH     (-\omega)}
+  %\\(5).\quad \Swuu(\omega) &= \Swxx(\omega) - \Swpp(\omega) &&= \Swxx(\omega) - \ffrac{\Swpq(\omega)}{\estH     ( \omega)} &&= \Swxx(\omega) - \ffrac{\Swxy(\omega)}{\estH     ( \omega)}
+  %\\(6).\quad \Swuu(\omega) &= \Swxx(\omega) - \Swpp(\omega) &&= \Swxx(\omega) - \ffrac{\Swpq(\omega)}{\estH     (-\omega)} &&= \Swxx(\omega) - \ffrac{\Swxy(\omega)}{\estH     (-\omega)}
+  %\\(7).\quad \Swuu(\omega) &= \Swxx(\omega) - \Swpp(\omega) &&= \Swxx(\omega) - \ffrac{\Swpq(\omega)}{\estH^\ast(-\omega)} &&= \Swxx(\omega) - \ffrac{\Swxy(\omega)}{\estH^\ast(-\omega)}
+  %\\(8).\quad \Swuu(\omega) &= \Swxx(\omega) - \Swpp(\omega) &&= \Swxx(\omega) - \ffrac{\Swpq(\omega)}{\estH     (-\omega)} &&= \Swxx(\omega) - \ffrac{\Swxy(\omega)}{\estH     (-\omega)}
+  %\\
+   \\(1).\quad \Swvv(\omega) &= \Swyy(\omega) - \Swqq(\omega) &&= \Swyy(\omega) - \Swpq(\omega)\estH     ( \omega) &&= \Swyy(\omega) - \Swxy(\omega)\estH     ( \omega)
+  %\\(2).\quad \Swvv(\omega) &= \Swyy(\omega) - \Swqq(\omega) &&= \Swyy(\omega) - \Swpq(\omega)\estH     ( \omega) &&= \Swyy(\omega) - \Swxy(\omega)\estH     ( \omega)
+  %\\(3).\quad \Swvv(\omega) &= \Swyy(\omega) - \Swqq(\omega) &&= \Swyy(\omega) - \Swpq(\omega)\estH     (-\omega) &&= \Swyy(\omega) - \Swxy(\omega)\estH     (-\omega)
+  %\\(4).\quad \Swvv(\omega) &= \Swyy(\omega) - \Swqq(\omega) &&= \Swyy(\omega) - \Swpq(\omega)\estH^\ast(-\omega) &&= \Swyy(\omega) - \Swxy(\omega)\estH^\ast(-\omega)
+  %\\(5).\quad \Swvv(\omega) &= \Swyy(\omega) - \Swqq(\omega) &&= \Swyy(\omega) - \Swpq(\omega)\estH     (-\omega) &&= \Swyy(\omega) - \Swxy(\omega)\estH     (-\omega)
+  %\\(6).\quad \Swvv(\omega) &= \Swyy(\omega) - \Swqq(\omega) &&= \Swyy(\omega) - \Swpq(\omega)\estH     ( \omega) &&= \Swyy(\omega) - \Swxy(\omega)\estH     ( \omega)
+  %\\(7).\quad \Swvv(\omega) &= \Swyy(\omega) - \Swqq(\omega) &&= \Swyy(\omega) - \Swpq(\omega)\estH     ( \omega) &&= \Swyy(\omega) - \Swxy(\omega)\estH     ( \omega)
+  %\\(8).\quad \Swvv(\omega) &= \Swyy(\omega) - \Swqq(\omega) &&= \Swyy(\omega) - \Swpq(\omega)\estH     ( \omega) &&= \Swyy(\omega) - \Swxy(\omega)\estH     ( \omega)
+%  \\
+%  \\(1).\quad \Swuu\brs{\abs{\estH}^2+\kappa} &= \Swuu\abs{\estH}^2 + \Swvv &&= \abs{\estH}^2\brs{\Swxx - \frac{\Swxy}{\estH^\ast}} +\brs{\Swyy - \Swxy\estH}  &&= \abs{\estH}^2\Swxx - \estH^\ast\Swyx -\Swxy\estH + \Swyy
+%  \\
+\end{align*}
+
+\begin{align*}
+    (1).\quad \Swuu\brs{\abs{\estH}^2+\kappa}
+          &= \Swuu\abs{\estH}^2 + \Swvv
+         &&= \abs{\estH}^2\brs{\Swxx - \frac{\Swxy}{\estH^\ast}} +\brs{\Swyy - \Swxy\estH}
+         &&= \abs{\estH}^2\Swxx - 2\estH\Swxy + \Swyy
+    \\
+    (2).\quad \Swuu\brs{\abs{\estH}^2+\kappa}
+         &= \Swuu\abs{\estH}^2 + \Swvv
+         &&= \abs{\estH}^2\brs{\Swxx - \frac{\Swxy}{\estH}} +\brs{\Swyy - \Swxy\estH}
+         &&= \abs{\estH}^2\Swxx - \estH^\ast\Swxy - \estH\Swxy + \Swyy
+    \\
+    (3).\quad \Swuu\brs{\abs{\estH}^2+\kappa}
+          &= \Swuu\abs{\estH}^2 + \Swvv
+         &&= \abs{\estH}^2\brs{\Swxx - \frac{\Swxy}{\estH^\ast(-\omega)}} +\brs{\Swyy - \Swxy\estH(-\omega)}
+        % &&= \abs{\estH}^2\Swxx - \estH^\ast\Swxy - \estH\Swxy + \Swyy 
+\end{align*}
+
+\begin{align*}
+     \Swuu\brs{\abs{\estH}^2+\kappa}
+          &= \abs{\estH}^2\Swuu +\kappa\Swuu
+          && \eqd \Swuu\abs{\estH}^2 + \Swvv
+          &&= \abs{\estH}^2\brs{\Swxx - \frac{\Swyx}{\estH}}
+      +\brs{\Swyy - \Swxy\estH}
+  \\&= \abs{\estH}^2\Swxx - \estH^\ast\Swyx
+      -\Swxy\estH + \Swyy
+  \\&\mathrlap{\implies
+    \boxed{
+      \Swuu(\omega) = \frac{\abs{\estH(\omega)}^2\Swxx(\omega) - \estH(\omega)\Swxy(\omega) - \estH^\ast(\omega)\Swxy^\ast(\omega) + \Swyy(\omega)}
+                   {\kappa(\omega)+\abs{\estH(\omega)}^2}
+            }}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\footnote{
+  \citePpc{wicks1986}{898}{has additional $s$ in denominator},
+  \citerpgc{shin2008}{293}{0470725648}{(9.67)},
+  \citePpc{white2006}{679}{(6)}
+  }
+\label{thm:estHk}
+\label{thm:estHs}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefpp{fig:addnoise_LTI}.
+Let $\estHkp(\omega)$ be the transfer function estimate defined in \prefpp{def:Hkp}.
+%Let \\\indentx$\norm{\Swxx(\omega)}^2\eqd\inprod{\Swxx(\omega)}{\Swxx(\omega)}\eqd\pE ...$
+\thmbox{
+  \brb{\begin{array}{FMD}
+      (1).& There exists $\kappa(\omega)$ such that     &
+        \\& $\Swvv(\omega)=\kappa(\omega)\Swuu(\omega)$ & and
+    \\(2).& $\fCost(\estHls)=\Swuu(\omega)$             &
+  \end{array}}
+  \implies
+  \brb{\begin{array}{>{\ds}rc>{\ds}l}
+    \argmin_{\estH}\fCost(\estH) &=& \estHkp(\omega)
+    \\\mc{3}{D}{($\estHkp$ is the ``optimal" estimator for minimizing system noise)}
+  \end{array}}
+  }
+\end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Let \label{item:estHk_FG}
+        $\begin{array}[t]{rclDD}
+             \fF &\eqd& \abs{\estH(\omega)}^2\Swxx(\omega) - \estH(\omega)\Swxy(\omega) - \estH^\ast(\omega)\Swxy^\ast(\omega) + \Swyy(\omega)
+               & (numerator in \pref{lem:estHk_Suu})
+               & and
+           \\\fG &\eqd& \kappa(\omega)+\abs{\estH(\omega)}^2
+               & (denominator in \pref{lem:estHk_Suu})
+        \end{array}$
+
+  \item lemma $\brp{\pderiv{}{\estH_R}\Swuu}$: \label{ilem:estHk_HR}
+    \begin{align*}
+      \boxed{0}
+        &= \frac{1}{2}\fG^20 = \frac{1}{2}\fG^2\pderiv{}{\estH_R}\Swuu
+        && \text{set $\pderiv{}{\estH_R}\Swuu=0$ to find optimum $\estH_R$}
+      \\&= \frac{1}{2}\fG^2\pderiv{}{\estH_R}\frac{\fF}{\fG}
+        && \text{by \prefp{lem:estHk_Suu}}
+      \\&= \frac{1}{2}\fG^2\frac{(\fF'\fG-\fG'\fF)}{\fG^2}
+        && \text{by \thme{Quotient Rule}}
+      \\&= \frac{1}{2}(\fF'\fG-\fG'\fF)
+      \\&= \frac{1}{2}\brs{2\estH_R\Swxx - \Swxy - \Swxy^\ast}\fG - \frac{1}{2}2\estH_R\fF
+        && \text{by definition of $\fF$, $\fG$}
+        && \text{\xref{item:estHk_FG}}
+      \\&= \boxed{\estH_R\Swxx \fG - \fG\Real\Swxy - \estH_R\fF}
+    \end{align*}
+
+  \item lemma $\brp{\pderiv{}{\estH_I}\Swuu}$: \label{ilem:estHk_HI}
+    \begin{align*}
+      \boxed{0}
+        &= \frac{1}{2}\fG^20 = \frac{1}{2}\fG^2\pderiv{}{\estH_I}\Swuu
+        && \text{set $\pderiv{}{\estH_I}\Swuu=0$ to find optimum $\estH_I$}
+      \\&= \frac{1}{2}\fG^20 = \frac{1}{2}\fG^2\pderiv{}{\estH_I}\frac{\fF}{\fG}
+        && \text{by \prefp{lem:estHk_Suu}}
+      \\&= \frac{1}{2}\fG^2\frac{(\fF'\fG-\fG'\fF)}{\fG^2}
+        && \text{by \thme{Quotient Rule}}
+      \\&= \frac{1}{2}(\fF'\fG-\fG'\fF)
+      \\&= \frac{1}{2}\brs{2\estH_I\Swxx - i\Swxy + i\Swxy^\ast}\fG - \frac{1}{2}2\estH_I\fF
+        && \text{by definition of $\fF$, $\fG$}
+        && \text{\xref{item:estHk_FG}}
+      \\&= \boxed{\estH_I\Swxx \fG + \fG\Imag\Swxy - \estH_I\fF}
+    \end{align*}
+
+  \item Solve for $\estH$ \ldots
+    \begin{align*}
+      0
+        &= 0 + i0
+         = \frac{1}{2}\fG^20
+         + \frac{1}{2}\fG^20
+         = \frac{1}{2}\fG^2\pderiv{}{\estH_R}\Swuu
+         +i\frac{1}{2}\fG^2\pderiv{}{\estH_I}\Swuu
+      \\&= \brs{\estH_R\Swxx \fG - \fG\Real\Swxy - \estH_R\fF}
+         +i\brs{\estH_I\Swxx \fG + \fG\Imag\Swxy - \estH_I\fF}
+        && \text{by \pref{ilem:estHk_HR} and \pref{ilem:estHk_HI}}
+      \\&= \mathrlap{
+             \estH\Swxx \fG - \Swxy^\ast \fG - \estH \fF
+             \quad\text{because $\Real(z) + i\Imag(z)=z$ and $\Real(z) - i\Imag(z)=z^\ast$}
+             }
+      \\&= \estH\Swxx \fG - \Swyx \fG - \estH \fF
+        && \text{by \prefp{cor:Swxy_sym}}
+      \\&= \estH\Swxx\brp{\kappa+\abs{\estH}^2} - \Swyx\brp{\kappa+\abs{\estH}^2}
+         - \estH\brp{\abs{\estH}^2\Swxx - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
+        && \text{by $\fF$, $\fG$ defs.}
+      \\&= \estH\Swxx\brp{\kappa+\cancelto{}{\abs{\estH}^2}} - \Swyx\brp{\kappa+\abs{\estH}^2}
+         - \estH\brp{\cancelto{}{\abs{\estH}^2\Swxx} - \estH\Swxy - \estH^\ast\Swxy^\ast + \Swyy}
+      \\&= \kappa\estH\Swxx - \Swyx\brp{\kappa+\abs{\estH}^2}
+         + \brp{ \estH^2\Swxy + \abs{\estH}^2\Swxy^\ast - \estH\Swyy}
+      \\&= \kappa\estH\Swxx - \kappa\Swyx - \cancelto{}{\Swyx\abs{\estH}^2}
+         + \brp{ \estH^2\Swxy + \cancelto{}{\abs{\estH}^2\Swxy^\ast} - \estH\Swyy}
+      \\&=  \estH^2\Swxy + \estH\brs{\kappa\Swxx - \Swyy} - \kappa\Swxy^\ast
+      \\
+      \implies&\boxed{
+        \estH = \frac{\brp{\Swyy-\kappa\Swxx} \pm \sqrt{\brp{\Swyy-\kappa\Swxx}^2 + 4\kappa\abs{\Swxy}^2}}
+                     {2\Swxy}
+      }% Praise the Lord!!!     2019 March 17 Sunday
+      && \text{by \thme{Quadratic Equation}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+
+%20190528%%============================================================================
+%20190528%\subsection{Coherence}
+%20190528%%============================================================================
+%20190528%%=======================================
+%20190528%%\subsubsection{Application}
+%20190528%%=======================================
+%20190528%%Coherence has two basic purposes:
+%20190528%%\begin{enume}
+%20190528%%  \item The \fncte{coherence} of $\rvx$ and $\rvy$ is a measure of how closely
+%20190528%%        $\rvx$ and $\rvy$ are statistically related.
+%20190528%%        %That is, it is an indication of how much $\rvx$ and $\rvy$
+%20190528%%        %``cohere" or ``stick" together
+%20190528%%  \item
+%20190528%The \fncte{coherence} of $\rvx$ and $\rvy$ is a measure of how reliable
+%20190528%        are the estimates $\estHa$ and $\estHb$ \xxref{def:H1}{def:H2}.
+%20190528%        If the coherence is $0.70$ or above, then we can have high confidence that
+%20190528%        the estimates $\estHa$ and $\estHb$ are ``good"
+%20190528%        estimates.\footnote{\citerpgc{liang2015}{363}{365}{1498702341}{7.4.2\scshape Coherece Function}}
+%20190528%%\end{enume}
+%20190528%
+%20190528%%=======================================
+%20190528%%\subsubsection{Definitions}
+%20190528%%=======================================
+%20190528%%---------------------------------------
+%20190528%\begin{definition}
+%20190528%\footnote{
+%20190528%  \citePp{chen2012}{4699}{(1), (2)},
+%20190528%  \citerppgc{liang2015}{363}{365}{1498702341}{7.4.2 Coherence function},
+%20190528%  \citerpgc{ewins1986}{131}{0863800173}{$\gamma^2=\ffrac{H_1(\omega)}{H_2(\omega)}$ (3.8)}
+%20190528%  }
+%20190528%\label{def:Cxy}
+%20190528%\label{def:oCxy}
+%20190528%%---------------------------------------
+%20190528%Let $\opS$ be a \structe{system} with input $\rvx(n)$ and output $\rvy(n)$.
+%20190528%\defbox{\begin{array}{MM>{\ds}rc>{\ds}l}
+%20190528%  The \fnctd{complex coherence} function &is defined as&
+%20190528%    \Cxy(\omega) &\eqd& \frac{\Swxy^\ast(\omega)}{\sqrt{\Swxx(\omega)\Swyy(\omega)}}
+%20190528%    \\
+%20190528%  The \fnctd{ordinary coherence} function &is defined as&
+%20190528%    \oCxy(\omega) &\eqd& \frac{\abs{\Swxy(\omega)}^2}{\Swxx(\omega)\Swyy(\omega)}
+%20190528%\end{array}}
+%20190528%\end{definition}
+%20190528%

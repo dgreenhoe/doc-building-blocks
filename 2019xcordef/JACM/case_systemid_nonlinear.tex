@@ -1,0 +1,298 @@
+%============================================================================
+% Daniel J. Greenhoe
+% LaTeX file
+%============================================================================
+%============================================================================
+\subsection{Case study: Non-linear system identification}
+\label{sec:case_systemid_nonlinear}
+%============================================================================
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{|c|}
+    \hline
+    \tbox{\includegraphics{graphics/opT_estH_mnoise.pdf}}
+    \\\hline
+  \end{tabular}
+  \caption{Least Square estimation \xref{prop:estHls}\label{fig:estHls}}
+\end{figure}
+
+%\begin{minipage}{\tw-50mm}
+%Let $\opS$ be the \structe{system} illustrated to the right.
+%\textbf{If} there is no measurement noise on the input and output and \textbf{if}
+%$\opH$ is \prope{linear time invariant}, then
+%$\FH = \Swxy/\Swxx$ \xref{cor:Rxyh}.
+%But what if there is output measurement noise?
+%And what if $\opH$ is not \prope{LTI}?
+%What is the best least-squares estimate of $\FH$?
+%The answer depends on how you define ``the best".
+%\end{minipage}
+%\hfill\tbox{\includegraphics{graphics/sysHw_xy.pdf}}
+
+%---------------------------------------
+\begin{remark}
+\label{rem:fCost}
+%---------------------------------------
+The defintion of ``best" or ``optimal" is given by a \fncte{cost function} $\fCost(\estH)$.
+There are several possible cost functions.
+One possibility is to define an error $\rve(n)\eqd\rvq(n)-\rvr(n)$.
+We note that if $\estH$ is closely tuned to match $\opT$, then 
+not only should $\rve(n)$ be close to 0 for all $n\in\Z$, 
+but the \fncte{auto-correlation} $\estRee(m)$ of $\rve(n)$ should also be close to 0 for all $m\in\Z$.
+Moreover by extension, the \fncte{auto-spectral density} $\Swee(\omega)\eqd\opDTFT\estRee(m)$ 
+should also be close to 0. 
+As such, we can define an arguably relevant \fncte{cost function} for the system $\opS$ of
+\prefpp{fig:estHls} in terms of $\Swxx$, $\Swyy$ and $\Swxy$. % as in \prefpp{def:fCost}.
+In the case of Papoulis's $\Rxy(m)$, the development of such a cost function $\fCost(\estH)$ 
+might look something like this:
+\begin{align*}
+  &(1).\quad\fCostrq\brp{\estH} %|
+  \\&\eqd \opDTFT\pE\brp{\brs{\rvr(n)-\rvq(n)}\brs{\rvr(0)-\rvq(0)}^\ast}
+    && \text{by definition of $\fCostrq$}
+    && \text{\xref{def:fCost}}
+  \\&=\opFT\brs{
+            \pE\brs{\rvr(n)\rvr^\ast(0)}
+           -\pE\brs{\rvr(n)\rvq^\ast(0)}
+           -\pE\brs{\rvq(n)\rvr^\ast(0)}
+           +\pE\brs{\rvq(n)\rvq^\ast(0)}
+           }
+    && \text{by \prope{linearity} of $\pE$}
+    && \text{\xref{prop:pE_linop}}
+  \\&\eqd \opFT\brs{\Rrr(m) - \Rrq(m) - \Rqr(m) + \Rqq(m)}
+    && \text{by definition of $\Rxy$}
+    && \text{\xref{def:Rxym}}
+  \\&\eqd \boxed{\Swrr(\omega) - \Swrq(\omega) - \Swqr(\omega) + \Swqq(\omega)}
+    && \text{by definition of $\Swxy$}
+    && \text{\xref{def:Swxy}}
+  %\\&= \Swrr(\omega) - \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)
+  %  && \text{by \prefp{cor:Swxy}}
+  %\\&= \Swpp(\omega)\abs{\estH(\omega)}^2 - \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)
+  %  && \text{by \pref{cor:RxySwxy}}
+  %\\&= \Swpp(\omega)\abs{\estH(\omega)}^2
+  %   - \Swpy(\omega)\estH(\omega)
+  %   - \Swpy^\ast(\omega)\estH^\ast(\omega)
+  %   + \Swqq(\omega)
+  %  && \text{by \pref{prop:dual_mnoise}}
+\end{align*}
+\end{remark}
+
+Taking cue from the result of \pref{rem:fCost}, we arrive at \emph{a} definition of cost:
+
+%---------------------------------------
+\begin{definition}
+\label{def:fCost}
+%---------------------------------------
+Let $\opS$ be a system defined as in \prefpp{fig:estHls}.
+Define the following \fncte{cost function}s for spectral \prope{least-squares} estimates:
+\defbox{\begin{array}{>{\ds}r*{2}{c>{\ds}l}}
+      \fCostrq(\estH) &\eqd& 
+        \Swrr(\omega) - \Swrq(\omega) - \Swqr(\omega) + \Swqq(\omega)
+  \end{array}}
+\end{definition}
+
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
+Note that by \prefpp{cor:Swxx_real}, $\Swqr=\Swrq^\ast$ for (1)--(4)\ldots and thus 
+the cost function $\fCost$ for (1)--(4) is \fncte{real-valued}. 
+This in general is \emph{not} true for (5)--(8).
+This in itself provides an argument, however weak that argument may be, 
+for \emph{not} selecting any of (5)--(8) as a standard for the definition of $\Rxy(m)$.
+\end{remark}
+
+Now for each of the eight $\Rxy(m)$ definitions, we can transform the expression of $\fCostrq(\estH)$
+as given by \pref{def:fCost} into expressions involving $\estH$ (next lemma). 
+In doing so, one might hope to be in a good position to take partial derivatives of the real and imaginary parts of $\estH$
+to find an optimal \prope{least-squares-like} solution for $\estH$.
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:H1LS_cost}
+%---------------------------------------
+Let $\fCostrq(\estH)$ be defined as in \pref{def:fCost}.
+Let (1)--(8) below correspond to the eight definitions of $\Rxy(m)$ in \pref{def:Rxym}.
+%\lembox{\begin{array}{>{\ds}rc>{\ds}l}
+%  \fCostrq\brp{\estH}
+%    &=& \Swpp     (\omega)\abs{\estH     (\omega)}^2
+%      - \Swpy     (\omega)     \estH     (\omega)
+%      - \Swpy^\ast(\omega)     \estH^\ast(\omega)
+%      + \Swqq     (\omega)
+%\end{array}}
+%\end{lemma}
+%\begin{proof}
+\begin{small}
+%\begin{align*}
+%    %---------------------------
+%  (1).\,\fCostrq\brp{\estH} %|
+%    %---------------------------
+%    &\eqd \Swrr(\omega) - \Swrq(\omega) - \Swqr(\omega) + \Swqq(\omega)
+%    && \text{by definition of $\fCostrq$}
+%    && \text{\xref{def:fCost}}
+%  \\&= \Swrr(\omega) - \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)
+%    && \text{by \prefp{cor:Swxy}}
+%
+%  \\&= \Swpp(\omega)\abs{\estH(\omega)}^2 - \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)
+%    && \text{by \prefp{cor:RxySwxy}}
+%
+%  \\&= \Swpp(\omega)\abs{\estH(\omega)}^2
+%     - \Swpy(\omega)\estH(\omega)
+%     - \Swpy^\ast(\omega)\estH^\ast(\omega)
+%     + \Swqq(\omega)
+%    && \text{by \prefp{prop:dual_mnoise}}
+%\end{align*}
+\begin{align*}
+  (1).\quad\fCostrq\brp{\estH}
+     &= \ocom{\Swrr(\omega)- \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)}
+             {by \pref{def:fCost} and \prefp{cor:Swxy}}
+    &&= \ocom{
+        \Swpp(\omega)\abs{\estH(\omega)}^2
+      - \Swpy(\omega)\estH(\omega)
+      - \Swpy^\ast(\omega)\estH^\ast(\omega)
+      + \Swqq(\omega)
+      }{by \prefp{cor:RxySwxy} and \prefp{prop:dual_mnoise}}
+    \\
+  (2).\quad\fCostrq\brp{\estH}
+     &= \Swrr(\omega)- \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)
+    &&= \Swpp(\omega)\abs{\estH(\omega)}^2
+      - \Swpy(\omega)\estH^\ast(-\omega)
+      - \Swpy^\ast(\omega)\estH(-\omega)
+      + \Swqq(\omega)
+    \\
+  (3).\quad\fCostrq\brp{\estH}
+     &= \Swrr(\omega)- \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)
+    &&= \Swpp(\omega)\abs{\estH(-\omega)}^2
+      - \Swpy(\omega)\estH(\omega)
+      - \Swpy^\ast(\omega)\estH^\ast(\omega)
+      + \Swqq(\omega)
+    \\
+  (4).\quad\fCostrq\brp{\estH}
+     &= \Swrr(\omega)- \Swrq(\omega) - \Swrq^\ast(\omega) + \Swqq(\omega)
+    &&= \Swpp(\omega)\abs{\estH(-\omega)}^2
+      - \Swpy(\omega)\estH^\ast(-\omega)
+      - \Swpy^\ast(\omega)\estH(-\omega)
+      + \Swqq(\omega)
+    \\
+  (5).\quad\fCostrq\brp{\estH}
+     &= \Swrr(\omega)- \Swrq(\omega) - \Swrq(-\omega) + \Swqq(\omega)
+    &&= \Swpp(\omega)\estH(\omega)\estH(-\omega)
+      - \Swpy(\omega)\estH(\omega)
+      - \Swpy(-\omega)\estH(-\omega)
+      + \Swqq(\omega)
+    \\
+  (6).\quad\fCostrq\brp{\estH}
+     &= \Swrr(\omega)- \Swrq(\omega) - \Swrq(-\omega) + \Swqq(\omega)
+    &&= \Swpp(\omega)\estH(\omega)\estH(-\omega)
+      - \Swpy(\omega)\estH(\omega)
+      - \Swpy(-\omega)\estH(-\omega)
+      + \Swqq(\omega)
+    \\
+  (7).\quad\fCostrq\brp{\estH}
+     &= \Swrr(\omega)- \Swrq(\omega) - \Swrq(-\omega) + \Swqq(\omega)
+    &&= \Swpp(\omega)\estH^\ast(\omega)\estH^\ast(-\omega)
+      - \Swpy(\omega)\estH(\omega)
+      - \Swpy(-\omega)\estH^\ast(\omega)
+      + \Swqq(\omega)
+    \\
+  (8).\quad\fCostrq\brp{\estH}
+     &= \Swrr(\omega)- \Swrq(\omega) - \Swrq(-\omega) + \Swqq(\omega)
+    &&= \Swpp(\omega)\estH(\omega)\estH(-\omega)
+      - \Swpy(\omega)\estH^\ast(-\omega)
+      - \Swpy(-\omega)\estH(-\omega)
+      + \Swqq(\omega)
+\end{align*}
+%\end{proof}
+\end{small}
+\end{lemma}
+
+%%---------------------------------------
+%\begin{remark}
+%\label{rem:case_systemid_nonlinear}
+%%---------------------------------------
+For the Papoulis $\Rxy(m)$ definition (1), the $\fCostrq$ expression demonstrated in \pref{lem:H1LS_cost} is very 
+useful. 
+In particular, we can 
+%However, it does illustrate what properties might be useful in identifying an optimal least squares solution.
+%In particular, least squares methods involve 
+set the partial derivatives 
+$\pderiv{}{\estH_R}\estH(\omega)$ and $\pderiv{}{\estH_I}\estH(\omega)$
+of the real and imaginary parts 
+of $\estH(\omega)$ to zero and solve the resulting two equations to find an optimal $\estH$ (as in \prefp{prop:estHls}).
+
+However, this becomes troublesome in the case when encountering $\estH(-\omega)$ and the 
+\fncte{impulse response} of $\estH$ is \prope{complex-valued}---in which case in general $\estH(-\omega)\neq\estH^\ast(\omega)$.
+
+Note that except for (1), \emph{all} of the expressions demonstrated in \pref{lem:H1LS_cost} contain an $\estH(-\omega)$ 
+and/or $\estH^\ast(-\omega)$. 
+
+This trouble provides an argument, however a weak one it might be, for choosing (1) as the standard definition of $\Rxy(m)$.
+%\end{remark}
+
+%---------------------------------------
+\begin{proposition}
+\label{prop:estHls}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls}.
+\propbox{
+  \brb{\begin{array}{FMMD}
+      (A).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{WSS}          & and
+    \\(B).& $\rvx$, $\rvu$, and $\rvv$ are & \prope{uncorrelated} & and
+    \\(C).& $\rvu$ and $\rvv$ are          & \prope{zero-mean}    & and
+    \\(D).& $\estH$ is                     & \prope{LTI}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{>{\ds}r>{\ds}c>{\ds}l}
+    \argmin_{\estH}\fCostrq(\estH) &=& \frac{\Swxy^\ast(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
+    \\\mc{3}{M}{for (1)}
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  (1).\quad 
+    0 &= \pderiv{}{\estH_R}\fCostrq\brs{\estH(\omega)}
+      &= 2\estH_R(\omega)\Swpp(\omega) -  \Swpy(\omega) -  \Swpy^\ast(\omega) + \cancelto{0}{\pderiv{}{\estH_R}\Swqq(\omega)}
+     &&\implies \estH_R(\omega) = \frac{\Real\Swpy^\ast(\omega)}{\Swpp(\omega)}
+     \\
+    0 &= \pderiv{}{\estH_I}\fCostrq\brs{\estH(\omega)}
+      &= 2\estH_I(\omega)\Swpp(\omega) -  i\Swpy(\omega) + i\Swpy^\ast(\omega) + \cancelto{0}{\pderiv{}{\estH_R}\Swqq(\omega)}
+     &&\implies \estH_I(\omega) = \frac{\Imag\Swpy^\ast(\omega)}{\Swpp(\omega)}
+\end{align*}
+\begin{align*}
+    \implies \estH(\omega)
+      &\eqd \estH_R(\omega) + i\estH_I(\omega)
+        \frac{\Real\Swpy^\ast(\omega)}{\Swpp(\omega)}
+        + \frac{i\Imag\Swpy^\ast(\omega)}{\Swpp(\omega)}
+    \\&= \frac{\Swpy^\ast(\omega)}{\Swpp(\omega)}
+    \\&= \frac{\Swxy^\ast(\omega)}{\Swxx(\omega)-\Swuu(\omega)}
+      && \text{by \prefp{prop:xvy}}
+\end{align*}
+\end{proof}
+
+It follows immediately from \pref{prop:estHls} that, for (1) and in the special case
+of no input noise ($\rvu(n)=0$), the standard estimate\footnote{
+  \citerppgc{bendat1980}{98}{100}{0471058874}{5.1.1 Optimal Character of Calculations; note: proof minimizing $\Swvv$ but yields same result},
+  \citerppgc{bendat1993}{106}{109}{0471570559}{5.1.1 Optimality of Calculations},
+  \citerppgc{bendat2010}{187}{190}{1118210824}{6.1.4 Optimum Frequency Response Functions}
+  }
+$\estHa$ is the optimal
+least-squares estimate of $\FH$ (next).
+
+%---------------------------------------
+\begin{corollary}
+\label{cor:H1LSb}
+%---------------------------------------
+Let $\opS$ be the \structe{system} illustrated in \prefp{fig:estHls}.
+\corbox{
+  \brb{\begin{array}{FMD}
+      (1). & hypotheses of \pref{prop:estHls} & and
+    \\(2). & $\rvu(n)=0$
+  \end{array}}
+  \implies
+  \brb{\estH(\omega) = \estHa(\omega) \eqd \frac{\Swxy^\ast(\omega)}{\Swxx(\omega)}
+  }
+  \qquad
+  \begin{array}{M}
+    for (1)
+  \end{array}
+  }
+\end{corollary}
