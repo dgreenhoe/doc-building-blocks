@@ -1,0 +1,321 @@
+%============================================================================
+% LaTeX File
+% Daniel J. Greenhoe
+%============================================================================
+
+%======================================
+\section{Operations on Sequences}
+%\label{app:dsp}
+%\label{app:ztrans}
+%======================================
+%======================================
+%\subsection{Operations}
+%======================================
+%======================================
+\subsection{Convolution operation}
+%======================================
+%--------------------------------------
+\begin{definition}
+\label{def:sequence}
+\footnote{
+  \citerp{bromwich1908}{1},
+  \citerpgc{thomson2008}{23}{143484367X}{Definition 2.1},
+  \citerpg{joshi1997}{31}{8122408265}
+  }
+\label{def:tuple}
+\label{def:seq}
+%--------------------------------------
+Let $\clFyx$ be the set of all functions from a set $\setY$ to a set $\setX$.
+Let $\Z$ be the set of integers.
+\defbox{\begin{array}{l}
+  \text{A function $\ff$ in $\clFyx$ is a \structd{sequence} over $\setX$ if $\setY=\Z$.}\\
+  \text{A sequence may be denoted in the form $\ds\seqxZ{x_n}$ or simply as $\ds\seqn{x_n}$.}
+  %\text{A function $\ff$ in $\clFyx$ is an \hid{n-tuple} over $\setX$ if $\setY=\setn{1,2,\ldots,\xN}$.}\\
+  %\text{An n-tuple may be denoted in the form $\ds\tuplexn{x_n}$ or simply as $\ds\tuplen{x_n}$.}
+\end{array}}
+\end{definition}
+
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \citerpgc{kubrusly2011}{347}{0817649972}{Example 5.K}
+  }
+\label{def:spllR}
+\label{def:spllC}
+\label{def:spllF}
+%--------------------------------------
+%Let $\fieldF$ be a \structe{field}. % \xref{def:field}.
+Let $\fieldC$ be the \structe{field of complex numbers}.
+\defboxt{
+  The \structd{space of all absolutely square summable sequences} $\spllC$ over $\C$ is defined as
+  \\\indentx$\ds\spllC\eqd\set{\seqxZ{x_n}}{\sum_{n\in\Z}\abs{x_n}^2 < \infty}$
+  }
+\end{definition}
+
+%The space $\spllC$ is an example of a \structe{separable Hilbert space}.
+%In fact, $\spllC$ is the \emph{only} separable Hilbert space in the sense that all separable Hilbert spaces
+%are isomorphically equivalent.
+%For example, $\spllC$ is isomorphic to $\spLLR$, the \structe{space of all absolutely square Lebesgue integrable functions}.
+%%That is, their topological structure is the same.
+%%Differences occur in the nature of operators on the spaces.
+
+%--------------------------------------
+\begin{definition}
+\label{def:dsp_conv}
+\label{def:convd}
+\index{convolution}
+%--------------------------------------
+%Let $\seq{x_n}{n\in\Z}$ and $\seq{y_n}{n\in\Z}$ be sequences \xref{def:seq} in the space $\spllC$ \xref{def:spllR}.
+\defbox{\begin{array}{M}
+  The \opd{convolution} operation $\hxs{\convd}$ is defined as
+  \\\indentx
+  $\ds{\seqn{x_n}\convd\seqn{y_n}} \eqd \seq{\sum_{m\in\Z} x_{m} y_{n-m}}{n\in\Z}\qquad\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllC$
+\end{array}}
+\end{definition}
+
+%======================================
+\subsection{Z-transform}
+%======================================
+%--------------------------------------
+\begin{definition}
+\footnote{
+  \structe{Laurent series}: \citerpg{aa}{49}{0821821466}
+  }
+\label{def:opZ}
+%--------------------------------------
+Let $\seqnZ{\fx(n)}$ be a sequence.
+\defboxt{
+%Let $\seq{x_n}{n\in\Z}$ be a sequence in the space $\spllC$. %over a ring $\ring$.
+  The \opd{z-transform} $\opZ$ of $\seqn{\fx(n)}$ is defined as
+  \\\indentx
+  $\ds\brs{\hxs{\opZ}\seqn{\fx(n)}}(z) \eqd {\sum_{n\in\Z} \fx(n) z^{-n}}\qquad\scy\forall\seqn{\fx(n)}\in\spllC$
+  }
+\end{definition}
+
+%--------------------------------------
+\begin{proposition}
+\label{prop:opZ}
+%--------------------------------------
+Let $X(z)\eqd\opZ\fx(n)$ be the \ope{z-transform} of $\fx(n)$.
+\thmbox{
+  \mcom{\brb{\begin{array}{rcl}
+    \Zx(z) &\eqd& \opZ\seqn{\fx(n)}
+  \end{array}}}{\xref{def:opZ}}
+  \quad\implies\quad
+  \brb{\begin{array}{F>{\ds}lc>{\ds}lCD}
+      (1).&\opZ\seqn{\alpha\fx(n)} &=& \alpha\Zx(z)                    & \forall\seqn{x_n}\in\spllC & and
+    \\(2).&\opZ\seqn{\fx[n-k]}     &=& z^{-k}\Zx(z)                    & \forall\seqn{x_n}\in\spllC & and
+    \\(3).&\opZ\seqn{\fx(-n)}      &=& \Zx\brp{\frac{1}{z}}            & \forall\seqn{x_n}\in\spllC & and
+    \\(4).&\opZ\seqn{\fx^\ast(n)}  &=& \Zx^\ast\brp{z^\ast}            & \forall\seqn{x_n}\in\spllC & and
+    \\(5).&\opZ\seqn{\fx^\ast(-n)} &=& \Zx^\ast\brp{\frac{1}{z^\ast}}  & \forall\seqn{x_n}\in\spllC &
+  \end{array}}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  \alpha\Z\Zx(z)
+    &\eqd \alpha \opZ \seqn{\fx(n)}                && \text{by definition of $\Zx(z)$}
+  \\&\eqd \alpha \sum_{n\in\Z} \fx(n) z^{-n}       && \text{by definition of $\opZ$ operator}
+  \\&\eqd \sum_{n\in\Z} \brp{\alpha\fx(n)} z^{-n}  && \text{by \prope{distributive} property}
+  \\&\eqd \opZ\seqn{\alpha\fx(n)}                  && \text{by definition of $\opZ$ operator}
+  \\
+  z^{-k}\Zx(z)
+    &= z^{-k} \opZ\seqn{\fx(n)}
+    && \text{by definition of $\Zx(z)$}
+    && \text{(left hypothesis)}
+  \\&\eqd z^{-k}\sum_{n=-\infty}^{n=+\infty} \fx(n) z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&=          \sum_{n=-\infty}^{n=+\infty} \fx(n) z^{-n-k}
+  \\&=          \sum_{m-k=-\infty}^{m-k=+\infty} \fx[m-k] z^{-m}
+    && \text{where $m\eqd n+k$}
+    && \text{$\implies$ $n=m-k$}
+  \\&=          \sum_{m=-\infty}^{m=+\infty} \fx[m-k] z^{-m}
+  \\&=          \sum_{n=-\infty}^{n=+\infty} \fx[n-k] z^{-n}
+    && \text{where $n\eqd m$}
+  \\&\eqd \opZ\seqn{\fx[n-k]}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx^\ast(n)}
+    &\eqd \sum_{n\in\Z}\fx^\ast(n) z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&\eqd \brp{\sum_{n\in\Z}\fx(n) (z^\ast)^{-n}}^\ast
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&\eqd \Zx^\ast(z^\ast)
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx(-n)}
+    &\eqd \sum_{n\in\Z}\fx(-n) z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&= \sum_{-m\in\Z}\fx[m] z^{m}
+    && \text{where $m\eqd -n$}
+    && \text{$\implies$ $n=-m$}
+  \\&= \sum_{m\in\Z}\fx[m] z^{m}
+    && \text{because $\seqn{\fx(n)},\seqn{z^n}\in\spllC$}     && \text{\xref{def:spllC}}
+  \\&= \sum_{m\in\Z}\fx[m] \brp{\frac{1}{z}}^{-m}
+  \\&\eqd \Zx\brp{\frac{1}{z}}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\
+  \opZ\seqn{\fx^\ast(-n)}
+    &\eqd \sum_{n\in\Z}\fx^\ast(-n) z^{-n}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+  \\&= \sum_{-m\in\Z}\fx^\ast[m] z^{m}
+    && \text{where $m\eqd -n$}
+    && \text{$\implies$ $n=-m$}
+  \\&= \sum_{m\in\Z}\fx^\ast[m] z^{m}
+    && \text{because $\seqn{\fx(n)},\seqn{z^n}\in\spllC$}     && \text{\xref{def:spllC}}
+  \\&= \sum_{m\in\Z}\fx^\ast[m] \brp{\frac{1}{z}}^{-m}
+  \\&= \brp{\sum_{m\in\Z}\fx[m] \brp{\frac{1}{z^\ast}}^{-m}}^\ast
+  \\&\eqd \Zx^\ast\brp{\frac{1}{z^\ast}}
+    && \text{by definition of $\opZ$}
+    && \text{\xref{def:opZ}}
+\end{align*}
+\end{proof}
+
+%--------------------------------------
+\begin{proposition}[\thmd{Convolution Theorem}]
+\label{prop:conv}
+%--------------------------------------
+Let $\convd$ be the convolution operator \xref{def:dsp_conv}.
+%$\seq{x_n}{n\in\Z}$ and $\seq{y_n}{n\in\Z}$ be sequences in the space $\spllC$. %be sequences over a ring $\ring$.
+\thmbox{
+  \opZ\mcom{\brp{\seqn{x_n}\convd\seqn{y_n}}}{sequence convolution} = \mcom{\brp{\opZ\seqn{x_n}}\;\brp{\opZ\seqn{y_n}}}{series multiplication}
+  \qquad{\scy\forall\seqxZ{x_n},\seqxZ{y_n}\in\spllC}
+  }
+\end{proposition}
+\begin{proof}
+\begin{align*}
+  [\opZ(x\convd y)](z)
+    &\eqd \opZ {\left(\sum_{m\in\Z} x_m y_{n-m}\right)}
+    &&    \text{by \prefp{def:dsp_conv}}
+  \\&\eqd \sum_{n\in\Z} \sum_{m\in\Z} x_m y_{n-m} z^{-n}
+    &&    \text{by \prefp{def:opZ}}
+  \\&=    \sum_{n\in\Z} \sum_{m\in\Z} x_m y_{n-m} z^{-n}
+  \\&=    \sum_{m\in\Z} \sum_{n\in\Z} x_m y_{n-m} z^{-n}
+  \\&=    \sum_{m\in\Z} \sum_{k\in\Z} x_m y_k z^{-(m+k)}
+    &&    \text{where $k=n-m \iff n=m+k$}
+  \\&=    {\left[\sum_{m\in\Z} x_m z^{-m}\right]}
+          {\left[\sum_{k\in\Z} y_k z^{-k}\right]}
+  \\&\eqd \brp{\opZ\seqn{x_n}}\;\brp{\opZ\seqn{y_n}}
+    &&    \text{by \prefp{def:opZ}}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:real_xyh}
+%---------------------------------------
+Let $\opH$ be a \prope{linear time-invariant} operator with \fncte{impulse response} $\seqn{\fh(n)}$.
+Let $\seqn{\fy(n)}\eqd\seqn{\opH\fx(n)}$.
+\lembox{
+  \brb{\begin{array}{FMD}
+      (A). & $\seqn{\fx(n)}$ and $\seqn{\fy(n)}$ are \prope{real-valued}  & and
+    \\(B). & $\seqn{\fx(n)}$ and $\seqn{\fh(n)}$  are in $\spllC$         & and
+    \\(C). & $\seqn{\fx(n)}\neq\seqn{\cdots,0,0,0,\cdots}$                & and
+    \\(D). & $\seqn{\fh(n)}$ is \prope{linear time-invariant}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{FMD}
+      (1). & $\seqn{\fh(n)}$ is \prope{real-valued} & and
+    \\(2). & $\ZH(z) = \ZH^*\brp{z^\ast}$
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{enumerate}
+  \item Let $\fh_R(n)$ and $\fh_I(n)$ be the \structe{real-part} and \structe{imaginary-part}, respectively,
+        of $\fh(n)$. \label{item:real_xyh_def}
+  \item lemma: $\sum_{m\in\Z} \fh_I(m)\fx(n-m) = 0$ \label{ilem:real_xyh_lem}
+    \begin{align*}
+      &\sum_{m\in\Z} \fh_R(m)\fx(n-m) + i\sum_{m\in\Z} \fh_I(m)\fx(n-m)
+      \\&= \sum_{m\in\Z} \fh(m)\fx(n-m)
+        && \text{by definitions of $\fh_R$ and $\fh_I$}                && \text{\pref{item:real_xyh_def}}
+      \\&= \fy(n)
+        && \text{because $\opH$ is \prope{LTI}}                        && \text{hypothesis (D)}
+      \\&= \fy^\ast(n)
+        && \text{because $\fy$ is \prope{real-valued}}                 && \text{hypothesis (A)}
+      \\&= \brp{\sum_{m\in\Z} \fh(m)\fx(n-m)}^\ast
+        && \text{because $\opH$ is \prope{LTI}}                        && \text{hypothesis (D)}
+      \\&= \sum_{m\in\Z} \fh^\ast(m)\fx^\ast(n-m)
+        && \text{by \prope{antiautomorphic} property}                  && \text{\xref{def:staralg}}
+       %&& \text{by \prope{antiautomorphic} property of *-algebras}    && \text{\xref{def:staralg}}
+      \\&= \sum_{m\in\Z} \fh^\ast(m)\fx(n-m)
+        && \text{because $\fy$ is \prope{real-valued}}                 && \text{hypothesis (A)}
+      \\&= \sum_{m\in\Z} \fh_R(m)\fx(n-m) - i\sum_{m\in\Z} \fh_I(m)\fx(n-m)
+        && \text{by definitions of $\fh_R$ and $\fh_I$}                && \text{\pref{item:real_xyh_def}}
+      \\
+      \implies&
+      \boxed{\sum_{m\in\Z} \fh_I(m)\fx(n-m) = 0}
+    \end{align*}
+
+  \item Notes:
+    \begin{enumerate}
+      \item Without hypothesis (C), it is trivial to satisfy \pref{ilem:real_xyh_lem}.
+
+      \item Without hypothesis (B), it is simple to satisfy \pref{ilem:real_xyh_lem} with
+        \\$\fh(n)=\seqn{\cdots,0,0,0,i,-i,0,0,0,\cdots}$ and $\fx(n)=\seqn{\cdots,1,1,1,\cdots}$
+
+      \item Without hypothesis (D), it is trivial to satisfy \pref{ilem:real_xyh_lem} with
+        $\ds\opH\fx(n)\eqd\Real\brp{\sum_{m\in\Z}\fh(m)\fx(n-m)}$
+    \end{enumerate}
+
+  \item Proof that $\fh(n)$ is \prope{real-valued}:\label{item:real_xyh_realh}
+    \begin{align*}
+      \text{\pref{ilem:real_xyh_lem}}
+        &\implies \ZH_I(z)\ZX(z) = 0
+        && \text{by \thme{Convolution Theorem}}                  && \text{\xref{prop:conv}}
+      \\&\implies \ZH_I(z) = 0
+        && \text{because $\fx(n)\neq\seqn{\cdots,0,0,0,\cdots}$} && \text{hypothesis (C)}
+      \\&\implies \fh_I(n) = \seqn{\cdots,0,0,0,\cdots}
+      \\&\implies \text{$\fh(n)\eqd\fh_R(n)+i\fh_I(n)$ is \prope{real-valued}}
+    \end{align*}
+
+  \item Proof that $\ZH(z) = \ZH^*\brp{z^\ast}$:
+    \begin{align*}
+      \ZH(z)
+        &\eqd \opZ\seqn{\fx(n)}
+        && \text{by definition of $\ZH(z)$}
+      \\&= \opZ\seqn{\fx^\ast(n)}
+        && \text{because $\fx(n)$ is \prope{real-valued}} && \text{\xref{item:real_xyh_realh}}
+      \\&= \ZH^*\brp{z^\ast}
+        && \text{by \pref{prop:opZ}}
+    \end{align*}
+\end{enumerate}
+\end{proof}
+
+%---------------------------------------
+\begin{lemma}
+\label{lem:real_FH}
+%---------------------------------------
+Let $\FH(\omega)$ be the DTFT \xref{def:dtft} of a sequence $\fh(n)$.
+\lembox{
+  \brb{\begin{array}{M}
+      $\fh(n)$ is \prope{real-valued}
+  \end{array}}
+  \implies
+  \brb{\begin{array}{rclD}
+      \FH(-\omega) &=& \FH^\ast(\omega) & (\prope{conjugate symmetric})
+  \end{array}}
+  }
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \FH(-\omega)
+    &\eqd \sum_{n\in\Z} \fh(n) e^{-i(-\omega)n}
+    && \text{by definition of $\FH(\omega)$}  &&\text{\xref{def:dtft}}
+  \\&= \sum_{n\in\Z} \fh(n) e^{i\omega n}
+  \\&= \brs{\sum_{n\in\Z} \fh^\ast(n) e^{i\omega n}}^\ast
+    && \text{by \prope{antiautomorphic} property of *-algebras}    && \text{\xref{def:staralg}}
+  \\&= \brs{\sum_{n\in\Z} \fh(n) e^{-i\omega n}}^\ast
+    && \text{by \prope{real-valued} hypothesis}
+  \\&\eqd \FH^\ast(\omega)
+    && \text{by definition of $\FH(\omega)$}  &&\text{\xref{def:dtft}}
+\end{align*}
+\end{proof}
