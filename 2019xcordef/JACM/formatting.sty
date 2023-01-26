@@ -13,7 +13,7 @@
 \newcommand{\citerpg}[3]{\cite[page #2]{#1}}
 \newcommand{\citerp}[2]{\cite[page #2]{#1}}
 \newcommand{\citerc}[2]{\cite{#1}}
-\newcommand{\xref}[1]{\ref{#1}}
+%\newcommand{\xref}[1]{\ref{#1}}
 \newcommand{\defbox}[1]{\mbox{}\\$\displaystyle#1$\\}
 \newcommand{\lembox}[1]{\mbox{}\\$\displaystyle#1$\\}
 \newcommand{\propbox}[1]{\mbox{}\\$\displaystyle#1$\\}
@@ -26,9 +26,27 @@
 \newcommand{\citeP}    [1]{\cite{#1}}
 \newcommand{\citePp}   [2]{\cite[page~#2]{#1}}
 \newcommand{\citePpc}  [2]{\cite[page~#2]{#1}}
-\newcommand{\pref}     [1]{\cite{#1}}
-\newcommand{\prefp}    [1]{\cite{#1}}
-\newcommand{\prefpp}   [1]{\cite{#1}}
+
+\newcommand{\pref}  [1]{{\prettyref{#1}}}                                       % prefixed reference
+\newcommand{\prefp} [1]{{\prettyref{#1} {\scriptsize page}~\pageref{#1}}}       % prefixed reference with page number
+\newcommand{\prefpp}[1]{{\prettyref{#1} (page~\pageref{#1})}}                   % prefixed reference with (page number)
+\newcommand{\prefpo}[1]{{page~\pageref{#1}}}                                    % reference page number
+\newcommand{\xrefP} [1]{(\prettyref{#1} page~\pageref{#1})}  % prefixed reference with page number
+%\newcommand{\xrefr} [1]{{\sffamily\addfontfeatures{Scale=0.71}(\prettyref{#1})}}% prefixed reference without page number
+%\newcommand{\xrefnp} [1]{{\sffamily\addfontfeatures{Scale=0.71}\prettyref{#1} page~\pageref{#1}}}  % xref with no parentheses
+%\newcommand{\xxref} [2]{{\sffamily\addfontfeatures{Scale=0.71}(\prettyref{#1} page~\pageref{#1}, \prettyref{#2} page~\pageref{#2})}}  % 2 prefixed references with page numbers
+%\newcommand{\xxrefnp} [2]{{\sffamily\addfontfeatures{Scale=0.71}\prettyref{#1} page~\pageref{#1}, \prettyref{#2} page~\pageref{#2}}}  % xxref with no parenthesis
+%\newcommand{\xxxref}[3]{{\sffamily\addfontfeatures{Scale=0.71}(\prettyref{#1} page~\pageref{#1}, \prettyref{#2} page~\pageref{#2}, \prettyref{#3} page~\pageref{#3})}}  % 3 prefixed references with page numbers
+%\newcommand{\xrefn} [1]{{\sffamily\addfontfeatures{Scale=0.71}(\prettyref{#1})}}% prefixed reference with no page number
+%\newcommand{\xrefp} [1]{{\sffamily\addfontfeatures{Scale=0.71}\prettyref{#1} page~\pageref{#1}}}  % prefixed reference with page number
+%\newcommand{\xrefpo} [1]{{\sffamily\addfontfeatures{Scale=0.71}(page~\pageref{#1})}}  % reference with page number only
+\newcommand{\xref}  [1]{\xrefP{#1}}
+
+
+%\newcommand{\pref}     [1]{\cite{#1}}
+%\newcommand{\prefp}    [1]{\cite{#1}}
+%\newcommand{\prefpp}   [1]{\cite{#1}}
+ 
 \newcommand{\ds}{\displaystyle}
 \newcommand{\brp}[1]{{\left(#1\right)}}       % bracket with parenthesis
 \newcommand{\brs}[1]{{\left[#1\right]}}       % bracket with square brackets
@@ -52,25 +70,10 @@
 \newcommand{\axboxt}  [1]{\axbox{\begin{array}{M}#1\end{array}}}
 \newcommand{\remboxt} [1]{\rembox{\begin{array}{M}#1\end{array}}}
 
-\newcolumntype{R}{>{\cellcolor{red}\upshape\bfseries\color{white}}c}
-\newcolumntype{G}{>{\cellcolor{tblgreen}\upshape\bfseries\color{white}}c}
-\newcolumntype{B}{>{\cellcolor{blue}\upshape\bfseries\color{white}}c}
-\newcolumntype{P}{>{\cellcolor{purple}\upshape\bfseries\color{white}}c}
-\newcolumntype{g}{>{\cellcolor{gray}\upshape\bfseries\color{black}}c}
-\newcolumntype{X}{>{\cellcolor{red}$\upshape\bfseries\color{white}}c<{$}}
-\newcolumntype{Y}{>{\cellcolor{green}$\upshape\bfseries\color{white}}c<{$}}
-\newcolumntype{Z}{>{\cellcolor{blue}$\upshape\bfseries\color{white}}c<{$}}
 
-\newcolumntype{C}{>{\scriptstyle}l}
 \newcolumntype{D}{>{$\scriptsize}l<{$}}
-\newcolumntype{H}{>{$\scriptsize}c<{$}}
 \newcolumntype{F}{>{$\scriptsize}r<{$}}
-\newcolumntype{E}{>{\scriptsize}l}
-\newcolumntype{L}{>{\displaystyle}l}
 \newcolumntype{M}{>{$}l<{$}}
-\newcolumntype{N}{>{$}c<{$}}
-\newcolumntype{O}{>{$}r<{$}}
-\newcolumntype{z}{>{\zhtzye}l}
 
 \newenvironment{liste}[1][\imark]
   {\begin{list}{#1}{
@@ -87,18 +90,54 @@
       }}
    {\end{list}}
 
-\newenvironment{listi}[1][\imarks]%list for indexes
-  {\begin{list}{#1}{
-      \setlength{\topsep        }{0ex}
-      \setlength{\partopsep     }{0ex}
-      \setlength{\parsep        }{0ex}
-      \setlength{\itemsep       }{0ex}
-      \setlength{\leftmargin    }{4ex}
-      \setlength{\rightmargin   }{4ex}
-      \setlength{\listparindent }{0ex}
-      \setlength{\labelwidth    }{5ex}
-      \setlength{\labelsep      }{0ex}
-      \setlength{\itemindent    }{0ex}
-      }}
-   {\end{list}}
 
+%------------------------------------
+% Hyperref Setup
+%------------------------------------
+\hypersetup{%
+  pdfauthor={Daniel J. Greenhoe},
+  pdfcreator={pdfLaTeX},
+  pdfmenubar=true,
+  pdftoolbar=true,
+  final=true,
+  debug=false,
+  pdfborder={0 0 0},
+  colorlinks=true,
+  allcolors=blue,
+ %linkcolor=blue,
+ %citecolor=blue,
+ %anchorcolor=blue,
+  }
+
+\geometry{
+  xetex,paper=a4paper,centering,twoside,includehead,includefoot,nomarginpar,
+  bindingoffset=5mm,
+  inner=10mm,outer=10mm,top=10mm,bottom=10mm,           % margins
+  headheight=5.2mm,headsep=5mm,footskip=7mm,
+  showframe=true,showcrop=true,
+  }
+
+   \newrefformat{chp}  {{\scshape~Chapter}~\ref{#1}}
+   \newrefformat{app}  {{\scshape~Appendix}~\ref{#1}}
+   \newrefformat{def}  {Definition~\ref{#1}}
+   \newrefformat{lem}  {Lemma~\ref{#1}}
+   \newrefformat{ilem} {(\ref{#1})~lemma}
+   \newrefformat{idef} {definition~\ref{#1}}
+   \newrefformat{prop} {Proposition~\ref{#1}}
+   \newrefformat{tbl}  {Table~\ref{#1}}
+   \newrefformat{thm}  {Theorem~\ref{#1}}
+   \newrefformat{cnj}  {Conjecture~\ref{#1}}
+   \newrefformat{cor}  {Corollary~\ref{#1}}
+   \newrefformat{fig}  {Figure~\ref{#1}}
+   \newrefformat{tab}  {Table~\ref{#1}}
+   \newrefformat{ex}   {Example~\ref{#1}}
+   \newrefformat{ax}   {Axiom~\ref{#1}}
+   \newrefformat{item} {item~(\ref{#1})}
+   \newrefformat{lit}  {Literature item~\ref{#1}}
+   \newrefformat{equ}  {equation~\eqref{#1}}
+   \newrefformat{eq}   {equation~\eqref{#1}}
+   \newrefformat{sen}  {Sentence Table~\ref{#1}}
+   \newrefformat{voc}  {Vocabulary Table~\ref{#1}}
+   \newrefformat{theme}{Theme~\ref{#1}}
+   \newrefformat{cnt}  {Counterexample~\ref{#1}}
+   \newrefformat{rem}  {Remark~\ref{#1}}
