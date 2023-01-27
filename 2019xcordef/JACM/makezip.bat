@@ -1,0 +1,1 @@
+zip JACM-2019-13.zip * src\* sty\* bib\* graphics\* -r -x main.pdf *.out *.log *.blg *.aux *.zip *.bat
