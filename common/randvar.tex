@@ -84,9 +84,9 @@ Let $\rvX$ be a \fncte{random variable} with \fncte{probability density function
 Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function} $\pcy(y)$.
 \thmbox{
   \brb{\begin{array}{FMD}
-         (1).&$\rvY=\pcz^{-1}(\rvX)$                       & and\\
-         (2).&$\rvY$ is \prope{uniformly distributed} & and\\
-         (3).&$\ppz(z)$ is \prope{continuous}         &
+         (1).&$\rvY=\pcz^{-1}(\rvX)$                     & and\\
+         (2).&$\rvX$    is \prope{uniformly distributed} & and\\
+         (3).&$\ppz(z)$ is \prope{continuous}            &
        \end{array}}
   \quad\implies\quad
   \brb{\begin{array}{M}
@@ -167,6 +167,28 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
   \label{fig:YfX}
   }
 \end{figure}
+
+%---------------------------------------
+\begin{example}
+%---------------------------------------
+Design a random generator for random variable $\rvY$ with distribution
+$\ppy(y)\eqd\frac{1}{2}$ for $y\in\intcc{1}{3}$ and $0$ otherwise.
+\exbox{
+  \ff(x) \eqd \brbl{\begin{array}{lM}
+    0    & for $x=0$\\
+    2x+1 & otherwise
+  \end{array}}
+  \qquad\implies\qquad
+  \rvY = \ff(X)
+}
+\begin{lstlisting}
+N = 1e6                                                       # Number of samples
+X = runif( n=N, min=0, max=1 )                                # X = Uniformly distributed RV
+Y = ifelse( X==0, 0, 2*X+1 )                                  # Y = cZ^{-1}( X )
+plot( X, Y, ylim=c(0,3), col="red" )                          # plot X -> Y mapping
+plot( density( Y, bw="SJ" ), lwd=3, xlim=c(0,4), col="blue" ) # plot estimated pdf of Y
+\end{lstlisting}
+\end{example}
 
 %---------------------------------------
 \begin{definition}
@@ -383,10 +405,12 @@ Let $a,b\in\R$.
 \setlength{\unitlength}{0.3mm}
 \thicklines
 \begin{center}
-\begin{footnotesize}
+%\begin{footnotesize}
 \begin{picture}(350,200)(-100,-20)
-  \put( -20,   0){\line(1,0){220}}
-  \put(   0, -20){\line(0,1){120}}
+  {\color{axis}%
+    \put( -20,   0){\line(1,0){220}}
+    \put(   0, -20){\line(0,1){120}}
+    }
   \put(   0, 110){\makebox(0,0)[r]{$y$}}
   \put( 210,   0){\makebox(0,0)[r]{$x$}}
   {\color{red}
@@ -394,11 +418,15 @@ Let $a,b\in\R$.
     \qbezier(20,150)(30,30)(150,20)
     \put( 35, 105){\makebox(0,0)[l]{$y=\frac{1}{x}$}}
     }
-  \put(40,80){\line(1,-1){40}} %straight line
-  \qbezier[28](0,80)(20,80)(40,80)
-  \qbezier[50](40,0)(40,40)(40,80)
-  \qbezier[40](0,40)(40,40)(80,40)
-  \qbezier[20](80,0)(80,20)(80,40)
+  {\color{blue}% f(x)
+    \put(40,80){\line(1,-1){40}} %straight line
+    }
+  {\color{black}% f(x)
+    \qbezier[28](0,80)(20,80)(40,80)
+    \qbezier[50](40,0)(40,40)(40,80)
+    \qbezier[40](0,40)(40,40)(80,40)
+    \qbezier[20](80,0)(80,20)(80,40)
+    }
   \put(  -5,  80){\makebox(0,0)[r]{$y+h$}}
   \put(  -5,  40){\makebox(0,0)[r]{$y$}}
   \put(  40,  -5){\makebox(0,0)[t]{$\frac{1}{y+h}$}}
@@ -408,7 +436,7 @@ Let $a,b\in\R$.
   \put( 100,  40){\makebox(0,0)[l]{$\frac{1}{y}+\frac{\Delta x}{\Delta y}\Delta y = \frac{1}{y} - \frac{1}{y^2}h$}}
   \put(  95,  40){\vector(-3,-2){55}}
 \end{picture}
-\end{footnotesize}
+%\end{footnotesize}
 \end{center}
 \caption{
   $\rvY=\frac{1}{\rvX}$
@@ -828,12 +856,12 @@ Let $\conv$ be the \ope{convolution} operator \xref{def:conv}.
   \begin{tabular}{c>{\Huge}c c>{\Huge}c l}%
     \tboxc{\includegraphics{../common/math/graphics/pdfs/pdf_fairdie_blue.pdf}} &\tbox{+}&%
     \tboxc{\includegraphics{../common/math/graphics/pdfs/pdf_fairdie_red.pdf}}  &\tbox{=}&%
-    \tboxc{\includegraphics{../common/math/graphics/pdfs/pdf_dicesum_bluered.pdf}}% 
+    \tboxc{\includegraphics{../common/math/graphics/pdfs/pdf_dicesum_bluered.pdf}}%
     \\
     \tboxc{\includegraphics{../common/math/graphics/pdfs/n0.pdf}}               &\tbox{+}&%
     \tboxc{\includegraphics{../common/math/graphics/pdfs/n0.pdf}}               &\tbox{=}&%
-    \tboxc{\includegraphics{../common/math/graphics/pdfs/n1.pdf}}%              
-    \\                                                      
+    \tboxc{\includegraphics{../common/math/graphics/pdfs/n1.pdf}}%
+    \\
     \tboxc{\includegraphics{../common/math/graphics/pdfs/n0.pdf}}               &\tbox{+}&%
     \tboxc{\includegraphics{../common/math/graphics/pdfs/n1.pdf}}               &\tbox{=}&%
     \tboxc{\includegraphics{../common/math/graphics/pdfs/n2.pdf}}%
@@ -953,12 +981,12 @@ Then
 %---------------------------------------
 \begin{proposition}
 %---------------------------------------
-Let $\rvX$ and $\rvY$ be \fncte{random variable}s 
+Let $\rvX$ and $\rvY$ be \fncte{random variable}s
 with covariance $\pvarxy$ on a
 \structe{probability space} $\ps$.
 \propbox{
   \brb{\begin{array}{FMD}
-      (A).&$\rvX$ is \prope{Gaussian} with $\pN{\pmeanx}{\pvarx}$ & and 
+      (A).&$\rvX$ is \prope{Gaussian} with $\pN{\pmeanx}{\pvarx}$ & and
     \\(B).&$\rvX$ is \prope{Gaussian} with $\pN{\pmeany}{\pvary}$ & and
     \\(C).&$\pvarxy=\cov{\rvX}{\rvY}$
   \end{array}}
