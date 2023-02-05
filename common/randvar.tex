@@ -171,24 +171,63 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
 %---------------------------------------
 \begin{example}
 %---------------------------------------
-Design a random generator for random variable $\rvY$ with distribution
-$\ppy(y)\eqd\frac{1}{2}$ for $y\in\intcc{1}{3}$ and $0$ otherwise.
+Suppose we have a random generator that yields a value $\rvX$ with
+\prope{uniform distribution}.
+Design a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution
+\\\indentx$\ds\ppy(y) \eqd \brbl{\begin{array}{lM}
+                              \frac{1}{2} & for $y\in\intoc{1}{3}$\\
+                              0           & otherwise
+                            \end{array}}$
 \exbox{
-  \ff(x) \eqd \brbl{\begin{array}{lM}
-    0    & for $x=0$\\
-    2x+1 & otherwise
-  \end{array}}
+  \ff(x) \eqd 2x + 1
   \qquad\implies\qquad
-  \rvY = \ff(X)
+  \rvY \eqd \ff(\rvX)\qquad\text{has distribution $\ppy(y)$}
 }
-\begin{lstlisting}
+
+Moreover, here's some R code demonstrating the concept:
+\begin{lstlisting}[language=R]
 N = 1e6                                                       # Number of samples
 X = runif( n=N, min=0, max=1 )                                # X = Uniformly distributed RV
-Y = ifelse( X==0, 0, 2*X+1 )                                  # Y = cZ^{-1}( X )
+Y = 2 * X + 1                                                 # Y = f( X )
 plot( X, Y, ylim=c(0,3), col="red" )                          # plot X -> Y mapping
 plot( density( Y, bw="SJ" ), lwd=3, xlim=c(0,4), col="blue" ) # plot estimated pdf of Y
 \end{lstlisting}
 \end{example}
+\begin{proof}
+\begin{enumerate}
+  \item The \fncte{cumulative distribution function} $\pcy(y)$ of $\rvY$ with desired pdf $\ppy(y)$ is
+    \begin{align*}
+      \pcy(y)
+        &  \eqd \int_{-\infty}^y \ppy(u) \du
+        &&    \text{by definition of cdf} &&\text{\xref{def:cdf}}
+      \\&  \eqd \int_{-\infty}^y \brb{\begin{array}{lM}
+                                        \frac{1}{2} & for $u\in\intcc{1}{3}$\\
+                                        0           & otherwise
+                                      \end{array}} \du
+        &&    \text{by definition of $\ppy(y)$}
+      \\&= \brb{\begin{array}{lM}
+             0            & for $y\le1$\\
+             \frac{1}{2}y & for $1<y\le 3$\\
+             1            & otherwise
+           \end{array}}
+    \end{align*}
+
+  \item The inverse cdf $\pcy^{-1}(x)$ is
+    $\ds\pcy^{-1}(x) = \brbl{\begin{array}{lMM}
+                               \intcc{0}{1} & for $x=0$     & (undefined but in $\intcc{0}{1}$)\\
+                               2x + 1       & for $0<x\le 1$\\
+                               $undefined$  & otherwise
+                             \end{array}}$
+
+  \item Since we are using $\pcy^{-1}(x)$ with $\rvX$ which only yields values of non-zero probablity in $\intoc{0}{1}$ \xref{def:uniform},
+        we can simplify $\ff(x)$ to
+        only necessarily match $\pcy^{-1}$ in the domain $\intoc{0}{1}$, and be whatever is convenient elsewhere.
+        As such, let $\ds \ff(x) \eqd 2x + 1$.
+
+  \item By the \thme{Inverse probability integral transform} \xref{thm:its}, $\rvY\eqd\ff(\rvX)\eqd 2\rvX + 1$ has the
+        desired pdf $\ppy(y)$.
+\end{enumerate}
+\end{proof}
 
 %---------------------------------------
 \begin{definition}
