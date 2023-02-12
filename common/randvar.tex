@@ -77,7 +77,7 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
 \label{ex:pit}
 %---------------------------------------
 \exboxt{
-\begin{minipage}{\tw-60mm}
+\begin{minipage}{\tw-58mm}
 Let $\rvX$ be a random variable with \fncte{pdf} \xref{def:pdf} $\ppx(x)$ where
 $\ppx(x)$ is the triangle-like \fncte{first order B-spline} $\fN_1(x)$ \xref{ex:bspline_N1}.
 %(a triangle-like function with height=1, peak at $x=1$, and support $x\in\intcc{0}{2}$).
@@ -94,16 +94,16 @@ $\pcx(x)$ is the \fncte{cdf} \xref{def:cdf} of $\rvX$.
                    &1                      & for $    x >   2$
                 \end{array}}
 $\qquad\tbox{\includegraphics{../common/math/graphics/pdfs/n1_int.pdf}}%
-\\Here is some R code if you want to try out the concept on the lab bench:\footnotemark\\
+\\Here is some R code if you want to try out the concept on the lab bench:\footnotemark
 \footnotetext{Note: To understand why $\rvX\eqd\rvX1+\rvX2$ has triangle distribution $\fN_1(x)$,
 see \exme{Sum of Uniformly Distributed Random Variables} \prefp{ex:pdf_uniform_sums}.}
 \begin{lstlisting}[language=R]
-N  = 1e6                               # N = number of samples
-X1 = runif( n=N, min=0, max=1 )        # X1 has uniform distribution
-X2 = runif( n=N, min=0, max=1 )        # X2 has uniform distribution
-X  = X1 + X2                           # X  has triangular distribution N1(x)
-Y  = ifelse( X<1, X^2/2, -X^2/2+2*Y-1) # Y = cdf_x( X ) has uniform distribution
-plot( density( Y, bw="SJ" ), lwd=3, xlim=c(0,4), col="blue" )
+N  = 1e6                                                      # N = number of samples
+X1 = runif( n=N, min=0, max=1 )                               # X1 has uniform distribution
+X2 = runif( n=N, min=0, max=1 )                               # X2 has uniform distribution
+X  = X1 + X2                                                  # X  has triangular distribution N1(x)
+Y  = ifelse( X<1, X^2/2, -X^2/2+2*Y-1)                        # Y = cdf_x( X ) has uniform distribution
+plot( density( Y, bw="SJ" ), lwd=3, xlim=c(0,4), col="blue" ) # plot estimated pdf of Y
 \end{lstlisting}
 \end{example}
 \begin{proof}
@@ -248,9 +248,8 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
 \begin{example}
 \label{ex:ppy_2x1}
 %---------------------------------------
-Suppose we have a random generator that yields a value $\rvX$ with
-\prope{uniform distribution}.
-Choose a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution
+Let $\rvX$ be a \fncte{random variable} with \prope{uniform distribution}.
+Select a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution
 \\\indentx$\ds\ppy(y) \eqd \brbl{\begin{array}{lM}
                               \frac{1}{2} & for $y\in\intoc{1}{3}$\\
                               0           & otherwise
@@ -260,7 +259,7 @@ Choose a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution
   \qquad\implies\qquad
   \rvY \eqd \ff(\rvX)\qquad\text{has distribution $\ppy(y)$}
 }
-
+\\
 Moreover, here's some R code demonstrating the concept:
 \begin{lstlisting}[language=R]
 N = 1e6                                                       # Number of samples
@@ -307,6 +306,57 @@ plot( density( Y, bw="SJ" ), lwd=3, xlim=c(0,4), col="blue" ) # plot estimated p
   \item Note: For an alternative proof using \prefpp{cor:YaXb}
               rather than the \thme{Inverse probability integral transform} \xref{thm:its},
               see \prefpp{ex:ppy_2x1b}.
+\end{enumerate}
+\end{proof}
+
+
+%---------------------------------------
+\begin{example}
+\label{ex:ppy_N1}
+%---------------------------------------
+Let $\rvX$ be a \fncte{random variable} with \prope{uniform distribution}.
+Select a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution $\fN_1(x)$ 
+as defined in \prefp{ex:pit} (triangle-like 1st order B-spline).
+\exbox{
+  \ff(x) \eqd \brb{\begin{array}{lM}
+                \sqrt{2x}         & for $x\in\intoc{0}{\frac{1}{2}}$\\
+                2 - \sqrt{2(1-x)} & for $x\in\intcc{\frac{1}{2}}{1}$
+              \end{array}}
+  \qquad\implies\qquad
+  \rvY \eqd \ff(\rvX)\qquad\text{has distribution $\fN_1(x)$}
+}
+%\\
+%Moreover, here's some R code demonstrating the concept:
+%\begin{lstlisting}[language=R]
+%N = 1e6                                                       # Number of samples
+%X = runif( n=N, min=0, max=1 )                                # X = Uniformly distributed RV
+%Y = 2 * X + 1                                                 # Y = f( X )
+%plot( X, Y, ylim=c(0,3), col="red" )                          # plot X -> Y mapping
+%plot( density( Y, bw="SJ" ), lwd=3, xlim=c(0,4), col="blue" ) # plot estimated pdf of Y
+%\end{lstlisting}
+\end{example}
+\begin{proof}
+\begin{enumerate}
+  \item $\pcx(x)\eqd y = \frac{1}{2}x^2$ $\implies$ $x = \pm\sqrt{2y}$ $\implies$ $\pcx^{-1}(x) = \pm\sqrt{2x}$
+  \item $\pcx(x)\eqd y = -\frac{1}{2}x^2 + 2x - 1$ $\implies$ $\pcx^{-1}(x) = 2 \pm \sqrt{ 2(1-x) }$
+    \begin{align*}
+      y = -\frac{1}{2}x^2 + 2x - 1 \quad\implies\quad
+      x &= \frac{-2 \pm \sqrt{ 2^2 - 4\brp{-\frac{1}{2}}\brp{-y-1}}}{2\brp{-\frac{1}{2}}}
+        && \text{by the \thme{Quadratic Equation}}
+      \\&= 2 \pm \sqrt{ 4 - 4\brp{-\frac{1}{2}}\brp{-y-1}}
+      \\&= 2 \pm \sqrt{ 4 - 2\brp{y+1}}
+      \\&= 2 \pm \sqrt{ 2(1 - y)}
+    \end{align*}
+  \item Taking (1) and (2) above and the fact that the \fncte{cdf} is always \prope{non-negative}, we have
+    \begin{align*}
+      \ff(x) \eqd \pcx^{-1}(x) 
+        &= \brbl{\begin{array}{lM}
+                  \sqrt{2x}         & for $x\in\intoc{0}{\frac{1}{2}}$\\
+                  2 - \sqrt{2(1-x)} & for $x\in\intcc{\frac{1}{2}}{1}$
+                \end{array}}
+    \end{align*}
+  \item By the \thme{Inverse probability integral transform} \xref{thm:its}, $\rvY\eqd\ff(\rvX)$ has the
+        desired pdf $\fN_1(x)$.
 \end{enumerate}
 \end{proof}
 
