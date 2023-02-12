@@ -842,6 +842,7 @@ GRP_SPLINE =                            \
 	n2_pz.pdf                           \
 	n3_pz.pdf                           \
 	n1_int.pdf                          \
+	n1_int_inverse.pdf                  \
 	pulse_pun.pdf                       \
 	Fpulse.pdf                          \
 	tent012.pdf                         \
