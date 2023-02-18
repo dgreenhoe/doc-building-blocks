@@ -105,6 +105,7 @@ FILE_GRP  =              \
   sinsin02_pun.pdf      \
   sinsin02hn.pdf        \
   spaces.pdf            \
+  tan.pdf               \
   tentfx.pdf            \
   tent_pun.pdf          \
   tent012.pdf           \
@@ -815,6 +816,8 @@ GRP_SPLINE =                            \
 	fstep.pdf                           \
 	tent_pun.pdf                        \
 	n0.pdf                              \
+	n0_2x1.pdf                          \
+	n0_2x1_int_inverse.pdf              \
 	n1.pdf                              \
 	n2.pdf                              \
 	n3.pdf                              \
