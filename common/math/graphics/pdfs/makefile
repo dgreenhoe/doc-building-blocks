@@ -50,6 +50,7 @@ FILE_CC =                \
 #  12000_2428.pdf         \
 
 FILE_GRP  =              \
+  1_over_x.pdf           \
   latnegations.pdf       \
   argmin_xx-2x2.pdf      \
   bijective_x4y4.pdf     \
@@ -123,6 +124,7 @@ FILE_GRP  =              \
   unitcircle_roots4.pdf \
   unitcircle_roots5.pdf \
   vecres.pdf            \
+  x_squared.pdf         \
   Fhw.pdf
 
 GRP_BASIS = \

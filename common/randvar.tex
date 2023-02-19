@@ -497,17 +497,17 @@ Let $a,b\in\R$.
   \end{array}}
   \implies
   \brb{
-  \ppy(y) = \mcom{\frac{1}{\abs{a}} \ppx\brp{\frac{y-b}{a}}}
-                 {\ope{Dilation} by $a$ and \ope{Translation} by $b$}
+  \ppy(y) = \mcoml{\frac{1}{\abs{a}} \ppx\brp{\frac{y-b}{a}}}
+                  {\ope{Dilation} by $a$ and \ope{Translation} by $b$}
   }}
 \end{corollary}
 \begin{proof}
   \begin{enumerate}
-    \item \label{item:YaXb_ffp}
-          Note that $\ff(x)=ax+b$ is a \prope{differentiable function} with $\xN=0$ \prope{critical point}s
+    \item lemma: \label{ilem:YaXb_ffp}
+          $\ff(x)=ax+b$ is a \prope{differentiable function} with $\xN=0$ \prope{critical point}s
           and $\ffp(x)=a$.
-    \item \label{item:YaXb_ffi}
-          The inverse of $\ff(x)$ is $\fg_1(y)=\ffi(y)=\frac{y-b}{a}$.
+    \item lemma: \label{ilem:YaXb_ffi}
+          The inverse of $y=\ff(x)=ax+b$ is $x=\fg_1(y)=\ffi(y)=\frac{y-b}{a}$.
     \item It follows that
       \begin{align*}
         \ppy(y)
@@ -516,9 +516,9 @@ Let $a,b\in\R$.
         \\&= \frac{\ppx\brp{\ffi(y)}}{\abs{\ff'\brp{\ffi(y)}}}
           && \text{because $\xN=0$}
         \\&= \frac{\ppx\brp{\ffi(y)}}{\abs{a}}
-          && \text{by \pref{item:YaXb_ffp}}
+          && \text{by \pref{ilem:YaXb_ffp}}
         \\&= \frac{1}{\abs{a}}\ppx\brp{\frac{y-b}{a}}
-          && \text{by \pref{item:YaXb_ffi}}
+          && \text{by \pref{ilem:YaXb_ffi}}
       \end{align*}
   \end{enumerate}
 \end{proof}
@@ -532,14 +532,16 @@ rather than the \thme{Inverse probability integral transform} \xref{thm:its}:
 Suppose we have a random generator that yields a value $\rvX$ with
 \prope{uniform distribution}.
 Choose a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution
-\\\indentx$\ds\ppy(y) \eqd \brbl{\begin{array}{lM}
-                              \frac{1}{2} & for $y\in\intoc{1}{3}$\\
-                              0           & otherwise
-                            \end{array}}$
+$\ppy(y)\eqd\frac{1}{2}$ for $y\in\intoc{1}{3}$ and $0$ otherwise.
 \exbox{
-  \ff(x) \eqd 2x + 1
-  \qquad\implies\qquad
-  \rvY \eqd \ff(\rvX)\qquad\text{has distribution $\ppy(y)$}
+  \brb{\ff(x) \eqd 2x + 1}
+  \implies
+  \rvY \eqd \ff(\rvX)\;\text{has \fncte{pdf}}\;
+    \ppy(y) \eqd \brbl{\begin{array}{lM}
+                         \frac{1}{2} & for $y\in\intoc{1}{3}$\\
+                         0           & otherwise
+                       \end{array}}
+  \tbox{\includegraphics{../common/math/graphics/pdfs/n0_2x1.pdf}}
 }
 \end{example}
 \begin{proof}
@@ -567,12 +569,13 @@ Choose a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution
 \label{cor:Yf1X}
 %---------------------------------------
 \corbox{
-  \brb{\rvY=\frac{1}{\rvX}}
+  \brb{
+    \tbox{\includegraphics{../common/math/graphics/pdfs/1_over_x.pdf}}
+    \rvY=\frac{1}{\rvX}
+    }
   \implies
   \brb{\ppy(y) = \begin{array}{lM}
-     %                                             & for $y<0$ \\
-     %0                                            & for $y=0$ \\
-     \frac{1}{y^2} \ppx\left( \frac{1}{y} \right) & for $y>0$
+    \frac{1}{y^2} \ppx\left( \frac{1}{y} \right) & for $y>0$
   \end{array}}
   }
 \end{corollary}
@@ -613,9 +616,15 @@ Choose a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution
 %---------------------------------------
 Let $\rvX$ and $\rvY$ be \fncte{random variable}s.
 \corbox{
-  \brb{\rvY=\rvX^2}
+  \brb{
+    \tbox{\includegraphics{../common/math/graphics/pdfs/x_squared.pdf}}
+    \rvY=\rvX^2
+    }
   \implies
-  \brb{\ppy(y) = \frac{1}{2\sqrt{y}} \brs{\ppx\brp{-\sqrt{y}} + \ppx\brp{\sqrt{y}}}}
+  \brb{
+    \ppy(y) = \frac{1}{2\sqrt{y}} \brs{\ppx\brp{-\sqrt{y}} + \ppx\brp{\sqrt{y}}}
+    \quad\text{for $y\ge0$}
+    }
   }
 \end{corollary}
 \begin{proof}
@@ -670,76 +679,22 @@ Let $\rvZ=\tan\Theta$. Then
   }
 \end{corollary}
 \begin{proof}
-%\begin{enumerate}
-%  \item The theorem can also be proved using \prefpp{thm:YfX}:
-    \begin{enumerate}
-      \item The roots of $z=\tan\theta$ are $\set{\theta_n=\atan{z}+n\pi}{n\in\Z}$. \label{item:ppztan_roots}
-      \item The derivative of $z=\tan\theta$ is  $\ff'(\theta)=\sec^2 \theta$. \label{item:ppztan_derivative}
-      \item It follows that
-        \begin{align*}
-          \ppz(z)
-            &= \sum_{n=1}^\xN \frac{\ppth(\theta_n)}{|\ff'(\theta_n)|}
-          \\&= \sum_n \frac{\ppth(\atan{z}+n\pi)}{|\ff'(\atan{z}+n\pi)|}
-          \\&= \sum_n \frac{\ppth(\atan{z}+n\pi)}{|\sec^2(\atan{z}+n\pi)|}
-          \\&= \sum_n \cos^2(\atan{z}+n\pi)  \ppth(\atan{z}+n\pi)
-          \\&= \cos^2(\atan{z}) \sum_n  \ppth(\atan{z}+n\pi)
-          \\&= \frac{1}{1+z^2}  \sum_n \ppth(\atan{z}+n\pi)
-        \end{align*}
-    \end{enumerate}
-
-%  \item Alternatively \ldots
-%    \begin{enumerate}
-%      \item Let $z=\frac{y}{x}$ and $x^2 + y^2 = r^2$.
-%            \begin{align*}
-%              \cos^2\atan z
-%                &= \cos^2\theta
-%                 = \frac{x^2}{r^2}
-%                 = \frac{x^2}{x^2+y^2}
-%                 = \frac{\frac{x^2}{x^2}}{\frac{x^2}{x^2}+\frac{y^2}{x^2}}
-%                 = \frac{1}{1+z^2}
-%            \end{align*}
-%      \item Let $h\to0$.
-%            \begin{align*}
-%              \atan{z+h}
-%                &= y_1 + \frac{1}{m} \Delta y
-%              \\&= \atan{z} + \left.\frac{1}{\dz/\dth}\right|_{\theta=\atan{z}} h
-%              \\&= \atan{z} + \left.\frac{1}{\sec^2\theta}\right|_{\theta=\atan{z}} h
-%              \\&= \atan{z} + \left.\cos^2\theta\right|_{\theta=\atan{z}} h
-%              \\&= \atan{z} + h\cos^2\atan{z}
-%              \\&= \atan{z} + h\frac{1}{1+z^2}
-%            \end{align*}
-%
-%      \item Now we prove the theorem using the above relation.
-%            \begin{align*}
-%              \ppz(z)h
-%                &= \psp\setn{z\le Z < z+h}
-%              \\&= \psp\setn{z\le \tan\Theta < z+h}
-%              \\&= \sum_n \psp\setn{z\le \tan\Theta < z+h \land
-%                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
-%                          }
-%              \\&= \sum_n \psp\setn{z\le \tan\Theta < z+h \left|
-%                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
-%                          \right.}
-%                          \psp\setn{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
-%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \left|
-%                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
-%                          \right.}
-%                          \psp\setn{\pi\left(n-\frac{1}{2}\right) \le \Theta \pi\left(n+\frac{1}{2}\right)}
-%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi \land
-%                          \pi\left(n-\frac{1}{2}\right) \le \Theta < \pi\left(n+\frac{1}{2}\right)
-%                          }
-%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < \atan(z+h)+n\pi }
-%              \\&= \sum_n \psp\setn{\atan{z}+n\pi \le \Theta < +\atan(z)+n\pi + h\frac{1}{1+z^2} }
-%              \\&= h\frac{1}{1+z^2} \sum_n \ppth(\atan{z}+n\pi)
-%            \\\implies
-%              \ppz(z) &=  \frac{1}{1+z^2} \sum_n \ppth(\atan{z}+n\pi)
-%            \end{align*}
-%  \end{enumerate}
-%\end{enumerate}
+  \begin{enumerate}
+    \item lemma: The roots of $z=\tan\theta$ are $\set{\theta_n=\atan(z)+n\pi}{n\in\Z}$. \label{ilem:ppztan_roots}
+    \item lemma: The derivative of $z=\tan\theta$ is  $\ff'(\theta)=\sec^2 \theta$. \label{ilem:ppztan_derivative}
+    \item It follows that
+      \begin{align*}
+        \ppz(z)
+          &= \sum_{n=1}^\xN \frac{\ppth(\theta_n)}{|\ff'(\theta_n)|}
+          && \text{by \prefp{thm:YfX}}
+        \\&= \sum_n \frac{\ppth(\atan(z)+n\pi)}{|\ff'(\atan(z)+n\pi)|}
+        \\&= \sum_n \frac{\ppth(\atan(z)+n\pi)}{|\sec^2(\atan(z)+n\pi)|}
+        \\&= \sum_n \cos^2(\atan(z)+n\pi)  \ppth(\atan(z)+n\pi)
+        \\&= \cos^2(\atan(z)) \sum_n  \ppth(\atan(z)+n\pi)
+        \\&= \frac{1}{1+z^2}  \sum_n \ppth(\atan(z)+n\pi)
+      \end{align*}
+  \end{enumerate}
 \end{proof}
-
-
-
 
 %=======================================
 \section{Functions of two random variables}
