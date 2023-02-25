@@ -117,6 +117,7 @@ FILE_GRP  =              \
   triangleabc.pdf       \
   triangleabcft.pdf     \
   unitcircle.pdf        \
+  unitcircle_xyr.pdf    \
   unitcircle_RecipricolConjugate.pdf \
   unitcircle_roots1.pdf \
   unitcircle_roots2.pdf \
