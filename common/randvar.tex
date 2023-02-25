@@ -376,19 +376,19 @@ plot( density( Y, bw="SJ" ), lwd=3, xlim=c(0,4), col="blue" ) # plot estimated p
 \end{enumerate}
 \end{proof}
 
-%---------------------------------------
-\begin{definition}
-\footnote{
-  \citerpgc{callahan2010}{189}{144197332X}{Definition 6.1}
-  }
-\label{def:cp}
-%---------------------------------------
-Let $\ff(x)$ be a \structe{differentiable function} in $\clFrr$.
-\defboxt{
-  A point $p\in\R$ is a \propd{critical point} of $\ff(x)$ if
-  \\\indentx$\ffp(p)=0$.
-  }
-\end{definition}
+%%---------------------------------------
+%\begin{definition}
+%\footnote{
+%  \citerpgc{callahan2010}{189}{144197332X}{Definition 6.1}
+%  }
+%\label{def:cp}
+%%---------------------------------------
+%Let $\ff(x)$ be a \structe{differentiable function} in $\clFrr$.
+%\defboxt{
+%  A point $p\in\R$ is a \propd{critical point} of $\ff(x)$ if
+%  \\\indentx$\ffp(p)=0$.
+%  }
+%\end{definition}
 
 %---------------------------------------
 \begin{theorem}
@@ -402,33 +402,35 @@ Let $\ff(x)$ be a \structe{differentiable function} in $\clFrr$.
 \label{thm:YfX}
 %---------------------------------------
 Let $\rvX$ and $\rvY$ be \fncte{random variable}s in $\clFrr$.
-Let $\ff$ be a \structe{differentiable function} in $\clFrr$
-with $\xN$ \prope{critical point}s \xref{def:cp}.
-Let the range of $\rvX$ be partitioned into $\xN+1$ partitions
-$\set{\setA_n}{n=1,2,\ldots,\xN+1}$
-with partition boundaries set at the $\xN$ \structe{critical point}s of $\ff(x)$.
-Let $\fg_n(x)\eqd\ff(x)$ but with domain restricted to $x\in\setA_n$.
+Let $\ff$ be a \structe{differentiable function} in $\clFrr$.
+Let $\xN$ be the number of solutions in $x$ of the equation $y=\ff(x)$
+and $\set{\fs_n(y)}{n=1,2,\ldots,\xN}$ be those solutions.
+Let $\set{\setA_n}{n=1,2,\ldots,\xN}$ be the partitions of the domain of $\ff(x)$
+such that each $\setA_n$ is the interval over which $\fs_n(y)$ is valid.
 \thmbox{
   \brb{\begin{array}{FMD}
     (1).&$\rvY=\ff(\rvX)$  & and \\
     (2).&$\ff$ is \prope{differentiable}
   \end{array}}
   \implies
-  \brb{\ppy(y) = \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fgi_n(y)}}{\abs{\ffp\brp{\fgi_n(y)}}}}
+  \brb{\ppy(y) = \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fs_n(y)}}{\abs{\ffp\brp{\fs_n(y)}}}}
   }
 \end{theorem}
 \begin{proof}
 \begin{enumerate}
   \item \label{item:YfX_N}
-        Note that while a function $\ff(x)$ always has an \structe{inverse relation} $\ff^{-1}(x)$, 
-        this relation is not always a \structe{function}. 
+        Note that while a function $\ff(x)$ always has an \structe{inverse relation} $\ff^{-1}(x)$,
+        this relation is not always a \structe{function}.
         That is, a function $\ff(x)$ may have more than one solution $\xN$.
         Let $\xN$ be the number of solutions of a function $\ff(x)$.
-  \item However, note that Note further that in each partition $\setA_n$, $\ff(x)$ is \prope{invertible} and thus
-        $\ffi(y)$ in that partition has a \prope{unique} solution.
-        Thus, each $\fg_n(x)$ \emph{is} \prop{invertible} in it's domain (and each $\fgi_n(y)$ exists as a function).
 
-  \item Using \pref{item:YfX_gn}, the remainder of the proof follows \ldots
+  \item \label{item:YfX_s}
+        Note further that for each of the $\xN$ solutions in $x$ of $y=\ff(x)$,
+        there is a set $\setA_n$ such that for $x\in\setA_n$ the function $\ff(x)$ is
+        invertible (as a function).
+        Let $x=\fs_n(y)$ be the solution in $x$ of the equation $y=\ff(x)$ for $x\in\setA_n$.
+
+  \item The remainder of the proof follows \ldots
     \begin{align*}
       \ppy(y)
         &\eqd \ddy\psp\setn{\rvY \le y}
@@ -439,41 +441,41 @@ Let $\fg_n(x)\eqd\ff(x)$ but with domain restricted to $x\in\setA_n$.
         && \text{by \thme{sum of products} \xref{thm:psp_sop}}
       \\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\ff(\rvX)\le y}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
         && \text{by definition of $\psp\setn{\setX|\setY}$ \xref{def:conP}}
-      \\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\fg_n(\rvX)\le y}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
-        && \text{by definition of $\fg_n(x)$}
+      %\\&= \ddy\sum_{n=1}^{\xN+1} \pPc{\fg_n(\rvX)\le y}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}
+      %  && \text{by definition of $\fg_n(x)$}
       \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \ge \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & otherwise
-           \end{array}}\quad\text{by \pref{item:YfX_gn}}}
+            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fs_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \pPc{\rvX \ge \fs_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n} & otherwise
+           \end{array}}\quad\text{by \pref{item:YfX_s}}}
       \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\pPc{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}}  & otherwise
+            \sum_{n=1}^{\xN+1} \pPc{\rvX \le \fs_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{1-\pPc{\rvX \le \fs_n(y)}{\rvX\in\setA_n}\psp\setn{\rvX\in\setA_n}}  & otherwise
            \end{array}}}
       \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \psp\set{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\psp\set{\rvX \le \fgi_n(y)}{\rvX\in\setA_n}}  & otherwise
+            \sum_{n=1}^{\xN+1} \psp\set{\rvX \le \fs_n(y)}{\rvX\in\setA_n}          & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{1-\psp\set{\rvX \le \fs_n(y)}{\rvX\in\setA_n}}  & otherwise
            \end{array}}\quad\text{by definition of $\psp\setn{\setX|\setY}$}}
       \\&= \mathrlap{\ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \brp{\psp\setn{\rvX \le \fgi_n(y)}-\psp\setn{\rvX < \min\setA_n}}        & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\brp{\psp\setn{\rvX \le \fgi_n(y)}-\psp\setn{\rvX<\min\setA_n}}}  & otherwise
+            \sum_{n=1}^{\xN+1} \brp{\psp\setn{\rvX \le \fs_n(y)}-\psp\setn{\rvX < \min\setA_n}}        & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{1-\brp{\psp\setn{\rvX \le \fs_n(y)}-\psp\setn{\rvX<\min\setA_n}}}  & otherwise
            \end{array}}}
       \\&= \ddy\brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \psp\setn{\rvX \le \fgi_n(y)}          & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{1-\psp\setn{\rvX \le \fgi_n(y)}}  & otherwise
+            \sum_{n=1}^{\xN+1} \psp\setn{\rvX \le \fs_n(y)}          & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{1-\psp\setn{\rvX \le \fs_n(y)}}  & otherwise
            \end{array}}
         && \text{because $\ddy\psp\setn{\rvX<\text{constant}}=0$}
       \\&= \brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1} \ddy\pcx\brs{\fgi_n(y)}         & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \ddy\brs{1-\pcx\brp{\fgi_n(y)}} & otherwise
+            \sum_{n=1}^{\xN+1} \ddy\pcx\brs{\fs_n(y)}         & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \ddy\brs{1-\pcx\brp{\fs_n(y)}} & otherwise
            \end{array}}
         && \text{by \prope{linearity} of $\ddy$ operator}
       \\&= \brb{\begin{array}{>{\ds}lM}
-            \sum_{n=1}^{\xN+1}       \ppx\brs{\fgi_n(y)}\ddy\brs{\fgi_n(y)}   & for $\ffp(x)\ge0$ \\
-            \sum_{n=1}^{\xN+1} \brs{-\ppx\brs{\fgi_n(y)}\ddy\brs{\fgi_n(y)}}  & otherwise
+            \sum_{n=1}^{\xN+1}       \ppx\brs{\fs_n(y)}\ddy\brs{\fs_n(y)}   & for $\ffp(x)\ge0$ \\
+            \sum_{n=1}^{\xN+1} \brs{-\ppx\brs{\fs_n(y)}\ddy\brs{\fs_n(y)}}  & otherwise
            \end{array}}
         && \text{\begin{tabular}[t]{@{}l}by definition of $\ppx$ \xref{def:pdf}\\and the \thme{chain rule}\end{tabular}}
-      \\&= \sum_{n=1}^{\xN+1} \ppx\brp{\fgi_n(y)}\abs{\ddy\brs{\fgi_n(y)}}
-      \\&= \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fgi_n(y)}}{\abs{\ffp\brp{\fgi_n(y)}}}
+      \\&= \sum_{n=1}^{\xN+1} \ppx\brp{\fs_n(y)}\abs{\ddy\brs{\fs_n(y)}}
+      \\&= \sum_{n=1}^{\xN+1} \frac{\ppx\brp{\fs_n(y)}}{\abs{\ffp\brp{\fs_n(y)}}}
         && \text{by \prefp{lem:ddyffi}}
     \end{align*}
 \end{enumerate}
