@@ -25,6 +25,7 @@ FILE_SRC  =                               \
   ../common/dimensionality_reduction.tex  \
   ../common/dtft.tex                      \
   ../common/expectation.tex               \
+  ../common/harTrig.tex                   \
   ../common/kl_seq.tex                    \
   ../common/moment_estimation.tex         \
   ../common/model_estimation.tex          \
