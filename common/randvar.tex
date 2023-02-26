@@ -747,15 +747,22 @@ Let $\conv$ be the \ope{convolution} operator \xref{def:conv}.
     &&    \text{by definition of $\ppz$} &&\text{\xref{def:pdf}}
   \\&\eqd \ddz\psp\setn{\rvZ \le z}
     &&    \text{by definition of $\pcz$} &&\text{\xref{def:cdf}}
-  \\&=    \ddz\psp\setn{\rvX+\rvY \le z}
+  \\&\eqd \ddz\psp\setn{\rvX+\rvY \le z}
     &&    \text{by hypothesis (1)}
-  \\&=    \ddz\lim_{\varepsilon\to0}\sum_{n\in\Z} \psp\set{\rvX+\rvY \le z}{y+n\varepsilon<\rvY\le y+(n+1)\varepsilon}
+  \\&=    \ddz\lim_{\varepsilon\to0}\sum_{n\in\Z} \psp\setn{\brs{\rvX+\rvY \le z} \land \brs{y+n\varepsilon<\rvY\le y+(n+1)\varepsilon}}
     &&    \text{by \thme{sum of products}}&&\text{\xref{thm:psp_sop}}
-  %\\&=    \ddz\int_y \pPc{\rvX+y \le z}{y<\rvY\le y+\varepsilon}\psp\setn{y<\rvY\le y+\varepsilon} \dy
-  %  &&    \text{by definiton of $\pPc{\rvX}{\rvY}$ \xref{def:conprob}}
+  \\&=\mathrlap{\ddz\lim_{\varepsilon\to0}\sum_{n\in\Z}
+          \psp\set{\rvX+\rvY \le z}{y+n\varepsilon<\rvY\le y+(n+1)\varepsilon}
+          \psp\setn{y+n\varepsilon<\rvY\le y+(n+1)\varepsilon}
+      }
+  \\&=\mathrlap{\ddz\lim_{\varepsilon\to0}\sum_{n\in\Z}
+          \psp\set{\rvX+\rvY \le z}{ \rvY=y }
+          \psp\setn{y+n\varepsilon<\rvY\le y+(n+1)\varepsilon}
+      }
   \\&=    \ddz\int_{y\in\R} \pPc{\rvX+\rvY \le z}{\rvY=y}\ppy(y) \dy
-    &&    \text{by definiton of $\pPc{\rvX}{\rvY}$}&&\text{\xref{def:conprob}}
+   %&&    \text{by definiton of $\pPc{\rvX}{\rvY}$}&&\text{\xref{def:conprob}}
   \\&=    \ddz\int_{y\in\R} \pPc{\rvX \le z-y}{\rvY=y} \ppy(y) \dy
+    &&    \text{$\rvY$ is given as $\rvY=y$}
   \\&=    \ddz\int_{y\in\R} \psp\setn{\rvX \le z-y}\ppy(y) \dy
     &&    \text{by hypothesis (2)}
   \\&\eqd \ddz\int_{y\in\R} \pcx(z-y)\ppy(y) \dy
@@ -769,24 +776,6 @@ Let $\conv$ be the \ope{convolution} operator \xref{def:conv}.
   \\&=    \ppx(z) \conv \ppy(z)
     &&    \text{by definition of $\conv$}&&\text{\xref{def:conv}}
 \end{align*}
-%
-%\begin{align*}
-%  \ppz(z)
-%    &\eqd \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \psp\setn{z \le Z < z+\varepsilon }
-%    &&    \text{by definition of $\ppz$ \xref{def:pdf}}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \psp\setn{z \le X+Y < z+\varepsilon }
-%    &&    \text{by definition of $\rvZ$}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z \le X+y < z+\varepsilon) \land (y\le Y<y+\varepsilon) } \dy
-%    &&    \text{by \thme{sum of products} \xref{thm:psp_sop}}
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon) | (y\le Y<y+\varepsilon) }\psp\setn{y\le Y<y+\varepsilon} \dy
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon) | Y=y }\psp\setn{y\le Y<y+\varepsilon} \dy
-%  \\&=    \lim_{\varepsilon\to0}\frac{1}{\varepsilon} \int_y \psp\setn{(z-y \le\rvX < z-y+\varepsilon)}\psp\setn{y\le Y<y+\varepsilon} \dy
-%    &&    \text{by \prope{independence} hypothesis}
-%  \\&\eqd \int_y \ppx(z-y) \ppy(y)  \dy
-%    &&    \text{by definition of $\ppx$ \xref{def:pdf}}
-%  \\&=    \ppx(z) \conv \ppy(z)
-%    &&    \text{by definition of $\conv$ \xref{def:conv}}
-%\end{align*}
 \end{proof}
 
 \begin{figure}
@@ -812,21 +801,18 @@ Let $\conv$ be the \ope{convolution} operator \xref{def:conv}.
 \begin{theorem}
 \label{thm:x1x2->y1y2}
 %---------------------------------------
-Let
-\begin{liste}
-  \item $\rvX_1$ and $\rvX_2$ be random variables with joint distribution
-        $\ppx[\rvX_1,\rvX_2](x_1,x_2)$
-  \item $\rvY_1=\ff_1(x_1,x_2)$ and $\rvY_2=\ff_2(x_1,x_2)$
-\end{liste}
-Then the joint distribution of $\rvY_1$ and $\rvY_2$ is
+Let $\rvX_1$ and $\rvX_2$ be random variables with joint distribution
+$\ppx[\rvX_1,\rvX_2](x_1,x_2)$.
+\\Let $\rvY_1\eqd\ff_1(x_1,x_2)$ and $\rvY_2\eqd\ff_2(x_1,x_2)$ with
+joint distribution $\ppx[\rvY_1,\rvY_2](y_1,y_2)$.
 \thmbox{
-  \ppx[Y_1,Y_2](y_1,y_2)
+  \ppx[\rvY_1,\rvY_2](y_1,y_2)
     = \frac{\ppx[\rvX_1,\rvX_2](x_1,x_2)}{|J(x_1,x_2)|}
     = \frac{\ppx[\rvX_1,\rvX_2](x_1,x_2)}{
-        \left|\begin{array}{cc}
+        \abs{\begin{array}{cc}
           \pderiv{\ff_1}{x_1} & \pderiv{\ff_1}{x_2}   \\
           \pderiv{\ff_2}{x_1} & \pderiv{\ff_2}{x_2}
-        \end{array}\right|
+        \end{array}}
         }
     = \frac{\ppx[\rvX_1,\rvX_2](x_1,x_2)}{
         \pderiv{\ff_1}{x_1}\pderiv{\ff_2}{x_2} -
@@ -839,10 +825,9 @@ Then the joint distribution of $\rvY_1$ and $\rvY_2$ is
 \begin{proposition}
 \label{prop:XY->RT}
 %---------------------------------------
-Let $\rvX$ and $\rvY$ be random variables with joint distribution
-$\ppxy(x,y)$ and
-\[ R^2 \eqd X^2 + Y^2 \hspace{10ex} \Theta \eqd \atan\frac{\rvY}{\rvX}. \]
-Then
+Let $\rvX$ and $\rvY$ be random variables with joint distribution $\ppxy(x,y)$ and
+\\$\ds R^2 \eqd \rvX^2 + \rvY^2$ and $\ds\Theta \eqd \atan\brp{\frac{\rvY}{\rvX}}.$
+\quad Then
 \propbox{
   \ppx[R,\Theta](r,\theta)
     =  r\;\ppxy(r\cos\theta,r\sin\theta)
@@ -864,6 +849,7 @@ Then
           \frac{-y}{x^2+y^2}         & \frac{x}{x^2+y^2}
         \end{array}\right|
         }
+    && \text{by \prefp{thm:x1x2->y1y2}}
   \\&= \frac{\ppxy(x,y)}{
          \frac{x}{\sqrt{x^2+y^2}}\frac{x}{x^2+y^2}  -
          \frac{y}{\sqrt{x^2+y^2}}\frac{-y}{x^2+y^2}
@@ -884,13 +870,13 @@ Then
 %---------------------------------------
 Let $\rvX\sim\pN{0}{\sigma^2}$ and $\rvY\sim\pN{0}{\sigma^2}$ be
 independent random variables and
-\\\indentx$R^2 \eqd X^2 + Y^2 \hspace{10ex} \Theta \eqd \atan\frac{\rvY}{\rvX}.$\\
-Then
+\\$\ds\rvR^2 \eqd \rvX^2 + \rvY^2$ and $\ds\Theta \eqd \atan\frac{\rvY}{\rvX}.$
+\quad Then
 \propbox{\begin{array}{FMrcl}
-  1. & $R$ and $\Theta$ are independent with joint distribution
+  1. & $\rvR$ and $\Theta$ are independent with joint distribution
      & \ppx[R,\Theta](r,\theta) &=& \ppr(r)\ppth(\theta)
 \\
-  2. & $R$ has Rayleigh distribution
+  2. & $\rvR$ has Rayleigh distribution
      & \ppr(r)  &=& \frac{r}{\sigma^2}\exp{\frac{r^2}{-2\sigma^2}}
 \\
   3. & $\Theta$ has uniform distribution
@@ -899,7 +885,7 @@ Then
 \end{proposition}
 \begin{proof}
 \begin{align*}
-  \ppx[R,\Theta](r,\theta)
+  \ppx[\rvR,\Theta](r,\theta)
     &= r\;\ppxy(r\cos\theta,r\sin\theta)
     && \text{by \prefpp{prop:XY->RT}}
   \\&= r\;\ppx(r\cos\theta) \; \ppy(r\sin\theta)
@@ -935,7 +921,7 @@ with covariance $\pvarxy$ on a
 \end{proposition}
 \begin{proof}
 Because $\rvX$ and $\rvY$ are jointly Gaussian,
-their linear combination $\rvZ=rvX-\rvY$ is also Gaussian.
+their linear combination $\rvZ=\rvX-\rvY$ is also Gaussian.
 A Gaussian distribution is completely defined by its mean and variance.
 So, to determine the distribution of $\rvZ$,
 we just have to determine the mean and variance of $\rvZ$.

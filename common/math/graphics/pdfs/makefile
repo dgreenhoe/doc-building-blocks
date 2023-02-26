@@ -90,6 +90,8 @@ FILE_GRP  =              \
   pulse03.pdf           \
   pulse_pun.pdf         \
   Fpulse.pdf            \
+  pdf_Normal_0_1.pdf    \
+  pdf_Normal_1_quadRoot1over2pi.pdf \
   pulseabc.pdf          \
   pulseabcft.pdf        \
   pz_minphase.pdf       \
