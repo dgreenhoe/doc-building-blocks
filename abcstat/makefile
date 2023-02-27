@@ -47,6 +47,7 @@ FILE_SRC  =                               \
   ../common/estimate.tex                  \
   ../common/netdet.tex                    \
   ../common/setstrct.tex                  \
+  ../common/somepdfs.tex                  \
   ../common/spectral.tex                  \
   ../common/spectral_estimation.tex       \
   ../common/sums.tex                      \

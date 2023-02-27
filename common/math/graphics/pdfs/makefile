@@ -91,6 +91,8 @@ FILE_GRP  =              \
   pulse_pun.pdf         \
   Fpulse.pdf            \
   pdf_Normal_0_1.pdf    \
+  pdf_Normal_1_squareRoot1over2pi.pdf \
+  pdf_Normal_2overSqrtpi.pdf \
   pdf_Normal_1_quadRoot1over2pi.pdf \
   pulseabc.pdf          \
   pulseabcft.pdf        \
