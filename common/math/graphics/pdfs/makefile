@@ -51,6 +51,7 @@ FILE_CC =                \
 
 FILE_GRP  =              \
   1_over_x.pdf           \
+  1overSqrt2piXplus1.pdf \
   latnegations.pdf       \
   argmin_xx-2x2.pdf      \
   bijective_x4y4.pdf     \
