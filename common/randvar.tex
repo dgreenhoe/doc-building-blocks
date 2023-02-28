@@ -77,16 +77,30 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
   $\ds\begin{array}{|ccccc|}
     \hline
     \boxed{\tbox{\includegraphics{../common/math/graphics/pdfs/n1.pdf}}}
-    &\quad\rightarrow\quad&
+    &\rightarrow&
     \boxed{\tbox{\includegraphics{../common/math/graphics/pdfs/n1_int.pdf}}}
-    &\quad\rightarrow\quad&
+    &\rightarrow&
     \boxed{\tbox{\includegraphics{../common/math/graphics/pdfs/n0.pdf}}}
     \\
-    \text{\fncte{pdf} $\ppx(x)$ of $\rvX$}
-    &&
-    \ff(x)=\pcx(x)
-    &&
-    \text{\fncte{pdf} $\ppy(x)$ of $\rvY\eqd\ff(\rvX)$}
+       \text{\fncte{pdf} $\ppx(x)$ of $\rvX$}
+    && \ff(x)\eqd \pcx(x)
+    && \text{\fncte{pdf} $\ppy(x)$ of $\rvY\eqd\ff(\rvX)$}
+    \\
+      \ppx(x)= \brbl{\begin{array}{r@{}lD}
+                        &x                      & for $0 < x \le 1$\\
+                       -&x                      & for $1 < x \le 2$\\
+                        &0                      & otherwise
+                     \end{array}}
+    &&\ff(x) = \brbl{\begin{array}{r@{}lD}
+                        &0                      & for $    x \le 0$\\
+                        &\frac{1}{2}x^2         & for $0 < x \le 1$\\
+                       -&\frac{1}{2}x^2 +2x - 1 & for $1 < x \le 2$\\
+                        &1                      & for $    x >   2$
+                     \end{array}}
+    &&\ppy(x)= \brbl{\begin{array}{r@{}lD}
+                        &1                      & for $0 \le x < 1$\\
+                        &0                      & otherwise
+                     \end{array}}
     \\\hline
   \end{array}$
   \caption{Flow diagram for \prefpp{ex:pit}\label{fig:pit_N1}}
@@ -96,25 +110,15 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
 \label{ex:pit}
 %---------------------------------------
 \exboxt{
-\begin{minipage}{\tw-58mm}
-Let $\rvX$ be a random variable with \fncte{pdf} \xref{def:pdf} $\ppx(x)$ where
-$\ppx(x)$ is the triangle-like \fncte{first order B-spline} $\fN_1(x)$ \xref{ex:bspline_N1}.
-%(a triangle-like function with height=1, peak at $x=1$, and support $x\in\intcc{0}{2}$).
-Then the random variable $\rvY\eqd\pcx(\rvX)$ has \prope{uniform distribution} \xref{def:uniform} where
-$\pcx(x)$ is the \fncte{cdf} \xref{def:cdf} of $\rvX$.
-\end{minipage}%
-\tbox{\includegraphics{../common/math/graphics/pdfs/n1.pdf}}%
-}
-\\\indentx$\ds
-\pcx(x) = \brbl{\begin{array}{r@{}lM}
-                   &0                      & for $    x \le 0$\\
-                   &\frac{1}{2}x^2         & for $0 < x \le 1$\\
-                  -&\frac{1}{2}x^2 +2x - 1 & for $1 < x \le 2$\\
-                   &1                      & for $    x >   2$
-                \end{array}}
-$\qquad\tbox{\includegraphics{../common/math/graphics/pdfs/n1_int.pdf}}%
-\\See \prefpp{fig:pit_N1} for an illustration.
-Here is some R code if you want to try out the concept on the bench:\footnotemark
+  Let $\rvX$ be a random variable with \fncte{cdf} \xref{def:cdf} $\pcx(x)$
+  and \fncte{pdf} \xref{def:pdf} $\ppx(x)$ where
+  $\ppx(x)$ is the triangle-like \fncte{first order B-spline} $\fN_1(x)$ \xref{ex:bspline_N1}.
+  Then the random variable $\rvY\eqd\pcx(\rvX)$
+  has \prope{uniform distribution} \xref{def:uniform},
+  as illustrated in \prefpp{fig:pit_N1}.
+  }
+\\
+Here is some R code if you want to try out the concept empirically:\footnotemark
 \footnotetext{Note: To understand why $\rvX\eqd\rvX1+\rvX2$ has triangle distribution $\fN_1(x)$,
 see \exme{Sum of Uniformly Distributed Random Variables} \prefp{ex:pdf_uniform_sums}.}
 \begin{lstlisting}[language=R]
@@ -221,7 +225,7 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
     \\
     \text{\fncte{pdf} $\ppx(x)$ of $\rvX$}
     &&
-    \ff(x)=\pcy^{-1}(x)
+    \ff(x)=2x+1
     &&
     \text{\fncte{pdf} $\ppy(x)$ of $\rvY\eqd\ff(\rvX)$}
     \\\hline
@@ -233,16 +237,22 @@ Let $\rvY$ be a \fncte{random variable} \fncte{cumulative distribution function}
 \label{ex:ppy_2x1}
 %---------------------------------------
 Let $\rvX$ be a \fncte{random variable} with \prope{uniform distribution}.
-Select a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has distribution
-\\\indentx$\ds\ppy(y) \eqd \brbl{\begin{array}{lM}
-                              \frac{1}{2} & for $y\in\intoc{1}{3}$\\
-                              0           & otherwise
-                            \end{array}}$
-\exbox{
-  \ff(x) \eqd 2x + 1
+Select a function $\ff(x)$ such that $\rvY\eqd\ff(\rvX)$ has \fncte{pdf} \xref{def:pdf}
+$\ppy(y)\eqd\frac{1}{2}$ for $y\in\intoc{1}{3}$ and $0$ otherwise.
+\exbox{\ds
+  \brb{\begin{array}{FMD}
+    (1) & $\ppx(x)$ is \prope{uniform} & and
+  \\(2) & $\ff(x) \eqd 2x + 1$
+  \end{array}}
   \qquad\implies\qquad
-  \rvY \eqd \ff(\rvX)\qquad\text{has distribution $\ppy(y)$}
-}
+  \brb{
+    \rvY \eqd \ff(\rvX)\qquad\text{has \fncte{pdf}}\quad
+    \ppy(y) \eqd \brbl{\begin{array}{lM}
+                          \frac{1}{2} & for $y\in\intoc{1}{3}$\\
+                          0           & otherwise
+                        \end{array}}
+    }
+  }
 \\\ldots as illustrated in \prefpp{fig:ppy_2x1}.
 Here's some R code demonstrating the concept: % (the ``blue" plot should look approximately like $\fN_1(x)$):
 \begin{lstlisting}[language=R]
@@ -493,34 +503,42 @@ Let $\rvX$ and $\rvY$ be \fncte{random variable}s in $\clFrr$.
 Let $a,b\in\R$.
 \corbox{
   \brb{\begin{array}{FlCD}
-    (1).&\rvY=\psdev\rvX+\pmean & and \\
-    (2).&\psdev\neq0            &
+    (A).&\rvY=\psdev\rvX+\pmean & and
+  \\(B).&\psdev\neq0            &
   \end{array}}
   \implies
-  \brb{
-  \ppy(y) = \mcoml{\frac{1}{\abs{\psdev}} \ppx\brp{\frac{y-\pmean}{\psdev}}}
-                  {\ope{Dilation} by $\psdev$ and \ope{Translation} by $\pmean$}
-  }}
+  \brb{\begin{array}{FrclD}
+    (1) & \ppy(y) &=& \mcoml{\frac{1}{\abs{\psdev}} \ppx\brp{\frac{y-\pmean}{\psdev}}}
+                            {\ope{Dilation} by $\psdev$ and \ope{Translation} by $\pmean$} & and
+  \\(2) & \pE(\rvY)   &=& \psdev\pE(\rvX) + \pmean & and
+  \\(3) & \pVar(\rvY) &=& \psdev^2\pVar(\rvX)
+  \end{array}}
+  }
 \end{corollary}
 \begin{proof}
   \begin{enumerate}
-    \item lemma: \label{ilem:YaXb_ffp}
-          $\ff(x)=\psdev x+\pmean$ is a \prope{differentiable function} and $\ffp(x)=\psdev$.
-    \item lemma: \label{ilem:YaXb_fs}
-          The equation $y=\ff(x)=\psdev x+b$ has $\xN=1$ solution and that solution is 
-          $x=\fs_1(y)=\frac{y-\pmean}{\psdev}$.
-    \item It follows that
-      \begin{align*}
-        \ppy(y)
-          &= \sum_{n=1}^{\xN} \frac{\ppx\brp{\fs_n(y)}}{\abs{\ff'\brp{\fs_n(y)}}}
-          && \text{by \prefpp{thm:YfX}}
-        \\&= \frac{\ppx\brp{\fs_1(y)}}{\abs{\ff'\brp{\fs_1(y)}}}
-          && \text{because $\xN=1$ \xref{ilem:YaXb_fs}}
-        \\&= \frac{\ppx\brp{\fs_1(y)}}{\abs{\psdev}}
-          && \text{by \pref{ilem:YaXb_ffp}}
-        \\&= \frac{1}{\abs{\psdev}}\ppx\brp{\frac{y-\pmean}{\psdev}}
-          && \text{by \pref{ilem:YaXb_fs}}
-      \end{align*}
+    \item Proof for (1):
+      \begin{enumerate}
+        \item lemma: \label{ilem:YaXb_ffp}
+              $\ff(x)=\psdev x+\pmean$ is a \prope{differentiable function} and $\ffp(x)=\psdev$.
+        \item lemma: \label{ilem:YaXb_fs}
+              The equation $y=\ff(x)=\psdev x+b$ has $\xN=1$ solution and that solution is
+              $x=\fs_1(y)=\frac{y-\pmean}{\psdev}$.
+        \item It follows that
+          \begin{align*}
+            \ppy(y)
+              &= \sum_{n=1}^{\xN} \frac{\ppx\brp{\fs_n(y)}}{\abs{\ff'\brp{\fs_n(y)}}}
+              && \text{by \prefpp{thm:YfX}}
+            \\&= \frac{\ppx\brp{\fs_1(y)}}{\abs{\ff'\brp{\fs_1(y)}}}
+              && \text{because $\xN=1$ \xref{ilem:YaXb_fs}}
+            \\&= \frac{\ppx\brp{\fs_1(y)}}{\abs{\psdev}}
+              && \text{by \pref{ilem:YaXb_ffp}}
+            \\&= \frac{1}{\abs{\psdev}}\ppx\brp{\frac{y-\pmean}{\psdev}}
+              && \text{by \pref{ilem:YaXb_fs}}
+          \end{align*}
+      \end{enumerate}
+    \item Proof for (2): By \prefpp{thm:pE_linop}.
+    \item Proof for (3): By \prefpp{cor:pVar}.
   \end{enumerate}
 \end{proof}
 
@@ -580,7 +598,7 @@ $\ppy(y)\eqd\frac{1}{2}$ for $y\in\intoc{1}{3}$ and $0$ otherwise.
     \rvX \sim \pN{\mu_x}{\sigma_x^2} = \pN{0}{1}
     &&
     &&
-    \rvY \sim \pN{\mu_x}{\sigma_y^2} = \pN{1}{\frac{1}{2\pi}}
+    \rvY \sim \pN{\mu_y}{\sigma_y^2} = \pN{1}{\frac{1}{2\pi}}
     \\\hline
   \end{array}$
   \caption{Flow diagram for \prefpp{ex:ppy_N01_2x1}\label{fig:ppy_N01_2x1}}
