@@ -51,6 +51,7 @@ FILE_CC =                \
 
 FILE_GRP  =              \
   1_over_x.pdf           \
+  1_over_x_gt0.pdf       \
   1overSqrt2piXplus1.pdf \
   latnegations.pdf       \
   argmin_xx-2x2.pdf      \
@@ -92,9 +93,12 @@ FILE_GRP  =              \
   pulse_pun.pdf         \
   Fpulse.pdf            \
   pdf_Normal_0_1.pdf    \
+  pdf_Uniform_1-2.pdf   \
+  pdf_Uniform12_1X.pdf  \
   pdf_Normal_1_squareRoot1over2pi.pdf \
   pdf_Normal_2overSqrtpi.pdf \
   pdf_Normal_1_quadRoot1over2pi.pdf \
+  pdf_Uniform_0-1.pdf   \
   pulseabc.pdf          \
   pulseabcft.pdf        \
   pz_minphase.pdf       \
