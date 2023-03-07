@@ -1,6 +1,7 @@
 #-----------------------------------------------------------------------------
 # Project Makefile
 # Daniel J. Greenhoe
+# cd C:\dan\personal\Repos\r\common\math\graphics\pdfs
 #-----------------------------------------------------------------------------
 #--------------------------------------
 # TARGET
@@ -96,9 +97,10 @@ FILE_GRP  =              \
   pdf_Uniform_1-2.pdf   \
   pdf_Uniform12_1X.pdf  \
   pdf_Normal_1_squareRoot1over2pi.pdf \
-  pdf_Normal_2overSqrtpi.pdf \
-  pdf_Normal_1_quadRoot1over2pi.pdf \
-  pdf_Uniform_0-1.pdf   \
+  pdf_Normal_2overSqrtpi.pdf          \
+  pdf_Normal_1_quadRoot1over2pi.pdf   \
+  pdf_Uniform_0-1.pdf                 \
+  pdf_Uniform12_Xsquared.pdf          \
   pulseabc.pdf          \
   pulseabcft.pdf        \
   pz_minphase.pdf       \
