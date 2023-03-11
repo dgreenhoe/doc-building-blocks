@@ -302,6 +302,30 @@ Let $\pp(x)$ be a \fncte{probability density function} on a \structe{probability
   }
 \end{definition}
 
+\begin{figure}
+  \centering
+  $\ds\begin{array}{|ccccc|}
+    \hline
+    \boxed{\tbox{\includegraphics{../common/math/graphics/pdfs/pdf_Normal_0_1.pdf}}}
+    &\quad\rightarrow\quad&
+    \boxed{\tbox{\includegraphics{../common/math/graphics/pdfs/x_squared.pdf}}}
+    &\quad\rightarrow\quad&
+    \boxed{\tbox{\includegraphics{../common/math/graphics/pdfs/pdf_Normal01_ChiSq-k1.pdf}}}
+    \\
+    \text{\fncte{pdf} $\ppx(x)$ of $\rvX$}
+    &&
+    \ff(x)=x^2
+    &&
+    \text{\fncte{pdf} $\ppy(x)$ of $\rvY\eqd\ff(\rvX)$}
+    \\
+    \rvX \sim \fN(0,1)
+    &&
+    &&
+    \rvY \sim \brlr{\chi(k)}_{k=1}
+    \\\hline
+  \end{array}$
+  \caption{Flow diagram for \prefpp{thm:Gamma=X^2}\label{fig:Gamma=X^2}}
+\end{figure}
 %A random variable $\rvY$ with \fncte{chi-squared distribution} is equivalent
 %to the square of random variable with zero-mean Gaussian distribution.
 %Thus if you wanted to generate a random value with chi-square distribution,
@@ -315,15 +339,15 @@ Let $\pp(x)$ be a \fncte{probability density function} on a \structe{probability
   \citerp{ross}{267}
   }
 %---------------------------------------
-\mbox{}\\
 \thmboxt{
   The following distributions are equivalent:
   \\\indentx$\begin{array}{FMD}
       (1).& chi-squared distribution                                            & and
     \\(2).& distribution of $\rvX^2$ where $\rvX\sim\pN{0}{\sigma^2}$           & and
-    \\(3).& Gamma distribution $\left(\frac{1}{2},\frac{1}{2\sigma^2} \right)$  &
+    \\(3).& Gamma distribution $\Gamma\brp{\frac{1}{2},\frac{1}{2\sigma^2}}$    &
   \end{array}$
   }
+\\\ldots see \prefpp{fig:Gamma=X^2} for an illustration of (2).
 \end{theorem}
 \begin{proof}
 \begin{enumerate}
@@ -334,14 +358,15 @@ Let $\pp(x)$ be a \fncte{probability density function} on a \structe{probability
     &= \left.\left.\frac{1}{2\sqrt{y}}\right[
        \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
     && \text{by \prefp{cor:YX2}}
+  \\&= \frac{1}{2\sqrt{y}}
+       \brs{
+         \frac{1}{\sqrt{2\pi\sigma^2}} \exp\brp{-\frac{(-\sqrt{y}-0)^2}{2\sigma^2}}+
+         \frac{1}{\sqrt{2\pi\sigma^2}} \exp\brp{-\frac{(+\sqrt{y}-0)^2}{2\sigma^2}}
+       }
   \\&= \left.\left.\frac{1}{2\sqrt{y}}\right[
-       \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{(-\sqrt{y}-0)^2}{2\sigma^2}}+
-       \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{(+\sqrt{y}-0)^2}{2\sigma^2}}
+       2\frac{1}{\sqrt{2\pi\sigma^2}} \exp\brp{-\frac{y}{2\sigma^2}}+
        \right]
-  \\&= \left.\left.\frac{1}{2\sqrt{y}}\right[
-       2\frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{y}{2\sigma^2}}+
-       \right]
-  \\&= \frac{1}{\sqrt{2\pi \sigma^2 y}} \exp{-\frac{y}{2\sigma^2}}
+  \\&= \frac{1}{\sqrt{2\pi \sigma^2 y}} \exp\brp{-\frac{y}{2\sigma^2}}
 \end{align*}
 
 \item Proof that chi-distribution is a Gamma distribution $(b,\lambda)$:
@@ -349,7 +374,7 @@ Let $\pp(x)$ be a \fncte{probability density function} on a \structe{probability
   b &\eqd& \frac{1}{2} \\
   \lambda &\eqd \frac{1}{2\sigma^2} \\
 \\
-  \frac{1}{\sqrt{2\pi\sigma^2y}}\exp{-\frac{y}{2\sigma^2}}
+  \frac{1}{\sqrt{2\pi\sigma^2y}}\exp\brp{-\frac{y}{2\sigma^2}}
     &= \frac{1}{\sqrt{\pi}}\lambda^{1/2} \lambda^{1/2} (\lambda y)^{-1/2} e^{-\lambda y}
   \\&= \frac{\lambda}{\sqrt{\pi}} (\lambda y)^{b-1} e^{-\lambda y}
 \end{align*}
@@ -370,7 +395,7 @@ The \fnctd{Chi-squared distribution with $n$ degrees of freedom} has pdf
     0 &:y<0 \\ \ds
     \frac{1}{2\sigma^2\Gamma(n/2)}
                \left(\frac{y}{2\sigma^2}\right)^{\frac{n}{2}-1}
-               \exp{-\frac{y}{2\sigma^2}}
+               \exp\brp{-\frac{y}{2\sigma^2}}
     &:y\ge 0
     \end{array}\right.
   }
@@ -402,10 +427,10 @@ The following distributions are equivalent:
     b       &\eqd& \frac{1}{2} \\
     \frac{1}{2\sigma^2\Gamma(n/2)}
                  \left(\frac{y}{2\sigma^2}\right)^{\frac{n}{2}-1}
-                 \exp{-\frac{y}{2\sigma^2}}
+                 \exp\brp{-\frac{y}{2\sigma^2}}
       &=& \frac{\lambda}{\Gamma(nb)}
           \left(\lambda y \right)^{nb-1}
-          \exp{-\lambda y}
+          \exp\brp{-\lambda y}
   \end{eqnarray*}
 
 \item Prove $\sum_{k=1}^n X^2$ is Gamma $\left(\frac{n}{2}, \frac{1}{2\sigma^2} \right)$:
@@ -429,8 +454,8 @@ A \fnctd{noncentral chi-square distribution} $(\mu,\sigma^2)$
 has pdf
 \defbox{
   \ppy(y)
-  = \frac{1}{\sqrt{2\pi\sigma^2y}} \exp{\frac{y+\mu^2 }{-2\sigma^2}}
-          \cosh{\frac{ \mu\sqrt{y}}{\sigma^2}}
+  = \frac{1}{\sqrt{2\pi\sigma^2y}} \exp\brp{\frac{y+\mu^2 }{-2\sigma^2}}
+          \cosh\brp{\frac{ \mu\sqrt{y}}{\sigma^2}}
   }
 \end{definition}
 
@@ -454,21 +479,21 @@ has pdf
        \ppx(-\sqrt{y}) + \ppx( \sqrt{y}) \right]
     \qquad\text{by \prefp{cor:YX2}}
   \\&= \left.\left.\frac{1}{2\sqrt{y}}\right[
-       \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{(-\sqrt{y}-\mu)^2}{2\sigma^2}}+
-       \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{(+\sqrt{y}-\mu)^2}{2\sigma^2}}
+       \frac{1}{\sqrt{2\pi\sigma^2}} \exp\brp{-\frac{(-\sqrt{y}-\mu)^2}{2\sigma^2}}+
+       \frac{1}{\sqrt{2\pi\sigma^2}} \exp\brp{-\frac{(+\sqrt{y}-\mu)^2}{2\sigma^2}}
        \right]
   \\&= \left.\left.\frac{1}{2\sqrt{y}}\right[
-       \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{y+\mu^2 }{2\sigma^2}} \exp{\frac{-2\mu\sqrt{y}}{2\sigma^2}}+
-       \frac{1}{\sqrt{2\pi\sigma^2}} \exp{-\frac{y+\mu^2 }{2\sigma^2}} \exp{\frac{ 2\mu\sqrt{y}}{2\sigma^2}}
+       \frac{1}{\sqrt{2\pi\sigma^2}} \exp\brp{-\frac{y+\mu^2 }{2\sigma^2}} \exp\brp{\frac{-2\mu\sqrt{y}}{2\sigma^2}}+
+       \frac{1}{\sqrt{2\pi\sigma^2}} \exp\brp{-\frac{y+\mu^2 }{2\sigma^2}} \exp\brp{\frac{ 2\mu\sqrt{y}}{2\sigma^2}}
        \right]
-  \\&= \frac{1}{\sqrt{2\pi\sigma^2y}} \exp{-\frac{y+\mu^2 }{2\sigma^2}}
+  \\&= \frac{1}{\sqrt{2\pi\sigma^2y}} \exp\brp{-\frac{y+\mu^2 }{2\sigma^2}}
        \frac{1}{2}
        \left[
-         \exp{\frac{ 2\mu\sqrt{y}}{2\sigma^2}} +
-         \exp{\frac{-2\mu\sqrt{y}}{2\sigma^2}}
+         \exp\brp{\frac{ 2\mu\sqrt{y}}{2\sigma^2}} +
+         \exp\brp{\frac{-2\mu\sqrt{y}}{2\sigma^2}}
        \right]
-  \\&= \frac{1}{\sqrt{2\pi\sigma^2y}} \exp{\frac{y+\mu^2 }{-2\sigma^2}}
-         \cosh{\frac{ \mu\sqrt{y}}{\sigma^2}}
+  \\&= \frac{1}{\sqrt{2\pi\sigma^2y}} \exp\brp{\frac{y+\mu^2 }{-2\sigma^2}}
+         \cosh\brp{\frac{ \mu\sqrt{y}}{\sigma^2}}
 \end{align*}
 \end{enumerate}
 \end{proof}
@@ -499,7 +524,7 @@ pdf
   \ppy(y) =
   \frac{1}{2\sigma^2}
   \left(\frac{y}{s^2}\right)^\frac{n-2}{4}
-  \exp{\frac{y+s^2}{-2\sigma^2}}
+  \exp\brp{\frac{y+s^2}{-2\sigma^2}}
   I_{n/2-1}\left(\sqrt{y}\frac{s}{\sigma^2}\right)
   \hspace{1cm}\mbox{where }
   s^2 \eqd \sum_{k=1}^n \mu_k^2
@@ -521,7 +546,7 @@ The \fnctd{Rayleigh distribution} is the pdf
 \defbox{
   \ppr(r) = \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
   0 & r<0 \\
-  \frac{r}{\sigma^2}\exp{-\frac{r^2}{2\sigma^2}}
+  \frac{r}{\sigma^2}\exp\brp{-\frac{r^2}{2\sigma^2}}
   & r\ge 0
   \end{array}\right.
   }
@@ -543,7 +568,7 @@ The \fnctd{Rice distribution} is the pdf
 \defbox{
   \ppr(r) = \left\{\begin{array}{l@{\hspace{4ex}\mbox{for}\hspace{4ex}}l}
   0 & r<0 \\
-  \frac{r}{\sigma^2}\exp{\frac{r^2+s^2}{-2\sigma^2}}
+  \frac{r}{\sigma^2}\exp\brp{\frac{r^2+s^2}{-2\sigma^2}}
   I_o\left(\frac{rs}{\sigma^2}\right)
   & r\ge 0
   \end{array}\right.
@@ -584,7 +609,7 @@ The \fnctd{Rice distribution} is the pdf
 \defbox{\begin{array}{rclD}
   \pp(x_1,x_2,\ldots,x_n)
     &\eqd& \ds\frac{1}{\sqrt{(2\pi)^n |\vM|}}
-           \exp{-\frac{1}{2}(\vx-\pE\vx)^T\vM^{-1}(\vx-\pE\vx)}
+           \exp\brp{-\frac{1}{2}(\vx-\pE\vx)^T\vM^{-1}(\vx-\pE\vx)}
     &      (Gaussian joint pdf)
     \\ \\
   \vx
