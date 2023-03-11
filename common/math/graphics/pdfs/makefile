@@ -101,6 +101,7 @@ FILE_GRP  =              \
   pdf_Normal_1_quadRoot1over2pi.pdf   \
   pdf_Uniform_0-1.pdf                 \
   pdf_Normal01_ChiSq-k1.pdf \
+  pdf_Poisson.pdf       \
   pulseabc.pdf          \
   pulseabcft.pdf        \
   pz_minphase.pdf       \
