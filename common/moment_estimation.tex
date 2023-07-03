@@ -572,8 +572,60 @@ In software/firmware implementations, recursive forms are very useful and effici
 \end{proof}
 
 %---------------------------------------
+\begin{theorem}[\thmd{Second central moment recursive estimation}]
+\label{thm:cmom2_recursive}
+%---------------------------------------
+\thmbox{
+  \meanest_{2,n} = \meanest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
+  }
+\end{theorem}
+\begin{proof}
+{\begin{align*}
+  \meanest_{2,n}
+     &\eqd \sum_{k=1}^n \brp{ \rvx_k - \meanest_n }^2
+     \qquad\text{by estimated 2nd centralized moment}
+   \\&= \sum_{k=1}^{n} \brs{ \rvx_k - \meanest_{n-1} - \frac{1}{n}\brp{ x_n-\meanest_{n-1} } }^2
+   \\&= \sum_{k=1}^{n} \brs{
+                        \brp{ \rvx_k - \meanest_{n-1} }^2
+        - \frac{2}{n}   \brp{ \rvx_k - \meanest_{n-1} } \brp{ x_n-\meanest_{n-1} }
+        + \frac{1}{n^2} \brp{ x_n-\meanest_{n-1} }^2
+        }
+   \\&=                 \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} }^2
+        - \frac{2}{n}   \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} } \brp{ x_n-\meanest_{n-1} }
+        + \frac{1}{n^2} \sum_{k=1}^{n} \brp{ x_n-\meanest_{n-1} }^2
+     %
+   \\&=   \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} }
+        + \frac{n}{n^2} \brp{ x_n-\meanest_{n-1} }^2
+     %
+   \\&=   \mcom{\brs{ \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^2 }}{$\meanest_{2,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brs{ n\mcom{\brp{\frac{1}{n}\sum_{k=1}^{n}\rvx_k}}{$\meanest$} - \brp{\sum_{k=1}^n \meanest_{n-1} } }
+        + \frac{1}{n} \brp{ x_n-\meanest_{n-1} }^2
+     %
+   \\&=   \meanest_{2,n-1}
+        + \brs{1 + \frac{1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brs{ n\meanest - n\meanest_{n-1} }
+     %
+   \\&=   \meanest_{2,n-1}
+        + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } n\brs{ \meanest_{n-1} + \frac{1}{n}\brp{ x_n - \meanest_{n-1} } - \meanest_{n-1} }
+     %
+   \\&=   \meanest_{2,n-1}
+        + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brp{ x_n - \meanest_{n-1} }
+     %
+   \\&=   \meanest_{2,n-1}
+        + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} }^2
+     %
+   \\&=   \meanest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
+\end{align*}}
+% Praise the Lord!!!
+\end{proof}
+
+%---------------------------------------
 \begin{theorem}
-\label{thm:moment_recursive}
+\label{thm:var_recursive}
 %---------------------------------------
 \thmbox{
   \varest_n = \frac{n-2}{n-1}\varest_{n-1} + \frac{1}{n}\brp{ \rvx_n - \meanest_{n-1} }^2
