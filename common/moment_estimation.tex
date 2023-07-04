@@ -388,7 +388,7 @@ Let $\mu^4\eqd\pE\brs{\brp{\rvx_n-\mean}^4}$ be the \fncte{4th central moment} o
         The assertion is made by \citerp{wilks1962}{199} who also without there supplying a proof
         says,
         ``Carrying out similar mean value operations we find after some reduction that" the result follows.
-    {\begin{align*}
+    \begin{align*}
       \pE\brs{\brp{\varest}^2}
         &\eqd \pE\brs{\brp{\frac{1}{\xN-1}\sum_{n=1}^{\xN} \brp{\rvx_n - \meanest}^2}^2}
         \qquad \text{by definition of $\varest$ \xref{def:varest}}
@@ -438,10 +438,10 @@ Let $\mu^4\eqd\pE\brs{\brp{\rvx_n-\mean}^4}$ be the \fncte{4th central moment} o
                  +  \pE\brs{\meanest^4                 }
            \end{array}}
       \\&\eqq \frac{\mu^4}{\xN} + \frac{(\xN-1)^2+2}{\xN(\xN-1)} \sigma^4
-    \end{align*}}
+    \end{align*}
 
   \item Proof for (3):
-    {\begin{align*}
+    \begin{align*}
       \var\brs{\varest\seqn{\rvx_n}}
         &\eqd \pE\brs{\brp{\varest-\pE\varest}^2}
         && \text{by definition of $\varest$}
@@ -462,7 +462,7 @@ Let $\mu^4\eqd\pE\brs{\brp{\rvx_n-\mean}^4}$ be the \fncte{4th central moment} o
         && \text{by \pref{ilem:varest_varvar}}
       \\&= \mathrlap{\frac{1}{\xN}\brs{\mu^4 + \brp{\frac{(\xN^2-\xN+1)+2-\xN(\xN-1)}{\xN-1}} \sigma^4}}
       \\&= \frac{1}{\xN}\brs{\mu^4 - \brp{\frac{\xN-3}{\xN-1}}\sigma^4}
-    \end{align*}}
+    \end{align*}
 \end{enumerate}
 \end{proof}
 
@@ -491,7 +491,7 @@ Let $\mu^4\eqd\pE\brs{\brp{\rvx_n-\mean}^4}$ be the \fncte{4th central moment} o
 \end{array}}
 \end{proposition}
 \begin{proof}
-{\begin{align*}
+\begin{align*}
   \meanest\seqn{\rvx_n}
     &\eqd \frac{1}{\xN}\sum_{n=1}^{\xN} \rvx_n
     && \text{by definition of $\meanest$}
@@ -512,7 +512,7 @@ Let $\mu^4\eqd\pE\brs{\brp{\rvx_n-\mean}^4}$ be the \fncte{4th central moment} o
       - 2\mcom{\meanest}{$\momest_1$}\frac{\xN}{\xN-1}\mcom{\frac{1}{\xN}\sum_{n=1}^{\xN} \rvx_n}{$\momest_1$}
       +  \frac{\xN}{\xN-1} \mcom{\meanest^2}{$\momest_1^2$}
   \\&= \frac{\xN}{\xN-1}\momest_2 - \frac{\xN}{\xN-1}\momest_1^2
-\end{align*}}
+\end{align*}
 \end{proof}
 
 %=======================================
@@ -582,7 +582,7 @@ In software/firmware implementations, recursive forms are very useful and effici
   }
 \end{theorem}
 \begin{proof}
-{\begin{align*}
+\begin{align*}
   \cmomest_{2,n}
      &\eqd \sum_{k=1}^n \brp{ \rvx_k - \meanest_n }^2
      \qquad\text{by estimated 2nd centralized moment}
@@ -621,7 +621,7 @@ In software/firmware implementations, recursive forms are very useful and effici
         - \frac{2}{n} \brp{ x_n-\meanest_{n-1} }^2
      %
    \\&=   \cmomest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
-\end{align*}}
+\end{align*}
 % Praise the Lord!!!
 \end{proof}
 
@@ -675,4 +675,59 @@ In software/firmware implementations, recursive forms are very useful and effici
         \end{align*}
   \end{enumerate}
 % Praise the Lord!!!
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}[\thmd{Third central moment recursive estimation}]
+\label{thm:cmom3_recursive}
+%---------------------------------------
+\thmbox{
+  \meanest_{3,n} =
+      \cmomest_{3,n-1}
+    - \frac{3}{n}  \brp{ \rvx_n-\meanest_{n-1} } \cmomest_{2,n-1}
+    + \brs{\frac{n^2-3n+2}{n^2} }\brp{ \rvx_n - \meanest_{n-1} }^3
+  }
+\end{theorem}
+\begin{proof}
+\begin{align*}
+  \cmomest_{3,n} =
+     &\eqd \sum_{k=1}^n \brp{ \rvx_k - \meanest_n }^3
+     \qquad\text{by estimated 3rd centralized moment}
+   \\&= \sum_{k=1}^{n} \brs{ \rvx_k - \meanest_{n-1} - \frac{1}{n}\brp{ \rvx_n-\meanest_{n-1} } }^3
+   \\&= \sum_{k=1}^{n} \brs{
+                        \brp{ \rvx_k - \meanest_{n-1} }^3
+        - \frac{3}{n}   \brp{ \rvx_k - \meanest_{n-1} }^2 \brp{ \rvx_n-\meanest_{n-1} }
+        + \frac{3}{n^2} \brp{ \rvx_k - \meanest_{n-1} }   \brp{ \rvx_n-\meanest_{n-1} }^2
+        - \frac{1}{n^3} \brp{ \rvx_n-\meanest_{n-1} }^3
+        }
+   \\&=                 \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }^3
+        - \frac{3}{n}   \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }^2 \brp{ \rvx_n-\meanest_{n-1} }
+        + \frac{3}{n^2} \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }   \brp{ \rvx_n-\meanest_{n-1} }^2
+        - \frac{1}{n^3} \sum_{k=1}^n \brp{ \rvx_n-\meanest_{n-1} }^3
+   \\&=                 \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }^3
+        - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} }   \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }^2
+        + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }
+        - \frac{1}{n^3} n \brp{ \rvx_n-\meanest_{n-1} }^3
+   \\&=                 \mcom{\brs{\sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^3}}{$\cmomest_{3,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^3
+        - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} }  \brs{\mcom{\sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^2}{$\cmomest_{2,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^2 }
+      \\&\qquad + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brs{n\mcom{\frac{1}{n}\sum_{k=1}^n \rvx_k}{$\meanest_n$} - \sum_{k=1}^n \meanest_{n-1} }
+        - \frac{1}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^3
+   \\&=  \cmomest_{3,n-1} + \brp{ \rvx_n - \meanest_{n-1} }^3
+        - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} }   \brs{ \cmomest_{2,n-1} + \brp{ \rvx_n - \meanest_{n-1} }^2 }
+        + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brs{n\meanest_n - n \meanest_{n-1} }
+      \\&\qquad- \frac{1}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^3
+   \\&=  \cmomest_{3,n-1} + \brp{ \rvx_n - \meanest_{n-1} }^3
+        - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} } \cmomest_{2,n-1}
+        - \frac{3}{n}   \brp{ \rvx_n - \meanest_{n-1} }^3
+      \\&\qquad  + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brs{n\meanest_{n-1}+n\frac{1}{n}\brp{\rvx_n-\meanest_{n-1}} - n \meanest_{n-1} }
+        - \frac{1}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^3
+   \\&=  \cmomest_{3,n-1} + \brs{1 -\frac{3}{n} -\frac{1}{n^2} }\brp{ \rvx_n - \meanest_{n-1} }^3
+        - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} } \cmomest_{2,n-1}
+        + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brp{\rvx_n-\meanest_{n-1}}
+   \\&=  \cmomest_{3,n-1} + \brs{1 -\frac{3}{n} -\frac{1}{n^2} + \frac{3}{n^2}}\brp{ \rvx_n - \meanest_{n-1} }^3
+        - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} } \cmomest_{2,n-1}
+   \\&=  \cmomest_{3,n-1}
+        - \frac{3}{n}  \brp{ \rvx_n-\meanest_{n-1} } \cmomest_{2,n-1}
+        + \brs{\frac{n^2-3n+2}{n^2} }\brp{ \rvx_n - \meanest_{n-1} }^3
+\end{align*}
 \end{proof}
