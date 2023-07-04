@@ -576,12 +576,14 @@ In software/firmware implementations, recursive forms are very useful and effici
 \label{thm:cmom2_recursive}
 %---------------------------------------
 \thmbox{
-  \meanest_{2,n} = \meanest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
+  \meanest_{2,n} = \mcom{\meanest_{2,n-1}}{previous}
+                 + \mcom{\brs{\frac{n-1}{n}}}{weight}
+                   \mcom{\brp{ \rvx_n - \meanest_{n-1} }^2}{square error}
   }
 \end{theorem}
 \begin{proof}
 {\begin{align*}
-  \meanest_{2,n}
+  \cmomest_{2,n}
      &\eqd \sum_{k=1}^n \brp{ \rvx_k - \meanest_n }^2
      \qquad\text{by estimated 2nd centralized moment}
    \\&= \sum_{k=1}^{n} \brs{ \rvx_k - \meanest_{n-1} - \frac{1}{n}\brp{ x_n-\meanest_{n-1} } }^2
@@ -598,83 +600,79 @@ In software/firmware implementations, recursive forms are very useful and effici
         - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} }
         + \frac{n}{n^2} \brp{ x_n-\meanest_{n-1} }^2
      %
-   \\&=   \mcom{\brs{ \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^2 }}{$\meanest_{2,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^2
+   \\&=   \mcom{\brs{ \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^2 }}{$\cmomest_{2,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^2
         - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brs{ n\mcom{\brp{\frac{1}{n}\sum_{k=1}^{n}\rvx_k}}{$\meanest$} - \brp{\sum_{k=1}^n \meanest_{n-1} } }
         + \frac{1}{n} \brp{ x_n-\meanest_{n-1} }^2
      %
-   \\&=   \meanest_{2,n-1}
+   \\&=   \cmomest_{2,n-1}
         + \brs{1 + \frac{1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
-        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brs{ n\meanest - n\meanest_{n-1} }
+        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brs{ n\meanest_n - n\meanest_{n-1} }
      %
-   \\&=   \meanest_{2,n-1}
+   \\&=   \cmomest_{2,n-1}
         + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
         - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } n\brs{ \meanest_{n-1} + \frac{1}{n}\brp{ x_n - \meanest_{n-1} } - \meanest_{n-1} }
      %
-   \\&=   \meanest_{2,n-1}
+   \\&=   \cmomest_{2,n-1}
         + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
         - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brp{ x_n - \meanest_{n-1} }
      %
-   \\&=   \meanest_{2,n-1}
+   \\&=   \cmomest_{2,n-1}
         + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
         - \frac{2}{n} \brp{ x_n-\meanest_{n-1} }^2
      %
-   \\&=   \meanest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
+   \\&=   \cmomest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
 \end{align*}}
 % Praise the Lord!!!
 \end{proof}
 
 %---------------------------------------
-\begin{theorem}
-\label{thm:var_recursive}
+\begin{corollary}
+\label{cor:var_recursive}
+% cross-reference: https://math.stackexchange.com/questions/374881/
 %---------------------------------------
-\thmbox{
-  \varest_n = \frac{n-2}{n-1}\varest_{n-1} + \frac{1}{n}\brp{ \rvx_n - \meanest_{n-1} }^2
-  }
-\end{theorem}
+\corbox{\begin{array}{rc>{\ds}lM}
+  \varest_n &=& \mcom{ \brs{\frac{n-2}{n-1}} \varest_{n-1}            }{weighted previous}
+              + \mcom{      \frac{1}{n}      \brp{ \rvx_n - \meanest_{n-1} }^2 }{weighted squared error}
+              & (\fncte{sample variance estimation})
+             \\
+  \popvarest_n &=& \mcom{ \brs{\frac{n-1}{n}}  \popvarest_{n-1}            }{weighted previous}
+              + \mcom{         \frac{n-1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2 }{weighted squared error}
+              & (\fncte{population variance estimation})
+\end{array}}
+\end{corollary}
 \begin{proof}
-\begin{align*}
-  \varest_n
-     &\eqd \frac{1}{n-1} \sum_{k=1}^n \brp{ \rvx_k - \meanest_n }^2
-     \qquad\text{by definition of $\varest$ \xref{def:varest}}
-   \\&= \brp{ \rvx_n - \meanest_n }^2 + \frac{1}{n-1} \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_n }^2
-   \\&= \brp{ \rvx_n - \meanest_n }^2 + \frac{1}{n-1} \sum_{k=1}^{n-1} \brs{ \rvx_k - \meanest_{n-1} - \frac{1}{n}\brs{ \rvx_n - \meanest_{n-1}} }^2
-   \\&= \brp{ \rvx_n - \meanest_n }^2
-      + \frac{1}{    n-1} \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^2
-      - \frac{2/n}{  n-1} \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} } \brp{ \rvx_n - \meanest_{n-1} }
-      + \frac{1/n^2}{n-1} \sum_{k=1}^{n-1} \brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \frac{1}{n-1} \brp{ \rvx_n - \meanest_n }^2
-      + \frac{n-2}{n-1} \mcom{\brs{\frac{1}{n-2} \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^2}}
-                             {$\varest_{n-1}$ \xref{def:varest}}
-      - \frac{2}{n(n-1)}\brp{ \rvx_n - \meanest_{n-1} } \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }
-      + \frac{n-1}{n^2(n-1)}\brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \frac{1}{n-1} \brp{ \rvx_n - \meanest_n }^2
-      + \brs{\frac{n-2}{n-1}} \varest_{n-1}
-      - \frac{2}{n(n-1)}\brp{ \rvx_n - \meanest_{n-1} } \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }
-      + \frac{1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \frac{1}{n-1} \brp{ \rvx_n - \meanest_n }^2
-      + \brs{\frac{n-2}{n-1}} \varest_{n-1}
-      - 2\brs{\frac{1}{n} \mcom{\brp{\frac{1}{n-1}\sum_{k=1}^{n-1} \rvx_k }}{$\meanest_{n-1}$ \xref{def:average}} - \brp{ \frac{1}{n(n-1)}\sum_{k=1}^{n-1} \meanest_{n-1} }  } \brp{ \rvx_n - \meanest_{n-1} }
-      + \frac{1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \frac{1}{n-1} \brp{ \rvx_n - \meanest_n }^2
-      + \brs{\frac{n-2}{n-1}} \varest_{n-1}
-      - 2 \cancelto{0}{\brs{\frac{1}{n}\meanest_{n-1} - \frac{1}{n}\meanest_{n-1} }} \brp{ \rvx_n - \meanest_{n-1} }
-      + \frac{1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \brs{\frac{n-2}{n-1}} \varest_{n-1}
-      + \frac{1}{n-1} \brp{ \rvx_n - \meanest_n }^2
-      + \frac{1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \brs{\frac{n-2}{n-1}} \varest_{n-1}
-      + \frac{1}{n-1} \brs{ \rvx_n - \meanest_{n-1} - \frac{1}{n}\brp{ \rvx_n - \meanest_{n-1} } }^2
-      + \frac{1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \brs{\frac{n-2}{n-1}} \varest_{n-1}
-      + \frac{1}{n-1} \brs{ \frac{n-1}{n} \brp{ \rvx_n - \meanest_{n-1} } }^2
-      + \frac{1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \brs{\frac{n-2}{n-1}} \varest_{n-1}
-      + \frac{n-1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
-      + \frac{  1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
-   \\&= \boxed{
-          \brs{\frac{n-2}{n-1}} \varest_{n-1}
-        + \frac{1}{n} \brp{ \rvx_n - \meanest_{n-1} }^2
-        }
-\end{align*}
+\begin{enumerate}
+  \item lemma: $\varest_n \eqd \frac{1}{n-1}\cmomest_{2,n}$. \label{ilem:var_recursive_n}
+        Proof: By definition of \fncte{sample variance}.
+  \item lemma: $\cmomest_{2,n-1} = (n-2)\varest_{n-1}$ \label{ilem:var_recursive_n1}
+        Proof: By \pref{ilem:var_recursive_n}.
+  \item Remainder of sample variance estimate proof \ldots
+        \begin{align*}
+          \varest_n
+             &= \brs{\frac{1}{n-1}} \cmomest_{2,n}
+             && \text{by \pref{ilem:var_recursive_n}}
+           \\&= \frac{1}{n-1} \brs{ \cmomest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2 }
+             && \text{by \prefp{thm:cmom2_recursive}}
+           \\&= \frac{1}{n-1} \brs{ (n-2)\varest_{n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2 }
+             && \text{by \pref{ilem:var_recursive_n1}}
+           \\&= \brs{\frac{n-2}{n-1}} \varest_{n-1} + \frac{1}{n} \brp{ \rvx_n - \meanest_{n-1} }^2
+        \end{align*}
+
+  \item lemma: $\popvarest_n \eqd \frac{1}{n}\cmomest_{2,n}$. \label{ilem:popvar_recursive_n}
+        Proof: By definition of \fncte{population variance}.
+  \item lemma: $\cmomest_{2,n-1} = (n-1)\popvarest_{n-1}$ \label{ilem:popvar_recursive_n1}
+        Proof: By \pref{ilem:popvar_recursive_n}.
+  \item Remainder of population variance estimate proof \ldots
+        \begin{align*}
+          \popvarest_n
+             &= \brs{\frac{1}{n}} \cmomest_{2,n}
+             && \text{by \pref{ilem:popvar_recursive_n}}
+           \\&= \frac{1}{n} \brs{ \cmomest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2 }
+             && \text{by \prefp{thm:cmom2_recursive}}
+           \\&= \frac{1}{n} \brs{ (n-1)\popvarest_{n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2 }
+             && \text{by \pref{ilem:popvar_recursive_n1}}
+           \\&= \brs{\frac{n-1}{n}} \popvarest_{n-1} + \frac{n-1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2
+        \end{align*}
+  \end{enumerate}
 % Praise the Lord!!!
 \end{proof}
