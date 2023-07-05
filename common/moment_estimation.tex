@@ -586,39 +586,39 @@ In software/firmware implementations, recursive forms are very useful and effici
   \cmomest_{2,n}
      &\eqd \sum_{k=1}^n \brp{ \rvx_k - \meanest_n }^2
      \qquad\text{by estimated 2nd centralized moment}
-   \\&= \sum_{k=1}^{n} \brs{ \rvx_k - \meanest_{n-1} - \frac{1}{n}\brp{ x_n-\meanest_{n-1} } }^2
+   \\&= \sum_{k=1}^{n} \brs{ \rvx_k - \meanest_{n-1} - \frac{1}{n}\brp{ \rvx_n-\meanest_{n-1} } }^2
    \\&= \sum_{k=1}^{n} \brs{
                         \brp{ \rvx_k - \meanest_{n-1} }^2
-        - \frac{2}{n}   \brp{ \rvx_k - \meanest_{n-1} } \brp{ x_n-\meanest_{n-1} }
-        + \frac{1}{n^2} \brp{ x_n-\meanest_{n-1} }^2
+        - \frac{2}{n}   \brp{ \rvx_k - \meanest_{n-1} } \brp{ \rvx_n-\meanest_{n-1} }
+        + \frac{1}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2
         }
    \\&=                 \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} }^2
-        - \frac{2}{n}   \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} } \brp{ x_n-\meanest_{n-1} }
-        + \frac{1}{n^2} \sum_{k=1}^{n} \brp{ x_n-\meanest_{n-1} }^2
+        - \frac{2}{n}   \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} } \brp{ \rvx_n-\meanest_{n-1} }
+        + \frac{1}{n^2} \sum_{k=1}^{n} \brp{ \rvx_n-\meanest_{n-1} }^2
      %
    \\&=   \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} }^2
-        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} }
-        + \frac{n}{n^2} \brp{ x_n-\meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ \rvx_n-\meanest_{n-1} } \mcom{\sum_{k=1}^{n} \brp{ \rvx_k - \meanest_{n-1} }}{$\rvx_n - \meanest_{n-1}$ by \pref{lem:meanest}}
+        + \frac{n}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2
      %
    \\&=   \mcom{\brs{ \sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^2 }}{$\cmomest_{2,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^2
-        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brs{ n\mcom{\brp{\frac{1}{n}\sum_{k=1}^{n}\rvx_k}}{$\meanest$} - \brp{\sum_{k=1}^n \meanest_{n-1} } }
-        + \frac{1}{n} \brp{ x_n-\meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ \rvx_n-\meanest_{n-1} } \brp{ \rvx_n - \meanest_{n-1} }
+        + \frac{1}{n} \brp{ \rvx_n-\meanest_{n-1} }^2
      %
    \\&=   \cmomest_{2,n-1}
         + \brs{1 + \frac{1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
-        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brs{ n\meanest_n - n\meanest_{n-1} }
+        - \frac{2}{n} \brp{ \rvx_n-\meanest_{n-1} } \brp{ \rvx_n - \meanest_{n-1} }
      %
    \\&=   \cmomest_{2,n-1}
         + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
-        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } n\brs{ \meanest_{n-1} + \frac{1}{n}\brp{ x_n - \meanest_{n-1} } - \meanest_{n-1} }
+        - \frac{2}{n} \brp{ \rvx_n-\meanest_{n-1} } \brp{ \rvx_n - \meanest_{n-1} }
      %
    \\&=   \cmomest_{2,n-1}
         + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
-        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} } \brp{ x_n - \meanest_{n-1} }
+        - \frac{2}{n} \brp{ \rvx_n-\meanest_{n-1} } \brp{ \rvx_n - \meanest_{n-1} }
      %
    \\&=   \cmomest_{2,n-1}
         + \brs{\frac{n+1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
-        - \frac{2}{n} \brp{ x_n-\meanest_{n-1} }^2
+        - \frac{2}{n} \brp{ \rvx_n-\meanest_{n-1} }^2
      %
    \\&=   \cmomest_{2,n-1} + \brs{\frac{n-1}{n}} \brp{ \rvx_n - \meanest_{n-1} }^2
 \end{align*}
@@ -678,6 +678,24 @@ In software/firmware implementations, recursive forms are very useful and effici
 \end{proof}
 
 %---------------------------------------
+\begin{lemma}
+\label{lem:meanest}
+%---------------------------------------
+\lembox{
+  \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} } = \rvx_n - \meanest_{n-1}
+}
+\end{lemma}
+\begin{proof}
+\begin{align*}
+  \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }
+    &= n\mcom{\frac{1}{n}\sum_{k=1}^n \rvx_k}{$\meanest_n$} - \sum_{k=1}^n \meanest_{n-1}
+  \\&= n\meanest_n - n\meanest_{n-1}
+  \\&= n \brs{ \meanest_{n-1} + \frac{1}{n}\brp{\rvx_n - \meanest_{n-1}} } - n\meanest_{n-1}
+  \\&= \rvx_n - \meanest_{n-1}
+\end{align*}
+\end{proof}
+
+%---------------------------------------
 \begin{theorem}[\thmd{Third central moment recursive estimation}]
 \label{thm:cmom3_recursive}
 %---------------------------------------
@@ -706,20 +724,20 @@ In software/firmware implementations, recursive forms are very useful and effici
         - \frac{1}{n^3} \sum_{k=1}^n \brp{ \rvx_n-\meanest_{n-1} }^3
    \\&=                 \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }^3
         - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} }   \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }^2
-        + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }
+        + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \mcom{\sum_{k=1}^n \brp{ \rvx_k - \meanest_{n-1} }}{$\rvx_n - \meanest_{n-1}$ by \pref{lem:meanest}}
         - \frac{1}{n^3} n \brp{ \rvx_n-\meanest_{n-1} }^3
-   \\&=                 \mcom{\brs{\sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^3}}{$\cmomest_{3,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^3
+   \\&=                 \mcom{\sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^3}{$\cmomest_{3,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^3
         - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} }  \brs{\mcom{\sum_{k=1}^{n-1} \brp{ \rvx_k - \meanest_{n-1} }^2}{$\cmomest_{2,n-1}$} + \brp{ \rvx_n - \meanest_{n-1} }^2 }
-      \\&\qquad + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brs{n\mcom{\frac{1}{n}\sum_{k=1}^n \rvx_k}{$\meanest_n$} - \sum_{k=1}^n \meanest_{n-1} }
+      \\&\qquad + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brp{ \rvx_n - \meanest_{n-1} }
         - \frac{1}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^3
    \\&=  \cmomest_{3,n-1} + \brp{ \rvx_n - \meanest_{n-1} }^3
         - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} }   \brs{ \cmomest_{2,n-1} + \brp{ \rvx_n - \meanest_{n-1} }^2 }
-        + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brs{n\meanest_n - n \meanest_{n-1} }
+        + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brp{ \rvx_n - \meanest_{n-1} }
       \\&\qquad- \frac{1}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^3
    \\&=  \cmomest_{3,n-1} + \brp{ \rvx_n - \meanest_{n-1} }^3
         - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} } \cmomest_{2,n-1}
         - \frac{3}{n}   \brp{ \rvx_n - \meanest_{n-1} }^3
-      \\&\qquad  + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brs{n\meanest_{n-1}+n\frac{1}{n}\brp{\rvx_n-\meanest_{n-1}} - n \meanest_{n-1} }
+      \\&\qquad  + \frac{3}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^2 \brp{ \rvx_n - \meanest_{n-1} }
         - \frac{1}{n^2} \brp{ \rvx_n-\meanest_{n-1} }^3
    \\&=  \cmomest_{3,n-1} + \brs{1 -\frac{3}{n} -\frac{1}{n^2} }\brp{ \rvx_n - \meanest_{n-1} }^3
         - \frac{3}{n}   \brp{ \rvx_n-\meanest_{n-1} } \cmomest_{2,n-1}
