@@ -1,0 +1,73 @@
+$\newcommand{\ds}{\displaystyle}$
+$\newcommand{\mean}{\mu}$
+$\newcommand{\meanest}{\hat{\mean}}$
+$\newcommand{\seqn}[1]{\left\{#1\right\}}$
+$\newcommand{\rvx}{x}$
+$\newcommand{\xN}{N}$
+$\newcommand{\eqd}{\triangleq}$
+$\newcommand{\brp}[1]{{\left(#1\right)}}$
+$\newcommand{\brs}[1]{{\left[#1\right]}}$
+$\newcommand{\brl}[1]{{\left.#1\right|}}$
+$\newcommand{\moment}{M}$
+$\newcommand{\momest}{\hat{\moment}}$
+$\newcommand{\meanest}{\hat{\mean}}$
+$\newcommand{\cmomest}{\hat{\cmom}}$
+$\newcommand{\varest}{\hat{\var}}$
+$\newcommand{\popvarest}{\hat{\popvar}}$
+$\newcommand{\mcom}[2]{{\displaystyle\underbrace{\displaystyle#1}_{\text{#2}}}}$
+$\newcommand{\indentx}{\ensuremath{\mbox{}\qquad}}$
+
+An alternative solution using central moments $\ldots$
+
+Estimated Mean in recursive form
+--------------------------------
+Define $\meanest_{n}\eqd 0$ for $n=0$.
+\begin{align*}
+  \boxed{\mcom{\meanest_{n}}{new}}
+    &\eqd \frac{1}{n} \sum_{k=1}^{n} \rvx_k
+    && \text{by definition of *average*}
+  \\&= \frac{1}{n}\rvx_n + \frac{1}{n} \sum_{k=1}^{n-1} \rvx_k
+  \\&= \frac{1}{n}\rvx_n + \frac{n-1}{n}\brs{\frac{1}{n-1} \sum_{k=1}^{n-1} \rvx_k }
+  \\&\eqd \frac{1}{n}\rvx_n + \frac{n-1}{n}\meanest_{n-1}
+    && \text{by definition of $\meanest$}
+  \\&= \frac{1}{n}\rvx_n + \meanest_{n-1} - \frac{1}{n}\meanest_{n-1}
+  \\&= \boxed{\mcom{\meanest_{n-1}}{old} + \mcom{\frac{1}{n}}{weight} \mcom{\brs{\rvx_n - \meanest_{n-1}}}{error}}
+    && \text{for $n>0$}
+\end{align*}
+
+**Example**:
+Let $X \eqd \seqn{1,2,3,4,5}$ be a finite sequence of numbers.
+The *average* of $X$ is $\ds
+  \boxed{\meanest} \eqd \frac{1}{\xN}\sum_{n=1}^\xN x_n
+                   =    \frac{1}{5}\brp{1+2+3+4+5}
+                   =    \frac{15}{5}
+                   =    \boxed{3}
+$.  
+Using the recursive method yields the same result:
+$\begin{array}{l|rclcl clcl cl}
+  n=1 & \meanest_1 &=& \meanest_0   &+& \frac{1}{1}\brp{ \rvx_1 - \meanest_0 }
+                   &=& 0            &+&          1 \brp{ 1      - 0          }
+                   &=& 1\\
+  n=2 & \meanest_2 &=& \meanest_1   &+& \frac{1}{2}\brp{ \rvx_2 - \meanest_1 }
+                   &=& 1            &+& \frac{1}{2}\brp{ 2      - 1          }
+                   &=& \frac{3}{2} \\
+  n=3 & \meanest_3 &=& \meanest_2   &+& \frac{1}{3}\brp{ \rvx_3 - \meanest_2 }
+                   &=& \frac{3}{2}  &+& \frac{1}{3}\brp{ 3      - \frac{3}{2}}
+                   &=& 2           \\
+  n=4 & \meanest_4 &=& \meanest_3   &+& \frac{1}{4}\brp{ \rvx_4 - \meanest_3 }
+                   &=& 2            &+& \frac{1}{4}\brp{ 4      - 2          }
+                   &=& \frac{5}{2} \\
+  n=5 & \boxed{\meanest_5} &=& \meanest_4   &+& \frac{1}{5}\brp{ \rvx_5 - \meanest_4 }
+                   &=& \frac{5}{2}  &+& \frac{1}{5}\brp{ 5      - \frac{5}{2}}
+                   &=& \boxed{3}
+\end{array}$
+
+
+References: 
+[Candy (2009) pages 11-12](http://books.google.com/books?vid=ISBN9780470430576&pg=PA11),
+[Candy (2016) pages 12-13](http://books.google.com/books?vid=ISBN9781119125457&pg=PA12)
+
+Estimated order-$p$ Central Moment in recursive form
+----------------------------------------------------
+
+

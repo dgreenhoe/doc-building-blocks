@@ -1,0 +1,37 @@
+I am having difficulty coming to terms with the [Rexnord ZA-2115 bearing](https://www.rexnord.com/products/za2115) technical specifications. This bearing is used in the [*NASA Bearing Dataset*](https://www.kaggle.com/datasets/vinayak123tyagi/bearing-dataset) where the Rexnord bearings are tested at 2000 RPM under a 6000 pound load. My questions in particular are:
+
+(A) The *Vibration Frequency Fundamental Train*, *Inner Ring Defect*, *Outer Ring Defect*, and *Roller Spin* values are specified as 0.0072, 0.1617, 0.1217, 0.0559 cps, respectively. I might assume these are somehow [related to](https://books.google.com/books?id=_2RXEAAAQBAJ&pg=PA358) *Fundamental Train Frequency* (FTF), *Ballpass frequency outer race* (BPFO), *Ballpass frequency inner race* (BPFI), and *Ball spin frequency* (BSF).<br>
+$\begin{array}{lcl|}
+FTF &=&\frac{R}{2}\left(1-\frac{d}{D}\cos\phi\right)\\
+BPFO&=&\frac{nR}{2}\left(1-\frac{d}{D}\cos\phi\right)\\
+BPFI&=&\frac{nR}{2}\left(1+\frac{d}{D}\cos\phi\right)\\
+BSF &=&\frac{DR}{2d}\left[1-\left(\frac{d}{D}\cos\phi\right)^2\right]
+\end{array}$
+where $n$ is the number of balls, $R$ is rotational speed, and $\phi$ is the contact angle.
+
+
+<br>
+But how do I get (and/or should I be able to get) from the Rexnord values to the (FTF, BPFO, BPFI, BSF) 4-tuple? Do I need to multiply Rexnord values by shaft rotational frequency? For example, is 0.0072 x RPM/60 equal to FTF in Hertz?
+
+(B) How can I determine the number of rolling elements in ZA-2115? Since BPFO and FTF only differ by a factor $n$, then I might think that $n$ should equal BPFO / FTF (regardless of RPM). However, when I calculate 0.1217 / 0.0072, I get approximately  16.9 ... shouldn't I get an integer? Or are the values derived empirically using actual test data and a PSD?
+[![enter image description here][1]][1]
+
+Some PSD-Welch calculations suggests peaks at the following locations for $x$ axis<br>
+$\begin{array}{cc}
+  492.95775 \;Hz& 2.1302751\\
+  985.91549 \;Hz& 3.6660246\\
+ 4201.87793 \;Hz& 1.4599044\\
+ 5164.31925 \;Hz& 1.5721200\\
+ 7018.77934 \;Hz& 1.3078587\\
+ 9061.03286 \;Hz& 1.6893742
+\end{array}$<br>
+and $y$ axis<br>
+$\begin{array}{cc}
+  492.957746  \;Hz&  1.497\\
+  985.915493  \;Hz&  1.596\\
+  5164.319249 \;Hz&  1.024\\
+  7136.150235 \;Hz&  0.979\\
+  8990.610329 \;Hz&  2.115
+\end{array}$
+
+  [1]: https://i.stack.imgur.com/HzKEN.png
