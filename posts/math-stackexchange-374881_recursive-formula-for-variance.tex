@@ -16,6 +16,7 @@ $\newcommand{\meanest}{\hat{\mean}}$
 $\newcommand{\cmomest}{\hat{\cmom}}$
 $\newcommand{\varest}{\hat{\var}}$
 $\newcommand{\popvarest}{\hat{\popvar}}$
+$\newcommand{\samvarest}{\hat{s^2}}$
 $\newcommand{\mcom}[2]{{\displaystyle\underbrace{\displaystyle#1}_{\text{#2}}}}$
 $\newcommand{\indentx}{\ensuremath{\mbox{}\qquad}}$
 $\newcommand{\bcoef}[2]{{#1\choose#2}}$
@@ -96,14 +97,12 @@ References:
    &&=  \frac{1}{n} \sum_{k=1}^{n} 1
    &&=  \frac{n}{n}
    &&=  \boxed{1}
-   &&   \text{(Lemma 0)}
   \\
   \boxed{\cmomest_1}
     &\eqd \frac{1}{n} \sum_{k=1}^{n} \brp{ \rvx_k - \meanest_n }^1
    &&= \mcom{\brs{\frac{1}{n} \sum_{k=1}^{n} \rvx_k}}{$\meanest_n$} - \brs{\frac{1}{n} \sum_{k=1}^{n} \meanest_n }
    &&= \meanest_n - \frac{n}{n} \meanest_n
    &&= \boxed{0}
-   && \text{(Lemma 1)}
 \end{align*}
 
 (4) Estimated 2nd Central Moment in recursive form
@@ -119,7 +118,8 @@ References:
      + \frac{1}{n}\brp{ \rvx_n - \meanest_{n-1} }^2}
      -\frac{2}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2 +\frac{1}{n^2} \brp{ \rvx_n - \meanest_{n-1} }^2 \brs{ (n-1) + 1 }
   \\&= \brs{\frac{n-1}{n}}\cmomest_{2,n-1} + \brs{ \frac{1}{n} - \frac{2}{n^2} + \frac{1}{n^2} } \brp{ \rvx_n - \meanest_{n-1} }^2
-  \\&= \boxed{\brs{\frac{n-1}{n}}\cmomest_{2,n-1} + \brs{ \frac{n-1}{n^2} } \mcom{\brp{ \rvx_n - \meanest_{n-1} }^2}{error squared}}
+  \\&= \boxed{\brs{\frac{n-1}{n}}\mcom{\cmomest_{2,n-1}}{previous} 
+     + \brs{ \frac{n-1}{n^2} } \mcom{\brp{ \rvx_n - \meanest_{n-1} }^2}{error squared}}
 \end{align*}
 
 **Example**:
@@ -153,7 +153,7 @@ $\begin{array}{l|rclcl clcl clcl cl}
 
 (5) Population Variance Estimation
 ----------------------------------
-This follows directly from (4) in any of several forms:
+This follows directly from (4) in any of several forms (use square root function to get associated Standard Deviation estimates):
 \begin{align*}
   \popvarest_n
     &\eqd \cmomest_{2,n}
@@ -161,6 +161,29 @@ This follows directly from (4) in any of several forms:
    \\
   \popvarest_{m+1}
     &\eqd \cmomest_{2,m+1}
-   &&= \brs{\frac{m}{m+1}}\popvarest_{2,m} + \brs{ \frac{m}{(m+1)^2} } \brp{ \rvx_{m+1} - \meanest_{m} }^2
-   &&  \text{where $m\eqd n+1$}
+   &&=    \brs{\frac{m}{m+1}}\popvarest_{2,m} + \brs{ \frac{m}{(m+1)^2} } \brp{ \rvx_{m+1} - \meanest_{m} }^2
+   &&     \text{where $m\eqd n-1\implies n=m+1$}
+\end{align*}
+
+(6) Sample Variance Estimation
+------------------------------
+This follows from (5) and *[Bessel's Correction](https://mathworld.wolfram.com/BesselsCorrection.html)* (use square root function to get associated Standard Deviation estimates):
+\begin{align*}
+  \samvarest_n
+    &\eqd \mcom{\brs{\frac{n}{n-1}}}{Bessel's Correction} \cmomest_{2,n}
+     \implies \cmomest_{2,n}   = \brs{\frac{n-1}{n}}\samvarest_n
+     \implies \boxed{\cmomest_{2,n-1} = \brs{\frac{n-2}{n-1}}\samvarest_{n-1}}
+    &&\text{[Lemma-(5)]}
+    \\\\
+  \boxed{\samvarest_n}
+    &\eqd \mcom{\brs{\frac{n}{n-1}}}{Bessel's Correction} \cmomest_{2,n}
+  \\&=  \brs{\frac{n}{n-1}}\brs{\frac{n-1}{n}}\cmomest_{2,n-1} + \brs{\frac{n}{n-1}}\brs{ \frac{n-1}{n^2} } \brp{ \rvx_n - \meanest_{n-1} }^2
+    &&  \text{by (4)}
+  \\&=  \cmomest_{2,n-1} + \brs{ \frac{1}{n} } \brp{ \rvx_n - \meanest_{n-1} }^2
+  \\&=  \boxed{\brs{\frac{n-2}{n-1}}\samvarest_{2,n-1} + \brs{ \frac{1}{n} } \brp{ \rvx_n - \meanest_{n-1} }^2}
+    &&  \text{by [Lemma-(5)]}
+    \\\\
+  \samvarest_{m+1}
+    &=  \brs{\frac{m-1}{m}}\samvarest_{2,m} + \brs{ \frac{1}{m+1} } \brp{ \rvx_{m+1} - \meanest_{m} }^2
+    && \text{where $m\eqd n-1\implies n=m+1$}
 \end{align*}
