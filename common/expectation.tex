@@ -44,8 +44,8 @@ $\rvX$ a \fncte{random variable} \xref{def:rv} on $\ps$ with
 }
 \end{definition}
 
-We already said that a \fncte{random variable} $\rvX$ is neither random nor a variable,
-but is rather a function of an underlying process that does appear to be random.
+A \fncte{random variable} $\rvX$ is neither random nor a variable,
+but is rather a function of an underlying process that appears to be random.
 However, because it is a function of a process that does appear random,
 the \fncte{random variable} $\rvX$ also appears to be random.
 That is, if we don't know the outcome of of the underlying experimental
@@ -97,28 +97,30 @@ that it's linear operator birthright grants it \xref{cor:pE_linop}.
 %---------------------------------------
 Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
 \thmbox{\begin{array}{>{\ds}rc>{\ds}lCD}
-    \pEx(a\rvX+b\rvY+c)&=& \brp{a\pEx\rvX} + \brp{b\pEx\rvY} + c& \forall a,b,c\in\R & (\prope{linear})
+    \pExy(a\rvX+b\rvY+c)&=& \brp{a\pEx\rvX} + \brp{b\pEx\rvY} + c& \forall a,b,c\in\R & (\prope{linear})
 \end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
   \boxed{\pExy(a\rvX+b\rvY + c)}
     &\eqd \int_{x\in\R}\int_{y\in\R}\brs{ax+by+c} \pdfxy(x,y)  \dy\dx
-    \qquad\text{by definition of $\pE$ \xref{def:pE}}
-  \\&= \int_{x\in\R}\int_{y\in\R} ax \pdfxy(x,y)  \dy\dx
+    &&\text{by definition of $\pE$ \xref{def:pE}}
+  \\&\mathrlap{
+     = \int_{x\in\R}\int_{y\in\R} ax \pdfxy(x,y)  \dy\dx
      + \int_{x\in\R}\int_{y\in\R} by \pdfxy(x,y)  \dy\dx
      + \int_{x\in\R}\int_{y\in\R} c  \pdfxy(x,y)  \dy\dx
-     %&& \text{by \prope{lineararity} of $\int\int\dy\dx$}
-     %&& \text{\xref{def:linop}}
-  \\&=  \int_{x\in\R} ax \mcom{\int_{y\in\R}\pdfxy(x,y)  \dy}{$\pdfx(x)$}\dx
-     +  \int_{y\in\R} by \mcom{\int_{x\in\R}\pdfxy(x,y)  \dx}{$\pdfy(y)$}\dy
-     + c\mcom{\int_{y\in\R}\int_{x\in\R}\pdfxy(x,y)  \dx\dy}{$1$}
-     %&& \text{by \prope{lineararity} of $\int\int\dy\dx$}
-     %&& \text{\xref{def:linop}}
-  \\&= a\mcom{\int_{x\in\R} x \pdfx(x) \dx}{$\pEx\rvX$}
-     + b\mcom{\int_{y\in\R} y \pdfy(y) \dy}{$\pEy\rvY$}
-     + c
+     }
+  \\&\mathrlap{
+     =  \int_{x\in\R} ax \mcom{\int_{y\in\R}\pdfxy(x,y)  \dy}{$\pdfx(x)$  \xref{thm:pdf1}}\dx
+     +  \int_{y\in\R} by \mcom{\int_{x\in\R}\pdfxy(x,y)  \dx}{$\pdfy(y)$  \xref{thm:pdf1}}\dy
+     + c\mcom{\int_{y\in\R}\int_{x\in\R}\pdfxy(x,y)  \dx\dy}{$1$ \xref{thm:pdf1}}
+     }
+  \\&\eqd a\mcom{\int_{x\in\R} x \pdfx(x) \dx}{$\pEx\rvX$}
+        + b\mcom{\int_{y\in\R} y \pdfy(y) \dy}{$\pEy\rvY$}
+        + c
+    &&\text{by definition of $\pE$ \xref{def:pE}}
   \\&\eqd \boxed{\brp{a\pEx\rvX} + \brp{b\pEy\rvY} + c}
+    &&\text{by definition of $\pE$ \xref{def:pE}}
 \end{align*}
 \end{proof}
 
@@ -242,6 +244,21 @@ Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
   \pE\brs{\fg(\rvX)} = \int_{x\in\R} \fg(x) \pdfx(x) \dx
   }
 \end{theorem}
+\begin{proof}
+\begin{enumerate}
+  \item Let $\fy\eqd\fg(x)$.
+  \item lemma: $\psP\brs{\rvX=x} = \psP\brs{ \fg(\rvX)=\fg(x) } = \psP\brs{ \rvY=y }$
+  \item Then \ldots
+        \begin{align*}
+          \pE\brs{\fg(\rvX)}
+            &\eqd \pEy\brs{\rvY}
+          \\&\eqd \int_{y\in\R} y \pdfy(y) \dy
+          \\&\eqd \int_{\fg(x)\in\R} \fg(x) \pdfy(y) \dy
+          \\&=    \int_{x\in\R} \fg(x) \pdfx(x) \dx
+        \end{align*}
+  \item \textbf{TODO: make proof more convincing}
+\end{enumerate}
+\end{proof}
 
 %=======================================
 \section{Expectation inner product space}
@@ -461,12 +478,16 @@ Then
 \label{ex:jensen}
 %--------------------------------------
 Some examples of \thme{Jensen's Inequality} \xref{cor:jensen} applied to the \ope{expectation operator}
-are the following:
-\exbox{\begin{array}{c|c|c}
-    \ds \brp{\pE\rvX}^{-1}  <   \pE\brp{\rvX^{-1}}
-   &\ds \pE\brp{\log\rvX}   <   \log\brp{\pE\rvX}
-   &\ds e^{-\pE\rvX}        \le \pE\brs{e^{-\rvX}}
+are as follows:
+\exbox{\begin{array}{>{\ds}rc>{\ds}lM}
+      \brp{\pE\rvX}^{-1}  &<  & \pE\brp{\rvX^{-1}} & ( $\ff(x)\eqd\sfrac{1}{x}$ is \prope{convex}  )
+   \\ \log\brp{\pE\rvX}   &>  & \pE\brp{\log\rvX}  & ( $\ff(x)\eqd\log(x)$      is \prope{concave} )
+   \\ e^{-\pE\rvX}        &\le& \pE\brs{e^{-\rvX}} & ( $\ff(x)\eqd\exp(x)$      is \prope{convex}  )
+   \\ \sin\brp{\pE\rvX}   &\le& \pE\brp{\sin\rvX}  & for $0\le\rvX\le\pi/2$
+   \\ \sin\brp{\pE\rvX}   &\ge& \pE\brp{\sin\rvX}  & for $\pi/2\le\rvX\le\pi$
 \end{array}}
+\\
+Colloquially, ``If $\ff$ is \prope{convex}, then $\ff$ on the outside of $\pE$ is less than $\ff$ on the inside."
 \end{example}
 
 %---------------------------------------
