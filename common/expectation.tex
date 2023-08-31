@@ -55,23 +55,50 @@ However, eventhough $\rvX$ appears to be random,
 the expected value $\pEx\rvX$  of $\rvX$ is {\bf not random}.
 Rather it is a fixed value (like $0$ or $7.9$ or $-2.6$).
 
+%---------------------------------------
+\begin{definition}
+\label{def:moment}
+\label{def:cmom}
+%---------------------------------------
+Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$.
+\defbox{\begin{array}{FM>{\ds}rc>{\ds}l}
+  (1).&The $n$th \fnctd{moment} $\moment_n$ of $\rvX$ is
+      & \moment_n(\rvX)  &\eqd& \pEx\brp{\rvX^n}
+  \\
+  (2).&The $n$th \fnctd{central moment} $\cmom_n$ of $\rvX$ is
+      & \cmom_n(\rvX) &\eqd& \pEx\brs{\brp{\rvX - \pEx\rvX}^n}
+\end{array}}
+\end{definition}
+
 Two common statistics that are conveniently expressed in terms of the
-expectation operator are the \hie{mean} and \hie{variance}.
+expectation operator are the \fncte{mean} and \fncte{variance}.
 The mean is an indicator of the ``middle" of a probability distribution and the
 variance is an indicator of the ``spread".
 %---------------------------------------
 \begin{definition}
-\label{def:Mx}
+\label{def:mean}
 \label{def:pvar}
 \label{def:pVar}
+\label{def:skewness}
+\label{def:kurtosis}
 %---------------------------------------
-Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$.
+Let $\rvX$ be a \fncte{random variable} on the \structe{probability space} $\ps$
+with 1st \fncte{moment} $\moment_1$ and $n$th \fncte{central moment} $\cmom_n$ \xref{def:cmom}.
 \defbox{\begin{array}{FM>{\ds}rc>{\ds}l}
   (1).&The \fnctd{mean} $\pmeanx$ of $\rvX$ is
-      & \pmeanx  &\eqd& \pEx\rvX
+      & \pmeanx  &\eqd& \moment_1(\rvX)
   \\
   (2).&The \fnctd{variance} $\pVar(\rvX)$ or $\pvarx$ of $\rvX$ is
-      & \pVar(\rvX) &\eqd& \pEx\left[(\rvX-\pEx\rvX)^2 \right]
+      & \pVar(\rvX) &\eqd& \cmom_2(\rvX)
+  \\
+  (3).&The \fnctd{standard deviation} $\psdevX$ of $\rvX$ is
+      & \psdevX &\eqd& \sqrt{\pvarx}
+  \\
+  (4).&The \fnctd{skewness} $\skewness(\rvX)$ is
+      & \skewness(\rvX) &\eqd& \frac{1}{\psdevX^3}\cmom_3(\rvX)
+  \\
+  (5).&The \fnctd{kurtosis} $\kurtosis(\rvX)$ is
+      & \kurtosis(\rvX) &\eqd& \frac{1}{\psdevX^4}\cmom_4(\rvX)
 \end{array}}
 \end{definition}
 
@@ -97,7 +124,7 @@ that it's linear operator birthright grants it \xref{cor:pE_linop}.
 %---------------------------------------
 Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
 \thmbox{\begin{array}{>{\ds}rc>{\ds}lCD}
-    \pExy(a\rvX+b\rvY+c)&=& \brp{a\pEx\rvX} + \brp{b\pEx\rvY} + c& \forall a,b,c\in\R & (\prope{linear})
+    \pExy(a\rvX+b\rvY+c)&=& \brp{a\pEx\rvX} + \brp{b\pEy\rvY} + c& \forall a,b,c\in\R & (\prope{linear})
 \end{array}}
 \end{theorem}
 \begin{proof}
@@ -106,17 +133,17 @@ Let $\rvX$ be a \fncte{random variable} on a \structe{probability space} $\ps$.
     &\eqd \int_{x\in\R}\int_{y\in\R}\brs{ax+by+c} \pdfxy(x,y)  \dy\dx
     &&\text{by definition of $\pE$ \xref{def:pE}}
   \\&\mathrlap{
-     = \int_{x\in\R}\int_{y\in\R} ax \pdfxy(x,y)  \dy\dx
-     + \int_{x\in\R}\int_{y\in\R} by \pdfxy(x,y)  \dy\dx
+     = \int_{x\in\R} a \int_{y\in\R} x \pdfxy(x,y)  \dy\dx
+     + \int_{x\in\R} b \int_{y\in\R} y \pdfxy(x,y)  \dy\dx
      + \int_{x\in\R}\int_{y\in\R} c  \pdfxy(x,y)  \dy\dx
      }
   \\&\mathrlap{
-     =  \int_{x\in\R} ax \mcom{\int_{y\in\R}\pdfxy(x,y)  \dy}{$\pdfx(x)$  \xref{thm:pdf1}}\dx
-     +  \int_{y\in\R} by \mcom{\int_{x\in\R}\pdfxy(x,y)  \dx}{$\pdfy(y)$  \xref{thm:pdf1}}\dy
-     + c\mcom{\int_{y\in\R}\int_{x\in\R}\pdfxy(x,y)  \dx\dy}{$1$ \xref{thm:pdf1}}
+     =  a \int_{x\in\R} x \mcom{\int_{y\in\R}\pdfxy(x,y)  \dy}{$\pdfx(x)$  \xref{thm:pdf1}}\dx
+     +  b \int_{y\in\R} y \mcom{\int_{x\in\R}\pdfxy(x,y)  \dx}{$\pdfy(y)$  \xref{thm:pdf1}}\dy
+     +  c \mcom{\int_{y\in\R}\int_{x\in\R}\pdfxy(x,y)  \dx\dy}{$1$ \xref{thm:pdf1}}
      }
-  \\&\eqd a\mcom{\int_{x\in\R} x \pdfx(x) \dx}{$\pEx\rvX$}
-        + b\mcom{\int_{y\in\R} y \pdfy(y) \dy}{$\pEy\rvY$}
+  \\&\eqd a \mcom{\int_{x\in\R} x \pdfx(x) \dx}{$\pEx\rvX$}
+        + b \mcom{\int_{y\in\R} y \pdfy(y) \dy}{$\pEy\rvY$}
         + c
     &&\text{by definition of $\pE$ \xref{def:pE}}
   \\&\eqd \boxed{\brp{a\pEx\rvX} + \brp{b\pEy\rvY} + c}
@@ -148,31 +175,6 @@ Let $\spLLF$ be a \structe{vector space of random variables} over $\ps$.
 These all follow immediately from the fact that $\pE$ is a \ope{linear operator} \xref{thm:pE_linop}
 and from properties of all linear operators \xref{thm:L_prop}.
 \end{proof}
-
-%---------------------------------------
-\begin{remark}
-%---------------------------------------
-Projecting a stochastic process onto a basis often yields valuable insights
-into the nature of the underlying data.
-Typical projection operators include the Fourier operator $\opFT$, Laplace $\opLT$,
-and z-transform $\opZT$ \ldots not to mention wavelet operators.
-But note that any such projection on a random sequence simply produces another random sequence.
-For example, the Fourier transform $\opFT\rvx(n)$ of a random sequence $\rvx(n)$ is another random
-sequence.
-
-One way to overcome this difficulty is to simply invoke a \ope{sampling} operator $\opS\rvx(n)$\ifsxref{sampling}{chp:sampling},
-yielding a deterministic sequence, and then take the Fourier transform of the resulting
-deterministic sequence.
-The problem here is that every time you resample the sequence, you will very likely get a
-different Fourier transform.
-
-Arguably a better approach (and the standard one at that)
-is to first invoke the expectation operator $\pE\rvx(n)$, also yielding a deterministic sequence.
-
-The good news here is that because $\pE$ and all the above mentioned operators are \prope{linear},
-we can do all the standard arithmetic acrobatics associated with linear algebra operators (next corollary).
-%such as $\opE\opFT\rvx(n)
-\end{remark}
 
 %---------------------------------------
 \begin{corollary}
