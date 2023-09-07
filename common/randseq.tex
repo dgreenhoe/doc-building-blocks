@@ -359,8 +359,8 @@ and $\Rxy(n,m)$  the \fncte{cross-correlation} of $\rvx$ and $\rvy$ \xxref{def:R
 \corbox{
   \brb{\begin{array}{FMD}
       (A).&$\rvx$ is \prope{WSS} & and
-    \\(B).&$\rvy$ is \prope{WSS} & %and
-   %\\(C).&$\opS$ is \prope{LTI} &
+    \\(B).&$\rvy$ is \prope{WSS} &
+    \\    & \xref{def:wss}
   \end{array}}
   \implies
   \brb{\begin{array}{Frc>{\ds}lDD}
@@ -449,16 +449,16 @@ and $\Rxy(n,m)$  the \fncte{cross-correlation} of $\rvx$ and $\rvy$ \xxref{def:R
 \label{def:Szxx}
 \label{def:Szxy}
 %---------------------------------------
-Let $\rvx(n)$ and $\rvy(n)$ be \prope{wide sense stationary} \fncte{random sequence}s
-with auto-correlation $\Rxx(m)$ and cross-correlation $\Rxy(m)$.
+Let $\rvx(n)$ and $\rvy(n)$ be \prope{wide sense stationary} \xref{def:wss} \fncte{random sequence}s
+with auto-correlation $\Rxx(m)$ and cross-correlation $\Rxy(m)$ \xref{def:Rxym}.
 Let $\opZ$ be the \ope{Z-transform operator}\ifsxref{dsp}{def:opZ}.
 \\
-\defbox{\begin{array}{MMrcl}
-   The \opd{z-domain cross spectral density} & (\opd{CSD}) $\ZSxy(z)$ of $\vx$ and $\vy$ is
-     \\\mc{5}{l}{\ds\Szxy(z) \eqd \opZ{\Rxy(m)} \eqd \sum_{m\in\Z} \Rxy(m) z^{-m}}
-     \\
-   The \opd{z-domain power spectral density} & (\opd{PSD}) $\ZSxx(z)$ of $\vx$ is & \Szxx(z) &\eqd& \brlr{\Szxy(z)}_{\rvy(n)=\rvx(n)}
-\end{array}}
+\defboxt{
+  The \opd{z-domain cross spectral density} (\opd{CSD}) $\ZSxy(z)$ of $\rvx(n)$ and $\rvy(n)$ is
+  \\\indentx$\ds\Szxy(z) \eqd \opZ{\Rxy(m)} \eqd \sum_{m\in\Z} \Rxy(m) z^{-m}$
+  \\The \opd{z-domain power spectral density} (\opd{PSD}) $\ZSxx(z)$ of $\rvx(n)$ is
+    $\ds\Szxx(z) \eqd \brlr{\Szxy(z)}_{\rvy(n)=\rvx(n)}$
+  }
 \end{definition}
 
 %---------------------------------------
@@ -468,33 +468,36 @@ Let $\opZ$ be the \ope{Z-transform operator}\ifsxref{dsp}{def:opZ}.
 \label{def:Swxx}
 \label{def:Swxy}
 %---------------------------------------
-Let $\rvx(n)$ and $\rvy(n)$ be \prope{wide sense stationary} \fncte{random sequence}s
-with auto-correlation $\Rxx(m)$ and cross-correlation $\Rxy(m)$.
+Let $\rvx(n)$ and $\rvy(n)$ be \prope{wide sense stationary} \xref{def:wss} \fncte{random sequence}s
+with auto-correlation $\Rxx(m)$ and cross-correlation $\Rxy(m)$ \xref{def:Rxym}.
 Let $\opDTFT$ be the \ope{Discrete Time Fourier Transform} (\ope{DTFT}) operator\ifsxref{dtft}{def:dtft}.
 \\
-\defbox{\begin{array}{M rclcl}
-  The \opd{auto-spectral density}
-  \\$\Swxx(\omega)$ of $\vx$ is           & \Swxx(\omega) &\eqd& \opDTFT{\Rxx(m)} &\eqd& \ds \sum_{m\in\Z} \Rxx(m) e^{-i\omega m}
-  \\The \opd{cross spectral density}
-  \\(\opd{CSD}) $\Swxy(\omega)$ of $\vx$ and $\vy$ is & \Swxy(\omega) &\eqd& \opDTFT{\Rxy(m)} &\eqd& \ds \sum_{m\in\Z} \Rxy(m) e^{-i\omega m}
-  \\\mc{6}{M}{The \opd{auto-spectral density} is also called \opd{power spectral density} (\opd{PSD}).}
-\end{array}}
+\defboxt{
+  The \opd{cross spectral density} (\opd{CSD}) $\Swxy(\omega)$ of $\rvx(n)$ and $\rvy(n)$ is
+  \\\indentx$\ds\Swxy(\omega) \eqd \opDTFT{\Rxy(m)} \eqd \sum_{m\in\Z} \Rxy(m) e^{-i\omega m}$
+  \\
+  The \opd{auto-spectral density} $\Swxx(\omega)$ of $\vx$ is
+    $\ds\Swxx(\omega) \eqd \brlr{\Swxy(\omega)}_{\rvy(n)=\rvx(n)}$
+  \\\indentx$\ds\Swxx(\omega) \eqd \opDTFT{\Rxx(m)} \eqd \sum_{m\in\Z} \Rxx(m) e^{-i\omega m}$
+  \\The \opd{auto-spectral density} is also called the \opd{power spectral density} (\opd{PSD}).
+  }
 \end{definition}
 
 %---------------------------------------
 \begin{theorem}
 \label{thm:ZSxy_sym}
 %---------------------------------------
-Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
-\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s \xref{def:randseq}
+with \ope{CSD} $\Szxy(z)$ and \ope{PSD} $\Szxx(z)$ \xref{def:csd}.
 \thmbox{
-  \brb{\begin{array}{MD}
-    \mc{2}{M}{$\rvx$ and $\rvy$ are \prope{wide sense stationary}}
+  \brb{\begin{array}{M}
+    $\rvx(n)$ and $\rvy(n)$ are\\
+    \prope{wide sense stationary} \xref{def:wss}
   \end{array}}
   \implies
   \brb{\begin{array}{F>{\ds}rc>{\ds}lD}
-       (1).&\Szxx(z) &=& \Szxx^\ast\brp{\frac{1}{z^\ast}}             & and
-     \\(2).&\Szyx(z) &=& \Szxy^\ast\brp{\frac{1}{z^\ast}}             &
+       (1).&\Szxx(z) &=& \Szxx^\ast\brp{\frac{1}{z^\ast}} & and
+     \\(2).&\Szyx(z) &=& \Szxy^\ast\brp{\frac{1}{z^\ast}} &
   \end{array}}
   }
 \end{theorem}
@@ -518,8 +521,7 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
     && \text{by definition of $\opZ$}                              && \text{\xref{def:opZ}}
   \\
   \ZSxx(z)
-    &= \brlr{\ZSxy(z)}_{\rvy=\rvx}
-  \\&= \brlr{\ZSyx^\ast(z)}_{\rvy=\rvx}
+    &= \brlr{\ZSyx(z)}_{\rvy=\rvx}
   \\&= \brlr{\ZSxy^\ast\brp{\frac{1}{z^\ast}}}_{\rvy=\rvx}
     && \text{by (2)---previous result}
   \\&= \ZSxx^\ast\brp{\frac{1}{z^\ast}}
@@ -530,18 +532,19 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
 \begin{corollary}
 \label{cor:Swxy_sym}
 %---------------------------------------
-Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
-\fncte{input} $\rvx(n)$, and \fncte{output} $\rvy(n)$.
+Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s \xref{def:randseq}
+with \ope{CSD} $\Szxy(z)$ and \ope{PSD} $\Szxx(z)$ \xref{def:csd}.
 \corbox{
-  \brb{\begin{array}{FMD}
-    (A).& $\fh$ is \prope{LTI} & and\\
-    (B).& \mc{2}{M}{$\rvx$ and $\rvy$ are \prope{WSS}}
+  \brb{\begin{array}{M}
+    $\rvx(n)$ and $\rvy(n)$ are\\
+    \prope{wide sense stationary}\\
+    \xref{def:wss}
   \end{array}}
   \implies
-  \brb{\begin{array}{F>{\ds}rc>{\ds}lDD}
-       (1).&\Swxy^\ast(\omega) &=& \ds \Swyx(\omega)          & (\prope{conjugate-symmetric}) & and
-     \\(2).&\Swxx^\ast(\omega) &=& \ds \Swxx(\omega)          & (\prope{conjugate symmetric}) & and
-     \\(3).&\Swxx(\omega)      &\in& \R                       & (\prope{real-valued})         &
+  \brb{\begin{array}{F>{\ds}rc>{\ds}lD}
+       (1).&\Swxy^\ast(\omega) &=& \Swyx(\omega) & and
+     \\(2).&\Swxx^\ast(\omega) &=& \Swxx(\omega) & and
+     \\(3).&\Swxx(\omega)      &\in& \R          & (\prope{real-valued})
   \end{array}}
   }
 \end{corollary}
@@ -556,43 +559,31 @@ Let $\opS$ be a system with \fncte{impulse response} $\fh(n)$,
    \\&= \brlr{\ZSyx\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
      && \text{by \prope{involutory} property of \structd{$\invo$-algebra}s}
      && \text{\xref{def:staralg}}
-   \\&= \ZSyx\brp{\frac{1}{e^{i\omega\ast}}}
+   \\&= \ZSyx\brs{\frac{1}{\brp{e^{i\omega}}^\ast}}
    \\&= \ZSyx\brp{e^{i\omega}}
    \\&= \Swyx\brp{\omega}
      && \text{by definition of \ope{DTFT}}
      && \text{\xref{def:dtft}}
    \\
    \Swxx^\ast(\omega)
-     &= \brlr{\ZSxx^\ast(z)}_{z=e^{i\omega}}
-     && \text{by definition of \ope{DTFT}}
-     && \text{\xref{def:dtft}}
-   \\&= \brlr{\ZSxx^{\ast\ast}\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
-     && \text{by \prefp{thm:ZSxy_sym}}
-   \\&= \brlr{\ZSxx\brp{\frac{1}{z^\ast}}}_{z=e^{i\omega}}
-     && \text{by \prope{involutory} property of \structd{$\invo$-algebra}s}
-     && \text{\xref{def:staralg}}
-   \\&= \ZSxx\brp{\frac{1}{e^{i\omega\ast}}}
-   \\&= \ZSxx\brp{e^{i\omega}}
-   \\&= \Swxx\brp{\omega}
-     && \text{by definition of \ope{DTFT}}
-     && \text{\xref{def:dtft}}
-   \\&\implies\text{$\Swxx(\omega)$ is \prope{real-valued}}
-   \\
-   \Swxx^\ast(\omega)
      &= \brlr{\Swxy^\ast(\omega)}_{\rvy=\rvx}
    \\&= \brlr{\Swyx(\omega)}_{\rvy=\rvx}
      && \text{by previous result}
    \\&= \Swxx(\omega)
+   \\
+   \Swxx^\ast(\omega)
+     &= \Swxx(\omega)
+     && \text{by previous result}
+   \\&\implies\text{$\Swxx(\omega)$ is \prope{real-valued}}
 \end{align*}
 \end{proof}
 
-%=======================================
-\section{Spectral Power}
-%=======================================
+%---------------------------------------
+\begin{remark}
+%---------------------------------------
 The term ``\fncte{spectral power}" is a bit of an oxymoron because ``spectral"
 deals with leaving the time-domain for the frequency-domain, howbeit
 the concept of power is solidly founded on the concept of time in that power = energy per time.
-
 However, the \prope{Plancherel Formula}, or more generally \prope{Parseval's Identity} \xref{prop:parseval_reconstruction},
 demonstrates that power in time can also be calculated in frequency.\footnote{\url{https://math.stackexchange.com/questions/3785037/}}
 So, it makes some sense to speak of the term ``spectral power".
@@ -600,3 +591,4 @@ Moreover, one way to estimate this power is to average the
 Fourier Transforms of the product $\abs{\rvx(n)}^2=\rvx(n)\rvx^\ast(n)$\ldots that is, to use an estimate of
 the auto-spectral density $\Swxx(\omega)$.
 Thus, an alternate name for \fncte{auto-spectral density} is \fnctb{power spectral density} (PSD).
+\end{remark}
