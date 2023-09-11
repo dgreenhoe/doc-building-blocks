@@ -51,6 +51,8 @@ FILE_SRC  =                               \
   ../common/spectral.tex                  \
   ../common/spectral_estimation.tex       \
   ../common/sums.tex                      \
+  ../common/sunspots.tex                  \
+  ../common/RandSeq_CaseStudies.tex       \
   ../common/measure.tex                   \
   ../common/integrat.tex                  \
   ../common/ortholat.tex                  \
