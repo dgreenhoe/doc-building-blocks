@@ -17,8 +17,8 @@
 Let $\rvx(t)$ be a \fncte{random process}
 with continuous \fncte{auto-correlation} $\Rxx(t,u)$ \xref{def:Rxx}.
 \defboxt{
-  The \opd{auto-correlation operator} $\opR$ of $\rvx(t)$ is defined as
-  \\\indentx$\ds\opR\ff  \eqd \int_{u\in\R}\Rxx(t,u)\ff(u) \du$
+  The \opd{auto-correlation operator} $\opRx$ of $\rvx(t)$ is defined as
+  \\\indentx$\ds\opRx\ff  \eqd \int_{u\in\R}\Rxx(t,u)\ff(u) \du$
   }
 \end{definition}
 
@@ -33,19 +33,19 @@ Let $\rvx(t)$ be a \fncte{random process} with \fncte{auto-correlation} $\Rxx(\t
   }
 \end{definition}
 
-If a random process $\rvx(t)$ is \prope{white} \xref{def:white}
-and the set $\Psi=\setn{\fpsi_1(t),\fpsi_2(t),\ldots,\fpsi_\xN(t)\}}$
-is \textbf{any} set of orthonormal basis functions, then the innerproducts
-$\inprod{n(t)}{\fpsi_n(t)}$ and $\inprod{n(t)}{\fpsi_m(t)}$ are \prope{uncorrelated}
-for $m\ne  n$.
-However, if $\rvx(t)$ is \propb{colored} (not white), then the innerproducts are not
-in general uncorrelated.
-But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opR$ such
-that $\ds\opR \fpsi_n = \lambda_n \fpsi_n$,
-then by \prefpp{thm:Rxx_prop}, the set $\setn{\fpsi_n(t)}$ are \prope{orthogonal} and
-the innerproducts \textbf{are} \prope{uncorrelated} even though $\rvx(t)$ is
-not white.
-This criterion is called the \fncte{Karhunen-Lo\`{e}ve criterion} for $\rvx(t)$.
+\begin{liste}
+  \item If a random process $\rvx(t)$ is \prope{white} \xref{def:white}
+        and the set $\Psi=\setn{\fpsi_1(t),\fpsi_2(t),\ldots,\fpsi_\xN(t)}$
+        is \textbf{any} set of orthonormal basis functions for $\rvx(t)$, then the innerproducts
+        $\inprod{\rvx(t)}{\fpsi_n(t)}$ and $\inprod{\rvx(t)}{\fpsi_m(t)}$ are \prope{uncorrelated}
+        for $m\ne  n$.
+  \item However, if $\rvx(t)$ is \propb{colored} (not white), then the innerproducts are not
+        in general uncorrelated.
+  \item But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opRx$ such that $\ds\opRx \fpsi_n = \lambda_n \fpsi_n$,
+        then the set $\setn{\fpsi_n(t)}$ are \prope{orthogonal} \xref{cor:opR_eigen} and
+        the innerproducts \textbf{are} \prope{uncorrelated} even though $\rvx(t)$ is not white.
+  \item This criterion is called the \fncte{Karhunen-Lo\`{e}ve criterion} for $\rvx(t)$ \xref{thm:kle}.
+\end{liste}
 
 %=======================================
 \section{Properties}
@@ -54,31 +54,27 @@ This criterion is called the \fncte{Karhunen-Lo\`{e}ve criterion} for $\rvx(t)$.
 \begin{theorem}
 \label{thm:opR}
 %---------------------------------------
-Let $\opR$ be an \ope{auto-correlation} operator.
-\thmbox{
-  \brb{\begin{array}{rl>{\ds}l}
-    \inprod{\rvx}{\rvy} &\eqd& \int_{t\in\R} \rvx(t) \rvy^\ast(t) \dt \\
-  \end{array}}
-  \implies
-  \brb{\begin{array}{FlDD}
-    (1). & \inprod{\opR \rvx}{\rvx} \ge 0
+Let $\opRx$ be the \ope{auto-correlation} operator \xref{def:opR}.
+Let the \fncte{inner product} \xref{def:inprod} $\inprodn$ be defined as
+\quad$\ds\inprod{\rvx(t)}{\rvy(t)} \eqd \int_{t\in\R} \rvx(t) \rvy^\ast(t) \dt$
+\thmbox{\begin{array}{FlDD}
+    (1). & \inprod{\opRx \rvx}{\rvx} \ge 0
          & \text{(\prope{non-negative})}
          & and
         \\
-    (2). & \inprod{\opR \rvx}{\fy} = \inprod{\rvx}{\opR \fy}
+    (2). & \inprod{\opRx \rvx}{\fy} = \inprod{\rvx}{\opRx \fy}
          & \text{(\prope{self-adjoint})}
          &
-  \end{array}}
-  }
+\end{array}}
 \end{theorem}
 \begin{proof}
 \begin{align*}
-\intertext{1. Proof that $\opR$ is \prope{non-negative} under hypothesis (A):}
-   \inprod{\opR \fy}{\fy}
-     &= \inprod{\int_{u\in\R}\Rxx(t,u) \fy(u) \du}{\fy(t)}
-     && \text{by definition of $\opR$}
+\intertext{1. Proof that $\opRx$ is \prope{non-negative}:}
+   \inprod{\opRx \fy}{\fy}
+     &\eqd \inprod{\int_{u\in\R}\Rxx(t,u) \fy(u) \du}{\fy(t)}
+     && \text{by definition of $\opRx$}
      && \text{\xref{def:opR}}
-   \\&= \inprod{\int_{u\in\R}\pE\brs{\rvx(t)\rvx^\ast(u)} \fy(u) \du}{\fy(t)}
+   \\&\eqd \inprod{\int_{u\in\R}\pE\brs{\rvx(t)\rvx^\ast(u)} \fy(u) \du}{\fy(t)}
      && \text{by definition of $\Rxx(t,u)$}
      && \text{\xref{def:Rxx}}
    \\&= \pE\brs{\inprod{\int_{u\in\R}\rvx(t)\rvx^\ast(u) \fy(u) \du}{\fy(t)}}
@@ -92,16 +88,16 @@ Let $\opR$ be an \ope{auto-correlation} operator.
    \\&= \pE\brs{\inprod{\rvx(u)}{\fy(u)}^\ast \inprod{\rvx(t) }{\fy(t)}}
      && \text{by \prope{conjugate symmetry} prop.}
      && \text{\ifsxref{vsinprod}{def:inprod}}
-   \\&= \pE{\abs{\inprod{\rvx(t) }{\fy(t)}}^2}
+   \\&\eqd \pE{\abs{\inprod{\rvx(t) }{\fy(t)}}^2}
      && \text{by definition of $\absn$}
      && \text{\xref{def:abs}}
    \\&\ge 0
      && \text{by \prope{strictly positive} property of norms}
      && \text{\ifxref{vsnorm}{def:norm}}
-\intertext{2. Proof that $\opR$ is \prope{self-adjoint} under hypothesis (A):}
-   \inprod{\brs{\opR \rvx}(t)}{\fy}
-     &= \inprod{\int_{u\in\R}\Rxx(t,u) \rvx(u) \du}{\fy(t)}
-     && \text{by definition of $\opR$}
+\intertext{2. Proof that $\opRx$ is \prope{self-adjoint}:}
+   \inprod{\brs{\opRx \rvx}(t)}{\fy}
+     &\eqd \inprod{\int_{u\in\R}\Rxx(t,u) \rvx(u) \du}{\fy(t)}
+     && \text{by definition of $\opRx$}
      && \text{\xref{def:opR}}
    \\&= \int_{u\in\R}\rvx(u) \inprod{\Rxx(t,u)  }{\fy(t)} \du
      && \text{by \prope{additive} property of $\inprodn$}
@@ -112,35 +108,35 @@ Let $\opR$ be an \ope{auto-correlation} operator.
    \\&= \inprod{ \rvx(u) }{\inprod{\fy(t)}{\Rxx(t,u)} }
      && \text{by local definition of $\inprodn$}
    \\&= \inprod{ \rvx(u) }{\int_{t\in\R}\fy(t) \Rxx^\ast(t,u)\dt }
+     && \text{by definition of $\inprodn$}
      && \text{\ifsxref{vsinprod}{def:inprod}}
    \\&= \inprod{ \rvx(u) }{\int_{t\in\R}\fy(t) \Rxx(u,t)\dt }
      && \text{by property of $\Rxx$}
      && \text{\xref{thm:Rxx_prop}}
-   \\&= \inprod{ \rvx(u) }{\mcom{\opR}{$\opRa$} \fy }
-     && \text{by definition of $\opR$}
+   \\&\eqd \inprod{ \rvx(u) }{\mcom{\opRx}{$\opRxa$} \fy }
+     && \text{by definition of $\opRx$}
      && \text{\xref{def:opR}}
-   \\\implies& \opR=\opRa
-     && \text{by definition of \ope{adjoint} $\opRa$}
+   \\\implies& \opRx=\opRxa
+     && \text{by definition of \ope{adjoint} $\opRxa$}
      && \text{\ifxref{operator}{def:adjoint}}
-   \\\implies& \text{$\opR$ is \prope{self-adjoint}}
+   \\\implies& \text{$\opRx$ is \prope{self-adjoint}}
      && \text{by definition of \prope{self-adjoint}}
      && \text{\ifxref{operator}{def:op_selfadj}}
-\intertext{3. Proofs under hypothesis (B): substitute $\ds\sum_{n\in\Z}$ operator for $\ds\int_{t\in\R}\dt$ operator in above proofs.}
 \end{align*}
 \end{proof}
 
 %---------------------------------------
-\begin{theorem}
+\begin{corollary}
 \footnote{
   \citerpp{keener}{114}{119}
   }
-\label{thm:opR_eigen}
+\label{cor:opR_eigen}
 %---------------------------------------
 Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues and
     $\seq{\fpsi_n}{n\in\Z}$ be the eigenfunctions of
-    operator $\opR$ such that
-    $\opR \fpsi_n = \lambda_n \fpsi_n$.
-\thmbox{\begin{array}{FlM}
+    operator $\opRx$ such that
+    $\opRx \fpsi_n = \lambda_n \fpsi_n$.
+\corbox{\begin{array}{FlM}
   (1). & \lambda_n \in \R
        & (\prope{real-valued})
        \\
@@ -150,21 +146,21 @@ Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues and
   (3). & \norm{\fpsi_n(t)}^2>0 \implies \lambda_n\ge0
        & (\prope{non-negative})
        \\
-  (4). & \norm{\fpsi_n(t)}^2>0, \inprod{\opR\ff}{\ff} > 0 \implies \lambda_n>0
-       & ($\opR$ \prope{positive definite} $\implies$ $\lambda_n$ \prope{positive})
+  (4). & \norm{\fpsi_n(t)}^2>0, \inprod{\opRx\ff}{\ff} > 0 \implies \lambda_n>0
+       & ($\opRx$ \prope{positive definite} $\implies$ $\lambda_n$ \prope{positive})
 \end{array}}
-\end{theorem}
+\end{corollary}
 \begin{proof}
 \begin{enumerate}
 \item Proof that eigenvalues are \prope{real-valued}:
-Because $\opR$ is \prope{self-adjoint}, its eigenvalues are real\ifsxref{operator}{thm:self_adjoint}.
+Because $\opRx$ is \prope{self-adjoint}, its eigenvalues are real\ifsxref{operator}{thm:self_adjoint}.
 
 \item Proof that eigenfunctions associated with distinct eigenvalues are orthogonal:
-Because $\opR$ is \prope{self-adjoint}, this property follows\ifsxref{operator}{thm:self_adjoint}.
+Because $\opRx$ is \prope{self-adjoint}, this property follows\ifsxref{operator}{thm:self_adjoint}.
 
 \item Proof that eigenvalues are \prope{non-negative}:
       \begin{align*}
-         0 &\le \inprod{\opR \fpsi_n}{\fpsi_n}
+         0 &\le \inprod{\opRx \fpsi_n}{\fpsi_n}
            &&   \text{by definition of \prope{non-negative definite}}
          \\&=   \inprod{\lambda_n \fpsi_n}{\fpsi_n}
            &&   \text{by hypothesis}
@@ -174,9 +170,9 @@ Because $\opR$ is \prope{self-adjoint}, this property follows\ifsxref{operator}{
            &&   \text{by definition of norm induced by inner-product}
       \end{align*}
 
-\item Proof that eigenvalues are \prope{positive} if $\opR$ is \prope{positive definite}:
+\item Proof that eigenvalues are \prope{positive} if $\opRx$ is \prope{positive definite}:
       \begin{align*}
-         0 &< \inprod{\opR \fpsi_n}{\fpsi_n}
+         0 &< \inprod{\opRx \fpsi_n}{\fpsi_n}
            && \text{by definition of \prope{positive definite}}
          \\&= \inprod{\lambda_n \fpsi_n}{\fpsi_n}
            && \text{by hypothesis}
@@ -197,11 +193,11 @@ Because $\opR$ is \prope{self-adjoint}, this property follows\ifsxref{operator}{
   }
 \label{thm:kle}
 %---------------------------------------
-Let $\opR$ be the \ope{auto-correlation operator} \xref{def:opR}
+Let $\opRx$ be the \ope{auto-correlation operator} \xref{def:opR}
 of a \fncte{random process} $\rvx(t)$.
-Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues of $\opR$
-and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
-    $\opR \fpsi_n = \lambda_n \fpsi_n$.
+Let $\seq{\lambda_n}{n\in\Z}$ be the eigenvalues of $\opRx$
+and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opRx$ such that
+    $\opRx \fpsi_n = \lambda_n \fpsi_n$.
 \thmbox{
   \mcom{\norm{\fpsi_n(t)}=1}
        {$\setn{\fpsi_n(t)}$ are \prope{normalized}}
@@ -214,7 +210,7 @@ and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
 \begin{proof}
 \begin{enumerate}
   \item Define $\ds\dotx_n\eqd \inprod{\rvx(t)}{\fpsi_n(t)}$ \label{idef:kle_xdot}
- %\item Define $\ds\opR\rvx(t) \eqd \int_{u\in\R} \Rxx(t,u)\rvx(u)\du$ \label{idef:kle_R}
+ %\item Define $\ds\opRx\rvx(t) \eqd \int_{u\in\R} \Rxx(t,u)\rvx(u)\du$ \label{idef:kle_R}
 
   \item lemma: \label{ilem:kle_mercer}
         $\ds\pE\brs{\rvx(t)\rvx(t)} = \sum_{n\in\Z}\lambda_n \abs{\fpsi_n(t)}^2$. Proof:
@@ -239,8 +235,8 @@ and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
        \\&\eqd \sum_{n\in\Z}\brp{\int_{u\in\R}\Rxx(t,u)\fpsi_n(u)\du} \fpsi_n^\ast(t)
          && \text{by definition of $\Rxx(t,u)$}
          && \text{\xref{def:Rxx}}
-       \\&\eqd \sum_{n\in\Z}\brp{\opR\fpsi_n(t) \fpsi_n^\ast(t)}
-         && \text{by definition of $\opR$}
+       \\&\eqd \sum_{n\in\Z}\brp{\opRx\fpsi_n(t) \fpsi_n^\ast(t)}
+         && \text{by definition of $\opRx$}
          && \text{\xref{def:opR}}
        \\&= \sum_{n\in\Z}\lambda_n\fpsi_n(t) \fpsi_n^\ast(t)
          && \text{by property of \structe{eigen-system}}
@@ -259,8 +255,8 @@ and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
        \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\int_v \Rxx(u,v)\fpsi_m(v)\dv} \fpsi_n^\ast(u)\du   \fpsi_n(t)   \fpsi_m^\ast(t)
          && \text{by definition of $\Rxx(t,u)$
                   \xref{def:Rxx}}
-       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\opR\fpsi_m(u)} \fpsi_n^\ast(u)\du   \fpsi_n(t)   \fpsi_m^\ast(t)
-         && \text{by definition of $\opR$
+       \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\opRx\fpsi_m(u)} \fpsi_n^\ast(u)\du   \fpsi_n(t)   \fpsi_m^\ast(t)
+         && \text{by definition of $\opRx$
                   \xref{def:opR}}
        \\&= \sum_{n\in\Z}\sum_{m\in\Z}\int_u\brp{\lambda_m\fpsi_m(u)} \fpsi_n^\ast(u)\du   \fpsi_n(t)   \fpsi_m^\ast(t)
          && \text{by property of \structe{eigen-system}}
@@ -268,7 +264,7 @@ and $\seq{\fpsi_n}{n\in\Z}$ are the eigenfunctions of $\opR$ such that
          && \text{by \prope{linearity}}
        \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \norm{\fpsi(t)}^2 \kdelta_{mn}   \fpsi_n(t)   \fpsi_m^\ast(t)
          && \text{by \prope{orthogonal} property
-                  \xref{thm:opR_eigen}}
+                  \xref{cor:opR_eigen}}
        \\&= \sum_{n\in\Z}\sum_{m\in\Z}\lambda_m \kdelta_{mn}   \fpsi_n(t)   \fpsi_m^\ast(t)
          && \text{by \prope{normalized} hypothesis}
        \\&= \sum_{n\in\Z}\lambda_n   \fpsi_n(t)   \fpsi_n^\ast(t)
