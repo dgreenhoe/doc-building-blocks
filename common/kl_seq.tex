@@ -14,11 +14,16 @@
 \begin{definition}
 \label{def:white_seq}
 %---------------------------------------
-Let $\rvx(n)$ be a \prope{wide sense stationary} \xref{def:wss} \fncte{random sequence} \xref{def:randseq}.
-Let $\Rxx(m)$ be the \fncte{autocorrelation} \xref{def:Rxxm} of $\rvx(n)$.
+Let $\rvx(n)$ be a \fncte{random sequence} \xref{def:randseq}
+and $\Rxx(m)$ the \fncte{autocorrelation} \xref{def:Rxxm} of $\rvx(n)$.
+Let $\kdelta(n)$ be the \fncte{Kronecker delta function} \xref{def:kdelta}.
 \defboxt{
-  $\rvx(n)$ is \propd{white} if \quad
-  $\ds\Rxx(m)=K\kdelta(m)$\quad for some $K>0$.
+  $\rvx(n)$ is \propd{white} if
+  \\\indentx$\begin{array}{cMMD}
+    (1) & $\ds\rvx(n)$ is \prope{wide sense stationary} (WSS) & \xref{def:wss} & and\\
+    (2) & $\ds\Rxx(m)=K\kdelta(m)$\quad for some $K>0$
+  \end{array}$
+  \\The random sequence $\rvx(n)$ is \propd{colored} if $\rvx(n)$ is \prope{WSS} but yet \emph{not} \prope{white}.
   }
 \end{definition}
 
@@ -30,50 +35,118 @@ Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s \xref{def:randseq}.
 Let $\Rxx(n,m)$ be the \fncte{autocorrelation} \xref{def:Rxxnm} of $\rvx(n)$.
 \defboxt{
   The \opd{autocorrelation operator} $\opRx$ of $\rvy(n)$ is defined as
-  \\\indentx$\ds\opRx\rvy(n) \eqd \sum_{m\in\Z} \Rxx(m,n) \rvy(m)$
+  \\\indentx$\ds\brs{\opRx\rvy}(n) \eqd \sum_{m\in\Z} \Rxx(m,n) \rvy(m)$
+  \\where $\Rxx(m,n)$ is the \fncte{kernel} \xref{rem:kernel} of $\brs{\opRx\rvy}(n)$.
   }
 \end{definition}
 
-If a random sequence $\rvx(m)$ is \prope{white} \xref{def:white_seq}
-and the set $\Psi=\setn{\fpsi_1(n),\fpsi_2(n),\ldots,\fpsi_\xN(n)}$
-is \textbf{any} set of orthonormal basis functions, then the innerproducts
-$\inprod{n(n)}{\fpsi_n(n)}$ and $\inprod{n(n)}{\fpsi_m(n)}$ are \prope{uncorrelated}
-for $m\ne  n$.
-However, if $\rvx(n)$ is \propb{colored} (not white), then the innerproducts are not
-in general uncorrelated.
-But if the elements of $\Psi$ are chosen to be the eigenfunctions of $\opRx$ such
-that $\ds\opRx \fpsi_n = \lambda_n \fpsi_n$,
-then the set $\setn{\fpsi_n(n)}$ are \prope{orthogonal} \xref{cor:opRn_eigen} and
-the innerproducts \textbf{are} \prope{uncorrelated} even though $\rvx(n)$ is not white.
-This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(n)$ \xref{thm:kle}.
+Now for some key points:
+\begin{liste}
+  \item If a random sequence $\rvx(n)$ is \prope{white} \xref{def:white_seq}
+        and the set $\Psi=\setn{\fpsi_1(n),\fpsi_2(n),\ldots,\fpsi_\xN(n)}$
+        is \textbf{any} set of orthonormal basis functions, then the inner products
+        $\inprod{\rvx(n)}{\fpsi_p(n)}$ and $\inprod{\rvx(n)}{\fpsi_q(n)}$ are \prope{uncorrelated}
+        for $p\ne  q$ \xref{thm:fdotp_white}.
+  \item However, if $\rvx(n)$ is \propb{colored}, then the inner products are \emph{not}
+        in general uncorrelated.
+  \item \emph{But} if the elements of $\Psi$ are chosen to be the \fncte{eigenfunction}s \xref{def:eigen} 
+        of $\opRx$ such that $\ds\opRx \fpsi_n = \lambda_n \fpsi_n$,
+        then the set $\setn{\fpsi_n(n)}$ are \prope{orthogonal} \xref{cor:opRn_eigen} and
+        the inner products \textbf{are} \prope{uncorrelated}, even if $\rvx(n)$ is not white.
+%This criterion is called the  Karhunen-Lo\`{e}ve criterion for $\rvx(n)$ \xref{thm:kle}.
+\end{liste}
 
 %=======================================
 \section{Properties}
 %=======================================
 %---------------------------------------
 \begin{theorem}
-\label{thm:opRn}
+\label{thm:fdotp_zeromean}
 %---------------------------------------
-Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s \xref{def:randseq}.\\
-Let $\opRx$ be the \ope{autocorrelation} operator \xref{def:opRnm} with respect to $\rvx(n)$.
+Let $\rvx(n)$ be a \fncte{random sequence} \xref{def:randseq}.
+Let $\fpsi_p(n)$ be a function.
+Let $\fdotx_p$ be the \ope{projection} of $\rvx(n)$ onto $\fpsi_p(n)$ such that
+\\\indentx$\ds \fdotx_p \eqd \inprod{\rvx(n)}{\fpsi_p(n)} \eqd \sum_{n\in\Z} \rvx(n) \fpsi_p^\ast(n)$
 \thmbox{
-  \brb{\begin{array}{rl>{\ds}lD}
-     \inprod{\rvx}{\rvy} &\eqd& \sum_{n\in\Z} \rvx(n) \rvy^\ast(n)     &
-  \end{array}}
-  \implies
-  \brb{\begin{array}{FlDD}
-    (1). & \inprod{\opRx \rvx}{\rvx} \ge 0
-         & \text{(\prope{non-negative})}
-         & and
-        \\
-    (2). & \inprod{\opRx \rvx}{\fy} = \inprod{\rvx}{\opRx \fy}
-         & \text{(\prope{self-adjoint})}
-         &
-  \end{array}}
+  \mcom{ \pE\brs{\rvx(n)} = 0 }{\prope{zero-mean}}
+  \quad\implies\quad
+  \mcom{ \pE\brs{\fdotx_p} = 0 }{\prope{zero-mean}}
   }
 \end{theorem}
 \begin{proof}
+  \begin{align*}
+    \pE\fdotx_p
+      &\eqd \pE\brs{ \inprod{\rvx(n)}{\fpsi_p(n)} }
+      && \text{by definition of $\fdotx_p$}
+    \\&\eqd \pE\brs{ \sum_{n\in\Z} \rvx(n) \fpsi_p^\ast(n) }
+      && \text{by definition of $\inprodn$}
+    \\&= \sum_{n\in\Z} \pE\brs{\rvx(n)} \fpsi_p^\ast(n)
+      && \text{by \prope{linearity}}
+      && \text{\ifxref{expectation}{thm:pE_linop}}
+    \\&= \sum_{n\in\Z} 0 \cdot \fpsi_p^\ast(n)
+      && \text{by \prope{zero-mean} property}
+    \\&= 0
+  \end{align*}
+\end{proof}
 
+%---------------------------------------
+\begin{theorem}
+\label{thm:fdotp_white}
+%---------------------------------------
+Let $\rvx(n)$ be a \fncte{random sequence} \xref{def:randseq}.
+Let $\fpsi_p(n)$ be a function.
+Let $\fdotx_p$ be the \ope{projection} of $\rvx(n)$ onto $\fpsi_p(n)$ such that
+\\\indentx$\ds \fdotx_p \eqd \inprod{\rvx(n)}{\fpsi_p(n)} \eqd \sum_{n\in\Z} \rvx(n) \fpsi_p^\ast(n)$
+\thmbox{
+  \mcom{ \pE\brs{\rvx(n)\rvx(m)}   = \sigma^2 \kdelta(n-m)  }{\prope{uncorrelated}}
+  \quad\implies\quad
+  \mcom{ \pE\brs{\fdotx_p\fdotx_q} = \sigma^2 \kdelta_{p-q} }{\prope{uncorrelated}}
+  }
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+   \pE\brs{ \fdotx_q \fdotx_p^\ast }
+      &= \pE\brs{ \inprod{\rvx(n)}{\fpsi_q(n)} \inprod{\rvx(n)}{\fpsi_p(n)}^\ast }
+      && \text{by definition of $\fdotx_p$}
+    \\&\eqd \pE\brs{ \brp{\sum_{n\in\Z} \rvx(n) \fpsi_q(n)}
+                     \brp{\sum_{m\in\Z} \rvx(m) \fpsi_p(m)}^\ast }
+      && \text{by definition of $\inprodn$}
+    \\&= \pE\brs{ \brp{\sum_{n\in\Z} \rvx(n) \fpsi_q(n)}
+                  \brp{\sum_{m\in\Z} \rvx(m) \fpsi_p(m)}^\ast }
+      && \text{by def. of $\pCov$}
+    \\&= \pE\brs{ \sum_{n\in\Z}\sum_{m\in\Z} \rvx(n)\rvx^\ast(m) \fpsi_q(n) \fpsi_p^\ast(m) }
+    \\&= \sum_{n\in\Z}\sum_{m\in\Z} \pE\brs{\rvx(n)\rvx^\ast(m)} \fpsi_q(n) \fpsi_p^\ast(m) 
+    \\&= \sum_{n\in\Z}\sum_{m\in\Z} \sigma^2\kdelta(n-m) \fpsi_q(n) \fpsi_p^\ast(m) 
+      && \text{by \prope{uncorrelated} hypothesis}
+      && \text{(B)}
+    \\&= \sigma^2 \sum_{n\in\Z}  \fpsi_q(n) \fpsi_p^\ast(n) 
+    \\&\eqd \sigma^2 \inprod{\fpsi_q(n)}{\fpsi_p(n)}
+      && \text{by definition of $\inprodn$}
+    \\&= \brbl{\begin{array}{lM}
+             \sigma^2 & for $p = q$ \\
+             0        & for $p\ne q$.
+          \end{array}}
+      && \text{by \prope{orthonormal} property}
+    \\&\eqd \sigma^2 \kdelta_{p-q}
+      &&\text{by definition of \fncte{Kronecker delta} $\kdelta$}
+      && \text{\xref{def:kdelta}}
+  \end{align*}
+\end{proof}
+
+%---------------------------------------
+\begin{theorem}
+\label{thm:opRn}
+%---------------------------------------
+Let $\rvx(n)$ and $\rvy(n)$ be \fncte{random sequence}s \xref{def:randseq} 
+with \fncte{inner product} \xref{def:inprod} defined as
+\\\indentx$\ds\inprod{\rvx}{\rvy} \eqd \sum_{n\in\Z} \rvx(n) \rvy^\ast(n)$\\
+Let $\opRx$ be the \ope{autocorrelation} operator \xref{def:opRnm} with respect to $\rvx(n)$.
+\thmbox{\brb{\begin{array}{F>{\ds}lDD}
+    (1). & \inprod{\opRx \rvx}{\rvx} \ge 0                     & \text{(\prope{non-negative})} & and\\
+    (2). & \inprod{\opRx \rvx}{\fy} = \inprod{\rvx}{\opRx \fy} & \text{(\prope{self-adjoint})} &
+\end{array}}}
+\end{theorem}
+\begin{proof}
 
 \begin{align*}
 \intertext{1. Proof that $\opRx$ is \prope{non-negative}:}
@@ -129,7 +202,6 @@ Let $\opRx$ be the \ope{autocorrelation} operator \xref{def:opRnm} with respect 
    \\\implies& \text{$\opRx$ is \prope{self-adjoint}}
      && \text{by definition of \prope{self-adjoint}}
      && \text{\ifxref{operator}{def:op_selfadj}}
-%\intertext{3. Proofs under hypothesis (B): substitute $\sum_{n\in\Z}$ operator for $\sum_{n\in\Z} $ operator in above proofs.}
 \end{align*}
 \end{proof}
 
@@ -141,7 +213,7 @@ Let $\opRx$ be the \ope{autocorrelation} operator \xref{def:opRnm} with respect 
 \label{cor:opRn_eigen}
 %---------------------------------------
 Let $\seq{\lambda_n}{n\in\Z}$ be the \fncte{eigenvalue}s and
-    $\seq{\fpsi_n}{n\in\Z}$ be the \fncte{eigenfunction}s of
+    $\seq{\fpsi_n}{n\in\Z}$ be the \fncte{eigenfunction}s \xref{def:eigen} of
     operator $\opRx$ such that
     $\opRx \fpsi_n = \lambda_n \fpsi_n$ for all $n\in\Z$.
 \corbox{\begin{array}{FrclM}
@@ -362,4 +434,4 @@ For more information about the properties of \opb{Toeplitz matrices}, see
 %=======================================
 \section{Examples}
 %=======================================
-Sunspot data --- see \prefpp{ex:sunspots}
+Sunspot data --- see \prefpp{ex:sunspot_period_Eigen} and \prefpp{ex:sunspot_white_Eigen}.
