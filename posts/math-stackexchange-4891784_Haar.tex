@@ -1,0 +1,41 @@
+$\newcommand{\pP}{P}$
+$\newcommand{\ds}{\displaystyle}$
+$\newcommand{\RR}{\mathbb{R}}$
+$\newcommand{\NN}{\mathbb{N}}$
+$\newcommand{\ZZ}{\mathbb{Z}}$
+$\newcommand{\brp}[1]{\left(#1\right)}$
+$\newcommand{\setn}[1]{\left\{#1\right\}}$
+$\newcommand{\set}[2]{\left\{#1|#2\right\}}$
+$\newcommand{\linspan}{{{s\!p\!a\!n}}}$
+
+This may not be the answer you're looking for, but some points to consider if you want $\ldots$
+
+* To avoid discontinuities when using shifted versions of B(x) as a basis, 
+you may want to change your definition of B(x) to 
+$B(x):= \begin{cases} 1 & \text{if } x \in [0,\ 1) \\
+0 & \text{otherwise} \end{cases}$  
+(rather than $x\in[0,1]$).
+
+* The sequence $\setn{\cdots,V_n, V_{n+1}, V_{n+2},\cdots}$ is a set of *nested subspaces* such that
+$$\ds \lim_{n\to-\infty}V_n = 0 \subset \cdots \subset V_{-2} \subset V_{-1} \subset V_0 \subset V_1 \subset V_2 \subset \cdots \subset L^2(\RR)$$
+As such it would seem
+$\ds L^{2}(\RR) = \lim_{n\to\infty} V_{n}$.
+Note that the relation $\ds V_{n} \subset V_{n+1}$ holds for any order-$n$ B-spline, of which $B(x)$ is the special $n=0$ case.
+
+* Using the above relation, along with $V_{n+1} = W_{n} \oplus V_{n}$ yields
+\begin{align*}
+L^{2}(\RR) 
+  &= {\lim_{n\to\infty} V_{n}}
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus V_{n-1} } }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus V_{n-2} } }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus W_{n-3} \oplus V_{n-3} } }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus W_{n-3} \oplus W_{n-4} \oplus V_{n-4} } }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus W_{n-3} \oplus W_{n-4} } \oplus \cdots \oplus W_{0} \oplus V_{0} }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus W_{n-3} \oplus W_{n-4} } \oplus \cdots \oplus W_{0} \oplus V_{0} }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus W_{n-3} \oplus W_{n-4} } \oplus \cdots \oplus W_{0} \oplus W_{-1} \oplus V_{-1} }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus W_{n-3} \oplus W_{n-4} } \oplus \cdots \oplus W_{0} \oplus W_{-1} \oplus W_{-2} \oplus V_{-2} }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus W_{n-3} \oplus W_{n-4} } \oplus \cdots \oplus W_{0} \oplus W_{-1} \oplus W_{-2} \oplus\cdots\oplus\lim_{n\to-\infty} V_n }
+\\&= {\lim_{n\to\infty} \brp{ W_{n-1} \oplus W_{n-2} \oplus W_{n-3} \oplus W_{n-4} } \oplus \cdots \oplus W_{0} \oplus W_{-1} \oplus W_{-2} \oplus\cdots\oplus\setn{0} }
+\\&= {\bigoplus_{n\in\ZZ} W_n }
+\end{align*}
+
