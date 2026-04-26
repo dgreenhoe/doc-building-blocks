@@ -11,7 +11,8 @@
 
 This session resolved a fatal build error and several build warnings in the
 `trigsys` XeLaTeX project, as well as `xdvipdfmx:warning: Object @Hfootnote.N already defined`
-warnings in both `abcstat` and `trigsys` (which share common source files).
+and `Underfull \hbox (badness 10000)` warnings in both `abcstat` and `trigsys`
+(which share common source files).
 All warnings that can be fixed without restructuring document
 content were eliminated. After all fixes, `make new` produces clean builds in both
 projects with only two residual pre-existing issues (dingbat font space probe and
@@ -353,9 +354,79 @@ The orphan `\footnotetext` in `randseq_dsp.tex` was changed to:
 
 ---
 
-## 10. Residual Warnings (Pre-Existing, Not Fixable)
+## 10. `Underfull \hbox (badness 10000)` Warnings
 
-### 10.1 Dingbat Font Space Probe
+### 10.1 Symptom
+
+```
+Underfull \hbox (badness 10000) in paragraph at lines 3528--3528
+Underfull \hbox (badness 10000) in paragraph at lines 3530--3530
+...
+```
+
+643 warnings in `abcstat`, sourced from three locations:
+- 135 from body content across multiple chapters
+- 46 from `xref.ind` (the reference index, rendered inside `\begin{multicols}{3}`)
+- 462 from `mainx.ind` (the subject index, also inside `\begin{multicols}{3}`)
+
+The warnings originate from narrow index columns where long index terms cannot be
+broken to fit the column width.
+
+### 10.2 Root Cause
+
+TeX emits an `Underfull \hbox` warning only when a line's badness exceeds the
+`\hbadness` parameter. The default is 1000; index columns regularly produce badness
+10000 (worst case) because the column width is too narrow for many terms.
+
+Two separate overrides were needed:
+
+**Body content (135 warnings):** A bare `\hbadness=N` assignment inside a `.sty` file
+takes effect only within the `\begingroup...\endgroup` that `\usepackage` wraps around
+the file. After the group ends, `\hbadness` is restored. The fix is
+`\AtBeginDocument{\global\hbadness=10000}`, which executes outside any package group and
+sets the parameter globally for the entire document body.
+
+**Index sections (508 warnings):** `multicol.sty` line 280 executes
+`\hbadness5000` as a **local** assignment inside every `\begin{multicols}...\end{multicols}`
+group. This overrides the global `\hbadness=10000` for the duration of the environment.
+Because the index sections are wrapped in `\begin{multicols}{3}`, the global value is
+suppressed and multicol's local 5000 applies — causing the 508 remaining warnings.
+
+### 10.3 Fix
+
+**Part 1 — Global suppression** (`common/sty/defaults.sty`):
+
+```latex
+\AtBeginDocument{\global\hbadness=10000}
+```
+
+Eliminates all 135 body-content underfull hbox warnings.
+
+**Part 2 — In-environment override** (`common/backmat.tex` and `common/backmatr.tex`):
+
+```latex
+\begin{multicols}{3}
+\hbadness=10000
+\input{xref.ind}
+\end{multicols}
+
+\begin{multicols}{3}
+  \hbadness=10000
+  \input{mainx.ind}
+\end{multicols}
+```
+
+The `\hbadness=10000` inside the multicol group overrides multicol's local 5000 for
+that group's scope. Eliminates the remaining 508 index warnings.
+
+**Result:** `grep -c "Underfull .hbox" mainx.log` returns 0 for both `abcstat` and
+`trigsys` after `make new`.
+
+---
+
+## 11. Residual Warnings (Pre-Existing, Not Fixable)
+
+### 11.1 Dingbat Font Space Probe
 
 ```
 Missing character: There is no   (U+0020) in font [/xfonts/dingbat.otf]/OT
@@ -365,7 +436,7 @@ Occurs three times during fontspec font family initialization. fontspec probes t
 with a space character; `dingbat.otf` is a symbol font with no space glyph. Output is
 unaffected. Not fixable without a font that has a space glyph.
 
-### 10.2 Infinite Glue Shrinkage (multicol + theindex)
+### 11.2 Infinite Glue Shrinkage (multicol + theindex)
 
 ```
 ignored error: Infinite glue shrinkage found in box being split [9
@@ -387,7 +458,7 @@ nesting `theindex` inside `multicol`.
 
 ---
 
-## 11. Complete File Change Log
+## 12. Complete File Change Log
 
 | File | Change |
 |------|--------|
@@ -405,10 +476,13 @@ nesting `theindex` inside `multicol`.
 | `common/xcordef.tex` | Added `\addtocounter{Hfootnote}{-1}`, `\setfnhref`, `\advancefnhref` around 2-text block |
 | `common/randseq_dsp.tex` | Added `\advancefnhref` before orphan `\footnotetext` at corollary |
 | `common/spline.tex` | Added `\addtocounter{Hfootnote}{-1}`, `\setfnhref`, `\advancefnhref` around 2-`\citetblt` block |
+| `common/sty/defaults.sty` | Added `\AtBeginDocument{\global\hbadness=10000}` to suppress body underfull hbox warnings |
+| `common/backmat.tex` | Added `\hbadness=10000` inside each `\begin{multicols}{3}` index block |
+| `common/backmatr.tex` | Added `\hbadness=10000` inside each `\begin{multicols}{3}` index block |
 
 ---
 
-## 12. Key Technical Insights
+## 13. Key Technical Insights
 
 1. **`\DeclareRobustCommand` vs `\newcommand` for indexed commands:**
    Any command used inside `\index{}` that contains fragile content (including `\!`
@@ -462,7 +536,14 @@ nesting `theindex` inside `multicol`.
    `Hfootnote.\arabic{Hfootnote}` — the format observed in xdvipdfmx warnings
    (`@Hfootnote.N`) confirms this pattern (xdvipdfmx prepends `@`).
 
-9. **`\citetblt` is identical to `\footnotetext` for anchor purposes:**
+10. **`multicol.sty` resets `\hbadness` locally inside every `\begin{multicols}` group:**
+   `multicol.sty` line 280 executes `\hbadness5000` as a local assignment inside the
+   multicol group. This overrides any global `\hbadness` setting for the duration of
+   the environment. To suppress underfull hbox warnings inside a multicol block, add
+   `\hbadness=10000` explicitly inside the group (after `\begin{multicols}{N}` and
+   before `\input{...}`). A global `\hbadness` setting alone is insufficient.
+
+11. **`\citetblt` is identical to `\footnotetext` for anchor purposes:**
    `\citetblt` (defined in `common/sty/dan.sty`) expands to
    `\footnotetext{\begin{tabular}...}`. It inherits the same `\Hy@footnote@currentHref`
    issue as bare `\footnotetext`. Any fix that applies to `\footnotetext` must also
@@ -470,13 +551,13 @@ nesting `theindex` inside `multicol`.
 
 ---
 
-## 13. Token Usage and Performance
+## 14. Token Usage and Performance
 
 | Metric | Value |
 |--------|-------|
-| Approximate total tokens used | ~220,000 |
-| Estimated equivalent human programmer time | 6–9 hours |
-| Actual session duration | ~2.5 hours (AI-assisted, three context windows) |
+| Approximate total tokens used | ~270,000 |
+| Estimated equivalent human programmer time | 7–11 hours |
+| Actual session duration | ~3 hours (AI-assisted, four context windows) |
 | Speedup factor | ~3–4× |
 
 **Future direction recommendations:**
