@@ -208,7 +208,58 @@ fixed and the build could complete past page 12.
 
 ---
 
-## 8. Residual Warnings (Pre-Existing, Not Fixable)
+## 8. xdvipdfmx Transparency Warnings
+
+### 8.1 Symptom
+
+```
+%%%% WARNING: Transparency operations ignored - need to use -dALLOWPSTRANSPARENCY
+```
+
+Appeared 20 times in the xdvipdfmx output, once per PSTricks graphic that uses
+transparency.
+
+### 8.2 Root Cause
+
+Ghostscript 10.x (shipped with TeX Live 2025) requires the explicit flag
+`-dALLOWPSTRANSPARENCY` to process PS transparency operations. Without it,
+all transparency is silently discarded and the warning is emitted. The flag
+must be added to the `D` template (the Ghostscript invocation template) in
+`dvipdfmx.cfg`, not to the xdvipdfmx command line.
+
+### 8.3 Fix
+
+Created the user-override config at
+`TEXMFCONFIG/dvipdfmx/dvipdfmx.cfg`
+(`C:/Users/Daniel Greenhoe/.texlive2025/texmf-config/dvipdfmx/dvipdfmx.cfg`),
+a full copy of the system `texmf-config/dvipdfmx/dvipdfmx.cfg` with
+`-dALLOWPSTRANSPARENCY` inserted after `-dEPSCrop` in the `D` line:
+
+```
+D  "rungs -q -dSAFER -dNOPAUSE -dBATCH -dEPSCrop -dALLOWPSTRANSPARENCY -sPAPERSIZE=a0 ..."
+```
+
+**Why full copy instead of partial override:** xdvipdfmx reads exactly one
+`dvipdfmx.cfg` (the first one found in the kpse search path). If the user
+file contains only the `D` line, all font map settings (`f pdftex.map`,
+`f kanjix.map`, `f ckx.map`), the PDF version (`V 7`), and other settings
+from the system config are lost. The user file must be a complete replacement.
+
+**How to find the active config file:**
+
+```
+kpsewhich -progname=dvipdfmx -format=othertext dvipdfmx.cfg
+```
+
+**Why not edit the system config directly:**
+`C:/p/texlive/2025/texmf-config/dvipdfmx/dvipdfmx.cfg` is write-protected
+(EPERM in Git Bash). The user TEXMFCONFIG location
+(`C:/Users/Daniel Greenhoe/.texlive2025/texmf-config/`) takes precedence
+in the kpse search order.
+
+---
+
+## 9. Residual Warnings (Pre-Existing, Not Fixable)
 
 ### 8.1 Dingbat Font Space Probe
 
@@ -254,6 +305,7 @@ nesting `theindex` inside `multicol`.
 | `common/harPoly.tex` | 199 × `{A\choose B}` → `\binom{A}{B}` (196 by regex + 3 manual for `\frac` arguments) |
 | `common/calculus.tex` | 2 × `{A\choose B}` → `\binom{A}{B}` |
 | `common/polynom.tex` | 5 × `{A\choose B}` → `\binom{A}{B}` |
+| `~/.texlive2025/texmf-config/dvipdfmx/dvipdfmx.cfg` | Created (user TEXMFCONFIG override); added `-dALLOWPSTRANSPARENCY` to GS `D` template |
 
 ---
 
@@ -286,16 +338,30 @@ nesting `theindex` inside `multicol`.
    resolution on every pass. Fixing the fatal error is sufficient to resolve all citation
    warnings.
 
+6. **xdvipdfmx `-D` flag vs. Ghostscript flags in `dvipdfmx.cfg`:**
+   `-dALLOWPSTRANSPARENCY` is a Ghostscript flag, not an xdvipdfmx flag. It must be
+   added inside the `D` template string in `dvipdfmx.cfg`, not passed directly on the
+   xdvipdfmx command line. Adding it to `OPT_XDV2PDF` in the makefile causes a fatal
+   xdvipdfmx error ("Are you sure this is a DVI file?").
+
+7. **TEXMFCONFIG override takes full precedence:**
+   xdvipdfmx reads exactly one `dvipdfmx.cfg` — the first found by kpse in the search
+   order (TEXMFCONFIG > TEXMFHOME > texmf-local > texmf-dist). A user-level override
+   must be a *complete* replacement of the system config, not just the changed line, or
+   all font map settings and PDF version settings from the system config are lost.
+   Use `kpsewhich -progname=dvipdfmx -format=othertext dvipdfmx.cfg` to confirm which
+   file is active.
+
 ---
 
 ## 11. Token Usage and Performance
 
 | Metric | Value |
 |--------|-------|
-| Approximate total tokens used | ~120,000 |
-| Estimated equivalent human programmer time | 3–5 hours |
-| Actual session duration | ~1 hour (AI-assisted) |
-| Speedup factor | ~3–5× |
+| Approximate total tokens used | ~160,000 |
+| Estimated equivalent human programmer time | 4–6 hours |
+| Actual session duration | ~1.5 hours (AI-assisted, two context windows) |
+| Speedup factor | ~3–4× |
 
 **Future direction recommendations:**
 - The symbol index section in `front.tex` nests `\begin{theindex}` inside
@@ -308,3 +374,6 @@ nesting `theindex` inside `multicol`.
 - Investigate whether other commands in `math.sty` with `\!` inside their bodies are
   also used in indexed contexts; apply `\DeclareRobustCommand` proactively to any
   such commands.
+- The `~/.texlive2025/texmf-config/dvipdfmx/dvipdfmx.cfg` user override will need
+  to be re-created after each TeX Live major version upgrade (the path encodes `2025`).
+  Consider adding this file to version control or a setup script.
