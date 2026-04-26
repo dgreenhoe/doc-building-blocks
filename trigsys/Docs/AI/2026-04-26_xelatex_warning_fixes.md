@@ -1,18 +1,20 @@
 # XeLaTeX Build Warning Resolution Session
 
 **Date:** 2026-04-26
-**Project:** trigsys — *Trigonometric Systems*
+**Projects:** trigsys — *Trigonometric Systems*; abcstat — *A Book Concerning Statistical Signal Processing*
 **Tool:** Claude Code (claude-sonnet-4-6)
-**Scope:** Eliminate build errors and warnings in `mainx.log` (TeX Live 2025, XeLaTeX)
+**Scope:** Eliminate build errors and warnings (TeX Live 2025, XeLaTeX)
 
 ---
 
 ## 1. Summary
 
 This session resolved a fatal build error and several build warnings in the
-`trigsys` XeLaTeX project. All warnings that can be fixed without restructuring document
-content were eliminated. After all fixes, `make new` followed by one `make` produced a
-clean build with only two residual pre-existing issues (dingbat font space probe and
+`trigsys` XeLaTeX project, as well as `xdvipdfmx:warning: Object @Hfootnote.N already defined`
+warnings in both `abcstat` and `trigsys` (which share common source files).
+All warnings that can be fixed without restructuring document
+content were eliminated. After all fixes, `make new` produces clean builds in both
+projects with only two residual pre-existing issues (dingbat font space probe and
 infinite glue shrinkage from `multicol`/`theindex` interaction).
 
 ---
@@ -259,9 +261,101 @@ in the kpse search order.
 
 ---
 
-## 9. Residual Warnings (Pre-Existing, Not Fixable)
+## 9. `xdvipdfmx:warning: Object @Hfootnote.N already defined`
 
-### 8.1 Dingbat Font Space Probe
+### 9.1 Symptom
+
+```
+xdvipdfmx:warning: Object @Hfootnote.5 already defined.
+xdvipdfmx:warning: Object @Hfootnote.5 already defined.
+xdvipdfmx:warning: Object @Hfootnote.5 already defined.
+xdvipdfmx:warning: Object @Hfootnote.49 already defined.
+xdvipdfmx:warning: Object @Hfootnote.50 already defined.
+xdvipdfmx:warning: Object @Hfootnote.517 already defined.
+```
+
+Appeared in the abcstat build; `@Hfootnote.5` × 3 would also appear in trigsys
+(both books include `quotepagepair.tex`).
+
+### 9.2 Root Cause
+
+hyperref v7.01o (TeX Live 2025) uses a global variable `\Hy@footnote@currentHref`
+to communicate the PDF anchor name from `\footnotemark` to `\footnotetext`.
+Each `\footnotemark` call increments a separate `Hfootnote` counter (distinct from
+the `footnote` counter) and stores the result as `\Hy@footnote@currentHref`
+(format: `Hfootnote.<N>`). Every `\footnotetext` call (including `\citetblt`,
+which is defined as `\footnotetext{\begin{tabular}...}`) uses whatever
+`\Hy@footnote@currentHref` is currently set to — it does **not** advance the
+counter itself.
+
+The pattern `\footnotemark × N` → `\addtocounter{footnote}{-N}` →
+`\footnotetext × N` rewinds only the `footnote` counter, not `Hfootnote`.
+All N texts then share the href from the LAST mark, creating N−1 duplicate
+anchor names.
+
+Additionally, a lone `\footnotetext` with no preceding `\footnotemark` reuses
+the href from whatever mark came before it (case in `randseq_dsp.tex`).
+
+`hyperfootnotes=false` would silence the warnings but removes all footnote
+hyperlinks; that approach was rejected.
+
+### 9.3 Fix
+
+Two helper macros added to `common/sty/packages.sty` after `\hypersetup`:
+
+```latex
+\makeatletter
+\newcommand{\setfnhref}{%
+  \xdef\Hy@footnote@currentHref{Hfootnote.\arabic{Hfootnote}}%
+}%
+\newcommand{\advancefnhref}{%
+  \stepcounter{Hfootnote}%
+  \xdef\Hy@footnote@currentHref{Hfootnote.\arabic{Hfootnote}}%
+}%
+\makeatother
+```
+
+- `\setfnhref` — syncs `\Hy@footnote@currentHref` to the current `Hfootnote`
+  value without incrementing. Called immediately after
+  `\addtocounter{Hfootnote}{-N}` to set the correct href for the first text.
+- `\advancefnhref` — increments `Hfootnote` and updates the href. Called before
+  each subsequent `\footnotetext` in a multi-text block, or before a lone orphan
+  `\footnotetext` that has no corresponding `\footnotemark`.
+
+### 9.4 Files and Patterns Fixed
+
+| File | Pattern | Warnings fixed |
+|------|---------|----------------|
+| `common/quotepagepair.tex` | 4 marks → `\addtocounter{footnote}{-3}` → 4 texts | `@Hfootnote.5` × 3 |
+| `common/xcordef.tex` | 2 marks → `\addtocounter{footnote}{-1}` → 2 texts | `@Hfootnote.49`/`.50` |
+| `common/randseq_dsp.tex` | Lone `\footnotetext` at corollary with no preceding mark | `@Hfootnote.50`/`.49` |
+| `common/spline.tex` | 2 marks via `\citetblt` → `\addtocounter{footnote}{-1}` → 2 `\citetblt` | `@Hfootnote.517` |
+
+Multi-text rewind sections were changed to:
+
+```latex
+\addtocounter{footnote}{-N}%
+\addtocounter{Hfootnote}{-N}%
+\setfnhref%
+\footnotetext{...text 1...}
+\stepcounter{footnote}%
+\advancefnhref%
+\footnotetext{...text 2...}
+% ... and so on
+```
+
+The orphan `\footnotetext` in `randseq_dsp.tex` was changed to:
+
+```latex
+\advancefnhref%
+\footnotetext{...}
+```
+
+---
+
+## 10. Residual Warnings (Pre-Existing, Not Fixable)
+
+### 10.1 Dingbat Font Space Probe
 
 ```
 Missing character: There is no   (U+0020) in font [/xfonts/dingbat.otf]/OT
@@ -271,7 +365,7 @@ Occurs three times during fontspec font family initialization. fontspec probes t
 with a space character; `dingbat.otf` is a symbol font with no space glyph. Output is
 unaffected. Not fixable without a font that has a space glyph.
 
-### 8.2 Infinite Glue Shrinkage (multicol + theindex)
+### 10.2 Infinite Glue Shrinkage (multicol + theindex)
 
 ```
 ignored error: Infinite glue shrinkage found in box being split [9
@@ -293,7 +387,7 @@ nesting `theindex` inside `multicol`.
 
 ---
 
-## 9. Complete File Change Log
+## 11. Complete File Change Log
 
 | File | Change |
 |------|--------|
@@ -306,10 +400,15 @@ nesting `theindex` inside `multicol`.
 | `common/calculus.tex` | 2 × `{A\choose B}` → `\binom{A}{B}` |
 | `common/polynom.tex` | 5 × `{A\choose B}` → `\binom{A}{B}` |
 | `~/.texlive2025/texmf-config/dvipdfmx/dvipdfmx.cfg` | Created (user TEXMFCONFIG override); added `-dALLOWPSTRANSPARENCY` to GS `D` template |
+| `common/sty/packages.sty` | Added `\setfnhref` and `\advancefnhref` helpers (after `\hypersetup`) |
+| `common/quotepagepair.tex` | Added `\addtocounter{Hfootnote}{-3}`, `\setfnhref`, and `\advancefnhref` × 3 in even-page section |
+| `common/xcordef.tex` | Added `\addtocounter{Hfootnote}{-1}`, `\setfnhref`, `\advancefnhref` around 2-text block |
+| `common/randseq_dsp.tex` | Added `\advancefnhref` before orphan `\footnotetext` at corollary |
+| `common/spline.tex` | Added `\addtocounter{Hfootnote}{-1}`, `\setfnhref`, `\advancefnhref` around 2-`\citetblt` block |
 
 ---
 
-## 10. Key Technical Insights
+## 12. Key Technical Insights
 
 1. **`\DeclareRobustCommand` vs `\newcommand` for indexed commands:**
    Any command used inside `\index{}` that contains fragile content (including `\!`
@@ -352,15 +451,32 @@ nesting `theindex` inside `multicol`.
    Use `kpsewhich -progname=dvipdfmx -format=othertext dvipdfmx.cfg` to confirm which
    file is active.
 
+8. **hyperref v7 `\Hy@footnote@currentHref` is global and not auto-advanced:**
+   In hyperref v7.01o (TeX Live 2025), `\footnotemark` sets the global
+   `\Hy@footnote@currentHref` to `Hfootnote.<N>` where N is the `Hfootnote` counter.
+   All subsequent `\footnotetext` calls use this value until the next `\footnotemark`.
+   The `footnote` counter and the `Hfootnote` counter are independent; rewinding
+   `footnote` with `\addtocounter` does not rewind `Hfootnote`. Any code that places
+   multiple `\footnotetext` calls per `\footnotemark` must explicitly manage both
+   counters. The anchor name can be reconstructed as
+   `Hfootnote.\arabic{Hfootnote}` — the format observed in xdvipdfmx warnings
+   (`@Hfootnote.N`) confirms this pattern (xdvipdfmx prepends `@`).
+
+9. **`\citetblt` is identical to `\footnotetext` for anchor purposes:**
+   `\citetblt` (defined in `common/sty/dan.sty`) expands to
+   `\footnotetext{\begin{tabular}...}`. It inherits the same `\Hy@footnote@currentHref`
+   issue as bare `\footnotetext`. Any fix that applies to `\footnotetext` must also
+   be applied to `\citetblt` calls.
+
 ---
 
-## 11. Token Usage and Performance
+## 13. Token Usage and Performance
 
 | Metric | Value |
 |--------|-------|
-| Approximate total tokens used | ~160,000 |
-| Estimated equivalent human programmer time | 4–6 hours |
-| Actual session duration | ~1.5 hours (AI-assisted, two context windows) |
+| Approximate total tokens used | ~220,000 |
+| Estimated equivalent human programmer time | 6–9 hours |
+| Actual session duration | ~2.5 hours (AI-assisted, three context windows) |
 | Speedup factor | ~3–4× |
 
 **Future direction recommendations:**
@@ -377,3 +493,7 @@ nesting `theindex` inside `multicol`.
 - The `~/.texlive2025/texmf-config/dvipdfmx/dvipdfmx.cfg` user override will need
   to be re-created after each TeX Live major version upgrade (the path encodes `2025`).
   Consider adding this file to version control or a setup script.
+- Audit other occurrences of the `\footnotemark × N` + `\addtocounter{footnote}{-N}`
+  + `\footnotetext × N` pattern in the common/ tree; each one needs both
+  `\addtocounter{Hfootnote}{-N}` + `\setfnhref` / `\advancefnhref` management or it
+  will produce duplicate-anchor warnings under hyperref v7.

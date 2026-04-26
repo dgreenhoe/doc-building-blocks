@@ -76,6 +76,24 @@
  %anchorcolor=blue,
   }
 
+%------------------------------------
+% Footnote hyperref helpers
+% \setfnhref   -- sync \Hy@footnote@currentHref to current Hfootnote (no increment)
+% \advancefnhref -- increment Hfootnote and sync \Hy@footnote@currentHref
+% Needed when \addtocounter{footnote}{-N} rewinds the counter before placing
+% multiple \footnotetext calls: without these helpers all texts share the href
+% from the last \footnotemark, producing "Object @Hfootnote.N already defined".
+%------------------------------------
+\makeatletter
+\newcommand{\setfnhref}{%
+  \xdef\Hy@footnote@currentHref{Hfootnote.\arabic{Hfootnote}}%
+}%
+\newcommand{\advancefnhref}{%
+  \stepcounter{Hfootnote}%
+  \xdef\Hy@footnote@currentHref{Hfootnote.\arabic{Hfootnote}}%
+}%
+\makeatother
+
                                       % mathematics
                                       %------------------------------------
 \usepackage{cancel}                  % allows diagonal cancelation
