@@ -23,6 +23,7 @@ FILE_SRC  =                               \
   ../common/correlation_estimation.tex    \
   ../common/density_estimation.tex        \
   ../common/dimensionality_reduction.tex  \
+  ../common/dsp.tex                       \
   ../common/dtft.tex                      \
   ../common/expectation.tex               \
   ../common/frames.tex                    \
